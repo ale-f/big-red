@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Big_Red
+Bundle-SymbolicName: Big_Red; singleton:=true
+Bundle-Version: 1.0.0.1001-dk
+Bundle-Activator: dk.itu.big_red.Activator
+Bundle-Vendor: Alexander Faithfull
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.intro,
+ org.eclipse.ui.forms,
+ org.eclipse.gef,
+ org.eclipse.ui.views
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

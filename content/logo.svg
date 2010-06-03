@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="250"
+   height="156.71823"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   version="1.0"
+   sodipodi:docname="logo.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   inkscape:export-filename="/home/alec/workspace/Big Red/content/logo-big.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3163">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:1;"
+         offset="0"
+         id="stop3165" />
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="1"
+         id="stop3167" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3155">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop3157" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop3159" />
+    </linearGradient>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="6.1230318e-14 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3163"
+       id="radialGradient2404"
+       gradientUnits="userSpaceOnUse"
+       cx="147.14287"
+       cy="68.14286"
+       fx="147.14287"
+       fy="68.14286"
+       r="36.42857" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3163"
+       id="radialGradient2397"
+       gradientUnits="userSpaceOnUse"
+       cx="147.14287"
+       cy="68.14286"
+       fx="147.14287"
+       fy="68.14286"
+       r="36.42857" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3163"
+       id="radialGradient2407"
+       gradientUnits="userSpaceOnUse"
+       cx="147.14287"
+       cy="68.14286"
+       fx="147.14287"
+       fy="68.14286"
+       r="36.42857" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3163"
+       id="radialGradient2406"
+       gradientUnits="userSpaceOnUse"
+       cx="147.14287"
+       cy="68.14286"
+       fx="147.14287"
+       fy="68.14286"
+       r="36.42857" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="270.48863"
+     inkscape:cy="93.661473"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="825"
+     inkscape:window-x="0"
+     inkscape:window-y="25" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-96.450791,-72.228954)">
+    <text
+       id="text3190"
+       y="-77.819519"
+       x="373.85797"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium"
+       xml:space="preserve"><tspan
+         y="-77.819519"
+         x="373.85797"
+         id="tspan3192"
+         sodipodi:role="line">Big Red</tspan></text>
+    <g
+       id="g2397"
+       transform="translate(15,-9.4030907)">
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/alec/workspace/Big Red/content/logo-big.png"
+         transform="matrix(1.3512476,0,0,1.3571875,-29.257465,27.150384)"
+         d="M 166.78572,83.5 A 36.42857,36.42857 0 1 1 93.928577,83.5 A 36.42857,36.42857 0 1 1 166.78572,83.5 z"
+         sodipodi:ry="36.42857"
+         sodipodi:rx="36.42857"
+         sodipodi:cy="83.5"
+         sodipodi:cx="130.35715"
+         id="path2383"
+         style="fill:url(#radialGradient2406);fill-opacity:1;stroke:none"
+         sodipodi:type="arc" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/alec/workspace/Big Red/content/logo-big.png"
+         id="path3219"
+         d="M 96.450791,178.77365 L 96.450791,181.70009 L 97.253094,181.70009 C 100.06369,181.70009 101.20042,181.92063 101.68688,182.46351 C 102.06523,182.9521 102.06691,183.14551 102.06691,186.61988 L 102.06691,210.15862 C 102.06691,213.57874 102.06523,213.79589 101.68688,214.23017 C 101.20044,214.82735 100.06368,215.03602 97.253094,215.03602 L 96.450791,215.03602 L 96.450791,217.96245 L 118.32411,217.96245 C 123.94529,217.96245 126.79981,217.54511 129.55636,216.35079 C 133.01555,214.77644 135.29916,211.37838 135.29916,207.74113 C 135.29916,203.94101 133.13378,200.83812 129.13409,199.04665 C 127.29639,198.17806 125.65293,197.73018 122.84234,197.35017 C 125.49077,196.91585 127.02953,196.52906 128.54292,195.82333 C 131.78591,194.249 133.52564,191.65846 133.52564,188.40122 C 133.52564,185.30683 131.86697,182.40244 129.21855,180.93667 C 126.2458,179.19949 123.7426,178.77365 117.31067,178.77365 L 96.450791,178.77365 z M 114.81931,181.70009 L 116.42392,181.70009 C 121.18029,181.70009 123.7291,184.10742 123.7291,188.61327 C 123.7291,191.27335 122.79841,193.40587 121.06883,194.76303 C 119.6095,195.95736 117.79035,196.37468 114.43928,196.37468 L 111.779,196.37468 L 111.779,184.88101 C 111.779,183.30668 111.87189,182.8554 112.41241,182.42111 C 112.95291,181.93251 113.79236,181.70009 114.81931,181.70009 z M 111.779,199.34353 L 115.49494,199.34353 C 118.90007,199.34353 120.48443,199.68114 121.99782,200.6583 C 123.83549,201.90694 124.95368,204.282 124.95368,207.10495 C 124.95368,209.71073 123.98753,212.12147 122.42008,213.42435 C 121.06883,214.56439 119.31389,215.03602 116.7195,215.03602 L 115.07268,215.03602 C 113.18094,215.03602 112.27221,214.73573 111.94792,213.9757 C 111.78576,213.5414 111.779,213.3497 111.779,211.5582 L 111.779,199.34353 z"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/alec/workspace/Big Red/content/logo-big.png"
+         id="path3213"
+         d="M 151.74201,192.30283 L 139.04027,192.68284 L 139.04027,195.4515 L 139.79698,195.4515 C 143.09402,195.4515 143.25619,195.72295 143.25619,200.55452 L 143.25619,210.1634 L 143.25619,212.66063 C 143.25619,214.83214 142.66161,215.21215 139.25648,215.21215 L 139.04027,215.21215 L 139.04027,217.9808 L 155.9579,217.9808 L 155.9579,215.21215 L 155.63359,215.21215 C 152.33655,215.21215 151.74201,214.83214 151.74201,212.71491 L 151.74201,210.1634 L 151.74201,192.30283"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#ff0000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/alec/workspace/Big Red/content/logo-big.png"
+         id="path3211"
+         d="M 187.15329,188.78292 C 184.72104,188.78292 182.60633,190.08075 180.22814,193.06654 C 178.17425,192.03508 175.76397,191.49728 173.00742,191.49728 C 165.60258,191.49728 160.25501,195.41109 160.25501,200.78554 C 160.25502,204.42279 162.27512,207.06257 166.16672,208.41972 C 161.95083,209.17973 159.9172,210.94072 159.9172,213.76366 C 159.9172,216.15231 161.68058,217.94209 164.81548,218.81069 C 161.19415,219.35357 159.1149,221.09417 159.1149,223.64566 C 159.1149,227.22865 163.47945,228.94718 172.28957,228.94718 C 182.34282,228.94716 187.95558,225.76456 187.95558,219.95581 C 187.95558,216.91571 186.18208,214.32348 183.47957,213.50917 C 181.69593,212.91199 179.30591,212.70335 175.41432,212.70335 L 171.69839,212.70335 C 168.83375,212.70335 168.1936,212.437 168.1936,211.13411 C 168.1936,209.77693 169.15467,209.35277 172.28957,209.35277 L 173.26078,209.35277 C 176.82807,209.35277 178.80764,209.01519 180.86153,208.038 C 183.99645,206.57226 185.84425,203.80018 185.84425,200.48866 C 185.84425,197.93717 184.97103,196.33566 182.59281,194.3813 C 183.29546,193.40416 183.97108,192.85447 184.61969,192.85447 C 184.78186,192.85447 184.87305,192.89179 184.87305,193.10894 L 184.87305,193.32101 C 184.87305,194.56963 186.32732,195.78091 187.78669,195.78091 C 189.67842,195.78091 191.16479,194.25747 191.16479,192.30313 C 191.16479,190.18592 189.53149,188.78292 187.15329,188.78292 z M 173.1341,194.29648 C 175.72848,194.29648 177.10339,196.49005 177.10339,200.61589 C 177.10336,204.4703 175.63221,206.72323 173.09187,206.72323 C 171.47037,206.72323 170.43499,206.12948 169.84042,204.77229 C 169.24587,203.57799 168.99591,202.0138 168.99591,200.27659 C 168.99589,196.31363 170.37755,194.29648 173.1341,194.29648 z M 168.10916,220.29511 L 175.2032,220.29511 C 178.55428,220.29509 179.22485,220.41896 180.14369,221.01612 C 180.63013,221.34186 180.94599,222.09171 180.94599,222.79742 C 180.94599,225.02321 178.23675,226.10558 172.66961,226.10558 C 168.50774,226.10558 166.1245,224.9757 166.1245,222.96706 C 166.12453,221.77276 166.75789,220.89227 168.10916,220.29511 z"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/alec/workspace/Big Red/content/logo-big.png"
+         id="path3205"
+         d="M 207.1264,178.77365 L 207.1264,181.70009 L 207.92872,181.70009 C 210.73932,181.70009 211.87605,181.92063 212.36251,182.46351 C 212.74086,182.9521 212.74254,183.14551 212.74254,186.61988 L 212.74254,210.1162 C 212.74254,213.59062 212.74084,213.74159 212.36251,214.23017 C 211.87607,214.77307 210.73932,214.99359 207.92872,214.99359 L 207.1264,214.99359 L 207.1264,217.92003 L 228.74638,217.92003 L 228.74638,214.99359 L 227.35289,214.99359 C 224.54231,214.99357 223.32112,214.77307 222.83467,214.23017 C 222.45631,213.74161 222.45464,213.59062 222.45464,210.1162 L 222.45464,199.13146 L 225.49495,199.13146 C 227.8191,199.13146 229.33585,199.6998 230.30876,200.78554 C 231.17355,201.81701 231.40158,202.44133 231.61777,205.5357 C 231.94208,209.17296 232.21571,211.45304 232.37786,212.32163 C 233.29669,216.55606 236.28972,218.81069 240.99207,218.81069 C 246.82944,218.81069 250.19744,215.48897 250.19744,209.73449 L 250.19744,209.09833 L 247.2838,209.09833 C 247.22974,212.51841 246.41394,214.23017 244.79243,214.23017 C 244.19791,214.23019 243.55437,213.91293 243.23006,213.42435 C 242.90575,212.99005 242.86692,212.61682 242.59665,210.87962 C 242.59669,210.66247 242.45141,210.11281 242.34331,209.35277 L 241.96326,207.27458 C 241.15249,202.38873 239.10706,199.94239 234.40471,198.36804 C 237.26937,197.82518 238.66961,197.45026 240.02085,196.7988 C 243.31789,195.1159 245.21471,192.14195 245.21471,188.61327 C 245.21471,185.35605 243.67599,182.5704 240.86538,180.72462 C 238.81148,179.42175 235.15466,178.77365 230.18207,178.77365 L 207.1264,178.77365 z M 226.29724,181.70009 L 227.60626,181.70009 C 232.6329,181.70009 234.91144,183.92759 234.91144,188.86774 C 234.91144,194.40506 232.64133,196.16261 225.4527,196.16261 L 222.45464,196.16261 L 222.45464,185.17788 C 222.45464,182.08353 222.83805,181.70009 226.29724,181.70009 z"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/alec/workspace/Big Red/content/logo-big.png"
+         id="path3201"
+         d="M 266.32794,191.49728 C 262.00397,191.49728 258.38935,192.88504 255.68689,195.65367 C 253.25463,198.20519 251.80204,201.78308 251.80204,205.36606 C 251.80206,209.22046 253.44887,213.16819 256.15137,215.50255 C 258.63765,217.61978 262.26237,218.81069 266.37018,218.81069 C 272.69401,218.81069 276.87106,215.96737 279.24926,210.15862 L 276.58899,209.09833 C 274.42701,213.33274 271.99473,215.12085 268.4815,215.12085 C 265.99522,215.12085 263.83656,213.91802 262.48534,211.85511 C 261.56651,210.38936 261.18814,208.71489 261.1341,205.62052 L 279.24926,205.62052 L 279.24926,204.72986 C 279.24926,196.64105 274.21923,191.49728 266.32794,191.49728 z M 266.49684,194.29648 C 269.25339,194.29648 270.76174,196.58167 270.76174,200.87036 C 270.76174,202.17327 270.3648,202.60926 269.28381,202.60926 L 261.17632,202.60926 C 261.17632,197.45197 263.25387,194.29648 266.49684,194.29648 z"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium" />
+      <path
+         inkscape:export-filename="/home/alec/workspace/Big Red/content/logo-big.png"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         id="path3197"
+         d="M 311.80588,177.96784 L 298.12449,178.77365 L 298.12449,181.57286 L 299.85578,181.57286 C 303.15282,181.57286 303.31836,181.78831 303.31836,186.61988 L 303.31836,195.14473 C 301.26445,192.64753 298.82713,191.49728 295.422,191.49728 C 288.50363,191.49728 283.09188,197.60972 283.09188,205.5357 C 283.09184,213.40739 287.8888,218.81069 294.9153,218.81069 C 298.80686,218.81069 301.5668,217.31779 303.78284,214.06052 L 303.78284,217.96245 L 316.45079,217.36868 L 316.45079,214.44225 L 314.97287,214.44225 C 313.02706,214.44225 312.87168,214.44055 312.43928,214.06052 C 311.95285,213.62624 311.80588,212.97478 311.80588,211.34616 L 311.80588,177.96784 z M 297.91336,195.18714 C 301.26445,195.18714 303.40282,199.08567 303.40282,205.11159 C 303.40282,211.02892 301.13777,215.12085 297.78669,215.12085 C 294.38153,215.12085 292.46615,211.63966 292.46615,205.45087 C 292.46614,198.99068 294.45418,195.18714 297.91336,195.18714 z"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Century Schoolbook L;-inkscape-font-specification:Century Schoolbook L Medium" />
+    </g>
+  </g>
+</svg>

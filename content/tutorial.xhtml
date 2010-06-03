@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>tutorial.xhtml</title>
+		<link rel="stylesheet" href="shared.css" type="text/css" />
+	</head>
+	<body>
+		<div class="header">
+			<h1>Getting started</h1>
+			<div id="tr-image"></div>
+		</div>
+		<div class="content">
+<p>
+	This guide will take you through the construction of a simple bigraph using Big Red.
+	(Remember that you can move this guide around; drag its tab to the bottom of the window to
+	see the main workspace.)
+</p>
+<img src="screenshots/basic.png" />
+<ol>
+	<li>
+		<h2>Add ports to the bigraph</h2>
+		<p>
+			Bigraphs are useless without connections joining nodes together, and nodes
+			can only be joined at <em>ports</em> - designated connection points.
+			Let's add a few ports to get started.
+		</p>
+		<p>
+			Go to the <u>B</u>igraph menu, then select <q><u>P</u>orts...</q>. The
+			Ports wizard will appear.
+		</p>
+		<img src="screenshots/ports.png" />
+		<p>
+			The option we want - <q>Add a new port</q> - is already
+			selected, so click <u>N</u>ext. The port editor will appear.
+		</p>
+		<img src="screenshots/port-editor.png" />
+		<p>
+			We're going to model a simple office environment, so let's create the first
+			port: <code>telephone-cable</code>, which models the wire that connects a
+			telephone to the telephone system. Type this into the <u>N</u>ame box.
+		</p>
+		<img src="screenshots/telephone-cable.png" />
+		<p>
+			<code>telephone-cable</code> can connect to the telephone system, so we'll
+			model that as the port <code>telephone-system</code>. Click <u>A</u>dd; a
+			new entry appears in the large frame, ready for editing. Type
+			<code>telephone-system</code> into the new entry. (If you make a mistake,
+			you can click it again to edit it.)
+		</p>
+		<img src="screenshots/telephone-system.png" />
+		<p>
+			That's it; click <u>F</u>inish to create this port. (Notice that you don't
+			need to make a separate <code>telephone-system</code> port - it's
+			created implicitly.)
+		</p>
+	</li>
+	<li>
+		<h2>Adding a control</h2>
+		<p>
+			Bigraphs have the concept of <em>controls</em> (essentially classes which
+			govern some aspects of a node's display and function); each node on the
+			bigraph has a control, which dictates its appearance and its ports. Since
+			we're modelling an office environment, we'll need two controls to
+			start: <code>Building</code> and <code>Telephone</code>.
+		</p>
+		<p>
+			Go to the <u>B</u>igraph menu, then select <q><u>C</u>ontrols...</q>.
+			The Controls wizard will appear.
+		</p>
+		<img src="screenshots/controls.png" />
+		<p>
+			As before, <q>Add a new control</q> has already been selected, so click
+			<u>N</u>ext.
+		</p>
+		<img src="screenshots/control-editor.png" />
+		<p>
+			The control editor might look complicated, but don't worry! It's actually
+			quite easy to use. Type <code>Building</code> in the <u>N</u>ame field, and
+			then - using the drop-down boxes - set the <u>T</u>op port to
+			<code>telephone-system</code>.
+		</p>
+		<img src="screenshots/control-editor-2.png" />
+		<p>
+			The port is now configured; any <code>Telephone</code>s we add to the
+			bigraph will be able to connect to <code>Building</code>s.
+		</p>
+		<p>
+			Let's change the look of this control. The default size of 50x50 is fine,
+			but it should be resizable, so tick the <q><u>A</u>llow resizing</q> box at
+			the bottom - and change the <u>A</u>ppearance drop-down box to
+			<q>Oval</q>.
+		</p>
+		<img src="screenshots/control-editor-3.png" />
+		<p>
+			All done; click <u>F</u>inish. Now make another control, <code>Telephone</code>,
+			with these settings:
+		</p>
+		<img src="screenshots/control-telephone.png" />
+		<p>
+			Once you've done that, we can move on to actually creating the bigraph.
+		</p>
+	</li>
+	<li>
+		<h2>Adding the nodes</h2>
+		<p>
+			You should be back at the main window at this point. From the list of
+			tools (the <em>palette</em>), choose <q>Root</q>.
+		</p>
+		<img src="screenshots/root.png" />
+		<p>
+			The formal language of bigraphs only allows us to create nodes if they're
+			inside a <em>root</em>, so we need one of those before we can go any
+			further. Move the mouse into the blank white area (the <em>canvas</em>),
+			and draw a large rectangle with it (click, hold, and drag). This will add
+			a root - shown as a white rectangle with rounded corners and a dashed
+			border - to the bigraph.
+		</p>
+		<img src="screenshots/root-2.png" />
+		<p>
+			(Notice the black border around it, and the square handles around the
+			border; this tells us that this item is <em>selected</em>. When something
+			is selected, you can click and drag the handles to resize it - or
+			you can click and drag the figure itself to move it around.)
+		</p>
+		<p>
+			Now select the <q>Node</q> tool from the palette, and draw another large
+			rectangle - <em>inside</em> the root.
+		</p>
+		<img src="screenshots/root-3.png" />
+		<p>
+			This node doesn't have a control, so it has no ports and a very dull
+			appearance. Double-click it, and the Properties view will appear on the
+			left-hand side of the window.
+		</p>
+		<img src="screenshots/properties.png" />
+		<p>
+			Its control is <code>Unknown</code>. This is no good; obviously we want
+			it to be <code>Building</code>. Click on the <code>Unknown</code> text, and
+			it'll become another drop-down box - which you can use to choose
+			<code>Building</code>!
+		</p>
+		<img src="screenshots/building.png" />
+		<p>
+			(Notice the red dot at the top of the <code>Building</code> figure; this is
+			how Big Red shows ports.)
+		</p>
+		<p>
+			Now make a few smaller nodes and give them the control <code>Telephone</code>,
+			until your bigraph looks something like this:
+		</p>
+		<img src="screenshots/nodes.png" />
+	</li>
+	<li>
+		<h2>Adding the edges</h2>
+		<p>
+			Adding connections between nodes - <em>edges</em> - is easy.
+			When you use the <q>Edge</q> tool to connect two nodes, Big Red will
+			automatically work out whether or not they have compatible ports -
+			and it'll link those ports together for you, too.
+		</p>
+		<p>
+			Select the <q>Edge</q> tool, and use it to draw a line between any of the
+			<code>Telephone</code>s and the <code>Building</code>. The result will be
+			something like this:
+		</p>
+		<img src="screenshots/edge.png" />
+		<p>
+			Big Red uses <q>Manhattan routing</q> for edges, so - rather than
+			just using a straight line between the source and the destination -
+			the line can only turn ninety degrees at a time. This may not seem very
+			useful now, but when you have lots of edges on a diagram, it makes it much
+			more readable!
+		</p>
+		<p>
+			Connect the remaining two <code>Telephone</code>s to the <code>Building</code>.
+		</p>
+		<img src="screenshots/bigraph.png" />
+		<p>
+			Congratulations - you've drawn your first Big Red bigraph!
+		</p>
+	</li>
+	<li>
+		<h2>Saving and loading</h2>
+		<p>
+			To save your masterpiece, go to the <u>F</u>ile menu, and choose <u>S</u>ave.
+			The standard file dialog will appear; call your bigraph <code>Office</code>,
+			then click <u>O</u>K.
+		</p>
+		<img src="screenshots/file.png" />
+		<p>
+			If you don't add one yourself, Big Red will automatically append a
+			<code>.bigred</code> suffix to the filename - so the file actually ends up
+			being called <code>Office.bigred</code>.
+		</p>
+		<img src="screenshots/suffix.png" />
+		<p>
+			Opening a previously-saved bigraph is similarly intuitive; go to <u>F</u>ile
+			and choose <u>O</u>pen.
+		</p>
+	</li>
+</ol>
+	<p>
+		That's all for this guide; now you know how to add ports and controls to a
+		bigraph, how to actually draw one, and how to save it out as a file.
+	</p>
+	<p>
+		Of course, Big Red can do <em>lots</em> more - but the best way to learn is through
+		experimentation! For example, why not try using the Properties view to change the
+		colour of one of the nodes in your diagram?
+	</p>
+		</div>
+	</body>
+</html>
