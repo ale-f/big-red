@@ -80,7 +80,7 @@ public class Name extends Thing {
 	}
 	
 	@Override
-	public Name fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry) {
+	public void fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry) {
 		idRegistry.put(DOM.getAttribute(d, "id"), this);
 		
 		Rectangle layout = new Rectangle();
@@ -91,7 +91,5 @@ public class Name extends Thing {
 		setLayout(layout);
 		
 		setType(NameType.valueOf(DOM.getAttribute(d, "type")));
-		
-		return this;
 	}
 }

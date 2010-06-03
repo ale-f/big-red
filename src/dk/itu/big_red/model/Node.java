@@ -182,7 +182,7 @@ public class Node extends Thing implements PropertyChangeListener {
 	}
 	
 	@Override
-	public Node fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry) {
+	public void fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry) {
 		idRegistry.put(DOM.getAttribute(d, "id"), this);
 		
 		setControl(getControlAuthority().getControl(DOM.getAttribute(d, "metaclass")));
@@ -212,8 +212,6 @@ public class Node extends Thing implements PropertyChangeListener {
 				nc.fromXML(t, idRegistry);
 			}
 		}
-		
-		return this;
 	}
 
 	@Override
