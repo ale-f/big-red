@@ -33,14 +33,7 @@ public class Bigraph extends Thing {
 	
 	@Override
 	public Node toXML() {
-		DOMImplementationRegistry registry;
-		try {
-			registry = DOMImplementationRegistry.newInstance();
-		} catch (Exception e) {
-			return null;
-		}
-		DOMImplementation impl =
-			registry.getDOMImplementation("XML 3.0");
+		DOMImplementation impl = DOM.getImplementation();
 		
 		Document doc = impl.createDocument(null, "big-red", null);
 		Node node = doc.getDocumentElement();

@@ -2,12 +2,39 @@ package dk.itu.big_red.util;
 
 import java.util.ArrayList;
 
+import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 public class DOM {
-
+	private static DOMImplementation impl = null;
+	
+	/**
+	 * Gets the shared DOM implementation object (required to actually
+	 * <i>do</i> anything XML-related), creating it if necessary.
+	 * @return the shared DOM implementation object, or <code>null</code> if it
+	 *         couldn't be created
+	 */
+	public static DOMImplementation getImplementation() {
+		if (impl == null) {
+			try {
+				impl = DOMImplementationRegistry.newInstance().
+				       getDOMImplementation("XML 3.0");
+			} catch (ClassCastException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return impl;
+	}
 	/**
 	 * Gets all the children of the specified node with the given tag name.
 	 * (Note that this method only searches immediate children.)
