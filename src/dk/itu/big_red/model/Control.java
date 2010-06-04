@@ -29,11 +29,36 @@ public class Control {
 		SHAPE_TRIANGLE
 	}
 
-	public static final String PROPERTY_LABEL = "MetaclassLabel";
-	public static final String PROPERTY_SHAPE = "MetaclassShape";
-	public static final String PROPERTY_DEFAULT_SIZE = "MetaclassDefaultSize";
-	public static final String PROPERTY_RESIZABLE = "MetaclassResizable";
-	public static final String PROPERTY_PORT = "MetaclassPort";
+	/**
+	 * The property name fired when the label (the one- or two-character
+	 * caption that appears next to {@link Node}s on the bigraph) changes.
+	 */
+	public static final String PROPERTY_LABEL = "ControlLabel";
+	/**
+	 * The property name fired when the name changes.
+	 */
+	public static final String PROPERTY_NAME = "ControlName";
+	/**
+	 * The property name fired when the shape changes.
+	 */
+	public static final String PROPERTY_SHAPE = "ControlShape";
+	/**
+	 * The property name fired when the default size changes. (This only
+	 * really matters for existing {@link Node}s if they aren't resizable.)
+	 */
+	public static final String PROPERTY_DEFAULT_SIZE = "ControlDefaultSize";
+	/**
+	 * The property name fired when the resizability changes. If this changes
+	 * from <code>true</code> to <code>false</code>, listeners should make sure
+	 * that any {@link Node}s with this Control are resized to the default
+	 * size.
+	 * @see Control#getDefaultSize
+	 */
+	public static final String PROPERTY_RESIZABLE = "ControlResizable";
+	/**
+	 * The property name fired when the set of ports changes.
+	 */
+	public static final String PROPERTY_PORT = "ControlPort";
 	
 	private PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
