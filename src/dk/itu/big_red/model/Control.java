@@ -12,7 +12,13 @@ import org.w3c.dom.Node;
 import dk.itu.big_red.exceptions.DuplicateControlException;
 
 /**
+ * A Control is the bigraphical analogue of a <i>class</i> - a template from
+ * which instances ({@link Node}s) should be constructed. Controls are
+ * registered with a {@link Bigraph} as part of its {@link Signature}.
  * 
+ * <p>In the formal bigraph model, controls define labels and numbered ports;
+ * this model differs slightly by defining <i>named</i> ports and certain
+ * graphical properties (chiefly shapes and default port offsets).
  * @author alec
  *
  */
