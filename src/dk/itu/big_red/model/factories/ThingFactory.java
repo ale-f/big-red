@@ -1,12 +1,18 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.factories;
 
 import org.eclipse.gef.requests.CreationFactory;
 
+import dk.itu.big_red.model.Name;
+import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.Thing;
+
 public class ThingFactory implements CreationFactory {
 
-	private Class<?> template;
+	private Class<? extends Thing> template;
 	
-	public ThingFactory(Class<?> t) {
+	public ThingFactory(Class<? extends Thing> t) {
 		this.template = t;
 	}
 	
@@ -23,12 +29,6 @@ public class ThingFactory implements CreationFactory {
 		} else if (template == Site.class) {
 			Site site = new Site();
 			return site;
-		} else if (template == Edge.class) {
-			/*
-			 * So Edges aren't *technically* Things. Oh, well; who cares?
-			 */
-			Edge edge = new Edge();
-			return edge;
 		} else if (template == Name.class){
 			Name name = new Name();
 			return name;

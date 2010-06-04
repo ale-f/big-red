@@ -17,6 +17,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.propertysources.ThingPropertySource;
 import dk.itu.big_red.util.DOM;
 

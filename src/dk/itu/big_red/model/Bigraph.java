@@ -16,6 +16,7 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 import dk.itu.big_red.commands.EdgeCreateCommand;
+import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.util.DOM;
 
 public class Bigraph extends Thing {
