@@ -10,7 +10,7 @@ import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.util.DOM;
 
-public class Name extends Thing {
+public class Name extends Thing implements IConnectable {
 	public static final String PROPERTY_NAME = "NameName";
 	public static final String PROPERTY_TYPE = "NameType";
 	public static enum NameType {
@@ -49,6 +49,16 @@ public class Name extends Thing {
 		System.out.println(oldType + " -> " + type);
 		this.type = type;
 		getListeners().firePropertyChange(PROPERTY_TYPE, oldType, type);
+	}
+	
+	@Override
+	public void connect(Edge e) {
+		
+	}
+
+	@Override
+	public void disconnect(Edge e) {
+		
 	}
 	
 	@Override
