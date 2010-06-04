@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.exceptions.DuplicateControlException;
+import dk.itu.big_red.util.DOM;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -171,12 +172,13 @@ public class Control {
 	public Node toXML(Node d) {
 		Document doc = d.getOwnerDocument();
 		Element r = doc.createElement("metaclass");
-		r.setAttribute("name", getLongName());
-		r.setAttribute("control", getLabel());
-		r.setAttribute("shape", getShape().toString());
-		r.setAttribute("width", Integer.toString(getDefaultSize().x));
-		r.setAttribute("height", Integer.toString(getDefaultSize().y));
-		r.setAttribute("resizable", Boolean.toString(resizable));
+		DOM.applyAttributesToElement(r,
+				"name", getLongName(),
+				"control", getLabel(),
+				"shape", getShape(),
+				"width", getDefaultSize().x,
+				"height", getDefaultSize().y,
+				"resizable", this.resizable);
 		Element portsE = doc.createElement("ports");
 		for (String port : getPorts()) {
 			Element portE = doc.createElement("port");
