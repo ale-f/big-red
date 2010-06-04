@@ -1,8 +1,10 @@
 package dk.itu.big_red.util;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -35,6 +37,20 @@ public class DOM {
 		}
 		return impl;
 	}
+	
+	/**
+	 * Applies the specified name-value pairs to the specified element as
+	 * attributes. (This uses {@link Element#setAttribute}, but is slightly
+	 * less irritating, as it automatically converts names and values to
+	 * strings.)
+	 * @param d an Element
+	 * @param attrs a vararg list of name-value pairs of any type
+	 */
+	public static void applyAttributesToElement(Element d, Object... attrs) {
+		for (int i = 0; i < attrs.length; i += 2)
+			d.setAttribute(attrs[i].toString(), attrs[i + 1].toString());
+	}
+	
 	/**
 	 * Gets all the children of the specified node with the given tag name.
 	 * (Note that this method only searches immediate children.)
