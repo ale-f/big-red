@@ -3,12 +3,18 @@ package dk.itu.big_red.part;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-public class PortPart extends AbstractGraphicalEditPart {
+import dk.itu.big_red.figure.PortFigure;
+import dk.itu.big_red.model.Port;
 
+public class PortPart extends AbstractGraphicalEditPart {
+	@Override
+	public Port getModel() {
+		return (Port)super.getModel();
+	}
+	
 	@Override
 	protected IFigure createFigure() {
-		// TODO Auto-generated method stub
-		return null;
+		return new PortFigure();
 	}
 
 	@Override
