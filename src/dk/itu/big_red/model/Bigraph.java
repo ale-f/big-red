@@ -33,26 +33,13 @@ public class Bigraph extends Thing {
 	public Node toXML() {
 		DOMImplementation impl = DOM.getImplementation();
 		
-		Document doc = impl.createDocument(null, "big-red", null);
+		Document doc = impl.createDocument(null, "brs", null);
 		Node node = doc.getDocumentElement();
 		
 		node.appendChild(doc.createComment(
 			"This is a Big Red XML bigraph definition. " +
 			"DO NOT EDIT IT UNLESS YOU KNOW WHAT YOU'RE DOING - " +
 			"whitespace is significant and no attributes are optional!"));
-		
-		Node portzE = doc.createElement("ports");
-		for (String key : signature.getPorts()) {
-			Element p = doc.createElement("port");
-			p.setAttribute("key", key);
-			for (String port : signature.getConnections(key)) {
-				Element x = doc.createElement("can-connect-to");
-				x.setTextContent(port);
-				p.appendChild(x);
-			}
-			portzE.appendChild(p);
-		}
-		node.appendChild(portzE);
 		
 		Node signatureE = doc.createElement("signature");
 		for (Control k : getSignature().getControls())
@@ -72,20 +59,6 @@ public class Bigraph extends Thing {
 		Bigraph r = new Bigraph();
 		
 		ArrayList<Node> mcs =
-			DOM.getNamedChildNodes(doc.getElementsByTagName("ports").item(0), "port");
-		for (Node t : mcs) {
-			String port = DOM.getAttribute(t, "key");
-			NodeList ccs = t.getChildNodes();
-			for (int j = 0; j < ccs.getLength(); j++) {
-				Node u = ccs.item(j);
-				if (u.getAttributes() != null) {
-					String dst = u.getTextContent();
-					r.getSignature().allowConnection(port, dst);
-				}
-			}
-		}
-		
-		mcs =
 			DOM.getNamedChildNodes(doc.getElementsByTagName("signature").item(0), "control");
 		for (Node t : mcs) {
 			String name = DOM.getAttribute(t, "name");
