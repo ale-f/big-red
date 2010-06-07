@@ -40,6 +40,13 @@ public final class Utility {
 		return new FileDialog(parent, format | SWT.DIALOG_TRIM);
 	}
 	
+	/**
+	 * Converts a {@link RGB} colour to a string of the format
+	 * <code>#rrggbb</code>.
+	 * 
+	 * @param c a RGB colour
+	 * @return a string representation of the specified colour
+	 */
 	public static String colourToString(RGB c) {
 		String r = Integer.toHexString(c.red);
 		if (r.length() == 1)
@@ -53,6 +60,14 @@ public final class Utility {
 		return "#" + r + g + b;
 	}
 	
+	/**
+	 * Converts a string description of a colour to a {@link RGB} colour.
+	 * 
+	 * <p>At the moment, the string must be of the format <code>#rrggbb</code>,
+	 * but this will become more lenient in future.
+	 * @param c a string description of a colour
+	 * @return a new RGB colour, or <code>null</code> if the string was invalid
+	 */
 	public static RGB colourFromString(String c) {
 		if (c.length() != 7 && c.charAt(0) != '#')
 			return null;
