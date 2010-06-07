@@ -25,6 +25,8 @@ public class PartFactory implements EditPartFactory {
         	part = new EdgePart();
         } else if (model instanceof Name) {
         	part = new NamePart();
+        } else if (model instanceof Port) {
+        	part = new PortPart();
         }
 	       
 		if (part != null)
