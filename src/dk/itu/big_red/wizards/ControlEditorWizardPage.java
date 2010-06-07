@@ -88,8 +88,7 @@ public class ControlEditorWizardPage extends WizardPage {
 		});
 		appearanceChoice.select(0);
 		
-		portNames =
-			getModel().getSignature().getPorts().toArray(new String[]{});
+		portNames = new String[]{};
 		
 		Label topPort = new Label(form, SWT.NONE);
 		topPort.setText("&Top port:");
@@ -168,7 +167,7 @@ public class ControlEditorWizardPage extends WizardPage {
 			leftPortChoice.select(0);
 			bottomPortChoice.select(0);
 			rightPortChoice.select(0);
-			String[] ports = getModel().getSignature().getPorts().toArray(new String[]{});
+			String[] ports = new String[]{};
 			for (String p : m.getPorts()) {
 				/*
 				 * 0 is a safe default ("(none)").

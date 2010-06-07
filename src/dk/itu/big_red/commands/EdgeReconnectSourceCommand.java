@@ -21,35 +21,13 @@ public class EdgeReconnectSourceCommand extends Command {
 		this.source = node;
 	}
 	
-	public boolean compatiblePorts() {
-		targetKey = sourceKey = null;
-		for (String s : ((Node)source).getControl().getPorts()) {
-			for (String t : ((Node)model.getTarget()).getControl().getPorts()) {
-				if (source.getSignature().canConnect(s, t)) {
-					sourceKey = s;
-					targetKey = t;
-					return true;
-				}
-			}
-		}
+	public boolean canExecute() {
 		return false;
 	}
 	
-	public boolean canExecute() {
-		return (model != null && source != null && model.sourceOK(source) && compatiblePorts());
-	}
-	
 	public void execute() {
-		if (canExecute()) {
-			model.getTarget().removeEdge(model);
-			oldSource.removeEdge(model);
-			((Node)source).connect(sourceKey, (Node)model.getTarget(), targetKey, model);
-		}
 	}
 	
 	public void undo() {
-		model.getTarget().removeEdge(model);
-		source.removeEdge(model);
-		((Node)oldSource).connect(oldSourceKey, (Node)model.getTarget(), oldTargetKey, model);
 	}
 }

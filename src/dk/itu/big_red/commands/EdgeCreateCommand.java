@@ -63,61 +63,11 @@ public class EdgeCreateCommand extends Command {
 		this.targetKey = targetKey;
 	}
 	
-	public boolean compatiblePorts() {
-		if (source instanceof Name || target instanceof Name) return true;
-			else if (targetKey != null && sourceKey != null) return true;
-		Node sn = (Node)source;
-		Node tn = (Node)target;
-		targetKey = sourceKey = null;
-		for (String s : sn.getControl().getPorts()) {
-			for (String t : tn.getControl().getPorts()) {
-				if (source.getSignature().canConnect(s, t)) {
-					sourceKey = s;
-					targetKey = t;
-					return true;
-				}
-			}
-		}
+	public boolean canExecute() {
 		return false;
 	}
 	
-	public boolean canExecute() {
-		return (target != null && source != null && edge != null && compatiblePorts());
-	}
-	
 	public void execute() {
-		if (canExecute()) {
-			if (source instanceof Node && target instanceof Node)
-				((Node)source).connect(sourceKey, (Node)target, targetKey, edge);
-			else {
-				if (source instanceof Node && sourceKey == null && icl != null) {
-					Node ns = (Node)source;
-					String bestPort = null;
-					double bestDistance = Double.MAX_VALUE;
-					for (String s : ns.getControl().getPorts()) {
-						Point p = ns.getPortAnchorPosition(s);
-						if (p.getDistance(this.icl) < bestDistance) {
-							bestPort = s;
-							bestDistance = p.getDistance(this.icl);
-						}
-					}
-					sourceKey = bestPort;
-				}
-				if (target instanceof Node && targetKey == null) {
-					/* FIXME - no way to detect final location? */
-					Node nt = (Node)target;
-					String bestPort = null;
-					for (String s : nt.getControl().getPorts()) {
-						bestPort = s;
-						break;
-					}
-					targetKey = bestPort;
-				}
-				edge.setSource(source, sourceKey);
-				edge.setTarget(target, targetKey);
-				source.addEdge(edge); target.addEdge(edge);
-			}
-		}
 	}
 	
 	public boolean canUndo() {

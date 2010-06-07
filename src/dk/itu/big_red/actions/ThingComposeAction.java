@@ -67,7 +67,6 @@ public class ThingComposeAction extends Action {
 					ArrayList<Thing> roots = b.findAllChildren(Root.class);
 					
 					if (roots.size() == sites.size()) {
-						model.getSignature().registerPortsFrom(b.getSignature());
 						model.getSignature().registerControlsFrom(b.getSignature());
 						
 						for (int i = 0; i < sites.size(); i++) {

@@ -24,10 +24,6 @@ public class PortSelectionPage extends WizardPage {
 		return ((GraphicalEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
 	}
 	
-	public Collection<String> getPorts() {
-		return getModel().getSignature().getPorts();
-	}
-	
 	protected PortSelectionPage(String pageName, IPortSelector parent) {
 		super(pageName);
 		this.parent = parent;
@@ -56,7 +52,6 @@ public class PortSelectionPage extends WizardPage {
 		TreeViewer tree = new TreeViewer(form, SWT.BORDER);
 		tree.setLabelProvider(new PortLabelProvider());
 		tree.setContentProvider(new CollectionContentProvider<String>());
-		tree.setInput(getPorts());
 		tree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		tree.addSelectionChangedListener(new ISelectionChangedListener() {

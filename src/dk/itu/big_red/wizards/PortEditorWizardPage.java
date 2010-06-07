@@ -119,7 +119,6 @@ public class PortEditorWizardPage extends WizardPage {
 				if (item != null) {
 					String port = item.getText();
 					Signature pa = getModel().getSignature();
-					pa.denyConnection(getWizardPort(), port);
 					item.dispose();
 				}
 			}
@@ -209,21 +208,8 @@ public class PortEditorWizardPage extends WizardPage {
 	}
 
 	public void updateFromPort() {
-		String port = getWizardPort();
-		nameInput.setText(port);
-		connectionsTree.removeAll();
-		Signature pa = getModel().getSignature();
-		for (String s : pa.getConnections(port)) {
-			TreeItem item = new TreeItem(connectionsTree, SWT.NONE);
-			item.setText(s);
-		}
 	}
 	
 	public void registerPortFromValues() {
-		String port = nameInput.getText();
-		Signature pa = getModel().getSignature();
-		pa.clearConnections(port);
-		for (TreeItem i : connectionsTree.getItems())
-			pa.allowConnection(port, i.getText());
 	}
 }

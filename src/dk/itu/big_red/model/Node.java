@@ -148,17 +148,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
-	public void connect(String srcPort, Node target, String destPort, Edge e) {
-		if (getSignature().canConnect(srcPort, destPort) &&
-			this.getControl().hasPort(srcPort) &&
-			target.getControl().hasPort(destPort)) {
-			e.setSource(this, srcPort);
-			e.setTarget(target, destPort);
-			e.setComment("(" + this + "[" + this.getControl().getLongName() + "])." + srcPort + " -> (" + target + "[" + target.getControl().getLongName() + "])." + destPort);
-			this.addEdge(e); target.addEdge(e);
-		}
-	}
-	
 	public Point getPortAnchorPosition(String port) {
 		Point pt = null;
 		if (getControl().hasPort(port)) {
