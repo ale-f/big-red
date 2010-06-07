@@ -7,7 +7,6 @@ import java.beans.PropertyChangeSupport;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import dk.itu.big_red.part.EdgePart;
 import dk.itu.big_red.propertysources.EdgePropertySource;
 
 public class Edge implements IAdaptable, IPropertyChangeNotifier {

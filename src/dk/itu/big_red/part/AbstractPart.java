@@ -7,7 +7,6 @@ import java.util.List;
 
 
 import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;

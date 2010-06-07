@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Control.Shape;
 
 public class NodeFigure extends AbstractFigure {
 	public static final int NODE_FIGURE_DEFWIDTH = 100;

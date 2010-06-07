@@ -1,9 +1,5 @@
 package dk.itu.big_red.commands;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.IEditorPart;
 

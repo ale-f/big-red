@@ -1,21 +1,17 @@
 package dk.itu.big_red.util;
 
 import java.io.InputStream;
-import java.io.ObjectInputStream.GetField;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.gef.SharedImages;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
 /**

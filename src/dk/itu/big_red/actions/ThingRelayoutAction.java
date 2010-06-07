@@ -10,7 +10,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 
 import dk.itu.big_red.commands.ThingRelayoutCommand;
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.part.AbstractPart;
 import dk.itu.big_red.util.Utility;
 

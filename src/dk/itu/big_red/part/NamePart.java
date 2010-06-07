@@ -11,9 +11,7 @@ import dk.itu.big_red.editpolicies.ThingDeletePolicy;
 import dk.itu.big_red.editpolicies.ThingEdgePolicy;
 import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
 import dk.itu.big_red.figure.NameFigure;
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Name;
-import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Name.NameType;
 
 public class NamePart extends AbstractPart {

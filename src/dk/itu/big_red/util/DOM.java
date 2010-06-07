@@ -1,7 +1,6 @@
 package dk.itu.big_red.util;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Element;

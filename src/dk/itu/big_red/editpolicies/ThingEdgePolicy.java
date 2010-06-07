@@ -11,7 +11,6 @@ import dk.itu.big_red.commands.EdgeReconnectSourceCommand;
 import dk.itu.big_red.commands.EdgeReconnectTargetCommand;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Node;
 
 public class ThingEdgePolicy extends GraphicalNodeEditPolicy {
 	

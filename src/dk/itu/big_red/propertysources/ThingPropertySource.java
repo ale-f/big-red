@@ -2,7 +2,6 @@ package dk.itu.big_red.propertysources;
 
 import java.util.ArrayList;
 
-
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
@@ -12,10 +11,9 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.BigRedConstants;
-import dk.itu.big_red.model.Thing;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Name;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Thing;
 
 public class ThingPropertySource implements IPropertySource {
 	private Thing node;

@@ -3,14 +3,9 @@ package dk.itu.big_red.commands;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.ui.PlatformUI;
 
 import dk.itu.big_red.model.*;
-import dk.itu.big_red.part.AbstractPart;
 
 public class EdgeCreateCommand extends Command {
 	private Thing target, source;
