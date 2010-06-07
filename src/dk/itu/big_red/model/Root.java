@@ -16,7 +16,7 @@ public class Root extends Thing {
 	public void setNumber(int number) {
 		String oldNumber = Integer.toString(number);
 		this.number = number;
-		getListeners().firePropertyChange(PROPERTY_RENAME, oldNumber, Integer.toString(number));
+		listeners.firePropertyChange(PROPERTY_RENAME, oldNumber, Integer.toString(number));
 	}
 	
 	public int getNumber() {

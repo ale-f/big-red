@@ -76,7 +76,7 @@ public class Node extends Thing implements PropertyChangeListener {
 				nr.height = c.y;
 				super.setLayout(nr);
 			}
-			getListeners().firePropertyChange(PROPERTY_CONTROL, oldControl, control);
+			listeners.firePropertyChange(PROPERTY_CONTROL, oldControl, control);
 		} else {
 			setControl(Signature.DEFAULT_CONTROL);
 		}
@@ -89,7 +89,7 @@ public class Node extends Thing implements PropertyChangeListener {
 	public void setFillColour(RGB fillColour) {
 		RGB oldColour = getFillColour();
 		this.fillColour = fillColour;
-		getListeners().firePropertyChange(PROPERTY_FILL_COLOUR, oldColour, fillColour);
+		listeners.firePropertyChange(PROPERTY_FILL_COLOUR, oldColour, fillColour);
 	}
 
 	public RGB getFillColour() {
@@ -99,7 +99,7 @@ public class Node extends Thing implements PropertyChangeListener {
 	public void setOutlineColour(RGB outlineColour) {
 		RGB oldColour = getOutlineColour();
 		this.outlineColour = outlineColour;
-		getListeners().firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
+		listeners.firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
 	}
 
 	public RGB getOutlineColour() {
@@ -113,7 +113,7 @@ public class Node extends Thing implements PropertyChangeListener {
 	public void setComment(String comment) {
 		String oldComment = getComment();
 		this.comment = comment;
-		getListeners().firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
+		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
 	public void connect(String srcPort, Node target, String destPort, Edge e) {

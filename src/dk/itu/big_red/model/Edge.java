@@ -31,8 +31,8 @@ public class Edge implements IAdaptable {
 			String oldSourceKey = this.sourceKey;
 			this.source = source;
 			this.sourceKey = key;
-			getListeners().firePropertyChange(PROPERTY_SOURCE, oldSource, source);
-			getListeners().firePropertyChange(PROPERTY_SOURCE_KEY, oldSourceKey, key);
+			listeners.firePropertyChange(PROPERTY_SOURCE, oldSource, source);
+			listeners.firePropertyChange(PROPERTY_SOURCE_KEY, oldSourceKey, key);
 		}
 	}
 	public Thing getSource() {
@@ -48,8 +48,8 @@ public class Edge implements IAdaptable {
 			String oldTargetKey = this.targetKey;
 			this.target = target;
 			this.targetKey = key;
-			getListeners().firePropertyChange(PROPERTY_TARGET, oldTarget, target);
-			getListeners().firePropertyChange(PROPERTY_SOURCE_KEY, oldTargetKey, key);
+			listeners.firePropertyChange(PROPERTY_TARGET, oldTarget, target);
+			listeners.firePropertyChange(PROPERTY_SOURCE_KEY, oldTargetKey, key);
 		}
 	}
 	public Thing getTarget() {
@@ -75,10 +75,6 @@ public class Edge implements IAdaptable {
 		listeners.addPropertyChangeListener(edgePart);
 	}
 	
-	public PropertyChangeSupport getListeners() {
-		return listeners;
-	}
-	
 	public void removePropertyChangeListener(EdgePart edgePart) {
 		listeners.addPropertyChangeListener(edgePart);
 	}
@@ -90,7 +86,7 @@ public class Edge implements IAdaptable {
 	public void setComment(String comment) {
 		String oldComment = getComment();
 		this.comment = comment;
-		getListeners().firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
+		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
 	public boolean sourceOK(Thing source) {

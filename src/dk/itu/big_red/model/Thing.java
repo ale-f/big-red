@@ -33,7 +33,8 @@ import dk.itu.big_red.util.DOM;
  *
  */
 public class Thing implements IAdaptable, IXMLisable {
-	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+	protected PropertyChangeSupport listeners =
+		new PropertyChangeSupport(this);
 	
 	public static final String PROPERTY_CLASS = "ThingClass";
 	public static final String PROPERTY_LAYOUT = "ThingLayout";
@@ -73,7 +74,7 @@ public class Thing implements IAdaptable, IXMLisable {
 	public void setLayout(Rectangle newLayout) {
 		Rectangle oldLayout = this.layout;
 		this.layout = newLayout;
-		getListeners().firePropertyChange(PROPERTY_LAYOUT, oldLayout, newLayout);
+		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, newLayout);
 	}
 	
 	public Rectangle getLayout() {
@@ -88,7 +89,7 @@ public class Thing implements IAdaptable, IXMLisable {
 		boolean added = this.children.add(child);
 		if (added) {
 			child.setParent(this);
-			getListeners().firePropertyChange(PROPERTY_CHILD, null, child);
+			listeners.firePropertyChange(PROPERTY_CHILD, null, child);
 		}
 		return added;
 	}
@@ -96,7 +97,7 @@ public class Thing implements IAdaptable, IXMLisable {
 	public boolean removeChild(Thing child) {
 		boolean removed = this.children.remove(child);
 		if (removed)
-			getListeners().firePropertyChange(PROPERTY_CHILD, child, null);
+			listeners.firePropertyChange(PROPERTY_CHILD, child, null);
 		return removed;
 	}
 	
@@ -114,10 +115,6 @@ public class Thing implements IAdaptable, IXMLisable {
 	
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
-	}
-	
-	public PropertyChangeSupport getListeners() {
-		return listeners;
 	}
 	
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
@@ -165,10 +162,10 @@ public class Thing implements IAdaptable, IXMLisable {
 			throw new IllegalArgumentException();
 		if (c.getSource() == this) {
 			sourceEdges.add(c);
-			getListeners().firePropertyChange(PROPERTY_SOURCE_EDGE, null, c);
+			listeners.firePropertyChange(PROPERTY_SOURCE_EDGE, null, c);
 		} else if (c.getTarget() == this){
 			targetEdges.add(c);
-			getListeners().firePropertyChange(PROPERTY_TARGET_EDGE, null, c);
+			listeners.firePropertyChange(PROPERTY_TARGET_EDGE, null, c);
 		}
 	}
 	
@@ -177,10 +174,10 @@ public class Thing implements IAdaptable, IXMLisable {
 			throw new IllegalArgumentException();
 		if (c.getSource() == this) {
 			sourceEdges.remove(c);
-			getListeners().firePropertyChange(PROPERTY_SOURCE_EDGE, c, null);
+			listeners.firePropertyChange(PROPERTY_SOURCE_EDGE, c, null);
 		} else if (c.getTarget() == this) {
 			targetEdges.remove(c);
-			getListeners().firePropertyChange(PROPERTY_TARGET_EDGE, c, null);
+			listeners.firePropertyChange(PROPERTY_TARGET_EDGE, c, null);
 		}
 	}
 	

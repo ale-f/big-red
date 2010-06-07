@@ -37,7 +37,7 @@ public class Name extends Thing implements IConnectable {
 	public void setName(String name) {
 		String oldName = this.name;
 		this.name = name;
-		getListeners().firePropertyChange(PROPERTY_RENAME, oldName, name);
+		listeners.firePropertyChange(PROPERTY_RENAME, oldName, name);
 	}
 
 	public NameType getType() {
@@ -48,7 +48,7 @@ public class Name extends Thing implements IConnectable {
 		NameType oldType = this.type;
 		System.out.println(oldType + " -> " + type);
 		this.type = type;
-		getListeners().firePropertyChange(PROPERTY_TYPE, oldType, type);
+		listeners.firePropertyChange(PROPERTY_TYPE, oldType, type);
 	}
 	
 	@Override
