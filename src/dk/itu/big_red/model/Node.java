@@ -233,8 +233,8 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 				setComment(comment);
 		}
 		
-		setFillColour(Utility.colourFromString(DOM.getAttribute(d, "fill")));
-		setOutlineColour(Utility.colourFromString(DOM.getAttribute(d, "outline")));
+		setFillColour(DOM.getColorAttribute(d, "fill"));
+		setOutlineColour(DOM.getColorAttribute(d, "outline"));
 		
 		NodeList l = ((Element)d).getElementsByTagName("children").item(0).getChildNodes();
 		for (int i = 0; i < l.getLength(); i++) {
