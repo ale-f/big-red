@@ -20,8 +20,7 @@ import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.util.DOM;
 
 public class Bigraph extends Thing {
-	protected PortAuthority portAuthority = new PortAuthority();
-	protected ControlAuthority controlAuthority = new ControlAuthority();
+	protected Signature signature = new Signature();
 
 	public Thing clone() throws CloneNotSupportedException {
 		return new Bigraph()._overwrite(this);
@@ -44,10 +43,10 @@ public class Bigraph extends Thing {
 			"whitespace is significant and no attributes are optional!"));
 		
 		Node portzE = doc.createElement("ports");
-		for (String key : portAuthority.getPorts()) {
+		for (String key : signature.getPorts()) {
 			Element p = doc.createElement("port");
 			p.setAttribute("key", key);
-			for (String port : portAuthority.getConnections(key)) {
+			for (String port : signature.getConnections(key)) {
 				Element x = doc.createElement("can-connect-to");
 				x.setTextContent(port);
 				p.appendChild(x);
@@ -57,7 +56,7 @@ public class Bigraph extends Thing {
 		node.appendChild(portzE);
 		
 		Node metaclassesE = doc.createElement("metaclasses");
-		for (Control k : getControlAuthority().getControls())
+		for (Control k : getSignature().getControls())
 			metaclassesE.appendChild(k.toXML(metaclassesE));
 		node.appendChild(metaclassesE);
 		
@@ -82,7 +81,7 @@ public class Bigraph extends Thing {
 				Node u = ccs.item(j);
 				if (u.getAttributes() != null) {
 					String dst = u.getTextContent();
-					r.getPortAuthority().allowConnection(port, dst);
+					r.getSignature().allowConnection(port, dst);
 				}
 			}
 		}
@@ -103,7 +102,7 @@ public class Bigraph extends Thing {
 				DOM.getAttribute(t, "resizable").equals("true");
 			
 			Control mc =
-				r.getControlAuthority().
+				r.getSignature().
 				registerControl(name, control, shape, defaultSize, resizable);
 			
 			Node p = DOM.getNamedChildNode(t, "ports");
@@ -168,11 +167,7 @@ public class Bigraph extends Thing {
 		return this;
 	}
 	
-	public PortAuthority getPortAuthority() {
-		return portAuthority;
-	}
-	
-	public ControlAuthority getControlAuthority() {
-		return controlAuthority;
+	public Signature getSignature() {
+		return signature;
 	}
 }

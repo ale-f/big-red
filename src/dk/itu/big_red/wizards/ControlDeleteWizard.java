@@ -8,7 +8,7 @@ import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.ControlAuthority;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Node;
 
 import org.eclipse.jface.wizard.WizardPage;
@@ -42,7 +42,7 @@ public class ControlDeleteWizard extends SubWizard implements IControlSelector {
 		
 		if (result == SWT.YES) { 
 			Bigraph b = getModel();
-			b.getControlAuthority().deleteControl(getSelectedControl());
+			b.getSignature().deleteControl(getSelectedControl());
 			
 			for (Thing n : b.findAllChildren(Node.class)) {
 				Node node = (Node)n;

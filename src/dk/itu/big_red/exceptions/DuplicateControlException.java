@@ -1,11 +1,11 @@
 package dk.itu.big_red.exceptions;
 
-import dk.itu.big_red.model.ControlAuthority;
+import dk.itu.big_red.model.Signature;
 
 /**
  * It's a serious (and stupid) error to instantiate two Controls with the same
  * name; if that happens, a DuplicateControlException will be raised. To get
- * another copy of a pre-existing Controls, use {@link ControlAuthority#getControl}.
+ * another copy of a pre-existing Controls, use {@link Signature#getControl}.
  * @author alec
  *
  */

@@ -269,12 +269,8 @@ public class Thing implements IAdaptable, IXMLisable {
 		return (Bigraph)i;
 	}
 	
-	public PortAuthority getPortAuthority() {
-		return getBigraph().getPortAuthority();
-	}
-	
-	public ControlAuthority getControlAuthority() {
-		return getBigraph().getControlAuthority();
+	public Signature getSignature() {
+		return getBigraph().getSignature();
 	}
 	
 	public void relayout() {

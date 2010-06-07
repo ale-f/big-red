@@ -13,7 +13,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.BigRedConstants;
 import dk.itu.big_red.model.Thing;
-import dk.itu.big_red.model.ControlAuthority;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Name;
 import dk.itu.big_red.model.Node;
 
@@ -38,7 +38,7 @@ public class ThingPropertySource implements IPropertySource {
 			new ArrayList<IPropertyDescriptor>();
 		properties.add(new PropertyDescriptor(Thing.PROPERTY_CLASS, "Class"));
 		if (node instanceof Node) {
-			setControlNames(node.getControlAuthority().getControlNames());
+			setControlNames(node.getSignature().getControlNames());
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
 			properties.add(new ColorPropertyDescriptor(Node.PROPERTY_FILL_COLOUR, "Fill colour"));
 			properties.add(new ColorPropertyDescriptor(Node.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
@@ -100,8 +100,8 @@ public class ThingPropertySource implements IPropertySource {
 		 * just calls this function with the previous Control value).
 		 */
 		if (id.equals(Node.PROPERTY_CONTROL)) {
-			String control = node.getControlAuthority().getControlNames()[(Integer)value];
-			((Node)node).setControl(node.getControlAuthority().getControl(control));
+			String control = node.getSignature().getControlNames()[(Integer)value];
+			((Node)node).setControl(node.getSignature().getControl(control));
 		} else if (id.equals(Node.PROPERTY_FILL_COLOUR)) {
 			((Node)node).setFillColour((RGB)value);
 		} else if (id.equals(Node.PROPERTY_OUTLINE_COLOUR)) {

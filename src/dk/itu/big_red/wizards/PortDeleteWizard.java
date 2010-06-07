@@ -61,8 +61,8 @@ public class PortDeleteWizard extends SubWizard implements IPortSelector {
 		if (result == SWT.YES) { 
 			Bigraph b = getModel();
 			
-			b.getPortAuthority().clearConnections(port);
-			b.getPortAuthority().connections.remove(port);
+			b.getSignature().clearConnections(port);
+			b.getSignature().connections.remove(port);
 			
 			return true;
 		} else {

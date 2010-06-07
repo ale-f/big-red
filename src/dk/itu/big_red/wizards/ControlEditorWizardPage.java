@@ -3,7 +3,7 @@ package dk.itu.big_red.wizards;
 import dk.itu.big_red.GraphicalEditor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.ControlAuthority;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Control.Shape;
 
 import org.eclipse.draw2d.geometry.Point;
@@ -89,7 +89,7 @@ public class ControlEditorWizardPage extends WizardPage {
 		appearanceChoice.select(0);
 		
 		portNames =
-			getModel().getPortAuthority().getPorts().toArray(new String[]{});
+			getModel().getSignature().getPorts().toArray(new String[]{});
 		
 		Label topPort = new Label(form, SWT.NONE);
 		topPort.setText("&Top port:");
@@ -168,7 +168,7 @@ public class ControlEditorWizardPage extends WizardPage {
 			leftPortChoice.select(0);
 			bottomPortChoice.select(0);
 			rightPortChoice.select(0);
-			String[] ports = getModel().getPortAuthority().getPorts().toArray(new String[]{});
+			String[] ports = getModel().getSignature().getPorts().toArray(new String[]{});
 			for (String p : m.getPorts()) {
 				/*
 				 * 0 is a safe default ("(none)").
@@ -225,7 +225,7 @@ public class ControlEditorWizardPage extends WizardPage {
 		if (rightPortChoice.getSelectionIndex() > 0)
 			rightPort = portNames[rightPortChoice.getSelectionIndex() - 1];
 		
-		ControlAuthority ma = getModel().getControlAuthority();
+		Signature ma = getModel().getSignature();
 		Control m = ma.getControl(longName);
 		if (m == null) {
 			m = ma.registerControl(longName, label, shape, defaultSize, constraintModifiable);

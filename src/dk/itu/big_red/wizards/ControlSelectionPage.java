@@ -27,7 +27,7 @@ public class ControlSelectionPage extends WizardPage {
 	}
 	
 	public Collection<Control> getControls() {
-		return getModel().getControlAuthority().getControls();
+		return getModel().getSignature().getControls();
 	}
 	
 	protected ControlSelectionPage(String pageName, IControlSelector parent) {

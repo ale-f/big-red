@@ -76,7 +76,7 @@ public class EdgeCreateCommand extends Command {
 		targetKey = sourceKey = null;
 		for (String s : sn.getControl().getPorts()) {
 			for (String t : tn.getControl().getPorts()) {
-				if (source.getPortAuthority().canConnect(s, t)) {
+				if (source.getSignature().canConnect(s, t)) {
 					sourceKey = s;
 					targetKey = t;
 					return true;

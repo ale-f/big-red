@@ -25,7 +25,7 @@ public class EdgeReconnectTargetCommand extends Command {
 		sourceKey = targetKey = null;
 		for (String s : ((Node)target).getControl().getPorts()) {
 			for (String t : ((Node)model.getSource()).getControl().getPorts()) {
-				if (target.getPortAuthority().canConnect(s, t)) {
+				if (target.getSignature().canConnect(s, t)) {
 					targetKey = s;
 					sourceKey = t;
 					return true;

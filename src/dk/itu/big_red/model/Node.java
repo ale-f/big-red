@@ -25,7 +25,7 @@ public class Node extends Thing implements PropertyChangeListener {
 	private RGB fillColour = new RGB(255, 255, 255), outlineColour = new RGB(0, 0, 0);
 	
 	public Node() {
-		setControl(ControlAuthority.DEFAULT_CONTROL);
+		setControl(Signature.DEFAULT_CONTROL);
 	}
 	
 	public Node(Control control) {
@@ -78,7 +78,7 @@ public class Node extends Thing implements PropertyChangeListener {
 			}
 			getListeners().firePropertyChange(PROPERTY_CONTROL, oldControl, control);
 		} else {
-			setControl(ControlAuthority.DEFAULT_CONTROL);
+			setControl(Signature.DEFAULT_CONTROL);
 		}
 	}
 	
@@ -117,7 +117,7 @@ public class Node extends Thing implements PropertyChangeListener {
 	}
 	
 	public void connect(String srcPort, Node target, String destPort, Edge e) {
-		if (getPortAuthority().canConnect(srcPort, destPort) &&
+		if (getSignature().canConnect(srcPort, destPort) &&
 			this.getControl().hasPort(srcPort) &&
 			target.getControl().hasPort(destPort)) {
 			e.setSource(this, srcPort);
@@ -186,7 +186,7 @@ public class Node extends Thing implements PropertyChangeListener {
 	public void fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry) {
 		idRegistry.put(DOM.getAttribute(d, "id"), this);
 		
-		setControl(getControlAuthority().getControl(DOM.getAttribute(d, "metaclass")));
+		setControl(getSignature().getControl(DOM.getAttribute(d, "metaclass")));
 		
 		Rectangle layout = new Rectangle();
 		layout.x = DOM.getIntAttribute(d, "x");

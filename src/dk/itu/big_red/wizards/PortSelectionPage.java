@@ -25,7 +25,7 @@ public class PortSelectionPage extends WizardPage {
 	}
 	
 	public Collection<String> getPorts() {
-		return getModel().getPortAuthority().getPorts();
+		return getModel().getSignature().getPorts();
 	}
 	
 	protected PortSelectionPage(String pageName, IPortSelector parent) {

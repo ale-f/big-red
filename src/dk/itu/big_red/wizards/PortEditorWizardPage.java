@@ -2,7 +2,7 @@ package dk.itu.big_red.wizards;
 
 import dk.itu.big_red.GraphicalEditor;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.PortAuthority;
+import dk.itu.big_red.model.Signature;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -118,7 +118,7 @@ public class PortEditorWizardPage extends WizardPage {
 				TreeItem item = connectionsTree.getSelection()[0];
 				if (item != null) {
 					String port = item.getText();
-					PortAuthority pa = getModel().getPortAuthority();
+					Signature pa = getModel().getSignature();
 					pa.denyConnection(getWizardPort(), port);
 					item.dispose();
 				}
@@ -212,7 +212,7 @@ public class PortEditorWizardPage extends WizardPage {
 		String port = getWizardPort();
 		nameInput.setText(port);
 		connectionsTree.removeAll();
-		PortAuthority pa = getModel().getPortAuthority();
+		Signature pa = getModel().getSignature();
 		for (String s : pa.getConnections(port)) {
 			TreeItem item = new TreeItem(connectionsTree, SWT.NONE);
 			item.setText(s);
@@ -221,7 +221,7 @@ public class PortEditorWizardPage extends WizardPage {
 	
 	public void registerPortFromValues() {
 		String port = nameInput.getText();
-		PortAuthority pa = getModel().getPortAuthority();
+		Signature pa = getModel().getSignature();
 		pa.clearConnections(port);
 		for (TreeItem i : connectionsTree.getItems())
 			pa.allowConnection(port, i.getText());
