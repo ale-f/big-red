@@ -2,6 +2,7 @@ package dk.itu.big_red.util;
 
 import java.util.ArrayList;
 
+import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -110,8 +111,8 @@ public class DOM {
 	 * automatically converting the result from a string into an integer.
 	 * @param d a Node with attributes set
 	 * @param n the attribute name to search for
-	 * @return the attribute's value as an integer, or 0 if the attribute
-	 *         couldn't be found
+	 * @return the attribute's value as an integer, or <code>0</code> if the
+	 *         attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
 	public static int getIntAttribute(Node d, String n) {
@@ -127,8 +128,8 @@ public class DOM {
 	 * automatically converting the result from a string into a double.
 	 * @param d a Node with attributes set
 	 * @param n the attribute name to search for
-	 * @return the attribute's value as an double, or 0 if the attribute
-	 *         couldn't be found
+	 * @return the attribute's value as an double, or <code>0</code> if the
+	 *         attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
 	public static double getDoubleAttribute(Node d, String n) {
@@ -137,5 +138,19 @@ public class DOM {
 		} catch (Exception e) {
 			return 0;
 		}
+	}
+	
+	/**
+	 * Retrieves the given named attribute from the specified node's node map,
+	 * automatically converting the result from a string into a {@link RGB}
+	 * colour.
+	 * @param d a Node with attributes set
+	 * @param n the attribute name to search for
+	 * @return the attribute's value as a RGB colour, or <code>null</code> if
+	 *         the attribute couldn't be found
+	 * @see DOM#getAttribute
+	 */
+	public static RGB getColorAttribute(Node d, String n) {
+		return Utility.colourFromString(getAttribute(d, n));
 	}
 }
