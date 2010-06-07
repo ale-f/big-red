@@ -54,10 +54,10 @@ public class Bigraph extends Thing {
 		}
 		node.appendChild(portzE);
 		
-		Node metaclassesE = doc.createElement("metaclasses");
+		Node signatureE = doc.createElement("signature");
 		for (Control k : getSignature().getControls())
-			metaclassesE.appendChild(k.toXML(metaclassesE));
-		node.appendChild(metaclassesE);
+			signatureE.appendChild(k.toXML(signatureE));
+		node.appendChild(signatureE);
 		
 		Node bigraphE = doc.createElement("bigraph");
 		for (Thing b : getChildrenArray())
@@ -86,12 +86,12 @@ public class Bigraph extends Thing {
 		}
 		
 		mcs =
-			DOM.getNamedChildNodes(doc.getElementsByTagName("metaclasses").item(0), "metaclass");
+			DOM.getNamedChildNodes(doc.getElementsByTagName("signature").item(0), "control");
 		for (Node t : mcs) {
 			String name = DOM.getAttribute(t, "name");
 			Control.Shape shape =
 				Control.Shape.valueOf(DOM.getAttribute(t, "shape"));
-			String control = DOM.getAttribute(t, "control");
+			String label = DOM.getAttribute(t, "label");
 			
 			Point defaultSize = new Point(
 				DOM.getIntAttribute(t, "width"),
@@ -102,7 +102,7 @@ public class Bigraph extends Thing {
 			
 			Control mc =
 				r.getSignature().
-				registerControl(name, control, shape, defaultSize, resizable);
+				registerControl(name, label, shape, defaultSize, resizable);
 			
 			Node p = DOM.getNamedChildNode(t, "ports");
 			ArrayList<Node> ports = DOM.getNamedChildNodes(p, "port");

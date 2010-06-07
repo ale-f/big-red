@@ -174,10 +174,10 @@ public class Control implements IPropertyChangeNotifier {
 
 	public Node toXML(Node d) {
 		Document doc = d.getOwnerDocument();
-		Element r = doc.createElement("metaclass");
+		Element r = doc.createElement("control");
 		DOM.applyAttributesToElement(r,
 				"name", getLongName(),
-				"control", getLabel(),
+				"label", getLabel(),
 				"shape", getShape(),
 				"width", getDefaultSize().x,
 				"height", getDefaultSize().y,

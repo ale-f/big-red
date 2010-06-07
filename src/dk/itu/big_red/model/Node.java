@@ -186,7 +186,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 	public org.w3c.dom.Node toXML(org.w3c.dom.Node d) {
 		Element r = mintElement(d);
 		Document doc = d.getOwnerDocument();
-		r.setAttribute("metaclass", getControl().getLongName());
+		r.setAttribute("control", getControl().getLongName());
 		r.setAttribute("x", Integer.toString(getLayout().x));
 		r.setAttribute("y", Integer.toString(getLayout().y));
 		r.setAttribute("width", Integer.toString(getLayout().width));
@@ -218,7 +218,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 	public void fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry) {
 		idRegistry.put(DOM.getAttribute(d, "id"), this);
 		
-		setControl(getSignature().getControl(DOM.getAttribute(d, "metaclass")));
+		setControl(getSignature().getControl(DOM.getAttribute(d, "control")));
 		
 		Rectangle layout = new Rectangle();
 		layout.x = DOM.getIntAttribute(d, "x");
