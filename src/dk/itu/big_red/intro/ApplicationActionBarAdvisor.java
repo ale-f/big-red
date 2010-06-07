@@ -13,7 +13,6 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 
-import dk.itu.big_red.actions.ThingComposeAction;
 import dk.itu.big_red.actions.WizardAction;
 import dk.itu.big_red.actions.FileNewAction;
 import dk.itu.big_red.actions.FileOpenAction;
@@ -64,8 +63,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		};
 
 		actionBigraph = new Object[] {
-			new ThingComposeAction(window),
-			new Separator(),
 			new WizardAction(window, "ports", "&Ports...",
 					PortsWizard.class),
 			new WizardAction(window, "controls", "&Controls...",
