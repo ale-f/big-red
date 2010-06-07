@@ -121,4 +121,21 @@ public class DOM {
 			return 0;
 		}
 	}
+	
+	/**
+	 * Retrieves the given named attribute from the specified node's node map,
+	 * automatically converting the result from a string into a double.
+	 * @param d a Node with attributes set
+	 * @param n the attribute name to search for
+	 * @return the attribute's value as an double, or 0 if the attribute
+	 *         couldn't be found
+	 * @see DOM#getAttribute
+	 */
+	public static double getDoubleAttribute(Node d, String n) {
+		try {
+			return Double.parseDouble(getAttribute(d, n));
+		} catch (Exception e) {
+			return 0;
+		}
+	}
 }
