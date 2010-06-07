@@ -11,6 +11,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.BigRedConstants;
+import dk.itu.big_red.model.IColourable;
 import dk.itu.big_red.model.Name;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Thing;
@@ -38,12 +39,15 @@ public class ThingPropertySource implements IPropertySource {
 		if (node instanceof Node) {
 			setControlNames(node.getSignature().getControlNames());
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
-			properties.add(new ColorPropertyDescriptor(Node.PROPERTY_FILL_COLOUR, "Fill colour"));
-			properties.add(new ColorPropertyDescriptor(Node.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
 			properties.add(new TextPropertyDescriptor(Node.PROPERTY_COMMENT, "Comment"));
 		} else if (node instanceof Name) {
 			properties.add(new TextPropertyDescriptor(Name.PROPERTY_NAME, "Name"));
 			properties.add(new ComboBoxPropertyDescriptor(Name.PROPERTY_TYPE, "Type", BigRedConstants.INNER_OUTER_NAMES));
+		}
+		
+		if (node instanceof IColourable) {
+			properties.add(new ColorPropertyDescriptor(IColourable.PROPERTY_FILL_COLOUR, "Fill colour"));
+			properties.add(new ColorPropertyDescriptor(IColourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
 		}
 		return properties.toArray(new IPropertyDescriptor[0]);
 	}
@@ -62,10 +66,10 @@ public class ThingPropertySource implements IPropertySource {
 				}
 			}
 			return null;
-		} else if (id.equals(Node.PROPERTY_FILL_COLOUR)) {
-			return ((Node)node).getFillColour();
-		} else if (id.equals(Node.PROPERTY_OUTLINE_COLOUR)) {
-			return ((Node)node).getOutlineColour();
+		} else if (id.equals(IColourable.PROPERTY_FILL_COLOUR)) {
+			return ((IColourable)node).getFillColour();
+		} else if (id.equals(IColourable.PROPERTY_OUTLINE_COLOUR)) {
+			return ((IColourable)node).getOutlineColour();
 		} else if (id.equals(Node.PROPERTY_COMMENT)) {
 			String result = ((Node)node).getComment();
 			return (result == null ? "" : result);
@@ -100,10 +104,10 @@ public class ThingPropertySource implements IPropertySource {
 		if (id.equals(Node.PROPERTY_CONTROL)) {
 			String control = node.getSignature().getControlNames()[(Integer)value];
 			((Node)node).setControl(node.getSignature().getControl(control));
-		} else if (id.equals(Node.PROPERTY_FILL_COLOUR)) {
-			((Node)node).setFillColour((RGB)value);
-		} else if (id.equals(Node.PROPERTY_OUTLINE_COLOUR)) {
-			((Node)node).setOutlineColour((RGB)value);
+		} else if (id.equals(IColourable.PROPERTY_FILL_COLOUR)) {
+			((IColourable)node).setFillColour((RGB)value);
+		} else if (id.equals(IColourable.PROPERTY_OUTLINE_COLOUR)) {
+			((IColourable)node).setOutlineColour((RGB)value);
 		} else if (id.equals(Node.PROPERTY_COMMENT)) {
 			String comment = (String)value;
 			((Node)node).setComment((comment.length() == 0 ? null : comment));
