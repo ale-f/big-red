@@ -17,12 +17,30 @@ import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
 
 public class Node extends Thing implements PropertyChangeListener {
+	/**
+	 * The property name fired when the comment changes.
+	 */
 	public static final String PROPERTY_COMMENT = "NodeComment";
+	
+	/**
+	 * The property name fired when the control changes. (Note that this
+	 * property name is fired <i>after</i> any other changes required to change
+	 * the control have been made.)
+	 */
 	public static final String PROPERTY_CONTROL = "NodeControl";
+	
+	/**
+	 * The property name fired when the fill colour changes.
+	 */
 	public static final String PROPERTY_FILL_COLOUR = "NodeFillColour";
+	
+	/**
+	 * The property name fired when the outline colour changes.
+	 */
 	public static final String PROPERTY_OUTLINE_COLOUR = "NodeOutlineColour";
 	
-	private RGB fillColour = new RGB(255, 255, 255), outlineColour = new RGB(0, 0, 0);
+	private RGB fillColour = new RGB(255, 255, 255);
+	private RGB outlineColour = new RGB(0, 0, 0);
 	
 	public Node() {
 		setControl(Signature.DEFAULT_CONTROL);
@@ -60,6 +78,14 @@ public class Node extends Thing implements PropertyChangeListener {
 		super.setLayout(layoutCopy);
 	}
 	
+	/**
+	 * Changes the {@link Control} of this Node. (Note that this operation will
+	 * give the Node a new set of {@link Port}s, which means that all of its
+	 * old ones will be disconnected.)
+	 * 
+	 * @param control the new Control; if <code>null</code>, the <i>default
+	 *        control</i> will be used
+	 */
 	public void setControl(Control control) {
 		if (control != null) {
 			Control oldControl = this.control;
@@ -82,6 +108,10 @@ public class Node extends Thing implements PropertyChangeListener {
 		}
 	}
 	
+	/**
+	 * Returns the {@link Control} of this Node.
+	 * @return a Control
+	 */
 	public Control getControl() {
 		return control;
 	}
@@ -106,10 +136,18 @@ public class Node extends Thing implements PropertyChangeListener {
 		return outlineColour;
 	}
 
+	/**
+	 * Gets the comment of this Node.
+	 * @return the comment
+	 */
 	public String getComment() {
 		return this.comment;
 	}
 	
+	/**
+	 * Sets the comment of this Node.
+	 * @param comment the new comment
+	 */
 	public void setComment(String comment) {
 		String oldComment = getComment();
 		this.comment = comment;

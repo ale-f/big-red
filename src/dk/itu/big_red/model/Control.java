@@ -57,7 +57,10 @@ public class Control implements IPropertyChangeNotifier {
 	 */
 	public static final String PROPERTY_RESIZABLE = "ControlResizable";
 	/**
-	 * The property name fired when the set of ports changes.
+	 * The property name fired when the set of ports changes. If this changes
+	 * from <code>null</code> to a non-null value, then a port has been added;
+	 * if it changes from a non-null value to <code>null</code>, one has been
+	 * removed.
 	 */
 	public static final String PROPERTY_PORT = "ControlPort";
 	
