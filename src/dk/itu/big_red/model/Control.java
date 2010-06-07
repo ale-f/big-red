@@ -182,14 +182,12 @@ public class Control implements IPropertyChangeNotifier {
 				"width", getDefaultSize().x,
 				"height", getDefaultSize().y,
 				"resizable", this.resizable);
-		Element portsE = doc.createElement("ports");
 		for (String port : getPorts()) {
 			Element portE = doc.createElement("port");
 			portE.setAttribute("key", port);
 			portE.setAttribute("offset", Integer.toString(getOffset(port)));
-			portsE.appendChild(portE);
+			r.appendChild(portE);
 		}
-		r.appendChild(portsE);
 		return r;
 	}
 	

@@ -77,8 +77,7 @@ public class Bigraph extends Thing {
 				r.getSignature().
 				registerControl(name, label, shape, defaultSize, resizable);
 			
-			Node p = DOM.getNamedChildNode(t, "ports");
-			ArrayList<Node> ports = DOM.getNamedChildNodes(p, "port");
+			ArrayList<Node> ports = DOM.getNamedChildNodes(t, "port");
 			for (Node u : ports) {
 				String port = DOM.getAttribute(u, "key");
 				int offset = DOM.getIntAttribute(u, "offset");
