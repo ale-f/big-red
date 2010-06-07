@@ -90,4 +90,10 @@ public class Port implements IAdaptable, IConnectable {
 	public void disconnect(Edge e) {
 		
 	}
+
+	@Override
+	public boolean isConnected(Edge e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

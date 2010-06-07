@@ -102,4 +102,10 @@ public class Name extends Thing implements IConnectable {
 		
 		setType(NameType.valueOf(DOM.getAttribute(d, "type")));
 	}
+
+	@Override
+	public boolean isConnected(Edge e) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
