@@ -16,7 +16,7 @@ import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
 
-public class Node extends Thing implements PropertyChangeListener {
+public class Node extends Thing implements PropertyChangeListener, IColourable {
 	/**
 	 * The property name fired when the comment changes.
 	 */
@@ -28,16 +28,6 @@ public class Node extends Thing implements PropertyChangeListener {
 	 * the control have been made.)
 	 */
 	public static final String PROPERTY_CONTROL = "NodeControl";
-	
-	/**
-	 * The property name fired when the fill colour changes.
-	 */
-	public static final String PROPERTY_FILL_COLOUR = "NodeFillColour";
-	
-	/**
-	 * The property name fired when the outline colour changes.
-	 */
-	public static final String PROPERTY_OUTLINE_COLOUR = "NodeOutlineColour";
 	
 	private RGB fillColour = new RGB(255, 255, 255);
 	private RGB outlineColour = new RGB(0, 0, 0);
@@ -116,22 +106,26 @@ public class Node extends Thing implements PropertyChangeListener {
 		return control;
 	}
 
+	@Override
 	public void setFillColour(RGB fillColour) {
 		RGB oldColour = getFillColour();
 		this.fillColour = fillColour;
 		listeners.firePropertyChange(PROPERTY_FILL_COLOUR, oldColour, fillColour);
 	}
 
+	@Override
 	public RGB getFillColour() {
 		return fillColour;
 	}
 
+	@Override
 	public void setOutlineColour(RGB outlineColour) {
 		RGB oldColour = getOutlineColour();
 		this.outlineColour = outlineColour;
 		listeners.firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
 	}
 
+	@Override
 	public RGB getOutlineColour() {
 		return outlineColour;
 	}
