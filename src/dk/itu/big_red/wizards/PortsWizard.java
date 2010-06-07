@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.ui.IWorkbench;
 
 public class PortsWizard extends Wizard {
 	private ArrayList<SubWizard> wizards = new ArrayList<SubWizard>();

@@ -6,7 +6,6 @@ import dk.itu.big_red.model.Control;
 
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.IWorkbench;
 
 public class ControlModifyWizard extends SubWizard implements IControlSelector {
 	private Control control = null;

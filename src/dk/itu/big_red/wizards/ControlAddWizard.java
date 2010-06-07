@@ -7,11 +7,9 @@ import dk.itu.big_red.util.Utility;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbench;
 
 public class ControlAddWizard extends SubWizard {
 	private ControlEditorWizardPage editor = null;
-	private IWorkbench workbench = null;
 	
 	@Override
 	public boolean performFinish() {

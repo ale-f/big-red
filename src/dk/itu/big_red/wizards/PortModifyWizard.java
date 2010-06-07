@@ -3,7 +3,6 @@ package dk.itu.big_red.wizards;
 import java.util.ArrayList;
 
 import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.ui.IWorkbench;
 
 public class PortModifyWizard extends SubWizard implements IPortSelector {
 	private String port = null;
