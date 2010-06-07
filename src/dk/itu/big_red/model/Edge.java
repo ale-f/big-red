@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 
@@ -9,7 +10,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import dk.itu.big_red.part.EdgePart;
 import dk.itu.big_red.propertysources.EdgePropertySource;
 
-public class Edge implements IAdaptable {
+public class Edge implements IAdaptable, IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	public static final String PROPERTY_SOURCE = "EdgeSource";
@@ -71,12 +72,12 @@ public class Edge implements IAdaptable {
 		return null;
 	}
 
-	public void addPropertyChangeListener(EdgePart edgePart) {
-		listeners.addPropertyChangeListener(edgePart);
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		listeners.addPropertyChangeListener(listener);
 	}
 	
-	public void removePropertyChangeListener(EdgePart edgePart) {
-		listeners.addPropertyChangeListener(edgePart);
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		listeners.addPropertyChangeListener(listener);
 	}
 	
 	public String getComment() {

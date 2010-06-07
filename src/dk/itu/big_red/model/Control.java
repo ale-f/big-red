@@ -23,7 +23,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Control {
+public class Control implements IPropertyChangeNotifier {
 	public static enum Shape {
 		SHAPE_RECTANGLE,
 		SHAPE_OVAL,
@@ -190,11 +190,13 @@ public class Control {
 		return r;
 	}
 	
-	public void addListener(PropertyChangeListener o) {
-		listeners.addPropertyChangeListener(o);
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		listeners.addPropertyChangeListener(listener);
 	}
-	
-	public void removeListener(PropertyChangeListener o) {
-		listeners.removePropertyChangeListener(o);
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		listeners.removePropertyChangeListener(listener);
 	}
 }

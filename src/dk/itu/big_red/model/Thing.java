@@ -32,7 +32,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Thing implements IAdaptable, IXMLisable {
+public class Thing implements IAdaptable, IXMLisable, IPropertyChangeNotifier {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
@@ -113,10 +113,12 @@ public class Thing implements IAdaptable, IXMLisable {
 		return this.parent;
 	}
 	
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
 	}
 	
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
 	}

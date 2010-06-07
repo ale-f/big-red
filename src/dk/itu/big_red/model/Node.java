@@ -66,8 +66,8 @@ public class Node extends Thing implements PropertyChangeListener {
 			this.control = control;
 			
 			if (oldControl != null)
-				oldControl.removeListener(this);
-			control.addListener(this);
+				oldControl.removePropertyChangeListener(this);
+			control.addPropertyChangeListener(this);
 			
 			Point c = control.getDefaultSize();
 			if (!control.isResizable()) {
