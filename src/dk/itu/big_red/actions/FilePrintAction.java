@@ -54,11 +54,7 @@ public class FilePrintAction extends org.eclipse.gef.ui.actions.PrintAction {
 			 * XXX: Trim calculation?
 			 */
 			Rectangle trim = p.computeTrim(0, 0, 0, 0);
-			
-			/*
-			 * Before printing, scale the picture up to 1000% (so that the
-			 * printout fills a whole page).
-			 */
+
 			ZoomManager zm =
 				((ScalableRootEditPart)(viewer.getRootEditPart())).getZoomManager();
 			double oldZoom = zm.getZoom();
