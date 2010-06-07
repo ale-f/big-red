@@ -204,8 +204,8 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 	}
 	
 	@Override
-	public void fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry) {
-		idRegistry.put(DOM.getAttribute(d, "id"), this);
+	public void fromXML(org.w3c.dom.Node d) {
+		getBigraph().idRegistry.put(DOM.getAttribute(d, "id"), this);
 		
 		setControl(getSignature().getControl(DOM.getAttribute(d, "control")));
 		
@@ -231,7 +231,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 			if (t.getAttributes() != null) {
 				Thing nc = ThingFactory.getNewObject(t.getNodeName());
 				addChild(nc);
-				nc.fromXML(t, idRegistry);
+				nc.fromXML(t);
 			}
 		}
 	}

@@ -20,7 +20,8 @@ import dk.itu.big_red.util.DOM;
 
 public class Bigraph extends Thing {
 	protected Signature signature = new Signature();
-
+	protected HashMap<String, Thing> idRegistry = new HashMap<String, Thing>();
+	
 	public Thing clone() throws CloneNotSupportedException {
 		return new Bigraph()._overwrite(this);
 	}
@@ -29,7 +30,6 @@ public class Bigraph extends Thing {
 		return (c == Root.class || c == Name.class);
 	}
 	
-	@Override
 	public Node toXML() {
 		DOMImplementation impl = DOM.getImplementation();
 		
@@ -54,8 +54,6 @@ public class Bigraph extends Thing {
 	}
 	
 	public static Bigraph fromXML(org.w3c.dom.Document doc) {
-		HashMap<String, Thing> elements = new HashMap<String, Thing>();
-		
 		Bigraph r = new Bigraph();
 		
 		ArrayList<Node> mcs =
@@ -92,7 +90,7 @@ public class Bigraph extends Thing {
 			if (t.getAttributes() != null) {
 				Thing nc = ThingFactory.getNewObject(t.getNodeName());
 				r.addChild(nc);
-				nc.fromXML(t, elements);
+				nc.fromXML(t);
 			}
 		}
 		
@@ -106,8 +104,8 @@ public class Bigraph extends Thing {
 				String srcKey = DOM.getAttribute(u, "sourceKey");
 				String dstKey = DOM.getAttribute(u, "targetKey");
 				
-				Thing srcNode = ((Thing)elements.get(src)),
-				         dstNode = ((Thing)elements.get(dst));
+				Thing srcNode = ((Thing)r.idRegistry.get(src)),
+				         dstNode = ((Thing)r.idRegistry.get(dst));
 				
 				EdgeCreateCommand cmd = new EdgeCreateCommand();
 				cmd.setObject(new Edge());

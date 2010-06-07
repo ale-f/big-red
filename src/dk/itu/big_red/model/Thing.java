@@ -202,12 +202,6 @@ public class Thing implements IAdaptable, IXMLisable, IPropertyChangeNotifier {
 	}
 	
 	@Override
-	public Node toXML() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	@Override
 	public org.w3c.dom.Node toXML(org.w3c.dom.Node d) {
 		/*
 		 * Override in subclasses!
@@ -223,9 +217,9 @@ public class Thing implements IAdaptable, IXMLisable, IPropertyChangeNotifier {
 	}
 
 	@Override
-	public void fromXML(Node d, HashMap<String, Thing> idRegistry) {
+	public void fromXML(Node d) {
 		Rectangle layout = new Rectangle();
-		idRegistry.put(DOM.getAttribute(d, "id"), this);
+		getBigraph().idRegistry.put(DOM.getAttribute(d, "id"), this);
 		layout.x = DOM.getIntAttribute(d, "x");
 		layout.y = DOM.getIntAttribute(d, "y");
 		layout.width = DOM.getIntAttribute(d, "width");
@@ -238,7 +232,7 @@ public class Thing implements IAdaptable, IXMLisable, IPropertyChangeNotifier {
 			if (t.getAttributes() != null) {
 				Thing nc = ThingFactory.getNewObject(t.getNodeName());
 				addChild(nc);
-				nc.fromXML(t, idRegistry);
+				nc.fromXML(t);
 			}
 		}
 	}

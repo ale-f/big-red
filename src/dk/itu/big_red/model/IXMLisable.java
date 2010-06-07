@@ -1,6 +1,6 @@
 package dk.itu.big_red.model;
 
-import java.util.HashMap;
+import org.w3c.dom.Node;
 
 /**
  * Objects implementing IXMLisable can turn themselves into XML documents and
@@ -10,13 +10,6 @@ import java.util.HashMap;
  *
  */
 public interface IXMLisable {
-	public org.w3c.dom.Node toXML();
-	public org.w3c.dom.Node toXML(org.w3c.dom.Node d);
-	/**
-	 * Populates the current Thing from the contents of the Node given.
-	 * XXX - changed to void return value. Sensible? (if not, Thing)
-	 * @param d
-	 * @return
-	 */
-	public void fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry);
+	public Node toXML(Node d);
+	public void fromXML(Node d);
 }

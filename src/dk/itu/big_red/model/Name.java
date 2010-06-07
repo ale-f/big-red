@@ -89,8 +89,8 @@ public class Name extends Thing implements IConnectable {
 	}
 	
 	@Override
-	public void fromXML(org.w3c.dom.Node d, HashMap<String, Thing> idRegistry) {
-		idRegistry.put(DOM.getAttribute(d, "id"), this);
+	public void fromXML(org.w3c.dom.Node d) {
+		getBigraph().idRegistry.put(DOM.getAttribute(d, "id"), this);
 		
 		Rectangle layout = new Rectangle();
 		layout.x = DOM.getIntAttribute(d, "x");
