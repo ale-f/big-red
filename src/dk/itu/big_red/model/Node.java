@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -31,6 +32,8 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 	
 	private RGB fillColour = new RGB(255, 255, 255);
 	private RGB outlineColour = new RGB(0, 0, 0);
+	
+	private ArrayList<Port> ports = new ArrayList<Port>();
 	
 	public Node() {
 		setControl(Signature.DEFAULT_CONTROL);
@@ -85,6 +88,9 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 				oldControl.removePropertyChangeListener(this);
 			control.addPropertyChangeListener(this);
 			
+			/* XXX: disconnect old ports */
+			ports = control.getPortsArray();
+			
 			Point c = control.getDefaultSize();
 			if (!control.isResizable()) {
 				Rectangle nr = new Rectangle(this.getLayout());
@@ -106,6 +112,10 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		return control;
 	}
 
+	public ArrayList<Port> getPorts() {
+		return ports;
+	}
+	
 	@Override
 	public void setFillColour(RGB fillColour) {
 		RGB oldColour = getFillColour();

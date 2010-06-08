@@ -53,11 +53,11 @@ public class NodePart extends AbstractPart {
 		Rectangle layout = model.getLayout();
 		
 		String portDescription = null;
-		if (model.getControl().getPorts().size() != 0)
-			portDescription = model.getControl().getPorts().toString();
+		if (model.getControl().getPortNames().size() != 0)
+			portDescription = model.getControl().getPortNames().toString();
 		
 		figure.clearPortAnchors();
-		for (String i : model.getControl().getPorts())
+		for (String i : model.getControl().getPortNames())
 			figure.addPortAnchor(model.getPortAnchorPosition(i));
 		
 		figure.setShape(model.getControl().getShape());

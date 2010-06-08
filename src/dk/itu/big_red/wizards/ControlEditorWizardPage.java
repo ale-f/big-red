@@ -168,7 +168,7 @@ public class ControlEditorWizardPage extends WizardPage {
 			bottomPortChoice.select(0);
 			rightPortChoice.select(0);
 			String[] ports = new String[]{};
-			for (String p : m.getPorts()) {
+			for (String p : m.getPortNames()) {
 				/*
 				 * 0 is a safe default ("(none)").
 				 */

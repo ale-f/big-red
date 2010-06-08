@@ -67,8 +67,9 @@ public class Control implements IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
-	private ArrayList<String> ports = new ArrayList<String>();
-	private ArrayList<Integer> offsets = new ArrayList<Integer>();
+	private ArrayList<String> portNames = new ArrayList<String>();
+	private ArrayList<Integer> portOffsets = new ArrayList<Integer>();
+	
 	private Control.Shape shape;
 	private String longName;
 	private String label;
@@ -135,37 +136,48 @@ public class Control implements IPropertyChangeNotifier {
 	}
 
 	public void clearPorts() {
-		this.ports.clear();
+		this.portNames.clear();
 		listeners.firePropertyChange(PROPERTY_PORT, null, null);
 	}
 	
 	public void addPort(String port, int offset) {
-		if (port != null && !this.ports.contains(port)) {
-			this.ports.add(port);
-			this.offsets.add(offset);
+		if (port != null && !this.portNames.contains(port)) {
+			this.portNames.add(port);
+			this.portOffsets.add(offset);
 			listeners.firePropertyChange(PROPERTY_PORT, null, port);
 		}
 	}
 	
 	public void removePort(String port) {
-		int index = this.ports.indexOf(port);
+		int index = this.portNames.indexOf(port);
 		if (index != -1) {
-			this.ports.remove(index);
-			this.offsets.remove(index);
+			this.portNames.remove(index);
+			this.portOffsets.remove(index);
 			listeners.firePropertyChange(PROPERTY_PORT, port, null);
 		}
 	}
 	
 	public boolean hasPort(String port) {
-		return this.ports.contains(port);
+		return this.portNames.contains(port);
 	}
 	
-	public ArrayList<String> getPorts() {
-		return ports;
+	public ArrayList<String> getPortNames() {
+		return portNames;
+	}
+	
+	/**
+	 * Produces a <i>new</i> array of {@link Port}s to give to a {@link Node}.
+	 * @return an array of Ports
+	 */
+	public ArrayList<Port> getPortsArray() {
+		ArrayList<Port> r = new ArrayList<Port>();
+		for (int i = 0; i < this.portNames.size(); i++)
+			r.add(new Port(this.portNames.get(i), this.portOffsets.get(i)));
+		return r;
 	}
 	
 	public int getOffset(String port) {
-		return this.offsets.get(this.ports.indexOf(port));
+		return this.portOffsets.get(this.portNames.indexOf(port));
 	}
 
 	public Node toXML() {
@@ -182,7 +194,7 @@ public class Control implements IPropertyChangeNotifier {
 				"width", getDefaultSize().x,
 				"height", getDefaultSize().y,
 				"resizable", this.resizable);
-		for (String port : getPorts()) {
+		for (String port : getPortNames()) {
 			Element portE = doc.createElement("port");
 			portE.setAttribute("key", port);
 			portE.setAttribute("offset", Integer.toString(getOffset(port)));
