@@ -1,4 +1,4 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.interfaces;
 
 import org.w3c.dom.Node;
 

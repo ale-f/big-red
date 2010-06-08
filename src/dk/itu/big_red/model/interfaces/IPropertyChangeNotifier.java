@@ -1,4 +1,4 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.interfaces;
 
 import java.beans.PropertyChangeListener;
 

@@ -10,6 +10,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.exceptions.DuplicateControlException;
+import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
+import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.util.DOM;
 
 /**

@@ -1,4 +1,6 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.interfaces;
+
+import dk.itu.big_red.model.Edge;
 
 /**
  * Objects implementing IConnectable are those which can be connected to by an

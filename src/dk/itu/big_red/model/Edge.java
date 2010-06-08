@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.propertysources.EdgePropertySource;
 
 /**

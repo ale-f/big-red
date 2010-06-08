@@ -14,6 +14,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.factories.ThingFactory;
+import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
 

@@ -1,4 +1,4 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.interfaces;
 
 /**
  * Objects implementing IColourable have a <i>comment</i> that can be

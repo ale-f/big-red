@@ -7,6 +7,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.util.DOM;
 
 public class Name extends Thing implements IConnectable {

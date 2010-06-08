@@ -2,6 +2,8 @@ package dk.itu.big_red.model;
 
 import org.eclipse.core.runtime.IAdaptable;
 
+import dk.itu.big_red.model.interfaces.IConnectable;
+
 /**
  * Ports are one of the two kinds of object that can be connected by an
  * {@link Edge} (the other being the {@link Name}). Ports are only ever found
