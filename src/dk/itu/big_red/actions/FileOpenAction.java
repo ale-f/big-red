@@ -8,7 +8,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 
 import dk.itu.big_red.BigRedConstants;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 public class FileOpenAction extends Action {
 	private IWorkbenchWindow window;
@@ -27,7 +27,7 @@ public class FileOpenAction extends Action {
 	
 	public void run() {
 		if (window != null) {
-			FileDialog f = Utility.getFileDialog(window.getShell(), SWT.OPEN);
+			FileDialog f = UI.getFileDialog(window.getShell(), SWT.OPEN);
 			f.setText("Open");
 			f.setFilterExtensions(BigRedConstants.FILE_FILTER_EXTENSIONS);
 			f.setFilterNames(BigRedConstants.FILE_FILTER_NAMES);

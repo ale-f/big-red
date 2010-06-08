@@ -9,7 +9,7 @@ import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.BigRedConstants;
 import dk.itu.big_red.GraphicalEditor;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 
 public class FileSaveAsAction extends org.eclipse.gef.ui.actions.SaveAction {
@@ -27,7 +27,7 @@ public class FileSaveAsAction extends org.eclipse.gef.ui.actions.SaveAction {
 	
 	@Override
 	public void run() {
-		FileDialog f = Utility.getFileDialog(SWT.SAVE);
+		FileDialog f = UI.getFileDialog(SWT.SAVE);
 		f.setText("Save As...");
 		f.setOverwrite(true);
 		f.setFilterExtensions(BigRedConstants.FILE_FILTER_EXTENSIONS);

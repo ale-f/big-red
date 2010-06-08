@@ -1,6 +1,7 @@
 package dk.itu.big_red.wizards;
 
 import dk.itu.big_red.GraphicalEditor;
+import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.commands.BigraphBitmapExportCommand;
 
@@ -112,7 +113,7 @@ public class ExportBitmapWizard extends Wizard implements IExportWizard {
 				filenameButton.addSelectionListener(new SelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						FileDialog f = Utility.getFileDialog(parent.getShell(), SWT.SAVE | SWT.APPLICATION_MODAL);
+						FileDialog f = UI.getFileDialog(parent.getShell(), SWT.SAVE | SWT.APPLICATION_MODAL);
 						f.setText("Export as...");
 						f.setFilterExtensions(new String[] {
 							"*.png;*.bmp;*.gif;*.jpg;*.jpeg"

@@ -10,8 +10,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -21,24 +19,6 @@ import org.eclipse.ui.PlatformUI;
  */
 public final class Utility {
 	private static Map<String, Image> sharedImages = new HashMap<String, Image>();
-	
-	/**
-	 * Gets a file dialog for the current workbench shell.
-	 * @param format the style of dialog to construct
-	 * @return a new file dialog whose parent is the current workbench shell
-	 */
-	public static FileDialog getFileDialog(int format) {
-		return getFileDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), format);
-	}
-	
-	/**
-	 * Gets a file dialog for the specified window.
-	 * @param format the style of dialog to construct
-	 * @return a new file dialog whose parent is the specified window
-	 */
-	public static FileDialog getFileDialog(Shell parent, int format) {
-		return new FileDialog(parent, format | SWT.DIALOG_TRIM);
-	}
 	
 	/**
 	 * Converts a {@link RGB} colour to a string of the format
