@@ -5,10 +5,24 @@ import java.beans.PropertyChangeSupport;
 
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.draw2d.Connection;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.propertysources.EdgePropertySource;
 
+/**
+ * An Edge is a connection which connects any number of {@link Port}s and
+ * {@link Name}s. (An Edge which "connects" only one point is perfectly
+ * legitimate.)
+ * 
+ * <p>Note that Edges represent the <i>bigraphical</i> concept of an edge
+ * rather than a GEF/GMF {@link Connection}, and so they lack any concept of a
+ * "source" or "target"; Ports and Names are always source nodes as far as the
+ * underlying framework is concerned, and the target is always an {@link
+ * EdgeTarget}.
+ * @author alec
+ *
+ */
 public class Edge implements IAdaptable, IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
