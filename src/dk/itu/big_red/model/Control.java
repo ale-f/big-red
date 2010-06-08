@@ -23,7 +23,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Control implements IPropertyChangeNotifier {
+public class Control implements IPropertyChangeNotifier, IXMLisable {
 	public static enum Shape {
 		SHAPE_RECTANGLE,
 		SHAPE_OVAL,
@@ -179,11 +179,18 @@ public class Control implements IPropertyChangeNotifier {
 	public int getOffset(String port) {
 		return this.portOffsets.get(this.portNames.indexOf(port));
 	}
-
-	public Node toXML() {
-		return null;
+	
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		listeners.addPropertyChangeListener(listener);
 	}
 
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		listeners.removePropertyChangeListener(listener);
+	}
+
+	@Override
 	public Node toXML(Node d) {
 		Document doc = d.getOwnerDocument();
 		Element r = doc.createElement("control");
@@ -204,12 +211,7 @@ public class Control implements IPropertyChangeNotifier {
 	}
 	
 	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.removePropertyChangeListener(listener);
+	public void fromXML(Node d) {
+		
 	}
 }

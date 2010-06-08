@@ -29,14 +29,14 @@ public class EdgePropertySource implements IPropertySource {
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		ArrayList<IPropertyDescriptor> properties =
 			new ArrayList<IPropertyDescriptor>();
-		properties.add(new PropertyDescriptor(Thing.PROPERTY_CLASS, "Class"));
+		properties.add(new PropertyDescriptor("Class", "Class"));
 		properties.add(new TextPropertyDescriptor(Edge.PROPERTY_COMMENT, "Comment"));
 		return properties.toArray(new IPropertyDescriptor[0]);
 	}
 
 	@Override
 	public Object getPropertyValue(Object id) {
-		if (id.equals(Thing.PROPERTY_CLASS)) {
+		if (id.equals("Class")) {
 			return edge.getClass().getSimpleName();
 		} else if (id.equals(Edge.PROPERTY_COMMENT)) {
 			return edge.getComment();

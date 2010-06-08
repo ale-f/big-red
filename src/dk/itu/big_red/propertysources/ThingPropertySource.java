@@ -35,7 +35,7 @@ public class ThingPropertySource implements IPropertySource {
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		ArrayList<IPropertyDescriptor> properties =
 			new ArrayList<IPropertyDescriptor>();
-		properties.add(new PropertyDescriptor(Thing.PROPERTY_CLASS, "Class"));
+		properties.add(new PropertyDescriptor("Class", "Class"));
 		if (node instanceof Node) {
 			setControlNames(node.getSignature().getControlNames());
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
@@ -55,7 +55,7 @@ public class ThingPropertySource implements IPropertySource {
 	@Override
 	public Object getPropertyValue(Object id) {
 		// TODO Auto-generated method stub
-		if (id.equals(Thing.PROPERTY_CLASS)) {
+		if (id.equals("Class")) {
 			return node.getClass().getSimpleName();
 		} else if (id.equals(Node.PROPERTY_CONTROL)) {
 			String targetName = ((Node)node).getControl().getLongName();

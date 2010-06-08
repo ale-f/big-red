@@ -35,7 +35,6 @@ public class Thing implements IAdaptable, IXMLisable, IPropertyChangeNotifier {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
-	public static final String PROPERTY_CLASS = "ThingClass";
 	public static final String PROPERTY_LAYOUT = "ThingLayout";
 	/**
 	 * The property name fired when a child is added or removed.
