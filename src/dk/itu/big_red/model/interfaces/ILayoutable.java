@@ -11,5 +11,21 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  */
 public interface ILayoutable {
-
+	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
+	
+	/**
+	 * Gets a copy of the current layout of this object.
+	 * @return the current layout
+	 */
+	public Rectangle getLayout();
+	
+	/**
+	 * Sets the current layout of this object.
+	 * 
+	 * <p>Implementers are required not to store a reference to the {@link
+	 * Rectangle} provided - its values should instead be copied into another
+	 * structure.
+	 * @param layout the new layout
+	 */
+	public void setLayout(Rectangle layout);
 }

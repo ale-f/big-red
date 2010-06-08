@@ -17,6 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.factories.ThingFactory;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.propertysources.ThingPropertySource;
@@ -33,11 +34,10 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Thing implements IAdaptable, IXMLisable, IPropertyChangeNotifier {
+public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChangeNotifier {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
-	public static final String PROPERTY_LAYOUT = "ThingLayout";
 	/**
 	 * The property name fired when a child is added or removed.
 	 */
@@ -70,15 +70,17 @@ public class Thing implements IAdaptable, IXMLisable, IPropertyChangeNotifier {
 	public Thing() {
 		this.layout = new Rectangle(10, 10, 100, 100);
 	}
-	
-	public void setLayout(Rectangle newLayout) {
-		Rectangle oldLayout = this.layout;
-		this.layout = newLayout;
-		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, newLayout);
+
+	@Override
+	public Rectangle getLayout() {
+		return new Rectangle(this.layout);
 	}
 	
-	public Rectangle getLayout() {
-		return this.layout;
+	@Override
+	public void setLayout(Rectangle newLayout) {
+		Rectangle oldLayout = this.layout;
+		this.layout = new Rectangle(newLayout);
+		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, this.layout);
 	}
 	
 	public boolean canContain(Thing child) {
