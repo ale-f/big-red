@@ -73,7 +73,7 @@ public class Bigraph extends Thing {
 			
 			Control mc =
 				r.getSignature().
-				registerControl(name, label, shape, defaultSize, resizable);
+				addControl(name, label, shape, defaultSize, resizable);
 			
 			ArrayList<Node> ports = DOM.getNamedChildNodes(t, "port");
 			for (Node u : ports) {

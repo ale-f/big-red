@@ -227,7 +227,7 @@ public class ControlEditorWizardPage extends WizardPage {
 		Signature ma = getModel().getSignature();
 		Control m = ma.getControl(longName);
 		if (m == null) {
-			m = ma.registerControl(longName, label, shape, defaultSize, constraintModifiable);
+			m = ma.addControl(longName, label, shape, defaultSize, constraintModifiable);
 			
 			m.addPort(topPort, 0);
 			m.addPort(leftPort, 1);

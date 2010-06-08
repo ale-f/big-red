@@ -25,10 +25,10 @@ public class Signature {
 		new HashMap<String, Control>();
 	
 	public Signature() {
-		registerControl("Unknown", "?", Control.Shape.SHAPE_RECTANGLE, new Point(50, 50), true);
+		addControl("Unknown", "?", Control.Shape.SHAPE_RECTANGLE, new Point(50, 50), true);
 	}
 	
-	public Control registerControl(String longName, String label, Control.Shape shape, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
+	public Control addControl(String longName, String label, Control.Shape shape, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
 		Control m = null;
 		if ((m = controls.get(longName)) == null) {
 			m = new Control(longName, label, shape, defaultSize, constraintModifiable);
@@ -37,10 +37,17 @@ public class Signature {
 		return m;
 	}
 	
-	public void registerControlsFrom(Signature i) {
+	public void addControlsFrom(Signature i) {
 		for (Control m : i.getControls()) {
 			if (controls.get(m.getLongName()) == null)
 				controls.put(m.getLongName(), m);
+		}
+	}
+	
+	public void removeControl(Control m) {
+		if (m != null) {
+			if (controls.get(m.getLongName()) != null)
+				controls.remove(m.getLongName());
 		}
 	}
 	
@@ -54,12 +61,5 @@ public class Signature {
 	
 	public Collection<Control> getControls() {
 		return controls.values();
-	}
-	
-	public void deleteControl(Control m) {
-		if (m != null) {
-			if (controls.get(m.getLongName()) != null)
-				controls.remove(m.getLongName());
-		}
 	}
 }

@@ -41,7 +41,7 @@ public class ControlDeleteWizard extends SubWizard implements IControlSelector {
 		
 		if (result == SWT.YES) { 
 			Bigraph b = getModel();
-			b.getSignature().deleteControl(getSelectedControl());
+			b.getSignature().removeControl(getSelectedControl());
 			
 			for (Thing n : b.findAllChildren(Node.class)) {
 				Node node = (Node)n;
