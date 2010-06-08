@@ -104,7 +104,7 @@ public class Thing implements IAdaptable, IXMLisable, IPropertyChangeNotifier {
 		return this.children;
 	}
 	
-	public void setParent(Thing parent) {
+	private void setParent(Thing parent) {
 		this.parent = parent;
 	}
 	
