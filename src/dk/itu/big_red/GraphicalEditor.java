@@ -49,11 +49,14 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 
 import dk.itu.big_red.EditorInput;
 import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.factories.EdgeFactory;
 import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.part.PartFactory;
@@ -326,6 +329,37 @@ public class GraphicalEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWit
 	    	setAssociatedFile(inputName);
 	    } else {
 	    	model = new Bigraph();
+	    	Signature signature = model.getSignature();
+	    	
+	    	dk.itu.big_red.model.Control b = signature.addControl("Building", "B", Shape.SHAPE_OVAL,
+	    			             new Point(250, 250), true),
+	    	r = signature.addControl("Room", "R", Shape.SHAPE_OVAL,
+	    			             new Point(125, 200), true),
+	    	a = signature.addControl("Agent", "A", Shape.SHAPE_TRIANGLE,
+	    			             new Point(25, 50), false),
+	    	c = signature.addControl("Computer", "C", Shape.SHAPE_RECTANGLE,
+	    			             new Point(25, 13), false);
+	    	
+	    	b.addPort("lan", 2);
+	    	
+	    	c.addPort("keyboard", 0);
+	    	c.addPort("ethernet", 2);
+	    	
+	    	a.addPort("conference", 0);
+	    	a.addPort("hands", 2);
+	    	
+	    	Root r0 = new Root();
+	    	model.addChild(r0);
+	    	r0.setLayout(new Rectangle(10, 10, 400, 400));
+	    		Node building0 = new Node(b);
+	    		r0.addChild(building0);
+	    		building0.setLayout(new Rectangle(10, 10, 250, 250));
+	    			Node room0 = new Node(r);
+	    			building0.addChild(room0);
+	    			room0.setLayout(new Rectangle(10, 10, 125, 200));
+	    				Node agent0 = new Node(a);
+	    				room0.addChild(agent0);
+	    				agent0.setLayout(new Rectangle(10, 10, 0, 0));
 	    }
 	    
 	    viewer.setContents(model);
