@@ -3,18 +3,18 @@ package dk.itu.big_red.model.factories;
 import org.eclipse.gef.requests.CreationFactory;
 
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Name;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.interfaces.IXMLisable;
 
 public class ThingFactory implements CreationFactory {
 
-	private Class<? extends Thing> template;
+	private Class<?> template;
 	
-	public ThingFactory(Class<? extends Thing> t) {
+	public ThingFactory(Class<?> t) {
 		this.template = t;
 	}
 	
@@ -34,6 +34,8 @@ public class ThingFactory implements CreationFactory {
 		} else if (template == Name.class){
 			Name name = new Name();
 			return name;
+		} else if (template == Edge.class) {
+			return new Edge();
 		} else {
 			return null;
 		}
@@ -63,6 +65,8 @@ public class ThingFactory implements CreationFactory {
 			return new Name();
 		else if (namedObject.equals("control"))
 			return new Control();
+		else if (namedObject.equals("edge"))
+			return new Edge();
 		else return null;
 	}
 }

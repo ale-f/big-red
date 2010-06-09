@@ -57,7 +57,6 @@ import dk.itu.big_red.EditorInput;
 import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.factories.EdgeFactory;
 import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
@@ -407,7 +406,7 @@ public class GraphicalEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWit
 		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
 				Root.class, new ThingFactory(Root.class), null, null));
 		creationGroup.add(new ConnectionDragCreationToolEntry("Edge", "Connect two nodes with a new edge",
-				new EdgeFactory(Edge.class), null, null));
+				new ThingFactory(Edge.class), null, null));
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Name", "Add a new name to the bigraph",
 				Name.class, new ThingFactory(Name.class), null, null));
