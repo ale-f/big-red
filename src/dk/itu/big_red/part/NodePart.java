@@ -81,6 +81,8 @@ public class NodePart extends AbstractPart {
 		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
 		for (Thing t : getModel().getChildrenArray())
 			children.add(t);
+		for (Port p : getModel().getPorts())
+			children.add(p);
 		return children;
 	}
 }
