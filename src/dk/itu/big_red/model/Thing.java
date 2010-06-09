@@ -233,7 +233,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		for (int i = 0; i < l.getLength(); i++) {
 			Node t = l.item(i);
 			if (t.getAttributes() != null) {
-				Thing nc = ThingFactory.getNewObject(t.getNodeName());
+				Thing nc = (Thing)ThingFactory.getNewObject(t.getNodeName());
 				addChild(nc);
 				nc.fromXML(t);
 			}

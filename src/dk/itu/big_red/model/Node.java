@@ -240,7 +240,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		for (int i = 0; i < l.getLength(); i++) {
 			org.w3c.dom.Node t = l.item(i);
 			if (t.getAttributes() != null) {
-				Thing nc = ThingFactory.getNewObject(t.getNodeName());
+				Thing nc = (Thing)ThingFactory.getNewObject(t.getNodeName());
 				addChild(nc);
 				nc.fromXML(t);
 			}

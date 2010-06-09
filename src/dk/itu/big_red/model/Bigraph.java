@@ -88,7 +88,7 @@ public class Bigraph extends Thing {
 		for (int i = 0; i < l.getLength(); i++) {
 			Node t = l.item(i);
 			if (t.getAttributes() != null) {
-				Thing nc = ThingFactory.getNewObject(t.getNodeName());
+				Thing nc = (Thing)ThingFactory.getNewObject(t.getNodeName());
 				r.addChild(nc);
 				nc.fromXML(t);
 			}

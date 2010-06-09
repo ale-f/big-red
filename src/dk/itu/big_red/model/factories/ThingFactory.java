@@ -2,11 +2,13 @@ package dk.itu.big_red.model.factories;
 
 import org.eclipse.gef.requests.CreationFactory;
 
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Name;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.interfaces.IXMLisable;
 
 public class ThingFactory implements CreationFactory {
 
@@ -42,7 +44,14 @@ public class ThingFactory implements CreationFactory {
 		return template;
 	}
 
-	public static Thing getNewObject(String namedObject) {
+	/**
+	 * Creates a new object from a XML tag name, ready to be overwritten with
+	 * {@link IXMLisable#fromXML}.
+	 * @param namedObject a XML tag name
+	 * @return a new object of the appropriate type, or <code>null</code> if
+	 *         the tag name was unrecognised
+	 */
+	public static IXMLisable getNewObject(String namedObject) {
 		namedObject = namedObject.toLowerCase();
 		if (namedObject.equals("root"))
 			return new Root();
@@ -52,6 +61,8 @@ public class ThingFactory implements CreationFactory {
 			return new Node();
 		else if (namedObject.equals("name"))
 			return new Name();
+		else if (namedObject.equals("control"))
+			return new Control();
 		else return null;
 	}
 }
