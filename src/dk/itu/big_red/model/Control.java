@@ -86,6 +86,14 @@ public class Control implements IPropertyChangeNotifier, IXMLisable {
 	private Point defaultSize;
 	private boolean resizable;
 	
+	Control() {
+		setLongName("Unknown");
+		setLabel("?");
+		setShape(Control.Shape.SHAPE_RECTANGLE);
+		setDefaultSize(new Point(50, 50));
+		setResizable(true);
+	}
+	
 	Control(String longName, String label, Control.Shape shape, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
 		setLongName(longName);
 		setLabel(label);
