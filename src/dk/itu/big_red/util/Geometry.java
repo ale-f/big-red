@@ -6,6 +6,17 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 public class Geometry {
 	/**
+	 * Returns the Euclidean distance between two points.
+	 * @param p1 the first point
+	 * @param p2 the second point
+	 * @return the Euclidean distance between the two
+	 */
+	public static double getDistance(Point p1, Point p2) {
+		double a = p2.x - p1.x, b = p2.y - p1.y;
+		return Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2));
+	}
+	
+	/**
 	 * Returns the point on the ellipse defined by the given rectangle which is
 	 * closest to the given point.
 	 * @param r a rectangle defining an ellipse
@@ -23,7 +34,24 @@ public class Geometry {
 	 * @param p a point
 	 * @return the point on the polygon defined by r closest to p
 	 */
-	public static Point getNearestPointOnPolygon(PointList r, Point p) {
+	public static Point getNearestPointOnPolygon(PointList l, Point d) {
+		double d1 = 0, d2 = 0;
+		int i1 = -1, i2 = -1;
+		
+		for (int i = 0; i < l.size(); i++) {
+			Point pt = l.getPoint(i);
+			double td = getDistance(d, pt);
+			if (td > d1) {
+				d1 = td;
+				i1 = i;
+			} else if (td > d2) {
+				d2 = td;
+				i2 = i;
+			}
+		}
+		
+		System.out.println("Closest two points are " + i1 + " and " + i2);
+		
 		return new Point(0, 0);
 	}
 }
