@@ -37,6 +37,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 			new FileNewAction(window),
 			new FileOpenAction(window),
 			new Separator(),
+			ActionFactory.CLOSE.create(window),
+			ActionFactory.CLOSE_ALL.create(window),
+			new Separator(),
 			ActionFactory.SAVE.create(window),
 			ActionFactory.SAVE_AS.create(window),
 			ActionFactory.REVERT.create(window),
@@ -45,7 +48,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 			new Separator(),
 			ActionFactory.EXPORT.create(window),
 			new Separator(),
-			ActionFactory.CLOSE.create(window),
 			ActionFactory.QUIT.create(window)
 		};
 		
