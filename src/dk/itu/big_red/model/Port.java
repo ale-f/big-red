@@ -1,8 +1,10 @@
 package dk.itu.big_red.model;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
 /**
  * Ports are one of the two kinds of object that can be connected by an
@@ -11,7 +13,7 @@ import dk.itu.big_red.model.interfaces.IConnectable;
  * @author alec
  *
  */
-public class Port implements IAdaptable, IConnectable {
+public class Port implements IAdaptable, IConnectable, ILayoutable {
 	/**
 	 * The position of a Port on its parent {@link Node} is governed by its
 	 * <code>distance</code>, a value in the range [0,1) that specifies a
@@ -97,5 +99,18 @@ public class Port implements IAdaptable, IConnectable {
 	public boolean isConnected(Edge e) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	private Rectangle layout = new Rectangle(5, 5, 40, 40);
+	
+	@Override
+	public Rectangle getLayout() {
+		return new Rectangle(layout);
+	}
+
+	@Override
+	public void setLayout(Rectangle layout) {
+		if (layout != null)
+			this.layout.setBounds(layout);
 	}
 }
