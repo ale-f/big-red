@@ -1,6 +1,7 @@
 package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -13,6 +14,7 @@ import dk.itu.big_red.editpolicies.ThingEdgePolicy;
 import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class NodePart extends AbstractPart {
 	@Override
@@ -75,7 +77,10 @@ public class NodePart extends AbstractPart {
 		figure.repaint();
 	}
 	
-	public List<Thing> getModelChildren() {
-		return ((Node)getModel()).getChildrenArray();
+	public List<ILayoutable> getModelChildren() {
+		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
+		for (Thing t : getModel().getChildrenArray())
+			children.add(t);
+		return children;
 	}
 }

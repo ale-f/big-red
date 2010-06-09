@@ -1,5 +1,6 @@
 package dk.itu.big_red.part;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,6 +10,7 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
 import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class BigraphPart extends AbstractPart {
 	@Override
@@ -36,7 +38,10 @@ public class BigraphPart extends AbstractPart {
 		figure.setLayout(model.getLayout());
 	}
 	
-	public List<Thing> getModelChildren() {
-		return ((Bigraph)getModel()).getChildrenArray();
+	public List<ILayoutable> getModelChildren() {
+		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
+		for (Thing t : getModel().getChildrenArray())
+			children.add(t);
+		return children;
 	}
 }

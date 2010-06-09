@@ -20,6 +20,7 @@ import org.eclipse.ui.PlatformUI;
 import dk.itu.big_red.figure.AbstractFigure;
 import dk.itu.big_red.figure.adornments.PortAnchor;
 import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener, NodeEditPart {
 	@Override
@@ -109,7 +110,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
     }
 	
 	@Override
-	public List<Thing> getModelChildren() {
-		return new ArrayList<Thing>();
+	public List<ILayoutable> getModelChildren() {
+		return new ArrayList<ILayoutable>();
 	}
 }
