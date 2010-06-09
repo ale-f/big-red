@@ -7,8 +7,10 @@ import java.beans.PropertyChangeSupport;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
+import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.propertysources.EdgePropertySource;
 
 /**
@@ -24,7 +26,7 @@ import dk.itu.big_red.propertysources.EdgePropertySource;
  * @author alec
  *
  */
-public class Edge implements IAdaptable, IPropertyChangeNotifier {
+public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	public static final String PROPERTY_SOURCE = "EdgeSource";
@@ -110,5 +112,15 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier {
 	
 	public boolean targetOK(Thing target) {
 		return (target != null && target != this.source && target != this.target);
+	}
+	@Override
+	public void fromXML(Node d) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public Node toXML(Node d) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
