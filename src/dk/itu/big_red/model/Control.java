@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -29,7 +30,8 @@ public class Control implements IPropertyChangeNotifier, IXMLisable {
 	public static enum Shape {
 		SHAPE_RECTANGLE,
 		SHAPE_OVAL,
-		SHAPE_TRIANGLE
+		SHAPE_TRIANGLE,
+		SHAPE_POLYGON
 	}
 
 	/**
@@ -45,6 +47,11 @@ public class Control implements IPropertyChangeNotifier, IXMLisable {
 	 * The property name fired when the shape changes.
 	 */
 	public static final String PROPERTY_SHAPE = "ControlShape";
+	/**
+	 * The property name fired when the set of points defining this control's
+	 * polygon changes.
+	 */
+	public static final String PROPERTY_POLYGON = "ControlPolygon";
 	/**
 	 * The property name fired when the default size changes. (This only
 	 * really matters for existing {@link Node}s if they aren't resizable.)
@@ -71,6 +78,7 @@ public class Control implements IPropertyChangeNotifier, IXMLisable {
 	
 	private ArrayList<String> portNames = new ArrayList<String>();
 	private ArrayList<Integer> portOffsets = new ArrayList<Integer>();
+	private PointList polygonSpec = new PointList();
 	
 	private Control.Shape shape;
 	private String longName;
@@ -182,6 +190,35 @@ public class Control implements IPropertyChangeNotifier, IXMLisable {
 		return this.portOffsets.get(this.portNames.indexOf(port));
 	}
 	
+	/**
+	 * If this object's shape is {@link Shape#SHAPE_POLYGON}, then gets a copy
+	 * of the list of points defining its polygon.
+	 * @return a list of points defining a polygon, or <code>null</code> if
+	 *         this object's shape is not {@link Shape#SHAPE_POLYGON}
+	 * @see Control#getShape
+	 * @see Control#setShape
+	 */
+	public PointList getPolygon() {
+		if (this.shape == Shape.SHAPE_POLYGON)
+			return this.polygonSpec.getCopy();
+		else return null;
+	}
+	
+	/**
+	 * If this object's shape is {@link Shape#SHAPE_POLYGON}, then sets the
+	 * list of points defining its polygon to a copy of the list provided.
+	 * @param newPolygon a list of points defining a new polygon
+	 * @see Control#getShape
+	 * @see Control#setShape
+	 */
+	public void setPolygon(PointList newPolygon) {
+		if (this.shape == Shape.SHAPE_POLYGON) {
+			PointList oldPolygon = this.polygonSpec;
+			this.polygonSpec = newPolygon.getCopy();
+			listeners.firePropertyChange(PROPERTY_POLYGON, oldPolygon, newPolygon);
+		}
+	}
+	
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
@@ -191,7 +228,7 @@ public class Control implements IPropertyChangeNotifier, IXMLisable {
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
 	}
-
+	
 	@Override
 	public Node toXML(Node d) {
 		Document doc = d.getOwnerDocument();
