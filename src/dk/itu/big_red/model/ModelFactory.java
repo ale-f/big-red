@@ -1,20 +1,14 @@
-package dk.itu.big_red.model.factories;
+package dk.itu.big_red.model;
 
 import org.eclipse.gef.requests.CreationFactory;
 
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Name;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.IXMLisable;
 
-public class ThingFactory implements CreationFactory {
+public class ModelFactory implements CreationFactory {
 
 	private Class<?> template;
 	
-	public ThingFactory(Class<?> t) {
+	public ModelFactory(Class<?> t) {
 		this.template = t;
 	}
 	

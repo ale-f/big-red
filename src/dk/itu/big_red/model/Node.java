@@ -13,7 +13,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
@@ -240,7 +239,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		for (int i = 0; i < l.getLength(); i++) {
 			org.w3c.dom.Node t = l.item(i);
 			if (t.getAttributes() != null) {
-				Thing nc = (Thing)ThingFactory.getNewObject(t.getNodeName());
+				Thing nc = (Thing)ModelFactory.getNewObject(t.getNodeName());
 				addChild(nc);
 				nc.fromXML(t);
 			}

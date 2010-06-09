@@ -15,7 +15,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.commands.EdgeCreateCommand;
-import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.util.DOM;
 
 public class Bigraph extends Thing {
@@ -88,7 +87,7 @@ public class Bigraph extends Thing {
 		for (int i = 0; i < l.getLength(); i++) {
 			Node t = l.item(i);
 			if (t.getAttributes() != null) {
-				Thing nc = (Thing)ThingFactory.getNewObject(t.getNodeName());
+				Thing nc = (Thing)ModelFactory.getNewObject(t.getNodeName());
 				r.addChild(nc);
 				nc.fromXML(t);
 			}

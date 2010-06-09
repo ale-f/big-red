@@ -57,7 +57,6 @@ import dk.itu.big_red.EditorInput;
 import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
 import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
@@ -400,16 +399,16 @@ public class GraphicalEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWit
 		root.add(creationGroup);
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Node", "Add a new node to the bigraph",
-				Node.class, new ThingFactory(Node.class), null, null));
+				Node.class, new ModelFactory(Node.class), null, null));
 		creationGroup.add(new CombinedTemplateCreationEntry("Site", "Add a new site to the bigraph",
-				Site.class, new ThingFactory(Site.class), null, null));
+				Site.class, new ModelFactory(Site.class), null, null));
 		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
-				Root.class, new ThingFactory(Root.class), null, null));
+				Root.class, new ModelFactory(Root.class), null, null));
 		creationGroup.add(new ConnectionDragCreationToolEntry("Edge", "Connect two nodes with a new edge",
-				new ThingFactory(Edge.class), null, null));
+				new ModelFactory(Edge.class), null, null));
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Name", "Add a new name to the bigraph",
-				Name.class, new ThingFactory(Name.class), null, null));
+				Name.class, new ModelFactory(Name.class), null, null));
 		
 		root.setDefaultEntry((ToolEntry) selectGroup.getChildren().get(0));
 		return root;

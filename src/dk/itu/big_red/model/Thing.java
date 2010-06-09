@@ -16,7 +16,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.model.factories.ThingFactory;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
@@ -233,7 +232,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		for (int i = 0; i < l.getLength(); i++) {
 			Node t = l.item(i);
 			if (t.getAttributes() != null) {
-				Thing nc = (Thing)ThingFactory.getNewObject(t.getNodeName());
+				Thing nc = (Thing)ModelFactory.getNewObject(t.getNodeName());
 				addChild(nc);
 				nc.fromXML(t);
 			}
