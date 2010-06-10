@@ -1,4 +1,4 @@
-package dk.itu.big_red.propertysources;
+package dk.itu.big_red.model;
 
 import java.util.ArrayList;
 
@@ -11,17 +11,14 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.BigRedConstants;
-import dk.itu.big_red.model.Name;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
 
-public class ThingPropertySource implements IPropertySource {
-	private Thing node;
+public class ModelPropertySource implements IPropertySource {
+	private Object object;
 	
-	public ThingPropertySource(Thing node) {
-		this.node = node;
+	public ModelPropertySource(Object node) {
+		this.object = node;
 	}
 	
 	@Override
@@ -37,20 +34,20 @@ public class ThingPropertySource implements IPropertySource {
 		ArrayList<IPropertyDescriptor> properties =
 			new ArrayList<IPropertyDescriptor>();
 		properties.add(new PropertyDescriptor("Class", "Class"));
-		if (node instanceof Node) {
-			setControlNames(node.getSignature().getControlNames());
+		if (object instanceof Node) {
+			setControlNames(((Node)object).getSignature().getControlNames());
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
 			properties.add(new TextPropertyDescriptor(Node.PROPERTY_COMMENT, "Comment"));
-		} else if (node instanceof Name) {
+		} else if (object instanceof Name) {
 			properties.add(new TextPropertyDescriptor(Name.PROPERTY_NAME, "Name"));
 			properties.add(new ComboBoxPropertyDescriptor(Name.PROPERTY_TYPE, "Type", BigRedConstants.INNER_OUTER_NAMES));
 		}
 		
-		if (node instanceof IColourable) {
+		if (object instanceof IColourable) {
 			properties.add(new ColorPropertyDescriptor(IColourable.PROPERTY_FILL_COLOUR, "Fill colour"));
 			properties.add(new ColorPropertyDescriptor(IColourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
 		}
-		if (node instanceof ICommentable) {
+		if (object instanceof ICommentable) {
 			properties.add(new TextPropertyDescriptor(ICommentable.PROPERTY_COMMENT, "Comment"));
 		}
 		return properties.toArray(new IPropertyDescriptor[0]);
@@ -58,11 +55,10 @@ public class ThingPropertySource implements IPropertySource {
 
 	@Override
 	public Object getPropertyValue(Object id) {
-		// TODO Auto-generated method stub
 		if (id.equals("Class")) {
-			return node.getClass().getSimpleName();
+			return object.getClass().getSimpleName();
 		} else if (id.equals(Node.PROPERTY_CONTROL)) {
-			String targetName = ((Node)node).getControl().getLongName();
+			String targetName = ((Node)object).getControl().getLongName();
 			String[] names = getControlNames();
 			for (int i = 0; i < names.length; i++) {
 				if (names[i].equals(targetName)) {
@@ -71,16 +67,16 @@ public class ThingPropertySource implements IPropertySource {
 			}
 			return null;
 		} else if (id.equals(IColourable.PROPERTY_FILL_COLOUR)) {
-			return ((IColourable)node).getFillColour();
+			return ((IColourable)object).getFillColour();
 		} else if (id.equals(IColourable.PROPERTY_OUTLINE_COLOUR)) {
-			return ((IColourable)node).getOutlineColour();
+			return ((IColourable)object).getOutlineColour();
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
-			String result = ((ICommentable)node).getComment();
+			String result = ((ICommentable)object).getComment();
 			return (result == null ? "" : result);
 		} else if (id.equals(Name.PROPERTY_NAME)){
-			return ((Name)node).getName();
+			return ((Name)object).getName();
 		} else if (id.equals(Name.PROPERTY_TYPE)){
-			return ((Name)node).getType().ordinal();
+			return ((Name)object).getType().ordinal();
 		} else {
 			return null;
 		}
@@ -106,19 +102,19 @@ public class ThingPropertySource implements IPropertySource {
 		 * just calls this function with the previous Control value).
 		 */
 		if (id.equals(Node.PROPERTY_CONTROL)) {
-			String control = node.getSignature().getControlNames()[(Integer)value];
-			((Node)node).setControl(node.getSignature().getControl(control));
+			String control = ((Node)object).getSignature().getControlNames()[(Integer)value];
+			((Node)object).setControl(((Node)object).getSignature().getControl(control));
 		} else if (id.equals(IColourable.PROPERTY_FILL_COLOUR)) {
-			((IColourable)node).setFillColour((RGB)value);
+			((IColourable)object).setFillColour((RGB)value);
 		} else if (id.equals(IColourable.PROPERTY_OUTLINE_COLOUR)) {
-			((IColourable)node).setOutlineColour((RGB)value);
+			((IColourable)object).setOutlineColour((RGB)value);
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String comment = (String)value;
-			((ICommentable)node).setComment((comment.length() == 0 ? null : comment));
+			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));
 		} else if (id.equals(Name.PROPERTY_NAME)) {
-			((Name)node).setName((String)value);
+			((Name)object).setName((String)value);
 		} else if (id.equals(Name.PROPERTY_TYPE)) {
-			((Name)node).setType(Name.NameType.values()[(Integer)value]);
+			((Name)object).setType(Name.NameType.values()[(Integer)value]);
 		}
 	}
 

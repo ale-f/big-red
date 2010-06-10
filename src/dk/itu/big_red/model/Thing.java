@@ -20,7 +20,6 @@ import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
-import dk.itu.big_red.propertysources.ThingPropertySource;
 import dk.itu.big_red.util.DOM;
 
 /**
@@ -131,7 +130,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySource.class) {
 			if (propertySource == null)
-				propertySource = new ThingPropertySource(this);
+				propertySource = new ModelPropertySource(this);
 			return propertySource;
 		}
 		return null;

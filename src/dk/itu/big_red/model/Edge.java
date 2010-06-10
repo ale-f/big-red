@@ -53,7 +53,7 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable {
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySource.class) {
 			if (propertySource == null) {
-				//propertySource = new ThingPropertySource(this);
+				propertySource = new ModelPropertySource(this);
 			}
 			return propertySource;
 		}
