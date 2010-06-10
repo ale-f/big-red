@@ -93,28 +93,7 @@ public class Bigraph extends Thing {
 			}
 		}
 		
-		l = doc.getElementsByTagName("edges");
-		for (int i = 0; i < l.getLength(); i++) {
-			Node t = l.item(i);
-			ArrayList<Node> edgesc = DOM.getNamedChildNodes(t, "edge");
-			for (Node u : edgesc) {
-				String src = DOM.getAttribute(u.getParentNode().getParentNode(), "id");
-				String dst = DOM.getAttribute(u, "target");
-				String srcKey = DOM.getAttribute(u, "sourceKey");
-				String dstKey = DOM.getAttribute(u, "targetKey");
-				
-				Thing srcNode = ((Thing)r.idRegistry.get(src)),
-				         dstNode = ((Thing)r.idRegistry.get(dst));
-				
-				EdgeCreateCommand cmd = new EdgeCreateCommand();
-				cmd.setObject(new Edge());
-				cmd.setSource(srcNode);
-				cmd.setTarget(dstNode);
-				cmd.setSourceKey(srcKey);
-				cmd.setTargetKey(dstKey);
-				cmd.execute();
-			}
-		}
+		/* EDGE XML */
 		return r;
 	}
 	
