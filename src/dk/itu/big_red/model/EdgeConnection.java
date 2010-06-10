@@ -27,7 +27,7 @@ public class EdgeConnection implements IPropertyChangeNotifier, ICommentable {
 	 */
 	public static final String PROPERTY_TARGET = "EdgeConnectionTarget";
 	
-	private IConnectable source, target;
+	private IConnectable source;
 	private Edge parent;
 	
 	public EdgeConnection(Edge parent) {
@@ -39,14 +39,6 @@ public class EdgeConnection implements IPropertyChangeNotifier, ICommentable {
 			IConnectable oldSource = this.source;
 			this.source = source;
 			listeners.firePropertyChange(PROPERTY_SOURCE, oldSource, source);
-		}
-	}
-
-	public void setTarget(IConnectable target, String key) {
-		if (target != null) {
-			IConnectable oldTarget = this.target;
-			this.target = target;
-			listeners.firePropertyChange(PROPERTY_TARGET, oldTarget, target);
 		}
 	}
 	
