@@ -76,15 +76,7 @@ public class Name extends Thing implements IConnectable {
 		r.setAttribute("width", Integer.toString(getLayout().width));
 		r.setAttribute("height", Integer.toString(getLayout().height));
 		
-		Element edgesE = doc.createElement("edges"); 
-		for (Edge e : getSourceEdges()) {
-			Element edge = doc.createElement("edge");
-			edge.setAttribute("target", Integer.toString(e.getTarget().hashCode()));
-			edge.setAttribute("sourceKey", e.getSourceKey());
-			edge.setAttribute("targetKey", e.getTargetKey());
-			edgesE.appendChild(edge);
-		}
-		r.appendChild(edgesE);
+		/* EDGE XML */
 
 		return r;
 	}

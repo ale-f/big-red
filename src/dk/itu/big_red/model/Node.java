@@ -196,15 +196,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		if (getComment() != null)
 			r.setAttribute("comment", getComment());
 		
-		Element edgesE = doc.createElement("edges"); 
-		for (Edge e : getSourceEdges()) {
-			Element edge = doc.createElement("edge");
-			edge.setAttribute("target", Integer.toString(e.getTarget().hashCode()));
-			edge.setAttribute("sourceKey", e.getSourceKey());
-			edge.setAttribute("targetKey", e.getTargetKey());
-			edgesE.appendChild(edge);
-		}
-		r.appendChild(edgesE);
+		/* EDGE XML */
 		
 		Element childrenE = doc.createElement("children");
 		for (Thing b : getChildrenArray())
