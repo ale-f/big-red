@@ -21,8 +21,8 @@ public class PartFactory implements EditPartFactory {
         	part = new RootPart();
         } else if (model instanceof Site) {
     		part = new SitePart();
-        } else if (model instanceof Edge) {
-        	part = new EdgePart();
+        } else if (model instanceof EdgeConnection) {
+        	part = new EdgeConnectionPart();
         } else if (model instanceof Name) {
         	part = new NamePart();
         } else if (model instanceof Port) {

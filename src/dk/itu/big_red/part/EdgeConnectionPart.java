@@ -13,11 +13,12 @@ import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import dk.itu.big_red.editpolicies.EdgeEditPolicy;
 import dk.itu.big_red.figure.EdgeFigure;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.EdgeConnection;
 
-public class EdgePart extends AbstractConnectionEditPart implements PropertyChangeListener {
+public class EdgeConnectionPart extends AbstractConnectionEditPart implements PropertyChangeListener {
 	@Override
-	public Edge getModel() {
-		return (Edge)super.getModel();
+	public EdgeConnection getModel() {
+		return (EdgeConnection)super.getModel();
 	}
 	
 	@Override
@@ -53,7 +54,7 @@ public class EdgePart extends AbstractConnectionEditPart implements PropertyChan
 
 	public void refreshVisuals() {
 		EdgeFigure figure = (EdgeFigure)getFigure();
-		Edge model = getModel();
+		EdgeConnection model = getModel();
 		
 		figure.setToolTip(model.getComment());
 	}
