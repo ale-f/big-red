@@ -3,9 +3,14 @@ package dk.itu.big_red.part;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.NodeEditPart;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
@@ -15,7 +20,7 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Port;
 
-public class PortPart extends AbstractGraphicalEditPart {
+public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart {
 	@Override
 	public Port getModel() {
 		return (Port)super.getModel();
@@ -50,4 +55,20 @@ public class PortPart extends AbstractGraphicalEditPart {
 	protected List<Edge> getModelTargetConnections() {
 		return new ArrayList<Edge>();
 	}
+	
+	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
+		return new EllipseAnchor(getFigure());
+    }
+    
+	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
+		return new EllipseAnchor(getFigure());
+    }
+	
+	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
+		return new EllipseAnchor(getFigure());
+    }
+    
+	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
+		return new EllipseAnchor(getFigure());
+    }
 }
