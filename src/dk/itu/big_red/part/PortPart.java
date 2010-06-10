@@ -1,11 +1,15 @@
 package dk.itu.big_red.part;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.figure.PortFigure;
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Port;
 
@@ -34,5 +38,15 @@ public class PortPart extends AbstractGraphicalEditPart {
 		PortFigure figure = (PortFigure)getFigure();
 		
 		figure.setLayout(model.getLayout());
+	}
+	
+	@Override
+	protected List<Edge> getModelSourceConnections() {
+		return new ArrayList<Edge>();
+	}
+    	     
+	@Override
+	protected List<Edge> getModelTargetConnections() {
+		return new ArrayList<Edge>();
 	}
 }
