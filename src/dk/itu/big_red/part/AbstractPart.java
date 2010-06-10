@@ -77,36 +77,28 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 
 	@Override
 	protected List<Edge> getModelSourceConnections() {
-        return getModel().getSourceEdges();
+        return new ArrayList<Edge>();
     }
     
 	@Override
 	protected List<Edge> getModelTargetConnections() {
-        return getModel().getTargetEdges();
+        return new ArrayList<Edge>();
     }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		if (connection instanceof EdgePart) {
-			EdgePart part = (EdgePart)connection;
-			Edge edge = part.getModel();
-			return new PortAnchor(getFigure(), getModel(), edge.getSourceKey());
-		} else return null;
+		return null;
     }
     
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-        return new PortAnchor(getFigure(), null, null);
+		return null;
     }
 	
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		if (connection instanceof EdgePart) {
-			EdgePart part = (EdgePart)connection;
-			Edge edge = part.getModel();
-			return new PortAnchor(getFigure(), getModel(), edge.getTargetKey());
-		} else return null;
+		return null;
     }
     
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-        return new PortAnchor(getFigure(), null, null);
+		return null;
     }
 	
 	@Override
