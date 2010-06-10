@@ -14,7 +14,6 @@ import org.w3c.dom.Node;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
-import dk.itu.big_red.propertysources.EdgePropertySource;
 
 /**
  * An Edge is a connection which connects any number of {@link Port}s and
@@ -54,7 +53,7 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable {
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySource.class) {
 			if (propertySource == null) {
-				propertySource = new EdgePropertySource(this);
+				//propertySource = new ThingPropertySource(this);
 			}
 			return propertySource;
 		}
