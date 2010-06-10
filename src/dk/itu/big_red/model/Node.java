@@ -44,7 +44,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 	}
 	
 	private Control control = null;
-	private String comment = null;
 	
 	public Thing clone() throws CloneNotSupportedException {
 		Node result = new Node();
@@ -138,24 +137,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 	@Override
 	public RGB getOutlineColour() {
 		return outlineColour;
-	}
-
-	/**
-	 * Gets the comment of this Node.
-	 * @return the comment
-	 */
-	public String getComment() {
-		return this.comment;
-	}
-	
-	/**
-	 * Sets the comment of this Node.
-	 * @param comment the new comment
-	 */
-	public void setComment(String comment) {
-		String oldComment = getComment();
-		this.comment = comment;
-		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
 	public Point getPortAnchorPosition(String port) {

@@ -16,6 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
@@ -33,7 +34,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChangeNotifier {
+public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChangeNotifier, ICommentable {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
@@ -250,5 +251,19 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		}
 		
 		setLayout(r);
+	}
+
+	private String comment = "";
+	
+	@Override
+	public String getComment() {
+		return this.comment;
+	}
+
+	@Override
+	public void setComment(String comment) {
+		String oldComment = this.comment;
+		this.comment = comment;
+		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 }
