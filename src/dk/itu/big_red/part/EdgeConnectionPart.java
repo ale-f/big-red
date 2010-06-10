@@ -11,7 +11,7 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
 import dk.itu.big_red.editpolicies.EdgeEditPolicy;
-import dk.itu.big_red.figure.EdgeFigure;
+import dk.itu.big_red.figure.EdgeConnectionFigure;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
 
@@ -23,7 +23,7 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements Pr
 	
 	@Override
 	protected IFigure createFigure() {
-		return new EdgeFigure();
+		return new EdgeConnectionFigure();
 	}
 
 	public void activate() {
@@ -53,7 +53,7 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements Pr
 	}
 
 	public void refreshVisuals() {
-		EdgeFigure figure = (EdgeFigure)getFigure();
+		EdgeConnectionFigure figure = (EdgeConnectionFigure)getFigure();
 		EdgeConnection model = getModel();
 		
 		figure.setToolTip(model.getComment());

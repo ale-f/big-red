@@ -8,8 +8,8 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.swt.SWT;
 
-public class EdgeFigure extends PolylineConnection {
-	public EdgeFigure() {
+public class EdgeConnectionFigure extends PolylineConnection {
+	public EdgeConnectionFigure() {
 		setAntialias(SWT.ON);
         setLineStyle(org.eclipse.swt.SWT.LINE_SOLID);
         setForegroundColor(ColorConstants.darkGreen);
