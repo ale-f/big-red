@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 
 import dk.itu.big_red.GraphicalEditor;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.util.DOM;
 
 public class FileSaveAction extends org.eclipse.gef.ui.actions.SaveAction {
 
@@ -43,17 +44,7 @@ public class FileSaveAction extends org.eclipse.gef.ui.actions.SaveAction {
 			 * Saving goes here.
 			 */
 			try {
-				Node d = ((Bigraph)e.getModel()).toXML();
-				TransformerFactory f =
-					TransformerFactory.newInstance();
-				
-				Source source = new DOMSource(d);
-				File output = new File(e.getAssociatedFile());
-				Result result = new StreamResult(output);
-			
-				Transformer t =
-					f.newTransformer();
-				t.transform(source, result);
+				DOM.write(e.getAssociatedFile(), e.getModel().toXML());
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
