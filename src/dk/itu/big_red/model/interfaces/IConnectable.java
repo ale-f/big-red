@@ -4,11 +4,12 @@ import dk.itu.big_red.model.Edge;
 
 /**
  * Objects implementing IConnectable are those which can be connected to by an
- * {@link Edge}.
+ * {@link Edge}. (This implies that they have a layout, so this interface
+ * inherits from {@link ILayoutable}.)
  * @author alec
  *
  */
-public interface IConnectable {
+public interface IConnectable extends ILayoutable {
 	/**
 	 * Attempts to connect the given {@link Edge} to this object. (Note that
 	 * this is the <i>only</i> method you should have to call to establish a
