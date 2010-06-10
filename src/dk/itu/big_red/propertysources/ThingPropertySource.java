@@ -15,6 +15,7 @@ import dk.itu.big_red.model.Name;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.interfaces.IColourable;
+import dk.itu.big_red.model.interfaces.ICommentable;
 
 public class ThingPropertySource implements IPropertySource {
 	private Thing node;
@@ -49,6 +50,9 @@ public class ThingPropertySource implements IPropertySource {
 			properties.add(new ColorPropertyDescriptor(IColourable.PROPERTY_FILL_COLOUR, "Fill colour"));
 			properties.add(new ColorPropertyDescriptor(IColourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
 		}
+		if (node instanceof ICommentable) {
+			properties.add(new TextPropertyDescriptor(ICommentable.PROPERTY_COMMENT, "Comment"));
+		}
 		return properties.toArray(new IPropertyDescriptor[0]);
 	}
 
@@ -70,8 +74,8 @@ public class ThingPropertySource implements IPropertySource {
 			return ((IColourable)node).getFillColour();
 		} else if (id.equals(IColourable.PROPERTY_OUTLINE_COLOUR)) {
 			return ((IColourable)node).getOutlineColour();
-		} else if (id.equals(Node.PROPERTY_COMMENT)) {
-			String result = ((Node)node).getComment();
+		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
+			String result = ((ICommentable)node).getComment();
 			return (result == null ? "" : result);
 		} else if (id.equals(Name.PROPERTY_NAME)){
 			return ((Name)node).getName();
@@ -108,9 +112,9 @@ public class ThingPropertySource implements IPropertySource {
 			((IColourable)node).setFillColour((RGB)value);
 		} else if (id.equals(IColourable.PROPERTY_OUTLINE_COLOUR)) {
 			((IColourable)node).setOutlineColour((RGB)value);
-		} else if (id.equals(Node.PROPERTY_COMMENT)) {
+		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String comment = (String)value;
-			((Node)node).setComment((comment.length() == 0 ? null : comment));
+			((ICommentable)node).setComment((comment.length() == 0 ? null : comment));
 		} else if (id.equals(Name.PROPERTY_NAME)) {
 			((Name)node).setName((String)value);
 		} else if (id.equals(Name.PROPERTY_TYPE)) {
