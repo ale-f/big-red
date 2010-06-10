@@ -4,8 +4,13 @@ import java.beans.PropertyChangeEvent;
 
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.NodeEditPart;
+import org.eclipse.gef.Request;
 
 import dk.itu.big_red.editpolicies.ThingDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
@@ -14,7 +19,7 @@ import dk.itu.big_red.figure.NameFigure;
 import dk.itu.big_red.model.Name;
 import dk.itu.big_red.model.Name.NameType;
 
-public class NamePart extends AbstractPart {
+public class NamePart extends AbstractPart implements NodeEditPart {
 	@Override
 	public Name getModel() {
 		return (Name)super.getModel();
@@ -56,4 +61,20 @@ public class NamePart extends AbstractPart {
 		figure.setBackgroundColor(model.getType() == NameType.NAME_INNER ?
 			ColorConstants.blue : ColorConstants.red);
 	}
+	
+	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
+		return new EllipseAnchor(getFigure());
+    }
+    
+	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
+		return new EllipseAnchor(getFigure());
+    }
+	
+	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
+		return new EllipseAnchor(getFigure());
+    }
+    
+	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
+		return new EllipseAnchor(getFigure());
+    }
 }

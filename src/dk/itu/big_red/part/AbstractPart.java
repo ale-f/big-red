@@ -7,6 +7,7 @@ import java.util.List;
 
 
 import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
@@ -22,7 +23,7 @@ import dk.itu.big_red.figure.adornments.PortAnchor;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
-public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener, NodeEditPart {
+public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 	@Override
 	public Thing getModel() {
 		return (Thing)super.getModel();
@@ -83,22 +84,6 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	@Override
 	protected List<Edge> getModelTargetConnections() {
         return new ArrayList<Edge>();
-    }
-	
-	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return null;
-    }
-    
-	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return null;
-    }
-	
-	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return null;
-    }
-    
-	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return null;
     }
 	
 	@Override
