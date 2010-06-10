@@ -1,14 +1,28 @@
 package dk.itu.big_red.util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.xml.sax.SAXException;
 
 public class DOM {
 	private static DOMImplementation impl = null;
@@ -36,6 +50,42 @@ public class DOM {
 			
 		}
 		return impl;
+	}
+	
+	/**
+	 * Attempts to parse the specified file into a DOM {@link Document}.
+	 * @param path a file
+	 * @return a Document, or <code>null</code> if something went wrong
+	 */
+	public static Document parse(String path) {
+		try {
+			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(path));
+		} catch (SAXException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Converts the specified {@link Node} into a textual representation of a
+	 * XML document, then writes it to the specified file.
+	 * @param path a file
+	 * @param d a Node
+	 * @throws TransformerException
+	 */
+	public static void write(String path, Node d) throws TransformerException {
+		TransformerFactory f = TransformerFactory.newInstance();
+		
+		Source source = new DOMSource(d);
+		File output = new File(path);
+		Result result = new StreamResult(output);
+	
+		Transformer t = f.newTransformer();
+		t.transform(source, result);
 	}
 	
 	/**
