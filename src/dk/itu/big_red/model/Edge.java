@@ -44,6 +44,12 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable {
 	 */
 	private ArrayList<EdgeConnection> connections = new ArrayList<EdgeConnection>();
 	
+	/**
+	 * The {@link EdgeTarget} which all the {@link EdgeConnection}s use as
+	 * their target.
+	 */
+	private EdgeTarget target = new EdgeTarget();
+	
 	private IPropertySource propertySource = null;
 
 	private String comment = null;
