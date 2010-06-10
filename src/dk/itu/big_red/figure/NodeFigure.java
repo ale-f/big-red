@@ -20,7 +20,6 @@ public class NodeFigure extends AbstractFigure {
 	public static final int NODE_FIGURE_DEFWIDTH = 100;
 	public static final int NODE_FIGURE_DEFHEIGHT = 100;
 
-	private ArrayList<Point> portAnchors = new ArrayList<Point>();
 	private Control.Shape shape = Control.Shape.SHAPE_RECTANGLE;
 	private Label labelControl = new Label();    
     
@@ -79,12 +78,6 @@ public class NodeFigure extends AbstractFigure {
 				graphics.fillRectangle(nc);
 				break;
 			}
-			graphics.setBackgroundColor(ColorConstants.red);
-			for (Point p : portAnchors) {
-				Rectangle r = getConstraintCopy(getTotalOffset());
-				r.x += p.x; r.y += p.y;
-				graphics.fillOval(r.x - 4, r.y - 4, 8, 8);
-			}
 		} finally {
 			graphics.popState();
 		}
@@ -138,13 +131,5 @@ public class NodeFigure extends AbstractFigure {
 				getLocalForegroundColor().dispose();
 			setForegroundColor(new Color(null, outlineColour));
 		}
-	}
-
-	public void addPortAnchor(Point portAnchorPosition) {
-		portAnchors.add(portAnchorPosition);
-	}
-
-	public void clearPortAnchors() {
-		portAnchors.clear();
 	}
 }
