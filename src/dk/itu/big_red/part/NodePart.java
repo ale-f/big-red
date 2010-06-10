@@ -57,10 +57,6 @@ public class NodePart extends AbstractPart {
 		if (model.getControl().getPortNames().size() != 0)
 			portDescription = model.getControl().getPortNames().toString();
 		
-		figure.clearPortAnchors();
-		for (String i : model.getControl().getPortNames())
-			figure.addPortAnchor(model.getPortAnchorPosition(i));
-		
 		figure.setShape(model.getControl().getShape());
 		figure.setLayout(layout);
 		figure.setLabel(model.getControl().getLabel());
