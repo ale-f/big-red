@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -33,7 +34,16 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable {
 	
 	public static final String PROPERTY_COMMENT = "EdgeComment";
 	
+	/**
+	 * The points on the bigraph connected by this Edge. (This should generally
+	 * contain at least one entry.)
+	 */
 	private ArrayList<IConnectable> points = new ArrayList<IConnectable>();
+	
+	/**
+	 * The {@link EdgeConnection}s that comprise this Edge on the bigraph.
+	 */
+	private ArrayList<EdgeConnection> connections = new ArrayList<EdgeConnection>();
 	
 	private IPropertySource propertySource = null;
 
