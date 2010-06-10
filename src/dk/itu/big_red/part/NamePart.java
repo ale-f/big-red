@@ -8,7 +8,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editpolicies.ThingDeletePolicy;
-import dk.itu.big_red.editpolicies.ThingEdgePolicy;
+import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
 import dk.itu.big_red.figure.NameFigure;
 import dk.itu.big_red.model.Name;
@@ -29,7 +29,7 @@ public class NamePart extends AbstractPart {
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ThingLayoutPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ThingDeletePolicy());
-		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ThingEdgePolicy());
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 	}
 	
 	@Override

@@ -7,14 +7,14 @@ import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
 
 import dk.itu.big_red.commands.EdgeCreateCommand;
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.interfaces.IConnectable;
 
-public class ThingEdgePolicy extends GraphicalNodeEditPolicy {
+public class EdgeCreationPolicy extends GraphicalNodeEditPolicy {
 	
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
-		Thing source = (Thing)getHost().getModel();
+		IConnectable source = (IConnectable)getHost().getModel();
 		EdgeCreateCommand cmd = new EdgeCreateCommand();
 		cmd.setSource(source);
 		cmd.setObject(new Edge());
@@ -26,7 +26,7 @@ public class ThingEdgePolicy extends GraphicalNodeEditPolicy {
 	protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
 		EdgeCreateCommand cmd = 
 			(EdgeCreateCommand) request.getStartCommand();
-		cmd.setTarget((Thing) getHost().getModel());
+		cmd.setTarget((IConnectable) getHost().getModel());
 		return cmd;
 	}
 	

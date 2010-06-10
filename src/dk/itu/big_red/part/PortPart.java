@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
+import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.figure.PortFigure;
 import dk.itu.big_red.model.Edge;
@@ -26,8 +28,7 @@ public class PortPart extends AbstractGraphicalEditPart {
 
 	@Override
 	protected void createEditPolicies() {
-		// TODO Auto-generated method stub
-		
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 	}
 
 	@Override
