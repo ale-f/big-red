@@ -99,15 +99,8 @@ public class Bigraph extends Thing {
 	
 	public static Bigraph fromXML(String filename) {
 		File file = new File(filename);
-		Document doc;
-		try {
-			doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-		return Bigraph.fromXML(doc);
+		Document doc = DOM.parse(filename);
+		return (doc != null ? Bigraph.fromXML(doc) : null);
 	}
 	
 	public Bigraph getBigraph() {
