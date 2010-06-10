@@ -61,9 +61,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	protected ArrayList<Thing> children = new ArrayList<Thing>();
 	protected Thing parent = null;
 	
-	protected ArrayList<Edge> sourceEdges = new ArrayList<Edge>();
-	protected ArrayList<Edge> targetEdges = new ArrayList<Edge>();
-	
 	private IPropertySource propertySource = null;
 	
 	public Thing() {
@@ -158,42 +155,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	
 	public Thing clone() throws CloneNotSupportedException {
 		return new Thing()._overwrite(this);
-	}
-	
-	public void addEdge(Edge c) {
-		if (c == null || c.getSource() == c.getTarget())
-			throw new IllegalArgumentException();
-		if (c.getSource() == this) {
-			sourceEdges.add(c);
-			listeners.firePropertyChange(PROPERTY_SOURCE_EDGE, null, c);
-		} else if (c.getTarget() == this){
-			targetEdges.add(c);
-			listeners.firePropertyChange(PROPERTY_TARGET_EDGE, null, c);
-		}
-	}
-	
-	public void removeEdge(Edge c) {
-		if (c == null)
-			throw new IllegalArgumentException();
-		if (c.getSource() == this) {
-			sourceEdges.remove(c);
-			listeners.firePropertyChange(PROPERTY_SOURCE_EDGE, c, null);
-		} else if (c.getTarget() == this) {
-			targetEdges.remove(c);
-			listeners.firePropertyChange(PROPERTY_TARGET_EDGE, c, null);
-		}
-	}
-	
-	public List<Edge> getSourceEdges() {
-		return new ArrayList<Edge>(sourceEdges);
-	}
-	
-	public List<Edge> getTargetEdges() {
-		return new ArrayList<Edge>(targetEdges);
-	}
-	
-	public boolean edgeIncident(Edge c) {
-		return (sourceEdges.contains(c) || targetEdges.contains(c));
 	}
 	
 	public Element mintElement(org.w3c.dom.Node d) {
