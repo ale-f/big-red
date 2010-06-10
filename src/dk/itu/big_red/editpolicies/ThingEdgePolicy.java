@@ -20,7 +20,6 @@ public class ThingEdgePolicy extends GraphicalNodeEditPolicy {
 		EdgeCreateCommand cmd = new EdgeCreateCommand();
 		cmd.setSource(source);
 		cmd.setObject(new Edge());
-		cmd.setInitialClickLocation(request.getLocation());
 		request.setStartCommand(cmd);
 		return cmd;
 	}

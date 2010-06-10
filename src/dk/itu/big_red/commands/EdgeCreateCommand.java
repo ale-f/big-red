@@ -6,17 +6,15 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.interfaces.IConnectable;
 
 public class EdgeCreateCommand extends Command {
-	private Thing target, source;
-	private String targetKey, sourceKey;
+	private IConnectable target, source;
 	private Edge edge;
-	private Point icl;
 	
 	public EdgeCreateCommand() {
 		super();
 		target = source = null;
-		targetKey = sourceKey = null;
 		edge = null;
 	}
 	
@@ -26,58 +24,32 @@ public class EdgeCreateCommand extends Command {
 	}
 
 	public void setTarget(Object e) {
-		if (e instanceof Name || e instanceof Node)
-			this.target = (Thing)e;
+		if (e instanceof IConnectable)
+			this.target = (IConnectable)e;
 	}
 	
 	public void setSource(Object e) {
-		if (e instanceof Name || e instanceof Node)
-			this.source = (Thing)e;
-	}
-	
-	public static Point getTotalOffset(Thing n) {
-		Rectangle constraint;
-		Point offset = new Point();
-		Thing generation = n;
-		
-		while (!(generation instanceof Bigraph)) {
-			constraint = generation.getLayout();
-			offset.x += constraint.x; offset.y += constraint.y;
-			generation = generation.getParent();
-		}
-		
-		return offset;
-	}
-	
-	public void setInitialClickLocation(Point icl) {
-		/* FIXME - zooming breaks this */
-		this.icl = getTotalOffset(source);
-		this.icl.x = icl.x - this.icl.x; this.icl.y = icl.y - this.icl.y;
-	}
-	
-	public void setSourceKey(String sourceKey) {
-		this.sourceKey = sourceKey;
-	}
-
-	public void setTargetKey(String targetKey) {
-		this.targetKey = targetKey;
+		if (e instanceof IConnectable)
+			this.source = (IConnectable)e;
 	}
 	
 	public boolean canExecute() {
-		return false;
+		return (target != null && source != null && edge != null &&
+				!target.isConnected(edge) && !source.isConnected(edge));
 	}
 	
 	public void execute() {
+		source.connect(edge);
+		target.connect(edge);
 	}
 	
 	public boolean canUndo() {
 		return (target != null && source != null && edge != null &&
-				target.edgeIncident(edge) && source.edgeIncident(edge));
+				target.isConnected(edge) && source.isConnected(edge));
 	}
 	
 	public void undo() {
-		source.removeEdge(edge);
-		target.removeEdge(edge);
-		edge.setSource(null, null); edge.setTarget(null, null);
+		source.disconnect(edge);
+		target.disconnect(edge);
 	}
 }
