@@ -1,6 +1,7 @@
 package dk.itu.big_red.model;
 
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -25,18 +26,6 @@ public class EdgeTarget implements IConnectable {
 	public EdgeTarget(Edge parent) {
 		this.parent = parent;
 	}
-	
-	@Override
-	public void addConnection(EdgeConnection e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeConnection(EdgeConnection e) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public Rectangle getLayout() {
@@ -54,10 +43,21 @@ public class EdgeTarget implements IConnectable {
 		return parent;
 	}
 	
+	private ArrayList<EdgeConnection> connections =
+		new ArrayList<EdgeConnection>();
+	
 	@Override
-	public List<EdgeConnection> getConnections() {
-		// TODO Auto-generated method stub
-		return null;
+	public void addConnection(EdgeConnection e) {
+		connections.add(e);
 	}
 
+	@Override
+	public void removeConnection(EdgeConnection e) {
+		connections.remove(e);
+	}
+	
+	@Override
+	public List<EdgeConnection> getConnections() {
+		return connections;
+	}
 }
