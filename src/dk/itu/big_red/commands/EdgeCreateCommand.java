@@ -31,6 +31,29 @@ public class EdgeCreateCommand extends Command {
 	}
 	
 	public void execute() {
+		/*
+		 * If either source or target is an EdgeTarget, then we can simply add
+		 * a new EdgeConnection to the existing Edge.
+		 */
+		if (target instanceof EdgeTarget) {
+			EdgeTarget target = (EdgeTarget)this.target;
+			target.getParent().addPoint(source);
+		} else if (source instanceof EdgeTarget) {
+			EdgeTarget source = (EdgeTarget)this.source;
+			source.getParent().addPoint(target);
+		} else {
+			/*
+			 * Create a new Edge, unless these two points are already
+			 * connected.
+			 */
+			for (EdgeConnection c : target.getConnections())
+				if (c.getSource() == source)
+					return;
+			
+			Edge e = new Edge();
+			e.addPoint(source);
+			e.addPoint(target);
+		}
 	}
 	
 	public boolean canUndo() {
