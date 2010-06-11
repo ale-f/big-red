@@ -18,6 +18,7 @@ import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
 import dk.itu.big_red.figure.NameFigure;
 import dk.itu.big_red.model.Name;
 import dk.itu.big_red.model.Name.NameType;
+import dk.itu.big_red.model.interfaces.IConnectable;
 
 public class NamePart extends AbstractPart implements NodeEditPart {
 	@Override
@@ -43,6 +44,8 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 		if (evt.getPropertyName().equals(Name.PROPERTY_NAME) ||
 			evt.getPropertyName().equals(Name.PROPERTY_TYPE)) {
 	    	refreshVisuals();
+	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
+	    	refreshSourceConnections();
 	    }
 	}
 	
