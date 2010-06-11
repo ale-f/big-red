@@ -20,15 +20,16 @@ import dk.itu.big_red.model.EdgeConnection;
  */
 public interface IConnectable extends ILayoutable {
 	/**
-	 * The property name fired when the source edge set changes (that is, a
-	 * source edge is added or removed).
-	 * 
-	 * <p>Generally, only {@link EdgeTarget}s should fire this property.
+	 * The property name fired when the source edge set changes (that is, an
+	 * edge for which this object is the source is added or removed).
 	 */
 	public static final String PROPERTY_SOURCE_EDGE = "IConnectableSourceEdge";
+	
 	/**
-	 * The property name fired when the target edge set changes (that is, a
-	 * target edge is added or removed).
+	 * The property name fired when the target edge set changes (that is, an
+	 * edge for which this object is the target is added or removed).
+	 * 
+	 * <p>Generally, only {@link EdgeTarget}s should fire this property.
 	 */
 	public static final String PROPERTY_TARGET_EDGE = "IConnectableTargetEdge";
 
