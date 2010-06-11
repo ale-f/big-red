@@ -43,13 +43,8 @@ public class EdgeCreateCommand extends Command {
 			source.getParent().addPoint(target);
 		} else {
 			/*
-			 * Create a new Edge, unless these two points are already
-			 * connected.
+			 * Create a new Edge.
 			 */
-			for (EdgeConnection c : target.getConnections())
-				if (c.getSource() == source)
-					return;
-			
 			Edge e = new Edge();
 			e.addPoint(source);
 			e.addPoint(target);
