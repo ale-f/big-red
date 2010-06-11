@@ -20,6 +20,7 @@ import dk.itu.big_red.util.DOM;
 public class Bigraph extends Thing {
 	protected Signature signature = new Signature();
 	protected HashMap<String, Thing> idRegistry = new HashMap<String, Thing>();
+	protected ArrayList<Edge> edges = new ArrayList<Edge>();
 	
 	public Thing clone() throws CloneNotSupportedException {
 		return new Bigraph()._overwrite(this);
