@@ -53,7 +53,6 @@ public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart,
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println(evt.getPropertyName());
 		if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
 			refreshSourceConnections();
 	    }

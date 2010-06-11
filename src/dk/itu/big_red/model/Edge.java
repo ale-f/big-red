@@ -79,7 +79,6 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, IC
 		points.add(point);
 		connections.add(c);
 		point.addConnection(c);
-		System.out.println(this + " has welcomed " + point + " to the fold");
 	}
 	
 	/**
