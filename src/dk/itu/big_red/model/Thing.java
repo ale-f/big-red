@@ -45,16 +45,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	 * The property name fired when the name of a Thing changes.
 	 */
 	public static final String PROPERTY_RENAME = "ThingRename";
-	/**
-	 * The property name fired when the source edge set changes (that is, a
-	 * source edge is added or removed).
-	 */
-	public static final String PROPERTY_SOURCE_EDGE = "ThingSourceEdge";
-	/**
-	 * The property name fired when the target edge set changes (that is, a
-	 * target edge is added or removed).
-	 */
-	public static final String PROPERTY_TARGET_EDGE = "ThingTargetEdge";
 	
 	protected Rectangle layout;
 	
