@@ -17,8 +17,10 @@ import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.figure.PortFigure;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart {
 	@Override
@@ -47,14 +49,14 @@ public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart 
 	}
 	
 	@Override
-	protected List<Edge> getModelSourceConnections() {
-		return new ArrayList<Edge>();
-	}
-    	     
+	protected List<EdgeConnection> getModelSourceConnections() {
+        return new ArrayList<EdgeConnection>();
+    }
+    
 	@Override
-	protected List<Edge> getModelTargetConnections() {
-		return new ArrayList<Edge>();
-	}
+	protected List<EdgeConnection> getModelTargetConnections() {
+        return new ArrayList<EdgeConnection>();
+    }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return new EllipseAnchor(getFigure());
