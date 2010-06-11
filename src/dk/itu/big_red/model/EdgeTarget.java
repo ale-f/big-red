@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import java.beans.PropertyChangeSupport;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -16,7 +17,15 @@ import dk.itu.big_red.model.interfaces.IConnectable;
  *
  */
 public class EdgeTarget implements IConnectable {
-
+	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+	
+	private Edge parent;
+	private Rectangle layout = new Rectangle();
+	
+	public EdgeTarget(Edge parent) {
+		this.parent = parent;
+	}
+	
 	@Override
 	public void addConnection(EdgeConnection e) {
 		// TODO Auto-generated method stub
@@ -31,16 +40,20 @@ public class EdgeTarget implements IConnectable {
 
 	@Override
 	public Rectangle getLayout() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Rectangle(this.layout);
 	}
-
+	
 	@Override
-	public void setLayout(Rectangle layout) {
-		// TODO Auto-generated method stub
-		
+	public void setLayout(Rectangle newLayout) {
+		Rectangle oldLayout = this.layout;
+		this.layout = new Rectangle(newLayout);
+		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, this.layout);
 	}
 
+	public Edge getParent() {
+		return parent;
+	}
+	
 	@Override
 	public List<EdgeConnection> getConnections() {
 		// TODO Auto-generated method stub
