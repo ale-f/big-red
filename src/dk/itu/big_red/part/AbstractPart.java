@@ -50,10 +50,6 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	    	refreshVisuals();
 	    } else if (evt.getPropertyName().equals(Thing.PROPERTY_CHILD)) {
 	    	refreshChildren();
-	    } else if (evt.getPropertyName().equals(Thing.PROPERTY_SOURCE_EDGE)) {
-	    	refreshSourceConnections();
-	    } else if (evt.getPropertyName().equals(Thing.PROPERTY_TARGET_EDGE)) {
-	    	refreshTargetConnections();
 	    }
 	}
 	
