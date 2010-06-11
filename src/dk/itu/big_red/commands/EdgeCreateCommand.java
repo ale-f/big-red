@@ -10,17 +10,10 @@ import dk.itu.big_red.model.interfaces.IConnectable;
 
 public class EdgeCreateCommand extends Command {
 	private IConnectable target, source;
-	private Edge edge;
 	
 	public EdgeCreateCommand() {
 		super();
 		target = source = null;
-		edge = null;
-	}
-	
-	public void setObject(Object s) {
-		if (s instanceof Edge)
-			this.edge = (Edge)s;
 	}
 
 	public void setTarget(Object e) {
@@ -34,7 +27,7 @@ public class EdgeCreateCommand extends Command {
 	}
 	
 	public boolean canExecute() {
-		return false;
+		return (target != null && source != null);
 	}
 	
 	public void execute() {
