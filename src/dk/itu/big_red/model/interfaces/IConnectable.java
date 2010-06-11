@@ -25,12 +25,12 @@ public interface IConnectable extends ILayoutable {
 	 * 
 	 * <p>Generally, only {@link EdgeTarget}s should fire this property.
 	 */
-	public static final String PROPERTY_SOURCE_EDGE = "ThingSourceEdge";
+	public static final String PROPERTY_SOURCE_EDGE = "IConnectableSourceEdge";
 	/**
 	 * The property name fired when the target edge set changes (that is, a
 	 * target edge is added or removed).
 	 */
-	public static final String PROPERTY_TARGET_EDGE = "ThingTargetEdge";
+	public static final String PROPERTY_TARGET_EDGE = "IConnectableTargetEdge";
 
 	/**
 	 * Registers the given {@link EdgeConnection} as being connected to this
