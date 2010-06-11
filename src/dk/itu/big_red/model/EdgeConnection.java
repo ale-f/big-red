@@ -34,7 +34,7 @@ public class EdgeConnection implements IPropertyChangeNotifier, ICommentable {
 		this.parent = parent;
 	}
 	
-	public void setSource(IConnectable source, String key) {
+	public void setSource(IConnectable source) {
 		if (source != null) {
 			IConnectable oldSource = this.source;
 			this.source = source;
