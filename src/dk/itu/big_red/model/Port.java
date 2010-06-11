@@ -111,13 +111,13 @@ public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyCha
 	@Override
 	public void addConnection(EdgeConnection e) {
 		connections.add(e);
-		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, null, e);
+		listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, null, e);
 	}
 
 	@Override
 	public void removeConnection(EdgeConnection e) {
 		connections.remove(e);
-		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, e, null);
+		listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, e, null);
 	}
 	
 	@Override
