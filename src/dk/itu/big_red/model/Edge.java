@@ -11,6 +11,7 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.w3c.dom.Node;
 
+import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
@@ -28,7 +29,7 @@ import dk.itu.big_red.model.interfaces.IXMLisable;
  * @author alec
  *
  */
-public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable {
+public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, ICommentable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	public static final String PROPERTY_COMMENT = "EdgeComment";
@@ -99,18 +100,26 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable {
 		}
 	}
 	
+	public EdgeTarget getEdgeTarget() {
+		return target;
+	}
+	
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
 	}
 	
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
 	}
 	
+	@Override
 	public String getComment() {
 		return this.comment;
 	}
 	
+	@Override
 	public void setComment(String comment) {
 		String oldComment = getComment();
 		this.comment = comment;
