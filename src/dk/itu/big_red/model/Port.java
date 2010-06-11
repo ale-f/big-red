@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -87,16 +88,6 @@ public class Port implements IAdaptable, IConnectable, ILayoutable {
 			this.distance = distance;
 	}
 
-	@Override
-	public void addConnection(EdgeConnection e) {
-		
-	}
-
-	@Override
-	public void removeConnection(EdgeConnection e) {
-		
-	}
-
 	private Rectangle layout = new Rectangle(5, 5, 40, 40);
 	
 	@Override
@@ -110,9 +101,21 @@ public class Port implements IAdaptable, IConnectable, ILayoutable {
 			this.layout.setBounds(layout);
 	}
 
+	private ArrayList<EdgeConnection> connections =
+		new ArrayList<EdgeConnection>();
+	
+	@Override
+	public void addConnection(EdgeConnection e) {
+		connections.add(e);
+	}
+
+	@Override
+	public void removeConnection(EdgeConnection e) {
+		connections.remove(e);
+	}
+	
 	@Override
 	public List<EdgeConnection> getConnections() {
-		// TODO Auto-generated method stub
-		return null;
+		return connections;
 	}
 }
