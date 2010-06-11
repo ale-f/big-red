@@ -34,12 +34,35 @@ public class EdgeConnection implements IPropertyChangeNotifier, ICommentable {
 		this.parent = parent;
 	}
 	
+	/**
+	 * Sets the source of this connection to the given {@link IConnectable}.
+	 * <p>(There's no corresponding way of setting the <i>target</i> of this
+	 * connection because it's always the same - {@link Edge#getEdgeTarget()
+	 * getParent().getEdgeTarget()}).
+	 * @param source the new source
+	 */
 	public void setSource(IConnectable source) {
 		if (source != null) {
 			IConnectable oldSource = this.source;
 			this.source = source;
 			listeners.firePropertyChange(PROPERTY_SOURCE, oldSource, source);
 		}
+	}
+	
+	/**
+	 * Gets the {@link IConnectable} that is the source of this Connection.
+	 * @return the current source
+	 */
+	public IConnectable getSource() {
+		return this.source;
+	}
+	
+	/**
+	 * Gets the {@link Edge} which manages and contains this connection.
+	 * @return the parent Edge
+	 */
+	public Edge getParent() {
+		return parent;
 	}
 	
 	@Override
