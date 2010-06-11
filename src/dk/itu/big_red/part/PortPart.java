@@ -1,5 +1,7 @@
 package dk.itu.big_red.part;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +22,10 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
-public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart {
+public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart, PropertyChangeListener {
 	@Override
 	public Port getModel() {
 		return (Port)super.getModel();
@@ -33,11 +36,29 @@ public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart 
 		return new PortFigure();
 	}
 
+	public void activate() {
+		super.activate();
+		getModel().addPropertyChangeListener(this);
+	}
+
+	public void deactivate() {
+		getModel().removePropertyChangeListener(this);
+		super.deactivate();
+	}
+	
 	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		System.out.println(evt.getPropertyName());
+		if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
+			refreshSourceConnections();
+	    }
+	}
+	
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();
@@ -50,7 +71,7 @@ public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart 
 	
 	@Override
 	protected List<EdgeConnection> getModelSourceConnections() {
-        return new ArrayList<EdgeConnection>();
+        return getModel().getConnections();
     }
     
 	@Override
