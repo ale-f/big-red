@@ -77,13 +77,13 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	}
 
 	@Override
-	protected List<Edge> getModelSourceConnections() {
-        return new ArrayList<Edge>();
+	protected List<EdgeConnection> getModelSourceConnections() {
+        return new ArrayList<EdgeConnection>();
     }
     
 	@Override
-	protected List<Edge> getModelTargetConnections() {
-        return new ArrayList<Edge>();
+	protected List<EdgeConnection> getModelTargetConnections() {
+        return new ArrayList<EdgeConnection>();
     }
 	
 	@Override
