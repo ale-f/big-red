@@ -34,22 +34,16 @@ public class EdgeCreateCommand extends Command {
 	}
 	
 	public boolean canExecute() {
-		return (target != null && source != null && edge != null &&
-				!target.isConnected(edge) && !source.isConnected(edge));
+		return false;
 	}
 	
 	public void execute() {
-		source.connect(edge);
-		target.connect(edge);
 	}
 	
 	public boolean canUndo() {
-		return (target != null && source != null && edge != null &&
-				target.isConnected(edge) && source.isConnected(edge));
+		return false;
 	}
 	
 	public void undo() {
-		source.disconnect(edge);
-		target.disconnect(edge);
 	}
 }

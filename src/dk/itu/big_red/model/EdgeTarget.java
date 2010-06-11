@@ -1,5 +1,7 @@
 package dk.itu.big_red.model;
 
+import java.util.List;
+
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
@@ -16,21 +18,15 @@ import dk.itu.big_red.model.interfaces.IConnectable;
 public class EdgeTarget implements IConnectable {
 
 	@Override
-	public void connect(Edge e) {
+	public void addConnection(EdgeConnection e) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void disconnect(Edge e) {
+	public void removeConnection(EdgeConnection e) {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public boolean isConnected(Edge e) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -43,6 +39,12 @@ public class EdgeTarget implements IConnectable {
 	public void setLayout(Rectangle layout) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<EdgeConnection> getConnections() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

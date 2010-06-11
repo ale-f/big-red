@@ -1,43 +1,41 @@
 package dk.itu.big_red.model.interfaces;
 
+import java.util.List;
+
+import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.EdgeConnection;
 
 /**
  * Objects implementing IConnectable are those which can be connected to by an
  * {@link Edge}. (This implies that they have a layout, so this interface
  * inherits from {@link ILayoutable}.)
+ * 
+ * <p>(This interface is chiefly intended for the use of instances of
+ * {@link EdgeCreationPolicy} - it allows objects to be notified of connections
+ * that <i>have</i> been established to them, but doesn't define policies for
+ * when such a connection should be allowed.)
  * @author alec
  *
  */
 public interface IConnectable extends ILayoutable {
 	/**
-	 * Attempts to connect the given {@link Edge} to this object. (Note that
-	 * this is the <i>only</i> method you should have to call to establish a
-	 * connection.)
-	 * 
-	 * <p>To see if the connection was established, compare the return values
-	 * of {@link IConnectable#isConnected isConnected} before and after a call
-	 * to this method.
-	 * @param e an Edge
-	 */
-	void connect(Edge e);
-	
-	/**
-	 * Attempts to disconnect the given {@link Edge} from this object.
-	 * 
-	 * <p>To see if the Edge was disconnected, compare the return values of
-	 * {@link IConnectable#isConnected isConnected} before and after a call to
-	 * this method.
-	 * @param e an Edge
-	 */
-	void disconnect(Edge e);
-	
-	/**
-	 * Indicates whether or not the given {@link Edge} is connected to this
+	 * Registers the given {@link EdgeConnection} as being connected to this
 	 * object.
-	 * @param e an Edge
-	 * @return <code>true</code> if the edge is valid and connected, or
-	 *         <code>false</code> otherwise
+	 * @param e an EdgeConnection
 	 */
-	boolean isConnected(Edge e);
+	public void addConnection(EdgeConnection e);
+	
+	/**
+	 * Unregisters the given {@link EdgeConnection} from being connected to
+	 * this object.
+	 * @param e an EdgeConnection
+	 */
+	public void removeConnection(EdgeConnection e);
+	
+	/**
+	 * Returns the set of {@link EdgeConnection}s incident on this object.
+	 * @return a {@link List} of EdgeConnections
+	 */
+	public List<EdgeConnection> getConnections();
 }

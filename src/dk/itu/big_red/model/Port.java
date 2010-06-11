@@ -1,5 +1,7 @@
 package dk.itu.big_red.model;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -86,19 +88,13 @@ public class Port implements IAdaptable, IConnectable, ILayoutable {
 	}
 
 	@Override
-	public void connect(Edge e) {
+	public void addConnection(EdgeConnection e) {
 		
 	}
 
 	@Override
-	public void disconnect(Edge e) {
+	public void removeConnection(EdgeConnection e) {
 		
-	}
-
-	@Override
-	public boolean isConnected(Edge e) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	private Rectangle layout = new Rectangle(5, 5, 40, 40);
@@ -112,5 +108,11 @@ public class Port implements IAdaptable, IConnectable, ILayoutable {
 	public void setLayout(Rectangle layout) {
 		if (layout != null)
 			this.layout.setBounds(layout);
+	}
+
+	@Override
+	public List<EdgeConnection> getConnections() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

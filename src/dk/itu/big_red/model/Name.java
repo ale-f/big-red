@@ -1,6 +1,7 @@
 package dk.itu.big_red.model;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -52,12 +53,12 @@ public class Name extends Thing implements IConnectable {
 	}
 	
 	@Override
-	public void connect(Edge e) {
+	public void addConnection(EdgeConnection e) {
 		
 	}
 
 	@Override
-	public void disconnect(Edge e) {
+	public void removeConnection(EdgeConnection e) {
 		
 	}
 	
@@ -96,8 +97,8 @@ public class Name extends Thing implements IConnectable {
 	}
 
 	@Override
-	public boolean isConnected(Edge e) {
+	public List<EdgeConnection> getConnections() {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 }
