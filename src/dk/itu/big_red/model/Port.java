@@ -102,7 +102,7 @@ public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyCha
 			this.distance = distance;
 	}
 
-	private Rectangle layout = new Rectangle(5, 5, 40, 40);
+	private Rectangle layout = new Rectangle(5, 5, 10, 10);
 	
 	@Override
 	public Rectangle getLayout() {
