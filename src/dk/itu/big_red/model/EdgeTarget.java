@@ -67,14 +67,12 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 
 	@Override
 	public Bigraph getBigraph() {
-		// TODO Auto-generated method stub
-		return null;
+		return getConnections().get(0).getSource().getBigraph();
 	}
 
 	@Override
 	public void setBigraph(Bigraph bigraph) {
-		// TODO Auto-generated method stub
-		
+		getConnections().get(0).getSource().setBigraph(bigraph);
 	}
 
 	@Override
