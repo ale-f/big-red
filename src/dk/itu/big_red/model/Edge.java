@@ -79,6 +79,9 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, IC
 		points.add(point);
 		connections.add(c);
 		point.addConnection(c);
+		
+		getEdgeTarget().addConnection(c);
+		point.getBigraph().addNHTLO(getEdgeTarget());
 	}
 	
 	/**
