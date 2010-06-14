@@ -89,6 +89,8 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 			
 			/* XXX: disconnect old ports */
 			ports = control.getPortsArray();
+			for (Port p : ports)
+				p.setParent(this);
 			
 			Point c = control.getDefaultSize();
 			if (!control.isResizable()) {

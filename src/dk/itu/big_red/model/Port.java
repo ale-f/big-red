@@ -20,6 +20,8 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  *
  */
 public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyChangeNotifier {
+	private Node parent = null;
+	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	/**
 	 * The position of a Port on its parent {@link Node} is governed by its
@@ -54,6 +56,14 @@ public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyCha
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Node getParent() {
+		return this.parent;
+	}
+	
+	public void setParent(Node parent) {
+		this.parent = parent;
 	}
 	
 	/**
@@ -137,13 +147,11 @@ public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyCha
 
 	@Override
 	public Bigraph getBigraph() {
-		// TODO Auto-generated method stub
-		return null;
+		return getParent().getBigraph();
 	}
 
 	@Override
 	public void setBigraph(Bigraph bigraph) {
-		// TODO Auto-generated method stub
-		
+		getParent().setBigraph(bigraph);
 	}
 }
