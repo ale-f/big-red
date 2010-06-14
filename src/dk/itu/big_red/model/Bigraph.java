@@ -123,7 +123,10 @@ public class Bigraph extends Thing {
 	 * @see Bigraph#getNHTLOs()
 	 */
 	public void addNHTLO(ILayoutable o) {
-		nhtlo.add(o);
+		if (!nhtlo.contains(o)) {
+			nhtlo.add(o);
+			listeners.firePropertyChange(PROPERTY_CHILD, null, o);
+		}
 	}
 	
 	/**
@@ -132,7 +135,10 @@ public class Bigraph extends Thing {
 	 * @see Bigraph#getNHTLOs()
 	 */
 	public void removeNHTLO(ILayoutable o) {
-		nhtlo.remove(o);
+		if (nhtlo.contains(o)) {
+			nhtlo.remove(o);
+			listeners.firePropertyChange(PROPERTY_CHILD, o, null);
+		}
 	}
 	
 	/**
