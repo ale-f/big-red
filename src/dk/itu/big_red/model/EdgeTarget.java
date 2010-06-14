@@ -23,7 +23,7 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	private Edge parent;
-	private Rectangle layout = new Rectangle();
+	private Rectangle layout = new Rectangle(0, 0, 10, 10);
 	
 	public EdgeTarget(Edge parent) {
 		this.parent = parent;
