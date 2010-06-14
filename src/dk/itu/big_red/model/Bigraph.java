@@ -99,7 +99,6 @@ public class Bigraph extends Thing {
 	}
 	
 	public static Bigraph fromXML(String filename) {
-		File file = new File(filename);
 		Document doc = DOM.parse(filename);
 		return (doc != null ? Bigraph.fromXML(doc) : null);
 	}
