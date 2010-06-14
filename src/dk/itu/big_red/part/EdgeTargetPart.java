@@ -6,12 +6,14 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
+import dk.itu.big_red.figure.EdgeTargetFigure;
+
 public class EdgeTargetPart extends AbstractGraphicalEditPart {
 
 	@Override
 	protected IFigure createFigure() {
 		// TODO Auto-generated method stub
-		return null;
+		return new EdgeTargetFigure();
 	}
 
 	@Override
