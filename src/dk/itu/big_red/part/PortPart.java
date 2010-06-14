@@ -72,11 +72,6 @@ public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart,
 	protected List<EdgeConnection> getModelSourceConnections() {
         return getModel().getConnections();
     }
-    
-	@Override
-	protected List<EdgeConnection> getModelTargetConnections() {
-        return new ArrayList<EdgeConnection>();
-    }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return new EllipseAnchor(getFigure());
