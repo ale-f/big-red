@@ -42,6 +42,8 @@ public class BigraphPart extends AbstractPart {
 		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
 		for (Thing t : getModel().getChildrenArray())
 			children.add(t);
+		for (ILayoutable t : getModel().getNHTLOs())
+			children.add(t);
 		return children;
 	}
 }

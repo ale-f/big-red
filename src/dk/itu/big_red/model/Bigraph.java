@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.gef.EditPart;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,6 +16,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.commands.EdgeCreateCommand;
+import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.part.BigraphPart;
 import dk.itu.big_red.util.DOM;
 
 public class Bigraph extends Thing {
@@ -109,5 +112,41 @@ public class Bigraph extends Thing {
 	
 	public Signature getSignature() {
 		return signature;
+	}
+	
+	private ArrayList<ILayoutable> nhtlo = new ArrayList<ILayoutable>();
+	
+	/**
+	 * Adds a <i>non-hierarchical top-level object</i> to this Bigraph.
+	 * @param o an {@link ILayoutable}
+	 * @see Bigraph#getNHTLOs()
+	 */
+	public void addNHTLO(ILayoutable o) {
+		nhtlo.add(o);
+	}
+	
+	/**
+	 * Removes a <i>non-hierarchical top-level object</i> from this Bigraph.
+	 * @param o an {@link ILayoutable}
+	 * @see Bigraph#getNHTLOs()
+	 */
+	public void removeNHTLO(ILayoutable o) {
+		nhtlo.remove(o);
+	}
+	
+	/**
+	 * Returns the array of <i>non-hierarchical top-level objects</i> for this
+	 * Bigraph.
+	 * 
+	 * <p>A <i>non-hierarchical top-level object</i> is an object whose {@link
+	 * EditPart} must always appear as a top-level child of {@link
+	 * BigraphPart}; they include {@link Port}s and {@link EdgeTarget}s. An
+	 * object is a good candidate for being a NHTLO if it doesn't really make
+	 * sense to think of it as being a child of a particular {@link Node}, or
+	 * if it needs to be able to escape the bounding box of its parent.
+	 * @return an array of {@link ILayoutable} objects
+	 */
+	public ArrayList<ILayoutable> getNHTLOs() {
+		return nhtlo;
 	}
 }
