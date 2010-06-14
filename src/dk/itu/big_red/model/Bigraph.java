@@ -107,6 +107,7 @@ public class Bigraph extends Thing {
 	}
 	
 	public Bigraph getBigraph() {
+		System.out.println(this + "pop!");
 		return this;
 	}
 	
