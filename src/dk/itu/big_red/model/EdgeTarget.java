@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 /**
  * An EdgeTarget is a small object used to keep {@link Edge}s as close to the
@@ -17,7 +19,7 @@ import dk.itu.big_red.model.interfaces.IConnectable;
  * @author alec
  *
  */
-public class EdgeTarget implements IConnectable {
+public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	private Edge parent;
@@ -49,11 +51,13 @@ public class EdgeTarget implements IConnectable {
 	@Override
 	public void addConnection(EdgeConnection e) {
 		connections.add(e);
+		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, null, e);
 	}
 
 	@Override
 	public void removeConnection(EdgeConnection e) {
 		connections.remove(e);
+		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, e, null);
 	}
 	
 	@Override
@@ -71,5 +75,15 @@ public class EdgeTarget implements IConnectable {
 	public void setBigraph(Bigraph bigraph) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		listeners.addPropertyChangeListener(listener);
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		listeners.removePropertyChangeListener(listener);
 	}
 }
