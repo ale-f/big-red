@@ -60,4 +60,16 @@ public class EdgeTarget implements IConnectable {
 	public List<EdgeConnection> getConnections() {
 		return connections;
 	}
+
+	@Override
+	public Bigraph getBigraph() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setBigraph(Bigraph bigraph) {
+		// TODO Auto-generated method stub
+		
+	}
 }

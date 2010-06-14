@@ -208,12 +208,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 			getParent().growUpRecursively(removed, added);
 	}
 	
-	public Bigraph getBigraph() {
-		Thing i = this;
-		for (; i != null && !(i instanceof Bigraph); i = i.getParent());
-		return (Bigraph)i;
-	}
-	
 	public Signature getSignature() {
 		return getBigraph().getSignature();
 	}
@@ -254,5 +248,18 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		String oldComment = this.comment;
 		this.comment = comment;
 		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
+	}
+	
+	@Override
+	public Bigraph getBigraph() {
+		Thing i = this;
+		for (; i != null && !(i instanceof Bigraph); i = i.getParent());
+		return (Bigraph)i;
+	}
+
+	@Override
+	public void setBigraph(Bigraph bigraph) {
+		// TODO Auto-generated method stub
+		
 	}
 }

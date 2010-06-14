@@ -134,4 +134,16 @@ public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyCha
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
 	}
+
+	@Override
+	public Bigraph getBigraph() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setBigraph(Bigraph bigraph) {
+		// TODO Auto-generated method stub
+		
+	}
 }
