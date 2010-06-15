@@ -17,6 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.interfaces.ICommentable;
+import dk.itu.big_red.model.interfaces.IHierarchical;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
@@ -33,7 +34,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChangeNotifier, ICommentable {
+public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChangeNotifier, ICommentable, IHierarchical {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
@@ -49,7 +50,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	protected Rectangle layout;
 	
 	protected ArrayList<Thing> children = new ArrayList<Thing>();
-	protected Thing parent = null;
+	protected IHierarchical parent = null;
 	
 	private IPropertySource propertySource = null;
 	
@@ -93,12 +94,19 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		return this.children;
 	}
 	
-	private void setParent(Thing parent) {
+	@Override
+	public IHierarchical getParent() {
+		return this.parent;
+	}
+	
+	@Override
+	public void setParent(IHierarchical parent) {
 		this.parent = parent;
 	}
 	
-	public Thing getParent() {
-		return this.parent;
+	@Override
+	public Rectangle getRootLayout() {
+		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
 	}
 	
 	@Override
@@ -198,14 +206,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 			r.addAll(x.findAllChildren(c));
 		}
 		return r;
-	}
-	
-	public void growUpRecursively(Rectangle removed, Rectangle added) {
-		Rectangle newLayout = new Rectangle(getLayout());
-		newLayout.width = this.layout.width - removed.width + added.width;
-		newLayout.height = this.layout.height - removed.width + added.height;
-		if (getParent() != null)
-			getParent().growUpRecursively(removed, added);
 	}
 	
 	public Signature getSignature() {

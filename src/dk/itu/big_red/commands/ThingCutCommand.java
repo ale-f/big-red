@@ -25,8 +25,8 @@ public class ThingCutCommand extends ThingCopyCommand {
 		Iterator<Thing> it = list.iterator();
 		while (it.hasNext()) {
 			Thing n = it.next();
-			parents.put(n, n.getParent());
-			n.getParent().removeChild(n);
+			parents.put(n, (Thing)n.getParent());
+			((Thing)n.getParent()).removeChild(n);
 		}
 	}
 	
