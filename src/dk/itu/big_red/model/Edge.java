@@ -96,6 +96,7 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, IC
 				if (index != -1) {
 					points.remove(point);
 					connections.remove(index);
+					getEdgeTarget().removeConnection(e);
 					point.removeConnection(e);
 					break;
 				}
