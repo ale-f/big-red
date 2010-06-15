@@ -338,13 +338,13 @@ public class GraphicalEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWit
 	    	c = signature.addControl("Computer", "C", Shape.SHAPE_RECTANGLE,
 	    			             new Point(25, 13), false);
 	    	
-	    	b.addPort("lan", 2);
+	    	b.addPort("a", 2);
 	    	
-	    	c.addPort("keyboard", 0);
-	    	c.addPort("ethernet", 2);
+	    	c.addPort("b", 0);
 	    	
-	    	a.addPort("conference", 0);
-	    	a.addPort("hands", 2);
+	    	a.addPort("c", 0);
+	    	
+	    	r.addPort("d", 0);
 	    	
 	    	Root r0 = new Root();
 	    	model.addChild(r0);
