@@ -45,18 +45,7 @@ public abstract class AbstractFigure extends Shape {
 	}
 	
 	public Point getTotalOffset() {
-		Rectangle constraint;
-		Point offset = new Point();
-		int generation = 0;
-		
-		while (true) {
-			constraint = getAncestorConstraint(generation);
-			if (constraint == null) break;
-			offset.x += constraint.x; offset.y += constraint.y;
-			generation++;
-		}
-		
-		return offset;
+		return getRootConstraint().getTopLeft();
 	}
 	
 	public void setConstraint(Rectangle rect) {
