@@ -39,8 +39,8 @@ public class NameFigure extends AbstractFigure {
 	}
 	
 	@Override
-	public void setLayout(Rectangle r) {
-		super.setLayout(r);
+	public void setConstraint(Rectangle r) {
+		super.setConstraint(r);
 		Dimension s = label.getPreferredSize();
 		setConstraint(label, new Rectangle(
 				(r.width / 2) - (s.width / 2),

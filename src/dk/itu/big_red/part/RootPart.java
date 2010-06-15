@@ -41,7 +41,7 @@ public class RootPart extends AbstractPart {
 		Root model = getModel();
 
 		figure.setNumber(model.getNumber());
-		figure.setLayout(model.getLayout());
+		figure.setConstraint(model.getLayout());
 	}
 	
 	public List<ILayoutable> getModelChildren() {

@@ -35,7 +35,7 @@ public class BigraphPart extends AbstractPart {
 		BigraphFigure figure = (BigraphFigure)getFigure();
 		Bigraph model = getModel();
 
-		figure.setLayout(model.getLayout());
+		figure.setConstraint(model.getLayout());
 	}
 	
 	public List<ILayoutable> getModelChildren() {

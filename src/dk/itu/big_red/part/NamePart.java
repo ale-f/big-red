@@ -57,7 +57,7 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 		Name model = getModel();
 		
 		figure.setName(model.getName());
-		figure.setLayout(model.getLayout());
+		figure.setConstraint(model.getLayout());
 		figure.setToolTip(model.getType() == NameType.NAME_INNER ?
 			"Inner name" : "Outer name");
 		

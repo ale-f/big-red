@@ -59,7 +59,7 @@ public abstract class AbstractFigure extends Shape {
 		return offset;
 	}
 	
-	public void setLayout(Rectangle rect) {
+	public void setConstraint(Rectangle rect) {
 		getParent().setConstraint(this, rect);
 	}
 	

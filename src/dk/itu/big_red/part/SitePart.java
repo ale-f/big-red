@@ -39,6 +39,6 @@ public class SitePart extends AbstractPart {
 		Site model = getModel();
 
 		figure.setNumber(model.getNumber());
-		figure.setLayout(model.getLayout());
+		figure.setConstraint(model.getLayout());
 	}
 }

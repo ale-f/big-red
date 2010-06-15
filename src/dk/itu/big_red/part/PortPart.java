@@ -65,7 +65,7 @@ public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart,
 		Port model = getModel();
 		PortFigure figure = (PortFigure)getFigure();
 		
-		figure.setLayout(model.getLayout());
+		figure.setConstraint(model.getLayout());
 	}
 	
 	@Override

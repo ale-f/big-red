@@ -58,7 +58,7 @@ public class NodePart extends AbstractPart {
 			portDescription = model.getControl().getPortNames().toString();
 		
 		figure.setShape(model.getControl().getShape());
-		figure.setLayout(layout);
+		figure.setConstraint(layout);
 		figure.setLabel(model.getControl().getLabel());
 		figure.setToolTip(model.getControl().getLongName(), portDescription, model.getComment());
 		
