@@ -8,6 +8,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -16,6 +17,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.commands.EdgeCreateCommand;
+import dk.itu.big_red.model.interfaces.IHierarchical;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.part.BigraphPart;
 import dk.itu.big_red.util.DOM;
@@ -113,6 +115,19 @@ public class Bigraph extends Thing {
 	
 	public Signature getSignature() {
 		return signature;
+	}
+	
+	public void setParent(IHierarchical parent) {
+		/* do nothing */
+	}
+	
+	public IHierarchical getParent() {
+		return null;
+	}
+	
+	@Override
+	public Rectangle getRootLayout() {
+		return new Rectangle();
 	}
 	
 	private ArrayList<ILayoutable> nhtlo = new ArrayList<ILayoutable>();
