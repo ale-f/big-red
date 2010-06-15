@@ -8,6 +8,7 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.IHierarchical;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 /**
@@ -52,6 +53,12 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 	public void addConnection(EdgeConnection e) {
 		connections.add(e);
 		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, null, e);
+		int tx = 0, ty = 0;
+		for (EdgeConnection f : connections) {
+			tx += ((IHierarchical)f.getSource()).getRootLayout().x;
+			ty += ((IHierarchical)f.getSource()).getRootLayout().y;
+		}
+		setLayout(new Rectangle(tx / connections.size(), ty / connections.size(), getLayout().width, getLayout().height));
 	}
 
 	@Override
