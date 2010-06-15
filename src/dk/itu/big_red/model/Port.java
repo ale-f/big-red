@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.IHierarchical;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
@@ -19,8 +20,8 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  * @author alec
  *
  */
-public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyChangeNotifier {
-	private Node parent = null;
+public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyChangeNotifier, IHierarchical {
+	private IHierarchical parent = null;
 	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	/**
@@ -58,12 +59,19 @@ public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyCha
 		return null;
 	}
 	
-	public Node getParent() {
+	@Override
+	public IHierarchical getParent() {
 		return this.parent;
 	}
 	
-	public void setParent(Node parent) {
+	@Override
+	public void setParent(IHierarchical parent) {
 		this.parent = parent;
+	}
+	
+	@Override
+	public Rectangle getRootLayout() {
+		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
 	}
 	
 	/**
