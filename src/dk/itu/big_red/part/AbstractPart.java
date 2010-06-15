@@ -56,7 +56,14 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	@Override
 	protected void refreshVisuals() {
 		super.refreshVisuals();
-		((AbstractFigure)getFigure()).setToolTip(getModel().getClass().getSimpleName());
+		
+		AbstractFigure figure = (AbstractFigure)getFigure();
+		Thing model = getModel();
+		
+		figure.setToolTip(model.getClass().getSimpleName());
+		
+		figure.setConstraint(model.getLayout());
+		figure.setRootConstraint(model.getRootLayout());
 	}
 	
 	@Override
