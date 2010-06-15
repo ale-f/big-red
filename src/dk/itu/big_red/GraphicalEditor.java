@@ -358,6 +358,12 @@ public class GraphicalEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWit
 	    				Node agent0 = new Node(a);
 	    				room0.addChild(agent0);
 	    				agent0.setLayout(new Rectangle(10, 10, 0, 0));
+	    		Node building1 = new Node(b);
+	    		r0.addChild(building1);
+	    		building1.setLayout(new Rectangle(20, 20, 100, 100));
+	    			Node room1 = new Node(r);
+	    			building1.addChild(room1);
+	    			room1.setLayout(new Rectangle(10, 10, 50, 50));
 	    }
 	    
 	    viewer.setContents(model);
