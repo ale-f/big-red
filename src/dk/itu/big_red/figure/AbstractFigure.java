@@ -63,6 +63,16 @@ public abstract class AbstractFigure extends Shape {
 		getParent().setConstraint(this, rect);
 	}
 	
+	private Rectangle rootConstraint;
+	
+	public Rectangle getRootConstraint() {
+		return rootConstraint;
+	}
+	
+	public void setRootConstraint(Rectangle rootConstraint) {
+		this.rootConstraint = rootConstraint;
+	}
+	
 	public void setToolTip(String content) {
 		Label label = new Label(content);
 		label.setBorder(new MarginBorder(4));
