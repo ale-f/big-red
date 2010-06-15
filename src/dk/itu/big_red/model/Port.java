@@ -123,24 +123,30 @@ public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyCha
 			this.layout.setBounds(layout);
 	}
 
-	private ArrayList<EdgeConnection> connections =
-		new ArrayList<EdgeConnection>();
+	private EdgeConnection connection = null;
 	
 	@Override
 	public void addConnection(EdgeConnection e) {
-		connections.add(e);
+		if (connection != null)
+			connection.getParent().removePoint(this);
+		connection = e;
 		listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, null, e);
 	}
 
 	@Override
 	public void removeConnection(EdgeConnection e) {
-		connections.remove(e);
-		listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, e, null);
+		if (connection == e) {
+			connection = null;
+			listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, e, null);
+		}
 	}
 	
 	@Override
 	public List<EdgeConnection> getConnections() {
-		return connections;
+		ArrayList<EdgeConnection> e = new ArrayList<EdgeConnection>();
+		if (connection != null)
+			e.add(connection);
+		return e;
 	}
 
 	@Override
