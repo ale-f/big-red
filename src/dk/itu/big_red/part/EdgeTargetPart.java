@@ -8,9 +8,11 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
+import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.EdgeConnectionFigure;
 import dk.itu.big_red.figure.EdgeTargetFigure;
 import dk.itu.big_red.model.EdgeConnection;
@@ -30,8 +32,7 @@ public class EdgeTargetPart extends AbstractGraphicalEditPart implements Propert
 
 	@Override
 	protected void createEditPolicies() {
-		// TODO Auto-generated method stub
-		
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 	}
 
 	public void activate() {
