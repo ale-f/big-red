@@ -56,6 +56,8 @@ public class EdgeTargetPart extends AbstractGraphicalEditPart implements Propert
 		EdgeTarget model = getModel();
 		
 		figure.setConstraint(model.getLayout());
+		figure.setRootConstraint(model.getLayout());
+		
 		figure.setToolTip(model.getParent().getComment());
 	}
 
