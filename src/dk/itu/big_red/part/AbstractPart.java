@@ -9,6 +9,7 @@ import java.util.List;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -64,6 +65,9 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 		
 		figure.setConstraint(model.getLayout());
 		figure.setRootConstraint(model.getRootLayout());
+		
+		for (Object i : getChildren())
+			((EditPart)i).refresh();
 	}
 	
 	@Override
