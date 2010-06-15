@@ -252,7 +252,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	
 	@Override
 	public Bigraph getBigraph() {
-		System.out.print(this + "bubble... ");
 		return getParent().getBigraph();
 	}
 
