@@ -5,12 +5,12 @@ package dk.itu.big_red.commands;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
-import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
 
 
-public class ThingLayoutChangeCommand extends Command {
-	private Thing model;
+public class ILayoutableRelayoutCommand extends Command {
+	private ILayoutable model;
 	private Rectangle layout, oldLayout;
 	
 	public void execute() {
@@ -22,11 +22,11 @@ public class ThingLayoutChangeCommand extends Command {
 	}
 
 	public void setModel(Object model) {
-		this.model = (Thing)model;
+		this.model = (ILayoutable)model;
 		this.oldLayout = this.model.getLayout();
 	}
 
 	public void undo() {
-		this.model.setLayout(this.oldLayout);
+		model.setLayout(this.oldLayout);
 	}
 }

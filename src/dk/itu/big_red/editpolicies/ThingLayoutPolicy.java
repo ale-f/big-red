@@ -10,7 +10,7 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 
 import dk.itu.big_red.commands.ThingCreateCommand;
-import dk.itu.big_red.commands.ThingLayoutChangeCommand;
+import dk.itu.big_red.commands.ILayoutableRelayoutCommand;
 import dk.itu.big_red.figure.*;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.part.*;
@@ -19,9 +19,9 @@ public class ThingLayoutPolicy extends XYLayoutEditPolicy {
 
 	@Override
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
-		ThingLayoutChangeCommand command = null;
+		ILayoutableRelayoutCommand command = null;
 		if (!(child instanceof BigraphPart)) {
-			command = new ThingLayoutChangeCommand();
+			command = new ILayoutableRelayoutCommand();
 			
 			command.setModel(child.getModel());
 			command.setConstraint((Rectangle)constraint);
