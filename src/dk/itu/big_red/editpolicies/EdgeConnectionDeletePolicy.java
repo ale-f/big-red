@@ -10,7 +10,7 @@ import dk.itu.big_red.model.Edge;
 
 
 
-public class EdgeEditPolicy extends ConnectionEditPolicy {
+public class EdgeConnectionDeletePolicy extends ConnectionEditPolicy {
 	private Edge getCastedModel() {
 		return (Edge)getHost().getModel();
 	}

@@ -10,7 +10,8 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
-import dk.itu.big_red.editpolicies.EdgeEditPolicy;
+import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
+import dk.itu.big_red.editpolicies.EdgeConnectionDeletePolicy;
 import dk.itu.big_red.figure.EdgeConnectionFigure;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
@@ -39,7 +40,7 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements Pr
 	
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.CONNECTION_ROLE, new EdgeEditPolicy());
+		installEditPolicy(EditPolicy.CONNECTION_ROLE, new EdgeConnectionDeletePolicy());
 		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE,
                           new ConnectionEndpointEditPolicy());
 	}
