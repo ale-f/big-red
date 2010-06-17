@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Big_Red
-Bundle-SymbolicName: Big_Red; singleton:=true
+Bundle-Name: Big Red
+Bundle-SymbolicName: dk.itu.big_red;singleton:=true
 Bundle-Version: 1.0.0.1001-dk
 Bundle-Activator: dk.itu.big_red.Activator
 Bundle-Vendor: Alexander Faithfull

@@ -16,14 +16,15 @@
       <perspective
             name="RCP Perspective"
             class="dk.itu.big_red.intro.Perspective"
-            id="Big_Red.perspective">
+            id="dk.itu.big_red.perspective">
       </perspective>
    </extension>
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="Big_Red.application"
+            application="dk.itu.big_red.application"
+            description="The integrated development environment for bigraphs"
             name="Big Red">
          <property
                name="windowImages"
@@ -63,17 +64,17 @@
          point="org.eclipse.ui.intro">
       <intro
             class="org.eclipse.ui.intro.config.CustomizableIntroPart"
-            id="big_red.intro">
+            id="dk.itu.big_red.intro">
       </intro>
       <introProductBinding
-            introId="big_red.intro"
-            productId="Big_Red.product">
+            introId="dk.itu.big_red.intro"
+            productId="dk.itu.big_red.product">
       </introProductBinding>
    </extension>
    <extension
          point="org.eclipse.ui.intro.config">
       <config
-            introId="big_red.intro"
+            introId="dk.itu.big_red.intro"
             content="introContent.xml"
             id="Big_Red.configId">
          <presentation
@@ -81,6 +82,32 @@
             <implementation
                   kind="html"
                   os="win32,linux,macosx">
+            </implementation>
+         </presentation>
+      </config>
+      <config
+            content="introContent.xml"
+            id="dk.itu.big_red.introConfigId"
+            introId="intro">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html"
+                  os="win32,linux,macosx"
+                  style="content/shared.css">
+            </implementation>
+         </presentation>
+      </config>
+      <config
+            content="introContent.xml"
+            id="dk.itu.big_red.introConfigId"
+            introId="dk.itu.big_red.intro">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html"
+                  os="win32,linux,macosx"
+                  style="content/shared.css">
             </implementation>
          </presentation>
       </config>
