@@ -42,7 +42,11 @@ public class ThingCutAction extends SelectionAction {
 		ThingCutCommand cmd = new ThingCutCommand();
 		Iterator<Object> it = selectedObjects.iterator();
 		while (it.hasNext()) {
-			Thing node = (Thing)((EditPart)it.next()).getModel();
+			EditPart n = (EditPart)it.next();
+			Object model = n.getModel();
+			if (!(model instanceof Thing))
+				continue;
+			Thing node = (Thing)model;
 			if (!cmd.isCopyableNode(node))
 				return null;
 			else
