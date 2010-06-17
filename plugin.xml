@@ -144,5 +144,27 @@
          </description>
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="dk.itu.big_red"
+            name="Big Red">
+      </category>
+      <primaryWizard
+            id="dk.itu.big_red.NewBRSWizard">
+      </primaryWizard>
+      <wizard
+            category="dk.itu.big_red"
+            class="dk.itu.big_red.wizards.new_wizards.NewBRSWizard"
+            finalPerspective="dk.itu.big_red.perspective"
+            icon="icons/icon16.png"
+            id="dk.itu.big_red.NewBRSWizard"
+            name="Bigraph reactive system"
+            project="true">
+         <description>
+            Create a new bigraph reactive system.
+         </description>
+      </wizard>
+   </extension>
 
 </plugin>
