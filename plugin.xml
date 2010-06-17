@@ -14,9 +14,10 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
             class="dk.itu.big_red.intro.Perspective"
-            id="dk.itu.big_red.perspective">
+            icon="icons/icon32.png"
+            id="dk.itu.big_red.perspective"
+            name="Big Red">
       </perspective>
    </extension>
    <extension
