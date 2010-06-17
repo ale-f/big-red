@@ -60,10 +60,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 	public void setLayout(Rectangle layout) {
 		Rectangle layoutCopy = new Rectangle(layout);
 		if (!control.isResizable()) {
-			/*
-			 * Think of a better way to do this (possibly using a
-			 * NonResizableEditPolicy? Where to install it, though?)
-			 */
 			layoutCopy.width = getLayout().width;
 			layoutCopy.height = getLayout().height;
 		}

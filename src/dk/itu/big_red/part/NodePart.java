@@ -6,8 +6,10 @@ import java.util.List;
 
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 
 import dk.itu.big_red.editpolicies.ThingDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
@@ -25,6 +27,29 @@ public class NodePart extends AbstractPart {
 	@Override
 	protected IFigure createFigure() {
 		return new NodeFigure();
+	}
+	
+	/**
+	 * Modifies this object's {@link EditPolicy#PRIMARY_DRAG_ROLE} edit policy
+	 * to enforce the resizability constraint from the model. 
+	 */
+	protected void setResizability() {
+		EditPolicy pol = getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
+		if (pol != null && pol instanceof ResizableEditPolicy) {
+			((ResizableEditPolicy)pol).setResizeDirections(
+				(getModel().getControl().isResizable() ? PositionConstants.NSEW : 0));
+		}
+	}
+	
+	@Override
+	public void installEditPolicy(Object key, EditPolicy editPolicy) {
+		super.installEditPolicy(key, editPolicy);
+		/*
+		 * Trap attempts to install a PRIMARY_DRAG_ROLE EditPolicy so that they
+		 * can be tweaked to better fit the model.
+		 */
+		if (key == EditPolicy.PRIMARY_DRAG_ROLE)
+			setResizability();
 	}
 	
 	@Override
@@ -50,7 +75,9 @@ public class NodePart extends AbstractPart {
 		
 		NodeFigure figure = (NodeFigure)getFigure();
 		Node model = getModel();
-
+		
+		setResizability();
+		
 		Rectangle layout = model.getLayout();
 		
 		String portDescription = null;
@@ -72,6 +99,7 @@ public class NodePart extends AbstractPart {
 		figure.repaint();
 	}
 	
+	@Override
 	public List<ILayoutable> getModelChildren() {
 		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
 		for (Thing t : getModel().getChildrenArray())
