@@ -1,9 +1,9 @@
 package dk.itu.big_red.wizards;
 
-import dk.itu.big_red.GraphicalEditor;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.commands.BigraphBitmapExportCommand;
+import dk.itu.big_red.editors.BigraphEditor;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
@@ -160,9 +160,9 @@ public class ExportBitmapWizard extends Wizard implements IExportWizard {
 		addPage(page);
 	}
 
-	private GraphicalEditor getEditor() {
+	private BigraphEditor getEditor() {
 		try {
-			return (GraphicalEditor)workbench.getActiveWorkbenchWindow().getActivePage().getActivePart();
+			return (BigraphEditor)workbench.getActiveWorkbenchWindow().getActivePage().getActivePart();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

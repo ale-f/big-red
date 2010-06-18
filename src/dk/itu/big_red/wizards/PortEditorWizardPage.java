@@ -1,6 +1,6 @@
 package dk.itu.big_red.wizards;
 
-import dk.itu.big_red.GraphicalEditor;
+import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Signature;
 
@@ -29,7 +29,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class PortEditorWizardPage extends WizardPage {
 	protected Bigraph getModel() {
-		return ((GraphicalEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
+		return ((BigraphEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
 	}
 	
 	protected String getWizardPort() {

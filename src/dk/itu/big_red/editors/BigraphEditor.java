@@ -1,4 +1,4 @@
-package dk.itu.big_red;
+package dk.itu.big_red.editors;
 
 import java.util.ArrayList;
 import java.util.EventObject;
@@ -53,6 +53,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 
+import dk.itu.big_red.AppContextMenuProvider;
+import dk.itu.big_red.AppTemplateTransferDropTargetListener;
 import dk.itu.big_red.EditorInput;
 import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
@@ -62,8 +64,8 @@ import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
 import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
 import dk.itu.big_red.tools.ConnectionDragCreationToolEntry;
 
-public class GraphicalEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
-	public static final String ID = "big_red.graphicaleditor";
+public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
+	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
 	private String displayFilename = null;
 	private String filesystemName = null;
@@ -200,7 +202,7 @@ public class GraphicalEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWit
 		}
 	}
 	
-	public GraphicalEditor() {
+	public BigraphEditor() {
 		setEditDomain(new DefaultEditDomain(this));
 	}
 

@@ -5,7 +5,7 @@ import org.eclipse.gef.ui.actions.EditorPartAction;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.GraphicalEditor;
+import dk.itu.big_red.editors.BigraphEditor;
 
 
 public class FileRevertAction extends EditorPartAction {
@@ -28,6 +28,6 @@ public class FileRevertAction extends EditorPartAction {
 	}
 
 	public void run() {
-		((GraphicalEditor)getEditorPart()).revert();
+		((BigraphEditor)getEditorPart()).revert();
 	}
 }

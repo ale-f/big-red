@@ -2,7 +2,7 @@ package dk.itu.big_red.wizards;
 
 import java.util.Collection;
 
-import dk.itu.big_red.GraphicalEditor;
+import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.model.Bigraph;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -21,7 +21,7 @@ public class PortSelectionPage extends WizardPage {
 	protected IPortSelector parent = null;
 	
 	protected Bigraph getModel() {
-		return ((GraphicalEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
+		return ((BigraphEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
 	}
 	
 	protected PortSelectionPage(String pageName, IPortSelector parent) {

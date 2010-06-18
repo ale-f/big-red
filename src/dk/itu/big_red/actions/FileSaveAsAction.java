@@ -8,7 +8,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.BigRedConstants;
-import dk.itu.big_red.GraphicalEditor;
+import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.util.UI;
 
 
@@ -36,7 +36,7 @@ public class FileSaveAsAction extends org.eclipse.gef.ui.actions.SaveAction {
 		if (file != null) {
 			if (!file.endsWith(".bigred"))
 				file = file + ".bigred";
-			((GraphicalEditor)getEditorPart()).setAssociatedFile(file);
+			((BigraphEditor)getEditorPart()).setAssociatedFile(file);
 			getEditorPart().doSave(new NullProgressMonitor());
 		}
 	}

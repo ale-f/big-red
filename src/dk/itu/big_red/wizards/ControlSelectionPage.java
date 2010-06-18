@@ -3,7 +3,7 @@ package dk.itu.big_red.wizards;
 import java.util.Collection;
 import java.util.List;
 
-import dk.itu.big_red.GraphicalEditor;
+import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 
@@ -23,7 +23,7 @@ public class ControlSelectionPage extends WizardPage {
 	protected IControlSelector parent = null;
 	
 	protected Bigraph getModel() {
-		return ((GraphicalEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
+		return ((BigraphEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
 	}
 	
 	public Collection<Control> getControls() {

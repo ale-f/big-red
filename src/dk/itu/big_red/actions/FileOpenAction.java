@@ -39,7 +39,7 @@ public class FileOpenAction extends Action {
 			try {
 				window.getActivePage().openEditor(
 					new dk.itu.big_red.EditorInput(filename),
-					dk.itu.big_red.GraphicalEditor.ID);
+					dk.itu.big_red.editors.BigraphEditor.ID);
 			} catch (PartInitException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

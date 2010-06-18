@@ -3,8 +3,8 @@ package dk.itu.big_red.wizards;
 import java.awt.Dialog;
 import java.util.ArrayList;
 
-import dk.itu.big_red.GraphicalEditor;
 import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
@@ -22,7 +22,7 @@ public class ControlDeleteWizard extends SubWizard implements IControlSelector {
 	protected Control control;
 	
 	protected Bigraph getModel() {
-		return ((GraphicalEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
+		return ((BigraphEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
 	}
 	
 	@Override

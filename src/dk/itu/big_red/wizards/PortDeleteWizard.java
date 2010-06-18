@@ -2,8 +2,8 @@ package dk.itu.big_red.wizards;
 
 import java.util.ArrayList;
 
-import dk.itu.big_red.GraphicalEditor;
 import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Node;
@@ -19,7 +19,7 @@ public class PortDeleteWizard extends SubWizard implements IPortSelector {
 	protected String port;
 	
 	protected Bigraph getModel() {
-		return ((GraphicalEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
+		return ((BigraphEditor)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()).getModel();
 	}
 	
 	@Override

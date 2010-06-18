@@ -13,12 +13,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 
-import dk.itu.big_red.GraphicalEditor;
+import dk.itu.big_red.editors.BigraphEditor;
 
 public class BigraphBitmapExportCommand extends Command {
 	private String filename = null;
 	private int format = SWT.IMAGE_PNG;
-	private GraphicalEditor editor = null;
+	private BigraphEditor editor = null;
 	
 	@Override
 	public boolean canExecute() {
@@ -73,11 +73,11 @@ public class BigraphBitmapExportCommand extends Command {
 		return format;
 	}
 
-	public void setEditor(GraphicalEditor editor) {
+	public void setEditor(BigraphEditor editor) {
 		this.editor = editor;
 	}
 
-	public GraphicalEditor getEditor() {
+	public BigraphEditor getEditor() {
 		return editor;
 	}
 }

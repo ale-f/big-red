@@ -28,7 +28,7 @@ public class FileNewAction extends Action {
 			try {				
 				window.getActivePage().openEditor(
 					new dk.itu.big_red.EditorInput("#empty"),
-					dk.itu.big_red.GraphicalEditor.ID);
+					dk.itu.big_red.editors.BigraphEditor.ID);
 			} catch (PartInitException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

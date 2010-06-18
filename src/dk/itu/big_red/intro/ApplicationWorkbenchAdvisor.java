@@ -38,7 +38,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 			page.openEditor(
 				new dk.itu.big_red.EditorInput("#empty"),
-				dk.itu.big_red.GraphicalEditor.ID, false);
+				dk.itu.big_red.editors.BigraphEditor.ID, false);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

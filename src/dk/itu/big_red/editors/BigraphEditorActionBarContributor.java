@@ -1,4 +1,4 @@
-package dk.itu.big_red;
+package dk.itu.big_red.editors;
 
 
 import org.eclipse.gef.ui.actions.*;
@@ -11,7 +11,7 @@ import org.eclipse.ui.actions.RetargetAction;
 
 import dk.itu.big_red.actions.FileNewAction;
 
-public class GraphicalEditorActionBarContributor extends ActionBarContributor {
+public class BigraphEditorActionBarContributor extends ActionBarContributor {
 
 	@Override
 	protected void buildActions() {

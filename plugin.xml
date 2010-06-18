@@ -116,11 +116,11 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="dk.itu.big_red.GraphicalEditor"
-            contributorClass="dk.itu.big_red.GraphicalEditorActionBarContributor"
+            class="dk.itu.big_red.editors.BigraphEditor"
+            contributorClass="dk.itu.big_red.editors.BigraphEditorActionBarContributor"
             default="true"
-            id="big_red.graphicaleditor"
-            name="GraphicalEditor">
+            id="dk.itu.big_red.BigraphEditor"
+            name="BigraphEditor">
       </editor>
    </extension>
    <extension
