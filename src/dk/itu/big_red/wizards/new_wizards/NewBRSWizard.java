@@ -34,6 +34,10 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 		} else {
 			try {
 				p.create(null);
+				p.open(null);
+				p.getFile(page.getProjectName() + ".bigraph-signature").create(null, 0, null);
+				p.getFolder("agents").create(0, true, null);
+				p.getFolder("rules").create(0, true, null);
 				return true;
 			} catch (CoreException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
