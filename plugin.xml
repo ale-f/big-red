@@ -184,6 +184,9 @@
             viewerId="dk.itu.big_red.CommonNavigator">
          <includes>
             <contentExtension
+                  pattern="org.eclipse.ui.navigator.resourceContent">
+            </contentExtension>
+            <contentExtension
                   pattern="org.eclipse.ui.navigator.resources">
             </contentExtension>
             <contentExtension
