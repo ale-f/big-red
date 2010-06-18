@@ -29,7 +29,7 @@
             name="Big Red">
          <property
                name="windowImages"
-               value="icons/icon32.png">
+               value="icons/icon16.png,icons/icon32.png">
          </property>
          <property
                name="appName"
@@ -165,6 +165,38 @@
             Create a new bigraph reactive system.
          </description>
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="org.eclipse.ui.navigator.CommonNavigator"
+            id="dk.itu.big_red.CommonNavigator"
+            name="Project Navigator"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerActionBinding
+            viewerId="dk.itu.big_red.CommonNavigator">
+      </viewerActionBinding>
+      <viewerContentBinding
+            viewerId="dk.itu.big_red.CommonNavigator">
+         <includes>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.filters.*">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.linkHelper">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.workingSets">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
    </extension>
 
 </plugin>
