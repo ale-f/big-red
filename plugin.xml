@@ -119,6 +119,8 @@
             class="dk.itu.big_red.editors.BigraphEditor"
             contributorClass="dk.itu.big_red.editors.BigraphEditorActionBarContributor"
             default="true"
+            extensions="bigraph, bigraph-agent"
+            icon="icons/icon16.png"
             id="dk.itu.big_red.BigraphEditor"
             name="BigraphEditor">
       </editor>
