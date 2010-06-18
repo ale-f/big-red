@@ -7,6 +7,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.actions.BaseNewWizardMenu;
 import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -22,6 +23,7 @@ import dk.itu.big_red.wizards.PortsWizard;
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	private Object[] actionFile = null;
+	private Object[] actionFileNew = null;
 	private Object[] actionEdit = null;
 	private Object[] actionBigraph = null;
 	private Object[] actionWindow = null;
@@ -34,8 +36,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	
 	protected void makeActions(IWorkbenchWindow window) {
 		actionFile = new Object[] {
-			new FileNewAction(window),
-			new FileOpenAction(window),
+			new MenuManager("&New"),
 			new Separator(),
 			ActionFactory.CLOSE.create(window),
 			ActionFactory.CLOSE_ALL.create(window),
@@ -46,9 +47,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 			new Separator(),
 			ActionFactory.PRINT.create(window),
 			new Separator(),
+			ActionFactory.IMPORT.create(window),
 			ActionFactory.EXPORT.create(window),
 			new Separator(),
 			ActionFactory.QUIT.create(window)
+		};
+		
+		actionFileNew = new Object[] {
+			new BaseNewWizardMenu(window, null)
 		};
 		
 		actionEdit = new Object[] {
@@ -100,6 +106,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	
 	protected void fillMenuBar(IMenuManager menuBar) {
 		MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
+		MenuManager fileNewMenu = (MenuManager)actionFile[0];
 		MenuManager editMenu = new MenuManager("&Edit", IWorkbenchActionConstants.M_EDIT);
 		MenuManager bigraphMenu = new MenuManager("&Bigraph", "bigraph");
 		MenuManager windowMenu = new MenuManager("&Window", IWorkbenchActionConstants.M_WINDOW);
@@ -113,6 +120,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menuBar.add(helpMenu);
 
 		populateMenu(fileMenu, actionFile);
+		populateMenu(fileNewMenu, actionFileNew);
 		populateMenu(editMenu, actionEdit);
 		populateMenu(bigraphMenu, actionBigraph);
 		populateMenu(windowMenu, actionWindow);
