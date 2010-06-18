@@ -1,147 +1,55 @@
 package dk.itu.big_red.wizards.new_wizards;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.IWizardContainer;
 import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.actions.NewProjectAction;
 
-public class NewBRSWizard implements INewWizard {
+import dk.itu.big_red.util.Utility;
+
+public class NewBRSWizard extends Wizard implements INewWizard {
+	private NewBRSWizardPage page = null;
+	
+	@Override
+	public boolean performFinish() {
+		IWorkspaceRoot r = ResourcesPlugin.getWorkspace().getRoot();
+		IProject p = r.getProject(page.getProjectName());
+		if (p.exists()) {
+			page.setErrorMessage("A project with this name already exists.");
+			return false;
+		} else {
+			try {
+				p.create(null);
+				return true;
+			} catch (CoreException e) {
+				page.setErrorMessage(e.getLocalizedMessage());
+				return false;
+			}
+		}
+	}
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		// TODO Auto-generated method stub
+		page = new NewBRSWizardPage("newBRSWizardPage");
 		
-	}
-
-	@Override
-	public void addPages() {
-		// TODO Auto-generated method stub
+		page.setTitle("Bigraph reactive system");
+		page.setDescription("Create a new bigraph reactive system.");
 		
+		addPage(page);
 	}
-
-	@Override
-	public boolean canFinish() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void createPageControls(Composite pageContainer) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public IWizardContainer getContainer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Image getDefaultPageImage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IDialogSettings getDialogSettings() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IWizardPage getNextPage(IWizardPage page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IWizardPage getPage(String pageName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getPageCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public IWizardPage[] getPages() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IWizardPage getPreviousPage(IWizardPage page) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public IWizardPage getStartingPage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public RGB getTitleBarColor() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getWindowTitle() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isHelpAvailable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean needsPreviousAndNextButtons() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean needsProgressMonitor() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean performCancel() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean performFinish() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setContainer(IWizardContainer wizardContainer) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
