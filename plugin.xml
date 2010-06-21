@@ -183,5 +183,29 @@
          </description>
       </wizard>
    </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="bigraph, bigraph-agent"
+            id="dk.itu.big_red.bigraph"
+            name="Bigraph"
+            priority="normal">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="bigraph-rule"
+            id="dk.itu.big_red.rule"
+            name="Rule"
+            priority="normal">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="bigraph-signature"
+            id="dk.itu.big_red.signature"
+            name="Signature"
+            priority="normal">
+      </content-type>
+   </extension>
 
 </plugin>
