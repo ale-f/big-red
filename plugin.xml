@@ -97,7 +97,25 @@
             extensions="bigraph, bigraph-agent"
             icon="icons/icon16.png"
             id="dk.itu.big_red.BigraphEditor"
-            name="BigraphEditor">
+            name="Bigraph Editor">
+      </editor>
+      <editor
+            class="dk.itu.big_red.editors.RuleEditor"
+            contributorClass="dk.itu.big_red.editors.RuleEditorActionBarContributor"
+            default="false"
+            extensions="bigraph-rule"
+            icon="icons/icon16.png"
+            id="dk.itu.big_red.RuleEditor"
+            name="Rule Editor">
+      </editor>
+      <editor
+            class="dk.itu.big_red.editors.SignatureEditor"
+            contributorClass="dk.itu.big_red.editors.SignatureEditorActionBarContributor"
+            default="false"
+            extensions="bigraph-signature"
+            icon="icons/icon16.png"
+            id="dk.itu.big_red.SignatureEditor"
+            name="Signature Editor">
       </editor>
    </extension>
    <extension
