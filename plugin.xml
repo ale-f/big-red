@@ -167,6 +167,28 @@
             Create a new bigraph reactive system.
          </description>
       </wizard>
+      <wizard
+            category="dk.itu.big_red"
+            class="dk.itu.big_red.wizards.new_wizards.NewRuleWizard"
+            finalPerspective="dk.itu.big_red.perspective"
+            icon="icons/icon16.png"
+            id="big-red.wizard1"
+            name="Rule">
+         <description>
+            Create a new rule in an existing bigraph reactive system.
+         </description>
+      </wizard>
+      <wizard
+            category="dk.itu.big_red"
+            class="dk.itu.big_red.wizards.new_wizards.NewAgentWizard"
+            finalPerspective="dk.itu.big_red.perspective"
+            icon="icons/icon16.png"
+            id="big-red.wizard1"
+            name="Agent">
+         <description>
+            Create a new agent in an existing bigraph reactive system.
+         </description>
+      </wizard>
    </extension>
 
 </plugin>
