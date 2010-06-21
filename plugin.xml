@@ -165,7 +165,7 @@
             class="dk.itu.big_red.wizards.new_wizards.NewRuleWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
-            id="big-red.wizard1"
+            id="dk.itu.big_red.NewRuleWizard"
             name="Rule">
          <description>
             Create a new rule in an existing bigraph reactive system.
@@ -176,7 +176,7 @@
             class="dk.itu.big_red.wizards.new_wizards.NewAgentWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
-            id="big-red.wizard1"
+            id="dk.itu.big_red.NewAgentWizard"
             name="Agent">
          <description>
             Create a new agent in an existing bigraph reactive system.
