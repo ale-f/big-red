@@ -168,14 +168,5 @@
          </description>
       </wizard>
    </extension>
-   <extension
-         point="org.eclipse.ui.views">
-      <view
-            class="org.eclipse.ui.navigator.CommonNavigator"
-            id="dk.itu.big_red.CommonNavigator"
-            name="Project Navigator"
-            restorable="true">
-      </view>
-   </extension>
 
 </plugin>
