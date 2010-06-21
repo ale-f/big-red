@@ -7,7 +7,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.actions.BaseNewWizardMenu;
+import org.eclipse.ui.actions.NewWizardMenu;
 import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -52,7 +52,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		};
 		
 		actionFileNew = new Object[] {
-			new BaseNewWizardMenu(window, null)
+			new NewWizardMenu(window)
 		};
 		
 		actionEdit = new Object[] {
