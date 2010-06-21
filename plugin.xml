@@ -75,31 +75,6 @@
    <extension
          point="org.eclipse.ui.intro.config">
       <config
-            introId="dk.itu.big_red.intro"
-            content="introContent.xml"
-            id="Big_Red.configId">
-         <presentation
-               home-page-id="root">
-            <implementation
-                  kind="html"
-                  os="win32,linux,macosx">
-            </implementation>
-         </presentation>
-      </config>
-      <config
-            content="introContent.xml"
-            id="dk.itu.big_red.introConfigId"
-            introId="intro">
-         <presentation
-               home-page-id="root">
-            <implementation
-                  kind="html"
-                  os="win32,linux,macosx"
-                  style="content/shared.css">
-            </implementation>
-         </presentation>
-      </config>
-      <config
             content="introContent.xml"
             id="dk.itu.big_red.introConfigId"
             introId="dk.itu.big_red.intro">
