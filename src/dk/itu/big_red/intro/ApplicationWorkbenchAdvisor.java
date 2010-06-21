@@ -32,15 +32,4 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		return workspace.getRoot();
 	}
-	
-	public void postStartup() {
-		try {
-			IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-			page.openEditor(
-				new dk.itu.big_red.EditorInput("#empty"),
-				dk.itu.big_red.editors.BigraphEditor.ID, false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }

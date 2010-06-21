@@ -36,7 +36,6 @@ public class FileSaveAsAction extends org.eclipse.gef.ui.actions.SaveAction {
 		if (file != null) {
 			if (!file.endsWith(".bigred"))
 				file = file + ".bigred";
-			((BigraphEditor)getEditorPart()).setAssociatedFile(file);
 			getEditorPart().doSave(new NullProgressMonitor());
 		}
 	}

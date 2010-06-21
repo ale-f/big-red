@@ -55,7 +55,6 @@ import org.eclipse.draw2d.parts.ScrollableThumbnail;
 
 import dk.itu.big_red.AppContextMenuProvider;
 import dk.itu.big_red.AppTemplateTransferDropTargetListener;
-import dk.itu.big_red.EditorInput;
 import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
@@ -221,12 +220,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	
 	public String getAssociatedFile() {
 		return this.filesystemName;
-	}
-
-	public void setAssociatedFile(String filesystemName) {
-		this.filesystemName = filesystemName;
-		setInput(new EditorInput(filesystemName));
-		setPartName(getDisplayFilename());
 	}
 	
     protected void configureGraphicalViewer() {
