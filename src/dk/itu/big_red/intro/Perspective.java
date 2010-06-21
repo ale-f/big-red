@@ -12,7 +12,7 @@ public class Perspective implements IPerspectiveFactory {
 		IFolderLayout topLeft = layout.createFolder("topLeft", IPageLayout.LEFT, 0.20f,
 				editorArea);
 		
-		topLeft.addView("dk.itu.big_red.CommonNavigator");
+		topLeft.addView(IPageLayout.ID_PROJECT_EXPLORER);
 		topLeft.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 		
 		IFolderLayout topRight = layout.createFolder(
