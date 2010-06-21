@@ -2,6 +2,7 @@ package dk.itu.big_red.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +15,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -53,18 +56,23 @@ public class DOM {
 	}
 	
 	/**
-	 * Attempts to parse the specified file into a DOM {@link Document}.
-	 * @param path a file
+	 * Attempts to parse the specified {@link IFile} into a DOM {@link Document}.
+	 * @param file a file
 	 * @return a Document, or <code>null</code> if something went wrong
 	 */
-	public static Document parse(String path) {
+	public static Document parse(IFile file) {
 		try {
-			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(path));
+			InputStream is = file.getContents();
+			Document r = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
+			is.close();
+			return r;
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
 			e.printStackTrace();
 		}
 		return null;
