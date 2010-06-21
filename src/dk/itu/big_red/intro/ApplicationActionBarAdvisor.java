@@ -15,7 +15,6 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 
 import dk.itu.big_red.actions.WizardAction;
-import dk.itu.big_red.actions.FileNewAction;
 import dk.itu.big_red.wizards.ControlsWizard;
 import dk.itu.big_red.wizards.PortsWizard;
 

@@ -9,15 +9,13 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
-import dk.itu.big_red.actions.FileNewAction;
-
 public class BigraphEditorActionBarContributor extends ActionBarContributor {
 
 	@Override
 	protected void buildActions() {
 		IWorkbenchWindow iww = getPage().getWorkbenchWindow();
 		
-		addAction(new FileNewAction(iww));
+		addAction(ActionFactory.NEW.create(iww));
 		addAction(ActionFactory.SAVE.create(iww));
 		addAction(ActionFactory.PRINT.create(iww));
 		
@@ -37,7 +35,7 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 
 	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
-		toolBarManager.add(getAction("net.ybother.big_red.new"));
+		toolBarManager.add(getAction(ActionFactory.NEW.getId()));
 		toolBarManager.add(getAction(ActionFactory.SAVE.getId()));
 		toolBarManager.add(getAction(ActionFactory.PRINT.getId()));
 		
