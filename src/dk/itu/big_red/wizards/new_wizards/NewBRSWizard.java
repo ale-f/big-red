@@ -19,6 +19,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.actions.NewProjectAction;
 
+import dk.itu.big_red.util.NullInputStream;
 import dk.itu.big_red.util.Utility;
 
 public class NewBRSWizard extends Wizard implements INewWizard {
@@ -35,8 +36,9 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 			try {
 				p.create(null);
 				p.open(null);
-				p.getFile(page.getProjectName() + ".bigraph-signature").create(null, 0, null);
+				p.getFile(page.getProjectName() + ".bigraph-signature").create(NullInputStream.getInstance(), 0, null);
 				p.getFolder("agents").create(0, true, null);
+				p.getFolder("agents").getFile("test.bigraph-agent").create(NullInputStream.getInstance(), 0, null);
 				p.getFolder("rules").create(0, true, null);
 				return true;
 			} catch (CoreException e) {
