@@ -323,11 +323,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     
     protected void initializeGraphicalViewer() {
 	    GraphicalViewer viewer = getGraphicalViewer();
-	    String inputName = getEditorInput().getName();
-	    if (!inputName.equals("#empty")) {
-	    	model = Bigraph.fromXML(inputName);
-	    	setAssociatedFile(inputName);
-	    } else {
+	    {
 	    	model = new Bigraph();
 	    	Signature signature = model.getSignature();
 	    	
