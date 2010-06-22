@@ -41,8 +41,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -52,6 +54,7 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
+import org.w3c.dom.Document;
 
 import dk.itu.big_red.AppContextMenuProvider;
 import dk.itu.big_red.AppTemplateTransferDropTargetListener;
@@ -62,6 +65,7 @@ import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
 import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
 import dk.itu.big_red.tools.ConnectionDragCreationToolEntry;
+import dk.itu.big_red.util.DOM;
 
 public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
@@ -316,7 +320,12 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     
     protected void initializeGraphicalViewer() {
 	    GraphicalViewer viewer = getGraphicalViewer();
-	    {
+	    IEditorInput input = getEditorInput();
+	    if (input instanceof FileEditorInput) {
+	    	FileEditorInput fi = (FileEditorInput)input;
+	    	Document doc = DOM.parse(fi.getFile());
+	    	model = (doc != null ? Bigraph.fromXML(doc) : new Bigraph());
+	    } else {
 	    	model = new Bigraph();
 	    	Signature signature = model.getSignature();
 	    	
