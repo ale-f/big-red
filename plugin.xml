@@ -197,6 +197,17 @@
             Create a new agent in an existing bigraphical reactive system.
          </description>
       </wizard>
+      <wizard
+            category="dk.itu.big_red"
+            class="dk.itu.big_red.wizards.new_wizards.NewSimulationSpecWizard"
+            finalPerspective="dk.itu.big_red.perspective"
+            icon="icons/cic/process.png"
+            id="dk.itu.big_red.NewSimulationSpecWizard"
+            name="Simulation spec">
+         <description>
+            Create a simulation spec for an existing bigraphical reactive system.
+         </description>
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.core.contenttype.contentTypes">
