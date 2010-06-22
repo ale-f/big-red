@@ -53,8 +53,8 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 		// TODO Auto-generated method stub
 		page = new NewBRSWizardPage("newBRSWizardPage");
 		
-		page.setTitle("Bigraph reactive system");
-		page.setDescription("Create a new bigraph reactive system.");
+		page.setTitle("Bigraphical reactive system");
+		page.setDescription("Create a new bigraphical reactive system.");
 		
 		addPage(page);
 	}

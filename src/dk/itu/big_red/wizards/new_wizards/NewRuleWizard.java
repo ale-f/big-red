@@ -20,7 +20,7 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 		page = new NewRuleWizardPage("newRuleWizardPage", selection);
 		
 		page.setTitle("Rule");
-		page.setDescription("Create a new rule in an existing bigraph reactive system.");
+		page.setDescription("Create a new rule in an existing bigraphical reactive system.");
 		
 		addPage(page);
 	}

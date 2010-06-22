@@ -20,7 +20,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 		page = new NewAgentWizardPage("newAgentWizardPage", selection);
 		
 		page.setTitle("Agent");
-		page.setDescription("Create a new agent in an existing bigraph reactive system.");
+		page.setDescription("Create a new agent in an existing bigraphical reactive system.");
 		
 		addPage(page);
 	}

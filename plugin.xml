@@ -169,10 +169,10 @@
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
             id="dk.itu.big_red.NewBRSWizard"
-            name="Bigraph reactive system"
+            name="Bigraphical reactive system"
             project="true">
          <description>
-            Create a new bigraph reactive system.
+            Create a new bigraphical reactive system.
          </description>
       </wizard>
       <wizard
@@ -183,7 +183,7 @@
             id="dk.itu.big_red.NewRuleWizard"
             name="Rule">
          <description>
-            Create a new rule in an existing bigraph reactive system.
+            Create a new rule in an existing bigraphical reactive system.
          </description>
       </wizard>
       <wizard
@@ -194,7 +194,7 @@
             id="dk.itu.big_red.NewAgentWizard"
             name="Agent">
          <description>
-            Create a new agent in an existing bigraph reactive system.
+            Create a new agent in an existing bigraphical reactive system.
          </description>
       </wizard>
    </extension>
