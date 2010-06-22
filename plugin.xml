@@ -132,6 +132,15 @@
             id="dk.itu.big_red.SignatureEditor"
             name="Signature Editor">
       </editor>
+      <editor
+            class="dk.itu.big_red.editors.SimulationSpecEditor"
+            contributorClass="dk.itu.big_red.editors.SignatureEditorActionBarContributor"
+            default="false"
+            extensions="bigraph-simulation-spec"
+            icon="icons/cic/process.png"
+            id="dk.itu.big_red.SimulationSpecEditor"
+            name="Simulation Spec Editor">
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.exportWizards">
