@@ -323,8 +323,11 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    IEditorInput input = getEditorInput();
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
-	    	Document doc = DOM.parse(fi.getFile());
-	    	model = (doc != null ? Bigraph.fromXML(doc) : new Bigraph());
+	    	try {
+	    		model = Bigraph.fromXML(DOM.parse(fi.getFile()));
+	    	} catch (Exception e) {
+	    		model = new Bigraph();
+	    	}
 	    } else {
 	    	model = new Bigraph();
 	    	Signature signature = model.getSignature();

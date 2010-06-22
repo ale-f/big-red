@@ -34,22 +34,9 @@ public class FileSaveAction extends org.eclipse.gef.ui.actions.SaveAction {
 		 * FIXME: this should work. Why won't it work? I hate you, isEnabled,
 		 * in all your various guises
 		 */
-		return true;
+		return false;
 	}
 	
 	public void run() {
-		BigraphEditor e = getEditor();
-		if (e.getAssociatedFile() != null) {
-			/*
-			 * Saving goes here.
-			 */
-			try {
-				DOM.write(e.getAssociatedFile(), e.getModel().toXML());
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		} else {
-			new FileSaveAsAction(getEditor()).run();
-		}
 	}
 }

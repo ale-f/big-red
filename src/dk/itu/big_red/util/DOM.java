@@ -1,10 +1,16 @@
 package dk.itu.big_red.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
@@ -58,42 +64,42 @@ public class DOM {
 	/**
 	 * Attempts to parse the specified {@link IFile} into a DOM {@link Document}.
 	 * @param file a file
-	 * @return a Document, or <code>null</code> if something went wrong
+	 * @return a Document
+	 * @throws SAXException as {@link DocumentBuilder#parse(File)}
+	 * @throws CoreException as {@link IFile#getContents()}
+	 * @throws IOException as {@link DocumentBuilder#parse(File)} or {@link InputStream#close}
+	 * @throws ParserConfigurationException as {@link DocumentBuilderFactory#newDocumentBuilder()}
 	 */
-	public static Document parse(IFile file) {
+	public static Document parse(IFile file) throws SAXException, CoreException, IOException, ParserConfigurationException {
+		InputStream is = file.getContents();
 		try {
-			InputStream is = file.getContents();
 			Document r = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
-			is.close();
 			return r;
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
+		} finally {
+			is.close();
 		}
-		return null;
 	}
 	
 	/**
 	 * Converts the specified {@link Node} into a textual representation of a
-	 * XML document, then writes it to the specified file.
-	 * @param path a file
+	 * XML document, then writes it to the specified {@link IFile}.
+	 * @param file a file
 	 * @param d a Node
-	 * @throws TransformerException
+	 * @throws CoreException if the file couldn't be overwritten
+	 * @throws TransformerException if the Node couldn't be converted to XML
 	 */
-	public static void write(String path, Node d) throws TransformerException {
+	public static void write(IFile file, Node d) throws CoreException, TransformerException {
 		TransformerFactory f = TransformerFactory.newInstance();
 		
 		Source source = new DOMSource(d);
-		File output = new File(path);
-		Result result = new StreamResult(output);
-	
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		Result result = new StreamResult(os);
+		
 		Transformer t = f.newTransformer();
 		t.transform(source, result);
+		
+		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
+		file.setContents(is, 0, null);
 	}
 	
 	/**
