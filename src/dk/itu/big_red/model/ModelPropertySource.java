@@ -37,7 +37,6 @@ public class ModelPropertySource implements IPropertySource {
 		if (object instanceof Node) {
 			setControlNames(((Node)object).getSignature().getControlNames());
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
-			properties.add(new TextPropertyDescriptor(Node.PROPERTY_COMMENT, "Comment"));
 		} else if (object instanceof Name) {
 			properties.add(new TextPropertyDescriptor(Name.PROPERTY_NAME, "Name"));
 			properties.add(new ComboBoxPropertyDescriptor(Name.PROPERTY_TYPE, "Type", BigRedConstants.INNER_OUTER_NAMES));

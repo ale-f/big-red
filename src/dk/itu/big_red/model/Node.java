@@ -17,11 +17,6 @@ import dk.itu.big_red.util.Utility;
 
 public class Node extends Thing implements PropertyChangeListener, IColourable {
 	/**
-	 * The property name fired when the comment changes.
-	 */
-	public static final String PROPERTY_COMMENT = "NodeComment";
-	
-	/**
 	 * The property name fired when the control changes. (Note that this
 	 * property name is fired <i>after</i> any other changes required to change
 	 * the control have been made.)
