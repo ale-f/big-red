@@ -65,6 +65,7 @@ public class NodePart extends AbstractPart {
 	        evt.getPropertyName().equals(Node.PROPERTY_OUTLINE_COLOUR) ||
 	        evt.getPropertyName().equals(Node.PROPERTY_COMMENT)) {
 	    	refreshVisuals();
+	    	refreshChildren();
 	    }
 	}
 	
