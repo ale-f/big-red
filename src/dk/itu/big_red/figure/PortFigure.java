@@ -19,8 +19,7 @@ public class PortFigure extends AbstractFigure {
 		graphics.pushState();
 		try {
 			graphics.setBackgroundColor(ColorConstants.red);
-			graphics.setAlpha(128);
-			graphics.fillRectangle(getConstraintCopy(getTotalOffset()));
+			graphics.fillOval(getConstraintCopy(getTotalOffset()));
 		} finally {
 			graphics.popState();
 		}
