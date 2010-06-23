@@ -5,12 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.EllipseAnchor;
-import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
@@ -20,7 +15,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import dk.itu.big_red.figure.AbstractFigure;
-import dk.itu.big_red.figure.adornments.PortAnchor;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 

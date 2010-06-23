@@ -1,7 +1,5 @@
 package dk.itu.big_red.wizards;
 
-import java.util.Collection;
-
 import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.model.Bigraph;
 

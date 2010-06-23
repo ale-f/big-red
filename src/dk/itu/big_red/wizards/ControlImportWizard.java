@@ -2,7 +2,6 @@ package dk.itu.big_red.wizards;
 
 import dk.itu.big_red.util.Utility;
 
-import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 

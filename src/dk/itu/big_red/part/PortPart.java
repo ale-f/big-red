@@ -2,13 +2,11 @@ package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
@@ -16,14 +14,10 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
-import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.figure.PortFigure;
-import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
-import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart, PropertyChangeListener {
 	@Override

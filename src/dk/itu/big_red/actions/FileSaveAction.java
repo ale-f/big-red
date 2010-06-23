@@ -1,21 +1,8 @@
 package dk.itu.big_red.actions;
 
-import java.io.File;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-
 import org.eclipse.ui.IEditorPart;
-import org.w3c.dom.Node;
 
 import dk.itu.big_red.editors.BigraphEditor;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.util.DOM;
 
 public class FileSaveAction extends org.eclipse.gef.ui.actions.SaveAction {
 

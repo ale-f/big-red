@@ -1,22 +1,16 @@
 package dk.itu.big_red.model;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.commands.EdgeCreateCommand;
 import dk.itu.big_red.model.interfaces.IHierarchical;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.part.BigraphPart;

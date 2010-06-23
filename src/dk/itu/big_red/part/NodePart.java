@@ -12,7 +12,6 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 
 import dk.itu.big_red.editpolicies.ThingDeletePolicy;
-import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.model.*;

@@ -8,7 +8,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.BigRedConstants;
-import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.util.UI;
 
 

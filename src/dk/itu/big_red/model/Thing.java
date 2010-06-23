@@ -2,11 +2,9 @@ package dk.itu.big_red.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
-
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;

@@ -1,6 +1,5 @@
 package dk.itu.big_red.wizards;
 
-import java.awt.Dialog;
 import java.util.ArrayList;
 
 import dk.itu.big_red.util.Utility;
@@ -8,7 +7,6 @@ import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Node;
 
 import org.eclipse.jface.wizard.WizardPage;

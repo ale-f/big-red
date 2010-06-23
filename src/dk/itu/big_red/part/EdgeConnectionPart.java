@@ -3,17 +3,13 @@ package dk.itu.big_red.part;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
-import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.EdgeConnectionDeletePolicy;
 import dk.itu.big_red.figure.EdgeConnectionFigure;
-import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
 
 public class EdgeConnectionPart extends AbstractConnectionEditPart implements PropertyChangeListener {

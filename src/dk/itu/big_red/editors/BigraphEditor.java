@@ -54,7 +54,6 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
-import org.w3c.dom.Document;
 
 import dk.itu.big_red.AppContextMenuProvider;
 import dk.itu.big_red.AppTemplateTransferDropTargetListener;

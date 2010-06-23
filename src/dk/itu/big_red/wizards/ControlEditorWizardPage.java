@@ -4,7 +4,6 @@ import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.Control.Shape;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.jface.wizard.WizardPage;
