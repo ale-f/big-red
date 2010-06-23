@@ -6,6 +6,8 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
 public class EdgeConnectionFigure extends PolylineConnection {
@@ -13,13 +15,25 @@ public class EdgeConnectionFigure extends PolylineConnection {
 		setAntialias(SWT.ON);
         setLineStyle(org.eclipse.swt.SWT.LINE_SOLID);
         setForegroundColor(ColorConstants.darkGreen);
-        setConnectionRouter(new ManhattanConnectionRouter());
 	}
 	
 	public void outlineShape(Graphics g) {
 		g.pushState();
 		try {
-			super.outlineShape(g);
+			Rectangle sr = getClientArea().getCopy();
+			sr.height *= 2; sr.width *= 2;
+			Dimension d = getStart().translate(5, 5).getDifference(getEnd().translate(5, 5));
+			
+			if (d.height > 0)
+				sr.y -= getClientArea().height;
+			
+			if (d.width < 0)
+				sr.x -= getClientArea().width;
+			
+			g.setForegroundColor(ColorConstants.darkGreen);
+			g.setLineWidth(1);
+			sr.width -= 1; sr.height -= 1;
+			g.drawOval(sr);
 		} finally {
 			g.popState();
 		}
