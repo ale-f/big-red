@@ -325,47 +325,45 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    	try {
 	    		model = Bigraph.fromXML(DOM.parse(fi.getFile()));
 	    	} catch (Exception e) {
-	    		model = new Bigraph();
+		    	model = new Bigraph();
+		    	Signature signature = model.getSignature();
+		    	
+		    	dk.itu.big_red.model.Control b = signature.addControl("Building", "B", Shape.SHAPE_OVAL,
+		    			             new Point(250, 250), true),
+		    	r = signature.addControl("Room", "R", Shape.SHAPE_OVAL,
+		    			             new Point(125, 200), true),
+		    	a = signature.addControl("Agent", "A", Shape.SHAPE_TRIANGLE,
+		    			             new Point(25, 50), false),
+		    	c = signature.addControl("Computer", "C", Shape.SHAPE_RECTANGLE,
+		    			             new Point(25, 13), false);
+		    	
+		    	b.addPort("a", 2);
+		    	
+		    	c.addPort("b", 0);
+		    	
+		    	a.addPort("c", 0);
+		    	
+		    	r.addPort("d", 0);
+		    	
+		    	Root r0 = new Root();
+		    	model.addChild(r0);
+		    	r0.setLayout(new Rectangle(10, 10, 400, 400));
+		    		Node building0 = new Node(b);
+		    		r0.addChild(building0);
+		    		building0.setLayout(new Rectangle(10, 10, 250, 250));
+		    			Node room0 = new Node(r);
+		    			building0.addChild(room0);
+		    			room0.setLayout(new Rectangle(10, 10, 125, 200));
+		    				Node agent0 = new Node(a);
+		    				room0.addChild(agent0);
+		    				agent0.setLayout(new Rectangle(10, 10, 0, 0));
+		    		Node building1 = new Node(b);
+		    		r0.addChild(building1);
+		    		building1.setLayout(new Rectangle(20, 20, 100, 100));
+		    			Node room1 = new Node(r);
+		    			building1.addChild(room1);
+		    			room1.setLayout(new Rectangle(10, 10, 50, 50));
 	    	}
-	    } else {
-	    	model = new Bigraph();
-	    	Signature signature = model.getSignature();
-	    	
-	    	dk.itu.big_red.model.Control b = signature.addControl("Building", "B", Shape.SHAPE_OVAL,
-	    			             new Point(250, 250), true),
-	    	r = signature.addControl("Room", "R", Shape.SHAPE_OVAL,
-	    			             new Point(125, 200), true),
-	    	a = signature.addControl("Agent", "A", Shape.SHAPE_TRIANGLE,
-	    			             new Point(25, 50), false),
-	    	c = signature.addControl("Computer", "C", Shape.SHAPE_RECTANGLE,
-	    			             new Point(25, 13), false);
-	    	
-	    	b.addPort("a", 2);
-	    	
-	    	c.addPort("b", 0);
-	    	
-	    	a.addPort("c", 0);
-	    	
-	    	r.addPort("d", 0);
-	    	
-	    	Root r0 = new Root();
-	    	model.addChild(r0);
-	    	r0.setLayout(new Rectangle(10, 10, 400, 400));
-	    		Node building0 = new Node(b);
-	    		r0.addChild(building0);
-	    		building0.setLayout(new Rectangle(10, 10, 250, 250));
-	    			Node room0 = new Node(r);
-	    			building0.addChild(room0);
-	    			room0.setLayout(new Rectangle(10, 10, 125, 200));
-	    				Node agent0 = new Node(a);
-	    				room0.addChild(agent0);
-	    				agent0.setLayout(new Rectangle(10, 10, 0, 0));
-	    		Node building1 = new Node(b);
-	    		r0.addChild(building1);
-	    		building1.setLayout(new Rectangle(20, 20, 100, 100));
-	    			Node room1 = new Node(r);
-	    			building1.addChild(room1);
-	    			room1.setLayout(new Rectangle(10, 10, 50, 50));
 	    }
 	    
 	    viewer.setContents(model);
