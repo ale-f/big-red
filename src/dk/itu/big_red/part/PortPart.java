@@ -15,6 +15,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
+import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.IConnectable;
@@ -69,18 +70,18 @@ public class PortPart extends AbstractGraphicalEditPart implements NodeEditPart,
     }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new EllipseAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
     
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new EllipseAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
 	
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new EllipseAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
     
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new EllipseAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
 }

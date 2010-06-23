@@ -15,6 +15,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.EdgeTargetFigure;
+import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.EdgeTarget;
 
@@ -68,18 +69,18 @@ public class EdgeTargetPart extends AbstractGraphicalEditPart implements NodeEdi
     }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new ChopboxAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
     
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new ChopboxAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
 	
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new ChopboxAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
     
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new ChopboxAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
 }
