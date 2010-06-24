@@ -24,6 +24,7 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	private Edge parent;
+	private Bigraph bigraph;
 	private Rectangle layout = new Rectangle(0, 0, 10, 10);
 	
 	public EdgeTarget(Edge parent) {
@@ -74,12 +75,19 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 
 	@Override
 	public Bigraph getBigraph() {
-		return getConnections().get(0).getSource().getBigraph();
+		return this.bigraph;
 	}
 
 	@Override
 	public void setBigraph(Bigraph bigraph) {
-		getConnections().get(0).getSource().setBigraph(bigraph);
+		if (bigraph != null) {
+			bigraph.addNHTLO(this);
+		} else {
+			if (this.bigraph != null)
+				this.bigraph.removeNHTLO(this);
+		}
+		
+		this.bigraph = bigraph;
 	}
 
 	@Override
