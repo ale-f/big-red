@@ -18,6 +18,9 @@ public class EdgeTargetFigure extends AbstractFigure {
 	protected void fillShape(Graphics graphics) {
 		graphics.pushState();
 		try {
+			graphics.setAlpha(32);
+			graphics.setBackgroundColor(ColorConstants.darkGreen);
+			graphics.fillRectangle(getClientArea());
 		} finally {
 			graphics.popState();
 		}
