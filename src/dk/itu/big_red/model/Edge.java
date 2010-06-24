@@ -78,13 +78,16 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, IC
 		connections.add(c);
 		point.addConnection(c);
 		
+		getEdgeTarget().setBigraph(point.getBigraph());
 		getEdgeTarget().addConnection(c);
-		point.getBigraph().addNHTLO(getEdgeTarget());
 	}
 	
 	/**
 	 * Removes the given {@link IConnectable} from this Edge's set of points
 	 * and destroys its {@link EdgeConnection}.
+	 * 
+	 * <p>If this Edge has no points left after this operation, then it'll be
+	 * removed from the Bigraph.
 	 * @param point an IConnectable
 	 */
 	public void removePoint(IConnectable point) {
@@ -99,6 +102,9 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, IC
 					break;
 				}
 			}
+			
+			if (points.size() == 0)
+				getEdgeTarget().setBigraph(null);
 		}
 	}
 	
