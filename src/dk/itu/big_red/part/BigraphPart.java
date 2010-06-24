@@ -12,7 +12,7 @@ import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
-public class BigraphPart extends AbstractPart {
+public class BigraphPart extends ThingPart {
 	@Override
 	public Bigraph getModel() {
 		return (Bigraph)super.getModel();
@@ -26,16 +26,6 @@ public class BigraphPart extends AbstractPart {
 	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ThingLayoutPolicy());
-	}
-
-	@Override
-	protected void refreshVisuals(){
-		super.refreshVisuals();
-		
-		BigraphFigure figure = (BigraphFigure)getFigure();
-		Bigraph model = getModel();
-
-		figure.setConstraint(model.getLayout());
 	}
 	
 	public List<ILayoutable> getModelChildren() {

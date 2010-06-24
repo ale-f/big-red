@@ -17,7 +17,7 @@ import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
-public class NodePart extends AbstractPart {
+public class NodePart extends ThingPart {
 	@Override
 	public Node getModel() {
 		return (Node)super.getModel();
@@ -85,7 +85,6 @@ public class NodePart extends AbstractPart {
 			portDescription = model.getControl().getPortNames().toString();
 		
 		figure.setShape(model.getControl().getShape());
-		figure.setConstraint(layout);
 		figure.setLabel(model.getControl().getLabel());
 		figure.setToolTip(model.getControl().getLongName(), portDescription, model.getComment());
 		

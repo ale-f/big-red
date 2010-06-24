@@ -10,7 +10,7 @@ import dk.itu.big_red.model.*;
 
 
 
-public class SitePart extends AbstractPart {
+public class SitePart extends ThingPart {
 	@Override
 	public Site getModel() {
 		return (Site)super.getModel();
@@ -39,6 +39,5 @@ public class SitePart extends AbstractPart {
 		Site model = getModel();
 
 		figure.setNumber(model.getNumber());
-		figure.setConstraint(model.getLayout());
 	}
 }

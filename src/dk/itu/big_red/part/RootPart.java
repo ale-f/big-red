@@ -16,7 +16,7 @@ import dk.itu.big_red.model.interfaces.ILayoutable;
 
 
 
-public class RootPart extends AbstractPart {
+public class RootPart extends ThingPart {
 	@Override
 	public Root getModel() {
 		return (Root)super.getModel();
@@ -41,7 +41,6 @@ public class RootPart extends AbstractPart {
 		Root model = getModel();
 
 		figure.setNumber(model.getNumber());
-		figure.setConstraint(model.getLayout());
 	}
 	
 	public List<ILayoutable> getModelChildren() {
