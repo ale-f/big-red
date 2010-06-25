@@ -63,9 +63,6 @@ public class ControlEditorWizardPage extends WizardPage {
 		int nameInputFlags = SWT.BORDER;
 		nameInput = new Text(form, nameInputFlags);
 		nameInput.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-		if (getWizard().getClass() != ControlAddWizard.class) {
-			nameInput.setEnabled(false);
-		}
 		
 		nameInput.addModifyListener(new ModifyListener() {
 			@Override
@@ -124,13 +121,6 @@ public class ControlEditorWizardPage extends WizardPage {
 		rightPortChoice.setItems(portNames);
 		rightPortChoice.add("(none)", 0);
 		rightPortChoice.select(0);
-		
-		if (getWizard().getClass() != ControlAddWizard.class) {
-			topPortChoice.setEnabled(false);
-			leftPortChoice.setEnabled(false);
-			bottomPortChoice.setEnabled(false);
-			rightPortChoice.setEnabled(false);
-		}
 		
 		Label sizeLabel = new Label(form, SWT.NONE);
 		sizeLabel.setText("&Default size:");

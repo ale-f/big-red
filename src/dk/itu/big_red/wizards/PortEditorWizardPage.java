@@ -60,8 +60,6 @@ public class PortEditorWizardPage extends WizardPage {
 		int nameInputFlags = SWT.BORDER;
 		nameInput = new Text(form, nameInputFlags);
 		nameInput.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-		if (getWizard().getClass() != PortAddWizard.class)
-			nameInput.setEnabled(false);
 		
 		nameInput.addModifyListener(new ModifyListener() {
 			@Override
