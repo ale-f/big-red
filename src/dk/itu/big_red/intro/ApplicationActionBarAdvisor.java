@@ -15,15 +15,12 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 
 import dk.itu.big_red.actions.WizardAction;
-import dk.itu.big_red.wizards.ControlsWizard;
-import dk.itu.big_red.wizards.PortsWizard;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	private Object[] actionFile = null;
 	private Object[] actionFileNew = null;
 	private Object[] actionEdit = null;
-	private Object[] actionBigraph = null;
 	private Object[] actionWindow = null;
 	private Object[] actionWindowShowView = null;
     private Object[] actionHelp = null;
@@ -67,13 +64,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 			new Separator(),
 			ActionFactory.SELECT_ALL.create(window)
 		};
-
-		actionBigraph = new Object[] {
-			new WizardAction(window, "ports", "&Ports...",
-					PortsWizard.class),
-			new WizardAction(window, "controls", "&Controls...",
-					ControlsWizard.class)
-		};
 		
 		actionWindow = new Object[] {
 			new MenuManager("Show &View")
@@ -113,14 +103,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		
 		menuBar.add(fileMenu);
 		menuBar.add(editMenu);
-		menuBar.add(bigraphMenu);
 		menuBar.add(windowMenu);
 		menuBar.add(helpMenu);
 
 		populateMenu(fileMenu, actionFile);
 		populateMenu(fileNewMenu, actionFileNew);
 		populateMenu(editMenu, actionEdit);
-		populateMenu(bigraphMenu, actionBigraph);
 		populateMenu(windowMenu, actionWindow);
 		populateMenu(windowShowViewMenu, actionWindowShowView);
 		populateMenu(helpMenu, actionHelp);
