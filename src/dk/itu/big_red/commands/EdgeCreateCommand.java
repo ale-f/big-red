@@ -35,9 +35,11 @@ public class EdgeCreateCommand extends Command {
 		if (target instanceof EdgeTarget) {
 			EdgeTarget target = (EdgeTarget)this.target;
 			target.getParent().addPoint(source);
+			target.averagePosition();
 		} else if (source instanceof EdgeTarget) {
 			EdgeTarget source = (EdgeTarget)this.source;
 			source.getParent().addPoint(target);
+			source.averagePosition();
 		} else {
 			/*
 			 * Create a new Edge.
@@ -45,6 +47,7 @@ public class EdgeCreateCommand extends Command {
 			Edge e = new Edge();
 			e.addPoint(source);
 			e.addPoint(target);
+			e.getEdgeTarget().averagePosition();
 		}
 	}
 	

@@ -50,16 +50,23 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 	private ArrayList<EdgeConnection> connections =
 		new ArrayList<EdgeConnection>();
 	
-	@Override
-	public void addConnection(EdgeConnection e) {
-		connections.add(e);
-		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, null, e);
+	/**
+	 * Moves this EdgeTarget to the average position of all the
+	 * {@link IConnectable}s connected to it.
+	 */
+	public void averagePosition() {
 		int tx = 0, ty = 0;
 		for (EdgeConnection f : connections) {
 			tx += ((IHierarchical)f.getSource()).getRootLayout().x;
 			ty += ((IHierarchical)f.getSource()).getRootLayout().y;
 		}
 		setLayout(new Rectangle(tx / connections.size(), ty / connections.size(), getLayout().width, getLayout().height));
+	}
+	
+	@Override
+	public void addConnection(EdgeConnection e) {
+		connections.add(e);
+		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, null, e);
 	}
 
 	@Override
