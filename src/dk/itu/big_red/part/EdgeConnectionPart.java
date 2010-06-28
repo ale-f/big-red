@@ -36,7 +36,7 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements Pr
 	
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.CONNECTION_ROLE, new EdgeConnectionDeletePolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new EdgeConnectionDeletePolicy());
 		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE,
                           new ConnectionEndpointEditPolicy());
 	}
