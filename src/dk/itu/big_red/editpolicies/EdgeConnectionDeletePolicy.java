@@ -6,16 +6,16 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 
-import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.commands.EdgeConnectionDeleteCommand;
+import dk.itu.big_red.model.EdgeConnection;
 
 
 
 public class EdgeConnectionDeletePolicy extends ConnectionEditPolicy {
-	private Edge getCastedModel() {
-		return (Edge)getHost().getModel();
-	}
-	
-    protected Command getDeleteCommand(GroupRequest request) {
-        return null;
+    @Override
+	protected Command getDeleteCommand(GroupRequest request) {
+    	EdgeConnectionDeleteCommand dc = new EdgeConnectionDeleteCommand();
+		dc.setModel((EdgeConnection)getHost().getModel());
+		return dc;
     }
 }
