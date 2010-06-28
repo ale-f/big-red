@@ -3,16 +3,30 @@ package dk.itu.big_red.part;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.NodeEditPart;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
 import dk.itu.big_red.editpolicies.EdgeConnectionDeletePolicy;
+import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.EdgeConnectionFigure;
 import dk.itu.big_red.model.EdgeConnection;
 
-public class EdgeConnectionPart extends AbstractConnectionEditPart implements PropertyChangeListener {
+public class EdgeConnectionPart extends AbstractConnectionEditPart implements NodeEditPart, PropertyChangeListener {
+	/**
+	 * Returns the {@link EdgeTargetPart} corresponding to this connection's
+	 * {@link EdgeTarget}.
+	 * @return an EdgeTargetPart
+	 */
+	public EdgeTargetPart getEdgeTargetPart() {
+		return ((EdgeTargetPart)this.getViewer().getEditPartRegistry().get(getModel().getParent().getEdgeTarget()));
+	}
+	
 	@Override
 	public EdgeConnection getModel() {
 		return (EdgeConnection)super.getModel();
@@ -36,6 +50,7 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements Pr
 	
 	@Override
 	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new EdgeConnectionDeletePolicy());
 		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE,
                           new ConnectionEndpointEditPolicy());
@@ -54,5 +69,27 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements Pr
 		EdgeConnection model = getModel();
 		
 		figure.setToolTip(model.getComment());
+	}
+
+	@Override
+	public ConnectionAnchor getSourceConnectionAnchor(
+			ConnectionEditPart connection) {
+		return getEdgeTargetPart().getSourceConnectionAnchor(connection);
+	}
+
+	@Override
+	public ConnectionAnchor getTargetConnectionAnchor(
+			ConnectionEditPart connection) {
+		return getEdgeTargetPart().getTargetConnectionAnchor(connection);
+	}
+
+	@Override
+	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
+		return getEdgeTargetPart().getSourceConnectionAnchor(request);
+	}
+
+	@Override
+	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
+		return getEdgeTargetPart().getTargetConnectionAnchor(request);
 	}
 }
