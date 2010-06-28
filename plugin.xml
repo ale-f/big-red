@@ -145,6 +145,7 @@
    <extension
          point="org.eclipse.ui.exportWizards">
       <wizard
+            category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.ExportBitmapWizard"
             icon="icons/wizards/bitmap.png"
             id="Big Red.BitmapExportWizard"
@@ -154,6 +155,7 @@
          </description>
       </wizard>
       <wizard
+            category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.ExportVectorWizard"
             icon="icons/wizards/vector.png"
             id="Big Red.VectorExportWizard"
@@ -162,6 +164,10 @@
             Export the current bigraph as a (scalable) vector image, suitable for use in papers and high-resolution printing.
          </description>
       </wizard>
+      <category
+            id="dk.itu.big_red"
+            name="Big Red">
+      </category>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
