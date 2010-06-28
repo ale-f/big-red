@@ -17,11 +17,15 @@ public class EdgeCreateCommand extends Command {
 	public void setTarget(Object e) {
 		if (e instanceof IConnectable)
 			this.target = (IConnectable)e;
+		else if (e instanceof EdgeConnection)
+			this.target = ((EdgeConnection)e).getParent().getEdgeTarget();
 	}
 	
 	public void setSource(Object e) {
 		if (e instanceof IConnectable)
 			this.source = (IConnectable)e;
+		else if (e instanceof EdgeConnection)
+			this.source = ((EdgeConnection)e).getParent().getEdgeTarget();
 	}
 	
 	public boolean canExecute() {
