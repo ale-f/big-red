@@ -13,9 +13,8 @@ public class EdgeCreationPolicy extends GraphicalNodeEditPolicy {
 	
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
-		IConnectable source = (IConnectable)getHost().getModel();
 		EdgeCreateCommand cmd = new EdgeCreateCommand();
-		cmd.setSource(source);
+		cmd.setSource(getHost().getModel());
 		request.setStartCommand(cmd);
 		return cmd;
 	}
@@ -24,7 +23,7 @@ public class EdgeCreationPolicy extends GraphicalNodeEditPolicy {
 	protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
 		EdgeCreateCommand cmd = 
 			(EdgeCreateCommand) request.getStartCommand();
-		cmd.setTarget((IConnectable) getHost().getModel());
+		cmd.setTarget(getHost().getModel());
 		return cmd;
 	}
 	
