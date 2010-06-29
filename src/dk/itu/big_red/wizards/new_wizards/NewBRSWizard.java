@@ -32,7 +32,6 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 				Project.getFile(p, page.getProjectName() + ".bigraph-simulation-spec");
 				return true;
 			} catch (CoreException e) {
-				e.printStackTrace();
 				page.setErrorMessage(e.getLocalizedMessage());
 				return false;
 			}
