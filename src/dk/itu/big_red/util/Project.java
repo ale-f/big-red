@@ -7,6 +7,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 
 public class Project {
 	public static IWorkspaceRoot getWorkspaceRoot() {
@@ -48,7 +49,7 @@ public class Project {
 	 * org.eclipse.core.runtime.IProgressMonitor)} goes wrong
 	 */
 	public static IFolder getFolder(IContainer c, String name) throws CoreException {
-		IFolder f = c.getFolder(c.getFullPath().append(name));
+		IFolder f = c.getFolder(new Path(name));
 		if (!f.exists())
 			f.create(0, true, null);
 		return f;
@@ -62,7 +63,7 @@ public class Project {
 	 * @return whether the folder exists or not
 	 */
 	public static boolean folderExists(IContainer c, String name) {
-		return c.getFolder(c.getFullPath().append(name)).exists();
+		return c.getFolder(new Path(name)).exists();
 	}
 	
 	/**
@@ -75,7 +76,7 @@ public class Project {
 	 * boolean, org.eclipse.core.runtime.IProgressMonitor)} goes wrong
 	 */
 	public static IFile getFile(IContainer c, String name) throws CoreException {
-		IFile f = c.getFile(c.getFullPath().append(name));
+		IFile f = c.getFile(new Path(name));
 		if (!f.exists())
 			f.create(NullInputStream.getInstance(), true, null);
 		return f;
@@ -89,6 +90,6 @@ public class Project {
 	 * @return whether the file exists or not
 	 */
 	public static boolean fileExists(IContainer c, String name) {
-		return c.getFile(c.getFullPath().append(name)).exists();
+		return c.getFile(new Path(name)).exists();
 	}
 }
