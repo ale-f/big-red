@@ -3,7 +3,6 @@ package dk.itu.big_red.figure;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.ManhattanConnectionRouter;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -20,9 +19,9 @@ public class EdgeConnectionFigure extends PolylineConnection {
 	public void outlineShape(Graphics g) {
 		g.pushState();
 		try {
-			Rectangle sr = getClientArea().getCopy();
+			Rectangle sr = getClientArea();
 			sr.height *= 2; sr.width *= 2;
-			Dimension d = getStart().translate(5, 5).getDifference(getEnd().translate(5, 5));
+			Dimension d = getStart().getDifference(getEnd());
 			
 			if (d.height > 0)
 				sr.y -= getClientArea().height;
