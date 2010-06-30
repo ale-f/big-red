@@ -15,15 +15,14 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 /**
  * Ports are one of the two kinds of object that can be connected by an
- * {@link Edge} (the other being the {@link Name}). Ports are only ever found
+ * {@link Edge} (the other being the {@link InnerName}). Ports are only ever found
  * on a {@link Node}, and inherit their name from a {@link Control}.
  * @author alec
  *
  */
-public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyChangeNotifier, IHierarchical {
+public class Port extends Point implements IAdaptable, IConnectable, ILayoutable, IPropertyChangeNotifier, IHierarchical {
 	private IHierarchical parent = null;
 	
-	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	/**
 	 * The position of a Port on its parent {@link Node} is governed by its
 	 * <code>distance</code>, a value in the range [0,1) that specifies a
@@ -108,55 +107,6 @@ public class Port implements IAdaptable, IConnectable, ILayoutable, IPropertyCha
 	public void setDistance(double distance) {
 		if (distance >= 0 && distance < 1)
 			this.distance = distance;
-	}
-
-	private Rectangle layout = new Rectangle(5, 5, 10, 10);
-	
-	@Override
-	public Rectangle getLayout() {
-		return new Rectangle(layout);
-	}
-
-	@Override
-	public void setLayout(Rectangle layout) {
-		if (layout != null)
-			this.layout.setBounds(layout);
-	}
-
-	private EdgeConnection connection = null;
-	
-	@Override
-	public void addConnection(EdgeConnection e) {
-		if (connection != null)
-			connection.getParent().removePoint(this);
-		connection = e;
-		listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, null, e);
-	}
-
-	@Override
-	public void removeConnection(EdgeConnection e) {
-		if (connection == e) {
-			connection = null;
-			listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, e, null);
-		}
-	}
-	
-	@Override
-	public List<EdgeConnection> getConnections() {
-		ArrayList<EdgeConnection> e = new ArrayList<EdgeConnection>();
-		if (connection != null)
-			e.add(connection);
-		return e;
-	}
-
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.removePropertyChangeListener(listener);
 	}
 
 	@Override
