@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.util.DOM;
@@ -22,17 +23,20 @@ import dk.itu.big_red.util.DOM;
  *
  */
 public class Point implements IConnectable, IPropertyChangeNotifier, IXMLisable {
-
+	protected Rectangle layout = new Rectangle(5, 5, 10, 10);
+	
 	@Override
 	public Rectangle getLayout() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Rectangle(layout);
 	}
 
 	@Override
 	public void setLayout(Rectangle layout) {
-		// TODO Auto-generated method stub
-		
+		if (layout != null) {
+			Rectangle oldLayout = new Rectangle(this.layout);
+			this.layout.setBounds(layout);
+			listeners.firePropertyChange(ILayoutable.PROPERTY_LAYOUT, oldLayout, layout);
+		}
 	}
 
 	@Override
