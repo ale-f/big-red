@@ -91,16 +91,14 @@ public class Point implements IConnectable, IPropertyChangeNotifier, IXMLisable 
 
 	@Override
 	public Node toXML(Node d) {
-		Document doc = d.getOwnerDocument();
-		
-		Element r = doc.createElement(getClass().getSimpleName().toLowerCase());
 		if (connection != null) {
+			Document doc = d.getOwnerDocument();
+			Element r = doc.createElement(getClass().getSimpleName().toLowerCase());
 			DOM.applyAttributesToElement(r,
 					"name", Integer.toString(hashCode(), 16),
 					"link", Integer.toString(connection.getParent().hashCode(), 16));
-		}
-		
-		return r;
+			return r;
+		} else return null;
 	}
 
 	@Override
