@@ -16,11 +16,13 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart implements PropertyChangeListener {
 	@Override
-	public Thing getModel() {
-		return (Thing)super.getModel();
+	public IPropertyChangeNotifier getModel() {
+		return (IPropertyChangeNotifier)super.getModel();
 	}
 	
 	public void activate() {
@@ -35,11 +37,7 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart implements P
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-    	if (evt.getPropertyName().equals(Thing.PROPERTY_RENAME)) {
-    		refreshVisuals();
-    	} else if (evt.getPropertyName().equals(Thing.PROPERTY_CHILD)) {
-	    	refreshChildren();
-	    }
+    	refresh();
 	}
 	
 	@Override
