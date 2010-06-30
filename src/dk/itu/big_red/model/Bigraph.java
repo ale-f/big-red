@@ -33,10 +33,12 @@ public class Bigraph extends Thing {
 	public Node toXML() {
 		DOMImplementation impl = DOM.getImplementation();
 		
-		Document doc = impl.createDocument(null, "bigraph", null);
+		Document doc = impl.createDocument(
+				"http://pls.itu.dk/bigraphs/2010/bigraph", "bigraph", null);
 		Element node = doc.getDocumentElement();
 		DOM.applyAttributesToElement(node,
-			"signature", "signatures/test.bigraph-signature"); /* placeholder */
+			"signature", "signatures/test.bigraph-signature", /* placeholder */
+			"xmlns:big-red", "http://pls.itu.dk/bigraphs/2010/big-red");
 		
 		for (Thing b : getChildrenArray())
 			node.appendChild(b.toXML(node));
