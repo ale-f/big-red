@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -158,23 +159,24 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		Element r = mintElement(d);
 		Document doc = d.getOwnerDocument();
 		r.setAttribute("control", getControl().getLongName());
-		r.setAttribute("x", Integer.toString(getLayout().x));
-		r.setAttribute("y", Integer.toString(getLayout().y));
-		r.setAttribute("width", Integer.toString(getLayout().width));
-		r.setAttribute("height", Integer.toString(getLayout().height));
-		r.setAttribute("fill", Utility.colourToString(getFillColour()));
-		r.setAttribute("outline", Utility.colourToString(getOutlineColour()));
 		
-		if (getComment() != null)
+		if (getComment() != null && getComment().length() > 0)
 			r.setAttribute("comment", getComment());
 		
-		/* EDGE XML */
+		for (Port p : ports) {
+			List<EdgeConnection> e = p.getConnections();
+			if (e.size() != 0) {
+				Element pointE = doc.createElement("point");
+				DOM.applyAttributesToElement(pointE,
+						"port", p.getName(),
+						"edge", e.get(0).getParent().hashCode());
+				r.appendChild(pointE);
+			}
+		}
 		
 		if (getChildrenArray().size() != 0) {
-			Element childrenE = doc.createElement("children");
 			for (Thing b : getChildrenArray())
-				childrenE.appendChild(b.toXML(childrenE));
-			r.appendChild(childrenE);
+				r.appendChild(b.toXML(r));
 		}
 		
 		return r;
