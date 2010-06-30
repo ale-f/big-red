@@ -164,14 +164,9 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 			r.setAttribute("comment", getComment());
 		
 		for (Port p : ports) {
-			List<EdgeConnection> e = p.getConnections();
-			if (e.size() != 0) {
-				Element pointE = doc.createElement("point");
-				DOM.applyAttributesToElement(pointE,
-						"port", p.getName(),
-						"edge", e.get(0).getParent().hashCode());
-				r.appendChild(pointE);
-			}
+			org.w3c.dom.Node portE = p.toXML(r);
+			if (portE != null)
+				r.appendChild(portE);
 		}
 		
 		if (getChildrenArray().size() != 0) {
