@@ -14,8 +14,6 @@ import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 
-import dk.itu.big_red.actions.WizardAction;
-
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	private Object[] actionFile = null;
@@ -96,7 +94,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		MenuManager fileMenu = new MenuManager("&File", IWorkbenchActionConstants.M_FILE);
 		MenuManager fileNewMenu = (MenuManager)actionFile[0];
 		MenuManager editMenu = new MenuManager("&Edit", IWorkbenchActionConstants.M_EDIT);
-		MenuManager bigraphMenu = new MenuManager("&Bigraph", "bigraph");
 		MenuManager windowMenu = new MenuManager("&Window", IWorkbenchActionConstants.M_WINDOW);
 		MenuManager helpMenu = new MenuManager("&Help", IWorkbenchActionConstants.M_HELP);
 		MenuManager windowShowViewMenu = (MenuManager)actionWindow[0];
