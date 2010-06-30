@@ -170,10 +170,13 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		
 		/* EDGE XML */
 		
-		Element childrenE = doc.createElement("children");
-		for (Thing b : getChildrenArray())
-			childrenE.appendChild(b.toXML(childrenE));
-		r.appendChild(childrenE);
+		if (getChildrenArray().size() != 0) {
+			Element childrenE = doc.createElement("children");
+			for (Thing b : getChildrenArray())
+				childrenE.appendChild(b.toXML(childrenE));
+			r.appendChild(childrenE);
+		}
+		
 		return r;
 	}
 	
