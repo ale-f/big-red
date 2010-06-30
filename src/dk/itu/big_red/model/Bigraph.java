@@ -8,6 +8,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -32,58 +33,20 @@ public class Bigraph extends Thing {
 	public Node toXML() {
 		DOMImplementation impl = DOM.getImplementation();
 		
-		Document doc = impl.createDocument(null, "brs", null);
-		Node node = doc.getDocumentElement();
+		Document doc = impl.createDocument(null, "bigraph", null);
+		Element node = doc.getDocumentElement();
+		DOM.applyAttributesToElement(node,
+			"signature", "signatures/test.bigraph-signature"); /* placeholder */
 		
-		node.appendChild(doc.createComment(
-			"This is a Big Red XML bigraph definition. " +
-			"DO NOT EDIT IT UNLESS YOU KNOW WHAT YOU'RE DOING - " +
-			"whitespace is significant and no attributes are optional!"));
-		
-		Node signatureE = doc.createElement("signature");
-		for (Control k : getSignature().getControls())
-			signatureE.appendChild(k.toXML(signatureE));
-		node.appendChild(signatureE);
-		
-		Node bigraphE = doc.createElement("bigraph");
 		for (Thing b : getChildrenArray())
-			bigraphE.appendChild(b.toXML(bigraphE));
-		node.appendChild(bigraphE);
+			node.appendChild(b.toXML(node));
 		return doc;
 	}
 	
 	public static Bigraph fromXML(org.w3c.dom.Document doc) {
 		Bigraph r = new Bigraph();
 		
-		ArrayList<Node> mcs =
-			DOM.getNamedChildNodes(doc.getElementsByTagName("signature").item(0), "control");
-		for (Node t : mcs) {
-			String name = DOM.getAttribute(t, "name");
-			Control.Shape shape =
-				Control.Shape.valueOf(DOM.getAttribute(t, "shape"));
-			String label = DOM.getAttribute(t, "label");
-			
-			Point defaultSize = new Point(
-				DOM.getIntAttribute(t, "width"),
-				DOM.getIntAttribute(t, "height"));
-			
-			boolean resizable =
-				DOM.getAttribute(t, "resizable").equals("true");
-			
-			Control mc =
-				r.getSignature().
-				addControl(name, label, shape, defaultSize, resizable);
-			
-			ArrayList<Node> ports = DOM.getNamedChildNodes(t, "port");
-			for (Node u : ports) {
-				String port = DOM.getAttribute(u, "key");
-				int offset = DOM.getIntAttribute(u, "offset");
-					
-				mc.addPort(port, offset);
-			}
-		}
-		
-		NodeList l = doc.getElementsByTagName("bigraph").item(0).getChildNodes();
+		NodeList l = doc.getChildNodes();
 		for (int i = 0; i < l.getLength(); i++) {
 			Node t = l.item(i);
 			if (t.getAttributes() != null) {
@@ -93,7 +56,6 @@ public class Bigraph extends Thing {
 			}
 		}
 		
-		/* EDGE XML */
 		return r;
 	}
 	
