@@ -26,6 +26,7 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ContentOutlinePage;
@@ -301,15 +302,10 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	getEditorSite().getActionBars().
     		setGlobalActionHandler(ActionFactory.PRINT.getId(), action);
     	
-    	action = new FileSaveAction(this);
+    	action = new SaveAction(this);
     	registry.registerAction(action);
     	getEditorSite().getActionBars().
     		setGlobalActionHandler(ActionFactory.SAVE.getId(), action);
-    	
-    	action = new FileSaveAsAction(this);
-    	registry.registerAction(action);
-    	getEditorSite().getActionBars().
-    		setGlobalActionHandler(ActionFactory.SAVE_AS.getId(), action);
     	
     	action = new FileRevertAction(this);
     	registry.registerAction(action);
@@ -431,7 +427,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	
 	@Override
 	public boolean isSaveAsAllowed() {
-		return true;
+		return false;
 	}
 	
 	@Override
@@ -442,9 +438,15 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		IAction action = new FileSaveAction(this);
-		action.run();
-		getCommandStack().markSaveLocation();
+		try {
+        	FileEditorInput i = (FileEditorInput)getEditorInput();
+        	DOM.write(i.getFile(), getModel().toXML());
+        	
+    		getCommandStack().markSaveLocation();
+    		firePropertyChange(IEditorPart.PROP_DIRTY);
+        } catch (Exception ex) {
+        	ex.printStackTrace();
+        }
 	}
 	
 	public void revert() {
