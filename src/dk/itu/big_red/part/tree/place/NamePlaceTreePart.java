@@ -9,7 +9,7 @@ import org.eclipse.ui.ISharedImages;
 
 import dk.itu.big_red.editpolicies.ThingDeletePolicy;
 import dk.itu.big_red.model.Thing;
-import dk.itu.big_red.model.Name;
+import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.part.tree.AbstractTreePart;
 import dk.itu.big_red.util.Utility;
 
@@ -27,7 +27,7 @@ public class NamePlaceTreePart extends AbstractTreePart {
 	
 	@Override
 	public String getText() {
-		return ((Name)getModel()).getName();
+		return ((InnerName)getModel()).getName();
 	}
 	
 	@Override

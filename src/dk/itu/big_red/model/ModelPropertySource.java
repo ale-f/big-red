@@ -37,9 +37,9 @@ public class ModelPropertySource implements IPropertySource {
 		if (object instanceof Node) {
 			setControlNames(((Node)object).getSignature().getControlNames());
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
-		} else if (object instanceof Name) {
-			properties.add(new TextPropertyDescriptor(Name.PROPERTY_NAME, "Name"));
-			properties.add(new ComboBoxPropertyDescriptor(Name.PROPERTY_TYPE, "Type", BigRedConstants.INNER_OUTER_NAMES));
+		} else if (object instanceof InnerName) {
+			properties.add(new TextPropertyDescriptor(InnerName.PROPERTY_NAME, "Name"));
+			properties.add(new ComboBoxPropertyDescriptor(InnerName.PROPERTY_TYPE, "Type", BigRedConstants.INNER_OUTER_NAMES));
 		}
 		
 		if (object instanceof IColourable) {
@@ -72,10 +72,10 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String result = ((ICommentable)object).getComment();
 			return (result == null ? "" : result);
-		} else if (id.equals(Name.PROPERTY_NAME)){
-			return ((Name)object).getName();
-		} else if (id.equals(Name.PROPERTY_TYPE)){
-			return ((Name)object).getType().ordinal();
+		} else if (id.equals(InnerName.PROPERTY_NAME)){
+			return ((InnerName)object).getName();
+		} else if (id.equals(InnerName.PROPERTY_TYPE)){
+			return ((InnerName)object).getType().ordinal();
 		} else {
 			return null;
 		}
@@ -110,10 +110,10 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String comment = (String)value;
 			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));
-		} else if (id.equals(Name.PROPERTY_NAME)) {
-			((Name)object).setName((String)value);
-		} else if (id.equals(Name.PROPERTY_TYPE)) {
-			((Name)object).setType(Name.NameType.values()[(Integer)value]);
+		} else if (id.equals(InnerName.PROPERTY_NAME)) {
+			((InnerName)object).setName((String)value);
+		} else if (id.equals(InnerName.PROPERTY_TYPE)) {
+			((InnerName)object).setType(InnerName.NameType.values()[(Integer)value]);
 		}
 	}
 

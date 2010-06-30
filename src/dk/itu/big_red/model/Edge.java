@@ -16,7 +16,7 @@ import dk.itu.big_red.model.interfaces.IXMLisable;
 
 /**
  * An Edge is a connection which connects any number of {@link Port}s and
- * {@link Name}s. (An Edge which "connects" only one point is perfectly
+ * {@link InnerName}s. (An Edge which "connects" only one point is perfectly
  * legitimate.)
  * 
  * <p>Note that Edges represent the <i>bigraphical</i> concept of an edge

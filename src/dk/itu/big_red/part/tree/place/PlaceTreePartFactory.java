@@ -23,7 +23,7 @@ public class PlaceTreePartFactory implements EditPartFactory {
         	part = new RootPlaceTreePart();
         } else if (model instanceof Site) {
     		part = new SitePlaceTreePart();
-        } else if (model instanceof Name) {
+        } else if (model instanceof InnerName) {
         	part = new NamePlaceTreePart();
         }
 	    

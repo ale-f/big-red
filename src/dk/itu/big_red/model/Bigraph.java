@@ -27,7 +27,7 @@ public class Bigraph extends Thing {
 	}
 	public boolean canContain(Thing child) {
 		Class<? extends Thing> c = child.getClass();
-		return (c == Root.class || c == Name.class);
+		return (c == Root.class || c == InnerName.class);
 	}
 	
 	public Node toXML() {

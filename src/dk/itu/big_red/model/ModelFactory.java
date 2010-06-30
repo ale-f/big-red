@@ -25,8 +25,8 @@ public class ModelFactory implements CreationFactory {
 		} else if (template == Site.class) {
 			Site site = new Site();
 			return site;
-		} else if (template == Name.class){
-			Name name = new Name();
+		} else if (template == InnerName.class){
+			InnerName name = new InnerName();
 			return name;
 		} else if (template == Edge.class) {
 			return new Edge();
@@ -56,7 +56,7 @@ public class ModelFactory implements CreationFactory {
 		else if (namedObject.equals("node"))
 			return new Node();
 		else if (namedObject.equals("name"))
-			return new Name();
+			return new InnerName();
 		else if (namedObject.equals("control"))
 			return new Control();
 		else if (namedObject.equals("edge"))

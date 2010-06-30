@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.util.DOM;
 
-public class Name extends Thing implements IConnectable {
+public class InnerName extends Thing implements IConnectable {
 	public static final String PROPERTY_NAME = "NameName";
 	public static final String PROPERTY_TYPE = "NameType";
 	public static enum NameType {
@@ -18,7 +18,7 @@ public class Name extends Thing implements IConnectable {
 	
 	@Override
 	public Thing clone() throws CloneNotSupportedException {
-		return new Name()._overwrite(this);
+		return new InnerName()._overwrite(this);
 	}
 	
 	public boolean canContain(Thing child) {

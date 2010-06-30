@@ -410,7 +410,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 				new ModelFactory(Edge.class), null, null));
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Name", "Add a new name to the bigraph",
-				Name.class, new ModelFactory(Name.class), null, null));
+				InnerName.class, new ModelFactory(InnerName.class), null, null));
 		
 		root.setDefaultEntry((ToolEntry) selectGroup.getChildren().get(0));
 		return root;

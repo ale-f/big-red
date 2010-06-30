@@ -56,7 +56,7 @@ public class ThingLayoutPolicy extends XYLayoutEditPolicy {
 		} else if (type == Site.class) {
 			defWidth = SiteFigure.SITE_FIGURE_DEFWIDTH;
 			defHeight = SiteFigure.SITE_FIGURE_DEFHEIGHT;
-		} else if (type == Name.class){
+		} else if (type == InnerName.class){
 			defWidth = NameFigure.SITE_FIGURE_DEFWIDTH;
 			defHeight = NameFigure.SITE_FIGURE_DEFHEIGHT;
 		}

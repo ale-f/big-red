@@ -16,14 +16,14 @@ import dk.itu.big_red.editpolicies.ThingDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
 import dk.itu.big_red.figure.NameFigure;
-import dk.itu.big_red.model.Name;
-import dk.itu.big_red.model.Name.NameType;
+import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.InnerName.NameType;
 import dk.itu.big_red.model.interfaces.IConnectable;
 
 public class NamePart extends AbstractPart implements NodeEditPart {
 	@Override
-	public Name getModel() {
-		return (Name)super.getModel();
+	public InnerName getModel() {
+		return (InnerName)super.getModel();
 	}
 	
 	@Override
@@ -41,8 +41,8 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
-		if (evt.getPropertyName().equals(Name.PROPERTY_NAME) ||
-			evt.getPropertyName().equals(Name.PROPERTY_TYPE)) {
+		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME) ||
+			evt.getPropertyName().equals(InnerName.PROPERTY_TYPE)) {
 	    	refreshVisuals();
 	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
 	    	refreshSourceConnections();
@@ -54,7 +54,7 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 		super.refreshVisuals();
 		
 		NameFigure figure = (NameFigure)getFigure();
-		Name model = getModel();
+		InnerName model = getModel();
 		
 		figure.setName(model.getName());
 		figure.setConstraint(model.getLayout());
