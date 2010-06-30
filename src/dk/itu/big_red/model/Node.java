@@ -178,6 +178,16 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 			for (Thing b : getChildrenArray())
 				r.appendChild(b.toXML(r));
 		}
+
+		Element braE = doc.createElementNS("http://pls.itu.dk/bigraphs/2010/big-red", "big-red:appearance");
+		DOM.applyAttributesToElement(braE,
+				"x", getLayout().x,
+				"y", getLayout().y,
+				"width", getLayout().width,
+				"height", getLayout().height,
+				"fillColor", Utility.colourToString(getFillColour()),
+				"outlineColor", Utility.colourToString(getOutlineColour()));
+		r.appendChild(braE);
 		
 		return r;
 	}
