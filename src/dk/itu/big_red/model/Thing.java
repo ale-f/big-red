@@ -156,7 +156,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	public Element mintElement(org.w3c.dom.Node d) {
 		org.w3c.dom.Element r =
 			d.getOwnerDocument().createElement(getClass().getSimpleName().toLowerCase());
-		r.setAttribute("id", Integer.toString(hashCode()));
+		r.setAttribute("id", Integer.toString(hashCode(), 16));
 		return r;
 	}
 	
