@@ -128,4 +128,27 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}
 	}
+
+	@Override
+	public List<ILayoutable> getChildren() {
+		return new ArrayList<ILayoutable>();
+	}
+
+	@Override
+	public void addChild(ILayoutable c) {
+	}
+
+	@Override
+	public void removeChild(ILayoutable c) {
+	}
+
+	@Override
+	public boolean canContain(ILayoutable c) {
+		return false;
+	}
+	
+	@Override
+	public EdgeTarget clone() {
+		return new EdgeTarget(edge);
+	}
 }

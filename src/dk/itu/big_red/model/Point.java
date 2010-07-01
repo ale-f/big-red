@@ -128,4 +128,39 @@ public class Point implements IConnectable, IPropertyChangeNotifier, IXMLisable 
 			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}
 	}
+	
+	/**
+	 * Returns an empty list.
+	 */
+	@Override
+	public List<ILayoutable> getChildren() {
+		return new ArrayList<ILayoutable>();
+	}
+
+	/**
+	 * Does nothing.
+	 */
+	@Override
+	public void addChild(ILayoutable c) {
+	}
+
+	/**
+	 * Does nothing.
+	 */
+	@Override
+	public void removeChild(ILayoutable c) {
+	}
+
+	/**
+	 * Returns false.
+	 */
+	@Override
+	public boolean canContain(ILayoutable c) {
+		return false;
+	}
+	
+	@Override
+	public Point clone() {
+		return new Point();
+	}
 }

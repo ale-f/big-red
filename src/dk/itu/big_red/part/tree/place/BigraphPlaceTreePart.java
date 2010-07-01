@@ -2,14 +2,14 @@ package dk.itu.big_red.part.tree.place;
 
 import java.util.List;
 
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.part.tree.AbstractTreePart;
 
 
 public class BigraphPlaceTreePart extends AbstractTreePart {
 	@Override
-	protected List<Thing> getModelChildren() {
+	protected List<ILayoutable> getModelChildren() {
 		return ((Bigraph)getModel()).getChildren();
 	}
 

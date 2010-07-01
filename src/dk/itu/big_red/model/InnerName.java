@@ -18,7 +18,7 @@ public class InnerName extends Point implements IConnectable {
 	};
 	
 	@Override
-	public InnerName clone() throws CloneNotSupportedException {
+	public InnerName clone() {
 		System.out.println("! Clone?");
 		return new InnerName();
 	}

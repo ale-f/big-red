@@ -29,11 +29,8 @@ public class BigraphPart extends ThingPart {
 	}
 	
 	public List<ILayoutable> getModelChildren() {
-		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
-		for (Thing t : getModel().getChildren())
-			children.add(t);
-		for (ILayoutable t : getModel().getNHTLOs())
-			children.add(t);
+		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>(getModel().getChildren());
+		children.addAll(getModel().getNHTLOs());
 		return children;
 	}
 }

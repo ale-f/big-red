@@ -8,14 +8,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 
 import dk.itu.big_red.editpolicies.ThingDeletePolicy;
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.part.tree.AbstractTreePart;
 import dk.itu.big_red.util.Utility;
 
 public class SitePlaceTreePart extends AbstractTreePart {
 	@Override
-	protected List<Thing> getModelChildren() {
+	protected List<ILayoutable> getModelChildren() {
 		return ((Site)getModel()).getChildren();
 	}
 

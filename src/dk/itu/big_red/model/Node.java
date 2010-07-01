@@ -13,6 +13,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.interfaces.IColourable;
+import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
 
@@ -170,8 +172,9 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		}
 		
 		if (getChildren().size() != 0) {
-			for (Thing b : getChildren())
-				r.appendChild(b.toXML(r));
+			for (ILayoutable b : getChildren())
+				if (b instanceof IXMLisable)
+					r.appendChild(((IXMLisable)b).toXML(r));
 		}
 
 		Element braE = doc.createElementNS("http://pls.itu.dk/bigraphs/2010/big-red", "big-red:appearance");

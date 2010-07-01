@@ -44,9 +44,6 @@ public class RootPart extends ThingPart {
 	}
 	
 	public List<ILayoutable> getModelChildren() {
-		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
-		for (Thing t : getModel().getChildren())
-			children.add(t);
-		return children;
+		return getModel().getChildren();
 	}
 }

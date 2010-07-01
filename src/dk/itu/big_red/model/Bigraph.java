@@ -13,6 +13,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.part.BigraphPart;
 import dk.itu.big_red.util.DOM;
 
@@ -39,8 +40,9 @@ public class Bigraph extends Thing {
 			"signature", "signatures/test.bigraph-signature", /* placeholder */
 			"xmlns:big-red", "http://pls.itu.dk/bigraphs/2010/big-red");
 		
-		for (Thing b : getChildren())
-			node.appendChild(b.toXML(node));
+		for (ILayoutable b : getChildren())
+			if (b instanceof IXMLisable)
+				node.appendChild(((IXMLisable)b).toXML(node));
 		return doc;
 	}
 	

@@ -1,7 +1,6 @@
 package dk.itu.big_red.model.interfaces;
 
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -80,4 +79,32 @@ public interface ILayoutable {
 	 * @param p the new parent {@link ILayoutable}
 	 */
 	public void setParent(ILayoutable p);
+	
+	/**
+	 * Gets this object's children.
+	 */
+	public List<ILayoutable> getChildren();
+
+	/**
+	 * Adds a new child to this object.
+	 * @param c an {@link ILayoutable}
+	 */
+	public void addChild(ILayoutable c);
+	
+	/**
+	 * Removes an existing child from this object.
+	 * @param c an {@link ILayoutable}
+	 */
+	public void removeChild(ILayoutable c);
+	
+	/**
+	 * Indicates whether or not this object can contain the specified {@link
+	 * ILayoutable}.
+	 * @param c an {@link ILayoutable}
+	 * @return <code>true</code> if this object can contain <code>c</code>, or
+	 *         <code>false</code> otherwise
+	 */
+	public boolean canContain(ILayoutable c);
+
+	public ILayoutable clone() throws CloneNotSupportedException;
 }

@@ -46,7 +46,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	
 	protected Rectangle layout;
 	
-	protected ArrayList<Thing> children = new ArrayList<Thing>();
+	protected ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
 	protected ILayoutable parent = null;
 	
 	private IPropertySource propertySource = null;
@@ -67,27 +67,28 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, this.layout);
 	}
 	
-	public boolean canContain(Thing child) {
+	@Override
+	public boolean canContain(ILayoutable child) {
 		return false;
 	}
 	
-	public boolean addChild(Thing child) {
+	@Override
+	public void addChild(ILayoutable child) {
 		boolean added = this.children.add(child);
 		if (added) {
 			child.setParent(this);
 			listeners.firePropertyChange(PROPERTY_CHILD, null, child);
 		}
-		return added;
 	}
 	
-	public boolean removeChild(Thing child) {
+	@Override
+	public void removeChild(ILayoutable child) {
 		boolean removed = this.children.remove(child);
 		if (removed)
 			listeners.firePropertyChange(PROPERTY_CHILD, child, null);
-		return removed;
 	}
 	
-	public List<Thing> getChildren() {
+	public List<ILayoutable> getChildren() {
 		return this.children;
 	}
 	
@@ -137,10 +138,10 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 			orig.getLayout().x + 10, orig.getLayout().y + 10,
 			orig.getLayout().width, orig.getLayout().height));
 		
-		Iterator<Thing> it = orig.getChildren().iterator();
+		Iterator<ILayoutable> it = orig.getChildren().iterator();
 		while (it.hasNext()) {
-			Thing child = it.next();
-			Thing childClone = (Thing)(child.clone());
+			ILayoutable child = it.next();
+			ILayoutable childClone = child.clone();
 			this.addChild(childClone);
 			childClone.setLayout(child.getLayout());
 		}
@@ -168,8 +169,9 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		r.setAttribute("y", Integer.toString(getLayout().y));
 		r.setAttribute("width", Integer.toString(getLayout().width));
 		r.setAttribute("height", Integer.toString(getLayout().height));
-		for (Thing b : getChildren())
-			r.appendChild(b.toXML(r));
+		for (ILayoutable b : getChildren())
+			if (b instanceof IXMLisable)
+				r.appendChild(((IXMLisable)b).toXML(r));
 		return r;
 	}
 
@@ -199,27 +201,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	}
 	
 	public void relayout() {
-		int padding = 10;
-		Rectangle r = new Rectangle(getLayout());
-		r.width = r.height = 20;
-		for (Thing i : getChildren()) {
-			i.relayout();
-			r.width += i.getLayout().width + padding;
-			r.height += i.getLayout().height;
-		}
-		setLayout(r);
-		
-		int currX = 10;
-		for (Thing i : getChildren()) {
-			Rectangle cr = new Rectangle(i.getLayout());
-			cr.x = currX;
-			cr.y = (r.height / 2) - (cr.height / 2);
-			//cr.y = currY;
-			currX += cr.width + padding;
-			i.setLayout(cr);
-		}
-		
-		setLayout(r);
 	}
 
 	private String comment = "";
