@@ -8,8 +8,8 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
-import dk.itu.big_red.editpolicies.ThingDeletePolicy;
-import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
+import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
+import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.RootFigure;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
@@ -29,8 +29,8 @@ public class RootPart extends ThingPart {
 
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ThingLayoutPolicy());
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ThingDeletePolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ILayoutableLayoutPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ILayoutableDeletePolicy());
 	}
 
 	@Override

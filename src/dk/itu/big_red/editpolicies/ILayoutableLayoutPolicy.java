@@ -9,13 +9,14 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 
-import dk.itu.big_red.commands.ThingCreateCommand;
+import dk.itu.big_red.commands.ILayoutableCreateCommand;
 import dk.itu.big_red.commands.ILayoutableRelayoutCommand;
 import dk.itu.big_red.figure.*;
 import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.part.*;
 
-public class ThingLayoutPolicy extends XYLayoutEditPolicy {
+public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 
 	@Override
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
@@ -41,13 +42,13 @@ public class ThingLayoutPolicy extends XYLayoutEditPolicy {
 	protected Command getCreateCommand(CreateRequest request) {
 		Object requestObject = request.getNewObject();
 		
-		Class type = (Class)(requestObject.getClass());
+		Class<? extends ILayoutable> type =
+			(Class<? extends ILayoutable>)requestObject.getClass();
 		int defWidth = 0, defHeight = 0;
-		Thing parent = (Thing)getHost().getModel();
-		if (!parent.canContain((Thing)requestObject)) {
+		ILayoutable parent = (ILayoutable)getHost().getModel();
+		if (!parent.canContain((ILayoutable)requestObject)) {
 			return null;
-		}
-		if (type == Node.class) {
+		} else if (type == Node.class) {
 			defWidth = NodeFigure.NODE_FIGURE_DEFWIDTH;
 			defHeight = NodeFigure.NODE_FIGURE_DEFHEIGHT;
 		} else if (type == Root.class) {
@@ -61,7 +62,7 @@ public class ThingLayoutPolicy extends XYLayoutEditPolicy {
 			defHeight = NameFigure.SITE_FIGURE_DEFHEIGHT;
 		}
 		
-		ThingCreateCommand cmd = new ThingCreateCommand();
+		ILayoutableCreateCommand cmd = new ILayoutableCreateCommand();
 		cmd.setContainer(getHost().getModel());
 		cmd.setObject(request.getNewObject());
 		

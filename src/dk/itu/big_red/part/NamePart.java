@@ -12,9 +12,9 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 
-import dk.itu.big_red.editpolicies.ThingDeletePolicy;
+import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
-import dk.itu.big_red.editpolicies.ThingLayoutPolicy;
+import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NameFigure;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.InnerName.NameType;
@@ -33,8 +33,8 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ThingLayoutPolicy());
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ThingDeletePolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ILayoutableLayoutPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ILayoutableDeletePolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 	}
 	

@@ -5,26 +5,26 @@ package dk.itu.big_red.commands;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
-import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
-public class ThingCreateCommand extends Command {
-	private Thing container;
-	private Thing node;
+public class ILayoutableCreateCommand extends Command {
+	private ILayoutable container;
+	private ILayoutable node;
 	
-	public ThingCreateCommand() {
+	public ILayoutableCreateCommand() {
 		super();
 		container = null;
 		node = null;
 	}
 	
 	public void setObject(Object s) {
-		if (s instanceof Thing)
-			this.node = (Thing)s;
+		if (s instanceof ILayoutable)
+			this.node = (ILayoutable)s;
 	}
 	
 	public void setContainer(Object e) {
-		if (e instanceof Thing)
-			this.container = (Thing)e;
+		if (e instanceof ILayoutable)
+			this.container = (ILayoutable)e;
 	}
 	
 	public void setLayout(Rectangle r) {
@@ -42,7 +42,7 @@ public class ThingCreateCommand extends Command {
 	}
 	
 	public boolean canUndo() {
-		return (node != null && container != null ? container.contains(node) : false);
+		return (node != null && container != null ? node.getParent() == container : false);
 	}
 	
 	public void undo() {

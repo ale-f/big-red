@@ -4,7 +4,7 @@ package dk.itu.big_red.part;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
-import dk.itu.big_red.editpolicies.ThingDeletePolicy;
+import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.figure.SiteFigure;
 import dk.itu.big_red.model.*;
 
@@ -28,7 +28,7 @@ public class SitePart extends ThingPart {
 		 * can only be populated by importing another bigraph. As such, the
 		 * AppEditLayoutPolicy isn't installed here.
 		 * */
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ThingDeletePolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ILayoutableDeletePolicy());
 	}
 
 	@Override

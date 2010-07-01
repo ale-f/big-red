@@ -7,7 +7,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 
-import dk.itu.big_red.editpolicies.ThingDeletePolicy;
+import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.part.tree.AbstractTreePart;
@@ -22,7 +22,7 @@ public class NamePlaceTreePart extends AbstractTreePart {
 
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ThingDeletePolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ILayoutableDeletePolicy());
 	}
 	
 	@Override
