@@ -58,7 +58,6 @@ public class EdgeTargetPart extends AbstractGraphicalEditPart implements NodeEdi
 		EdgeTarget model = getModel();
 		
 		figure.setConstraint(model.getLayout());
-		figure.setRootConstraint(model.getLayout());
 		
 		figure.setToolTip(model.getEdge().getComment());
 	}

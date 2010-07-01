@@ -16,6 +16,7 @@ import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NameFigure;
+import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.InnerName.NameType;
 import dk.itu.big_red.model.interfaces.IConnectable;
@@ -66,18 +67,18 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 	}
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new EllipseAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
     
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new EllipseAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
 	
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new EllipseAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
     
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new EllipseAnchor(getFigure());
+		return new CentreAnchor(getFigure());
     }
 }

@@ -45,21 +45,22 @@ public abstract class AbstractFigure extends Shape {
 	}
 	
 	public Point getTotalOffset() {
-		return getRootConstraint().getTopLeft();
+		Rectangle constraint;
+		Point offset = new Point();
+		int generation = 0;
+		
+		while (true) {
+			constraint = getAncestorConstraint(generation);
+			if (constraint == null) break;
+			offset.x += constraint.x; offset.y += constraint.y;
+			generation++;
+		}
+		
+		return offset;
 	}
 	
 	public void setConstraint(Rectangle rect) {
 		getParent().setConstraint(this, rect);
-	}
-	
-	private Rectangle rootConstraint;
-	
-	public Rectangle getRootConstraint() {
-		return rootConstraint;
-	}
-	
-	public void setRootConstraint(Rectangle rootConstraint) {
-		this.rootConstraint = rootConstraint;
 	}
 	
 	public void setToolTip(String content) {
