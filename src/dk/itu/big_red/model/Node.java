@@ -48,8 +48,9 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		return result;
 	}
 	
-	public boolean canContain(Thing child) {
-		Class<? extends Thing> c = child.getClass();
+	@Override
+	public boolean canContain(ILayoutable child) {
+		Class<? extends ILayoutable> c = child.getClass();
 		return (c == Node.class || c == Site.class);
 	}
 	

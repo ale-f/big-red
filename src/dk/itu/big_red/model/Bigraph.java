@@ -25,7 +25,9 @@ public class Bigraph extends Thing {
 	public Thing clone() throws CloneNotSupportedException {
 		return new Bigraph()._overwrite(this);
 	}
-	public boolean canContain(Thing child) {
+	
+	@Override
+	public boolean canContain(ILayoutable child) {
 		Class<? extends ILayoutable> c = child.getClass();
 		return (c == Root.class || c == InnerName.class);
 	}

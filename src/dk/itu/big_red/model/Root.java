@@ -1,13 +1,16 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.interfaces.ILayoutable;
+
 public class Root extends Thing {
 	@Override
 	public Thing clone() throws CloneNotSupportedException {
 		return new Root()._overwrite(this);
 	}
 	
-	public boolean canContain(Thing child) {
-		Class<? extends Thing> c = child.getClass();
+	@Override
+	public boolean canContain(ILayoutable child) {
+		Class<? extends ILayoutable> c = child.getClass();
 		return (c == Node.class || c == Site.class);
 	}
 	
