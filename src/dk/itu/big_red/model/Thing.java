@@ -194,16 +194,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		}
 	}
 	
-	public ArrayList<Thing> findAllChildren(Class<? extends Thing> c) {
-		ArrayList<Thing> r = new ArrayList<Thing>();
-		for (Thing x : this.getChildren()) {
-			if (x.getClass() == c)
-				r.add(x);
-			r.addAll(x.findAllChildren(c));
-		}
-		return r;
-	}
-	
 	public Signature getSignature() {
 		return getBigraph().getSignature();
 	}

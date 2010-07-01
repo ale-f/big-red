@@ -1,5 +1,6 @@
 package dk.itu.big_red.part.tree.link;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dk.itu.big_red.model.Thing;
@@ -15,6 +16,6 @@ public class BigraphLinkTreePart extends AbstractTreePart {
 		 * FIXME: notifications are only fired for *children* of the Bigraph
 		 * (i.e., Roots), not further descendants.
 		 */
-		return ((Bigraph)getModel()).findAllChildren(Node.class);
+		return new ArrayList<Thing>();
 	}
 }
