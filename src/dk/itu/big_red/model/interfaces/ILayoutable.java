@@ -7,14 +7,24 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.Bigraph;
 
 /**
- * Objects implementing ILayoutable are model objects which represent an actual
- * graphical item on the bigraph - they have a <i>layout</i> (a {@link
- * Rectangle}) which defines their bounding box and which can change under some
- * circumstances.
+ * Objects implementing ILayoutable are model objects which have a graphical
+ * representation:
+ * 
+ * <ul>
+ * <li>they have a <i>layout</i> (a {@link Rectangle}) which defines their
+ * bounding box and which can change under some circumstances;
+ * <li>they have a <i>parent</i> (another {@link ILayoutable}) and a
+ * <i>{@link Bigraph bigraph}</i>, which serve as their containers; and
+ * <li>they may also optionally have <i>children</i> (other
+ * {@link ILayoutable}s).
+ * </ul>
+ * 
+ * <p>As they also implement {@link IPropertyChangeNotifier}, they can also
+ * notify interested parties when these properties change.
  * @author alec
  *
  */
-public interface ILayoutable {
+public interface ILayoutable extends IPropertyChangeNotifier {
 	/**
 	 * The property name fired when the ILayoutable's layout changes (i.e.,
 	 * it's resized or moved).
