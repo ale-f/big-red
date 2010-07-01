@@ -20,7 +20,7 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  * @author alec
  *
  */
-public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
+public class EdgeTarget implements IConnectable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	private Edge edge;

@@ -6,10 +6,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.util.DOM;
 
-public class InnerName extends Point implements IConnectable {
+public class InnerName extends Point {
 	public static final String PROPERTY_NAME = "NameName";
 	public static final String PROPERTY_TYPE = "NameType";
 	public static enum NameType {

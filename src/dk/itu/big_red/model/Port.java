@@ -19,7 +19,7 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  * @author alec
  *
  */
-public class Port extends Point implements IAdaptable, IConnectable, ILayoutable, IPropertyChangeNotifier {
+public class Port extends Point implements IAdaptable, ILayoutable {
 	private ILayoutable parent = null;
 	
 	/**

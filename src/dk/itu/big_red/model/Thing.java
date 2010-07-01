@@ -16,7 +16,6 @@ import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.util.DOM;
 
@@ -31,7 +30,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChangeNotifier, ICommentable {
+public class Thing implements IAdaptable, IXMLisable, ILayoutable, ICommentable {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	

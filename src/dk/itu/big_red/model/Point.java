@@ -22,7 +22,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Point implements IConnectable, IPropertyChangeNotifier, IXMLisable {
+public class Point implements IConnectable, IXMLisable {
 	protected Rectangle layout = new Rectangle(5, 5, 10, 10);
 	
 	@Override
