@@ -26,7 +26,7 @@ public class Bigraph extends Thing {
 		return new Bigraph()._overwrite(this);
 	}
 	public boolean canContain(Thing child) {
-		Class<? extends Thing> c = child.getClass();
+		Class<? extends ILayoutable> c = child.getClass();
 		return (c == Root.class || c == InnerName.class);
 	}
 	

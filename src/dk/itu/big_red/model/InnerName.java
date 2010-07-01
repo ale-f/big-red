@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.util.DOM;
 
-public class InnerName extends Thing implements IConnectable {
+public class InnerName extends Point implements IConnectable {
 	public static final String PROPERTY_NAME = "NameName";
 	public static final String PROPERTY_TYPE = "NameType";
 	public static enum NameType {
@@ -17,8 +18,9 @@ public class InnerName extends Thing implements IConnectable {
 	};
 	
 	@Override
-	public Thing clone() throws CloneNotSupportedException {
-		return new InnerName()._overwrite(this);
+	public InnerName clone() throws CloneNotSupportedException {
+		System.out.println("! Clone?");
+		return new InnerName();
 	}
 	
 	public boolean canContain(Thing child) {
@@ -35,7 +37,7 @@ public class InnerName extends Thing implements IConnectable {
 	public void setName(String name) {
 		String oldName = this.name;
 		this.name = name;
-		listeners.firePropertyChange(PROPERTY_RENAME, oldName, name);
+		listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 
 	public NameType getType() {
@@ -50,39 +52,7 @@ public class InnerName extends Thing implements IConnectable {
 	}
 	
 	@Override
-	public void addConnection(EdgeConnection e) {
-		
-	}
-
-	@Override
-	public void removeConnection(EdgeConnection e) {
-		
-	}
-	
-	@Override
-	public org.w3c.dom.Node toXML(org.w3c.dom.Node d) {
-		/*
-		 * Override in subclasses!
-		 */
-		Document doc = d.getOwnerDocument();
-		
-		org.w3c.dom.Element r = mintElement(d);
-		r.setAttribute("name", getName());
-		r.setAttribute("type", getType().toString());
-		r.setAttribute("x", Integer.toString(getLayout().x));
-		r.setAttribute("y", Integer.toString(getLayout().y));
-		r.setAttribute("width", Integer.toString(getLayout().width));
-		r.setAttribute("height", Integer.toString(getLayout().height));
-		
-		/* EDGE XML */
-
-		return r;
-	}
-	
-	@Override
 	public void fromXML(org.w3c.dom.Node d) {
-		getBigraph().idRegistry.put(DOM.getAttribute(d, "id"), this);
-		
 		Rectangle layout = new Rectangle();
 		layout.x = DOM.getIntAttribute(d, "x");
 		layout.y = DOM.getIntAttribute(d, "y");
@@ -91,11 +61,5 @@ public class InnerName extends Thing implements IConnectable {
 		setLayout(layout);
 		
 		setType(NameType.valueOf(DOM.getAttribute(d, "type")));
-	}
-
-	@Override
-	public List<EdgeConnection> getConnections() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
