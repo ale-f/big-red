@@ -169,8 +169,8 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 				r.appendChild(portE);
 		}
 		
-		if (getChildrenArray().size() != 0) {
-			for (Thing b : getChildrenArray())
+		if (getChildren().size() != 0) {
+			for (Thing b : getChildren())
 				r.appendChild(b.toXML(r));
 		}
 

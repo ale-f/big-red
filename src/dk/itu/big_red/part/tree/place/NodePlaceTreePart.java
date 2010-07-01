@@ -17,7 +17,7 @@ import dk.itu.big_red.util.Utility;
 public class NodePlaceTreePart extends AbstractTreePart {
 	@Override
 	protected List<Thing> getModelChildren() {
-		return ((Node)getModel()).getChildrenArray();
+		return ((Node)getModel()).getChildren();
 	}
 
 	@Override

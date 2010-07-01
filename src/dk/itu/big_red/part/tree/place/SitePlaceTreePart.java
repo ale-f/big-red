@@ -16,7 +16,7 @@ import dk.itu.big_red.util.Utility;
 public class SitePlaceTreePart extends AbstractTreePart {
 	@Override
 	protected List<Thing> getModelChildren() {
-		return ((Site)getModel()).getChildrenArray();
+		return ((Site)getModel()).getChildren();
 	}
 
 	@Override

@@ -39,7 +39,7 @@ public class Bigraph extends Thing {
 			"signature", "signatures/test.bigraph-signature", /* placeholder */
 			"xmlns:big-red", "http://pls.itu.dk/bigraphs/2010/big-red");
 		
-		for (Thing b : getChildrenArray())
+		for (Thing b : getChildren())
 			node.appendChild(b.toXML(node));
 		return doc;
 	}

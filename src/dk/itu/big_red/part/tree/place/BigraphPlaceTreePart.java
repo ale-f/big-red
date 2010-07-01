@@ -10,7 +10,7 @@ import dk.itu.big_red.part.tree.AbstractTreePart;
 public class BigraphPlaceTreePart extends AbstractTreePart {
 	@Override
 	protected List<Thing> getModelChildren() {
-		return ((Bigraph)getModel()).getChildrenArray();
+		return ((Bigraph)getModel()).getChildren();
 	}
 
 	@Override

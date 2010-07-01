@@ -30,7 +30,7 @@ public class BigraphPart extends ThingPart {
 	
 	public List<ILayoutable> getModelChildren() {
 		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
-		for (Thing t : getModel().getChildrenArray())
+		for (Thing t : getModel().getChildren())
 			children.add(t);
 		for (ILayoutable t : getModel().getNHTLOs())
 			children.add(t);

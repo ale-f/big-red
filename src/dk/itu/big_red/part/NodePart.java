@@ -101,7 +101,7 @@ public class NodePart extends ThingPart {
 	@Override
 	public List<ILayoutable> getModelChildren() {
 		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
-		for (Thing t : getModel().getChildrenArray())
+		for (Thing t : getModel().getChildren())
 			children.add(t);
 		for (Port p : getModel().getPorts())
 			children.add(p);

@@ -87,7 +87,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		return removed;
 	}
 	
-	public List<Thing> getChildrenArray() {
+	public List<Thing> getChildren() {
 		return this.children;
 	}
 	
@@ -137,7 +137,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 			orig.getLayout().x + 10, orig.getLayout().y + 10,
 			orig.getLayout().width, orig.getLayout().height));
 		
-		Iterator<Thing> it = orig.getChildrenArray().iterator();
+		Iterator<Thing> it = orig.getChildren().iterator();
 		while (it.hasNext()) {
 			Thing child = it.next();
 			Thing childClone = (Thing)(child.clone());
@@ -168,7 +168,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		r.setAttribute("y", Integer.toString(getLayout().y));
 		r.setAttribute("width", Integer.toString(getLayout().width));
 		r.setAttribute("height", Integer.toString(getLayout().height));
-		for (Thing b : getChildrenArray())
+		for (Thing b : getChildren())
 			r.appendChild(b.toXML(r));
 		return r;
 	}
@@ -196,7 +196,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	
 	public ArrayList<Thing> findAllChildren(Class<? extends Thing> c) {
 		ArrayList<Thing> r = new ArrayList<Thing>();
-		for (Thing x : this.getChildrenArray()) {
+		for (Thing x : this.getChildren()) {
 			if (x.getClass() == c)
 				r.add(x);
 			r.addAll(x.findAllChildren(c));
@@ -212,7 +212,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		int padding = 10;
 		Rectangle r = new Rectangle(getLayout());
 		r.width = r.height = 20;
-		for (Thing i : getChildrenArray()) {
+		for (Thing i : getChildren()) {
 			i.relayout();
 			r.width += i.getLayout().width + padding;
 			r.height += i.getLayout().height;
@@ -220,7 +220,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 		setLayout(r);
 		
 		int currX = 10;
-		for (Thing i : getChildrenArray()) {
+		for (Thing i : getChildren()) {
 			Rectangle cr = new Rectangle(i.getLayout());
 			cr.x = currX;
 			cr.y = (r.height / 2) - (cr.height / 2);
