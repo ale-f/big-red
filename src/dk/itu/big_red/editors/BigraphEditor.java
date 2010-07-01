@@ -275,7 +275,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
-    	action = new ThingCutAction(this);
+    	/*action = new ThingCutAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
@@ -289,7 +289,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	
     	action = new ThingRelayoutAction(this);
     	registry.registerAction(action);
-    	getSelectionActions().add(action.getId());
+    	getSelectionActions().add(action.getId());*/
     	
     	/*
     	 * Does this kind of action need to be registered in the
