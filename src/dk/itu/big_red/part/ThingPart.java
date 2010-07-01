@@ -21,8 +21,5 @@ public abstract class ThingPart extends AbstractPart {
 		figure.setToolTip(model.getClass().getSimpleName());
 		
 		figure.setConstraint(model.getLayout());
-		
-		for (Object i : getChildren())
-			((EditPart)i).refresh();
 	}
 }
