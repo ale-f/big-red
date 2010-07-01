@@ -7,10 +7,10 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.actions.ActionFactory;
 
-public class AppContextMenuProvider extends ContextMenuProvider {
+public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
 	
-	public AppContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
+	public BigraphEditorContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
 		super(viewer);
 		setActionRegistry(registry);
 	}
