@@ -9,7 +9,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.IHierarchical;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
@@ -20,8 +19,8 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  * @author alec
  *
  */
-public class Port extends Point implements IAdaptable, IConnectable, ILayoutable, IPropertyChangeNotifier, IHierarchical {
-	private IHierarchical parent = null;
+public class Port extends Point implements IAdaptable, IConnectable, ILayoutable, IPropertyChangeNotifier {
+	private ILayoutable parent = null;
 	
 	/**
 	 * The position of a Port on its parent {@link Node} is governed by its
@@ -59,12 +58,12 @@ public class Port extends Point implements IAdaptable, IConnectable, ILayoutable
 	}
 	
 	@Override
-	public IHierarchical getParent() {
+	public ILayoutable getParent() {
 		return this.parent;
 	}
 	
 	@Override
-	public void setParent(IHierarchical parent) {
+	public void setParent(ILayoutable parent) {
 		this.parent = parent;
 	}
 	

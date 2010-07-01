@@ -1,5 +1,8 @@
 package dk.itu.big_red.model.interfaces;
 
+import java.util.List;
+import java.util.Set;
+
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
@@ -13,13 +16,36 @@ import dk.itu.big_red.model.Bigraph;
  *
  */
 public interface ILayoutable {
+	/**
+	 * The property name fired when the ILayoutable's layout changes (i.e.,
+	 * it's resized or moved).
+	 */
 	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
+	
+	/**
+	 * The property name fired when a child is added or removed.
+	 */
+	public static final String PROPERTY_CHILD = "ILayoutableChild";
+	
+	/**
+	 * The property name fired when the ILayoutable's parent changes.
+	 */
+	public static final String PROPERTY_PARENT = "ILayoutableParent";
 	
 	/**
 	 * Gets a copy of the current layout of this object.
 	 * @return the current layout
 	 */
 	public Rectangle getLayout();
+	
+	/**
+	 * Gets the layout of this object relative to the top-left of the
+	 * <i>root</i> rather than the immediate parent. (Like {@link
+	 * ILayoutable#getLayout}, the object returned is newly created, and so can
+	 * be safely modified.)
+	 * @return the current layout relative to the root
+	 */
+	public Rectangle getRootLayout();
 	
 	/**
 	 * Sets the layout of this object.
@@ -42,4 +68,16 @@ public interface ILayoutable {
 	 * @param bigraph a Bigraph
 	 */
 	public void setBigraph(Bigraph bigraph);
+	
+	/**
+	 * Returns the parent of this object.
+	 * @return an {@link ILayoutable}
+	 */
+	public ILayoutable getParent();
+
+	/**
+	 * Changes the parent of this object.
+	 * @param p the new parent {@link ILayoutable}
+	 */
+	public void setParent(ILayoutable p);
 }

@@ -12,7 +12,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.model.interfaces.IHierarchical;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.part.BigraphPart;
 import dk.itu.big_red.util.DOM;
@@ -69,11 +68,11 @@ public class Bigraph extends Thing {
 		return signature;
 	}
 	
-	public void setParent(IHierarchical parent) {
+	public void setParent(ILayoutable parent) {
 		/* do nothing */
 	}
 	
-	public IHierarchical getParent() {
+	public ILayoutable getParent() {
 		return null;
 	}
 	

@@ -8,7 +8,7 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.IHierarchical;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 /**
@@ -23,12 +23,12 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
-	private Edge parent;
+	private Edge edge;
 	private Bigraph bigraph;
 	private Rectangle layout = new Rectangle(0, 0, 10, 10);
 	
-	public EdgeTarget(Edge parent) {
-		this.parent = parent;
+	public EdgeTarget(Edge edge) {
+		this.edge = edge;
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, this.layout);
 	}
 
-	public Edge getParent() {
-		return parent;
+	public Edge getEdge() {
+		return edge;
 	}
 	
 	private ArrayList<EdgeConnection> connections =
@@ -57,8 +57,8 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 	public void averagePosition() {
 		int tx = 0, ty = 0;
 		for (EdgeConnection f : connections) {
-			tx += ((IHierarchical)f.getSource()).getRootLayout().x;
-			ty += ((IHierarchical)f.getSource()).getRootLayout().y;
+			tx += f.getSource().getRootLayout().x;
+			ty += f.getSource().getRootLayout().y;
 		}
 		setLayout(new Rectangle(tx / connections.size(), ty / connections.size(), getLayout().width, getLayout().height));
 	}
@@ -105,5 +105,27 @@ public class EdgeTarget implements IConnectable, IPropertyChangeNotifier {
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
+	}
+
+	@Override
+	public Rectangle getRootLayout() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private ILayoutable parent = null;
+	
+	@Override
+	public ILayoutable getParent() {
+		return this.parent;
+	}
+
+	@Override
+	public void setParent(ILayoutable p) {
+		if (p != null) {
+			ILayoutable oldParent = this.parent;
+			this.parent = p;
+			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
+		}
 	}
 }

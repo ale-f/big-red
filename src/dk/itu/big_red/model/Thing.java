@@ -15,7 +15,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.interfaces.ICommentable;
-import dk.itu.big_red.model.interfaces.IHierarchical;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.IXMLisable;
@@ -32,7 +31,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChangeNotifier, ICommentable, IHierarchical {
+public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChangeNotifier, ICommentable {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
@@ -48,7 +47,7 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	protected Rectangle layout;
 	
 	protected ArrayList<Thing> children = new ArrayList<Thing>();
-	protected IHierarchical parent = null;
+	protected ILayoutable parent = null;
 	
 	private IPropertySource propertySource = null;
 	
@@ -93,12 +92,12 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, IPropertyChan
 	}
 	
 	@Override
-	public IHierarchical getParent() {
+	public ILayoutable getParent() {
 		return this.parent;
 	}
 	
 	@Override
-	public void setParent(IHierarchical parent) {
+	public void setParent(ILayoutable parent) {
 		this.parent = parent;
 	}
 	

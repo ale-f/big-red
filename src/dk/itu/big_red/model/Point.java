@@ -106,4 +106,26 @@ public class Point implements IConnectable, IPropertyChangeNotifier, IXMLisable 
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public Rectangle getRootLayout() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private ILayoutable parent = null;
+	
+	@Override
+	public ILayoutable getParent() {
+		return this.parent;
+	}
+
+	@Override
+	public void setParent(ILayoutable p) {
+		if (p != null) {
+			ILayoutable oldParent = this.parent;
+			this.parent = p;
+			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
+		}
+	}
 }
