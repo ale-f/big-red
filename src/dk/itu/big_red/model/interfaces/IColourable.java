@@ -8,16 +8,14 @@ import org.eclipse.swt.graphics.RGB;
  * @author alec
  *
  */
-public interface IColourable {
+public interface IColourable extends IPropertyChangeNotifier {
 	/**
-	 * The property name implementors should fire (if applicable) when their
-	 * fill colour changes.
+	 * The property name fired when the fill colour changes.
 	 */
 	public static final String PROPERTY_FILL_COLOUR = "IColourableFillColour";
 	
 	/**
-	 * The property name implementors should fire (if applicable) when their
-	 * outline colour changes.
+	 * The property name fired when the outline colour changes.
 	 */
 	public static final String PROPERTY_OUTLINE_COLOUR = "IColourableOutlineColour";
 	

@@ -6,10 +6,9 @@ package dk.itu.big_red.model.interfaces;
  * @author alec
  *
  */
-public interface ICommentable {
+public interface ICommentable extends IPropertyChangeNotifier {
 	/**
-	 * The property name implementors should fire (if applicable) when the
-	 * comment changes.
+	 * The property name fired when the comment changes.
 	 */
 	public static final String PROPERTY_COMMENT = "ICommentableComment";
 	
