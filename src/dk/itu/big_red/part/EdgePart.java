@@ -19,7 +19,7 @@ import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.EdgeTarget;
 
-public class EdgeTargetPart extends AbstractGraphicalEditPart implements NodeEditPart, PropertyChangeListener {
+public class EdgePart extends AbstractGraphicalEditPart implements NodeEditPart, PropertyChangeListener {
 	@Override
 	public EdgeTarget getModel() {
 		return (EdgeTarget)super.getModel();

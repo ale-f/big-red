@@ -19,12 +19,12 @@ import dk.itu.big_red.model.EdgeConnection;
 
 public class EdgeConnectionPart extends AbstractConnectionEditPart implements NodeEditPart, PropertyChangeListener {
 	/**
-	 * Returns the {@link EdgeTargetPart} corresponding to this connection's
+	 * Returns the {@link EdgePart} corresponding to this connection's
 	 * {@link EdgeTarget}.
 	 * @return an EdgeTargetPart
 	 */
-	public EdgeTargetPart getEdgeTargetPart() {
-		return ((EdgeTargetPart)this.getViewer().getEditPartRegistry().get(getModel().getParent().getEdgeTarget()));
+	public EdgePart getEdgePart() {
+		return ((EdgePart)this.getViewer().getEditPartRegistry().get(getModel().getParent().getEdgeTarget()));
 	}
 	
 	@Override
@@ -74,22 +74,22 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(
 			ConnectionEditPart connection) {
-		return getEdgeTargetPart().getSourceConnectionAnchor(connection);
+		return getEdgePart().getSourceConnectionAnchor(connection);
 	}
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(
 			ConnectionEditPart connection) {
-		return getEdgeTargetPart().getTargetConnectionAnchor(connection);
+		return getEdgePart().getTargetConnectionAnchor(connection);
 	}
 
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return getEdgeTargetPart().getSourceConnectionAnchor(request);
+		return getEdgePart().getSourceConnectionAnchor(request);
 	}
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return getEdgeTargetPart().getTargetConnectionAnchor(request);
+		return getEdgePart().getTargetConnectionAnchor(request);
 	}
 }
