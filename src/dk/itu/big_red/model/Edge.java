@@ -30,8 +30,6 @@ import dk.itu.big_red.model.interfaces.IXMLisable;
 public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, ICommentable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
-	public static final String PROPERTY_COMMENT = "EdgeComment";
-	
 	/**
 	 * The points on the bigraph connected by this Edge. (This should generally
 	 * contain at least one entry.)
