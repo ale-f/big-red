@@ -22,7 +22,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Point implements IConnectable, IXMLisable {
+public abstract class Point implements IConnectable, IXMLisable {
 	protected Rectangle layout = new Rectangle(5, 5, 10, 10);
 	
 	@Override
@@ -37,18 +37,6 @@ public class Point implements IConnectable, IXMLisable {
 			this.layout.setBounds(layout);
 			listeners.firePropertyChange(ILayoutable.PROPERTY_LAYOUT, oldLayout, layout);
 		}
-	}
-
-	@Override
-	public Bigraph getBigraph() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setBigraph(Bigraph bigraph) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	protected EdgeConnection connection = null;
@@ -159,7 +147,7 @@ public class Point implements IConnectable, IXMLisable {
 	}
 	
 	@Override
-	public Point clone() {
-		return new Point();
+	public Point clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException();
 	}
 }
