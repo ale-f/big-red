@@ -28,18 +28,6 @@ public class NodePart extends ThingPart {
 		return new NodeFigure();
 	}
 	
-	/**
-	 * Modifies this object's {@link EditPolicy#PRIMARY_DRAG_ROLE} edit policy
-	 * to enforce the resizability constraint from the model. 
-	 */
-	protected void setResizability() {
-		EditPolicy pol = getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
-		if (pol != null && pol instanceof ResizableEditPolicy) {
-			((ResizableEditPolicy)pol).setResizeDirections(
-				(getModel().getControl().isResizable() ? PositionConstants.NSEW : 0));
-		}
-	}
-	
 	@Override
 	public void installEditPolicy(Object key, EditPolicy editPolicy) {
 		super.installEditPolicy(key, editPolicy);
@@ -48,7 +36,7 @@ public class NodePart extends ThingPart {
 		 * can be tweaked to better fit the model.
 		 */
 		if (key == EditPolicy.PRIMARY_DRAG_ROLE)
-			setResizability();
+			setResizable(getModel().getControl().isResizable());
 	}
 	
 	@Override
@@ -76,7 +64,7 @@ public class NodePart extends ThingPart {
 		NodeFigure figure = (NodeFigure)getFigure();
 		Node model = getModel();
 		
-		setResizability();
+		setResizable(getModel().getControl().isResizable());
 		
 		Rectangle layout = model.getLayout();
 		

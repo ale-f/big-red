@@ -5,11 +5,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -36,6 +38,20 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	public void deactivate() {
 		getModel().removePropertyChangeListener(this);
 		super.deactivate();
+	}
+	
+	/**
+	 * Checks to see if this {@link EditPart}'s <code>PRIMARY_DRAG_ROLE</code>
+	 * {@link EditPolicy} is a {@link ResizableEditPolicy}, and - if it is -
+	 * reconfigures it to allow or forbid resizing.
+	 * @param resizable whether or not this Part should be resizable
+	 */
+	protected void setResizable(boolean resizable) {
+		EditPolicy pol = getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
+		if (pol instanceof ResizableEditPolicy) {
+			((ResizableEditPolicy)pol).setResizeDirections(
+				(resizable ? PositionConstants.NSEW : 0));
+		}
 	}
 	
 	@Override
