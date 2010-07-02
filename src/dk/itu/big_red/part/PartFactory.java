@@ -23,7 +23,7 @@ public class PartFactory implements EditPartFactory {
     		part = new SitePart();
         } else if (model instanceof EdgeConnection) {
         	part = new EdgeConnectionPart();
-        } else if (model instanceof EdgeTarget) {
+        } else if (model instanceof Edge) {
         	part = new EdgePart();
         } else if (model instanceof InnerName) {
         	part = new NamePart();

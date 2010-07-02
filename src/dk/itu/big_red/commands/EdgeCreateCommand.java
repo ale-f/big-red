@@ -18,14 +18,14 @@ public class EdgeCreateCommand extends Command {
 		if (e instanceof IConnectable)
 			this.target = (IConnectable)e;
 		else if (e instanceof EdgeConnection)
-			this.target = ((EdgeConnection)e).getParent().getEdgeTarget();
+			this.target = ((EdgeConnection)e).getParent();
 	}
 	
 	public void setSource(Object e) {
 		if (e instanceof IConnectable)
 			this.source = (IConnectable)e;
 		else if (e instanceof EdgeConnection)
-			this.source = ((EdgeConnection)e).getParent().getEdgeTarget();
+			this.source = ((EdgeConnection)e).getParent();
 	}
 	
 	public boolean canExecute() {
@@ -34,27 +34,27 @@ public class EdgeCreateCommand extends Command {
 	
 	public void execute() {
 		if (edge != null) {
-			if (!(source instanceof EdgeTarget))
+			if (!(source instanceof Edge))
 				edge.addPoint(source);
-			if (!(target instanceof EdgeTarget))
+			if (!(target instanceof Edge))
 				edge.addPoint(target);
 		} else
 		/*
 		 * If either source or target is an EdgeTarget, then we can simply add
 		 * a new EdgeConnection to the existing Edge.
 		 */
-		if (target instanceof EdgeTarget) {
-			EdgeTarget target = (EdgeTarget)this.target;
-			target.getEdge().addPoint(source);
+		if (target instanceof Edge) {
+			Edge target = (Edge)this.target;
+			target.addPoint(source);
 			target.averagePosition();
 			
-			edge = target.getEdge();
-		} else if (source instanceof EdgeTarget) {
-			EdgeTarget source = (EdgeTarget)this.source;
-			source.getEdge().addPoint(target);
+			edge = target;
+		} else if (source instanceof Edge) {
+			Edge source = (Edge)this.source;
+			source.addPoint(target);
 			source.averagePosition();
 			
-			edge = source.getEdge();
+			edge = source;
 		} else {
 			/*
 			 * Create a new Edge.
@@ -62,7 +62,7 @@ public class EdgeCreateCommand extends Command {
 			edge = new Edge();
 			edge.addPoint(source);
 			edge.addPoint(target);
-			edge.getEdgeTarget().averagePosition();
+			edge.averagePosition();
 		}
 	}
 	
@@ -71,9 +71,9 @@ public class EdgeCreateCommand extends Command {
 	}
 	
 	public void undo() {
-		if (!(source instanceof EdgeTarget))
+		if (!(source instanceof Edge))
 			edge.removePoint(source);
-		if (!(target instanceof EdgeTarget))
+		if (!(target instanceof Edge))
 			edge.removePoint(target);
 	}
 }

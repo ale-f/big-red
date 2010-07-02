@@ -20,11 +20,11 @@ import dk.itu.big_red.model.EdgeConnection;
 public class EdgeConnectionPart extends AbstractConnectionEditPart implements NodeEditPart, PropertyChangeListener {
 	/**
 	 * Returns the {@link EdgePart} corresponding to this connection's
-	 * {@link EdgeTarget}.
+	 * {@link Edge}.
 	 * @return an EdgeTargetPart
 	 */
 	public EdgePart getEdgePart() {
-		return ((EdgePart)this.getViewer().getEditPartRegistry().get(getModel().getParent().getEdgeTarget()));
+		return ((EdgePart)this.getViewer().getEditPartRegistry().get(getModel().getParent()));
 	}
 	
 	@Override

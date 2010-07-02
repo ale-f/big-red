@@ -29,7 +29,7 @@ public interface IConnectable extends ILayoutable {
 	 * The property name fired when the target edge set changes (that is, an
 	 * edge for which this object is the target is added or removed).
 	 * 
-	 * <p>Generally, only {@link EdgeTarget}s should fire this property.
+	 * <p>Generally, only {@link Edge}s should fire this property.
 	 */
 	public static final String PROPERTY_TARGET_EDGE = "IConnectableTargetEdge";
 

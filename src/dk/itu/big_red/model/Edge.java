@@ -3,81 +3,83 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IXMLisable;
 
 /**
- * An Edge is a connection which connects any number of {@link Port}s and
- * {@link InnerName}s. (An Edge which "connects" only one point is perfectly
- * legitimate.)
- * 
- * <p>Note that Edges represent the <i>bigraphical</i> concept of an edge
- * rather than a GEF/GMF {@link Connection}, and so they lack any concept of a
- * "source" or "target"; Ports and Names are always source nodes as far as the
- * underlying framework is concerned, and the target is always an {@link
- * EdgeTarget}.
+ * An EdgeTarget is a small object used to keep {@link Edge}s as close to the
+ * formal bigraphical model as possible. GEF/GMF requires that every connection
+ * joins <i>two</i> objects; the EdgeTarget provides a target for multiple
+ * connections, so multi-point bigraphical edges can be constructed quite
+ * happily. 
  * @author alec
  *
  */
-public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, ICommentable {
+public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-	
-	/**
-	 * The points on the bigraph connected by this Edge. (This should generally
-	 * contain at least one entry.)
-	 */
-	private ArrayList<IConnectable> points = new ArrayList<IConnectable>();
 	
 	/**
 	 * The {@link EdgeConnection}s that comprise this Edge on the bigraph.
 	 */
-	private ArrayList<EdgeConnection> connections = new ArrayList<EdgeConnection>();
+	private ArrayList<EdgeConnection> connections =
+		new ArrayList<EdgeConnection>();
 	
-	/**
-	 * The {@link EdgeTarget} which all the {@link EdgeConnection}s use as
-	 * their target.
-	 */
-	private EdgeTarget target = new EdgeTarget(this);
+	private Bigraph bigraph;
+	private Rectangle layout = new Rectangle(0, 0, 10, 10);
 	
-	private IPropertySource propertySource = null;
-
-	private String comment = null;
+	protected String comment = null;
 	
-	@SuppressWarnings("unchecked")
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter == IPropertySource.class) {
-			if (propertySource == null) {
-				propertySource = new ModelPropertySource(this);
-			}
-			return propertySource;
-		}
-		return null;
+	public Edge() {
 	}
 
+	@Override
+	public Rectangle getLayout() {
+		return new Rectangle(this.layout);
+	}
+	
+	@Override
+	public void setLayout(Rectangle newLayout) {
+		Rectangle oldLayout = this.layout;
+		this.layout = new Rectangle(newLayout);
+		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, this.layout);
+	}
+	
+	/**
+	 * Moves this EdgeTarget to the average position of all the
+	 * {@link IConnectable}s connected to it.
+	 */
+	public void averagePosition() {
+		int tx = 0, ty = 0;
+		for (EdgeConnection f : connections) {
+			tx += f.getSource().getRootLayout().x;
+			ty += f.getSource().getRootLayout().y;
+		}
+		setLayout(new Rectangle(tx / connections.size(), ty / connections.size(), getLayout().width, getLayout().height));
+	}
+	
 	/**
 	 * Adds the given {@link IConnectable} to this Edge's set of points, and
 	 * creates a new {@link EdgeConnection} joining it to this Edge's {@link
-	 * EdgeTarget}.
+	 * Edge}.
 	 * @param point an IConnectable
 	 */
 	public void addPoint(IConnectable point) {
 		EdgeConnection c = new EdgeConnection(this);
 		c.setSource(point);
-		points.add(point);
-		connections.add(c);
-		point.addConnection(c);
 		
-		getEdgeTarget().setBigraph(point.getBigraph());
-		getEdgeTarget().addConnection(c);
+		setBigraph(point.getBigraph());
+		
+		point.addConnection(c);
+		addConnection(c);
 	}
 	
 	/**
@@ -89,35 +91,106 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, IC
 	 * @param point an IConnectable
 	 */
 	public void removePoint(IConnectable point) {
-		if (points.contains(point)) {
-			for (EdgeConnection e : point.getConnections()) {
-				int index = connections.indexOf(e);
-				if (index != -1) {
-					points.remove(point);
-					connections.remove(index);
-					getEdgeTarget().removeConnection(e);
-					point.removeConnection(e);
-					break;
-				}
+		for (EdgeConnection e : connections) {
+			if (e.getSource() == point) {
+				point.removeConnection(e);
+				removeConnection(e);
+				
+				break;
 			}
-			
-			if (points.size() == 0)
-				getEdgeTarget().setBigraph(null);
 		}
+		
+		if (connections.size() == 0)
+			setBigraph(null);
 	}
 	
-	public EdgeTarget getEdgeTarget() {
-		return target;
+	@Override
+	public void addConnection(EdgeConnection e) {
+		connections.add(e);
+		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, null, e);
+	}
+
+	@Override
+	public void removeConnection(EdgeConnection e) {
+		connections.remove(e);
+		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, e, null);
 	}
 	
+	@Override
+	public List<EdgeConnection> getConnections() {
+		return connections;
+	}
+
+	@Override
+	public Bigraph getBigraph() {
+		return this.bigraph;
+	}
+
+	@Override
+	public void setBigraph(Bigraph bigraph) {
+		if (bigraph != null) {
+			bigraph.addNHTLO(this);
+		} else {
+			if (this.bigraph != null)
+				this.bigraph.removeNHTLO(this);
+		}
+		
+		this.bigraph = bigraph;
+	}
+
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
 	}
-	
+
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
+		listeners.removePropertyChangeListener(listener);
+	}
+
+	@Override
+	public Rectangle getRootLayout() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private ILayoutable parent = null;
+	
+	@Override
+	public ILayoutable getParent() {
+		return this.parent;
+	}
+
+	@Override
+	public void setParent(ILayoutable p) {
+		if (p != null) {
+			ILayoutable oldParent = this.parent;
+			this.parent = p;
+			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
+		}
+	}
+
+	@Override
+	public List<ILayoutable> getChildren() {
+		return new ArrayList<ILayoutable>();
+	}
+
+	@Override
+	public void addChild(ILayoutable c) {
+	}
+
+	@Override
+	public void removeChild(ILayoutable c) {
+	}
+
+	@Override
+	public boolean canContain(ILayoutable c) {
+		return false;
+	}
+	
+	@Override
+	public Edge clone() {
+		return new Edge();
 	}
 	
 	@Override
@@ -133,13 +206,21 @@ public class Edge implements IAdaptable, IPropertyChangeNotifier, IXMLisable, IC
 	}
 	
 	@Override
-	public void fromXML(Node d) {
-		// TODO Auto-generated method stub
-		
+	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+		if (adapter == IPropertySource.class) {
+			return new ModelPropertySource(this);
+		} else return null;
 	}
+
 	@Override
 	public Node toXML(Node d) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void fromXML(Node d) {
+		// TODO Auto-generated method stub
+		
 	}
 }

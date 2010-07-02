@@ -17,12 +17,12 @@ import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.EdgeFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
-import dk.itu.big_red.model.EdgeTarget;
+import dk.itu.big_red.model.Edge;
 
 public class EdgePart extends AbstractGraphicalEditPart implements NodeEditPart, PropertyChangeListener {
 	@Override
-	public EdgeTarget getModel() {
-		return (EdgeTarget)super.getModel();
+	public Edge getModel() {
+		return (Edge)super.getModel();
 	}
 	
 	@Override
@@ -55,11 +55,11 @@ public class EdgePart extends AbstractGraphicalEditPart implements NodeEditPart,
 	
 	public void refreshVisuals() {
 		EdgeFigure figure = (EdgeFigure)getFigure();
-		EdgeTarget model = getModel();
+		Edge model = getModel();
 		
 		figure.setConstraint(model.getLayout());
 		
-		figure.setToolTip(model.getEdge().getComment());
+		figure.setToolTip(model.getComment());
 	}
 
 	@Override

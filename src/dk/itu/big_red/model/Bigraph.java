@@ -117,7 +117,7 @@ public class Bigraph extends Thing {
 	 * 
 	 * <p>A <i>non-hierarchical top-level object</i> is an object whose {@link
 	 * EditPart} must always appear as a top-level child of {@link
-	 * BigraphPart}; they include {@link Port}s and {@link EdgeTarget}s. An
+	 * BigraphPart}; they include {@link Port}s and {@link Edge}s. An
 	 * object is a good candidate for being a NHTLO if it doesn't really make
 	 * sense to think of it as being a child of a particular {@link Node}, or
 	 * if it needs to be able to escape the bounding box of its parent.
