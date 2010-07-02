@@ -45,6 +45,8 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 	protected void refreshVisuals(){
 		super.refreshVisuals();
 		
+		setResizable(false);
+		
 		Port model = getModel();
 		PortFigure figure = (PortFigure)getFigure();
 		
