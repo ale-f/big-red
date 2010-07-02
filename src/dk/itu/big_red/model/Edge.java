@@ -16,14 +16,17 @@ import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IXMLisable;
 
 /**
- * An EdgeTarget is a small object used to keep {@link Edge}s as close to the
- * formal bigraphical model as possible. GEF/GMF requires that every connection
- * joins <i>two</i> objects; the EdgeTarget provides a target for multiple
- * connections, so multi-point bigraphical edges can be constructed quite
- * happily. 
- * @author alec
- *
- */
+  * An Edge is a connection which connects any number of {@link Port}s and
+  * {@link InnerName}s. (An Edge which "connects" only one point is perfectly
+  * legitimate.)
+  * 
+  * <p>Note that Edges represent the <i>bigraphical</i> concept of an edge
+  * rather than a GEF/GMF {@link Connection}, and so they lack any concept of a
+  * "source" or "target"; the Edge is always the target for a connection, and
+  * {@link Point}s are always sources.
+  * @author alec
+  *
+  */
 public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
@@ -170,19 +173,31 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable 
 		}
 	}
 
+	/**
+	 * Returns an empty list.
+	 */
 	@Override
 	public List<ILayoutable> getChildren() {
 		return new ArrayList<ILayoutable>();
 	}
 
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	public void addChild(ILayoutable c) {
 	}
 
+	/**
+	 * Does nothing.
+	 */
 	@Override
 	public void removeChild(ILayoutable c) {
 	}
 
+	/**
+	 * Returns false.
+	 */
 	@Override
 	public boolean canContain(ILayoutable c) {
 		return false;
