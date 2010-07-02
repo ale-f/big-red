@@ -14,7 +14,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
-import dk.itu.big_red.figure.EdgeTargetFigure;
+import dk.itu.big_red.figure.EdgeFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.EdgeTarget;
@@ -28,7 +28,7 @@ public class EdgePart extends AbstractGraphicalEditPart implements NodeEditPart,
 	@Override
 	protected IFigure createFigure() {
 		// TODO Auto-generated method stub
-		return new EdgeTargetFigure();
+		return new EdgeFigure();
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class EdgePart extends AbstractGraphicalEditPart implements NodeEditPart,
 	}
 	
 	public void refreshVisuals() {
-		EdgeTargetFigure figure = (EdgeTargetFigure)getFigure();
+		EdgeFigure figure = (EdgeFigure)getFigure();
 		EdgeTarget model = getModel();
 		
 		figure.setConstraint(model.getLayout());

@@ -4,9 +4,9 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.XYLayout;
 
-public class EdgeTargetFigure extends AbstractFigure {
+public class EdgeFigure extends AbstractFigure {
 	
-	public EdgeTargetFigure() {
+	public EdgeFigure() {
 		super();
 		
 		XYLayout layout = new XYLayout();
