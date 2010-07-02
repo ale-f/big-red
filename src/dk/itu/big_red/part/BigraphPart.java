@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.XYLayout;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
-import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
@@ -20,7 +21,9 @@ public class BigraphPart extends ThingPart {
 	
 	@Override
 	protected IFigure createFigure() {
-		return new BigraphFigure();
+		Figure f = new Figure();
+		f.setLayoutManager(new XYLayout());
+		return f;
 	}
 
 	@Override
@@ -32,5 +35,12 @@ public class BigraphPart extends ThingPart {
 		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>(getModel().getChildren());
 		children.addAll(getModel().getNHTLOs());
 		return children;
+	}
+	
+	/**
+	 * Does nothing.
+	 */
+	@Override
+	protected void refreshVisuals() {
 	}
 }
