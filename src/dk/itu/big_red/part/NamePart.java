@@ -1,6 +1,7 @@
 package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
+import java.util.List;
 
 
 import org.eclipse.draw2d.ColorConstants;
@@ -17,6 +18,7 @@ import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NameFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
+import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.InnerName.NameType;
 import dk.itu.big_red.model.interfaces.IConnectable;
@@ -65,6 +67,11 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 		figure.setBackgroundColor(model.getType() == NameType.NAME_INNER ?
 			ColorConstants.blue : ColorConstants.red);
 	}
+	
+	@Override
+	protected List<EdgeConnection> getModelSourceConnections() {
+        return getModel().getConnections();
+    }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return new CentreAnchor(getFigure());

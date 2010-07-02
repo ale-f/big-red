@@ -61,4 +61,15 @@ public class InnerName extends Point {
 		
 		setType(NameType.valueOf(DOM.getAttribute(d, "type")));
 	}
+	
+	@Override
+	public Bigraph getBigraph() {
+		return getParent().getBigraph();
+	}
+
+	@Override
+	public void setBigraph(Bigraph bigraph) {
+		// TODO Auto-generated method stub
+		
+	}
 }
