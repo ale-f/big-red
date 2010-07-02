@@ -87,9 +87,4 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	public Bigraph getBigraph() {
 		return getParent().getBigraph();
 	}
-
-	@Override
-	public void setBigraph(Bigraph bigraph) {
-		getParent().setBigraph(bigraph);
-	}
 }

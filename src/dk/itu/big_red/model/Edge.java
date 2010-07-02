@@ -79,7 +79,7 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable 
 		EdgeConnection c = new EdgeConnection(this);
 		c.setSource(point);
 		
-		setBigraph(point.getBigraph());
+		getBigraph().addNHTLO(this);
 		
 		point.addConnection(c);
 		addConnection(c);
@@ -104,7 +104,7 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable 
 		}
 		
 		if (connections.size() == 0)
-			setBigraph(null);
+			getBigraph().removeNHTLO(this);
 	}
 	
 	@Override
@@ -127,18 +127,6 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable 
 	@Override
 	public Bigraph getBigraph() {
 		return this.bigraph;
-	}
-
-	@Override
-	public void setBigraph(Bigraph bigraph) {
-		if (bigraph != null) {
-			bigraph.addNHTLO(this);
-		} else {
-			if (this.bigraph != null)
-				this.bigraph.removeNHTLO(this);
-		}
-		
-		this.bigraph = bigraph;
 	}
 
 	@Override

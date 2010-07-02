@@ -73,12 +73,6 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	public Bigraph getBigraph();
 	
 	/**
-	 * Sets the {@link Bigraph} that contains this object.
-	 * @param bigraph a Bigraph
-	 */
-	public void setBigraph(Bigraph bigraph);
-	
-	/**
 	 * Returns the parent of this object.
 	 * @return an {@link ILayoutable}
 	 */

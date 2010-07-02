@@ -220,10 +220,4 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, ICommentable 
 	public Bigraph getBigraph() {
 		return getParent().getBigraph();
 	}
-
-	@Override
-	public void setBigraph(Bigraph bigraph) {
-		// TODO Auto-generated method stub
-		
-	}
 }
