@@ -1,16 +1,8 @@
 package dk.itu.big_red.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 /**
  * Ports are one of the two kinds of object that can be connected by an
@@ -20,8 +12,6 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  *
  */
 public class Port extends Point implements IAdaptable, ILayoutable {
-	private ILayoutable parent = null;
-	
 	/**
 	 * The position of a Port on its parent {@link Node} is governed by its
 	 * <code>distance</code>, a value in the range [0,1) that specifies a
@@ -55,21 +45,6 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	@Override
-	public ILayoutable getParent() {
-		return this.parent;
-	}
-	
-	@Override
-	public void setParent(ILayoutable parent) {
-		this.parent = parent;
-	}
-	
-	@Override
-	public Rectangle getRootLayout() {
-		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
 	}
 	
 	/**
