@@ -60,6 +60,7 @@ public class EdgeCreateCommand extends Command {
 			 * Create a new Edge.
 			 */
 			edge = new Edge();
+			edge.setParent(source.getBigraph());
 			edge.addPoint(source);
 			edge.addPoint(target);
 			edge.averagePosition();

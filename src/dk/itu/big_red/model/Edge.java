@@ -36,7 +36,6 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable 
 	private ArrayList<EdgeConnection> connections =
 		new ArrayList<EdgeConnection>();
 	
-	private Bigraph bigraph;
 	private Rectangle layout = new Rectangle(0, 0, 10, 10);
 	
 	protected String comment = null;
@@ -126,7 +125,7 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable 
 
 	@Override
 	public Bigraph getBigraph() {
-		return this.bigraph;
+		return getParent().getBigraph();
 	}
 
 	@Override
