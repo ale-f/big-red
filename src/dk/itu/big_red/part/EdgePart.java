@@ -4,14 +4,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.EdgeFigure;
@@ -19,7 +18,7 @@ import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Edge;
 
-public class EdgePart extends AbstractGraphicalEditPart implements NodeEditPart, PropertyChangeListener {
+public class EdgePart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 	@Override
 	public Edge getModel() {
 		return (Edge)super.getModel();
@@ -56,6 +55,8 @@ public class EdgePart extends AbstractGraphicalEditPart implements NodeEditPart,
 	public void refreshVisuals() {
 		EdgeFigure figure = (EdgeFigure)getFigure();
 		Edge model = getModel();
+		
+		setResizable(false);
 		
 		figure.setConstraint(model.getLayout());
 		
