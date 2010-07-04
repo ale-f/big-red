@@ -18,8 +18,10 @@ public class ILayoutableCopyCommand extends Command {
 	protected ArrayList<ILayoutable> list =
 		new ArrayList<ILayoutable>();
 	
-	public boolean addElement(ILayoutable node) {
-		return (list.contains(node) ? false : list.add(node));
+	public boolean addElement(Object node) {
+		if (node instanceof ILayoutable)
+			return (list.contains(node) ? false : list.add((ILayoutable)node));
+		else return false;
 	}
 	
 	private void crunchList() {
@@ -61,7 +63,7 @@ public class ILayoutableCopyCommand extends Command {
 		return true;
 	}
 	
-	public boolean isCopyableNode(ILayoutable node) {
+	public boolean isCopyableNode(Object node) {
 		return (node instanceof Root || node instanceof Site || 
 				node instanceof Node);
 	}
