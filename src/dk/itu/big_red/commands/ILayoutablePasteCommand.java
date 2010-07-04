@@ -10,22 +10,24 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
 import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
 
 
-public class ThingPasteCommand extends Command {
-	private HashMap<Thing, Thing> list = new HashMap<Thing, Thing>();
-	private Thing newParent;
+public class ILayoutablePasteCommand extends Command {
+	private HashMap<ILayoutable, ILayoutable> list =
+		new HashMap<ILayoutable, ILayoutable>();
+	private ILayoutable newParent;
 	
-	public ThingPasteCommand() {
+	public ILayoutablePasteCommand() {
 		
 	}
 	
-	public ThingPasteCommand(Thing newParent) {
+	public ILayoutablePasteCommand(ILayoutable newParent) {
 		this.newParent = newParent;
 	}
 	
-	public Thing getNewParent() {
+	public ILayoutable getNewParent() {
 		return newParent;
 	}
 	
@@ -47,12 +49,13 @@ public class ThingPasteCommand extends Command {
 		 */
 		if (newParent == null)
 			return false;
-		ArrayList<Thing> bList = (ArrayList<Thing>)Clipboard.getDefault().getContents();
+		ArrayList<ILayoutable> bList =
+			(ArrayList<ILayoutable>)Clipboard.getDefault().getContents();
 		if (bList == null || bList.isEmpty())
 			return false;
-		Iterator<Thing> it = bList.iterator();
+		Iterator<ILayoutable> it = bList.iterator();
 		while (it.hasNext()) {
-			Thing node = (Thing)it.next();
+			ILayoutable node = (ILayoutable)it.next();
 			if (!newParent.canContain(node))
 				return false;
 			else if (isPastableNode(node))
@@ -65,9 +68,9 @@ public class ThingPasteCommand extends Command {
 		if (!canExecute())
 			return;
 		
-		Iterator<Thing> it = list.keySet().iterator();
+		Iterator<ILayoutable> it = list.keySet().iterator();
 		while (it.hasNext()) {
-			Thing node = (Thing)it.next();
+			ILayoutable node = (Thing)it.next();
 			try {
 				list.put(node, (Thing)node.clone());
 			} catch (Exception e) {
@@ -80,9 +83,9 @@ public class ThingPasteCommand extends Command {
 	
 	@Override
 	public void redo() {
-		Iterator<Thing> it = list.values().iterator();
+		Iterator<ILayoutable> it = list.values().iterator();
 		while (it.hasNext()) {
-			Thing node = it.next();
+			ILayoutable node = it.next();
 			if (isPastableNode(node)) {
 				newParent.addChild(node);
 			}
@@ -90,15 +93,16 @@ public class ThingPasteCommand extends Command {
 	}
 	
 	public void undo() {
-		Iterator<Thing> it = list.values().iterator();
+		Iterator<ILayoutable> it = list.values().iterator();
 		while (it.hasNext()) {
-			Thing node = it.next();
+			ILayoutable node = it.next();
 			if (isPastableNode(node))
 				newParent.removeChild(node);
 		}
 	}
 	
-	public boolean isPastableNode(Thing node) {
-		return (node instanceof Node || node instanceof Root || node instanceof Site);
+	public boolean isPastableNode(ILayoutable node) {
+		return (node instanceof Node || node instanceof Root ||
+				node instanceof Site);
 	}
 }
