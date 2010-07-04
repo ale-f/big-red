@@ -12,7 +12,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.commands.ThingCopyCommand;
+import dk.itu.big_red.commands.ILayoutableCopyCommand;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.util.Utility;
 
@@ -39,7 +39,7 @@ public class ThingCopyAction extends SelectionAction {
 		if (selectedObjects == null || selectedObjects.isEmpty())
 			return null;
 		
-		ThingCopyCommand cmd = new ThingCopyCommand();
+		ILayoutableCopyCommand cmd = new ILayoutableCopyCommand();
 		Iterator<Object> it = selectedObjects.iterator();
 		while (it.hasNext()) {
 			Thing node = (Thing)((EditPart)it.next()).getModel();

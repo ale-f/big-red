@@ -12,11 +12,13 @@ import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
-public class ThingCopyCommand extends Command {
-	protected ArrayList<Thing> list = new ArrayList<Thing>();
+public class ILayoutableCopyCommand extends Command {
+	protected ArrayList<ILayoutable> list =
+		new ArrayList<ILayoutable>();
 	
-	public boolean addElement(Thing node) {
+	public boolean addElement(ILayoutable node) {
 		return (list.contains(node) ? false : list.add(node));
 	}
 	
@@ -26,10 +28,11 @@ public class ThingCopyCommand extends Command {
 		 * performs a deep copy), so crunchList throws away any of the nodes
 		 * whose parent is also a candidate for copying.
 		 */
-		ArrayList<Thing> crunchedList = new ArrayList<Thing>();
-		Iterator<Thing> it = list.iterator();
+		ArrayList<ILayoutable> crunchedList =
+			new ArrayList<ILayoutable>();
+		Iterator<ILayoutable> it = list.iterator();
 		while (it.hasNext()) {
-			Thing copycdt = it.next();
+			ILayoutable copycdt = it.next();
 			if (!list.contains(copycdt.getParent())) {
 				crunchedList.add(copycdt);
 			}
@@ -41,7 +44,7 @@ public class ThingCopyCommand extends Command {
 		if (list == null || list.isEmpty())
 			return false;
 		crunchList();
-		Iterator<Thing> it = list.iterator();
+		Iterator<ILayoutable> it = list.iterator();
 		while (it.hasNext()) {
 			if (!isCopyableNode(it.next()))
 				return false;
@@ -58,7 +61,8 @@ public class ThingCopyCommand extends Command {
 		return true;
 	}
 	
-	public boolean isCopyableNode(Thing node) {
-		return (node instanceof Root || node instanceof Site || node instanceof Node);
+	public boolean isCopyableNode(ILayoutable node) {
+		return (node instanceof Root || node instanceof Site || 
+				node instanceof Node);
 	}
 }
