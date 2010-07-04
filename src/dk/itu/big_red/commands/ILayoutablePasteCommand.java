@@ -23,17 +23,17 @@ public class ILayoutablePasteCommand extends Command {
 		
 	}
 	
-	public ILayoutablePasteCommand(ILayoutable newParent) {
-		this.newParent = newParent;
+	public ILayoutablePasteCommand(Object newParent) {
+		setNewParent(newParent);
 	}
 	
 	public ILayoutable getNewParent() {
 		return newParent;
 	}
 	
-	public void setNewParent(Thing newParent) {
-		if (newParent != null)
-			this.newParent = newParent;
+	public void setNewParent(Object newParent) {
+		if (newParent instanceof ILayoutable)
+			this.newParent = (ILayoutable)newParent;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -101,7 +101,7 @@ public class ILayoutablePasteCommand extends Command {
 		}
 	}
 	
-	public boolean isPastableNode(ILayoutable node) {
+	public boolean isPastableNode(Object node) {
 		return (node instanceof Node || node instanceof Root ||
 				node instanceof Site);
 	}
