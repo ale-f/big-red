@@ -7,7 +7,7 @@ import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 
-public class ThingCutCommand extends ILayoutableCopyCommand {
+public class ILayoutableCutCommand extends ILayoutableCopyCommand {
 	private HashMap<ILayoutable, ILayoutable> parents =
 		new HashMap<ILayoutable, ILayoutable>();
 	

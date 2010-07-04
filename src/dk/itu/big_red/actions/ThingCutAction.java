@@ -12,7 +12,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.commands.ThingCutCommand;
+import dk.itu.big_red.commands.ILayoutableCutCommand;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.util.Utility;
 
@@ -39,7 +39,7 @@ public class ThingCutAction extends SelectionAction {
 		if (selectedObjects == null || selectedObjects.isEmpty())
 			return null;
 		
-		ThingCutCommand cmd = new ThingCutCommand();
+		ILayoutableCutCommand cmd = new ILayoutableCutCommand();
 		Iterator<Object> it = selectedObjects.iterator();
 		while (it.hasNext()) {
 			EditPart n = (EditPart)it.next();
