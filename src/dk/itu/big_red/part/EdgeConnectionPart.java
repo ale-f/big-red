@@ -40,11 +40,13 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements No
 	public void activate() {
 		super.activate();
 		getModel().addPropertyChangeListener(this);
+		getModel().getParent().addPropertyChangeListener(this);
 		refreshVisuals();
 	}
 
 	public void deactivate() {
 		getModel().removePropertyChangeListener(this);
+		getModel().getParent().removePropertyChangeListener(this);
 		super.deactivate();
 	}
 	
@@ -68,7 +70,7 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements No
 		EdgeConnectionFigure figure = (EdgeConnectionFigure)getFigure();
 		EdgeConnection model = getModel();
 		
-		figure.setToolTip(model.getComment());
+		figure.setToolTip(model.getParent().getComment());
 	}
 
 	@Override

@@ -15,7 +15,7 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  * @author alec
  *
  */
-public class EdgeConnection implements IPropertyChangeNotifier, ICommentable {
+public class EdgeConnection implements IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 	/**
@@ -73,17 +73,5 @@ public class EdgeConnection implements IPropertyChangeNotifier, ICommentable {
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
-	}
-
-	@Override
-	public String getComment() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setComment(String comment) {
-		// TODO Auto-generated method stub
-		
 	}
 }

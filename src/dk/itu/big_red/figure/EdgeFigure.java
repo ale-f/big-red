@@ -2,6 +2,8 @@ package dk.itu.big_red.figure;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.XYLayout;
 
 public class EdgeFigure extends AbstractFigure {
@@ -12,6 +14,13 @@ public class EdgeFigure extends AbstractFigure {
 		XYLayout layout = new XYLayout();
 		setLayoutManager(layout);
 		
+	}
+	
+	public void setToolTip(String content) {
+		String labelText = "Edge";
+		if (content != null)
+			labelText += "\n\n" + content;
+		super.setToolTip(labelText);
 	}
 	
 	@Override
