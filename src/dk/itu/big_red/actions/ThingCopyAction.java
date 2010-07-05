@@ -42,7 +42,10 @@ public class ThingCopyAction extends SelectionAction {
 		ILayoutableCopyCommand cmd = new ILayoutableCopyCommand();
 		Iterator<Object> it = selectedObjects.iterator();
 		while (it.hasNext()) {
-			Thing node = (Thing)((EditPart)it.next()).getModel();
+			Object i = it.next();
+			if (!(i instanceof EditPart))
+				continue;
+			Object node = ((EditPart)i).getModel();
 			if (!cmd.isCopyableNode(node))
 				return null;
 			else
