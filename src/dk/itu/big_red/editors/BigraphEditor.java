@@ -275,7 +275,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
-    	/*action = new ThingCutAction(this);
+    	action = new ThingCutAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
@@ -287,7 +287,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
-    	action = new ThingRelayoutAction(this);
+    	/*action = new ThingRelayoutAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());*/
     	
