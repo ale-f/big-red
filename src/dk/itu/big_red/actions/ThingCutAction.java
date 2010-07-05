@@ -42,11 +42,10 @@ public class ThingCutAction extends SelectionAction {
 		ILayoutableCutCommand cmd = new ILayoutableCutCommand();
 		Iterator<Object> it = selectedObjects.iterator();
 		while (it.hasNext()) {
-			EditPart n = (EditPart)it.next();
-			Object model = n.getModel();
-			if (!(model instanceof Thing))
+			Object i = it.next();
+			if (!(i instanceof EditPart))
 				continue;
-			Thing node = (Thing)model;
+			Object node = ((EditPart)i).getModel();
 			if (!cmd.isCopyableNode(node))
 				return null;
 			else
