@@ -39,9 +39,6 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 		
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT,
 				getActionRegistry().getAction(ActionFactory.PROPERTIES.getId()));
-		
-		menu.appendToGroup(GEFActionConstants.GROUP_REST,
-				getActionRegistry().getAction("net.ybother.big_red.relayout"));
 	}
 
 	private ActionRegistry getActionRegistry() {
