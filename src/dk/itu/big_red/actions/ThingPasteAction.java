@@ -14,6 +14,7 @@ import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.commands.ILayoutablePasteCommand;
 import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
 public class ThingPasteAction extends SelectionAction {
@@ -36,24 +37,31 @@ public class ThingPasteAction extends SelectionAction {
 	
 	@SuppressWarnings("unchecked")
 	private Command createPasteCommand(List selectedObjects) {
-		Thing newParent = null;
+		ILayoutable newParent = null;
 		if (selectedObjects.size() == 0) {
 			return null;
 		} else if (selectedObjects.size() == 1) {
-			newParent =
-				(Thing)((EditPart)selectedObjects.get(0)).getModel();
+			Object i = selectedObjects.get(0);
+			if (i instanceof EditPart && ((EditPart)i).getModel() instanceof
+					ILayoutable)
+				newParent = (ILayoutable)((EditPart)i).getModel();
+			else return null;
 		} else {
-			Iterator<EditPart> it = selectedObjects.iterator();
+			Iterator<Object> it = selectedObjects.iterator();
 			EditPart sharedParent = null;
 			while (it.hasNext()) {
-				EditPart part = it.next();
+				Object i = it.next();
+				if (!(i instanceof EditPart))
+					continue;
+				EditPart part = (EditPart)i;
 				if (sharedParent == null) {
 					sharedParent = part.getParent();
 				} else if (sharedParent != part.getParent()) {
 					return null;
 				}
 			}
-			newParent = (Thing)sharedParent.getModel();
+			if (sharedParent.getModel() instanceof ILayoutable)
+				newParent = (ILayoutable)sharedParent.getModel();
 		}
 		return new ILayoutablePasteCommand(newParent);
 	}
