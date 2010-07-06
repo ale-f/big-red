@@ -161,8 +161,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 	}
 	
 	public org.w3c.dom.Node toXML(org.w3c.dom.Node d) {
-		Element r = mintElement(d);
-		Document doc = d.getOwnerDocument();
+		Element r = (Element)super.toXML(d);
 		r.setAttribute("control", getControl().getLongName());
 		
 		for (Port p : ports) {
@@ -170,16 +169,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 			if (portE != null)
 				r.appendChild(portE);
 		}
-		
-		if (getChildren().size() != 0) {
-			for (ILayoutable b : getChildren())
-				if (b instanceof IXMLisable)
-					r.appendChild(((IXMLisable)b).toXML(r));
-		}
-
-		Element braE = AppearanceGenerator.getAppearance(doc, this);
-		if (braE != null)
-			r.appendChild(braE);
 		
 		return r;
 	}

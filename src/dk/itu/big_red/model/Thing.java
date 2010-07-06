@@ -10,10 +10,12 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ICommentable;
@@ -154,25 +156,22 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, ICommentable 
 		return new Thing()._overwrite(this);
 	}
 	
-	public Element mintElement(org.w3c.dom.Node d) {
-		org.w3c.dom.Element r =
-			d.getOwnerDocument().createElement(getClass().getSimpleName().toLowerCase());
-		return r;
-	}
-	
 	@Override
 	public org.w3c.dom.Node toXML(org.w3c.dom.Node d) {
 		/*
 		 * Override in subclasses!
 		 */
-		org.w3c.dom.Element r = mintElement(d);
-		r.setAttribute("x", Integer.toString(getLayout().x));
-		r.setAttribute("y", Integer.toString(getLayout().y));
-		r.setAttribute("width", Integer.toString(getLayout().width));
-		r.setAttribute("height", Integer.toString(getLayout().height));
+		Document doc = d.getOwnerDocument();
+		Element r = doc.createElement(getClass().getSimpleName().toLowerCase());
+
 		for (ILayoutable b : getChildren())
 			if (b instanceof IXMLisable)
 				r.appendChild(((IXMLisable)b).toXML(r));
+		
+		Element braE = AppearanceGenerator.getAppearance(doc, this);
+		if (braE != null)
+			r.appendChild(braE);
+		
 		return r;
 	}
 
