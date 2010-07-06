@@ -20,7 +20,6 @@ import dk.itu.big_red.figure.NameFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.InnerName.NameType;
 import dk.itu.big_red.model.interfaces.IConnectable;
 
 public class NamePart extends AbstractPart implements NodeEditPart {
@@ -44,8 +43,7 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
-		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME) ||
-			evt.getPropertyName().equals(InnerName.PROPERTY_TYPE)) {
+		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME)) {
 	    	refreshVisuals();
 	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
 	    	refreshSourceConnections();
@@ -61,11 +59,9 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 		
 		figure.setName(model.getName());
 		figure.setConstraint(model.getLayout());
-		figure.setToolTip(model.getType() == NameType.NAME_INNER ?
-			"Inner name" : "Outer name");
+		figure.setToolTip("Inner name");
 		
-		figure.setBackgroundColor(model.getType() == NameType.NAME_INNER ?
-			ColorConstants.blue : ColorConstants.red);
+		figure.setBackgroundColor(ColorConstants.blue);
 	}
 	
 	@Override

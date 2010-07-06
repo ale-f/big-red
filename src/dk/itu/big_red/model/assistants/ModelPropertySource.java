@@ -13,7 +13,6 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import dk.itu.big_red.BigRedConstants;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.InnerName.NameType;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
 
@@ -42,7 +41,6 @@ public class ModelPropertySource implements IPropertySource {
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
 		} else if (object instanceof InnerName) {
 			properties.add(new TextPropertyDescriptor(InnerName.PROPERTY_NAME, "Name"));
-			properties.add(new ComboBoxPropertyDescriptor(InnerName.PROPERTY_TYPE, "Type", BigRedConstants.INNER_OUTER_NAMES));
 		}
 		
 		if (object instanceof IColourable) {
@@ -77,8 +75,6 @@ public class ModelPropertySource implements IPropertySource {
 			return (result == null ? "" : result);
 		} else if (id.equals(InnerName.PROPERTY_NAME)){
 			return ((InnerName)object).getName();
-		} else if (id.equals(InnerName.PROPERTY_TYPE)){
-			return ((InnerName)object).getType().ordinal();
 		} else {
 			return null;
 		}
@@ -115,8 +111,6 @@ public class ModelPropertySource implements IPropertySource {
 			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));
 		} else if (id.equals(InnerName.PROPERTY_NAME)) {
 			((InnerName)object).setName((String)value);
-		} else if (id.equals(InnerName.PROPERTY_TYPE)) {
-			((InnerName)object).setType(InnerName.NameType.values()[(Integer)value]);
 		}
 	}
 

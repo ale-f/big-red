@@ -9,13 +9,6 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.util.DOM;
 
 public class InnerName extends Point {
-	public static final String PROPERTY_NAME = "NameName";
-	public static final String PROPERTY_TYPE = "NameType";
-	public static enum NameType {
-		NAME_INNER,
-		NAME_OUTER
-	};
-	
 	@Override
 	public InnerName clone() {
 		System.out.println("! Clone?");
@@ -26,19 +19,6 @@ public class InnerName extends Point {
 		return false;
 	}
 	
-	private NameType type = NameType.NAME_INNER;
-	
-	public NameType getType() {
-		return type;
-	}
-
-	public void setType(NameType type) {
-		NameType oldType = this.type;
-		System.out.println(oldType + " -> " + type);
-		this.type = type;
-		listeners.firePropertyChange(PROPERTY_TYPE, oldType, type);
-	}
-	
 	@Override
 	public void fromXML(org.w3c.dom.Node d) {
 		Rectangle layout = new Rectangle();
@@ -47,8 +27,6 @@ public class InnerName extends Point {
 		layout.width = DOM.getIntAttribute(d, "width");
 		layout.height = DOM.getIntAttribute(d, "height");
 		setLayout(layout);
-		
-		setType(NameType.valueOf(DOM.getAttribute(d, "type")));
 	}
 	
 	@Override
