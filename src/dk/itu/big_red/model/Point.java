@@ -82,8 +82,7 @@ public abstract class Point implements IConnectable, IXMLisable {
 		listeners.removePropertyChangeListener(listener);
 	}
 
-	protected String name = null;
-	
+	protected String name = "?";
 	
 	/**
 	 * Gets the name of this Point.
@@ -98,9 +97,11 @@ public abstract class Point implements IConnectable, IXMLisable {
 	 * @param name the new name
 	 */
 	public void setName(String name) {
-		String oldName = this.name;
-		this.name = name;
-		listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+		if (name != null) {
+			String oldName = this.name;
+			this.name = name;
+			listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+		}
 	}
 	
 	@Override
@@ -109,7 +110,7 @@ public abstract class Point implements IConnectable, IXMLisable {
 			Document doc = d.getOwnerDocument();
 			Element r = doc.createElement(getClass().getSimpleName().toLowerCase());
 			DOM.applyAttributesToElement(r,
-					"name", Integer.toString(hashCode(), 16),
+					"name", getName(),
 					"link", Integer.toString(connection.getParent().hashCode(), 16));
 			return r;
 		} else return null;
