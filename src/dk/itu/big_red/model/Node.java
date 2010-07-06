@@ -12,6 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
@@ -164,9 +165,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		Document doc = d.getOwnerDocument();
 		r.setAttribute("control", getControl().getLongName());
 		
-		if (getComment() != null && getComment().length() > 0)
-			r.setAttribute("comment", getComment());
-		
 		for (Port p : ports) {
 			org.w3c.dom.Node portE = p.toXML(r);
 			if (portE != null)
@@ -179,15 +177,9 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 					r.appendChild(((IXMLisable)b).toXML(r));
 		}
 
-		Element braE = doc.createElementNS("http://pls.itu.dk/bigraphs/2010/big-red", "big-red:appearance");
-		DOM.applyAttributesToElement(braE,
-				"x", getLayout().x,
-				"y", getLayout().y,
-				"width", getLayout().width,
-				"height", getLayout().height,
-				"fillColor", Utility.colourToString(getFillColour()),
-				"outlineColor", Utility.colourToString(getOutlineColour()));
-		r.appendChild(braE);
+		Element braE = AppearanceGenerator.getAppearance(doc, this);
+		if (braE != null)
+			r.appendChild(braE);
 		
 		return r;
 	}
