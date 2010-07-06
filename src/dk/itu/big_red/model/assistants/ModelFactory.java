@@ -1,7 +1,13 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.assistants;
 
 import org.eclipse.gef.requests.CreationFactory;
 
+import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.IXMLisable;
 
 public class ModelFactory implements CreationFactory {

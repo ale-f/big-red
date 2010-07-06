@@ -1,4 +1,4 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
 
@@ -11,6 +11,9 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.BigRedConstants;
+import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.InnerName.NameType;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
 

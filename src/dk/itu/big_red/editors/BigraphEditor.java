@@ -61,6 +61,7 @@ import dk.itu.big_red.AppTemplateTransferDropTargetListener;
 import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
 import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
