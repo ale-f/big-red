@@ -23,8 +23,10 @@ public class AppearanceGenerator {
 		Element aE =
 			doc.createElementNS("http://pls.itu.dk/bigraphs/2010/big-red",
 					"big-red:appearance");
+		boolean alive = false;
 		
 		if (o instanceof ILayoutable) {
+			alive = true;
 			Rectangle r = ((ILayoutable)o).getLayout();
 			
 			DOM.applyAttributesToElement(aE,
@@ -35,6 +37,7 @@ public class AppearanceGenerator {
 		}
 		
 		if (o instanceof IColourable) {
+			alive = true;
 			RGB fillColour = ((IColourable)o).getFillColour(),
 			    outlineColour = ((IColourable)o).getOutlineColour();
 			
@@ -44,12 +47,13 @@ public class AppearanceGenerator {
 		}
 		
 		if (o instanceof ICommentable) {
+			alive = true;
 			String comment = ((ICommentable)o).getComment();
 			if (comment != null && comment.length() != 0)
 				DOM.applyAttributesToElement(aE,
 						"comment", comment);
 		}
 		
-		return aE;
+		return (alive ? aE : null);
 	}
 }
