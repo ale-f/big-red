@@ -29,12 +29,6 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	 */
 	private double distance = 0.0;
 	
-	/**
-	 * The <code>name</code> of a Port identifies it, and is inherited from
-	 * the parent {@link Node}'s {@link Control}.
-	 */
-	private String name = "0";
-	
 	public Port(String name, double distance) {
 		setName(name);
 		setDistance(distance);
@@ -45,24 +39,6 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-	
-	/**
-	 * Gets this Port's {@link Port#name name}.
-	 * @see Port#name
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	/**
-	 * Sets this Port's {@link Port#name name}.
-	 * @param name the new name for this Port
-	 * @see Port#name
-	 */
-	public void setName(String name) {
-		if (name != null)
-			this.name = name;
 	}
 	
 	/**

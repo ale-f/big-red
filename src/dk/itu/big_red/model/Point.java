@@ -23,6 +23,11 @@ import dk.itu.big_red.util.DOM;
  *
  */
 public abstract class Point implements IConnectable, IXMLisable {
+	/**
+	 * The property name fired when the name changes.
+	 */
+	public static final String PROPERTY_NAME = "PointName";
+	
 	protected Rectangle layout = new Rectangle(5, 5, 10, 10);
 	
 	@Override
@@ -77,6 +82,27 @@ public abstract class Point implements IConnectable, IXMLisable {
 		listeners.removePropertyChangeListener(listener);
 	}
 
+	protected String name = null;
+	
+	
+	/**
+	 * Gets the name of this Point.
+	 * @return the current name
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * Sets the name of this Point.
+	 * @param name the new name
+	 */
+	public void setName(String name) {
+		String oldName = this.name;
+		this.name = name;
+		listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+	}
+	
 	@Override
 	public Node toXML(Node d) {
 		if (connection != null) {

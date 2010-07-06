@@ -26,19 +26,8 @@ public class InnerName extends Point {
 		return false;
 	}
 	
-	private String name = "?";
 	private NameType type = NameType.NAME_INNER;
 	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		String oldName = this.name;
-		this.name = name;
-		listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
-	}
-
 	public NameType getType() {
 		return type;
 	}
