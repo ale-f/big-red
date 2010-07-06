@@ -37,7 +37,6 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		command.setParent(getHost().getModel());
 		command.setChild(child.getModel());
 		command.setConstraint(constraint);
-		System.out.println("Ready to add with " + command + ", which is " + (command.canExecute() ? "ready" : "not ready") + "!");
 		return command;
 	}
 	
