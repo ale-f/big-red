@@ -26,7 +26,7 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			command = new ILayoutableRelayoutCommand();
 			
 			command.setModel(child.getModel());
-			command.setConstraint((Rectangle)constraint);
+			command.setConstraint(constraint);
 		}
 		return command;
 	}
