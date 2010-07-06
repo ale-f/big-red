@@ -1,15 +1,16 @@
 package dk.itu.big_red.editpolicies;
 
-
-
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
+import org.eclipse.gef.requests.GroupRequest;
 
+import dk.itu.big_red.commands.ILayoutableAddCommand;
 import dk.itu.big_red.commands.ILayoutableCreateCommand;
+import dk.itu.big_red.commands.ILayoutableOrphanCommand;
 import dk.itu.big_red.commands.ILayoutableRelayoutCommand;
 import dk.itu.big_red.figure.*;
 import dk.itu.big_red.model.*;
@@ -31,10 +32,30 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	}
 	
 	@Override
+	protected Command createAddCommand(EditPart child, Object constraint) {
+		ILayoutableAddCommand command = new ILayoutableAddCommand();
+		command.setParent(getHost().getModel());
+		command.setChild(child.getModel());
+		command.setConstraint(constraint);
+		System.out.println("Ready to add with " + command + ", which is " + (command.canExecute() ? "ready" : "not ready") + "!");
+		return command;
+	}
+	
+	@Override
 	protected Command getOrphanChildrenCommand(Request request) {
-		if (request.getType() == REQ_ORPHAN_CHILDREN) {
-			return null; // new OrphanCommand(request.getExtendedData());
-		} else return super.getOrphanChildrenCommand(request);
+		ILayoutableOrphanCommand command = null;
+		if (request.getType() == REQ_ORPHAN_CHILDREN && request instanceof GroupRequest) {
+			GroupRequest groupRequest = (GroupRequest)request;
+			command = new ILayoutableOrphanCommand();
+			
+			Object model =
+				((EditPart)groupRequest.getEditParts().get(0)).getModel();
+			if (model instanceof ILayoutable)
+				command.setParent(((ILayoutable)model).getParent());
+			
+			command.setChildren(groupRequest.getEditParts());
+		}
+		return command;
 	}
 	
 	@SuppressWarnings("unchecked")
