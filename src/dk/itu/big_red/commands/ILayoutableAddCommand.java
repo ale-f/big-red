@@ -25,10 +25,16 @@ public class ILayoutableAddCommand extends Command {
 			this.constraint = (Rectangle)constraint;
 	}
 	
+	public boolean parentLayoutCanContainChildConstraint() {
+		return (constraint.x >= 0 && constraint.y >= 0 &&
+				constraint.x + constraint.width <= parent.getLayout().width &&
+				constraint.y + constraint.height <= parent.getLayout().height);
+	}
+	
 	public boolean canExecute() {
 		return (this.parent != null && this.child != null &&
 				this.constraint != null &&
-				this.parent.getLayout().contains(constraint));
+				parentLayoutCanContainChildConstraint());
 	}
 	
 	public void execute() {
