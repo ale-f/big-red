@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
@@ -20,6 +21,9 @@ public class AppearanceGenerator {
 	 * @param o a model object
 	 */
 	public static Element getAppearance(Document doc, Object o) {
+		if (o instanceof Bigraph)
+			return null;
+		
 		Element aE =
 			doc.createElementNS("http://pls.itu.dk/bigraphs/2010/big-red",
 					"big-red:appearance");
