@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
@@ -99,6 +100,8 @@ public class XMLExport extends Export {
 			e = process((Bigraph)obj);
 		} else if (obj instanceof Node) {
 			e = process((Node)obj);
+		} else if (obj instanceof InnerName) {
+			e = process((Point)obj);
 		} else {
 			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
 		}
