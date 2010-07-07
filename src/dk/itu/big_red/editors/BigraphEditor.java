@@ -65,6 +65,7 @@ import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.import_export.XMLExport;
+import dk.itu.big_red.model.import_export.XMLImport;
 import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
 import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
@@ -323,8 +324,12 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		throw new Exception("Placeholder!");
+	    		XMLImport im = new XMLImport();
+	    		im.setInputStream(fi.getFile().getContents());
+	    		
+	    		model = im.importModel();
 	    	} catch (Exception e) {
+	    		e.printStackTrace();
 		    	model = new Bigraph();
 		    	Signature signature = model.getSignature();
 		    	
