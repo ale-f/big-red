@@ -14,7 +14,6 @@ import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.IXMLisable;
 
 /**
   * An Edge is a connection which connects any number of {@link Port}s and
@@ -28,7 +27,7 @@ import dk.itu.big_red.model.interfaces.IXMLisable;
   * @author alec
   *
   */
-public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable {
+public class Edge implements IAdaptable, IConnectable, ICommentable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	/**
@@ -213,17 +212,5 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, IXMLisable 
 		if (adapter == IPropertySource.class) {
 			return new ModelPropertySource(this);
 		} else return null;
-	}
-
-	@Override
-	public Node toXML(Node d) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void fromXML(Node d) {
-		// TODO Auto-generated method stub
-		
 	}
 }

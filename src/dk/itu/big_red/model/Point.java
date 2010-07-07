@@ -13,7 +13,6 @@ import org.w3c.dom.Node;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
-import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.util.DOM;
 
 /**
@@ -22,7 +21,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public abstract class Point implements IConnectable, IXMLisable {
+public abstract class Point implements IConnectable {
 	/**
 	 * The property name fired when the name changes.
 	 */
@@ -102,24 +101,6 @@ public abstract class Point implements IConnectable, IXMLisable {
 			this.name = name;
 			listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
 		}
-	}
-	
-	@Override
-	public Node toXML(Node d) {
-		if (connection != null) {
-			Document doc = d.getOwnerDocument();
-			Element r = doc.createElement(getClass().getSimpleName().toLowerCase());
-			DOM.applyAttributesToElement(r,
-					"name", getName(),
-					"link", Integer.toString(connection.getParent().hashCode(), 16));
-			return r;
-		} else return null;
-	}
-
-	@Override
-	public void fromXML(Node d) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

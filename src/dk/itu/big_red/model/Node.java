@@ -16,7 +16,6 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
 
@@ -158,52 +157,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 			}
 		}
 		return pt;
-	}
-	
-	public org.w3c.dom.Node toXML(org.w3c.dom.Node d) {
-		Element r = (Element)super.toXML(d);
-		r.setAttribute("control", getControl().getLongName());
-		
-		for (Port p : ports) {
-			org.w3c.dom.Node portE = p.toXML(r);
-			if (portE != null)
-				r.appendChild(portE);
-		}
-		
-		return r;
-	}
-	
-	@Override
-	public void fromXML(org.w3c.dom.Node d) {
-		getBigraph().idRegistry.put(DOM.getAttribute(d, "id"), this);
-		
-		setControl(getSignature().getControl(DOM.getAttribute(d, "control")));
-		
-		Rectangle layout = new Rectangle();
-		layout.x = DOM.getIntAttribute(d, "x");
-		layout.y = DOM.getIntAttribute(d, "y");
-		layout.width = DOM.getIntAttribute(d, "width");
-		layout.height = DOM.getIntAttribute(d, "height");
-		setLayout(layout);
-		
-		String comment = DOM.getAttribute(d, "comment");
-		if (comment != null) {
-			if (comment.length() > 0)
-				setComment(comment);
-		}
-		
-		setFillColour(DOM.getColorAttribute(d, "fill"));
-		setOutlineColour(DOM.getColorAttribute(d, "outline"));
-		
-		NodeList l = ((Element)d).getElementsByTagName("children").item(0).getChildNodes();
-		for (int i = 0; i < l.getLength(); i++) {
-			org.w3c.dom.Node t = l.item(i);
-			if (t.getAttributes() != null) {
-				Thing nc = (Thing)ModelFactory.getNewObject(t.getNodeName());
-				addChild(nc);
-				nc.fromXML(t);
-			}
-		}
 	}
 
 	@Override

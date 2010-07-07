@@ -14,7 +14,6 @@ import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.part.BigraphPart;
 import dk.itu.big_red.util.DOM;
 
@@ -31,38 +30,6 @@ public class Bigraph extends Thing {
 	public boolean canContain(ILayoutable child) {
 		Class<? extends ILayoutable> c = child.getClass();
 		return (c == Root.class || c == InnerName.class);
-	}
-	
-	public Node toXML() {
-		DOMImplementation impl = DOM.getImplementation();
-		
-		Document doc = impl.createDocument(
-				"http://pls.itu.dk/bigraphs/2010/bigraph", "bigraph", null);
-		Element node = doc.getDocumentElement();
-		DOM.applyAttributesToElement(node,
-			"signature", "signatures/test.bigraph-signature", /* placeholder */
-			"xmlns:big-red", "http://pls.itu.dk/bigraphs/2010/big-red");
-		
-		for (ILayoutable b : getChildren())
-			if (b instanceof IXMLisable)
-				node.appendChild(((IXMLisable)b).toXML(node));
-		return doc;
-	}
-	
-	public static Bigraph fromXML(org.w3c.dom.Document doc) {
-		Bigraph r = new Bigraph();
-		
-		NodeList l = doc.getChildNodes();
-		for (int i = 0; i < l.getLength(); i++) {
-			Node t = l.item(i);
-			if (t.getAttributes() != null) {
-				Thing nc = (Thing)ModelFactory.getNewObject(t.getNodeName());
-				r.addChild(nc);
-				nc.fromXML(t);
-			}
-		}
-		
-		return r;
 	}
 	
 	public Bigraph getBigraph() {

@@ -12,7 +12,6 @@ import org.w3c.dom.Node;
 
 import dk.itu.big_red.exceptions.DuplicateControlException;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
-import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.util.DOM;
 
 /**
@@ -26,7 +25,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Control implements IPropertyChangeNotifier, IXMLisable {
+public class Control implements IPropertyChangeNotifier {
 	public static enum Shape {
 		SHAPE_RECTANGLE,
 		SHAPE_OVAL,
@@ -235,30 +234,5 @@ public class Control implements IPropertyChangeNotifier, IXMLisable {
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
-	}
-	
-	@Override
-	public Node toXML(Node d) {
-		Document doc = d.getOwnerDocument();
-		Element r = doc.createElement("control");
-		DOM.applyAttributesToElement(r,
-				"name", getLongName(),
-				"label", getLabel(),
-				"shape", getShape(),
-				"width", getDefaultSize().x,
-				"height", getDefaultSize().y,
-				"resizable", this.resizable);
-		for (String port : getPortNames()) {
-			Element portE = doc.createElement("port");
-			portE.setAttribute("key", port);
-			portE.setAttribute("offset", Integer.toString(getOffset(port)));
-			r.appendChild(portE);
-		}
-		return r;
-	}
-	
-	@Override
-	public void fromXML(Node d) {
-		
 	}
 }

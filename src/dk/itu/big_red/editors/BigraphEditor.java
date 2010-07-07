@@ -323,7 +323,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		model = Bigraph.fromXML(DOM.parse(fi.getFile()));
+	    		throw new Exception("Placeholder!");
 	    	} catch (Exception e) {
 		    	model = new Bigraph();
 		    	Signature signature = model.getSignature();
@@ -452,7 +452,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
         	ex.exportModel();
         	
     		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
-    		System.out.println(is.available());
     		i.getFile().setContents(is, 0, null);
         	
     		getCommandStack().markSaveLocation();

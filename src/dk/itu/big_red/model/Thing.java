@@ -20,7 +20,6 @@ import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.IXMLisable;
 import dk.itu.big_red.util.DOM;
 
 /**
@@ -34,7 +33,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class Thing implements IAdaptable, IXMLisable, ILayoutable, ICommentable {
+public class Thing implements IAdaptable, ILayoutable, ICommentable {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
@@ -154,46 +153,6 @@ public class Thing implements IAdaptable, IXMLisable, ILayoutable, ICommentable 
 	
 	public Thing clone() throws CloneNotSupportedException {
 		return new Thing()._overwrite(this);
-	}
-	
-	@Override
-	public org.w3c.dom.Node toXML(org.w3c.dom.Node d) {
-		/*
-		 * Override in subclasses!
-		 */
-		Document doc = d.getOwnerDocument();
-		Element r = doc.createElement(getClass().getSimpleName().toLowerCase());
-
-		for (ILayoutable b : getChildren())
-			if (b instanceof IXMLisable)
-				r.appendChild(((IXMLisable)b).toXML(r));
-		
-		Element braE = AppearanceGenerator.getAppearance(doc, this);
-		if (braE != null)
-			r.appendChild(braE);
-		
-		return r;
-	}
-
-	@Override
-	public void fromXML(Node d) {
-		Rectangle layout = new Rectangle();
-		getBigraph().idRegistry.put(DOM.getAttribute(d, "id"), this);
-		layout.x = DOM.getIntAttribute(d, "x");
-		layout.y = DOM.getIntAttribute(d, "y");
-		layout.width = DOM.getIntAttribute(d, "width");
-		layout.height = DOM.getIntAttribute(d, "height");
-		setLayout(layout);
-		
-		NodeList l = d.getChildNodes();
-		for (int i = 0; i < l.getLength(); i++) {
-			Node t = l.item(i);
-			if (t.getAttributes() != null) {
-				Thing nc = (Thing)ModelFactory.getNewObject(t.getNodeName());
-				addChild(nc);
-				nc.fromXML(t);
-			}
-		}
 	}
 	
 	public Signature getSignature() {

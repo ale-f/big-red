@@ -8,7 +8,6 @@ import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.interfaces.IXMLisable;
 
 public class ModelFactory implements CreationFactory {
 
@@ -47,13 +46,12 @@ public class ModelFactory implements CreationFactory {
 	}
 
 	/**
-	 * Creates a new object from a XML tag name, ready to be overwritten with
-	 * {@link IXMLisable#fromXML}.
+	 * Creates a new object from a XML tag name.
 	 * @param namedObject a XML tag name
 	 * @return a new object of the appropriate type, or <code>null</code> if
 	 *         the tag name was unrecognised
 	 */
-	public static IXMLisable getNewObject(String namedObject) {
+	public static Object getNewObject(String namedObject) {
 		namedObject = namedObject.toLowerCase();
 		if (namedObject.equals("root"))
 			return new Root();

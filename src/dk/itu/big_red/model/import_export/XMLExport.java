@@ -21,7 +21,6 @@ import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.util.DOM;
@@ -95,7 +94,6 @@ public class XMLExport extends Export {
 	}
 	
 	Element process(ILayoutable obj) {
-		System.out.println(obj);
 		Element e = null;
 		if (obj instanceof Bigraph) {
 			e = process((Bigraph)obj);
