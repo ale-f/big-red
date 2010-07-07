@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.EventObject;
 
@@ -62,6 +64,7 @@ import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.ModelFactory;
+import dk.itu.big_red.model.import_export.XMLExport;
 import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
 import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
@@ -441,7 +444,16 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	public void doSave(IProgressMonitor monitor) {
 		try {
         	FileEditorInput i = (FileEditorInput)getEditorInput();
-        	DOM.write(i.getFile(), getModel().toXML());
+        	ByteArrayOutputStream os = new ByteArrayOutputStream();
+        	XMLExport ex = new XMLExport();
+        	
+        	ex.setModel(getModel());
+        	ex.setOutputStream(os);
+        	ex.exportModel();
+        	
+    		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
+    		System.out.println(is.available());
+    		i.getFile().setContents(is, 0, null);
         	
     		getCommandStack().markSaveLocation();
     		firePropertyChange(IEditorPart.PROP_DIRTY);
