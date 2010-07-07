@@ -142,7 +142,7 @@ public class DOM {
 	 */
 	public static Element getNamedChildElement(Element d, String n) {
 		ArrayList<Element> r = getNamedChildElements(d, n);
-		if (r.size() != 0)
+		if (r.size() == 1)
 			return r.get(0);
 		else return null;
 	}
