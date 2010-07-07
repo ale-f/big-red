@@ -15,7 +15,7 @@ import dk.itu.big_red.exceptions.ExportFailedException;
  * <p>The existence of an Export class for a given format does <i>not</i> imply
  * that a {@link Import} class should exist for that format - in most cases,
  * that'd be impossible (try importing a bigraph from a PNG!).
- * @see {@link Import}
+ * @see Import
  * @author alec
  *
  */
