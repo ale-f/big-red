@@ -60,4 +60,31 @@ public class AppearanceGenerator {
 		
 		return (alive ? aE : null);
 	}
+	
+	public static void setAppearance(Element e, Object o) {
+		if (!e.getNodeName().equals("big-red:appearance"))
+			return;
+		
+		if (o instanceof ILayoutable) {
+			Rectangle r = new Rectangle(
+					DOM.getIntAttribute(e, "x"),
+					DOM.getIntAttribute(e, "y"),
+					DOM.getIntAttribute(e, "width"),
+					DOM.getIntAttribute(e, "height"));
+			
+			((ILayoutable)o).setLayout(r);
+		}
+		
+		if (o instanceof IColourable) {
+			RGB fillColour = DOM.getColorAttribute(e, "fillColor"),
+			    outlineColour = DOM.getColorAttribute(e, "outlineColor");
+			
+			((IColourable)o).setFillColour(fillColour);
+			((IColourable)o).setOutlineColour(outlineColour);
+		}
+		
+		if (o instanceof ICommentable) {
+			((ICommentable)o).setComment(DOM.getAttribute(e, "comment"));
+		}
+	}
 }
