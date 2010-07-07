@@ -7,7 +7,8 @@ import java.io.InputStream;
 import dk.itu.big_red.exceptions.ImportFailedException;
 
 /**
- * Classes extending Import can read a model object from a file.
+ * Classes extending Import can read a model object from an {@link
+ * InputStream}.
  * 
  * <p>The existence of an Import class for a given format implies that a
  * corresponding {@link Export} class <i>should</i> exist for that format.
@@ -17,7 +18,7 @@ import dk.itu.big_red.exceptions.ImportFailedException;
  */
 
 public abstract class Import {
-	InputStream source = null;
+	protected InputStream source = null;
 	
 	/**
 	 * Sets the source of the import to the given {@link InputStream}.

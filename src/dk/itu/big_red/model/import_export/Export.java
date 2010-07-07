@@ -7,10 +7,10 @@ import java.io.OutputStream;
 import dk.itu.big_red.exceptions.ExportFailedException;
 
 /**
- * Classes extending Export can write a model object to a file in some way.
- * (The export process can do anything it wants - one class might export a
- * {@link Bigraph} to a PNG image, and another might export a {@link Signature}
- * to a XML document.)
+ * Classes extending Export can write a model object to an {@link
+ * OutputStream}. (The export process can do anything it wants - one class
+ * might export a {@link Bigraph} to a PNG image, and another might export a
+ * {@link Signature} to a XML document.)
  * 
  * <p>The existence of an Export class for a given format does <i>not</i> imply
  * that a {@link Import} class should exist for that format - in most cases,
@@ -26,7 +26,7 @@ public abstract class Export {
 	 */
 	abstract void setModel(Object model);
 	
-	OutputStream target = null;
+	protected OutputStream target = null;
 	
 	/**
 	 * Sets the target of the export to the given {@link OutputStream}.
