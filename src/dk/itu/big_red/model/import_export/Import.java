@@ -24,7 +24,7 @@ public abstract class Import {
 	 * Sets the source of the import to the given {@link InputStream}.
 	 * @param os an InputStream
 	 */
-	void setInputStream(InputStream is) {
+	public void setInputStream(InputStream is) {
 		if (is != null)
 			this.source = is;
 	}
@@ -38,7 +38,7 @@ public abstract class Import {
 	 * @throws FileNotFoundException if
 	 *         {@link FileInputStream#FileInputStream(String)} fails
 	 */
-	void setInputFile(String path) throws FileNotFoundException {
+	public void setInputFile(String path) throws FileNotFoundException {
 		setInputStream(new FileInputStream(path));
 	}
 	
@@ -47,12 +47,12 @@ public abstract class Import {
 	 * @return <code>true</code> if the model is ready to be imported, or
 	 *         <code>false</code> otherwise
 	 */
-	abstract boolean canImport();
+	public abstract boolean canImport();
 	
 	/**
 	 * Imports the model. This function should not be called unless {@link
 	 * Import#canImport canImport} returns <code>true</code>.
 	 * @throws ImportFailedException if the import failed
 	 */
-	abstract Object importModel() throws ImportFailedException;
+	public abstract Object importModel() throws ImportFailedException;
 }

@@ -24,7 +24,7 @@ public abstract class Export {
 	 * Sets the model object to be exported.
 	 * @param model
 	 */
-	abstract void setModel(Object model);
+	public abstract void setModel(Object model);
 	
 	protected OutputStream target = null;
 	
@@ -32,7 +32,7 @@ public abstract class Export {
 	 * Sets the target of the export to the given {@link OutputStream}.
 	 * @param os an OutputStream
 	 */
-	void setOutputStream(OutputStream os) {
+	public void setOutputStream(OutputStream os) {
 		if (os != null)
 			this.target = os;
 	}
@@ -46,7 +46,7 @@ public abstract class Export {
 	 * @throws FileNotFoundException if
 	 *         {@link FileOutputStream#FileOutputStream(String)} fails
 	 */
-	void setOutputFile(String path) throws FileNotFoundException {
+	public void setOutputFile(String path) throws FileNotFoundException {
 		setOutputStream(new FileOutputStream(path));
 	}
 	
@@ -55,12 +55,12 @@ public abstract class Export {
 	 * @return <code>true</code> if the model is ready to be exported, or
 	 *         <code>false</code> otherwise
 	 */
-	abstract boolean canExport();
+	public abstract boolean canExport();
 	
 	/**
 	 * Exports the model. This function should not be called unless {@link
 	 * Export#canExport canExport} returns <code>true</code>.
 	 * @throws ExportFailedException if the export failed
 	 */
-	abstract void exportModel() throws ExportFailedException;
+	public abstract void exportModel() throws ExportFailedException;
 }
