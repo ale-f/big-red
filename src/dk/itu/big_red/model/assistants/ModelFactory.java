@@ -2,6 +2,7 @@ package dk.itu.big_red.model.assistants;
 
 import org.eclipse.gef.requests.CreationFactory;
 
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
@@ -53,7 +54,9 @@ public class ModelFactory implements CreationFactory {
 	 */
 	public static Object getNewObject(String namedObject) {
 		namedObject = namedObject.toLowerCase();
-		if (namedObject.equals("root"))
+		if (namedObject.equals("bigraph"))
+			return new Bigraph();
+		else if (namedObject.equals("root"))
 			return new Root();
 		else if (namedObject.equals("site"))
 			return new Site();
