@@ -113,48 +113,49 @@ public class DOM {
 	}
 	
 	/**
-	 * Gets all the children of the specified node with the given tag name.
+	 * Gets all the children of the specified element with the given name.
 	 * (Note that this method only searches immediate children.)
-	 * @param d a Node containing children
+	 * @param d an Element containing children
 	 * @param n the tag name to search for
-	 * @return an ArrayList of child nodes
+	 * @return an ArrayList of child elements
 	 */
-	public static ArrayList<Node> getNamedChildNodes(Node d, String n) {
-		ArrayList<Node> r = new ArrayList<Node>();
+	public static ArrayList<Element> getNamedChildElements(Element d, String n) {
+		ArrayList<Element> r = new ArrayList<Element>();
 		NodeList p = d.getChildNodes();
 		for (int i = 0; i < p.getLength(); i++) {
 			Node t = p.item(i);
-			if (t.getNodeName().equals(n)) r.add(t);
+			if (t instanceof Element &&
+					t.getNodeName().equals(n))
+				r.add((Element)t);
 		}
 		return r;
 	}
 
 	/**
-	 * Returns the unique child of the specified node which has the given tag
-	 * name.
-	 * @param d a Node containing children
+	 * Returns the unique child of the specified Element which has the given
+	 * tag name.
+	 * @param d an Element containing children
 	 * @param n the tag name to search for
 	 * @return the unique named child, or <code>null</code> if there were zero
 	 *         or more than one matches
-	 * @see DOM#getNamedChildNodes
+	 * @see DOM#getNamedChildElements
 	 */
-	public static Node getNamedChildNode(Node d, String n) {
-		ArrayList<Node> r = getNamedChildNodes(d, n);
+	public static Element getNamedChildElement(Element d, String n) {
+		ArrayList<Element> r = getNamedChildElements(d, n);
 		if (r.size() != 0)
 			return r.get(0);
 		else return null;
 	}
 
 	/**
-	 * Retrieves the given named attribute from the specified node's node map,
-	 * so you can get an attribute with one function call rather than four of
-	 * them.
-	 * @param d a Node with attributes set
+	 * Retrieves the given named attribute from the specified Element, so you
+	 * can get an attribute with one function call rather than four of them.
+	 * @param d an Element with attributes set
 	 * @param n the attribute name to search for
 	 * @return the attribute's value, or <code>null</code> if the attribute
 	 *         couldn't be found
 	 */
-	public static String getAttribute(Node d, String n) {
+	public static String getAttribute(Element d, String n) {
 		NamedNodeMap attrs = d.getAttributes();
 		if (attrs != null) {
 			Node value = attrs.getNamedItem(n);
@@ -168,15 +169,15 @@ public class DOM {
 	}
 
 	/**
-	 * Retrieves the given named attribute from the specified node's node map,
+	 * Retrieves the given named attribute from the specified Element,
 	 * automatically converting the result from a string into an integer.
-	 * @param d a Node with attributes set
+	 * @param d an Element with attributes set
 	 * @param n the attribute name to search for
 	 * @return the attribute's value as an integer, or <code>0</code> if the
 	 *         attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
-	public static int getIntAttribute(Node d, String n) {
+	public static int getIntAttribute(Element d, String n) {
 		try {
 			return Integer.parseInt(getAttribute(d, n));
 		} catch (Exception e) {
@@ -185,15 +186,15 @@ public class DOM {
 	}
 	
 	/**
-	 * Retrieves the given named attribute from the specified node's node map,
+	 * Retrieves the given named attribute from the specified Element,
 	 * automatically converting the result from a string into a double.
-	 * @param d a Node with attributes set
+	 * @param d an Element with attributes set
 	 * @param n the attribute name to search for
 	 * @return the attribute's value as an double, or <code>0</code> if the
 	 *         attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
-	public static double getDoubleAttribute(Node d, String n) {
+	public static double getDoubleAttribute(Element d, String n) {
 		try {
 			return Double.parseDouble(getAttribute(d, n));
 		} catch (Exception e) {
@@ -202,16 +203,16 @@ public class DOM {
 	}
 	
 	/**
-	 * Retrieves the given named attribute from the specified node's node map,
+	 * Retrieves the given named attribute from the specified Element,
 	 * automatically converting the result from a string into a {@link RGB}
 	 * colour.
-	 * @param d a Node with attributes set
+	 * @param d an Element with attributes set
 	 * @param n the attribute name to search for
 	 * @return the attribute's value as a RGB colour, or <code>null</code> if
 	 *         the attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
-	public static RGB getColorAttribute(Node d, String n) {
+	public static RGB getColorAttribute(Element d, String n) {
 		return Utility.colourFromString(getAttribute(d, n));
 	}
 }

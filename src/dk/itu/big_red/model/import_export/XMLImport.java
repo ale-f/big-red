@@ -44,7 +44,7 @@ public class XMLImport extends Import {
 	}
 	
 	protected void processThing(Element e, Thing model) throws ImportFailedException {
-		Element el = (Element)DOM.getNamedChildNode(e, "big-red:appearance");
+		Element el = (Element)DOM.getNamedChildElement(e, "big-red:appearance");
 		if (el != null) {
 			AppearanceGenerator.setAppearance(el, model);
 			el.getParentNode().removeChild(el);
