@@ -10,6 +10,7 @@ public class ILayoutableAddCommand extends Command {
 	private ILayoutable parent = null;
 	private ILayoutable child = null;
 	private Rectangle constraint = null, oldConstraint = null;
+	private boolean constraintTranslated = false;
 	
 	public void setParent(Object parent) {
 		if (parent instanceof ILayoutable)
@@ -43,8 +44,10 @@ public class ILayoutableAddCommand extends Command {
 		if (!(child instanceof Edge))
 			parent.addChild(child);
 		oldConstraint = child.getLayout();
-		if (child instanceof Edge)
+		if (child instanceof Edge && !constraintTranslated) {
 			constraint = new Rectangle(constraint).translate(parent.getRootLayout().getTopLeft());
+			constraintTranslated = true;
+		}
 		child.setLayout(constraint);
 	}
 	
