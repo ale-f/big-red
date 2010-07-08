@@ -1,4 +1,4 @@
-package dk.itu.big_red;
+package dk.itu.big_red.editors;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;

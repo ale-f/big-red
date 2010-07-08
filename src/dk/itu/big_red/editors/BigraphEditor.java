@@ -58,7 +58,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 
-import dk.itu.big_red.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.AppTemplateTransferDropTargetListener;
 import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
