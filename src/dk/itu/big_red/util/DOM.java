@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -59,16 +60,16 @@ public class DOM {
 	}
 	
 	/**
-	 * Attempts to parse the specified {@link IFile} into a DOM {@link Document}.
-	 * @param file a file
+	 * Attempts to parse the specified {@link InputStream} into a DOM {@link
+	 * Document}.
+	 * @param is an InputStream
 	 * @return a Document
 	 * @throws SAXException as {@link DocumentBuilder#parse(File)}
 	 * @throws CoreException as {@link IFile#getContents()}
 	 * @throws IOException as {@link DocumentBuilder#parse(File)} or {@link InputStream#close}
 	 * @throws ParserConfigurationException as {@link DocumentBuilderFactory#newDocumentBuilder()}
 	 */
-	public static Document parse(IFile file) throws SAXException, CoreException, IOException, ParserConfigurationException {
-		InputStream is = file.getContents();
+	public static Document parse(InputStream is) throws SAXException, CoreException, IOException, ParserConfigurationException {
 		try {
 			Document r = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
 			return r;
@@ -78,25 +79,21 @@ public class DOM {
 	}
 	
 	/**
-	 * Converts the specified {@link Node} into a textual representation of a
-	 * XML document, then writes it to the specified {@link IFile}.
-	 * @param file a file
-	 * @param d a Node
+	 * Converts the specified {@link Document} into a textual representation of
+	 * a XML document, then writes it to the specified {@link OutputStream}.
+	 * @param os an OutputStream
+	 * @param d a Document
 	 * @throws CoreException if the file couldn't be overwritten
 	 * @throws TransformerException if the Node couldn't be converted to XML
 	 */
-	public static void write(IFile file, Node d) throws CoreException, TransformerException {
+	public static void write(OutputStream os, Document d) throws CoreException, TransformerException {
 		TransformerFactory f = TransformerFactory.newInstance();
 		
 		Source source = new DOMSource(d);
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Result result = new StreamResult(os);
 		
 		Transformer t = f.newTransformer();
 		t.transform(source, result);
-		
-		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
-		file.setContents(is, 0, null);
 	}
 	
 	/**
