@@ -63,8 +63,8 @@ import dk.itu.big_red.actions.*;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.ModelFactory;
-import dk.itu.big_red.model.import_export.XMLExport;
-import dk.itu.big_red.model.import_export.XMLImport;
+import dk.itu.big_red.model.import_export.BigraphXMLExport;
+import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
 import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
@@ -323,7 +323,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		XMLImport im = new XMLImport();
+	    		BigraphXMLImport im = new BigraphXMLImport();
 	    		im.setInputStream(fi.getFile().getContents());
 	    		
 	    		model = im.importModel();
@@ -449,7 +449,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		try {
         	FileEditorInput i = (FileEditorInput)getEditorInput();
         	ByteArrayOutputStream os = new ByteArrayOutputStream();
-        	XMLExport ex = new XMLExport();
+        	BigraphXMLExport ex = new BigraphXMLExport();
         	
         	ex.setModel(getModel());
         	ex.setOutputStream(os);

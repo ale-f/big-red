@@ -18,10 +18,10 @@ import dk.itu.big_red.util.DOM;
 /**
  * XMLExport writes a {@link Bigraph} out as an XML document.
  * @author alec
- * @see XMLImport
+ * @see BigraphXMLImport
  *
  */
-public class XMLExport extends Export {
+public class BigraphXMLExport extends Export {
 	private Bigraph model = null;
 	
 	@Override

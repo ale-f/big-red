@@ -14,10 +14,10 @@ import dk.itu.big_red.util.DOM;
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.
  * @author alec
- * @see XMLExport
+ * @see BigraphXMLExport
  *
  */
-public class XMLImport extends Import {
+public class BigraphXMLImport extends Import {
 	@Override
 	public boolean canImport() {
 		return (source != null);
