@@ -33,13 +33,7 @@ public class XMLImport extends Import {
 		try {
 			Document d = DOM.parse(source);
 			return (Bigraph)process(d.getDocumentElement());
-		} catch (ParserConfigurationException e) {
-			throw new ImportFailedException(e);
-		} catch (SAXException e) {
-			throw new ImportFailedException(e);
-		} catch (IOException e) {
-			throw new ImportFailedException(e);
-		} catch (CoreException e) {
+		} catch (Exception e) {
 			throw new ImportFailedException(e);
 		}
 	}

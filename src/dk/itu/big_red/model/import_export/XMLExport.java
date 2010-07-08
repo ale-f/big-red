@@ -17,6 +17,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
+import dk.itu.big_red.exceptions.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.InnerName;
@@ -49,9 +50,7 @@ public class XMLExport extends Export {
 		
 		try {
 			DOM.write(target, doc);
-		} catch (CoreException e) {
-			throw new ExportFailedException(e);
-		} catch (TransformerException e) {
+		} catch (Exception e) {
 			throw new ExportFailedException(e);
 		}
 	}
