@@ -11,6 +11,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,13 +47,10 @@ public class XMLExport extends Export {
 	public void exportModel() throws ExportFailedException {
 		process((ILayoutable)model);
 		
-		TransformerFactory f = TransformerFactory.newInstance();
-		Source source = new DOMSource(doc);
-		Result result = new StreamResult(target);
-		
 		try {
-			Transformer t = f.newTransformer();
-			t.transform(source, result);
+			DOM.write(target, doc);
+		} catch (CoreException e) {
+			throw new ExportFailedException(e);
 		} catch (TransformerException e) {
 			throw new ExportFailedException(e);
 		}
