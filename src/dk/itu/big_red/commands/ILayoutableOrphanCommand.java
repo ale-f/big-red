@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class ILayoutableOrphanCommand extends Command {
@@ -27,13 +28,13 @@ public class ILayoutableOrphanCommand extends Command {
 	
 	public void execute() {
 		for (Object i : children)
-			if (i instanceof EditPart)
+			if (i instanceof EditPart && !(i instanceof Edge))
 				parent.removeChild((ILayoutable)((EditPart)i).getModel());
 	}
 	
 	public void undo() {
 		for (Object i : children)
-			if (i instanceof EditPart)
+			if (i instanceof EditPart && !(i instanceof Edge))
 				parent.addChild((ILayoutable)((EditPart)i).getModel());
 	}
 }

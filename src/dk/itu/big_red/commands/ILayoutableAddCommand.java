@@ -3,6 +3,7 @@ package dk.itu.big_red.commands;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class ILayoutableAddCommand extends Command {
@@ -26,9 +27,10 @@ public class ILayoutableAddCommand extends Command {
 	}
 	
 	public boolean parentLayoutCanContainChildConstraint() {
-		return (constraint.x >= 0 && constraint.y >= 0 &&
-				constraint.x + constraint.width <= parent.getLayout().width &&
-				constraint.y + constraint.height <= parent.getLayout().height);
+		return (child instanceof Edge ||
+				(constraint.x >= 0 && constraint.y >= 0 &&
+				 constraint.x + constraint.width <= parent.getLayout().width &&
+				 constraint.y + constraint.height <= parent.getLayout().height));
 	}
 	
 	public boolean canExecute() {
@@ -38,14 +40,18 @@ public class ILayoutableAddCommand extends Command {
 	}
 	
 	public void execute() {
-		parent.addChild(child);
+		if (!(child instanceof Edge))
+			parent.addChild(child);
 		oldConstraint = child.getLayout();
+		if (child instanceof Edge)
+			constraint = new Rectangle(constraint).translate(parent.getRootLayout().getTopLeft());
 		child.setLayout(constraint);
 	}
 	
 	public void undo() {
 		child.setLayout(oldConstraint);
-		parent.removeChild(child);
+		if (!(child instanceof Edge))
+			parent.removeChild(child);
 	}
 
 }
