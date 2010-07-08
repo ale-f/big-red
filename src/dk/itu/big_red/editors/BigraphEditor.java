@@ -461,7 +461,8 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     		getCommandStack().markSaveLocation();
     		firePropertyChange(IEditorPart.PROP_DIRTY);
         } catch (Exception ex) {
-        	ex.printStackTrace();
+        	if (monitor != null)
+        		monitor.setCanceled(true);
         }
 	}
 	
