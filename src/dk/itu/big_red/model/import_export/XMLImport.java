@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -30,15 +31,15 @@ public class XMLImport extends Import {
 	@Override
 	public Bigraph importModel() throws ImportFailedException {
 		try {
-			Document doc =
-				DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(source);
-			
-			return (Bigraph)process(doc.getDocumentElement());
+			Document d = DOM.parse(source);
+			return (Bigraph)process(d.getDocumentElement());
 		} catch (ParserConfigurationException e) {
 			throw new ImportFailedException(e);
 		} catch (SAXException e) {
 			throw new ImportFailedException(e);
 		} catch (IOException e) {
+			throw new ImportFailedException(e);
+		} catch (CoreException e) {
 			throw new ImportFailedException(e);
 		}
 	}
