@@ -6,14 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
-import dk.itu.big_red.util.DOM;
 
 /**
  * Points are objects which can be connected to <em>at most one</em> {@link

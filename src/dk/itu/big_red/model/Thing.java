@@ -10,17 +10,11 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.util.DOM;
 
 /**
  * The <code>Thing</code> provides the basic functionality shared by most
@@ -123,7 +117,7 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 		return children.contains(child);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySource.class) {

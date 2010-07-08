@@ -34,7 +34,7 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 		setDistance(distance);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub

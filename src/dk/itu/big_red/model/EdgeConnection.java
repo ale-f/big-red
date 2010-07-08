@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 
 import org.eclipse.draw2d.Connection;
 
-import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 

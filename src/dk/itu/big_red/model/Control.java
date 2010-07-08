@@ -6,13 +6,9 @@ import java.util.ArrayList;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import dk.itu.big_red.exceptions.DuplicateControlException;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
-import dk.itu.big_red.util.DOM;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
