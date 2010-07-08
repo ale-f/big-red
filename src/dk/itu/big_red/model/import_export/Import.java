@@ -21,7 +21,8 @@ public abstract class Import {
 	protected InputStream source = null;
 	
 	/**
-	 * Sets the source of the import to the given {@link InputStream}.
+	 * Sets the source of the import to the given {@link InputStream}. The
+	 * InputStream will be closed once the input has been read.
 	 * @param os an InputStream
 	 */
 	public void setInputStream(InputStream is) {

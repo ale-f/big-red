@@ -29,7 +29,8 @@ public abstract class Export {
 	protected OutputStream target = null;
 	
 	/**
-	 * Sets the target of the export to the given {@link OutputStream}.
+	 * Sets the target of the export to the given {@link OutputStream}. The
+	 * OutputStream will be closed once the output has been written.
 	 * @param os an OutputStream
 	 */
 	public void setOutputStream(OutputStream os) {
