@@ -216,7 +216,7 @@ public class ControlEditorWizardPage extends WizardPage {
 		Signature ma = getModel().getSignature();
 		Control m = ma.getControl(longName);
 		if (m == null) {
-			m = ma.addControl(longName, label, shape, defaultSize, constraintModifiable);
+			//m = ma.addControl(longName, label, shape, defaultSize, constraintModifiable);
 			
 			m.addPort(topPort, 0);
 			m.addPort(leftPort, 1);
@@ -225,7 +225,7 @@ public class ControlEditorWizardPage extends WizardPage {
 		} else {
 			/* XXX: propagate changes *properly* through the model! Ports! */
 			m.setLabel(label);
-			m.setShape(shape);
+			//m.setShape(shape);
 			m.setDefaultSize(defaultSize);
 			m.setResizable(constraintModifiable);
 		}

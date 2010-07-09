@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
@@ -75,6 +76,40 @@ public class NodePart extends ThingPart {
 		figure.setShape(model.getControl().getShape());
 		figure.setLabel(model.getControl().getLabel());
 		figure.setToolTip(model.getControl().getLongName(), portDescription, model.getComment());
+		
+		PointList points = model.getControl().getPoints();
+		if (points != null) {
+			PointList adjustedPoints = points.getCopy();
+			
+			/*
+			 * Move the polygon so that its top-left corner is at (0,0).
+			 */
+			adjustedPoints.translate(
+					points.getBounds().getTopLeft().getNegated());
+			
+			/*
+			 * Work out the scaling factors that'll make the polygon fit inside
+			 * the layout.
+			 * 
+			 * (Note that adjustedBounds.width and adjustedBounds.height are
+			 * both off-by-one - getBounds() prefers < to <=, it seems.)
+			 */
+			Rectangle adjustedBounds = adjustedPoints.getBounds();
+			double xScale = layout.width - 2,
+			       yScale = layout.height - 2;
+			xScale /= adjustedBounds.width - 1; yScale /= adjustedBounds.height - 1;
+			
+			/*
+			 * Scale all of the points.
+			 */
+			org.eclipse.draw2d.geometry.Point tmp =
+				new org.eclipse.draw2d.geometry.Point();
+			for (int i = 0; i < adjustedPoints.size(); i++) {
+				adjustedPoints.getPoint(tmp, i).scale(xScale, yScale).translate(1, 1);
+				adjustedPoints.setPoint(tmp, i);
+			}
+			figure.setPoints(adjustedPoints);
+		}
 		
 		figure.setFillColour(model.getFillColour());
 		figure.setOutlineColour(model.getOutlineColour());

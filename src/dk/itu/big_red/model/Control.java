@@ -23,9 +23,13 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  */
 public class Control implements IPropertyChangeNotifier {
 	public static enum Shape {
-		SHAPE_RECTANGLE,
+		/**
+		 * An oval.
+		 */
 		SHAPE_OVAL,
-		SHAPE_TRIANGLE,
+		/**
+		 * A polygon.
+		 */
 		SHAPE_POLYGON
 	}
 
@@ -46,7 +50,7 @@ public class Control implements IPropertyChangeNotifier {
 	 * The property name fired when the set of points defining this control's
 	 * polygon changes.
 	 */
-	public static final String PROPERTY_POLYGON = "ControlPolygon";
+	public static final String PROPERTY_POINTS = "ControlPoints";
 	/**
 	 * The property name fired when the default size changes. (This only
 	 * really matters for existing {@link Node}s if they aren't resizable.)
@@ -68,12 +72,25 @@ public class Control implements IPropertyChangeNotifier {
 	 */
 	public static final String PROPERTY_PORT = "ControlPort";
 	
+	public static final PointList POINTS_QUAD = new PointList(new int[] {
+			0, 0,
+			0, 1,
+			1, 1,
+			1, 0
+	});
+	
+	public static final PointList POINTS_TRIANGLE = new PointList(new int[] {
+			0, -1,
+			-1, 0,
+			1, 0
+	});
+	
 	private PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
 	private ArrayList<String> portNames = new ArrayList<String>();
 	private ArrayList<Integer> portOffsets = new ArrayList<Integer>();
-	private PointList polygonSpec = new PointList();
+	private PointList points = new PointList();
 	
 	private Control.Shape shape;
 	private String longName;
@@ -84,15 +101,15 @@ public class Control implements IPropertyChangeNotifier {
 	public Control() {
 		setLongName("Unknown");
 		setLabel("?");
-		setShape(Control.Shape.SHAPE_RECTANGLE);
+		setShape(Control.Shape.SHAPE_POLYGON, POINTS_QUAD);
 		setDefaultSize(new Point(50, 50));
 		setResizable(true);
 	}
 	
-	public Control(String longName, String label, Control.Shape shape, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
+	public Control(String longName, String label, Control.Shape shape, PointList points, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
 		setLongName(longName);
 		setLabel(label);
-		setShape(shape);
+		setShape(shape, points);
 		setDefaultSize(defaultSize);
 		setResizable(constraintModifiable);
 	}
@@ -111,10 +128,38 @@ public class Control implements IPropertyChangeNotifier {
 		return shape;
 	}
 	
-	public void setShape(Control.Shape shape) {
+	/**
+	 * If this object's shape is {@link Shape#SHAPE_POLYGON}, then gets a copy
+	 * of the list of points defining its polygon.
+	 * @return a list of points defining a polygon, or <code>null</code> if
+	 *         this object's shape is not {@link Shape#SHAPE_POLYGON}
+	 * @see Control#getShape
+	 * @see Control#setShape
+	 */
+	public PointList getPoints() {
+		if (this.shape == Shape.SHAPE_POLYGON)
+			return this.points.getCopy();
+		else return null;
+	}
+	
+	/**
+	 * Sets this Control's {@link Shape}. <code>points</code> must <i>not</i>
+	 * be <code>null</code> if <code>shape</code> is {@link
+	 * Shape#SHAPE_POLYGON}, but it <i>must</i> be <code>null</code> otherwise.
+	 * @param shape the new Shape
+	 * @param points a {@link PointList} specifying a polygon
+	 */
+	public void setShape(Control.Shape shape, PointList points) {
+		if ((points == null && shape == Shape.SHAPE_POLYGON) ||
+			(points != null && shape == Shape.SHAPE_OVAL))
+			return;
 		Control.Shape oldShape = this.shape;
 		this.shape = shape;
 		listeners.firePropertyChange(PROPERTY_SHAPE, oldShape, shape);
+		
+		PointList oldPoints = this.points;
+		this.points = points;
+		listeners.firePropertyChange(PROPERTY_POINTS, oldPoints, points);
 	}
 
 	public void setLongName(String longName) {
@@ -191,35 +236,6 @@ public class Control implements IPropertyChangeNotifier {
 	
 	public int getOffset(String port) {
 		return this.portOffsets.get(this.portNames.indexOf(port));
-	}
-	
-	/**
-	 * If this object's shape is {@link Shape#SHAPE_POLYGON}, then gets a copy
-	 * of the list of points defining its polygon.
-	 * @return a list of points defining a polygon, or <code>null</code> if
-	 *         this object's shape is not {@link Shape#SHAPE_POLYGON}
-	 * @see Control#getShape
-	 * @see Control#setShape
-	 */
-	public PointList getPolygon() {
-		if (this.shape == Shape.SHAPE_POLYGON)
-			return this.polygonSpec.getCopy();
-		else return null;
-	}
-	
-	/**
-	 * If this object's shape is {@link Shape#SHAPE_POLYGON}, then sets the
-	 * list of points defining its polygon to a copy of the list provided.
-	 * @param newPolygon a list of points defining a new polygon
-	 * @see Control#getShape
-	 * @see Control#setShape
-	 */
-	public void setPolygon(PointList newPolygon) {
-		if (this.shape == Shape.SHAPE_POLYGON) {
-			PointList oldPolygon = this.polygonSpec;
-			this.polygonSpec = newPolygon.getCopy();
-			listeners.firePropertyChange(PROPERTY_POLYGON, oldPolygon, newPolygon);
-		}
 	}
 	
 	@Override

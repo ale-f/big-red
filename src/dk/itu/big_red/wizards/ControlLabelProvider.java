@@ -23,12 +23,12 @@ public class ControlLabelProvider extends LabelProvider {
 		case SHAPE_OVAL:
 			i = Utility.getBigRedImage("/resource/icons/bigraph/circle.png");
 			break;
-		case SHAPE_RECTANGLE:
+/*		case SHAPE_RECTANGLE:
 			i = Utility.getBigRedImage("/resource/icons/bigraph/square.png");
 			break;
 		case SHAPE_TRIANGLE:
 			i = Utility.getBigRedImage("/resource/icons/bigraph/triangle.png");
-			break;
+			break;*/
 		default:
 			break;
 		}

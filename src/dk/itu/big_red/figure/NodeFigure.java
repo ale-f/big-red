@@ -4,6 +4,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Geometry;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
@@ -16,7 +17,8 @@ public class NodeFigure extends AbstractFigure {
 	public static final int NODE_FIGURE_DEFWIDTH = 100;
 	public static final int NODE_FIGURE_DEFHEIGHT = 100;
 
-	private Control.Shape shape = Control.Shape.SHAPE_RECTANGLE;
+	private Control.Shape shape = Control.Shape.SHAPE_POLYGON;
+	private PointList points = Control.POINTS_QUAD;
 	private Label labelControl = new Label();    
     
 	public NodeFigure() {
@@ -33,6 +35,14 @@ public class NodeFigure extends AbstractFigure {
 	
 	public void setLabel(String text) {
 		labelControl.setText(text);
+	}
+	
+	public void setPoints(PointList points) {
+		this.points = points;
+	}
+	
+	public PointList getPoints() {
+		return this.points;
 	}
 	
 	public void setShape(Control.Shape shape) {
@@ -57,21 +67,15 @@ public class NodeFigure extends AbstractFigure {
 		graphics.pushState();
 		try {
 			graphics.setBackgroundColor(getBackgroundColor());
-			Rectangle nc = getConstraintCopy(getTotalOffset());
-			nc.x++; nc.y++; nc.width -= 2; nc.height -= 2;
+			
+			graphics.translate(getLocation());
+			Rectangle c = getConstraint();
 			switch (shape) {
 			case SHAPE_OVAL:
-				graphics.fillOval(nc);
+				graphics.fillOval(1, 1, c.width - 1, c.height - 1);
 				break;
-			case SHAPE_TRIANGLE:
-				PointList triangle = new PointList();
-				triangle.addPoint(nc.x + (nc.width / 2), nc.y);
-				triangle.addPoint(nc.x, nc.y + nc.height);
-				triangle.addPoint(nc.x + nc.width, nc.y + nc.height);
-				graphics.fillPolygon(triangle);
-				break;
-			case SHAPE_RECTANGLE:
-				graphics.fillRectangle(nc);
+			case SHAPE_POLYGON:
+				graphics.fillPolygon(points);
 				break;
 			}
 		} finally {
@@ -86,26 +90,15 @@ public class NodeFigure extends AbstractFigure {
 			graphics.setLineWidth(2);
 			graphics.setLineStyle(SWT.LINE_SOLID);
 			graphics.setForegroundColor(getForegroundColor());
-			Rectangle nc = getConstraintCopy(getTotalOffset());
-			/*
-			 * This special adjustment stops the objects from being clipped
-			 * (because they went slightly over their borders), because that
-			 * looks terrible.
-			 */
-			nc.x++; nc.y++; nc.width -= 3; nc.height -= 3;
+			
+			graphics.translate(getLocation());
+			Rectangle c = getConstraint();
 			switch (shape) {
 			case SHAPE_OVAL:
-				graphics.drawOval(nc);
+				graphics.drawOval(1, 1, c.width - 2, c.height - 2);
 				break;
-			case SHAPE_TRIANGLE:
-				PointList triangle = new PointList();
-				triangle.addPoint(nc.x + (nc.width / 2), nc.y);
-				triangle.addPoint(nc.x, nc.y + nc.height);
-				triangle.addPoint(nc.x + nc.width, nc.y + nc.height);
-				graphics.drawPolygon(triangle);
-				break;
-			case SHAPE_RECTANGLE:
-				graphics.drawRectangle(nc);
+			case SHAPE_POLYGON:
+				graphics.drawPolygon(points);
 				break;
 			}
 		} finally {

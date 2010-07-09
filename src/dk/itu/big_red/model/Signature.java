@@ -4,34 +4,33 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.exceptions.DuplicateControlException;
 
 /**
- * The ControlAuthority is a central storage point for controls and their
- * properties; every {@link Bigraph} (that is, every document) has an
- * associated ControlAuthority.
- * 
- * <p>Make sure the controls of all the nodes you're using have been
- * registered with the containing Bigraph!
+ * The Signature is a central storage point for {@link Control}s and their
+ * properties (both in terms of the bigraph model and their visual
+ * representations). Every {@link Bigraph} has an associated Signature, which
+ * they consult whenever they need to create a {@link Node}.
  * @author alec
  *
  */
 public class Signature {
 	public static Control DEFAULT_CONTROL =
-		new Control("Unknown", "?", Control.Shape.SHAPE_RECTANGLE, new Point(50, 50), true);
+		new Control("Unknown", "?", Control.Shape.SHAPE_POLYGON, Control.POINTS_QUAD, new Point(50, 50), true);
 	
 	private HashMap<String, Control> controls =
 		new HashMap<String, Control>();
 	
 	public Signature() {
-		addControl("Unknown", "?", Control.Shape.SHAPE_RECTANGLE, new Point(50, 50), true);
+		addControl("Unknown", "?", Control.Shape.SHAPE_POLYGON, Control.POINTS_QUAD, new Point(50, 50), true);
 	}
 	
-	public Control addControl(String longName, String label, Control.Shape shape, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
+	public Control addControl(String longName, String label, Control.Shape shape, PointList points, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
 		Control m = null;
 		if ((m = controls.get(longName)) == null) {
-			m = new Control(longName, label, shape, defaultSize, constraintModifiable);
+			m = new Control(longName, label, shape, points, defaultSize, constraintModifiable);
 			controls.put(longName, m);
 		}
 		return m;
