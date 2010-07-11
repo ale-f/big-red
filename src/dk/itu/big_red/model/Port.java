@@ -14,6 +14,16 @@ import dk.itu.big_red.model.interfaces.ILayoutable;
  */
 public class Port extends Point implements IAdaptable, ILayoutable {
 	/**
+	 * The property name fired when this Port's {@link #segment} changes.
+	 */
+	public static final String PROPERTY_SEGMENT = "PortSegment";
+	
+	/**
+	 * The property name fired when this Port's {@link #distance} changes.
+	 */
+	public static final String PROPERTY_DISTANCE = "PortDistance";
+	
+	/**
 	 * An integer index specifying the line segment on the parent {@link
 	 * Node}'s polygon that this Port falls on. Together with {@link
 	 * #distance}, it defines this Port's position.
@@ -61,8 +71,11 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	 * @see #distance
 	 */
 	public void setDistance(double distance) {
-		if (distance >= 0 && distance < 1)
+		if (distance >= 0 && distance < 1) {
+			double oldDistance = this.distance;
 			this.distance = distance;
+			listeners.firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
+		}
 	}
 
 	/**
@@ -86,8 +99,11 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	public void setSegment(int segment) {
 		Control c = getParent().getControl();
 		if (c.getShape() == Shape.SHAPE_POLYGON &&
-				distance >= 0 && distance < c.getPoints().size())
+				distance >= 0 && distance < c.getPoints().size()) {
+			int oldSegment = this.segment;
 			this.segment = segment;
+			listeners.firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
+		}
 	}
 	
 	@Override
