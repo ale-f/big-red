@@ -17,6 +17,7 @@ import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.util.Geometry;
 
 public class NodePart extends ThingPart {
 	@Override
@@ -79,36 +80,8 @@ public class NodePart extends ThingPart {
 		
 		PointList points = model.getControl().getPoints();
 		if (points != null) {
-			PointList adjustedPoints = points.getCopy();
-			
-			/*
-			 * Move the polygon so that its top-left corner is at (0,0).
-			 */
-			adjustedPoints.translate(
-					points.getBounds().getTopLeft().getNegated());
-			
-			/*
-			 * Work out the scaling factors that'll make the polygon fit inside
-			 * the layout.
-			 * 
-			 * (Note that adjustedBounds.width and adjustedBounds.height are
-			 * both off-by-one - getBounds() prefers < to <=, it seems.)
-			 */
-			Rectangle adjustedBounds = adjustedPoints.getBounds();
-			double xScale = layout.width - 2,
-			       yScale = layout.height - 2;
-			xScale /= adjustedBounds.width - 1; yScale /= adjustedBounds.height - 1;
-			
-			/*
-			 * Scale all of the points.
-			 */
-			org.eclipse.draw2d.geometry.Point tmp =
-				new org.eclipse.draw2d.geometry.Point();
-			for (int i = 0; i < adjustedPoints.size(); i++) {
-				adjustedPoints.getPoint(tmp, i).scale(xScale, yScale).translate(1, 1);
-				adjustedPoints.setPoint(tmp, i);
-			}
-			figure.setPoints(adjustedPoints);
+			figure.setPoints(
+				Geometry.fitPolygonToRectangle(points, layout));
 		}
 		
 		figure.setFillColour(model.getFillColour());
