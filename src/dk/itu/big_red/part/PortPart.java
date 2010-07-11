@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
@@ -17,6 +20,7 @@ import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.util.Geometry;
 
 public class PortPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 	@Override
@@ -50,7 +54,17 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		Port model = getModel();
 		PortFigure figure = (PortFigure)getFigure();
 		
-		figure.setConstraint(model.getLayout());
+		Rectangle r = model.getLayout();
+		PointList polypt = model.getParent().getControl().getPoints();
+		if (polypt != null) {
+			polypt =
+				Geometry.fitPolygonToRectangle(polypt, model.getParent().getLayout());
+			int segment = model.getSegment();
+			Point p1 = polypt.getPoint(segment),
+			      p2 = polypt.getPoint((segment + 1) % polypt.size());
+			r.setLocation(Geometry.getPointOnSegment(p1, p2, model.getDistance()).translate(-5, -5));
+		}
+		figure.setConstraint(r);
 	}
 	
 	@Override
