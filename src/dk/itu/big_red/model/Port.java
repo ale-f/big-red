@@ -40,8 +40,9 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	 */
 	private double distance = 0.0;
 	
-	public Port(String name, double distance) {
+	public Port(String name, int segment, double distance) {
 		setName(name);
+		setSegment(segment);
 		setDistance(distance);
 	}
 	

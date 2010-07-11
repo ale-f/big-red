@@ -199,10 +199,9 @@ public class Control implements IPropertyChangeNotifier {
 	
 	public void addPort(String port, int segment, double distance) {
 		if (port != null) {
-			Port p = new Port(port, distance);
-			p.setSegment(segment);
+			Port p = new Port(port, segment, distance);
 			this.ports.add(p);
-			listeners.firePropertyChange(PROPERTY_PORT, null, port);
+			listeners.firePropertyChange(PROPERTY_PORT, null, p);
 		}
 	}
 	
@@ -231,10 +230,8 @@ public class Control implements IPropertyChangeNotifier {
 	 */
 	public ArrayList<Port> getPortsArray() {
 		ArrayList<Port> r = new ArrayList<Port>();
-		for (Port i : ports) {
-			Port p = new Port(i.getName(), i.getDistance());
-			p.setSegment(i.getSegment());
-		}
+		for (Port i : ports)
+			r.add(new Port(i.getName(), i.getSegment(), i.getDistance()));
 		return r;
 	}
 	
