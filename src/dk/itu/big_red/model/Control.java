@@ -88,8 +88,7 @@ public class Control implements IPropertyChangeNotifier {
 	private PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
-	private ArrayList<String> portNames = new ArrayList<String>();
-	private ArrayList<Integer> portOffsets = new ArrayList<Integer>();
+	private ArrayList<Port> ports = new ArrayList<Port>();
 	private PointList points = new PointList();
 	
 	private Control.Shape shape;
@@ -194,33 +193,36 @@ public class Control implements IPropertyChangeNotifier {
 	}
 
 	public void clearPorts() {
-		this.portNames.clear();
+		this.ports.clear();
 		listeners.firePropertyChange(PROPERTY_PORT, null, null);
 	}
 	
-	public void addPort(String port, int offset) {
-		if (port != null && !this.portNames.contains(port)) {
-			this.portNames.add(port);
-			this.portOffsets.add(offset);
+	public void addPort(String port, int segment, double distance) {
+		if (port != null) {
+			Port p = new Port(port, distance);
+			p.setSegment(segment);
+			this.ports.add(p);
 			listeners.firePropertyChange(PROPERTY_PORT, null, port);
 		}
 	}
 	
 	public void removePort(String port) {
-		int index = this.portNames.indexOf(port);
-		if (index != -1) {
-			this.portNames.remove(index);
-			this.portOffsets.remove(index);
-			listeners.firePropertyChange(PROPERTY_PORT, port, null);
+		Port p = getPort(port);
+		if (p != null) {
+			this.ports.remove(p);
+			listeners.firePropertyChange(PROPERTY_PORT, p, null);
 		}
 	}
 	
 	public boolean hasPort(String port) {
-		return this.portNames.contains(port);
+		return (getPort(port) != null);
 	}
 	
 	public ArrayList<String> getPortNames() {
-		return portNames;
+		ArrayList<String> names = new ArrayList<String>();
+		for (Port i : ports)
+			names.add(i.getName());
+		return names;
 	}
 	
 	/**
@@ -229,13 +231,18 @@ public class Control implements IPropertyChangeNotifier {
 	 */
 	public ArrayList<Port> getPortsArray() {
 		ArrayList<Port> r = new ArrayList<Port>();
-		for (int i = 0; i < this.portNames.size(); i++)
-			r.add(new Port(this.portNames.get(i), this.portOffsets.get(i)));
+		for (Port i : ports) {
+			Port p = new Port(i.getName(), i.getDistance());
+			p.setSegment(i.getSegment());
+		}
 		return r;
 	}
 	
-	public int getOffset(String port) {
-		return this.portOffsets.get(this.portNames.indexOf(port));
+	public Port getPort(String name) {
+		for (Port i : ports)
+			if (i.getName().equals(name))
+				return i;
+		return null;
 	}
 	
 	@Override

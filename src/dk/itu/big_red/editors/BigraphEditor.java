@@ -343,13 +343,13 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		    	c = signature.addControl("Computer", "C", Shape.SHAPE_POLYGON,
 		    			dk.itu.big_red.model.Control.POINTS_QUAD, new Point(25, 13), false);
 		    	
-		    	b.addPort("a", 2);
+		    	b.addPort("a", 0, 0.33);
 		    	
-		    	c.addPort("b", 0);
+		    	c.addPort("b", 0, 0.45);
 		    	
-		    	a.addPort("c", 0);
+		    	a.addPort("c", 0, 0.66);
 		    	
-		    	r.addPort("d", 0);
+		    	r.addPort("d", 0, 0.78);
 		    	
 		    	Root r0 = new Root();
 		    	model.addChild(r0);

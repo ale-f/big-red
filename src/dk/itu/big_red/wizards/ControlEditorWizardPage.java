@@ -167,7 +167,7 @@ public class ControlEditorWizardPage extends WizardPage {
 						portIndex = i + 1;
 				}
 				Combo appropriatePortChoice = null;
-				switch (m.getOffset(p)) {
+				/*switch (m.getOffset(p)) {
 				case 0:
 					appropriatePortChoice = topPortChoice;
 					break;
@@ -182,7 +182,7 @@ public class ControlEditorWizardPage extends WizardPage {
 					break;
 				default:
 					break;
-				}
+				}*/
 				appropriatePortChoice.select(portIndex);
 			}
 			
@@ -218,10 +218,10 @@ public class ControlEditorWizardPage extends WizardPage {
 		if (m == null) {
 			//m = ma.addControl(longName, label, shape, defaultSize, constraintModifiable);
 			
-			m.addPort(topPort, 0);
+			/*m.addPort(topPort, 0);
 			m.addPort(leftPort, 1);
 			m.addPort(bottomPort, 2);
-			m.addPort(rightPort, 3);
+			m.addPort(rightPort, 3);*/
 		} else {
 			/* XXX: propagate changes *properly* through the model! Ports! */
 			m.setLabel(label);

@@ -127,30 +127,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		return outlineColour;
 	}
 	
-	public Point getPortAnchorPosition(String port) {
-		Point pt = null;
-		if (getControl().hasPort(port)) {
-			int offset = getControl().getOffset(port);
-			switch (offset) {
-			case 0:
-				pt = new Point((layout.width / 2), 0);
-				break;
-			case 1:
-				pt = new Point(0, (layout.height / 2));
-				break;
-			case 2:
-				pt = new Point((layout.width / 2), layout.height);
-				break;
-			case 3:
-				pt = new Point(layout.width, (layout.height / 2));
-				break;
-			default:
-				break;
-			}
-		}
-		return pt;
-	}
-
 	@Override
 	public void propertyChange(PropertyChangeEvent arg) {
 		/*
