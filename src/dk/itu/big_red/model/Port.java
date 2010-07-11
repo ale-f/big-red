@@ -84,26 +84,22 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	 * @return
 	 */
 	public int getSegment() {
-		Control c = getParent().getControl();
-		return (c.getShape() == Shape.SHAPE_POLYGON ? segment : 0);
+		return segment;
 	}
 	
 	/**
 	 * Sets this Port's {@link #segment segment}.
 	 * 
-	 * <p>Calls to this method will do nothing if the parent {@link Node}'s
-	 * {@link Control} isn't a {@link Control.Shape#SHAPE_POLYGON polygon}.
+	 * <p>Note that the segment value is <i>not</i> checked against the parent
+	 * {@link Node}'s {@link Control} - users of this method must make sure
+	 * they pass something sensible.
 	 * @param segment the new segment value
 	 * @see #segment
 	 */
 	public void setSegment(int segment) {
-		Control c = getParent().getControl();
-		if (c.getShape() == Shape.SHAPE_POLYGON &&
-				distance >= 0 && distance < c.getPoints().size()) {
-			int oldSegment = this.segment;
-			this.segment = segment;
-			listeners.firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
-		}
+		int oldSegment = this.segment;
+		this.segment = segment;
+		listeners.firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
 	}
 	
 	@Override
