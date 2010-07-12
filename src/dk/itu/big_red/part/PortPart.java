@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
@@ -19,8 +17,8 @@ import dk.itu.big_red.figure.PortFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.util.Geometry;
 
 public class PortPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 	@Override
@@ -43,11 +41,15 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
 			refreshSourceConnections();
 			refreshVisuals();
+	    } else if (evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT)) {
+	    	refreshVisuals();
 	    }
 	}
 	
 	@Override
 	protected void refreshVisuals(){
+		super.refreshVisuals();
+		
 		setResizable(false);
 		
 		Port model = getModel();
@@ -60,6 +62,8 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		List<EdgeConnection> l = model.getConnections();
 		if (l.size() != 0)
 			toolTip += "\n(connected to " + l.get(0).getParent() + ")";
+		if (model.getComment() != null)
+			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
 	}
 	

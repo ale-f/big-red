@@ -10,6 +10,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
+import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
@@ -19,12 +20,26 @@ import dk.itu.big_red.model.interfaces.ILayoutable;
  * @author alec
  *
  */
-public abstract class Point implements IConnectable, IAdaptable {
+public abstract class Point implements IConnectable, IAdaptable, ICommentable {
 	/**
 	 * The property name fired when the name changes.
 	 */
 	public static final String PROPERTY_NAME = "PointName";
 	
+	private String comment = null;
+	
+	@Override
+	public String getComment() {
+		return comment;
+	}
+
+	@Override
+	public void setComment(String comment) {
+		String oldComment = this.comment;
+		this.comment = comment;
+		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
+	}
+
 	protected Rectangle layout = new Rectangle(5, 5, 10, 10);
 	
 	@Override

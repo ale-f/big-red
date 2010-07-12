@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
@@ -20,6 +19,7 @@ import dk.itu.big_red.figure.NameFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 
 public class NamePart extends AbstractPart implements NodeEditPart {
@@ -43,7 +43,8 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
-		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME)) {
+		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME) ||
+			evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT)) {
 	    	refreshVisuals();
 	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
 	    	refreshSourceConnections();
@@ -59,7 +60,11 @@ public class NamePart extends AbstractPart implements NodeEditPart {
 		
 		figure.setName(model.getName());
 		figure.setConstraint(model.getLayout());
-		figure.setToolTip("Inner name");
+		
+		String toolTip = "Inner name";
+		if (model.getComment() != null)
+			toolTip += "\n\n" + model.getComment();
+		figure.setToolTip(toolTip);
 		
 		figure.setBackgroundColor(ColorConstants.blue);
 	}
