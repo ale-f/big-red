@@ -53,7 +53,7 @@ public class AppearanceGenerator {
 		if (o instanceof ICommentable) {
 			alive = true;
 			String comment = ((ICommentable)o).getComment();
-			if (comment != null && comment.length() != 0)
+			if (comment != null)
 				DOM.applyAttributesToElement(aE,
 						"comment", comment);
 		}
