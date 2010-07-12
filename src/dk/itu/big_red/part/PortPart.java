@@ -42,6 +42,7 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
 			refreshSourceConnections();
+			refreshVisuals();
 	    }
 	}
 	
@@ -54,6 +55,12 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		
 		Rectangle r = model.getLayout();
 		figure.setConstraint(r);
+		
+		String toolTip = model.getName();
+		List<EdgeConnection> l = model.getConnections();
+		if (l.size() != 0)
+			toolTip += "\n(connected to " + l.get(0).getParent() + ")";
+		figure.setToolTip(toolTip);
 	}
 	
 	@Override

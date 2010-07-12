@@ -68,15 +68,9 @@ public class NodePart extends ThingPart {
 		
 		setResizable(getModel().getControl().isResizable());
 		
-		Rectangle layout = model.getLayout();
-		
-		String portDescription = null;
-		if (model.getControl().getPortNames().size() != 0)
-			portDescription = model.getControl().getPortNames().toString();
-		
 		figure.setShape(model.getControl().getShape());
 		figure.setLabel(model.getControl().getLabel());
-		figure.setToolTip(model.getControl().getLongName(), portDescription, model.getComment());
+		figure.setToolTip(model.getControl().getLongName(), null, model.getComment());
 		
 		PointList points = model.getFittedPolygon();
 		if (points != null)
