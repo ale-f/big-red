@@ -212,4 +212,15 @@ public class DOM {
 	public static RGB getColorAttribute(Element d, String n) {
 		return Utility.colourFromString(getAttribute(d, n));
 	}
+	
+	/**
+	 * Appends <code>newChild</code> to <code>e</code>, if neither of them are
+	 * <code>null</code>.
+	 * @param e the would-be parent of the new node
+	 * @param newChild the node to add
+	 */
+	public static void appendChildIfNotNull(Element e, Node newChild) {
+		if (e != null && newChild != null)
+			e.appendChild(newChild);
+	}
 }
