@@ -73,4 +73,17 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	public List<ILayoutable> getModelChildren() {
 		return new ArrayList<ILayoutable>();
 	}
+	
+	@Override
+	public void performRequest(Request req) {
+		if (req.getType().equals(RequestConstants.REQ_OPEN)) {
+			try {
+				IWorkbenchPage page =
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+				page.showView(IPageLayout.ID_PROP_SHEET);
+			} catch (PartInitException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
