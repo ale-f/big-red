@@ -15,7 +15,7 @@ import dk.itu.big_red.util.Geometry;
  * @author alec
  *
  */
-public class Port extends Point implements IAdaptable, ILayoutable {
+public class Port extends Point implements ILayoutable {
 	/**
 	 * The property name fired when this Port's {@link #segment} changes.
 	 */
@@ -52,13 +52,6 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	@Override
 	public Node getParent() {
 		return (Node)super.getParent();
-	}
-	
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	/**

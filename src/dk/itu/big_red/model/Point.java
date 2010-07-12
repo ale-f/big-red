@@ -5,8 +5,11 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
@@ -16,7 +19,7 @@ import dk.itu.big_red.model.interfaces.ILayoutable;
  * @author alec
  *
  */
-public abstract class Point implements IConnectable {
+public abstract class Point implements IConnectable, IAdaptable {
 	/**
 	 * The property name fired when the name changes.
 	 */
@@ -152,5 +155,13 @@ public abstract class Point implements IConnectable {
 	@Override
 	public Point clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException();
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == IPropertySource.class) {
+			return new ModelPropertySource(this);
+		} else return null;
 	}
 }

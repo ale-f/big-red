@@ -3,8 +3,11 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.Connection;
+import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
@@ -14,7 +17,7 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  * @author alec
  *
  */
-public class EdgeConnection implements IPropertyChangeNotifier {
+public class EdgeConnection implements IPropertyChangeNotifier, IAdaptable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 	/**
@@ -72,5 +75,13 @@ public class EdgeConnection implements IPropertyChangeNotifier {
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
+	}
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == IPropertySource.class) {
+			return new ModelPropertySource(getParent());
+		} else return null;
 	}
 }
