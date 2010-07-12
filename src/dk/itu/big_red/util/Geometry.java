@@ -9,6 +9,16 @@ public class Geometry {
 		return new Point(p1).translate(p2.getDifference(p1).scale(offset));
 	}
 	
+	public static Point getPointOnEllipse(Rectangle el, double offset) {
+		Point centre = el.getCenter();
+		offset -= 0.25;
+		double t = offset * (2 * Math.PI),
+		       a = el.width / 2,
+		       b = el.height / 2;
+		return new Point(centre.x + (a * Math.cos(t)),
+				centre.y + (b * Math.sin(t)));
+	}
+	
 	/**
 	 * Scales and resizes the polygon defined by <code>points</code> to fit
 	 * within <code>rectangle</code>.
