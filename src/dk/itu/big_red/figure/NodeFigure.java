@@ -53,15 +53,6 @@ public class NodeFigure extends AbstractFigure {
 		return this.shape;
 	}
 	
-	public void setToolTip(String control, String ports, String content) {
-		String labelText = control;
-		if (ports != null)
-			labelText += "\nHas ports: " + ports;
-		if (content != null)
-			labelText += "\n\n" + content;
-		super.setToolTip(labelText);
-	}
-	
 	@Override
 	protected void fillShape(Graphics graphics) {
 		graphics.pushState();

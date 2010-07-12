@@ -70,7 +70,11 @@ public class NodePart extends ThingPart {
 		
 		figure.setShape(model.getControl().getShape());
 		figure.setLabel(model.getControl().getLabel());
-		figure.setToolTip(model.getControl().getLongName(), null, model.getComment());
+		
+		String toolTip = model.getControl().getLongName();
+		if (model.getComment() != null)
+			toolTip += "\n\n" + model.getComment();
+		figure.setToolTip(toolTip);
 		
 		PointList points = model.getFittedPolygon();
 		if (points != null)
