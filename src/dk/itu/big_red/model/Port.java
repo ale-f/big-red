@@ -1,9 +1,12 @@
 package dk.itu.big_red.model;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.util.Geometry;
 
 /**
  * Ports are one of the two kinds of object that can be connected by an
@@ -106,5 +109,20 @@ public class Port extends Point implements IAdaptable, ILayoutable {
 	@Override
 	public Bigraph getBigraph() {
 		return getParent().getBigraph();
+	}
+	
+	@Override
+	public Rectangle getLayout() {
+		Rectangle r = super.getLayout();
+		PointList polypt = getParent().getFittedPolygon();
+		if (polypt != null) {
+			int segment = getSegment();
+			org.eclipse.draw2d.geometry.Point p1 = polypt.getPoint(segment),
+			      p2 = polypt.getPoint((segment + 1) % polypt.size());
+			r.setLocation(Geometry.getPointOnSegment(p1, p2, getDistance()).translate(-5, -5));
+		} else {
+			r.setLocation(Geometry.getPointOnEllipse(getParent().getLayout().getCopy().setLocation(0, 0), getDistance()).translate(-5, -5));
+		}
+		return r;
 	}
 }

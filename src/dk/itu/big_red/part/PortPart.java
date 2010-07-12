@@ -47,21 +47,12 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 	
 	@Override
 	protected void refreshVisuals(){
-		super.refreshVisuals();
-		
 		setResizable(false);
 		
 		Port model = getModel();
 		PortFigure figure = (PortFigure)getFigure();
 		
 		Rectangle r = model.getLayout();
-		PointList polypt = model.getParent().getFittedPolygon();
-		if (polypt != null) {
-			int segment = model.getSegment();
-			Point p1 = polypt.getPoint(segment),
-			      p2 = polypt.getPoint((segment + 1) % polypt.size());
-			r.setLocation(Geometry.getPointOnSegment(p1, p2, model.getDistance()).translate(-5, -5));
-		}
 		figure.setConstraint(r);
 	}
 	
