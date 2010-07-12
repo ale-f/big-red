@@ -1,5 +1,7 @@
 package dk.itu.big_red.figure;
 
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IClippingStrategy;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
@@ -8,6 +10,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
+import dk.itu.big_red.figure.adornments.SlightlyOvergenerousClippingStrategy;
+
 public abstract class AbstractFigure extends Shape {
 	public AbstractFigure() {
 		/*
@@ -15,6 +19,7 @@ public abstract class AbstractFigure extends Shape {
 		 */
 		setAntialias(SWT.ON);
 		setOpaque(false);
+		setClippingStrategy(new SlightlyOvergenerousClippingStrategy());
 	}
 	
 	protected Rectangle getAncestorConstraint(int generations) {
