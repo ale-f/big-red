@@ -63,11 +63,8 @@ public class BigraphXMLExport extends Export {
 		Element e = doc.createElement("node");
 		e.setAttribute("control", n.getControl().getLongName());
 		
-		for (Port p : n.getPorts()) {
-			org.w3c.dom.Node portE = process(p);
-			if (portE != null)
-				e.appendChild(portE);
-		}
+		for (Port p : n.getPorts()) 
+			DOM.appendChildIfNotNull(e, process(p));
 		
 		return e;
 	}
@@ -99,10 +96,7 @@ public class BigraphXMLExport extends Export {
 		for (ILayoutable i : obj.getChildren())
 			e.appendChild(process(i));
 		
-		Element appearanceElement =
-			AppearanceGenerator.getAppearance(doc, obj);
-		if (appearanceElement != null)
-			e.appendChild(appearanceElement);
+		DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
 		
 		return e;
 	}
