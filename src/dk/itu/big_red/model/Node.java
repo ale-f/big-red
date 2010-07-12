@@ -5,11 +5,14 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 
+import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.util.Geometry;
 
 public class Node extends Thing implements PropertyChangeListener, IColourable {
 	/**
@@ -53,6 +56,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 			layoutCopy.width = getLayout().width;
 			layoutCopy.height = getLayout().height;
 		}
+		fittedPolygon = null;
 		super.setLayout(layoutCopy);
 	}
 	
@@ -68,6 +72,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		if (control != null) {
 			Control oldControl = this.control;
 			this.control = control;
+			fittedPolygon = null;
 			
 			if (oldControl != null)
 				oldControl.removePropertyChangeListener(this);
@@ -135,5 +140,24 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 		 */
 		setControl(null);
 		setControl((Control)arg.getSource());
+	}
+	
+	private PointList fittedPolygon = null;
+	
+	/**
+	 * Lazily creates and returns the <i>fitted polygon</i> for this Node (a
+	 * copy of its {@link Control}'s polygon, scaled to fit inside this Node's
+	 * layout).
+	 * 
+	 * <p>A call to {@link #setControl} or {@link #setLayout} will invalidate
+	 * the fitted polygon.
+	 * @return the fitted polygon
+	 */
+	public PointList getFittedPolygon() {
+		if (fittedPolygon == null) {
+			if (getControl().getShape() == Shape.SHAPE_POLYGON)
+				fittedPolygon = Geometry.fitPolygonToRectangle(getControl().getPoints(), getLayout());
+		}
+		return fittedPolygon;
 	}
 }

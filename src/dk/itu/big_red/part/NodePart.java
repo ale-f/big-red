@@ -78,11 +78,9 @@ public class NodePart extends ThingPart {
 		figure.setLabel(model.getControl().getLabel());
 		figure.setToolTip(model.getControl().getLongName(), portDescription, model.getComment());
 		
-		PointList points = model.getControl().getPoints();
-		if (points != null) {
-			figure.setPoints(
-				Geometry.fitPolygonToRectangle(points, layout));
-		}
+		PointList points = model.getFittedPolygon();
+		if (points != null)
+			figure.setPoints(points);
 		
 		figure.setFillColour(model.getFillColour());
 		figure.setOutlineColour(model.getOutlineColour());

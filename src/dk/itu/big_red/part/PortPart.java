@@ -55,10 +55,8 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		PortFigure figure = (PortFigure)getFigure();
 		
 		Rectangle r = model.getLayout();
-		PointList polypt = model.getParent().getControl().getPoints();
+		PointList polypt = model.getParent().getFittedPolygon();
 		if (polypt != null) {
-			polypt =
-				Geometry.fitPolygonToRectangle(polypt, model.getParent().getLayout());
 			int segment = model.getSegment();
 			Point p1 = polypt.getPoint(segment),
 			      p2 = polypt.getPoint((segment + 1) % polypt.size());
