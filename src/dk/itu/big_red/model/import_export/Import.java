@@ -17,7 +17,7 @@ import dk.itu.big_red.exceptions.ImportFailedException;
  *
  */
 
-public abstract class Import {
+public abstract class Import<T> {
 	protected InputStream source = null;
 	
 	/**
@@ -48,12 +48,14 @@ public abstract class Import {
 	 * @return <code>true</code> if the model is ready to be imported, or
 	 *         <code>false</code> otherwise
 	 */
-	public abstract boolean canImport();
+	public boolean canImport() {
+		return (source != null);
+	}
 	
 	/**
 	 * Imports the model. This function should not be called unless {@link
 	 * Import#canImport canImport} returns <code>true</code>.
 	 * @throws ImportFailedException if the import failed
 	 */
-	public abstract Object importModel() throws ImportFailedException;
+	public abstract T importModel() throws ImportFailedException;
 }

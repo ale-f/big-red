@@ -19,12 +19,16 @@ import dk.itu.big_red.exceptions.ExportFailedException;
  * @author alec
  *
  */
-public abstract class Export {
+public abstract class Export<T> {
+	protected T model = null;
+	
 	/**
 	 * Sets the model object to be exported.
 	 * @param model
 	 */
-	public abstract void setModel(Object model);
+	public void setModel(T model) {
+		this.model = model;
+	}
 	
 	protected OutputStream target = null;
 	
@@ -56,7 +60,9 @@ public abstract class Export {
 	 * @return <code>true</code> if the model is ready to be exported, or
 	 *         <code>false</code> otherwise
 	 */
-	public abstract boolean canExport();
+	public boolean canExport() {
+		return (this.model != null && this.target != null);
+	}
 	
 	/**
 	 * Exports the model. This function should not be called unless {@link

@@ -17,12 +17,7 @@ import dk.itu.big_red.util.DOM;
  * @see BigraphXMLExport
  *
  */
-public class BigraphXMLImport extends Import {
-	@Override
-	public boolean canImport() {
-		return (source != null);
-	}
-
+public class BigraphXMLImport extends Import<Bigraph> {
 	@Override
 	public Bigraph importModel() throws ImportFailedException {
 		try {

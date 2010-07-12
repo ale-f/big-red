@@ -14,20 +14,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.util.DOM;
 
-public class SignatureXMLExport extends Export {
-	private Signature model = null;
-	
-	@Override
-	public void setModel(Object model) {
-		if (model instanceof Signature)
-			this.model = (Signature)model;
-	}
-
-	@Override
-	public boolean canExport() {
-		return (target != null && model != null);
-	}
-
+public class SignatureXMLExport extends Export<Signature> {
 	private Document doc = null;
 	
 	@Override

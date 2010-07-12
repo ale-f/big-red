@@ -21,20 +21,7 @@ import dk.itu.big_red.util.DOM;
  * @see BigraphXMLImport
  *
  */
-public class BigraphXMLExport extends Export {
-	private Bigraph model = null;
-	
-	@Override
-	public void setModel(Object model) {
-		if (model instanceof Bigraph)
-			this.model = (Bigraph)model;
-	}
-
-	@Override
-	public boolean canExport() {
-		return (this.model != null && this.target != null);
-	}
-
+public class BigraphXMLExport extends Export<Bigraph> {
 	private Document doc = null;
 	
 	@Override
