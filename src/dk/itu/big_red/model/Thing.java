@@ -156,7 +156,7 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 	public void relayout() {
 	}
 
-	private String comment = "";
+	private String comment = null;
 	
 	@Override
 	public String getComment() {
