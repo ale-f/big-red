@@ -53,13 +53,13 @@ public class NameFigure extends AbstractFigure {
 	
 	@Override
 	protected void fillShape(Graphics graphics) {
-		graphics.pushState();
+		Rectangle a = start(graphics);
 		try {
 			graphics.setBackgroundColor(getBackgroundColor());
 			graphics.setAlpha(128);
-			graphics.fillRectangle(getConstraint());
+			graphics.fillRectangle(a);
 		} finally {
-			graphics.popState();
+			stop(graphics);
 		}
 	}
 

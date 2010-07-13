@@ -55,45 +55,41 @@ public class NodeFigure extends AbstractFigure {
 	
 	@Override
 	protected void fillShape(Graphics graphics) {
-		graphics.pushState();
+		Rectangle a = start(graphics);
 		try {
 			graphics.setBackgroundColor(getBackgroundColor());
 			
-			graphics.translate(getLocation());
-			Rectangle c = getConstraint();
 			switch (shape) {
 			case SHAPE_OVAL:
-				graphics.fillOval(1, 1, c.width - 1, c.height - 1);
+				graphics.fillOval(1, 1, a.width - 1, a.height - 1);
 				break;
 			case SHAPE_POLYGON:
 				graphics.fillPolygon(points);
 				break;
 			}
 		} finally {
-			graphics.popState();
+			stop(graphics);
 		}
 	}
 	
 	@Override
 	protected void outlineShape(Graphics graphics) {
-		graphics.pushState();
+		Rectangle a = start(graphics);
 		try {
 			graphics.setLineWidth(2);
 			graphics.setLineStyle(SWT.LINE_SOLID);
 			graphics.setForegroundColor(getForegroundColor());
 			
-			graphics.translate(getLocation());
-			Rectangle c = getConstraint();
 			switch (shape) {
 			case SHAPE_OVAL:
-				graphics.drawOval(1, 1, c.width - 2, c.height - 2);
+				graphics.drawOval(1, 1, a.width - 2, a.height - 2);
 				break;
 			case SHAPE_POLYGON:
 				graphics.drawPolygon(points);
 				break;
 			}
 		} finally {
-			graphics.popState();
+			stop(graphics);
 		}
 	}
 

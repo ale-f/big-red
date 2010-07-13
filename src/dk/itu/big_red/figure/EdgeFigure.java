@@ -5,6 +5,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class EdgeFigure extends AbstractFigure {
 	
@@ -25,20 +26,18 @@ public class EdgeFigure extends AbstractFigure {
 	
 	@Override
 	protected void fillShape(Graphics graphics) {
-		graphics.pushState();
+		Rectangle a = start(graphics);
 		try {
 			graphics.setAlpha(32);
 			graphics.setBackgroundColor(ColorConstants.darkGreen);
-			graphics.fillRectangle(getClientArea());
+			graphics.fillRectangle(a);
 		} finally {
-			graphics.popState();
+			stop(graphics);
 		}
 	}
 
 	@Override
 	protected void outlineShape(Graphics graphics) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

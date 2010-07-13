@@ -3,6 +3,7 @@ package dk.itu.big_red.figure;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class PortFigure extends AbstractFigure {
 
@@ -16,12 +17,12 @@ public class PortFigure extends AbstractFigure {
 	
 	@Override
 	protected void fillShape(Graphics graphics) {
-		graphics.pushState();
+		Rectangle a = start(graphics);
 		try {
 			graphics.setBackgroundColor(ColorConstants.red);
-			graphics.fillOval(getConstraintCopy(getTotalOffset()));
+			graphics.fillOval(a);
 		} finally {
-			graphics.popState();
+			stop(graphics);
 		}
 	}
 

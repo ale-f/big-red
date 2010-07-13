@@ -31,27 +31,25 @@ public class SiteFigure extends AbstractFigure {
 
 	@Override
 	protected void fillShape(Graphics graphics) {
-		graphics.pushState();
+		Rectangle a = start(graphics);
 		try {
 			graphics.setBackgroundColor(getBackgroundColor());
-			Rectangle nc = getConstraintCopy(getTotalOffset());
-			graphics.fillRoundRectangle(nc, 20, 20);
+			graphics.fillRoundRectangle(a, 20, 20);
 		} finally {
-			graphics.popState();
+			stop(graphics);
 		}
 	}
 	
 	@Override
 	protected void outlineShape(Graphics graphics) {
-		graphics.pushState();
+		Rectangle a = start(graphics);
 		try {
 			graphics.setLineStyle(SWT.LINE_DOT);
 			graphics.setForegroundColor(getForegroundColor());
-			Rectangle nc = getConstraintCopy(getTotalOffset());
-			nc.width--; nc.height--;
-			graphics.drawRoundRectangle(nc, 20, 20);
+			a.width--; a.height--;
+			graphics.drawRoundRectangle(a, 20, 20);
 		} finally {
-			graphics.popState();
+			stop(graphics);
 		}
 	}
 }
