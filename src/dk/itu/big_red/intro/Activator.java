@@ -1,4 +1,4 @@
-package dk.itu.big_red;
+package dk.itu.big_red.intro;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Big Red
 Bundle-SymbolicName: dk.itu.big_red;singleton:=true
 Bundle-Version: 1.0.0.1001-dk
-Bundle-Activator: dk.itu.big_red.Activator
+Bundle-Activator: dk.itu.big_red.intro.Activator
 Bundle-Vendor: Alexander Faithfull
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
