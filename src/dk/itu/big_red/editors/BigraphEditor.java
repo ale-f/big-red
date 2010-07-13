@@ -278,8 +278,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	
 	@Override
 	public void doSaveAs() {
-		IAction action = new FileSaveAsAction(this);
-		action.run();
+		// TODO Auto-generated method stub
 	}
 	
 	@Override
