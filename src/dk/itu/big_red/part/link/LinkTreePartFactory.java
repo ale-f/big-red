@@ -1,4 +1,4 @@
-package dk.itu.big_red.part.tree.link;
+package dk.itu.big_red.part.link;
 
 
 import org.eclipse.gef.EditPart;

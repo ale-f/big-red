@@ -1,6 +1,7 @@
-package dk.itu.big_red.part.tree.place;
+package dk.itu.big_red.part.place;
 
 import java.util.List;
+
 
 
 import org.eclipse.gef.EditPolicy;
@@ -8,15 +9,15 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
-import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.part.tree.AbstractTreePart;
+import dk.itu.big_red.part.AbstractTreePart;
 import dk.itu.big_red.util.Utility;
 
-public class SitePlaceTreePart extends AbstractTreePart {
+public class NodePlaceTreePart extends AbstractTreePart {
 	@Override
 	protected List<ILayoutable> getModelChildren() {
-		return ((Site)getModel()).getChildren();
+		return ((Node)getModel()).getChildren();
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class SitePlaceTreePart extends AbstractTreePart {
 	
 	@Override
 	public String getText() {
-		return Integer.toString(((Site)getModel()).getNumber());
+		return ((Node)getModel()).getControl().getLabel();
 	}
 	
 	@Override

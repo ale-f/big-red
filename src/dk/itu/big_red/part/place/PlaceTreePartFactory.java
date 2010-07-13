@@ -1,4 +1,4 @@
-package dk.itu.big_red.part.tree.place;
+package dk.itu.big_red.part.place;
 
 
 

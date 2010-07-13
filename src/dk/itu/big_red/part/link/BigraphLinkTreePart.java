@@ -1,4 +1,4 @@
-package dk.itu.big_red.part.tree.link;
+package dk.itu.big_red.part.link;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.part.tree.AbstractTreePart;
+import dk.itu.big_red.part.AbstractTreePart;
 
 
 public class BigraphLinkTreePart extends AbstractTreePart {

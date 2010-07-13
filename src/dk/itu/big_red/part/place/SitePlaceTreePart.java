@@ -1,23 +1,22 @@
-package dk.itu.big_red.part.tree.place;
+package dk.itu.big_red.part.place;
 
-import java.util.ArrayList;
 import java.util.List;
+
 
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
-import dk.itu.big_red.model.Thing;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.part.tree.AbstractTreePart;
+import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.part.AbstractTreePart;
 import dk.itu.big_red.util.Utility;
 
-
-public class NamePlaceTreePart extends AbstractTreePart {
+public class SitePlaceTreePart extends AbstractTreePart {
 	@Override
-	protected List<Thing> getModelChildren() {
-		return new ArrayList<Thing>();
+	protected List<ILayoutable> getModelChildren() {
+		return ((Site)getModel()).getChildren();
 	}
 
 	@Override
@@ -27,7 +26,7 @@ public class NamePlaceTreePart extends AbstractTreePart {
 	
 	@Override
 	public String getText() {
-		return ((InnerName)getModel()).getName();
+		return Integer.toString(((Site)getModel()).getNumber());
 	}
 	
 	@Override

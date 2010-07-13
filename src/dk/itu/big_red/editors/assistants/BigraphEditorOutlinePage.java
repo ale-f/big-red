@@ -23,8 +23,8 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPageSite;
 
 import dk.itu.big_red.editors.BigraphEditor;
-import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
-import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
+import dk.itu.big_red.part.link.LinkTreePartFactory;
+import dk.itu.big_red.part.place.PlaceTreePartFactory;
 
 public class BigraphEditorOutlinePage extends ContentOutlinePage {
 	/**
