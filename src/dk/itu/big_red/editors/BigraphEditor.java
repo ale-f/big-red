@@ -60,6 +60,7 @@ import org.eclipse.draw2d.parts.ScrollableThumbnail;
 
 import dk.itu.big_red.AppTemplateTransferDropTargetListener;
 import dk.itu.big_red.actions.*;
+import dk.itu.big_red.editors.assistants.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.ModelFactory;

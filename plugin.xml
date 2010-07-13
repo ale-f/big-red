@@ -107,7 +107,7 @@
          point="org.eclipse.ui.editors">
       <editor
             class="dk.itu.big_red.editors.BigraphEditor"
-            contributorClass="dk.itu.big_red.editors.BigraphEditorActionBarContributor"
+            contributorClass="dk.itu.big_red.editors.assistants.BigraphEditorActionBarContributor"
             default="true"
             extensions="bigraph, bigraph-agent"
             icon="icons/icon16.png"
@@ -116,7 +116,7 @@
       </editor>
       <editor
             class="dk.itu.big_red.editors.RuleEditor"
-            contributorClass="dk.itu.big_red.editors.RuleEditorActionBarContributor"
+            contributorClass="dk.itu.big_red.editors.assistants.RuleEditorActionBarContributor"
             default="false"
             extensions="bigraph-rule"
             icon="icons/icon16.png"
@@ -125,7 +125,7 @@
       </editor>
       <editor
             class="dk.itu.big_red.editors.SignatureEditor"
-            contributorClass="dk.itu.big_red.editors.SignatureEditorActionBarContributor"
+            contributorClass="dk.itu.big_red.editors.assistants.SignatureEditorActionBarContributor"
             default="false"
             extensions="bigraph-signature"
             icon="icons/icon16.png"
@@ -134,7 +134,7 @@
       </editor>
       <editor
             class="dk.itu.big_red.editors.SimulationSpecEditor"
-            contributorClass="dk.itu.big_red.editors.SignatureEditorActionBarContributor"
+            contributorClass="dk.itu.big_red.editors.assistants.SignatureEditorActionBarContributor"
             default="false"
             extensions="bigraph-simulation-spec"
             icon="icons/cic/process.png"

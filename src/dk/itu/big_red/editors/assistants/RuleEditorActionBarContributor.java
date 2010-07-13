@@ -1,9 +1,8 @@
-package dk.itu.big_red.editors;
+package dk.itu.big_red.editors.assistants;
 
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 
-public class SimulationSpecEditorActionBarContributor extends
-		ActionBarContributor {
+public class RuleEditorActionBarContributor extends ActionBarContributor {
 
 	@Override
 	protected void buildActions() {
