@@ -11,6 +11,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
+/**
+ * Utility functions for manipulating an Eclipse {@link IProject project} and
+ * the {@link IResource resources} they contain.
+ * @author alec
+ *
+ */
 public class Project {
 	public static IWorkspaceRoot getWorkspaceRoot() {
 		return ResourcesPlugin.getWorkspace().getRoot();

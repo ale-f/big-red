@@ -4,6 +4,11 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * Utility functions for geometry.
+ * @author alec
+ *
+ */
 public class Geometry {
 	public static Point getPointOnSegment(Point p1, Point p2, double offset) {
 		return new Point(p1).translate(p2.getDifference(p1).scale(offset));

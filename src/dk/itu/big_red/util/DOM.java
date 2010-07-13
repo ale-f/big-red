@@ -31,6 +31,12 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.xml.sax.SAXException;
 
+/**
+ * Utility functions for manipulating DOM {@link Document}s and
+ * {@link Element}s.
+ * @author alec
+ *
+ */
 public class DOM {
 	private static DOMImplementation impl = null;
 	

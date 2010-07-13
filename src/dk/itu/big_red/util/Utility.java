@@ -13,7 +13,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * A miscellaneous grab bag of utility functions and constants.
+ * Miscellaneous utility methods.
  * @author alec
  *
  */

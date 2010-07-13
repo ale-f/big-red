@@ -6,6 +6,11 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * Utility methods for the SWT user interface.
+ * @author alec
+ *
+ */
 public class UI {
 	/**
 	 * Gets the active workbench window's {@link Shell}.
