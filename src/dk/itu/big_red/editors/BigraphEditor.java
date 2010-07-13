@@ -44,8 +44,8 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.AppTemplateTransferDropTargetListener;
 import dk.itu.big_red.actions.*;
+import dk.itu.big_red.editors.assistants.BigraphEditorTemplateTransferDropTargetListener;
 import dk.itu.big_red.editors.assistants.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
 import dk.itu.big_red.model.*;
@@ -209,7 +209,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    }
 	    
 	    viewer.setContents(model);
-	    viewer.addDropTargetListener(new AppTemplateTransferDropTargetListener(viewer));
+	    viewer.addDropTargetListener(new BigraphEditorTemplateTransferDropTargetListener(viewer));
 	    setPartName(getEditorInput().getName());
     }
     
