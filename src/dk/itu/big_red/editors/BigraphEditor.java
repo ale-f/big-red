@@ -70,18 +70,9 @@ import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
 import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
 import dk.itu.big_red.tools.ConnectionDragCreationToolEntry;
-import dk.itu.big_red.util.DOM;
 
 public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
-	
-	private String displayFilename = null;
-	private String filesystemName = null;
-	
-	/**
-	 * Tracks the number of new documents opened.
-	 */
-	static int untitledCount = 1;
 	
 	private Bigraph model;
 	private KeyHandler keyHandler;
@@ -121,11 +112,11 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 			
 			getViewer().setEditDomain(getEditDomain());
 			getViewer().setEditPartFactory(new PlaceTreePartFactory());
-			getViewer().setContents(model);
+			getViewer().setContents(getModel());
 			
 			getViewer2().setEditDomain(getEditDomain());
 			getViewer2().setEditPartFactory(new LinkTreePartFactory());
-			getViewer2().setContents(model);
+			getViewer2().setContents(getModel());
 			
 			getSelectionSynchronizer().addViewer(getViewer());
 			getSelectionSynchronizer().addViewer(getViewer2());
@@ -166,7 +157,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 			bars.setGlobalActionHandler(ActionFactory.DELETE.getId(), getActionRegistry().getAction(ActionFactory.DELETE.getId()));
 			bars.updateActionBars();
 			
-			getViewer().setKeyHandler(keyHandler);
+			getViewer().setKeyHandler(getGraphicalViewer().getKeyHandler());
 		}
 		
 		public Control getControl() {
@@ -212,23 +203,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	
 	public BigraphEditor() {
 		setEditDomain(new DefaultEditDomain(this));
-	}
-
-	public String getDisplayFilename() {
-		String inputName = getEditorInput().getName();
-		if (!inputName.equals("#empty")) {
-			return inputName;
-		} else {
-			if (this.displayFilename == null) {
-				this.displayFilename = "Untitled bigraph " + untitledCount;
-				untitledCount++;
-			}
-			return this.displayFilename;
-		}
-	}
-	
-	public String getAssociatedFile() {
-		return this.filesystemName;
 	}
 	
     protected void configureGraphicalViewer() {
@@ -375,7 +349,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    
 	    viewer.setContents(model);
 	    viewer.addDropTargetListener(new AppTemplateTransferDropTargetListener(viewer));
-	    setPartName(getDisplayFilename());
+	    setPartName(getEditorInput().getName());
     }
     
     protected void initializePaletteViewer() {
