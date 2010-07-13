@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 
-import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.KeyHandler;
@@ -31,44 +31,29 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
-import org.eclipse.gef.ui.parts.ContentOutlinePage;
-import org.eclipse.gef.ui.parts.TreeViewer;
+import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.TabFolder;
-import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LightweightSystem;
-import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.parts.ScrollableThumbnail;
 
 import dk.itu.big_red.AppTemplateTransferDropTargetListener;
 import dk.itu.big_red.actions.*;
 import dk.itu.big_red.editors.assistants.BigraphEditorContextMenuProvider;
+import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.part.PartFactory;
-import dk.itu.big_red.part.tree.link.LinkTreePartFactory;
-import dk.itu.big_red.part.tree.place.PlaceTreePartFactory;
 import dk.itu.big_red.tools.ConnectionDragCreationToolEntry;
 
 public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
@@ -76,130 +61,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	
 	private Bigraph model;
 	private KeyHandler keyHandler;
-	
-	protected class OutlinePage extends ContentOutlinePage {
-		/*
-		 * This ContentOutlinePage has been tweaked slightly to contain a
-		 * second EditPartViewer (one for the place graph, one for the link).
-		 */
-		private EditPartViewer viewer2;
-		private Control control2;
-		
-		private SashForm sash;
-		private TabFolder tabs;
-		private ScrollableThumbnail thumbnail;
-		private DisposeListener disposeListener;
-		
-		public OutlinePage() {
-			super(new TreeViewer());
-			setViewer2(new TreeViewer());
-		}
-		
-		public void createControl(Composite parent) {
-			IActionBars bars = getSite().getActionBars();
-			ActionRegistry ar = getActionRegistry();
-			
-			sash = new SashForm(parent, SWT.VERTICAL);
-			tabs = new TabFolder(sash, SWT.NONE);
-			
-			TabItem placeGraphTab = new TabItem(tabs, SWT.NONE);
-			placeGraphTab.setText("Place graph");
-			placeGraphTab.setControl(getViewer().createControl(tabs));
-			
-			TabItem linkGraphTab = new TabItem(tabs, SWT.NONE);
-			linkGraphTab.setText("Link graph");
-			linkGraphTab.setControl(getViewer2().createControl(tabs));
-			
-			getViewer().setEditDomain(getEditDomain());
-			getViewer().setEditPartFactory(new PlaceTreePartFactory());
-			getViewer().setContents(getModel());
-			
-			getViewer2().setEditDomain(getEditDomain());
-			getViewer2().setEditPartFactory(new LinkTreePartFactory());
-			getViewer2().setContents(getModel());
-			
-			getSelectionSynchronizer().addViewer(getViewer());
-			getSelectionSynchronizer().addViewer(getViewer2());
-			
-			Canvas canvas = new Canvas(sash, SWT.BORDER);
-			LightweightSystem lws = new LightweightSystem(canvas);
-			
-			thumbnail = new ScrollableThumbnail((Viewport)((ScalableRootEditPart)getGraphicalViewer().getRootEditPart()).getFigure());
-			thumbnail.setSource(((ScalableRootEditPart)getGraphicalViewer().getRootEditPart()).getLayer(LayerConstants.PRINTABLE_LAYERS));
-			lws.setContents(thumbnail);
-			
-			disposeListener = new DisposeListener() {
-				@Override
-				public void widgetDisposed(DisposeEvent e) {
-					if (thumbnail != null) {
-						thumbnail.deactivate();
-						thumbnail = null;
-					}
-				}
-			};
-			
-			bars.setGlobalActionHandler(ActionFactory.COPY.getId(), ar.getAction(ActionFactory.COPY.getId()));
-			bars.setGlobalActionHandler(ActionFactory.PASTE.getId(), ar.getAction(ActionFactory.PASTE.getId()));
-			
-			getGraphicalViewer().getControl().addDisposeListener(disposeListener);
-		}
-		
-		public void init(IPageSite pageSite) {
-			super.init(pageSite);
-			
-			getViewer().setContextMenu(
-				new BigraphEditorContextMenuProvider(getViewer(), getActionRegistry()));
-			
-			IActionBars bars = getSite().getActionBars();
-			
-			bars.setGlobalActionHandler(ActionFactory.UNDO.getId(), getActionRegistry().getAction(ActionFactory.UNDO.getId()));
-			bars.setGlobalActionHandler(ActionFactory.REDO.getId(), getActionRegistry().getAction(ActionFactory.REDO.getId()));
-			bars.setGlobalActionHandler(ActionFactory.DELETE.getId(), getActionRegistry().getAction(ActionFactory.DELETE.getId()));
-			bars.updateActionBars();
-			
-			getViewer().setKeyHandler(getGraphicalViewer().getKeyHandler());
-		}
-		
-		public Control getControl() {
-			return sash;
-		}
-		
-		public void dispose() {
-			getSelectionSynchronizer().removeViewer(getViewer());
-			getSelectionSynchronizer().removeViewer(getViewer2());
-			
-			if (getGraphicalViewer().getControl() != null &&
-				!getGraphicalViewer().getControl().isDisposed()) {
-				getGraphicalViewer().getControl().removeDisposeListener(disposeListener);
-			}
-			
-	        Control c = getControl2();
-	        if (c != null && !c.isDisposed())
-				c.dispose();
-	        
-			super.dispose();
-		}
-
-		public void setViewer2(EditPartViewer viewer2) {
-			this.viewer2 = viewer2;
-		}
-
-		public EditPartViewer getViewer2() {
-			return viewer2;
-		}
-
-		public void setControl2(Control control2) {
-			this.control2 = control2;
-		}
-
-		public Control getControl2() {
-			return control2;
-		}
-		
-		public void createControl2(Composite parent) {
-			control2 = getViewer2().createControl(parent);
-		}
-	}
 	
 	public BigraphEditor() {
 		setEditDomain(new DefaultEditDomain(this));
@@ -365,7 +226,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	if (type == ZoomManager.class) {
     		return ((ScalableRootEditPart)getGraphicalViewer().getRootEditPart()).getZoomManager();
     	} else if (type == IContentOutlinePage.class) {
-    		return new OutlinePage();
+    		return new BigraphEditorOutlinePage(this);
     	} else return super.getAdapter(type);
     }
     
@@ -461,5 +322,15 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	public IFigure getPrintLayer() {
 		return ((LayerManager)getGraphicalViewer().getEditPartRegistry().get(LayerManager.ID)).
 			getLayer(LayerConstants.PRINTABLE_LAYERS);
+	}
+	
+	@Override
+	public SelectionSynchronizer getSelectionSynchronizer() {
+		return super.getSelectionSynchronizer();
+	}
+	
+	@Override
+	public DefaultEditDomain getEditDomain() {
+		return super.getEditDomain();
 	}
 }
