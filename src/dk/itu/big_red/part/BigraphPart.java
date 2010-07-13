@@ -13,6 +13,13 @@ import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
+/**
+ * BigraphParts represent {@link Bigraph}s, the top-level container of the
+ * model.
+ * @see Bigraph
+ * @author alec
+ *
+ */
 public class BigraphPart extends ThingPart {
 	@Override
 	public Bigraph getModel() {

@@ -21,6 +21,13 @@ import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
+/**
+ * PortParts represent {@link Port}s, sites on {@link Node}s which can be
+ * connected to {@link Edge}s.
+ * @see Port
+ * @author alec
+ *
+ */
 public class PortPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 	@Override
 	public Port getModel() {

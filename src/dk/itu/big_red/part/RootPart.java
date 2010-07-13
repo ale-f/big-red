@@ -1,9 +1,6 @@
 package dk.itu.big_red.part;
 
-import java.util.ArrayList;
 import java.util.List;
-
-
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
@@ -14,8 +11,13 @@ import dk.itu.big_red.figure.RootFigure;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
-
-
+/**
+ * RootParts represent {@link Root}s, the containers immediately below the
+ * {@link Bigraph}.
+ * @see Root
+ * @author alec
+ *
+ */
 public class RootPart extends ThingPart {
 	@Override
 	public Root getModel() {

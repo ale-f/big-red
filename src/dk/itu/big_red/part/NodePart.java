@@ -6,19 +6,21 @@ import java.util.List;
 
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.util.Geometry;
 
+/**
+ * NodeParts represent {@link Node}s, the basic building block of bigraphs.
+ * @see Node
+ * @author alec
+ *
+ */
 public class NodePart extends ThingPart {
 	@Override
 	public Node getModel() {

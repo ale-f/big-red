@@ -22,18 +22,37 @@ import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
+/**
+ * The AbstractPart is the base class for most of the objects in the bigraph
+ * model. It provides sensible default implementations of the abstract methods
+ * from {@link AbstractGraphicalEditPart}, and also some generally-useful
+ * functionality, like receiving property notifications from model objects.
+ * @author alec
+ *
+ */
 public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
+	/**
+	 * Gets the model object, cast to an {@link IPropertyChangeNotifier}.
+	 */
 	@Override
 	public IPropertyChangeNotifier getModel() {
 		return (IPropertyChangeNotifier)super.getModel();
 	}
 	
+	/**
+	 * Extends {@link AbstractGraphicalEditPart#activate()} to also register to
+	 * receive property change notifications from the model object.
+	 */
 	@Override
 	public void activate() {
 		super.activate();
 		getModel().addPropertyChangeListener(this);
 	}
 
+	/**
+	 * Extends {@link AbstractGraphicalEditPart#activate()} to also unregister
+	 * from the model object's property change notifications.
+	 */
 	@Override
 	public void deactivate() {
 		getModel().removePropertyChangeListener(this);
@@ -59,21 +78,37 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 		refresh();
 	}
 
+	/**
+	 * Returns an empty list of {@link EdgeConnection}s. Subclasses which
+	 * implement {@link IConnectable} should probably override this method!
+	 */
 	@Override
 	protected List<EdgeConnection> getModelSourceConnections() {
         return new ArrayList<EdgeConnection>();
     }
-    
+
+	/**
+	 * Returns an empty list of {@link EdgeConnection}s. Subclasses which
+	 * implement {@link IConnectable} should probably override this method!
+	 */
 	@Override
 	protected List<EdgeConnection> getModelTargetConnections() {
         return new ArrayList<EdgeConnection>();
     }
-	
+
+	/**
+	 * Returns an empty list of {@link ILayoutable}s. Model objects with
+	 * children should probably override this method!
+	 */
 	@Override
 	public List<ILayoutable> getModelChildren() {
 		return new ArrayList<ILayoutable>();
 	}
 	
+	/**
+	 * Handles {@link RequestConstants#REQ_OPEN} requests by opening the
+	 * property sheet.
+	 */
 	@Override
 	public void performRequest(Request req) {
 		if (req.getType().equals(RequestConstants.REQ_OPEN)) {

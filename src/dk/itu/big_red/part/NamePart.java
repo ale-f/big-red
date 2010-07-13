@@ -22,6 +22,13 @@ import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 
+/**
+ * NameParts represent {@link InnerName}s, the model objects which define
+ * (along with outer names) a bigraph's interface.
+ * @see InnerName
+ * @author alec
+ *
+ */
 public class NamePart extends AbstractPart implements NodeEditPart {
 	@Override
 	public InnerName getModel() {
