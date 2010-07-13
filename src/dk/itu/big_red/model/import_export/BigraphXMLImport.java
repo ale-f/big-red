@@ -28,7 +28,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		}
 	}
 	
-	protected void processThing(Element e, Thing model) throws ImportFailedException {
+	private void processThing(Element e, Thing model) throws ImportFailedException {
 		Element el = (Element)DOM.getNamedChildElement(e, "big-red:appearance");
 		if (el != null) {
 			AppearanceGenerator.setAppearance(el, model);
@@ -44,7 +44,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		}
 	}
 	
-	protected Object process(Element e) throws ImportFailedException {
+	private Object process(Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
 		if (model instanceof Thing) {
 			processThing(e, (Thing)model);

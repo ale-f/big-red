@@ -35,7 +35,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		}
 	}
 
-	Element process(Bigraph obj) {
+	private Element process(Bigraph obj) {
 		DOMImplementation impl = DOM.getImplementation();
 		doc = impl.createDocument(
 				"http://pls.itu.dk/bigraphs/2010/bigraph", "bigraph", null);
@@ -46,7 +46,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		return e;
 	}
 	
-	Element process(Node n) {
+	private Element process(Node n) {
 		Element e = doc.createElement("node");
 		e.setAttribute("control", n.getControl().getLongName());
 		
@@ -56,7 +56,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		return e;
 	}
 	
-	Element process(Point p) {
+	private Element process(Point p) {
 		if (p.getConnections().size() != 0) {
 			EdgeConnection connection = p.getConnections().get(0);
 			Element e =
@@ -68,7 +68,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		} else return null;
 	}
 	
-	Element process(ILayoutable obj) {
+	private Element process(ILayoutable obj) {
 		Element e = null;
 		if (obj instanceof Bigraph) {
 			e = process((Bigraph)obj);
