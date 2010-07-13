@@ -19,11 +19,24 @@ import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class PortPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 	@Override
 	public Port getModel() {
 		return (Port)super.getModel();
+	}
+	
+	@Override
+	public void activate() {
+		super.activate();
+		getModel().getParent().addPropertyChangeListener(this);
+	}
+
+	@Override
+	public void deactivate() {
+		getModel().getParent().removePropertyChangeListener(this);
+		super.deactivate();
 	}
 	
 	@Override
@@ -38,12 +51,19 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
-			refreshSourceConnections();
-			refreshVisuals();
-	    } else if (evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT)) {
-	    	refreshVisuals();
-	    }
+		String prop = evt.getPropertyName();
+		Object source = evt.getSource();
+		if (source == getModel()) {
+			if (prop.equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
+				refreshSourceConnections();
+				refreshVisuals();
+		    } else if (prop.equals(ICommentable.PROPERTY_COMMENT)) {
+		    	refreshVisuals();
+		    }
+		} else if (source == getModel().getParent()) {
+			if (prop.equals(ILayoutable.PROPERTY_LAYOUT))
+				refreshVisuals();
+		}
 	}
 	
 	@Override
