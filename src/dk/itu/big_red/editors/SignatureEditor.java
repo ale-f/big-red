@@ -32,6 +32,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.util.Utility;
 
@@ -72,6 +73,18 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		return false;
 	}
 
+	private Signature signature;
+	private dk.itu.big_red.model.Control currentControl;
+	
+	private List controls;
+	private Button addControl, removeControl;
+	
+	private Text name, label;
+	private List ports;
+	private Button addPort, removePort;
+	private ScrollingGraphicalViewer viewer;
+	private Button resizable, portsMovable;
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		GridLayout layout = new GridLayout(2, false);
@@ -82,29 +95,22 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		GridLayout leftLayout = new GridLayout(1, false);
 		left.setLayout(leftLayout);
 		
-		List controls = new List(left, SWT.SINGLE | SWT.BORDER);
+		controls = new List(left, SWT.SINGLE | SWT.BORDER);
 		GridData controlsLayoutData =
 			new GridData(SWT.FILL, SWT.FILL, true, true);
 		controlsLayoutData.widthHint = 100;
 		controls.setLayoutData(controlsLayoutData);
-		
-		controls.add("Jingle Bells,");
-		controls.add("Jingle Bells,");
-		controls.add("jingle all the way,");
-		controls.add("oh what fun");
-		controls.add("it is to ride");
-		controls.add("on a one-horse open sleigh");
 		
 		Composite controlButtons = new Composite(left, SWT.NONE);
 		RowLayout controlButtonsLayout = new RowLayout();
 		controlButtons.setLayout(controlButtonsLayout);
 		controlButtons.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
 		
-		Button addControl = new Button(controlButtons, SWT.NONE);
-		addControl.setText("Add");
+		addControl = new Button(controlButtons, SWT.NONE);
+		addControl.setImage(Utility.getImage(ISharedImages.IMG_OBJ_ADD));
 		
-		Button removeControl = new Button(controlButtons, SWT.NONE);
-		removeControl.setText("Remove");
+		removeControl = new Button(controlButtons, SWT.NONE);
+		removeControl.setImage(Utility.getImage(ISharedImages.IMG_ELCL_REMOVE));
 		
 		Composite right = new Composite(parent, 0);
 		right.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -114,42 +120,42 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		Label nameLabel = new Label(right, SWT.NONE);
 		nameLabel.setText("Name:");
 		
-		Text name = new Text(right, SWT.BORDER);
+		name = new Text(right, SWT.BORDER);
 		name.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		
 		Label labelLabel = new Label(right, SWT.NONE);
 		labelLabel.setText("Label:");
 		
-		Text label = new Text(right, SWT.BORDER);
+		label = new Text(right, SWT.BORDER);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		
 		Label portsLabel = new Label(right, SWT.NONE);
 		portsLabel.setText("Ports:");
 		
-		List ports = new List(right, SWT.SINGLE | SWT.BORDER);
-		ports.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
+		ports = new List(right, SWT.SINGLE | SWT.BORDER);
+		GridData portsLayout = new GridData(SWT.FILL, SWT.NONE, true, false);
+		portsLayout.heightHint = 90;
+		ports.setLayoutData(portsLayout);
 		
-		ports.add("kernel");
-		ports.add("coproc0");
-		ports.add("coproc1");
-		
-		Label padding = new Label(right, SWT.NONE);
+		new Label(right, SWT.NONE); /* padding */
 		
 		Composite portButtons = new Composite(right, SWT.NONE);
 		RowLayout portButtonsLayout = new RowLayout();
 		portButtons.setLayout(portButtonsLayout);
 		portButtons.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
 		
-		Button addPort = new Button(portButtons, SWT.NONE);
+		addPort = new Button(portButtons, SWT.NONE);
 		addPort.setImage(Utility.getImage(ISharedImages.IMG_OBJ_ADD));
 		
-		Button removePort = new Button(portButtons, SWT.NONE);
+		removePort = new Button(portButtons, SWT.NONE);
 		removePort.setImage(Utility.getImage(ISharedImages.IMG_ELCL_REMOVE));
 		
 		Label appearanceLabel = new Label(right, SWT.NONE);
+		GridData appearanceLabelLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
+		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
 		appearanceLabel.setText("Appearance:");
 		
-		ScrollingGraphicalViewer viewer = new ScrollingGraphicalViewer();
+		viewer = new ScrollingGraphicalViewer();
 		
 		Control appearance = viewer.createControl(right);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -161,14 +167,14 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		viewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, true);
 		viewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, true);
 		
-		Label padding2 = new Label(right, SWT.NONE);
+		new Label(right, SWT.NONE); /* padding */
 		
 		FontData smif = appearanceLabel.getFont().getFontData()[0];
 		smif.setStyle(SWT.ITALIC);
 		smif.setHeight(8);
 		Font smiff = new Font(null, smif);
 		
-		Label appearanceDescription = new Label(right, SWT.WRAP);
+		Label appearanceDescription = new Label(right, SWT.CENTER | SWT.WRAP);
 		GridData appearanceDescriptionData = new GridData();
 		appearanceDescriptionData.verticalAlignment = SWT.TOP;
 		appearanceDescriptionData.horizontalAlignment = SWT.FILL;
@@ -177,15 +183,15 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceDescription.setLayoutData(appearanceDescriptionData);
 		appearanceDescription.setFont(smiff);
 		
-		Label resizableLabel = new Label(right, SWT.NONE);
-		resizableLabel.setText("Resizable:");
+		new Label(right, SWT.NONE);
 		
-		Button resizable = new Button(right, SWT.CHECK);
+		resizable = new Button(right, SWT.CHECK);
+		resizable.setText("Resizable");
 		
-		Label portsMovableLabel = new Label(right, SWT.NONE);
-		portsMovableLabel.setText("Ports movable:");
+		new Label(right, SWT.NONE);
 		
-		Button portsMovable = new Button(right, SWT.CHECK);
+		portsMovable = new Button(right, SWT.CHECK);
+		portsMovable.setText("Ports movable");
 	}
 
 	@Override
