@@ -150,7 +150,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
 		appearanceLabel.setText("Appearance:");
 		
-		Composite appearance = new SignatureEditorPolygonCanvas(right, SWT.NONE);
+		Composite appearance = new SignatureEditorPolygonCanvas(right, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		appearanceLayoutData.widthHint = 100;
 		appearanceLayoutData.heightHint = 100;
