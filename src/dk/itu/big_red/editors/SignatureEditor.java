@@ -4,13 +4,10 @@ import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
@@ -18,7 +15,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
@@ -31,9 +27,8 @@ import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.editors.assistants.SignatureEditorPolygonCanvas;
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.part.PartFactory;
 import dk.itu.big_red.util.Utility;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
@@ -155,17 +150,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
 		appearanceLabel.setText("Appearance:");
 		
-		viewer = new ScrollingGraphicalViewer();
-		
-		Control appearance = viewer.createControl(right);
+		Composite appearance = new SignatureEditorPolygonCanvas(right, SWT.NONE);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		appearanceLayoutData.widthHint = 100;
 		appearanceLayoutData.heightHint = 100;
 		appearance.setLayoutData(appearanceLayoutData);
 		appearance.setBackground(ColorConstants.listBackground);
-		
-		viewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, true);
-		viewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, true);
 		
 		new Label(right, SWT.NONE); /* padding */
 		
