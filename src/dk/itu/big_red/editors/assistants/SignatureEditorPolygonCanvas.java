@@ -16,6 +16,13 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+/**
+ * SignatureEditorPolygonCanvases are widgets based on {@link Canvas} that let
+ * the user design a polygon. They keep track of a {@link PointList}, and the
+ * user can modify that PointList by clicking on the widget.
+ * @author alec
+ *
+ */
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 	private PointList points = new PointList();
@@ -34,6 +41,10 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		points.addPoint(50, 50);
 	}
 
+	/**
+	 * Deletes the point under the crosshairs, if there is one (and if it isn't
+	 * the last point remaining).
+	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
 		Point p = roundToGrid(e.x, e.y);
@@ -72,6 +83,10 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		return -1;
 	}
 	
+	/**
+	 * Creates a new point if the crosshairs aren't currently over one;
+	 * otherwise, starts a drag operation.
+	 */
 	@Override
 	public void mouseDown(MouseEvent e) {
 		if (e.button != 1)
@@ -96,6 +111,10 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		redraw();
 	}
 
+	/**
+	 * Moves the point the user's dragging and schedules a redraw, if dragging
+	 * is in progress.
+	 */
 	@Override
 	public void mouseUp(MouseEvent e) {
 		if (dragIndex != -1) {
@@ -163,6 +182,11 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		}
 	}
 
+	/**
+	 * Updates the centre point for the crosshairs and schedules a redraw, if
+	 * the mouse has moved to a new grid position since the last call to this
+	 * method.
+	 */
 	@Override
 	public void mouseMove(MouseEvent e) {
 		Point currentMousePosition = roundToGrid(e.x, e.y);
@@ -173,11 +197,18 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		}
 	}
 
+	/**
+	 * See {@link #controlResized}.
+	 * @see #controlResized
+	 */
 	@Override
 	public void controlMoved(ControlEvent e) {
 		controlResized(e);
 	}
 
+	/**
+	 * Updates the size information for this Canvas and schedules a redraw.
+	 */
 	@Override
 	public void controlResized(ControlEvent e) {
 		org.eclipse.swt.graphics.Point p = getSize();
@@ -185,5 +216,12 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		redraw();
 	}
 
-	
+	/**
+	 * Returns the {@link PointList} specifying the polygon drawn in this
+	 * Canvas.
+	 * @return a PointList specifying a polygon
+	 */
+	public PointList getPoints() {
+		return points;
+	}
 }
