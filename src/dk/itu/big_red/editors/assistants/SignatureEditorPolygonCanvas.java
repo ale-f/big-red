@@ -16,6 +16,8 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
+import dk.itu.big_red.util.Line;
+
 /**
  * SignatureEditorPolygonCanvases are widgets based on {@link Canvas} that let
  * the user design a polygon. They keep track of a {@link PointList}, and the
@@ -103,10 +105,23 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 					index = i;
 				}
 			}
-			if (p.getDistance(getPoint(tmp, index - 1)) <
-					p.getDistance(getPoint(tmp, index + 1)))
+			
+			Line l = new Line();
+			l.setFirstPoint(getPoint(tmp, index));
+			l.setSecondPoint(getPoint(tmp, index - 1));
+			
+			double id1 = Double.MAX_VALUE, id2 = Double.MAX_VALUE;
+			if (l.getIntersection(tmp, mousePosition) != null || points.size() == 1)
+				id1 = mousePosition.getDistance(tmp);
+			
+			l.setSecondPoint(getPoint(tmp, index + 1));
+			if (l.getIntersection(tmp, mousePosition) != null)
+				id2 = mousePosition.getDistance(tmp);
+			
+			if (id1 < id2)
 				points.insertPoint(p, index);
-			else points.insertPoint(p, index + 1);
+			else
+				points.insertPoint(p, index + 1);
 		}
 		redraw();
 	}
