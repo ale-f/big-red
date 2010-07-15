@@ -96,32 +96,27 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		Point p = roundToGrid(e.x, e.y);
 		dragIndex = findPointAt(p);
 		if (dragIndex == -1) {
-			double distance = Double.MAX_VALUE;
-			int index = -1;
-			for (int i = 0; i < points.size(); i++) {
-				double tDistance = p.getDistance(getPoint(tmp, i));
-				if (tDistance < distance) {
-					distance = tDistance;
-					index = i;
+			if (points.size() == 1) {
+				points.insertPoint(p, 0);
+			} else {
+				int index = -1;
+				Line l = new Line();
+				double distance = Double.MAX_VALUE;
+				for (int i = 0; i < points.size(); i++) {
+					l.setFirstPoint(getPoint(tmp, i));
+					l.setSecondPoint(getPoint(tmp, i + 1));
+					if (l.getIntersection(tmp, p) != null) {
+						double tDistance = p.getDistance(tmp);
+						if (tDistance < distance) {
+							distance = tDistance;
+							index = i;
+						}
+					}
 				}
+				
+				if (index != -1)
+					points.insertPoint(p, index + 1);
 			}
-			
-			Line l = new Line();
-			l.setFirstPoint(getPoint(tmp, index));
-			l.setSecondPoint(getPoint(tmp, index - 1));
-			
-			double id1 = Double.MAX_VALUE, id2 = Double.MAX_VALUE;
-			if (l.getIntersection(tmp, mousePosition) != null || points.size() == 1)
-				id1 = mousePosition.getDistance(tmp);
-			
-			l.setSecondPoint(getPoint(tmp, index + 1));
-			if (l.getIntersection(tmp, mousePosition) != null)
-				id2 = mousePosition.getDistance(tmp);
-			
-			if (id1 < id2)
-				points.insertPoint(p, index);
-			else
-				points.insertPoint(p, index + 1);
 		}
 		redraw();
 	}
