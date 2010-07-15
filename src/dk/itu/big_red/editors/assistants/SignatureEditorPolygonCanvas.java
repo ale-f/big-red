@@ -269,6 +269,21 @@ MenuListener {
 	}
 
 	/**
+	 * Overwrites the current polygon with the contents of the given {@link
+	 * PointList}.
+	 * <p>The points on the given PointList will not be snapped to the grid,
+	 * nor will they be checked for scale.
+	 * @param points a PointList
+	 */
+	public void setPoints(PointList points) {
+		if (points != null && points.size() >= 1) {
+			this.points.removeAllPoints();
+			this.points.addAll(points);
+			centrePolygon();
+		}
+	}
+	
+	/**
 	 * Does nothing.
 	 */
 	@Override
