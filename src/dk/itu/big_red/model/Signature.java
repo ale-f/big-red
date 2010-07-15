@@ -1,7 +1,9 @@
 package dk.itu.big_red.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -17,48 +19,50 @@ import dk.itu.big_red.exceptions.DuplicateControlException;
  *
  */
 public class Signature {
+	public static String[] EMPTY_STRING_ARRAY = new String[]{};
 	public static Control DEFAULT_CONTROL =
 		new Control("Unknown", "?", Control.Shape.SHAPE_POLYGON, Control.POINTS_QUAD, new Point(50, 50), true);
 	
-	private HashMap<String, Control> controls =
-		new HashMap<String, Control>();
+	private ArrayList<Control> controls = new ArrayList<Control>();
 	
 	public Signature() {
-		addControl("Unknown", "?", Control.Shape.SHAPE_POLYGON, Control.POINTS_QUAD, new Point(50, 50), true);
+		addControl(DEFAULT_CONTROL);
 	}
 	
-	public Control addControl(String longName, String label, Control.Shape shape, PointList points, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
+	public Control addControl(Control c) throws DuplicateControlException {
 		Control m = null;
-		if ((m = controls.get(longName)) == null) {
-			m = new Control(longName, label, shape, points, defaultSize, constraintModifiable);
-			controls.put(longName, m);
-		}
+		if ((m = getControl(c.getLongName())) == null)
+			controls.add(m = c);
 		return m;
 	}
 	
 	public void addControlsFrom(Signature i) {
-		for (Control m : i.getControls()) {
-			if (controls.get(m.getLongName()) == null)
-				controls.put(m.getLongName(), m);
+		for (Control c : i.getControls()) {
+			if (getControl(c.getLongName()) == null)
+				controls.add(c);
 		}
 	}
 	
 	public void removeControl(Control m) {
-		if (m != null) {
-			if (controls.get(m.getLongName()) != null)
-				controls.remove(m.getLongName());
-		}
+		if (controls.contains(m))
+			controls.remove(m);
 	}
 	
 	public Control getControl(String name) {
-		return controls.get(name);
+		for (Control c : controls)
+			if (c.getLongName().equals(name))
+				return c;
+		return null;
 	}
 
 	public String[] getControlNames() {
-		return controls.keySet().toArray(new String[0]);
+		ArrayList<String> controlNames = new ArrayList<String>();
+		for (Control c : controls)
+			controlNames.add(c.getLongName());
+		return controlNames.toArray(EMPTY_STRING_ARRAY);
 	}
 	
-	public Collection<Control> getControls() {
-		return controls.values();
+	public List<Control> getControls() {
+		return controls;
 	}
 }

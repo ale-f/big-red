@@ -169,15 +169,15 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		    	Signature signature = model.getSignature();
 		    	
 		    	dk.itu.big_red.model.Control b =
-		    		signature.addControl("Building", "B", Shape.SHAPE_OVAL, null,
-		    				new Point(250, 250), true),
-		    	r = signature.addControl("Room", "R", Shape.SHAPE_OVAL, null,
-		    			new Point(125, 200), true),
-		    	a = signature.addControl("Agent", "A", Shape.SHAPE_POLYGON,
+		    		signature.addControl(new Control("Building", "B", Shape.SHAPE_OVAL, null,
+		    				new Point(250, 250), true)),
+		    	r = signature.addControl(new Control("Room", "R", Shape.SHAPE_OVAL, null,
+		    			new Point(125, 200), true)),
+		    	a = signature.addControl(new Control("Agent", "A", Shape.SHAPE_POLYGON,
 		    			dk.itu.big_red.model.Control.POINTS_TRIANGLE,
-		    			new Point(25, 50), false),
-		    	c = signature.addControl("Computer", "C", Shape.SHAPE_POLYGON,
-		    			dk.itu.big_red.model.Control.POINTS_QUAD, new Point(25, 13), false);
+		    			new Point(25, 50), false)),
+		    	c = signature.addControl(new Control("Computer", "C", Shape.SHAPE_POLYGON,
+		    			dk.itu.big_red.model.Control.POINTS_QUAD, new Point(25, 13), false));
 		    	
 		    	b.addPort("a", 0, 0.33);
 		    	
