@@ -76,15 +76,15 @@ public class Control implements IPropertyChangeNotifier, IColourable {
 	
 	public static final PointList POINTS_QUAD = new PointList(new int[] {
 			0, 0,
-			0, 1,
-			1, 1,
-			1, 0
+			0, 40,
+			-40, 40,
+			-40, 0
 	});
 	
 	public static final PointList POINTS_TRIANGLE = new PointList(new int[] {
-			0, -1,
-			-1, 0,
-			1, 0
+			0, -40,
+			20, 0,
+			-20, 0
 	});
 	
 	private PropertyChangeSupport listeners =
