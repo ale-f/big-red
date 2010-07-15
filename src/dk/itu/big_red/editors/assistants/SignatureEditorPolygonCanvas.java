@@ -5,16 +5,23 @@ import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 
 import dk.itu.big_red.util.Line;
 
@@ -26,7 +33,8 @@ import dk.itu.big_red.util.Line;
  *
  */
 public class SignatureEditorPolygonCanvas extends Canvas
-implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
+implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
+MenuListener {
 	private PointList points = new PointList();
 	private Point tmp = Point.SINGLETON;
 	private Point mousePosition = new Point(-10, -10);
@@ -40,7 +48,9 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		addControlListener(this);
 		addMouseMoveListener(this);
 		
-		points.addPoint(50, 50);
+		Menu menu = new Menu(this);
+		menu.addMenuListener(this);
+		setMenu(menu);
 	}
 
 	/**
@@ -58,10 +68,14 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 		}
 	}
 
+	protected Point roundToGrid(Point p) {
+		p.x = (int)(Math.round(p.x / 10.0) * 10);
+		p.y = (int)(Math.round(p.y / 10.0) * 10);
+		return p;
+	}
+	
 	protected Point roundToGrid(int x, int y) {
-		return new Point(
-				(int)(Math.round(x / 10.0) * 10),
-				(int)(Math.round(y / 10.0) * 10));
+		return roundToGrid(new Point(x, y));
 	}
 	
 	protected Point getPoint(Point t, int i) {
@@ -83,6 +97,15 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 				return i;
 		}
 		return -1;
+	}
+	
+	private void centrePolygon() {
+		org.eclipse.swt.graphics.Point s = getSize();
+		
+		Rectangle polyBounds = points.getBounds();
+		points.translate(
+			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.width / 2, -polyBounds.height / 2)));
+		redraw();
 	}
 	
 	/**
@@ -223,6 +246,16 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 	public void controlResized(ControlEvent e) {
 		org.eclipse.swt.graphics.Point p = getSize();
 		controlSize.width = p.x; controlSize.height = p.y;
+		
+		/*
+		 * The first point can only safely be added at this point (the control
+		 * doesn't have a size when the constructor is running).
+		 */
+		if (points.size() == 0) {
+			points.addPoint(0, 0);
+			centrePolygon();
+		}
+		
 		redraw();
 	}
 
@@ -233,5 +266,76 @@ implements ControlListener, MouseListener, MouseMoveListener, PaintListener {
 	 */
 	public PointList getPoints() {
 		return points;
+	}
+
+	/**
+	 * Does nothing.
+	 */
+	@Override
+	public void menuHidden(MenuEvent e) {
+	}
+
+	/**
+	 * Populates and displays the pop-up menu.
+	 */
+	@Override
+	public void menuShown(MenuEvent e) {
+		MenuItem n;
+		Menu m = getMenu();
+		for (MenuItem i : m.getItems())
+			i.dispose();
+		
+		final int foundPoint = findPointAt(mousePosition);
+		if (foundPoint != -1) {
+			if (foundPoint != 0 || points.size() > 1) {
+				n = new MenuItem(m, 0);
+				n.setText("&Remove point");
+				n.addSelectionListener(new SelectionListener() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						points.removePoint(foundPoint);
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent e) {
+					}
+				});
+			} else {
+				n = new MenuItem(m, 0);
+				n.setText("Cannot remove last point");
+				n.setEnabled(false);
+			}
+		}
+		if (points.size() > 1) {
+			n = new MenuItem(m, 0);
+			n.setText("Remove &all points");
+			n.addSelectionListener(new SelectionListener() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					points.removeAllPoints();
+					points.addPoint(0, 0);
+					centrePolygon();
+					redraw();
+				}
+				
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+			});
+		}
+		if (m.getItemCount() > 0)
+			new MenuItem(m, SWT.SEPARATOR);
+		n = new MenuItem(m, 0);
+		n.setText("Centre &polygon on canvas");
+		n.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				centrePolygon();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
 	}
 }
