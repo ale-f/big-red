@@ -169,7 +169,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceDescriptionData.verticalAlignment = SWT.TOP;
 		appearanceDescriptionData.horizontalAlignment = SWT.FILL;
 		appearanceDescriptionData.widthHint = 0;
-		appearanceDescription.setText("Double-click a line segment to add a new point. Double-click a point to delete it. Move elements by clicking and dragging.");
+		appearanceDescription.setText("Click to add a new point. Double-click a point to delete it. Move elements by clicking and dragging. Right-click for more options.");
 		appearanceDescription.setLayoutData(appearanceDescriptionData);
 		appearanceDescription.setFont(smiff);
 		
