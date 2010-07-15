@@ -1,5 +1,7 @@
 package dk.itu.big_red.model;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,21 +33,18 @@ public class Signature {
 	
 	public Control addControl(Control c) throws DuplicateControlException {
 		Control m = null;
-		if ((m = getControl(c.getLongName())) == null)
+		if ((m = getControl(c.getLongName())) == null) {
 			controls.add(m = c);
+			c.setSignature(this);
+		} else throw new DuplicateControlException(c.getLongName());
 		return m;
 	}
 	
-	public void addControlsFrom(Signature i) {
-		for (Control c : i.getControls()) {
-			if (getControl(c.getLongName()) == null)
-				controls.add(c);
-		}
-	}
-	
 	public void removeControl(Control m) {
-		if (controls.contains(m))
+		if (controls.contains(m)) {
 			controls.remove(m);
+			m.setSignature(null);
+		}
 	}
 	
 	public Control getControl(String name) {
