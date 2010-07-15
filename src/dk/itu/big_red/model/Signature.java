@@ -21,14 +21,13 @@ import dk.itu.big_red.exceptions.DuplicateControlException;
  *
  */
 public class Signature {
-	public static String[] EMPTY_STRING_ARRAY = new String[]{};
-	public static Control DEFAULT_CONTROL =
-		new Control("Unknown", "?", Control.Shape.SHAPE_POLYGON, Control.POINTS_QUAD, new Point(50, 50), true);
+	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
+	public static final Control DEFAULT_CONTROL = new Control();
 	
 	private ArrayList<Control> controls = new ArrayList<Control>();
 	
 	public Signature() {
-		addControl(DEFAULT_CONTROL);
+		controls.add(DEFAULT_CONTROL);
 	}
 	
 	public Control addControl(Control c) throws DuplicateControlException {
@@ -41,7 +40,7 @@ public class Signature {
 	}
 	
 	public void removeControl(Control m) {
-		if (controls.contains(m)) {
+		if (controls.contains(m) && m != DEFAULT_CONTROL) {
 			controls.remove(m);
 			m.setSignature(null);
 		}
