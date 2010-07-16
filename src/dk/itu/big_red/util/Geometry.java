@@ -1,5 +1,7 @@
 package dk.itu.big_red.util;
 
+import java.lang.reflect.Constructor;
+
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -11,7 +13,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class Geometry {
 	public static Point getPointOnSegment(Point p1, Point p2, double offset) {
-		return new Point(p1).translate(p2.getDifference(p1).scale(offset));
+		return new Line(p1, p2).getPointFromOffset(offset);
 	}
 	
 	public static Point getPointOnEllipse(Rectangle el, double offset) {

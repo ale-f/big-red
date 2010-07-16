@@ -12,6 +12,11 @@ public class Line {
 	public Line() {
 	}
 	
+	public Line(Point p1, Point p2) {
+		setFirstPoint(p1);
+		setSecondPoint(p2);
+	}
+	
 	public Point getFirstPoint() {
 		return p1;
 	}
@@ -57,8 +62,9 @@ public class Line {
 	}
 	
 	/**
-	 * Returns the point where the line perpendicular to this line and passing
-	 * through point <code>p</code> meets this line.
+	 * Returns the point where this line and the line perpendicular to it which
+	 * passes through point <code>p3</code> meet.
+	 * @param p3 a Point
 	 * @return the point of intersection, or <code>null</code> if there isn't
 	 *         one
 	 */
@@ -66,6 +72,13 @@ public class Line {
 		return getIntersection(new Point(), p3);
 	}
 	
+	/**
+	 * As {@link #getIntersection(Point)}, but doesn't allocate a new point.
+	 * @param target the Point to store the result in
+	 * @param p3 a Point
+	 * @return the point of intersection, or <code>null</code> if there isn't
+	 *         one
+	 */
 	public Point getIntersection(Point target, Point p3) {
 		if (p1.x == p2.x) {
 			target.setLocation(p1.x, p3.y);
@@ -79,5 +92,20 @@ public class Line {
 			target.setLocation((int)x, (int)y);
 		}
 		return (bounds.contains(target) ? target : null);
+	}
+	
+	/**
+	 * Returns the point at a given offset along the line (where
+	 * <code>p1</code> is <code>0.0</code> and <code>p2</code> is
+	 * <code>1.0</code>).
+	 * @param offset an offset between <code>0</code> and <code>1</code>
+	 *        inclusive
+	 * @return a Point on this line segment, or <code>null</code> if
+	 *         <code>offset</code> is out of bounds
+	 */
+	public Point getPointFromOffset(double offset) {
+		if (offset >= 0.0 && offset <= 1.0)
+			return p1.getCopy().translate(p2.getDifference(p1).scale(offset));
+		else return null;
 	}
 }
