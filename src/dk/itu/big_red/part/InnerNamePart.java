@@ -15,7 +15,7 @@ import org.eclipse.gef.Request;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
-import dk.itu.big_red.figure.NameFigure;
+import dk.itu.big_red.figure.InnerNameFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.InnerName;
@@ -37,7 +37,7 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 	
 	@Override
 	protected IFigure createFigure() {
-		return new NameFigure();
+		return new InnerNameFigure();
 	}
 
 	@Override
@@ -62,7 +62,7 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 	protected void refreshVisuals(){
 		super.refreshVisuals();
 		
-		NameFigure figure = (NameFigure)getFigure();
+		InnerNameFigure figure = (InnerNameFigure)getFigure();
 		InnerName model = getModel();
 		
 		figure.setName(model.getName());

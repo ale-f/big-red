@@ -78,8 +78,8 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			defWidth = SiteFigure.SITE_FIGURE_DEFWIDTH;
 			defHeight = SiteFigure.SITE_FIGURE_DEFHEIGHT;
 		} else if (type == InnerName.class){
-			defWidth = NameFigure.SITE_FIGURE_DEFWIDTH;
-			defHeight = NameFigure.SITE_FIGURE_DEFHEIGHT;
+			defWidth = InnerNameFigure.SITE_FIGURE_DEFWIDTH;
+			defHeight = InnerNameFigure.SITE_FIGURE_DEFHEIGHT;
 		}
 		
 		ILayoutableCreateCommand cmd = new ILayoutableCreateCommand();
