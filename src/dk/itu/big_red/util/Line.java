@@ -1,37 +1,65 @@
 package dk.itu.big_red.util;
 
-import org.eclipse.draw2d.geometry.Geometry;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+/**
+ * Lines represent line segments.
+ * @author alec
+ *
+ */
 public class Line {
 	private Point p1 = new Point(),
 	              p2 = new Point();
 	private Rectangle bounds = new Rectangle();
 	
+	/**
+	 * Constructs a line from <code>(0, 0)</code> to <code>(0, 0)</code>.
+	 */
 	public Line() {
 	}
 	
+	/**
+	 * Constructs a line between the two points given.
+	 * @param p1 the first point
+	 * @param p2 the second point
+	 */
 	public Line(Point p1, Point p2) {
 		setFirstPoint(p1);
 		setSecondPoint(p2);
 	}
 	
+	/**
+	 * Gets the first point on this line.
+	 * @return the first point
+	 */
 	public Point getFirstPoint() {
 		return p1;
 	}
 	
+	/**
+	 * Overwrites the first point on this line with <code>p</code>.
+	 * @param p a Point
+	 */
 	public void setFirstPoint(Point p) {
 		if (p != null) {
 			p1.setLocation(p);
 			updateBounds();
 		}
 	}
-	
+
+	/**
+	 * Gets the second point on this line.
+	 * @param p the second point
+	 */
 	public Point getSecondPoint() {
 		return p1;
 	}
-	
+
+	/**
+	 * Overwrites the second point on this line with <code>p</code>.
+	 * @param p a Point
+	 */
 	public void setSecondPoint(Point p) {
 		if (p != null) {
 			p2.setLocation(p);
@@ -39,6 +67,9 @@ public class Line {
 		}
 	}
 	
+	/**
+	 * Updates the bounding rectangle for this line.
+	 */
 	private void updateBounds() {
 		bounds.scale(0);
 		bounds.setLocation(p1);
@@ -107,5 +138,13 @@ public class Line {
 		if (offset >= 0.0 && offset <= 1.0)
 			return p1.getCopy().translate(p2.getDifference(p1).scale(offset));
 		else return null;
+	}
+	
+	/**
+	 * Returns the length of this line (i.e., the Euclidean distance between
+	 * its two points).
+	 */
+	public double getLength() {
+		return p1.getDistance(p2);
 	}
 }
