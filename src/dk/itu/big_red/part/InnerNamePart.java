@@ -29,7 +29,7 @@ import dk.itu.big_red.model.interfaces.IConnectable;
  * @author alec
  *
  */
-public class NamePart extends AbstractPart implements NodeEditPart {
+public class InnerNamePart extends AbstractPart implements NodeEditPart {
 	@Override
 	public InnerName getModel() {
 		return (InnerName)super.getModel();
