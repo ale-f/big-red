@@ -1,7 +1,10 @@
 package dk.itu.big_red.util;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -63,5 +66,22 @@ public class UI {
 		mb.setMessage(message);
 		mb.setText(caption);
 		return mb.open();
+	}
+	
+	/**
+	 * Creates a new {@link MenuItem} with the given properties.
+	 * @param parent the parent {@link Menu}
+	 * @param style the style of MenuItem to construct
+	 * @param text the text of the MenuItem
+	 * @param listener the {@link SelectionListener} to be notified when the
+	 *        MenuItem is selected
+	 * @return the new MenuItem
+	 */
+	public static MenuItem createMenuItem(Menu parent, int style, String text, SelectionListener listener) {
+		MenuItem i = new MenuItem(parent, style);
+		i.setText(text);
+		if (listener != null)
+			i.addSelectionListener(listener);
+		return i;
 	}
 }
