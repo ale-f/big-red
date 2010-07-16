@@ -4,7 +4,6 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.XYLayout;
-import org.eclipse.draw2d.geometry.Geometry;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
@@ -14,9 +13,6 @@ import org.eclipse.swt.graphics.RGB;
 import dk.itu.big_red.model.Control;
 
 public class NodeFigure extends AbstractFigure {
-	public static final int NODE_FIGURE_DEFWIDTH = 100;
-	public static final int NODE_FIGURE_DEFHEIGHT = 100;
-
 	private Control.Shape shape = Control.Shape.SHAPE_POLYGON;
 	private PointList points = Control.POINTS_QUAD;
 	private Label labelControl = new Label();    

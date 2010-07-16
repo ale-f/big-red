@@ -13,9 +13,6 @@ import org.eclipse.swt.graphics.Font;
 import dk.itu.big_red.util.Utility;
 
 public class InnerNameFigure extends AbstractFigure {
-	public static final int SITE_FIGURE_DEFWIDTH = 100;
-	public static final int SITE_FIGURE_DEFHEIGHT = 50;
-	
 	private static Font italicFont = null;
 	private Label label = new Label();
 	

@@ -8,9 +8,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
 public class RootFigure extends AbstractFigure {
-	public static final int ROOT_FIGURE_DEFWIDTH = 100;
-	public static final int ROOT_FIGURE_DEFHEIGHT = 100;
-	
 	private Label labelName = new Label();    
     
 	public RootFigure() {

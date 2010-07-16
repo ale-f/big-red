@@ -1,5 +1,6 @@
 package dk.itu.big_red.editpolicies;
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
@@ -64,22 +65,12 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		
 		Class<? extends ILayoutable> type =
 			(Class<? extends ILayoutable>)requestObject.getClass();
-		int defWidth = 0, defHeight = 0;
+		Dimension size = new Dimension(100, 100);
 		ILayoutable parent = (ILayoutable)getHost().getModel();
 		if (!parent.canContain((ILayoutable)requestObject)) {
 			return null;
-		} else if (type == Node.class) {
-			defWidth = NodeFigure.NODE_FIGURE_DEFWIDTH;
-			defHeight = NodeFigure.NODE_FIGURE_DEFHEIGHT;
-		} else if (type == Root.class) {
-			defWidth = RootFigure.ROOT_FIGURE_DEFWIDTH;
-			defHeight = RootFigure.ROOT_FIGURE_DEFHEIGHT;
-		} else if (type == Site.class) {
-			defWidth = SiteFigure.SITE_FIGURE_DEFWIDTH;
-			defHeight = SiteFigure.SITE_FIGURE_DEFHEIGHT;
-		} else if (type == InnerName.class){
-			defWidth = InnerNameFigure.SITE_FIGURE_DEFWIDTH;
-			defHeight = InnerNameFigure.SITE_FIGURE_DEFHEIGHT;
+		} else {
+			size.setSize(((ILayoutable)requestObject).getLayout().getSize());
 		}
 		
 		ILayoutableCreateCommand cmd = new ILayoutableCreateCommand();
@@ -89,8 +80,8 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		Rectangle constraint = (Rectangle)getConstraintFor(request);
 		constraint.x = (constraint.x < 0 ? 0 : constraint.x);
 		constraint.y = (constraint.y < 0 ? 0 : constraint.y);
-		constraint.width = (constraint.width <= 0 ? defWidth : constraint.width);
-		constraint.height = (constraint.height <= 0 ? defHeight : constraint.height);
+		constraint.width = (constraint.width <= 0 ? size.width : constraint.width);
+		constraint.height = (constraint.height <= 0 ? size.height : constraint.height);
 		cmd.setLayout(constraint);
 		
 		return cmd;
