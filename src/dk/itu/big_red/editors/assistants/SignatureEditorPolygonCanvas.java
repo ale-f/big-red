@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import dk.itu.big_red.util.Line;
+import dk.itu.big_red.util.UI;
 
 /**
  * SignatureEditorPolygonCanvases are widgets based on {@link Canvas} that let
@@ -313,7 +314,6 @@ MenuListener {
 	 */
 	@Override
 	public void menuShown(MenuEvent e) {
-		MenuItem n;
 		Menu m = getMenu();
 		for (MenuItem i : m.getItems())
 			i.dispose();
@@ -321,9 +321,7 @@ MenuListener {
 		final int foundPoint = findPointAt(mousePosition);
 		if (foundPoint != -1) {
 			if (foundPoint != 0 || points.size() > 1) {
-				n = new MenuItem(m, 0);
-				n.setText("&Remove point");
-				n.addSelectionListener(new SelectionListener() {
+				UI.createMenuItem(m, 0, "&Remove point", new SelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						points.removePoint(foundPoint);
@@ -334,15 +332,11 @@ MenuListener {
 					}
 				});
 			} else {
-				n = new MenuItem(m, 0);
-				n.setText("Cannot remove last point");
-				n.setEnabled(false);
+				UI.createMenuItem(m, 0, "Cannot remove last point", null).setEnabled(false);
 			}
 		}
 		if (points.size() > 1) {
-			n = new MenuItem(m, 0);
-			n.setText("Remove &all points");
-			n.addSelectionListener(new SelectionListener() {
+			UI.createMenuItem(m, 0, "Remove &all points", new SelectionListener() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					points.removeAllPoints();
@@ -358,9 +352,7 @@ MenuListener {
 		}
 		if (m.getItemCount() > 0)
 			new MenuItem(m, SWT.SEPARATOR);
-		n = new MenuItem(m, 0);
-		n.setText("Centre &polygon on canvas");
-		n.addSelectionListener(new SelectionListener() {
+		UI.createMenuItem(m, 0, "Centre &polygon on canvas", new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				centrePolygon();
