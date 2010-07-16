@@ -36,10 +36,12 @@ public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
 MenuListener {
 	private PointList points = new PointList();
-	private Point tmp = Point.SINGLETON;
+	private Point tmp = new Point();
 	private Point mousePosition = new Point(-10, -10);
 	private Dimension controlSize = new Dimension();
+	
 	private int dragIndex = -1;
+	private Point dragPoint = null;
 	
 	public SignatureEditorPolygonCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -120,7 +122,8 @@ MenuListener {
 		dragIndex = findPointAt(p);
 		if (dragIndex == -1) {
 			if (points.size() == 1) {
-				points.insertPoint(p, 0);
+				dragIndex = 0;
+				dragPoint = p;
 			} else {
 				int index = -1;
 				Line l = new Line();
@@ -137,8 +140,10 @@ MenuListener {
 					}
 				}
 				
-				if (index != -1)
-					points.insertPoint(p, index + 1);
+				if (distance < 15 && index != -1) {
+					dragIndex = index + 1;
+					dragPoint = p;
+				}
 			}
 		}
 		redraw();
@@ -154,11 +159,18 @@ MenuListener {
 			Point p = roundToGrid(e.x, e.y);
 			int pointAtCursor = findPointAt(mousePosition);
 			if (pointAtCursor == -1) {
-				tmp = points.getPoint(dragIndex);
-				tmp.x = p.x; tmp.y = p.y;
-				points.setPoint(tmp, dragIndex);
+				if (dragPoint == null) {
+					tmp = points.getPoint(dragIndex);
+					tmp.x = p.x; tmp.y = p.y;
+					points.setPoint(tmp, dragIndex);
+				} else {
+					dragPoint.x = p.x;
+					dragPoint.y = p.y;
+					points.insertPoint(dragPoint, dragIndex);
+				}
 			}
 			dragIndex = -1;
+			dragPoint = null;
 			redraw();
 		}
 	}
@@ -197,8 +209,14 @@ MenuListener {
 		
 		if (dragIndex != -1) {
 			e.gc.setAlpha(127);
-			Point previous = getPoint(dragIndex - 1),
-				  next = getPoint(dragIndex + 1);
+			Point previous, next;
+			if (dragPoint == null) {
+				previous = getPoint(dragIndex - 1);
+				next = getPoint(dragIndex + 1);
+			} else {
+				previous = getPoint(dragIndex - 1);
+				next = getPoint(dragIndex);
+			}
 			
 			e.gc.setForeground(ColorConstants.red);
 			e.gc.setBackground(ColorConstants.red);
