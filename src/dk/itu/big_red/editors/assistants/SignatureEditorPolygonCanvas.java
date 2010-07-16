@@ -119,7 +119,8 @@ MenuListener {
 	public void mouseDown(MouseEvent e) {
 		if (e.button != 1)
 			return;
-		Point p = roundToGrid(e.x, e.y);
+		Point p = roundToGrid(e.x, e.y),
+		      up = new Point(e.x, e.y);
 		dragIndex = findPointAt(p);
 		if (dragIndex == -1) {
 			if (points.size() == 1) {
@@ -132,8 +133,8 @@ MenuListener {
 				for (int i = 0; i < points.size(); i++) {
 					l.setFirstPoint(getPoint(tmp, i));
 					l.setSecondPoint(getPoint(tmp, i + 1));
-					if (l.getIntersection(tmp, p) != null) {
-						double tDistance = p.getDistance(tmp);
+					if (l.getIntersection(tmp, up) != null) {
+						double tDistance = up.getDistance(tmp);
 						if (tDistance < distance) {
 							distance = tDistance;
 							index = i;
