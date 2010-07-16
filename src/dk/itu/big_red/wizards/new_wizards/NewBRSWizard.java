@@ -2,19 +2,17 @@ package dk.itu.big_red.wizards.new_wizards;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
-import dk.itu.big_red.util.NullInputStream;
 import dk.itu.big_red.util.Project;
 
 public class NewBRSWizard extends Wizard implements INewWizard {
-	private NewBRSWizardPage page = null;
+	private WizardNewProjectCreationPage page = null;
 	
 	@Override
 	public boolean performFinish() {
@@ -40,8 +38,7 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
-		page = new NewBRSWizardPage("newBRSWizardPage");
+		page = new WizardNewProjectCreationPage("newBRSWizardPage");
 		
 		page.setTitle("Bigraphical reactive system");
 		page.setDescription("Create a new bigraphical reactive system.");

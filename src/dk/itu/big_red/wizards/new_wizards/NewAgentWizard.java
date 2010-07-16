@@ -6,12 +6,18 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.util.Project;
 
-
+/**
+ * NewAgentWizards are responsible for creating {@link Bigraph} files within a
+ * project.
+ * @author alec
+ *
+ */
 public class NewAgentWizard extends Wizard implements INewWizard {
-	private NewAgentWizardPage page = null;
+	private WizardNewFileCreationPage page = null;
 	
 	@Override
 	public boolean performFinish() {
@@ -30,7 +36,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		page = new NewAgentWizardPage("newAgentWizardPage", selection);
+		page = new WizardNewFileCreationPage("newAgentWizardPage", selection);
 		
 		page.setTitle("Agent");
 		page.setDescription("Create a new agent in an existing bigraphical reactive system.");

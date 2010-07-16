@@ -6,11 +6,12 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.util.Project;
 
 public class NewSimulationSpecWizard extends Wizard implements INewWizard {
-	private NewSimulationSpecWizardPage page = null;
+	private WizardNewFileCreationPage page = null;
 	
 	@Override
 	public boolean performFinish() {
@@ -29,7 +30,7 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
- 		page = new NewSimulationSpecWizardPage("newSimulationSpecWizardPage", selection);
+ 		page = new WizardNewFileCreationPage("newSimulationSpecWizardPage", selection);
 		
 		page.setTitle("Simulation spec");
 		page.setDescription("Create a simulation spec for an existing bigraphical reactive system.");

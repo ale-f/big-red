@@ -6,12 +6,13 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.util.Project;
 
 
 public class NewRuleWizard extends Wizard implements INewWizard {
-	private NewRuleWizardPage page = null;
+	private WizardNewFileCreationPage page = null;
 	
 	@Override
 	public boolean performFinish() {
@@ -30,7 +31,7 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		page = new NewRuleWizardPage("newRuleWizardPage", selection);
+		page = new WizardNewFileCreationPage("newRuleWizardPage", selection);
 		
 		page.setTitle("Rule");
 		page.setDescription("Create a new rule in an existing bigraphical reactive system.");
