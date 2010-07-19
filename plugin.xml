@@ -113,6 +113,9 @@
             icon="icons/icon16.png"
             id="dk.itu.big_red.BigraphEditor"
             name="Bigraph Editor">
+         <contentTypeBinding
+               contentTypeId="dk.itu.big_red.bigraph">
+         </contentTypeBinding>
       </editor>
       <editor
             class="dk.itu.big_red.editors.RuleEditor"
@@ -122,6 +125,9 @@
             icon="icons/icon16.png"
             id="dk.itu.big_red.RuleEditor"
             name="Rule Editor">
+         <contentTypeBinding
+               contentTypeId="dk.itu.big_red.rule">
+         </contentTypeBinding>
       </editor>
       <editor
             class="dk.itu.big_red.editors.SignatureEditor"
@@ -131,6 +137,9 @@
             icon="icons/icon16.png"
             id="dk.itu.big_red.SignatureEditor"
             name="Signature Editor">
+         <contentTypeBinding
+               contentTypeId="dk.itu.big_red.signature">
+         </contentTypeBinding>
       </editor>
       <editor
             class="dk.itu.big_red.editors.SimulationSpecEditor"
