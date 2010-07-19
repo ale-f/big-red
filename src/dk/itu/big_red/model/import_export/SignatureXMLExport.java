@@ -51,22 +51,7 @@ public class SignatureXMLExport extends Export<Signature> {
 		for (Port p : c.getPortsArray())
 			e.appendChild(process(p));
 		
-		Element cs = doc.createElement("big-red:shape");
-		DOM.applyAttributesToElement(cs,
-				"shape", (c.getShape() == Shape.SHAPE_POLYGON ? "polygon" : "oval"));
-		if (c.getShape() == Shape.SHAPE_POLYGON) {
-			PointList points = c.getPoints();
-			for (int i = 0; i < points.size(); i++) {
-				Point p = points.getPoint(i);
-				Element pt = doc.createElement("big-red:point");
-				DOM.applyAttributesToElement(pt,
-						"x", p.x,
-						"y", p.y);
-				cs.appendChild(pt);
-			}
-		}
-		e.appendChild(cs);
-		
+		DOM.appendChildIfNotNull(e, AppearanceGenerator.getShape(doc, c));
 		DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, c));
 		
 		return e;
