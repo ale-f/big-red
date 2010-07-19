@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.assistants;
 
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.Document;
@@ -7,6 +9,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
@@ -86,5 +90,55 @@ public class AppearanceGenerator {
 		if (o instanceof ICommentable) {
 			((ICommentable)o).setComment(DOM.getAttribute(e, "comment"));
 		}
+	}
+	
+	public static Element getShape(Document doc, Control c) {
+		Element aE =
+			doc.createElementNS("http://pls.itu.dk/bigraphs/2010/big-red",
+					"big-red:shape");
+
+		DOM.applyAttributesToElement(aE,
+				"shape", (c.getShape() == Shape.SHAPE_POLYGON ? "polygon" : "oval"));
+		
+		PointList pl = c.getPoints();
+		if (pl != null) {
+			for (int i = 0; i < pl.size(); i++) {
+				Point p = pl.getPoint(i);
+				Element pE = doc.createElement("big-red:point");
+				DOM.applyAttributesToElement(pE,
+						"x", p.x,
+						"y", p.y);
+				aE.appendChild(pE);
+			}
+		}
+		
+		return aE;
+	}
+	
+	public static void setShape(Element e, Control c) {
+		if (!e.getTagName().equals("big-red:shape"))
+			return;
+
+		Control.Shape shape = Shape.SHAPE_OVAL;
+		PointList pl = null;
+		
+		String s = DOM.getAttribute(e, "shape");
+		if (s != null) {
+			if (s.equals("polygon"))
+				shape = Shape.SHAPE_POLYGON;
+		}
+		
+		if (shape == Shape.SHAPE_POLYGON) {
+			pl = new PointList();
+			for (int j = 0; j < e.getChildNodes().getLength(); j++) {
+				if (!(e.getChildNodes().item(j) instanceof Element))
+					continue;
+				Element pE = (Element)e.getChildNodes().item(j);
+				pl.addPoint(DOM.getIntAttribute(pE, "x"),
+						DOM.getIntAttribute(pE, "y"));
+			}
+		}
+		
+		c.setShape(shape, pl);
 	}
 }
