@@ -7,8 +7,10 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.ide.IDE;
 
 import dk.itu.big_red.util.Project;
+import dk.itu.big_red.util.UI;
 
 /**
  * NewAgentWizards are responsible for creating {@link Bigraph} files within a
@@ -25,7 +27,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 			Project.findContainerByPath(null, page.getContainerFullPath());
 		if (c != null) {
 			try {
-				Project.getFile(c, page.getFileName());
+				UI.openInEditor(Project.getFile(c, page.getFileName()));
 				return true;
 			} catch (CoreException e) {
 				page.setErrorMessage(e.getLocalizedMessage());

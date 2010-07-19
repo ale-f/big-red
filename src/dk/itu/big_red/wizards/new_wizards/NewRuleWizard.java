@@ -9,6 +9,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.util.Project;
+import dk.itu.big_red.util.UI;
 
 
 public class NewRuleWizard extends Wizard implements INewWizard {
@@ -20,7 +21,7 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 			Project.findContainerByPath(null, page.getContainerFullPath());
 		if (c != null) {
 			try {
-				Project.getFile(c, page.getFileName());
+				UI.openInEditor(Project.getFile(c, page.getFileName()));
 				return true;
 			} catch (CoreException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
