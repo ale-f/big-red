@@ -7,6 +7,7 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
@@ -67,6 +68,8 @@ public class ModelFactory implements CreationFactory {
 			return new InnerName();
 		else if (namedObject.equals("signature"))
 			return new Signature();
+		else if (namedObject.equals("port"))
+			return new Port();
 		else if (namedObject.equals("control"))
 			return new Control();
 		else if (namedObject.equals("edge"))

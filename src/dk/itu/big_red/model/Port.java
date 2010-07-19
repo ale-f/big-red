@@ -43,6 +43,9 @@ public class Port extends Point implements ILayoutable {
 	 */
 	private double distance = 0.0;
 	
+	public Port() {
+	}
+	
 	public Port(String name, int segment, double distance) {
 		setName(name);
 		setSegment(segment);
