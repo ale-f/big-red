@@ -1,5 +1,6 @@
 package dk.itu.big_red.util;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.FileDialog;
@@ -7,7 +8,11 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 
 /**
  * Utility methods for the SWT user interface.
@@ -16,11 +21,36 @@ import org.eclipse.ui.PlatformUI;
  */
 public class UI {
 	/**
+	 * Gets the active workbench.
+	 * @return an {@link IWorkbench}
+	 */
+	public static IWorkbench getWorkbench() {
+		return PlatformUI.getWorkbench();		
+	}
+	
+	/**
+	 * Gets the active workbench page.
+	 * @return an {@link IWorkbenchPage}
+	 */
+	public static IWorkbenchPage getWorkbenchPage() {
+		return getWorkbench().getActiveWorkbenchWindow().getActivePage();		
+	}
+	
+	/**
+	 * Opens the given {@link IFile} in the appropriate editor.
+	 * @param f an IFile
+	 * @throws PartInitException 
+	 */
+	public static void openInEditor(IFile f) throws PartInitException {
+		IDE.openEditor(getWorkbenchPage(), f);
+	}
+	
+	/**
 	 * Gets the active workbench window's {@link Shell}.
 	 * @return a Shell
 	 */
 	public static Shell getShell() {
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();		
+		return getWorkbench().getActiveWorkbenchWindow().getShell();		
 	}
 	
 	/**
