@@ -149,6 +149,9 @@
             icon="icons/cic/process.png"
             id="dk.itu.big_red.SimulationSpecEditor"
             name="Simulation Spec Editor">
+         <contentTypeBinding
+               contentTypeId="dk.itu.big_red.simulation_spec">
+         </contentTypeBinding>
       </editor>
    </extension>
    <extension
@@ -266,6 +269,13 @@
             file-extensions="bigraph-signature"
             id="dk.itu.big_red.signature"
             name="Signature"
+            priority="normal">
+      </content-type>
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="bigraph-simulation-spec"
+            id="dk.itu.big_red.simulation_spec"
+            name="Simulation spec"
             priority="normal">
       </content-type>
    </extension>
