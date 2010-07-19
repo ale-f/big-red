@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 
-import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.KeyHandler;
@@ -51,6 +50,7 @@ import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.ModelFactory;
+import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.part.PartFactory;
@@ -59,7 +59,7 @@ import dk.itu.big_red.tools.ConnectionDragCreationToolEntry;
 public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
-	private Bigraph model;
+	private ResourceWrapper<Bigraph> model = new ResourceWrapper<Bigraph>();
 	private KeyHandler keyHandler;
 	
 	public BigraphEditor() {
@@ -158,15 +158,16 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    IEditorInput input = getEditorInput();
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
+	    	model.setResource(fi.getFile());
 	    	try {
 	    		BigraphXMLImport im = new BigraphXMLImport();
 	    		im.setInputStream(fi.getFile().getContents());
 	    		
-	    		model = im.importModel();
+	    		model.setModel(im.importModel());
 	    	} catch (Exception e) {
 	    		e.printStackTrace();
-		    	model = new Bigraph();
-		    	Signature signature = model.getSignature();
+		    	model.setModel(new Bigraph());
+		    	Signature signature = model.getModel().getSignature();
 		    	
 		    	dk.itu.big_red.model.Control b =
 		    		signature.addControl(new Control("Building", "B", Shape.SHAPE_OVAL, null,
@@ -188,7 +189,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		    	r.addPort("d", 0, 0.78);
 		    	
 		    	Root r0 = new Root();
-		    	model.addChild(r0);
+		    	model.getModel().addChild(r0);
 		    	r0.setLayout(new Rectangle(10, 10, 400, 400));
 		    		Node building0 = new Node(b);
 		    		r0.addChild(building0);
@@ -208,7 +209,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    	}
 	    }
 	    
-	    viewer.setContents(model);
+	    viewer.setContents(model.getModel());
 	    viewer.addDropTargetListener(new BigraphEditorTemplateTransferDropTargetListener(viewer));
 	    setPartName(getEditorInput().getName());
     }
@@ -221,7 +222,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     		new TemplateTransferDragSourceListener(getPaletteViewer()));
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
     	if (type == ZoomManager.class) {
     		return ((ScalableRootEditPart)getGraphicalViewer().getRootEditPart()).getZoomManager();
