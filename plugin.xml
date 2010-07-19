@@ -192,6 +192,17 @@
       </wizard>
       <wizard
             category="dk.itu.big_red"
+            class="dk.itu.big_red.wizards.new_wizards.NewAgentWizard"
+            finalPerspective="dk.itu.big_red.perspective"
+            icon="icons/icon16.png"
+            id="dk.itu.big_red.NewAgentWizard"
+            name="Agent">
+         <description>
+            Create a new agent in an existing bigraphical reactive system.
+         </description>
+      </wizard>
+      <wizard
+            category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.new_wizards.NewRuleWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
@@ -203,13 +214,14 @@
       </wizard>
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.new_wizards.NewAgentWizard"
+            class="dk.itu.big_red.wizards.new_wizards.NewSignatureWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
-            id="dk.itu.big_red.NewAgentWizard"
-            name="Agent">
+            id="dk.itu.big_red.NewSignatureWizard"
+            name="Signature"
+            project="false">
          <description>
-            Create a new agent in an existing bigraphical reactive system.
+            Create a new signature in an existing bigraphical reactive system.
          </description>
       </wizard>
       <wizard
