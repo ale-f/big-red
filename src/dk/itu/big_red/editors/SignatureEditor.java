@@ -8,16 +8,28 @@ import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TreeEditor;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISelectionListener;
@@ -68,17 +80,26 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		return false;
 	}
 
-	private Signature signature;
+	private Signature signature = new Signature();
 	private dk.itu.big_red.model.Control currentControl;
 	
-	private List controls;
+	private Tree controls;
+	private TreeItem currentControlItem;
 	private Button addControl, removeControl;
 	
 	private Text name, label;
-	private List ports;
+	private Tree ports;
 	private Button addPort, removePort;
-	private ScrollingGraphicalViewer viewer;
+	private SignatureEditorPolygonCanvas appearance;
 	private Button resizable, portsMovable;
+	
+	protected void populateFields() {
+		label.setText(currentControl.getLabel());
+		name.setText(currentControl.getLongName());
+		appearance.setPoints(currentControl.getPoints());
+		resizable.setSelection(currentControl.isResizable());
+		currentControlItem.setText(currentControl.getLongName());
+	}
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -90,11 +111,27 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		GridLayout leftLayout = new GridLayout(1, false);
 		left.setLayout(leftLayout);
 		
-		controls = new List(left, SWT.SINGLE | SWT.BORDER);
+		controls = new Tree(left, SWT.SINGLE | SWT.BORDER | SWT.VIRTUAL);
 		GridData controlsLayoutData =
 			new GridData(SWT.FILL, SWT.FILL, true, true);
 		controlsLayoutData.widthHint = 100;
 		controls.setLayoutData(controlsLayoutData);
+		controls.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				currentControlItem = controls.getSelection()[0];
+				currentControl = signature.getControl(currentControlItem.getText());
+				populateFields();
+				name.setFocus();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		Composite controlButtons = new Composite(left, SWT.NONE);
 		RowLayout controlButtonsLayout = new RowLayout();
@@ -103,6 +140,21 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		addControl = new Button(controlButtons, SWT.NONE);
 		addControl.setImage(Utility.getImage(ISharedImages.IMG_OBJ_ADD));
+		addControl.addSelectionListener(new SelectionListener() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				currentControlItem = new TreeItem(controls, SWT.NONE);
+				currentControl = new dk.itu.big_red.model.Control();
+				populateFields();
+				controls.select(currentControlItem);
+				name.setFocus();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				return;
+			}
+		});
 		
 		removeControl = new Button(controlButtons, SWT.NONE);
 		removeControl.setImage(Utility.getImage(ISharedImages.IMG_ELCL_REMOVE));
@@ -117,6 +169,18 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		name = new Text(right, SWT.BORDER);
 		name.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
+		name.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+				label.setText(name.getText().substring(0, 1));
+				currentControlItem.setText(name.getText());
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+			}
+		});
 		
 		Label labelLabel = new Label(right, SWT.NONE);
 		labelLabel.setText("Label:");
@@ -127,7 +191,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		Label portsLabel = new Label(right, SWT.NONE);
 		portsLabel.setText("Ports:");
 		
-		ports = new List(right, SWT.SINGLE | SWT.BORDER);
+		ports = new Tree(right, SWT.SINGLE | SWT.BORDER | SWT.VIRTUAL);
 		GridData portsLayout = new GridData(SWT.FILL, SWT.NONE, true, false);
 		portsLayout.heightHint = 90;
 		ports.setLayoutData(portsLayout);
@@ -150,7 +214,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
 		appearanceLabel.setText("Appearance:");
 		
-		Composite appearance = new SignatureEditorPolygonCanvas(right, SWT.BORDER);
+		appearance = new SignatureEditorPolygonCanvas(right, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		appearanceLayoutData.widthHint = 100;
 		appearanceLayoutData.heightHint = 100;
