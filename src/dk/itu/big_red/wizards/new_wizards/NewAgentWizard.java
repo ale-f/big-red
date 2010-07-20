@@ -11,6 +11,7 @@ import org.eclipse.ui.ide.IDE;
 
 import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.wizards.new_wizards.assistants.WizardNewAgentCreationPage;
 
 /**
  * NewAgentWizards are responsible for creating {@link Bigraph} files within a
@@ -19,12 +20,12 @@ import dk.itu.big_red.util.UI;
  *
  */
 public class NewAgentWizard extends Wizard implements INewWizard {
-	private WizardNewFileCreationPage page = null;
+	private WizardNewAgentCreationPage page = null;
 	
 	@Override
 	public boolean performFinish() {
 		IContainer c =
-			Project.findContainerByPath(null, page.getContainerFullPath());
+			Project.findContainerByPath(null, page.getFolderPath());
 		if (c != null) {
 			try {
 				UI.openInEditor(Project.getFile(c, page.getFileName()));
@@ -38,11 +39,10 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		page = new WizardNewFileCreationPage("newAgentWizardPage", selection);
+		page = new WizardNewAgentCreationPage("newAgentWizardPage", selection);
 		
 		page.setTitle("Agent");
 		page.setDescription("Create a new agent in an existing bigraphical reactive system.");
-		page.setFileExtension("bigraph-agent");
 		
 		addPage(page);
 	}
