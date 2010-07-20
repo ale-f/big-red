@@ -19,10 +19,18 @@ import org.eclipse.core.runtime.Path;
  *
  */
 public class Project {
+	/**
+	 * Gets the workspace.
+	 * @return the workspace
+	 */
 	public static IWorkspace getWorkspace() {
 		return ResourcesPlugin.getWorkspace();
 	}
 	
+	/**
+	 * Gets the workspace root.
+	 * @return the workspace root
+	 */
 	public static IWorkspaceRoot getWorkspaceRoot() {
 		return getWorkspace().getRoot();
 	}
@@ -145,5 +153,18 @@ public class Project {
 	public static IContainer findContainerByPath(IContainer c, IPath path) {
 		IResource r = findResourceByPath(c, path);
 		return (r instanceof IContainer ? (IContainer)r : null);
+	}
+	
+	/**
+	 * Gets a file with the given path (relative to <code>c</code>). Note that
+	 * this method will <i>not</i> create the file if it doesn't already exist.
+	 * @param c the container to search in, or - if <code>null</code> - the workspace root
+	 * @param path the path of a would-be file
+	 * @return the {@link IFile} requested, or <code>null</code> if it doesn't
+	 * exist
+	 */
+	public static IFile findFileByPath(IContainer c, IPath path) {
+		IResource r = findResourceByPath(c, path);
+		return (r instanceof IFile ? (IFile)r : null);
 	}
 }
