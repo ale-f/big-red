@@ -1,6 +1,5 @@
 package dk.itu.big_red.figure;
 
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;

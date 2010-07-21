@@ -13,7 +13,6 @@ import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.part.AbstractTreePart;
 import dk.itu.big_red.util.Utility;
 
-
 public class NamePlaceTreePart extends AbstractTreePart {
 	@Override
 	protected List<Thing> getModelChildren() {

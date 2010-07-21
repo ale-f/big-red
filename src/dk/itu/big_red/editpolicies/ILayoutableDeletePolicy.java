@@ -1,7 +1,5 @@
 package dk.itu.big_red.editpolicies;
 
-
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;

@@ -1,13 +1,9 @@
 package dk.itu.big_red.part.place;
 
-
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
 import dk.itu.big_red.model.*;
-
-
 
 public class PlaceTreePartFactory implements EditPartFactory {
 

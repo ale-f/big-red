@@ -3,8 +3,6 @@ package dk.itu.big_red.actions;
 import java.util.Iterator;
 import java.util.List;
 
-
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.SelectionAction;
@@ -13,7 +11,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.commands.ILayoutableCopyCommand;
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.util.Utility;
 
 public class ThingCopyAction extends SelectionAction {

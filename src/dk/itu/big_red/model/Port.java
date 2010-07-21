@@ -1,10 +1,8 @@
 package dk.itu.big_red.model;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.util.Geometry;
 

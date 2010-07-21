@@ -1,6 +1,5 @@
 package dk.itu.big_red.editors.assistants;
 
-
 import org.eclipse.gef.ui.actions.*;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;

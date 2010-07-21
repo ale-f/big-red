@@ -6,7 +6,6 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.part.AbstractTreePart;
 
-
 public class BigraphPlaceTreePart extends AbstractTreePart {
 	@Override
 	protected List<ILayoutable> getModelChildren() {

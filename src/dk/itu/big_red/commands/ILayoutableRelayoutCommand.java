@@ -1,7 +1,5 @@
 package dk.itu.big_red.commands;
 
-
-
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 

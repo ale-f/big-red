@@ -6,7 +6,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;

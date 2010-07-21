@@ -1,13 +1,11 @@
 package dk.itu.big_red.editpolicies;
 
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
 
 import dk.itu.big_red.commands.EdgeCreateCommand;
-import dk.itu.big_red.model.interfaces.IConnectable;
 
 public class EdgeCreationPolicy extends GraphicalNodeEditPolicy {
 	

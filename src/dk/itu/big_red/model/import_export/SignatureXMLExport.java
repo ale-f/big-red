@@ -1,14 +1,11 @@
 package dk.itu.big_red.model.import_export;
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;

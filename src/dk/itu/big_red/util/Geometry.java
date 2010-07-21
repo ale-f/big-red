@@ -1,7 +1,5 @@
 package dk.itu.big_red.util;
 
-import java.lang.reflect.Constructor;
-
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;

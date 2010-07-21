@@ -1,6 +1,5 @@
 package dk.itu.big_red.part.link;
 
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 

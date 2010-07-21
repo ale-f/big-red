@@ -2,7 +2,6 @@ package dk.itu.big_red.actions;
 
 import java.util.List;
 
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;

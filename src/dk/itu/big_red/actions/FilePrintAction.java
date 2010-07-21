@@ -1,6 +1,5 @@
 package dk.itu.big_red.actions;
 
-
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ScalableRootEditPart;

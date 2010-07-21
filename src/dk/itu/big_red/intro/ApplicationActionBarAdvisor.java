@@ -1,6 +1,5 @@
 package dk.itu.big_red.intro;
 
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.Separator;

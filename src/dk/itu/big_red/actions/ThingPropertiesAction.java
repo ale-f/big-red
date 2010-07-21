@@ -1,6 +1,5 @@
 package dk.itu.big_red.actions;
 
-
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IPageLayout;

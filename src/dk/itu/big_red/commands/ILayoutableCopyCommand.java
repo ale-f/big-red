@@ -3,12 +3,9 @@ package dk.itu.big_red.commands;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
-import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;

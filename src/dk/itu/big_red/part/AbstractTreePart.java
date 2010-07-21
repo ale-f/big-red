@@ -3,8 +3,6 @@ package dk.itu.big_red.part;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-
-
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -15,8 +13,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import dk.itu.big_red.model.Thing;
-import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart implements PropertyChangeListener {

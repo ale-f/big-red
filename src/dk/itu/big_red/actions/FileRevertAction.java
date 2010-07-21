@@ -1,12 +1,10 @@
 package dk.itu.big_red.actions;
 
-
 import org.eclipse.gef.ui.actions.EditorPartAction;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.editors.BigraphEditor;
-
 
 public class FileRevertAction extends EditorPartAction {
 

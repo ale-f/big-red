@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.itu.big_red.model.Thing;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Node;
 import dk.itu.big_red.part.AbstractTreePart;
-
 
 public class BigraphLinkTreePart extends AbstractTreePart {
 	@Override

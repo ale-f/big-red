@@ -2,8 +2,6 @@ package dk.itu.big_red.part.place;
 
 import java.util.List;
 
-
-
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;

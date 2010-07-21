@@ -1,15 +1,11 @@
 package dk.itu.big_red.editors.assistants.resources;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
-
 
 /**
  * ResourceTreeSelectionDialogs are reasonably customisable dialogs designed

@@ -1,6 +1,5 @@
 package dk.itu.big_red.commands;
 
-
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.SWTGraphics;

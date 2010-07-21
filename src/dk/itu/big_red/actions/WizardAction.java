@@ -5,7 +5,6 @@ import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 
-
 public class WizardAction extends Action {
 	private IWorkbenchWindow window;
 	private Class<? extends IWizard> wizardClass;

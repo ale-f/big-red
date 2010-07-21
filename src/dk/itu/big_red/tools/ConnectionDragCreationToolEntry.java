@@ -1,6 +1,5 @@
 package dk.itu.big_red.tools;
 
-import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
 import org.eclipse.gef.tools.ConnectionDragCreationTool;
