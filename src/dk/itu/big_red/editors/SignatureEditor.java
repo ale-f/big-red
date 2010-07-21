@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
@@ -30,9 +33,13 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.assistants.SignatureEditorPolygonCanvas;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.assistants.ResourceWrapper;
+import dk.itu.big_red.model.import_export.SignatureXMLExport;
+import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.Utility;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
@@ -40,8 +47,23 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-
+		try {
+        	FileEditorInput i = (FileEditorInput)getEditorInput();
+        	ByteArrayOutputStream os = new ByteArrayOutputStream();
+        	SignatureXMLExport ex = new SignatureXMLExport();
+        	
+        	ex.setModel(model.getModel());
+        	ex.setOutputStream(os);
+        	ex.exportModel();
+        	
+    		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
+    		i.getFile().setContents(is, 0, null);
+        	
+    		firePropertyChange(IEditorPart.PROP_DIRTY);
+        } catch (Exception ex) {
+        	if (monitor != null)
+        		monitor.setCanceled(true);
+        }
 	}
 
 	@Override
@@ -72,7 +94,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		return false;
 	}
 
-	private Signature signature = new Signature();
+	private ResourceWrapper<Signature> model = new ResourceWrapper<Signature>();
+	
 	private dk.itu.big_red.model.Control currentControl;
 	
 	private Tree controls;
@@ -113,7 +136,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				currentControlItem = controls.getSelection()[0];
-				currentControl = signature.getControl(currentControlItem.getText());
+				currentControl = model.getModel().getControl(currentControlItem.getText());
 				populateFields();
 				name.setFocus();
 			}
@@ -238,6 +261,24 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		portsMovable = new Button(right, SWT.CHECK);
 		portsMovable.setText("Ports movable");
+		
+		initialiseSignatureEditor();
+	}
+
+	private void initialiseSignatureEditor() {
+		IEditorInput input = getEditorInput();
+		if (input instanceof FileEditorInput) {
+			FileEditorInput fi = (FileEditorInput)input;
+			model.setResource(fi.getFile());
+			try {
+				SignatureXMLImport im = new SignatureXMLImport();
+				im.setInputStream(fi.getFile().getContents());
+				
+				model.setModel(im.importModel());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
