@@ -9,8 +9,8 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
@@ -25,7 +25,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
@@ -36,6 +35,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.assistants.SignatureEditorPolygonCanvas;
+import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
@@ -59,7 +59,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
     		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
     		i.getFile().setContents(is, 0, null);
         	
-    		firePropertyChange(IEditorPart.PROP_DIRTY);
+    		setDirty(false);
         } catch (Exception ex) {
         	if (monitor != null)
         		monitor.setCanceled(true);
@@ -82,10 +82,18 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 	}
 
+	protected boolean dirty = false;
+	
+	protected void setDirty(boolean dirty) {
+		if (this.dirty != dirty) {
+			this.dirty = dirty;
+			firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
+		}
+	}
+	
 	@Override
 	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
+		return dirty;
 	}
 
 	@Override
@@ -108,16 +116,55 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	private SignatureEditorPolygonCanvas appearance;
 	private Button resizable, portsMovable;
 	
-	protected void populateFields() {
+	private boolean fireModify = true;
+	
+	protected void controlToFields() {
+		fireModify = false;
+		
 		label.setText(currentControl.getLabel());
 		name.setText(currentControl.getLongName());
 		appearance.setPoints(currentControl.getPoints());
 		resizable.setSelection(currentControl.isResizable());
 		currentControlItem.setText(currentControl.getLongName());
+		
+		fireModify = true;
+	}
+	
+	protected void fieldsToControl() {
+		currentControl.setLabel(label.getText());
+		currentControl.setLongName(name.getText());
+		currentControl.setResizable(resizable.getSelection());
+		currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints());
 	}
 	
 	@Override
 	public void createPartControl(Composite parent) {
+		final class DirtListener implements ModifyListener, SelectionListener {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (fireModify) {
+					fieldsToControl();
+					setDirty(true);
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				if (fireModify) {
+					fieldsToControl();
+					setDirty(true);
+				}
+			}
+			
+		}
+		
+		DirtListener sharedDirtListener = new DirtListener();
+		
 		GridLayout layout = new GridLayout(2, false);
 		parent.setLayout(layout);
 		
@@ -137,7 +184,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			public void widgetSelected(SelectionEvent e) {
 				currentControlItem = controls.getSelection()[0];
 				currentControl = model.getModel().getControl(currentControlItem.getText());
-				populateFields();
+				controlToFields();
 				name.setFocus();
 			}
 			
@@ -159,10 +206,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				currentControlItem = new TreeItem(controls, SWT.NONE);
-				currentControl = new dk.itu.big_red.model.Control();
-				populateFields();
+				currentControl = model.getModel().addControl(new dk.itu.big_red.model.Control());
+				controlToFields();
 				controls.select(currentControlItem);
 				name.setFocus();
+				
+				setDirty(true);
 			}
 			
 			@Override
@@ -184,16 +233,15 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		name = new Text(right, SWT.BORDER);
 		name.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		name.addFocusListener(new FocusListener() {
+		name.addModifyListener(sharedDirtListener);
+		name.addModifyListener(new ModifyListener() {
 			
 			@Override
-			public void focusLost(FocusEvent e) {
-				label.setText(name.getText().substring(0, 1));
+			public void modifyText(ModifyEvent e) {
+				String nT = name.getText();
+				if (nT.length() > 0)
+					label.setText(name.getText().substring(0, 1));
 				currentControlItem.setText(name.getText());
-			}
-			
-			@Override
-			public void focusGained(FocusEvent e) {
 			}
 		});
 		
@@ -202,6 +250,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		label = new Text(right, SWT.BORDER);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
+		label.addModifyListener(sharedDirtListener);
 		
 		Label portsLabel = new Label(right, SWT.NONE);
 		portsLabel.setText("Ports:");
@@ -255,12 +304,14 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		new Label(right, SWT.NONE);
 		
 		resizable = new Button(right, SWT.CHECK);
-		resizable.setText("Resizable");
+		resizable.setText("Resizable?");
+		resizable.addSelectionListener(sharedDirtListener);
 		
 		new Label(right, SWT.NONE);
 		
 		portsMovable = new Button(right, SWT.CHECK);
-		portsMovable.setText("Ports movable");
+		portsMovable.setText("Ports movable?");
+		portsMovable.addSelectionListener(sharedDirtListener);
 		
 		initialiseSignatureEditor();
 	}
@@ -277,8 +328,13 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 				model.setModel(im.importModel());
 			} catch (Exception e) {
 				e.printStackTrace();
+				model.setModel(new Signature());
 			}
 		}
+		
+		for (dk.itu.big_red.model.Control c : model.getModel().getControls())
+			new TreeItem(controls, 0).setText(c.getLongName());
+		setPartName(input.getName());
 	}
 
 	@Override
