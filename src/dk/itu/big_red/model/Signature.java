@@ -3,8 +3,6 @@ package dk.itu.big_red.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.itu.big_red.exceptions.DuplicateControlException;
-
 /**
  * The Signature is a central storage point for {@link Control}s and their
  * properties (both in terms of the bigraph model and their visual
@@ -23,20 +21,14 @@ public class Signature {
 		controls.add(DEFAULT_CONTROL);
 	}
 	
-	public Control addControl(Control c) throws DuplicateControlException {
-		Control m = null;
-		if ((m = getControl(c.getLongName())) == null) {
-			controls.add(m = c);
-			c.setSignature(this);
-		} else throw new DuplicateControlException(c.getLongName());
-		return m;
+	public Control addControl(Control c) {
+		controls.add(c);
+		return c;
 	}
 	
 	public void removeControl(Control m) {
-		if (controls.contains(m) && m != DEFAULT_CONTROL) {
+		if (controls.contains(m) && m != DEFAULT_CONTROL)
 			controls.remove(m);
-			m.setSignature(null);
-		}
 	}
 	
 	public Control getControl(String name) {

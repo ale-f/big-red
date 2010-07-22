@@ -98,9 +98,6 @@ public class Control implements IPropertyChangeNotifier, IColourable {
 	private String label;
 	private Point defaultSize;
 	private boolean resizable;
-	
-	private Signature signature = null;
-	
 	public Control() {
 		setLongName("Unknown");
 		setLabel("?");
@@ -115,15 +112,6 @@ public class Control implements IPropertyChangeNotifier, IColourable {
 		setShape(shape, points);
 		setDefaultSize(defaultSize);
 		setResizable(constraintModifiable);
-	}
-	
-	public Signature getSignature() {
-		return signature;
-	}
-	
-	public void setSignature(Signature signature) {
-		if (this.signature == null || signature == null)
-			this.signature = signature;
 	}
 	
 	public String getLabel() {
@@ -175,11 +163,8 @@ public class Control implements IPropertyChangeNotifier, IColourable {
 	}
 
 	public void setLongName(String longName) throws DuplicateControlException {
-		if (longName != null) {
-			if (signature != null && signature.getControl(longName) != null)
-				throw new DuplicateControlException(longName);
+		if (longName != null)
 			this.longName = longName;
-		}
 	}
 
 	public String getLongName() {
