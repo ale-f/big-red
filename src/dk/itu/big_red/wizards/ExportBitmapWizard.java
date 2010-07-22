@@ -1,10 +1,5 @@
 package dk.itu.big_red.wizards;
 
-import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.Utility;
-import dk.itu.big_red.commands.BigraphBitmapExportCommand;
-import dk.itu.big_red.editors.BigraphEditor;
-
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -21,6 +16,11 @@ import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 
+import dk.itu.big_red.editors.BigraphEditor;
+import dk.itu.big_red.figure.import_export.BigraphPNGExport;
+import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.Utility;
+
 public class ExportBitmapWizard extends Wizard implements IExportWizard {
 	private WizardPage page = null;
 	
@@ -32,19 +32,14 @@ public class ExportBitmapWizard extends Wizard implements IExportWizard {
 	@Override
 	public boolean performFinish() {
 		// TODO Auto-generated method stub
-		BigraphBitmapExportCommand c = new BigraphBitmapExportCommand();
-		c.setEditor(getEditor());
-		c.setFilename(getFilename());
-		c.setFormat(getFormat());
-		if (c.canExecute()) {
-			c.execute();
+		BigraphPNGExport be = new BigraphPNGExport();
+		be.setModel(getEditor().getPrintLayer());
+		try {
+			be.setOutputFile(filename);
+			be.exportObject();
 			return true;
-		} else {
-			if (getFilename() == null) {
-				page.setErrorMessage("You must choose a filename");
-			} else {
-				page.setErrorMessage("Unknown error");
-			}
+		} catch (Exception e) {
+			page.setErrorMessage(e.getLocalizedMessage());
 			return false;
 		}
 	}
