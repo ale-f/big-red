@@ -21,7 +21,7 @@ import dk.itu.big_red.figure.import_export.BigraphPNGExport;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.Utility;
 
-public class ExportBitmapWizard extends Wizard implements IExportWizard {
+public class BigraphPNGExportWizard extends Wizard implements IExportWizard {
 	private WizardPage page = null;
 	
 	private IWorkbench workbench = null;
