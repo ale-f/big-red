@@ -5,8 +5,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.EventObject;
 
-import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.LayerConstants;
@@ -37,17 +41,25 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.actions.*;
-import dk.itu.big_red.editors.assistants.BigraphEditorTemplateTransferDropTargetListener;
+import dk.itu.big_red.actions.FilePrintAction;
+import dk.itu.big_red.actions.FileRevertAction;
+import dk.itu.big_red.actions.ThingCopyAction;
+import dk.itu.big_red.actions.ThingCutAction;
+import dk.itu.big_red.actions.ThingPasteAction;
+import dk.itu.big_red.actions.ThingPropertiesAction;
 import dk.itu.big_red.editors.assistants.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.editors.assistants.BigraphEditorTemplateTransferDropTargetListener;
+import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
@@ -162,7 +174,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    		BigraphXMLImport im = new BigraphXMLImport();
 	    		im.setInputStream(fi.getFile().getContents());
 	    		
-	    		model.setModel(im.importModel());
+	    		model.setModel(im.importObject());
 	    	} catch (Exception e) {
 	    		e.printStackTrace();
 		    	model.setModel(new Bigraph());
@@ -290,7 +302,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
         	
         	ex.setModel(getModel());
         	ex.setOutputStream(os);
-        	ex.exportModel();
+        	ex.exportObject();
         	
     		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
     		i.getFile().setContents(is, 0, null);

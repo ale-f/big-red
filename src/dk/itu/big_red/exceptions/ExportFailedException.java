@@ -1,6 +1,6 @@
 package dk.itu.big_red.exceptions;
 
-import dk.itu.big_red.model.import_export.Export;
+import dk.itu.big_red.import_export.Export;
 
 /**
  * Classes extending {@link Export} throw an ExportFailedException if the

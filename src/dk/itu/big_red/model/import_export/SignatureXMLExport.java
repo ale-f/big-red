@@ -11,11 +11,11 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.util.DOM;
 
-public class SignatureXMLExport extends Export<Signature> {
+public class SignatureXMLExport extends ModelExport<Signature> {
 	private Document doc = null;
 	
 	@Override
-	public void exportModel() throws ExportFailedException {
+	public void exportObject() throws ExportFailedException {
 		process(model);
 		
 		try {

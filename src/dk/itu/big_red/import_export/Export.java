@@ -1,16 +1,18 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.import_export;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
+import org.eclipse.draw2d.IFigure;
+
 import dk.itu.big_red.exceptions.ExportFailedException;
 
 /**
- * Classes extending Export can write a model object to an {@link
- * OutputStream}. (The export process can do anything it wants - one class
- * might export a {@link Bigraph} to a PNG image, and another might export a
- * {@link Signature} to a XML document.)
+ * Classes extending Export can write objects to an {@link OutputStream}. (The
+ * export process can do anything it wants - one class might export an {@link
+ * IFigure} to a PNG image, and another might export a {@link Signature} to a
+ * XML document.)
  * 
  * <p>The existence of an Export class for a given format does <i>not</i> imply
  * that a {@link Import} class should exist for that format - in most cases,
@@ -56,8 +58,8 @@ public abstract class Export<T> {
 	}
 	
 	/**
-	 * Indicates whether or not the model is ready to be exported.
-	 * @return <code>true</code> if the model is ready to be exported, or
+	 * Indicates whether or not the object is ready to be exported.
+	 * @return <code>true</code> if the object is ready to be exported, or
 	 *         <code>false</code> otherwise
 	 */
 	public boolean canExport() {
@@ -65,9 +67,9 @@ public abstract class Export<T> {
 	}
 	
 	/**
-	 * Exports the model. This function should not be called unless {@link
+	 * Exports the object. This function should not be called unless {@link
 	 * Export#canExport canExport} returns <code>true</code>.
 	 * @throws ExportFailedException if the export failed
 	 */
-	public abstract void exportModel() throws ExportFailedException;
+	public abstract void exportObject() throws ExportFailedException;
 }

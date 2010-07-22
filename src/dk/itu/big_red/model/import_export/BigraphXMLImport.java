@@ -17,9 +17,9 @@ import dk.itu.big_red.util.DOM;
  * @see BigraphXMLExport
  *
  */
-public class BigraphXMLImport extends Import<Bigraph> {
+public class BigraphXMLImport extends ModelImport<Bigraph> {
 	@Override
-	public Bigraph importModel() throws ImportFailedException {
+	public Bigraph importObject() throws ImportFailedException {
 		try {
 			Document d = DOM.parse(source);
 			return (Bigraph)process(d.getDocumentElement());

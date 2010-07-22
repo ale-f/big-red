@@ -10,10 +10,10 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.util.DOM;
 
-public class SignatureXMLImport extends Import<Signature> {
+public class SignatureXMLImport extends ModelImport<Signature> {
 
 	@Override
-	public Signature importModel() throws ImportFailedException {
+	public Signature importObject() throws ImportFailedException {
 		try {
 			Document d = DOM.parse(source);
 			return (Signature)process(d.getDocumentElement());

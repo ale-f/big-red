@@ -1,14 +1,13 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.import_export;
 
-import java.io.FileNotFoundException;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import dk.itu.big_red.exceptions.ImportFailedException;
 
 /**
- * Classes extending Import can read a model object from an {@link
- * InputStream}.
+ * Classes extending Import can read objects from an {@link InputStream}.
  * 
  * <p>The existence of an Import class for a given format implies that a
  * corresponding {@link Export} class <i>should</i> exist for that format.
@@ -53,9 +52,9 @@ public abstract class Import<T> {
 	}
 	
 	/**
-	 * Imports the model. This function should not be called unless {@link
+	 * Imports the object. This function should not be called unless {@link
 	 * Import#canImport canImport} returns <code>true</code>.
 	 * @throws ImportFailedException if the import failed
 	 */
-	public abstract T importModel() throws ImportFailedException;
+	public abstract T importObject() throws ImportFailedException;
 }

@@ -21,11 +21,11 @@ import dk.itu.big_red.util.DOM;
  * @see BigraphXMLImport
  *
  */
-public class BigraphXMLExport extends Export<Bigraph> {
+public class BigraphXMLExport extends ModelExport<Bigraph> {
 	private Document doc = null;
 	
 	@Override
-	public void exportModel() throws ExportFailedException {
+	public void exportObject() throws ExportFailedException {
 		process((ILayoutable)model);
 		
 		try {
