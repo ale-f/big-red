@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.exceptions.ImportFailedException;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.util.DOM;
 
@@ -22,6 +23,19 @@ public class SignatureXMLImport extends Import<Signature> {
 	}
 
 	private void processControl(Element e, Control model) throws ImportFailedException {
+		model.setLongName(DOM.getAttribute(e, "name"));
+		
+		Element el = DOM.getNamedChildElement(e, "big-red:shape");
+		if (el != null) {
+			AppearanceGenerator.setShape(el, model);
+			el.getParentNode().removeChild(el);
+		}
+		
+		el = DOM.getNamedChildElement(e, "big-red:appearance");
+		if (el != null) {
+			AppearanceGenerator.setAppearance(el, model);
+			el.getParentNode().removeChild(el);
+		}
 	}
 	
 	private void processSignature(Element e, Signature model) throws ImportFailedException {
