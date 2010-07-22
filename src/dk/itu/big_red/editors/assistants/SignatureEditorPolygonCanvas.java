@@ -1,5 +1,8 @@
 package dk.itu.big_red.editors.assistants;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -23,6 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.util.Line;
 import dk.itu.big_red.util.UI;
 
@@ -35,7 +39,12 @@ import dk.itu.big_red.util.UI;
  */
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
-MenuListener {
+MenuListener, IPropertyChangeNotifier {
+	/**
+	 * The property name fired when the set of points changes.
+	 */
+	public static final String PROPERTY_POINT = "SignatureEditorPolygonCanvasPoint";
+	
 	private PointList points = new PointList();
 	private Point tmp = new Point();
 	private Point mousePosition = new Point(-10, -10);
@@ -43,6 +52,8 @@ MenuListener {
 	
 	private int dragIndex = -1;
 	private Point dragPoint = null;
+	
+	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	public SignatureEditorPolygonCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -67,7 +78,7 @@ MenuListener {
 		if (deleteIndex != -1 && (deleteIndex != 0 || points.size() > 1)) {
 			if (dragIndex == deleteIndex)
 				dragIndex = -1;
-			points.removePoint(deleteIndex);
+			listeners.firePropertyChange(PROPERTY_POINT, points.removePoint(deleteIndex), null);
 		}
 	}
 
@@ -108,6 +119,7 @@ MenuListener {
 		Rectangle polyBounds = points.getBounds();
 		points.translate(
 			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.width / 2, -polyBounds.height / 2)));
+		listeners.firePropertyChange(PROPERTY_POINT, points, points);
 		redraw();
 	}
 	
@@ -165,10 +177,12 @@ MenuListener {
 					tmp = points.getPoint(dragIndex);
 					tmp.x = p.x; tmp.y = p.y;
 					points.setPoint(tmp, dragIndex);
+					listeners.firePropertyChange(PROPERTY_POINT, tmp, tmp);
 				} else {
 					dragPoint.x = p.x;
 					dragPoint.y = p.y;
 					points.insertPoint(dragPoint, dragIndex);
+					listeners.firePropertyChange(PROPERTY_POINT, null, dragPoint);
 				}
 			}
 			dragIndex = -1;
@@ -325,7 +339,7 @@ MenuListener {
 				UI.createMenuItem(m, 0, "&Remove point", new SelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						points.removePoint(foundPoint);
+						listeners.firePropertyChange(PROPERTY_POINT, points.removePoint(foundPoint), null);
 					}
 					
 					@Override
@@ -363,5 +377,15 @@ MenuListener {
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
+	}
+	
+	@Override
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		listeners.addPropertyChangeListener(listener);
+	}
+
+	@Override
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		listeners.removePropertyChangeListener(listener);
 	}
 }
