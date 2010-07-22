@@ -158,7 +158,7 @@
          point="org.eclipse.ui.exportWizards">
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.ExportBitmapWizard"
+            class="dk.itu.big_red.wizards.export.ExportBitmapWizard"
             icon="icons/wizards/bitmap.png"
             id="Big Red.BitmapExportWizard"
             name="Export as bitmap image">

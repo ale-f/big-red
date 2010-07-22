@@ -1,4 +1,4 @@
-package dk.itu.big_red.wizards;
+package dk.itu.big_red.wizards.export;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
