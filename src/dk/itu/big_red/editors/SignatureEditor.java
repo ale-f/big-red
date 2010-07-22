@@ -75,7 +75,6 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
-		// TODO Auto-generated method stub
 		setSite(site);
 		setInput(input);
 		firePropertyChange(IWorkbenchPartConstants.PROP_INPUT);

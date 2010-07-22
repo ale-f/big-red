@@ -31,7 +31,6 @@ public class ExportBitmapWizard extends Wizard implements IExportWizard {
 	
 	@Override
 	public boolean performFinish() {
-		// TODO Auto-generated method stub
 		BigraphPNGExport be = new BigraphPNGExport();
 		be.setModel(getEditor().getPrintLayer());
 		try {

@@ -244,7 +244,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     
 	@Override
 	protected PaletteRoot getPaletteRoot() {
-		// TODO Auto-generated method stub
 		PaletteRoot root = new PaletteRoot();
 		
 		PaletteGroup selectGroup = new PaletteGroup("Object selection");
