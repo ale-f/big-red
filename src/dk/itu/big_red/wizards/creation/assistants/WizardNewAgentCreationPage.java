@@ -1,4 +1,4 @@
-package dk.itu.big_red.wizards.new_wizards.assistants;
+package dk.itu.big_red.wizards.creation.assistants;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;

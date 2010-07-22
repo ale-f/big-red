@@ -192,7 +192,7 @@
       </primaryWizard>
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.new_wizards.NewBRSWizard"
+            class="dk.itu.big_red.wizards.creation.NewBRSWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
             id="dk.itu.big_red.NewBRSWizard"
@@ -204,7 +204,7 @@
       </wizard>
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.new_wizards.NewAgentWizard"
+            class="dk.itu.big_red.wizards.creation.NewAgentWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
             id="dk.itu.big_red.NewAgentWizard"
@@ -215,7 +215,7 @@
       </wizard>
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.new_wizards.NewRuleWizard"
+            class="dk.itu.big_red.wizards.creation.NewRuleWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
             id="dk.itu.big_red.NewRuleWizard"
@@ -226,7 +226,7 @@
       </wizard>
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.new_wizards.NewSignatureWizard"
+            class="dk.itu.big_red.wizards.creation.NewSignatureWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
             id="dk.itu.big_red.NewSignatureWizard"
@@ -238,7 +238,7 @@
       </wizard>
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.new_wizards.NewSimulationSpecWizard"
+            class="dk.itu.big_red.wizards.creation.NewSimulationSpecWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/cic/process.png"
             id="dk.itu.big_red.NewSimulationSpecWizard"

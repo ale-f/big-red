@@ -1,4 +1,4 @@
-package dk.itu.big_red.wizards.new_wizards;
+package dk.itu.big_red.wizards.creation;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
