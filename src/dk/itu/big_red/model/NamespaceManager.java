@@ -1,6 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -15,6 +14,15 @@ public class NamespaceManager {
 	private HashMap<Class<?>, HashMap<String, Object>> names =
 		new HashMap<Class<?>, HashMap<String, Object>>();
 	
+	protected HashMap<String, Object> getSubspace(Class<?> klass) {
+		HashMap<String, Object> subspace = names.get(klass);
+		if (subspace == null) {
+			subspace = new HashMap<String, Object>();
+			names.put(klass, subspace);
+		}
+		return subspace;
+	}
+	
 	/**
 	 * Returns the name given to a particular object.
 	 * @param klass the {@link Class} whose namespace should be searched
@@ -22,7 +30,7 @@ public class NamespaceManager {
 	 * @return the object's name, if it has one, or <code>null</code> otherwise
 	 */
 	public String getName(Class<?> klass, Object object) {
-		HashMap<String, Object> subspace = names.get(klass);
+		HashMap<String, Object> subspace = getSubspace(klass);
 		if (subspace.containsValue(object)) {
 			for (Entry<String, Object> i : subspace.entrySet())
 				if (i.getValue() == object)
@@ -39,7 +47,7 @@ public class NamespaceManager {
 	 *         otherwise
 	 */
 	public Object getObject(Class<?> klass, String name) {
-		return names.get(klass).get(name);
+		return getSubspace(klass).get(name);
 	}
 	
 	/**
@@ -53,7 +61,7 @@ public class NamespaceManager {
 	 *         is already in use by a different object
 	 */
 	public boolean setName(Class<?> klass, String name, Object object) {
-		HashMap<String, Object> subspace = names.get(klass);
+		HashMap<String, Object> subspace = getSubspace(klass);
 		
 		Object current = subspace.get(name);
 		if (current == object) // object already has name
@@ -82,15 +90,16 @@ public class NamespaceManager {
 	 *         one!)
 	 */
 	public String newName(Class<?> klass, Object object) {
-		HashMap<String, Object> subspace = names.get(klass);
+		HashMap<String, Object> subspace = getSubspace(klass);
 		
 		String prospectiveName = getName(klass, object);
 		if (prospectiveName != null)
 			return prospectiveName;
 		
 		do {
-			prospectiveName = new BigInteger(64, random).toString(36);
-		} while (!subspace.containsKey(prospectiveName));
+			prospectiveName =
+				Integer.toString(Math.abs(random.nextInt()) % 65535, 36);
+		} while (subspace.containsKey(prospectiveName));
 		
 		subspace.put(prospectiveName, object);
 		return prospectiveName;
