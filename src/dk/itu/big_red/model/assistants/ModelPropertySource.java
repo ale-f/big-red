@@ -10,10 +10,10 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
+import dk.itu.big_red.model.interfaces.INameable;
 
 public class ModelPropertySource implements IPropertySource {
 	private Object object;
@@ -38,8 +38,6 @@ public class ModelPropertySource implements IPropertySource {
 		if (object instanceof Node) {
 			setControlNames(((Node)object).getSignature().getControlNames());
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
-		} else if (object instanceof InnerName) {
-			properties.add(new TextPropertyDescriptor(InnerName.PROPERTY_NAME, "Name"));
 		}
 		
 		if (object instanceof IColourable) {
@@ -48,6 +46,9 @@ public class ModelPropertySource implements IPropertySource {
 		}
 		if (object instanceof ICommentable) {
 			properties.add(new TextPropertyDescriptor(ICommentable.PROPERTY_COMMENT, "Comment"));
+		}
+		if (object instanceof INameable) {
+			properties.add(new TextPropertyDescriptor(INameable.PROPERTY_NAME, "Name"));
 		}
 		return properties.toArray(new IPropertyDescriptor[0]);
 	}
@@ -72,8 +73,8 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String result = ((ICommentable)object).getComment();
 			return (result == null ? "" : result);
-		} else if (id.equals(InnerName.PROPERTY_NAME)){
-			return ((InnerName)object).getName();
+		} else if (id.equals(INameable.PROPERTY_NAME)){
+			return ((INameable)object).getName();
 		} else {
 			return null;
 		}
@@ -108,8 +109,9 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String comment = (String)value;
 			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));
-		} else if (id.equals(InnerName.PROPERTY_NAME)) {
-			((InnerName)object).setName((String)value);
+		} else if (id.equals(INameable.PROPERTY_NAME)) {
+			String name = (String)value;
+			((INameable)object).setName(name.length() == 0 ? null : name);
 		}
 	}
 
