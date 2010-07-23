@@ -12,6 +12,11 @@ package dk.itu.big_red.model.interfaces;
  */
 public interface INameable {
 	/**
+	 * The property name fired when the name changes.
+	 */
+	public static final String PROPERTY_NAME = "INameableName";
+
+	/**
 	 * Gets this object's name.
 	 * @return a String
 	 */

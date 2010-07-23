@@ -13,6 +13,7 @@ import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.INameable;
 
 /**
  * Points are objects which can be connected to <em>at most one</em> {@link
@@ -21,11 +22,6 @@ import dk.itu.big_red.model.interfaces.ILayoutable;
  *
  */
 public abstract class Point implements IConnectable, IAdaptable, ICommentable {
-	/**
-	 * The property name fired when the name changes.
-	 */
-	public static final String PROPERTY_NAME = "PointName";
-	
 	private String comment = null;
 	
 	@Override
@@ -112,7 +108,7 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable {
 		if (name != null) {
 			String oldName = this.name;
 			this.name = name;
-			listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+			listeners.firePropertyChange(INameable.PROPERTY_NAME, oldName, name);
 		}
 	}
 
