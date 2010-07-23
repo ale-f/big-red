@@ -13,6 +13,7 @@ import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.INameable;
 
 /**
   * An Edge is a connection which connects any number of {@link Port}s and
@@ -26,7 +27,7 @@ import dk.itu.big_red.model.interfaces.ILayoutable;
   * @author alec
   *
   */
-public class Edge implements IAdaptable, IConnectable, ICommentable {
+public class Edge implements IAdaptable, IConnectable, ICommentable, INameable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	/**
@@ -157,6 +158,7 @@ public class Edge implements IAdaptable, IConnectable, ICommentable {
 			ILayoutable oldParent = this.parent;
 			this.parent = p;
 			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
+			setName(null);
 		}
 	}
 
@@ -220,5 +222,22 @@ public class Edge implements IAdaptable, IConnectable, ICommentable {
 		if (adapter == IPropertySource.class) {
 			return new ModelPropertySource(this);
 		} else return null;
+	}
+	
+	public String getName() {
+		return getBigraph().getNamespace().getName(getClass(), this);
+	}
+	
+	public void setName(String name) {
+		NamespaceManager nm = getBigraph().getNamespace();
+		String oldName = nm.getName(getClass(), this);
+		if (name != null) {
+			if (nm.setName(getClass(), name, this))
+				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+		} else {
+			String newName = nm.newName(getClass(), this);
+			if (!newName.equals(oldName))
+				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
+		}
 	}
 }
