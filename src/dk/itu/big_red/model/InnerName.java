@@ -18,7 +18,7 @@ public class InnerName extends Point implements INameable {
 	@Override
 	public void setParent(ILayoutable p) {
 		super.setParent(p);
-		getBigraph().getNamespace().newName(getClass(), this);
+		setName(null);
 	}
 	
 	@Override
