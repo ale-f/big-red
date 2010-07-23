@@ -1,6 +1,5 @@
 package dk.itu.big_red.part;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.Figure;
@@ -9,7 +8,7 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 /**
@@ -38,9 +37,7 @@ public class BigraphPart extends ThingPart {
 	}
 	
 	public List<ILayoutable> getModelChildren() {
-		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>(getModel().getChildren());
-		children.addAll(getModel().getNHTLOs());
-		return children;
+		return getModel().getChildren();
 	}
 	
 	/**
