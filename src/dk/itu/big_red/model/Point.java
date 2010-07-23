@@ -163,6 +163,14 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable {
 	 * Returns false.
 	 */
 	@Override
+	public boolean hasChild(ILayoutable c) {
+		return false;
+	}
+	
+	/**
+	 * Returns false.
+	 */
+	@Override
 	public boolean canContain(ILayoutable c) {
 		return false;
 	}

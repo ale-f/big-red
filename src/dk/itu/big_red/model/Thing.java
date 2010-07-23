@@ -2,14 +2,13 @@ package dk.itu.big_red.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
-
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
@@ -113,7 +112,8 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 		listeners.removePropertyChangeListener(listener);
 	}
 
-	public boolean contains(Thing child) {
+	@Override
+	public boolean hasChild(ILayoutable child) {
 		return children.contains(child);
 	}
 	

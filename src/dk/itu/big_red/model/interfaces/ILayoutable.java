@@ -102,6 +102,14 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	public void removeChild(ILayoutable c);
 	
 	/**
+	 * Indicates whether or not the given object is a child of this one.
+	 * @param c an {@link ILayoutable}
+	 * @return <code>true</code> if this object contains <code>c</code> as a
+	 *         child, or <code>false</code> otherwise
+	 */
+	public boolean hasChild(ILayoutable c);
+	
+	/**
 	 * Indicates whether or not this object can contain the specified {@link
 	 * ILayoutable}.
 	 * @param c an {@link ILayoutable}
