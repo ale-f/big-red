@@ -11,8 +11,8 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 
-import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
+import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.InnerNameFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
@@ -67,7 +67,7 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 		figure.setName(model.getName());
 		figure.setConstraint(model.getLayout());
 		
-		String toolTip = "Inner name";
+		String toolTip = "Inner name (\"" + model.getName() + "\")";
 		if (model.getComment() != null)
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
