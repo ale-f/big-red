@@ -7,6 +7,7 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.wizards.creation.assistants.WizardNewAgentCreationPage;
