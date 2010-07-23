@@ -8,7 +8,6 @@ import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
-import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
@@ -82,7 +81,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 			e = process((Bigraph)obj);
 		} else if (obj instanceof Node) {
 			e = process((Node)obj);
-		} else if (obj instanceof InnerName) {
+		} else if (obj instanceof Point) {
 			e = process((Point)obj);
 		} else if (obj instanceof Edge) {
 			e = process((Edge)obj);
