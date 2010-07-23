@@ -17,7 +17,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 

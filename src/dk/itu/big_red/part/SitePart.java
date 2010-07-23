@@ -5,7 +5,7 @@ import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.figure.SiteFigure;
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.Site;
 
 public class SitePart extends ThingPart {
 	@Override

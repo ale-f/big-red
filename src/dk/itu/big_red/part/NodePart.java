@@ -11,7 +11,7 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 /**

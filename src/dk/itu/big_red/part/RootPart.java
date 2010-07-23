@@ -8,7 +8,8 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.RootFigure;
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 /**

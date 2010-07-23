@@ -14,8 +14,8 @@ import org.eclipse.gef.Request;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.EdgeFigure;
 import dk.itu.big_red.figure.adornments.CentreAnchor;
-import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.EdgeConnection;
 
 /**
  * EdgeParts represent {@link Edge}s, the container for - and target point of -
