@@ -166,16 +166,6 @@
             Export the current bigraph as a bitmap image, suitable for embedding into webpages or for low-resolution printing.
          </description>
       </wizard>
-      <wizard
-            category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.ExportVectorWizard"
-            icon="icons/wizards/vector.png"
-            id="Big Red.VectorExportWizard"
-            name="Export as vector image">
-         <description>
-            Export the current bigraph as a (scalable) vector image, suitable for use in papers and high-resolution printing.
-         </description>
-      </wizard>
       <category
             id="dk.itu.big_red"
             name="Big Red">
