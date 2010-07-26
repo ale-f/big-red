@@ -34,6 +34,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.editors.assistants.PointListener;
 import dk.itu.big_red.editors.assistants.SignatureEditorPolygonCanvas;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Signature;
@@ -130,15 +131,17 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	}
 	
 	protected void fieldsToControl() {
-		currentControl.setLabel(label.getText());
-		currentControl.setLongName(name.getText());
-		currentControl.setResizable(resizable.getSelection());
-		currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints());
+		if (currentControl != null) {
+			currentControl.setLabel(label.getText());
+			currentControl.setLongName(name.getText());
+			currentControl.setResizable(resizable.getSelection());
+			currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints());
+		}
 	}
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		final class DirtListener implements ModifyListener, SelectionListener {
+		final class DirtListener implements ModifyListener, SelectionListener, PointListener {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -154,6 +157,14 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 			@Override
 			public void modifyText(ModifyEvent e) {
+				if (fireModify) {
+					fieldsToControl();
+					setDirty(true);
+				}
+			}
+
+			@Override
+			public void pointChange(PointEvent e) {
 				if (fireModify) {
 					fieldsToControl();
 					setDirty(true);
@@ -283,6 +294,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceLayoutData.heightHint = 100;
 		appearance.setLayoutData(appearanceLayoutData);
 		appearance.setBackground(ColorConstants.listBackground);
+		appearance.addPointListener(sharedDirtListener);
 		
 		new Label(right, SWT.NONE); /* padding */
 		
