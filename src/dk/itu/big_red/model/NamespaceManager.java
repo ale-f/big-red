@@ -2,7 +2,6 @@ package dk.itu.big_red.model;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Random;
 
 /**
  * NamespaceManagers manage {@link Class}-specific <i>namespaces</i>, groups of
@@ -82,8 +81,6 @@ public class NamespaceManager {
 		return true;
 	}
 	
-	private static Random random = new Random();
-	
 	/**
 	 * Finds a unique name for <code>object</code> in the
 	 * <code>klass</code>-specific namespace, registers it with that name, and
@@ -123,5 +120,16 @@ public class NamespaceManager {
 		
 		subspace.put(prospectiveName, object);
 		return prospectiveName;
+	}
+	
+	/**
+	 * Removes the named object from the <code>klass</code>-specific namespace.
+	 * @param klass the {@link Class} whose namespace should be searched
+	 * @param name a name
+	 * @return the formerly-named object, if there was one, or
+	 *         <code>null</code> if there wasn't
+	 */
+	public Object removeObject(Class<?> klass, String name) {
+		return getSubspace(klass).remove(name);
 	}
 }
