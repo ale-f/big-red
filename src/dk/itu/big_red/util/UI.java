@@ -3,6 +3,7 @@ package dk.itu.big_red.util;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
@@ -113,5 +114,15 @@ public class UI {
 		if (listener != null)
 			i.addSelectionListener(listener);
 		return i;
+	}
+	
+	/**
+	 * Enables, or disables, a group of {@link Control}s.
+	 * @param enabled the new enabled state
+	 * @param controls the controls to enable or disable
+	 */
+	public static void setEnabled(boolean enabled, Control... controls) {
+		for (Control c : controls)
+			c.setEnabled(enabled);
 	}
 }
