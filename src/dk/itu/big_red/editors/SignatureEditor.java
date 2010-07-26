@@ -135,7 +135,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			currentControl.setLabel(label.getText());
 			currentControl.setLongName(name.getText());
 			currentControl.setResizable(resizable.getSelection());
-			currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints());
+			currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints().getCopy());
 		}
 	}
 	
