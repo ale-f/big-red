@@ -15,8 +15,8 @@ import org.eclipse.swt.widgets.Canvas;
  */
 public interface PointListener {
 	/**
-	 * Instances of this class are sent as a result of points being added or
-	 * removed from a {@link SignatureEditorPolygonCanvas}.
+	 * Instances of this class are sent as a result of points being added to,
+	 * removed from, or moved on a {@link SignatureEditorPolygonCanvas}.
 	 * @author alec
 	 *
 	 */
@@ -28,26 +28,37 @@ public interface PointListener {
 		SignatureEditorPolygonCanvas source;
 		
 		/**
-		 * The Point just added to the polygon, if any.
-		 * 
-		 * <p>If both <code>added</code> and {@link #removed} are null, then
-		 * all points have been removed.
+		 * A point has been added.
 		 */
-		Point added;
+		public static int ADDED = 1;
 		
 		/**
-		 * The Point just removed from the polygon, if any.
-		 * 
-		 * <p>If both {@link #added} and <code>removed</code> are null, then
-		 * all points have been removed.
+		 * A point has been removed.
 		 */
-		Point removed;
+		public static int REMOVED = 2;
+		
+		/**
+		 * A point has been moved.
+		 */
+		public static int MOVED = 3;
+		
+		/**
+		 * The type of change that occurred ({@link #ADDED}, {@link #REMOVED}
+		 * or {@link #MOVED}).
+		 */
+		int type;
+		
+		/**
+		 * The Point which caused this event to be fired.
+		 * 
+		 * <p>If this property is <code>null</code>, then the event represents
+		 * a mass change to all Points.
+		 */
+		Point object;
 	}
 	
 	/**
-	 * Sent when a point is added or removed.
-	 * <p>If <i>all</i> points are removed, then both <code>e.added</code> and
-	 * <code>e.removed</code> will be <code>null</code>.
+	 * Sent when a point has changed.
 	 * @param e a {@link PointEvent}
 	 */
 	public void pointChange(PointEvent e);
