@@ -35,6 +35,6 @@ public class SitePart extends ThingPart {
 		SiteFigure figure = (SiteFigure)getFigure();
 		Site model = getModel();
 
-		figure.setNumber(model.getNumber());
+		figure.setName(model.getName());
 	}
 }

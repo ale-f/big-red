@@ -25,7 +25,7 @@ public class SitePlaceTreePart extends AbstractTreePart {
 	
 	@Override
 	public String getText() {
-		return Integer.toString(((Site)getModel()).getNumber());
+		return ((Site)getModel()).getName();
 	}
 	
 	@Override

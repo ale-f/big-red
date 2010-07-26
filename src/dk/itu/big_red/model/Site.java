@@ -1,18 +1,14 @@
 package dk.itu.big_red.model;
 
-public class Site extends Thing {
+import dk.itu.big_red.model.interfaces.ILayoutable;
+
+public class Site extends Root {
+	@Override
+	public boolean canContain(ILayoutable child) {
+		return false;
+	}
+	
 	public Thing clone() throws CloneNotSupportedException {
 		return new Site()._overwrite(this);
 	}
-	
-	private int number;
-	
-	public void setNumber(int number) {
-		this.number = number;
-	}
-	
-	public int getNumber() {
-		return number;
-	}
-	
 }
