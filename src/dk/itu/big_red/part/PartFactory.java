@@ -24,21 +24,23 @@ public class PartFactory implements EditPartFactory {
 	public EditPart createEditPart(EditPart context, Object model) {
 		AbstractGraphicalEditPart part = null;
 		
-		if (model instanceof Bigraph) {
+		Class<?> target = model.getClass();
+		
+		if (target == Bigraph.class) {
 			part = new BigraphPart();
-		} else if (model instanceof Node) {
+		} else if (target == Node.class) {
 			part = new NodePart();
-        } else if (model instanceof Root) {
+        } else if (target == Root.class) {
         	part = new RootPart();
-        } else if (model instanceof Site) {
+        } else if (target == Site.class) {
     		part = new SitePart();
-        } else if (model instanceof EdgeConnection) {
+        } else if (target == EdgeConnection.class) {
         	part = new EdgeConnectionPart();
-        } else if (model instanceof Edge) {
+        } else if (target == Edge.class) {
         	part = new EdgePart();
-        } else if (model instanceof InnerName) {
+        } else if (target == InnerName.class) {
         	part = new InnerNamePart();
-        } else if (model instanceof Port) {
+        } else if (target == Port.class) {
         	part = new PortPart();
         }
 	       
