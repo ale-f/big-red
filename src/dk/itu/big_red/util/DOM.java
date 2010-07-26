@@ -149,6 +149,21 @@ public class DOM {
 	}
 
 	/**
+	 * Removes the unique child of the specified Element which has the given
+	 * tag name, and returns it.
+	 * @param d an Element containing children
+	 * @param n the tag name to search for
+	 * @return the unique named (former) child, or <code>null</code> if there
+	 *         were zero or more than one matches
+	 */
+	public static Element removeNamedChildElement(Element d, String n) {
+		Element r = getNamedChildElement(d, n);
+		if (r != null)
+			r.getParentNode().removeChild(r);
+		return r;
+	}
+	
+	/**
 	 * Retrieves the given named attribute from the specified Element, so you
 	 * can get an attribute with one function call rather than four of them.
 	 * @param d an Element with attributes set
