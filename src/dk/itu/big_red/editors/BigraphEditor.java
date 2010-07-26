@@ -7,8 +7,6 @@ import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
@@ -52,13 +50,10 @@ import dk.itu.big_red.editors.assistants.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
 import dk.itu.big_red.editors.assistants.BigraphEditorTemplateTransferDropTargetListener;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.ResourceWrapper;
@@ -177,46 +172,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    		model.setModel(im.importObject());
 	    	} catch (Exception e) {
 	    		e.printStackTrace();
-		    	model.setModel(new Bigraph());
-		    	Signature signature = model.getModel().getSignature();
-		    	
-		    	dk.itu.big_red.model.Control b =
-		    		signature.addControl(new Control("Building", "B", Shape.SHAPE_OVAL, null,
-		    				new Point(250, 250), true)),
-		    	r = signature.addControl(new Control("Room", "R", Shape.SHAPE_OVAL, null,
-		    			new Point(125, 200), true)),
-		    	a = signature.addControl(new Control("Agent", "A", Shape.SHAPE_POLYGON,
-		    			dk.itu.big_red.model.Control.POINTS_TRIANGLE,
-		    			new Point(25, 50), false)),
-		    	c = signature.addControl(new Control("Computer", "C", Shape.SHAPE_POLYGON,
-		    			dk.itu.big_red.model.Control.POINTS_QUAD, new Point(25, 13), false));
-		    	
-		    	b.addPort("a", 0, 0.33);
-		    	
-		    	c.addPort("b", 0, 0.45);
-		    	
-		    	a.addPort("c", 0, 0.66);
-		    	
-		    	r.addPort("d", 0, 0.78);
-		    	
-		    	Root r0 = new Root();
-		    	model.getModel().addChild(r0);
-		    	r0.setLayout(new Rectangle(10, 10, 400, 400));
-		    		Node building0 = new Node(b);
-		    		r0.addChild(building0);
-		    		building0.setLayout(new Rectangle(10, 10, 250, 250));
-		    			Node room0 = new Node(r);
-		    			building0.addChild(room0);
-		    			room0.setLayout(new Rectangle(10, 10, 125, 200));
-		    				Node agent0 = new Node(a);
-		    				room0.addChild(agent0);
-		    				agent0.setLayout(new Rectangle(10, 10, 0, 0));
-		    		Node building1 = new Node(b);
-		    		r0.addChild(building1);
-		    		building1.setLayout(new Rectangle(20, 20, 100, 100));
-		    			Node room1 = new Node(r);
-		    			building1.addChild(room1);
-		    			room1.setLayout(new Rectangle(10, 10, 50, 50));
+	    		System.exit(-1);
 	    	}
 	    }
 	    
