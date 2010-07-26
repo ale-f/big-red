@@ -43,7 +43,7 @@ public class RootPart extends ThingPart {
 		RootFigure figure = (RootFigure)getFigure();
 		Root model = getModel();
 
-		figure.setNumber(model.getNumber());
+		figure.setName(model.getName());
 	}
 	
 	public List<ILayoutable> getModelChildren() {

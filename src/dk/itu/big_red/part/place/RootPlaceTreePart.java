@@ -25,7 +25,7 @@ public class RootPlaceTreePart extends AbstractTreePart {
 	
 	@Override
 	public String getText() {
-		return Integer.toString(((Root)getModel()).getNumber());
+		return ((Root)getModel()).getName();
 	}
 	
 	@Override

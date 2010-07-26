@@ -1,8 +1,9 @@
 package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.INameable;
 
-public class Root extends Thing {
+public class Root extends Thing implements INameable {
 	@Override
 	public Thing clone() throws CloneNotSupportedException {
 		return new Root()._overwrite(this);
@@ -14,15 +15,27 @@ public class Root extends Thing {
 		return (c == Node.class || c == Site.class);
 	}
 	
-	private int number;
-	
-	public void setNumber(int number) {
-		String oldNumber = Integer.toString(number);
-		this.number = number;
-		listeners.firePropertyChange(PROPERTY_RENAME, oldNumber, Integer.toString(number));
+	@Override
+	public void setParent(ILayoutable p) {
+		super.setParent(p);
+		setName(null);
 	}
 	
-	public int getNumber() {
-		return number;
+	public String getName() {
+		return getBigraph().getNamespace().getName(getClass(), this);
 	}
+	
+	public void setName(String name) {
+		NamespaceManager nm = getBigraph().getNamespace();
+		String oldName = nm.getName(getClass(), this);
+		if (name != null) {
+			if (nm.setName(getClass(), name, this))
+				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+		} else {
+			String newName = nm.newName(getClass(), this);
+			if (!newName.equals(oldName))
+				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
+		}
+	}
+
 }

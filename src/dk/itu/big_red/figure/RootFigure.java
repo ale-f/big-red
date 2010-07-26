@@ -22,8 +22,8 @@ public class RootFigure extends AbstractFigure {
 		setBackgroundColor(ColorConstants.white);
 	}
 
-	public void setNumber(int number) {
-		labelName.setText(Integer.toString(number));
+	public void setName(String name) {
+		labelName.setText(name);
 	}
 
 	@Override
