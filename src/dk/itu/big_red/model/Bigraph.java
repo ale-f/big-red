@@ -2,12 +2,15 @@ package dk.itu.big_red.model;
 
 import java.util.ArrayList;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class Bigraph extends Thing {
-	protected Signature signature = new Signature();
+	protected ResourceWrapper<Signature> signature =
+		new ResourceWrapper<Signature>();
 	protected NamespaceManager namespaceManager = new NamespaceManager();
 	protected ArrayList<Edge> edges = new ArrayList<Edge>();
 	
@@ -33,8 +36,15 @@ public class Bigraph extends Thing {
 		return this;
 	}
 	
+	public void setSignature(IFile file, Signature signature) {
+		if (file != null && signature != null) {
+			this.signature.setResource(file);
+			this.signature.setModel(signature);
+		}
+	}
+	
 	public Signature getSignature() {
-		return signature;
+		return signature.getModel();
 	}
 	
 	public void setParent(ILayoutable parent) {

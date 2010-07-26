@@ -1,23 +1,22 @@
 package dk.itu.big_red.model.import_export;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.util.Project;
 
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.
@@ -40,29 +39,17 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	
 	private void processBigraph(Element e, Bigraph model) throws ImportFailedException {
 		String signaturePath = e.getAttribute("signature");
-		System.out.println(signaturePath);
 		
-		Signature signature = model.getSignature();
+		IFile sigFile =
+			Project.findFileByPath(null, new Path(signaturePath));
+		SignatureXMLImport si = new SignatureXMLImport();
+		try {
+			si.setInputStream(sigFile.getContents());
+			model.setSignature(sigFile, si.importObject());
+		} catch (Exception ex) {
+			throw new ImportFailedException(ex);
+		}
 		
-    	dk.itu.big_red.model.Control b =
-    		signature.addControl(new Control("Building", "B", Shape.SHAPE_OVAL, null,
-    				new Point(250, 250), true)),
-    	r = signature.addControl(new Control("Room", "R", Shape.SHAPE_OVAL, null,
-    			new Point(125, 200), true)),
-    	a = signature.addControl(new Control("Agent", "A", Shape.SHAPE_POLYGON,
-    			dk.itu.big_red.model.Control.POINTS_TRIANGLE,
-    			new Point(25, 50), false)),
-    	c = signature.addControl(new Control("Computer", "C", Shape.SHAPE_POLYGON,
-    			dk.itu.big_red.model.Control.POINTS_QUAD, new Point(25, 13), false));
-		
-    	b.addPort("a", 0, 0.33);
-    	
-    	c.addPort("b", 0, 0.45);
-    	
-    	a.addPort("c", 0, 0.66);
-    	
-    	r.addPort("d", 0, 0.78);
-
     	bigraph = model;
 		processThing(e, model);
 	}
