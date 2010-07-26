@@ -41,6 +41,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
+import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.Utility;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
@@ -196,6 +197,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 				currentControl = model.getModel().getControl(currentControlItem.getText());
 				controlToFields();
 				name.setFocus();
+				setEnablement(true);
 			}
 			
 			@Override
@@ -220,6 +222,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 				controlToFields();
 				controls.select(currentControlItem);
 				name.setFocus();
+				setEnablement(true);
 				
 				setDirty(true);
 			}
@@ -324,9 +327,16 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		portsMovable.setText("Ports movable?");
 		portsMovable.addSelectionListener(sharedDirtListener);
 		
+		setEnablement(false);
 		initialiseSignatureEditor();
 	}
 
+	private void setEnablement(boolean enabled) {
+		UI.setEnabled(enabled,
+			name, label, ports, addPort, removePort, appearance, resizable,
+			portsMovable);
+	}
+	
 	private void initialiseSignatureEditor() {
 		IEditorInput input = getEditorInput();
 		if (input instanceof FileEditorInput) {
