@@ -42,10 +42,8 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 			if (!(e.getChildNodes().item(j) instanceof Element))
 				continue;
 			Object i = process((Element)e.getChildNodes().item(j));
-			if (i instanceof Port) {
+			if (i instanceof Port)
 				model.addPort((Port)i);
-				System.out.println("Adding Port " + ((Port)i).getName());
-			}
 		}
 	}
 	
