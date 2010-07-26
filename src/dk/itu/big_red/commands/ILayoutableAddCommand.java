@@ -36,6 +36,7 @@ public class ILayoutableAddCommand extends Command {
 	
 	public boolean canExecute() {
 		return (this.parent != null && this.child != null &&
+				this.parent.canContain(this.child) &&
 				this.constraint != null &&
 				parentLayoutCanContainChildConstraint());
 	}
