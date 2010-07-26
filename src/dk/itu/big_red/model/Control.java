@@ -163,8 +163,11 @@ public class Control implements IPropertyChangeNotifier, IColourable {
 	}
 
 	public void setLongName(String longName) throws DuplicateControlException {
-		if (longName != null)
+		if (longName != null) {
 			this.longName = longName;
+			if (longName.length() > 1)
+				setLabel(longName.substring(0, 1).toUpperCase());
+		}
 	}
 
 	public String getLongName() {
