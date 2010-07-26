@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.assistants;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
@@ -26,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
+import dk.itu.big_red.editors.assistants.PointListener.PointEvent;
 import dk.itu.big_red.util.Line;
 import dk.itu.big_red.util.UI;
 
@@ -39,7 +38,7 @@ import dk.itu.big_red.util.UI;
  */
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
-MenuListener, IPropertyChangeNotifier {
+MenuListener {
 	/**
 	 * The property name fired when the set of points changes.
 	 */
@@ -53,7 +52,8 @@ MenuListener, IPropertyChangeNotifier {
 	private int dragIndex = -1;
 	private Point dragPoint = null;
 	
-	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+	protected ArrayList<PointListener> listeners =
+		new ArrayList<PointListener>();
 	
 	public SignatureEditorPolygonCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -78,7 +78,7 @@ MenuListener, IPropertyChangeNotifier {
 		if (deleteIndex != -1 && (deleteIndex != 0 || points.size() > 1)) {
 			if (dragIndex == deleteIndex)
 				dragIndex = -1;
-			listeners.firePropertyChange(PROPERTY_POINT, points.removePoint(deleteIndex), null);
+			firePointChange(PointEvent.REMOVED, points.removePoint(deleteIndex));
 		}
 	}
 
@@ -119,7 +119,7 @@ MenuListener, IPropertyChangeNotifier {
 		Rectangle polyBounds = points.getBounds();
 		points.translate(
 			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.width / 2, -polyBounds.height / 2)));
-		listeners.firePropertyChange(PROPERTY_POINT, points, points);
+		firePointChange(PointEvent.MOVED, null);
 		redraw();
 	}
 	
@@ -177,12 +177,12 @@ MenuListener, IPropertyChangeNotifier {
 					tmp = points.getPoint(dragIndex);
 					tmp.x = p.x; tmp.y = p.y;
 					points.setPoint(tmp, dragIndex);
-					listeners.firePropertyChange(PROPERTY_POINT, tmp, tmp);
+					firePointChange(PointEvent.MOVED, tmp);
 				} else {
 					dragPoint.x = p.x;
 					dragPoint.y = p.y;
 					points.insertPoint(dragPoint, dragIndex);
-					listeners.firePropertyChange(PROPERTY_POINT, null, dragPoint);
+					firePointChange(PointEvent.ADDED, dragPoint);
 				}
 			}
 			dragIndex = -1;
@@ -339,7 +339,7 @@ MenuListener, IPropertyChangeNotifier {
 				UI.createMenuItem(m, 0, "&Remove point", new SelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						listeners.firePropertyChange(PROPERTY_POINT, points.removePoint(foundPoint), null);
+						firePointChange(PointEvent.REMOVED, points.removePoint(foundPoint));
 					}
 					
 					@Override
@@ -355,7 +355,11 @@ MenuListener, IPropertyChangeNotifier {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					points.removeAllPoints();
+					firePointChange(PointEvent.REMOVED, null);
+					
 					points.addPoint(0, 0);
+					firePointChange(PointEvent.ADDED, new Point(0, 0));
+
 					centrePolygon();
 					redraw();
 				}
@@ -379,13 +383,30 @@ MenuListener, IPropertyChangeNotifier {
 		});
 	}
 	
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
+	/**
+	 * Registers the given listener to be notified when the user adds or
+	 * removes a point from the canvas. 
+	 * @param listener a {@link PointListener}
+	 */
+	public void addPointListener(PointListener listener) {
+		listeners.add(listener);
 	}
 
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.removePropertyChangeListener(listener);
+	/**
+	 * Unregisters the given listener from being notified when the user adds or
+	 * removes a point from the canvas. 
+	 * @param listener a {@link PointListener}
+	 */
+	public void removePointListener(PointListener listener) {
+		listeners.remove(listener);
+	}
+	
+	private void firePointChange(int type, Point object) {
+		PointEvent e = new PointEvent();
+		e.source = this;
+		e.type = type;
+		e.object = object;
+		for (PointListener i : listeners)
+			i.pointChange(e);
 	}
 }
