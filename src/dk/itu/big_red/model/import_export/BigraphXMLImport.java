@@ -55,11 +55,9 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	}
 	
 	private void processThing(Element e, Thing model) throws ImportFailedException {
-		Element el = (Element)DOM.getNamedChildElement(e, "big-red:appearance");
-		if (el != null) {
+		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
+		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
-			el.getParentNode().removeChild(el);
-		}
 		
 		if (model instanceof Node) {
 			Node node = (Node)model;
@@ -100,20 +98,15 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 			edge = model;
 		}
 		
-		Element el = (Element)DOM.getNamedChildElement(e, "big-red:appearance");
-		if (el != null) {
+		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
+		if (el != null)
 			AppearanceGenerator.setAppearance(el, edge);
-			el.getParentNode().removeChild(el);
-		}
 	}
 	
 	private void processInnerName(Element e, InnerName model) throws ImportFailedException {
-		System.out.println("INNER NAME PROCESSING BEGINS");
-		Element el = (Element)DOM.getNamedChildElement(e, "big-red:appearance");
-		if (el != null) {
+		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
+		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
-			el.getParentNode().removeChild(el);
-		}
 
 		String name = DOM.getAttribute(e, "name"),
         link = DOM.getAttribute(e, "link");
