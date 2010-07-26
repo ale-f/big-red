@@ -93,7 +93,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	           link = DOM.getAttribute(e, "link");
 		model.setName(name);
 		
-		Edge edge = (Edge)bigraph.getNamespace().getObject(Edge.class, link);
+		Edge edge = (Edge)bigraph.getNamespaceManager().getObject(Edge.class, link);
 		if (edge != null) {
 			edge.addPoint(model);
 		} else {
@@ -106,7 +106,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	
 	private void processEdge(Element e, Edge model) throws ImportFailedException {
 		String name = DOM.getAttribute(e, "name");
-		Edge edge = (Edge)bigraph.getNamespace().getObject(Edge.class, name);
+		Edge edge = (Edge)bigraph.getNamespaceManager().getObject(Edge.class, name);
 		if (edge == null) {
 			model.setParent(bigraph);
 			model.setName(name);
@@ -133,7 +133,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		model.setParent(bigraph);
 		model.setName(name);
 		
-		Edge edge = (Edge)bigraph.getNamespace().getObject(Edge.class, link);
+		Edge edge = (Edge)bigraph.getNamespaceManager().getObject(Edge.class, link);
 		if (edge != null) {
 			edge.addPoint(model);
 		} else {

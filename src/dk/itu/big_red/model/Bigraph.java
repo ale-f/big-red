@@ -8,7 +8,7 @@ import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class Bigraph extends Thing {
 	protected Signature signature = new Signature();
-	protected NamespaceManager namespace = new NamespaceManager();
+	protected NamespaceManager namespaceManager = new NamespaceManager();
 	protected ArrayList<Edge> edges = new ArrayList<Edge>();
 	
 	public Thing clone() throws CloneNotSupportedException {
@@ -19,8 +19,8 @@ public class Bigraph extends Thing {
 	 * Gets the {@link NamespaceManager} for this bigraph.
 	 * @return a NamespaceManager
 	 */
-	public NamespaceManager getNamespace() {
-		return namespace;
+	public NamespaceManager getNamespaceManager() {
+		return namespaceManager;
 	}
 	
 	@Override
