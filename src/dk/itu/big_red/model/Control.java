@@ -198,11 +198,11 @@ public class Control implements IPropertyChangeNotifier, IColourable {
 		listeners.firePropertyChange(PROPERTY_PORT, null, null);
 	}
 	
-	public void addPort(String port, int segment, double distance) {
-		if (port != null) {
-			Port p = new Port(port, segment, distance);
-			this.ports.add(p);
-			listeners.firePropertyChange(PROPERTY_PORT, null, p);
+	public void addPort(Port p) {
+		if (p != null) {
+			Port q = new Port(p.getName(), p.getSegment(), p.getDistance());
+			this.ports.add(q);
+			listeners.firePropertyChange(PROPERTY_PORT, null, q);
 		}
 	}
 	
