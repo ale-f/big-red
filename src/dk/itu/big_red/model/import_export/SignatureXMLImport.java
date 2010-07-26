@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ImportFailedException;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
@@ -36,6 +37,16 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 			AppearanceGenerator.setAppearance(el, model);
 			el.getParentNode().removeChild(el);
 		}
+		
+		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
+			if (!(e.getChildNodes().item(j) instanceof Element))
+				continue;
+			Object i = process((Element)e.getChildNodes().item(j));
+			if (i instanceof Port) {
+				model.addPort((Port)i);
+				System.out.println("Adding Port " + ((Port)i).getName());
+			}
+		}
 	}
 	
 	private void processSignature(Element e, Signature model) throws ImportFailedException {
@@ -48,12 +59,25 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 		}
 	}
 	
+	private void processPort(Element e, Port model) {
+		model.setName(DOM.getAttribute(e, "name"));
+		
+		Element el = DOM.getNamedChildElement(e, "big-red:port-appearance");
+		if (el != null) {
+			model.setDistance(DOM.getDoubleAttribute(el, "distance"));
+			model.setSegment(DOM.getIntAttribute(el, "segment"));
+			el.getParentNode().removeChild(el);
+		}
+	}
+	
 	private Object process(Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getTagName());
 		if (model instanceof Signature)
 			processSignature(e, (Signature)model);
 		else if (model instanceof Control)
 			processControl(e, (Control)model);
+		else if (model instanceof Port)
+			processPort(e, (Port)model);
 		return model;
 	}
 }
