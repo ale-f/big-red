@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
 
@@ -32,7 +33,7 @@ public class Root extends Thing implements INameable {
 			if (nm.setName(getClass(), name, this))
 				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
 		} else {
-			String newName = nm.newName(getClass(), this);
+			String newName = nm.newName(getClass(), this, NameType.NAME_NUMERIC);
 			if (!newName.equals(oldName))
 				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}

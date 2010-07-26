@@ -11,6 +11,11 @@ import java.util.Random;
  *
  */
 public class NamespaceManager {
+	public enum NameType {
+		NAME_ALPHABETIC,
+		NAME_NUMERIC
+	};
+	
 	private HashMap<Class<?>, HashMap<String, Object>> names =
 		new HashMap<Class<?>, HashMap<String, Object>>();
 	
@@ -85,21 +90,36 @@ public class NamespaceManager {
 	 * returns that name.
 	 * @param klass the {@link Class} whose namespace should be searched
 	 * @param object an object
+	 * @param t the type of name to generate
 	 * @return the unique name with which <code>object</code> was registered
 	 *         (not necessarily randomly generated - it might already have had
 	 *         one!)
 	 */
-	public String newName(Class<?> klass, Object object) {
+	public String newName(Class<?> klass, Object object, NameType t) {
 		HashMap<String, Object> subspace = getSubspace(klass);
 		
 		String prospectiveName = getName(klass, object);
 		if (prospectiveName != null)
 			return prospectiveName;
 		
-		do {
-			prospectiveName =
-				Integer.toString(Math.abs(random.nextInt()) % 65535, 36);
-		} while (subspace.containsKey(prospectiveName));
+		if (t == NameType.NAME_NUMERIC) {
+			int i = 0;
+			do {
+				prospectiveName = Integer.toString(i++);
+			} while (subspace.containsKey(prospectiveName));
+		} else if (t == NameType.NAME_ALPHABETIC) {
+			int i = 0;
+			do {
+				prospectiveName = "";
+				int j = i;
+				do {
+					int lastPart = j % 26;
+					prospectiveName = (char)('a' + lastPart) + prospectiveName;
+					j /= 26;
+				} while (j != 0);
+				i++;
+			} while (subspace.containsKey(prospectiveName));
+		}
 		
 		subspace.put(prospectiveName, object);
 		return prospectiveName;

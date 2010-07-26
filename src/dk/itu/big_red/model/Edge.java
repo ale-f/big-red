@@ -9,6 +9,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
@@ -235,7 +236,7 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, INameable {
 			if (nm.setName(getClass(), name, this))
 				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
 		} else {
-			String newName = nm.newName(getClass(), this);
+			String newName = nm.newName(getClass(), this, NameType.NAME_ALPHABETIC);
 			if (!newName.equals(oldName))
 				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}
