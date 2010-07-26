@@ -210,6 +210,13 @@ MenuListener {
 			e.gc.drawLine(0, y, controlSize.width, y);
 		}
 		
+		if (getEnabled() == false) {
+			e.gc.setBackground(ColorConstants.lightGray);
+			e.gc.setAlpha(128);
+			e.gc.fillRectangle(0, 0, controlSize.width, controlSize.height);
+			return;
+		}
+		
 		e.gc.setAlpha(255);
 		
 		e.gc.setForeground(ColorConstants.black);
