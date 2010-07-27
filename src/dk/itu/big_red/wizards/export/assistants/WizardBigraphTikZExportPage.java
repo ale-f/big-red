@@ -31,7 +31,7 @@ import dk.itu.big_red.util.UI;
 public class WizardBigraphTikZExportPage extends WizardPage {
 	private Text bigraphText, targetText;
 	private IPath bigraphPath;
-	private String targetPath;
+	private String targetString;
 	
 	private IStructuredSelection selection = null;
 	
@@ -44,9 +44,10 @@ public class WizardBigraphTikZExportPage extends WizardPage {
 	private boolean validate() {
 		setPageComplete(false);
 		
-		String bT = bigraphText.getText(), tT = targetText.getText();
-		IPath bigraphPath = new Path(bT);
-		IPath targetPath = new Path(tT);
+		String bT = bigraphText.getText();
+		targetString = targetText.getText();
+		bigraphPath = new Path(bT);
+		IPath targetPath = new Path(targetString);
 		
 		if (bT.length() == 0 || bigraphPath.segmentCount() == 0) {
 			setErrorMessage("Bigraph is empty.");
@@ -68,7 +69,7 @@ public class WizardBigraphTikZExportPage extends WizardPage {
 			}
 		}
 		
-		if (tT.length() == 0 || targetPath.segmentCount() == 0) {
+		if (targetString.length() == 0 || targetPath.segmentCount() == 0) {
 			setErrorMessage("Target file is empty.");
 			return false;
 		}
@@ -84,7 +85,7 @@ public class WizardBigraphTikZExportPage extends WizardPage {
 	}
 	
 	private void setTargetPath(String path) {
-		targetPath = path;
+		targetString = path;
 		targetText.setText(path);
 	}
 	
@@ -93,7 +94,7 @@ public class WizardBigraphTikZExportPage extends WizardPage {
 	}
 	
 	public String getTargetPath() {
-		return targetPath;
+		return targetString;
 	}
 	
 	@Override
@@ -181,7 +182,7 @@ public class WizardBigraphTikZExportPage extends WizardPage {
 				d.setFilterNames(new String[] {
 					"LaTeX documents (*.tex)"
 				});
-				d.setFileName(targetPath);
+				d.setFileName(targetString);
 				
 				String result = d.open();
 				if (result != null)
