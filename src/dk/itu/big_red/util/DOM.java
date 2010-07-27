@@ -75,8 +75,9 @@ public class DOM {
 	 */
 	public static Document parse(InputStream is) throws SAXException, CoreException, IOException, ParserConfigurationException {
 		try {
-			Document r = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(is);
-			return r;
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setNamespaceAware(true);
+			return dbf.newDocumentBuilder().parse(is);
 		} finally {
 			is.close();
 		}
