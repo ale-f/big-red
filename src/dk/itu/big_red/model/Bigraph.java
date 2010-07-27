@@ -47,6 +47,10 @@ public class Bigraph extends Thing {
 		return signature.getModel();
 	}
 	
+	public IFile getSignatureFile() {
+		return signature.getResource();
+	}
+	
 	public void setParent(ILayoutable parent) {
 		/* do nothing */
 	}
