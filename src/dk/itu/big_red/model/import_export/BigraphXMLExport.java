@@ -38,11 +38,11 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	private Element process(Bigraph obj) {
 		DOMImplementation impl = DOM.getImplementation();
 		doc = impl.createDocument(
-				"http://pls.itu.dk/bigraphs/2010/bigraph", "bigraph", null);
+				XMLNamespaceConstants.BIGRAPH, "bigraph", null);
 		Element e = doc.getDocumentElement();
 		DOM.applyAttributesToElement(e,
 			"signature", "signatures/test.bigraph-signature",
-			"xmlns:big-red", "http://pls.itu.dk/bigraphs/2010/big-red");
+			"xmlns:big-red", XMLNamespaceConstants.BIG_RED);
 		return e;
 	}
 	

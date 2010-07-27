@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.import_export.XMLNamespaceConstants;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
@@ -28,7 +29,7 @@ public class AppearanceGenerator {
 			return null;
 		
 		Element aE =
-			doc.createElementNS("http://pls.itu.dk/bigraphs/2010/big-red",
+			doc.createElementNS(XMLNamespaceConstants.BIG_RED,
 					"big-red:appearance");
 		boolean alive = false;
 		
@@ -93,7 +94,7 @@ public class AppearanceGenerator {
 	
 	public static Element getShape(Document doc, Control c) {
 		Element aE =
-			doc.createElementNS("http://pls.itu.dk/bigraphs/2010/big-red",
+			doc.createElementNS(XMLNamespaceConstants.BIG_RED,
 					"big-red:shape");
 
 		DOM.applyAttributesToElement(aE,
