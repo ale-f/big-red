@@ -50,6 +50,7 @@ public class SignatureXMLExport extends ModelExport<Signature> {
 		
 		DOM.appendChildIfNotNull(e, AppearanceGenerator.getShape(doc, c));
 		DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, c));
+		AppearanceGenerator.modelToAttributes(e, c);
 		
 		return e;
 	}

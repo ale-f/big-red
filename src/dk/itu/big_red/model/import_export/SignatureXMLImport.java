@@ -34,6 +34,8 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
 		
+		AppearanceGenerator.attributesToModel(e, model);
+		
 		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
 			if (!(e.getChildNodes().item(j) instanceof Element))
 				continue;
