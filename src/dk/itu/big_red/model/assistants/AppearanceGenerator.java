@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.import_export.XMLNamespaceConstants;
+import dk.itu.big_red.model.import_export.XMLNS;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
@@ -29,7 +29,7 @@ public class AppearanceGenerator {
 			return null;
 		
 		Element aE =
-			doc.createElementNS(XMLNamespaceConstants.BIG_RED,
+			doc.createElementNS(XMLNS.BIG_RED,
 					"big-red:appearance");
 		boolean alive = false;
 		
@@ -94,7 +94,7 @@ public class AppearanceGenerator {
 	
 	public static Element getShape(Document doc, Control c) {
 		Element aE =
-			doc.createElementNS(XMLNamespaceConstants.BIG_RED,
+			doc.createElementNS(XMLNS.BIG_RED,
 					"big-red:shape");
 
 		DOM.applyAttributesToElement(aE,
@@ -144,12 +144,12 @@ public class AppearanceGenerator {
 	
 	public static void modelToAttributes(Element e, Object o) {
 		if (o instanceof Control)
-			e.setAttributeNS(XMLNamespaceConstants.BIG_RED, "big-red:label",
+			e.setAttributeNS(XMLNS.BIG_RED, "big-red:label",
 					((Control)o).getLabel());
 	}
 	
 	public static void attributesToModel(Element e, Object o) {
-		if (o instanceof Control && e.hasAttributeNS(XMLNamespaceConstants.BIG_RED, "label"))
-			((Control)o).setLabel(e.getAttributeNS(XMLNamespaceConstants.BIG_RED, "label"));
+		if (o instanceof Control && e.hasAttributeNS(XMLNS.BIG_RED, "label"))
+			((Control)o).setLabel(e.getAttributeNS(XMLNS.BIG_RED, "label"));
 	}
 }

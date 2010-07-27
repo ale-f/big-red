@@ -1,6 +1,6 @@
 package dk.itu.big_red.model.import_export;
 
-public interface XMLNamespaceConstants {
+public interface XMLNS {
 	public static final String BIGRAPH =
 		"http://pls.itu.dk/bigraphs/2010/bigraph";
 	

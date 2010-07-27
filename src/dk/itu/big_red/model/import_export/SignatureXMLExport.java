@@ -28,10 +28,10 @@ public class SignatureXMLExport extends ModelExport<Signature> {
 	private void process(Signature s) {
 		DOMImplementation impl = DOM.getImplementation();
 		doc = impl.createDocument(
-				XMLNamespaceConstants.SIGNATURE, "signature", null);
+				XMLNS.SIGNATURE, "signature", null);
 		Element e = doc.getDocumentElement();
 		DOM.applyAttributesToElement(e,
-			"xmlns:big-red", XMLNamespaceConstants.BIG_RED);
+			"xmlns:big-red", XMLNS.BIG_RED);
 
 		for (Control c : s.getControls())
 			DOM.appendChildIfNotNull(e, process(c));
