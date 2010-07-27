@@ -1,5 +1,8 @@
 package dk.itu.big_red.wizards.export;
 
+import java.awt.Desktop;
+import java.io.File;
+
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
@@ -32,6 +35,20 @@ public class BigraphTikZExportWizard extends Wizard implements IExportWizard {
 			ex.setModel(model);
 			ex.setOutputFile(page.getTargetPath());
 			ex.exportObject();
+		} catch (Exception e) {
+			page.setErrorMessage(e.getLocalizedMessage());
+			return false;
+		}
+		
+		try {
+			Process p =
+				Runtime.getRuntime().exec(new String[] { "pdflatex", page.getTargetPath() });
+			int status = p.waitFor();
+			
+			if (status == 0) {
+				String output = page.getTargetPath().replaceAll("\\.tex$", "").concat(".pdf");
+				Desktop.getDesktop().open(new File(output));
+			}
 		} catch (Exception e) {
 			page.setErrorMessage(e.getLocalizedMessage());
 			return false;
