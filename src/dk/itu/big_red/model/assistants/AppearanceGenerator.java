@@ -141,4 +141,15 @@ public class AppearanceGenerator {
 		
 		c.setShape(shape, pl);
 	}
+	
+	public static void modelToAttributes(Element e, Object o) {
+		if (o instanceof Control)
+			e.setAttributeNS(XMLNamespaceConstants.BIG_RED, "big-red:label",
+					((Control)o).getLabel());
+	}
+	
+	public static void attributesToModel(Element e, Object o) {
+		if (o instanceof Control && e.hasAttributeNS(XMLNamespaceConstants.BIG_RED, "label"))
+			((Control)o).setLabel(e.getAttributeNS(XMLNamespaceConstants.BIG_RED, "label"));
+	}
 }
