@@ -41,7 +41,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 				XMLNS.BIGRAPH, "bigraph", null);
 		Element e = doc.getDocumentElement();
 		DOM.applyAttributesToElement(e,
-			"signature", "signatures/test.bigraph-signature",
+			"signature", obj.getSignatureFile().getFullPath().makeRelative().toString(),
 			"xmlns:big-red", XMLNS.BIG_RED);
 		return e;
 	}
