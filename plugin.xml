@@ -156,6 +156,10 @@
    </extension>
    <extension
          point="org.eclipse.ui.exportWizards">
+      <category
+            id="dk.itu.big_red"
+            name="Big Red">
+      </category>
       <wizard
             category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.export.BigraphPNGExportWizard"
@@ -166,10 +170,16 @@
             Export the current bigraph as a bitmap image, suitable for embedding into webpages or for low-resolution printing.
          </description>
       </wizard>
-      <category
-            id="dk.itu.big_red"
-            name="Big Red">
-      </category>
+      <wizard
+            category="dk.itu.big_red"
+            class="dk.itu.big_red.wizards.export.BigraphTikZExportWizard"
+            icon="icons/wizards/vector.png"
+            id="Big Red.TikZExportWizard"
+            name="Export as TikZ image">
+         <description>
+            Export the current bigraph as a TikZ image, suitable for use in papers or high-resolution printing.
+         </description>
+      </wizard>
    </extension>
    <extension
          point="org.eclipse.ui.newWizards">
