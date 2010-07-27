@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -98,6 +99,7 @@ public class DOM {
 		Result result = new StreamResult(os);
 		
 		Transformer t = f.newTransformer();
+		t.setOutputProperty(OutputKeys.INDENT, "yes");
 		t.transform(source, result);
 	}
 	
