@@ -26,17 +26,13 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 	private void processControl(Element e, Control model) throws ImportFailedException {
 		model.setLongName(DOM.getAttribute(e, "name"));
 		
-		Element el = DOM.getNamedChildElement(e, "big-red:shape");
-		if (el != null) {
+		Element el = DOM.removeNamedChildElement(e, "big-red:shape");
+		if (el != null)
 			AppearanceGenerator.setShape(el, model);
-			el.getParentNode().removeChild(el);
-		}
 		
-		el = DOM.getNamedChildElement(e, "big-red:appearance");
-		if (el != null) {
+		el = DOM.removeNamedChildElement(e, "big-red:appearance");
+		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
-			el.getParentNode().removeChild(el);
-		}
 		
 		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
 			if (!(e.getChildNodes().item(j) instanceof Element))
@@ -60,11 +56,10 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 	private void processPort(Element e, Port model) {
 		model.setName(DOM.getAttribute(e, "name"));
 		
-		Element el = DOM.getNamedChildElement(e, "big-red:port-appearance");
+		Element el = DOM.removeNamedChildElement(e, "big-red:port-appearance");
 		if (el != null) {
 			model.setDistance(DOM.getDoubleAttribute(el, "distance"));
 			model.setSegment(DOM.getIntAttribute(el, "segment"));
-			el.getParentNode().removeChild(el);
 		}
 	}
 	
