@@ -29,7 +29,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	public Bigraph importObject() throws ImportFailedException {
 		try {
 			Document d = DOM.parse(source);
-			return (Bigraph)process(d.getDocumentElement());
+			return (Bigraph)process(null, d.getDocumentElement());
 		} catch (Exception e) {
 			throw new ImportFailedException(e);
 		}
@@ -67,7 +67,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
 			if (!(e.getChildNodes().item(j) instanceof Element))
 				continue;
-			Object i = process((Element)e.getChildNodes().item(j));
+			Object i = process(model, (Element)e.getChildNodes().item(j));
 			if (i instanceof ILayoutable)
 				model.addChild((ILayoutable)i);
 		}
@@ -89,18 +89,21 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		}
 	}
 	
-	private void processEdge(Element e, Edge model) throws ImportFailedException {
+	private boolean processEdge(Element e, Edge model) throws ImportFailedException {
+		boolean rv = false;
 		String name = DOM.getAttribute(e, "name");
 		Edge edge = (Edge)bigraph.getNamespaceManager().getObject(Edge.class, name);
 		if (edge == null) {
 			model.setParent(bigraph);
 			model.setName(name);
 			edge = model;
+			rv = true;
 		}
 		
 		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, edge);
+		return rv;
 	}
 	
 	private void processInnerName(Element e, InnerName model) throws ImportFailedException {
@@ -124,16 +127,26 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		}
 	}
 	
-	private Object process(Element e) throws ImportFailedException {
+	private Object process(Object context, Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
 		if (model instanceof Bigraph) {
 			processBigraph(e, (Bigraph)model);
 		} else if (model instanceof Thing) {
 			processThing(e, (Thing)model);
 		} else if (model instanceof Port) {
-			processPort(e, (Port)model);
+			if (context instanceof Node) {
+				Node n = (Node)context;
+				for (Port p : n.getPorts()) {
+					if (p.getName().equals(e.getAttribute("name"))) {
+						processPort(e, p);
+						break;
+					}
+				}
+			}
+			model = null;
 		} else if (model instanceof Edge) {
-			processEdge(e, (Edge)model);
+			if (!processEdge(e, (Edge)model))
+				return null;
 		} else if (model instanceof InnerName) {
 			processInnerName(e, (InnerName)model);
 		}
