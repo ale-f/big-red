@@ -4,12 +4,20 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.RGB;
+
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.Thing;
@@ -36,8 +44,24 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	private void line(String line) throws ExportFailedException {
 		try {
 			for (int i = 0; i < scope; i++)
-				writer.write(" ");
+				writer.write("  ");
 			writer.write("\\" + line + "\n");
+		} catch (Exception e) {
+			throw new ExportFailedException(e);
+		}
+	}
+	
+	private void newLine() throws ExportFailedException {
+		try {
+			writer.write("\n");
+		} catch (Exception e) {
+			throw new ExportFailedException(e);
+		}
+	}
+	
+	private void commentLine(String line) throws ExportFailedException {
+		try {
+			writer.write("% " + line);
 		} catch (Exception e) {
 			throw new ExportFailedException(e);
 		}
@@ -58,10 +82,24 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("usepackage{tikz}");
 		line("begin{document}");
 		
-		for (Control c : b.getSignature().getControls())
-			line("tikzset{" + c.getLongName() + "/.style={shape=rectangle,fill=blue!50}}");
-		line("tikzset{internal root/.style={shape=rectangle,dash pattern=on 2pt off 2pt}}");
-		line("tikzset{internal site/.style={shape=rectangle,dash pattern=on 2pt off 2pt,fill=black!25}}");
+		newLine();
+		
+		for (Control c : b.getSignature().getControls()) {
+			String cN = c.getLongName();
+			RGB fillColour = c.getFillColour(),
+			    outlineColour = c.getOutlineColour();
+			line("definecolor{" + cN + " fill}{RGB}{" + fillColour.red + "," + fillColour.green + "," + fillColour.blue + "}");
+			line("definecolor{" + cN + " outline}{RGB}{" + outlineColour.red + "," + outlineColour.green + "," + outlineColour.blue + "}");
+			line("tikzset{" + cN + "/.style={fill=" + cN + " fill,draw=" + cN + " outline}}");
+			newLine();
+		}
+		line("tikzset{internal edge/.style={curve to,in=90,draw=green!50!black,fill=none}}");
+		line("tikzset{internal port/.style={fill=red,draw=none}}");
+		line("tikzset{internal root/.style={dash pattern=on 2pt off 2pt}}");
+		line("tikzset{internal site/.style={dash pattern=on 2pt off 2pt,fill=black!25}}");
+		line("tikzset{internal inner name/.style={fill=blue!30,draw=none}}");
+		
+		newLine();
 		
 		line("begin{tikzpicture}[x=0.02cm,y=-0.02cm]");
 		
@@ -72,26 +110,66 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(Node n) throws ExportFailedException {
-		org.eclipse.draw2d.geometry.Point
-			ptl = n.getRootLayout().getTopLeft(),
-			ptr = n.getRootLayout().getBottomRight();
+		Control con = n.getControl();
+		Rectangle rl = n.getRootLayout();
+		Point rltl = rl.getTopLeft();
 		
-		line("draw [" + n.getControl().getLongName() + "] (" + ptl.x + "," +
-				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
+		Point tmp;
+		String shapeDescriptor = "";
+		if (con.getShape() == Shape.SHAPE_OVAL) {
+			tmp = rl.getCenter();
+			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ") ellipse (" +
+				(rl.width / 2) + " and " + (rl.height / 2) + ")";
+		} else if (con.getShape() == Shape.SHAPE_POLYGON) {
+			PointList fp = n.getFittedPolygon().getCopy();
+			fp.translate(rltl);
+			tmp = new Point();
+			for (int i = 0; i < fp.size(); i++) {
+				fp.getPoint(tmp, i);
+				shapeDescriptor += "(" + tmp.x + "," + tmp.y + ") -- ";
+			}
+			fp.getPoint(tmp, 0);
+			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ")";
+		}
 		
-		process((Thing)n);
+		line("draw [" + n.getControl().getLongName() + "] " + shapeDescriptor + ";");
+		line("node at (" + rltl.x + "," + rltl.y + ") {" + con.getLabel() + "};");
+		
+		beginScope(n);
+		for (ILayoutable c : n.getChildren())
+			process(c);
+		for (ILayoutable c : n.getPorts())
+			process(c);
+		endScope();
 	}
 	
-	private void process(Point p) {
-		
+	private void process(Port p) throws ExportFailedException {
+		Rectangle rl = p.getRootLayout();
+		Point tmp =
+			rl.getCenter();
+		line("node [internal port] (" + p.getParent().hashCode() + " " + p.getName() + ") (" + tmp.x + "," + tmp.y + ") circle (5) {};");
 	}
 	
-	private void process(Edge e) {
-		
+	private void process(Edge e) throws ExportFailedException {
+		for (EdgeConnection c : e.getConnections()) {
+			Point
+				slp = c.getSource().getRootLayout().getCenter(),
+			    tlp = c.getParent().getRootLayout().getCenter();
+			line("draw [internal edge] (" + slp.x + "," + slp.y + ") to (" + tlp.x + "," + tlp.y + ");");
+		}
+	}
+	
+	private void process(InnerName i) throws ExportFailedException {
+		Point
+			tl = i.getRootLayout().getTopLeft(),
+			br = i.getRootLayout().getBottomRight(),
+			c = i.getRootLayout().getCenter();
+		line("draw [internal inner name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
+		line("node at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 	}
 	
 	private void process(Site r) throws ExportFailedException {
-		org.eclipse.draw2d.geometry.Point
+		Point
 			ptl = r.getRootLayout().getTopLeft(),
 			ptr = r.getRootLayout().getBottomRight();
 		
@@ -102,7 +180,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(Root r) throws ExportFailedException {
-		org.eclipse.draw2d.geometry.Point
+		Point
 			ptl = r.getRootLayout().getTopLeft(),
 			ptr = r.getRootLayout().getBottomRight();
 		
@@ -120,15 +198,16 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(ILayoutable obj) throws ExportFailedException {
-		System.out.println("process(" + obj + ")");
 		if (obj instanceof Bigraph) {
 			process((Bigraph)obj);
 		} else if (obj instanceof Node) {
 			process((Node)obj);
-		} else if (obj instanceof Point) {
-			process((Point)obj);
+		} else if (obj instanceof Port) {
+			process((Port)obj);
 		} else if (obj instanceof Edge) {
 			process((Edge)obj);
+		} else if (obj instanceof InnerName) {
+			process((InnerName)obj);
 		} else if (obj instanceof Site) {
 			process((Site)obj);
 		} else if (obj instanceof Root) {
