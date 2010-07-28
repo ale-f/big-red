@@ -1,10 +1,7 @@
 package dk.itu.big_red.wizards.export.assistants;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentType;
@@ -122,17 +119,12 @@ public class WizardBigraphTikZExportPage extends WizardPage {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				IContainer f = null;
+				IResource f = null;
 				for (Object i : selection.toArray()) {
-					if (i instanceof IFolder)
-						f = (IFolder)i;
-					else if (i instanceof IResource)
-						f = ((IResource)i).getParent();
-					else if (i instanceof IAdaptable)
-						f = (IFolder)((IAdaptable)i).getAdapter(IFolder.class);
-					
-					if (f != null)
+					if (i instanceof IResource) {
+						f = (IResource)i;
 						break;
+					}
 				}
 
 				if (f == null)
@@ -143,8 +135,9 @@ public class WizardBigraphTikZExportPage extends WizardPage {
 						Project.getWorkspaceRoot(),
 						ResourceTreeSelectionDialog.MODE_FILE,
 						"dk.itu.big_red.bigraph");
-				if (bigraphPath != null)
-					d.setInitialSelection(Project.findContainerByPath(null, bigraphPath));
+				/*if (bigraphPath != null)
+					d.setInitialSelection(Project.findContainerByPath(null, bigraphPath));*/
+				d.setInitialSelection(f);
 				d.open();
 				IResource result = d.getFirstResult();
 				if (result instanceof IFile)
