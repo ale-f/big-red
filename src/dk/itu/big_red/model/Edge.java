@@ -142,8 +142,7 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, INameable {
 
 	@Override
 	public Rectangle getRootLayout() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
 	}
 
 	private ILayoutable parent = null;
