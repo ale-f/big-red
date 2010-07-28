@@ -109,8 +109,13 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("end{document}");
 	}
 	
-	private String hhc(Object o) {
-		return Integer.toHexString(o.hashCode());
+	private String getPointName(Object o) {
+		if (o instanceof InnerName) {
+			return "inner name " + ((InnerName)o).getName();
+		} else if (o instanceof Port) {
+			Port p = (Port)o;
+			return "port " + p.getName() + " on node " + p.getParent().hashCode();
+		} else return null;
 	}
 	
 	private void process(Node n) throws ExportFailedException {
@@ -151,17 +156,14 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		Rectangle rl = p.getRootLayout();
 		Point tmp =
 			rl.getCenter();
-		line("node [internal port] (point " + hhc(p) + "_" + p.getName() + ") at (" + tmp.x + "," + tmp.y + ") {};");
+		line("node [internal port] (" + getPointName(p) + ") at (" + tmp.x + "," + tmp.y + ") {};");
 	}
 	
 	private void process(Edge e) throws ExportFailedException {
 		Point rlc = e.getRootLayout().getCenter();
 		line("node (edge " + e.getName() + ") at (" + rlc.x + "," + rlc.y + ") {};");
-		for (EdgeConnection c : e.getConnections()) {
-			dk.itu.big_red.model.Point p =
-				(dk.itu.big_red.model.Point)c.getSource();
-			line("draw [internal edge] (point " + hhc(p) + "_" + p.getName() + ") to (edge " + e.getName() + ");");
-		}
+		for (EdgeConnection c : e.getConnections())
+			line("draw [internal edge] (" + getPointName(c.getSource()) + ") to (edge " + e.getName() + ");");
 	}
 	
 	private void process(InnerName i) throws ExportFailedException {
@@ -170,7 +172,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			br = i.getRootLayout().getBottomRight(),
 			c = i.getRootLayout().getCenter();
 		line("draw [internal inner name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
-		line("node (point " + hhc(i) + "_" + i.getName() + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
+		line("node (" + getPointName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 	}
 	
 	private void process(Site r) throws ExportFailedException {
