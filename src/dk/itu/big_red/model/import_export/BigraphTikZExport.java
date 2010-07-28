@@ -94,7 +94,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			newLine();
 		}
 		line("tikzset{internal edge/.style={curve to,in=90,draw=green!50!black,fill=none}}");
-		line("tikzset{internal port/.style={fill=red,draw=none}}");
+		line("tikzset{internal port/.style={circle,fill=red,draw=none,minimum size=6,inner sep=0}}");
 		line("tikzset{internal root/.style={dash pattern=on 2pt off 2pt}}");
 		line("tikzset{internal site/.style={dash pattern=on 2pt off 2pt,fill=black!25}}");
 		line("tikzset{internal inner name/.style={fill=blue!30,draw=none}}");
@@ -107,6 +107,10 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		
 		line("end{tikzpicture}");
 		line("end{document}");
+	}
+	
+	private String hhc(Object o) {
+		return Integer.toHexString(o.hashCode());
 	}
 	
 	private void process(Node n) throws ExportFailedException {
@@ -147,15 +151,16 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		Rectangle rl = p.getRootLayout();
 		Point tmp =
 			rl.getCenter();
-		line("node [internal port] (" + p.getParent().hashCode() + " " + p.getName() + ") (" + tmp.x + "," + tmp.y + ") circle (5) {};");
+		line("node [internal port] (point " + hhc(p) + "_" + p.getName() + ") at (" + tmp.x + "," + tmp.y + ") {};");
 	}
 	
 	private void process(Edge e) throws ExportFailedException {
+		Point rlc = e.getRootLayout().getCenter();
+		line("node (edge " + e.getName() + ") at (" + rlc.x + "," + rlc.y + ") {};");
 		for (EdgeConnection c : e.getConnections()) {
-			Point
-				slp = c.getSource().getRootLayout().getCenter(),
-			    tlp = c.getParent().getRootLayout().getCenter();
-			line("draw [internal edge] (" + slp.x + "," + slp.y + ") to (" + tlp.x + "," + tlp.y + ");");
+			dk.itu.big_red.model.Point p =
+				(dk.itu.big_red.model.Point)c.getSource();
+			line("draw [internal edge] (point " + hhc(p) + "_" + p.getName() + ") to (edge " + e.getName() + ");");
 		}
 	}
 	
@@ -165,7 +170,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			br = i.getRootLayout().getBottomRight(),
 			c = i.getRootLayout().getCenter();
 		line("draw [internal inner name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
-		line("node at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
+		line("node (point " + hhc(i) + "_" + i.getName() + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 	}
 	
 	private void process(Site r) throws ExportFailedException {
