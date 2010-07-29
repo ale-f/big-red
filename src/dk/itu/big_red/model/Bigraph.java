@@ -69,20 +69,19 @@ public class Bigraph extends Thing {
 	
 	@Override
 	public void addChild(ILayoutable child) {
-		super.addChild(child);
 		sortedChildren.clear();
+		super.addChild(child);
 	}
 	
 	@Override
 	public void removeChild(ILayoutable child) {
-		super.removeChild(child);
 		sortedChildren.clear();
+		super.removeChild(child);
 	}
 	
 	@Override
 	public List<ILayoutable> getChildren() {
 		if (sortedChildren.size() == 0) {
-			sortedChildren = new ArrayList<ILayoutable>();
 			for (ILayoutable i : children) {
 				if (i.getClass() != Edge.class)
 					sortedChildren.add(i);
