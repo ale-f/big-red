@@ -3,6 +3,9 @@ package dk.itu.big_red.commands;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
+import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class ILayoutableCreateCommand extends Command {
@@ -31,8 +34,25 @@ public class ILayoutableCreateCommand extends Command {
 		} else node.setLayout(r);
 	}
 	
+	private boolean boundariesSatisfied() {
+		if (!(container instanceof Bigraph))
+			return true;
+		Bigraph bigraph = (Bigraph)container;
+		int top = node.getLayout().y,
+		    bottom = node.getLayout().y + node.getLayout().height;
+		if (node instanceof Root) {
+			if (top < bigraph.getUpperRootBoundary() ||
+					bottom > bigraph.getLowerRootBoundary())
+				return false;
+		} else if (node instanceof InnerName) {
+			if (top < bigraph.getUpperInnerNameBoundary())
+				return false;
+		}
+		return true;
+	}
+	
 	public boolean canExecute() {
-		return node != null && container != null;
+		return node != null && container != null && boundariesSatisfied();
 	}
 	
 	public void execute() {
