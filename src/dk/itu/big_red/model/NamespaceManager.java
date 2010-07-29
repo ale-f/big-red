@@ -74,7 +74,7 @@ public class NamespaceManager {
 			return false;
 		
 		String currentName = getName(klass, object);
-		if (!currentName.equals(name)) // object already has different name
+		if (currentName != null && !currentName.equals(name)) // object already has different name
 			subspace.remove(currentName);
 		
 		subspace.put(name, object);
