@@ -6,13 +6,13 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.INameable;
 import dk.itu.big_red.util.DOM;
 
 /**
@@ -68,8 +68,8 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		} else return null;
 	}
 	
-	private Element process(Edge e) {
-		Element el = doc.createElement("edge");
+	private Element process(INameable e) {
+		Element el = doc.createElement(e.getClass().getSimpleName().toLowerCase());
 		DOM.applyAttributesToElement(el,
 				"name", e.getName());
 		return el;
@@ -83,8 +83,8 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 			e = process((Node)obj);
 		} else if (obj instanceof Point) {
 			e = process((Point)obj);
-		} else if (obj instanceof Edge) {
-			e = process((Edge)obj);
+		} else if (obj instanceof INameable) {
+			e = process((INameable)obj);
 		} else {
 			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
 		}
