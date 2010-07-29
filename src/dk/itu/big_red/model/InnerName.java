@@ -1,7 +1,6 @@
 package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.NamespaceManager.NameType;
-import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
 
 
@@ -14,12 +13,6 @@ public class InnerName extends Point implements INameable {
 	
 	public boolean canContain(Thing child) {
 		return false;
-	}
-	
-	@Override
-	public void setParent(ILayoutable p) {
-		super.setParent(p);
-		setName(null);
 	}
 	
 	@Override

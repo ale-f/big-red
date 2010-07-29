@@ -16,12 +16,6 @@ public class Root extends Thing implements INameable {
 		return (c == Node.class || c == Site.class);
 	}
 	
-	@Override
-	public void setParent(ILayoutable p) {
-		super.setParent(p);
-		setName(null);
-	}
-	
 	public String getName() {
 		return getBigraph().getNamespaceManager().getName(getClass(), this);
 	}

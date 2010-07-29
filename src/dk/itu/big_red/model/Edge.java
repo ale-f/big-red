@@ -158,7 +158,6 @@ public class Edge implements IAdaptable, IConnectable, ICommentable, INameable {
 			ILayoutable oldParent = this.parent;
 			this.parent = p;
 			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
-			setName(null);
 		}
 	}
 
