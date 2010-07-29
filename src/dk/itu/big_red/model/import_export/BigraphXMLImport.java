@@ -15,6 +15,7 @@ import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.INameable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Project;
 
@@ -62,6 +63,8 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		if (model instanceof Node) {
 			Node node = (Node)model;
 			node.setControl(bigraph.getSignature().getControl(DOM.getAttribute(e, "control")));
+		} else if (model instanceof INameable) {
+			bigraph.getNamespaceManager().setName(model.getClass(), DOM.getAttribute(e, "name"), model);
 		}
 		
 		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
