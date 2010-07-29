@@ -102,7 +102,11 @@ public class Bigraph extends Thing {
 		return sortedChildren;
 	}
 	
-	private void updateBoundaries() {
+	/**
+	 * Recalculates the boundaries that govern the placement of {@link
+	 * OuterName}s, {@link Root}s, and {@link InnerName}s.
+	 */
+	public void updateBoundaries() {
 		lowestOuterName = Integer.MIN_VALUE;
 		highestRoot = Integer.MAX_VALUE;
 		lowestRoot = Integer.MIN_VALUE;

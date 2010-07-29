@@ -47,9 +47,13 @@ public class ILayoutableRelayoutCommand extends Command {
 	
 	public void execute() {
 		model.setLayout(layout);
+		if (model.getParent() instanceof Bigraph)
+			model.getBigraph().updateBoundaries();
 	}
 
 	public void undo() {
 		model.setLayout(this.oldLayout);
+		if (model.getParent() instanceof Bigraph)
+			model.getBigraph().updateBoundaries();
 	}
 }
