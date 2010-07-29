@@ -3,6 +3,8 @@ package dk.itu.big_red.model;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import dk.itu.big_red.model.interfaces.INameable;
+
 /**
  * NamespaceManagers manage {@link Class}-specific <i>namespaces</i>, groups of
  * unique-name-to-object mappings.
@@ -131,5 +133,22 @@ public class NamespaceManager {
 	 */
 	public Object removeObject(Class<?> klass, String name) {
 		return getSubspace(klass).remove(name);
+	}
+	
+	/**
+	 * Returns the name registered in <code>nm</code> for <code>nameable</code>.
+	 * If it doesn't have a name, then <code>nameable.setName(null)</code> will
+	 * be called to create one.
+	 * @param nameable an {@link INameable}
+	 * @param nm a {@link NamespaceManager}
+	 * @return the registered name of <code>nameable</code>
+	 */
+	public static String sensibleGetNameImplementation(INameable nameable, NamespaceManager nm) {
+		String name = nm.getName(nameable.getClass(), nameable);
+		if (name == null) {
+			nameable.setName(null);
+			name = nm.getName(nameable.getClass(), nameable);
+		}
+		return name;
 	}
 }
