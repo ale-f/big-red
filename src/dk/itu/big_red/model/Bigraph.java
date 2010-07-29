@@ -14,6 +14,12 @@ public class Bigraph extends Thing {
 		new ResourceWrapper<Signature>();
 	protected NamespaceManager namespaceManager = new NamespaceManager();
 	
+	protected int lowestOuterName = 0,
+	              highestRoot = 0,
+	              lowestRoot = 0,
+	              highestInnerName = 0;
+	protected static int BOUNDARY_MARGIN = 20;
+	
 	public Thing clone() throws CloneNotSupportedException {
 		return new Bigraph()._overwrite(this);
 	}
@@ -71,12 +77,14 @@ public class Bigraph extends Thing {
 	public void addChild(ILayoutable child) {
 		sortedChildren.clear();
 		super.addChild(child);
+		updateBoundaries();
 	}
 	
 	@Override
 	public void removeChild(ILayoutable child) {
 		sortedChildren.clear();
 		super.removeChild(child);
+		updateBoundaries();
 	}
 	
 	@Override
@@ -92,5 +100,42 @@ public class Bigraph extends Thing {
 			}
 		}
 		return sortedChildren;
+	}
+	
+	private void updateBoundaries() {
+		lowestOuterName = Integer.MIN_VALUE;
+		highestRoot = Integer.MAX_VALUE;
+		lowestRoot = Integer.MIN_VALUE;
+		highestInnerName = Integer.MAX_VALUE;
+		
+		for (ILayoutable i : children) {
+			int top = i.getLayout().getTopLeft().y,
+				bottom = i.getLayout().getBottomLeft().y;
+			if (i instanceof Root) {
+				if (top < highestRoot)
+					highestRoot = top;
+				if (bottom > lowestRoot)
+					lowestRoot = bottom;
+			} else if (i instanceof InnerName) {
+				if (top < highestInnerName)
+					highestInnerName = top;
+			}
+		}
+	}
+	
+	public int getLowerOuterNameBoundary() {
+		return highestRoot - BOUNDARY_MARGIN;
+	}
+	
+	public int getUpperRootBoundary() {
+		return lowestOuterName + BOUNDARY_MARGIN;
+	}
+	
+	public int getLowerRootBoundary() {
+		return highestInnerName - BOUNDARY_MARGIN;
+	}
+	
+	public int getUpperInnerNameBoundary() {
+		return lowestRoot + BOUNDARY_MARGIN;
 	}
 }
