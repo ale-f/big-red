@@ -17,7 +17,7 @@ public class Root extends Thing implements INameable {
 	}
 	
 	public String getName() {
-		return getBigraph().getNamespaceManager().getName(getClass(), this);
+		return NamespaceManager.sensibleGetNameImplementation(this, getBigraph().getNamespaceManager());
 	}
 	
 	public void setName(String name) {
