@@ -4,6 +4,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class ILayoutableRelayoutCommand extends Command {
@@ -22,6 +23,16 @@ public class ILayoutableRelayoutCommand extends Command {
 		}
 	}
 	
+	public boolean noOverlap() {
+		for (ILayoutable i : model.getParent().getChildren()) {
+			if (i instanceof Edge || i == model)
+				continue;
+			else if (i.getLayout().intersects(layout))
+				return false;
+		}
+		return true;
+	}
+	
 	public boolean parentLayoutCanContainChildLayout() {
 		return (model.getParent() instanceof Bigraph ||
 				(layout.x >= 0 && layout.y >= 0 &&
@@ -31,7 +42,7 @@ public class ILayoutableRelayoutCommand extends Command {
 	
 	public boolean canExecute() {
 		return (model != null && layout != null && oldLayout != null &&
-				parentLayoutCanContainChildLayout());
+				parentLayoutCanContainChildLayout() && noOverlap());
 	}
 	
 	public void execute() {
