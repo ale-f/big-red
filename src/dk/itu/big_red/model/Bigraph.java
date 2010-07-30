@@ -61,7 +61,7 @@ public class Bigraph extends Thing {
 	@Override
 	public boolean canContain(ILayoutable child) {
 		Class<? extends ILayoutable> c = child.getClass();
-		return (c == Root.class || c == InnerName.class);
+		return (c == Root.class || c == InnerName.class || c == OuterName.class);
 	}
 	
 	public Bigraph getBigraph() {
