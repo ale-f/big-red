@@ -8,6 +8,7 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
@@ -22,7 +23,7 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 
-public class OuterNamePart extends AbstractPart {
+public class OuterNamePart extends AbstractPart implements NodeEditPart {
 	@Override
 	public OuterName getModel() {
 		return (OuterName)super.getModel();
@@ -46,8 +47,8 @@ public class OuterNamePart extends AbstractPart {
 		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME) ||
 			evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT)) {
 	    	refreshVisuals();
-	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
-	    	refreshSourceConnections();
+	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_TARGET_EDGE)) {
+	    	refreshTargetConnections();
 	    }
 	}
 	
@@ -70,22 +71,26 @@ public class OuterNamePart extends AbstractPart {
 	}
 	
 	@Override
-	protected List<EdgeConnection> getModelSourceConnections() {
+	protected List<EdgeConnection> getModelTargetConnections() {
         return getModel().getConnections();
     }
 	
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return new FixedPointAnchor(getFigure(), Orientation.SOUTH);
     }
     
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
 		return new FixedPointAnchor(getFigure(), Orientation.SOUTH);
     }
 	
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return new FixedPointAnchor(getFigure(), Orientation.SOUTH);
     }
     
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return new FixedPointAnchor(getFigure(), Orientation.SOUTH);
     }
