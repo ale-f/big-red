@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
@@ -14,7 +15,6 @@ import org.eclipse.gef.Request;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
-import dk.itu.big_red.figure.adornments.CentreAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.ICommentable;
@@ -100,18 +100,18 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
     }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new CentreAnchor(getFigure());
+		return new EllipseAnchor(getFigure());
     }
     
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new CentreAnchor(getFigure());
+		return new EllipseAnchor(getFigure());
     }
 	
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new CentreAnchor(getFigure());
+		return new EllipseAnchor(getFigure());
     }
     
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new CentreAnchor(getFigure());
+		return new EllipseAnchor(getFigure());
     }
 }
