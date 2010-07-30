@@ -3,7 +3,6 @@ package dk.itu.big_red.figure;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
@@ -17,9 +16,6 @@ public class InnerNameFigure extends AbstractFigure {
 	
 	public InnerNameFigure() {
 		super();
-		
-		XYLayout layout = new XYLayout();
-		setLayoutManager(layout);
 		
 		label.setText("?");
 		label.setForegroundColor(ColorConstants.white);

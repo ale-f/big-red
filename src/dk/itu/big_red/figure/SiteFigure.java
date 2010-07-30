@@ -3,7 +3,6 @@ package dk.itu.big_red.figure;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
@@ -11,9 +10,8 @@ public class SiteFigure extends AbstractFigure {
 	private Label labelName = new Label();    
     
 	public SiteFigure() {
-		XYLayout layout = new XYLayout();
-		setLayoutManager(layout);
-	       
+		super();
+		
 		labelName.setForegroundColor(ColorConstants.black);
 		add(labelName, 0);
 		setConstraint(labelName, new Rectangle(10, 10, -1, -1));

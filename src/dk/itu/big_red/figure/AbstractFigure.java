@@ -4,6 +4,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Shape;
+import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
@@ -17,6 +18,7 @@ public abstract class AbstractFigure extends Shape {
 		setAntialias(SWT.ON);
 		setOpaque(false);
 		setClippingStrategy(new SlightlyOvergenerousClippingStrategy());
+		setLayoutManager(new XYLayout());
 	}
 	
 	public void setConstraint(Rectangle rect) {

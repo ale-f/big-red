@@ -2,19 +2,9 @@ package dk.itu.big_red.figure;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public class EdgeFigure extends AbstractFigure {
-	
-	public EdgeFigure() {
-		super();
-		
-		XYLayout layout = new XYLayout();
-		setLayoutManager(layout);
-		
-	}
-	
 	public void setToolTip(String content) {
 		String labelText = "Edge";
 		if (content != null)

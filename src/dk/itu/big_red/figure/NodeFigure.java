@@ -3,7 +3,6 @@ package dk.itu.big_red.figure;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
@@ -18,9 +17,8 @@ public class NodeFigure extends AbstractFigure {
 	private Label labelControl = new Label();    
     
 	public NodeFigure() {
-		XYLayout layout = new XYLayout();
-		setLayoutManager(layout);
-	    
+		super();
+		
 		labelControl.setForegroundColor(ColorConstants.black);
 		add(labelControl, 0);
 		setConstraint(labelControl, new Rectangle(1, 1, -1, -1));

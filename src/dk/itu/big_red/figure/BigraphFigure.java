@@ -1,7 +1,6 @@
 package dk.itu.big_red.figure;
 
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
@@ -12,11 +11,6 @@ public class BigraphFigure extends AbstractFigure {
 	              lowerOuterNameBoundary = Integer.MAX_VALUE,
 	              upperInnerNameBoundary = Integer.MIN_VALUE,
 	              lowerRootBoundary = Integer.MAX_VALUE;
-	
-	public BigraphFigure() {
-		XYLayout layout = new XYLayout();
-		setLayoutManager(layout);
-	}
 	
 	@Override
 	protected void fillShape(Graphics g) {
