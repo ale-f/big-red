@@ -53,6 +53,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.ModelFactory;
@@ -222,8 +223,10 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		creationGroup.add(new ConnectionDragCreationToolEntry("Edge", "Connect two nodes with a new edge",
 				new ModelFactory(Edge.class), null, null));
 		
-		creationGroup.add(new CombinedTemplateCreationEntry("Name", "Add a new name to the bigraph",
+		creationGroup.add(new CombinedTemplateCreationEntry("Inner name", "Add a new inner name to the bigraph",
 				InnerName.class, new ModelFactory(InnerName.class), null, null));
+		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
+				OuterName.class, new ModelFactory(OuterName.class), null, null));
 		
 		root.setDefaultEntry((ToolEntry) selectGroup.getChildren().get(0));
 		return root;
