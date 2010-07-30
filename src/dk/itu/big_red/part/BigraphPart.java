@@ -37,10 +37,14 @@ public class BigraphPart extends ThingPart {
 		return getModel().getChildren();
 	}
 	
-	/**
-	 * Does nothing.
-	 */
 	@Override
 	protected void refreshVisuals() {
+		Bigraph model = getModel();
+		BigraphFigure figure = (BigraphFigure)getFigure();
+		
+		figure.setLowerOuterNameBoundary(model.getLowerOuterNameBoundary());
+		figure.setUpperRootBoundary(model.getUpperRootBoundary());
+		figure.setLowerRootBoundary(model.getLowerRootBoundary());
+		figure.setUpperInnerNameBoundary(model.getUpperInnerNameBoundary());
 	}
 }
