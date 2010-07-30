@@ -6,6 +6,7 @@ import org.eclipse.gef.commands.Command;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
@@ -41,7 +42,10 @@ public class ILayoutableRelayoutCommand extends Command {
 		Bigraph bigraph = (Bigraph)model.getParent();
 		int top = layout.y,
 		    bottom = layout.y + layout.height;
-		if (model instanceof Root) {
+		if (model instanceof OuterName) {
+			if (bottom > bigraph.getLowerOuterNameBoundary())
+				return false;
+		} else if (model instanceof Root) {
 			if (top < bigraph.getUpperRootBoundary() ||
 					bottom > bigraph.getLowerRootBoundary())
 				return false;

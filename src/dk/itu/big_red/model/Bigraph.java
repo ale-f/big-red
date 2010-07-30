@@ -145,7 +145,10 @@ public class Bigraph extends Thing {
 		for (ILayoutable i : children) {
 			int top = i.getLayout().getTopLeft().y,
 				bottom = i.getLayout().getBottomLeft().y;
-			if (i instanceof Root) {
+			if (i instanceof OuterName) {
+				if (bottom > upperRootBoundary)
+					upperRootBoundary = bottom;
+			} else if (i instanceof Root) {
 				if (top < lowerOuterNameBoundary)
 					lowerOuterNameBoundary = top;
 				if (bottom > upperInnerNameBoundary)
