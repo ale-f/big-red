@@ -2,12 +2,11 @@ package dk.itu.big_red.part;
 
 import java.util.List;
 
-import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.XYLayout;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
+import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
@@ -26,9 +25,7 @@ public class BigraphPart extends ThingPart {
 	
 	@Override
 	protected IFigure createFigure() {
-		Figure f = new Figure();
-		f.setLayoutManager(new XYLayout());
-		return f;
+		return new BigraphFigure();
 	}
 
 	@Override
