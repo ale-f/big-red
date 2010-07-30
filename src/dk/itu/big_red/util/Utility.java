@@ -89,13 +89,27 @@ public final class Utility {
 	 * @param original the font to adjust
 	 * @param properties a combination of {@link SWT#BOLD},
 	 * {@link SWT#ITALIC}, and {@link SWT#NORMAL}
-	 * @return a new Font (make sure to dispose it!)
+	 * @return a new Font (make sure to {@link Font#dispose() dispose} it!)
 	 */
 	public static Font tweakFont(Font original, int properties) {
+		return tweakFont(original, 0, properties);
+	}
+	
+	/**
+	 * Returns a copy of the given Font with the formatting properties changed.
+	 * @param original the font to adjust
+	 * @param pt the size of the new font, in points
+	 * @param properties a combination of {@link SWT#BOLD},
+	 * {@link SWT#ITALIC}, and {@link SWT#NORMAL}
+	 * @return a new Font (make sure to {@link Font#dispose() dispose} it!)
+	 */
+	public static Font tweakFont(Font original, int pt, int properties) {
 		FontData[] orig = original.getFontData();
 		if (orig.length < 1)
 			return null;
-		FontData f = new FontData(orig[0].getName(), orig[0].getHeight(), properties);
+		if (pt < 1)
+			pt = orig[0].getHeight();
+		FontData f = new FontData(orig[0].getName(), pt, properties);
 		return new Font(null, f);
 	}
 }
