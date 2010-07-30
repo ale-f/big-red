@@ -47,15 +47,13 @@ public class EdgeCreateCommand extends Command {
 		 * a new EdgeConnection to the existing Edge.
 		 */
 		if (point1 instanceof Link) {
-			Edge point1 = (Edge)this.point1;
+			Link point1 = (Link)this.point1;
 			point1.addPoint((Point)point2);
-			point1.averagePosition();
 			
 			link = point1;
 		} else if (point2 instanceof Link) {
-			Edge point2 = (Edge)this.point2;
+			Link point2 = (Link)this.point2;
 			point2.addPoint((Point)point1);
-			point2.averagePosition();
 			
 			link = point2;
 		} else {
