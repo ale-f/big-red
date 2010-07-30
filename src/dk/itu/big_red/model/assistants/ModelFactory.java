@@ -7,6 +7,7 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
@@ -35,6 +36,9 @@ public class ModelFactory implements CreationFactory {
 			return site;
 		} else if (template == InnerName.class){
 			InnerName name = new InnerName();
+			return name;
+		} else if (template == OuterName.class) {
+			OuterName name = new OuterName();
 			return name;
 		} else if (template == Edge.class) {
 			return new Edge();
@@ -66,6 +70,8 @@ public class ModelFactory implements CreationFactory {
 			return new Node();
 		else if (namedObject.equals("innername"))
 			return new InnerName();
+		else if (namedObject.equals("outername"))
+			return new OuterName();
 		else if (namedObject.equals("signature"))
 			return new Signature();
 		else if (namedObject.equals("port"))
