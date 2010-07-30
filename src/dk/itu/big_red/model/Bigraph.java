@@ -14,10 +14,36 @@ public class Bigraph extends Thing {
 		new ResourceWrapper<Signature>();
 	protected NamespaceManager namespaceManager = new NamespaceManager();
 	
-	protected int lowestOuterName = 0,
-	              highestRoot = 0,
-	              lowestRoot = 0,
-	              highestInnerName = 0;
+	/**
+	 * The property name fired when the <i>lower outer name</i> boundary is
+	 * changed.
+	 */
+	public static final String
+		PROPERTY_BOUNDARY_LON = "BigraphBoundaryLowerOuterName";
+	
+	/**
+	 * The property name fired when the <i>upper root</i> boundary is changed.
+	 */
+	public static final String
+		PROPERTY_BOUNDARY_UR = "BigraphBoundaryUpperRoot";
+	
+	/**
+	 * The property name fired when the <i>lower root</i> boundary is changed.
+	 */
+	public static final String
+		PROPERTY_BOUNDARY_LR = "BigraphBoundaryLowerRoot";
+	
+	/**
+	 * The property name fired when the <i>upper inner name</i> boundary is
+	 * changed.
+	 */
+	public static final String
+		PROPERTY_BOUNDARY_UIN = "BigraphBoundaryUpperInnerName";
+	
+	protected int upperRootBoundary = 0,
+	              lowerOuterNameBoundary = 0,
+	              upperInnerNameBoundary = 0,
+	              lowerRootBoundary = 0;
 	protected static int BOUNDARY_MARGIN = 20;
 	
 	public Thing clone() throws CloneNotSupportedException {
@@ -107,39 +133,57 @@ public class Bigraph extends Thing {
 	 * OuterName}s, {@link Root}s, and {@link InnerName}s.
 	 */
 	public void updateBoundaries() {
-		lowestOuterName = Integer.MIN_VALUE;
-		highestRoot = Integer.MAX_VALUE;
-		lowestRoot = Integer.MIN_VALUE;
-		highestInnerName = Integer.MAX_VALUE;
+		int oldLON = upperRootBoundary,
+		    oldHR = lowerOuterNameBoundary,
+		    oldLR = upperInnerNameBoundary,
+		    oldHIN = lowerRootBoundary;
+		upperRootBoundary = Integer.MIN_VALUE;
+		lowerOuterNameBoundary = Integer.MAX_VALUE;
+		upperInnerNameBoundary = Integer.MIN_VALUE;
+		lowerRootBoundary = Integer.MAX_VALUE;
 		
 		for (ILayoutable i : children) {
 			int top = i.getLayout().getTopLeft().y,
 				bottom = i.getLayout().getBottomLeft().y;
 			if (i instanceof Root) {
-				if (top < highestRoot)
-					highestRoot = top;
-				if (bottom > lowestRoot)
-					lowestRoot = bottom;
+				if (top < lowerOuterNameBoundary)
+					lowerOuterNameBoundary = top;
+				if (bottom > upperInnerNameBoundary)
+					upperInnerNameBoundary = bottom;
 			} else if (i instanceof InnerName) {
-				if (top < highestInnerName)
-					highestInnerName = top;
+				if (top < lowerRootBoundary)
+					lowerRootBoundary = top;
 			}
 		}
+		
+		lowerOuterNameBoundary -= BOUNDARY_MARGIN;
+		upperRootBoundary += BOUNDARY_MARGIN;
+		lowerRootBoundary -= BOUNDARY_MARGIN;
+		upperInnerNameBoundary += BOUNDARY_MARGIN;
+		
+		if (oldHR != lowerOuterNameBoundary)
+			listeners.firePropertyChange(PROPERTY_BOUNDARY_LON, oldHR, lowerOuterNameBoundary);
+		if (oldLON != upperRootBoundary)
+			listeners.firePropertyChange(PROPERTY_BOUNDARY_UR, oldLON, upperRootBoundary);
+		if (oldHIN != lowerRootBoundary)
+			listeners.firePropertyChange(PROPERTY_BOUNDARY_LR, oldHIN, lowerRootBoundary);
+		if (oldLR != upperInnerNameBoundary)
+			listeners.firePropertyChange(PROPERTY_BOUNDARY_UIN, oldLR, upperInnerNameBoundary);
 	}
 	
 	public int getLowerOuterNameBoundary() {
-		return highestRoot - BOUNDARY_MARGIN;
+		return lowerOuterNameBoundary;
 	}
 	
 	public int getUpperRootBoundary() {
-		return lowestOuterName + BOUNDARY_MARGIN;
+		return upperRootBoundary;
 	}
 	
 	public int getLowerRootBoundary() {
-		return highestInnerName - BOUNDARY_MARGIN;
+		return lowerRootBoundary;
 	}
 	
 	public int getUpperInnerNameBoundary() {
-		return lowestRoot + BOUNDARY_MARGIN;
+		return upperInnerNameBoundary;
 	}
 }
