@@ -29,7 +29,7 @@ public class EdgeConnection implements IPropertyChangeNotifier, IAdaptable {
 	 */
 	public static final String PROPERTY_TARGET = "EdgeConnectionTarget";
 	
-	private IConnectable source;
+	private Point source;
 	private Link parent;
 	
 	public EdgeConnection(Link link) {
@@ -42,7 +42,7 @@ public class EdgeConnection implements IPropertyChangeNotifier, IAdaptable {
 	 * connection because it's always the same - {@link #getParent()}).
 	 * @param source the new source
 	 */
-	public void setSource(IConnectable source) {
+	public void setSource(Point source) {
 		if (source != null) {
 			IConnectable oldSource = this.source;
 			this.source = source;
@@ -51,10 +51,10 @@ public class EdgeConnection implements IPropertyChangeNotifier, IAdaptable {
 	}
 	
 	/**
-	 * Gets the {@link IConnectable} that is the source of this Connection.
+	 * Gets the {@link Point} that is the source of this Connection.
 	 * @return the current source
 	 */
-	public IConnectable getSource() {
+	public Point getSource() {
 		return this.source;
 	}
 	

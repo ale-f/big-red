@@ -30,18 +30,17 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	}
 	
 	/**
-	 * The {@link EdgeConnection}s that comprise this Edge on the bigraph.
+	 * The {@link EdgeConnection}s that comprise this Link on the bigraph.
 	 */
 	private ArrayList<EdgeConnection> connections =
 		new ArrayList<EdgeConnection>();
 
 	/**
-	 * Adds the given {@link IConnectable} to this Edge's set of points, and
-	 * creates a new {@link EdgeConnection} joining it to this Edge's {@link
-	 * Edge}.
-	 * @param point an IConnectable
+	 * Adds the given {@link Point} to this Link's set of points, and creates a
+	 * new {@link EdgeConnection} joining it to this Link's {@link Link}.
+	 * @param point a Point
 	 */
-	public void addPoint(IConnectable point) {
+	public void addPoint(Point point) {
 		EdgeConnection c = new EdgeConnection(this);
 		c.setSource(point);
 		
@@ -53,14 +52,14 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	}
 	
 	/**
-	 * Removes the given {@link IConnectable} from this Edge's set of points
-	 * and destroys its {@link EdgeConnection}.
+	 * Removes the given {@link Point} from this Link's set of points and
+	 * destroys its {@link EdgeConnection}.
 	 * 
-	 * <p>If this Edge has no points left after this operation, then it'll be
+	 * <p>If this Link has no points left after this operation, then it'll be
 	 * removed from the Bigraph.
-	 * @param point an IConnectable
+	 * @param point a Point
 	 */
-	public void removePoint(IConnectable point) {
+	public void removePoint(Point point) {
 		for (EdgeConnection e : connections) {
 			if (e.getSource() == point) {
 				point.removeConnection(e);

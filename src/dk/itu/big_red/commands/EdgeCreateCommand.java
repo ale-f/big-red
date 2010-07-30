@@ -2,79 +2,84 @@ package dk.itu.big_red.commands;
 
 import org.eclipse.gef.commands.Command;
 
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.interfaces.IConnectable;
 
 public class EdgeCreateCommand extends Command {
-	private IConnectable target, source;
-	private Edge edge = null;
+	private IConnectable point1, point2;
+	private Link link = null;
 	
 	public EdgeCreateCommand() {
 		super();
-		target = source = null;
+		point1 = point2 = null;
 	}
 
 	public void setTarget(Object e) {
 		if (e instanceof IConnectable)
-			this.target = (IConnectable)e;
+			this.point1 = (IConnectable)e;
 		else if (e instanceof EdgeConnection)
-			this.target = ((EdgeConnection)e).getParent();
+			this.point1 = ((EdgeConnection)e).getParent();
 	}
 	
 	public void setSource(Object e) {
 		if (e instanceof IConnectable)
-			this.source = (IConnectable)e;
+			this.point2 = (IConnectable)e;
 		else if (e instanceof EdgeConnection)
-			this.source = ((EdgeConnection)e).getParent();
+			this.point2 = ((EdgeConnection)e).getParent();
 	}
 	
 	public boolean canExecute() {
-		return (target != null && source != null);
+		return (point1 != null && point2 != null);
 	}
 	
 	public void execute() {
-		if (edge != null) {
-			if (!(source instanceof Edge))
-				edge.addPoint(source);
-			if (!(target instanceof Edge))
-				edge.addPoint(target);
+		if (link != null) {
+			if (point2 instanceof Point)
+				link.addPoint((Point)point2);
+			if (point1 instanceof Point)
+				link.addPoint((Point)point1);
 		} else
 		/*
-		 * If either source or target is an EdgeTarget, then we can simply add
+		 * If either point2 or point1 is an EdgeTarget, then we can simply add
 		 * a new EdgeConnection to the existing Edge.
 		 */
-		if (target instanceof Edge) {
-			Edge target = (Edge)this.target;
-			target.addPoint(source);
-			target.averagePosition();
+		if (point1 instanceof Link) {
+			Edge point1 = (Edge)this.point1;
+			point1.addPoint((Point)point2);
+			point1.averagePosition();
 			
-			edge = target;
-		} else if (source instanceof Edge) {
-			Edge source = (Edge)this.source;
-			source.addPoint(target);
-			source.averagePosition();
+			link = point1;
+		} else if (point2 instanceof Link) {
+			Edge point2 = (Edge)this.point2;
+			point2.addPoint((Point)point1);
+			point2.averagePosition();
 			
-			edge = source;
+			link = point2;
 		} else {
 			/*
 			 * Create a new Edge.
 			 */
-			edge = new Edge();
-			edge.setParent(source.getBigraph());
-			edge.addPoint(source);
-			edge.addPoint(target);
-			edge.averagePosition();
+			Edge e = new Edge();
+			e.setParent(point2.getBigraph());
+			e.addPoint((Point)point2);
+			e.addPoint((Point)point1);
+			e.averagePosition();
+			
+			link = e;
 		}
 	}
 	
 	public boolean canUndo() {
-		return (edge != null);
+		return (link != null);
 	}
 	
 	public void undo() {
-		if (!(source instanceof Edge))
-			edge.removePoint(source);
-		if (!(target instanceof Edge))
-			edge.removePoint(target);
+		if (point2 instanceof Point)
+			link.removePoint((Point)point2);
+		if (point1 instanceof Point)
+			link.removePoint((Point)point1);
 	}
 }
