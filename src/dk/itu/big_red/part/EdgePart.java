@@ -13,7 +13,7 @@ import org.eclipse.gef.Request;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.EdgeFigure;
-import dk.itu.big_red.figure.adornments.CentreAnchor;
+import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
 
@@ -84,18 +84,18 @@ public class EdgePart extends AbstractPart implements NodeEditPart, PropertyChan
     }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new CentreAnchor(getFigure());
+		return new FixedPointAnchor(getFigure());
     }
     
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new CentreAnchor(getFigure());
+		return new FixedPointAnchor(getFigure());
     }
 	
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new CentreAnchor(getFigure());
+		return new FixedPointAnchor(getFigure());
     }
     
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new CentreAnchor(getFigure());
+		return new FixedPointAnchor(getFigure());
     }
 }

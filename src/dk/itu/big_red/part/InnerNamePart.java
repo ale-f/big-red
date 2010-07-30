@@ -15,7 +15,7 @@ import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.InnerNameFigure;
-import dk.itu.big_red.figure.adornments.CentreAnchor;
+import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.interfaces.ICommentable;
@@ -81,18 +81,18 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
     }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new CentreAnchor(getFigure());
+		return new FixedPointAnchor(getFigure());
     }
     
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new CentreAnchor(getFigure());
+		return new FixedPointAnchor(getFigure());
     }
 	
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new CentreAnchor(getFigure());
+		return new FixedPointAnchor(getFigure());
     }
     
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new CentreAnchor(getFigure());
+		return new FixedPointAnchor(getFigure());
     }
 }
