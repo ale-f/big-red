@@ -13,7 +13,7 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 /**
  * An EdgeConnection is the model object behind an actual {@link Connection}
- * on the bigraph. {@link Edge}s create and manage them.
+ * on the bigraph. {@link Link}s create and manage them.
  * @author alec
  *
  */
@@ -30,17 +30,16 @@ public class EdgeConnection implements IPropertyChangeNotifier, IAdaptable {
 	public static final String PROPERTY_TARGET = "EdgeConnectionTarget";
 	
 	private IConnectable source;
-	private Edge parent;
+	private Link parent;
 	
-	public EdgeConnection(Edge parent) {
-		this.parent = parent;
+	public EdgeConnection(Link link) {
+		this.parent = link;
 	}
 	
 	/**
 	 * Sets the source of this connection to the given {@link IConnectable}.
 	 * <p>(There's no corresponding way of setting the <i>target</i> of this
-	 * connection because it's always the same - {@link Edge#getEdgeTarget()
-	 * getParent().getEdgeTarget()}).
+	 * connection because it's always the same - {@link #getParent()}).
 	 * @param source the new source
 	 */
 	public void setSource(IConnectable source) {
@@ -60,10 +59,10 @@ public class EdgeConnection implements IPropertyChangeNotifier, IAdaptable {
 	}
 	
 	/**
-	 * Gets the {@link Edge} which manages and contains this connection.
-	 * @return the parent Edge
+	 * Gets the {@link Link} which manages and contains this connection.
+	 * @return the parent Link
 	 */
-	public Edge getParent() {
+	public Link getParent() {
 		return parent;
 	}
 	
