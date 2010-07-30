@@ -5,6 +5,8 @@ import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 public class ILayoutableRelayoutCommand extends Command {
@@ -33,6 +35,23 @@ public class ILayoutableRelayoutCommand extends Command {
 		return true;
 	}
 	
+	private boolean boundariesSatisfied() {
+		if (!(model.getParent() instanceof Bigraph))
+			return true;
+		Bigraph bigraph = (Bigraph)model.getParent();
+		int top = layout.y,
+		    bottom = layout.y + layout.height;
+		if (model instanceof Root) {
+			if (top < bigraph.getUpperRootBoundary() ||
+					bottom > bigraph.getLowerRootBoundary())
+				return false;
+		} else if (model instanceof InnerName) {
+			if (top < bigraph.getUpperInnerNameBoundary())
+				return false;
+		}
+		return true;
+	}
+	
 	public boolean parentLayoutCanContainChildLayout() {
 		return (model.getParent() instanceof Bigraph ||
 				(layout.x >= 0 && layout.y >= 0 &&
@@ -42,7 +61,8 @@ public class ILayoutableRelayoutCommand extends Command {
 	
 	public boolean canExecute() {
 		return (model != null && layout != null && oldLayout != null &&
-				parentLayoutCanContainChildLayout() && noOverlap());
+				parentLayoutCanContainChildLayout() && noOverlap() &&
+				boundariesSatisfied());
 	}
 	
 	public void execute() {
