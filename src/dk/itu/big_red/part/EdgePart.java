@@ -12,6 +12,7 @@ import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
+import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.figure.EdgeFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.model.Edge;
@@ -39,6 +40,7 @@ public class EdgePart extends AbstractPart implements NodeEditPart, PropertyChan
 
 	@Override
 	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ILayoutableDeletePolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 	}
 
