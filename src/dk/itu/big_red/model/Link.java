@@ -44,9 +44,6 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 		EdgeConnection c = new EdgeConnection(this);
 		c.setSource(point);
 		
-		if (!getBigraph().hasChild(this))
-			getBigraph().addChild(this);
-		
 		point.addConnection(c);
 		addConnection(c);
 	}
@@ -55,8 +52,6 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	 * Removes the given {@link Point} from this Link's set of points and
 	 * destroys its {@link EdgeConnection}.
 	 * 
-	 * <p>If this Link has no points left after this operation, then it'll be
-	 * removed from the Bigraph.
 	 * @param point a Point
 	 */
 	public void removePoint(Point point) {
@@ -68,9 +63,6 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 				break;
 			}
 		}
-		
-		if (connections.size() == 0)
-			getBigraph().removeChild(this);
 	}
 	
 	@Override
