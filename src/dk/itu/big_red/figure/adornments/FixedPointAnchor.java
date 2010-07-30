@@ -36,27 +36,30 @@ public class FixedPointAnchor extends AbstractConnectionAnchor {
 	
 	@Override
 	public Point getLocation(Point reference) {
+		Point p = null;
 		switch (orientation) {
 		case NORTH_WEST:
-			return getOwner().getBounds().getTopLeft();
+			p = getOwner().getBounds().getTopLeft();
 		case NORTH:
-			return getOwner().getBounds().getTop();
+			p = getOwner().getBounds().getTop();
 		case NORTH_EAST:
-			return getOwner().getBounds().getTopRight();
+			p = getOwner().getBounds().getTopRight();
 		case EAST:
-			return getOwner().getBounds().getRight();
+			p = getOwner().getBounds().getRight();
 		case SOUTH_EAST:
-			return getOwner().getBounds().getBottomRight();
+			p = getOwner().getBounds().getBottomRight();
 		case SOUTH:
-			return getOwner().getBounds().getBottom();
+			p = getOwner().getBounds().getBottom();
 		case SOUTH_WEST:
-			return getOwner().getBounds().getBottomLeft();
+			p = getOwner().getBounds().getBottomLeft();
 		case WEST:
-			return getOwner().getBounds().getLeft();
+			p = getOwner().getBounds().getLeft();
 		case CENTER:
 		default:
-			return getOwner().getBounds().getCenter();
+			p = getOwner().getBounds().getCenter();
 		}
+		getOwner().translateToAbsolute(p);
+		return p;
 	}
 
 }
