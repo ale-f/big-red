@@ -46,5 +46,6 @@ public class BigraphPart extends ThingPart {
 		figure.setUpperRootBoundary(model.getUpperRootBoundary());
 		figure.setLowerRootBoundary(model.getLowerRootBoundary());
 		figure.setUpperInnerNameBoundary(model.getUpperInnerNameBoundary());
+		figure.repaint();
 	}
 }
