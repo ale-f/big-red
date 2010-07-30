@@ -9,6 +9,7 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
@@ -40,6 +41,8 @@ public class PartFactory implements EditPartFactory {
         	part = new EdgePart();
         } else if (target == InnerName.class) {
         	part = new InnerNamePart();
+        } else if (target == OuterName.class) {
+        	part = new OuterNamePart();
         } else if (target == Port.class) {
         	part = new PortPart();
         }
