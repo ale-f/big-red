@@ -114,7 +114,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			return "inner name " + ((InnerName)o).getName();
 		} else if (o instanceof Port) {
 			Port p = (Port)o;
-			return "port " + p.getName() + " on node " + p.getParent().hashCode();
+			return "port " + p.getName() + " on node " + p.getParent().getName();
 		} else return null;
 	}
 	
