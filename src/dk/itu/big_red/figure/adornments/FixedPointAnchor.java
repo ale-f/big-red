@@ -40,23 +40,32 @@ public class FixedPointAnchor extends AbstractConnectionAnchor {
 		switch (orientation) {
 		case NORTH_WEST:
 			p = getOwner().getBounds().getTopLeft();
+			break;
 		case NORTH:
 			p = getOwner().getBounds().getTop();
+			break;
 		case NORTH_EAST:
 			p = getOwner().getBounds().getTopRight();
+			break;
 		case EAST:
 			p = getOwner().getBounds().getRight();
+			break;
 		case SOUTH_EAST:
 			p = getOwner().getBounds().getBottomRight();
+			break;
 		case SOUTH:
 			p = getOwner().getBounds().getBottom();
+			break;
 		case SOUTH_WEST:
 			p = getOwner().getBounds().getBottomLeft();
+			break;
 		case WEST:
 			p = getOwner().getBounds().getLeft();
+			break;
 		case CENTER:
 		default:
 			p = getOwner().getBounds().getCenter();
+			break;
 		}
 		getOwner().translateToAbsolute(p);
 		return p;
