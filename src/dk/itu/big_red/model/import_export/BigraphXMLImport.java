@@ -95,7 +95,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 			Node node = (Node)model;
 			node.setControl(bigraph.getSignature().getControl(DOM.getAttribute(e, "control")));
 		} else if (model instanceof INameable) {
-			bigraph.getNamespaceManager().setName(model.getClass(), DOM.getAttribute(e, "name"), model);
+			((INameable)model).setName(DOM.getAttribute(e, "name"));
 		}
 		
 		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
