@@ -139,15 +139,16 @@ public class NamespaceManager {
 	 * Returns the name registered in <code>nm</code> for <code>nameable</code>.
 	 * If it doesn't have a name, then <code>nameable.setName(null)</code> will
 	 * be called to create one.
+	 * @param klass the {@link Class} whose namespace should be used
 	 * @param nameable an {@link INameable}
 	 * @param nm a {@link NamespaceManager}
 	 * @return the registered name of <code>nameable</code>
 	 */
-	public static String sensibleGetNameImplementation(INameable nameable, NamespaceManager nm) {
-		String name = nm.getName(nameable.getClass(), nameable);
+	public static String sensibleGetNameImplementation(Class<?> klass, INameable nameable, NamespaceManager nm) {
+		String name = nm.getName(klass, nameable);
 		if (name == null) {
 			nameable.setName(null);
-			name = nm.getName(nameable.getClass(), nameable);
+			name = nm.getName(klass, nameable);
 		}
 		return name;
 	}

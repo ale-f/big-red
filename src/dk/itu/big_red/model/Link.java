@@ -134,18 +134,18 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	
 	@Override
 	public String getName() {
-		return NamespaceManager.sensibleGetNameImplementation(this, getBigraph().getNamespaceManager());
+		return NamespaceManager.sensibleGetNameImplementation(Link.class, this, getBigraph().getNamespaceManager());
 	}
 	
 	@Override
 	public void setName(String name) {
 		NamespaceManager nm = getBigraph().getNamespaceManager();
-		String oldName = nm.getName(getClass(), this);
+		String oldName = nm.getName(Link.class, this);
 		if (name != null) {
-			if (nm.setName(getClass(), name, this))
+			if (nm.setName(Link.class, name, this))
 				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
 		} else {
-			String newName = nm.newName(getClass(), this, NameType.NAME_ALPHABETIC);
+			String newName = nm.newName(Link.class, this, NameType.NAME_ALPHABETIC);
 			if (!newName.equals(oldName))
 				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}

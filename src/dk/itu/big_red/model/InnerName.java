@@ -21,7 +21,7 @@ public class InnerName extends Point implements INameable {
 	}
 	
 	public String getName() {
-		return NamespaceManager.sensibleGetNameImplementation(this, getBigraph().getNamespaceManager());
+		return NamespaceManager.sensibleGetNameImplementation(getClass(), this, getBigraph().getNamespaceManager());
 	}
 	
 	public void setName(String name) {
