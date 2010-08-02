@@ -23,6 +23,8 @@ public class BigraphFigure extends AbstractFigure {
 		Rectangle r = start(g);
 		int width = r.width, height = r.height;
 		try {
+			g.setAlpha(63);
+			
 			g.setLineStyle(SWT.LINE_DASH);
 			
 			g.setFont(Utility.tweakFont(g.getFont(), 8, SWT.ITALIC));
