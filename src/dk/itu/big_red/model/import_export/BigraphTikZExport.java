@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -16,7 +17,9 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
@@ -67,8 +70,8 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		}
 	}
 	
-	private void beginScope(Object context) throws ExportFailedException {
-		line("begin{scope} % " + context);
+	private void beginScope(Thing context) throws ExportFailedException {
+		line("begin{scope} % " + getNiceName(context));
 		scope++;
 	}
 	
@@ -93,11 +96,13 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			line("tikzset{" + cN + "/.style={fill=" + cN + " fill,draw=" + cN + " outline}}");
 			newLine();
 		}
-		line("tikzset{internal edge/.style={curve to,in=90,draw=green!50!black,fill=none}}");
+		line("tikzset{internal edge/.style={curve to,relative=false,draw=green!50!black,fill=none}}");
 		line("tikzset{internal port/.style={circle,fill=red,draw=none,minimum size=6,inner sep=0}}");
 		line("tikzset{internal root/.style={dash pattern=on 2pt off 2pt}}");
 		line("tikzset{internal site/.style={dash pattern=on 2pt off 2pt,fill=black!25}}");
 		line("tikzset{internal inner name/.style={fill=blue!30,draw=none}}");
+		line("tikzset{internal outer name/.style={fill=red!30,draw=none}}");
+		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
 		
 		newLine();
 		
@@ -109,13 +114,23 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("end{document}");
 	}
 	
-	private String getPointName(Object o) {
-		if (o instanceof InnerName) {
+	private String getNiceName(Object o) {
+		if (o instanceof Node) {
+			return "node " + ((Node)o).getName();
+		} if (o instanceof Site) {
+			return "site " + ((Site)o).getName();
+		} else if (o instanceof Root) {
+			return "root " + ((Root)o).getName();
+		} else if (o instanceof InnerName) {
 			return "inner name " + ((InnerName)o).getName();
+		} else if (o instanceof Edge) {
+			return "edge " + ((Edge)o).getName();
+		} else if (o instanceof OuterName) {
+			return "outer name " + ((OuterName)o).getName();
 		} else if (o instanceof Port) {
 			Port p = (Port)o;
-			return "port " + p.getName() + " on node " + p.getParent().getName();
-		} else return null;
+			return "port " + p.getName() + " on " + getNiceName(p.getParent());
+		} else return o.toString();
 	}
 	
 	private void process(Node n) throws ExportFailedException {
@@ -156,14 +171,27 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		Rectangle rl = p.getRootLayout();
 		Point tmp =
 			rl.getCenter();
-		line("node [internal port] (" + getPointName(p) + ") at (" + tmp.x + "," + tmp.y + ") {};");
+		line("node [internal port] (" + getNiceName(p) + ") at (" + tmp.x + "," + tmp.y + ") {};");
 	}
 	
-	private void process(Edge e) throws ExportFailedException {
-		Point rlc = e.getRootLayout().getCenter();
-		line("node (edge " + e.getName() + ") at (" + rlc.x + "," + rlc.y + ") {};");
-		for (EdgeConnection c : e.getConnections())
-			line("draw [internal edge] (" + getPointName(c.getSource()) + ") to (edge " + e.getName() + ");");
+	private void process(Link e) throws ExportFailedException {
+		Point
+			tl = e.getRootLayout().getTopLeft(),
+			br = e.getRootLayout().getBottomRight(),
+			c = e.getRootLayout().getCenter();
+		if (e instanceof OuterName) {
+			line("draw [internal outer name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
+			line("node [internal name] (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {" + e.getName() + "};");
+		} else if (e instanceof Edge) {
+			line("node (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {};");
+		}
+		for (EdgeConnection co : e.getConnections()) {
+			Dimension d =
+				co.getParent().getLayout().getCenter().getDifference(co.getSource().getLayout().getCenter());
+			String in = (d.height > 0 ? "90" : "270"),
+			       out = (d.width > 0 ? "0" : "180");
+			line("draw [internal edge,in=" + in + ",out=" + out + "] (" + getNiceName(co.getSource()) + ") to (" + getNiceName(e) + "); % " + d);
+		}
 	}
 	
 	private void process(InnerName i) throws ExportFailedException {
@@ -172,7 +200,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			br = i.getRootLayout().getBottomRight(),
 			c = i.getRootLayout().getCenter();
 		line("draw [internal inner name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
-		line("node (" + getPointName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
+		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 	}
 	
 	private void process(Site r) throws ExportFailedException {
@@ -211,8 +239,8 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			process((Node)obj);
 		} else if (obj instanceof Port) {
 			process((Port)obj);
-		} else if (obj instanceof Edge) {
-			process((Edge)obj);
+		} else if (obj instanceof Link) {
+			process((Link)obj);
 		} else if (obj instanceof InnerName) {
 			process((InnerName)obj);
 		} else if (obj instanceof Site) {
