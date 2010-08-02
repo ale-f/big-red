@@ -32,7 +32,7 @@ public class EdgeCreateCommand extends Command {
 	}
 	
 	public boolean canExecute() {
-		return (point1 != null && point2 != null);
+		return (point1 != null && point2 != null && point1 != point2);
 	}
 	
 	public void execute() {
