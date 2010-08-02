@@ -51,8 +51,6 @@ public class NodeFigure extends AbstractFigure {
 	protected void fillShape(Graphics graphics) {
 		Rectangle a = start(graphics);
 		try {
-			graphics.setBackgroundColor(getBackgroundColor());
-			
 			switch (shape) {
 			case SHAPE_OVAL:
 				graphics.fillOval(1, 1, a.width - 1, a.height - 1);
@@ -72,7 +70,6 @@ public class NodeFigure extends AbstractFigure {
 		try {
 			graphics.setLineWidth(2);
 			graphics.setLineStyle(SWT.LINE_SOLID);
-			graphics.setForegroundColor(getForegroundColor());
 			
 			switch (shape) {
 			case SHAPE_OVAL:

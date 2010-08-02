@@ -28,7 +28,6 @@ public class RootFigure extends AbstractFigure {
 	protected void fillShape(Graphics graphics) {
 		Rectangle a = start(graphics);
 		try {
-			graphics.setBackgroundColor(getBackgroundColor());
 			graphics.fillRoundRectangle(a, 20, 20);
 		} finally {
 			stop(graphics);
@@ -40,7 +39,6 @@ public class RootFigure extends AbstractFigure {
 		Rectangle a = start(graphics);
 		try {
 			graphics.setLineStyle(SWT.LINE_DOT);
-			graphics.setForegroundColor(getForegroundColor());
 			a.width--; a.height--;
 			graphics.drawRoundRectangle(a, 20, 20);
 		} finally {

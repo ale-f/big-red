@@ -5,11 +5,16 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public class PortFigure extends AbstractFigure {
+	public PortFigure() {
+		super();
+
+		setBackgroundColor(ColorConstants.red);
+	}
+	
 	@Override
 	protected void fillShape(Graphics graphics) {
 		Rectangle a = start(graphics);
 		try {
-			graphics.setBackgroundColor(ColorConstants.red);
 			graphics.fillOval(a);
 		} finally {
 			stop(graphics);

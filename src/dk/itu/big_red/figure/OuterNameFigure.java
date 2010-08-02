@@ -47,7 +47,6 @@ public class OuterNameFigure extends AbstractFigure {
 	protected void fillShape(Graphics graphics) {
 		Rectangle a = start(graphics);
 		try {
-			graphics.setBackgroundColor(getBackgroundColor());
 			graphics.setAlpha(128);
 			graphics.fillRectangle(a);
 		} finally {

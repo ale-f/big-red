@@ -5,6 +5,12 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public class EdgeFigure extends AbstractFigure {
+	public EdgeFigure() {
+		super();
+		
+		setBackgroundColor(ColorConstants.darkGreen);
+	}
+	
 	public void setToolTip(String content) {
 		String labelText = "Edge";
 		if (content != null)
@@ -17,7 +23,6 @@ public class EdgeFigure extends AbstractFigure {
 		Rectangle a = start(graphics);
 		try {
 			graphics.setAlpha(32);
-			graphics.setBackgroundColor(ColorConstants.darkGreen);
 			graphics.fillRectangle(a);
 		} finally {
 			stop(graphics);
