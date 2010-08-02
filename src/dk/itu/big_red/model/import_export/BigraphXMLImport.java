@@ -100,9 +100,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
 			if (!(e.getChildNodes().item(j) instanceof Element))
 				continue;
-			Object i = process(model, (Element)e.getChildNodes().item(j));
-			if (i instanceof ILayoutable)
-				model.addChild((ILayoutable)i);
+			process(model, (Element)e.getChildNodes().item(j));
 		}
 	}
 	
@@ -141,8 +139,8 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	private Object process(ILayoutable context, Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
 		
-		if (model instanceof ILayoutable)
-			((ILayoutable)model).setParent(context);
+		if (model instanceof ILayoutable && context != null)
+			context.addChild((ILayoutable)model);
 		
 		if (model instanceof Bigraph) {
 			processBigraph(e, (Bigraph)model);
@@ -158,6 +156,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 					}
 				}
 			}
+			context.removeChild((ILayoutable)model);
 			model = null;
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);
