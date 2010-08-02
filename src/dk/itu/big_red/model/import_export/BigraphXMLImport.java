@@ -91,12 +91,11 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
 		
-		if (model instanceof Node) {
-			Node node = (Node)model;
-			node.setControl(bigraph.getSignature().getControl(DOM.getAttribute(e, "control")));
-		} else if (model instanceof INameable) {
+		if (model instanceof Node)
+			((Node)model).setControl(bigraph.getSignature().getControl(DOM.getAttribute(e, "control")));
+		
+		if (model instanceof INameable)
 			((INameable)model).setName(DOM.getAttribute(e, "name"));
-		}
 		
 		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
 			if (!(e.getChildNodes().item(j) instanceof Element))

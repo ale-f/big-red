@@ -10,11 +10,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.INameable;
 import dk.itu.big_red.util.Geometry;
 
-public class Node extends Thing implements PropertyChangeListener, IColourable {
+public class Node extends Thing implements PropertyChangeListener, IColourable, INameable {
 	/**
 	 * The property name fired when the control changes. (Note that this
 	 * property name is fired <i>after</i> any other changes required to change
@@ -159,5 +161,24 @@ public class Node extends Thing implements PropertyChangeListener, IColourable {
 				fittedPolygon = Geometry.fitPolygonToRectangle(getControl().getPoints(), getLayout());
 		}
 		return fittedPolygon;
+	}
+	
+	@Override
+	public String getName() {
+		return NamespaceManager.sensibleGetNameImplementation(getClass(), this, getBigraph().getNamespaceManager());
+	}
+	
+	@Override
+	public void setName(String name) {
+		NamespaceManager nm = getBigraph().getNamespaceManager();
+		String oldName = nm.getName(getClass(), this);
+		if (name != null) {
+			if (nm.setName(getClass(), name, this))
+				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+		} else {
+			String newName = nm.newName(getClass(), this, NameType.NAME_ALPHABETIC);
+			if (!newName.equals(oldName))
+				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
+		}
 	}
 }

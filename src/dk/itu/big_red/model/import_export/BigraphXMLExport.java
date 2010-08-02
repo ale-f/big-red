@@ -49,6 +49,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	private Element process(Node n) {
 		Element e = doc.createElement("node");
 		e.setAttribute("control", n.getControl().getLongName());
+		e.setAttribute("name", n.getName());
 		
 		for (Port p : n.getPorts()) 
 			DOM.appendChildIfNotNull(e, process(p));
