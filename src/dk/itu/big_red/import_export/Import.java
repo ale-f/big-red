@@ -23,10 +23,12 @@ public abstract class Import<T> {
 	 * Sets the source of the import to the given {@link InputStream}. The
 	 * InputStream will be closed once the input has been read.
 	 * @param os an InputStream
+	 * @return <code>this</code>, for convenience
 	 */
-	public void setInputStream(InputStream is) {
+	public Import<T> setInputStream(InputStream is) {
 		if (is != null)
 			this.source = is;
+		return this;
 	}
 	
 	/**
@@ -37,9 +39,10 @@ public abstract class Import<T> {
 	 * @param path a path to a file
 	 * @throws FileNotFoundException if
 	 *         {@link FileInputStream#FileInputStream(String)} fails
+	 * @return <code>this</code>, for convenience
 	 */
-	public void setInputFile(String path) throws FileNotFoundException {
-		setInputStream(new FileInputStream(path));
+	public Import<T> setInputFile(String path) throws FileNotFoundException {
+		return setInputStream(new FileInputStream(path));
 	}
 	
 	/**

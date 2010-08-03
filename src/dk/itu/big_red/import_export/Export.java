@@ -27,9 +27,11 @@ public abstract class Export<T> {
 	/**
 	 * Sets the model object to be exported.
 	 * @param model
+	 * @return <code>this</code>, for convenience
 	 */
-	public void setModel(T model) {
+	public Export<T> setModel(T model) {
 		this.model = model;
+		return this;
 	}
 	
 	protected OutputStream target = null;
@@ -38,10 +40,12 @@ public abstract class Export<T> {
 	 * Sets the target of the export to the given {@link OutputStream}. The
 	 * OutputStream will be closed once the output has been written.
 	 * @param os an OutputStream
+	 * @return <code>this</code>, for convenience
 	 */
-	public void setOutputStream(OutputStream os) {
+	public Export<T> setOutputStream(OutputStream os) {
 		if (os != null)
 			this.target = os;
+		return this;
 	}
 	
 	/**
@@ -52,9 +56,10 @@ public abstract class Export<T> {
 	 * @param path a path to a file
 	 * @throws FileNotFoundException if
 	 *         {@link FileOutputStream#FileOutputStream(String)} fails
+	 * @return <code>this</code>, for convenience
 	 */
-	public void setOutputFile(String path) throws FileNotFoundException {
-		setOutputStream(new FileOutputStream(path));
+	public Export<T> setOutputFile(String path) throws FileNotFoundException {
+		return setOutputStream(new FileOutputStream(path));
 	}
 	
 	/**
