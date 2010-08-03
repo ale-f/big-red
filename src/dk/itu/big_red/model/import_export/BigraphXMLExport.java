@@ -1,16 +1,25 @@
 package dk.itu.big_red.model.import_export;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
+import dk.itu.big_red.model.assistants.ClassComparator;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
 import dk.itu.big_red.util.DOM;
@@ -91,7 +100,30 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
 		}
 		
-		for (ILayoutable i : obj.getChildren())
+		ClassComparator<ILayoutable> comparator =
+			new ClassComparator<ILayoutable>();
+		if (obj instanceof Bigraph) {
+			comparator.setClassOrder(
+					Edge.class,
+					OuterName.class,
+					Root.class,
+					InnerName.class);
+		} else if (obj instanceof Root) {
+			comparator.setClassOrder(
+					Node.class,
+					Site.class);
+		} else if (obj instanceof Node) {
+			comparator.setClassOrder(
+					Port.class,
+					Node.class,
+					Site.class);
+		}
+		
+		ArrayList<ILayoutable> children =
+			new ArrayList<ILayoutable>(obj.getChildren());
+		Collections.sort(children, comparator);
+		
+		for (ILayoutable i : children)
 			e.appendChild(process(i));
 		
 		DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
