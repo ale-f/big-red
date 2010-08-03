@@ -21,11 +21,12 @@
 						<code>bigraph</code> schema
 					</h1>
 					<p>
-						This document is part of the IT University of Copenhagen's set of <a href="http://www.w3.org/XML/Schema">XML Schema</a>s for
-						<i>bigraphs</i>: it can be used to validate <code>&lt;bigraph&gt;</code> documents.
+						This document is part of the <a href="http://www.itu.dk/">IT University of Copenhagen</a>'s
+						set of <a href="http://www.w3.org/XML/Schema">XML Schema</a>s for <i>bigraphs</i>: it can be
+						used to validate <code>&lt;bigraph&gt;</code> documents.
 					</p>
 					<p>
-						The <code>bigraph</code> XML namespace is <code>http://pls.itu.dk/bigraphs/2010/bigraph</code>.
+						The <code>bigraph</code> XML namespace name is <code><a href="http://pls.itu.dk/bigraphs/2010/bigraph">http://pls.itu.dk/bigraphs/2010/bigraph</a></code>.
 					</p>
 					<hr />
 				</body>
@@ -184,14 +185,14 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>may</strong> be present:
+						The following attributes <strong>must</strong> be present:
 					</p>
 					<ul>
 						<a id="root_name" />
 						<li>
 							<code>name</code> (<code>string</code>): this root's identifier.
 							<br />
-							This attribute, if present, must be unique across all roots in this <a href="#bigraph">bigraph</a>.
+							This attribute must be unique across all roots in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -209,7 +210,7 @@
 				<xsd:element ref="bigraph:site" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:group ref="bigraph:anyForeignElements" />
 			</xsd:sequence>
-			<xsd:attribute name="name" type="xsd:string" use="optional" />
+			<xsd:attribute name="name" type="xsd:string" use="required" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>
@@ -253,14 +254,14 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>may</strong> be present:
+						The following attributes <strong>must</strong> be present:
 					</p>
 					<ul>
 						<li>
 							<a id="node_name" />
 							<code>name</code> (<code>string</code>): this node's identifier.
 							<br />
-							This attribute, if present, must be unique across all nodes in this <a href="#bigraph">bigraph</a>.
+							This attribute must be unique across all nodes in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -279,7 +280,7 @@
 				<xsd:element ref="bigraph:site" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:group ref="bigraph:anyForeignElements" />
 			</xsd:sequence>
-			<xsd:attribute name="name" type="xsd:string" />
+			<xsd:attribute name="name" type="xsd:string" use="required" />
 			<xsd:attribute name="control" type="xsd:string" use="required" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
