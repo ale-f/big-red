@@ -40,11 +40,11 @@ public class Bigraph extends Thing {
 	public static final String
 		PROPERTY_BOUNDARY_UIN = "BigraphBoundaryUpperInnerName";
 	
-	protected int upperRootBoundary = 0,
-	              lowerOuterNameBoundary = 0,
-	              upperInnerNameBoundary = 0,
-	              lowerRootBoundary = 0;
 	protected static int BOUNDARY_MARGIN = 20;
+	protected int upperRootBoundary = Integer.MIN_VALUE + BOUNDARY_MARGIN,
+	              lowerOuterNameBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN,
+	              upperInnerNameBoundary = Integer.MIN_VALUE + BOUNDARY_MARGIN,
+	              lowerRootBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN;
 	
 	public Thing clone() throws CloneNotSupportedException {
 		return new Bigraph()._overwrite(this);
