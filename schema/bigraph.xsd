@@ -66,7 +66,7 @@
 						Children
 					</h3>
 					<p>
-						<code>bigraph</code>s must contain:
+						<code>bigraph</code>s <strong>must</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -168,7 +168,7 @@
 						Children
 					</h3>
 					<p>
-						<code>root</code>s must contain:
+						<code>root</code>s <strong>must</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -192,7 +192,7 @@
 						<li>
 							<code>name</code> (<code>string</code>): this root's identifier.
 							<br />
-							This attribute must be unique across all roots in this <a href="#bigraph">bigraph</a>.
+							This attribute <strong>must</strong> be unique across all roots in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -234,7 +234,7 @@
 						Children
 					</h3>
 					<p>
-						<code>node</code>s must contain:
+						<code>node</code>s <strong>must</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -261,7 +261,7 @@
 							<a id="node_name" />
 							<code>name</code> (<code>string</code>): this node's identifier.
 							<br />
-							This attribute must be unique across all nodes in this <a href="#bigraph">bigraph</a>.
+							This attribute <strong>must</strong> be unique across all nodes in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -310,7 +310,7 @@
 						Children
 					</h3>
 					<p>
-						<code>site</code>s must contain:
+						<code>site</code>s <strong>must</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -328,7 +328,7 @@
 							<a id="site_name" />
 							<code>name</code> (<code>string</code>): this site's identifier.
 							<br />
-							This attribute must be unique across all sites in this <a href="#bigraph">bigraph</a>.
+							This attribute <strong>must</strong> be unique across all sites in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -368,7 +368,7 @@
 						Children
 					</h3>
 					<p>
-						<code>port</code>s must contain:
+						<code>port</code>s <strong>must</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -386,13 +386,13 @@
 							<a id="port_name" />
 							<code>name</code> (<code>string</code>): this port's identifier.
 							<br />
-							This attribute must be unique across all ports within a <a href="#node">node</a>.
+							This attribute <strong>must</strong> be unique across all ports within a <a href="#node">node</a>.
 						</li>
 						<li>
 							<a id="port_link" />
 							<code>link</code> (<code>string</code>): the identifier of the <a href="#edge">edge</a> or <a href="#outername">outername</a> to which this port is connected.
 							<br />
-							This attribute must be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
+							This attribute <strong>must</strong> be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -432,7 +432,7 @@
 						Children
 					</h3>
 					<p>
-						<code>innername</code>s must contain:
+						<code>innername</code>s <strong>must</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -450,13 +450,13 @@
 							<a id="innername_name" />
 							<code>name</code> (<code>string</code>): this innername's identifier.
 							<br />
-							This attribute must be unique across all innernames in this <a href="#bigraph">bigraph</a>.
+							This attribute <strong>must</strong> be unique across all innernames in this <a href="#bigraph">bigraph</a>.
 						</li>
 						<li>
 							<a id="innername_link" />
 							<code>link</code> (<code>string</code>): the identifier of the <a href="#edge">edge</a> or <a href="#outername">outername</a> to which this innername is connected.
 							<br />
-							This attribute must be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
+							This attribute <strong>must</strong> be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -496,7 +496,7 @@
 						Children
 					</h3>
 					<p>
-						<code>edges</code>s must contain:
+						<code>edges</code>s <strong>must</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -514,7 +514,7 @@
 							<a id="edge_name" />
 							<code>name</code> (<code>string</code>): this edge's identifier.
 							<br />
-							This attribute must be unique across all edges <i>and</i> <a href="#outername">outername</a>s in this <a href="#bigraph">bigraph</a>.
+							This attribute <strong>must</strong> be unique across all edges <i>and</i> <a href="#outername">outername</a>s in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -554,7 +554,7 @@
 						Children
 					</h3>
 					<p>
-						<code>outername</code>s must contain:
+						<code>outername</code>s <strong>must</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -572,7 +572,7 @@
 							<a id="outername_name" />
 							<code>name</code> (<code>string</code>): this outername's identifier.
 							<br />
-							This attribute must be unique across all outernames <i>and</i> <a href="#edge">edge</a>s in this <a href="#bigraph">bigraph</a>.
+							This attribute <strong>must</strong> be unique across all outernames <i>and</i> <a href="#edge">edge</a>s in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
