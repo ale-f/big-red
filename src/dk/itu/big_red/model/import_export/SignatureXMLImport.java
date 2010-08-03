@@ -17,6 +17,7 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 	public Signature importObject() throws ImportFailedException {
 		try {
 			Document d = DOM.parse(source);
+			source.close();
 			return (Signature)process(d.getDocumentElement());
 		} catch (Exception e) {
 			throw new ImportFailedException(e);

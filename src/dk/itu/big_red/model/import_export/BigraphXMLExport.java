@@ -30,6 +30,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		
 		try {
 			DOM.write(target, doc);
+			target.close();
 		} catch (Exception e) {
 			throw new ExportFailedException(e);
 		}

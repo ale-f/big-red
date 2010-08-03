@@ -37,6 +37,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	public Bigraph importObject() throws ImportFailedException {
 		try {
 			Document d = DOM.parse(source);
+			source.close();
 			return (Bigraph)process(null, d.getDocumentElement());
 		} catch (Exception e) {
 			throw new ImportFailedException(e);

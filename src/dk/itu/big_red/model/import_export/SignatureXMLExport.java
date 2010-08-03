@@ -20,6 +20,7 @@ public class SignatureXMLExport extends ModelExport<Signature> {
 		
 		try {
 			DOM.write(target, doc);
+			target.close();
 		} catch (Exception e) {
 			throw new ExportFailedException(e);
 		}
