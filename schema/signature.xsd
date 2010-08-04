@@ -10,8 +10,8 @@
 	without any warranty.
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:signature="http://pls.itu.dk/bigraphs/2010/signature"
-            targetNamespace="http://pls.itu.dk/bigraphs/2010/signature">
+            xmlns:signature="http://www.itu.dk/research/pls/xmlns/2010/signature"
+            targetNamespace="http://www.itu.dk/research/pls/xmlns/2010/signature">
 
 	<xsd:annotation>
 		<xsd:documentation>
@@ -26,7 +26,7 @@
 						used to validate <code>&lt;signature&gt;</code> documents.
 					</p>
 					<p>
-						The <code>signature</code> XML namespace name is <code><a href="http://www.itu.dk/research/pls/xmlns/2010/bigraph">http://www.itu.dk/research/pls/xmlns/2010/bigraph</a></code>.
+						The <code>signature</code> XML namespace name is <code><a href="http://www.itu.dk/research/pls/xmlns/2010/signature">http://www.itu.dk/research/pls/xmlns/2010/signature</a></code>.
 					</p>
 					<hr />
 				</body>
