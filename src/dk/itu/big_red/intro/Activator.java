@@ -1,5 +1,11 @@
 package dk.itu.big_red.intro;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -57,5 +63,23 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
+	}
+	
+	/**
+	 * Returns an {@link InputStream} for the given file in this plugin, if it
+	 * exists.
+	 * @param path a (plugin root-relative) path to a file
+	 * @return an InputStream, or <code>null</code> if the file wasn't found
+	 */
+	public static InputStream getPluginResource(String path) {
+		try {
+			URL u = FileLocator.find(
+					getDefault().getBundle(), new Path(path), null);
+			if (u != null)
+				return u.openStream();
+			else return null;
+		} catch (IOException e) {
+			return null;
+		}
 	}
 }
