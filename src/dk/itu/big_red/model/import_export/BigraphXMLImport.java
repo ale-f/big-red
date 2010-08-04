@@ -1,8 +1,5 @@
 package dk.itu.big_red.model.import_export;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
@@ -30,9 +27,6 @@ import dk.itu.big_red.util.Project;
  *
  */
 public class BigraphXMLImport extends ModelImport<Bigraph> {
-	private HashMap<String, ArrayList<Point>> potentialConnections =
-		new HashMap<String, ArrayList<Point>>();
-	
 	@Override
 	public Bigraph importObject() throws ImportFailedException {
 		try {
@@ -44,28 +38,8 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		}
 	}
 	
-	private void registerConnection(String linkName, Point object) {
-		Link actualLink =
-			(Link)bigraph.getNamespaceManager().getObject(Link.class, linkName);
-		if (actualLink == null) {
-			ArrayList<Point> connections = potentialConnections.get(linkName);
-			if (connections == null) {
-				connections = new ArrayList<Point>();
-				potentialConnections.put(linkName, connections);
-			}
-			connections.add(object);
-		} else {
-			actualLink.addPoint(object);
-		}
-	}
-	
-	private void getPendingConnections(Link object) {
-		ArrayList<Point> connections = potentialConnections.get(object.getName());
-		if (connections == null)
-			return;
-		for (Point p : connections)
-			object.addPoint(p);
-		potentialConnections.remove(object.getName());
+	private void connect(String linkName, Point object) {
+		((Link)bigraph.getNamespaceManager().getObject(Link.class, linkName)).addPoint(object);
 	}
 	
 	private Bigraph bigraph = null;
@@ -110,14 +84,12 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	           link = DOM.getAttribute(e, "link");
 		model.setName(name);
 		
-		registerConnection(link, model);
+		connect(link, model);
 	}
 	
 	private boolean processLink(Element e, Link model) throws ImportFailedException {
 		boolean rv = false;
 		model.setName(DOM.getAttribute(e, "name"));
-		
-		getPendingConnections(model);
 		
 		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
 		if (el != null)
@@ -134,7 +106,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
         link = DOM.getAttribute(e, "link");
 		model.setName(name);
 		
-		registerConnection(link, model);
+		connect(link, model);
 	}
 	
 	private Object process(ILayoutable context, Element e) throws ImportFailedException {
