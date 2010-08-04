@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,6 +18,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.SchemaFactory;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -29,6 +32,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.xml.sax.SAXException;
+
+import dk.itu.big_red.exceptions.ValidationFailedException;
 
 /**
  * Utility functions for manipulating DOM {@link Document}s and
@@ -101,6 +106,26 @@ public class DOM {
 		Transformer t = f.newTransformer();
 		t.setOutputProperty(OutputKeys.INDENT, "yes");
 		t.transform(source, result);
+	}
+	
+	/**
+	 * Validates the given {@link Document} with the {@link Schema} constructed
+	 * from the given {@link InputStream}.
+	 * @param d a Document
+	 * @param schema an InputStream
+	 * @return <code>d</code>, for convenience
+	 * @throws ValidationFailedException if the validation (or the validator's
+	 *         initialisation and configuration) failed
+	 */
+	public static Document validate(Document d, InputStream schema) throws ValidationFailedException {
+		try {
+			SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).
+				newSchema(new StreamSource(schema)).newValidator().validate(
+					new DOMSource(d));
+			return d;
+		} catch (Exception e) {
+			throw new ValidationFailedException(e);
+		}
 	}
 	
 	/**
