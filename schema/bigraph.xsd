@@ -263,6 +263,12 @@
 							<br />
 							This attribute <strong>must</strong> be unique across all nodes in this <a href="#bigraph">bigraph</a>.
 						</li>
+						<li>
+							<a id="control_name" />
+							<code>control</code> (<code>string</code>): this node's control.
+							<br />
+							This attribute <strong>should</strong> be the <code>name</code> of a <a href="#">control</a> defined in the <a href="#bigraph_signature">signature</a>.
+						</li>
 					</ul>
 					<p>
 						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>node</code>s.
