@@ -6,6 +6,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ImportFailedException;
+import dk.itu.big_red.intro.Activator;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Link;
@@ -30,7 +31,8 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	@Override
 	public Bigraph importObject() throws ImportFailedException {
 		try {
-			Document d = DOM.parse(source);
+			Document d =
+				DOM.validate(DOM.parse(source), Activator.getPluginResource("schema/bigraph.xsd"));
 			source.close();
 			return (Bigraph)process(null, d.getDocumentElement());
 		} catch (Exception e) {
