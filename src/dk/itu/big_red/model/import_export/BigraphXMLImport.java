@@ -62,10 +62,6 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	}
 	
 	private void processThing(Element e, Thing model) throws ImportFailedException {
-		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
-		if (el != null)
-			AppearanceGenerator.setAppearance(el, model);
-		
 		if (model instanceof Node)
 			((Node)model).setControl(bigraph.getSignature().getControl(DOM.getAttribute(e, "control")));
 		
@@ -91,17 +87,10 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		boolean rv = false;
 		model.setName(DOM.getAttribute(e, "name"));
 		
-		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
-		if (el != null)
-			AppearanceGenerator.setAppearance(el, model);
 		return rv;
 	}
 	
 	private void processInnerName(Element e, InnerName model) throws ImportFailedException {
-		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
-		if (el != null)
-			AppearanceGenerator.setAppearance(el, model);
-
 		String name = DOM.getAttribute(e, "name"),
         link = DOM.getAttribute(e, "link");
 		model.setName(name);
@@ -111,6 +100,10 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	
 	private Object process(ILayoutable context, Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
+		
+		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
+		if (el != null)
+			AppearanceGenerator.setAppearance(el, model);
 		
 		if (model instanceof ILayoutable && context != null)
 			context.addChild((ILayoutable)model);
