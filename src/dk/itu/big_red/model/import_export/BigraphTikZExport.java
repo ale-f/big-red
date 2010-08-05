@@ -3,6 +3,7 @@ package dk.itu.big_red.model.import_export;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -80,10 +81,17 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("end{scope}");
 	}
 	
+	private Point translate = null;
+	
 	private void process(Bigraph b) throws ExportFailedException {
 		line("documentclass{article}");
 		line("usepackage{tikz}");
 		line("begin{document}");
+		
+		newLine();
+		
+		line("pgfdeclarelayer{connection}");
+		line("pgfsetlayers{main,connection}");
 		
 		newLine();
 		
@@ -103,6 +111,15 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("tikzset{internal inner name/.style={fill=blue!30,draw=none}}");
 		line("tikzset{internal outer name/.style={fill=red!30,draw=none}}");
 		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
+		
+		List<ILayoutable> ch = b.getChildren();
+		if (ch.size() > 0) {
+			Rectangle bounding = ch.get(0).getLayout().getCopy();
+			for (ILayoutable i : ch)
+				bounding.union(i.getLayout());
+			translate = bounding.getTopLeft().getNegated();
+			System.out.println("(translating everything by " + translate + ")");
+		}
 		
 		newLine();
 		
@@ -135,7 +152,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	
 	private void process(Node n) throws ExportFailedException {
 		Control con = n.getControl();
-		Rectangle rl = n.getRootLayout();
+		Rectangle rl = n.getRootLayout().translate(translate);
 		Point rltl = rl.getTopLeft();
 		
 		Point tmp;
@@ -168,45 +185,59 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(Port p) throws ExportFailedException {
-		Rectangle rl = p.getRootLayout();
+		Rectangle rl = p.getRootLayout().translate(translate);
 		Point tmp =
 			rl.getCenter();
 		line("node [internal port] (" + getNiceName(p) + ") at (" + tmp.x + "," + tmp.y + ") {};");
+		process((dk.itu.big_red.model.Point)p);
 	}
 	
 	private void process(Link e) throws ExportFailedException {
+		Rectangle rl = e.getRootLayout().translate(translate);
 		Point
-			tl = e.getRootLayout().getTopLeft(),
-			br = e.getRootLayout().getBottomRight(),
-			c = e.getRootLayout().getCenter();
+			tl = rl.getTopLeft(),
+			br = rl.getBottomRight(),
+			c = rl.getCenter();
 		if (e instanceof OuterName) {
 			line("draw [internal outer name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 			line("node [internal name] (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {" + e.getName() + "};");
 		} else if (e instanceof Edge) {
 			line("node (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {};");
 		}
-		for (EdgeConnection co : e.getConnections()) {
+	}
+	
+	private void process(InnerName i) throws ExportFailedException {
+		Rectangle rl = i.getRootLayout().translate(translate);
+		Point
+			tl = rl.getTopLeft(),
+			br = rl.getBottomRight(),
+			c = rl.getCenter();
+		line("draw [internal inner name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
+		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
+		process((dk.itu.big_red.model.Point)i);
+	}
+	
+	private void process(dk.itu.big_red.model.Point p) throws ExportFailedException {
+		List<EdgeConnection> x = p.getConnections();
+		if (x.size() == 1) {
+			EdgeConnection co = x.get(0);
 			Dimension d =
 				co.getParent().getLayout().getCenter().getDifference(co.getSource().getLayout().getCenter());
 			String in = (d.height > 0 ? "90" : "270"),
 			       out = (d.width > 0 ? "0" : "180");
-			line("draw [internal edge,in=" + in + ",out=" + out + "] (" + getNiceName(co.getSource()) + ") to (" + getNiceName(e) + "); % " + d);
+			line("begin{pgfonlayer}{connection}");
+			scope++;
+			line("draw [internal edge,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getParent()) + "); % " + d);
+			scope--;
+			line("end{pgfonlayer}");
 		}
 	}
 	
-	private void process(InnerName i) throws ExportFailedException {
-		Point
-			tl = i.getRootLayout().getTopLeft(),
-			br = i.getRootLayout().getBottomRight(),
-			c = i.getRootLayout().getCenter();
-		line("draw [internal inner name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
-		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
-	}
-	
 	private void process(Site r) throws ExportFailedException {
+		Rectangle rl = r.getRootLayout().translate(translate);
 		Point
-			ptl = r.getRootLayout().getTopLeft(),
-			ptr = r.getRootLayout().getBottomRight();
+			ptl = rl.getTopLeft(),
+			ptr = rl.getBottomRight();
 		
 		line("draw [internal site] (" + ptl.x + "," +
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
@@ -215,9 +246,10 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(Root r) throws ExportFailedException {
+		Rectangle rl = r.getRootLayout().translate(translate);
 		Point
-			ptl = r.getRootLayout().getTopLeft(),
-			ptr = r.getRootLayout().getBottomRight();
+			ptl = rl.getTopLeft(),
+			ptr = rl.getBottomRight();
 		
 		line("draw [internal root] (" + ptl.x + "," +
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
@@ -233,6 +265,8 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(ILayoutable obj) throws ExportFailedException {
+		BigraphXMLExport.sortChildrenIntoSchemaOrder(obj);
+		
 		if (obj instanceof Bigraph) {
 			process((Bigraph)obj);
 		} else if (obj instanceof Node) {
