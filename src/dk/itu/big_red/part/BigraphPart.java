@@ -1,5 +1,6 @@
 package dk.itu.big_red.part;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
@@ -8,6 +9,8 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.assistants.ClassComparator;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 /**
@@ -34,7 +37,16 @@ public class BigraphPart extends ThingPart {
 	}
 	
 	public List<ILayoutable> getModelChildren() {
-		return getModel().getChildren();
+		List<ILayoutable> c = getModel().getChildren();
+		
+		ClassComparator<ILayoutable> comparator =
+			new ClassComparator<ILayoutable>();
+		comparator.setClassOrder(
+				Edge.class);
+		comparator.setUndefinedAtEnd(false);
+		Collections.sort(c, comparator);
+		
+		return c;
 	}
 	
 	@Override
