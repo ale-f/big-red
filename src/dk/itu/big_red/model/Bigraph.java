@@ -1,6 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -96,36 +95,21 @@ public class Bigraph extends Thing {
 		return new Rectangle();
 	}
 	
-	private ArrayList<ILayoutable> sortedChildren =
-		new ArrayList<ILayoutable>();
-	
 	@Override
 	public void addChild(ILayoutable child) {
-		sortedChildren.clear();
 		super.addChild(child);
 		updateBoundaries();
 	}
 	
 	@Override
 	public void removeChild(ILayoutable child) {
-		sortedChildren.clear();
 		super.removeChild(child);
 		updateBoundaries();
 	}
 	
 	@Override
 	public List<ILayoutable> getChildren() {
-		if (sortedChildren.size() == 0) {
-			for (ILayoutable i : children) {
-				if (i.getClass() != Edge.class)
-					sortedChildren.add(i);
-			}
-			for (ILayoutable i : children) {
-				if (i.getClass() == Edge.class)
-					sortedChildren.add(i);
-			}
-		}
-		return sortedChildren;
+		return children;
 	}
 	
 	/**
