@@ -29,9 +29,7 @@ public class ILayoutableAddCommand extends Command {
 	
 	public boolean noOverlap() {
 		for (ILayoutable i : parent.getChildren()) {
-			if (i instanceof Edge)
-				continue;
-			else if (i.getLayout().intersects(constraint))
+			if (i.getLayout().intersects(constraint))
 				return false;
 		}
 		return true;
@@ -46,9 +44,10 @@ public class ILayoutableAddCommand extends Command {
 	
 	public boolean canExecute() {
 		return (this.parent != null && this.child != null &&
-				(child instanceof Edge || this.parent.canContain(this.child)) &&
-				this.constraint != null &&
-				parentLayoutCanContainChildConstraint() && noOverlap());
+				(child instanceof Edge ||
+				 (this.parent.canContain(this.child) &&
+				  this.constraint != null &&
+				  parentLayoutCanContainChildConstraint() && noOverlap())));
 	}
 	
 	public void execute() {
