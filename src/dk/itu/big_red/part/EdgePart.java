@@ -44,17 +44,6 @@ public class EdgePart extends AbstractPart implements NodeEditPart, PropertyChan
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 	}
 
-	public void activate() {
-		super.activate();
-		getModel().addPropertyChangeListener(this);
-		refreshVisuals();
-	}
-
-	public void deactivate() {
-		getModel().removePropertyChangeListener(this);
-		super.deactivate();
-	}
-
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		refreshVisuals();

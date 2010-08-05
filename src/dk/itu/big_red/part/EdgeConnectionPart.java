@@ -54,7 +54,6 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements No
 	 */
 	public void activate() {
 		super.activate();
-		getModel().addPropertyChangeListener(this);
 		getModel().getParent().addPropertyChangeListener(this);
 		refreshVisuals();
 	}
@@ -65,7 +64,6 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements No
 	 * parent {@link Edge}.
 	 */
 	public void deactivate() {
-		getModel().removePropertyChangeListener(this);
 		getModel().getParent().removePropertyChangeListener(this);
 		super.deactivate();
 	}

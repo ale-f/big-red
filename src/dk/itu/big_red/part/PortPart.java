@@ -35,18 +35,6 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 	}
 	
 	@Override
-	public void activate() {
-		super.activate();
-		getModel().getParent().addPropertyChangeListener(this);
-	}
-
-	@Override
-	public void deactivate() {
-		getModel().getParent().removePropertyChangeListener(this);
-		super.deactivate();
-	}
-	
-	@Override
 	protected IFigure createFigure() {
 		return new PortFigure();
 	}
