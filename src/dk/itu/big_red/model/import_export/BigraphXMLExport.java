@@ -1,6 +1,5 @@
 package dk.itu.big_red.model.import_export;
 
-import java.util.ArrayList;
 import java.util.Collections;
 
 import org.w3c.dom.DOMImplementation;
@@ -86,20 +85,12 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		return el;
 	}
 	
-	private Element process(ILayoutable obj) {
-		Element e = null;
-		if (obj instanceof Bigraph) {
-			e = process((Bigraph)obj);
-		} else if (obj instanceof Node) {
-			e = process((Node)obj);
-		} else if (obj instanceof Point) {
-			e = process((Point)obj);
-		} else if (obj instanceof INameable) {
-			e = process((INameable)obj);
-		} else {
-			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
-		}
-		
+	/**
+	 * Sorts the immediate children of the given {@link ILayoutable} into the
+	 * order required by the {@code <bigraph>} schema.
+	 * @param obj an ILayoutable
+	 */
+	public static void sortChildrenIntoSchemaOrder(ILayoutable obj) {
 		ClassComparator<ILayoutable> comparator =
 			new ClassComparator<ILayoutable>();
 		if (obj instanceof Bigraph) {
@@ -117,13 +108,27 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 					Port.class,
 					Node.class,
 					Site.class);
+		} else return;
+		Collections.sort(obj.getChildren(), comparator);
+	}
+	
+	private Element process(ILayoutable obj) {
+		Element e = null;
+		if (obj instanceof Bigraph) {
+			e = process((Bigraph)obj);
+		} else if (obj instanceof Node) {
+			e = process((Node)obj);
+		} else if (obj instanceof Point) {
+			e = process((Point)obj);
+		} else if (obj instanceof INameable) {
+			e = process((INameable)obj);
+		} else {
+			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
 		}
 		
-		ArrayList<ILayoutable> children =
-			new ArrayList<ILayoutable>(obj.getChildren());
-		Collections.sort(children, comparator);
+		sortChildrenIntoSchemaOrder(obj);
 		
-		for (ILayoutable i : children)
+		for (ILayoutable i : obj.getChildren())
 			e.appendChild(process(i));
 		
 		DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
