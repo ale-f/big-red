@@ -12,6 +12,7 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
@@ -40,8 +41,17 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 	}
 	
 	@Override
+	public void installEditPolicy(Object key, EditPolicy editPolicy) {
+		if (key != EditPolicy.PRIMARY_DRAG_ROLE)
+			super.installEditPolicy(key, editPolicy);
+	}
+	
+	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
+		super.installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new NonResizableEditPolicy() {{
+			setDragAllowed(false);
+		}});
 	}
 
 	@Override
