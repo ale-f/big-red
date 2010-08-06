@@ -84,12 +84,6 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	private Point translate = null;
 	
 	private void process(Bigraph b) throws ExportFailedException {
-		line("documentclass{article}");
-		line("usepackage{tikz}");
-		line("begin{document}");
-		
-		newLine();
-		
 		line("pgfdeclarelayer{connection}");
 		line("pgfsetlayers{main,connection}");
 		
@@ -128,7 +122,6 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		process((Thing)b);
 		
 		line("end{tikzpicture}");
-		line("end{document}");
 	}
 	
 	private String getNiceName(Object o) {
