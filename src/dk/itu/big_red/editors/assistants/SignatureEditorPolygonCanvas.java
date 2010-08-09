@@ -160,22 +160,32 @@ MenuListener {
 	}
 	
 	private int getNearestSegment(Point up, double threshold) {
-		int index = -1;
+		int index = -1,
+		    closestPointIndex = -1;
 		Line l = new Line();
-		double distance = Double.MAX_VALUE;
+		double distance = Double.MAX_VALUE,
+		       closestPointDistance = Double.MAX_VALUE;
 		for (int i = 0; i < points.size(); i++) {
 			l.setFirstPoint(getPoint(tmp, i));
 			l.setSecondPoint(getPoint(tmp, i + 1));
+			double tDistance;
 			if (l.getIntersection(tmp, up) != null) {
-				double tDistance = up.getDistance(tmp);
+				tDistance = up.getDistance(tmp);
 				if (tDistance < distance) {
 					distance = tDistance;
 					index = i;
 				}
 			}
+			
+			tDistance = l.getFirstPoint().getDistance(up);
+			if (tDistance < closestPointDistance) {
+				closestPointDistance = tDistance;
+				closestPointIndex = i;
+			}
 		}
 		
-		if (distance < threshold)
+		if (distance < threshold &&
+			(closestPointIndex == index || closestPointIndex == ((index + 1) % points.size())))
 			return index;
 		else return -1;
 	}
