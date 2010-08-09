@@ -59,8 +59,10 @@ MenuListener {
 	private Point roundedMousePosition = new Point(-10, -10),
 	              mousePosition = new Point(-10, -10);
 	
-	private int dragIndex = -1;
+	private int dragPointIndex = -1;
 	private Point dragPoint = null;
+	
+	private int dragPortIndex = -1;
 	
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	
@@ -90,8 +92,8 @@ MenuListener {
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p);
 		if (deleteIndex != -1 && (deleteIndex != 0 || points.size() > 1)) {
-			if (dragIndex == deleteIndex)
-				dragIndex = -1;
+			if (dragPointIndex == deleteIndex)
+				dragPointIndex = -1;
 			firePointChange(PointEvent.REMOVED, points.removePoint(deleteIndex));
 		}
 	}
@@ -188,17 +190,20 @@ MenuListener {
 			return;
 		Point p = roundToGrid(e.x, e.y),
 		      up = new Point(e.x, e.y);
-		dragIndex = findPointAt(p);
-		if (dragIndex == -1) {
-			if (points.size() == 1) {
-				dragIndex = 0;
-				dragPoint = p;
-			} else {
-				int index = getNearestSegment(up, 15);
-				
-				if (index != -1) {
-					dragIndex = index + 1;
+		dragPortIndex = findPortAt(up);
+		if (dragPortIndex == -1) {
+			dragPointIndex = findPointAt(up);
+			if (dragPointIndex == -1) {
+				if (points.size() == 1) {
+					dragPointIndex = 0;
 					dragPoint = p;
+				} else {
+					int index = getNearestSegment(up, 15);
+					
+					if (index != -1) {
+						dragPointIndex = index + 1;
+						dragPoint = p;
+					}
 				}
 			}
 		}
@@ -211,23 +216,26 @@ MenuListener {
 	 */
 	@Override
 	public void mouseUp(MouseEvent e) {
-		if (dragIndex != -1) {
+		if (dragPortIndex != -1) {
+			dragPortIndex = -1;
+			redraw();
+		} else if (dragPointIndex != -1) {
 			Point p = roundToGrid(e.x, e.y);
 			int pointAtCursor = findPointAt(roundedMousePosition);
 			if (pointAtCursor == -1) {
 				if (dragPoint == null) {
-					tmp = points.getPoint(dragIndex);
+					tmp = points.getPoint(dragPointIndex);
 					tmp.x = p.x; tmp.y = p.y;
-					points.setPoint(tmp, dragIndex);
+					points.setPoint(tmp, dragPointIndex);
 					firePointChange(PointEvent.MOVED, tmp);
 				} else {
 					dragPoint.x = p.x;
 					dragPoint.y = p.y;
-					points.insertPoint(dragPoint, dragIndex);
+					points.insertPoint(dragPoint, dragPointIndex);
 					firePointChange(PointEvent.ADDED, dragPoint);
 				}
 			}
-			dragIndex = -1;
+			dragPointIndex = -1;
 			dragPoint = null;
 			redraw();
 		}
@@ -283,25 +291,36 @@ MenuListener {
 			e.gc.fillOval(pt.x - 4, pt.y - 4, 8, 8);
 		}
 		
-		if (dragIndex != -1) {
+		if (dragPortIndex != -1) {
+			e.gc.setAlpha(127);
+			
+			int segment = getNearestSegment(mousePosition, 15);
+			if (segment != -1) {
+				l.setFirstPoint(getPoint(segment));
+				l.setSecondPoint(getPoint(segment + 1));
+				tmp.setLocation(l.getIntersection(mousePosition));
+				e.gc.fillOval(tmp.x - 4, tmp.y - 4, 8, 8);
+			}
+		} else if (dragPointIndex != -1) {
 			e.gc.setAlpha(127);
 			Point previous, next;
 			if (dragPoint == null) {
-				previous = getPoint(dragIndex - 1);
-				next = getPoint(dragIndex + 1);
+				previous = getPoint(dragPointIndex - 1);
+				next = getPoint(dragPointIndex + 1);
 			} else {
-				previous = getPoint(dragIndex - 1);
-				next = getPoint(dragIndex);
+				previous = getPoint(dragPointIndex - 1);
+				next = getPoint(dragPointIndex);
 			}
 			
 			e.gc.setForeground(ColorConstants.red);
+			e.gc.setBackground(ColorConstants.red);
 			
 			e.gc.drawLine(previous.x, previous.y, roundedMousePosition.x, roundedMousePosition.y);
 			e.gc.drawLine(next.x, next.y, roundedMousePosition.x, roundedMousePosition.y);
 			e.gc.fillOval(roundedMousePosition.x - 3, roundedMousePosition.y - 3, 6, 6);
 			
 			int pointAtCursor = findPointAt(roundedMousePosition);
-			if (pointAtCursor != -1 && pointAtCursor != dragIndex)
+			if (pointAtCursor != -1 && pointAtCursor != dragPointIndex)
 				setCursor(Cursors.NO);
 			
 			e.gc.setAlpha(255);
@@ -321,7 +340,8 @@ MenuListener {
 			roundedMousePosition.x = currentMousePosition.x;
 			roundedMousePosition.y = currentMousePosition.y;
 			redraw();
-		}
+		} else if (dragPointIndex != -1 || dragPortIndex != -1)
+			redraw();
 	}
 
 	/**
@@ -393,7 +413,10 @@ MenuListener {
 		for (MenuItem i : m.getItems())
 			i.dispose();
 		
-		final int segment = getNearestSegment(roundedMousePosition, 15);
+		final int foundPoint = findPointAt(roundedMousePosition),
+		          foundPort = findPortAt(mousePosition),
+		          segment = getNearestSegment(roundedMousePosition, 15);
+		
 		if (segment != -1) {
 			UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
 	
@@ -430,7 +453,6 @@ MenuListener {
 			});
 		}
 		
-		final int foundPoint = findPointAt(roundedMousePosition);
 		if (foundPoint != -1) {
 			if (foundPoint != 0 || points.size() > 1) {
 				UI.createMenuItem(m, 0, "&Remove point", new SelectionListener() {
