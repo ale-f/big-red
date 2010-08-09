@@ -294,13 +294,27 @@ MenuListener {
 		if (dragPortIndex != -1) {
 			e.gc.setAlpha(127);
 			
-			int segment = getNearestSegment(mousePosition, 15);
+			int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 			if (segment != -1) {
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
 				tmp.setLocation(l.getIntersection(mousePosition));
-				e.gc.fillOval(tmp.x - 4, tmp.y - 4, 8, 8);
+			} else {
+				int index = -1;
+				double distance = Double.MAX_VALUE;
+				for (int i = 0; i < points.size(); i++) {
+					points.getPoint(tmp, i);
+					double td = tmp.getDistance(mousePosition);
+					if (td < distance) {
+						index = i;
+						distance = td;
+					}
+				}
+				if (index != -1)
+					points.getPoint(tmp, index);
 			}
+			
+			e.gc.fillOval(tmp.x - 4, tmp.y - 4, 8, 8);
 		} else if (dragPointIndex != -1) {
 			e.gc.setAlpha(127);
 			Point previous, next;
@@ -417,39 +431,55 @@ MenuListener {
 		          foundPort = findPortAt(mousePosition),
 		          segment = getNearestSegment(roundedMousePosition, 15);
 		
-		if (segment != -1) {
-			UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
-	
+		if (foundPort == -1) {
+			if (segment != -1) {
+				UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
+		
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						Line l = new Line();
+						l.setFirstPoint(getPoint(segment));
+						l.setSecondPoint(getPoint(segment + 1));
+						
+						Point portPoint = l.getIntersection(roundedMousePosition);
+						double distance = l.getOffsetFromPoint(portPoint);
+						
+						int lsegment = segment;
+						if (distance >= 1) {
+							lsegment++;
+							distance = 0;
+						}
+						
+						Port p = new Port();
+						p.setSegment(lsegment);
+						p.setDistance(distance);
+						
+						ports.add(p);
+						firePortChange(PortEvent.ADDED, p);
+						redraw();
+					}
+		
+					@Override
+					public void widgetDefaultSelected(SelectionEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+		} else {
+			UI.createMenuItem(m, 0, "&Remove port", new SelectionListener() {
+				
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					Line l = new Line();
-					l.setFirstPoint(getPoint(segment));
-					l.setSecondPoint(getPoint(segment + 1));
+					// TODO Auto-generated method stub
 					
-					Point portPoint = l.getIntersection(roundedMousePosition);
-					double distance = l.getOffsetFromPoint(portPoint);
-					
-					int lsegment = segment;
-					if (distance >= 1) {
-						lsegment++;
-						distance = 0;
-					}
-					
-					Port p = new Port();
-					p.setSegment(lsegment);
-					p.setDistance(distance);
-					
-					ports.add(p);
-					firePortChange(PortEvent.ADDED, p);
-					redraw();
 				}
-	
+				
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
 					// TODO Auto-generated method stub
 					
 				}
-				
 			});
 		}
 		
