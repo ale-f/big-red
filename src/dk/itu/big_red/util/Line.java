@@ -1,5 +1,6 @@
 package dk.itu.big_red.util;
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -138,6 +139,26 @@ public class Line {
 		if (offset >= 0.0 && offset <= 1.0)
 			return p1.getCopy().translate(p2.getDifference(p1).scale(offset));
 		else return null;
+	}
+	
+	/**
+	 * Returns the offset of a given point along the line (where
+	 * <code>p1</code> is <code>0.0</code> and <code>p2</code> is
+	 * <code>1.0</code>).
+	 * @param point a Point on this line segment
+	 * @return an offset on this line segment, or {@link Double#NaN} if
+	 *         <code>point</code> isn't on this line
+	 */
+	public double getOffsetFromPoint(Point point) {
+		if (getIntersection(point).equals(point)) {
+			Dimension dp = p1.getDifference(point),
+			          dt = p1.getDifference(p2);
+			double d1 = (double)dp.width / dt.width,
+			       d2 = (double)dp.height / dt.height;
+			if (d1 != Double.NaN)
+				return d1;
+			else return d2;
+		} else return Double.NaN;
 	}
 	
 	/**
