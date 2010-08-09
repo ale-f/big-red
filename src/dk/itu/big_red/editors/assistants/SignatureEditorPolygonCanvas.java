@@ -114,6 +114,25 @@ MenuListener {
 		return points.getPoint((i + points.size()) % points.size());
 	}
 	
+	protected int findPortAt(Point p) {
+		return findPortAt(p.x, p.y);
+	}
+	
+	protected int findPortAt(int x, int y) {
+		Line l = new Line();
+		for (int i = 0; i < ports.size(); i++) {
+			Port p = ports.get(i);
+			int segment = p.getSegment();
+			l.setFirstPoint(getPoint(segment));
+			l.setSecondPoint(getPoint(segment + 1));
+			tmp.setLocation(l.getPointFromOffset(p.getDistance()));
+			if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
+				y >= tmp.y - 4 && y <= tmp.y + 4)
+				return i;
+		}
+		return -1;
+	}
+	
 	protected int findPointAt(Point p) {
 		return findPointAt(p.x, p.y);
 	}
