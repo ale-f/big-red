@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.assistants;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
@@ -412,7 +413,15 @@ MenuListener {
 				UI.createMenuItem(m, 0, "&Remove point", new SelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
+						for (Iterator<Port> it = ports.iterator(); it.hasNext(); ) {
+							Port p = it.next();
+							if (p.getSegment() == foundPoint) {
+								it.remove();
+								firePortChange(PortEvent.REMOVED, p);
+							}
+						}
 						firePointChange(PointEvent.REMOVED, points.removePoint(foundPoint));
+						redraw();
 					}
 					
 					@Override
