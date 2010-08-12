@@ -11,9 +11,10 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
+import dk.itu.big_red.model.interfaces.IFillColourable;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.IOutlineColourable;
 
 public class ModelPropertySource implements IPropertySource {
 	private Object object;
@@ -40,16 +41,15 @@ public class ModelPropertySource implements IPropertySource {
 			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
 		}
 		
-		if (object instanceof IColourable) {
-			properties.add(new ColorPropertyDescriptor(IColourable.PROPERTY_FILL_COLOUR, "Fill colour"));
-			properties.add(new ColorPropertyDescriptor(IColourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
-		}
-		if (object instanceof ICommentable) {
+		if (object instanceof IFillColourable)
+			properties.add(new ColorPropertyDescriptor(IFillColourable.PROPERTY_FILL_COLOUR, "Fill colour"));
+		if (object instanceof IOutlineColourable)
+			properties.add(new ColorPropertyDescriptor(IOutlineColourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
+		if (object instanceof ICommentable)
 			properties.add(new TextPropertyDescriptor(ICommentable.PROPERTY_COMMENT, "Comment"));
-		}
-		if (object instanceof INameable) {
+		if (object instanceof INameable)
 			properties.add(new TextPropertyDescriptor(INameable.PROPERTY_NAME, "Name"));
-		}
+		
 		return properties.toArray(new IPropertyDescriptor[0]);
 	}
 
@@ -66,10 +66,10 @@ public class ModelPropertySource implements IPropertySource {
 				}
 			}
 			return null;
-		} else if (id.equals(IColourable.PROPERTY_FILL_COLOUR)) {
-			return ((IColourable)object).getFillColour();
-		} else if (id.equals(IColourable.PROPERTY_OUTLINE_COLOUR)) {
-			return ((IColourable)object).getOutlineColour();
+		} else if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
+			return ((IFillColourable)object).getFillColour();
+		} else if (id.equals(IOutlineColourable.PROPERTY_OUTLINE_COLOUR)) {
+			return ((IOutlineColourable)object).getOutlineColour();
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String result = ((ICommentable)object).getComment();
 			return (result == null ? "" : result);
@@ -102,10 +102,10 @@ public class ModelPropertySource implements IPropertySource {
 		if (id.equals(Node.PROPERTY_CONTROL)) {
 			String control = ((Node)object).getSignature().getControlNames()[(Integer)value];
 			((Node)object).setControl(((Node)object).getSignature().getControl(control));
-		} else if (id.equals(IColourable.PROPERTY_FILL_COLOUR)) {
-			((IColourable)object).setFillColour((RGB)value);
-		} else if (id.equals(IColourable.PROPERTY_OUTLINE_COLOUR)) {
-			((IColourable)object).setOutlineColour((RGB)value);
+		} else if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
+			((IFillColourable)object).setFillColour((RGB)value);
+		} else if (id.equals(IOutlineColourable.PROPERTY_OUTLINE_COLOUR)) {
+			((IOutlineColourable)object).setOutlineColour((RGB)value);
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String comment = (String)value;
 			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));
