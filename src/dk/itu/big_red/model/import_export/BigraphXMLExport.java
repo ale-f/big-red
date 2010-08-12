@@ -9,7 +9,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
@@ -68,7 +68,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	
 	private Element process(Point p) {
 		if (p.getConnections().size() != 0) {
-			EdgeConnection connection = p.getConnections().get(0);
+			LinkConnection connection = p.getConnections().get(0);
 			Element e =
 				doc.createElement(p.getClass().getSimpleName().toLowerCase());
 			DOM.applyAttributesToElement(e,

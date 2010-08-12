@@ -16,7 +16,7 @@ import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
@@ -84,7 +84,7 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		figure.setConstraint(r);
 		
 		String toolTip = model.getName();
-		List<EdgeConnection> l = model.getConnections();
+		List<LinkConnection> l = model.getConnections();
 		if (l.size() != 0)
 			toolTip += "\n(connected to " + l.get(0).getParent() + ")";
 		if (model.getComment() != null)
@@ -93,7 +93,7 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 	}
 	
 	@Override
-	protected List<EdgeConnection> getModelSourceConnections() {
+	protected List<LinkConnection> getModelSourceConnections() {
         return getModel().getConnections();
     }
 	

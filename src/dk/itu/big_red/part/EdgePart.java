@@ -16,14 +16,14 @@ import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.figure.EdgeFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 
 /**
  * EdgeParts represent {@link Edge}s, the container for - and target point of -
- * {@link EdgeConnection}s.
+ * {@link LinkConnection}s.
  * @see Edge
- * @see EdgeConnection
- * @see EdgeConnectionPart
+ * @see LinkConnection
+ * @see LinkConnectionPart
  * @author alec
  *
  */
@@ -64,7 +64,7 @@ public class EdgePart extends AbstractPart implements NodeEditPart, PropertyChan
 	}
 
 	/**
-	 * Returns a list of all the {@link EdgeConnection}s for which the model
+	 * Returns a list of all the {@link LinkConnection}s for which the model
 	 * object is the <i>target</i>.
 	 * 
 	 * <p>Note that EdgeParts are always targets rather than sources, so
@@ -72,7 +72,7 @@ public class EdgePart extends AbstractPart implements NodeEditPart, PropertyChan
 	 * AbstractPart#getModelSourceConnections()} implementation.
 	 */
 	@Override
-	protected List<EdgeConnection> getModelTargetConnections() {
+	protected List<LinkConnection> getModelTargetConnections() {
         return getModel().getConnections();
     }
 	

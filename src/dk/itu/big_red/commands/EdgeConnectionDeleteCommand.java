@@ -3,38 +3,38 @@ package dk.itu.big_red.commands;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 
 /**
- * EdgeConnectionDeleteCommands remove {@link EdgeConnection}s from their
+ * EdgeConnectionDeleteCommands remove {@link LinkConnection}s from their
  * containing {@link Bigraph}.
  * @author alec
  *
  */
 public class EdgeConnectionDeleteCommand extends Command {
-	private EdgeConnection edgeConnection;
+	private LinkConnection linkConnection;
 
-	public void setModel(EdgeConnection edgeConnection) {
-		this.edgeConnection = edgeConnection;
+	public void setModel(LinkConnection linkConnection) {
+		this.linkConnection = linkConnection;
 	}
 
-	public EdgeConnection getModel() {
-		return edgeConnection;
+	public LinkConnection getModel() {
+		return linkConnection;
 	}
 	
 	@Override
 	public boolean canExecute() {
-		return (edgeConnection != null);
+		return (linkConnection != null);
 	}
 	
 	@Override
 	public void execute() {
 		if (canExecute())
-			edgeConnection.getParent().removePoint(edgeConnection.getSource());
+			linkConnection.getParent().removePoint(linkConnection.getSource());
 	}
 	
 	@Override
 	public void undo() {
-		edgeConnection.getParent().addPoint(edgeConnection.getSource());
+		linkConnection.getParent().addPoint(linkConnection.getSource());
 	}
 }

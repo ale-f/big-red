@@ -6,7 +6,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
@@ -35,8 +35,8 @@ public class PartFactory implements EditPartFactory {
         	part = new RootPart();
         } else if (target == Site.class) {
     		part = new SitePart();
-        } else if (target == EdgeConnection.class) {
-        	part = new EdgeConnectionPart();
+        } else if (target == LinkConnection.class) {
+        	part = new LinkConnectionPart();
         } else if (target == Edge.class) {
         	part = new EdgePart();
         } else if (target == InnerName.class) {

@@ -17,7 +17,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
@@ -79,21 +79,21 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	}
 
 	/**
-	 * Returns an empty list of {@link EdgeConnection}s. Subclasses which
+	 * Returns an empty list of {@link LinkConnection}s. Subclasses which
 	 * implement {@link IConnectable} should probably override this method!
 	 */
 	@Override
-	protected List<EdgeConnection> getModelSourceConnections() {
-        return new ArrayList<EdgeConnection>();
+	protected List<LinkConnection> getModelSourceConnections() {
+        return new ArrayList<LinkConnection>();
     }
 
 	/**
-	 * Returns an empty list of {@link EdgeConnection}s. Subclasses which
+	 * Returns an empty list of {@link LinkConnection}s. Subclasses which
 	 * implement {@link IConnectable} should probably override this method!
 	 */
 	@Override
-	protected List<EdgeConnection> getModelTargetConnections() {
-        return new ArrayList<EdgeConnection>();
+	protected List<LinkConnection> getModelTargetConnections() {
+        return new ArrayList<LinkConnection>();
     }
 
 	/**

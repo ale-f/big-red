@@ -5,13 +5,13 @@ import org.eclipse.gef.editpolicies.ConnectionEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 
 import dk.itu.big_red.commands.EdgeConnectionDeleteCommand;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 
 public class EdgeConnectionDeletePolicy extends ConnectionEditPolicy {
     @Override
 	protected Command getDeleteCommand(GroupRequest request) {
     	EdgeConnectionDeleteCommand dc = new EdgeConnectionDeleteCommand();
-		dc.setModel((EdgeConnection)getHost().getModel());
+		dc.setModel((LinkConnection)getHost().getModel());
 		return dc;
     }
 }

@@ -32,18 +32,18 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	}
 	
 	/**
-	 * The {@link EdgeConnection}s that comprise this Link on the bigraph.
+	 * The {@link LinkConnection}s that comprise this Link on the bigraph.
 	 */
-	private ArrayList<EdgeConnection> connections =
-		new ArrayList<EdgeConnection>();
+	private ArrayList<LinkConnection> connections =
+		new ArrayList<LinkConnection>();
 
 	/**
 	 * Adds the given {@link Point} to this Link's set of points, and creates a
-	 * new {@link EdgeConnection} joining it to this Link's {@link Link}.
+	 * new {@link LinkConnection} joining it to this Link's {@link Link}.
 	 * @param point a Point
 	 */
 	public void addPoint(Point point) {
-		EdgeConnection c = new EdgeConnection(this);
+		LinkConnection c = new LinkConnection(this);
 		c.setSource(point);
 		
 		point.addConnection(c);
@@ -52,12 +52,12 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	
 	/**
 	 * Removes the given {@link Point} from this Link's set of points and
-	 * destroys its {@link EdgeConnection}.
+	 * destroys its {@link LinkConnection}.
 	 * 
 	 * @param point a Point
 	 */
 	public void removePoint(Point point) {
-		for (EdgeConnection e : connections) {
+		for (LinkConnection e : connections) {
 			if (e.getSource() == point) {
 				point.removeConnection(e);
 				removeConnection(e);
@@ -68,19 +68,19 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	}
 	
 	@Override
-	public void addConnection(EdgeConnection e) {
+	public void addConnection(LinkConnection e) {
 		connections.add(e);
 		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, null, e);
 	}
 
 	@Override
-	public void removeConnection(EdgeConnection e) {
+	public void removeConnection(LinkConnection e) {
 		connections.remove(e);
 		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, e, null);
 	}
 	
 	@Override
-	public List<EdgeConnection> getConnections() {
+	public List<LinkConnection> getConnections() {
 		return connections;
 	}
 	

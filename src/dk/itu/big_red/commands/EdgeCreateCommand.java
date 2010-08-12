@@ -3,7 +3,7 @@ package dk.itu.big_red.commands;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.interfaces.IConnectable;
@@ -20,15 +20,15 @@ public class EdgeCreateCommand extends Command {
 	public void setTarget(Object e) {
 		if (e instanceof IConnectable)
 			this.point1 = (IConnectable)e;
-		else if (e instanceof EdgeConnection)
-			this.point1 = ((EdgeConnection)e).getParent();
+		else if (e instanceof LinkConnection)
+			this.point1 = ((LinkConnection)e).getParent();
 	}
 	
 	public void setSource(Object e) {
 		if (e instanceof IConnectable)
 			this.point2 = (IConnectable)e;
-		else if (e instanceof EdgeConnection)
-			this.point2 = ((EdgeConnection)e).getParent();
+		else if (e instanceof LinkConnection)
+			this.point2 = ((LinkConnection)e).getParent();
 	}
 	
 	public boolean canExecute() {
@@ -46,7 +46,7 @@ public class EdgeCreateCommand extends Command {
 		} else
 		/*
 		 * If either point2 or point1 is an EdgeTarget, then we can simply add
-		 * a new EdgeConnection to the existing Edge.
+		 * a new LinkConnection to the existing Edge.
 		 */
 		if (point1 instanceof Link) {
 			Link point1 = (Link)this.point1;

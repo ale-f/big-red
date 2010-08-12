@@ -15,20 +15,20 @@ import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
 import dk.itu.big_red.editpolicies.EdgeConnectionDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
-import dk.itu.big_red.figure.EdgeConnectionFigure;
+import dk.itu.big_red.figure.LinkConnectionFigure;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 
 /**
- * EdgeConnectionParts represent {@link EdgeConnection}s, the individual
+ * EdgeConnectionParts represent {@link LinkConnection}s, the individual
  * connections that together comprise an {@link Edge}.
  * @see Edge
- * @see EdgeConnection
+ * @see LinkConnection
  * @see EdgePart
  * @author alec
  *
  */
-public class EdgeConnectionPart extends AbstractConnectionEditPart implements NodeEditPart, PropertyChangeListener {
+public class LinkConnectionPart extends AbstractConnectionEditPart implements NodeEditPart, PropertyChangeListener {
 	/**
 	 * Returns the {@link NodeEditPart} corresponding to this connection's
 	 * {@link Link}.
@@ -39,13 +39,13 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements No
 	}
 	
 	@Override
-	public EdgeConnection getModel() {
-		return (EdgeConnection)super.getModel();
+	public LinkConnection getModel() {
+		return (LinkConnection)super.getModel();
 	}
 	
 	@Override
 	protected IFigure createFigure() {
-		return new EdgeConnectionFigure();
+		return new LinkConnectionFigure();
 	}
 
 	/**
@@ -86,8 +86,8 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements No
 	}
 
 	public void refreshVisuals() {
-		EdgeConnectionFigure figure = (EdgeConnectionFigure)getFigure();
-		EdgeConnection model = getModel();
+		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
+		LinkConnection model = getModel();
 		
 		figure.setToolTip(model.getParent().getComment());
 		

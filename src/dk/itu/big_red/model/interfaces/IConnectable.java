@@ -4,7 +4,7 @@ import java.util.List;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 
 /**
  * Objects implementing IConnectable are those which can be connected to by an
@@ -34,22 +34,22 @@ public interface IConnectable extends ILayoutable {
 	public static final String PROPERTY_TARGET_EDGE = "IConnectableTargetEdge";
 
 	/**
-	 * Registers the given {@link EdgeConnection} as being connected to this
+	 * Registers the given {@link LinkConnection} as being connected to this
 	 * object.
-	 * @param e an EdgeConnection
+	 * @param e an LinkConnection
 	 */
-	public void addConnection(EdgeConnection e);
+	public void addConnection(LinkConnection e);
 	
 	/**
-	 * Unregisters the given {@link EdgeConnection} from being connected to
+	 * Unregisters the given {@link LinkConnection} from being connected to
 	 * this object.
-	 * @param e an EdgeConnection
+	 * @param e an LinkConnection
 	 */
-	public void removeConnection(EdgeConnection e);
+	public void removeConnection(LinkConnection e);
 	
 	/**
-	 * Returns the set of {@link EdgeConnection}s incident on this object.
+	 * Returns the set of {@link LinkConnection}s incident on this object.
 	 * @return a {@link List} of EdgeConnections
 	 */
-	public List<EdgeConnection> getConnections();
+	public List<LinkConnection> getConnections();
 }

@@ -16,7 +16,7 @@ import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.OuterNameFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.interfaces.ICommentable;
@@ -70,7 +70,7 @@ public class OuterNamePart extends AbstractPart implements NodeEditPart {
 	}
 	
 	@Override
-	protected List<EdgeConnection> getModelTargetConnections() {
+	protected List<LinkConnection> getModelTargetConnections() {
         return getModel().getConnections();
     }
 	

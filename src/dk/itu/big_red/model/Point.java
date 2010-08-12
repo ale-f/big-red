@@ -52,10 +52,10 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable {
 		}
 	}
 
-	protected EdgeConnection connection = null;
+	protected LinkConnection connection = null;
 	
 	@Override
-	public void addConnection(EdgeConnection e) {
+	public void addConnection(LinkConnection e) {
 		if (connection != null)
 			connection.getParent().removePoint(this);
 		connection = e;
@@ -63,7 +63,7 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable {
 	}
 
 	@Override
-	public void removeConnection(EdgeConnection e) {
+	public void removeConnection(LinkConnection e) {
 		if (connection == e) {
 			connection = null;
 			listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, e, null);
@@ -71,8 +71,8 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable {
 	}
 	
 	@Override
-	public List<EdgeConnection> getConnections() {
-		ArrayList<EdgeConnection> e = new ArrayList<EdgeConnection>();
+	public List<LinkConnection> getConnections() {
+		ArrayList<LinkConnection> e = new ArrayList<LinkConnection>();
 		if (connection != null)
 			e.add(connection);
 		return e;

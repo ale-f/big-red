@@ -23,7 +23,7 @@ public class Edge extends Link {
 	 */
 	public void averagePosition() {
 		int tx = 0, ty = 0, s = getConnections().size();
-		for (EdgeConnection f : getConnections()) {
+		for (LinkConnection f : getConnections()) {
 			tx += f.getSource().getRootLayout().x;
 			ty += f.getSource().getRootLayout().y;
 		}

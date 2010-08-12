@@ -12,12 +12,12 @@ import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 
 /**
- * An EdgeConnection is the model object behind an actual {@link Connection}
+ * An LinkConnection is the model object behind an actual {@link Connection}
  * on the bigraph. {@link Link}s create and manage them.
  * @author alec
  *
  */
-public class EdgeConnection implements IPropertyChangeNotifier, IAdaptable {
+public class LinkConnection implements IPropertyChangeNotifier, IAdaptable {
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 	/**
@@ -32,7 +32,7 @@ public class EdgeConnection implements IPropertyChangeNotifier, IAdaptable {
 	private Point source;
 	private Link parent;
 	
-	public EdgeConnection(Link link) {
+	public LinkConnection(Link link) {
 		this.parent = link;
 	}
 	

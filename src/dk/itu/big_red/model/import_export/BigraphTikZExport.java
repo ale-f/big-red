@@ -16,7 +16,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.EdgeConnection;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
@@ -216,9 +216,9 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(dk.itu.big_red.model.Point p) throws ExportFailedException {
-		List<EdgeConnection> x = p.getConnections();
+		List<LinkConnection> x = p.getConnections();
 		if (x.size() == 1) {
-			EdgeConnection co = x.get(0);
+			LinkConnection co = x.get(0);
 			Dimension d =
 				co.getParent().getLayout().getCenter().getDifference(co.getSource().getLayout().getCenter());
 			String in = (d.height > 0 ? "90" : "270"),

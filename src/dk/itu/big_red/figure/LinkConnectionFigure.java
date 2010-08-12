@@ -10,8 +10,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
-public class EdgeConnectionFigure extends PolylineConnection {
-	public EdgeConnectionFigure() {
+public class LinkConnectionFigure extends PolylineConnection {
+	public LinkConnectionFigure() {
 		setAntialias(SWT.ON);
         setLineStyle(org.eclipse.swt.SWT.LINE_SOLID);
         setOutlineColour(new RGB(0, 127, 0));
