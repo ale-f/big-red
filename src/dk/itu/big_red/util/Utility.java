@@ -49,8 +49,8 @@ public final class Utility {
 	 * @return a new RGB colour, or <code>null</code> if the string was invalid
 	 */
 	public static RGB colourFromString(String c) {
-		if (c.length() != 7 && c.charAt(0) != '#')
-			return null;
+		if (c == null || c.length() != 7 || c.charAt(0) != '#')
+			return new RGB(0, 0, 0);
 		int r = Integer.parseInt(c.substring(1, 3), 16);
 		int g = Integer.parseInt(c.substring(3, 5), 16);
 		int b = Integer.parseInt(c.substring(5, 7), 16);
