@@ -3,7 +3,6 @@ package dk.itu.big_red.model.assistants;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -11,9 +10,10 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.import_export.XMLNS;
-import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ICommentable;
+import dk.itu.big_red.model.interfaces.IFillColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.IOutlineColourable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
 
@@ -44,14 +44,16 @@ public class AppearanceGenerator {
 					"y", r.y);
 		}
 		
-		if (o instanceof IColourable) {
+		if (o instanceof IFillColourable) {
 			alive = true;
-			RGB fillColour = ((IColourable)o).getFillColour(),
-			    outlineColour = ((IColourable)o).getOutlineColour();
-			
 			DOM.applyAttributesToElement(aE,
-					"fillColor", Utility.colourToString(fillColour),
-					"outlineColor", Utility.colourToString(outlineColour));
+					"fillColor", Utility.colourToString(((IFillColourable)o).getFillColour()));
+		}
+		
+		if (o instanceof IOutlineColourable) {
+			alive = true;
+			DOM.applyAttributesToElement(aE,
+					"outlineColor", Utility.colourToString(((IOutlineColourable)o).getOutlineColour()));
 		}
 		
 		if (o instanceof ICommentable) {
@@ -79,12 +81,11 @@ public class AppearanceGenerator {
 			((ILayoutable)o).setLayout(r);
 		}
 		
-		if (o instanceof IColourable) {
-			RGB fillColour = DOM.getColorAttribute(e, "fillColor"),
-			    outlineColour = DOM.getColorAttribute(e, "outlineColor");
-			
-			((IColourable)o).setFillColour(fillColour);
-			((IColourable)o).setOutlineColour(outlineColour);
+		if (o instanceof IFillColourable)
+			((IFillColourable)o).setFillColour(DOM.getColorAttribute(e, "fillColor"));
+		
+		if (o instanceof IOutlineColourable) {
+			((IOutlineColourable)o).setOutlineColour(DOM.getColorAttribute(e, "outlineColor"));
 		}
 		
 		if (o instanceof ICommentable) {
