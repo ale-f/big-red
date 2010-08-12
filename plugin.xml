@@ -33,6 +33,9 @@
          <newWizardShortcut
                id="dk.itu.big_red.NewRuleWizard">
          </newWizardShortcut>
+         <newWizardShortcut
+               id="dk.itu.big_red.NewSignatureWizard">
+         </newWizardShortcut>
       </perspectiveExtension>
    </extension>
    <extension
