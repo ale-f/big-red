@@ -13,7 +13,7 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
-import dk.itu.big_red.editpolicies.EdgeConnectionDeletePolicy;
+import dk.itu.big_red.editpolicies.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.LinkConnectionFigure;
 import dk.itu.big_red.model.Edge;
@@ -72,7 +72,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new EdgeConnectionDeletePolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LinkConnectionDeletePolicy());
 		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE,
                           new ConnectionEndpointEditPolicy());
 	}

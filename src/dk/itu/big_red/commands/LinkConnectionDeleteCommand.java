@@ -11,7 +11,7 @@ import dk.itu.big_red.model.LinkConnection;
  * @author alec
  *
  */
-public class EdgeConnectionDeleteCommand extends Command {
+public class LinkConnectionDeleteCommand extends Command {
 	private LinkConnection linkConnection;
 
 	public void setModel(LinkConnection linkConnection) {
