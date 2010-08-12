@@ -135,7 +135,7 @@
 		</xsd:unique>
 		
 		<xsd:unique name="EdgeAndOuterNameNames">
-			<xsd:selector xpath="bigraph:edge | bigraph:outername" />
+			<xsd:selector xpath="bigraph:edge|bigraph:outername" />
 			<xsd:field xpath="@name" />
 		</xsd:unique>
 		
@@ -145,7 +145,7 @@
 		</xsd:unique>
 		
 		<xsd:keyref name="PointsConnectedToLinks" refer="bigraph:EdgeAndOuterNameNames">
-			<xsd:selector xpath=".//bigraph:port | .//bigraph:innername" />
+			<xsd:selector xpath=".//bigraph:port|.//bigraph:innername" />
 			<xsd:field xpath="@link" />
 		</xsd:keyref>
 	</xsd:element>
