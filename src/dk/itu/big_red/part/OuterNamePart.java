@@ -3,7 +3,6 @@ package dk.itu.big_red.part;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
@@ -67,7 +66,7 @@ public class OuterNamePart extends AbstractPart implements NodeEditPart {
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
 		
-		figure.setBackgroundColor(ColorConstants.red);
+		figure.setFillColour(model.getOutlineColour());
 	}
 	
 	@Override

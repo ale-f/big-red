@@ -16,6 +16,7 @@ import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import dk.itu.big_red.editpolicies.EdgeConnectionDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.EdgeConnectionFigure;
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.EdgeConnection;
 
 /**
@@ -89,6 +90,8 @@ public class EdgeConnectionPart extends AbstractConnectionEditPart implements No
 		EdgeConnection model = getModel();
 		
 		figure.setToolTip(model.getParent().getComment());
+		
+		figure.setOutlineColour(model.getParent().getOutlineColour());
 	}
 
 	/**
