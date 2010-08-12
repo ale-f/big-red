@@ -1,4 +1,4 @@
-package dk.itu.big_red.tools;
+package dk.itu.big_red.editors.assistants;
 
 import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
