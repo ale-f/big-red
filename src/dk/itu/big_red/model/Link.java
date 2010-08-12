@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.NamespaceManager.NameType;
@@ -15,8 +16,9 @@ import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.IOutlineColourable;
 
-public abstract class Link implements IAdaptable, ILayoutable, INameable, IConnectable, ICommentable {
+public abstract class Link implements IAdaptable, ILayoutable, INameable, IConnectable, ICommentable, IOutlineColourable {
 	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 	@Override
@@ -198,6 +200,20 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 		Rectangle oldLayout = this.layout;
 		this.layout = new Rectangle(newLayout);
 		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, this.layout);
+	}
+	
+	private RGB outlineColour = new RGB(0, 127, 0);
+	
+	@Override
+	public void setOutlineColour(RGB outlineColour) {
+		RGB oldColour = getOutlineColour();
+		this.outlineColour = outlineColour;
+		listeners.firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
+	}
+
+	@Override
+	public RGB getOutlineColour() {
+		return outlineColour;
 	}
 	
 	public abstract Link clone();
