@@ -91,19 +91,17 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		
 		for (Control c : b.getSignature().getControls()) {
 			String cN = c.getLongName();
-			RGB fillColour = c.getFillColour(),
-			    outlineColour = c.getOutlineColour();
-			line("definecolor{" + cN + " fill}{RGB}{" + fillColour.red + "," + fillColour.green + "," + fillColour.blue + "}");
-			line("definecolor{" + cN + " outline}{RGB}{" + outlineColour.red + "," + outlineColour.green + "," + outlineColour.blue + "}");
-			line("tikzset{" + cN + "/.style={fill=" + cN + " fill,draw=" + cN + " outline}}");
-			newLine();
+			line("tikzset{" + cN + "/.style={}}");
 		}
-		line("tikzset{internal edge/.style={curve to,relative=false,draw=green!50!black,fill=none}}");
+		
+		newLine();
+		
+		line("tikzset{internal edge/.style={curve to,relative=false,fill=none}}");
 		line("tikzset{internal port/.style={circle,fill=red,draw=none,minimum size=6,inner sep=0}}");
 		line("tikzset{internal root/.style={dash pattern=on 2pt off 2pt}}");
 		line("tikzset{internal site/.style={dash pattern=on 2pt off 2pt,fill=black!25}}");
 		line("tikzset{internal inner name/.style={fill=blue!30,draw=none}}");
-		line("tikzset{internal outer name/.style={fill=red!30,draw=none}}");
+		line("tikzset{internal outer name/.style={draw=none}}");
 		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
 		
 		List<ILayoutable> ch = b.getChildren();
@@ -166,7 +164,12 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ")";
 		}
 		
-		line("draw [" + n.getControl().getLongName() + "] " + shapeDescriptor + ";");
+		RGB fillColour = n.getFillColour(),
+		    outlineColour = n.getOutlineColour();
+		
+		line("definecolor{" + n.getName() + " fill}{RGB}{" + fillColour.red + "," + fillColour.green + "," + fillColour.blue + "}");
+		line("definecolor{" + n.getName() + " outline}{RGB}{" + outlineColour.red + "," + outlineColour.green + "," + outlineColour.blue + "}");
+		line("draw [" + n.getControl().getLongName() + ",fill=" + n.getName() + " fill,draw=" + n.getName()+ " outline] " + shapeDescriptor + ";");
 		line("node at (" + rltl.x + "," + rltl.y + ") {" + con.getLabel() + "};");
 		
 		beginScope(n);
@@ -191,8 +194,10 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			tl = rl.getTopLeft(),
 			br = rl.getBottomRight(),
 			c = rl.getCenter();
+		RGB outlineColour = e.getOutlineColour();
+		line("definecolor{" + getNiceName(e) + " color}{RGB}{" + outlineColour.red + "," + outlineColour.green + "," + outlineColour.blue + "}"); 
 		if (e instanceof OuterName) {
-			line("draw [internal outer name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
+			line("draw [internal outer name,fill=" + getNiceName(e) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 			line("node [internal name] (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {" + e.getName() + "};");
 		} else if (e instanceof Edge) {
 			line("node (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {};");
@@ -220,7 +225,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			       out = (d.width > 0 ? "0" : "180");
 			line("begin{pgfonlayer}{connection}");
 			scope++;
-			line("draw [internal edge,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getParent()) + "); % " + d);
+			line("draw [internal edge,draw=" + getNiceName(co.getParent()) + " color,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getParent()) + "); % " + d);
 			scope--;
 			line("end{pgfonlayer}");
 		}
