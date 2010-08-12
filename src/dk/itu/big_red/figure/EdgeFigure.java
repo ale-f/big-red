@@ -1,14 +1,15 @@
 package dk.itu.big_red.figure;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 
 public class EdgeFigure extends AbstractFigure {
 	public EdgeFigure() {
 		super();
 		
-		setBackgroundColor(ColorConstants.darkGreen);
+		setFillColour(new RGB(0, 127, 0));
 	}
 	
 	public void setToolTip(String content) {
@@ -33,4 +34,12 @@ public class EdgeFigure extends AbstractFigure {
 	protected void outlineShape(Graphics graphics) {
 	}
 
+
+	public void setFillColour(RGB fillColour) {
+		if (fillColour != null) {
+			if (getLocalBackgroundColor() != null)
+				getLocalBackgroundColor().dispose();
+			setBackgroundColor(new Color(null, fillColour));
+		}
+	}
 }
