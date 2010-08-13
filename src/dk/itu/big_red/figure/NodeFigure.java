@@ -22,8 +22,8 @@ public class NodeFigure extends AbstractFigure {
 		add(labelControl, 0);
 		setConstraint(labelControl, new Rectangle(1, 1, -1, -1));
 		
-		setFillColour(new RGB(255, 255, 255));
-		setOutlineColour(new RGB(0, 0, 0));
+		setBackgroundColor(new RGB(255, 255, 255));
+		setForegroundColor(new RGB(0, 0, 0));
 	}
 	
 	public void setLabel(String text) {

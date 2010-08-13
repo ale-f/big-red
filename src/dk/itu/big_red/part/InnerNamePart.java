@@ -17,10 +17,11 @@ import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.InnerNameFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.IFillColourable;
 
 /**
  * NameParts represent {@link InnerName}s, the model objects which define
@@ -51,7 +52,8 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
 		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME) ||
-			evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT)) {
+			evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT) ||
+			evt.getPropertyName().equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
 	    	refreshVisuals();
 	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
 	    	refreshSourceConnections();

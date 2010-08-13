@@ -81,8 +81,8 @@ public class NodePart extends ThingPart {
 		if (points != null)
 			figure.setPoints(points);
 		
-		figure.setFillColour(model.getFillColour());
-		figure.setOutlineColour(model.getOutlineColour());
+		figure.setBackgroundColor(model.getFillColour());
+		figure.setForegroundColor(model.getOutlineColour());
 		
 		/*
 		 * Any changes to the Metaclass will almost certainly change the

@@ -66,7 +66,7 @@ public class OuterNamePart extends AbstractPart implements NodeEditPart {
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
 		
-		figure.setFillColour(model.getOutlineColour());
+		figure.setBackgroundColor(model.getOutlineColour());
 	}
 	
 	@Override

@@ -22,7 +22,7 @@ public class OuterNameFigure extends AbstractFigure {
 		label.setForegroundColor(ColorConstants.white);
 		add(label, 0);
 		
-		setFillColour(new RGB(255, 0, 0));
+		setBackgroundColor(new RGB(255, 0, 0));
 	}
 	
 	@Override

@@ -60,7 +60,7 @@ public class EdgePart extends AbstractPart implements NodeEditPart, PropertyChan
 		
 		figure.setToolTip(model.getComment());
 		
-		figure.setFillColour(model.getOutlineColour());
+		figure.setBackgroundColor(model.getOutlineColour());
 	}
 
 	/**

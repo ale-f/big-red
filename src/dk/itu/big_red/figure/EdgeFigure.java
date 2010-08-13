@@ -8,7 +8,7 @@ public class EdgeFigure extends AbstractFigure {
 	public EdgeFigure() {
 		super();
 		
-		setFillColour(new RGB(0, 127, 0));
+		setBackgroundColor(new RGB(0, 127, 0));
 	}
 	
 	public void setToolTip(String content) {

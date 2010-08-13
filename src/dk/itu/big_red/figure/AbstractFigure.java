@@ -62,27 +62,27 @@ public abstract class AbstractFigure extends Shape {
 	
 	@Override
 	public void setBackgroundColor(Color c) {
-		setFillColour(c.getRGB());
+		setBackgroundColor(c.getRGB());
 	}
 	
 	@Override
 	public void setForegroundColor(Color c) {
-		setOutlineColour(c.getRGB());
+		setForegroundColor(c.getRGB());
 	}
 	
-	public void setFillColour(RGB fill) {
-		if (fill != null) {
+	public void setBackgroundColor(RGB c) {
+		if (c != null) {
 			if (getLocalBackgroundColor() != null)
 				getLocalBackgroundColor().dispose();
-			super.setBackgroundColor(new Color(null, fill));
+			super.setBackgroundColor(new Color(null, c));
 		}
 	}
 	
-	public void setOutlineColour(RGB outline) {
-		if (outline != null) {
+	public void setForegroundColor(RGB c) {
+		if (c != null) {
 			if (getLocalForegroundColor() != null)
 				getLocalForegroundColor().dispose();
-			super.setForegroundColor(new Color(null, outline));
+			super.setForegroundColor(new Color(null, c));
 		}
 	}
 }
