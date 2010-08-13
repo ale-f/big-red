@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -16,9 +15,9 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
@@ -100,7 +99,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("tikzset{internal port/.style={circle,fill=red,draw=none,minimum size=6,inner sep=0}}");
 		line("tikzset{internal root/.style={dash pattern=on 2pt off 2pt}}");
 		line("tikzset{internal site/.style={dash pattern=on 2pt off 2pt,fill=black!25}}");
-		line("tikzset{internal inner name/.style={fill=blue!30,draw=none}}");
+		line("tikzset{internal inner name/.style={fill=blue!30,draw=none,rectangle,inner sep=0,text=white,font=\\itshape}}");
 		line("tikzset{internal outer name/.style={draw=none}}");
 		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
 		
@@ -206,12 +205,9 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	
 	private void process(InnerName i) throws ExportFailedException {
 		Rectangle rl = i.getRootLayout().translate(translate);
-		Point
-			tl = rl.getTopLeft(),
-			br = rl.getBottomRight(),
-			c = rl.getCenter();
-		line("draw [internal inner name] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
-		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
+		Point c = rl.getCenter();
+		System.out.println(rl);
+		line("node [internal inner name,minimum width=" + (rl.width / 2) + "pt,minimum height=" + (rl.height / 2) + "pt] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 		process((dk.itu.big_red.model.Point)i);
 	}
 	
@@ -219,13 +215,20 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		List<LinkConnection> x = p.getConnections();
 		if (x.size() == 1) {
 			LinkConnection co = x.get(0);
-			Dimension d =
-				co.getParent().getLayout().getCenter().getDifference(co.getSource().getLayout().getCenter());
-			String in = (d.height > 0 ? "90" : "270"),
-			       out = (d.width > 0 ? "0" : "180");
+			String in, out;
+			Point source = co.getSource().getRootLayout().getCenter(),
+			      target = co.getTarget().getRootLayout().getCenter();
+			System.out.println(source);
+			System.out.println(target);
+			if (source.y < target.y)
+				in = "90";
+			else in = "270";
+			if (source.x < target.x)
+				out = "0";
+			else out = "180";
 			line("begin{pgfonlayer}{connection}");
 			scope++;
-			line("draw [internal edge,draw=" + getNiceName(co.getParent()) + " color,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getParent()) + "); % " + d);
+			line("draw [internal edge,draw=" + getNiceName(co.getTarget()) + " color,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getTarget()) + ");");
 			scope--;
 			line("end{pgfonlayer}");
 		}

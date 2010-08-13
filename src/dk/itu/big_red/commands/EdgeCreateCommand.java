@@ -21,14 +21,14 @@ public class EdgeCreateCommand extends Command {
 		if (e instanceof IConnectable)
 			this.point1 = (IConnectable)e;
 		else if (e instanceof LinkConnection)
-			this.point1 = ((LinkConnection)e).getParent();
+			this.point1 = ((LinkConnection)e).getTarget();
 	}
 	
 	public void setSource(Object e) {
 		if (e instanceof IConnectable)
 			this.point2 = (IConnectable)e;
 		else if (e instanceof LinkConnection)
-			this.point2 = ((LinkConnection)e).getParent();
+			this.point2 = ((LinkConnection)e).getTarget();
 	}
 	
 	public boolean canExecute() {

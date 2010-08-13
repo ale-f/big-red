@@ -59,7 +59,7 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable, I
 	@Override
 	public void addConnection(LinkConnection e) {
 		if (connection != null)
-			connection.getParent().removePoint(this);
+			connection.getTarget().removePoint(this);
 		connection = e;
 		listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, null, e);
 	}

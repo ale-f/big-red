@@ -30,11 +30,11 @@ public class LinkConnectionDeleteCommand extends Command {
 	@Override
 	public void execute() {
 		if (canExecute())
-			linkConnection.getParent().removePoint(linkConnection.getSource());
+			linkConnection.getTarget().removePoint(linkConnection.getSource());
 	}
 	
 	@Override
 	public void undo() {
-		linkConnection.getParent().addPoint(linkConnection.getSource());
+		linkConnection.getTarget().addPoint(linkConnection.getSource());
 	}
 }

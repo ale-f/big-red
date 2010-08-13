@@ -35,7 +35,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	 * @return a NodeEditPart
 	 */
 	public NodeEditPart getLinkPart() {
-		return ((NodeEditPart)this.getViewer().getEditPartRegistry().get(getModel().getParent()));
+		return ((NodeEditPart)this.getViewer().getEditPartRegistry().get(getModel().getTarget()));
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	 */
 	public void activate() {
 		super.activate();
-		getModel().getParent().addPropertyChangeListener(this);
+		getModel().getTarget().addPropertyChangeListener(this);
 		refreshVisuals();
 	}
 	
@@ -65,7 +65,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	 * parent {@link Edge}.
 	 */
 	public void deactivate() {
-		getModel().getParent().removePropertyChangeListener(this);
+		getModel().getTarget().removePropertyChangeListener(this);
 		super.deactivate();
 	}
 	
@@ -89,9 +89,9 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
 		LinkConnection model = getModel();
 		
-		figure.setToolTip(model.getParent().getComment());
+		figure.setToolTip(model.getTarget().getComment());
 		
-		figure.setOutlineColour(model.getParent().getOutlineColour());
+		figure.setOutlineColour(model.getTarget().getOutlineColour());
 	}
 
 	/**

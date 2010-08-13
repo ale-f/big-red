@@ -23,23 +23,23 @@ public class LinkConnection implements IPropertyChangeNotifier, IAdaptable {
 	/**
 	 * The property name fired when the connection source changes.
 	 */
-	public static final String PROPERTY_SOURCE = "EdgeConnectionSource";
+	public static final String PROPERTY_SOURCE = "LinkConnectionSource";
 	/**
 	 * The property name fired when the connection target changes.
 	 */
-	public static final String PROPERTY_TARGET = "EdgeConnectionTarget";
+	public static final String PROPERTY_TARGET = "LinkConnectionTarget";
 	
 	private Point source;
-	private Link parent;
+	private Link target;
 	
 	public LinkConnection(Link link) {
-		this.parent = link;
+		this.target = link;
 	}
 	
 	/**
 	 * Sets the source of this connection to the given {@link IConnectable}.
 	 * <p>(There's no corresponding way of setting the <i>target</i> of this
-	 * connection because it's always the same - {@link #getParent()}).
+	 * connection because it's always the same - {@link #getTarget()}).
 	 * @param source the new source
 	 */
 	public void setSource(Point source) {
@@ -60,10 +60,10 @@ public class LinkConnection implements IPropertyChangeNotifier, IAdaptable {
 	
 	/**
 	 * Gets the {@link Link} which manages and contains this connection.
-	 * @return the parent Link
+	 * @return the target Link
 	 */
-	public Link getParent() {
-		return parent;
+	public Link getTarget() {
+		return target;
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class LinkConnection implements IPropertyChangeNotifier, IAdaptable {
 	@Override
 	public Object getAdapter(Class adapter) {
 		if (adapter == IPropertySource.class) {
-			return new ModelPropertySource(getParent());
+			return new ModelPropertySource(getTarget());
 		} else return null;
 	}
 }
