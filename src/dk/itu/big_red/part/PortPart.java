@@ -20,6 +20,7 @@ import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.IFillColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
 /**
@@ -62,7 +63,8 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 			if (prop.equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
 				refreshSourceConnections();
 				refreshVisuals();
-		    } else if (prop.equals(ICommentable.PROPERTY_COMMENT)) {
+		    } else if (prop.equals(ICommentable.PROPERTY_COMMENT) ||
+		    		   prop.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
 		    	refreshVisuals();
 		    }
 		} else if (source == getModel().getParent()) {
@@ -90,6 +92,8 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		if (model.getComment() != null)
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
+		
+		figure.setBackgroundColor(model.getFillColour());
 	}
 	
 	@Override
