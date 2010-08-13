@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.assistants;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
@@ -227,6 +228,33 @@ MenuListener {
 	@Override
 	public void mouseUp(MouseEvent e) {
 		if (dragPortIndex != -1) {
+			Port p = ports.get(dragPortIndex);
+			Line l = new Line();
+			int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
+			double offset;
+			if (segment != -1) {
+				l.setFirstPoint(getPoint(segment));
+				l.setSecondPoint(getPoint(segment + 1));
+				offset =
+					l.getOffsetFromPoint(l.getIntersection(mousePosition));
+			} else {
+				int index = -1;
+				double distance = Double.MAX_VALUE;
+				for (int i = 0; i < points.size(); i++) {
+					points.getPoint(tmp, i);
+					double td = tmp.getDistance(mousePosition);
+					if (td < distance) {
+						index = i;
+						distance = td;
+					}
+				}
+				segment = index;
+				offset = 0.0;
+			}
+			
+			p.setSegment(segment);
+			p.setDistance(offset);
+			
 			dragPortIndex = -1;
 			redraw();
 		} else if (dragPointIndex != -1) {
@@ -605,5 +633,26 @@ MenuListener {
 		e.object = object;
 		for (PortListener i : portListeners)
 			i.portChange(e);
+	}
+	
+	/**
+	 * Returns a list of {@link Port}s specifying the polygon drawn in this
+	 * Canvas.
+	 * @return a PointList specifying a polygon
+	 */
+	public List<Port> getPorts() {
+		return ports;
+	}
+
+	/**
+	 * Overwrites the current list of Ports with the contents of the given
+	 * {@link List}.
+	 * @param ports a list of Ports
+	 */
+	public void setPorts(List<Port> ports) {
+		if (ports != null && ports.size() >= 1) {
+			this.ports.clear();
+			this.ports.addAll(ports);
+		}
 	}
 }
