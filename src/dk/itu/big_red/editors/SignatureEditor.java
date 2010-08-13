@@ -38,6 +38,7 @@ import dk.itu.big_red.editors.assistants.PointListener;
 import dk.itu.big_red.editors.assistants.PortListener;
 import dk.itu.big_red.editors.assistants.SignatureEditorPolygonCanvas;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
@@ -136,6 +137,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			currentControl.setLabel(label.getText());
 			currentControl.setLongName(name.getText());
 			currentControl.clearPorts();
+			for (Port p : appearance.getPorts())
+				currentControl.addPort(p);
 			currentControl.setResizable(resizable.getSelection());
 			currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints().getCopy());
 		}
