@@ -7,6 +7,8 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.figure.adornments.SlightlyOvergenerousClippingStrategy;
 
@@ -56,5 +58,31 @@ public abstract class AbstractFigure extends Shape {
 	 */
 	public void stop(Graphics g) {
 		g.popState();
+	}
+	
+	@Override
+	public void setBackgroundColor(Color c) {
+		setFillColour(c.getRGB());
+	}
+	
+	@Override
+	public void setForegroundColor(Color c) {
+		setOutlineColour(c.getRGB());
+	}
+	
+	public void setFillColour(RGB fill) {
+		if (fill != null) {
+			if (getLocalBackgroundColor() != null)
+				getLocalBackgroundColor().dispose();
+			super.setBackgroundColor(new Color(null, fill));
+		}
+	}
+	
+	public void setOutlineColour(RGB outline) {
+		if (outline != null) {
+			if (getLocalForegroundColor() != null)
+				getLocalForegroundColor().dispose();
+			super.setForegroundColor(new Color(null, outline));
+		}
 	}
 }

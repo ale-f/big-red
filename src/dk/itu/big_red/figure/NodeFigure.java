@@ -6,7 +6,6 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.model.Control;
@@ -81,22 +80,6 @@ public class NodeFigure extends AbstractFigure {
 			}
 		} finally {
 			stop(graphics);
-		}
-	}
-
-	public void setFillColour(RGB fillColour) {
-		if (fillColour != null) {
-			if (getLocalBackgroundColor() != null)
-				getLocalBackgroundColor().dispose();
-			setBackgroundColor(new Color(null, fillColour));
-		}
-	}
-	
-	public void setOutlineColour(RGB outlineColour) {
-		if (outlineColour != null) {
-			if (getLocalForegroundColor() != null)
-				getLocalForegroundColor().dispose();
-			setForegroundColor(new Color(null, outlineColour));
 		}
 	}
 }

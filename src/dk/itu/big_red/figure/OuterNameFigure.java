@@ -6,7 +6,6 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
 
@@ -59,13 +58,5 @@ public class OuterNameFigure extends AbstractFigure {
 
 	@Override
 	protected void outlineShape(Graphics graphics) {
-	}
-
-	public void setFillColour(RGB fillColour) {
-		if (fillColour != null) {
-			if (getLocalBackgroundColor() != null)
-				getLocalBackgroundColor().dispose();
-			setBackgroundColor(new Color(null, fillColour));
-		}
 	}
 }
