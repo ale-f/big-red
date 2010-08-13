@@ -7,11 +7,13 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.IFillColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
 
@@ -21,7 +23,7 @@ import dk.itu.big_red.model.interfaces.INameable;
  * @author alec
  *
  */
-public abstract class Point implements IConnectable, IAdaptable, ICommentable {
+public abstract class Point implements IConnectable, IAdaptable, ICommentable, IFillColourable {
 	private String comment = null;
 	
 	@Override
@@ -182,5 +184,19 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable {
 		if (adapter == IPropertySource.class) {
 			return new ModelPropertySource(this);
 		} else return null;
+	}
+	
+	private RGB fillColour = new RGB(255, 0, 0);
+	
+	@Override
+	public void setFillColour(RGB fillColour) {
+		RGB oldColour = getFillColour();
+		this.fillColour = fillColour;
+		listeners.firePropertyChange(PROPERTY_FILL_COLOUR, oldColour, fillColour);
+	}
+
+	@Override
+	public RGB getFillColour() {
+		return fillColour;
 	}
 }
