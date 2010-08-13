@@ -112,8 +112,6 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	private Button addControl, removeControl;
 	
 	private Text name, label;
-	private Tree ports;
-	private Button addPort, removePort;
 	private SignatureEditorPolygonCanvas appearance;
 	private Button resizable, portsMovable;
 	
@@ -266,27 +264,6 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		label.addModifyListener(sharedDirtListener);
 		
-		Label portsLabel = new Label(right, SWT.NONE);
-		portsLabel.setText("Ports:");
-		
-		ports = new Tree(right, SWT.SINGLE | SWT.BORDER | SWT.VIRTUAL);
-		GridData portsLayout = new GridData(SWT.FILL, SWT.NONE, true, false);
-		portsLayout.heightHint = 90;
-		ports.setLayoutData(portsLayout);
-		
-		new Label(right, SWT.NONE); /* padding */
-		
-		Composite portButtons = new Composite(right, SWT.NONE);
-		RowLayout portButtonsLayout = new RowLayout();
-		portButtons.setLayout(portButtonsLayout);
-		portButtons.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
-		
-		addPort = new Button(portButtons, SWT.NONE);
-		addPort.setImage(Utility.getImage(ISharedImages.IMG_OBJ_ADD));
-		
-		removePort = new Button(portButtons, SWT.NONE);
-		removePort.setImage(Utility.getImage(ISharedImages.IMG_ELCL_REMOVE));
-		
 		Label appearanceLabel = new Label(right, SWT.NONE);
 		GridData appearanceLabelLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
@@ -334,8 +311,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 	private void setEnablement(boolean enabled) {
 		UI.setEnabled(enabled,
-			name, label, ports, addPort, removePort, appearance, resizable,
-			portsMovable);
+			name, label, appearance, resizable, portsMovable);
 	}
 	
 	private void initialiseSignatureEditor() {
