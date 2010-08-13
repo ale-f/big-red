@@ -155,9 +155,9 @@ public class Line {
 			          dt = p1.getDifference(p2);
 			double d1 = (double)dp.width / dt.width,
 			       d2 = (double)dp.height / dt.height;
-			if (d1 != Double.NaN)
-				return d1;
-			else return d2;
+			if (Double.isNaN(d1))
+				return d2;
+			else return d1;
 		} else return Double.NaN;
 	}
 	
