@@ -35,6 +35,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.assistants.PointListener;
+import dk.itu.big_red.editors.assistants.PortListener;
 import dk.itu.big_red.editors.assistants.SignatureEditorPolygonCanvas;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Signature;
@@ -134,6 +135,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		if (currentControl != null) {
 			currentControl.setLabel(label.getText());
 			currentControl.setLongName(name.getText());
+			currentControl.clearPorts();
 			currentControl.setResizable(resizable.getSelection());
 			currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints().getCopy());
 		}
@@ -141,7 +143,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		final class DirtListener implements ModifyListener, SelectionListener, PointListener {
+		final class DirtListener implements ModifyListener, SelectionListener, PointListener, PortListener {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -171,6 +173,13 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 				}
 			}
 			
+			@Override
+			public void portChange(PortEvent e) {
+				if (fireModify) {
+					fieldsToControl();
+					setDirty(true);
+				}
+			}
 		}
 		
 		DirtListener sharedDirtListener = new DirtListener();
@@ -275,6 +284,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceLayoutData.heightHint = 100;
 		appearance.setLayoutData(appearanceLayoutData);
 		appearance.setBackground(ColorConstants.listBackground);
+		appearance.addPortListener(sharedDirtListener);
 		appearance.addPointListener(sharedDirtListener);
 		
 		new Label(right, SWT.NONE); /* padding */
