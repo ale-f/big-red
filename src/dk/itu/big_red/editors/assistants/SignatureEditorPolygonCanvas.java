@@ -254,6 +254,7 @@ MenuListener {
 			
 			p.setSegment(segment);
 			p.setDistance(offset);
+			firePortChange(PortEvent.MOVED, p);
 			
 			dragPortIndex = -1;
 			redraw();
@@ -650,7 +651,7 @@ MenuListener {
 	 * @param ports a list of Ports
 	 */
 	public void setPorts(List<Port> ports) {
-		if (ports != null && ports.size() >= 1) {
+		if (ports != null) {
 			this.ports.clear();
 			this.ports.addAll(ports);
 		}
