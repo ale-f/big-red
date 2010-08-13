@@ -99,7 +99,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("tikzset{internal port/.style={circle,fill=red,draw=none,minimum size=6,inner sep=0}}");
 		line("tikzset{internal root/.style={dash pattern=on 2pt off 2pt}}");
 		line("tikzset{internal site/.style={dash pattern=on 2pt off 2pt,fill=black!25}}");
-		line("tikzset{internal inner name/.style={fill=blue!30,draw=none,rectangle,inner sep=0,text=white,font=\\itshape}}");
+		line("tikzset{internal inner name/.style={draw=none,rectangle,inner sep=0,text=white,font=\\itshape}}");
 		line("tikzset{internal outer name/.style={draw=none}}");
 		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
 		
@@ -207,7 +207,9 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		Rectangle rl = i.getRootLayout().translate(translate);
 		Point c = rl.getCenter();
 		System.out.println(rl);
-		line("node [internal inner name,minimum width=" + (rl.width / 2) + "pt,minimum height=" + (rl.height / 2) + "pt] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
+		RGB fillColour = i.getFillColour();
+		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.red + "," + fillColour.green + "," + fillColour.blue + "}");
+		line("node [internal inner name,fill=" + getNiceName(i) + " color!50,minimum width=" + (rl.width / 2) + "pt,minimum height=" + (rl.height / 2) + "pt] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 		process((dk.itu.big_red.model.Point)i);
 	}
 	
