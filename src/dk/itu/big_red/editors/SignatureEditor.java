@@ -115,19 +115,24 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	
 	private Text name, label;
 	private SignatureEditorPolygonCanvas appearance;
-	private Button resizable, portsMovable;
+	private Button ovalMode, polygonMode, resizable;
 	
 	private boolean fireModify = true;
 	
 	protected void controlToFields() {
 		fireModify = false;
+		boolean polygon = (currentControl.getShape() == Shape.SHAPE_POLYGON);
 		
 		label.setText(currentControl.getLabel());
 		name.setText(currentControl.getLongName());
-		appearance.setPoints(currentControl.getPoints());
+		if (polygon)
+			appearance.setPoints(currentControl.getPoints());
 		appearance.setPorts(currentControl.getPortsArray());
 		resizable.setSelection(currentControl.isResizable());
 		currentControlItem.setText(currentControl.getLongName());
+		
+		ovalMode.setSelection(!polygon);
+		polygonMode.setSelection(polygon);
 		
 		fireModify = true;
 	}
@@ -281,7 +286,20 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
 		appearanceLabel.setText("Appearance:");
 		
-		appearance = new SignatureEditorPolygonCanvas(right, SWT.BORDER);
+		Composite appearanceGroup = new Composite(right, SWT.NONE);
+		GridData appearanceGroupLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
+		appearanceGroup.setLayoutData(appearanceGroupLayoutData);
+		GridLayout appearanceGroupLayout = new GridLayout(1, false);
+		appearanceGroup.setLayout(appearanceGroupLayout);		
+		
+		ovalMode = new Button(appearanceGroup, SWT.RADIO);
+		ovalMode.setText("Oval");
+		
+		polygonMode = new Button(appearanceGroup, SWT.RADIO);
+		polygonMode.setText("Polygon");
+		polygonMode.setSelection(true);
+		
+		appearance = new SignatureEditorPolygonCanvas(appearanceGroup, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		appearanceLayoutData.widthHint = 100;
 		appearanceLayoutData.heightHint = 100;
@@ -290,14 +308,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearance.addPortListener(sharedDirtListener);
 		appearance.addPointListener(sharedDirtListener);
 		
-		new Label(right, SWT.NONE); /* padding */
-		
 		FontData smif = appearanceLabel.getFont().getFontData()[0];
 		smif.setStyle(SWT.ITALIC);
 		smif.setHeight(8);
 		Font smiff = new Font(null, smif);
 		
-		Label appearanceDescription = new Label(right, SWT.CENTER | SWT.WRAP);
+		Label appearanceDescription = new Label(appearanceGroup, SWT.CENTER | SWT.WRAP);
 		GridData appearanceDescriptionData = new GridData();
 		appearanceDescriptionData.verticalAlignment = SWT.TOP;
 		appearanceDescriptionData.horizontalAlignment = SWT.FILL;
@@ -306,17 +322,9 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceDescription.setLayoutData(appearanceDescriptionData);
 		appearanceDescription.setFont(smiff);
 		
-		new Label(right, SWT.NONE);
-		
-		resizable = new Button(right, SWT.CHECK);
+		resizable = new Button(appearanceGroup, SWT.CHECK);
 		resizable.setText("Resizable?");
 		resizable.addSelectionListener(sharedDirtListener);
-		
-		new Label(right, SWT.NONE);
-		
-		portsMovable = new Button(right, SWT.CHECK);
-		portsMovable.setText("Ports movable?");
-		portsMovable.addSelectionListener(sharedDirtListener);
 		
 		setEnablement(false);
 		initialiseSignatureEditor();
@@ -324,7 +332,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 	private void setEnablement(boolean enabled) {
 		UI.setEnabled(enabled,
-			name, label, appearance, resizable, portsMovable);
+			name, label, appearance, resizable, ovalMode, polygonMode);
 	}
 	
 	private void initialiseSignatureEditor() {
