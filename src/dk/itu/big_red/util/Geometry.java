@@ -15,13 +15,7 @@ public class Geometry {
 	}
 	
 	public static Point getPointOnEllipse(Rectangle el, double offset) {
-		Point centre = el.getCenter();
-		offset -= 0.25;
-		double t = offset * (2 * Math.PI),
-		       a = el.width / 2,
-		       b = el.height / 2;
-		return new Point(centre.x + (a * Math.cos(t)),
-				centre.y + (b * Math.sin(t)));
+		return new Ellipse(el).getPointFromOffset(offset);
 	}
 	
 	/**
