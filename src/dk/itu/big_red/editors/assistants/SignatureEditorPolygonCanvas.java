@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.MenuItem;
 
 import dk.itu.big_red.editors.assistants.PointListener.PointEvent;
 import dk.itu.big_red.editors.assistants.PortListener.PortEvent;
+import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.util.Line;
 import dk.itu.big_red.util.UI;
@@ -53,9 +54,12 @@ MenuListener {
 	 */
 	public static final String PROPERTY_PORT = "SignatureEditorPolygonCanvasPort";
 	
+	private Shape mode = Shape.SHAPE_POLYGON;
 	private PointList points = new PointList();
 	private Point tmp = new Point();
 	private Dimension controlSize = new Dimension();
+	
+	private double ellipseWidth = 40, ellipseHeight = 40;
 	
 	private Point roundedMousePosition = new Point(-10, -10),
 	              mousePosition = new Point(-10, -10);
@@ -85,11 +89,46 @@ MenuListener {
 	}
 
 	/**
+	 * Changes the mode of the editor, allowing either ovals or polygons to be
+	 * edited. (Both modes allow for ports to be added, moved, and removed, but
+	 * only the polygon editor allows for the shape to be changed.)
+	 * 
+	 * <p>Even if the mode wasn't actually changed, a call to this method
+	 * resets the editor, removing all points and ports.
+	 * @param mode a {@link Shape}
+	 */
+	public void setMode(Shape mode) {
+		points.removeAllPoints();
+		firePointChange(PointEvent.REMOVED, null);
+		points.addPoint(0, 0);
+		
+		ports.clear();
+		firePortChange(PortEvent.REMOVED, null);
+				
+		if (mode == Shape.SHAPE_POLYGON) {
+			firePointChange(PointEvent.ADDED, new Point(0, 0));
+
+			centrePolygon();
+		} else if (mode == Shape.SHAPE_OVAL) {
+			/* no special handling */
+		}
+
+		this.mode = mode;
+		redraw();
+	}
+	
+	public Shape getMode() {
+		return mode;
+	}
+	
+	/**
 	 * Deletes the point under the crosshairs, if there is one (and if it isn't
 	 * the last point remaining).
 	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
+		if (mode == Shape.SHAPE_OVAL)
+			return;
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p);
 		if (deleteIndex != -1 && (deleteIndex != 0 || points.size() > 1)) {
@@ -161,6 +200,8 @@ MenuListener {
 	}
 	
 	private int getNearestSegment(Point up, double threshold) {
+		if (mode == Shape.SHAPE_OVAL)
+			return -1;
 		int index = -1,
 		    closestPointIndex = -1;
 		Line l = new Line();
@@ -550,17 +591,7 @@ MenuListener {
 			UI.createMenuItem(m, 0, "Remove &all points and ports", new SelectionListener() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					points.removeAllPoints();
-					firePointChange(PointEvent.REMOVED, null);
-					
-					ports.clear();
-					firePortChange(PortEvent.REMOVED, null);
-					
-					points.addPoint(0, 0);
-					firePointChange(PointEvent.ADDED, new Point(0, 0));
-
-					centrePolygon();
-					redraw();
+					setMode(mode);
 				}
 				
 				@Override
