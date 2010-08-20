@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ImportFailedException;
+import dk.itu.big_red.intro.Activator;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
@@ -16,7 +17,8 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 	@Override
 	public Signature importObject() throws ImportFailedException {
 		try {
-			Document d = DOM.parse(source);
+			Document d =
+				DOM.validate(DOM.parse(source), Activator.getPluginResource("schema/signature.xsd"));
 			source.close();
 			return (Signature)process(d.getDocumentElement());
 		} catch (Exception e) {
