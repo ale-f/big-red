@@ -125,6 +125,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		label.setText(currentControl.getLabel());
 		name.setText(currentControl.getLongName());
+		appearance.setMode(polygon ? Shape.SHAPE_POLYGON : Shape.SHAPE_OVAL);
 		if (polygon)
 			appearance.setPoints(currentControl.getPoints());
 		appearance.setPorts(currentControl.getPortsArray());
@@ -145,7 +146,9 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			for (Port p : appearance.getPorts())
 				currentControl.addPort(p);
 			currentControl.setResizable(resizable.getSelection());
-			currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints().getCopy());
+			if (polygonMode.getSelection()) {
+				currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints().getCopy());
+			} else currentControl.setShape(Shape.SHAPE_OVAL, null);
 		}
 	}
 	
@@ -294,10 +297,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		ovalMode = new Button(appearanceGroup, SWT.RADIO);
 		ovalMode.setText("Oval");
+		ovalMode.addSelectionListener(sharedDirtListener);
 		
 		polygonMode = new Button(appearanceGroup, SWT.RADIO);
 		polygonMode.setText("Polygon");
 		polygonMode.setSelection(true);
+		polygonMode.addSelectionListener(sharedDirtListener);
 		
 		appearance = new SignatureEditorPolygonCanvas(appearanceGroup, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
