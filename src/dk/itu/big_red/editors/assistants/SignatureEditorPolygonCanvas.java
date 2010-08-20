@@ -554,26 +554,46 @@ MenuListener {
 		
 		if (foundPort == -1) {
 			if (segment != -1) {
-				UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
-		
+				if (mode == Shape.SHAPE_POLYGON)
+					UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
+			
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							Line l = new Line();
+							l.setFirstPoint(getPoint(segment));
+							l.setSecondPoint(getPoint(segment + 1));
+							
+							Point portPoint = l.getIntersection(roundedMousePosition);
+							double distance = l.getOffsetFromPoint(portPoint);
+							
+							int lsegment = segment;
+							if (distance >= 1) {
+								lsegment++;
+								distance = 0;
+							}
+							
+							Port p = new Port();
+							p.setSegment(lsegment);
+							p.setDistance(distance);
+							
+							ports.add(p);
+							firePortChange(PortEvent.ADDED, p);
+							redraw();
+						}
+			
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {
+							// TODO Auto-generated method stub
+							
+						}
+					});
+				else UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
+					
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						Line l = new Line();
-						l.setFirstPoint(getPoint(segment));
-						l.setSecondPoint(getPoint(segment + 1));
-						
-						Point portPoint = l.getIntersection(roundedMousePosition);
-						double distance = l.getOffsetFromPoint(portPoint);
-						
-						int lsegment = segment;
-						if (distance >= 1) {
-							lsegment++;
-							distance = 0;
-						}
-						
 						Port p = new Port();
-						p.setSegment(lsegment);
-						p.setDistance(distance);
+						p.setSegment(0);
+						p.setDistance(new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10)).getClosestOffset(mousePosition));
 						
 						ports.add(p);
 						firePortChange(PortEvent.ADDED, p);
