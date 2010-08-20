@@ -31,6 +31,7 @@ import dk.itu.big_red.editors.assistants.PointListener.PointEvent;
 import dk.itu.big_red.editors.assistants.PortListener.PortEvent;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Port;
+import dk.itu.big_red.util.Ellipse;
 import dk.itu.big_red.util.Line;
 import dk.itu.big_red.util.UI;
 
@@ -161,16 +162,28 @@ MenuListener {
 	}
 	
 	protected int findPortAt(int x, int y) {
-		Line l = new Line();
-		for (int i = 0; i < ports.size(); i++) {
-			Port p = ports.get(i);
-			int segment = p.getSegment();
-			l.setFirstPoint(getPoint(segment));
-			l.setSecondPoint(getPoint(segment + 1));
-			tmp.setLocation(l.getPointFromOffset(p.getDistance()));
-			if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
-				y >= tmp.y - 4 && y <= tmp.y + 4)
-				return i;
+		if (mode == Shape.SHAPE_POLYGON) {
+			Line l = new Line();
+			for (int i = 0; i < ports.size(); i++) {
+				Port p = ports.get(i);
+				int segment = p.getSegment();
+				l.setFirstPoint(getPoint(segment));
+				l.setSecondPoint(getPoint(segment + 1));
+				tmp.setLocation(l.getPointFromOffset(p.getDistance()));
+				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
+					y >= tmp.y - 4 && y <= tmp.y + 4)
+					return i;
+			}
+		} else if (mode == Shape.SHAPE_OVAL) {
+			Ellipse e = new Ellipse();
+			e.setBounds(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10));
+			for (int i = 0; i < ports.size(); i++) {
+				Port p = ports.get(i);
+				tmp.setLocation(e.getPointFromOffset(p.getDistance()));
+				if (x >= tmp.x - 4 && y <= tmp.y + 4 &&
+					y >= tmp.y - 4 && y <= tmp.y + 4)
+					return i;
+			}
 		}
 		return -1;
 	}
@@ -273,26 +286,34 @@ MenuListener {
 		if (dragPortIndex != -1) {
 			Port p = ports.get(dragPortIndex);
 			Line l = new Line();
-			int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
+			int segment;
 			double offset;
-			if (segment != -1) {
-				l.setFirstPoint(getPoint(segment));
-				l.setSecondPoint(getPoint(segment + 1));
-				offset =
-					l.getOffsetFromPoint(l.getIntersection(mousePosition));
-			} else {
-				int index = -1;
-				double distance = Double.MAX_VALUE;
-				for (int i = 0; i < points.size(); i++) {
-					points.getPoint(tmp, i);
-					double td = tmp.getDistance(mousePosition);
-					if (td < distance) {
-						index = i;
-						distance = td;
+			
+			if (mode == Shape.SHAPE_POLYGON) {
+				segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
+				if (segment != -1) {
+					l.setFirstPoint(getPoint(segment));
+					l.setSecondPoint(getPoint(segment + 1));
+					offset =
+						l.getOffsetFromPoint(l.getIntersection(mousePosition));
+				} else {
+					int index = -1;
+					double distance = Double.MAX_VALUE;
+					for (int i = 0; i < points.size(); i++) {
+						points.getPoint(tmp, i);
+						double td = tmp.getDistance(mousePosition);
+						if (td < distance) {
+							index = i;
+							distance = td;
+						}
 					}
+					segment = index;
+					offset = 0.0;
 				}
-				segment = index;
-				offset = 0.0;
+			} else {
+				segment = 0;
+				offset = new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10))
+					.getClosestOffset(mousePosition);
 			}
 			
 			p.setSegment(segment);
@@ -378,29 +399,40 @@ MenuListener {
 			int w = ((controlSize.width - 60) / 10) * 10,
 			    h = ((controlSize.height - 60) / 10) * 10;
 			e.gc.drawOval(30, 30, w, h);
+			
+			e.gc.setBackground(ColorConstants.red);
+			for (Port p : ports) {
+				Point pt = new Ellipse(new Rectangle(30, 30, w, h)).getPointFromOffset(p.getDistance());
+				e.gc.fillOval(pt.x - 4, pt.y - 4, 8, 8);
+			}
 		}
 		
 		if (dragPortIndex != -1) {
 			e.gc.setAlpha(127);
 			
-			int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
-			if (segment != -1) {
-				l.setFirstPoint(getPoint(segment));
-				l.setSecondPoint(getPoint(segment + 1));
-				tmp.setLocation(l.getIntersection(mousePosition));
-			} else {
-				int index = -1;
-				double distance = Double.MAX_VALUE;
-				for (int i = 0; i < points.size(); i++) {
-					points.getPoint(tmp, i);
-					double td = tmp.getDistance(mousePosition);
-					if (td < distance) {
-						index = i;
-						distance = td;
+			if (mode == Shape.SHAPE_POLYGON) {
+				int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
+				if (segment != -1) {
+					l.setFirstPoint(getPoint(segment));
+					l.setSecondPoint(getPoint(segment + 1));
+					tmp.setLocation(l.getIntersection(mousePosition));
+				} else {
+					int index = -1;
+					double distance = Double.MAX_VALUE;
+					for (int i = 0; i < points.size(); i++) {
+						points.getPoint(tmp, i);
+						double td = tmp.getDistance(mousePosition);
+						if (td < distance) {
+							index = i;
+							distance = td;
+						}
 					}
+					if (index != -1)
+						points.getPoint(tmp, index);
 				}
-				if (index != -1)
-					points.getPoint(tmp, index);
+			} else if (mode == Shape.SHAPE_OVAL) {
+				tmp.setLocation(new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10))
+					.getClosestPoint(mousePosition));
 			}
 			
 			e.gc.fillOval(tmp.x - 4, tmp.y - 4, 8, 8);
