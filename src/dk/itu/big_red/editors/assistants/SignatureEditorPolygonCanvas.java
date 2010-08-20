@@ -180,6 +180,8 @@ MenuListener {
 	}
 	
 	protected int findPointAt(int x, int y) {
+		if (mode != Shape.SHAPE_POLYGON)
+			return -1;
 		for (int i = 0; i < points.size(); i++) {
 			points.getPoint(tmp, i);
 			if (x >= tmp.x - 3 && x <= tmp.x + 3 &&
@@ -201,7 +203,7 @@ MenuListener {
 	
 	private int getNearestSegment(Point up, double threshold) {
 		if (mode == Shape.SHAPE_OVAL)
-			return -1;
+			return 0;
 		int index = -1,
 		    closestPointIndex = -1;
 		Line l = new Line();
@@ -245,7 +247,7 @@ MenuListener {
 		dragPortIndex = findPortAt(up);
 		if (dragPortIndex == -1) {
 			dragPointIndex = findPointAt(up);
-			if (dragPointIndex == -1) {
+			if (dragPointIndex == -1 && mode == Shape.SHAPE_POLYGON) {
 				if (points.size() == 1) {
 					dragPointIndex = 0;
 					dragPoint = p;
@@ -348,27 +350,34 @@ MenuListener {
 		}
 		
 		e.gc.setAlpha(255);
-		
 		e.gc.setForeground(ColorConstants.black);
-		e.gc.drawPolyline(points.toIntArray());
-		Point first = getPoint(0), last = getPoint(points.size() - 1);
-		e.gc.drawLine(first.x, first.y, last.x, last.y);
 		
-		e.gc.setBackground(ColorConstants.black);
-		for (int i = 0; i < points.size(); i++) {
-			points.getPoint(tmp, i);
-			e.gc.fillOval(tmp.x - 3, tmp.y - 3, 6, 6);
-		}
-		
-		e.gc.setBackground(ColorConstants.red);
 		Line l = new Line();
-		for (Port p : ports) {
-			int segment = p.getSegment();
-			l.setFirstPoint(getPoint(segment));
-			l.setSecondPoint(getPoint(segment + 1));
+		
+		if (mode == Shape.SHAPE_POLYGON) {
+			e.gc.drawPolyline(points.toIntArray());
+			Point first = getPoint(0), last = getPoint(points.size() - 1);
+			e.gc.drawLine(first.x, first.y, last.x, last.y);
 			
-			Point pt = l.getPointFromOffset(p.getDistance());
-			e.gc.fillOval(pt.x - 4, pt.y - 4, 8, 8);
+			e.gc.setBackground(ColorConstants.black);
+			for (int i = 0; i < points.size(); i++) {
+				points.getPoint(tmp, i);
+				e.gc.fillOval(tmp.x - 3, tmp.y - 3, 6, 6);
+			}
+			
+			e.gc.setBackground(ColorConstants.red);
+			for (Port p : ports) {
+				int segment = p.getSegment();
+				l.setFirstPoint(getPoint(segment));
+				l.setSecondPoint(getPoint(segment + 1));
+				
+				Point pt = l.getPointFromOffset(p.getDistance());
+				e.gc.fillOval(pt.x - 4, pt.y - 4, 8, 8);
+			}
+		} else {
+			int w = ((controlSize.width - 60) / 10) * 10,
+			    h = ((controlSize.height - 60) / 10) * 10;
+			e.gc.drawOval(30, 30, w, h);
 		}
 		
 		if (dragPortIndex != -1) {
