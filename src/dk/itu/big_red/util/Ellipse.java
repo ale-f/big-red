@@ -43,8 +43,7 @@ public class Ellipse {
 	 * @return an offset
 	 */
 	public double getClosestOffset(Point p) {
-		Point el = bb.getTopLeft(),
-		      elc = bb.getCenter();
+		Point elc = bb.getCenter();
 		double elw = bb.width, elh = bb.height;
 		double xscale = 1, yscale = 1;
 		
@@ -52,18 +51,16 @@ public class Ellipse {
 			xscale = elh / elh;
 		else yscale = elw / elh;
 		
-		el.scale(xscale, yscale);
 		elc.scale(xscale, yscale);
 		elw *= xscale; elh *= yscale;
 		
 		Point tr = elc.getNegated();
 		p = p.getCopy().scale(xscale, yscale).translate(tr);
-		el.translate(tr);
 		elc.translate(tr);
 		
 		double dx = -p.x, dy = -p.y,
 		       dr2 = sq(dx) + sq(dy),
-		       r = bb.width / 2,
+		       r = elw / 2,
 		       sqrt = Math.sqrt(sq(r) * dr2),
 		       x0 = (sgn(dy) * dx * sqrt) / dr2,
 		       x1 = (-(sgn(dy) * dx * sqrt)) / dr2,
