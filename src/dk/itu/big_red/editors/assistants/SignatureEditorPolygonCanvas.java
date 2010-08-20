@@ -180,7 +180,7 @@ MenuListener {
 			for (int i = 0; i < ports.size(); i++) {
 				Port p = ports.get(i);
 				tmp.setLocation(e.getPointFromOffset(p.getDistance()));
-				if (x >= tmp.x - 4 && y <= tmp.y + 4 &&
+				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
 			}
