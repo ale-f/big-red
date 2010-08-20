@@ -612,8 +612,8 @@ MenuListener {
 				
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
-					
+					firePortChange(PortEvent.REMOVED, ports.remove(foundPort));
+					redraw();
 				}
 				
 				@Override
