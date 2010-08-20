@@ -49,6 +49,14 @@ import dk.itu.big_red.util.Utility;
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
 	
+	public SignatureEditor() {
+		 /*
+		  * Don't fire any modifications until the first control has been
+		  * loaded.
+		  */
+		fireModify = false;
+	}
+	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		try {
