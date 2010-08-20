@@ -11,6 +11,10 @@ public class Ellipse {
 	
 	
 	public Ellipse(Rectangle bb) {
+		setBounds(bb);
+	}
+	
+	public void setBounds(Rectangle bb) {
 		this.bb.setBounds(bb);
 	}
 	
@@ -48,13 +52,12 @@ public class Ellipse {
 			xscale = elh / elh;
 		else yscale = elw / elh;
 		
-		p.scale(xscale, yscale);
 		el.scale(xscale, yscale);
 		elc.scale(xscale, yscale);
 		elw *= xscale; elh *= yscale;
 		
 		Point tr = elc.getNegated();
-		p.translate(tr);
+		p = p.getCopy().scale(xscale, yscale).translate(tr);
 		el.translate(tr);
 		elc.translate(tr);
 		
@@ -76,6 +79,11 @@ public class Ellipse {
 		
 		if (t < 0)
 			t += Math.PI * 2;
-		return t / (Math.PI * 2);
+		t = (t / (Math.PI * 2)) + 0.25;
+		return (t > 1 ? t - 1 : t);
+	}
+	
+	public Point getClosestPoint(Point p) {
+		return getPointFromOffset(getClosestOffset(p));
 	}
 }
