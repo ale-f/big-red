@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
@@ -31,6 +32,7 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -48,7 +50,9 @@ import dk.itu.big_red.editors.assistants.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
 import dk.itu.big_red.editors.assistants.BigraphEditorTemplateTransferDropTargetListener;
 import dk.itu.big_red.editors.assistants.ConnectionDragCreationToolEntry;
+import dk.itu.big_red.exceptions.ImportFailedException;
 import dk.itu.big_red.import_export.assistants.FileResourceOutputStream;
+import dk.itu.big_red.intro.Activator;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
@@ -170,6 +174,10 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    		im.setInputStream(fi.getFile().getContents());
 	    		
 	    		model.setModel(im.importObject());
+	    	} catch (ImportFailedException e) {
+	    		ErrorDialog.openError(getSite().getShell(), null, "Validation has failed.",
+	    			new Status(Status.ERROR, Activator.PLUGIN_ID, Status.OK, e.getCause().getCause().getLocalizedMessage(), e));
+	    		model.setModel(new Bigraph());
 	    	} catch (Exception e) {
 	    		e.printStackTrace();
 	    		System.exit(-1);
