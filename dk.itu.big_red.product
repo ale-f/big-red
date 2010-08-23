@@ -6,7 +6,7 @@
    <aboutInfo>
       <image path="content/logo-big.png"/>
       <text>
-         Big Red, the integrated development environment for bigraphs
+         Big Red, the graphical development environment for bigraphs
 Copyright © 2009, 2010 Alexander Faithfull. All rights reserved.
 
 Big Red is built on the Eclipse Rich Client Platform.
