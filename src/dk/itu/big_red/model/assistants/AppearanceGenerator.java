@@ -68,7 +68,7 @@ public class AppearanceGenerator {
 	}
 	
 	public static void setAppearance(Element e, Object o) {
-		if (!e.getNodeName().equals("big-red:appearance"))
+		if (!DOM.nameEqualsNS(e, XMLNS.BIG_RED, "appearance"))
 			return;
 		
 		if (o instanceof ILayoutable) {
@@ -117,7 +117,7 @@ public class AppearanceGenerator {
 	}
 	
 	public static void setShape(Element e, Control c) {
-		if (!e.getTagName().equals("big-red:shape"))
+		if (!DOM.nameEqualsNS(e, XMLNS.BIG_RED, "shape"))
 			return;
 
 		Control.Shape shape = Shape.SHAPE_OVAL;

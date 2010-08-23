@@ -270,4 +270,8 @@ public class DOM {
 		if (e != null && newChild != null)
 			e.appendChild(newChild);
 	}
+	
+	public static boolean nameEqualsNS(Element e, String nsURI, String nodeName) {
+		return (e.getNamespaceURI().equals(nsURI) && e.getLocalName().equals(nodeName));
+	}
 }
