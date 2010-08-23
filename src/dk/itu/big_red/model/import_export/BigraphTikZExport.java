@@ -99,8 +99,8 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("tikzset{internal port/.style={circle,fill=red,draw=none,minimum size=6,inner sep=0}}");
 		line("tikzset{internal root/.style={dash pattern=on 2pt off 2pt}}");
 		line("tikzset{internal site/.style={dash pattern=on 2pt off 2pt,fill=black!25}}");
-		line("tikzset{internal inner name/.style={draw=none,rectangle,inner sep=0,text=white,font=\\itshape}}");
-		line("tikzset{internal outer name/.style={draw=none}}");
+		line("tikzset{internal inner name/.style={draw=none,rectangle}}");
+		line("tikzset{internal outer name/.style={draw=none,rectangle}}");
 		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
 		
 		List<ILayoutable> ch = b.getChildren();
@@ -199,17 +199,21 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			line("draw [internal outer name,fill=" + getNiceName(e) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 			line("node [internal name] (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {" + e.getName() + "};");
 		} else if (e instanceof Edge) {
-			line("node (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {};");
+			line("node [inner sep=0] (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {};");
 		}
 	}
 	
 	private void process(InnerName i) throws ExportFailedException {
 		Rectangle rl = i.getRootLayout().translate(translate);
-		Point c = rl.getCenter();
+		Point
+			tl = rl.getTopLeft(),
+			br = rl.getBottomRight(),
+			c = rl.getCenter();
 		System.out.println(rl);
 		RGB fillColour = i.getFillColour();
 		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.red + "," + fillColour.green + "," + fillColour.blue + "}");
-		line("node [internal inner name,fill=" + getNiceName(i) + " color!50,minimum width=" + (rl.width / 2) + "pt,minimum height=" + (rl.height / 2) + "pt] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
+		line("draw [internal inner name,fill=" + getNiceName(i) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
+		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 		process((dk.itu.big_red.model.Point)i);
 	}
 	
@@ -225,9 +229,13 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			if (source.y < target.y)
 				in = "90";
 			else in = "270";
-			if (source.x < target.x)
-				out = "0";
-			else out = "180";
+			if (!(p instanceof InnerName)) {
+				if (source.x < target.x)
+					out = "0";
+				else out = "180";
+			} else {
+				out = "90";
+			}
 			line("begin{pgfonlayer}{connection}");
 			scope++;
 			line("draw [internal edge,draw=" + getNiceName(co.getTarget()) + " color,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getTarget()) + ");");
