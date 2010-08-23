@@ -52,7 +52,7 @@ import dk.itu.big_red.editors.assistants.BigraphEditorTemplateTransferDropTarget
 import dk.itu.big_red.editors.assistants.ConnectionDragCreationToolEntry;
 import dk.itu.big_red.exceptions.ImportFailedException;
 import dk.itu.big_red.import_export.assistants.FileResourceOutputStream;
-import dk.itu.big_red.intro.Activator;
+import dk.itu.big_red.intro.RedActivator;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
@@ -176,7 +176,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    		model.setModel(im.importObject());
 	    	} catch (ImportFailedException e) {
 	    		ErrorDialog.openError(getSite().getShell(), null, "Validation has failed.",
-	    			new Status(Status.ERROR, Activator.PLUGIN_ID, Status.OK, e.getCause().getCause().getLocalizedMessage(), e));
+	    			new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, e.getCause().getCause().getLocalizedMessage(), e));
 	    		model.setModel(new Bigraph());
 	    	} catch (Exception e) {
 	    		e.printStackTrace();
