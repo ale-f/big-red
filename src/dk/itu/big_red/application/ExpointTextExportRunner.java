@@ -1,4 +1,4 @@
-package dk.itu.big_red.intro;
+package dk.itu.big_red.application;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;

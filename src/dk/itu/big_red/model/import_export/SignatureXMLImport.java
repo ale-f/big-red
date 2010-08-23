@@ -3,8 +3,8 @@ package dk.itu.big_red.model.import_export;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.application.RedActivator;
 import dk.itu.big_red.exceptions.ImportFailedException;
-import dk.itu.big_red.intro.RedActivator;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;

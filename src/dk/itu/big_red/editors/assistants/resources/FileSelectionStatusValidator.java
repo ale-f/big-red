@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 
-import dk.itu.big_red.intro.RedActivator;
+import dk.itu.big_red.application.RedActivator;
 
 /**
  * FileSelectionStatusValidators only validate selections which contain a

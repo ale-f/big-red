@@ -1,4 +1,4 @@
-package dk.itu.big_red.intro;
+package dk.itu.big_red.application;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;

@@ -5,8 +5,8 @@ import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.application.RedActivator;
 import dk.itu.big_red.exceptions.ImportFailedException;
-import dk.itu.big_red.intro.RedActivator;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Link;
