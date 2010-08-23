@@ -20,7 +20,8 @@ public class FixedPointAnchor extends AbstractConnectionAnchor {
 		SOUTH,
 		SOUTH_WEST,
 		WEST,
-		CENTER
+		CENTER,
+		CALCULATE
 	};
 	
 	private Orientation orientation = Orientation.CENTER;
@@ -61,6 +62,11 @@ public class FixedPointAnchor extends AbstractConnectionAnchor {
 			break;
 		case WEST:
 			p = getOwner().getBounds().getLeft();
+			break;
+		case CALCULATE:
+			if (reference.x < getOwner().getBounds().getCenter().x)
+				p = getOwner().getBounds().getLeft();
+			else p = getOwner().getBounds().getRight();
 			break;
 		case CENTER:
 		default:
