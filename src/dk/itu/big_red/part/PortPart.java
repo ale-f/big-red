@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.EllipseAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
@@ -16,6 +15,8 @@ import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
+import dk.itu.big_red.figure.adornments.FixedPointAnchor;
+import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.ICommentable;
@@ -114,18 +115,18 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
     }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new EllipseAnchor(getFigure());
+		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
     }
     
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new EllipseAnchor(getFigure());
+		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
     }
 	
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new EllipseAnchor(getFigure());
+		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
     }
     
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new EllipseAnchor(getFigure());
+		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
     }
 }
