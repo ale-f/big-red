@@ -65,10 +65,10 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	
 	private void processThing(Element e, Thing model) throws ImportFailedException {
 		if (model instanceof Node)
-			((Node)model).setControl(bigraph.getSignature().getControl(DOM.getAttribute(e, "control")));
+			((Node)model).setControl(bigraph.getSignature().getControl(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control")));
 		
 		if (model instanceof INameable)
-			((INameable)model).setName(DOM.getAttribute(e, "name"));
+			((INameable)model).setName(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"));
 		
 		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
 			if (!(e.getChildNodes().item(j) instanceof Element))
@@ -78,8 +78,8 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	}
 	
 	private void processPort(Element e, Port model) throws ImportFailedException {
-		String name = DOM.getAttribute(e, "name"),
-	           link = DOM.getAttribute(e, "link");
+		String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"),
+	           link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
 		model.setName(name);
 		
 		connect(link, model);
@@ -87,14 +87,14 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	
 	private boolean processLink(Element e, Link model) throws ImportFailedException {
 		boolean rv = false;
-		model.setName(DOM.getAttribute(e, "name"));
+		model.setName(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"));
 		
 		return rv;
 	}
 	
 	private void processInnerName(Element e, InnerName model) throws ImportFailedException {
-		String name = DOM.getAttribute(e, "name"),
-        link = DOM.getAttribute(e, "link");
+		String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"),
+        link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
 		model.setName(name);
 		
 		connect(link, model);
@@ -103,7 +103,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	private Object process(ILayoutable context, Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
 		
-		Element el = DOM.removeNamedChildElement(e, "big-red:appearance");
+		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
 		

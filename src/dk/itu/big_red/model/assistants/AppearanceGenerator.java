@@ -73,23 +73,23 @@ public class AppearanceGenerator {
 		
 		if (o instanceof ILayoutable) {
 			Rectangle r = new Rectangle(
-					DOM.getIntAttribute(e, "x"),
-					DOM.getIntAttribute(e, "y"),
-					DOM.getIntAttribute(e, "width"),
-					DOM.getIntAttribute(e, "height"));
+					DOM.getIntAttribute(e, XMLNS.BIG_RED, "x"),
+					DOM.getIntAttribute(e, XMLNS.BIG_RED, "y"),
+					DOM.getIntAttribute(e, XMLNS.BIG_RED, "width"),
+					DOM.getIntAttribute(e, XMLNS.BIG_RED, "height"));
 			
 			((ILayoutable)o).setLayout(r);
 		}
 		
 		if (o instanceof IFillColourable)
-			((IFillColourable)o).setFillColour(DOM.getColorAttribute(e, "fillColor"));
+			((IFillColourable)o).setFillColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "fillColor"));
 		
 		if (o instanceof IOutlineColourable) {
-			((IOutlineColourable)o).setOutlineColour(DOM.getColorAttribute(e, "outlineColor"));
+			((IOutlineColourable)o).setOutlineColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor"));
 		}
 		
 		if (o instanceof ICommentable) {
-			((ICommentable)o).setComment(DOM.getAttribute(e, "comment"));
+			((ICommentable)o).setComment(DOM.getAttributeNS(e, XMLNS.BIG_RED, "comment"));
 		}
 	}
 	
@@ -123,7 +123,7 @@ public class AppearanceGenerator {
 		Control.Shape shape = Shape.SHAPE_OVAL;
 		PointList pl = null;
 		
-		String s = DOM.getAttribute(e, "shape");
+		String s = DOM.getAttributeNS(e, XMLNS.BIG_RED, "shape");
 		if (s != null) {
 			if (s.equals("polygon"))
 				shape = Shape.SHAPE_POLYGON;
@@ -135,8 +135,8 @@ public class AppearanceGenerator {
 				if (!(e.getChildNodes().item(j) instanceof Element))
 					continue;
 				Element pE = (Element)e.getChildNodes().item(j);
-				pl.addPoint(DOM.getIntAttribute(pE, "x"),
-						DOM.getIntAttribute(pE, "y"));
+				pl.addPoint(DOM.getIntAttribute(pE, XMLNS.BIG_RED, "x"),
+						DOM.getIntAttribute(pE, XMLNS.BIG_RED, "y"));
 			}
 		}
 		

@@ -27,7 +27,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
@@ -142,19 +141,22 @@ public class DOM {
 	}
 	
 	/**
-	 * Gets all the children of the specified element with the given name.
+	 * Gets all the children of the specified element with the given name and
+	 * namespace.
 	 * (Note that this method only searches immediate children.)
 	 * @param d an Element containing children
+	 * @param nsURI the namespace to search in
 	 * @param n the tag name to search for
 	 * @return an ArrayList of child elements
 	 */
-	public static ArrayList<Element> getNamedChildElements(Element d, String n) {
+	public static ArrayList<Element> getNamedChildElements(Element d, String nsURI, String n) {
 		ArrayList<Element> r = new ArrayList<Element>();
 		NodeList p = d.getChildNodes();
 		for (int i = 0; i < p.getLength(); i++) {
 			Node t = p.item(i);
 			if (t instanceof Element &&
-					t.getNodeName().equals(n))
+					t.getNamespaceURI().equals(nsURI) &&
+					t.getLocalName().equals(n))
 				r.add((Element)t);
 		}
 		return r;
@@ -169,8 +171,8 @@ public class DOM {
 	 *         or more than one matches
 	 * @see DOM#getNamedChildElements
 	 */
-	public static Element getNamedChildElement(Element d, String n) {
-		ArrayList<Element> r = getNamedChildElements(d, n);
+	public static Element getNamedChildElement(Element d, String nsURI, String n) {
+		ArrayList<Element> r = getNamedChildElements(d, nsURI, n);
 		if (r.size() == 1)
 			return r.get(0);
 		else return null;
@@ -184,46 +186,37 @@ public class DOM {
 	 * @return the unique named (former) child, or <code>null</code> if there
 	 *         were zero or more than one matches
 	 */
-	public static Element removeNamedChildElement(Element d, String n) {
-		Element r = getNamedChildElement(d, n);
+	public static Element removeNamedChildElement(Element d, String nsURI, String n) {
+		Element r = getNamedChildElement(d, nsURI, n);
 		if (r != null)
 			r.getParentNode().removeChild(r);
 		return r;
 	}
-	
-	/**
-	 * Retrieves the given named attribute from the specified Element, so you
-	 * can get an attribute with one function call rather than four of them.
-	 * @param d an Element with attributes set
-	 * @param n the attribute name to search for
-	 * @return the attribute's value, or <code>null</code> if the attribute
-	 *         couldn't be found
-	 */
-	public static String getAttribute(Element d, String n) {
-		NamedNodeMap attrs = d.getAttributes();
-		if (attrs != null) {
-			Node value = attrs.getNamedItem(n);
-			if (value != null) {
-				String result = value.getNodeValue().trim();
-				if (result.length() > 0)
-					return result;
-					else return null;
-			} else return null;
-		} else return null;
-	}
 
 	/**
-	 * Retrieves the given named attribute from the specified Element,
-	 * automatically converting the result from a string into an integer.
+	 * Retrieves the given named attribute from the given Element. (Either the
+	 * attribute or the Element must have the given namespace; see Neil
+	 * Bradley's <q>The XML Companion</q>, third edition, page 160 for why this
+	 * is necessary.)
 	 * @param d an Element with attributes set
+	 * @param nsURI the attribute (or Element's) namespace
 	 * @param n the attribute name to search for
-	 * @return the attribute's value as an integer, or <code>0</code> if the
-	 *         attribute couldn't be found
-	 * @see DOM#getAttribute
+	 * @return the attribute's value
 	 */
-	public static int getIntAttribute(Element d, String n) {
+	public static String getAttributeNS(Element d, String nsURI, String n) {
+		String r = d.getAttributeNS(nsURI, n);
+		if ((r == null || r.length() == 0) && d.getNamespaceURI().equals(nsURI)) {
+			r = d.getAttributeNS(null, n);
+		}
+		return r;
+	}
+	
+	public static int getIntAttribute(Element d, String nsURI, String n) {
 		try {
-			return Integer.parseInt(getAttribute(d, n));
+			String attr = getAttributeNS(d, nsURI, n);
+			System.out.println("getIntAttribute(" + d + ", \"" + nsURI + "\", \"" + n + "\")");
+			System.out.println("attr is " + attr);
+			return Integer.parseInt(getAttributeNS(d, nsURI, n));
 		} catch (Exception e) {
 			return 0;
 		}
@@ -233,14 +226,15 @@ public class DOM {
 	 * Retrieves the given named attribute from the specified Element,
 	 * automatically converting the result from a string into a double.
 	 * @param d an Element with attributes set
+	 * @param nsURI the attribute's namespace
 	 * @param n the attribute name to search for
 	 * @return the attribute's value as an double, or <code>0</code> if the
 	 *         attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
-	public static double getDoubleAttribute(Element d, String n) {
+	public static double getDoubleAttribute(Element d, String nsURI, String n) {
 		try {
-			return Double.parseDouble(getAttribute(d, n));
+			return Double.parseDouble(getAttributeNS(d, nsURI, n));
 		} catch (Exception e) {
 			return 0;
 		}
@@ -251,13 +245,14 @@ public class DOM {
 	 * automatically converting the result from a string into a {@link RGB}
 	 * colour.
 	 * @param d an Element with attributes set
+	 * @param nsURI the attribute's namespace
 	 * @param n the attribute name to search for
 	 * @return the attribute's value as a RGB colour, or <code>null</code> if
 	 *         the attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
-	public static RGB getColorAttribute(Element d, String n) {
-		return Utility.colourFromString(getAttribute(d, n));
+	public static RGB getColorAttribute(Element d, String nsURI, String n) {
+		return Utility.colourFromString(getAttributeNS(d, nsURI, n));
 	}
 	
 	/**
