@@ -1,11 +1,9 @@
 package dk.itu.big_red.model.interfaces.pure;
 
-import java.util.Collection;
-
 public interface INode extends IPlace {
-	public IPlace getParent();
+	public IPlace getIPlace();
 	
-	public Collection<INode> getNodes();
-	public Collection<IPort> getPorts();
-	public Collection<ISite> getSites();
+	public Iterable<INode> getINodes();
+	public Iterable<IPort> getIPorts();
+	public Iterable<ISite> getISites();
 }
