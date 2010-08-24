@@ -30,9 +30,7 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 		page1.setTitle("Select a file format.");
 		
 		page2 = new WizardBigraphTextExportPage("bigraphTikZExportPage", selection);
-		page2.setTitle("Export as TikZ image");
-		page2.setDescription("Export the current bigraph as a TikZ image, suitable for use in papers or high-resolution printing.");
-		setWindowTitle("Export as TikZ image");
+		setWindowTitle("Export");
 		
 		addPage(page1);
 		addPage(page2); 
@@ -49,6 +47,11 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 					cfe = e;
 					page2.setTitle("Export as " + e.getAttribute("name"));
 					setWindowTitle("Export as " + e.getAttribute("name"));
+					IConfigurationElement[] description =
+						e.getChildren("description");
+					if (description.length == 1)
+						page2.setDescription(description[0].getValue());
+					else page2.setDescription("Export the current bigraph in a textual form.");
 				} catch (CoreException x) {
 					x.printStackTrace();
 					return;
