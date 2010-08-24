@@ -2,9 +2,10 @@ package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.pure.IInnerName;
 
 
-public class InnerName extends Point implements INameable {
+public class InnerName extends Point implements INameable, IInnerName {
 	@Override
 	public InnerName clone() {
 		System.out.println("! Clone?");

@@ -3,8 +3,12 @@ package dk.itu.big_red.model;
 import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.pure.INode;
+import dk.itu.big_red.model.interfaces.pure.IRoot;
+import dk.itu.big_red.model.interfaces.pure.ISite;
+import dk.itu.big_red.util.HomogeneousIterable;
 
-public class Root extends Thing implements INameable {
+public class Root extends Thing implements INameable, IRoot {
 	@Override
 	public Thing clone() throws CloneNotSupportedException {
 		return new Root()._overwrite(this);
@@ -33,4 +37,13 @@ public class Root extends Thing implements INameable {
 		}
 	}
 
+	@Override
+	public Iterable<INode> getINodes() {
+		return new HomogeneousIterable<INode>(children, INode.class);
+	}
+
+	@Override
+	public Iterable<ISite> getISites() {
+		return new HomogeneousIterable<ISite>(children, ISite.class);
+	}
 }

@@ -14,9 +14,14 @@ import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.pure.INode;
+import dk.itu.big_red.model.interfaces.pure.IPlace;
+import dk.itu.big_red.model.interfaces.pure.IPort;
+import dk.itu.big_red.model.interfaces.pure.ISite;
 import dk.itu.big_red.util.Geometry;
+import dk.itu.big_red.util.HomogeneousIterable;
 
-public class Node extends Thing implements PropertyChangeListener, IColourable, INameable {
+public class Node extends Thing implements PropertyChangeListener, IColourable, INameable, INode {
 	/**
 	 * The property name fired when the control changes. (Note that this
 	 * property name is fired <i>after</i> any other changes required to change
@@ -180,5 +185,25 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 			if (!newName.equals(oldName))
 				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}
+	}
+
+	@Override
+	public IPlace getIPlace() {
+		return (IPlace)getParent();
+	}
+
+	@Override
+	public Iterable<INode> getINodes() {
+		return new HomogeneousIterable<INode>(children, INode.class);
+	}
+
+	@Override
+	public Iterable<IPort> getIPorts() {
+		return new HomogeneousIterable<IPort>(children, IPort.class);
+	}
+
+	@Override
+	public Iterable<ISite> getISites() {
+		return new HomogeneousIterable<ISite>(children, ISite.class);
 	}
 }

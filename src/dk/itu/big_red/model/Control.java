@@ -11,6 +11,7 @@ import org.eclipse.swt.graphics.RGB;
 import dk.itu.big_red.exceptions.DuplicateControlException;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
+import dk.itu.big_red.model.interfaces.pure.IControl;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -23,7 +24,7 @@ import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
  * @author alec
  *
  */
-public class Control implements IPropertyChangeNotifier, IColourable {
+public class Control implements IPropertyChangeNotifier, IColourable, IControl {
 	public static enum Shape {
 		/**
 		 * An oval.

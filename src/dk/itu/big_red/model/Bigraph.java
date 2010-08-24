@@ -7,8 +7,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.pure.IBigraph;
+import dk.itu.big_red.model.interfaces.pure.IEdge;
+import dk.itu.big_red.model.interfaces.pure.IOuterName;
+import dk.itu.big_red.model.interfaces.pure.IRoot;
+import dk.itu.big_red.util.HomogeneousIterable;
 
-public class Bigraph extends Thing {
+public class Bigraph extends Thing implements IBigraph {
 	protected ResourceWrapper<Signature> signature =
 		new ResourceWrapper<Signature>();
 	protected NamespaceManager namespaceManager = new NamespaceManager();
@@ -172,5 +177,20 @@ public class Bigraph extends Thing {
 	
 	public int getUpperInnerNameBoundary() {
 		return upperInnerNameBoundary;
+	}
+
+	@Override
+	public Iterable<IEdge> getIEdges() {
+		return new HomogeneousIterable<IEdge>(children, IEdge.class);
+	}
+
+	@Override
+	public Iterable<IRoot> getIRoots() {
+		return new HomogeneousIterable<IRoot>(children, IRoot.class);
+	}
+
+	@Override
+	public Iterable<IOuterName> getIOuterNames() {
+		return new HomogeneousIterable<IOuterName>(children, IOuterName.class);
 	}
 }

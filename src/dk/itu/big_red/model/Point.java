@@ -16,6 +16,8 @@ import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.IFillColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.pure.ILink;
+import dk.itu.big_red.model.interfaces.pure.IPoint;
 
 /**
  * Points are objects which can be connected to <em>at most one</em> {@link
@@ -23,7 +25,13 @@ import dk.itu.big_red.model.interfaces.INameable;
  * @author alec
  *
  */
-public abstract class Point implements IConnectable, IAdaptable, ICommentable, IFillColourable {
+public abstract class Point implements IConnectable, IAdaptable, ICommentable, IFillColourable, IPoint {
+	@Override
+	public ILink getILink() {
+		return (getConnections().size() > 0 ?
+				getConnections().get(0).getTarget() : null);
+	}
+
 	private String comment = null;
 	
 	@Override

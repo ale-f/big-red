@@ -1,6 +1,8 @@
 package dk.itu.big_red.model;
 
-public class OuterName extends Link {
+import dk.itu.big_red.model.interfaces.pure.IOuterName;
+
+public class OuterName extends Link implements IOuterName {
 
 	@Override
 	public OuterName clone() {

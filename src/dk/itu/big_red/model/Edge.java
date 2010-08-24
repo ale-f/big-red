@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.pure.IEdge;
 
 /**
   * An Edge is a connection which connects any number of {@link Port}s and
@@ -16,7 +17,7 @@ import dk.itu.big_red.model.interfaces.IConnectable;
   * @author alec
   *
   */
-public class Edge extends Link {
+public class Edge extends Link implements IEdge {
 	/**
 	 * Moves this EdgeTarget to the average position of all the
 	 * {@link IConnectable}s connected to it.

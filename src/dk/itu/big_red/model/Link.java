@@ -17,8 +17,10 @@ import dk.itu.big_red.model.interfaces.IConnectable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
 import dk.itu.big_red.model.interfaces.IOutlineColourable;
+import dk.itu.big_red.model.interfaces.pure.ILink;
+import dk.itu.big_red.model.interfaces.pure.IPoint;
 
-public abstract class Link implements IAdaptable, ILayoutable, INameable, IConnectable, ICommentable, IOutlineColourable {
+public abstract class Link implements IAdaptable, ILayoutable, INameable, IConnectable, ICommentable, IOutlineColourable, ILink {
 	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 	@Override
@@ -217,4 +219,12 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	}
 	
 	public abstract Link clone();
+	
+	@Override
+	public Iterable<IPoint> getIPoints() {
+		ArrayList<IPoint> points = new ArrayList<IPoint>();
+		for (LinkConnection c : connections)
+			points.add(c.getSource());
+		return points;
+	}
 }

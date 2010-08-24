@@ -3,6 +3,10 @@ package dk.itu.big_red.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.itu.big_red.model.interfaces.pure.IControl;
+import dk.itu.big_red.model.interfaces.pure.ISignature;
+import dk.itu.big_red.util.HomogeneousIterable;
+
 /**
  * The Signature is a central storage point for {@link Control}s and their
  * properties (both in terms of the bigraph model and their visual
@@ -11,7 +15,7 @@ import java.util.List;
  * @author alec
  *
  */
-public class Signature {
+public class Signature implements ISignature {
 	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
 	public static final Control DEFAULT_CONTROL = new Control();
 	
@@ -47,5 +51,10 @@ public class Signature {
 	
 	public List<Control> getControls() {
 		return controls;
+	}
+
+	@Override
+	public Iterable<IControl> getIControls() {
+		return new HomogeneousIterable<IControl>(controls, IControl.class);
 	}
 }

@@ -4,6 +4,8 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.pure.INode;
+import dk.itu.big_red.model.interfaces.pure.IPort;
 import dk.itu.big_red.util.Geometry;
 
 /**
@@ -13,7 +15,7 @@ import dk.itu.big_red.util.Geometry;
  * @author alec
  *
  */
-public class Port extends Point implements ILayoutable {
+public class Port extends Point implements ILayoutable, IPort {
 	/**
 	 * The property name fired when this Port's {@link #segment} changes.
 	 */
@@ -118,5 +120,10 @@ public class Port extends Point implements ILayoutable {
 			r.setLocation(Geometry.getPointOnEllipse(getParent().getLayout().getCopy().setLocation(0, 0), getDistance()).translate(-5, -5));
 		}
 		return r;
+	}
+
+	@Override
+	public INode getINode() {
+		return getParent();
 	}
 }
