@@ -181,7 +181,7 @@
             id="Big Red.TikZExportWizard"
             name="Export as text">
          <description>
-            Export the current bigraph in a textual form.
+            Export a bigraph in a textual form.
          </description>
       </wizard>
    </extension>
@@ -290,12 +290,18 @@
             icon="icons/wizards/vector.png"
             id="big-red.exporter1"
             name="TikZ image">
+         <description>
+            Export a bigraph as a TikZ image, suitable for use in papers or high-resolution printing.
+         </description>
       </exporter>
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphXMLExport"
             icon="icons/icon16.png"
             id="big-red.exporter2"
             name="XML">
+         <description>
+            Export a bigraph as a XML document, equivalent to that produced by File → Save.
+         </description>
       </exporter>
    </extension>
 

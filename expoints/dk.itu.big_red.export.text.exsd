@@ -49,6 +49,9 @@
 
    <element name="exporter">
       <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
@@ -89,6 +92,17 @@
       </complexType>
    </element>
 
+   <element name="description" type="string">
+      <annotation>
+         <appinfo>
+            <meta.element translatable="true"/>
+         </appinfo>
+         <documentation>
+            An optional sub-element whose body should describe this text exporter.
+         </documentation>
+      </annotation>
+   </element>
+
    <annotation>
       <appinfo>
          <meta.section type="since"/>
@@ -108,10 +122,10 @@
       <documentation>
          Copyright © 2010 Alexander Faithfull.
 &lt;p&gt;
-	Copying and distribution of this file, with or without modification,
-	are permitted in any medium without royalty provided that the
-	copyright notice and this notice are preserved. This file is offered
-	as-is, without any warranty.
+ Copying and distribution of this file, with or without modification,
+ are permitted in any medium without royalty provided that the
+ copyright notice and this notice are preserved. This file is offered
+ as-is, without any warranty.
 &lt;/p&gt;
       </documentation>
    </annotation>
