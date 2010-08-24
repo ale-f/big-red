@@ -2,6 +2,9 @@ package dk.itu.big_red.util;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -124,5 +127,36 @@ public class UI {
 	public static void setEnabled(boolean enabled, Control... controls) {
 		for (Control c : controls)
 			c.setEnabled(enabled);
+	}
+	
+	private static Clipboard cb = null;
+	
+	/**
+	 * Returns the shared {@link Clipboard} for this application.
+	 * @return a Clipboard
+	 */
+	public static Clipboard getClipboard() {
+		if (cb == null)
+			cb = new Clipboard(null);
+		return cb;
+	}
+	
+	/**
+	 * Sets the clipboard's contents to the given string.
+	 * @param s a string
+	 */
+	public static void setClipboardText(String s) {
+		TextTransfer tt = TextTransfer.getInstance();
+		getClipboard().setContents(new Object[]{ s }, new Transfer[]{ tt });
+	}
+	
+	/**
+	 * Returns the clipboard's contents as a string.
+	 * @return the clipboard's contents, or <code>null</code> if the clipboard
+	 *         didn't contain a string
+	 */
+	public static String getClipboardText() {
+		TextTransfer tt = TextTransfer.getInstance();
+		return (String)getClipboard().getContents(tt);
 	}
 }
