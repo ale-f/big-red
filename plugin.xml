@@ -176,12 +176,12 @@
       </wizard>
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.export.BigraphTikZExportWizard"
-            icon="icons/wizards/vector.png"
+            class="dk.itu.big_red.wizards.export.BigraphTextExportWizard"
+            icon="icons/wizards/text.png"
             id="Big Red.TikZExportWizard"
-            name="Export as TikZ image">
+            name="Export as text">
          <description>
-            Export the current bigraph as a TikZ image, suitable for use in papers or high-resolution printing.
+            Export the current bigraph in a textual form.
          </description>
       </wizard>
    </extension>
@@ -282,6 +282,21 @@
             name="Simulation spec"
             priority="normal">
       </content-type>
+   </extension>
+   <extension
+         point="dk.itu.big_red.export.text">
+      <exporter
+            class="dk.itu.big_red.model.import_export.BigraphTikZExport"
+            icon="icons/wizards/vector.png"
+            id="big-red.exporter1"
+            name="TikZ image">
+      </exporter>
+      <exporter
+            class="dk.itu.big_red.model.import_export.BigraphXMLExport"
+            icon="icons/icon16.png"
+            id="big-red.exporter2"
+            name="XML">
+      </exporter>
    </extension>
 
 </plugin>

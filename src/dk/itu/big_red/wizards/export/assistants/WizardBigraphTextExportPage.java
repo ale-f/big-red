@@ -35,18 +35,22 @@ import dk.itu.big_red.model.import_export.ModelExport;
 import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.Types;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.wizards.export.BigraphTextExportWizard;
 
 public class WizardBigraphTextExportPage extends WizardPage {
 	private Text bigraphText, resultText;
 	private IPath bigraphPath;
 	private Button clipboardButton, saveButton;
 	
-	private Class<? extends ModelExport<Bigraph>> ex = null;
 	private IStructuredSelection selection = null;
 	
-	public WizardBigraphTextExportPage(String pageName, IStructuredSelection selection, Class<? extends ModelExport<Bigraph>> ex) {
+	@Override
+	public BigraphTextExportWizard getWizard() {
+		return (BigraphTextExportWizard)super.getWizard();
+	}
+	
+	public WizardBigraphTextExportPage(String pageName, IStructuredSelection selection) {
 		super(pageName);
-		this.ex = ex;
 		this.selection = selection;
 		setPageComplete(false);
 	}
@@ -91,14 +95,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			return false;
 		}
 		
-		ModelExport<Bigraph> ex;
-		try {
-			ex = this.ex.newInstance();
-		} catch (Exception e) {
-			setErrorMessage(e.getLocalizedMessage());
-			return false;
-		}
-		
+		ModelExport<Bigraph> ex = getWizard().getExporter();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
 			ex.setModel(model);
@@ -207,7 +204,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		signatureLabel.setText("&Result:");
 		signatureLabel.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true));
 		
-		resultText = new Text(root, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL | SWT.READ_ONLY);
+		resultText = new Text(root, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
 		GridData targetTextLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		targetTextLayoutData.horizontalSpan = 2;
 		resultText.setLayoutData(targetTextLayoutData);
