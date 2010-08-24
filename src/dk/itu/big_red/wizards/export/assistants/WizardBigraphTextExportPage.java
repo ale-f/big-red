@@ -139,6 +139,14 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		return bigraphPath;
 	}
 	
+	public void reset() {
+		resultText.setText("");
+		bigraphText.setText("");
+		UI.setEnabled(false, clipboardButton, saveButton, resultText);
+		setErrorMessage(null);
+		setPageComplete(false);
+	}
+	
 	@Override
 	public void createControl(Composite parent) {
 		Composite root = new Composite(parent, SWT.NONE);

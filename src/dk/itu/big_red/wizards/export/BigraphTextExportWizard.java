@@ -52,6 +52,7 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 					if (description.length == 1)
 						page2.setDescription(description[0].getValue());
 					else page2.setDescription("Export the current bigraph in a textual form.");
+					page2.reset();
 				} catch (CoreException x) {
 					x.printStackTrace();
 					return;
