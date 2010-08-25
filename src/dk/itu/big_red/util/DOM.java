@@ -213,9 +213,6 @@ public class DOM {
 	
 	public static int getIntAttribute(Element d, String nsURI, String n) {
 		try {
-			String attr = getAttributeNS(d, nsURI, n);
-			System.out.println("getIntAttribute(" + d + ", \"" + nsURI + "\", \"" + n + "\")");
-			System.out.println("attr is " + attr);
 			return Integer.parseInt(getAttributeNS(d, nsURI, n));
 		} catch (Exception e) {
 			return 0;
