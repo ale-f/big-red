@@ -12,6 +12,8 @@ import dk.itu.big_red.exceptions.DuplicateControlException;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
 import dk.itu.big_red.model.interfaces.pure.IControl;
+import dk.itu.big_red.model.interfaces.pure.IPort;
+import dk.itu.big_red.util.HomogeneousIterable;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -278,5 +280,15 @@ public class Control implements IPropertyChangeNotifier, IColourable, IControl {
 	@Override
 	public void setOutlineColour(RGB outlineColour) {
 		this.outlineColour = outlineColour;
+	}
+	
+	@Override
+	public Iterable<IPort> getIPorts() {
+		return new HomogeneousIterable<IPort>(ports, IPort.class);
+	}
+
+	@Override
+	public String getName() {
+		return getLongName();
 	}
 }

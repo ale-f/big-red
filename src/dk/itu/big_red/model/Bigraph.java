@@ -12,6 +12,7 @@ import dk.itu.big_red.model.interfaces.pure.IEdge;
 import dk.itu.big_red.model.interfaces.pure.IInnerName;
 import dk.itu.big_red.model.interfaces.pure.IOuterName;
 import dk.itu.big_red.model.interfaces.pure.IRoot;
+import dk.itu.big_red.model.interfaces.pure.ISignature;
 import dk.itu.big_red.util.HomogeneousIterable;
 
 public class Bigraph extends Thing implements IBigraph {
@@ -198,5 +199,10 @@ public class Bigraph extends Thing implements IBigraph {
 	@Override
 	public Iterable<IOuterName> getIOuterNames() {
 		return new HomogeneousIterable<IOuterName>(children, IOuterName.class);
+	}
+
+	@Override
+	public ISignature getISignature() {
+		return signature.getModel();
 	}
 }

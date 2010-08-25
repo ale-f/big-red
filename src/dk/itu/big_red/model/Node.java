@@ -14,6 +14,7 @@ import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.pure.IControl;
 import dk.itu.big_red.model.interfaces.pure.INode;
 import dk.itu.big_red.model.interfaces.pure.IPlace;
 import dk.itu.big_red.model.interfaces.pure.IPort;
@@ -205,5 +206,10 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	@Override
 	public Iterable<ISite> getISites() {
 		return new HomogeneousIterable<ISite>(children, ISite.class);
+	}
+	
+	@Override
+	public IControl getIControl() {
+		return control;
 	}
 }
