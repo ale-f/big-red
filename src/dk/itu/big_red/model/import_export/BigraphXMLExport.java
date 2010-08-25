@@ -9,8 +9,8 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
@@ -22,6 +22,7 @@ import dk.itu.big_red.model.assistants.ClassComparator;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
 import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.util.HomogeneousIterable;
 
 /**
  * XMLExport writes a {@link Bigraph} out as an XML document.
@@ -88,8 +89,13 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	/**
 	 * Sorts the immediate children of the given {@link ILayoutable} into the
 	 * order required by the {@code <bigraph>} schema.
+	 * @deprecated Re-sorting the array every time you need to use it is
+	 * inefficient (and randomly rearranging internal data structures is an
+	 * awful idea, anyway). Use a group of {@link HomogeneousIterable}s
+	 * instead.
 	 * @param obj an ILayoutable
 	 */
+	@Deprecated
 	public static void sortChildrenIntoSchemaOrder(ILayoutable obj) {
 		ClassComparator<ILayoutable> comparator =
 			new ClassComparator<ILayoutable>();
