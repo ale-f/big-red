@@ -217,11 +217,9 @@ MenuListener {
 	private int getNearestSegment(Point up, double threshold) {
 		if (mode == Shape.SHAPE_OVAL)
 			return 0;
-		int index = -1,
-		    closestPointIndex = -1;
+		int index = -1;
 		Line l = new Line();
-		double distance = Double.MAX_VALUE,
-		       closestPointDistance = Double.MAX_VALUE;
+		double distance = Double.MAX_VALUE;
 		for (int i = 0; i < points.size(); i++) {
 			l.setFirstPoint(getPoint(tmp, i));
 			l.setSecondPoint(getPoint(tmp, i + 1));
@@ -232,19 +230,18 @@ MenuListener {
 					distance = tDistance;
 					index = i;
 				}
-			}
-			
-			tDistance = l.getFirstPoint().getDistance(up);
-			if (tDistance < closestPointDistance) {
-				closestPointDistance = tDistance;
-				closestPointIndex = i;
+			} else {
+				tDistance = l.getFirstPoint().getDistance(up);
+				if (tDistance < distance) {
+					distance = tDistance;
+					index = i;
+				}
 			}
 		}
 		
-		if (distance < threshold &&
-			(closestPointIndex == index || closestPointIndex == ((index + 1) % points.size())))
+		//if (distance < threshold)
 			return index;
-		else return -1;
+		//else return -1;
 	}
 	
 	/**
@@ -291,25 +288,12 @@ MenuListener {
 			
 			if (mode == Shape.SHAPE_POLYGON) {
 				segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
-				if (segment != -1) {
-					l.setFirstPoint(getPoint(segment));
-					l.setSecondPoint(getPoint(segment + 1));
-					offset =
-						l.getOffsetFromPoint(l.getIntersection(mousePosition));
-				} else {
-					int index = -1;
-					double distance = Double.MAX_VALUE;
-					for (int i = 0; i < points.size(); i++) {
-						points.getPoint(tmp, i);
-						double td = tmp.getDistance(mousePosition);
-						if (td < distance) {
-							index = i;
-							distance = td;
-						}
-					}
-					segment = index;
-					offset = 0.0;
-				}
+				l.setFirstPoint(getPoint(segment));
+				l.setSecondPoint(getPoint(segment + 1));
+				Point intersection = l.getIntersection(mousePosition);
+				if (intersection != null)
+					offset = l.getOffsetFromPoint(intersection);
+				else offset = 0;
 			} else {
 				segment = 0;
 				offset = new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10))
@@ -412,24 +396,12 @@ MenuListener {
 			
 			if (mode == Shape.SHAPE_POLYGON) {
 				int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
-				if (segment != -1) {
-					l.setFirstPoint(getPoint(segment));
-					l.setSecondPoint(getPoint(segment + 1));
-					tmp.setLocation(l.getIntersection(mousePosition));
-				} else {
-					int index = -1;
-					double distance = Double.MAX_VALUE;
-					for (int i = 0; i < points.size(); i++) {
-						points.getPoint(tmp, i);
-						double td = tmp.getDistance(mousePosition);
-						if (td < distance) {
-							index = i;
-							distance = td;
-						}
-					}
-					if (index != -1)
-						points.getPoint(tmp, index);
-				}
+				l.setFirstPoint(getPoint(segment));
+				l.setSecondPoint(getPoint(segment + 1));
+				Point intersection = l.getIntersection(mousePosition);
+				if (intersection == null)
+					intersection = getPoint(segment);
+				tmp.setLocation(intersection);
 			} else if (mode == Shape.SHAPE_OVAL) {
 				tmp.setLocation(new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10))
 					.getClosestPoint(mousePosition));
