@@ -1,5 +1,6 @@
 package dk.itu.big_red.wizards.creation;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -9,6 +10,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
+import dk.itu.big_red.exceptions.ExportFailedException;
+import dk.itu.big_red.exceptions.ImportFailedException;
 import dk.itu.big_red.util.Project;
 
 public class NewBRSWizard extends Wizard implements INewWizard {
@@ -25,14 +28,19 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 				IFolder signatures = Project.getFolder(p, "signatures"),
 				        agents = Project.getFolder(p, "agents"),
 				        rules = Project.getFolder(p, "rules");
-				Project.getFile(signatures, page.getProjectName() + ".bigraph-signature");
-				Project.getFile(agents, "test.bigraph-agent");
 				Project.getFile(p, page.getProjectName() + ".bigraph-simulation-spec");
+				IFile signature = Project.getFile(signatures, page.getProjectName() + ".bigraph-signature");
+				Project.createSignature(signature);
+				Project.createBigraph(signature, Project.getFile(agents, "test.bigraph-agent"));
 				return true;
 			} catch (CoreException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
-				return false;
+			} catch (ImportFailedException e) {
+				page.setErrorMessage(e.getLocalizedMessage());
+			} catch (ExportFailedException e) {
+				page.setErrorMessage(e.getLocalizedMessage());
 			}
+			return false;
 		}
 	}
 

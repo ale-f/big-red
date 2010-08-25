@@ -12,6 +12,15 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
+import dk.itu.big_red.exceptions.ExportFailedException;
+import dk.itu.big_red.exceptions.ImportFailedException;
+import dk.itu.big_red.import_export.assistants.FileResourceOutputStream;
+import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.import_export.BigraphXMLExport;
+import dk.itu.big_red.model.import_export.SignatureXMLExport;
+import dk.itu.big_red.model.import_export.SignatureXMLImport;
+
 /**
  * Utility functions for manipulating an Eclipse {@link IProject project} and
  * the {@link IResource resources} they contain.
@@ -166,5 +175,15 @@ public class Project {
 	public static IFile findFileByPath(IContainer c, IPath path) {
 		IResource r = findResourceByPath(c, path);
 		return (r instanceof IFile ? (IFile)r : null);
+	}
+	
+	public static void createBigraph(IFile sigFile, IFile bigFile) throws ImportFailedException, ExportFailedException, CoreException {
+		Bigraph b = new Bigraph();
+		b.setSignature(sigFile, new SignatureXMLImport().setInputStream(sigFile.getContents()).importObject());
+		new BigraphXMLExport().setModel(b).setOutputStream(new FileResourceOutputStream(bigFile)).exportObject();
+	}
+	
+	public static void createSignature(IFile sigFile) throws ExportFailedException, CoreException {
+		new SignatureXMLExport().setModel(new Signature()).setOutputStream(new FileResourceOutputStream(sigFile)).exportObject();
 	}
 }
