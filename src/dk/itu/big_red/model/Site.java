@@ -6,6 +6,7 @@ import java.util.List;
 import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.pure.IParent;
 import dk.itu.big_red.model.interfaces.pure.ISite;
 
 public class Site extends Thing implements INameable, ISite {
@@ -61,5 +62,10 @@ public class Site extends Thing implements INameable, ISite {
 			if (!newName.equals(oldName))
 				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}
+	}
+
+	@Override
+	public IParent getIParent() {
+		return (IParent)getParent();
 	}
 }
