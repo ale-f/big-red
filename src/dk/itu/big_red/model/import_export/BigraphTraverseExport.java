@@ -112,8 +112,12 @@ public class BigraphTraverseExport extends ModelExport<Bigraph> {
 			process(e);
 			scope--;
 		}
-		for (IOuterName o : bigraph.getIOuterNames())
+		for (IOuterName o : bigraph.getIOuterNames()) {
 			line(niceName(o));
+			scope++;
+			process(o);
+			scope--;
+		}
 		for (IRoot r : bigraph.getIRoots()) {
 			line(niceName(r));
 			scope++;
