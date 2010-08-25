@@ -4,9 +4,7 @@ public interface INode extends IPlace {
 	public IPlace getIPlace();
 	public IControl getIControl();
 	
-	public Iterable<INode> getINodes();
 	public Iterable<IPort> getIPorts();
-	public Iterable<ISite> getISites();
 	
 	public String getName();
 }
