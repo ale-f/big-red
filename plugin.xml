@@ -303,6 +303,12 @@
             Export a bigraph as a XML document, equivalent to that produced by File → Save.
          </description>
       </exporter>
+      <exporter
+            class="dk.itu.big_red.model.import_export.BigraphTraverseExport"
+            icon="icons/wizards/text.png"
+            id="big-red.exporter3"
+            name="Traverse">
+      </exporter>
    </extension>
 
 </plugin>
