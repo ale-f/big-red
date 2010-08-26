@@ -244,9 +244,9 @@ MenuListener {
 			}
 		}
 		
-		//if (distance < threshold)
+		if (distance < threshold)
 			return index;
-		//else return -1;
+		else return -1;
 	}
 	
 	/**
