@@ -272,6 +272,8 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
         } catch (Exception ex) {
         	if (monitor != null)
         		monitor.setCanceled(true);
+        	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
+	    		new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, ex.getLocalizedMessage(), ex));
         }
 	}
 	
