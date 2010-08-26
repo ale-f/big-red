@@ -4,6 +4,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
@@ -35,6 +36,16 @@ public class ILayoutableCreateCommand extends Command {
 		} else node.setLayout(r);
 	}
 	
+	public boolean noOverlap() {
+		for (ILayoutable i : container.getChildren()) {
+			if (i instanceof Edge)
+				continue;
+			else if (i.getLayout().intersects(node.getLayout()))
+				return false;
+		}
+		return true;
+	}
+	
 	private boolean boundariesSatisfied() {
 		if (!(container instanceof Bigraph))
 			return true;
@@ -56,7 +67,8 @@ public class ILayoutableCreateCommand extends Command {
 	}
 	
 	public boolean canExecute() {
-		return node != null && container != null && boundariesSatisfied();
+		return (node != null && container != null && boundariesSatisfied() &&
+				noOverlap());
 	}
 	
 	public void execute() {
