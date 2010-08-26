@@ -39,9 +39,6 @@ public class SignatureXMLExport extends ModelExport<Signature> {
 	}
 	
 	private Element process(Control c) {
-		if (c.getLongName().equals("Unknown"))
-			return null;
-		
 		Element e = doc.createElement("control");
 		DOM.applyAttributesToElement(e,
 				"name", c.getLongName());
