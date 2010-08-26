@@ -14,9 +14,10 @@ import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IColourable;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.pure.IChild;
 import dk.itu.big_red.model.interfaces.pure.IControl;
 import dk.itu.big_red.model.interfaces.pure.INode;
-import dk.itu.big_red.model.interfaces.pure.IPlace;
+import dk.itu.big_red.model.interfaces.pure.IParent;
 import dk.itu.big_red.model.interfaces.pure.IPort;
 import dk.itu.big_red.model.interfaces.pure.ISite;
 import dk.itu.big_red.util.Geometry;
@@ -189,8 +190,8 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	}
 
 	@Override
-	public IPlace getIPlace() {
-		return (IPlace)getParent();
+	public IParent getIParent() {
+		return (IParent)getParent();
 	}
 
 	@Override
@@ -206,6 +207,11 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	@Override
 	public Iterable<ISite> getISites() {
 		return new HomogeneousIterable<ISite>(children, ISite.class);
+	}
+	
+	@Override
+	public Iterable<IChild> getIChildren() {
+		return new HomogeneousIterable<IChild>(children, IChild.class);
 	}
 	
 	@Override
