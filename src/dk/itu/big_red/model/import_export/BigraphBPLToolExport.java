@@ -8,12 +8,10 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.interfaces.pure.IBigraph;
 import dk.itu.big_red.model.interfaces.pure.IControl;
 import dk.itu.big_red.model.interfaces.pure.IEdge;
-import dk.itu.big_red.model.interfaces.pure.IEntity;
 import dk.itu.big_red.model.interfaces.pure.IInnerName;
 import dk.itu.big_red.model.interfaces.pure.INode;
 import dk.itu.big_red.model.interfaces.pure.IOuterName;
-import dk.itu.big_red.model.interfaces.pure.IPlace;
-import dk.itu.big_red.model.interfaces.pure.IPoint;
+import dk.itu.big_red.model.interfaces.pure.IParent;
 import dk.itu.big_red.model.interfaces.pure.IPort;
 import dk.itu.big_red.model.interfaces.pure.IRoot;
 import dk.itu.big_red.model.interfaces.pure.ISite;
@@ -104,20 +102,20 @@ public class BigraphBPLToolExport extends ModelExport<Bigraph> {
 		if (node.getINodes().iterator().hasNext() || node.getISites().iterator().hasNext()) {
 			printLine(" o (");
 			scope++;
-			process((IPlace) node);
+			process((IParent) node);
 			scope--;
 			printLine(")");
 		}
 	}
 	
-	public void process(IPlace place) throws ExportFailedException {
-		processIterable(place.getINodes(), "", " | ", "", new Processor<INode>() {
+	public void process(IParent parent) throws ExportFailedException {
+		processIterable(parent.getINodes(), "", " | ", "", new Processor<INode>() {
 			public void proc(INode n) throws ExportFailedException {
 				process(n);
 			}
 		});
 	
-		printIterable(place.getISites(), "", " | ", "", new Printer<ISite>() {
+		printIterable(parent.getISites(), "", " | ", "", new Printer<ISite>() {
 			public void prnt(ISite s) throws ExportFailedException {
 				print("[(* " + s.getName() + " *)]");
 			}
