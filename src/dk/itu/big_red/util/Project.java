@@ -11,6 +11,10 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.EditPart;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.ui.IFileEditorInput;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.exceptions.ImportFailedException;
@@ -175,6 +179,29 @@ public class Project {
 	public static IFile findFileByPath(IContainer c, IPath path) {
 		IResource r = findResourceByPath(c, path);
 		return (r instanceof IFile ? (IFile)r : null);
+	}
+	
+	/**
+	 * Tries desperately to get an {@link IResource} out of the given {@link
+	 * IStructuredSelection}, by hook or by crook.
+	 * @param selection an IStructuredSelection, which is a spectacularly
+	 *                  disingenuous name because it has almost no structure at
+	 *                  all
+	 * @return an IResource, or <code>null</code> if all this method's effort
+	 *         was for nothing, you hear me? <i>Nothing</i>
+	 */
+	public static IResource tryDesperatelyToGetAnIResourceOutOfAnIStructuredSelection(IStructuredSelection selection) {
+		for (Object i : selection.toArray()) {
+			if (i instanceof IResource)
+				return (IResource)i;
+			else if (i instanceof EditPart)
+				/* Let the Java... BEGIN! */
+				return ((IFileEditorInput)(
+					     (DefaultEditDomain)(
+					      (EditPart)i).getViewer().getEditDomain())
+					     .getEditorPart().getEditorInput()).getFile();
+		}
+		return null;
 	}
 	
 	public static void createBigraph(IFile sigFile, IFile bigFile) throws ImportFailedException, ExportFailedException, CoreException {

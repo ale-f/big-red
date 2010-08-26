@@ -145,6 +145,11 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		UI.setEnabled(false, clipboardButton, saveButton, resultText);
 		setErrorMessage(null);
 		setPageComplete(false);
+		
+		IResource r =
+			Project.tryDesperatelyToGetAnIResourceOutOfAnIStructuredSelection(selection);
+		if (r != null)
+			bigraphText.setText(r.getFullPath().makeRelative().toString());
 	}
 	
 	@Override
@@ -172,25 +177,15 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				IResource f = null;
-				for (Object i : selection.toArray()) {
-					if (i instanceof IResource) {
-						f = (IResource)i;
-						break;
-					}
-				}
-
-				if (f == null)
-					f = Project.getWorkspaceRoot();
-				
 				ResourceTreeSelectionDialog d =
 					new ResourceTreeSelectionDialog(getShell(),
 						Project.getWorkspaceRoot(),
 						ResourceTreeSelectionDialog.MODE_FILE,
 						"dk.itu.big_red.bigraph");
-				/*if (bigraphPath != null)
-					d.setInitialSelection(Project.findContainerByPath(null, bigraphPath));*/
-				d.setInitialSelection(f);
+				if (bigraphText.getText().length() > 0) {
+					System.out.println(Project.findFileByPath(null, new Path(bigraphText.getText())));
+					d.setInitialSelection(Project.findFileByPath(null, new Path(bigraphText.getText())));
+				}
 				d.open();
 				IResource result = d.getFirstResult();
 				if (result instanceof IFile)
