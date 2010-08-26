@@ -309,6 +309,11 @@
             id="big-red.exporter3"
             name="Traverse">
       </exporter>
+      <exporter
+            class="dk.itu.big_red.model.import_export.BigraphBPLToolExport"
+            id="big-red.exporter4"
+            name="BPL Tool">
+      </exporter>
    </extension>
 
 </plugin>
