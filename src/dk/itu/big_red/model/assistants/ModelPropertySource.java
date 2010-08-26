@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
+import org.eclipse.ui.views.properties.ComboBoxLabelProvider;
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.interfaces.ICommentable;
 import dk.itu.big_red.model.interfaces.IFillColourable;
@@ -38,7 +40,22 @@ public class ModelPropertySource implements IPropertySource {
 		properties.add(new PropertyDescriptor("Class", "Class"));
 		if (object instanceof Node) {
 			setControlNames(((Node)object).getSignature().getControlNames());
-			properties.add(new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames()));
+			ComboBoxPropertyDescriptor cbpd =
+				new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames());
+			cbpd.setLabelProvider(new ComboBoxLabelProvider(controlNames) {
+				@Override
+				public String getText(Object element) {
+					if (element instanceof Integer) {
+						Integer i = (Integer)element;
+						if (i == -1)
+							return "No control";
+						else if (i == -2)
+							return "Invalid control";
+					}
+					return super.getText(element);
+				}
+			});
+			properties.add(cbpd);
 		}
 		
 		if (object instanceof IFillColourable)
@@ -58,14 +75,19 @@ public class ModelPropertySource implements IPropertySource {
 		if (id.equals("Class")) {
 			return object.getClass().getSimpleName();
 		} else if (id.equals(Node.PROPERTY_CONTROL)) {
-			String targetName = ((Node)object).getControl().getLongName();
-			String[] names = getControlNames();
-			for (int i = 0; i < names.length; i++) {
-				if (names[i].equals(targetName)) {
-					return new Integer(i);
+			Control c = ((Node)object).getControl();
+			if (c != null) {
+				String targetName = ((Node)object).getControl().getLongName();
+				String[] names = getControlNames();
+				for (int i = 0; i < names.length; i++) {
+					if (names[i].equals(targetName)) {
+						return new Integer(i);
+					}
 				}
+				return -2;
+			} else {
+				return -1;
 			}
-			return null;
 		} else if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
 			return ((IFillColourable)object).getFillColour();
 		} else if (id.equals(IOutlineColourable.PROPERTY_OUTLINE_COLOUR)) {

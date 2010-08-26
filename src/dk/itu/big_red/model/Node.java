@@ -37,7 +37,6 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	
 	public Node() {
-		setControl(Signature.DEFAULT_CONTROL);
 	}
 	
 	public Node(Control control) {
@@ -61,7 +60,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	
 	public void setLayout(Rectangle layout) {
 		Rectangle layoutCopy = new Rectangle(layout);
-		if (!control.isResizable()) {
+		if (control != null && !control.isResizable()) {
 			layoutCopy.width = getLayout().width;
 			layoutCopy.height = getLayout().height;
 		}
@@ -78,9 +77,9 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	 *        control</i> will be used
 	 */
 	public void setControl(Control control) {
+		Control oldControl = this.control;
+		this.control = control;
 		if (control != null) {
-			Control oldControl = this.control;
-			this.control = control;
 			fittedPolygon = null;
 			
 			if (oldControl != null)
@@ -99,10 +98,8 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 				nr.height = c.y;
 				super.setLayout(nr);
 			}
-			listeners.firePropertyChange(PROPERTY_CONTROL, oldControl, control);
-		} else {
-			setControl(Signature.DEFAULT_CONTROL);
 		}
+		listeners.firePropertyChange(PROPERTY_CONTROL, oldControl, control);
 	}
 	
 	/**
@@ -164,8 +161,11 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	 */
 	public PointList getFittedPolygon() {
 		if (fittedPolygon == null) {
-			if (getControl().getShape() == Shape.SHAPE_POLYGON)
+			if (getControl() == null) {
+				fittedPolygon = Geometry.fitPolygonToRectangle(Control.POINTS_QUAD, getLayout());
+			} else if (getControl().getShape() == Shape.SHAPE_POLYGON) {
 				fittedPolygon = Geometry.fitPolygonToRectangle(getControl().getPoints(), getLayout());
+			}
 		}
 		return fittedPolygon;
 	}

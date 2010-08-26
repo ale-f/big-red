@@ -17,12 +17,10 @@ import dk.itu.big_red.util.HomogeneousIterable;
  */
 public class Signature implements ISignature {
 	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
-	public static final Control DEFAULT_CONTROL = new Control();
 	
 	private ArrayList<Control> controls = new ArrayList<Control>();
 	
 	public Signature() {
-		controls.add(DEFAULT_CONTROL);
 	}
 	
 	public Control addControl(Control c) {
@@ -31,7 +29,7 @@ public class Signature implements ISignature {
 	}
 	
 	public void removeControl(Control m) {
-		if (controls.contains(m) && m != DEFAULT_CONTROL)
+		if (controls.contains(m))
 			controls.remove(m);
 	}
 	

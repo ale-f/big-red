@@ -11,6 +11,7 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.interfaces.ILayoutable;
 
@@ -38,7 +39,7 @@ public class NodePart extends ThingPart {
 		 * Trap attempts to install a PRIMARY_DRAG_ROLE EditPolicy so that they
 		 * can be tweaked to better fit the model.
 		 */
-		if (key == EditPolicy.PRIMARY_DRAG_ROLE)
+		if (key == EditPolicy.PRIMARY_DRAG_ROLE && getModel().getControl() != null)
 			setResizable(getModel().getControl().isResizable());
 	}
 	
@@ -66,13 +67,19 @@ public class NodePart extends ThingPart {
 		
 		NodeFigure figure = (NodeFigure)getFigure();
 		Node model = getModel();
+		Control control = model.getControl();
 		
-		setResizable(getModel().getControl().isResizable());
-		
-		figure.setShape(model.getControl().getShape());
-		figure.setLabel(model.getControl().getLabel());
-		
-		String toolTip = model.getControl().getLongName();
+		String toolTip;
+		if (control != null) {
+			setResizable(getModel().getControl().isResizable());
+			
+			figure.setShape(model.getControl().getShape());
+			figure.setLabel(model.getControl().getLabel());
+			
+			toolTip = model.getControl().getLongName();
+		} else {
+			toolTip = "Node with no control";
+		}
 		if (model.getComment() != null)
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);

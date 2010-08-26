@@ -175,6 +175,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    		
 	    		model.setModel(im.importObject());
 	    	} catch (ImportFailedException e) {
+	    		e.printStackTrace();
 	    		ErrorDialog.openError(getSite().getShell(), null, "Validation has failed.",
 	    			new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, e.getCause().getCause().getLocalizedMessage(), e));
 	    		model.setModel(new Bigraph());
