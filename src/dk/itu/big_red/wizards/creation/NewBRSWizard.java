@@ -31,7 +31,7 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 				Project.getFile(p, page.getProjectName() + ".bigraph-simulation-spec");
 				IFile signature = Project.getFile(signatures, page.getProjectName() + ".bigraph-signature");
 				Project.createSignature(signature);
-				Project.createBigraph(signature, Project.getFile(agents, "test.bigraph-agent"));
+				Project.createBigraph(signature, Project.getFile(agents, page.getProjectName() + ".bigraph-agent"));
 				return true;
 			} catch (CoreException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
