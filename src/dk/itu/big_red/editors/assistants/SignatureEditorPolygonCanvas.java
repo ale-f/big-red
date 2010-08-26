@@ -136,6 +136,11 @@ MenuListener {
 			if (dragPointIndex == deleteIndex)
 				dragPointIndex = -1;
 			firePointChange(PointEvent.REMOVED, points.removePoint(deleteIndex));
+			for (Port port : ports) {
+				int segment = port.getSegment();
+				if (segment >= deleteIndex)
+					port.setSegment(segment - 1);
+			}
 		}
 	}
 
@@ -318,6 +323,11 @@ MenuListener {
 				} else {
 					dragPoint.x = p.x;
 					dragPoint.y = p.y;
+					for (Port port : ports) {
+						int segment = port.getSegment();
+						if (segment >= dragPointIndex)
+							port.setSegment(segment + 1);
+					}
 					points.insertPoint(dragPoint, dragPointIndex);
 					firePointChange(PointEvent.ADDED, dragPoint);
 				}
