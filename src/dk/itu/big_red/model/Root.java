@@ -1,12 +1,12 @@
 package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.NamespaceManager.NameType;
-import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.INameable;
-import dk.itu.big_red.model.interfaces.pure.IChild;
-import dk.itu.big_red.model.interfaces.pure.INode;
-import dk.itu.big_red.model.interfaces.pure.IRoot;
-import dk.itu.big_red.model.interfaces.pure.ISite;
+import dk.itu.big_red.model.interfaces.IChild;
+import dk.itu.big_red.model.interfaces.INode;
+import dk.itu.big_red.model.interfaces.IRoot;
+import dk.itu.big_red.model.interfaces.ISite;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.HomogeneousIterable;
 
 public class Root extends Thing implements INameable, IRoot {

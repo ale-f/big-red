@@ -13,10 +13,10 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.interfaces.ICommentable;
-import dk.itu.big_red.model.interfaces.IFillColourable;
-import dk.itu.big_red.model.interfaces.INameable;
-import dk.itu.big_red.model.interfaces.IOutlineColourable;
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.model.interfaces.internal.IFillColourable;
+import dk.itu.big_red.model.interfaces.internal.INameable;
+import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 
 public class ModelPropertySource implements IPropertySource {
 	private Object object;

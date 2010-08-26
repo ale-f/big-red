@@ -9,10 +9,10 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.exceptions.DuplicateControlException;
-import dk.itu.big_red.model.interfaces.IColourable;
-import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
-import dk.itu.big_red.model.interfaces.pure.IControl;
-import dk.itu.big_red.model.interfaces.pure.IPort;
+import dk.itu.big_red.model.interfaces.IControl;
+import dk.itu.big_red.model.interfaces.IPort;
+import dk.itu.big_red.model.interfaces.internal.IColourable;
+import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 import dk.itu.big_red.util.HomogeneousIterable;
 
 /**

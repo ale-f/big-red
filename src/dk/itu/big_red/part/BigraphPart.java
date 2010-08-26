@@ -11,7 +11,7 @@ import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.assistants.ClassComparator;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * BigraphParts represent {@link Bigraph}s, the top-level container of the

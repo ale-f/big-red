@@ -1,8 +1,8 @@
 package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.NamespaceManager.NameType;
-import dk.itu.big_red.model.interfaces.INameable;
-import dk.itu.big_red.model.interfaces.pure.IInnerName;
+import dk.itu.big_red.model.interfaces.IInnerName;
+import dk.itu.big_red.model.interfaces.internal.INameable;
 
 
 public class InnerName extends Point implements INameable, IInnerName {

@@ -19,8 +19,8 @@ import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.interfaces.ICommentable;
-import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.model.interfaces.internal.IConnectable;
 
 public class OuterNamePart extends AbstractPart implements NodeEditPart {
 	@Override

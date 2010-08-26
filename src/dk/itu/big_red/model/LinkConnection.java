@@ -8,8 +8,8 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
+import dk.itu.big_red.model.interfaces.internal.IConnectable;
+import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 
 /**
  * An LinkConnection is the model object behind an actual {@link Connection}

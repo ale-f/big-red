@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.interfaces;
+package dk.itu.big_red.model.interfaces.internal;
 
 /**
  * Objects implementing INameable are those which have a <i>name</i>, a unique

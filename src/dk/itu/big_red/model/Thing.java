@@ -12,8 +12,8 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.interfaces.ICommentable;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * The <code>Thing</code> provides the basic functionality shared by most

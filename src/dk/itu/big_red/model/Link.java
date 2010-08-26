@@ -12,13 +12,13 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.interfaces.ICommentable;
-import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.INameable;
-import dk.itu.big_red.model.interfaces.IOutlineColourable;
-import dk.itu.big_red.model.interfaces.pure.ILink;
-import dk.itu.big_red.model.interfaces.pure.IPoint;
+import dk.itu.big_red.model.interfaces.ILink;
+import dk.itu.big_red.model.interfaces.IPoint;
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.model.interfaces.internal.IConnectable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.INameable;
+import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 
 public abstract class Link implements IAdaptable, ILayoutable, INameable, IConnectable, ICommentable, IOutlineColourable, ILink {
 	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);

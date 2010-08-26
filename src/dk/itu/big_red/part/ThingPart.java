@@ -2,7 +2,7 @@ package dk.itu.big_red.part;
 
 import dk.itu.big_red.figure.AbstractFigure;
 import dk.itu.big_red.model.Thing;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * The ThingPart is the base class for edit parts whose model objects are

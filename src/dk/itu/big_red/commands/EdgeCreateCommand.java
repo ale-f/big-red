@@ -6,7 +6,7 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.interfaces.IConnectable;
+import dk.itu.big_red.model.interfaces.internal.IConnectable;
 
 public class EdgeCreateCommand extends Command {
 	private IConnectable point1, point2;

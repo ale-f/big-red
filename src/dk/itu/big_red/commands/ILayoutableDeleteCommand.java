@@ -3,7 +3,7 @@ package dk.itu.big_red.commands;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableDeleteCommand extends Command {
 	private ILayoutable model = null;

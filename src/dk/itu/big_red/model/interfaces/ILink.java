@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.interfaces.pure;
+package dk.itu.big_red.model.interfaces;
 
 public interface ILink extends IEntity {
 	public Iterable<IPoint> getIPoints();

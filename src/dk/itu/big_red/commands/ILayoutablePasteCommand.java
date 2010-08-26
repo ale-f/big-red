@@ -8,7 +8,7 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
 import dk.itu.big_red.model.*;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutablePasteCommand extends Command {
 	private HashMap<ILayoutable, ILayoutable> list =

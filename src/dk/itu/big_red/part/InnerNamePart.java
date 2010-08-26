@@ -18,9 +18,9 @@ import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.LinkConnection;
-import dk.itu.big_red.model.interfaces.ICommentable;
-import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.IFillColourable;
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.model.interfaces.internal.IConnectable;
+import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 
 /**
  * NameParts represent {@link InnerName}s, the model objects which define

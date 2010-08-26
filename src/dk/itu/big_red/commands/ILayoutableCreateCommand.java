@@ -7,7 +7,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableCreateCommand extends Command {
 	private ILayoutable container;

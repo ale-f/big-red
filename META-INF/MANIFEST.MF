@@ -24,4 +24,4 @@ Export-Package: dk.itu.big_red.exceptions,
  dk.itu.big_red.model,
  dk.itu.big_red.model.import_export,
  dk.itu.big_red.model.interfaces,
- dk.itu.big_red.model.interfaces.pure
+ dk.itu.big_red.model.interfaces.internal

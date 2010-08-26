@@ -16,8 +16,8 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
-import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Project;
 

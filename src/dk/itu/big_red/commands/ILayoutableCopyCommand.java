@@ -9,7 +9,7 @@ import org.eclipse.gef.ui.actions.Clipboard;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableCopyCommand extends Command {
 	protected ArrayList<ILayoutable> list =

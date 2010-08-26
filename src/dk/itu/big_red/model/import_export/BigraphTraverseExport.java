@@ -5,17 +5,17 @@ import java.io.OutputStreamWriter;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.interfaces.pure.IBigraph;
-import dk.itu.big_red.model.interfaces.pure.IControl;
-import dk.itu.big_red.model.interfaces.pure.IEdge;
-import dk.itu.big_red.model.interfaces.pure.IEntity;
-import dk.itu.big_red.model.interfaces.pure.IInnerName;
-import dk.itu.big_red.model.interfaces.pure.INode;
-import dk.itu.big_red.model.interfaces.pure.IOuterName;
-import dk.itu.big_red.model.interfaces.pure.IPoint;
-import dk.itu.big_red.model.interfaces.pure.IPort;
-import dk.itu.big_red.model.interfaces.pure.IRoot;
-import dk.itu.big_red.model.interfaces.pure.ISite;
+import dk.itu.big_red.model.interfaces.IBigraph;
+import dk.itu.big_red.model.interfaces.IControl;
+import dk.itu.big_red.model.interfaces.IEdge;
+import dk.itu.big_red.model.interfaces.IEntity;
+import dk.itu.big_red.model.interfaces.IInnerName;
+import dk.itu.big_red.model.interfaces.INode;
+import dk.itu.big_red.model.interfaces.IOuterName;
+import dk.itu.big_red.model.interfaces.IPoint;
+import dk.itu.big_red.model.interfaces.IPort;
+import dk.itu.big_red.model.interfaces.IRoot;
+import dk.itu.big_red.model.interfaces.ISite;
 
 public class BigraphTraverseExport extends ModelExport<Bigraph> {
 	private OutputStreamWriter osw = null;

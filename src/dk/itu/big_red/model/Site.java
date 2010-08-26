@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.itu.big_red.model.NamespaceManager.NameType;
-import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.INameable;
-import dk.itu.big_red.model.interfaces.pure.IParent;
-import dk.itu.big_red.model.interfaces.pure.ISite;
+import dk.itu.big_red.model.interfaces.IParent;
+import dk.itu.big_red.model.interfaces.ISite;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.INameable;
 
 public class Site extends Thing implements INameable, ISite {
 	public Thing clone() throws CloneNotSupportedException {

@@ -3,8 +3,8 @@ package dk.itu.big_red.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.itu.big_red.model.interfaces.pure.IControl;
-import dk.itu.big_red.model.interfaces.pure.ISignature;
+import dk.itu.big_red.model.interfaces.IControl;
+import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.util.HomogeneousIterable;
 
 /**

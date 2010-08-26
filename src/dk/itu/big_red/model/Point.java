@@ -11,13 +11,13 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.interfaces.ICommentable;
-import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.IFillColourable;
-import dk.itu.big_red.model.interfaces.ILayoutable;
-import dk.itu.big_red.model.interfaces.INameable;
-import dk.itu.big_red.model.interfaces.pure.ILink;
-import dk.itu.big_red.model.interfaces.pure.IPoint;
+import dk.itu.big_red.model.interfaces.ILink;
+import dk.itu.big_red.model.interfaces.IPoint;
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.model.interfaces.internal.IConnectable;
+import dk.itu.big_red.model.interfaces.internal.IFillColourable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.INameable;
 
 /**
  * Points are objects which can be connected to <em>at most one</em> {@link

@@ -8,7 +8,7 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableRelayoutCommand extends Command {
 	private ILayoutable model;

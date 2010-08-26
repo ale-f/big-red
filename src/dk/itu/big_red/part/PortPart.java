@@ -19,10 +19,10 @@ import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.interfaces.ICommentable;
-import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.IFillColourable;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.model.interfaces.internal.IConnectable;
+import dk.itu.big_red.model.interfaces.internal.IFillColourable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * PortParts represent {@link Port}s, sites on {@link Node}s which can be

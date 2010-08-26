@@ -2,8 +2,8 @@ package dk.itu.big_red.model;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.interfaces.IConnectable;
-import dk.itu.big_red.model.interfaces.pure.IEdge;
+import dk.itu.big_red.model.interfaces.IEdge;
+import dk.itu.big_red.model.interfaces.internal.IConnectable;
 
 /**
   * An Edge is a connection which connects any number of {@link Port}s and

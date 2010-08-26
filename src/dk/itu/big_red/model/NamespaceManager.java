@@ -3,7 +3,7 @@ package dk.itu.big_red.model;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import dk.itu.big_red.model.interfaces.INameable;
+import dk.itu.big_red.model.interfaces.internal.INameable;
 
 /**
  * NamespaceManagers manage {@link Class}-specific <i>namespaces</i>, groups of

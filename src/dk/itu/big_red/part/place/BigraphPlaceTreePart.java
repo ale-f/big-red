@@ -3,7 +3,7 @@ package dk.itu.big_red.part.place;
 import java.util.List;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.AbstractTreePart;
 
 public class BigraphPlaceTreePart extends AbstractTreePart {

@@ -13,7 +13,7 @@ import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.

@@ -1,6 +1,6 @@
 package dk.itu.big_red.model;
 
-import dk.itu.big_red.model.interfaces.pure.IOuterName;
+import dk.itu.big_red.model.interfaces.IOuterName;
 
 public class OuterName extends Link implements IOuterName {
 

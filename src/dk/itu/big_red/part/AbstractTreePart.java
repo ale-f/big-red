@@ -13,7 +13,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import dk.itu.big_red.model.interfaces.IPropertyChangeNotifier;
+import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart implements PropertyChangeListener {
 	@Override

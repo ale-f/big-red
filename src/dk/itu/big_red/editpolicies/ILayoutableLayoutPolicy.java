@@ -13,7 +13,7 @@ import dk.itu.big_red.commands.ILayoutableAddCommand;
 import dk.itu.big_red.commands.ILayoutableCreateCommand;
 import dk.itu.big_red.commands.ILayoutableOrphanCommand;
 import dk.itu.big_red.commands.ILayoutableRelayoutCommand;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.*;
 
 public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {

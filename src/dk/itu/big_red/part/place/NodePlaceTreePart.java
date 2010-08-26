@@ -8,7 +8,7 @@ import org.eclipse.ui.ISharedImages;
 
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.AbstractTreePart;
 import dk.itu.big_red.util.Utility;
 

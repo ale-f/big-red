@@ -10,7 +10,7 @@ import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.RootFigure;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * RootParts represent {@link Root}s, the containers immediately below the

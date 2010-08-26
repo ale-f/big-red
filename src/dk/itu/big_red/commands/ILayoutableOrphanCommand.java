@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 
-import dk.itu.big_red.model.interfaces.ILayoutable;
+import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.EdgePart;
 
 public class ILayoutableOrphanCommand extends Command {
