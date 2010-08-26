@@ -261,7 +261,7 @@ MenuListener {
 		      up = new Point(e.x, e.y);
 		dragPortIndex = findPortAt(up);
 		if (dragPortIndex == -1) {
-			dragPointIndex = findPointAt(up);
+			dragPointIndex = findPointAt(p);
 			if (dragPointIndex == -1 && mode == Shape.SHAPE_POLYGON) {
 				if (points.size() == 1) {
 					dragPointIndex = 0;
