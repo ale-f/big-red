@@ -35,11 +35,12 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		process((ILayoutable)model);
-		
 		try {
+			process((ILayoutable)model);
 			DOM.write(target, doc);
 			target.close();
+		} catch (ExportFailedException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new ExportFailedException(e);
 		}
@@ -56,9 +57,13 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		return e;
 	}
 	
-	private Element process(Node n) {
+	private Element process(Node n) throws ExportFailedException {
 		Element e = doc.createElement("node");
-		e.setAttribute("control", n.getControl().getLongName());
+		try {
+			e.setAttribute("control", n.getControl().getLongName());
+		} catch (NullPointerException ex) {
+			throw new ExportFailedException("This document contains a node with no control.", ex);
+		}
 		e.setAttribute("name", n.getName());
 		
 		for (Port p : n.getPorts()) 
@@ -118,7 +123,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		Collections.sort(obj.getChildren(), comparator);
 	}
 	
-	private Element process(ILayoutable obj) {
+	private Element process(ILayoutable obj) throws ExportFailedException {
 		Element e = null;
 		if (obj instanceof Bigraph) {
 			e = process((Bigraph)obj);
