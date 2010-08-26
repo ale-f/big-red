@@ -121,7 +121,7 @@ public class Line {
 			       m = getPerpendicularGradient();
 			double x = ((m_ * p1.x) - p1.y - (m * p3.x) + p3.y) / (m_ - m),
 			       y = m_ * (x - p1.x) + p1.y;
-			target.setLocation((int)x, (int)y);
+			target.setLocation((int)Math.round(x), (int)Math.round(y));
 		}
 		return (bounds.contains(target) ? target : null);
 	}
