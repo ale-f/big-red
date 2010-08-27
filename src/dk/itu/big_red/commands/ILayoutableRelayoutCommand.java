@@ -1,5 +1,6 @@
 package dk.itu.big_red.commands;
 
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
@@ -36,6 +37,17 @@ public class ILayoutableRelayoutCommand extends Command {
 		return true;
 	}
 	
+	private static final Point ORIGIN = new Point(0, 0);
+	
+	public boolean spaceForChildren() {
+		Rectangle t = new Rectangle(ORIGIN, layout.getSize());
+		for (ILayoutable i : model.getChildren()) {
+			if (!t.contains(i.getLayout()))
+				return false;
+		}
+		return true;
+	}
+	
 	private boolean boundariesSatisfied() {
 		if (!(model.getParent() instanceof Bigraph))
 			return true;
@@ -66,7 +78,7 @@ public class ILayoutableRelayoutCommand extends Command {
 	public boolean canExecute() {
 		return (model != null && layout != null && oldLayout != null &&
 				parentLayoutCanContainChildLayout() && noOverlap() &&
-				boundariesSatisfied());
+				boundariesSatisfied() && spaceForChildren());
 	}
 	
 	public void execute() {
