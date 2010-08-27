@@ -200,8 +200,8 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	}
 
 	@Override
-	public Iterable<IPort> getIPorts() {
-		return new HomogeneousIterable<IPort>(children, IPort.class);
+	public Iterable<? extends IPort> getIPorts() {
+		return ports;
 	}
 
 	@Override

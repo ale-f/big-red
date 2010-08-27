@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.interfaces.IBigraph;
+import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.IInnerName;
@@ -61,63 +62,63 @@ public class BigraphBPLToolExport extends ModelExport<Bigraph> {
 	}
 	
 	private void printStringDef(String s) throws ExportFailedException {
-		printLine("val " + s + " = \"" + s + "\";");
-	}
-	
-	interface Printer<T> {
-		public void prnt(T t) throws ExportFailedException;
-	}
-	private <T> void printIterable(Iterable<T> i, String left, String sep, String right, Printer<T> p) throws ExportFailedException {
-		print(left);
-		boolean first = true;
-		for (T t : i) {
-			if (!first) print(sep);
-			p.prnt(t);
-			first = false;
-		}
-		print(right);
+		print("val ");
+		print(s);
+		print(" = \"");
+		print(s);
+		printLine("\";");
 	}
 	
 	interface Processor<T> {
 		public void proc(T t) throws ExportFailedException;
 	}
-	private <T> void processIterable(Iterable<T> i, String left, String sep, String right, Processor<T> p) throws ExportFailedException {
-		print(left);
+	private <T> void processIterable(Iterable<? extends T> i, String empty, String left, String sep, String right, Processor<T> p) throws ExportFailedException {
 		boolean first = true;
 		for (T t : i) {
-			if (!first) print(sep);
+			if (first)
+				print(left);
+			else
+				print(sep);
 			p.proc(t);
 			first = false;
 		}
-		print(right);
+		if (first)
+			print(empty);
+		else
+			print(right);
 	}
-	
+
 	public void process(INode node) throws ExportFailedException {
 		print(SMLify(node.getIControl().getName()));
-		printIterable(node.getIPorts(), "[", ", ", "]", new Printer<IPort>() {
-			public void prnt(IPort p) throws ExportFailedException {
+		processIterable(node.getIPorts(), "[]", "[", ", ", "]", new Processor<IPort>() {
+			public void proc(IPort p) throws ExportFailedException {
+				print(p.getName());
+				print(" == ");
 				print(SMLify(p.getILink().getName()));
 			}
 		});
 		if (node.getINodes().iterator().hasNext() || node.getISites().iterator().hasNext()) {
-			printLine(" o (");
+			printLine(" o");
 			scope++;
 			process((IParent) node);
 			scope--;
-			printLine(")");
 		}
+	}
+
+	public void process(ISite site) throws ExportFailedException {
+		print("[(* ");
+		print(site.getName());
+		print(" *)]");
 	}
 	
 	public void process(IParent parent) throws ExportFailedException {
-		processIterable(parent.getINodes(), "", " | ", "", new Processor<INode>() {
-			public void proc(INode n) throws ExportFailedException {
-				process(n);
-			}
-		});
-	
-		printIterable(parent.getISites(), "", " | ", "", new Printer<ISite>() {
-			public void prnt(ISite s) throws ExportFailedException {
-				print("[(* " + s.getName() + " *)]");
+		processIterable(parent.getIChildren(), "<->", "(", " | ", ")", new Processor<IChild>() {
+			public void proc(IChild c) throws ExportFailedException {
+				if (c instanceof INode)
+					process((INode) c);
+				else {
+					process((ISite) c);
+				}
 			}
 		});
 	}
@@ -138,16 +139,20 @@ public class BigraphBPLToolExport extends ModelExport<Bigraph> {
 
 		printLine("");
 		printLine("(* signature *)");
-		printIterable(bigraph.getISignature().getIControls(), "", "\n", "", new Printer<IControl>() {
-			public void prnt(IControl c) throws ExportFailedException {
+		processIterable(bigraph.getISignature().getIControls(), null, "", "\n", "\n", new Processor<IControl>() {
+			public void proc(IControl c) throws ExportFailedException {
 				String name = SMLify(c.getName());
-				print("val " + name + " = active(" + name + " --: ");
-				printIterable(c.getIPorts(), "[", ", ", "]", new Printer<IPort>() {
-					public void prnt(IPort p) throws ExportFailedException {
+				print("val ");
+				print(name);
+				print(" = active(");
+				print(name);
+				print(" --: ");
+				processIterable(c.getIPorts(), null, "[", ", ", "]", new Processor<IPort>() {
+					public void proc(IPort p) throws ExportFailedException {
 						print(SMLify(p.getName()));
 					}
 				});
-				printLine(");");
+				print(");");
 			}
 		});
 
@@ -156,15 +161,14 @@ public class BigraphBPLToolExport extends ModelExport<Bigraph> {
 		printLine("val agent = ");
 		scope++;
 		
-		print("(idw");
-		printIterable(bigraph.getIOuterNames(), "[", ", ", "]", new Printer<IOuterName>() {
-			public void prnt(IOuterName o) throws ExportFailedException {
+		print("(");
+		processIterable(bigraph.getIOuterNames(), "idw[]", "idw[", ", ", "]", new Processor<IOuterName>() {
+			public void proc(IOuterName o) throws ExportFailedException {
 				print(SMLify(o.getName()));
 			}
 		});
-		print(" * -//");
-		printIterable(bigraph.getIEdges(), "[", ", ", "]", new Printer<IEdge>() {
-			public void prnt(IEdge e) throws ExportFailedException {
+		processIterable(bigraph.getIEdges(), "", " * -//[", ", ", "]", new Processor<IEdge>() {
+			public void proc(IEdge e) throws ExportFailedException {
 				print(SMLify(e.getName()));
 			}
 		});
@@ -172,18 +176,18 @@ public class BigraphBPLToolExport extends ModelExport<Bigraph> {
 		print("o (");
 		scope++;
 
-		printIterable(bigraph.getIInnerNames(), "", " || ", "", new Printer<IInnerName>() {
-			public void prnt(IInnerName i) throws ExportFailedException {
+		processIterable(bigraph.getIInnerNames(), "", "", " || ", " || ", new Processor<IInnerName>() {
+			public void proc(IInnerName i) throws ExportFailedException {
 				print(SMLify(i.getILink().getName()) + "/" + SMLify(i.getName()));
 			}
 		});
 		
-		if (bigraph.getIInnerNames().iterator().hasNext())
-			printLine(" || ");
-		
-		printIterable(bigraph.getIRoots(), "", " || ", "", new Printer<IRoot>() {
-			public void prnt(IRoot r) throws ExportFailedException {
+		processIterable(bigraph.getIRoots(), "idp(0)", "", "|| ", "", new Processor<IRoot>() {
+			public void proc(IRoot r) throws ExportFailedException {
+				scope++;
 				process(r);
+				printLine("");
+				scope--;
 			}
 		});
 		
