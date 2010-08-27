@@ -52,12 +52,6 @@
 						<code>signature</code>
 					</h2>
 					<h3>
-						Description
-					</h3>
-					<p>
-						<code>signature</code> is the top-level container for signature documents.
-					</p>
-					<h3>
 						Children
 					</h3>
 					<p>
@@ -109,12 +103,6 @@
 					<h2>
 						<code>control</code>
 					</h2>
-					<h3>
-						Description
-					</h3>
-					<p>
-						<code>control</code> is the control.
-					</p>
 					<h3>
 						Children
 					</h3>
@@ -176,12 +164,6 @@
 					<h2>
 						<code>port</code>
 					</h2>
-					<h3>
-						Description
-					</h3>
-					<p>
-						<code>port</code>s define connection points.
-					</p>
 					<h3>
 						Children
 					</h3>
