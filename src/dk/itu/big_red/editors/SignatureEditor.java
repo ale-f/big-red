@@ -267,6 +267,31 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		removeControl = new Button(controlButtons, SWT.NONE);
 		removeControl.setImage(Utility.getImage(ISharedImages.IMG_ELCL_REMOVE));
+		removeControl.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				model.getModel().removeControl(currentControl);
+				currentControlItem.dispose();
+				controls.update();
+				
+				if (controls.getItemCount() > 0) {
+					controls.select(controls.getItem(0));
+					currentControlItem = controls.getItem(0);
+					currentControl = model.getModel().getControl(currentControlItem.getText());
+					controlToFields();
+					name.setFocus();
+				} else setEnablement(false);
+				
+				setDirty(true);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 		Composite right = new Composite(parent, 0);
 		right.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
