@@ -5,8 +5,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -34,6 +36,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.application.RedActivator;
 import dk.itu.big_red.editors.assistants.PointListener;
 import dk.itu.big_red.editors.assistants.PortListener;
 import dk.itu.big_red.editors.assistants.SignatureEditorPolygonCanvas;
@@ -75,6 +78,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
         } catch (Exception ex) {
         	if (monitor != null)
         		monitor.setCanceled(true);
+        	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
+    	    		new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, ex.getLocalizedMessage(), ex));
         }
 	}
 
