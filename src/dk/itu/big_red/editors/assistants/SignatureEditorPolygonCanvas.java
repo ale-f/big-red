@@ -10,6 +10,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -444,6 +446,33 @@ MenuListener {
 		}
 	}
 
+	private int tippedPoint, tippedPort;
+	
+	private void updateToolTip() {
+		int point = findPointAt(mousePosition),
+		    port = findPortAt(mousePosition);
+		if (point == -1)
+			point = findPointAt(roundedMousePosition);
+		if (port == -1)
+			port = findPortAt(roundedMousePosition);
+		
+		if (tippedPoint == point && tippedPort == port)
+			return;
+		
+		tippedPoint = point;
+		tippedPort = port;
+		
+		String toolTipText = null;
+		if (port != -1 && point != -1) {
+			toolTipText = "Port " + getPorts().get(port).getName() + " and point " + point;
+		} else if (port != -1) {
+			toolTipText = "Port " + getPorts().get(port).getName();
+		} else if (point != -1) {
+			toolTipText = "Point " + point;
+		}
+		setToolTipText(toolTipText);
+	}
+	
 	/**
 	 * Updates the centre point for the crosshairs and schedules a redraw, if
 	 * the mouse has moved to a new grid position since the last call to this
@@ -459,6 +488,7 @@ MenuListener {
 			redraw();
 		} else if (dragPointIndex != -1 || dragPortIndex != -1)
 			redraw();
+		updateToolTip();
 	}
 
 	/**
@@ -590,6 +620,36 @@ MenuListener {
 				});
 			}
 		} else {
+			UI.createMenuItem(m, 0, "Re&name port", new SelectionListener() {
+				
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					final Port p = ports.get(foundPort);
+					InputDialog d = new InputDialog(getShell(),
+							"Port name", "Choose a name for this port:",
+							p.getName(), new IInputValidator() {
+								
+								@Override
+								public String isValid(String newText) {
+									for (Port i : ports)
+										if (i.getName().equals(newText) && i != p)
+											return "This port name is already in use.";
+									return null;
+								}
+							});
+					if (d.open() == InputDialog.OK) {
+						p.setName(d.getValue());
+						firePortChange(PortEvent.RENAMED, p);
+					}
+				}
+				
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
 			UI.createMenuItem(m, 0, "&Remove port", new SelectionListener() {
 				
 				@Override

@@ -45,8 +45,13 @@ public interface PortListener {
 		public static int MOVED = 3;
 		
 		/**
-		 * The type of change that occurred ({@link #ADDED}, {@link #REMOVED}
-		 * or {@link #MOVED}).
+		 * A port has been renamed.
+		 */
+		public static int RENAMED = 4;
+		
+		/**
+		 * The type of change that occurred ({@link #ADDED}, {@link #REMOVED},
+		 * {@link #MOVED}, or {@link #RENAMED}).
 		 */
 		int type;
 		
