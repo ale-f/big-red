@@ -144,11 +144,11 @@ public class NamespaceManager {
 	 * @param nm a {@link NamespaceManager}
 	 * @return the registered name of <code>nameable</code>
 	 */
-	public static String sensibleGetNameImplementation(Class<?> klass, INameable nameable, NamespaceManager nm) {
-		String name = nm.getName(klass, nameable);
+	public String getRequiredName(Class<?> klass, INameable nameable) {
+		String name = getName(klass, nameable);
 		if (name == null) {
 			nameable.setName(null);
-			name = nm.getName(klass, nameable);
+			name = getName(klass, nameable);
 		}
 		return name;
 	}

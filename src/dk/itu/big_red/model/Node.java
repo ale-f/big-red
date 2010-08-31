@@ -172,7 +172,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	
 	@Override
 	public String getName() {
-		return NamespaceManager.sensibleGetNameImplementation(getClass(), this, getBigraph().getNamespaceManager());
+		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);
 	}
 	
 	@Override

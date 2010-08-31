@@ -22,7 +22,7 @@ public class Root extends Thing implements INameable, IRoot {
 	}
 	
 	public String getName() {
-		return NamespaceManager.sensibleGetNameImplementation(getClass(), this, getBigraph().getNamespaceManager());
+		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);
 	}
 	
 	public void setName(String name) {

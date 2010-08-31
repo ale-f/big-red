@@ -126,4 +126,15 @@ public class Port extends Point implements ILayoutable, IPort {
 	public INode getINode() {
 		return getParent();
 	}
+	
+	private NamespaceManager nm = null;
+	
+	protected NamespaceManager getNamespaceManager() {
+		return nm;
+	}
+	
+	protected void setNamespaceManager(NamespaceManager nm) {
+		if (nm != null)
+			this.nm = nm;
+	}
 }

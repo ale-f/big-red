@@ -48,7 +48,7 @@ public class Site extends Thing implements INameable, ISite {
 	
 	@Override
 	public String getName() {
-		return NamespaceManager.sensibleGetNameImplementation(getClass(), this, getBigraph().getNamespaceManager());
+		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);
 	}
 	
 	public void setName(String name) {

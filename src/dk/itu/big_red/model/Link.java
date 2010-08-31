@@ -138,7 +138,7 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	
 	@Override
 	public String getName() {
-		return NamespaceManager.sensibleGetNameImplementation(Link.class, this, getBigraph().getNamespaceManager());
+		return getBigraph().getNamespaceManager().getRequiredName(Link.class, this);
 	}
 	
 	@Override
