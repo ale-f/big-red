@@ -677,6 +677,11 @@ MenuListener {
 								it.remove();
 								firePortChange(PortEvent.REMOVED, p);
 							}
+							for (Port port : ports) {
+								int segment = port.getSegment();
+								if (segment >= foundPoint)
+									port.setSegment(segment - 1);
+							}
 						}
 						firePointChange(PointEvent.REMOVED, points.removePoint(foundPoint));
 						redraw();
