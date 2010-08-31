@@ -26,9 +26,7 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 			try {
 				IProject p = Project.getProject(page.getProjectName());
 				IFolder signatures = Project.getFolder(p, "signatures"),
-				        agents = Project.getFolder(p, "agents"),
-				        rules = Project.getFolder(p, "rules");
-				Project.getFile(p, page.getProjectName() + ".bigraph-simulation-spec");
+				        agents = Project.getFolder(p, "agents");
 				IFile signature = Project.getFile(signatures, page.getProjectName() + ".bigraph-signature");
 				Project.createSignature(signature);
 				Project.createBigraph(signature, Project.getFile(agents, page.getProjectName() + ".bigraph-agent"));

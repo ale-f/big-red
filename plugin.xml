@@ -122,18 +122,6 @@
          </contentTypeBinding>
       </editor>
       <editor
-            class="dk.itu.big_red.editors.RuleEditor"
-            contributorClass="dk.itu.big_red.editors.assistants.RuleEditorActionBarContributor"
-            default="false"
-            extensions="bigraph-rule"
-            icon="icons/icon16.png"
-            id="dk.itu.big_red.RuleEditor"
-            name="Rule Editor">
-         <contentTypeBinding
-               contentTypeId="dk.itu.big_red.rule">
-         </contentTypeBinding>
-      </editor>
-      <editor
             class="dk.itu.big_red.editors.SignatureEditor"
             contributorClass="dk.itu.big_red.editors.assistants.SignatureEditorActionBarContributor"
             default="false"
@@ -143,18 +131,6 @@
             name="Signature Editor">
          <contentTypeBinding
                contentTypeId="dk.itu.big_red.signature">
-         </contentTypeBinding>
-      </editor>
-      <editor
-            class="dk.itu.big_red.editors.SimulationSpecEditor"
-            contributorClass="dk.itu.big_red.editors.assistants.SignatureEditorActionBarContributor"
-            default="false"
-            extensions="bigraph-simulation-spec"
-            icon="icons/cic/process.png"
-            id="dk.itu.big_red.SimulationSpecEditor"
-            name="Simulation Spec Editor">
-         <contentTypeBinding
-               contentTypeId="dk.itu.big_red.simulation_spec">
          </contentTypeBinding>
       </editor>
    </extension>
@@ -219,17 +195,6 @@
       </wizard>
       <wizard
             category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.creation.NewRuleWizard"
-            finalPerspective="dk.itu.big_red.perspective"
-            icon="icons/icon16.png"
-            id="dk.itu.big_red.NewRuleWizard"
-            name="Rule">
-         <description>
-            Create a new rule in an existing bigraphical reactive system.
-         </description>
-      </wizard>
-      <wizard
-            category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.creation.NewSignatureWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="icons/icon16.png"
@@ -238,17 +203,6 @@
             project="false">
          <description>
             Create a new signature in an existing bigraphical reactive system.
-         </description>
-      </wizard>
-      <wizard
-            category="dk.itu.big_red"
-            class="dk.itu.big_red.wizards.creation.NewSimulationSpecWizard"
-            finalPerspective="dk.itu.big_red.perspective"
-            icon="icons/cic/process.png"
-            id="dk.itu.big_red.NewSimulationSpecWizard"
-            name="Simulation spec">
-         <description>
-            Create a simulation spec for an existing bigraphical reactive system.
          </description>
       </wizard>
    </extension>
