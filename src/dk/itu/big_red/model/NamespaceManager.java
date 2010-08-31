@@ -59,6 +59,9 @@ public class NamespaceManager {
 	/**
 	 * Adds a mapping from <code>name</code> to <code>object</code> to the
 	 * <code>klass</code>-specific namespace.
+	 * <p>If <code>name</code> is <code>null</code>, then a call to this method
+	 * is equivalent to {@link #newName(Class, Object, NameType)
+	 * newName(klass, object, NameType.NAME_ALPHABETIC) != null}.
 	 * @param klass the {@link Class} whose namespace should be searched
 	 * @param name a name
 	 * @param object an object
@@ -67,6 +70,9 @@ public class NamespaceManager {
 	 *         is already in use by a different object
 	 */
 	public boolean setName(Class<?> klass, String name, Object object) {
+		if (name == null)
+			return newName(klass, object, NameType.NAME_ALPHABETIC) != null;
+		
 		HashMap<String, Object> subspace = getSubspace(klass);
 		
 		Object current = subspace.get(name);
