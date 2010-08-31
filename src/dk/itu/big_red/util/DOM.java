@@ -104,6 +104,7 @@ public class DOM {
 		
 		Transformer t = f.newTransformer();
 		t.setOutputProperty(OutputKeys.INDENT, "yes");
+		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		t.transform(source, result);
 	}
 	
