@@ -68,12 +68,19 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IF
 
 	protected LinkConnection connection = null;
 	
-	public void addConnection(LinkConnection e) {
+	/**
+	 * Replaces the current {@link LinkConnection} of this Point.
+	 * @param e the new {@link LinkConnection}
+	 * @return the previous {@link LinkConnection}, or <code>null</code>if
+	 * there wasn't one
+	 */
+	public LinkConnection setConnection(LinkConnection e) {
 		if (connection != null)
 			connection.getLink().removePoint(this);
 		LinkConnection oldConnection = connection;
 		connection = e;
 		listeners.firePropertyChange(Point.PROPERTY_SOURCE_EDGE, oldConnection, e);
+		return oldConnection;
 	}
 
 	public void removeConnection(LinkConnection e) {

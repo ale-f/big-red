@@ -59,7 +59,7 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 		LinkConnection c = new LinkConnection(this);
 		c.setPoint(point);
 		
-		point.addConnection(c);
+		point.setConnection(c);
 		addConnection(c);
 	}
 	
