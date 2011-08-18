@@ -15,7 +15,6 @@ import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IConnectable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
@@ -26,7 +25,7 @@ import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
  * @author alec
  *
  */
-public abstract class Link implements IAdaptable, ILayoutable, INameable, IConnectable, ICommentable, IOutlineColourable, ILink {
+public abstract class Link implements IAdaptable, ILayoutable, INameable, ICommentable, IOutlineColourable, ILink {
 	/**
 	 * The property name fired when the target edge set changes (that is, an
 	 * edge for which this object is the target is added or removed).
@@ -81,19 +80,16 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 		}
 	}
 	
-	@Override
 	public void addConnection(LinkConnection e) {
 		connections.add(e);
 		listeners.firePropertyChange(Link.PROPERTY_TARGET_EDGE, null, e);
 	}
 
-	@Override
 	public void removeConnection(LinkConnection e) {
 		connections.remove(e);
 		listeners.firePropertyChange(Link.PROPERTY_TARGET_EDGE, e, null);
 	}
 	
-	@Override
 	public List<LinkConnection> getConnections() {
 		return connections;
 	}

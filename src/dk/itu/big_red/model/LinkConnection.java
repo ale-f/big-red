@@ -8,7 +8,6 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.interfaces.internal.IConnectable;
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 
 /**
@@ -46,7 +45,7 @@ public class LinkConnection implements IPropertyChangeNotifier, IAdaptable {
 	 */
 	public void setSource(Point source) {
 		if (source != null) {
-			IConnectable oldSource = this.source;
+			Point oldSource = this.source;
 			this.source = source;
 			listeners.firePropertyChange(PROPERTY_SOURCE, oldSource, source);
 		}

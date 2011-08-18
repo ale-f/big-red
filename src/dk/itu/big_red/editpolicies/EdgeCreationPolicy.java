@@ -5,23 +5,23 @@ import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
 import org.eclipse.gef.requests.CreateConnectionRequest;
 import org.eclipse.gef.requests.ReconnectRequest;
 
-import dk.itu.big_red.commands.EdgeCreateCommand;
+import dk.itu.big_red.commands.LinkConnectionCreateCommand;
 
 public class EdgeCreationPolicy extends GraphicalNodeEditPolicy {
 	
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
-		EdgeCreateCommand cmd = new EdgeCreateCommand();
-		cmd.setSource(getHost().getModel());
+		LinkConnectionCreateCommand cmd = new LinkConnectionCreateCommand();
+		cmd.setFirst(getHost().getModel());
 		request.setStartCommand(cmd);
 		return cmd;
 	}
 
 	@Override
 	protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
-		EdgeCreateCommand cmd = 
-			(EdgeCreateCommand) request.getStartCommand();
-		cmd.setTarget(getHost().getModel());
+		LinkConnectionCreateCommand cmd = 
+			(LinkConnectionCreateCommand) request.getStartCommand();
+		cmd.setSecond(getHost().getModel());
 		return cmd;
 	}
 	

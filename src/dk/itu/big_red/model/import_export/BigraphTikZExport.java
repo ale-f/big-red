@@ -218,9 +218,8 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(dk.itu.big_red.model.Point p) throws ExportFailedException {
-		List<LinkConnection> x = p.getConnections();
-		if (x.size() == 1) {
-			LinkConnection co = x.get(0);
+		LinkConnection co = p.getConnection();
+		if (co != null) {
 			String in, out;
 			Point source = co.getSource().getRootLayout().getCenter(),
 			      target = co.getTarget().getRootLayout().getCenter();

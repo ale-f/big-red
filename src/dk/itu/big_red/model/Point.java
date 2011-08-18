@@ -14,7 +14,6 @@ import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IConnectable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
@@ -25,7 +24,7 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  *
  */
-public abstract class Point implements IConnectable, IAdaptable, ICommentable, IFillColourable, IPoint {
+public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IFillColourable, IPoint {
 	/**
 	 * The property name fired when the source edge changes.
 	 */
@@ -33,8 +32,8 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable, I
 	
 	@Override
 	public ILink getILink() {
-		return (getConnections().size() > 0 ?
-				getConnections().get(0).getTarget() : null);
+		return (getConnection() != null ?
+				getConnection().getTarget() : null);
 	}
 
 	private String comment = null;
@@ -69,7 +68,6 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable, I
 
 	protected LinkConnection connection = null;
 	
-	@Override
 	public void addConnection(LinkConnection e) {
 		if (connection != null)
 			connection.getTarget().removePoint(this);
@@ -78,7 +76,6 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable, I
 		listeners.firePropertyChange(Point.PROPERTY_SOURCE_EDGE, oldConnection, e);
 	}
 
-	@Override
 	public void removeConnection(LinkConnection e) {
 		if (connection == e) {
 			connection = null;
@@ -86,12 +83,8 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable, I
 		}
 	}
 	
-	@Override
-	public List<LinkConnection> getConnections() {
-		ArrayList<LinkConnection> e = new ArrayList<LinkConnection>();
-		if (connection != null)
-			e.add(connection);
-		return e;
+	public LinkConnection getConnection() {
+		return connection;
 	}
 
 	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);

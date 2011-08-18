@@ -1,6 +1,7 @@
 package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
@@ -79,7 +80,11 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 	
 	@Override
 	protected List<LinkConnection> getModelSourceConnections() {
-        return getModel().getConnections();
+		ArrayList<LinkConnection> l = new ArrayList<LinkConnection>();
+		LinkConnection c = getModel().getConnection();
+        if (c != null)
+        	l.add(c);
+        return l;
     }
 	
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {

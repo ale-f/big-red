@@ -18,7 +18,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import dk.itu.big_red.model.LinkConnection;
-import dk.itu.big_red.model.interfaces.internal.IConnectable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 

@@ -73,8 +73,8 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	}
 	
 	private Element process(Point p) throws ExportFailedException {
-		if (p.getConnections().size() != 0) {
-			LinkConnection connection = p.getConnections().get(0);
+		LinkConnection connection = p.getConnection();
+		if (connection != null) {
 			Element e =
 				doc.createElement(p.getClass().getSimpleName().toLowerCase());
 			DOM.applyAttributesToElement(e,
