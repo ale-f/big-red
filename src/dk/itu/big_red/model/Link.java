@@ -20,6 +20,12 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 
+/**
+ * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;
+ * model objects which have multiple {@link LinkConnection}s to {@link Point}s.
+ * @author alec
+ *
+ */
 public abstract class Link implements IAdaptable, ILayoutable, INameable, IConnectable, ICommentable, IOutlineColourable, ILink {
 	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 

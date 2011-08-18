@@ -15,6 +15,12 @@ import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.HomogeneousIterable;
 
+/**
+ * The Bigraph is the root of any agent, and contains {@link Root}s, {@link
+ * InnerName}s, and {@link OuterName}s.
+ * @author alec
+ *
+ */
 public class Bigraph extends Thing implements IBigraph {
 	protected ResourceWrapper<Signature> signature =
 		new ResourceWrapper<Signature>();

@@ -14,6 +14,8 @@ import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 /**
  * An LinkConnection is the model object behind an actual {@link Connection}
  * on the bigraph. {@link Link}s create and manage them.
+ * <p>The target of a {@link LinkConnection} is always a <code>Link</code>, and
+ * its source is always a <code>Point</code>.
  * @author alec
  *
  */
