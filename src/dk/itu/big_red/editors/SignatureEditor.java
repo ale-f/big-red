@@ -131,6 +131,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	private Button ovalMode, polygonMode, resizable;
 	
 	private boolean fireModify = true;
+
+	private Label appearanceDescription;
 	
 	protected void controlToFields() {
 		fireModify = false;
@@ -356,7 +358,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		smif.setHeight(8);
 		Font smiff = new Font(null, smif);
 		
-		Label appearanceDescription = new Label(appearanceGroup, SWT.CENTER | SWT.WRAP);
+		appearanceDescription = new Label(appearanceGroup, SWT.CENTER | SWT.WRAP);
 		GridData appearanceDescriptionData = new GridData();
 		appearanceDescriptionData.verticalAlignment = SWT.TOP;
 		appearanceDescriptionData.horizontalAlignment = SWT.FILL;
@@ -375,7 +377,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 	private void setEnablement(boolean enabled) {
 		UI.setEnabled(enabled,
-			name, label, appearance, resizable, ovalMode, polygonMode);
+			name, label, appearance, appearanceDescription, resizable, ovalMode, polygonMode);
 	}
 	
 	private void initialiseSignatureEditor() {
