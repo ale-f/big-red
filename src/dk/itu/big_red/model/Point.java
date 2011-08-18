@@ -26,6 +26,11 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  *
  */
 public abstract class Point implements IConnectable, IAdaptable, ICommentable, IFillColourable, IPoint {
+	/**
+	 * The property name fired when the source edge changes.
+	 */
+	public static final String PROPERTY_SOURCE_EDGE = "PointSourceEdge";
+	
 	@Override
 	public ILink getILink() {
 		return (getConnections().size() > 0 ?
@@ -70,14 +75,14 @@ public abstract class Point implements IConnectable, IAdaptable, ICommentable, I
 			connection.getTarget().removePoint(this);
 		LinkConnection oldConnection = connection;
 		connection = e;
-		listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, oldConnection, e);
+		listeners.firePropertyChange(Point.PROPERTY_SOURCE_EDGE, oldConnection, e);
 	}
 
 	@Override
 	public void removeConnection(LinkConnection e) {
 		if (connection == e) {
 			connection = null;
-			listeners.firePropertyChange(IConnectable.PROPERTY_SOURCE_EDGE, e, null);
+			listeners.firePropertyChange(Point.PROPERTY_SOURCE_EDGE, e, null);
 		}
 	}
 	

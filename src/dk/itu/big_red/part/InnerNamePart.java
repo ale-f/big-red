@@ -18,8 +18,8 @@ import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IConnectable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 
 /**
@@ -54,7 +54,7 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 			evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT) ||
 			evt.getPropertyName().equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
 	    	refreshVisuals();
-	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
+	    } else if (evt.getPropertyName().equals(Point.PROPERTY_SOURCE_EDGE)) {
 	    	refreshSourceConnections();
 	    }
 	}

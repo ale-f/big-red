@@ -16,11 +16,11 @@ import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.OuterNameFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IConnectable;
 
 public class OuterNamePart extends AbstractPart implements NodeEditPart {
 	@Override
@@ -46,7 +46,7 @@ public class OuterNamePart extends AbstractPart implements NodeEditPart {
 		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME) ||
 			evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT)) {
 	    	refreshVisuals();
-	    } else if (evt.getPropertyName().equals(IConnectable.PROPERTY_TARGET_EDGE)) {
+	    } else if (evt.getPropertyName().equals(Link.PROPERTY_TARGET_EDGE)) {
 	    	refreshTargetConnections();
 	    }
 	}

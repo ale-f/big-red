@@ -27,6 +27,12 @@ import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
  *
  */
 public abstract class Link implements IAdaptable, ILayoutable, INameable, IConnectable, ICommentable, IOutlineColourable, ILink {
+	/**
+	 * The property name fired when the target edge set changes (that is, an
+	 * edge for which this object is the target is added or removed).
+	 */
+	public static final String PROPERTY_TARGET_EDGE = "LinkTargetEdge";
+	
 	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 
 	@Override
@@ -78,13 +84,13 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IConne
 	@Override
 	public void addConnection(LinkConnection e) {
 		connections.add(e);
-		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, null, e);
+		listeners.firePropertyChange(Link.PROPERTY_TARGET_EDGE, null, e);
 	}
 
 	@Override
 	public void removeConnection(LinkConnection e) {
 		connections.remove(e);
-		listeners.firePropertyChange(IConnectable.PROPERTY_TARGET_EDGE, e, null);
+		listeners.firePropertyChange(Link.PROPERTY_TARGET_EDGE, e, null);
 	}
 	
 	@Override

@@ -18,9 +18,9 @@ import dk.itu.big_red.figure.PortFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IConnectable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
@@ -73,7 +73,7 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
 		if (source == getModel()) {
-			if (prop.equals(IConnectable.PROPERTY_SOURCE_EDGE)) {
+			if (prop.equals(Point.PROPERTY_SOURCE_EDGE)) {
 				refreshSourceConnections();
 				refreshVisuals();
 		    } else if (prop.equals(ICommentable.PROPERTY_COMMENT) ||

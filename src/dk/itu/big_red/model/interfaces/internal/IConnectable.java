@@ -20,20 +20,6 @@ import dk.itu.big_red.model.LinkConnection;
  */
 public interface IConnectable extends ILayoutable {
 	/**
-	 * The property name fired when the source edge set changes (that is, an
-	 * edge for which this object is the source is added or removed).
-	 */
-	public static final String PROPERTY_SOURCE_EDGE = "IConnectableSourceEdge";
-	
-	/**
-	 * The property name fired when the target edge set changes (that is, an
-	 * edge for which this object is the target is added or removed).
-	 * 
-	 * <p>Generally, only {@link Edge}s should fire this property.
-	 */
-	public static final String PROPERTY_TARGET_EDGE = "IConnectableTargetEdge";
-
-	/**
 	 * Registers the given {@link LinkConnection} as being connected to this
 	 * object.
 	 * @param e an LinkConnection
