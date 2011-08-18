@@ -79,7 +79,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 				doc.createElement(p.getClass().getSimpleName().toLowerCase());
 			DOM.applyAttributesToElement(e,
 					"name", p.getName(),
-					"link", connection.getTarget().getName());
+					"link", connection.getLink().getName());
 			return e;
 		} else if (p instanceof InnerName) {
 			throw new ExportFailedException("Inner name \"" + p.getName() + "\" isn't connected to anything.");

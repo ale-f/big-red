@@ -33,7 +33,7 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IF
 	@Override
 	public ILink getILink() {
 		return (getConnection() != null ?
-				getConnection().getTarget() : null);
+				getConnection().getLink() : null);
 	}
 
 	private String comment = null;
@@ -70,7 +70,7 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IF
 	
 	public void addConnection(LinkConnection e) {
 		if (connection != null)
-			connection.getTarget().removePoint(this);
+			connection.getLink().removePoint(this);
 		LinkConnection oldConnection = connection;
 		connection = e;
 		listeners.firePropertyChange(Point.PROPERTY_SOURCE_EDGE, oldConnection, e);

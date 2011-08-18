@@ -221,8 +221,8 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		LinkConnection co = p.getConnection();
 		if (co != null) {
 			String in, out;
-			Point source = co.getSource().getRootLayout().getCenter(),
-			      target = co.getTarget().getRootLayout().getCenter();
+			Point source = co.getPoint().getRootLayout().getCenter(),
+			      target = co.getLink().getRootLayout().getCenter();
 			System.out.println(source);
 			System.out.println(target);
 			if (source.y < target.y)
@@ -237,7 +237,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			}
 			line("begin{pgfonlayer}{connection}");
 			scope++;
-			line("draw [internal edge,draw=" + getNiceName(co.getTarget()) + " color,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getTarget()) + ");");
+			line("draw [internal edge,draw=" + getNiceName(co.getLink()) + " color,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getLink()) + ");");
 			scope--;
 			line("end{pgfonlayer}");
 		}

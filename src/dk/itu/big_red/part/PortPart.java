@@ -102,7 +102,7 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		String toolTip = model.getName();
 		LinkConnection l = model.getConnection();
 		if (l != null)
-			toolTip += "\n(connected to " + l.getTarget() + ")";
+			toolTip += "\n(connected to " + l.getLink() + ")";
 		if (model.getComment() != null)
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);

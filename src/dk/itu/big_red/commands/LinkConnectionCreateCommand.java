@@ -23,13 +23,13 @@ public class LinkConnectionCreateCommand extends Command {
 	public void setFirst(Object e) {
 		if (!(e instanceof LinkConnection))
 			first = e;
-		else first = ((LinkConnection)e).getTarget();
+		else first = ((LinkConnection)e).getLink();
 	}
 	
 	public void setSecond(Object e) {
 		if (!(e instanceof LinkConnection))
 			second = e;
-		else second = ((LinkConnection)e).getTarget();
+		else second = ((LinkConnection)e).getLink();
 	}
 	
 	public boolean canExecute() {

@@ -57,7 +57,7 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 	 */
 	public void addPoint(Point point) {
 		LinkConnection c = new LinkConnection(this);
-		c.setSource(point);
+		c.setPoint(point);
 		
 		point.addConnection(c);
 		addConnection(c);
@@ -71,7 +71,7 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 	 */
 	public void removePoint(Point point) {
 		for (LinkConnection e : connections) {
-			if (e.getSource() == point) {
+			if (e.getPoint() == point) {
 				point.removeConnection(e);
 				removeConnection(e);
 				
@@ -232,7 +232,7 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 	public Iterable<IPoint> getIPoints() {
 		ArrayList<IPoint> points = new ArrayList<IPoint>();
 		for (LinkConnection c : connections)
-			points.add(c.getSource());
+			points.add(c.getPoint());
 		return points;
 	}
 }

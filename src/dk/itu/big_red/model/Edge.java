@@ -24,8 +24,8 @@ public class Edge extends Link implements IEdge {
 	public void averagePosition() {
 		int tx = 0, ty = 0, s = getConnections().size();
 		for (LinkConnection f : getConnections()) {
-			tx += f.getSource().getRootLayout().x;
-			ty += f.getSource().getRootLayout().y;
+			tx += f.getPoint().getRootLayout().x;
+			ty += f.getPoint().getRootLayout().y;
 		}
 		setLayout(new Rectangle(tx / s, ty / s, getLayout().width, getLayout().height));
 	}
