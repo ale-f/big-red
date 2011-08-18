@@ -202,13 +202,15 @@ public class DOM {
 	 * @param d an Element with attributes set
 	 * @param nsURI the attribute (or Element's) namespace
 	 * @param n the attribute name to search for
-	 * @return the attribute's value
+	 * @return the attribute's value, or <code>null</code> if it wasn't present
 	 */
 	public static String getAttributeNS(Element d, String nsURI, String n) {
 		String r = d.getAttributeNS(nsURI, n);
 		if ((r == null || r.length() == 0) && d.getNamespaceURI().equals(nsURI)) {
 			r = d.getAttributeNS(null, n);
 		}
+		if (r.length() == 0)
+			r = null;
 		return r;
 	}
 	
