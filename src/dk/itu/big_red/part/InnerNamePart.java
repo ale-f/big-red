@@ -69,7 +69,7 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 		figure.setName(model.getName());
 		figure.setConstraint(model.getLayout());
 		
-		String toolTip = "Inner name (\"" + model.getName() + "\")";
+		String toolTip = "Inner name " + model.getName() + ")";
 		if (model.getComment() != null)
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);

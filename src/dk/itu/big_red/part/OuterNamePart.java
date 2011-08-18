@@ -61,7 +61,7 @@ public class OuterNamePart extends AbstractPart implements NodeEditPart {
 		figure.setName(model.getName());
 		figure.setConstraint(model.getLayout());
 		
-		String toolTip = "Outer name (\"" + model.getName() + "\")";
+		String toolTip = "Outer name " + model.getName();
 		if (model.getComment() != null)
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
