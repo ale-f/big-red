@@ -62,7 +62,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		try {
 			e.setAttribute("control", n.getControl().getLongName());
 		} catch (NullPointerException ex) {
-			throw new ExportFailedException("This document contains a node with no control.", ex);
+			throw new ExportFailedException("Node \"" + n.getName() + "\" has no control.", ex);
 		}
 		e.setAttribute("name", n.getName());
 		
@@ -72,7 +72,7 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		return e;
 	}
 	
-	private Element process(Point p) {
+	private Element process(Point p) throws ExportFailedException {
 		if (p.getConnections().size() != 0) {
 			LinkConnection connection = p.getConnections().get(0);
 			Element e =
@@ -81,7 +81,10 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 					"name", p.getName(),
 					"link", connection.getTarget().getName());
 			return e;
-		} else return null;
+		} else if (p instanceof InnerName) {
+			throw new ExportFailedException("Inner name \"" + p.getName() + "\" isn't connected to anything.");
+		}
+		return null;
 	}
 	
 	private Element process(INameable e) {
