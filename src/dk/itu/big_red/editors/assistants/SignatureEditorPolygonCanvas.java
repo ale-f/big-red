@@ -67,8 +67,16 @@ MenuListener {
 	private Point roundedMousePosition = new Point(-10, -10),
 	              mousePosition = new Point(-10, -10);
 	
+	/**
+	 * The index of the point which is currently the subject of a drag
+	 * operation - or, if {@link #newPoint} isn't <code>null</code>, the
+	 * index that the newly created point <i>will</i> have.
+	 */
 	private int dragPointIndex = -1;
-	private Point dragPoint = null;
+	/**
+	 * The new point about to be created, if there is one.
+	 */
+	private Point newPoint = null;
 	
 	private int dragPortIndex = -1;
 	
@@ -267,13 +275,13 @@ MenuListener {
 			if (dragPointIndex == -1 && mode == Shape.SHAPE_POLYGON) {
 				if (points.size() == 1) {
 					dragPointIndex = 0;
-					dragPoint = p;
+					newPoint = p;
 				} else {
 					int index = getNearestSegment(up, 15);
 					
 					if (index != -1) {
 						dragPointIndex = index + 1;
-						dragPoint = p;
+						newPoint = p;
 					}
 				}
 			}
@@ -282,12 +290,12 @@ MenuListener {
 	}
 
 	/**
-	 * Moves the point the user's dragging and schedules a redraw, if dragging
-	 * is in progress.
+	 * Creates or moves a point, or moves a port, depending on what the user
+	 * initially clicked.
 	 */
 	@Override
 	public void mouseUp(MouseEvent e) {
-		if (dragPortIndex != -1) {
+		if (dragPortIndex != -1) { /* a port is being moved */
 			Port p = ports.get(dragPortIndex);
 			Line l = new Line();
 			int segment;
@@ -313,29 +321,29 @@ MenuListener {
 			
 			dragPortIndex = -1;
 			redraw();
-		} else if (dragPointIndex != -1) {
+		} else if (dragPointIndex != -1) { /* a point is being manipulated */
 			Point p = roundToGrid(e.x, e.y);
 			int pointAtCursor = findPointAt(roundedMousePosition);
 			if (pointAtCursor == -1) {
-				if (dragPoint == null) {
+				if (newPoint == null) { /* an existing point is being moved */
 					tmp = points.getPoint(dragPointIndex);
 					tmp.x = p.x; tmp.y = p.y;
 					points.setPoint(tmp, dragPointIndex);
 					firePointChange(PointEvent.MOVED, tmp);
-				} else {
-					dragPoint.x = p.x;
-					dragPoint.y = p.y;
+				} else { /* a new point is being created */
+					newPoint.x = p.x;
+					newPoint.y = p.y;
 					for (Port port : ports) {
 						int segment = port.getSegment();
 						if (segment >= dragPointIndex)
 							port.setSegment(segment + 1);
 					}
-					points.insertPoint(dragPoint, dragPointIndex);
-					firePointChange(PointEvent.ADDED, dragPoint);
+					points.insertPoint(newPoint, dragPointIndex);
+					firePointChange(PointEvent.ADDED, newPoint);
 				}
 			}
 			dragPointIndex = -1;
-			dragPoint = null;
+			newPoint = null;
 			redraw();
 		}
 	}
@@ -423,7 +431,7 @@ MenuListener {
 		} else if (dragPointIndex != -1) {
 			e.gc.setAlpha(127);
 			Point previous, next;
-			if (dragPoint == null) {
+			if (newPoint == null) {
 				previous = getPoint(dragPointIndex - 1);
 				next = getPoint(dragPointIndex + 1);
 			} else {
