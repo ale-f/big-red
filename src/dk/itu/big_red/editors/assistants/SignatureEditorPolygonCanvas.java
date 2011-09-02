@@ -69,14 +69,14 @@ MenuListener {
 	
 	/**
 	 * The index of the point which is currently the subject of a drag
-	 * operation - or, if {@link #newPoint} isn't <code>null</code>, the
-	 * index that the newly created point <i>will</i> have.
+	 * operation - or, if {@link #newPoint} is <code>true</code>, the index
+	 * that the newly created point <i>will</i> have.
 	 */
 	private int dragPointIndex = -1;
 	/**
-	 * The new point about to be created, if there is one.
+	 * Is a new point being created?
 	 */
-	private Point newPoint = null;
+	private boolean newPoint = false;
 	
 	private int dragPortIndex = -1;
 	
@@ -275,13 +275,13 @@ MenuListener {
 			if (dragPointIndex == -1 && mode == Shape.SHAPE_POLYGON) {
 				if (points.size() == 1) {
 					dragPointIndex = 0;
-					newPoint = p;
+					newPoint = true;
 				} else {
 					int index = getNearestSegment(up, 15);
 					
 					if (index != -1) {
 						dragPointIndex = index + 1;
-						newPoint = p;
+						newPoint = true;
 					}
 				}
 			}
@@ -325,25 +325,24 @@ MenuListener {
 			Point p = roundToGrid(e.x, e.y);
 			int pointAtCursor = findPointAt(roundedMousePosition);
 			if (pointAtCursor == -1) {
-				if (newPoint == null) { /* an existing point is being moved */
+				if (!newPoint) { /* an existing point is being moved */
 					tmp = points.getPoint(dragPointIndex);
 					tmp.x = p.x; tmp.y = p.y;
 					points.setPoint(tmp, dragPointIndex);
 					firePointChange(PointEvent.MOVED, tmp);
 				} else { /* a new point is being created */
-					newPoint.x = p.x;
-					newPoint.y = p.y;
+					
 					for (Port port : ports) {
 						int segment = port.getSegment();
 						if (segment >= dragPointIndex)
 							port.setSegment(segment + 1);
 					}
-					points.insertPoint(newPoint, dragPointIndex);
-					firePointChange(PointEvent.ADDED, newPoint);
+					points.insertPoint(p, dragPointIndex);
+					firePointChange(PointEvent.ADDED, p);
 				}
 			}
 			dragPointIndex = -1;
-			newPoint = null;
+			newPoint = false;
 			redraw();
 		}
 	}
@@ -431,7 +430,7 @@ MenuListener {
 		} else if (dragPointIndex != -1) {
 			e.gc.setAlpha(127);
 			Point previous, next;
-			if (newPoint == null) {
+			if (!newPoint) {
 				previous = getPoint(dragPointIndex - 1);
 				next = getPoint(dragPointIndex + 1);
 			} else {
