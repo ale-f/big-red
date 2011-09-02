@@ -143,11 +143,23 @@ MenuListener {
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p);
 		if (deleteIndex != -1 && (deleteIndex != 0 || points.size() > 1)) {
+			Line l1 = new Line(getPoint(deleteIndex - 1), p),
+					l2 = new Line(p, getPoint(deleteIndex + 1));
+			double len1 = l1.getLength(),
+					len2 = l2.getLength(),
+					len = len1 + len2,
+					l1l = len1 / len;
 			if (dragPointIndex == deleteIndex)
 				dragPointIndex = -1;
 			firePointChange(PointEvent.REMOVED, points.removePoint(deleteIndex));
 			for (Port port : ports) {
 				int segment = port.getSegment();
+				double distance = port.getDistance();
+				if (segment == deleteIndex - 1) {
+					port.setDistance(distance * l1l);
+				} else if (segment == deleteIndex) {
+					port.setDistance(l1l + (distance * (len2 / len)));
+				}
 				if (segment >= deleteIndex)
 					port.setSegment(segment - 1);
 			}
@@ -331,11 +343,22 @@ MenuListener {
 					points.setPoint(tmp, dragPointIndex);
 					firePointChange(PointEvent.MOVED, tmp);
 				} else { /* a new point is being created */
-					
+					Line l1 = new Line(getPoint(dragPointIndex - 1), p),
+							l2 = new Line(p, getPoint(dragPointIndex));
+					double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
 					for (Port port : ports) {
 						int segment = port.getSegment();
-						if (segment >= dragPointIndex)
+						double distance = port.getDistance();
+						if (segment == (dragPointIndex - 1)) {
+							if (distance < pivot) {
+								port.setDistance((pivot - distance) / pivot);
+							} else {
+								port.setSegment(segment + 1);
+								port.setDistance((distance - pivot) / (1 - pivot));
+							}
+						} else if (segment >= dragPointIndex) {
 							port.setSegment(segment + 1);
+						}
 					}
 					points.insertPoint(p, dragPointIndex);
 					firePointChange(PointEvent.ADDED, p);
