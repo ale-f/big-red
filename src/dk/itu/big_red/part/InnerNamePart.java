@@ -18,6 +18,7 @@ import dk.itu.big_red.figure.InnerNameFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
@@ -55,7 +56,7 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 			evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT) ||
 			evt.getPropertyName().equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
 	    	refreshVisuals();
-	    } else if (evt.getPropertyName().equals(Point.PROPERTY_SOURCE_EDGE)) {
+	    } else if (evt.getPropertyName().equals(Point.PROPERTY_LINK)) {
 	    	refreshSourceConnections();
 	    }
 	}
@@ -81,24 +82,28 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 	@Override
 	protected List<LinkConnection> getModelSourceConnections() {
 		ArrayList<LinkConnection> l = new ArrayList<LinkConnection>();
-		LinkConnection c = getModel().getConnection();
-        if (c != null)
-        	l.add(c);
+		Link link = getModel().getLink();
+		if (link != null)
+			l.add(link.getConnectionFor(getModel()));
         return l;
     }
 	
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return new FixedPointAnchor(getFigure(), Orientation.NORTH);
     }
     
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
 		return new FixedPointAnchor(getFigure(), Orientation.NORTH);
     }
 	
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return new FixedPointAnchor(getFigure(), Orientation.NORTH);
     }
     
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return new FixedPointAnchor(getFigure(), Orientation.NORTH);
     }

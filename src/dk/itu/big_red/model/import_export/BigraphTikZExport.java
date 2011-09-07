@@ -17,7 +17,6 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
@@ -218,11 +217,11 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	}
 	
 	private void process(dk.itu.big_red.model.Point p) throws ExportFailedException {
-		LinkConnection co = p.getConnection();
-		if (co != null) {
+		Link l = p.getLink();
+		if (l != null) {
 			String in, out;
-			Point source = co.getPoint().getRootLayout().getCenter(),
-			      target = co.getLink().getRootLayout().getCenter();
+			Point source = p.getRootLayout().getCenter(),
+			      target = l.getRootLayout().getCenter();
 			System.out.println(source);
 			System.out.println(target);
 			if (source.y < target.y)
@@ -237,7 +236,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			}
 			line("begin{pgfonlayer}{connection}");
 			scope++;
-			line("draw [internal edge,draw=" + getNiceName(co.getLink()) + " color,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(co.getLink()) + ");");
+			line("draw [internal edge,draw=" + getNiceName(l) + " color,in=" + in + ",out=" + out + "] (" + getNiceName(p) + ") to (" + getNiceName(l) + ");");
 			scope--;
 			line("end{pgfonlayer}");
 		}

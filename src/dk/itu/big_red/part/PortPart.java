@@ -18,6 +18,7 @@ import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
@@ -74,7 +75,7 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
 		if (source == getModel()) {
-			if (prop.equals(Point.PROPERTY_SOURCE_EDGE)) {
+			if (prop.equals(Point.PROPERTY_LINK)) {
 				refreshSourceConnections();
 				refreshVisuals();
 		    } else if (prop.equals(ICommentable.PROPERTY_COMMENT) ||
@@ -100,9 +101,9 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		figure.setConstraint(r);
 		
 		String toolTip = model.getName();
-		LinkConnection l = model.getConnection();
+		Link l = model.getLink();
 		if (l != null)
-			toolTip += "\n(connected to " + l.getLink() + ")";
+			toolTip += "\n(connected to " + l + ")";
 		if (model.getComment() != null)
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
@@ -113,24 +114,28 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 	@Override
 	protected List<LinkConnection> getModelSourceConnections() {
 		ArrayList<LinkConnection> l = new ArrayList<LinkConnection>();
-		LinkConnection c = getModel().getConnection();
-        if (c != null)
-        	l.add(c);
+		Link link = getModel().getLink();
+		if (link != null)
+			l.add(link.getConnectionFor(getModel()));
         return l;
     }
 	
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
     }
     
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
 		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
     }
 	
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
     }
     
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
     }

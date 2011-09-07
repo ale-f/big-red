@@ -10,7 +10,7 @@ import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
@@ -73,13 +73,13 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	}
 	
 	private Element process(Point p) throws ExportFailedException {
-		LinkConnection connection = p.getConnection();
-		if (connection != null) {
+		Link link = p.getLink();
+		if (link != null) {
 			Element e =
 				doc.createElement(p.getClass().getSimpleName().toLowerCase());
 			DOM.applyAttributesToElement(e,
 					"name", p.getName(),
-					"link", connection.getLink().getName());
+					"link", link.getName());
 			return e;
 		} else if (p instanceof InnerName) {
 			throw new ExportFailedException("Inner name \"" + p.getName() + "\" isn't connected to anything.");

@@ -18,6 +18,8 @@ import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
+import dk.itu.big_red.part.InnerNamePart;
+import dk.itu.big_red.part.PortPart;
 
 /**
  * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;
@@ -58,9 +60,9 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 	public void addPoint(Point point) {
 		LinkConnection c = new LinkConnection(this);
 		c.setPoint(point);
-		
-		point.setConnection(c);
 		addConnection(c);
+		
+		point.setLink(this);
 	}
 	
 	/**
@@ -72,7 +74,7 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 	public void removePoint(Point point) {
 		for (LinkConnection e : connections) {
 			if (e.getPoint() == point) {
-				point.removeConnection(e);
+				point.setLink(null);
 				removeConnection(e);
 				
 				break;
@@ -80,18 +82,34 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 		}
 	}
 	
-	public void addConnection(LinkConnection e) {
+	private void addConnection(LinkConnection e) {
 		connections.add(e);
 		listeners.firePropertyChange(Link.PROPERTY_TARGET_EDGE, null, e);
 	}
 
-	public void removeConnection(LinkConnection e) {
+	private void removeConnection(LinkConnection e) {
 		connections.remove(e);
 		listeners.firePropertyChange(Link.PROPERTY_TARGET_EDGE, e, null);
 	}
 	
 	public List<LinkConnection> getConnections() {
 		return connections;
+	}
+
+	/**
+	 * Returns the {@link LinkConnection} connecting the given {@link Point}
+	 * to this Link.
+	 * 
+	 * <p><strong>Do not call this function</strong>; it's intended only for
+	 * the use of {@link PortPart}s and {@link InnerNamePart}s.
+	 * @param p a {@link Point}
+	 * @return a {@link LinkConnection}, which could go away at any point
+	 */
+	public LinkConnection getConnectionFor(Point p) {
+		for (LinkConnection l : connections)
+			if (l.getPoint() == p)
+				return l;
+		return null;
 	}
 	
 	@Override
@@ -226,6 +244,7 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 		return outlineColour;
 	}
 	
+	@Override
 	public abstract Link clone();
 	
 	@Override

@@ -28,12 +28,11 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IF
 	/**
 	 * The property name fired when the source edge changes.
 	 */
-	public static final String PROPERTY_SOURCE_EDGE = "PointSourceEdge";
+	public static final String PROPERTY_LINK = "PointLink";
 	
 	@Override
 	public ILink getILink() {
-		return (getConnection() != null ?
-				getConnection().getLink() : null);
+		return link;
 	}
 
 	private String comment = null;
@@ -66,32 +65,23 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IF
 		}
 	}
 
-	protected LinkConnection connection = null;
+	protected Link link = null;
 	
 	/**
-	 * Replaces the current {@link LinkConnection} of this Point.
-	 * @param e the new {@link LinkConnection}
-	 * @return the previous {@link LinkConnection}, or <code>null</code>if
+	 * Replaces the current {@link Link} of this Point.
+	 * @param l the new {@link Link}
+	 * @return the previous {@link Link}, or <code>null</code> if
 	 * there wasn't one
 	 */
-	public LinkConnection setConnection(LinkConnection e) {
-		if (connection != null)
-			connection.getLink().removePoint(this);
-		LinkConnection oldConnection = connection;
-		connection = e;
-		listeners.firePropertyChange(Point.PROPERTY_SOURCE_EDGE, oldConnection, e);
-		return oldConnection;
-	}
-
-	public void removeConnection(LinkConnection e) {
-		if (connection == e) {
-			connection = null;
-			listeners.firePropertyChange(Point.PROPERTY_SOURCE_EDGE, e, null);
-		}
+	public Link setLink(Link l) {
+		Link oldLink = link;
+		link = l;
+		listeners.firePropertyChange(Point.PROPERTY_LINK, oldLink, l);
+		return oldLink;
 	}
 	
-	public LinkConnection getConnection() {
-		return connection;
+	public Link getLink() {
+		return link;
 	}
 
 	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
