@@ -209,7 +209,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			br = rl.getBottomRight(),
 			c = rl.getCenter();
 		System.out.println(rl);
-		RGB fillColour = i.getFillColour();
+		RGB fillColour = (i.getLink() == null ? dk.itu.big_red.model.Point.DEFAULT_COLOUR : i.getLink().getOutlineColour());
 		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.red + "," + fillColour.green + "," + fillColour.blue + "}");
 		line("draw [internal inner name,fill=" + getNiceName(i) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");

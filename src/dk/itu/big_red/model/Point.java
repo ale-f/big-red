@@ -14,7 +14,6 @@ import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 
@@ -24,11 +23,16 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  *
  */
-public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IFillColourable, IPoint {
+public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IPoint {
 	/**
 	 * The property name fired when the source edge changes.
 	 */
 	public static final String PROPERTY_LINK = "PointLink";
+	
+	/**
+	 * The colour to be given to Points not connected to a {@link Link}.
+	 */
+	public static final RGB DEFAULT_COLOUR = new RGB(255, 0, 0);
 	
 	@Override
 	public ILink getILink() {
@@ -188,19 +192,5 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IF
 		if (adapter == IPropertySource.class) {
 			return new ModelPropertySource(this);
 		} else return null;
-	}
-	
-	private RGB fillColour = new RGB(255, 0, 0);
-	
-	@Override
-	public void setFillColour(RGB fillColour) {
-		RGB oldColour = getFillColour();
-		this.fillColour = fillColour;
-		listeners.firePropertyChange(PROPERTY_FILL_COLOUR, oldColour, fillColour);
-	}
-
-	@Override
-	public RGB getFillColour() {
-		return fillColour;
 	}
 }

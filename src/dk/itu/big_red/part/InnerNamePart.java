@@ -10,7 +10,6 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
-
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
@@ -71,12 +70,16 @@ public class InnerNamePart extends AbstractPart implements NodeEditPart {
 		figure.setName(model.getName());
 		figure.setConstraint(model.getLayout());
 		
-		String toolTip = "Inner name " + model.getName() + ")";
+		String toolTip = model.getName();
+		Link l = model.getLink();
+		if (l != null)
+			toolTip += "\n(connected to " + l + ")";
 		if (model.getComment() != null)
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
 		
-		figure.setBackgroundColor(model.getFillColour());
+		figure.setBackgroundColor(l != null ?
+				l.getOutlineColour() : Point.DEFAULT_COLOUR);
 	}
 	
 	@Override

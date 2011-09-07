@@ -13,7 +13,6 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
-
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
@@ -108,7 +107,8 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 			toolTip += "\n\n" + model.getComment();
 		figure.setToolTip(toolTip);
 		
-		figure.setBackgroundColor(model.getFillColour());
+		figure.setBackgroundColor(l != null ?
+				l.getOutlineColour() : Point.DEFAULT_COLOUR);
 	}
 	
 	@Override
