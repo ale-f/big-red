@@ -13,13 +13,11 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.ui.IPageLayout;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
+import dk.itu.big_red.util.UI;
 
 /**
  * The AbstractPart is the base class for most of the objects in the bigraph
@@ -112,9 +110,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	public void performRequest(Request req) {
 		if (req.getType().equals(RequestConstants.REQ_OPEN)) {
 			try {
-				IWorkbenchPage page =
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				page.showView(IPageLayout.ID_PROP_SHEET);
+				UI.getWorkbenchPage().showView(IPageLayout.ID_PROP_SHEET);
 			} catch (PartInitException e) {
 				e.printStackTrace();
 			}

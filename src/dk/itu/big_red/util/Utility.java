@@ -10,7 +10,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * Miscellaneous utility methods.
@@ -58,11 +57,11 @@ public final class Utility {
 	}
 	
 	public static Image getImage(String symbolicName) {
-		return PlatformUI.getWorkbench().getSharedImages().getImage(symbolicName);
+		return UI.getWorkbench().getSharedImages().getImage(symbolicName);
 	}
 	
 	public static ImageDescriptor getImageDescriptor(String symbolicName) {
-		return PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(symbolicName);
+		return UI.getWorkbench().getSharedImages().getImageDescriptor(symbolicName);
 	}
 	
 	/**

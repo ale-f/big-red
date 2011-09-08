@@ -11,8 +11,7 @@ import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PlatformUI;
-
+import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.Utility;
 
 public class FilePrintAction extends org.eclipse.gef.ui.actions.PrintAction {
@@ -44,7 +43,7 @@ public class FilePrintAction extends org.eclipse.gef.ui.actions.PrintAction {
 		viewer = (GraphicalViewer)getWorkbenchPart().getAdapter(GraphicalViewer.class);
 				
 		PrintDialog dialog = 
-			new PrintDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
+			new PrintDialog(UI.getShell());
 		PrinterData data = dialog.open();
 		if (data != null) {
 			Printer p = new Printer(data);

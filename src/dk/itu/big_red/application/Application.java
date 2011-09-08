@@ -6,6 +6,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
+import dk.itu.big_red.util.UI;
+
 /**
  * This class controls all aspects of the application's execution
  */
@@ -14,6 +16,7 @@ public class Application implements IApplication {
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
 	 */
+	@Override
 	public Object start(IApplicationContext context) {
 		Display display = PlatformUI.createDisplay();
 		try {
@@ -30,12 +33,14 @@ public class Application implements IApplication {
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#stop()
 	 */
+	@Override
 	public void stop() {
-		final IWorkbench workbench = PlatformUI.getWorkbench();
+		final IWorkbench workbench = UI.getWorkbench();
 		if (workbench == null)
 			return;
 		final Display display = workbench.getDisplay();
 		display.syncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (!display.isDisposed())
 					workbench.close();

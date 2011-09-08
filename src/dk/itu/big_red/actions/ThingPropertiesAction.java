@@ -6,9 +6,9 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 
+import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.Utility;
 
 public class ThingPropertiesAction extends SelectionAction {
@@ -18,6 +18,7 @@ public class ThingPropertiesAction extends SelectionAction {
 		setLazyEnablementCalculation(false);
 	}
 	
+	@Override
 	protected void init() {
 		setText("&Properties...");
 		setToolTipText("Properties");
@@ -37,10 +38,10 @@ public class ThingPropertiesAction extends SelectionAction {
 		return true;
 	}
 	
+	@Override
 	public void run() {
 		try {
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().
-				getActivePage().showView(IPageLayout.ID_PROP_SHEET);
+			UI.getWorkbenchPage().showView(IPageLayout.ID_PROP_SHEET);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}
