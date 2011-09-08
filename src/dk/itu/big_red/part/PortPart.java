@@ -2,27 +2,15 @@ package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.NodeEditPart;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
-import dk.itu.big_red.figure.adornments.FixedPointAnchor;
-import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
@@ -32,18 +20,13 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
  * @author alec
  *
  */
-public class PortPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
-	@Override
-	public Port getModel() {
-		return (Port)super.getModel();
-	}
-	
+public class PortPart extends PointPart implements PropertyChangeListener {
 	@Override
 	public void activate() {
 		super.activate();
 		getModel().getParent().addPropertyChangeListener(this);
 	}
-	
+
 	@Override
 	public void deactivate() {
 		getModel().getParent().removePropertyChangeListener(this);
@@ -71,17 +54,10 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
-		if (source == getModel()) {
-			if (prop.equals(Point.PROPERTY_LINK)) {
-				refreshSourceConnections();
-				refreshVisuals();
-		    } else if (prop.equals(ICommentable.PROPERTY_COMMENT) ||
-		    		   prop.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
-		    	refreshVisuals();
-		    }
-		} else if (source == getModel().getParent()) {
+		if (source == getModel().getParent()) {
 			if (prop.equals(ILayoutable.PROPERTY_LAYOUT))
 				refreshVisuals();
 		}
@@ -93,7 +69,7 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 		
 		setResizable(false);
 		
-		Port model = getModel();
+		Point model = getModel();
 		PortFigure figure = (PortFigure)getFigure();
 		
 		Rectangle r = model.getLayout();
@@ -111,32 +87,4 @@ public class PortPart extends AbstractPart implements NodeEditPart, PropertyChan
 				l.getOutlineColour() : Point.DEFAULT_COLOUR);
 	}
 	
-	@Override
-	protected List<LinkConnection> getModelSourceConnections() {
-		ArrayList<LinkConnection> l = new ArrayList<LinkConnection>();
-		Link link = getModel().getLink();
-		if (link != null)
-			l.add(link.getConnectionFor(getModel()));
-        return l;
-    }
-	
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
-    }
-    
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
-    }
-	
-	@Override
-	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
-    }
-    
-	@Override
-	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
-    }
 }
