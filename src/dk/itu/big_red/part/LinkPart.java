@@ -10,6 +10,7 @@ import org.eclipse.gef.Request;
 
 import dk.itu.big_red.figure.AbstractFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
+import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.LinkConnection;
 
@@ -66,11 +67,18 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 	
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure());
+		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
     }
     
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure());
+		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
     }
+	
+	/**
+	 * Returns the {@link Orientation} which should be given to any of this
+	 * PointPart's target {@link FixedPointAnchor}s.
+	 * @return an Orientation
+	 */
+	abstract public Orientation getAnchorOrientation();
 }

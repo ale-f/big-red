@@ -104,16 +104,6 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 			l.add(link.getConnectionFor(getModel()));
         return l;
     }
-	
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
-	}
-
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure(), Orientation.CALCULATE);
-	}
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
@@ -125,4 +115,20 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 		return null;
 	}
 
+	@Override
+	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
+		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
+	}
+
+	@Override
+	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
+		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
+	}
+	
+	/**
+	 * Returns the {@link Orientation} which should be given to any of this
+	 * PointPart's source {@link FixedPointAnchor}s.
+	 * @return an Orientation
+	 */
+	abstract public Orientation getAnchorOrientation();
 }

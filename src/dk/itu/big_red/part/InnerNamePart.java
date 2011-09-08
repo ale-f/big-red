@@ -1,16 +1,12 @@
 package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
-import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.Request;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.InnerNameFigure;
-import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.InnerName;
 
@@ -45,14 +41,9 @@ public class InnerNamePart extends PointPart {
 		super.refreshVisuals();
 		((InnerNameFigure)getFigure()).setName(getModel().getName());
 	}
-	
+
 	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure(), Orientation.NORTH);
-    }
-    
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure(), Orientation.NORTH);
-    }
+	public Orientation getAnchorOrientation() {
+		return Orientation.NORTH;
+	}
 }

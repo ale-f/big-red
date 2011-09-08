@@ -1,11 +1,13 @@
 package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
+import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
@@ -65,4 +67,8 @@ public class PortPart extends PointPart {
 		setResizable(false);
 	}
 	
+	@Override
+	public Orientation getAnchorOrientation() {
+		return Orientation.CENTER;
+	}
 }
