@@ -17,13 +17,14 @@ import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.model.interfaces.internal.IColourable;
+import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
+import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Geometry;
 import dk.itu.big_red.util.HomogeneousIterable;
 
-public class Node extends Thing implements PropertyChangeListener, IColourable, INameable, INode {
+public class Node extends Thing implements PropertyChangeListener, IFillColourable, IOutlineColourable, INameable, INode {
 	/**
 	 * The property name fired when the control changes. (Note that this
 	 * property name is fired <i>after</i> any other changes required to change
@@ -45,6 +46,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 	
 	private Control control = null;
 	
+	@Override
 	public Thing clone() throws CloneNotSupportedException {
 		Node result = new Node();
 		result._overwrite(this);
@@ -58,6 +60,7 @@ public class Node extends Thing implements PropertyChangeListener, IColourable, 
 		return (c == Node.class || c == Site.class);
 	}
 	
+	@Override
 	public void setLayout(Rectangle layout) {
 		Rectangle layoutCopy = new Rectangle(layout);
 		if (control != null && !control.isResizable()) {

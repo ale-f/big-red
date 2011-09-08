@@ -11,7 +11,8 @@ import org.eclipse.swt.graphics.RGB;
 import dk.itu.big_red.exceptions.DuplicateControlException;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.model.interfaces.internal.IColourable;
+import dk.itu.big_red.model.interfaces.internal.IFillColourable;
+import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 import dk.itu.big_red.util.HomogeneousIterable;
 
@@ -26,7 +27,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  *
  */
-public class Control implements IPropertyChangeNotifier, IColourable, IControl {
+public class Control implements IPropertyChangeNotifier, IFillColourable, IOutlineColourable, IControl {
 	public static enum Shape {
 		/**
 		 * An oval.
