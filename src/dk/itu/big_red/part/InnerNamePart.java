@@ -14,8 +14,6 @@ import dk.itu.big_red.figure.InnerNameFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Point;
 
 /**
  * NameParts represent {@link InnerName}s, the model objects which define
@@ -46,23 +44,7 @@ public class InnerNamePart extends PointPart implements NodeEditPart {
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();
-		
-		InnerNameFigure figure = (InnerNameFigure)getFigure();
-		Point model = getModel();
-		
-		figure.setName(model.getName());
-		figure.setConstraint(model.getLayout());
-		
-		String toolTip = model.getName();
-		Link l = model.getLink();
-		if (l != null)
-			toolTip += "\n(connected to " + l + ")";
-		if (model.getComment() != null)
-			toolTip += "\n\n" + model.getComment();
-		figure.setToolTip(toolTip);
-		
-		figure.setBackgroundColor(l != null ?
-				l.getOutlineColour() : Point.DEFAULT_COLOUR);
+		((InnerNameFigure)getFigure()).setName(getModel().getName());
 	}
 	
 	@Override

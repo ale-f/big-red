@@ -3,13 +3,10 @@ package dk.itu.big_red.part;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
@@ -66,25 +63,7 @@ public class PortPart extends PointPart implements PropertyChangeListener {
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();
-		
 		setResizable(false);
-		
-		Point model = getModel();
-		PortFigure figure = (PortFigure)getFigure();
-		
-		Rectangle r = model.getLayout();
-		figure.setConstraint(r);
-		
-		String toolTip = model.getName();
-		Link l = model.getLink();
-		if (l != null)
-			toolTip += "\n(connected to " + l + ")";
-		if (model.getComment() != null)
-			toolTip += "\n\n" + model.getComment();
-		figure.setToolTip(toolTip);
-		
-		figure.setBackgroundColor(l != null ?
-				l.getOutlineColour() : Point.DEFAULT_COLOUR);
 	}
 	
 }

@@ -9,6 +9,7 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 
+import dk.itu.big_red.figure.AbstractFigure;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor;
 import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Link;
@@ -66,9 +67,32 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart {
 		    	refreshVisuals();
 		    }
 		} else if (source == getModel().getLink()) {
-			if (prop.equals(Link.PROPERTY_OUTLINE_COLOUR))
+			if (prop.equals(Link.PROPERTY_NAME) ||
+				prop.equals(Link.PROPERTY_OUTLINE_COLOUR)) {
 				refreshVisuals();
+			}
 		}
+	}
+	
+	@Override
+	protected void refreshVisuals() {
+		super.refreshVisuals();
+		
+		Point model = getModel();
+		AbstractFigure figure = (AbstractFigure)getFigure();
+		
+		figure.setConstraint(model.getLayout());
+		
+		String toolTip = model.getName();
+		Link l = model.getLink();
+		if (l != null)
+			toolTip += "\n(connected to " + l.getName() + ")";
+		if (model.getComment() != null)
+			toolTip += "\n\n" + model.getComment();
+		figure.setToolTip(toolTip);
+		
+		figure.setBackgroundColor(l != null ?
+				l.getOutlineColour() : Point.DEFAULT_COLOUR);
 	}
 	
 	@Override
