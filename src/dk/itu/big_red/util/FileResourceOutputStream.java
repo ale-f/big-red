@@ -1,4 +1,4 @@
-package dk.itu.big_red.import_export.assistants;
+package dk.itu.big_red.util;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

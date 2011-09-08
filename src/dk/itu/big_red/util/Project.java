@@ -18,7 +18,6 @@ import org.eclipse.ui.IFileEditorInput;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.exceptions.ImportFailedException;
-import dk.itu.big_red.import_export.assistants.FileResourceOutputStream;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;

@@ -52,7 +52,6 @@ import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
 import dk.itu.big_red.editors.assistants.BigraphEditorTemplateTransferDropTargetListener;
 import dk.itu.big_red.editors.assistants.ConnectionDragCreationToolEntry;
 import dk.itu.big_red.exceptions.ImportFailedException;
-import dk.itu.big_red.import_export.assistants.FileResourceOutputStream;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
@@ -65,6 +64,7 @@ import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.part.PartFactory;
+import dk.itu.big_red.util.FileResourceOutputStream;
 
 public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
