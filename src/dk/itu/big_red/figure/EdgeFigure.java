@@ -11,6 +11,7 @@ public class EdgeFigure extends AbstractFigure {
 		setBackgroundColor(new RGB(0, 127, 0));
 	}
 	
+	@Override
 	public void setToolTip(String content) {
 		String labelText = "Edge";
 		if (content != null)
@@ -27,9 +28,5 @@ public class EdgeFigure extends AbstractFigure {
 		} finally {
 			stop(graphics);
 		}
-	}
-
-	@Override
-	protected void outlineShape(Graphics graphics) {
 	}
 }

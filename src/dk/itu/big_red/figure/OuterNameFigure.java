@@ -55,8 +55,4 @@ public class OuterNameFigure extends AbstractFigure {
 			stop(graphics);
 		}
 	}
-
-	@Override
-	protected void outlineShape(Graphics graphics) {
-	}
 }

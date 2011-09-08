@@ -85,4 +85,12 @@ public abstract class AbstractFigure extends Shape {
 			super.setForegroundColor(new Color(null, c));
 		}
 	}
+	
+	@Override
+	protected void fillShape(Graphics graphics) {
+	}
+	
+	@Override
+	protected void outlineShape(Graphics graphics) {
+	}
 }

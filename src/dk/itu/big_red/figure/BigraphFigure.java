@@ -11,12 +11,6 @@ public class BigraphFigure extends AbstractFigure {
 	              lowerOuterNameBoundary = Integer.MAX_VALUE,
 	              upperInnerNameBoundary = Integer.MIN_VALUE,
 	              lowerRootBoundary = Integer.MAX_VALUE;
-	
-	@Override
-	protected void fillShape(Graphics g) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	protected void outlineShape(Graphics g) {

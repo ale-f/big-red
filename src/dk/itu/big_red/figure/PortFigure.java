@@ -20,10 +20,4 @@ public class PortFigure extends AbstractFigure {
 			stop(graphics);
 		}
 	}
-
-	@Override
-	protected void outlineShape(Graphics graphics) {
-		// TODO Auto-generated method stub
-
-	}
 }
