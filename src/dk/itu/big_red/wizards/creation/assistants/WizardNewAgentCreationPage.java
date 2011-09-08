@@ -94,8 +94,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
+				widgetSelected(e);
 			}
 		});
 		
@@ -133,8 +132,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
+				widgetSelected(e);
 			}
 		});
 		

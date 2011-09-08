@@ -625,8 +625,7 @@ MenuListener {
 			
 						@Override
 						public void widgetDefaultSelected(SelectionEvent e) {
-							// TODO Auto-generated method stub
-							
+							widgetSelected(e);
 						}
 					});
 				else UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
@@ -644,8 +643,7 @@ MenuListener {
 		
 					@Override
 					public void widgetDefaultSelected(SelectionEvent e) {
-						// TODO Auto-generated method stub
-						
+						widgetSelected(e);
 					}
 				});
 			}
@@ -675,8 +673,7 @@ MenuListener {
 				
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
-					
+					widgetSelected(e);
 				}
 			});
 			
@@ -690,8 +687,7 @@ MenuListener {
 				
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
-					// TODO Auto-generated method stub
-					
+					widgetSelected(e);
 				}
 			});
 		}

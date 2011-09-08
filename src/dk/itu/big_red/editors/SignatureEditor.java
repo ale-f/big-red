@@ -236,8 +236,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
+				widgetSelected(e);
 			}
 		});
 		
@@ -290,8 +289,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
+				widgetSelected(e);
 			}
 		});
 		
