@@ -102,7 +102,9 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			ex.setOutputStream(os);
 			ex.exportObject();
 		} catch (Exception e) {
-			setErrorMessage(e.getLocalizedMessage());
+			String message = e.getLocalizedMessage();
+			setErrorMessage(message != null ? message :
+				"An unknown error (of type '" + e + "') occurred.");
 			return false;
 		}
 		
