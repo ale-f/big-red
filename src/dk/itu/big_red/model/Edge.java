@@ -14,6 +14,7 @@ import dk.itu.big_red.model.interfaces.IEdge;
   * "source" or "target"; the Edge is always the target for a connection, and
   * {@link Point}s are always sources.
   * @author alec
+  * @see IEdge
   *
   */
 public class Edge extends Link implements IEdge {

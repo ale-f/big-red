@@ -24,6 +24,11 @@ import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Geometry;
 import dk.itu.big_red.util.HomogeneousIterable;
 
+/**
+ * 
+ * @author alec
+ * @see INode
+ */
 public class Node extends Thing implements PropertyChangeListener, IFillColourable, IOutlineColourable, INameable, INode {
 	/**
 	 * The property name fired when the control changes. (Note that this

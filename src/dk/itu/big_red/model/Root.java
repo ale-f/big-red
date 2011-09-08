@@ -9,6 +9,11 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.HomogeneousIterable;
 
+/**
+ * 
+ * @author alec
+ * @see IRoot
+ */
 public class Root extends Thing implements INameable, IRoot {
 	@Override
 	public Thing clone() throws CloneNotSupportedException {
@@ -21,10 +26,12 @@ public class Root extends Thing implements INameable, IRoot {
 		return (c == Node.class || c == Site.class);
 	}
 	
+	@Override
 	public String getName() {
 		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);
 	}
 	
+	@Override
 	public void setName(String name) {
 		NamespaceManager nm = getBigraph().getNamespaceManager();
 		String oldName = nm.getName(getClass(), this);

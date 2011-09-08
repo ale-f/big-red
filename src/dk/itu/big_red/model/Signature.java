@@ -13,7 +13,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * representations). Every {@link Bigraph} has an associated Signature, which
  * they consult whenever they need to create a {@link Node}.
  * @author alec
- *
+ * @see ISignature
  */
 public class Signature implements ISignature {
 	public static final String[] EMPTY_STRING_ARRAY = new String[]{};

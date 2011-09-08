@@ -19,7 +19,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link
  * InnerName}s, and {@link OuterName}s.
  * @author alec
- *
+ * @see IBigraph
  */
 public class Bigraph extends Thing implements IBigraph {
 	protected ResourceWrapper<Signature> signature =
@@ -58,6 +58,7 @@ public class Bigraph extends Thing implements IBigraph {
 	              upperInnerNameBoundary = Integer.MIN_VALUE + BOUNDARY_MARGIN,
 	              lowerRootBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN;
 	
+	@Override
 	public Thing clone() throws CloneNotSupportedException {
 		return new Bigraph()._overwrite(this);
 	}
@@ -76,6 +77,7 @@ public class Bigraph extends Thing implements IBigraph {
 		return (c == Root.class || c == InnerName.class || c == OuterName.class);
 	}
 	
+	@Override
 	public Bigraph getBigraph() {
 		return this;
 	}
@@ -87,6 +89,7 @@ public class Bigraph extends Thing implements IBigraph {
 		}
 	}
 	
+	@Override
 	public Signature getSignature() {
 		return signature.getModel();
 	}
@@ -95,10 +98,12 @@ public class Bigraph extends Thing implements IBigraph {
 		return signature.getResource();
 	}
 	
+	@Override
 	public void setParent(ILayoutable parent) {
 		/* do nothing */
 	}
 	
+	@Override
 	public ILayoutable getParent() {
 		return null;
 	}

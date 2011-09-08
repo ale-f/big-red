@@ -9,7 +9,12 @@ import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 
+/**
+ * @author alec
+ * @see ISite
+ */
 public class Site extends Thing implements INameable, ISite {
+	@Override
 	public Thing clone() throws CloneNotSupportedException {
 		return new Site()._overwrite(this);
 	}
@@ -51,6 +56,7 @@ public class Site extends Thing implements INameable, ISite {
 		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);
 	}
 	
+	@Override
 	public void setName(String name) {
 		NamespaceManager nm = getBigraph().getNamespaceManager();
 		String oldName = nm.getName(getClass(), this);

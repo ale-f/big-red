@@ -25,7 +25,7 @@ import dk.itu.big_red.part.PortPart;
  * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;
  * model objects which have multiple {@link LinkConnection}s to {@link Point}s.
  * @author alec
- *
+ * @see ILink
  */
 public abstract class Link implements IAdaptable, ILayoutable, INameable, ICommentable, IOutlineColourable, ILink {
 	/**

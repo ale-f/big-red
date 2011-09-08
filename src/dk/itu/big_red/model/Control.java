@@ -25,7 +25,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * this model differs slightly by defining <i>named</i> ports and certain
  * graphical properties (chiefly shapes and default port offsets).
  * @author alec
- *
+ * @see IControl
  */
 public class Control implements IPropertyChangeNotifier, IFillColourable, IOutlineColourable, IControl {
 	public static enum Shape {

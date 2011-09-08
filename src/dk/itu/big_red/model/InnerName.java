@@ -4,7 +4,11 @@ import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IInnerName;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 
-
+/**
+ * 
+ * @author alec
+ * @see IInnerName
+ */
 public class InnerName extends Point implements INameable, IInnerName {
 	@Override
 	public InnerName clone() {
@@ -21,10 +25,12 @@ public class InnerName extends Point implements INameable, IInnerName {
 		return getParent().getBigraph();
 	}
 	
+	@Override
 	public String getName() {
 		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);
 	}
 	
+	@Override
 	public void setName(String name) {
 		NamespaceManager nm = getBigraph().getNamespaceManager();
 		String oldName = nm.getName(getClass(), this);

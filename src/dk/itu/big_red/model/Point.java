@@ -21,7 +21,7 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * Points are objects which can be connected to <em>at most one</em> {@link
  * Link} - {@link Port}s and {@link InnerName}s.
  * @author alec
- *
+ * @see IPoint
  */
 public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IPoint {
 	/**
