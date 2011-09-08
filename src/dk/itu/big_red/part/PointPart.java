@@ -1,6 +1,7 @@
 package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 
-public abstract class PointPart extends AbstractPart implements NodeEditPart {
+public abstract class PointPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 
 	public PointPart() {
 		super();

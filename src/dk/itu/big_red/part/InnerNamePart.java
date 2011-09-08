@@ -5,7 +5,6 @@ import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
@@ -22,7 +21,7 @@ import dk.itu.big_red.model.InnerName;
  * @author alec
  *
  */
-public class InnerNamePart extends PointPart implements NodeEditPart {
+public class InnerNamePart extends PointPart {
 	
 	@Override
 	protected IFigure createFigure() {

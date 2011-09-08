@@ -1,7 +1,6 @@
 package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
@@ -17,7 +16,7 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
  * @author alec
  *
  */
-public class PortPart extends PointPart implements PropertyChangeListener {
+public class PortPart extends PointPart {
 	@Override
 	public void activate() {
 		super.activate();
