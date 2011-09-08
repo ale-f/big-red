@@ -3,6 +3,7 @@ package dk.itu.big_red.figure.adornments;
 import org.eclipse.draw2d.AbstractConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * FixedPointAnchors always return a fixed point on the bounding box of their
@@ -20,8 +21,7 @@ public class FixedPointAnchor extends AbstractConnectionAnchor {
 		SOUTH,
 		SOUTH_WEST,
 		WEST,
-		CENTER,
-		CALCULATE
+		CENTER
 	};
 	
 	private Orientation orientation = Orientation.CENTER;
@@ -38,39 +38,35 @@ public class FixedPointAnchor extends AbstractConnectionAnchor {
 	@Override
 	public Point getLocation(Point reference) {
 		Point p = null;
+		Rectangle b = getOwner().getBounds();
 		switch (orientation) {
 		case NORTH_WEST:
-			p = getOwner().getBounds().getTopLeft();
+			p = b.getTopLeft();
 			break;
 		case NORTH:
-			p = getOwner().getBounds().getTop();
+			p = b.getTop();
 			break;
 		case NORTH_EAST:
-			p = getOwner().getBounds().getTopRight();
+			p = b.getTopRight();
 			break;
 		case EAST:
-			p = getOwner().getBounds().getRight();
+			p = b.getRight();
 			break;
 		case SOUTH_EAST:
-			p = getOwner().getBounds().getBottomRight();
+			p = b.getBottomRight();
 			break;
 		case SOUTH:
-			p = getOwner().getBounds().getBottom();
+			p = b.getBottom();
 			break;
 		case SOUTH_WEST:
-			p = getOwner().getBounds().getBottomLeft();
+			p = b.getBottomLeft();
 			break;
 		case WEST:
-			p = getOwner().getBounds().getLeft();
-			break;
-		case CALCULATE:
-			if (reference.x < getOwner().getBounds().getCenter().x)
-				p = getOwner().getBounds().getLeft();
-			else p = getOwner().getBounds().getRight();
+			p = b.getLeft();
 			break;
 		case CENTER:
 		default:
-			p = getOwner().getBounds().getCenter();
+			p = b.getCenter();
 			break;
 		}
 		getOwner().translateToAbsolute(p);
