@@ -7,7 +7,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.figure.PortFigure;
-import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
+import dk.itu.big_red.figure.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 

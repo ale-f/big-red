@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
-import dk.itu.big_red.figure.adornments.SlightlyOvergenerousClippingStrategy;
+import dk.itu.big_red.figure.assistants.SlightlyOvergenerousClippingStrategy;
 
 public abstract class AbstractFigure extends Shape {
 	public AbstractFigure() {

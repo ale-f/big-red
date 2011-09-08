@@ -1,4 +1,4 @@
-package dk.itu.big_red.figure.adornments;
+package dk.itu.big_red.figure.assistants;
 
 import org.eclipse.draw2d.IClippingStrategy;
 import org.eclipse.draw2d.IFigure;

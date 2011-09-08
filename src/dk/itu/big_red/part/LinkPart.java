@@ -9,8 +9,8 @@ import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 
 import dk.itu.big_red.figure.AbstractFigure;
-import dk.itu.big_red.figure.adornments.FixedPointAnchor;
-import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
+import dk.itu.big_red.figure.assistants.FixedPointAnchor;
+import dk.itu.big_red.figure.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.LinkConnection;
 

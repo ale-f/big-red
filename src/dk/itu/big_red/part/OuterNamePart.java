@@ -8,7 +8,7 @@ import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.OuterNameFigure;
-import dk.itu.big_red.figure.adornments.FixedPointAnchor.Orientation;
+import dk.itu.big_red.figure.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
