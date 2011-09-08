@@ -30,17 +30,7 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
-	/**
-	 * The property name fired when a child is added or removed.
-	 */
-	public static final String PROPERTY_CHILD = "ThingChild";
-	/**
-	 * The property name fired when the name of a Thing changes.
-	 */
-	public static final String PROPERTY_RENAME = "ThingRename";
-	
 	protected Rectangle layout;
-	
 	protected ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
 	protected ILayoutable parent = null;
 	
@@ -83,6 +73,7 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 			listeners.firePropertyChange(PROPERTY_CHILD, child, null);
 	}
 	
+	@Override
 	public List<ILayoutable> getChildren() {
 		return this.children;
 	}
@@ -145,6 +136,7 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 		return this;
 	}
 	
+	@Override
 	public Thing clone() throws CloneNotSupportedException {
 		return new Thing()._overwrite(this);
 	}
