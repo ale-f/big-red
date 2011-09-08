@@ -19,7 +19,7 @@ import dk.itu.big_red.model.interfaces.IEdge;
 public class Edge extends Link implements IEdge {
 	/**
 	 * Moves this EdgeTarget to the average position of all the
-	 * {@link IConnectable}s connected to it.
+	 * {@link Point}s connected to it.
 	 */
 	public void averagePosition() {
 		int tx = 0, ty = 0, s = getConnections().size();
@@ -30,6 +30,7 @@ public class Edge extends Link implements IEdge {
 		setLayout(new Rectangle(tx / s, ty / s, getLayout().width, getLayout().height));
 	}
 	
+	@Override
 	public void addPoint(Point point) {
 		super.addPoint(point);
 		
@@ -43,6 +44,7 @@ public class Edge extends Link implements IEdge {
 	 * <p>If this Edge has no points left after this operation, then it'll be
 	 * removed from the Bigraph.
 	 */
+	@Override
 	public void removePoint(Point point) {
 		super.removePoint(point);
 		

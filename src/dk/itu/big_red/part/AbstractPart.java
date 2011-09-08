@@ -78,8 +78,8 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	}
 
 	/**
-	 * Returns an empty list of {@link LinkConnection}s. Subclasses which
-	 * implement {@link IConnectable} should probably override this method!
+	 * Returns an empty list of {@link LinkConnection}s. {@link PointPart}s
+	 * should probably override this method!
 	 */
 	@Override
 	protected List<LinkConnection> getModelSourceConnections() {
@@ -87,8 +87,8 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
     }
 
 	/**
-	 * Returns an empty list of {@link LinkConnection}s. Subclasses which
-	 * implement {@link IConnectable} should probably override this method!
+	 * Returns an empty list of {@link LinkConnection}s. {@link LinkPart}s
+	 * should probably override this method!
 	 */
 	@Override
 	protected List<LinkConnection> getModelTargetConnections() {
