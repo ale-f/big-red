@@ -7,7 +7,6 @@ Bundle-Activator: dk.itu.big_red.application.RedActivator
 Bundle-Vendor: Alexander Faithfull
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.ui.intro,
  org.eclipse.ui.forms,
  org.eclipse.gef,
  org.eclipse.ui.views,
