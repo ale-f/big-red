@@ -10,8 +10,8 @@ import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.assistants.ClassComparator;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.util.Utility;
 
 /**
  * BigraphParts represent {@link Bigraph}s, the top-level container of the
@@ -36,17 +36,12 @@ public class BigraphPart extends ThingPart {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ILayoutableLayoutPolicy());
 	}
 	
+	@Override
 	public List<ILayoutable> getModelChildren() {
-		List<ILayoutable> c = getModel().getChildren();
-		
-		ClassComparator<ILayoutable> comparator =
-			new ClassComparator<ILayoutable>();
-		comparator.setClassOrder(
-				Edge.class);
-		comparator.setUndefinedAtEnd(false);
-		Collections.sort(c, comparator);
-		
-		return c;
+		List<ILayoutable> r =
+				Utility.groupListByClass(getModel().getChildren(), Edge.class, Object.class);
+		Collections.reverse(r);
+		return r;
 	}
 	
 	@Override
