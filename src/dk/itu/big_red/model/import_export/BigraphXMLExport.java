@@ -1,7 +1,5 @@
 package dk.itu.big_red.model.import_export;
 
-import java.util.Collections;
-
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,11 +16,10 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.model.assistants.ClassComparator;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.HomogeneousIterable;
+import dk.itu.big_red.util.Utility;
 
 /**
  * XMLExport writes a {@link Bigraph} out as an XML document.
@@ -31,6 +28,17 @@ import dk.itu.big_red.util.HomogeneousIterable;
  *
  */
 public class BigraphXMLExport extends ModelExport<Bigraph> {
+	/**
+	 * An array of model {@link Class}es in the appropriate order for the
+	 * <code>&lt;bigraph&gt;</code> XML schema, suitable for giving as the
+	 * last argument to {@link Utility#groupListByClass(java.util.List,
+	 * Object...)}.
+	 */
+	public static final Object SCHEMA_ORDER[] = {
+		Edge.class, OuterName.class, Root.class, InnerName.class,
+		Port.class, Node.class, Site.class
+	};
+	
 	private Document doc = null;
 	
 	@Override
@@ -94,38 +102,6 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		return el;
 	}
 	
-	/**
-	 * Sorts the immediate children of the given {@link ILayoutable} into the
-	 * order required by the {@code <bigraph>} schema.
-	 * @deprecated Re-sorting the array every time you need to use it is
-	 * inefficient (and randomly rearranging internal data structures is an
-	 * awful idea, anyway). Use a group of {@link HomogeneousIterable}s
-	 * instead.
-	 * @param obj an ILayoutable
-	 */
-	@Deprecated
-	public static void sortChildrenIntoSchemaOrder(ILayoutable obj) {
-		ClassComparator<ILayoutable> comparator =
-			new ClassComparator<ILayoutable>();
-		if (obj instanceof Bigraph) {
-			comparator.setClassOrder(
-					Edge.class,
-					OuterName.class,
-					Root.class,
-					InnerName.class);
-		} else if (obj instanceof Root) {
-			comparator.setClassOrder(
-					Node.class,
-					Site.class);
-		} else if (obj instanceof Node) {
-			comparator.setClassOrder(
-					Port.class,
-					Node.class,
-					Site.class);
-		} else return;
-		Collections.sort(obj.getChildren(), comparator);
-	}
-	
 	private Element process(ILayoutable obj) throws ExportFailedException {
 		Element e = null;
 		if (obj instanceof Bigraph) {
@@ -140,9 +116,8 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
 		}
 		
-		sortChildrenIntoSchemaOrder(obj);
-		
-		for (ILayoutable i : obj.getChildren())
+		for (ILayoutable i : Utility.groupListByClass(obj.getChildren(),
+				BigraphXMLExport.SCHEMA_ORDER))
 			e.appendChild(process(i));
 		
 		DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));

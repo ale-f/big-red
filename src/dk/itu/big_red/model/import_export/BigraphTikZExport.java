@@ -24,6 +24,7 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.Thing;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.util.Utility;
 
 public class BigraphTikZExport extends ModelExport<Bigraph> {
 	private BufferedWriter writer;
@@ -171,7 +172,8 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("node at (" + rltl.x + "," + rltl.y + ") {" + con.getLabel() + "};");
 		
 		beginScope(n);
-		for (ILayoutable c : n.getChildren())
+		for (ILayoutable c : Utility.groupListByClass(n.getChildren(),
+				BigraphXMLExport.SCHEMA_ORDER))
 			process(c);
 		for (ILayoutable c : n.getPorts())
 			process(c);
@@ -268,14 +270,13 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	
 	private void process(Thing t) throws ExportFailedException {
 		beginScope(t);
-		for (ILayoutable c : t.getChildren())
+		for (ILayoutable c : Utility.groupListByClass(t.getChildren(),
+				BigraphXMLExport.SCHEMA_ORDER))
 			process(c);
 		endScope();
 	}
 	
 	private void process(ILayoutable obj) throws ExportFailedException {
-		BigraphXMLExport.sortChildrenIntoSchemaOrder(obj);
-		
 		if (obj instanceof Bigraph) {
 			process((Bigraph)obj);
 		} else if (obj instanceof Node) {
