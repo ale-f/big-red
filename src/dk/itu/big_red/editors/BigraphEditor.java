@@ -52,6 +52,7 @@ import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
 import dk.itu.big_red.editors.assistants.BigraphEditorTemplateTransferDropTargetListener;
 import dk.itu.big_red.editors.assistants.ConnectionDragCreationToolEntry;
 import dk.itu.big_red.exceptions.ImportFailedException;
+import dk.itu.big_red.exceptions.ValidationFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
@@ -76,7 +77,8 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		setEditDomain(new DefaultEditDomain(this));
 	}
 	
-    protected void configureGraphicalViewer() {
+    @Override
+	protected void configureGraphicalViewer() {
 	    super.configureGraphicalViewer();   
 	    GraphicalViewer viewer = getGraphicalViewer();
 	    viewer.setEditPartFactory(new PartFactory());
@@ -163,7 +165,13 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     		setGlobalActionHandler(ActionFactory.REVERT.getId(), action);
     }
     
-    protected void initializeGraphicalViewer() {
+    private void loadingError(String error, Throwable cause) {
+		ErrorDialog.openError(getSite().getShell(), null, error,
+    			new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, cause.getLocalizedMessage(), cause));
+    }
+    
+    @Override
+	protected void initializeGraphicalViewer() {
 	    GraphicalViewer viewer = getGraphicalViewer();
 	    IEditorInput input = getEditorInput();
 	    if (input instanceof FileEditorInput) {
@@ -176,12 +184,14 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    		model.setModel(im.importObject());
 	    	} catch (ImportFailedException e) {
 	    		e.printStackTrace();
-	    		ErrorDialog.openError(getSite().getShell(), null, "Validation has failed.",
-	    			new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, e.getCause().getCause().getLocalizedMessage(), e));
-	    		model.setModel(new Bigraph());
+	    		Throwable cause = e.getCause();
+	    		if (cause instanceof ValidationFailedException) {
+	    			loadingError("Validation has failed.", cause);
+	    		} else {
+	    			loadingError("Opening the document failed.", e);
+	    		}
 	    	} catch (Exception e) {
-	    		e.printStackTrace();
-	    		System.exit(-1);
+	    		loadingError("An unexpected error occurred.", e);
 	    	}
 	    }
 	    
@@ -190,7 +200,8 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    setPartName(getEditorInput().getName());
     }
     
-    protected void initializePaletteViewer() {
+    @Override
+	protected void initializePaletteViewer() {
     	super.initializePaletteViewer();
     	// XXX (FIXME?) - what's going on here? Why not an AppTemplate (etc.)?
     	// (tutorial page 72)
@@ -198,7 +209,8 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     		new TemplateTransferDragSourceListener(getPaletteViewer()));
     }
     
-    @SuppressWarnings("rawtypes")
+    @Override
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
     	if (type == ZoomManager.class) {
     		return ((ScalableRootEditPart)getGraphicalViewer().getRootEditPart()).getZoomManager();
@@ -288,6 +300,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		return (Bigraph) getGraphicalViewer().getContents().getModel();
 	}
 	
+	@Override
 	public GraphicalViewer getGraphicalViewer() {
 		return super.getGraphicalViewer();
 	}
