@@ -104,11 +104,6 @@ public class Port extends Point implements ILayoutable, IPort {
 	}
 	
 	@Override
-	public Bigraph getBigraph() {
-		return getParent().getBigraph();
-	}
-	
-	@Override
 	public Rectangle getLayout() {
 		Rectangle r = super.getLayout();
 		PointList polypt = getParent().getFittedPolygon();

@@ -129,9 +129,4 @@ public class Container extends LayoutableModelObject implements IAdaptable, ILay
 		this.comment = comment;
 		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
-	
-	@Override
-	public Bigraph getBigraph() {
-		return getParent().getBigraph();
-	}
 }
