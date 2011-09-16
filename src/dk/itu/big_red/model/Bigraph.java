@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.IInnerName;

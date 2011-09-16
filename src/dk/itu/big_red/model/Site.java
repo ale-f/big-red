@@ -3,7 +3,8 @@ package dk.itu.big_red.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.itu.big_red.model.NamespaceManager.NameType;
+import dk.itu.big_red.model.assistants.NamespaceManager;
+import dk.itu.big_red.model.assistants.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;

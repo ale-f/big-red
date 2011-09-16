@@ -1,6 +1,7 @@
 package dk.itu.big_red.model;
 
-import dk.itu.big_red.model.NamespaceManager.NameType;
+import dk.itu.big_red.model.assistants.NamespaceManager;
+import dk.itu.big_red.model.assistants.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IInnerName;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 

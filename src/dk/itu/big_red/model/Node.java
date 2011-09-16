@@ -10,7 +10,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.NamespaceManager.NameType;
+import dk.itu.big_red.model.assistants.NamespaceManager;
+import dk.itu.big_red.model.assistants.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;

@@ -8,8 +8,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import dk.itu.big_red.model.NamespaceManager.NameType;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
+import dk.itu.big_red.model.assistants.NamespaceManager;
+import dk.itu.big_red.model.assistants.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;

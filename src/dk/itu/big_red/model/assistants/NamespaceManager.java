@@ -1,4 +1,4 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.assistants;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
