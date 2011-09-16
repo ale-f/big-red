@@ -40,6 +40,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import dk.itu.big_red.actions.ContainerRelayoutAction;
 import dk.itu.big_red.actions.FilePrintAction;
 import dk.itu.big_red.actions.FileRevertAction;
 import dk.itu.big_red.actions.ContainerCopyAction;
@@ -139,9 +140,9 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
-    	/*action = new ContainerRelayoutAction(this);
+    	action = new ContainerRelayoutAction(this);
     	registry.registerAction(action);
-    	getSelectionActions().add(action.getId());*/
+    	getSelectionActions().add(action.getId());
     	
     	/*
     	 * Does this kind of action need to be registered in the

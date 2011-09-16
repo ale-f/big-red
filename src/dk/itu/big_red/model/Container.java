@@ -146,6 +146,18 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	}
 	
 	public void relayout() {
+		Rectangle r = new Rectangle();
+		int leftProgress = 10;
+		int maxHeight = 0;
+		for (ILayoutable i : getChildren()) {
+			Rectangle layout = i.getLayout();
+			if (maxHeight < layout.height)
+				maxHeight = layout.height;
+			layout.setLocation(leftProgress, 10);
+			leftProgress += layout.width + 10;
+			i.setLayout(layout);
+		}
+		setLayout(getLayout().setSize(leftProgress, maxHeight + 20));
 	}
 
 	private String comment = null;
