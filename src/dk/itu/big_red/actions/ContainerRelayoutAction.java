@@ -1,14 +1,17 @@
 package dk.itu.big_red.actions;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 
 import dk.itu.big_red.commands.ContainerRelayoutCommand;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.part.AbstractPart;
 import dk.itu.big_red.util.Utility;
 
@@ -35,32 +38,51 @@ public class ContainerRelayoutAction extends SelectionAction {
 			setImageDescriptor(icon);
 	}
 	
-	private Command createRelayoutCommand(List<Object> selectedObjects) {
-		if (selectedObjects == null || selectedObjects.size() != 1)
-			return null;
+	private List<Object> lastObjects = null;
+	private List<Command> lastCommands = null;
+	
+	private List<Command> createRelayoutCommands(List<Object> selectedObjects) {
+		IEditorPart editor = getWorkbenchPart().getSite().getWorkbenchWindow().
+				getActivePage().getActiveEditor();
+		if (selectedObjects.equals(lastObjects)) {
+			System.out.println("Returning cache!");
+			return lastCommands;
+		}
 		
-		ContainerRelayoutCommand command = new ContainerRelayoutCommand();
-		command.setEditor(getWorkbenchPart().getSite().getWorkbenchWindow().getActivePage().getActiveEditor());
+		ContainerRelayoutCommand command;
+		lastObjects = selectedObjects;
+		lastCommands = new ArrayList<Command>();
+		for (Object i : selectedObjects) {
+			if (i instanceof AbstractPart) {
+				Object m = ((AbstractPart)i).getModel();
+				if (m instanceof Container) {
+					command = new ContainerRelayoutCommand();
+					command.setEditor(editor);
+					command.setModel(m);
+					lastCommands.add(command);
+				}
+			}
+		}
 		
-		Object model = selectedObjects.get(0);
-		if (model instanceof AbstractPart)
-			command.setModel(((AbstractPart)model).getModel());
-		
-		return command;
+		return lastCommands;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected boolean calculateEnabled() {
-		Command command = createRelayoutCommand(getSelectedObjects());
-		return command != null && command.canExecute();
+		List<Command> commands = createRelayoutCommands(getSelectedObjects());
+		for (Command i : commands)
+			if (!i.canExecute())
+				return false;
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run() {
-		Command command = createRelayoutCommand(getSelectedObjects());
-		if (command != null && command.canExecute())
-			execute(command);
+		List<Command> commands = createRelayoutCommands(getSelectedObjects());
+		for (Command i : commands)
+			if (i.canExecute())
+				execute(i);
 	}
 }
