@@ -60,10 +60,10 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		}
 		
     	bigraph = model;
-		processContainer(e, model);
+		processThing(e, model);
 	}
 	
-	private void processContainer(Element e, Container model) throws ImportFailedException {
+	private void processThing(Element e, Container model) throws ImportFailedException {
 		if (model instanceof Node)
 			((Node)model).setControl(bigraph.getSignature().getControl(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control")));
 		
@@ -113,7 +113,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		if (model instanceof Bigraph) {
 			processBigraph(e, (Bigraph)model);
 		} else if (model instanceof Container) {
-			processContainer(e, (Container)model);
+			processThing(e, (Container)model);
 		} else if (model instanceof Port) {
 			if (context instanceof Node) {
 				Node n = (Node)context;
