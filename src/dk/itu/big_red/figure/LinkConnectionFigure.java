@@ -17,6 +17,7 @@ public class LinkConnectionFigure extends PolylineConnection {
         setOutlineColour(new RGB(0, 127, 0));
 	}
 	
+	@Override
 	public void outlineShape(Graphics g) {
 		g.pushState();
 		try {

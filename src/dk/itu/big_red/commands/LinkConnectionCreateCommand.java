@@ -3,8 +3,8 @@ package dk.itu.big_red.commands;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Point;
 
 /**
@@ -32,6 +32,7 @@ public class LinkConnectionCreateCommand extends Command {
 		else second = ((LinkConnection)e).getLink();
 	}
 	
+	@Override
 	public boolean canExecute() {
 		return (first != null && second != null &&
 				first != second &&
@@ -40,6 +41,7 @@ public class LinkConnectionCreateCommand extends Command {
 				 (first instanceof Link && second instanceof Point)));
 	}
 	
+	@Override
 	public void execute() {
 		if (modifiedLink != null) {
 			if (first instanceof Point)
@@ -75,10 +77,12 @@ public class LinkConnectionCreateCommand extends Command {
 		}
 	}
 	
+	@Override
 	public boolean canUndo() {
 		return (modifiedLink != null);
 	}
 	
+	@Override
 	public void undo() {
 		if (first instanceof Point)
 			modifiedLink.removePoint((Point)first);

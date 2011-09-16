@@ -141,8 +141,8 @@ public class Control implements IPropertyChangeNotifier, IFillColourable, IOutli
 	 * @see Control#setShape
 	 */
 	public PointList getPoints() {
-		if (this.shape == Shape.SHAPE_POLYGON)
-			return this.points.getCopy();
+		if (shape == Shape.SHAPE_POLYGON)
+			return points.getCopy();
 		else return null;
 	}
 	
@@ -201,14 +201,14 @@ public class Control implements IPropertyChangeNotifier, IFillColourable, IOutli
 	}
 
 	public void clearPorts() {
-		this.ports.clear();
+		ports.clear();
 		listeners.firePropertyChange(PROPERTY_PORT, null, null);
 	}
 	
 	public void addPort(Port p) {
 		if (p != null) {
 			Port q = new Port(p.getName(), p.getSegment(), p.getDistance());
-			this.ports.add(q);
+			ports.add(q);
 			listeners.firePropertyChange(PROPERTY_PORT, null, q);
 		}
 	}
@@ -216,7 +216,7 @@ public class Control implements IPropertyChangeNotifier, IFillColourable, IOutli
 	public void removePort(String port) {
 		Port p = getPort(port);
 		if (p != null) {
-			this.ports.remove(p);
+			ports.remove(p);
 			listeners.firePropertyChange(PROPERTY_PORT, p, null);
 		}
 	}

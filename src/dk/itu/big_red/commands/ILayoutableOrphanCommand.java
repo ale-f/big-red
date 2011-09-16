@@ -22,16 +22,19 @@ public class ILayoutableOrphanCommand extends Command {
 			this.children = (List)children;
 	}
 	
+	@Override
 	public boolean canExecute() {
-		return (this.parent != null && this.children != null);
+		return (parent != null && children != null);
 	}
 	
+	@Override
 	public void execute() {
 		for (Object i : children)
 			if (i instanceof EditPart && !(i instanceof EdgePart))
 				parent.removeChild((ILayoutable)((EditPart)i).getModel());
 	}
 	
+	@Override
 	public void undo() {
 		for (Object i : children)
 			if (i instanceof EditPart && !(i instanceof EdgePart))

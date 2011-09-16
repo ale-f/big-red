@@ -1,6 +1,13 @@
 package dk.itu.big_red.editors.assistants;
 
-import org.eclipse.gef.ui.actions.*;
+import org.eclipse.gef.ui.actions.ActionBarContributor;
+import org.eclipse.gef.ui.actions.DeleteRetargetAction;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.actions.RedoRetargetAction;
+import org.eclipse.gef.ui.actions.UndoRetargetAction;
+import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
+import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
+import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -57,6 +64,7 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 		toolBarManager.add(new ZoomComboContributionItem(getPage()));
 	}
 
+	@Override
 	public void contributeToMenu(IMenuManager menuManager) {
 	}
 	

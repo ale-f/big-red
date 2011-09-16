@@ -22,7 +22,7 @@ public class ModelPropertySource implements IPropertySource {
 	private Object object;
 	
 	public ModelPropertySource(Object node) {
-		this.object = node;
+		object = node;
 	}
 	
 	@Override

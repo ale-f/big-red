@@ -5,12 +5,12 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.print.PrintGraphicalViewerOperation;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
+
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.Utility;
 
@@ -48,10 +48,7 @@ public class FilePrintAction extends org.eclipse.gef.ui.actions.PrintAction {
 		if (data != null) {
 			Printer p = new Printer(data);
 			
-			/*
-			 * XXX: Trim calculation?
-			 */
-			Rectangle trim = p.computeTrim(0, 0, 0, 0);
+			p.computeTrim(0, 0, 0, 0);
 
 			ZoomManager zm =
 				((ScalableRootEditPart)(viewer.getRootEditPart())).getZoomManager();

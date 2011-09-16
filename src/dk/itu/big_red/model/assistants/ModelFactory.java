@@ -18,7 +18,7 @@ public class ModelFactory implements CreationFactory {
 	private Class<?> template;
 	
 	public ModelFactory(Class<?> t) {
-		this.template = t;
+		template = t;
 	}
 	
 	@Override

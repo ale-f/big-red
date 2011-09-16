@@ -16,18 +16,20 @@ public class ILayoutableDeleteCommand extends Command {
 	
 	public void setParentModel(Object model) {
 		if (model instanceof ILayoutable)
-			this.parentModel = (ILayoutable)model;
+			parentModel = (ILayoutable)model;
 	}
 	
+	@Override
 	public void execute() {
-		this.parentModel.removeChild(model);
+		parentModel.removeChild(model);
 		if (parentModel instanceof Bigraph)
-			this.parentModel.getBigraph().updateBoundaries();
+			parentModel.getBigraph().updateBoundaries();
 	}
 	
+	@Override
 	public void undo() {
-		this.parentModel.addChild(model);
+		parentModel.addChild(model);
 		if (parentModel instanceof Bigraph)
-			this.parentModel.getBigraph().updateBoundaries();
+			parentModel.getBigraph().updateBoundaries();
 	}
 }

@@ -46,6 +46,7 @@ public class RootPart extends ContainerPart {
 		figure.setName(model.getName());
 	}
 	
+	@Override
 	public List<ILayoutable> getModelChildren() {
 		return getModel().getChildren();
 	}

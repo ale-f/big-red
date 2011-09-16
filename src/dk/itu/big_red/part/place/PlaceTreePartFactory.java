@@ -3,7 +3,11 @@ package dk.itu.big_red.part.place;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Site;
 
 public class PlaceTreePartFactory implements EditPartFactory {
 

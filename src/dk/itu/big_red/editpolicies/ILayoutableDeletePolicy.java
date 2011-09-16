@@ -7,6 +7,7 @@ import org.eclipse.gef.requests.GroupRequest;
 import dk.itu.big_red.commands.ILayoutableDeleteCommand;
 
 public class ILayoutableDeletePolicy extends ComponentEditPolicy {
+	@Override
 	protected Command createDeleteCommand(GroupRequest deleteRequest) {
 		ILayoutableDeleteCommand command = new ILayoutableDeleteCommand();
 		command.setModel(getHost().getModel());

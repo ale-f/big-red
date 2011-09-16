@@ -131,14 +131,14 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IP
 	
 	@Override
 	public ILayoutable getParent() {
-		return this.parent;
+		return parent;
 	}
 
 	@Override
 	public void setParent(ILayoutable p) {
 		if (p != null) {
-			ILayoutable oldParent = this.parent;
-			this.parent = p;
+			ILayoutable oldParent = parent;
+			parent = p;
 			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}
 	}

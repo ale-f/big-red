@@ -21,6 +21,7 @@ public class ContainerPasteAction extends SelectionAction {
 		setLazyEnablementCalculation(true);
 	}
 
+	@Override
 	protected void init() {
 		super.init();
 		setText("Paste");
@@ -63,11 +64,13 @@ public class ContainerPasteAction extends SelectionAction {
 		return new ILayoutablePasteCommand(newParent);
 	}
 	
+	@Override
 	protected boolean calculateEnabled() {
 		Command command = createPasteCommand(getSelectedObjects());
 		return (command != null && command.canExecute());
 	}
 	
+	@Override
 	public void run() {
 		Command command = createPasteCommand(getSelectedObjects());
 		if (command != null && command.canExecute())

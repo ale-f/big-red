@@ -63,6 +63,6 @@ public class ContainerRelayoutCommand extends Command {
 	}
 
 	public Container getModel() {
-		return this.model;
+		return model;
 	}
 }

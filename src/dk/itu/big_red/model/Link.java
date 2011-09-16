@@ -185,14 +185,14 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 	
 	@Override
 	public ILayoutable getParent() {
-		return this.parent;
+		return parent;
 	}
 
 	@Override
 	public void setParent(ILayoutable p) {
 		if (p != null) {
-			ILayoutable oldParent = this.parent;
-			this.parent = p;
+			ILayoutable oldParent = parent;
+			parent = p;
 			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}
 	}
@@ -206,7 +206,7 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 	
 	@Override
 	public String getComment() {
-		return this.comment;
+		return comment;
 	}
 	
 	@Override
@@ -220,14 +220,14 @@ public abstract class Link implements IAdaptable, ILayoutable, INameable, IComme
 
 	@Override
 	public Rectangle getLayout() {
-		return new Rectangle(this.layout);
+		return new Rectangle(layout);
 	}
 	
 	@Override
 	public void setLayout(Rectangle newLayout) {
-		Rectangle oldLayout = this.layout;
-		this.layout = new Rectangle(newLayout);
-		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, this.layout);
+		Rectangle oldLayout = layout;
+		layout = new Rectangle(newLayout);
+		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	private RGB outlineColour = new RGB(0, 127, 0);

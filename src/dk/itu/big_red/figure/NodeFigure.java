@@ -35,7 +35,7 @@ public class NodeFigure extends AbstractFigure {
 	}
 	
 	public PointList getPoints() {
-		return this.points;
+		return points;
 	}
 	
 	public void setShape(Control.Shape shape) {
@@ -43,7 +43,7 @@ public class NodeFigure extends AbstractFigure {
 	}
 	
 	public Control.Shape getShape() {
-		return this.shape;
+		return shape;
 	}
 	
 	@Override

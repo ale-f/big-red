@@ -55,7 +55,7 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 	public Container clone() throws CloneNotSupportedException {
 		Node result = new Node();
 		result._overwrite(this);
-		result.setControl(this.control);
+		result.setControl(control);
 		return result;
 	}
 	
@@ -103,7 +103,7 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 			
 			Point c = control.getDefaultSize();
 			if (!control.isResizable()) {
-				Rectangle nr = new Rectangle(this.getLayout());
+				Rectangle nr = new Rectangle(getLayout());
 				nr.width = c.x;
 				nr.height = c.y;
 				super.setLayout(nr);

@@ -39,6 +39,7 @@ public class ILayoutableCopyCommand extends Command {
 		list = crunchedList;
 	}
 	
+	@Override
 	public boolean canExecute() {
 		if (list == null || list.isEmpty())
 			return false;
@@ -51,11 +52,13 @@ public class ILayoutableCopyCommand extends Command {
 		return true;
 	}
 	
+	@Override
 	public void execute() {
 		if (canExecute())
 			Clipboard.getDefault().setContents(list);
 	}
 	
+	@Override
 	public boolean canUndo() {
 		return true;
 	}

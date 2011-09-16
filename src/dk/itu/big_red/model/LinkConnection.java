@@ -52,7 +52,7 @@ public class LinkConnection implements IPropertyChangeNotifier, IAdaptable {
 	 * @return the current Point
 	 */
 	public Point getPoint() {
-		return this.point;
+		return point;
 	}
 	
 	/**

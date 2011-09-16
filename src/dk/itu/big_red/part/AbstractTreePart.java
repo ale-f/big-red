@@ -10,6 +10,7 @@ import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
+
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 import dk.itu.big_red.util.UI;
 

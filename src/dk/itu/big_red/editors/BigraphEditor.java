@@ -40,13 +40,13 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import dk.itu.big_red.actions.ContainerRelayoutAction;
-import dk.itu.big_red.actions.FilePrintAction;
-import dk.itu.big_red.actions.FileRevertAction;
 import dk.itu.big_red.actions.ContainerCopyAction;
 import dk.itu.big_red.actions.ContainerCutAction;
 import dk.itu.big_red.actions.ContainerPasteAction;
 import dk.itu.big_red.actions.ContainerPropertiesAction;
+import dk.itu.big_red.actions.ContainerRelayoutAction;
+import dk.itu.big_red.actions.FilePrintAction;
+import dk.itu.big_red.actions.FileRevertAction;
 import dk.itu.big_red.application.RedActivator;
 import dk.itu.big_red.editors.assistants.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;

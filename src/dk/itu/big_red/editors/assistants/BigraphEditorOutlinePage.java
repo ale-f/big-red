@@ -46,6 +46,7 @@ public class BigraphEditorOutlinePage extends ContentOutlinePage {
 		setViewer2(new TreeViewer());
 	}
 	
+	@Override
 	public void createControl(Composite parent) {
 		//IActionBars bars = getSite().getActionBars();
 		//ActionRegistry ar = this.bigraphEditor.getActionRegistry();
@@ -61,22 +62,22 @@ public class BigraphEditorOutlinePage extends ContentOutlinePage {
 		linkGraphTab.setText("Link graph");
 		linkGraphTab.setControl(getViewer2().createControl(tabs));
 		
-		getViewer().setEditDomain(this.bigraphEditor.getEditDomain());
+		getViewer().setEditDomain(bigraphEditor.getEditDomain());
 		getViewer().setEditPartFactory(new PlaceTreePartFactory());
-		getViewer().setContents(this.bigraphEditor.getModel());
+		getViewer().setContents(bigraphEditor.getModel());
 		
-		getViewer2().setEditDomain(this.bigraphEditor.getEditDomain());
+		getViewer2().setEditDomain(bigraphEditor.getEditDomain());
 		getViewer2().setEditPartFactory(new LinkTreePartFactory());
-		getViewer2().setContents(this.bigraphEditor.getModel());
+		getViewer2().setContents(bigraphEditor.getModel());
 		
-		this.bigraphEditor.getSelectionSynchronizer().addViewer(getViewer());
-		this.bigraphEditor.getSelectionSynchronizer().addViewer(getViewer2());
+		bigraphEditor.getSelectionSynchronizer().addViewer(getViewer());
+		bigraphEditor.getSelectionSynchronizer().addViewer(getViewer2());
 		
 		Canvas canvas = new Canvas(sash, SWT.BORDER);
 		LightweightSystem lws = new LightweightSystem(canvas);
 		
-		thumbnail = new ScrollableThumbnail((Viewport)((ScalableRootEditPart)this.bigraphEditor.getGraphicalViewer().getRootEditPart()).getFigure());
-		thumbnail.setSource(((ScalableRootEditPart)this.bigraphEditor.getGraphicalViewer().getRootEditPart()).getLayer(LayerConstants.PRINTABLE_LAYERS));
+		thumbnail = new ScrollableThumbnail((Viewport)((ScalableRootEditPart)bigraphEditor.getGraphicalViewer().getRootEditPart()).getFigure());
+		thumbnail.setSource(((ScalableRootEditPart)bigraphEditor.getGraphicalViewer().getRootEditPart()).getLayer(LayerConstants.PRINTABLE_LAYERS));
 		lws.setContents(thumbnail);
 		
 		disposeListener = new DisposeListener() {
@@ -92,9 +93,10 @@ public class BigraphEditorOutlinePage extends ContentOutlinePage {
 		//bars.setGlobalActionHandler(ActionFactory.COPY.getId(), ar.getAction(ActionFactory.COPY.getId()));
 		//bars.setGlobalActionHandler(ActionFactory.PASTE.getId(), ar.getAction(ActionFactory.PASTE.getId()));
 		
-		this.bigraphEditor.getGraphicalViewer().getControl().addDisposeListener(disposeListener);
+		bigraphEditor.getGraphicalViewer().getControl().addDisposeListener(disposeListener);
 	}
 	
+	@Override
 	public void init(IPageSite pageSite) {
 		super.init(pageSite);
 		
@@ -108,20 +110,22 @@ public class BigraphEditorOutlinePage extends ContentOutlinePage {
 		bars.setGlobalActionHandler(ActionFactory.DELETE.getId(), this.bigraphEditor.getActionRegistry().getAction(ActionFactory.DELETE.getId()));
 		bars.updateActionBars();*/
 		
-		getViewer().setKeyHandler(this.bigraphEditor.getGraphicalViewer().getKeyHandler());
+		getViewer().setKeyHandler(bigraphEditor.getGraphicalViewer().getKeyHandler());
 	}
 	
+	@Override
 	public Control getControl() {
 		return sash;
 	}
 	
+	@Override
 	public void dispose() {
-		this.bigraphEditor.getSelectionSynchronizer().removeViewer(getViewer());
-		this.bigraphEditor.getSelectionSynchronizer().removeViewer(getViewer2());
+		bigraphEditor.getSelectionSynchronizer().removeViewer(getViewer());
+		bigraphEditor.getSelectionSynchronizer().removeViewer(getViewer2());
 		
-		if (this.bigraphEditor.getGraphicalViewer().getControl() != null &&
-			!this.bigraphEditor.getGraphicalViewer().getControl().isDisposed()) {
-			this.bigraphEditor.getGraphicalViewer().getControl().removeDisposeListener(disposeListener);
+		if (bigraphEditor.getGraphicalViewer().getControl() != null &&
+			!bigraphEditor.getGraphicalViewer().getControl().isDisposed()) {
+			bigraphEditor.getGraphicalViewer().getControl().removeDisposeListener(disposeListener);
 		}
 		
         Control c = getControl2();

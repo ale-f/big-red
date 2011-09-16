@@ -9,6 +9,7 @@ public class ILayoutableCutCommand extends ILayoutableCopyCommand {
 	private HashMap<ILayoutable, ILayoutable> parents =
 		new HashMap<ILayoutable, ILayoutable>();
 	
+	@Override
 	public void execute() {
 		if (canExecute()) {
 			super.execute();
@@ -16,20 +17,23 @@ public class ILayoutableCutCommand extends ILayoutableCopyCommand {
 		}
 	}
 	
+	@Override
 	public boolean canUndo() {
 		System.out.println("canUndo called on " + this);
 		return parents.size() != 0;
 	}
 	
+	@Override
 	public void redo() {
 		Iterator<ILayoutable> it = list.iterator();
 		while (it.hasNext()) {
 			ILayoutable n = it.next();
-			parents.put(n, (ILayoutable)n.getParent());
-			((ILayoutable)n.getParent()).removeChild(n);
+			parents.put(n, n.getParent());
+			n.getParent().removeChild(n);
 		}
 	}
 	
+	@Override
 	public void undo() {
 		/*
 		 * Notice that the clipboard *is not cleared* when you undo a Cut

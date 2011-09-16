@@ -42,14 +42,16 @@ public class ILayoutableAddCommand extends Command {
 				 constraint.y + constraint.height <= parent.getLayout().height));
 	}
 	
+	@Override
 	public boolean canExecute() {
-		return (this.parent != null && this.child != null &&
+		return (parent != null && child != null &&
 				(child instanceof Edge ||
-				 (this.parent.canContain(this.child) &&
-				  this.constraint != null &&
+				 (parent.canContain(child) &&
+				  constraint != null &&
 				  parentLayoutCanContainChildConstraint() && noOverlap())));
 	}
 	
+	@Override
 	public void execute() {
 		if (!(child instanceof Edge))
 			parent.addChild(child);
@@ -61,6 +63,7 @@ public class ILayoutableAddCommand extends Command {
 		child.setLayout(constraint);
 	}
 	
+	@Override
 	public void undo() {
 		child.setLayout(oldConstraint);
 		if (!(child instanceof Edge))

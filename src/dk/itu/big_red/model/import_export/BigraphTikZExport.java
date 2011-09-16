@@ -12,6 +12,7 @@ import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
@@ -22,7 +23,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
@@ -57,14 +57,6 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 	private void newLine() throws ExportFailedException {
 		try {
 			writer.write("\n");
-		} catch (Exception e) {
-			throw new ExportFailedException(e);
-		}
-	}
-	
-	private void commentLine(String line) throws ExportFailedException {
-		try {
-			writer.write("% " + line);
 		} catch (Exception e) {
 			throw new ExportFailedException(e);
 		}

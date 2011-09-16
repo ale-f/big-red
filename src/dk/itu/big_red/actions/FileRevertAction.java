@@ -14,6 +14,7 @@ public class FileRevertAction extends EditorPartAction {
 		
 	}
 
+	@Override
 	public void init() {
 		super.init();
 		setText("Rever&t");
@@ -25,6 +26,7 @@ public class FileRevertAction extends EditorPartAction {
 		return getCommandStack().isDirty();
 	}
 
+	@Override
 	public void run() {
 		((BigraphEditor)getEditorPart()).revert();
 	}

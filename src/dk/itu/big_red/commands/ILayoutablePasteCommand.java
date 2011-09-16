@@ -7,7 +7,9 @@ import java.util.Iterator;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
-import dk.itu.big_red.model.*;
+import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutablePasteCommand extends Command {
@@ -51,7 +53,7 @@ public class ILayoutablePasteCommand extends Command {
 			return false;
 		Iterator<ILayoutable> it = bList.iterator();
 		while (it.hasNext()) {
-			ILayoutable node = (ILayoutable)it.next();
+			ILayoutable node = it.next();
 			if (!newParent.canContain(node))
 				return false;
 			else if (isPastableNode(node))
@@ -60,15 +62,16 @@ public class ILayoutablePasteCommand extends Command {
 		return true;
 	}
 	
+	@Override
 	public void execute() {
 		if (!canExecute())
 			return;
 		
 		Iterator<ILayoutable> it = list.keySet().iterator();
 		while (it.hasNext()) {
-			ILayoutable node = (Container)it.next();
+			ILayoutable node = it.next();
 			try {
-				list.put(node, (Container)node.clone());
+				list.put(node, node.clone());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -88,6 +91,7 @@ public class ILayoutablePasteCommand extends Command {
 		}
 	}
 	
+	@Override
 	public void undo() {
 		Iterator<ILayoutable> it = list.values().iterator();
 		while (it.hasNext()) {

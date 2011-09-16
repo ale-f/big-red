@@ -13,8 +13,8 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
-import dk.itu.big_red.editpolicies.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
+import dk.itu.big_red.editpolicies.LinkConnectionDeletePolicy;
 import dk.itu.big_red.figure.LinkConnectionFigure;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LinkConnection;
@@ -35,7 +35,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	 * @return a NodeEditPart
 	 */
 	public NodeEditPart getLinkPart() {
-		return ((NodeEditPart)this.getViewer().getEditPartRegistry().get(getModel().getLink()));
+		return ((NodeEditPart)getViewer().getEditPartRegistry().get(getModel().getLink()));
 	}
 	
 	@Override
@@ -53,6 +53,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	 * receive property change notifications from both the model object <i>and</i>
 	 * its parent {@link Edge}.
 	 */
+	@Override
 	public void activate() {
 		super.activate();
 		getModel().getLink().addPropertyChangeListener(this);
@@ -64,6 +65,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	 * from the property change notifications of the model object and its
 	 * parent {@link Edge}.
 	 */
+	@Override
 	public void deactivate() {
 		getModel().getLink().removePropertyChangeListener(this);
 		super.deactivate();
@@ -85,6 +87,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		refreshVisuals();
 	}
 
+	@Override
 	public void refreshVisuals() {
 		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
 		LinkConnection model = getModel();

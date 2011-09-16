@@ -22,12 +22,12 @@ public class ILayoutableCreateCommand extends Command {
 	
 	public void setObject(Object s) {
 		if (s instanceof ILayoutable)
-			this.node = (ILayoutable)s;
+			node = (ILayoutable)s;
 	}
 	
 	public void setContainer(Object e) {
 		if (e instanceof ILayoutable)
-			this.container = (ILayoutable)e;
+			container = (ILayoutable)e;
 	}
 	
 	public void setLayout(Rectangle r) {
@@ -66,19 +66,23 @@ public class ILayoutableCreateCommand extends Command {
 		return true;
 	}
 	
+	@Override
 	public boolean canExecute() {
 		return (node != null && container != null && boundariesSatisfied() &&
 				noOverlap());
 	}
 	
+	@Override
 	public void execute() {
 		container.addChild(node);
 	}
 	
+	@Override
 	public boolean canUndo() {
 		return (node != null && container != null ? node.getParent() == container : false);
 	}
 	
+	@Override
 	public void undo() {
 		container.removeChild(node);
 	}

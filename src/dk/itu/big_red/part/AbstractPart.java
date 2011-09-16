@@ -14,6 +14,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
+
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;

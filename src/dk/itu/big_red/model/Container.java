@@ -37,19 +37,19 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	private IPropertySource propertySource = null;
 	
 	public Container() {
-		this.layout = new Rectangle(10, 10, 100, 100);
+		layout = new Rectangle(10, 10, 100, 100);
 	}
 
 	@Override
 	public Rectangle getLayout() {
-		return new Rectangle(this.layout);
+		return new Rectangle(layout);
 	}
 	
 	@Override
 	public void setLayout(Rectangle newLayout) {
-		Rectangle oldLayout = this.layout;
-		this.layout = new Rectangle(newLayout);
-		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, this.layout);
+		Rectangle oldLayout = layout;
+		layout = new Rectangle(newLayout);
+		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	@Override
@@ -59,7 +59,7 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	
 	@Override
 	public void addChild(ILayoutable child) {
-		boolean added = this.children.add(child);
+		boolean added = children.add(child);
 		if (added) {
 			child.setParent(this);
 			listeners.firePropertyChange(PROPERTY_CHILD, null, child);
@@ -68,19 +68,19 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	
 	@Override
 	public void removeChild(ILayoutable child) {
-		boolean removed = this.children.remove(child);
+		boolean removed = children.remove(child);
 		if (removed)
 			listeners.firePropertyChange(PROPERTY_CHILD, child, null);
 	}
 	
 	@Override
 	public List<ILayoutable> getChildren() {
-		return this.children;
+		return children;
 	}
 	
 	@Override
 	public ILayoutable getParent() {
-		return this.parent;
+		return parent;
 	}
 	
 	@Override
@@ -120,8 +120,8 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	}
 	
 	protected Container _overwrite(Container orig) throws CloneNotSupportedException {
-		this.setParent(orig.getParent());
-		this.setLayout(new Rectangle(
+		setParent(orig.getParent());
+		setLayout(new Rectangle(
 			orig.getLayout().x + 10, orig.getLayout().y + 10,
 			orig.getLayout().width, orig.getLayout().height));
 		
@@ -129,7 +129,7 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 		while (it.hasNext()) {
 			ILayoutable child = it.next();
 			ILayoutable childClone = child.clone();
-			this.addChild(childClone);
+			addChild(childClone);
 			childClone.setLayout(child.getLayout());
 		}
 		
@@ -146,7 +146,7 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	}
 	
 	public void relayout() {
-		Rectangle r = new Rectangle();
+		new Rectangle();
 		int leftProgress = 10;
 		int maxHeight = 0;
 		for (ILayoutable i : getChildren()) {
@@ -164,7 +164,7 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	
 	@Override
 	public String getComment() {
-		return this.comment;
+		return comment;
 	}
 
 	@Override

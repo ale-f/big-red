@@ -12,15 +12,18 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
 	private static final String PERSPECTIVE_ID = "dk.itu.big_red.perspective";
 
-    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+    @Override
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
         return new ApplicationWorkbenchWindowAdvisor(configurer);
     }
     
-    public void initialize(IWorkbenchConfigurer configurer) {
+    @Override
+	public void initialize(IWorkbenchConfigurer configurer) {
         super.initialize(configurer);
         org.eclipse.ui.ide.IDE.registerAdapters();
     }
 
+	@Override
 	public String getInitialWindowPerspectiveId() {
 		return PERSPECTIVE_ID;
 	}

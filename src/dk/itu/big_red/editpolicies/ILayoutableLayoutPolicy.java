@@ -14,7 +14,7 @@ import dk.itu.big_red.commands.ILayoutableCreateCommand;
 import dk.itu.big_red.commands.ILayoutableOrphanCommand;
 import dk.itu.big_red.commands.ILayoutableRelayoutCommand;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
-import dk.itu.big_red.part.*;
+import dk.itu.big_red.part.BigraphPart;
 
 public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 
@@ -61,8 +61,7 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	protected Command getCreateCommand(CreateRequest request) {
 		Object requestObject = request.getNewObject();
 		
-		Class<? extends ILayoutable> type =
-			(Class<? extends ILayoutable>)requestObject.getClass();
+		requestObject.getClass();
 		Dimension size = new Dimension(100, 100);
 		ILayoutable parent = (ILayoutable)getHost().getModel();
 		if (!parent.canContain((ILayoutable)requestObject)) {

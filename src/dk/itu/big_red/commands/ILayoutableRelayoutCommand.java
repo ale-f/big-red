@@ -17,13 +17,13 @@ public class ILayoutableRelayoutCommand extends Command {
 	
 	public void setConstraint(Object rect) {
 		if (rect instanceof Rectangle)
-			this.layout = (Rectangle)rect;
+			layout = (Rectangle)rect;
 	}
 
 	public void setModel(Object model) {
 		if (model instanceof ILayoutable) {
 			this.model = (ILayoutable)model;
-			this.oldLayout = this.model.getLayout();
+			oldLayout = this.model.getLayout();
 		}
 	}
 	
@@ -75,20 +75,23 @@ public class ILayoutableRelayoutCommand extends Command {
 				 layout.y + layout.height <= model.getParent().getLayout().height));
 	}
 	
+	@Override
 	public boolean canExecute() {
 		return (model != null && layout != null && oldLayout != null &&
 				parentLayoutCanContainChildLayout() && noOverlap() &&
 				boundariesSatisfied() && spaceForChildren());
 	}
 	
+	@Override
 	public void execute() {
 		model.setLayout(layout);
 		if (model.getParent() instanceof Bigraph)
 			model.getBigraph().updateBoundaries();
 	}
 
+	@Override
 	public void undo() {
-		model.setLayout(this.oldLayout);
+		model.setLayout(oldLayout);
 		if (model.getParent() instanceof Bigraph)
 			model.getBigraph().updateBoundaries();
 	}

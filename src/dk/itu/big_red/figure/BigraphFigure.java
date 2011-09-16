@@ -15,7 +15,7 @@ public class BigraphFigure extends AbstractFigure {
 	@Override
 	protected void outlineShape(Graphics g) {
 		Rectangle r = start(g);
-		int width = r.width, height = r.height;
+		int width = r.width;
 		try {
 			g.setAlpha(63);
 			

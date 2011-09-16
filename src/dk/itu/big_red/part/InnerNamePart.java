@@ -1,8 +1,10 @@
 package dk.itu.big_red.part;
 
 import java.beans.PropertyChangeEvent;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
+
 import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;

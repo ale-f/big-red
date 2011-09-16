@@ -62,8 +62,6 @@ MenuListener {
 	private Point tmp = new Point();
 	private Dimension controlSize = new Dimension();
 	
-	private double ellipseWidth = 40, ellipseHeight = 40;
-	
 	private Point roundedMousePosition = new Point(-10, -10),
 	              mousePosition = new Point(-10, -10);
 	
