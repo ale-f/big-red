@@ -71,12 +71,12 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 	
 	private void addConnection(LinkConnection e) {
 		connections.add(e);
-		listeners.firePropertyChange(Link.PROPERTY_TARGET_EDGE, null, e);
+		firePropertyChange(Link.PROPERTY_TARGET_EDGE, null, e);
 	}
 
 	private void removeConnection(LinkConnection e) {
 		connections.remove(e);
-		listeners.firePropertyChange(Link.PROPERTY_TARGET_EDGE, e, null);
+		firePropertyChange(Link.PROPERTY_TARGET_EDGE, e, null);
 	}
 	
 	public List<LinkConnection> getConnections() {
@@ -160,11 +160,11 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 		String oldName = nm.getName(Link.class, this);
 		if (name != null) {
 			if (nm.setName(Link.class, name, this))
-				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+				firePropertyChange(PROPERTY_NAME, oldName, name);
 		} else {
 			String newName = nm.newName(Link.class, this, NameType.NAME_ALPHABETIC);
 			if (!newName.equals(oldName))
-				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
+				firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}
 	}
 	
@@ -180,7 +180,7 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 		if (p != null) {
 			Container oldParent = parent;
 			parent = p;
-			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
+			firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}
 	}
 	
@@ -200,7 +200,7 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 	public void setComment(String comment) {
 		String oldComment = getComment();
 		this.comment = comment;
-		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
+		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
 	private Rectangle layout = new Rectangle(0, 0, 10, 10);
@@ -214,7 +214,7 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 	public void setLayout(Rectangle newLayout) {
 		Rectangle oldLayout = layout;
 		layout = new Rectangle(newLayout);
-		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
+		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	private RGB outlineColour = new RGB(0, 127, 0);
@@ -223,7 +223,7 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 	public void setOutlineColour(RGB outlineColour) {
 		RGB oldColour = getOutlineColour();
 		this.outlineColour = outlineColour;
-		listeners.firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
+		firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
 	}
 
 	@Override

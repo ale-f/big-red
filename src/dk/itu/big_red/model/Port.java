@@ -75,7 +75,7 @@ public class Port extends Point implements ILayoutable, IPort {
 		if (distance >= 0 && distance < 1) {
 			double oldDistance = this.distance;
 			this.distance = distance;
-			listeners.firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
+			firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
 		}
 	}
 
@@ -100,7 +100,7 @@ public class Port extends Point implements ILayoutable, IPort {
 	public void setSegment(int segment) {
 		int oldSegment = this.segment;
 		this.segment = segment;
-		listeners.firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
+		firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
 	}
 	
 	@Override

@@ -120,7 +120,7 @@ public class Control extends ModelObject implements IPropertyChangeNotifier, IFi
 	public void setLabel(String label) {
 		String oldLabel = this.label;
 		this.label = label;
-		listeners.firePropertyChange(PROPERTY_LABEL, oldLabel, label);
+		firePropertyChange(PROPERTY_LABEL, oldLabel, label);
 	}
 	
 	public Control.Shape getShape() {
@@ -154,11 +154,11 @@ public class Control extends ModelObject implements IPropertyChangeNotifier, IFi
 			return;
 		Control.Shape oldShape = this.shape;
 		this.shape = shape;
-		listeners.firePropertyChange(PROPERTY_SHAPE, oldShape, shape);
+		firePropertyChange(PROPERTY_SHAPE, oldShape, shape);
 		
 		PointList oldPoints = this.points;
 		this.points = points;
-		listeners.firePropertyChange(PROPERTY_POINTS, oldPoints, points);
+		firePropertyChange(PROPERTY_POINTS, oldPoints, points);
 	}
 
 	public void setLongName(String longName) throws DuplicateControlException {
@@ -181,7 +181,7 @@ public class Control extends ModelObject implements IPropertyChangeNotifier, IFi
 		if (defaultSize != null) {
 			Point oldSize = this.defaultSize;
 			this.defaultSize = defaultSize;
-			listeners.firePropertyChange(PROPERTY_DEFAULT_SIZE, oldSize, defaultSize);
+			firePropertyChange(PROPERTY_DEFAULT_SIZE, oldSize, defaultSize);
 		}
 	}
 	
@@ -192,19 +192,19 @@ public class Control extends ModelObject implements IPropertyChangeNotifier, IFi
 	public void setResizable(Boolean resizable) {
 		Boolean oldResizable = this.resizable;
 		this.resizable = resizable;
-		listeners.firePropertyChange(PROPERTY_RESIZABLE, oldResizable, resizable);
+		firePropertyChange(PROPERTY_RESIZABLE, oldResizable, resizable);
 	}
 
 	public void clearPorts() {
 		ports.clear();
-		listeners.firePropertyChange(PROPERTY_PORT, null, null);
+		firePropertyChange(PROPERTY_PORT, null, null);
 	}
 	
 	public void addPort(Port p) {
 		if (p != null) {
 			Port q = new Port(p.getName(), p.getSegment(), p.getDistance());
 			ports.add(q);
-			listeners.firePropertyChange(PROPERTY_PORT, null, q);
+			firePropertyChange(PROPERTY_PORT, null, q);
 		}
 	}
 	
@@ -212,7 +212,7 @@ public class Control extends ModelObject implements IPropertyChangeNotifier, IFi
 		Port p = getPort(port);
 		if (p != null) {
 			ports.remove(p);
-			listeners.firePropertyChange(PROPERTY_PORT, p, null);
+			firePropertyChange(PROPERTY_PORT, p, null);
 		}
 	}
 	

@@ -45,7 +45,7 @@ public class Container extends ModelObject implements IAdaptable, ILayoutable, I
 	public void setLayout(Rectangle newLayout) {
 		Rectangle oldLayout = layout;
 		layout = new Rectangle(newLayout);
-		listeners.firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
+		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	@Override
@@ -58,7 +58,7 @@ public class Container extends ModelObject implements IAdaptable, ILayoutable, I
 		boolean added = children.add(child);
 		if (added) {
 			child.setParent(this);
-			listeners.firePropertyChange(PROPERTY_CHILD, null, child);
+			firePropertyChange(PROPERTY_CHILD, null, child);
 		}
 	}
 	
@@ -66,7 +66,7 @@ public class Container extends ModelObject implements IAdaptable, ILayoutable, I
 	public void removeChild(ILayoutable child) {
 		boolean removed = children.remove(child);
 		if (removed)
-			listeners.firePropertyChange(PROPERTY_CHILD, child, null);
+			firePropertyChange(PROPERTY_CHILD, child, null);
 	}
 	
 	@Override
@@ -161,7 +161,7 @@ public class Container extends ModelObject implements IAdaptable, ILayoutable, I
 	public void setComment(String comment) {
 		String oldComment = this.comment;
 		this.comment = comment;
-		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
+		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
 	@Override

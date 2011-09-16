@@ -48,7 +48,7 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 	public void setComment(String comment) {
 		String oldComment = this.comment;
 		this.comment = comment;
-		listeners.firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
+		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 
 	protected Rectangle layout = new Rectangle(5, 5, 10, 10);
@@ -63,7 +63,7 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 		if (layout != null) {
 			Rectangle oldLayout = new Rectangle(this.layout);
 			this.layout.setBounds(layout);
-			listeners.firePropertyChange(ILayoutable.PROPERTY_LAYOUT, oldLayout, layout);
+			firePropertyChange(ILayoutable.PROPERTY_LAYOUT, oldLayout, layout);
 		}
 	}
 
@@ -78,7 +78,7 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 	public Link setLink(Link l) {
 		Link oldLink = link;
 		link = l;
-		listeners.firePropertyChange(Point.PROPERTY_LINK, oldLink, l);
+		firePropertyChange(Point.PROPERTY_LINK, oldLink, l);
 		return oldLink;
 	}
 	
@@ -104,7 +104,7 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 		if (name != null) {
 			String oldName = this.name;
 			this.name = name;
-			listeners.firePropertyChange(INameable.PROPERTY_NAME, oldName, name);
+			firePropertyChange(INameable.PROPERTY_NAME, oldName, name);
 		}
 	}
 
@@ -125,7 +125,7 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 		if (p != null) {
 			Container oldParent = parent;
 			parent = p;
-			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
+			firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}
 	}
 	

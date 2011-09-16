@@ -37,7 +37,7 @@ public class LinkConnection extends ModelObject implements IAdaptable {
 		if (point != null) {
 			Point oldPoint = this.point;
 			this.point = point;
-			listeners.firePropertyChange(PROPERTY_POINT, oldPoint, point);
+			firePropertyChange(PROPERTY_POINT, oldPoint, point);
 		}
 	}
 	

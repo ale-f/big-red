@@ -110,7 +110,7 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 				super.setLayout(nr);
 			}
 		}
-		listeners.firePropertyChange(PROPERTY_CONTROL, oldControl, control);
+		firePropertyChange(PROPERTY_CONTROL, oldControl, control);
 	}
 	
 	/**
@@ -129,7 +129,7 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 	public void setFillColour(RGB fillColour) {
 		RGB oldColour = getFillColour();
 		this.fillColour = fillColour;
-		listeners.firePropertyChange(PROPERTY_FILL_COLOUR, oldColour, fillColour);
+		firePropertyChange(PROPERTY_FILL_COLOUR, oldColour, fillColour);
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 	public void setOutlineColour(RGB outlineColour) {
 		RGB oldColour = getOutlineColour();
 		this.outlineColour = outlineColour;
-		listeners.firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
+		firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
 	}
 
 	@Override
@@ -195,11 +195,11 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 		String oldName = nm.getName(getClass(), this);
 		if (name != null) {
 			if (nm.setName(getClass(), name, this))
-				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+				firePropertyChange(PROPERTY_NAME, oldName, name);
 		} else {
 			String newName = nm.newName(getClass(), this, NameType.NAME_ALPHABETIC);
 			if (!newName.equals(oldName))
-				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
+				firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}
 	}
 

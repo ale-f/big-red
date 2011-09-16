@@ -174,13 +174,13 @@ public class Bigraph extends Container implements IBigraph {
 		upperInnerNameBoundary += BOUNDARY_MARGIN;
 		
 		if (oldHR != lowerOuterNameBoundary)
-			listeners.firePropertyChange(PROPERTY_BOUNDARY_LON, oldHR, lowerOuterNameBoundary);
+			firePropertyChange(PROPERTY_BOUNDARY_LON, oldHR, lowerOuterNameBoundary);
 		if (oldLON != upperRootBoundary)
-			listeners.firePropertyChange(PROPERTY_BOUNDARY_UR, oldLON, upperRootBoundary);
+			firePropertyChange(PROPERTY_BOUNDARY_UR, oldLON, upperRootBoundary);
 		if (oldHIN != lowerRootBoundary)
-			listeners.firePropertyChange(PROPERTY_BOUNDARY_LR, oldHIN, lowerRootBoundary);
+			firePropertyChange(PROPERTY_BOUNDARY_LR, oldHIN, lowerRootBoundary);
 		if (oldLR != upperInnerNameBoundary)
-			listeners.firePropertyChange(PROPERTY_BOUNDARY_UIN, oldLR, upperInnerNameBoundary);
+			firePropertyChange(PROPERTY_BOUNDARY_UIN, oldLR, upperInnerNameBoundary);
 	}
 	
 	public int getLowerOuterNameBoundary() {

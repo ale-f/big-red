@@ -63,11 +63,11 @@ public class Site extends Container implements INameable, ISite {
 		String oldName = nm.getName(getClass(), this);
 		if (name != null) {
 			if (nm.setName(getClass(), name, this))
-				listeners.firePropertyChange(PROPERTY_NAME, oldName, name);
+				firePropertyChange(PROPERTY_NAME, oldName, name);
 		} else {
 			String newName = nm.newName(getClass(), this, NameType.NAME_NUMERIC);
 			if (!newName.equals(oldName))
-				listeners.firePropertyChange(PROPERTY_NAME, oldName, newName);
+				firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}
 	}
 
