@@ -61,6 +61,6 @@ public class ContainerCutAction extends SelectionAction {
 	public void run() {
 		Command cmd = createCutCommand(getSelectedObjects());
 		if (cmd != null && cmd.canExecute())
-			cmd.execute();
+			execute(cmd);
 	}
 }
