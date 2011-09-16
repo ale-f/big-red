@@ -14,6 +14,7 @@ import org.w3c.dom.Node;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.util.Utility;
 
 /**
  * The <code>Container</code> provides the basic functionality shared by most
@@ -146,14 +147,18 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	}
 	
 	public void relayout() {
-		new Rectangle();
 		int leftProgress = 10;
 		int maxHeight = 0;
-		for (ILayoutable i : getChildren()) {
+		int topOffset = 10;
+		
+		if (this instanceof Bigraph)
+			topOffset += ((Bigraph)this).upperRootBoundary;
+		
+		for (ILayoutable i : Utility.groupListByClass(getChildren(), Container.class)) {
 			Rectangle layout = i.getLayout();
 			if (maxHeight < layout.height)
 				maxHeight = layout.height;
-			layout.setLocation(leftProgress, 10);
+			layout.setLocation(leftProgress, topOffset);
 			leftProgress += layout.width + 10;
 			i.setLayout(layout);
 		}

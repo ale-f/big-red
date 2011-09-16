@@ -104,6 +104,12 @@ public class Bigraph extends Container implements IBigraph {
 	}
 	
 	@Override
+	public void setLayout(Rectangle newLayout) {
+		super.setLayout(newLayout);
+		updateBoundaries();
+	}
+	
+	@Override
 	public ILayoutable getParent() {
 		return null;
 	}
