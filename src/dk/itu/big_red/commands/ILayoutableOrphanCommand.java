@@ -5,16 +5,17 @@ import java.util.List;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.EdgePart;
 
 public class ILayoutableOrphanCommand extends Command {
-	private ILayoutable parent = null;
+	private Container parent = null;
 	private List children = null;
 	
 	public void setParent(Object parent) {
-		if (parent instanceof ILayoutable)
-			this.parent = (ILayoutable)parent;
+		if (parent instanceof Container)
+			this.parent = (Container)parent;
 	}
 	
 	public void setChildren(Object children) {

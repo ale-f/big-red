@@ -4,6 +4,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
@@ -11,7 +12,7 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableCreateCommand extends Command {
-	private ILayoutable container;
+	private Container container;
 	private ILayoutable node;
 	
 	public ILayoutableCreateCommand() {
@@ -26,8 +27,8 @@ public class ILayoutableCreateCommand extends Command {
 	}
 	
 	public void setContainer(Object e) {
-		if (e instanceof ILayoutable)
-			container = (ILayoutable)e;
+		if (e instanceof Container)
+			container = (Container)e;
 	}
 	
 	public void setLayout(Rectangle r) {

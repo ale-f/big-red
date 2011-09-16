@@ -100,7 +100,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		connect(link, model);
 	}
 	
-	private Object process(ILayoutable context, Element e) throws ImportFailedException {
+	private Object process(Container context, Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
 		
 		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");

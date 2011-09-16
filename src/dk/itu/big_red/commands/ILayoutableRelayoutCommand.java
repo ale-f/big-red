@@ -5,6 +5,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
@@ -40,10 +41,13 @@ public class ILayoutableRelayoutCommand extends Command {
 	private static final Point ORIGIN = new Point(0, 0);
 	
 	public boolean spaceForChildren() {
-		Rectangle t = new Rectangle(ORIGIN, layout.getSize());
-		for (ILayoutable i : model.getChildren()) {
-			if (!t.contains(i.getLayout()))
-				return false;
+		if (model instanceof Container) {
+			Container model = (Container)this.model;
+			Rectangle t = new Rectangle(ORIGIN, layout.getSize());
+			for (ILayoutable i : model.getChildren()) {
+				if (!t.contains(i.getLayout()))
+					return false;
+			}
 		}
 		return true;
 	}

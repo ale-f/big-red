@@ -6,6 +6,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.exceptions.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Link;
@@ -116,9 +117,12 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
 		}
 		
-		for (ILayoutable i : Utility.groupListByClass(obj.getChildren(),
-				BigraphXMLExport.SCHEMA_ORDER))
-			e.appendChild(process(i));
+		if (obj instanceof Container) {
+			Container c = (Container)obj;
+			for (ILayoutable i : Utility.groupListByClass(c.getChildren(),
+					BigraphXMLExport.SCHEMA_ORDER))
+				e.appendChild(process(i));
+		}
 		
 		DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
 		

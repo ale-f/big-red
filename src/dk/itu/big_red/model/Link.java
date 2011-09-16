@@ -111,44 +111,6 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 		} else return null;
 	}
 	
-	/**
-	 * Returns an empty list.
-	 */
-	@Override
-	public List<ILayoutable> getChildren() {
-		return new ArrayList<ILayoutable>();
-	}
-
-	/**
-	 * Does nothing.
-	 */
-	@Override
-	public void addChild(ILayoutable c) {
-	}
-
-	/**
-	 * Does nothing.
-	 */
-	@Override
-	public void removeChild(ILayoutable c) {
-	}
-
-	/**
-	 * Returns false.
-	 */
-	@Override
-	public boolean hasChild(ILayoutable c) {
-		return false;
-	}
-	
-	/**
-	 * Returns false.
-	 */
-	@Override
-	public boolean canContain(ILayoutable c) {
-		return false;
-	}
-	
 	@Override
 	public String getName() {
 		return getBigraph().getNamespaceManager().getRequiredName(Link.class, this);

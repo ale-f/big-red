@@ -1,8 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
@@ -127,44 +124,6 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 			parent = p;
 			firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}
-	}
-	
-	/**
-	 * Returns an empty list.
-	 */
-	@Override
-	public List<ILayoutable> getChildren() {
-		return new ArrayList<ILayoutable>();
-	}
-
-	/**
-	 * Does nothing.
-	 */
-	@Override
-	public void addChild(ILayoutable c) {
-	}
-
-	/**
-	 * Does nothing.
-	 */
-	@Override
-	public void removeChild(ILayoutable c) {
-	}
-
-	/**
-	 * Returns false.
-	 */
-	@Override
-	public boolean hasChild(ILayoutable c) {
-		return false;
-	}
-	
-	/**
-	 * Returns false.
-	 */
-	@Override
-	public boolean canContain(ILayoutable c) {
-		return false;
 	}
 	
 	@Override

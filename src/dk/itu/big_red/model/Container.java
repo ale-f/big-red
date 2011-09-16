@@ -48,12 +48,10 @@ public class Container extends ModelObject implements IAdaptable, ILayoutable, I
 		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
-	@Override
 	public boolean canContain(ILayoutable child) {
 		return false;
 	}
 	
-	@Override
 	public void addChild(ILayoutable child) {
 		boolean added = children.add(child);
 		if (added) {
@@ -62,14 +60,12 @@ public class Container extends ModelObject implements IAdaptable, ILayoutable, I
 		}
 	}
 	
-	@Override
 	public void removeChild(ILayoutable child) {
 		boolean removed = children.remove(child);
 		if (removed)
 			firePropertyChange(PROPERTY_CHILD, child, null);
 	}
 	
-	@Override
 	public List<ILayoutable> getChildren() {
 		return children;
 	}
@@ -89,7 +85,6 @@ public class Container extends ModelObject implements IAdaptable, ILayoutable, I
 		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
 	}
 
-	@Override
 	public boolean hasChild(ILayoutable child) {
 		return children.contains(child);
 	}

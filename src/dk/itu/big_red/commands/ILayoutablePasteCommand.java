@@ -7,6 +7,7 @@ import java.util.Iterator;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
@@ -15,7 +16,7 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 public class ILayoutablePasteCommand extends Command {
 	private HashMap<ILayoutable, ILayoutable> list =
 		new HashMap<ILayoutable, ILayoutable>();
-	private ILayoutable newParent;
+	private Container newParent;
 	
 	public ILayoutablePasteCommand() {
 		
@@ -30,8 +31,8 @@ public class ILayoutablePasteCommand extends Command {
 	}
 	
 	public void setNewParent(Object newParent) {
-		if (newParent instanceof ILayoutable)
-			this.newParent = (ILayoutable)newParent;
+		if (newParent instanceof Container)
+			this.newParent = (Container)newParent;
 	}
 	
 	@SuppressWarnings("unchecked")

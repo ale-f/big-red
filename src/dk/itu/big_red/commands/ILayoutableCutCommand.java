@@ -3,11 +3,12 @@ package dk.itu.big_red.commands;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableCutCommand extends ILayoutableCopyCommand {
-	private HashMap<ILayoutable, ILayoutable> parents =
-		new HashMap<ILayoutable, ILayoutable>();
+	private HashMap<ILayoutable, Container> parents =
+		new HashMap<ILayoutable, Container>();
 	
 	@Override
 	public void execute() {

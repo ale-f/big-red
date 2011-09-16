@@ -3,18 +3,19 @@ package dk.itu.big_red.commands;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableAddCommand extends Command {
-	private ILayoutable parent = null;
+	private Container parent = null;
 	private ILayoutable child = null;
 	private Rectangle constraint = null, oldConstraint = null;
 	private boolean constraintTranslated = false;
 	
 	public void setParent(Object parent) {
-		if (parent instanceof ILayoutable)
-			this.parent = (ILayoutable)parent;
+		if (parent instanceof Container)
+			this.parent = (Container)parent;
 	}
 	
 	public void setChild(Object child) {

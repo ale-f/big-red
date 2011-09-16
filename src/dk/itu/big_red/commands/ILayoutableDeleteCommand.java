@@ -3,11 +3,12 @@ package dk.itu.big_red.commands;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableDeleteCommand extends Command {
 	private ILayoutable model = null;
-	private ILayoutable parentModel = null;
+	private Container parentModel = null;
 	
 	public void setModel(Object model) {
 		if (model instanceof ILayoutable)
@@ -15,8 +16,8 @@ public class ILayoutableDeleteCommand extends Command {
 	}
 	
 	public void setParentModel(Object model) {
-		if (model instanceof ILayoutable)
-			parentModel = (ILayoutable)model;
+		if (model instanceof Container)
+			parentModel = (Container)model;
 	}
 	
 	@Override
