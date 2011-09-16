@@ -12,7 +12,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 
 import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.Utility;
 
 public class FilePrintAction extends org.eclipse.gef.ui.actions.PrintAction {
 	/*
@@ -31,9 +30,9 @@ public class FilePrintAction extends org.eclipse.gef.ui.actions.PrintAction {
 	protected void init() {
 		super.init();
 		
-		setImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_ETOOL_PRINT_EDIT));
-		setHoverImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_ETOOL_PRINT_EDIT));
-		setDisabledImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_ETOOL_PRINT_EDIT_DISABLED));
+		setImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_ETOOL_PRINT_EDIT));
+		setHoverImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_ETOOL_PRINT_EDIT));
+		setDisabledImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_ETOOL_PRINT_EDIT_DISABLED));
 		setEnabled(false);
 	}
 

@@ -9,7 +9,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.RGB;
 
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 public class OuterNameFigure extends AbstractFigure {
 	private static Font italicFont = null;
@@ -28,7 +28,7 @@ public class OuterNameFigure extends AbstractFigure {
 	@Override
 	public void addNotify() {
 		if (italicFont == null)
-			italicFont = Utility.tweakFont(label.getFont(), SWT.ITALIC);
+			italicFont = UI.tweakFont(label.getFont(), SWT.ITALIC);
 		label.setFont(italicFont);
 	}
 	

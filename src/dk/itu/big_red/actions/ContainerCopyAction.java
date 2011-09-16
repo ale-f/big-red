@@ -11,7 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.commands.ILayoutableCopyCommand;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 public class ContainerCopyAction extends SelectionAction {
 
@@ -26,9 +26,9 @@ public class ContainerCopyAction extends SelectionAction {
 		setText("Copy");
 		setId(ActionFactory.COPY.getId());
 		
-		setImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
-		setHoverImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
-		setDisabledImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
+		setImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+		setHoverImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+		setDisabledImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
 		setEnabled(false);
 	}
 	

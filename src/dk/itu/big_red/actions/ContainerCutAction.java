@@ -11,7 +11,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.commands.ILayoutableCutCommand;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 public class ContainerCutAction extends SelectionAction {
 
@@ -26,9 +26,9 @@ public class ContainerCutAction extends SelectionAction {
 		setText("Cut");
 		setId(ActionFactory.CUT.getId());
 		
-		setImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_CUT));
-		setHoverImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_CUT));
-		setDisabledImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_CUT_DISABLED));
+		setImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_CUT));
+		setHoverImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_CUT));
+		setDisabledImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_CUT_DISABLED));
 		setEnabled(false);
 	}
 	

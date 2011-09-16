@@ -19,7 +19,6 @@ import org.eclipse.ui.IWorkbench;
 import dk.itu.big_red.editors.BigraphEditor;
 import dk.itu.big_red.figure.import_export.BigraphPNGExport;
 import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.Utility;
 
 public class BigraphPNGExportWizard extends Wizard implements IExportWizard {
 	private WizardPage page = null;
@@ -64,7 +63,7 @@ public class BigraphPNGExportWizard extends Wizard implements IExportWizard {
 				filenameCaption.setText("Filename:");
 				
 				final Button filenameButton = new Button(form, SWT.PUSH);
-				filenameButton.setImage(Utility.getImage(ISharedImages.IMG_ETOOL_SAVE_EDIT));
+				filenameButton.setImage(UI.getImage(ISharedImages.IMG_ETOOL_SAVE_EDIT));
 				filenameButton.setText("(none)");
 				
 				final Label formatCaption = new Label(form, SWT.LEFT);

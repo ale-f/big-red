@@ -1,11 +1,15 @@
 package dk.itu.big_red.util;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
@@ -158,5 +162,42 @@ public class UI {
 	public static String getClipboardText() {
 		TextTransfer tt = TextTransfer.getInstance();
 		return (String)getClipboard().getContents(tt);
+	}
+
+	/**
+	 * Returns a copy of the given Font with the formatting properties changed.
+	 * @param original the font to adjust
+	 * @param pt the size of the new font, in points
+	 * @param properties a combination of {@link SWT#BOLD},
+	 * {@link SWT#ITALIC}, and {@link SWT#NORMAL}
+	 * @return a new Font (make sure to {@link Font#dispose() dispose} it!)
+	 */
+	public static Font tweakFont(Font original, int pt, int properties) {
+		FontData[] orig = original.getFontData();
+		if (orig.length < 1)
+			return null;
+		if (pt < 1)
+			pt = orig[0].getHeight();
+		FontData f = new FontData(orig[0].getName(), pt, properties);
+		return new Font(null, f);
+	}
+
+	/**
+	 * Returns a copy of the given Font with the formatting properties changed.
+	 * @param original the font to adjust
+	 * @param properties a combination of {@link SWT#BOLD},
+	 * {@link SWT#ITALIC}, and {@link SWT#NORMAL}
+	 * @return a new Font (make sure to {@link Font#dispose() dispose} it!)
+	 */
+	public static Font tweakFont(Font original, int properties) {
+		return tweakFont(original, 0, properties);
+	}
+
+	public static Image getImage(String symbolicName) {
+		return getWorkbench().getSharedImages().getImage(symbolicName);
+	}
+
+	public static ImageDescriptor getImageDescriptor(String symbolicName) {
+		return getWorkbench().getSharedImages().getImageDescriptor(symbolicName);
 	}
 }

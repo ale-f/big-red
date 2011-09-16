@@ -4,7 +4,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 public class BigraphFigure extends AbstractFigure {
 	protected int upperRootBoundary = Integer.MIN_VALUE,
@@ -21,7 +21,7 @@ public class BigraphFigure extends AbstractFigure {
 			
 			g.setLineStyle(SWT.LINE_DASH);
 			
-			g.setFont(Utility.tweakFont(g.getFont(), 8, SWT.ITALIC));
+			g.setFont(UI.tweakFont(g.getFont(), 8, SWT.ITALIC));
 			
 			g.drawLine(0, lowerOuterNameBoundary, width, lowerOuterNameBoundary);
 			g.drawText("outer name boundary", 10, lowerOuterNameBoundary + 2);

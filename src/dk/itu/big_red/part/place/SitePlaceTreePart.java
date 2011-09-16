@@ -10,7 +10,7 @@ import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.AbstractTreePart;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 public class SitePlaceTreePart extends AbstractTreePart {
 	@Override
@@ -30,6 +30,6 @@ public class SitePlaceTreePart extends AbstractTreePart {
 	
 	@Override
 	public Image getImage() {
-		return Utility.getImage(ISharedImages.IMG_OBJ_ELEMENT);
+		return UI.getImage(ISharedImages.IMG_OBJ_ELEMENT);
 	}
 }

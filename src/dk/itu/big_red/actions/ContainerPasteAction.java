@@ -12,7 +12,7 @@ import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.commands.ILayoutablePasteCommand;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 public class ContainerPasteAction extends SelectionAction {
 
@@ -27,9 +27,9 @@ public class ContainerPasteAction extends SelectionAction {
 		setText("Paste");
 		setId(ActionFactory.PASTE.getId());
 		
-		setImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
-		setHoverImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
-		setDisabledImageDescriptor(Utility.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE_DISABLED));
+		setImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
+		setHoverImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
+		setDisabledImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE_DISABLED));
 		setEnabled(false);
 	}
 	

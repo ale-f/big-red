@@ -9,7 +9,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.Utility;
 
 public class ContainerPropertiesAction extends SelectionAction {
 
@@ -26,7 +25,7 @@ public class ContainerPropertiesAction extends SelectionAction {
 		setId(ActionFactory.PROPERTIES.getId());
 		
 		ImageDescriptor icon =
-			Utility.getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT);
+			UI.getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT);
 		if (icon != null)
 			setImageDescriptor(icon);
 		setEnabled(false);

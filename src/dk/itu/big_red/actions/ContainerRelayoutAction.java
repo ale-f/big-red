@@ -13,7 +13,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import dk.itu.big_red.commands.ContainerRelayoutCommand;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.part.AbstractPart;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.UI;
 
 public class ContainerRelayoutAction extends SelectionAction {
 	public static final String ID = "dk.itu.big_red.relayout";
@@ -33,7 +33,7 @@ public class ContainerRelayoutAction extends SelectionAction {
 		setId(ID);
 		
 		ImageDescriptor icon =
-			Utility.getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT);
+			UI.getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT);
 		if (icon != null)
 			setImageDescriptor(icon);
 	}

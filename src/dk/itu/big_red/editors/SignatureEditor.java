@@ -47,7 +47,6 @@ import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.Utility;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
@@ -246,7 +245,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		controlButtons.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
 		
 		addControl = new Button(controlButtons, SWT.NONE);
-		addControl.setImage(Utility.getImage(ISharedImages.IMG_OBJ_ADD));
+		addControl.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
 		addControl.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -267,7 +266,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		});
 		
 		removeControl = new Button(controlButtons, SWT.NONE);
-		removeControl.setImage(Utility.getImage(ISharedImages.IMG_ELCL_REMOVE));
+		removeControl.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
 		removeControl.addSelectionListener(new SelectionListener() {
 			
 			@Override
