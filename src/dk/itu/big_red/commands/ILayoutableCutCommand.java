@@ -19,7 +19,6 @@ public class ILayoutableCutCommand extends ILayoutableCopyCommand {
 	
 	@Override
 	public boolean canUndo() {
-		System.out.println("canUndo called on " + this);
 		return parents.size() != 0;
 	}
 	

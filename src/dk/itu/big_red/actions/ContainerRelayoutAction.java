@@ -44,10 +44,8 @@ public class ContainerRelayoutAction extends SelectionAction {
 	private List<Command> createRelayoutCommands(List<Object> selectedObjects) {
 		IEditorPart editor = getWorkbenchPart().getSite().getWorkbenchWindow().
 				getActivePage().getActiveEditor();
-		if (selectedObjects.equals(lastObjects)) {
-			System.out.println("Returning cache!");
+		if (selectedObjects.equals(lastObjects))
 			return lastCommands;
-		}
 		
 		ContainerRelayoutCommand command;
 		lastObjects = selectedObjects;
