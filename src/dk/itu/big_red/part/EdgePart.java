@@ -5,8 +5,8 @@ import java.beans.PropertyChangeEvent;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
-import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
-import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
+import dk.itu.big_red.editors.edit_policies.EdgeCreationPolicy;
+import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
 import dk.itu.big_red.figure.EdgeFigure;
 import dk.itu.big_red.figure.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Edge;

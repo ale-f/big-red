@@ -6,7 +6,7 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
-import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
+import dk.itu.big_red.editors.edit_policies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;

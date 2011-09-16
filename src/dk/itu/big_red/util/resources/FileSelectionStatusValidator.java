@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.assistants.resources;
+package dk.itu.big_red.util.resources;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IStatus;

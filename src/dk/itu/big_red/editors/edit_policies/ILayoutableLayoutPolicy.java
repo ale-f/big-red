@@ -1,4 +1,4 @@
-package dk.itu.big_red.editpolicies;
+package dk.itu.big_red.editors.edit_policies;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;

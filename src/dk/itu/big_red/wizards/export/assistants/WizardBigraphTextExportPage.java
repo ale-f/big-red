@@ -28,13 +28,13 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.editors.assistants.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.model.import_export.ModelExport;
 import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.Types;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.wizards.export.BigraphTextExportWizard;
 
 public class WizardBigraphTextExportPage extends WizardPage {

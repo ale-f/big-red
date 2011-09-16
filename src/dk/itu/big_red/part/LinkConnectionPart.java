@@ -13,8 +13,8 @@ import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 
-import dk.itu.big_red.editpolicies.EdgeCreationPolicy;
-import dk.itu.big_red.editpolicies.LinkConnectionDeletePolicy;
+import dk.itu.big_red.editors.edit_policies.EdgeCreationPolicy;
+import dk.itu.big_red.editors.edit_policies.LinkConnectionDeletePolicy;
 import dk.itu.big_red.figure.LinkConnectionFigure;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LinkConnection;

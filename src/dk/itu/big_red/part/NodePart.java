@@ -8,8 +8,8 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.gef.EditPolicy;
 
-import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
-import dk.itu.big_red.editpolicies.ILayoutableLayoutPolicy;
+import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
+import dk.itu.big_red.editors.edit_policies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Node;

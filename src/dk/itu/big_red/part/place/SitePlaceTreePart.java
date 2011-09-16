@@ -6,7 +6,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 
-import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
+import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.AbstractTreePart;

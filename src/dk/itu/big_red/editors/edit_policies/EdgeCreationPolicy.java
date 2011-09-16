@@ -1,4 +1,4 @@
-package dk.itu.big_red.editpolicies;
+package dk.itu.big_red.editors.edit_policies;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
