@@ -13,9 +13,9 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  * @see ISite
  */
-public class Site extends Thing implements INameable, ISite {
+public class Site extends Container implements INameable, ISite {
 	@Override
-	public Thing clone() throws CloneNotSupportedException {
+	public Container clone() throws CloneNotSupportedException {
 		return new Site()._overwrite(this);
 	}
 	

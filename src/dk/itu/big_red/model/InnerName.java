@@ -16,7 +16,7 @@ public class InnerName extends Point implements INameable, IInnerName {
 		return new InnerName();
 	}
 	
-	public boolean canContain(Thing child) {
+	public boolean canContain(Container child) {
 		return false;
 	}
 	

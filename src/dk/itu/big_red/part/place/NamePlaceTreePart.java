@@ -8,15 +8,15 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 
 import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
-import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.part.AbstractTreePart;
 import dk.itu.big_red.util.Utility;
 
 public class NamePlaceTreePart extends AbstractTreePart {
 	@Override
-	protected List<Thing> getModelChildren() {
-		return new ArrayList<Thing>();
+	protected List<Container> getModelChildren() {
+		return new ArrayList<Container>();
 	}
 
 	@Override

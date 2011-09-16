@@ -21,7 +21,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see IBigraph
  */
-public class Bigraph extends Thing implements IBigraph {
+public class Bigraph extends Container implements IBigraph {
 	protected ResourceWrapper<Signature> signature =
 		new ResourceWrapper<Signature>();
 	protected NamespaceManager namespaceManager = new NamespaceManager();
@@ -59,7 +59,7 @@ public class Bigraph extends Thing implements IBigraph {
 	              lowerRootBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN;
 	
 	@Override
-	public Thing clone() throws CloneNotSupportedException {
+	public Container clone() throws CloneNotSupportedException {
 		return new Bigraph()._overwrite(this);
 	}
 	

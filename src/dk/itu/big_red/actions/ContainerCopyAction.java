@@ -13,9 +13,9 @@ import org.eclipse.ui.actions.ActionFactory;
 import dk.itu.big_red.commands.ILayoutableCopyCommand;
 import dk.itu.big_red.util.Utility;
 
-public class ThingCopyAction extends SelectionAction {
+public class ContainerCopyAction extends SelectionAction {
 
-	public ThingCopyAction(IWorkbenchPart part) {
+	public ContainerCopyAction(IWorkbenchPart part) {
 		super(part);
 		setLazyEnablementCalculation(true);
 	}

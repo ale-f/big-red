@@ -21,7 +21,7 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
  * @author alec
  *
  */
-public class NodePart extends ThingPart {
+public class NodePart extends ContainerPart {
 	@Override
 	public Node getModel() {
 		return (Node)super.getModel();

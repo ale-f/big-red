@@ -14,9 +14,9 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see IRoot
  */
-public class Root extends Thing implements INameable, IRoot {
+public class Root extends Container implements INameable, IRoot {
 	@Override
-	public Thing clone() throws CloneNotSupportedException {
+	public Container clone() throws CloneNotSupportedException {
 		return new Root()._overwrite(this);
 	}
 	

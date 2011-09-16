@@ -22,7 +22,7 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
@@ -70,7 +70,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		}
 	}
 	
-	private void beginScope(Thing context) throws ExportFailedException {
+	private void beginScope(Container context) throws ExportFailedException {
 		line("begin{scope} % " + getNiceName(context));
 		scope++;
 	}
@@ -116,7 +116,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		
 		line("begin{tikzpicture}[x=0.02cm,y=-0.02cm]");
 		
-		process((Thing)b);
+		process((Container)b);
 		
 		line("end{tikzpicture}");
 	}
@@ -253,7 +253,7 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("draw [internal site] (" + ptl.x + "," +
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
 		
-		process((Thing)r);
+		process((Container)r);
 	}
 	
 	private void process(Root r) throws ExportFailedException {
@@ -265,10 +265,10 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		line("draw [internal root] (" + ptl.x + "," +
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
 		
-		process((Thing)r);
+		process((Container)r);
 	}
 	
-	private void process(Thing t) throws ExportFailedException {
+	private void process(Container t) throws ExportFailedException {
 		beginScope(t);
 		for (ILayoutable c : Utility.groupListByClass(t.getChildren(),
 				BigraphXMLExport.SCHEMA_ORDER))
@@ -291,8 +291,8 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 			process((Site)obj);
 		} else if (obj instanceof Root) {
 			process((Root)obj);
-		} else if (obj instanceof Thing) {
-			process((Thing)obj);
+		} else if (obj instanceof Container) {
+			process((Container)obj);
 		} else {
 			/* do nothing */
 		}

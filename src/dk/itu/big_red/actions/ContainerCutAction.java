@@ -13,9 +13,9 @@ import org.eclipse.ui.actions.ActionFactory;
 import dk.itu.big_red.commands.ILayoutableCutCommand;
 import dk.itu.big_red.util.Utility;
 
-public class ThingCutAction extends SelectionAction {
+public class ContainerCutAction extends SelectionAction {
 
-	public ThingCutAction(IWorkbenchPart part) {
+	public ContainerCutAction(IWorkbenchPart part) {
 		super(part);
 		setLazyEnablementCalculation(true);
 	}

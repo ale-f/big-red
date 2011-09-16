@@ -16,17 +16,17 @@ import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
- * The <code>Thing</code> provides the basic functionality shared by most
- * elements of a bigraph. <code>Thing</code>s can be moved around, copied, and
+ * The <code>Container</code> provides the basic functionality shared by most
+ * elements of a bigraph. <code>Container</code>s can be moved around, copied, and
  * deleted by the user, so {@link Root}s, {@link Node}s, and {@link Site}s are
- * all <code>Thing</code>s.
+ * all <code>Container</code>s.
  * 
- * <p><code>Thing</code>s are only useful if they've been added to a {@link
+ * <p><code>Container</code>s are only useful if they've been added to a {@link
  * Bigraph} - make sure you do that before you manipulate them.
  * @author alec
  *
  */
-public class Thing implements IAdaptable, ILayoutable, ICommentable {
+public class Container implements IAdaptable, ILayoutable, ICommentable {
 	protected PropertyChangeSupport listeners =
 		new PropertyChangeSupport(this);
 	
@@ -36,7 +36,7 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 	
 	private IPropertySource propertySource = null;
 	
-	public Thing() {
+	public Container() {
 		this.layout = new Rectangle(10, 10, 100, 100);
 	}
 
@@ -119,7 +119,7 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 		return null;
 	}
 	
-	protected Thing _overwrite(Thing orig) throws CloneNotSupportedException {
+	protected Container _overwrite(Container orig) throws CloneNotSupportedException {
 		this.setParent(orig.getParent());
 		this.setLayout(new Rectangle(
 			orig.getLayout().x + 10, orig.getLayout().y + 10,
@@ -137,8 +137,8 @@ public class Thing implements IAdaptable, ILayoutable, ICommentable {
 	}
 	
 	@Override
-	public Thing clone() throws CloneNotSupportedException {
-		return new Thing()._overwrite(this);
+	public Container clone() throws CloneNotSupportedException {
+		return new Container()._overwrite(this);
 	}
 	
 	public Signature getSignature() {

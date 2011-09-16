@@ -3,11 +3,11 @@ package dk.itu.big_red.commands;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.ui.IEditorPart;
 
-import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.Container;
 
-public class ThingRelayoutCommand extends Command {
+public class ContainerRelayoutCommand extends Command {
 	protected IEditorPart editor = null;
-	protected Thing model = null;
+	protected Container model = null;
 	
 	@Override
 	public boolean canExecute() {
@@ -37,11 +37,11 @@ public class ThingRelayoutCommand extends Command {
 	}
 
 	public void setModel(Object model) {
-		if (model instanceof Thing)
-			this.model = (Thing)model;
+		if (model instanceof Container)
+			this.model = (Container)model;
 	}
 
-	public Thing getModel() {
+	public Container getModel() {
 		return this.model;
 	}
 }

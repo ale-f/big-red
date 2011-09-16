@@ -14,9 +14,9 @@ import dk.itu.big_red.commands.ILayoutablePasteCommand;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
-public class ThingPasteAction extends SelectionAction {
+public class ContainerPasteAction extends SelectionAction {
 
-	public ThingPasteAction(IWorkbenchPart part) {
+	public ContainerPasteAction(IWorkbenchPart part) {
 		super(part);
 		setLazyEnablementCalculation(true);
 	}

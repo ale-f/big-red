@@ -8,13 +8,13 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 
-import dk.itu.big_red.commands.ThingRelayoutCommand;
+import dk.itu.big_red.commands.ContainerRelayoutCommand;
 import dk.itu.big_red.part.AbstractPart;
 import dk.itu.big_red.util.Utility;
 
-public class ThingRelayoutAction extends SelectionAction {
+public class ContainerRelayoutAction extends SelectionAction {
 
-	public ThingRelayoutAction(IWorkbenchPart part) {
+	public ContainerRelayoutAction(IWorkbenchPart part) {
 		super(part);
 		setLazyEnablementCalculation(true);
 	}
@@ -35,7 +35,7 @@ public class ThingRelayoutAction extends SelectionAction {
 		if (selectedObjects == null || selectedObjects.size() != 1)
 			return null;
 		
-		ThingRelayoutCommand cmd = new ThingRelayoutCommand();
+		ContainerRelayoutCommand cmd = new ContainerRelayoutCommand();
 		cmd.setEditor(getWorkbenchPart().getSite().getWorkbenchWindow().getActivePage().getActiveEditor());
 		
 		Object model = selectedObjects.get(0);

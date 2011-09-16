@@ -11,9 +11,9 @@ import org.eclipse.ui.actions.ActionFactory;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.Utility;
 
-public class ThingPropertiesAction extends SelectionAction {
+public class ContainerPropertiesAction extends SelectionAction {
 
-	public ThingPropertiesAction(IWorkbenchPart part) {
+	public ContainerPropertiesAction(IWorkbenchPart part) {
 		super(part);
 		setLazyEnablementCalculation(false);
 	}

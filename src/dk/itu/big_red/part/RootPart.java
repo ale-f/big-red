@@ -19,7 +19,7 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
  * @author alec
  *
  */
-public class RootPart extends ThingPart {
+public class RootPart extends ContainerPart {
 	@Override
 	public Root getModel() {
 		return (Root)super.getModel();

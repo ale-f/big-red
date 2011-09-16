@@ -66,9 +66,9 @@ public class ILayoutablePasteCommand extends Command {
 		
 		Iterator<ILayoutable> it = list.keySet().iterator();
 		while (it.hasNext()) {
-			ILayoutable node = (Thing)it.next();
+			ILayoutable node = (Container)it.next();
 			try {
-				list.put(node, (Thing)node.clone());
+				list.put(node, (Container)node.clone());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

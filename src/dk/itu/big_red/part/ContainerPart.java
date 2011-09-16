@@ -1,20 +1,20 @@
 package dk.itu.big_red.part;
 
 import dk.itu.big_red.figure.AbstractFigure;
-import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
- * The ThingPart is the base class for edit parts whose model objects are
- * instances of {@link Thing}, the ridiculously-named model superclass which
+ * The ContainerPart is the base class for edit parts whose model objects are
+ * instances of {@link Container}, the ridiculously-named model superclass which
  * provides a useful default implementation of {@link ILayoutable}.
  * @author alec
  *
  */
-public abstract class ThingPart extends AbstractPart {
+public abstract class ContainerPart extends AbstractPart {
 	@Override
-	public Thing getModel() {
-		return (Thing)super.getModel();
+	public Container getModel() {
+		return (Container)super.getModel();
 	}
 	
 	@Override
@@ -22,7 +22,7 @@ public abstract class ThingPart extends AbstractPart {
 		super.refreshVisuals();
 		
 		AbstractFigure figure = (AbstractFigure)getFigure();
-		Thing model = getModel();
+		Container model = getModel();
 		
 		String toolTip = model.getClass().getSimpleName();
 		if (model.getComment() != null)

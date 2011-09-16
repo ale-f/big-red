@@ -7,7 +7,7 @@ import dk.itu.big_red.editpolicies.ILayoutableDeletePolicy;
 import dk.itu.big_red.figure.SiteFigure;
 import dk.itu.big_red.model.Site;
 
-public class SitePart extends ThingPart {
+public class SitePart extends ContainerPart {
 	@Override
 	public Site getModel() {
 		return (Site)super.getModel();

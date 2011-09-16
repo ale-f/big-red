@@ -13,7 +13,7 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.Thing;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
@@ -60,10 +60,10 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		}
 		
     	bigraph = model;
-		processThing(e, model);
+		processContainer(e, model);
 	}
 	
-	private void processThing(Element e, Thing model) throws ImportFailedException {
+	private void processContainer(Element e, Container model) throws ImportFailedException {
 		if (model instanceof Node)
 			((Node)model).setControl(bigraph.getSignature().getControl(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control")));
 		
@@ -112,8 +112,8 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		
 		if (model instanceof Bigraph) {
 			processBigraph(e, (Bigraph)model);
-		} else if (model instanceof Thing) {
-			processThing(e, (Thing)model);
+		} else if (model instanceof Container) {
+			processContainer(e, (Container)model);
 		} else if (model instanceof Port) {
 			if (context instanceof Node) {
 				Node n = (Node)context;

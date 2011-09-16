@@ -42,10 +42,10 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import dk.itu.big_red.actions.FilePrintAction;
 import dk.itu.big_red.actions.FileRevertAction;
-import dk.itu.big_red.actions.ThingCopyAction;
-import dk.itu.big_red.actions.ThingCutAction;
-import dk.itu.big_red.actions.ThingPasteAction;
-import dk.itu.big_red.actions.ThingPropertiesAction;
+import dk.itu.big_red.actions.ContainerCopyAction;
+import dk.itu.big_red.actions.ContainerCutAction;
+import dk.itu.big_red.actions.ContainerPasteAction;
+import dk.itu.big_red.actions.ContainerPropertiesAction;
 import dk.itu.big_red.application.RedActivator;
 import dk.itu.big_red.editors.assistants.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.assistants.BigraphEditorOutlinePage;
@@ -123,23 +123,23 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	super.createActions();
     	
     	ActionRegistry registry = getActionRegistry();
-    	IAction action = new ThingPropertiesAction(this);
+    	IAction action = new ContainerPropertiesAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
-    	action = new ThingCutAction(this);
+    	action = new ContainerCutAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
-    	action = new ThingCopyAction(this);
+    	action = new ContainerCopyAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
-    	action = new ThingPasteAction(this);
+    	action = new ContainerPasteAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
-    	/*action = new ThingRelayoutAction(this);
+    	/*action = new ContainerRelayoutAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());*/
     	

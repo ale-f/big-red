@@ -20,7 +20,7 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  *
  */
-public class BigraphPart extends ThingPart {
+public class BigraphPart extends ContainerPart {
 	@Override
 	public Bigraph getModel() {
 		return (Bigraph)super.getModel();
