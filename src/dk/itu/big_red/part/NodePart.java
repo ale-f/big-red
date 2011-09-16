@@ -78,6 +78,11 @@ public class NodePart extends ContainerPart {
 			
 			toolTip = model.getControl().getLongName();
 		} else {
+			setResizable(true);
+			
+			figure.setShape(Control.Shape.SHAPE_POLYGON);
+			figure.setLabel("?");
+			
 			toolTip = "Node with no control";
 		}
 		if (model.getComment() != null)

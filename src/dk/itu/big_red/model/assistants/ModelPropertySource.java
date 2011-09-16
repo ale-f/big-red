@@ -122,8 +122,14 @@ public class ModelPropertySource implements IPropertySource {
 		 * just calls this function with the previous Control value).
 		 */
 		if (id.equals(Node.PROPERTY_CONTROL)) {
-			String control = ((Node)object).getSignature().getControlNames()[(Integer)value];
-			((Node)object).setControl(((Node)object).getSignature().getControl(control));
+			Node n = (Node)object;
+			int x = (Integer)value;
+			if (x >= 0) {
+				String control = n.getSignature().getControlNames()[x];
+				n.setControl((n.getSignature().getControl(control)));
+			} else {
+				n.setControl(null);
+			}
 		} else if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
 			((IFillColourable)object).setFillColour((RGB)value);
 		} else if (id.equals(IOutlineColourable.PROPERTY_OUTLINE_COLOUR)) {

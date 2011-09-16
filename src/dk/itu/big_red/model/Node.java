@@ -87,14 +87,16 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 	public void setControl(Control control) {
 		Control oldControl = this.control;
 		this.control = control;
+		
+		fittedPolygon = null;
+		/* XXX: disconnect old ports */
+		ports.clear();
+		
 		if (control != null) {
-			fittedPolygon = null;
-			
 			if (oldControl != null)
 				oldControl.removePropertyChangeListener(this);
 			control.addPropertyChangeListener(this);
 			
-			/* XXX: disconnect old ports */
 			ports = control.getPortsArray();
 			for (Port p : ports)
 				p.setParent(this);
