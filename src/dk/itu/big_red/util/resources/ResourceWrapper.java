@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.assistants;
+package dk.itu.big_red.util.resources;
 
 import org.eclipse.core.resources.IFile;
 

@@ -5,7 +5,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.IInnerName;
@@ -14,6 +13,7 @@ import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.HomogeneousIterable;
+import dk.itu.big_red.util.resources.ResourceWrapper;
 
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link

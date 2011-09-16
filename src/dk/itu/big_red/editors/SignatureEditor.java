@@ -43,10 +43,10 @@ import dk.itu.big_red.editors.assistants.SignatureEditorPolygonCanvas;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.assistants.ResourceWrapper;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.resources.ResourceWrapper;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
