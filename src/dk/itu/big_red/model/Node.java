@@ -154,8 +154,11 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 		 * At the moment, this is unsophisticated - but it does at least
 		 * propagate the visual changes immediately.
 		 */
-		setControl(null);
-		setControl((Control)arg.getSource());
+		if (arg.getSource() == control) {
+			setControl((Control)arg.getSource());
+		} else {
+			System.out.println(this + ": unexpected property change notification of type " + arg.getPropertyName());
+		}
 	}
 	
 	private PointList fittedPolygon = null;
