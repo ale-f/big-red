@@ -99,7 +99,7 @@ public class Bigraph extends Container implements IBigraph {
 	}
 	
 	@Override
-	public void setParent(ILayoutable parent) {
+	public void setParent(Container parent) {
 		/* do nothing */
 	}
 	
@@ -110,7 +110,7 @@ public class Bigraph extends Container implements IBigraph {
 	}
 	
 	@Override
-	public ILayoutable getParent() {
+	public Container getParent() {
 		return null;
 	}
 	

@@ -127,17 +127,17 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IP
 		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
 	}
 
-	private ILayoutable parent = null;
+	private Container parent = null;
 	
 	@Override
-	public ILayoutable getParent() {
+	public Container getParent() {
 		return parent;
 	}
 
 	@Override
-	public void setParent(ILayoutable p) {
+	public void setParent(Container p) {
 		if (p != null) {
-			ILayoutable oldParent = parent;
+			Container oldParent = parent;
 			parent = p;
 			listeners.firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}

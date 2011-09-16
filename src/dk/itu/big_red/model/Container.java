@@ -33,7 +33,7 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	
 	protected Rectangle layout;
 	protected ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
-	protected ILayoutable parent = null;
+	protected Container parent = null;
 	
 	private IPropertySource propertySource = null;
 	
@@ -80,12 +80,12 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	}
 	
 	@Override
-	public ILayoutable getParent() {
+	public Container getParent() {
 		return parent;
 	}
 	
 	@Override
-	public void setParent(ILayoutable parent) {
+	public void setParent(Container parent) {
 		this.parent = parent;
 	}
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 
 /**
  * Objects implementing ILayoutable are model objects which have a graphical
@@ -76,13 +77,13 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	 * Returns the parent of this object.
 	 * @return an {@link ILayoutable}
 	 */
-	public ILayoutable getParent();
+	public Container getParent();
 
 	/**
 	 * Changes the parent of this object.
 	 * @param p the new parent {@link ILayoutable}
 	 */
-	public void setParent(ILayoutable p);
+	public void setParent(Container p);
 	
 	/**
 	 * Gets this object's children.
