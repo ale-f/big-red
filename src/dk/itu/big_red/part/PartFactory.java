@@ -25,6 +25,9 @@ public class PartFactory implements EditPartFactory {
 	public EditPart createEditPart(EditPart context, Object model) {
 		AbstractGraphicalEditPart part = null;
 		
+		if (model == null)
+			return null;
+		
 		Class<?> target = model.getClass();
 		
 		if (target == Bigraph.class) {
