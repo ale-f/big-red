@@ -1,7 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,10 +25,7 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  *
  */
-public class Container implements IAdaptable, ILayoutable, ICommentable {
-	protected PropertyChangeSupport listeners =
-		new PropertyChangeSupport(this);
-	
+public class Container extends ModelObject implements IAdaptable, ILayoutable, ICommentable {
 	protected Rectangle layout;
 	protected ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
 	protected Container parent = null;
@@ -92,16 +87,6 @@ public class Container implements IAdaptable, ILayoutable, ICommentable {
 	@Override
 	public Rectangle getRootLayout() {
 		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
-	}
-	
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
-	}
-	
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.removePropertyChangeListener(listener);
 	}
 
 	@Override

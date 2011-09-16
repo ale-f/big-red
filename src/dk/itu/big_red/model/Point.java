@@ -1,7 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +21,7 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  * @see IPoint
  */
-public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IPoint {
+public abstract class Point extends ModelObject implements ILayoutable, IAdaptable, ICommentable, IPoint {
 	/**
 	 * The property name fired when the source edge changes.
 	 */
@@ -86,18 +84,6 @@ public abstract class Point implements ILayoutable, IAdaptable, ICommentable, IP
 	
 	public Link getLink() {
 		return link;
-	}
-
-	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-	
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.removePropertyChangeListener(listener);
 	}
 
 	protected String name = "?";

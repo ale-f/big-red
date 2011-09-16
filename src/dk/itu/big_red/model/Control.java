@@ -1,7 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 import org.eclipse.draw2d.geometry.Point;
@@ -27,7 +25,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see IControl
  */
-public class Control implements IPropertyChangeNotifier, IFillColourable, IOutlineColourable, IControl {
+public class Control extends ModelObject implements IPropertyChangeNotifier, IFillColourable, IOutlineColourable, IControl {
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -90,9 +88,6 @@ public class Control implements IPropertyChangeNotifier, IFillColourable, IOutli
 			20, 0,
 			-20, 0
 	});
-	
-	private PropertyChangeSupport listeners =
-		new PropertyChangeSupport(this);
 	
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	private PointList points = new PointList();
@@ -248,16 +243,6 @@ public class Control implements IPropertyChangeNotifier, IFillColourable, IOutli
 			if (i.getName().equals(name))
 				return i;
 		return null;
-	}
-	
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.removePropertyChangeListener(listener);
 	}
 
 	private RGB fillColour = new RGB(255, 255, 255);

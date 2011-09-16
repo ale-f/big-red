@@ -1,14 +1,10 @@
 package dk.itu.big_red.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 
 /**
  * An LinkConnection is the model object behind an actual {@link Connection}
@@ -16,9 +12,7 @@ import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
  * @author alec
  *
  */
-public class LinkConnection implements IPropertyChangeNotifier, IAdaptable {
-	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-
+public class LinkConnection extends ModelObject implements IAdaptable {
 	/**
 	 * The property name fired when this connection's {@link Point} changes.
 	 */
@@ -61,16 +55,6 @@ public class LinkConnection implements IPropertyChangeNotifier, IAdaptable {
 	 */
 	public Link getLink() {
 		return link;
-	}
-	
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.removePropertyChangeListener(listener);
 	}
 	
 	@SuppressWarnings("rawtypes")

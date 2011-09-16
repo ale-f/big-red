@@ -1,7 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,24 +25,12 @@ import dk.itu.big_red.part.PortPart;
  * @author alec
  * @see ILink
  */
-public abstract class Link implements IAdaptable, ILayoutable, INameable, ICommentable, IOutlineColourable, ILink {
+public abstract class Link extends ModelObject implements IAdaptable, ILayoutable, INameable, ICommentable, IOutlineColourable, ILink {
 	/**
 	 * The property name fired when the target edge set changes (that is, an
 	 * edge for which this object is the target is added or removed).
 	 */
 	public static final String PROPERTY_TARGET_EDGE = "LinkTargetEdge";
-	
-	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-
-	@Override
-	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		listeners.addPropertyChangeListener(listener);
-	}
-
-	@Override
-	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		listeners.removePropertyChangeListener(listener);
-	}
 	
 	/**
 	 * The {@link LinkConnection}s that comprise this Link on the bigraph.
