@@ -17,15 +17,6 @@ public class InnerName extends Point implements INameable, IInnerName {
 		return new InnerName();
 	}
 	
-	public boolean canContain(Container child) {
-		return false;
-	}
-	
-	@Override
-	public Bigraph getBigraph() {
-		return getParent().getBigraph();
-	}
-	
 	@Override
 	public String getName() {
 		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);

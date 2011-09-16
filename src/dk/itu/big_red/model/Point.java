@@ -18,7 +18,7 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  * @see IPoint
  */
-public abstract class Point extends ModelObject implements ILayoutable, IAdaptable, ICommentable, IPoint {
+public abstract class Point extends LayoutableModelObject implements ILayoutable, IAdaptable, ICommentable, IPoint {
 	/**
 	 * The property name fired when the source edge changes.
 	 */
@@ -28,6 +28,10 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 	 * The colour to be given to Points not connected to a {@link Link}.
 	 */
 	public static final RGB DEFAULT_COLOUR = new RGB(255, 0, 0);
+	
+	public Point() {
+		setLayout(new Rectangle(5, 5, 10, 10));
+	}
 	
 	@Override
 	public ILink getILink() {
@@ -46,22 +50,6 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 		String oldComment = this.comment;
 		this.comment = comment;
 		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
-	}
-
-	protected Rectangle layout = new Rectangle(5, 5, 10, 10);
-	
-	@Override
-	public Rectangle getLayout() {
-		return new Rectangle(layout);
-	}
-
-	@Override
-	public void setLayout(Rectangle layout) {
-		if (layout != null) {
-			Rectangle oldLayout = new Rectangle(this.layout);
-			this.layout.setBounds(layout);
-			firePropertyChange(ILayoutable.PROPERTY_LAYOUT, oldLayout, layout);
-		}
 	}
 
 	protected Link link = null;
@@ -102,27 +90,6 @@ public abstract class Point extends ModelObject implements ILayoutable, IAdaptab
 			String oldName = this.name;
 			this.name = name;
 			firePropertyChange(INameable.PROPERTY_NAME, oldName, name);
-		}
-	}
-
-	@Override
-	public Rectangle getRootLayout() {
-		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
-	}
-
-	private Container parent = null;
-	
-	@Override
-	public Container getParent() {
-		return parent;
-	}
-
-	@Override
-	public void setParent(Container p) {
-		if (p != null) {
-			Container oldParent = parent;
-			parent = p;
-			firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 		}
 	}
 	

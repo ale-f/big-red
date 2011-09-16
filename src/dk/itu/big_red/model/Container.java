@@ -25,27 +25,13 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  *
  */
-public class Container extends ModelObject implements IAdaptable, ILayoutable, ICommentable {
-	protected Rectangle layout;
+public class Container extends LayoutableModelObject implements IAdaptable, ILayoutable, ICommentable {
 	protected ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
-	protected Container parent = null;
 	
 	private IPropertySource propertySource = null;
 	
 	public Container() {
 		layout = new Rectangle(10, 10, 100, 100);
-	}
-
-	@Override
-	public Rectangle getLayout() {
-		return new Rectangle(layout);
-	}
-	
-	@Override
-	public void setLayout(Rectangle newLayout) {
-		Rectangle oldLayout = layout;
-		layout = new Rectangle(newLayout);
-		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	public boolean canContain(ILayoutable child) {
@@ -68,21 +54,6 @@ public class Container extends ModelObject implements IAdaptable, ILayoutable, I
 	
 	public List<ILayoutable> getChildren() {
 		return children;
-	}
-	
-	@Override
-	public Container getParent() {
-		return parent;
-	}
-	
-	@Override
-	public void setParent(Container parent) {
-		this.parent = parent;
-	}
-	
-	@Override
-	public Rectangle getRootLayout() {
-		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
 	}
 
 	public boolean hasChild(ILayoutable child) {

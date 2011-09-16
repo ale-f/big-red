@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertySource;
 
@@ -26,7 +25,7 @@ import dk.itu.big_red.part.PortPart;
  * @author alec
  * @see ILink
  */
-public abstract class Link extends ModelObject implements IAdaptable, ILayoutable, INameable, ICommentable, IOutlineColourable, ILink {
+public abstract class Link extends LayoutableModelObject implements IAdaptable, ILayoutable, INameable, ICommentable, IOutlineColourable, ILink {
 	/**
 	 * The property name fired when the target edge set changes (that is, an
 	 * edge for which this object is the target is added or removed).
@@ -100,11 +99,6 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 	}
 	
 	@Override
-	public Rectangle getRootLayout() {
-		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
-	}
-	
-	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 		if (adapter == IPropertySource.class) {
 			return new ModelPropertySource(this);
@@ -130,27 +124,6 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 		}
 	}
 	
-	private Container parent = null;
-	
-	@Override
-	public Container getParent() {
-		return parent;
-	}
-
-	@Override
-	public void setParent(Container p) {
-		if (p != null) {
-			Container oldParent = parent;
-			parent = p;
-			firePropertyChange(PROPERTY_PARENT, oldParent, parent);
-		}
-	}
-	
-	@Override
-	public Bigraph getBigraph() {
-		return getParent().getBigraph();
-	}
-	
 	private String comment = null;
 	
 	@Override
@@ -163,20 +136,6 @@ public abstract class Link extends ModelObject implements IAdaptable, ILayoutabl
 		String oldComment = getComment();
 		this.comment = comment;
 		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
-	}
-	
-	private Rectangle layout = new Rectangle(0, 0, 10, 10);
-
-	@Override
-	public Rectangle getLayout() {
-		return new Rectangle(layout);
-	}
-	
-	@Override
-	public void setLayout(Rectangle newLayout) {
-		Rectangle oldLayout = layout;
-		layout = new Rectangle(newLayout);
-		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	private RGB outlineColour = new RGB(0, 127, 0);
