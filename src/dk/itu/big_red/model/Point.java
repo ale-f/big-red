@@ -1,7 +1,6 @@
 package dk.itu.big_red.model;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertySource;
 
@@ -28,10 +27,6 @@ public abstract class Point extends LayoutableModelObject implements ILayoutable
 	 * The colour to be given to Points not connected to a {@link Link}.
 	 */
 	public static final RGB DEFAULT_COLOUR = new RGB(255, 0, 0);
-	
-	public Point() {
-		setLayout(new Rectangle(5, 5, 10, 10));
-	}
 	
 	@Override
 	public ILink getILink() {

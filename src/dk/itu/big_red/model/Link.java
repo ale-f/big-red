@@ -37,7 +37,7 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 	 */
 	private ArrayList<LinkConnection> connections =
 		new ArrayList<LinkConnection>();
-
+	
 	/**
 	 * Adds the given {@link Point} to this Link's set of points, and creates a
 	 * new {@link LinkConnection} joining it to this Link's {@link Link}.

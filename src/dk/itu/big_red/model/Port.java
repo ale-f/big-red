@@ -45,9 +45,17 @@ public class Port extends Point implements ILayoutable, IPort {
 	private double distance = 0.0;
 	
 	public Port() {
+		setLayout(new Rectangle(5, 5, 10, 10));
+	}
+	
+	@Override
+	public void setLayout(Rectangle newLayout) {
+		super.setLayout(newLayout.getCopy().setSize(10, 10));
 	}
 	
 	public Port(String name, int segment, double distance) {
+		setLayout(new Rectangle(5, 5, 10, 10));
+		
 		setName(name);
 		setSegment(segment);
 		setDistance(distance);

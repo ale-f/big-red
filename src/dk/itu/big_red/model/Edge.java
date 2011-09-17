@@ -31,6 +31,15 @@ public class Edge extends Link implements IEdge {
 		setLayout(new Rectangle(tx / s, ty / s, getLayout().width, getLayout().height));
 	}
 	
+	public Edge() {
+		setLayout(new Rectangle(5, 5, 14, 14));
+	}
+	
+	@Override
+	public void setLayout(Rectangle newLayout) {
+		super.setLayout(newLayout.getCopy().setSize(14, 14));
+	}
+	
 	@Override
 	public void addPoint(Point point) {
 		super.addPoint(point);
