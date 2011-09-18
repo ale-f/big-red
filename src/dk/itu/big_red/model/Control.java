@@ -6,7 +6,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.swt.graphics.RGB;
 
-import dk.itu.big_red.exceptions.DuplicateControlException;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
@@ -105,7 +104,7 @@ public class Control extends ModelObject implements IPropertyChangeNotifier, IFi
 		setResizable(true);
 	}
 	
-	public Control(String longName, String label, Control.Shape shape, PointList points, Point defaultSize, boolean constraintModifiable) throws DuplicateControlException {
+	public Control(String longName, String label, Control.Shape shape, PointList points, Point defaultSize, boolean constraintModifiable) {
 		setLongName(longName);
 		setLabel(label);
 		setShape(shape, points);
@@ -161,7 +160,7 @@ public class Control extends ModelObject implements IPropertyChangeNotifier, IFi
 		firePropertyChange(PROPERTY_POINTS, oldPoints, points);
 	}
 
-	public void setLongName(String longName) throws DuplicateControlException {
+	public void setLongName(String longName) {
 		if (longName != null) {
 			this.longName = longName;
 			if (longName.length() > 1)
