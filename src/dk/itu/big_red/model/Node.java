@@ -18,7 +18,6 @@ import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
-import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Geometry;
 import dk.itu.big_red.util.HomogeneousIterable;
@@ -28,7 +27,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see INode
  */
-public class Node extends NameableContainer implements PropertyChangeListener, IFillColourable, IOutlineColourable, INameable, INode {
+public class Node extends NameableContainer implements PropertyChangeListener, IFillColourable, IOutlineColourable, INode {
 	/**
 	 * The property name fired when the control changes. (Note that this
 	 * property name is fired <i>after</i> any other changes required to change

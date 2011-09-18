@@ -9,7 +9,6 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
@@ -24,7 +23,7 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  *
  */
-public class Container extends LayoutableModelObject implements IAdaptable, ILayoutable, ICommentable {
+public class Container extends LayoutableModelObject implements IAdaptable {
 	protected ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
 	
 	private IPropertySource propertySource = null;

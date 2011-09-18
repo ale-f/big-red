@@ -5,7 +5,6 @@ import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
-import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.HomogeneousIterable;
 
 /**
@@ -13,7 +12,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see IRoot
  */
-public class Root extends NameableContainer implements INameable, IRoot {
+public class Root extends NameableContainer implements IRoot {
 	@Override
 	public Container clone() throws CloneNotSupportedException {
 		return new Root()._overwrite(this);

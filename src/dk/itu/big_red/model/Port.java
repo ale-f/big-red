@@ -6,7 +6,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Geometry;
 
 /**
@@ -16,7 +15,7 @@ import dk.itu.big_red.util.Geometry;
  * @author alec
  *
  */
-public class Port extends Point implements ILayoutable, IPort {
+public class Port extends Point implements IPort {
 	/**
 	 * The property name fired when this Port's {@link #segment} changes.
 	 */

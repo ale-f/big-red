@@ -10,7 +10,6 @@ import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
-import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 import dk.itu.big_red.util.HomogeneousIterable;
 
 /**
@@ -24,7 +23,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see IControl
  */
-public class Control extends ModelObject implements IPropertyChangeNotifier, IFillColourable, IOutlineColourable, IControl {
+public class Control extends ModelObject implements IFillColourable, IOutlineColourable, IControl {
 	public static enum Shape {
 		/**
 		 * An oval.

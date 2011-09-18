@@ -11,8 +11,6 @@ import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
-import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.part.InnerNamePart;
@@ -24,7 +22,7 @@ import dk.itu.big_red.part.PortPart;
  * @author alec
  * @see ILink
  */
-public abstract class Link extends LayoutableModelObject implements IAdaptable, ILayoutable, INameable, ICommentable, IOutlineColourable, ILink {
+public abstract class Link extends LayoutableModelObject implements IAdaptable, INameable, IOutlineColourable, ILink {
 	/**
 	 * The property name fired when the target edge set changes (that is, an
 	 * edge for which this object is the target is added or removed).

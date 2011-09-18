@@ -7,8 +7,6 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
-import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 
 /**
@@ -17,7 +15,7 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  * @see IPoint
  */
-public abstract class Point extends LayoutableModelObject implements ILayoutable, IAdaptable, ICommentable, IPoint {
+public abstract class Point extends LayoutableModelObject implements IAdaptable, IPoint {
 	/**
 	 * The property name fired when the source edge changes.
 	 */
