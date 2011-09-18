@@ -4,7 +4,7 @@ import java.util.HashMap;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
 
-public class ILayoutableCutCommand extends ILayoutableCopyCommand {
+public class LayoutableCutCommand extends LayoutableCopyCommand {
 	private HashMap<LayoutableModelObject, Container> parents =
 		new HashMap<LayoutableModelObject, Container>();
 	

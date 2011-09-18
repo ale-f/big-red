@@ -9,7 +9,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.commands.ILayoutableCopyCommand;
+import dk.itu.big_red.commands.LayoutableCopyCommand;
 import dk.itu.big_red.util.UI;
 
 public class ContainerCopyAction extends SelectionAction {
@@ -35,7 +35,7 @@ public class ContainerCopyAction extends SelectionAction {
 		if (selectedObjects == null || selectedObjects.isEmpty())
 			return null;
 		
-		ILayoutableCopyCommand cmd = new ILayoutableCopyCommand();
+		LayoutableCopyCommand cmd = new LayoutableCopyCommand();
 		for (Object i : selectedObjects) {
 			if (!(i instanceof EditPart))
 				continue;

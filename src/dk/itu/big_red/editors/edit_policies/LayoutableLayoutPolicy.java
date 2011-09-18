@@ -9,21 +9,21 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
-import dk.itu.big_red.commands.ILayoutableAddCommand;
-import dk.itu.big_red.commands.ILayoutableCreateCommand;
-import dk.itu.big_red.commands.ILayoutableOrphanCommand;
-import dk.itu.big_red.commands.ILayoutableRelayoutCommand;
+import dk.itu.big_red.commands.LayoutableAddCommand;
+import dk.itu.big_red.commands.LayoutableCreateCommand;
+import dk.itu.big_red.commands.LayoutableOrphanCommand;
+import dk.itu.big_red.commands.LayoutableRelayoutCommand;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.BigraphPart;
 
-public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
+public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 
 	@Override
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
-		ILayoutableRelayoutCommand command = null;
+		LayoutableRelayoutCommand command = null;
 		if (!(child instanceof BigraphPart)) {
-			command = new ILayoutableRelayoutCommand();
+			command = new LayoutableRelayoutCommand();
 			
 			command.setModel(child.getModel());
 			command.setConstraint(constraint);
@@ -33,7 +33,7 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	
 	@Override
 	protected Command createAddCommand(EditPart child, Object constraint) {
-		ILayoutableAddCommand command = new ILayoutableAddCommand();
+		LayoutableAddCommand command = new LayoutableAddCommand();
 		command.setParent(getHost().getModel());
 		command.setChild(child.getModel());
 		command.setConstraint(constraint);
@@ -42,10 +42,10 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	
 	@Override
 	protected Command getOrphanChildrenCommand(Request request) {
-		ILayoutableOrphanCommand command = null;
+		LayoutableOrphanCommand command = null;
 		if (request.getType() == REQ_ORPHAN_CHILDREN && request instanceof GroupRequest) {
 			GroupRequest groupRequest = (GroupRequest)request;
-			command = new ILayoutableOrphanCommand();
+			command = new LayoutableOrphanCommand();
 			
 			Object model =
 				((EditPart)groupRequest.getEditParts().get(0)).getModel();
@@ -72,7 +72,7 @@ public class ILayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			size.setSize(((ILayoutable)requestObject).getLayout().getSize());
 		}
 		
-		ILayoutableCreateCommand cmd = new ILayoutableCreateCommand();
+		LayoutableCreateCommand cmd = new LayoutableCreateCommand();
 		cmd.setContainer(getHost().getModel());
 		cmd.setObject(request.getNewObject());
 		

@@ -11,11 +11,11 @@ import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 
-public class ILayoutableCreateCommand extends Command {
+public class LayoutableCreateCommand extends Command {
 	private Container container;
 	private LayoutableModelObject node;
 	
-	public ILayoutableCreateCommand() {
+	public LayoutableCreateCommand() {
 		super();
 		container = null;
 		node = null;

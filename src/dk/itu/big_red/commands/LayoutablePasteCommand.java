@@ -11,16 +11,16 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 
-public class ILayoutablePasteCommand extends Command {
+public class LayoutablePasteCommand extends Command {
 	private HashMap<LayoutableModelObject, LayoutableModelObject> list =
 		new HashMap<LayoutableModelObject, LayoutableModelObject>();
 	private Container newParent;
 	
-	public ILayoutablePasteCommand() {
+	public LayoutablePasteCommand() {
 		
 	}
 	
-	public ILayoutablePasteCommand(Object newParent) {
+	public LayoutablePasteCommand(Object newParent) {
 		setNewParent(newParent);
 	}
 	

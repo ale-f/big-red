@@ -9,7 +9,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.commands.ILayoutablePasteCommand;
+import dk.itu.big_red.commands.LayoutablePasteCommand;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.UI;
 
@@ -58,7 +58,7 @@ public class ContainerPasteAction extends SelectionAction {
 			if (sharedParent.getModel() instanceof ILayoutable)
 				newParent = (ILayoutable)sharedParent.getModel();
 		}
-		return new ILayoutablePasteCommand(newParent);
+		return new LayoutablePasteCommand(newParent);
 	}
 	
 	@Override

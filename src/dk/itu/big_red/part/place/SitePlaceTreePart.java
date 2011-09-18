@@ -7,7 +7,7 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 
-import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
+import dk.itu.big_red.editors.edit_policies.LayoutableDeletePolicy;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.part.AbstractTreePart;
@@ -21,7 +21,7 @@ public class SitePlaceTreePart extends AbstractTreePart {
 
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ILayoutableDeletePolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}
 	
 	@Override

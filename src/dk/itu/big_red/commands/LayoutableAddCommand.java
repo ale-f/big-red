@@ -7,7 +7,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LayoutableModelObject;
 
-public class ILayoutableAddCommand extends Command {
+public class LayoutableAddCommand extends Command {
 	private Container parent = null;
 	private LayoutableModelObject child = null;
 	private Rectangle constraint = null, oldConstraint = null;

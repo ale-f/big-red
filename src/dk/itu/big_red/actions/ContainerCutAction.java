@@ -9,7 +9,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.commands.ILayoutableCutCommand;
+import dk.itu.big_red.commands.LayoutableCutCommand;
 import dk.itu.big_red.util.UI;
 
 public class ContainerCutAction extends SelectionAction {
@@ -35,7 +35,7 @@ public class ContainerCutAction extends SelectionAction {
 		if (selectedObjects == null || selectedObjects.isEmpty())
 			return null;
 		
-		ILayoutableCutCommand cmd = new ILayoutableCutCommand();
+		LayoutableCutCommand cmd = new LayoutableCutCommand();
 		for (Object i : selectedObjects) {
 			if (!(i instanceof EditPart))
 				continue;

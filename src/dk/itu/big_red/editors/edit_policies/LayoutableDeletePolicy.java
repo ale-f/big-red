@@ -4,12 +4,12 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
 import org.eclipse.gef.requests.GroupRequest;
 
-import dk.itu.big_red.commands.ILayoutableDeleteCommand;
+import dk.itu.big_red.commands.LayoutableDeleteCommand;
 
-public class ILayoutableDeletePolicy extends ComponentEditPolicy {
+public class LayoutableDeletePolicy extends ComponentEditPolicy {
 	@Override
 	protected Command createDeleteCommand(GroupRequest deleteRequest) {
-		ILayoutableDeleteCommand command = new ILayoutableDeleteCommand();
+		LayoutableDeleteCommand command = new LayoutableDeleteCommand();
 		command.setModel(getHost().getModel());
 		command.setParentModel(getHost().getParent().getModel());
 		return command;

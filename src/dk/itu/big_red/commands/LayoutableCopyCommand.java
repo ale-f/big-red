@@ -9,7 +9,7 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 
-public class ILayoutableCopyCommand extends Command {
+public class LayoutableCopyCommand extends Command {
 	protected ArrayList<LayoutableModelObject> list =
 		new ArrayList<LayoutableModelObject>();
 	

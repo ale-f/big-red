@@ -6,7 +6,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
 
-public class ILayoutableDeleteCommand extends Command {
+public class LayoutableDeleteCommand extends Command {
 	private LayoutableModelObject model = null;
 	private Container parentModel = null;
 	

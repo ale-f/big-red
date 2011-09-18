@@ -5,8 +5,8 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
-import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
-import dk.itu.big_red.editors.edit_policies.ILayoutableLayoutPolicy;
+import dk.itu.big_red.editors.edit_policies.LayoutableDeletePolicy;
+import dk.itu.big_red.editors.edit_policies.LayoutableLayoutPolicy;
 import dk.itu.big_red.figure.RootFigure;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.LayoutableModelObject;
@@ -32,8 +32,8 @@ public class RootPart extends ContainerPart {
 
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ILayoutableLayoutPolicy());
-		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ILayoutableDeletePolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}
 
 	@Override

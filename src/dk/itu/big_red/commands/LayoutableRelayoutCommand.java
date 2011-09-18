@@ -12,7 +12,7 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
-public class ILayoutableRelayoutCommand extends Command {
+public class LayoutableRelayoutCommand extends Command {
 	private ILayoutable model;
 	private Rectangle layout, oldLayout;
 	

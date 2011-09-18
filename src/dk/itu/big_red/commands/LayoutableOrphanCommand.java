@@ -9,7 +9,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.part.EdgePart;
 
-public class ILayoutableOrphanCommand extends Command {
+public class LayoutableOrphanCommand extends Command {
 	private Container parent = null;
 	private List children = null;
 	
