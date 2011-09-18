@@ -94,10 +94,6 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		return new Container()._overwrite(this);
 	}
 	
-	public Signature getSignature() {
-		return getBigraph().getSignature();
-	}
-	
 	public void relayout() {
 		int leftProgress = 10;
 		int maxHeight = 0;

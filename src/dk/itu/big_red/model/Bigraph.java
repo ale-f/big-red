@@ -88,7 +88,6 @@ public class Bigraph extends Container implements IBigraph {
 		}
 	}
 	
-	@Override
 	public Signature getSignature() {
 		return signature.getModel();
 	}

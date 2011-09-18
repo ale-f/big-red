@@ -39,7 +39,7 @@ public class ModelPropertySource implements IPropertySource {
 			new ArrayList<IPropertyDescriptor>();
 		properties.add(new PropertyDescriptor("Class", "Class"));
 		if (object instanceof Node) {
-			setControlNames(((Node)object).getSignature().getControlNames());
+			setControlNames(((Node)object).getBigraph().getSignature().getControlNames());
 			ComboBoxPropertyDescriptor cbpd =
 				new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames());
 			cbpd.setLabelProvider(new ComboBoxLabelProvider(controlNames) {
@@ -125,8 +125,8 @@ public class ModelPropertySource implements IPropertySource {
 			Node n = (Node)object;
 			int x = (Integer)value;
 			if (x >= 0) {
-				String control = n.getSignature().getControlNames()[x];
-				n.setControl((n.getSignature().getControl(control)));
+				String control = n.getBigraph().getSignature().getControlNames()[x];
+				n.setControl((n.getBigraph().getSignature().getControl(control)));
 			} else {
 				n.setControl(null);
 			}
