@@ -15,7 +15,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see ISignature
  */
-public class Signature implements ISignature {
+public class Signature extends ModelObject implements ISignature {
 	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
 	
 	private ArrayList<Control> controls = new ArrayList<Control>();
