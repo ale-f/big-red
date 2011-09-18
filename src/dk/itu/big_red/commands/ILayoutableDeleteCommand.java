@@ -4,15 +4,15 @@ import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.LayoutableModelObject;
 
 public class ILayoutableDeleteCommand extends Command {
-	private ILayoutable model = null;
+	private LayoutableModelObject model = null;
 	private Container parentModel = null;
 	
 	public void setModel(Object model) {
-		if (model instanceof ILayoutable)
-			this.model = (ILayoutable)model;
+		if (model instanceof LayoutableModelObject)
+			this.model = (LayoutableModelObject)model;
 	}
 	
 	public void setParentModel(Object model) {

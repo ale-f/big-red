@@ -10,13 +10,13 @@ import dk.itu.big_red.exceptions.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Project;
@@ -107,8 +107,8 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
 		
-		if (model instanceof ILayoutable && context != null)
-			context.addChild((ILayoutable)model);
+		if (model instanceof LayoutableModelObject && context != null)
+			context.addChild((LayoutableModelObject)model);
 		
 		if (model instanceof Bigraph) {
 			processBigraph(e, (Bigraph)model);
@@ -124,7 +124,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 					}
 				}
 			}
-			context.removeChild((ILayoutable)model);
+			context.removeChild((LayoutableModelObject)model);
 			model = null;
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);

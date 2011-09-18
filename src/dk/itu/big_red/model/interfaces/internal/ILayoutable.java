@@ -68,11 +68,5 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	 */
 	public Container getParent();
 
-	/**
-	 * Changes the parent of this object.
-	 * @param p the new parent {@link Container}
-	 */
-	public void setParent(Container p);
-
 	public ILayoutable clone() throws CloneNotSupportedException;
 }

@@ -10,6 +10,7 @@ import dk.itu.big_red.editors.edit_policies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.BigraphFigure;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
@@ -37,8 +38,8 @@ public class BigraphPart extends ContainerPart {
 	}
 	
 	@Override
-	public List<ILayoutable> getModelChildren() {
-		List<ILayoutable> r =
+	public List<LayoutableModelObject> getModelChildren() {
+		List<LayoutableModelObject> r =
 				Utility.groupListByClass(getModel().getChildren(), Edge.class, Object.class);
 		Collections.reverse(r);
 		return r;

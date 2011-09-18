@@ -3,12 +3,12 @@ package dk.itu.big_red.part.place;
 import java.util.List;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.part.AbstractTreePart;
 
 public class BigraphPlaceTreePart extends AbstractTreePart {
 	@Override
-	protected List<ILayoutable> getModelChildren() {
+	protected List<LayoutableModelObject> getModelChildren() {
 		return ((Bigraph)getModel()).getChildren();
 	}
 

@@ -24,7 +24,7 @@ import dk.itu.big_red.util.Utility;
  *
  */
 public class Container extends LayoutableModelObject implements IAdaptable {
-	protected ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
+	protected ArrayList<LayoutableModelObject> children = new ArrayList<LayoutableModelObject>();
 	
 	private IPropertySource propertySource = null;
 
@@ -41,7 +41,7 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		return false;
 	}
 	
-	public void addChild(ILayoutable child) {
+	public void addChild(LayoutableModelObject child) {
 		boolean added = children.add(child);
 		if (added) {
 			child.setParent(this);
@@ -49,17 +49,17 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		}
 	}
 	
-	public void removeChild(ILayoutable child) {
+	public void removeChild(LayoutableModelObject child) {
 		boolean removed = children.remove(child);
 		if (removed)
 			firePropertyChange(PROPERTY_CHILD, child, null);
 	}
 	
-	public List<ILayoutable> getChildren() {
+	public List<LayoutableModelObject> getChildren() {
 		return children;
 	}
 
-	public boolean hasChild(ILayoutable child) {
+	public boolean hasChild(LayoutableModelObject child) {
 		return children.contains(child);
 	}
 	
@@ -80,8 +80,8 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 			orig.getLayout().x + 10, orig.getLayout().y + 10,
 			orig.getLayout().width, orig.getLayout().height));
 		
-		for (ILayoutable child : orig.getChildren()) {
-			ILayoutable childClone = child.clone();
+		for (LayoutableModelObject child : orig.getChildren()) {
+			LayoutableModelObject childClone = child.clone();
 			addChild(childClone);
 			childClone.setLayout(child.getLayout());
 		}

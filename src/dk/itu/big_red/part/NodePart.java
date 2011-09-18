@@ -12,8 +12,8 @@ import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editors.edit_policies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.NodeFigure;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.
@@ -104,8 +104,8 @@ public class NodePart extends ContainerPart {
 	}
 	
 	@Override
-	public List<ILayoutable> getModelChildren() {
-		ArrayList<ILayoutable> children = new ArrayList<ILayoutable>(getModel().getChildren());
+	public List<LayoutableModelObject> getModelChildren() {
+		ArrayList<LayoutableModelObject> children = new ArrayList<LayoutableModelObject>(getModel().getChildren());
 		children.addAll(getModel().getPorts());
 		return children;
 	}

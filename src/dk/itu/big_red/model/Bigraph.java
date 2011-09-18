@@ -1,7 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -121,20 +119,15 @@ public class Bigraph extends Container implements IBigraph {
 	}
 	
 	@Override
-	public void addChild(ILayoutable child) {
+	public void addChild(LayoutableModelObject child) {
 		super.addChild(child);
 		updateBoundaries();
 	}
 	
 	@Override
-	public void removeChild(ILayoutable child) {
+	public void removeChild(LayoutableModelObject child) {
 		super.removeChild(child);
 		updateBoundaries();
-	}
-	
-	@Override
-	public List<ILayoutable> getChildren() {
-		return children;
 	}
 	
 	/**

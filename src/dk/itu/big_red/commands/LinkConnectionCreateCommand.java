@@ -68,7 +68,7 @@ public class LinkConnectionCreateCommand extends Command {
 			 * Create a new Edge.
 			 */
 			Edge e = new Edge();
-			e.setParent(((Point)first).getBigraph());
+			((Point)first).getBigraph().addChild(e);
 			e.addPoint((Point)second);
 			e.addPoint((Point)first);
 			e.averagePosition();

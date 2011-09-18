@@ -7,13 +7,13 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableCreateCommand extends Command {
 	private Container container;
-	private ILayoutable node;
+	private LayoutableModelObject node;
 	
 	public ILayoutableCreateCommand() {
 		super();
@@ -22,8 +22,8 @@ public class ILayoutableCreateCommand extends Command {
 	}
 	
 	public void setObject(Object s) {
-		if (s instanceof ILayoutable)
-			node = (ILayoutable)s;
+		if (s instanceof LayoutableModelObject)
+			node = (LayoutableModelObject)s;
 	}
 	
 	public void setContainer(Object e) {
@@ -38,7 +38,7 @@ public class ILayoutableCreateCommand extends Command {
 	}
 	
 	public boolean noOverlap() {
-		for (ILayoutable i : container.getChildren()) {
+		for (LayoutableModelObject i : container.getChildren()) {
 			if (i instanceof Edge)
 				continue;
 			else if (i.getLayout().intersects(node.getLayout()))

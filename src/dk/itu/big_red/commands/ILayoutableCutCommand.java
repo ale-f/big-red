@@ -2,11 +2,11 @@ package dk.itu.big_red.commands;
 
 import java.util.HashMap;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.LayoutableModelObject;
 
 public class ILayoutableCutCommand extends ILayoutableCopyCommand {
-	private HashMap<ILayoutable, Container> parents =
-		new HashMap<ILayoutable, Container>();
+	private HashMap<LayoutableModelObject, Container> parents =
+		new HashMap<LayoutableModelObject, Container>();
 	
 	@Override
 	public void execute() {
@@ -23,7 +23,7 @@ public class ILayoutableCutCommand extends ILayoutableCopyCommand {
 	
 	@Override
 	public void redo() {
-		for (ILayoutable n : list) {
+		for (LayoutableModelObject n : list) {
 			parents.put(n, n.getParent());
 			n.getParent().removeChild(n);
 		}
@@ -36,7 +36,7 @@ public class ILayoutableCutCommand extends ILayoutableCopyCommand {
 		 * operation; this seems to be the behaviour preferred by every
 		 * other program in the universe. No sense in diverging, eh?
 		 */
-		for (ILayoutable n : list)
+		for (LayoutableModelObject n : list)
 			parents.get(n).addChild(n);
 	}
 }

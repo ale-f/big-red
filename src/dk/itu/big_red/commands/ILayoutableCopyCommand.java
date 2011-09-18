@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutableCopyCommand extends Command {
-	protected ArrayList<ILayoutable> list =
-		new ArrayList<ILayoutable>();
+	protected ArrayList<LayoutableModelObject> list =
+		new ArrayList<LayoutableModelObject>();
 	
 	public boolean addElement(Object node) {
-		if (node instanceof ILayoutable)
-			return (list.contains(node) ? false : list.add((ILayoutable)node));
+		if (node instanceof LayoutableModelObject)
+			return (list.contains(node) ? false : list.add((LayoutableModelObject)node));
 		else return false;
 	}
 	
@@ -25,9 +25,9 @@ public class ILayoutableCopyCommand extends Command {
 		 * performs a deep copy), so crunchList throws away any of the nodes
 		 * whose parent is also a candidate for copying.
 		 */
-		ArrayList<ILayoutable> crunchedList =
-			new ArrayList<ILayoutable>();
-		for (ILayoutable copycdt : list) {
+		ArrayList<LayoutableModelObject> crunchedList =
+			new ArrayList<LayoutableModelObject>();
+		for (LayoutableModelObject copycdt : list) {
 			if (!list.contains(copycdt.getParent()))
 				crunchedList.add(copycdt);
 		}
@@ -39,7 +39,7 @@ public class ILayoutableCopyCommand extends Command {
 		if (list == null || list.isEmpty())
 			return false;
 		crunchList();
-		for (ILayoutable i : list) {
+		for (LayoutableModelObject i : list) {
 			if (!isCopyableNode(i))
 				return false;
 		}

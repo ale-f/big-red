@@ -9,8 +9,8 @@ import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
 import dk.itu.big_red.editors.edit_policies.ILayoutableLayoutPolicy;
 import dk.itu.big_red.figure.RootFigure;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * RootParts represent {@link Root}s, the containers immediately below the
@@ -47,7 +47,7 @@ public class RootPart extends ContainerPart {
 	}
 	
 	@Override
-	public List<ILayoutable> getModelChildren() {
+	public List<LayoutableModelObject> getModelChildren() {
 		return getModel().getChildren();
 	}
 }

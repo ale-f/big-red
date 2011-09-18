@@ -5,11 +5,11 @@ import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.LayoutableModelObject;
 
 public class ILayoutableAddCommand extends Command {
 	private Container parent = null;
-	private ILayoutable child = null;
+	private LayoutableModelObject child = null;
 	private Rectangle constraint = null, oldConstraint = null;
 	private boolean constraintTranslated = false;
 	
@@ -19,8 +19,8 @@ public class ILayoutableAddCommand extends Command {
 	}
 	
 	public void setChild(Object child) {
-		if (child instanceof ILayoutable)
-			this.child = (ILayoutable)child;
+		if (child instanceof LayoutableModelObject)
+			this.child = (LayoutableModelObject)child;
 	}
 	
 	public void setConstraint(Object constraint) {
@@ -29,7 +29,7 @@ public class ILayoutableAddCommand extends Command {
 	}
 	
 	public boolean noOverlap() {
-		for (ILayoutable i : parent.getChildren()) {
+		for (LayoutableModelObject i : parent.getChildren()) {
 			if (i.getLayout().intersects(constraint))
 				return false;
 		}

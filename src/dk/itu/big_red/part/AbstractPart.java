@@ -15,6 +15,7 @@ import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
@@ -99,8 +100,8 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	 * children should probably override this method!
 	 */
 	@Override
-	public List<ILayoutable> getModelChildren() {
-		return new ArrayList<ILayoutable>();
+	public List<LayoutableModelObject> getModelChildren() {
+		return new ArrayList<LayoutableModelObject>();
 	}
 	
 	/**

@@ -48,8 +48,11 @@ public abstract class LayoutableModelObject extends ModelObject implements ILayo
 		return parent;
 	}
 
-	@Override
-	public void setParent(Container parent) {
+	/**
+	 * Changes the parent of this object.
+	 * @param p the new parent {@link Container}
+	 */
+	protected void setParent(Container parent) {
 		this.parent = parent;
 	}
 	
@@ -68,5 +71,5 @@ public abstract class LayoutableModelObject extends ModelObject implements ILayo
 	}
 	
 	@Override
-	public abstract ILayoutable clone() throws CloneNotSupportedException;
+	public abstract LayoutableModelObject clone() throws CloneNotSupportedException;
 }

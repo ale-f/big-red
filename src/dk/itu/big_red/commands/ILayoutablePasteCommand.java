@@ -6,14 +6,14 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
 import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class ILayoutablePasteCommand extends Command {
-	private HashMap<ILayoutable, ILayoutable> list =
-		new HashMap<ILayoutable, ILayoutable>();
+	private HashMap<LayoutableModelObject, LayoutableModelObject> list =
+		new HashMap<LayoutableModelObject, LayoutableModelObject>();
 	private Container newParent;
 	
 	public ILayoutablePasteCommand() {
@@ -24,7 +24,7 @@ public class ILayoutablePasteCommand extends Command {
 		setNewParent(newParent);
 	}
 	
-	public ILayoutable getNewParent() {
+	public Container getNewParent() {
 		return newParent;
 	}
 	
@@ -46,11 +46,11 @@ public class ILayoutablePasteCommand extends Command {
 		 */
 		if (newParent == null)
 			return false;
-		ArrayList<ILayoutable> bList =
-			(ArrayList<ILayoutable>)Clipboard.getDefault().getContents();
+		ArrayList<LayoutableModelObject> bList =
+			(ArrayList<LayoutableModelObject>)Clipboard.getDefault().getContents();
 		if (bList == null || bList.isEmpty())
 			return false;
-		for (ILayoutable node : bList) {
+		for (LayoutableModelObject node : bList) {
 			if (!newParent.canContain(node))
 				return false;
 			else if (isPastableNode(node))
@@ -64,7 +64,7 @@ public class ILayoutablePasteCommand extends Command {
 		if (!canExecute())
 			return;
 		
-		for (ILayoutable node : list.keySet()) {
+		for (LayoutableModelObject node : list.keySet()) {
 			try {
 				list.put(node, node.clone());
 			} catch (Exception e) {
@@ -77,7 +77,7 @@ public class ILayoutablePasteCommand extends Command {
 	
 	@Override
 	public void redo() {
-		for (ILayoutable node : list.values()) {
+		for (LayoutableModelObject node : list.values()) {
 			if (isPastableNode(node)) {
 				newParent.addChild(node);
 			}
@@ -86,7 +86,7 @@ public class ILayoutablePasteCommand extends Command {
 	
 	@Override
 	public void undo() {
-		for (ILayoutable node : list.values()) {
+		for (LayoutableModelObject node : list.values()) {
 			if (isPastableNode(node))
 				newParent.removeChild(node);
 		}
