@@ -2,8 +2,6 @@ package dk.itu.big_red.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
@@ -52,9 +50,7 @@ public class ILayoutablePasteCommand extends Command {
 			(ArrayList<ILayoutable>)Clipboard.getDefault().getContents();
 		if (bList == null || bList.isEmpty())
 			return false;
-		Iterator<ILayoutable> it = bList.iterator();
-		while (it.hasNext()) {
-			ILayoutable node = it.next();
+		for (ILayoutable node : bList) {
 			if (!newParent.canContain(node))
 				return false;
 			else if (isPastableNode(node))
@@ -68,9 +64,7 @@ public class ILayoutablePasteCommand extends Command {
 		if (!canExecute())
 			return;
 		
-		Iterator<ILayoutable> it = list.keySet().iterator();
-		while (it.hasNext()) {
-			ILayoutable node = it.next();
+		for (ILayoutable node : list.keySet()) {
 			try {
 				list.put(node, node.clone());
 			} catch (Exception e) {
@@ -83,9 +77,7 @@ public class ILayoutablePasteCommand extends Command {
 	
 	@Override
 	public void redo() {
-		Iterator<ILayoutable> it = list.values().iterator();
-		while (it.hasNext()) {
-			ILayoutable node = it.next();
+		for (ILayoutable node : list.values()) {
 			if (isPastableNode(node)) {
 				newParent.addChild(node);
 			}
@@ -94,9 +86,7 @@ public class ILayoutablePasteCommand extends Command {
 	
 	@Override
 	public void undo() {
-		Iterator<ILayoutable> it = list.values().iterator();
-		while (it.hasNext()) {
-			ILayoutable node = it.next();
+		for (ILayoutable node : list.values()) {
 			if (isPastableNode(node))
 				newParent.removeChild(node);
 		}

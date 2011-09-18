@@ -1,6 +1,5 @@
 package dk.itu.big_red.actions;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.gef.EditPart;
@@ -37,9 +36,7 @@ public class ContainerCutAction extends SelectionAction {
 			return null;
 		
 		ILayoutableCutCommand cmd = new ILayoutableCutCommand();
-		Iterator<Object> it = selectedObjects.iterator();
-		while (it.hasNext()) {
-			Object i = it.next();
+		for (Object i : selectedObjects) {
 			if (!(i instanceof EditPart))
 				continue;
 			Object node = ((EditPart)i).getModel();

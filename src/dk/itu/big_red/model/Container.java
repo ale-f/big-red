@@ -1,7 +1,6 @@
 package dk.itu.big_red.model;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -77,9 +76,7 @@ public class Container extends LayoutableModelObject implements IAdaptable, ILay
 			orig.getLayout().x + 10, orig.getLayout().y + 10,
 			orig.getLayout().width, orig.getLayout().height));
 		
-		Iterator<ILayoutable> it = orig.getChildren().iterator();
-		while (it.hasNext()) {
-			ILayoutable child = it.next();
+		for (ILayoutable child : orig.getChildren()) {
 			ILayoutable childClone = child.clone();
 			addChild(childClone);
 			childClone.setLayout(child.getLayout());

@@ -1,8 +1,6 @@
 package dk.itu.big_red.commands;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
@@ -29,12 +27,9 @@ public class ILayoutableCopyCommand extends Command {
 		 */
 		ArrayList<ILayoutable> crunchedList =
 			new ArrayList<ILayoutable>();
-		Iterator<ILayoutable> it = list.iterator();
-		while (it.hasNext()) {
-			ILayoutable copycdt = it.next();
-			if (!list.contains(copycdt.getParent())) {
+		for (ILayoutable copycdt : list) {
+			if (!list.contains(copycdt.getParent()))
 				crunchedList.add(copycdt);
-			}
 		}
 		list = crunchedList;
 	}
@@ -44,9 +39,8 @@ public class ILayoutableCopyCommand extends Command {
 		if (list == null || list.isEmpty())
 			return false;
 		crunchList();
-		Iterator<ILayoutable> it = list.iterator();
-		while (it.hasNext()) {
-			if (!isCopyableNode(it.next()))
+		for (ILayoutable i : list) {
+			if (!isCopyableNode(i))
 				return false;
 		}
 		return true;

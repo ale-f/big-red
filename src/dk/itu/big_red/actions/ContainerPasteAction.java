@@ -1,6 +1,5 @@
 package dk.itu.big_red.actions;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.gef.EditPart;
@@ -45,10 +44,8 @@ public class ContainerPasteAction extends SelectionAction {
 				newParent = (ILayoutable)((EditPart)i).getModel();
 			else return null;
 		} else {
-			Iterator<Object> it = selectedObjects.iterator();
 			EditPart sharedParent = null;
-			while (it.hasNext()) {
-				Object i = it.next();
+			for (Object i : selectedObjects) {
 				if (!(i instanceof EditPart))
 					continue;
 				EditPart part = (EditPart)i;
