@@ -11,11 +11,9 @@ import dk.itu.big_red.model.Container;
  * 
  * <ul>
  * <li>they have a <i>layout</i> (a {@link Rectangle}) which defines their
- * bounding box and which can change under some circumstances;
- * <li>they have a <i>parent</i> (another {@link ILayoutable}) and a
- * <i>{@link Bigraph bigraph}</i>, which serve as their containers; and
- * <li>they may also optionally have <i>children</i> (other
- * {@link ILayoutable}s).
+ * bounding box and which can change under some circumstances; and
+ * <li>they have a <i>parent</i> (another {@link ILayoutable}), which contains
+ * them.
  * </ul>
  * 
  * <p>As they also implement {@link IPropertyChangeNotifier}, they can also
@@ -31,11 +29,6 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
 	
 	/**
-	 * The property name fired when a child is added or removed.
-	 */
-	public static final String PROPERTY_CHILD = "ILayoutableChild";
-	
-	/**
 	 * The property name fired when the ILayoutable's parent changes.
 	 */
 	public static final String PROPERTY_PARENT = "ILayoutableParent";
@@ -47,10 +40,8 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	public Rectangle getLayout();
 	
 	/**
-	 * Gets the layout of this object relative to the top-left of the
-	 * <i>root</i> rather than the immediate parent. (Like {@link
-	 * ILayoutable#getLayout}, the object returned is newly created, and so can
-	 * be safely modified.)
+	 * Gets a copy of the layout of this object relative to the top-left of the
+	 * root {@link Bigraph} rather than the immediate parent.
 	 * @return the current layout relative to the root
 	 */
 	public Rectangle getRootLayout();
@@ -58,7 +49,7 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	/**
 	 * Sets the layout of this object.
 	 * 
-	 * <p>Implementers are required not to store a reference to the {@link
+	 * <p>Implementors are required not to store a reference to the {@link
 	 * Rectangle} provided - its values should instead be copied into another
 	 * structure.
 	 * @param layout the new layout
@@ -66,20 +57,20 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	public void setLayout(Rectangle layout);
 	
 	/**
-	 * Returns the {@link Bigraph} that contains this object.
+	 * Returns the {@link Bigraph} that ultimately contains this object.
 	 * @return a Bigraph
 	 */
 	public Bigraph getBigraph();
 	
 	/**
 	 * Returns the parent of this object.
-	 * @return an {@link ILayoutable}
+	 * @return an {@link Container}
 	 */
 	public Container getParent();
 
 	/**
 	 * Changes the parent of this object.
-	 * @param p the new parent {@link ILayoutable}
+	 * @param p the new parent {@link Container}
 	 */
 	public void setParent(Container p);
 

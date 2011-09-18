@@ -28,6 +28,11 @@ public class Container extends LayoutableModelObject implements IAdaptable, ILay
 	protected ArrayList<ILayoutable> children = new ArrayList<ILayoutable>();
 	
 	private IPropertySource propertySource = null;
+
+	/**
+	 * The property name fired when a child is added or removed.
+	 */
+	public static final String PROPERTY_CHILD = "ILayoutableChild";
 	
 	public Container() {
 		layout = new Rectangle(10, 10, 100, 100);
