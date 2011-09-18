@@ -1,6 +1,6 @@
 package dk.itu.big_red.exceptions;
 
-public class SaveFailedException extends Exception {
+public class SaveFailedException extends RedException {
 
 	/**
 	 * 

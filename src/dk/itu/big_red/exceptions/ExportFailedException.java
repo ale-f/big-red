@@ -8,7 +8,7 @@ import dk.itu.big_red.import_export.Export;
  * @author alec
  *
  */
-public class ExportFailedException extends Exception {
+public class ExportFailedException extends RedException {
 	/**
 	 * 
 	 */

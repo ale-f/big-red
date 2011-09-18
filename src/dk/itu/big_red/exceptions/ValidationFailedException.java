@@ -9,7 +9,7 @@ import dk.itu.big_red.util.DOM;
  * @author alec
  *
  */
-public class ValidationFailedException extends Exception {
+public class ValidationFailedException extends RedException {
 
 	/**
 	 * 
