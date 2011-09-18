@@ -32,7 +32,7 @@ public class ContainerPasteAction extends SelectionAction {
 		setEnabled(false);
 	}
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private Command createPasteCommand(List selectedObjects) {
 		ILayoutable newParent = null;
 		if (selectedObjects.size() == 0) {
