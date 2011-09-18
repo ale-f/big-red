@@ -2,9 +2,18 @@ package dk.itu.big_red.model;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
-public abstract class LayoutableModelObject extends ModelObject implements ILayoutable {
+/**
+ * All of the objects which can actually appear on a bigraph are instances of
+ * {@link LayoutableModelObject}. This extends {@link ModelObject} with
+ * implementations of {@link ILayoutable} and {@link ICommentable}.
+ * @author alec
+ * @see ModelObject
+ *
+ */
+public abstract class LayoutableModelObject extends ModelObject implements ILayoutable, ICommentable {
 	protected Rectangle layout;
 	protected Container parent;
 	
@@ -42,6 +51,20 @@ public abstract class LayoutableModelObject extends ModelObject implements ILayo
 	@Override
 	public void setParent(Container parent) {
 		this.parent = parent;
+	}
+	
+	private String comment = null;
+	
+	@Override
+	public String getComment() {
+		return comment;
+	}
+
+	@Override
+	public void setComment(String comment) {
+		String oldComment = this.comment;
+		this.comment = comment;
+		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
 	@Override

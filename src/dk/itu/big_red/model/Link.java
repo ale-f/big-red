@@ -124,20 +124,6 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 		}
 	}
 	
-	private String comment = null;
-	
-	@Override
-	public String getComment() {
-		return comment;
-	}
-	
-	@Override
-	public void setComment(String comment) {
-		String oldComment = getComment();
-		this.comment = comment;
-		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
-	}
-	
 	private RGB outlineColour = new RGB(0, 127, 0);
 	
 	@Override

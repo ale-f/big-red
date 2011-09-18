@@ -33,20 +33,6 @@ public abstract class Point extends LayoutableModelObject implements ILayoutable
 		return link;
 	}
 
-	private String comment = null;
-	
-	@Override
-	public String getComment() {
-		return comment;
-	}
-
-	@Override
-	public void setComment(String comment) {
-		String oldComment = this.comment;
-		this.comment = comment;
-		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
-	}
-
 	protected Link link = null;
 	
 	/**
