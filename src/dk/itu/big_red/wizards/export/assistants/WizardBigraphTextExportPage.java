@@ -184,10 +184,8 @@ public class WizardBigraphTextExportPage extends WizardPage {
 						Project.getWorkspaceRoot(),
 						ResourceTreeSelectionDialog.MODE_FILE,
 						"dk.itu.big_red.bigraph");
-				if (bigraphText.getText().length() > 0) {
-					System.out.println(Project.findFileByPath(null, new Path(bigraphText.getText())));
+				if (bigraphText.getText().length() > 0)
 					d.setInitialSelection(Project.findFileByPath(null, new Path(bigraphText.getText())));
-				}
 				d.open();
 				IResource result = d.getFirstResult();
 				if (result instanceof IFile)

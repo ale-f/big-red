@@ -95,7 +95,6 @@ public class NamespaceManager {
 				break;
 			}
 			if (setName(context, object, name)) {
-				System.out.println("Succeeded in giving " + object + " name \"" + name + "\" (context " + context + ")");
 				return name;
 			} else return null;
 		}
