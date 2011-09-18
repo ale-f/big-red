@@ -1,5 +1,6 @@
 package dk.itu.big_red.part.place;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.EditPolicy;
@@ -15,7 +16,7 @@ import dk.itu.big_red.util.UI;
 public class SitePlaceTreePart extends AbstractTreePart {
 	@Override
 	protected List<ILayoutable> getModelChildren() {
-		return ((Site)getModel()).getChildren();
+		return new ArrayList<ILayoutable>();
 	}
 
 	@Override

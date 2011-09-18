@@ -7,7 +7,7 @@ import dk.itu.big_red.editors.edit_policies.ILayoutableDeletePolicy;
 import dk.itu.big_red.figure.SiteFigure;
 import dk.itu.big_red.model.Site;
 
-public class SitePart extends ContainerPart {
+public class SitePart extends AbstractPart {
 	@Override
 	public Site getModel() {
 		return (Site)super.getModel();
@@ -36,5 +36,7 @@ public class SitePart extends ContainerPart {
 		Site model = getModel();
 
 		figure.setName(model.getName());
+		figure.setToolTip("Site " + model.getName());
+		figure.setConstraint(model.getLayout());
 	}
 }

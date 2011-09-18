@@ -1,55 +1,24 @@
 package dk.itu.big_red.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.assistants.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 
 /**
  * @author alec
  * @see ISite
  */
-public class Site extends Container implements INameable, ISite {
+public class Site extends LayoutableModelObject implements INameable, ISite {
 	@Override
-	public Container clone() throws CloneNotSupportedException {
-		return new Site()._overwrite(this);
-	}
-	
-	/**
-	 * Returns false.
-	 */
-	@Override
-	public boolean canContain(ILayoutable child) {
-		return false;
-	}
-	
-	/**
-	 * Does nothing.
-	 */
-	@Override
-	public void addChild(ILayoutable child) {
-		return;
-	}
-	
-	/**
-	 * Does nothing.
-	 */
-	@Override
-	public void removeChild(ILayoutable child) {
-		return;
-	}
-	
-	/**
-	 * Returns an empty list.
-	 */
-	@Override
-	public List<ILayoutable> getChildren() {
-		return new ArrayList<ILayoutable>();
+	public Site clone() {
+		Site s = new Site();
+		
+		s.setParent(getParent());
+		s.setLayout(getLayout());
+		
+		return s;
 	}
 	
 	@Override

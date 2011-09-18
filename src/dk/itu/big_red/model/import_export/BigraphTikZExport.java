@@ -244,8 +244,6 @@ public class BigraphTikZExport extends ModelExport<Bigraph> {
 		
 		line("draw [internal site] (" + ptl.x + "," +
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
-		
-		process((Container)r);
 	}
 	
 	private void process(Root r) throws ExportFailedException {
