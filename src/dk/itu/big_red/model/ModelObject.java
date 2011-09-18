@@ -5,6 +5,16 @@ import java.beans.PropertyChangeSupport;
 
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 
+/**
+ * This is the superclass of everything in Big Red's version of the bigraphical
+ * model. It provides an implementation of {@link IPropertyChangeNotifier}.
+ * 
+ * <p>Objects which can appear on a bigraph are instances of the subclass
+ * {@link LayoutableModelObject}.
+ * @author alec
+ * @see LayoutableModelObject
+ *
+ */
 public class ModelObject implements IPropertyChangeNotifier {
 	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
