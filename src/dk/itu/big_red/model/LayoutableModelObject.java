@@ -1,19 +1,23 @@
 package dk.itu.big_red.model;
 
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * All of the objects which can actually appear on a bigraph are instances of
  * {@link LayoutableModelObject}. This extends {@link ModelObject} with
- * implementations of {@link ILayoutable} and {@link ICommentable}.
+ * implementations of {@link ILayoutable}, {@link ICommentable}, and {@link
+ * IAdaptable}.
  * @author alec
  * @see ModelObject
  *
  */
-public abstract class LayoutableModelObject extends ModelObject implements ILayoutable, ICommentable {
+public abstract class LayoutableModelObject extends ModelObject implements IAdaptable, ILayoutable, ICommentable {
 	protected Rectangle layout;
 	protected Container parent;
 	
@@ -68,6 +72,19 @@ public abstract class LayoutableModelObject extends ModelObject implements ILayo
 		String oldComment = this.comment;
 		this.comment = comment;
 		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
+	}
+	
+	private ModelPropertySource propertySource;
+	
+	@SuppressWarnings("rawtypes")
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == IPropertySource.class) {
+			if (propertySource == null)
+				propertySource = new ModelPropertySource(this);
+			return propertySource;
+		}
+		return null;
 	}
 	
 	@Override

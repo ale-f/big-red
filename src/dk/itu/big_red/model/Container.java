@@ -5,10 +5,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.ui.views.properties.IPropertySource;
 import org.w3c.dom.Node;
 
-import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
@@ -25,8 +23,6 @@ import dk.itu.big_red.util.Utility;
  */
 public class Container extends LayoutableModelObject implements IAdaptable {
 	protected ArrayList<LayoutableModelObject> children = new ArrayList<LayoutableModelObject>();
-	
-	private IPropertySource propertySource = null;
 
 	/**
 	 * The property name fired when a child is added or removed.
@@ -61,17 +57,6 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 
 	public boolean hasChild(LayoutableModelObject child) {
 		return children.contains(child);
-	}
-	
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter == IPropertySource.class) {
-			if (propertySource == null)
-				propertySource = new ModelPropertySource(this);
-			return propertySource;
-		}
-		return null;
 	}
 	
 	protected Container _overwrite(Container orig) throws CloneNotSupportedException {

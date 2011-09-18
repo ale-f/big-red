@@ -2,9 +2,6 @@ package dk.itu.big_red.model;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.ui.views.properties.IPropertySource;
-
-import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.internal.INameable;
@@ -75,13 +72,5 @@ public abstract class Point extends LayoutableModelObject implements IAdaptable,
 	@Override
 	public Point clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException();
-	}
-	
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter == IPropertySource.class) {
-			return new ModelPropertySource(this);
-		} else return null;
 	}
 }

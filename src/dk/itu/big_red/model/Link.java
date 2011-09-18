@@ -5,9 +5,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.ui.views.properties.IPropertySource;
-
-import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
@@ -93,13 +90,6 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 			if (l.getPoint() == p)
 				return l;
 		return null;
-	}
-	
-	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
-		if (adapter == IPropertySource.class) {
-			return new ModelPropertySource(this);
-		} else return null;
 	}
 	
 	@Override
