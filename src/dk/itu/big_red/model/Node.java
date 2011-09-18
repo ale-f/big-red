@@ -10,8 +10,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.assistants.NamespaceManager;
-import dk.itu.big_red.model.assistants.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
@@ -30,7 +28,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see INode
  */
-public class Node extends Container implements PropertyChangeListener, IFillColourable, IOutlineColourable, INameable, INode {
+public class Node extends NameableContainer implements PropertyChangeListener, IFillColourable, IOutlineColourable, INameable, INode {
 	/**
 	 * The property name fired when the control changes. (Note that this
 	 * property name is fired <i>after</i> any other changes required to change
@@ -183,25 +181,6 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 		}
 		return fittedPolygon;
 	}
-	
-	@Override
-	public String getName() {
-		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);
-	}
-	
-	@Override
-	public void setName(String name) {
-		NamespaceManager nm = getBigraph().getNamespaceManager();
-		String oldName = nm.getName(getClass(), this);
-		if (name != null) {
-			if (nm.setName(getClass(), name, this))
-				firePropertyChange(PROPERTY_NAME, oldName, name);
-		} else {
-			String newName = nm.newName(getClass(), this, NameType.NAME_ALPHABETIC);
-			if (!newName.equals(oldName))
-				firePropertyChange(PROPERTY_NAME, oldName, newName);
-		}
-	}
 
 	@Override
 	public IParent getIParent() {
@@ -231,5 +210,10 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 	@Override
 	public IControl getIControl() {
 		return control;
+	}
+
+	@Override
+	public NameType getNameType() {
+		return NameType.NAME_ALPHABETIC;
 	}
 }

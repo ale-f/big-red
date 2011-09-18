@@ -14,4 +14,9 @@ public class OuterName extends Link implements IOuterName {
 		return new OuterName();
 	}
 
+	@Override
+	public NameType getNameType() {
+		return NameType.NAME_ALPHABETIC;
+	}
+
 }

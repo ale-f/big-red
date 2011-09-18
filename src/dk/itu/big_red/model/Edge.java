@@ -67,4 +67,9 @@ public class Edge extends Link implements IEdge {
 		return new Edge();
 	}
 
+	@Override
+	public NameType getNameType() {
+		return NameType.NAME_ALPHABETIC;
+	}
+
 }

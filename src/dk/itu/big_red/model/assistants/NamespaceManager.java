@@ -6,156 +6,108 @@ import java.util.Map.Entry;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 
 /**
- * NamespaceManagers manage {@link Class}-specific <i>namespaces</i>, groups of
+ * NamespaceManagers manage context-specific <i>namespaces</i>, groups of
  * unique-name-to-object mappings.
  * @author alec
  *
  */
 public class NamespaceManager {
-	public enum NameType {
-		NAME_ALPHABETIC,
-		NAME_NUMERIC
-	};
+	private HashMap<Object, HashMap<INameable, String>> names =
+		new HashMap<Object, HashMap<INameable, String>>();
 	
-	private HashMap<Class<?>, HashMap<String, Object>> names =
-		new HashMap<Class<?>, HashMap<String, Object>>();
-	
-	protected HashMap<String, Object> getSubspace(Class<?> klass) {
-		HashMap<String, Object> subspace = names.get(klass);
+	protected HashMap<INameable, String> getSubspace(Object context) {
+		HashMap<INameable, String> subspace = names.get(context);
 		if (subspace == null) {
-			subspace = new HashMap<String, Object>();
-			names.put(klass, subspace);
+			subspace = new HashMap<INameable, String>();
+			names.put(context, subspace);
 		}
 		return subspace;
 	}
 	
-	/**
-	 * Returns the name given to a particular object.
-	 * @param klass the {@link Class} whose namespace should be searched
-	 * @param object an object
-	 * @return the object's name, if it has one, or <code>null</code> otherwise
-	 */
-	public String getName(Class<?> klass, Object object) {
-		HashMap<String, Object> subspace = getSubspace(klass);
-		if (subspace.containsValue(object)) {
-			for (Entry<String, Object> i : subspace.entrySet())
-				if (i.getValue() == object)
-					return i.getKey();
-		}
-		return null;
+	public void destroyContext(Object context) {
+		if (names.containsKey(context))
+			names.remove(context);
+	}
+
+	public String getName(Object context, INameable object) {
+		return getSubspace(context).get(object);
 	}
 	
-	/**
-	 * Returns the object with a particular name.
-	 * @param klass the {@link Class} whose namespace should be searched
-	 * @param name a name
-	 * @return the named object, if there is one, or <code>null</code>
-	 *         otherwise
-	 */
-	public Object getObject(Class<?> klass, String name) {
-		return getSubspace(klass).get(name);
+	public boolean hasName(Object context, INameable object) {
+		return getSubspace(context).containsKey(object);
 	}
 	
-	/**
-	 * Adds a mapping from <code>name</code> to <code>object</code> to the
-	 * <code>klass</code>-specific namespace.
-	 * <p>If <code>name</code> is <code>null</code>, then a call to this method
-	 * is equivalent to {@link #newName(Class, Object, NameType)
-	 * newName(klass, object, NameType.NAME_ALPHABETIC) != null}.
-	 * @param klass the {@link Class} whose namespace should be searched
-	 * @param name a name
-	 * @param object an object
-	 * @return <code>true</code> if the mapping was registered successfully (or
-	 *         if it already existed), or <code>false</code> if <code>name</code>
-	 *         is already in use by a different object
-	 */
-	public boolean setName(Class<?> klass, String name, Object object) {
-		if (name == null)
-			return newName(klass, object, NameType.NAME_ALPHABETIC) != null;
-		
-		HashMap<String, Object> subspace = getSubspace(klass);
-		
-		Object current = subspace.get(name);
-		if (current == object) // object already has name
-			return true;
-		else if (current != null) // name is already taken
+	public boolean setName(Object context, INameable object, String name) {
+		HashMap<INameable, String> subspace = getSubspace(context);
+		if (subspace.containsValue(name))
 			return false;
 		
-		String currentName = getName(klass, object);
-		if (currentName != null && !currentName.equals(name)) // object already has different name
-			subspace.remove(currentName);
+		if (hasName(context, object))
+			removeName(context, object);
 		
-		subspace.put(name, object);
+		subspace.put(object, name);
 		return true;
 	}
 	
-	/**
-	 * Finds a unique name for <code>object</code> in the
-	 * <code>klass</code>-specific namespace, registers it with that name, and
-	 * returns that name.
-	 * @param klass the {@link Class} whose namespace should be searched
-	 * @param object an object
-	 * @param t the type of name to generate
-	 * @return the unique name with which <code>object</code> was registered
-	 *         (not necessarily randomly generated - it might already have had
-	 *         one!)
-	 */
-	public String newName(Class<?> klass, Object object, NameType t) {
-		HashMap<String, Object> subspace = getSubspace(klass);
-		
-		String prospectiveName = getName(klass, object);
-		if (prospectiveName != null)
-			return prospectiveName;
-		
-		if (t == NameType.NAME_NUMERIC) {
+	public boolean removeName(Object context, INameable object) {
+		return (getSubspace(context).remove(object) != null);
+	}
+	
+	private final static String _IAS_ALPHA = "abcdefghijklmnopqrstuvwxyz";
+	
+	private static String intAsString(int x) {
+		String s = "";
+		boolean nonZeroEncountered = false;
+		for (int i = 6; i >= 0; i--) {
+			int y = (int)Math.pow(26, i);
+			int z = x / y;
+
+			if (z == 0 && !nonZeroEncountered && i != 0)
+				continue;
+
+			nonZeroEncountered = true;
+			s += _IAS_ALPHA.charAt(z);
+
+			x -= y * z;
+		}
+		return s;
+	}
+	
+	public String requireName(Object context, INameable object) {
+		String name = getName(context, object);
+		if (name != null) {
+			return name;
+		} else {
+			HashMap<INameable, String> subspace = getSubspace(context);
 			int i = 0;
-			do {
-				prospectiveName = Integer.toString(i++);
-			} while (subspace.containsKey(prospectiveName));
-		} else if (t == NameType.NAME_ALPHABETIC) {
-			int i = 0;
-			do {
-				prospectiveName = "";
-				int j = i;
+			switch (object.getNameType()) {
+			case NAME_NUMERIC:
 				do {
-					int lastPart = j % 26;
-					prospectiveName = (char)('a' + lastPart) + prospectiveName;
-					j /= 26;
-				} while (j != 0);
-				i++;
-			} while (subspace.containsKey(prospectiveName));
+					name = Integer.toString(i++);
+				} while (subspace.containsValue(name));
+				break;
+			case NAME_ALPHABETIC:
+				do {
+					name = intAsString(i++);
+				} while (subspace.containsValue(name));
+				break;
+			default:
+				break;
+			}
+			if (setName(context, object, name)) {
+				System.out.println("Succeeded in giving " + object + " name \"" + name + "\" (context " + context + ")");
+				return name;
+			} else return null;
 		}
-		
-		subspace.put(prospectiveName, object);
-		return prospectiveName;
 	}
 	
-	/**
-	 * Removes the named object from the <code>klass</code>-specific namespace.
-	 * @param klass the {@link Class} whose namespace should be searched
-	 * @param name a name
-	 * @return the formerly-named object, if there was one, or
-	 *         <code>null</code> if there wasn't
-	 */
-	public Object removeObject(Class<?> klass, String name) {
-		return getSubspace(klass).remove(name);
-	}
-	
-	/**
-	 * Returns the name registered in <code>nm</code> for <code>nameable</code>.
-	 * If it doesn't have a name, then <code>nameable.setName(null)</code> will
-	 * be called to create one.
-	 * @param klass the {@link Class} whose namespace should be used
-	 * @param nameable an {@link INameable}
-	 * @param nm a {@link NamespaceManager}
-	 * @return the registered name of <code>nameable</code>
-	 */
-	public String getRequiredName(Class<?> klass, INameable nameable) {
-		String name = getName(klass, nameable);
-		if (name == null) {
-			nameable.setName(null);
-			name = getName(klass, nameable);
-		}
-		return name;
+	public INameable getObject(Object context, String name) {
+		HashMap<INameable, String> subspace = getSubspace(context);
+		if (subspace.containsValue(name)) {
+			for (Entry<INameable, String> i : subspace.entrySet())
+				if (i.getValue().equals(name))
+					return i.getKey();
+			return null;
+		} else return null;
 	}
 }

@@ -9,7 +9,6 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.assistants.NamespaceManager;
-import dk.itu.big_red.model.assistants.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
@@ -107,7 +106,7 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 	
 	@Override
 	public String getName() {
-		return getBigraph().getNamespaceManager().getRequiredName(Link.class, this);
+		return getBigraph().getNamespaceManager().requireName(Link.class, this);
 	}
 	
 	@Override
@@ -115,10 +114,10 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 		NamespaceManager nm = getBigraph().getNamespaceManager();
 		String oldName = nm.getName(Link.class, this);
 		if (name != null) {
-			if (nm.setName(Link.class, name, this))
+			if (nm.setName(Link.class, this, name))
 				firePropertyChange(PROPERTY_NAME, oldName, name);
 		} else {
-			String newName = nm.newName(Link.class, this, NameType.NAME_ALPHABETIC);
+			String newName = nm.requireName(Link.class, this);
 			if (!newName.equals(oldName))
 				firePropertyChange(PROPERTY_NAME, oldName, newName);
 		}

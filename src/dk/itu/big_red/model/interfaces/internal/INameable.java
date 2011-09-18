@@ -11,6 +11,11 @@ package dk.itu.big_red.model.interfaces.internal;
  *
  */
 public interface INameable {
+	public static enum NameType {
+		NAME_ALPHABETIC,
+		NAME_NUMERIC
+	};
+
 	/**
 	 * The property name fired when the name changes.
 	 */
@@ -29,4 +34,10 @@ public interface INameable {
 	 * @param name the new name for this object
 	 */
 	public void setName(String name);
+	
+	/**
+	 * Gets the type of name that should be given to this object.
+	 * @return a {@link NameType}
+	 */
+	public NameType getNameType();
 }

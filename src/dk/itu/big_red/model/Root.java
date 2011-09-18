@@ -1,7 +1,5 @@
 package dk.itu.big_red.model;
 
-import dk.itu.big_red.model.assistants.NamespaceManager;
-import dk.itu.big_red.model.assistants.NamespaceManager.NameType;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IRoot;
@@ -15,7 +13,7 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @author alec
  * @see IRoot
  */
-public class Root extends Container implements INameable, IRoot {
+public class Root extends NameableContainer implements INameable, IRoot {
 	@Override
 	public Container clone() throws CloneNotSupportedException {
 		return new Root()._overwrite(this);
@@ -25,25 +23,6 @@ public class Root extends Container implements INameable, IRoot {
 	public boolean canContain(ILayoutable child) {
 		Class<? extends ILayoutable> c = child.getClass();
 		return (c == Node.class || c == Site.class);
-	}
-	
-	@Override
-	public String getName() {
-		return getBigraph().getNamespaceManager().getRequiredName(getClass(), this);
-	}
-	
-	@Override
-	public void setName(String name) {
-		NamespaceManager nm = getBigraph().getNamespaceManager();
-		String oldName = nm.getName(getClass(), this);
-		if (name != null) {
-			if (nm.setName(getClass(), name, this))
-				firePropertyChange(PROPERTY_NAME, oldName, name);
-		} else {
-			String newName = nm.newName(getClass(), this, NameType.NAME_NUMERIC);
-			if (!newName.equals(oldName))
-				firePropertyChange(PROPERTY_NAME, oldName, newName);
-		}
 	}
 
 	@Override
@@ -59,5 +38,10 @@ public class Root extends Container implements INameable, IRoot {
 	@Override
 	public Iterable<IChild> getIChildren() {
 		return new HomogeneousIterable<IChild>(children, IChild.class);
+	}
+
+	@Override
+	public NameType getNameType() {
+		return NameType.NAME_NUMERIC;
 	}
 }
