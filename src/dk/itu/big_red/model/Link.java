@@ -5,13 +5,14 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.RGB;
+
+import dk.itu.big_red.editors.bigraph.parts.InnerNamePart;
+import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
-import dk.itu.big_red.part.InnerNamePart;
-import dk.itu.big_red.part.PortPart;
 
 /**
  * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;

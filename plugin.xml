@@ -83,8 +83,8 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="dk.itu.big_red.editors.BigraphEditor"
-            contributorClass="dk.itu.big_red.editors.assistants.BigraphEditorActionBarContributor"
+            class="dk.itu.big_red.editors.bigraph.BigraphEditor"
+            contributorClass="dk.itu.big_red.editors.bigraph.BigraphEditorActionBarContributor"
             default="true"
             extensions="bigraph, bigraph-agent"
             icon="icons/icon16.png"
@@ -95,8 +95,8 @@
          </contentTypeBinding>
       </editor>
       <editor
-            class="dk.itu.big_red.editors.SignatureEditor"
-            contributorClass="dk.itu.big_red.editors.assistants.SignatureEditorActionBarContributor"
+            class="dk.itu.big_red.editors.signature.SignatureEditor"
+            contributorClass="dk.itu.big_red.editors.signature.SignatureEditorActionBarContributor"
             default="false"
             extensions="bigraph-signature"
             icon="icons/icon16.png"
