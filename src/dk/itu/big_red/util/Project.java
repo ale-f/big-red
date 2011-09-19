@@ -203,6 +203,18 @@ public class Project {
 		return null;
 	}
 	
+	/**
+	 * Indicates whether or not the two {@link IFile}s provided belong to the
+	 * same {@link IProject}.
+	 * @param one the first {@link IFile} to compare
+	 * @param two the second {@link IFile} to compare
+	 * @return whether the two IFiles belong to the same project or not
+	 */
+	public boolean compareProjects(IFile one, IFile two) {
+		return (one != null && two != null &&
+				one.getProject().equals(two.getProject()));
+	}
+	
 	public static void createBigraph(IFile sigFile, IFile bigFile) throws ImportFailedException, ExportFailedException, CoreException {
 		Bigraph b = new Bigraph();
 		b.setSignature(sigFile, new SignatureXMLImport().setInputStream(sigFile.getContents()).importObject());
