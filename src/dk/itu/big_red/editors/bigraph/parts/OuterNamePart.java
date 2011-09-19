@@ -6,7 +6,6 @@ import org.eclipse.draw2d.IFigure;
 import dk.itu.big_red.editors.bigraph.figures.OuterNameFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 
 public class OuterNamePart extends LinkPart {
@@ -21,8 +20,6 @@ public class OuterNamePart extends LinkPart {
 		if (evt.getPropertyName().equals(InnerName.PROPERTY_NAME) ||
 			evt.getPropertyName().equals(ICommentable.PROPERTY_COMMENT)) {
 	    	refreshVisuals();
-	    } else if (evt.getPropertyName().equals(Link.PROPERTY_TARGET_EDGE)) {
-	    	refreshTargetConnections();
 	    }
 	}
 	

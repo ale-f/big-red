@@ -33,7 +33,6 @@ public class EdgePart extends LinkPart {
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
 		refreshVisuals();
-		refreshTargetConnections();
 	}
 	
 	@Override

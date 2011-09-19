@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,14 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 		return (Link)super.getModel();
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
+		if (evt.getPropertyName().equals(Link.PROPERTY_POINT)) {
+	    	refreshTargetConnections();
+	    }
+	}
+	
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();

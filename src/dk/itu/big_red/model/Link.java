@@ -22,10 +22,10 @@ import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
  */
 public abstract class Link extends LayoutableModelObject implements IAdaptable, INameable, IOutlineColourable, ILink {
 	/**
-	 * The property name fired when the target edge set changes (that is, an
-	 * edge for which this object is the target is added or removed).
+	 * The property name fired when a point is added to, or removed from, this
+	 * Link.
 	 */
-	public static final String PROPERTY_TARGET_EDGE = "LinkTargetEdge";
+	public static final String PROPERTY_POINT = "LinkPoint";
 	
 	/**
 	 * The {@link Point}s connected to this Link on the bigraph.
@@ -42,7 +42,7 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 			return;
 		points.add(point);
 		point.setLink(this);
-		firePropertyChange(Link.PROPERTY_TARGET_EDGE, null, getConnectionFor(point));
+		firePropertyChange(Link.PROPERTY_POINT, null, point);
 	}
 	
 	/**
@@ -51,9 +51,9 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 	 */
 	public void removePoint(Point point) {
 		if (points.remove(point)) {
-			LinkConnection l = connections.remove(point);
+			connections.remove(point);
 			point.setLink(null);
-			firePropertyChange(Link.PROPERTY_TARGET_EDGE, l, null);
+			firePropertyChange(Link.PROPERTY_POINT, point, null);
 		}
 	}
 	
