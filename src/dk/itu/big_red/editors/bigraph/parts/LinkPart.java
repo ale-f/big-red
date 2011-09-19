@@ -5,9 +5,13 @@ import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.gef.ConnectionEditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 
+import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
+import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
+import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
@@ -54,6 +58,13 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 	protected List<LinkConnection> getModelTargetConnections() {
         return getModel().getConnections();
     }
+	
+	@Override
+	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
+	}
 	
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
