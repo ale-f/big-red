@@ -3,7 +3,6 @@ package dk.itu.big_red.model;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.util.Geometry;
@@ -128,16 +127,5 @@ public class Port extends Point implements IPort {
 	@Override
 	public INode getINode() {
 		return getParent();
-	}
-	
-	private NamespaceManager nm = null;
-	
-	protected NamespaceManager getNamespaceManager() {
-		return nm;
-	}
-	
-	protected void setNamespaceManager(NamespaceManager nm) {
-		if (nm != null)
-			this.nm = nm;
 	}
 }
