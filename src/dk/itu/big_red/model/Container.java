@@ -47,8 +47,10 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 	
 	public void removeChild(LayoutableModelObject child) {
 		boolean removed = children.remove(child);
-		if (removed)
+		if (removed) {
+			child.setParent(null);
 			firePropertyChange(PROPERTY_CHILD, child, null);
+		}
 	}
 	
 	public List<LayoutableModelObject> getChildren() {

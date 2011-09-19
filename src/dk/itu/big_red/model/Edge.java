@@ -42,10 +42,10 @@ public class Edge extends Link implements IEdge {
 	
 	@Override
 	public void addPoint(Point point) {
-		super.addPoint(point);
+		if (getParent() == null)
+			point.getBigraph().addChild(this);
 		
-		if (!getBigraph().hasChild(this))
-			getBigraph().addChild(this);
+		super.addPoint(point);
 	}
 	
 	/**
