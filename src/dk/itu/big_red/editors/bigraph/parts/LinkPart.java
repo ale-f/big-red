@@ -18,8 +18,8 @@ import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.assistants.LinkConnection;
 
 public abstract class LinkPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 

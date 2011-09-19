@@ -7,12 +7,12 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.assistants.LinkConnection;
 
 /**
  * PartFactories produce {@link EditPart}s from bigraph model objects.

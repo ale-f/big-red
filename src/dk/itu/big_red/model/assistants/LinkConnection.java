@@ -1,31 +1,26 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.assistants;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import dk.itu.big_red.model.assistants.ModelPropertySource;
+import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Point;
 
 /**
- * An LinkConnection is the model object behind an actual {@link Connection}
- * on the bigraph. {@link Link}s create and manage them.
+ * An LinkConnection is a fake model object, created on demand by {@link
+ * Link}s, which corresponds to an Eclipse {@link Connection}. They represent
+ * single {@link Connection}s on the bigraph, joining a {@link Link} to a
+ * {@link Point}.
  * @author alec
  *
  */
 public class LinkConnection extends ModelObject implements IAdaptable {
-	/**
-	 * The property name fired when this connection's {@link Point} changes.
-	 */
-	public static final String PROPERTY_POINT = "LinkConnectionPoint";
-	/**
-	 * The property name fired when this connection's {@link Link} changes.
-	 */
-	public static final String PROPERTY_LINK = "LinkConnectionLink";
-	
 	private Point point;
 	private Link link;
 	
-	protected LinkConnection(Link link, Point point) {
+	public LinkConnection(Link link, Point point) {
 		this.link = link;
 		this.point = point;
 	}

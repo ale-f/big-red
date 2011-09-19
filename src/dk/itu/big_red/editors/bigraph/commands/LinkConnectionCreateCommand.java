@@ -5,8 +5,8 @@ import org.eclipse.gef.commands.Command;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.assistants.LinkConnection;
 
 /**
  * A LinkConnectionCreateCommand is in charge of creating and updating {@link

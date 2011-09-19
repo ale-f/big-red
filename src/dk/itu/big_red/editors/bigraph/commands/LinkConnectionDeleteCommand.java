@@ -3,7 +3,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.assistants.LinkConnection;
 
 /**
  * EdgeConnectionDeleteCommands remove {@link LinkConnection}s from their

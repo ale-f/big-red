@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
+import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;

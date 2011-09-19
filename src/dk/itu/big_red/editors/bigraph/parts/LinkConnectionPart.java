@@ -17,7 +17,7 @@ import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.assistants.LinkConnection;
 
 /**
  * EdgeConnectionParts represent {@link LinkConnection}s, the individual

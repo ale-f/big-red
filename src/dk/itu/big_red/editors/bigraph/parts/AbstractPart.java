@@ -17,7 +17,7 @@ import org.eclipse.ui.PartInitException;
 
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.model.LayoutableModelObject;
-import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.UI;
 

@@ -7,7 +7,7 @@ import dk.itu.big_red.editors.bigraph.figures.EdgeFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.assistants.LinkConnection;
 
 /**
  * EdgeParts represent {@link Edge}s, the container for - and target point of -
