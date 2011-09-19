@@ -25,7 +25,7 @@ public class LinkConnection extends ModelObject implements IAdaptable {
 	private Point point;
 	private Link link;
 	
-	public LinkConnection(Link link) {
+	protected LinkConnection(Link link) {
 		this.link = link;
 	}
 	
