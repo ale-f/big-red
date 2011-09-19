@@ -103,12 +103,12 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return null;
+		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
 	}
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return null;
+		 return new FixedPointAnchor(getFigure(), getAnchorOrientation());
 	}
 
 	@Override

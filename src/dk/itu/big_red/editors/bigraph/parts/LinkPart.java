@@ -62,12 +62,12 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 	
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return null;
+		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
     }
     
 	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return null;
+		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
     }
 	
 	@Override
