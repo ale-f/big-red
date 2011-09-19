@@ -39,6 +39,8 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 	 * @param point a Point
 	 */
 	public void addPoint(Point point) {
+		if (point == null)
+			return;
 		LinkConnection c = new LinkConnection(this);
 		c.setPoint(point);
 		addConnection(c);
@@ -53,6 +55,8 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 	 * @param point a Point
 	 */
 	public void removePoint(Point point) {
+		if (point == null)
+			return;
 		for (LinkConnection e : connections) {
 			if (e.getPoint() == point) {
 				point.setLink(null);
