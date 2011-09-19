@@ -4,6 +4,13 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.NamespaceManager;
+import dk.itu.big_red.model.changes.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.BigraphChangeConnect;
+import dk.itu.big_red.model.changes.BigraphChangeDisconnect;
+import dk.itu.big_red.model.changes.BigraphChangeRemoveChild;
+import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.IInnerName;
@@ -20,7 +27,7 @@ import dk.itu.big_red.util.resources.ResourceWrapper;
  * @author alec
  * @see IBigraph
  */
-public class Bigraph extends Container implements IBigraph {
+public class Bigraph extends Container implements IBigraph, IChangeable {
 	protected ResourceWrapper<Signature> signature =
 		new ResourceWrapper<Signature>();
 	protected NamespaceManager namespaceManager = new NamespaceManager();
@@ -68,6 +75,44 @@ public class Bigraph extends Container implements IBigraph {
 	 */
 	public NamespaceManager getNamespaceManager() {
 		return namespaceManager;
+	}
+	
+	@Override
+	public boolean validateChange(Change c) {
+		if (c instanceof ChangeGroup) {
+			for (Change d : (ChangeGroup)c) {
+				if (!validateChange(d))
+					return false;
+			}
+			return true;
+		} else return true;
+	}
+	
+	@Override
+	public boolean applyChange(Change c) {
+		if (!validateChange(c))
+			return false;
+		doChange(c);
+		return true;
+	}
+	
+	private void doChange(Change b) {
+		if (b instanceof ChangeGroup) {
+			for (Change c : (ChangeGroup)b)
+				doChange(c);
+		} else if (b instanceof BigraphChangeConnect) {
+			BigraphChangeConnect c = (BigraphChangeConnect)b;
+			c.link.addPoint(c.point);
+		} else if (b instanceof BigraphChangeDisconnect) {
+			BigraphChangeDisconnect c = (BigraphChangeDisconnect)b;
+			c.link.removePoint(c.point);
+		} else if (b instanceof BigraphChangeAddChild) {
+			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
+			c.parent.addChild(c.child);
+		} else if (b instanceof BigraphChangeRemoveChild) {
+			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
+			c.parent.removeChild(c.child);
+		}
 	}
 	
 	@Override
