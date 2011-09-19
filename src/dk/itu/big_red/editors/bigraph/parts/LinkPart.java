@@ -33,16 +33,10 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 	protected void refreshVisuals(){
 		super.refreshVisuals();
 		
-		AbstractFigure figure = (AbstractFigure)getFigure();
+		AbstractFigure figure = getFigure();
 		Link model = getModel();
 		
-		figure.setConstraint(model.getLayout());
-		
-		String toolTip = model.getName();
-		if (model.getComment() != null)
-			toolTip += "\n\n" + model.getComment();
-		figure.setToolTip(toolTip);
-		
+		setToolTip(model.getName());
 		figure.setBackgroundColor(model.getOutlineColour());
 	}
 	

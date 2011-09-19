@@ -85,9 +85,7 @@ public class NodePart extends ContainerPart {
 			
 			toolTip = "Node with no control";
 		}
-		if (model.getComment() != null)
-			toolTip += "\n\n" + model.getComment();
-		figure.setToolTip(toolTip);
+		setToolTip(toolTip);
 		
 		PointList points = model.getFittedPolygon();
 		if (points != null)

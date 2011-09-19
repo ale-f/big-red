@@ -15,10 +15,10 @@ import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 
+import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
-import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 import dk.itu.big_red.util.UI;
 
 /**
@@ -31,11 +31,16 @@ import dk.itu.big_red.util.UI;
  */
 public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 	/**
-	 * Gets the model object, cast to an {@link IPropertyChangeNotifier}.
+	 * Gets the model object, cast to a {@link LayoutableModelObject}.
 	 */
 	@Override
-	public IPropertyChangeNotifier getModel() {
-		return (IPropertyChangeNotifier)super.getModel();
+	public LayoutableModelObject getModel() {
+		return (LayoutableModelObject)super.getModel();
+	}
+	
+	@Override
+	public AbstractFigure getFigure() {
+		return (AbstractFigure)super.getFigure();
 	}
 	
 	/**
@@ -117,5 +122,24 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * Sets the tooltip of this {@link AbstractPart}'s associated {@link
+	 * AbstractFigure}, appending the model object's comment (if there is one).
+	 * @param tooltip
+	 */
+	protected void setToolTip(String tooltip) {
+		if (getModel().getComment() != null)
+			tooltip += "\n\n" + getModel().getComment();
+		getFigure().setToolTip(tooltip);
+	}
+	
+	@Override
+	protected void refreshVisuals() {
+		LayoutableModelObject model = getModel();
+		AbstractFigure figure = getFigure();
+		
+		figure.setConstraint(model.getLayout());
 	}
 }

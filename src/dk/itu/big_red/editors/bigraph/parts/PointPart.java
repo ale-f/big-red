@@ -80,17 +80,13 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 		super.refreshVisuals();
 		
 		Point model = getModel();
-		AbstractFigure figure = (AbstractFigure)getFigure();
-		
-		figure.setConstraint(model.getLayout());
+		AbstractFigure figure = getFigure();
 		
 		String toolTip = model.getName();
 		Link l = model.getLink();
 		if (l != null)
 			toolTip += "\n(connected to " + l.getName() + ")";
-		if (model.getComment() != null)
-			toolTip += "\n\n" + model.getComment();
-		figure.setToolTip(toolTip);
+		setToolTip(toolTip);
 		
 		figure.setBackgroundColor(l != null ?
 				l.getOutlineColour() : Point.DEFAULT_COLOUR);
