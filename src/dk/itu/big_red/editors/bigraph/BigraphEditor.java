@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
@@ -164,7 +163,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     
     private void loadingError(String error, Throwable cause) {
 		ErrorDialog.openError(getSite().getShell(), null, error,
-    			new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, cause.getLocalizedMessage(), cause));
+				RedActivator.getThrowableStatus(cause));
     }
     
     @Override
@@ -282,7 +281,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
         	if (monitor != null)
         		monitor.setCanceled(true);
         	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
-	    		new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, ex.getLocalizedMessage(), ex));
+	    		RedActivator.getThrowableStatus(ex));
         }
 	}
 	

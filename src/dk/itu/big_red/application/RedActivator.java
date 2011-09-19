@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -83,5 +85,16 @@ public class RedActivator extends AbstractUIPlugin {
 		} catch (IOException e) {
 			return null;
 		}
+	}
+	
+	/**
+	 * Returns a new {@link Status} object with a {@link Throwable} attached.
+	 * <p>The severity of the new Status object is always {@link
+	 * IStatus#ERROR}.
+	 * @param t a {@link Throwable}
+	 * @return a new {@link Status} object
+	 */
+	public static Status getThrowableStatus(Throwable t) {
+		return new Status(IStatus.ERROR, PLUGIN_ID, t.getLocalizedMessage(), t);
 	}
 }

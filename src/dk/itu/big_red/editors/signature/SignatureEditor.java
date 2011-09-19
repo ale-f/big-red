@@ -5,7 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -75,7 +74,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
         	if (monitor != null)
         		monitor.setCanceled(true);
         	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
-    	    		new Status(Status.ERROR, RedActivator.PLUGIN_ID, Status.OK, ex.getLocalizedMessage(), ex));
+        			RedActivator.getThrowableStatus(ex));
         }
 	}
 
