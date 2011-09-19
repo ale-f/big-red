@@ -2,7 +2,6 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import org.eclipse.gef.commands.Command;
 
-import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
 
@@ -23,14 +22,10 @@ public class LayoutableDeleteCommand extends Command {
 	@Override
 	public void execute() {
 		parentModel.removeChild(model);
-		if (parentModel instanceof Bigraph)
-			parentModel.getBigraph().updateBoundaries();
 	}
 	
 	@Override
 	public void undo() {
 		parentModel.addChild(model);
-		if (parentModel instanceof Bigraph)
-			parentModel.getBigraph().updateBoundaries();
 	}
 }
