@@ -1,31 +1,69 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import java.util.ArrayList;
+
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.Point;
 
 public class LayoutableDeleteCommand extends Command {
-	private LayoutableModelObject model = null;
-	private Container parentModel = null;
+	private LayoutableModelObject object = null;
+	private Container parent = null;
 	
-	public void setModel(Object model) {
-		if (model instanceof LayoutableModelObject)
-			this.model = (LayoutableModelObject)model;
-	}
-	
-	public void setParentModel(Object model) {
-		if (model instanceof Container)
-			parentModel = (Container)model;
+	public void setObject(Object model) {
+		if (model instanceof LayoutableModelObject) {
+			this.object = (LayoutableModelObject)model;
+			this.parent = this.object.getParent();
+			if (this.parent == null)
+				this.object = null;
+		}
 	}
 	
 	@Override
+	public boolean canExecute() {
+		return (object != null && parent != null);
+	}
+	
+	private Link link = null;
+	private ArrayList<Point> points = null;
+	
+	@Override
 	public void execute() {
-		parentModel.removeChild(model);
+		if (object instanceof Link) {
+			Link object = (Link)this.object;
+			if (points == null)
+				points = new ArrayList<Point>();
+			for (LinkConnection i : object.getConnections())
+				points.add(i.getPoint());
+			for (Point i : points)
+				object.removePoint(i);
+		} else if (object instanceof Point) {
+			Point object = (Point)this.object;
+			link = object.getLink();
+			if (link != null)
+				link.removePoint(object);
+		}
+		parent.removeChild(object);
 	}
 	
 	@Override
 	public void undo() {
-		parentModel.addChild(model);
+		parent.addChild(object);
+		if (object instanceof Link && points != null) {
+			Link object = (Link)this.object;
+			for (Point i : points)
+				object.addPoint(i);
+		} else if (object instanceof Point && link != null) {
+			link.addPoint((Point)this.object);
+		}
+	}
+	
+	@Override
+	public void redo() {
+		execute();
 	}
 }
