@@ -1,12 +1,9 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.draw2d.IFigure;
 import dk.itu.big_red.editors.bigraph.figures.EdgeFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.assistants.LinkConnection;
 
 /**
@@ -20,19 +17,8 @@ import dk.itu.big_red.model.assistants.LinkConnection;
  */
 public class EdgePart extends LinkPart {
 	@Override
-	public Link getModel() {
-		return super.getModel();
-	}
-	
-	@Override
 	protected IFigure createFigure() {
 		return new EdgeFigure();
-	}
-
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		super.propertyChange(evt);
-		refreshVisuals();
 	}
 	
 	@Override
