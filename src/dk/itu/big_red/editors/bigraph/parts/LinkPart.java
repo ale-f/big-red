@@ -35,9 +35,15 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
-		if (evt.getPropertyName().equals(Link.PROPERTY_POINT)) {
-	    	refreshTargetConnections();
-	    }
+		if (evt.getSource() == getModel()) {
+			String property = evt.getPropertyName();
+			if (property.equals(Link.PROPERTY_POINT)) {
+		    	refreshTargetConnections();
+		    } else if (property.equals(Link.PROPERTY_NAME) ||
+		    		property.equals(Link.PROPERTY_OUTLINE_COLOUR)) {
+		    	refreshVisuals();
+		    }
+		}
 	}
 	
 	@Override

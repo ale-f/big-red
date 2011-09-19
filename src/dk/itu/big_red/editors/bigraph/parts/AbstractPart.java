@@ -18,6 +18,7 @@ import org.eclipse.ui.PartInitException;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.assistants.LinkConnection;
+import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.UI;
 
@@ -79,7 +80,13 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		refresh();
+		if (evt.getSource() == getModel()) {
+			String property = evt.getPropertyName();
+			if (property.equals(ICommentable.PROPERTY_COMMENT) ||
+				property.equals(ILayoutable.PROPERTY_LAYOUT)) {
+				refreshVisuals();
+			}
+		}
 	}
 
 	/**

@@ -17,7 +17,6 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 
 public abstract class PointPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
@@ -49,11 +48,11 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
 		if (source == getModel()) {
-			if (prop.equals(ILayoutable.PROPERTY_LAYOUT) ||
-				prop.equals(INameable.PROPERTY_NAME)) {
+			if (prop.equals(INameable.PROPERTY_NAME)) {
 				refreshVisuals();
 			} else if (prop.equals(Point.PROPERTY_LINK)) {
 				Link oldLink = (Link)evt.getOldValue(),

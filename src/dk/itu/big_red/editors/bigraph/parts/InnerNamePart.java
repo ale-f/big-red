@@ -1,7 +1,5 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
-import java.beans.PropertyChangeEvent;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
@@ -31,11 +29,6 @@ public class InnerNamePart extends PointPart {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
-	}
-	
-	@Override
-	public void propertyChange(PropertyChangeEvent evt) {
-		super.propertyChange(evt);
 	}
 	
 	@Override

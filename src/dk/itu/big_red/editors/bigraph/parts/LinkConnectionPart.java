@@ -81,10 +81,6 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		/*
-		 * When in doubt, refresh visuals!
-		 */
-		refreshVisuals();
 	}
 
 	@Override
