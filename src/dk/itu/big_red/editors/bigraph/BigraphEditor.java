@@ -13,7 +13,6 @@ import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.dnd.TemplateTransferDragSourceListener;
 import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
@@ -192,17 +191,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    }
 	    
 	    viewer.setContents(model.getModel());
-	    viewer.addDropTargetListener(new BigraphEditorTemplateTransferDropTargetListener(viewer));
 	    setPartName(getEditorInput().getName());
-    }
-    
-    @Override
-	protected void initializePaletteViewer() {
-    	super.initializePaletteViewer();
-    	// XXX (FIXME?) - what's going on here? Why not an AppTemplate (etc.)?
-    	// (tutorial page 72)
-    	getPaletteViewer().addDragSourceListener(
-    		new TemplateTransferDragSourceListener(getPaletteViewer()));
     }
     
     @Override
