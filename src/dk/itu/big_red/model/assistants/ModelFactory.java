@@ -6,6 +6,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
@@ -13,43 +14,40 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 
+/**
+ * The ModelFactory class creates {@link ModelObject}s on demand.
+ * @author alec
+ *
+ */
 public class ModelFactory implements CreationFactory {
 
-	private Class<?> template;
+	private Class<? extends ModelObject> type;
 	
-	public ModelFactory(Class<?> t) {
-		template = t;
+	/**
+	 * Creates a new {@link ModelFactory}, ready to produce objects of the
+	 * given type.
+	 * @param type a {@link Class} (extending {@link ModelObject})
+	 */
+	public ModelFactory(Class<? extends ModelObject> type) {
+		this.type = type;
 	}
 	
 	@Override
-	public Object getNewObject() {
-		if (template == null) {
-			return null;
-		} else if (template == Node.class) {
-			Node node = new Node();
-			return node;
-		} else if (template == Root.class) {
-			Root root = new Root();
-			return root;
-		} else if (template == Site.class) {
-			Site site = new Site();
-			return site;
-		} else if (template == InnerName.class){
-			InnerName name = new InnerName();
-			return name;
-		} else if (template == OuterName.class) {
-			OuterName name = new OuterName();
-			return name;
-		} else if (template == Edge.class) {
-			return new Edge();
-		} else {
-			return null;
-		}
+	public ModelObject getNewObject() {
+		if (type != null) {
+			try {
+				return type.newInstance();
+			} catch (IllegalAccessException e) {
+				return null;
+			} catch (InstantiationException e) {
+				return null;
+			}
+		} else return null;
 	}
 	
 	@Override
-	public Object getObjectType() {
-		return template;
+	public Class<? extends ModelObject> getObjectType() {
+		return type;
 	}
 
 	/**
