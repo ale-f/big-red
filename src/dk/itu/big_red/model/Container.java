@@ -27,7 +27,7 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 	/**
 	 * The property name fired when a child is added or removed.
 	 */
-	public static final String PROPERTY_CHILD = "ILayoutableChild";
+	public static final String PROPERTY_CHILD = "ContainerChild";
 	
 	public Container() {
 		layout = new Rectangle(10, 10, 100, 100);

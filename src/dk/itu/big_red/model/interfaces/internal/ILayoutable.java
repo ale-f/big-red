@@ -29,11 +29,6 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
 	
 	/**
-	 * The property name fired when the ILayoutable's parent changes.
-	 */
-	public static final String PROPERTY_PARENT = "ILayoutableParent";
-	
-	/**
 	 * Gets a copy of the current layout of this object.
 	 * @return the current layout
 	 */
