@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.ConnectionAnchor;
@@ -17,6 +18,7 @@ import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.LinkConnection;
+import dk.itu.big_red.model.Point;
 
 public abstract class LinkPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 
@@ -50,7 +52,10 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 	 */
 	@Override
 	protected List<LinkConnection> getModelTargetConnections() {
-        return getModel().getConnections();
+        ArrayList<LinkConnection> l = new ArrayList<LinkConnection>();
+        for (Point p : getModel().getPoints())
+        	l.add(getModel().getConnectionFor(p));
+        return l;
     }
 	
 	@Override

@@ -25,20 +25,9 @@ public class LinkConnection extends ModelObject implements IAdaptable {
 	private Point point;
 	private Link link;
 	
-	protected LinkConnection(Link link) {
+	protected LinkConnection(Link link, Point point) {
 		this.link = link;
-	}
-	
-	/**
-	 * Sets the {@link Point} at one end of this connection.
-	 * @param point the new Point
-	 */
-	public void setPoint(Point point) {
-		if (point != null) {
-			Point oldPoint = this.point;
-			this.point = point;
-			firePropertyChange(PROPERTY_POINT, oldPoint, point);
-		}
+		this.point = point;
 	}
 	
 	/**

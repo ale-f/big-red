@@ -7,7 +7,6 @@ import org.eclipse.gef.commands.Command;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.LinkConnection;
 import dk.itu.big_red.model.Point;
 
 public class LayoutableDeleteCommand extends Command {
@@ -37,8 +36,7 @@ public class LayoutableDeleteCommand extends Command {
 			Link object = (Link)this.object;
 			if (points == null)
 				points = new ArrayList<Point>();
-			for (LinkConnection i : object.getConnections())
-				points.add(i.getPoint());
+			points.addAll(object.getPoints());
 			for (Point i : points)
 				object.removePoint(i);
 		} else if (object instanceof Point) {
@@ -57,6 +55,7 @@ public class LayoutableDeleteCommand extends Command {
 			Link object = (Link)this.object;
 			for (Point i : points)
 				object.addPoint(i);
+			points.clear();
 		} else if (object instanceof Point && link != null) {
 			link.addPoint((Point)this.object);
 		}

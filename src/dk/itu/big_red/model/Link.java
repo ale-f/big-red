@@ -1,12 +1,12 @@
 package dk.itu.big_red.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.RGB;
 
-import dk.itu.big_red.editors.bigraph.parts.InnerNamePart;
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.ILink;
@@ -28,73 +28,60 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 	public static final String PROPERTY_TARGET_EDGE = "LinkTargetEdge";
 	
 	/**
-	 * The {@link LinkConnection}s that comprise this Link on the bigraph.
+	 * The {@link Point}s connected to this Link on the bigraph.
 	 */
-	private ArrayList<LinkConnection> connections =
-		new ArrayList<LinkConnection>();
+	private ArrayList<Point> points =
+		new ArrayList<Point>();
 	
 	/**
-	 * Adds the given {@link Point} to this Link's set of points, and creates a
-	 * new {@link LinkConnection} joining it to this Link's {@link Link}.
+	 * Adds the given {@link Point} to this Link's set of points.
 	 * @param point a Point
 	 */
 	public void addPoint(Point point) {
 		if (point == null)
 			return;
-		LinkConnection c = new LinkConnection(this);
-		c.setPoint(point);
-		addConnection(c);
-		
+		points.add(point);
 		point.setLink(this);
+		firePropertyChange(Link.PROPERTY_TARGET_EDGE, null, getConnectionFor(point));
 	}
 	
 	/**
-	 * Removes the given {@link Point} from this Link's set of points and
-	 * destroys its {@link LinkConnection}.
-	 * 
+	 * Removes the given {@link Point} from this Link's set of points.
 	 * @param point a Point
 	 */
 	public void removePoint(Point point) {
-		if (point == null)
-			return;
-		for (LinkConnection e : connections) {
-			if (e.getPoint() == point) {
-				point.setLink(null);
-				removeConnection(e);
-				
-				break;
-			}
+		if (points.remove(point)) {
+			LinkConnection l = connections.remove(point);
+			point.setLink(null);
+			firePropertyChange(Link.PROPERTY_TARGET_EDGE, l, null);
 		}
 	}
 	
-	private void addConnection(LinkConnection e) {
-		connections.add(e);
-		firePropertyChange(Link.PROPERTY_TARGET_EDGE, null, e);
-	}
-
-	private void removeConnection(LinkConnection e) {
-		connections.remove(e);
-		firePropertyChange(Link.PROPERTY_TARGET_EDGE, e, null);
+	public List<Point> getPoints() {
+		return points;
 	}
 	
-	public List<LinkConnection> getConnections() {
-		return connections;
-	}
-
+	private HashMap<Point, LinkConnection> connections =
+		new HashMap<Point, LinkConnection>();
+	
 	/**
-	 * Returns the {@link LinkConnection} connecting the given {@link Point}
-	 * to this Link.
+	 * Lazily creates and returns a {@link LinkConnection} connecting the given
+	 * {@link Point} to this Link.
 	 * 
 	 * <p><strong>Do not call this function</strong>; it's intended only for
-	 * the use of {@link PortPart}s and {@link InnerNamePart}s.
+	 * the use of {@link PortPart}s and {@link LinkPart}s.
 	 * @param p a {@link Point}
 	 * @return a {@link LinkConnection}, which could go away at any point
 	 */
 	public LinkConnection getConnectionFor(Point p) {
-		for (LinkConnection l : connections)
-			if (l.getPoint() == p)
-				return l;
-		return null;
+		if (!points.contains(p))
+			return null;
+		LinkConnection l = connections.get(p);
+		if (l == null) {
+			l = new LinkConnection(this, p);
+			connections.put(p, l);
+		}
+		return l;
 	}
 	
 	@Override
@@ -136,8 +123,8 @@ public abstract class Link extends LayoutableModelObject implements IAdaptable, 
 	@Override
 	public Iterable<IPoint> getIPoints() {
 		ArrayList<IPoint> points = new ArrayList<IPoint>();
-		for (LinkConnection c : connections)
-			points.add(c.getPoint());
+		for (Point c : this.points)
+			points.add(c);
 		return points;
 	}
 }

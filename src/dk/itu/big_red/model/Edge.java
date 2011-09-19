@@ -23,10 +23,10 @@ public class Edge extends Link implements IEdge {
 	 * {@link Point}s connected to it.
 	 */
 	public void averagePosition() {
-		int tx = 0, ty = 0, s = getConnections().size();
-		for (LinkConnection f : getConnections()) {
-			tx += f.getPoint().getRootLayout().x;
-			ty += f.getPoint().getRootLayout().y;
+		int tx = 0, ty = 0, s = getPoints().size();
+		for (Point p : getPoints()) {
+			tx += p.getRootLayout().x;
+			ty += p.getRootLayout().y;
 		}
 		setLayout(new Rectangle(tx / s, ty / s, getLayout().width, getLayout().height));
 	}
@@ -58,7 +58,7 @@ public class Edge extends Link implements IEdge {
 	public void removePoint(Point point) {
 		super.removePoint(point);
 		
-		if (getConnections().size() == 0)
+		if (getPoints().size() == 0)
 			getBigraph().removeChild(this);
 	}
 	
