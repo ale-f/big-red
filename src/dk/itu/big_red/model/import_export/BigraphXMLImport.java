@@ -17,7 +17,7 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
-import dk.itu.big_red.model.changes.BigraphChangeConnect;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Project;

@@ -5,10 +5,10 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.assistants.LinkConnection;
-import dk.itu.big_red.model.changes.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.BigraphChangeConnect;
-import dk.itu.big_red.model.changes.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 
 /**
  * A LinkConnectionCreateCommand is in charge of creating and updating {@link

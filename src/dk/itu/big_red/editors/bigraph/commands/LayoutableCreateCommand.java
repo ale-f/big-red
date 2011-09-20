@@ -8,9 +8,9 @@ import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.changes.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
 public class LayoutableCreateCommand extends ChangeCommand {
 	ChangeGroup cg = new ChangeGroup();

@@ -1,7 +1,8 @@
-package dk.itu.big_red.model.changes;
+package dk.itu.big_red.model.changes.bigraph;
 
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.changes.Change;
 
 public class BigraphChangeConnect extends Change {
 	public Point point;

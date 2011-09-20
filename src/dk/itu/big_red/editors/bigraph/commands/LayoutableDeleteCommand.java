@@ -5,9 +5,9 @@ import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.changes.BigraphChangeDisconnect;
-import dk.itu.big_red.model.changes.BigraphChangeRemoveChild;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 
 public class LayoutableDeleteCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

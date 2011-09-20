@@ -7,8 +7,8 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Node;
 
-import dk.itu.big_red.model.changes.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**

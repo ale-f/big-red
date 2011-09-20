@@ -2,7 +2,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.assistants.LinkConnection;
-import dk.itu.big_red.model.changes.BigraphChangeDisconnect;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 
 /**
  * EdgeConnectionDeleteCommands remove {@link LinkConnection}s from their

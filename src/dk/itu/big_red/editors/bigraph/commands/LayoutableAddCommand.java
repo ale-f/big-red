@@ -4,9 +4,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LayoutableModelObject;
-import dk.itu.big_red.model.changes.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
 public class LayoutableAddCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

@@ -1,9 +1,8 @@
-package dk.itu.big_red.model.changes;
+package dk.itu.big_red.model.changes.bigraph;
 
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.changes.Change;
 
 public class BigraphChangeAddChild extends Change {
 	public Container parent;
