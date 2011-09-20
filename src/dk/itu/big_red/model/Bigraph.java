@@ -12,6 +12,7 @@ import dk.itu.big_red.model.changes.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.BigraphChangeRemoveChild;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IEdge;
@@ -80,25 +81,44 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
+	public void applyChange(Change b) {
+		if (!validateChange(b))
+			return;
+		doChange(b);
+	}
+	
+	private ChangeRejectedException lastRejection = null;
+	
+	@Override
 	public boolean validateChange(Change b) {
-		if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b) {
-				if (!validateChange(c))
-					return false;
-			}
-			return true;
-		} else if (b instanceof BigraphChangeConnect) {
-			BigraphChangeConnect c = (BigraphChangeConnect)b;
-			return (c.point.getLink() == null);
-		} else return true;
+		try {
+			tryValidateChange(b);
+		} catch (ChangeRejectedException e) {
+			e.printStackTrace();
+			lastRejection = e;
+			return false;
+		}
+		return true;
 	}
 	
 	@Override
-	public boolean applyChange(Change c) {
-		if (!validateChange(c))
-			return false;
-		doChange(c);
-		return true;
+	public ChangeRejectedException getLastRejection() {
+		return lastRejection;
+	}
+	
+	@Override
+	public void tryValidateChange(Change b) throws ChangeRejectedException {
+		if (b instanceof ChangeGroup) {
+			for (Change c : (ChangeGroup)b) {
+				tryValidateChange(c);
+			}
+		} else if (b instanceof BigraphChangeConnect) {
+			BigraphChangeConnect c = (BigraphChangeConnect)b;
+			if (c.point.getLink() != null)
+				throw new ChangeRejectedException(this, b, this,
+					"Connections can only be established to Points that " +
+					"aren't already connected");
+		}
 	}
 	
 	private void doChange(Change b) {
