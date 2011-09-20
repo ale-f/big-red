@@ -9,7 +9,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import dk.itu.big_red.exceptions.ExportFailedException;
+import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.UI;
 

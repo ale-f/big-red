@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.ImageLoader;
 
-import dk.itu.big_red.exceptions.ExportFailedException;
+import dk.itu.big_red.import_export.ExportFailedException;
 
 public class BigraphPNGExport extends FigureExport<IFigure> {
 

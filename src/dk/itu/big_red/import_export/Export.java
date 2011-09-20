@@ -6,7 +6,6 @@ import java.io.OutputStream;
 
 import org.eclipse.draw2d.IFigure;
 
-import dk.itu.big_red.exceptions.ExportFailedException;
 
 /**
  * Classes extending Export can write objects to an {@link OutputStream}. (The

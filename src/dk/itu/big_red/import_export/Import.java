@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-import dk.itu.big_red.exceptions.ImportFailedException;
 
 /**
  * Classes extending Import can read objects from an {@link InputStream}.

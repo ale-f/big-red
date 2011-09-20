@@ -4,7 +4,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.exceptions.ExportFailedException;
+import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;

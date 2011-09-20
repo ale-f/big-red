@@ -1,6 +1,6 @@
-package dk.itu.big_red.exceptions;
+package dk.itu.big_red.import_export;
 
-import dk.itu.big_red.import_export.Import;
+import dk.itu.big_red.application.RedException;
 
 /**
  * Classes extending {@link Import} throw an ImportFailedException if the

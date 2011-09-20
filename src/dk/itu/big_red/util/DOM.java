@@ -33,7 +33,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.xml.sax.SAXException;
 
-import dk.itu.big_red.exceptions.ValidationFailedException;
 
 /**
  * Utility functions for manipulating DOM {@link Document}s and

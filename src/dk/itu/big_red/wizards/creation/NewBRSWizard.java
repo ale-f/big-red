@@ -10,8 +10,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
-import dk.itu.big_red.exceptions.ExportFailedException;
-import dk.itu.big_red.exceptions.ImportFailedException;
+import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.util.Project;
 
 public class NewBRSWizard extends Wizard implements INewWizard {

@@ -8,8 +8,8 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import dk.itu.big_red.exceptions.ExportFailedException;
-import dk.itu.big_red.exceptions.ImportFailedException;
+import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.UI;

@@ -1,4 +1,4 @@
-package dk.itu.big_red.exceptions;
+package dk.itu.big_red.application;
 
 /**
  * All exceptions thrown by Big Red are subclasses of <code>RedException</code>.
