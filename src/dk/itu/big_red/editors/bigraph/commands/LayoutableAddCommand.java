@@ -1,74 +1,58 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.commands.Command;
-
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.changes.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.BigraphChangeLayout;
+import dk.itu.big_red.model.changes.ChangeGroup;
 
-public class LayoutableAddCommand extends Command {
+public class LayoutableAddCommand extends ChangeCommand {
+	private ChangeGroup cg = new ChangeGroup();
+	
+	public LayoutableAddCommand() {
+		setChange(cg);
+	}
+	
 	private Container parent = null;
 	private LayoutableModelObject child = null;
-	private Rectangle constraint = null, oldConstraint = null;
-	private boolean constraintTranslated = false;
+	private Rectangle constraint = null;
+	
+	private void prepareGroup() {
+		cg.clear();
+		if (parent != null && child != null && constraint != null) {
+			for (LayoutableModelObject i : parent.getChildren()) {
+				if (i.getLayout().intersects(constraint))
+					return;
+			}
+			if (!parent.getLayout().contains(constraint) &&
+					!(child instanceof Edge))
+				return;
+			
+			if (child instanceof Edge) {
+				constraint = new Rectangle(constraint).translate(parent.getRootLayout().getTopLeft());
+			} else cg.add(new BigraphChangeAddChild(parent, child));
+			
+			cg.add(new BigraphChangeLayout(child, constraint));
+		}
+	}
 	
 	public void setParent(Object parent) {
 		if (parent instanceof Container)
 			this.parent = (Container)parent;
+		prepareGroup();
 	}
 	
 	public void setChild(Object child) {
 		if (child instanceof LayoutableModelObject)
 			this.child = (LayoutableModelObject)child;
+		prepareGroup();
 	}
 	
 	public void setConstraint(Object constraint) {
 		if (constraint instanceof Rectangle)
 			this.constraint = (Rectangle)constraint;
+		prepareGroup();
 	}
-	
-	public boolean noOverlap() {
-		for (LayoutableModelObject i : parent.getChildren()) {
-			if (i.getLayout().intersects(constraint))
-				return false;
-		}
-		return true;
-	}
-	
-	public boolean parentLayoutCanContainChildConstraint() {
-		return (child instanceof Edge ||
-				(constraint.x >= 0 && constraint.y >= 0 &&
-				 constraint.x + constraint.width <= parent.getLayout().width &&
-				 constraint.y + constraint.height <= parent.getLayout().height));
-	}
-	
-	@Override
-	public boolean canExecute() {
-		return (parent != null && child != null &&
-				(child instanceof Edge ||
-				 (parent.canContain(child) &&
-				  constraint != null &&
-				  parentLayoutCanContainChildConstraint() && noOverlap())));
-	}
-	
-	@Override
-	public void execute() {
-		if (!(child instanceof Edge))
-			parent.addChild(child);
-		oldConstraint = child.getLayout();
-		if (child instanceof Edge && !constraintTranslated) {
-			constraint = new Rectangle(constraint).translate(parent.getRootLayout().getTopLeft());
-			constraintTranslated = true;
-		}
-		child.setLayout(constraint);
-	}
-	
-	@Override
-	public void undo() {
-		child.setLayout(oldConstraint);
-		if (!(child instanceof Edge))
-			parent.removeChild(child);
-	}
-
 }
