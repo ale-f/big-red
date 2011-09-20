@@ -7,6 +7,8 @@ import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.changes.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.BigraphChangeDisconnect;
+import dk.itu.big_red.model.changes.BigraphChangeEdgeReposition;
+import dk.itu.big_red.model.changes.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.BigraphChangeRemoveChild;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -78,13 +80,16 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public boolean validateChange(Change c) {
-		if (c instanceof ChangeGroup) {
-			for (Change d : (ChangeGroup)c) {
-				if (!validateChange(d))
+	public boolean validateChange(Change b) {
+		if (b instanceof ChangeGroup) {
+			for (Change c : (ChangeGroup)b) {
+				if (!validateChange(c))
 					return false;
 			}
 			return true;
+		} else if (b instanceof BigraphChangeConnect) {
+			BigraphChangeConnect c = (BigraphChangeConnect)b;
+			return (c.point.getLink() == null);
 		} else return true;
 	}
 	
@@ -112,6 +117,14 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof BigraphChangeRemoveChild) {
 			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
 			c.parent.removeChild(c.child);
+		} else if (b instanceof BigraphChangeLayout) {
+			BigraphChangeLayout c = (BigraphChangeLayout)b;
+			c.setOldLayout(c.model.getLayout());
+			c.model.setLayout(c.newLayout);
+		} else if (b instanceof BigraphChangeEdgeReposition) {
+			BigraphChangeEdgeReposition c = (BigraphChangeEdgeReposition)b;
+			c.setOldLayout(c.edge.getLayout());
+			c.edge.averagePosition();
 		}
 	}
 	

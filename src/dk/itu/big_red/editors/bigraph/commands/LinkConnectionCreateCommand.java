@@ -1,12 +1,14 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
-import org.eclipse.gef.commands.Command;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.assistants.LinkConnection;
+import dk.itu.big_red.model.changes.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.BigraphChangeConnect;
+import dk.itu.big_red.model.changes.BigraphChangeEdgeReposition;
+import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
  * A LinkConnectionCreateCommand is in charge of creating and updating {@link
@@ -17,75 +19,40 @@ import dk.itu.big_red.model.assistants.LinkConnection;
  * @author alec
  *
  */
-public class LinkConnectionCreateCommand extends Command {
-	private Point point1 = null, point2 = null;
-	private Link link = null, modifiedLink = null;
+public class LinkConnectionCreateCommand extends ChangeCommand {
+	private ChangeGroup cg = new ChangeGroup();
+	private Object first = null, second = null;
 	
 	public LinkConnectionCreateCommand() {
-		super();
+		setChange(cg);
 	}
 
 	public void setFirst(Object e) {
-		if (e instanceof Point) {
-			point1 = (Point)e;
-			if (point1.getLink() != null)
-				point1 = null;
-		} else if (e instanceof Link) {
-			link = (Link)e;
-		} else if (e instanceof LinkConnection) {
-			link = ((LinkConnection)e).getLink();
-		}
+		if (!(e instanceof LinkConnection)) {
+			first = e;
+		} else first = ((LinkConnection)e).getLink();
 	}
 	
 	public void setSecond(Object e) {
-		if (e instanceof Point) {
-			point2 = (Point)e;
-			if (point2.getLink() != null)
-				point2 = null;
-		} else if (e instanceof Link) {
-			link = (Link)e;
-		} else if (e instanceof LinkConnection) {
-			link = ((LinkConnection)e).getLink();
+		if (!(e instanceof LinkConnection)) {
+			second = e;
+		} else second = ((LinkConnection)e).getLink();
+		
+		cg.clear();
+		if (first instanceof Point && second instanceof Point) {
+			Bigraph b = ((Point)first).getBigraph();
+			setTarget(b);
+			Edge ed = new Edge();
+			cg.add(new BigraphChangeAddChild(b, ed),
+					new BigraphChangeConnect((Point)first, ed),
+					new BigraphChangeConnect((Point)second, ed),
+					new BigraphChangeEdgeReposition(ed));
+		} else if (first instanceof Point && second instanceof Link) {
+			setTarget(((Point)first).getBigraph());
+			cg.add(new BigraphChangeConnect((Point)first, (Link)second));
+		} else if (first instanceof Link && second instanceof Point) {
+			setTarget(((Link)first).getBigraph());
+			cg.add(new BigraphChangeConnect((Point)second, (Link)first));
 		}
-	}
-	
-	@Override
-	public boolean canExecute() {
-		return (point1 != null && point2 != null) ||
-				(point1 != null && link != null) ||
-				(link != null && point2 != null);
-	}
-	
-	@Override
-	public void execute() {
-		if (modifiedLink != null) { /* redo */
-			modifiedLink.addPoint(point1);
-			modifiedLink.addPoint(point2);
-		} else if (point1 != null && point2 != null) {
-			Edge e = new Edge();
-			point1.getBigraph().addChild(e);
-			e.addPoint(point1);
-			e.addPoint(point2);
-			e.averagePosition();
-			
-			modifiedLink = e;
-		} else if (point1 != null && link != null) {
-			modifiedLink = link;
-			link.addPoint(point1);
-		} else if (link != null && point2 != null) {
-			modifiedLink = link;
-			link.addPoint(point2);
-		}
-	}
-	
-	@Override
-	public boolean canUndo() {
-		return (modifiedLink != null);
-	}
-	
-	@Override
-	public void undo() {
-		modifiedLink.removePoint(point1);
-		modifiedLink.removePoint(point2);
 	}
 }
