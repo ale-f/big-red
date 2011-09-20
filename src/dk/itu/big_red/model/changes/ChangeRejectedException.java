@@ -7,10 +7,10 @@ public class ChangeRejectedException extends RedException {
 
 	private IChangeable changeable;
 	private Change rejectedChange;
-	private Object rejector;
+	private IChangeValidator rejector;
 	private String rationale;
 	
-	public ChangeRejectedException(IChangeable changeable, Change rejectedChange, Object rejector, String rationale) {
+	public ChangeRejectedException(IChangeable changeable, Change rejectedChange, IChangeValidator rejector, String rationale) {
 		this.changeable = changeable;
 		this.rejectedChange = rejectedChange;
 		this.rejector = rejector;
