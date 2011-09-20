@@ -47,6 +47,15 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	}
 	
 	/**
+	 * Returns <code>true</code> if this {@link ChangeGroup} has no {@link
+	 * Change}s to apply.
+	 * @return <code>true</code> if this ChangeGroup has no Changes
+	 */
+	public boolean isEmpty() {
+		return this.changes.isEmpty();
+	}
+	
+	/**
 	 * Removes all {@link Change}s from this ChangeGroup.
 	 */
 	public void clear() {
