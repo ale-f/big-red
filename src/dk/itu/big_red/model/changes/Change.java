@@ -37,4 +37,13 @@ public abstract class Change {
 	 */
 	public void beforeApply() {
 	}
+	
+	/**
+	 * Indicates whether or not this {@link Change} has all the information it
+	 * needs to be applied.
+	 * @return <code>true</code> if this {@link Change} is ready to apply
+	 */
+	public boolean isReady() {
+		return true /* by default; subclasses can override */;
+	}
 }

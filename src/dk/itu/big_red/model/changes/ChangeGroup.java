@@ -46,13 +46,14 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 		this.changes.add(0, c);
 	}
 	
-	/**
-	 * Returns <code>true</code> if this {@link ChangeGroup} has no {@link
-	 * Change}s to apply.
-	 * @return <code>true</code> if this ChangeGroup has no Changes
-	 */
-	public boolean isEmpty() {
-		return this.changes.isEmpty();
+	@Override
+	public boolean isReady() {
+		if (changes.isEmpty())
+			return false;
+		for (Change c : this)
+			if (!c.isReady())
+				return false;
+		return true;
 	}
 	
 	/**

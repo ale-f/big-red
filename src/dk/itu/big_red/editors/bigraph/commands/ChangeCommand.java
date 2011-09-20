@@ -3,7 +3,6 @@ package dk.itu.big_red.editors.bigraph.commands;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.IChangeable;
 
 public class ChangeCommand extends Command {
@@ -29,9 +28,7 @@ public class ChangeCommand extends Command {
 	@Override
 	public boolean canExecute() {
 		return (change != null && target != null &&
-				(change instanceof ChangeGroup ?
-						!((ChangeGroup)change).isEmpty() : true) &&
-				target.validateChange(change));
+				change.isReady() && target.validateChange(change));
 	}
 	
 	@Override
