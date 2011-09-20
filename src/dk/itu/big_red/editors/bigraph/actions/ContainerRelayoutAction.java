@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.SelectionAction;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -42,8 +41,6 @@ public class ContainerRelayoutAction extends SelectionAction {
 	private List<Command> lastCommands = null;
 	
 	private List<Command> createRelayoutCommands(List<Object> selectedObjects) {
-		IEditorPart editor = getWorkbenchPart().getSite().getWorkbenchWindow().
-				getActivePage().getActiveEditor();
 		if (selectedObjects.equals(lastObjects))
 			return lastCommands;
 		
@@ -55,7 +52,6 @@ public class ContainerRelayoutAction extends SelectionAction {
 				Object m = ((AbstractPart)i).getModel();
 				if (m instanceof Container) {
 					command = new ContainerRelayoutCommand();
-					command.setEditor(editor);
 					command.setModel(m);
 					lastCommands.add(command);
 				}

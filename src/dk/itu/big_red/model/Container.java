@@ -7,8 +7,9 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Node;
 
+import dk.itu.big_red.model.changes.BigraphChangeLayout;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
-import dk.itu.big_red.util.Utility;
 
 /**
  * The <code>Container</code> provides the basic functionality shared by most
@@ -81,7 +82,7 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		return new Container()._overwrite(this);
 	}
 	
-	public void relayout() {
+	public void relayout(ChangeGroup cg) {
 		int leftProgress = 10;
 		int maxHeight = 0;
 		int topOffset = 10;
@@ -89,14 +90,15 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		if (this instanceof Bigraph)
 			topOffset += ((Bigraph)this).upperRootBoundary;
 		
-		for (ILayoutable i : Utility.groupListByClass(getChildren(), Container.class)) {
+		for (LayoutableModelObject i : getChildren()) {
 			Rectangle layout = i.getLayout();
 			if (maxHeight < layout.height)
 				maxHeight = layout.height;
 			layout.setLocation(leftProgress, topOffset);
 			leftProgress += layout.width + 10;
-			i.setLayout(layout);
+			cg.add(new BigraphChangeLayout(i, layout));
 		}
-		setLayout(getLayout().setSize(leftProgress, maxHeight + 20));
+		cg.add(new BigraphChangeLayout(this,
+				getLayout().setSize(leftProgress, maxHeight + 20)));
 	}
 }
