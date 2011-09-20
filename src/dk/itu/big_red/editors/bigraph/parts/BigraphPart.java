@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,9 +10,9 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LayoutableModelObject;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
 /**
@@ -25,6 +26,22 @@ public class BigraphPart extends ContainerPart {
 	@Override
 	public Bigraph getModel() {
 		return (Bigraph)super.getModel();
+	}
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
+		String prop = evt.getPropertyName();
+		if (evt.getSource() == getModel()) {
+			if (prop.equals(Container.PROPERTY_CHILD)) {
+				refreshChildren();
+			} else if (prop.equals(Bigraph.PROPERTY_BOUNDARY_LON) ||
+					prop.equals(Bigraph.PROPERTY_BOUNDARY_LR) ||
+					prop.equals(Bigraph.PROPERTY_BOUNDARY_UIN) ||
+					prop.equals(Bigraph.PROPERTY_BOUNDARY_UR)) {
+				refreshVisuals();
+			}
+		}
 	}
 	
 	@Override
