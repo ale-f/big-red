@@ -22,19 +22,24 @@ public class LayoutableAddCommand extends ChangeCommand {
 	private void prepareGroup() {
 		cg.clear();
 		if (parent != null && child != null && constraint != null) {
-			for (LayoutableModelObject i : parent.getChildren()) {
-				if (i.getLayout().intersects(constraint))
+			setTarget(parent.getBigraph());
+			
+			if (!(child instanceof Edge)) {
+				for (LayoutableModelObject i : parent.getChildren()) {
+					if (i.getLayout().intersects(constraint))
+						return;
+				}
+				if (!parent.getLayout().contains(constraint))
 					return;
 			}
-			if (!parent.getLayout().contains(constraint) &&
-					!(child instanceof Edge))
-				return;
+			
+			Rectangle nr = constraint;
 			
 			if (child instanceof Edge) {
-				constraint = new Rectangle(constraint).translate(parent.getRootLayout().getTopLeft());
+				nr = new Rectangle(constraint).translate(parent.getRootLayout().getTopLeft());
 			} else cg.add(new BigraphChangeAddChild(parent, child));
 			
-			cg.add(new BigraphChangeLayout(child, constraint));
+			cg.add(new BigraphChangeLayout(child, nr));
 		}
 	}
 	
