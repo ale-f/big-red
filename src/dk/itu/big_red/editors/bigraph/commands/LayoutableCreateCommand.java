@@ -1,8 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.commands.Command;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -10,81 +8,68 @@ import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.changes.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.BigraphChangeLayout;
+import dk.itu.big_red.model.changes.ChangeGroup;
 
-public class LayoutableCreateCommand extends Command {
-	private Container container;
-	private LayoutableModelObject node;
+public class LayoutableCreateCommand extends ChangeCommand {
+	ChangeGroup cg = new ChangeGroup();
 	
 	public LayoutableCreateCommand() {
-		super();
-		container = null;
-		node = null;
+		setChange(cg);
+	}
+	
+	private Rectangle layout = null;
+	private Container container = null;
+	private LayoutableModelObject node = null;
+	
+	private void prepareGroup() {
+		cg.clear();
+		if (layout == null || container == null || node == null)
+			return;
+		for (LayoutableModelObject i : container.getChildren()) {
+			if (i instanceof Edge)
+				continue;
+			else if (i.getLayout().intersects(layout))
+				return;
+		}
+		if (container instanceof Bigraph) {
+			Bigraph bigraph = (Bigraph)container;
+			int top = layout.y,
+			    bottom = layout.y + layout.height;
+			if (node instanceof OuterName) {
+				if (bottom > bigraph.getLowerOuterNameBoundary())
+					return;
+			} else if (node instanceof Root) {
+				if (top < bigraph.getUpperRootBoundary() ||
+						bottom > bigraph.getLowerRootBoundary())
+					return;
+			} else if (node instanceof InnerName) {
+				if (top < bigraph.getUpperInnerNameBoundary())
+					return;
+			}
+		}
+		cg.add(new BigraphChangeAddChild(container, node),
+				new BigraphChangeLayout(node, layout));
 	}
 	
 	public void setObject(Object s) {
 		if (s instanceof LayoutableModelObject)
 			node = (LayoutableModelObject)s;
+		prepareGroup();
 	}
 	
 	public void setContainer(Object e) {
-		if (e instanceof Container)
+		if (e instanceof Container) {
 			container = (Container)e;
-	}
-	
-	public void setLayout(Rectangle r) {
-		if (node == null) {
-			return;
-		} else node.setLayout(r);
-	}
-	
-	public boolean noOverlap() {
-		for (LayoutableModelObject i : container.getChildren()) {
-			if (i instanceof Edge)
-				continue;
-			else if (i.getLayout().intersects(node.getLayout()))
-				return false;
+			setTarget(container.getBigraph());
 		}
-		return true;
+		prepareGroup();
 	}
 	
-	private boolean boundariesSatisfied() {
-		if (!(container instanceof Bigraph))
-			return true;
-		Bigraph bigraph = (Bigraph)container;
-		int top = node.getLayout().y,
-		    bottom = node.getLayout().y + node.getLayout().height;
-		if (node instanceof OuterName) {
-			if (bottom > bigraph.getLowerOuterNameBoundary())
-				return false;
-		} else if (node instanceof Root) {
-			if (top < bigraph.getUpperRootBoundary() ||
-					bottom > bigraph.getLowerRootBoundary())
-				return false;
-		} else if (node instanceof InnerName) {
-			if (top < bigraph.getUpperInnerNameBoundary())
-				return false;
-		}
-		return true;
-	}
-	
-	@Override
-	public boolean canExecute() {
-		return (node != null && container != null && boundariesSatisfied() &&
-				noOverlap());
-	}
-	
-	@Override
-	public void execute() {
-		container.addChild(node);
-	}
-	
-	@Override
-	public boolean canUndo() {
-		return (node != null && container != null ? node.getParent() == container : false);
-	}
-	
-	@Override
-	public void undo() {
-		container.removeChild(node);
+	public void setLayout(Object r) {
+		if (r instanceof Rectangle)
+			layout = (Rectangle)r;
+		prepareGroup();
 	}
 }
