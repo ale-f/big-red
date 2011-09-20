@@ -12,8 +12,9 @@ public class BigraphChangeEdgeReposition extends Change {
 	}
 
 	private Rectangle oldLayout;
-	public void setOldLayout(Rectangle oldLayout) {
-		this.oldLayout = oldLayout;
+	@Override
+	public void beforeApply() {
+		oldLayout = edge.getLayout();
 	}
 	
 	@Override

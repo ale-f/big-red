@@ -19,13 +19,22 @@ public abstract class Change {
 	/**
 	 * Indicates whether or not this {@link Change} needs more information to
 	 * be reversible. For example, inverting the change "resize X to 40x40"
-	 * requires knowledge of the size of X before the change was made. (How the
-	 * additional information is supposed to be specified depends on the {@link
-	 * Change}.)
+	 * requires knowledge of the size of X before the change was made.
 	 * @return <code>true</code> if {@link #inverse()} will work, or
 	 * <code>false</code> if more information is needed first
+	 * @see #beforeApply()
 	 */
 	public boolean canInvert() {
 		return true /* by default; subclasses can override */;
+	}
+	
+	/**
+	 * Called by {@link IChangeable}s just before they apply this {@link
+	 * Change}.
+	 * <p>(Subclasses should override this method if they need to save some
+	 * properties of an object before a change in order to be able to {@link
+	 * #inverse() reverse} it.)
+	 */
+	public void beforeApply() {
 	}
 }

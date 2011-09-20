@@ -94,7 +94,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		try {
 			tryValidateChange(b);
 		} catch (ChangeRejectedException e) {
-			e.printStackTrace();
 			lastRejection = e;
 			return false;
 		}
@@ -122,6 +121,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	private void doChange(Change b) {
+		b.beforeApply();
 		if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				doChange(c);
@@ -139,11 +139,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			c.parent.removeChild(c.child);
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
-			c.setOldLayout(c.model.getLayout());
 			c.model.setLayout(c.newLayout);
 		} else if (b instanceof BigraphChangeEdgeReposition) {
 			BigraphChangeEdgeReposition c = (BigraphChangeEdgeReposition)b;
-			c.setOldLayout(c.edge.getLayout());
 			c.edge.averagePosition();
 		}
 	}
