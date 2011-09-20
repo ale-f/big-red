@@ -17,6 +17,7 @@ import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.assistants.LinkConnection;
 
 /**
@@ -81,6 +82,12 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		String prop = evt.getPropertyName();
+		if (evt.getSource() == getModel().getLink()) {
+			if (prop.equals(Link.PROPERTY_OUTLINE_COLOUR)) {
+				refreshVisuals();
+			}
+		}
 	}
 
 	@Override
