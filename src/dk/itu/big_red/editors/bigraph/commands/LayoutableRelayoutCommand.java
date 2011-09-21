@@ -1,6 +1,5 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
@@ -11,6 +10,7 @@ import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.util.Geometry;
 
 public class LayoutableRelayoutCommand extends Command {
 	private ILayoutable model;
@@ -38,12 +38,10 @@ public class LayoutableRelayoutCommand extends Command {
 		return true;
 	}
 	
-	private static final Point ORIGIN = new Point(0, 0);
-	
 	public boolean spaceForChildren() {
 		if (model instanceof Container) {
 			Container model = (Container)this.model;
-			Rectangle t = new Rectangle(ORIGIN, layout.getSize());
+			Rectangle t = new Rectangle(Geometry.ORIGIN, layout.getSize());
 			for (ILayoutable i : model.getChildren()) {
 				if (!t.contains(i.getLayout()))
 					return false;
