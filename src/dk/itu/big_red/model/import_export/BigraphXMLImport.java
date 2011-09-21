@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.application.RedActivator;
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -33,7 +33,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	public Bigraph importObject() throws ImportFailedException {
 		try {
 			Document d =
-				DOM.validate(DOM.parse(source), RedActivator.getPluginResource("schema/bigraph.xsd"));
+				DOM.validate(DOM.parse(source), RedPlugin.getPluginResource("schema/bigraph.xsd"));
 			source.close();
 			return (Bigraph)process(null, d.getDocumentElement());
 		} catch (Exception e) {

@@ -1,26 +1,26 @@
-package dk.itu.big_red.application;
+package dk.itu.big_red.application.standalone;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.util.UI;
 
 /**
- * This class controls all aspects of the application's execution
+ * When Big Red is running as a stand-alone Eclipse application, this class
+ * is responsible for setting up a workbench so that the Big Red plugin can
+ * operate.
+ * 
+ * <p>Running the <i>plugin</i> is the responsibility of {@link RedPlugin}.
  */
-public class Application implements IApplication {
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
-	 */
+public class RedApplication implements IApplication {
 	@Override
 	public Object start(IApplicationContext context) {
 		Display display = PlatformUI.createDisplay();
 		try {
-			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
+			int returnCode = PlatformUI.createAndRunWorkbench(display, new RedApplicationWorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
 			}
@@ -29,10 +29,7 @@ public class Application implements IApplication {
 			display.dispose();
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.equinox.app.IApplication#stop()
-	 */
+	
 	@Override
 	public void stop() {
 		final IWorkbench workbench = UI.getWorkbench();

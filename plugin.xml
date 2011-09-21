@@ -8,14 +8,14 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="dk.itu.big_red.application.Application">
+               class="dk.itu.big_red.application.standalone.RedApplication">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="dk.itu.big_red.application.Perspective"
+            class="dk.itu.big_red.application.plugin.Perspective"
             icon="icons/icon32.png"
             id="dk.itu.big_red.perspective"
             name="Big Red">

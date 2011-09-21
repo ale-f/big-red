@@ -1,6 +1,5 @@
 package dk.itu.big_red.util;
 
-import dk.itu.big_red.application.RedException;
 
 /**
  * ValidationFailedExceptions are thrown when {@link

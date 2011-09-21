@@ -1,4 +1,4 @@
-package dk.itu.big_red.application;
+package dk.itu.big_red.application.plugin;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,21 +13,16 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The RedPlugin class is responsible for starting and stopping the Big Red
+ * plugin.
  */
-public class RedActivator extends AbstractUIPlugin {
+public class RedPlugin extends AbstractUIPlugin {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "dk.itu.big_red";
 
 	// The shared instance
-	private static RedActivator plugin;
-	
-	/**
-	 * The constructor
-	 */
-	public RedActivator() {
-	}
+	private static RedPlugin plugin;
 
 	/*
 	 * (non-Javadoc)
@@ -54,7 +49,7 @@ public class RedActivator extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static RedActivator getDefault() {
+	public static RedPlugin getDefault() {
 		return plugin;
 	}
 

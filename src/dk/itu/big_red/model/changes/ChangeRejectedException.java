@@ -1,6 +1,6 @@
 package dk.itu.big_red.model.changes;
 
-import dk.itu.big_red.application.RedException;
+import dk.itu.big_red.util.RedException;
 
 public class ChangeRejectedException extends RedException {
 	private static final long serialVersionUID = 7181613421769493596L;

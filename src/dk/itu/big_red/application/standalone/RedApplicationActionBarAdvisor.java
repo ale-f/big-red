@@ -1,4 +1,4 @@
-package dk.itu.big_red.application;
+package dk.itu.big_red.application.standalone;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
@@ -13,7 +13,7 @@ import org.eclipse.ui.actions.NewWizardMenu;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
-public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
+public class RedApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	private Object[] actionFile = null;
 	private Object[] actionFileNew = null;
@@ -22,7 +22,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private Object[] actionWindowShowView = null;
     private Object[] actionHelp = null;
     
-	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
+	public RedApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
 	}
 	

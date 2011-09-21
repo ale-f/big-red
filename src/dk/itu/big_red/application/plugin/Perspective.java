@@ -1,4 +1,4 @@
-package dk.itu.big_red.application;
+package dk.itu.big_red.application.plugin;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;

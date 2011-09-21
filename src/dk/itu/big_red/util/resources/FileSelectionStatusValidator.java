@@ -5,7 +5,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 
-import dk.itu.big_red.application.RedActivator;
+import dk.itu.big_red.application.plugin.RedPlugin;
 
 /**
  * FileSelectionStatusValidators only validate selections which contain a
@@ -15,8 +15,8 @@ import dk.itu.big_red.application.RedActivator;
  */
 public class FileSelectionStatusValidator implements ISelectionStatusValidator {
 	public static final IStatus
-		OK_STATUS = new Status(Status.OK, RedActivator.PLUGIN_ID, ""),
-		CANCEL_STATUS = new Status(Status.CANCEL, RedActivator.PLUGIN_ID, "");
+		OK_STATUS = new Status(Status.OK, RedPlugin.PLUGIN_ID, ""),
+		CANCEL_STATUS = new Status(Status.CANCEL, RedPlugin.PLUGIN_ID, "");
 	
 	@Override
 	public IStatus validate(Object[] selection) {

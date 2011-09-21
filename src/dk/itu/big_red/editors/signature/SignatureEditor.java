@@ -35,7 +35,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
-import dk.itu.big_red.application.RedActivator;
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
@@ -74,7 +74,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
         	if (monitor != null)
         		monitor.setCanceled(true);
         	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
-        			RedActivator.getThrowableStatus(ex));
+        			RedPlugin.getThrowableStatus(ex));
         }
 	}
 

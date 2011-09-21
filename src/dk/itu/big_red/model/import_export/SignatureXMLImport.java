@@ -3,7 +3,7 @@ package dk.itu.big_red.model.import_export;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.application.RedActivator;
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Port;
@@ -18,7 +18,7 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 	public Signature importObject() throws ImportFailedException {
 		try {
 			Document d =
-				DOM.validate(DOM.parse(source), RedActivator.getPluginResource("schema/signature.xsd"));
+				DOM.validate(DOM.parse(source), RedPlugin.getPluginResource("schema/signature.xsd"));
 			source.close();
 			return (Signature)process(d.getDocumentElement());
 		} catch (Exception e) {

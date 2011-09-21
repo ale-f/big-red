@@ -37,7 +37,7 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import dk.itu.big_red.application.RedActivator;
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
@@ -166,7 +166,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     
     private void loadingError(String error, Throwable cause) {
 		ErrorDialog.openError(getSite().getShell(), null, error,
-				RedActivator.getThrowableStatus(cause));
+				RedPlugin.getThrowableStatus(cause));
     }
     
     @Override
@@ -274,7 +274,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
         	if (monitor != null)
         		monitor.setCanceled(true);
         	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
-	    		RedActivator.getThrowableStatus(ex));
+	    		RedPlugin.getThrowableStatus(ex));
         }
 	}
 	
