@@ -22,6 +22,7 @@ import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.HomogeneousIterable;
+import dk.itu.big_red.util.ObjectScratchpad;
 import dk.itu.big_red.util.resources.ResourceWrapper;
 
 /**
@@ -88,9 +89,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	private ChangeRejectedException lastRejection = null;
+	private ObjectScratchpad scratch = new ObjectScratchpad();
 	
 	@Override
 	public boolean validateChange(Change b) {
+		scratch.clear();
 		try {
 			tryValidateChange(b);
 		} catch (ChangeRejectedException e) {
@@ -123,6 +126,19 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 				throw new ChangeRejectedException(this, b, this,
 					c.parent.getClass().getSimpleName() + "s can't contain " +
 					c.child.getClass().getSimpleName() + "s");
+		} else if (b instanceof BigraphChangeLayout) {
+			BigraphChangeLayout c = (BigraphChangeLayout)b;
+			Rectangle trLayout = c.newLayout.getCopy().setLocation(0, 0);
+			if (c.model instanceof Container) {
+				Container model = (Container)c.model;
+				for (LayoutableModelObject i : model.getChildren()) {
+					Rectangle layout = scratch.getRectangle(i.getLayout());
+					if (!trLayout.contains(layout))
+						throw new ChangeRejectedException(this, b, this,
+							"The new size is too small");
+				}
+				scratch.getRectangle(c.model.getLayout()).setBounds(c.newLayout);
+			}
 		}
 	}
 	
