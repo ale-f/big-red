@@ -162,6 +162,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
 			c.model.setLayout(c.newLayout);
+			if (c.model.getParent() instanceof Bigraph)
+				((Bigraph)c.model.getParent()).updateBoundaries();
 		} else if (b instanceof BigraphChangeEdgeReposition) {
 			BigraphChangeEdgeReposition c = (BigraphChangeEdgeReposition)b;
 			c.edge.averagePosition();
