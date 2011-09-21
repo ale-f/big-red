@@ -174,8 +174,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public boolean canContain(ILayoutable child) {
-		Class<? extends ILayoutable> c = child.getClass();
+	public boolean canContain(LayoutableModelObject child) {
+		Class<? extends LayoutableModelObject> c = child.getClass();
 		return (c == Root.class || c == InnerName.class || c == OuterName.class);
 	}
 	

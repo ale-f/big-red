@@ -17,7 +17,6 @@ import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Geometry;
 import dk.itu.big_red.util.HomogeneousIterable;
@@ -59,8 +58,8 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	private Control control = null;
 	
 	@Override
-	public boolean canContain(ILayoutable child) {
-		Class<? extends ILayoutable> c = child.getClass();
+	public boolean canContain(LayoutableModelObject child) {
+		Class<? extends LayoutableModelObject> c = child.getClass();
 		return (c == Node.class || c == Site.class);
 	}
 	

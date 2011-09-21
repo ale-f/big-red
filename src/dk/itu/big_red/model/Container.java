@@ -9,7 +9,6 @@ import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * The <code>Container</code> provides the basic functionality shared by most
@@ -34,7 +33,7 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		layout = new Rectangle(10, 10, 100, 100);
 	}
 	
-	public boolean canContain(ILayoutable child) {
+	public boolean canContain(LayoutableModelObject child) {
 		return false;
 	}
 	
@@ -60,19 +59,6 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 
 	public boolean hasChild(LayoutableModelObject child) {
 		return children.contains(child);
-	}
-	
-	protected Container _overwrite(Container orig) throws CloneNotSupportedException {
-		setParent(orig.getParent());
-		setLayout(orig.getLayout().getCopy().translate(10, 10));
-		
-		for (LayoutableModelObject child : orig.getChildren()) {
-			LayoutableModelObject childClone = child.clone();
-			addChild(childClone);
-			childClone.setLayout(child.getLayout().getCopy());
-		}
-		
-		return this;
 	}
 	
 	@Override
