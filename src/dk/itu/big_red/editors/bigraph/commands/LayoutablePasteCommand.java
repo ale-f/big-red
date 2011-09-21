@@ -1,8 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
 import dk.itu.big_red.model.Container;
@@ -10,18 +8,17 @@ import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
-public class LayoutablePasteCommand extends Command {
-	private HashMap<LayoutableModelObject, LayoutableModelObject> list =
-		new HashMap<LayoutableModelObject, LayoutableModelObject>();
+public class LayoutablePasteCommand extends ChangeCommand {
+	private ChangeGroup cg = new ChangeGroup();
+	
 	private Container newParent;
 	
 	public LayoutablePasteCommand() {
-		
-	}
-	
-	public LayoutablePasteCommand(Object newParent) {
-		setNewParent(newParent);
+		setChange(cg);
 	}
 	
 	public Container getNewParent() {
@@ -31,11 +28,11 @@ public class LayoutablePasteCommand extends Command {
 	public void setNewParent(Object newParent) {
 		if (newParent instanceof Container)
 			this.newParent = (Container)newParent;
+		prepareGroup();
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Override
-	public boolean canExecute() {
+	private void prepareGroup() {
 		/*
 		 * FIXME: If several elements with the same parent are copied and then
 		 * pasted *while the copied elements are still selected*, then
@@ -44,56 +41,30 @@ public class LayoutablePasteCommand extends Command {
 		 * after copying to the clipboard, Paste will be disabled (the bList
 		 * check having failed). How can this be resolved?
 		 */
+		cg.clear();
 		if (newParent == null)
-			return false;
-		ArrayList<LayoutableModelObject> bList =
-			(ArrayList<LayoutableModelObject>)Clipboard.getDefault().getContents();
-		if (bList == null || bList.isEmpty())
-			return false;
-		for (LayoutableModelObject node : bList) {
-			if (!newParent.canContain(node))
-				return false;
-			else if (isPastableNode(node))
-				list.put(node, null);
-		}
-		return true;
-	}
-	
-	@Override
-	public void execute() {
-		if (!canExecute())
 			return;
+		setTarget(newParent.getBigraph());
 		
-		for (LayoutableModelObject node : list.keySet()) {
-			try {
-				list.put(node, node.clone());
-			} catch (Exception e) {
-				e.printStackTrace();
+		ArrayList<LayoutableModelObject> bList;
+		try {
+			bList = (ArrayList<LayoutableModelObject>)Clipboard.getDefault().getContents();
+			if (bList == null)
+				return;
+		} catch (Exception e) {
+			return;
+		}
+		
+		for (LayoutableModelObject i : bList) {
+			if (!newParent.canContain(i)) {
+				cg.clear();
+				return;
+			} else if (i instanceof Node || i instanceof Root ||
+					i instanceof Site) {
+				LayoutableModelObject j = i.clone();
+				cg.add(new BigraphChangeAddChild(newParent, j),
+						new BigraphChangeLayout(j, j.getLayout().getCopy().translate(20, 20)));
 			}
 		}
-		
-		redo();
-	}
-	
-	@Override
-	public void redo() {
-		for (LayoutableModelObject node : list.values()) {
-			if (isPastableNode(node)) {
-				newParent.addChild(node);
-			}
-		}
-	}
-	
-	@Override
-	public void undo() {
-		for (LayoutableModelObject node : list.values()) {
-			if (isPastableNode(node))
-				newParent.removeChild(node);
-		}
-	}
-	
-	public boolean isPastableNode(Object node) {
-		return (node instanceof Node || node instanceof Root ||
-				node instanceof Site);
 	}
 }

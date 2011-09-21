@@ -58,7 +58,9 @@ public class ContainerPasteAction extends SelectionAction {
 			if (sharedParent.getModel() instanceof ILayoutable)
 				newParent = (ILayoutable)sharedParent.getModel();
 		}
-		return new LayoutablePasteCommand(newParent);
+		LayoutablePasteCommand c = new LayoutablePasteCommand();
+		c.setNewParent(newParent);
+		return c;
 	}
 	
 	@Override
