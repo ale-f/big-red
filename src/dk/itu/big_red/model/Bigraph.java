@@ -134,6 +134,14 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 				}
 				scratch.getRectangle(c.model.getLayout()).setBounds(c.newLayout);
 			}
+			LayoutableModelObject parent = c.model.getParent();
+			if (parent != null && !(parent instanceof Bigraph)) {
+				trLayout =
+					scratch.getRectangle(parent.getLayout()).getCopy().setLocation(0, 0);
+				if (!trLayout.contains(c.newLayout))
+					throw new ChangeRejectedException(this, b, this,
+						"The object can no longer fit into its container");
+			}
 		}
 	}
 	

@@ -38,8 +38,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	private void prepareGroup() {
 		cg.clear();
 		if (model != null && layout != null &&
-				parentLayoutCanContainChildLayout() && noOverlap() &&
-				boundariesSatisfied()) {
+				noOverlap() && boundariesSatisfied()) {
 			cg.add(new BigraphChangeLayout(model, layout));
 		}
 	}
@@ -72,12 +71,5 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 				return false;
 		}
 		return true;
-	}
-	
-	public boolean parentLayoutCanContainChildLayout() {
-		return (model.getParent() instanceof Bigraph ||
-				(layout.x >= 0 && layout.y >= 0 &&
-				 layout.x + layout.width <= model.getParent().getLayout().width &&
-				 layout.y + layout.height <= model.getParent().getLayout().height));
 	}
 }
