@@ -1,30 +1,46 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.commands.Command;
-
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
-import dk.itu.big_red.util.Geometry;
 
-public class LayoutableRelayoutCommand extends Command {
-	private ILayoutable model;
-	private Rectangle layout, oldLayout;
+public class LayoutableRelayoutCommand extends ChangeCommand {
+	private ChangeGroup cg = new ChangeGroup();
+	
+	public LayoutableRelayoutCommand() {
+		setChange(cg);
+	}
+	
+	private LayoutableModelObject model;
+	private Rectangle layout;
 	
 	public void setConstraint(Object rect) {
 		if (rect instanceof Rectangle)
 			layout = (Rectangle)rect;
+		prepareGroup();
 	}
 
 	public void setModel(Object model) {
-		if (model instanceof ILayoutable) {
-			this.model = (ILayoutable)model;
-			oldLayout = this.model.getLayout();
+		if (model instanceof LayoutableModelObject) {
+			this.model = (LayoutableModelObject)model;
+			setTarget(this.model.getBigraph());
+		}
+		prepareGroup();
+	}
+	
+	private void prepareGroup() {
+		cg.clear();
+		if (model != null && layout != null &&
+				parentLayoutCanContainChildLayout() && noOverlap() &&
+				boundariesSatisfied()) {
+			cg.add(new BigraphChangeLayout(model, layout));
 		}
 	}
 	
@@ -34,18 +50,6 @@ public class LayoutableRelayoutCommand extends Command {
 				continue;
 			else if (i.getLayout().intersects(layout))
 				return false;
-		}
-		return true;
-	}
-	
-	public boolean spaceForChildren() {
-		if (model instanceof Container) {
-			Container model = (Container)this.model;
-			Rectangle t = new Rectangle(Geometry.ORIGIN, layout.getSize());
-			for (ILayoutable i : model.getChildren()) {
-				if (!t.contains(i.getLayout()))
-					return false;
-			}
 		}
 		return true;
 	}
@@ -75,26 +79,5 @@ public class LayoutableRelayoutCommand extends Command {
 				(layout.x >= 0 && layout.y >= 0 &&
 				 layout.x + layout.width <= model.getParent().getLayout().width &&
 				 layout.y + layout.height <= model.getParent().getLayout().height));
-	}
-	
-	@Override
-	public boolean canExecute() {
-		return (model != null && layout != null && oldLayout != null &&
-				parentLayoutCanContainChildLayout() && noOverlap() &&
-				boundariesSatisfied() && spaceForChildren());
-	}
-	
-	@Override
-	public void execute() {
-		model.setLayout(layout);
-		if (model.getParent() instanceof Bigraph)
-			model.getBigraph().updateBoundaries();
-	}
-
-	@Override
-	public void undo() {
-		model.setLayout(oldLayout);
-		if (model.getParent() instanceof Bigraph)
-			model.getBigraph().updateBoundaries();
 	}
 }
