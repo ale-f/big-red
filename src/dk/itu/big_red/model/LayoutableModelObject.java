@@ -32,13 +32,13 @@ public abstract class LayoutableModelObject extends ModelObject implements IAdap
 
 	@Override
 	public Rectangle getRootLayout() {
-		return new Rectangle(getLayout()).translate(getParent().getRootLayout().getTopLeft());
+		return getLayout().getCopy().translate(getParent().getRootLayout().getTopLeft());
 	}
 
 	@Override
 	public void setLayout(Rectangle newLayout) {
 		Rectangle oldLayout = layout;
-		layout = new Rectangle(newLayout);
+		layout = newLayout;
 		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 

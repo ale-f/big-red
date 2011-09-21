@@ -29,7 +29,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 					if (i.getLayout().intersects(constraint))
 						return;
 				}
-				if (!parent.getLayout().setLocation(0, 0).contains(constraint))
+				if (!parent.getLayout().getCopy().setLocation(0, 0).contains(constraint))
 					return;
 			}
 			

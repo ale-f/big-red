@@ -15,7 +15,7 @@ public class Site extends LayoutableModelObject implements INameable, ISite {
 		Site s = new Site();
 		
 		s.setParent(getParent());
-		s.setLayout(getLayout());
+		s.setLayout(getLayout().getCopy());
 		
 		return s;
 	}

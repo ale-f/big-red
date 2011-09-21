@@ -29,7 +29,7 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
 	
 	/**
-	 * Gets a copy of the current layout of this object.
+	 * Gets the current layout of this object.
 	 * @return the current layout
 	 */
 	public Rectangle getLayout();
@@ -43,11 +43,7 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	
 	/**
 	 * Sets the layout of this object.
-	 * 
-	 * <p>Implementors are required not to store a reference to the {@link
-	 * Rectangle} provided - its values should instead be copied into another
-	 * structure.
-	 * @param layout the new layout
+	 * @param layout the new layout (which will belong to this object)
 	 */
 	public void setLayout(Rectangle layout);
 	

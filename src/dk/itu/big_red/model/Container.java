@@ -64,14 +64,12 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 	
 	protected Container _overwrite(Container orig) throws CloneNotSupportedException {
 		setParent(orig.getParent());
-		setLayout(new Rectangle(
-			orig.getLayout().x + 10, orig.getLayout().y + 10,
-			orig.getLayout().width, orig.getLayout().height));
+		setLayout(orig.getLayout().getCopy().translate(10, 10));
 		
 		for (LayoutableModelObject child : orig.getChildren()) {
 			LayoutableModelObject childClone = child.clone();
 			addChild(childClone);
-			childClone.setLayout(child.getLayout());
+			childClone.setLayout(child.getLayout().getCopy());
 		}
 		
 		return this;
@@ -91,7 +89,7 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 			topOffset += ((Bigraph)this).upperRootBoundary;
 		
 		for (LayoutableModelObject i : getChildren()) {
-			Rectangle layout = i.getLayout();
+			Rectangle layout = i.getLayout().getCopy();
 			if (maxHeight < layout.height)
 				maxHeight = layout.height;
 			layout.setLocation(leftProgress, topOffset);
@@ -99,6 +97,6 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 			cg.add(new BigraphChangeLayout(i, layout));
 		}
 		cg.add(new BigraphChangeLayout(this,
-				getLayout().setSize(leftProgress, maxHeight + 20)));
+				getLayout().getCopy().setSize(leftProgress, maxHeight + 20)));
 	}
 }

@@ -65,13 +65,12 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	
 	@Override
 	public void setLayout(Rectangle layout) {
-		Rectangle layoutCopy = new Rectangle(layout);
 		if (control != null && !control.isResizable()) {
-			layoutCopy.width = getLayout().width;
-			layoutCopy.height = getLayout().height;
+			layout.width = getLayout().width;
+			layout.height = getLayout().height;
 		}
 		fittedPolygon = null;
-		super.setLayout(layoutCopy);
+		super.setLayout(layout);
 	}
 	
 	/**
@@ -101,7 +100,7 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 			
 			Point c = control.getDefaultSize();
 			if (!control.isResizable()) {
-				Rectangle nr = new Rectangle(getLayout());
+				Rectangle nr = getLayout().getCopy();
 				nr.width = c.x;
 				nr.height = c.y;
 				super.setLayout(nr);

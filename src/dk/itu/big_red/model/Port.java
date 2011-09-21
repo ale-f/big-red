@@ -48,7 +48,7 @@ public class Port extends Point implements IPort {
 	
 	@Override
 	public void setLayout(Rectangle newLayout) {
-		super.setLayout(newLayout.getCopy().setSize(10, 10));
+		super.setLayout(newLayout.setSize(10, 10));
 	}
 	
 	public Port(String name, int segment, double distance) {
@@ -111,7 +111,7 @@ public class Port extends Point implements IPort {
 	
 	@Override
 	public Rectangle getLayout() {
-		Rectangle r = super.getLayout();
+		Rectangle r = super.getLayout().getCopy();
 		PointList polypt = getParent().getFittedPolygon();
 		if (polypt != null) {
 			int segment = getSegment();
