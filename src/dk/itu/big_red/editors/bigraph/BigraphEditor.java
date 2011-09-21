@@ -25,7 +25,6 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
@@ -117,6 +116,14 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     public void createActions() {
     	super.createActions();
     	
+    	/*
+    	 * Note to self: actions which are conditionally enabled only when
+    	 * certain items are selected must be registered with
+    	 * getSelectionActions(), actions which are conditionally enabled when
+    	 * the editor state changes must be registered with getStackActions(),
+    	 * and I have no idea at all what ActionBarContributors do.
+    	 */
+    	
     	ActionRegistry registry = getActionRegistry();
     	IAction action = new ContainerPropertiesAction(this);
     	registry.registerAction(action);
@@ -149,15 +156,12 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	getEditorSite().getActionBars().
     		setGlobalActionHandler(ActionFactory.PRINT.getId(), action);
     	
-    	action = new SaveAction(this);
-    	registry.registerAction(action);
-    	getEditorSite().getActionBars().
-    		setGlobalActionHandler(ActionFactory.SAVE.getId(), action);
-    	
     	action = new FileRevertAction(this);
     	registry.registerAction(action);
     	getEditorSite().getActionBars().
-    		setGlobalActionHandler(ActionFactory.REVERT.getId(), action);
+    		setGlobalActionHandler(ActionFactory.REVERT.getId(), action);    	
+    	
+    	getStackActions().add(ActionFactory.REVERT.getId());
     }
     
     private void loadingError(String error, Throwable cause) {
