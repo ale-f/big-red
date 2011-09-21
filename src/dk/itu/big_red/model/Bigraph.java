@@ -117,6 +117,12 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 				throw new ChangeRejectedException(this, b, this,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
+		} else if (b instanceof BigraphChangeAddChild) {
+			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
+			if (!c.parent.canContain(c.child))
+				throw new ChangeRejectedException(this, b, this,
+					c.parent.getClass().getSimpleName() + "s can't contain " +
+					c.child.getClass().getSimpleName() + "s");
 		}
 	}
 	

@@ -57,7 +57,6 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		return command;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Command getCreateCommand(CreateRequest request) {
 		Object requestObject = request.getNewObject();
@@ -65,8 +64,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		requestObject.getClass();
 		Dimension size = new Dimension(100, 100);
 		ILayoutable parent = (ILayoutable)getHost().getModel();
-		if (!(parent instanceof Container) ||
-			!((Container)parent).canContain((ILayoutable)requestObject)) {
+		if (!(parent instanceof Container)) {
 			return null;
 		} else {
 			size.setSize(((ILayoutable)requestObject).getLayout().getSize());
