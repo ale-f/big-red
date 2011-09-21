@@ -76,8 +76,13 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 	}
 	
 	@Override
-	public Container clone() throws CloneNotSupportedException {
-		return new Container()._overwrite(this);
+	public Container clone() {
+		Container c = (Container)super.clone();
+		
+		for (LayoutableModelObject child : getChildren())
+			c.addChild(child.clone());
+		
+		return c;
 	}
 	
 	public void relayout(ChangeGroup cg) {

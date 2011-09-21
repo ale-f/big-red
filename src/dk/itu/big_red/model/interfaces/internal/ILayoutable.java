@@ -58,6 +58,4 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	 * @return an {@link Container}
 	 */
 	public Container getParent();
-
-	public ILayoutable clone() throws CloneNotSupportedException;
 }

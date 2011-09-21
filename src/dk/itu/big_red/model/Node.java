@@ -47,15 +47,16 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 		setControl(control);
 	}
 	
-	private Control control = null;
-	
 	@Override
-	public Container clone() throws CloneNotSupportedException {
-		Node result = new Node();
-		result._overwrite(this);
-		result.setControl(control);
-		return result;
+	public Node clone() {
+		Node n = (Node)super.clone();
+		n.setControl(getControl());
+		n.setFillColour(getFillColour());
+		n.setOutlineColour(getOutlineColour());
+		return n;
 	}
+	
+	private Control control = null;
 	
 	@Override
 	public boolean canContain(ILayoutable child) {

@@ -13,10 +13,6 @@ import dk.itu.big_red.util.HomogeneousIterable;
  * @see IRoot
  */
 public class Root extends NameableContainer implements IRoot {
-	@Override
-	public Container clone() throws CloneNotSupportedException {
-		return new Root()._overwrite(this);
-	}
 	
 	@Override
 	public boolean canContain(ILayoutable child) {

@@ -87,6 +87,31 @@ public abstract class LayoutableModelObject extends ModelObject implements IAdap
 		return null;
 	}
 	
+	/**
+	 * Returns a new instance of this {@link LayoutableModelObject}'s class,
+	 * created as though by <code>this.getClass().newInstance()</code>.
+	 * @return a new instance of this LayoutableModelObject's class, or
+	 * <code>null</code>
+	 */
+	protected LayoutableModelObject newInstance() {
+		try {
+			return getClass().newInstance();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Creates and returns a new copy of this {@link LayoutableModelObject}.
+	 * <p>(Although the returned copy is a {@link LayoutableModelObject}, it's
+	 * really an instance of whatever subclass this object is.)
+	 * @return a new copy of this {@link LayoutableModelObject}
+	 */
 	@Override
-	public abstract LayoutableModelObject clone() throws CloneNotSupportedException;
+	public LayoutableModelObject clone() {
+		LayoutableModelObject m = newInstance();
+		m.setLayout(getLayout());
+		m.setComment(getComment());
+		return m;
+	}
 }

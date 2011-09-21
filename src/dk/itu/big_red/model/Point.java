@@ -68,9 +68,4 @@ public abstract class Point extends LayoutableModelObject implements IAdaptable,
 			firePropertyChange(INameable.PROPERTY_NAME, oldName, name);
 		}
 	}
-	
-	@Override
-	public Point clone() throws CloneNotSupportedException {
-		throw new CloneNotSupportedException();
-	}
 }

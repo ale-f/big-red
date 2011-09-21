@@ -11,12 +11,6 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  */
 public class InnerName extends Point implements INameable, IInnerName {
 	@Override
-	public InnerName clone() {
-		System.out.println("! Clone?");
-		return new InnerName();
-	}
-	
-	@Override
 	public String getName() {
 		return getBigraph().getNamespaceManager().requireName(getClass(), this);
 	}

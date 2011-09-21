@@ -68,11 +68,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	              upperInnerNameBoundary = Integer.MIN_VALUE + BOUNDARY_MARGIN,
 	              lowerRootBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN;
 	
-	@Override
-	public Container clone() throws CloneNotSupportedException {
-		return new Bigraph()._overwrite(this);
-	}
-	
 	/**
 	 * Gets the {@link NamespaceManager} for this bigraph.
 	 * @return a NamespaceManager

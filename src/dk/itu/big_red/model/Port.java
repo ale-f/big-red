@@ -128,4 +128,13 @@ public class Port extends Point implements IPort {
 	public INode getINode() {
 		return getParent();
 	}
+	
+	/**
+	 * This method should never be called; {@link Port}s are created only when
+	 * a {@link Control} is given to a {@link Node}.
+	 */
+	@Override
+	public Point clone() {
+		return null;
+	}
 }
