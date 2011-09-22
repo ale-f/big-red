@@ -26,4 +26,9 @@ public class BigraphChangeAddChild extends Change {
 	public boolean isReady() {
 		return (parent != null && child != null && newLayout != null);
 	}
+	
+	@Override
+	public String toString() {
+		return "Change(add child " + child + " to parent " + parent + " with layout " + newLayout + ")";
+	}
 }

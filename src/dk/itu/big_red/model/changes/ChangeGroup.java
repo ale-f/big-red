@@ -75,4 +75,9 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	public Iterator<Change> iterator() {
 		return changes.iterator();
 	}
+	
+	@Override
+	public String toString() {
+		return changes.toString();
+	}
 }

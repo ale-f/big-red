@@ -34,4 +34,9 @@ public class BigraphChangeLayout extends Change {
 	public boolean isReady() {
 		return (model != null && newLayout != null);
 	}
+	
+	@Override
+	public String toString() {
+		return "Change(set layout of " + model + " to " + newLayout + ")";
+	}
 }

@@ -22,4 +22,9 @@ public class BigraphChangeDisconnect extends Change {
 	public boolean isReady() {
 		return (point != null && link != null);
 	}
+	
+	@Override
+	public String toString() {
+		return "Change(disconnect " + point + " from " + link + ")";
+	}
 }

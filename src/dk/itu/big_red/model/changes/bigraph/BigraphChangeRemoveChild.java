@@ -30,4 +30,9 @@ public class BigraphChangeRemoveChild extends Change {
 	public boolean isReady() {
 		return (parent != null && child != null);
 	}
+	
+	@Override
+	public String toString() {
+		return "Change(remove child " + child + " from " + parent + ")";
+	}
 }

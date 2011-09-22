@@ -32,4 +32,9 @@ public class BigraphChangeEdgeReposition extends Change {
 	public boolean isReady() {
 		return (edge != null);
 	}
+	
+	@Override
+	public String toString() {
+		return "Change(recalculate position of " + edge + ")";
+	}
 }
