@@ -37,7 +37,9 @@ public class Edge extends Link implements IEdge {
 	
 	@Override
 	public void setLayout(Rectangle newLayout) {
-		super.setLayout(newLayout.setSize(14, 14));
+		if (newLayout != null)
+			newLayout.setSize(14, 14);
+		super.setLayout(newLayout);
 	}
 	
 	@Override

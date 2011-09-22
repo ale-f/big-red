@@ -37,6 +37,8 @@ public abstract class LayoutableModelObject extends ModelObject implements IAdap
 
 	@Override
 	public void setLayout(Rectangle newLayout) {
+		if (newLayout == null)
+			return;
 		Rectangle oldLayout = layout;
 		layout = newLayout;
 		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
