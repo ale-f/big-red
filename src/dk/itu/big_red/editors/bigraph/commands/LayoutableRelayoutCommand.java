@@ -24,7 +24,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	public void setConstraint(Object rect) {
 		if (rect instanceof Rectangle)
 			layout = (Rectangle)rect;
-		prepareGroup();
+		prepare();
 	}
 
 	public void setModel(Object model) {
@@ -32,10 +32,11 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 			this.model = (LayoutableModelObject)model;
 			setTarget(this.model.getBigraph());
 		}
-		prepareGroup();
+		prepare();
 	}
 	
-	private void prepareGroup() {
+	@Override
+	public void prepare() {
 		cg.clear();
 		if (model != null && layout != null &&
 				noOverlap() && boundariesSatisfied()) {

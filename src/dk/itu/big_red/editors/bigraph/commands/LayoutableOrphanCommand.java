@@ -23,7 +23,7 @@ public class LayoutableOrphanCommand extends ChangeCommand {
 	public void setParent(Object parent) {
 		if (parent instanceof Container)
 			this.parent = (Container)parent;
-		prepareGroup();
+		prepare();
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -36,10 +36,11 @@ public class LayoutableOrphanCommand extends ChangeCommand {
 					this.children.add(((AbstractPart)i).getModel());
 			}
 		}
-		prepareGroup();
+		prepare();
 	}
 	
-	private void prepareGroup() {
+	@Override
+	public void prepare() {
 		cg.clear();
 		if (parent != null && children.size() != 0) {
 			setTarget(parent.getBigraph());

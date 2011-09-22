@@ -22,7 +22,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	private Container container = null;
 	private LayoutableModelObject node = null;
 	
-	private void prepareGroup() {
+	@Override
+	public void prepare() {
 		cg.clear();
 		if (layout == null || container == null || node == null)
 			return;
@@ -54,7 +55,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	public void setObject(Object s) {
 		if (s instanceof LayoutableModelObject)
 			node = (LayoutableModelObject)s;
-		prepareGroup();
+		prepare();
 	}
 	
 	public void setContainer(Object e) {
@@ -62,12 +63,12 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			container = (Container)e;
 			setTarget(container.getBigraph());
 		}
-		prepareGroup();
+		prepare();
 	}
 	
 	public void setLayout(Object r) {
 		if (r instanceof Rectangle)
 			layout = (Rectangle)r;
-		prepareGroup();
+		prepare();
 	}
 }

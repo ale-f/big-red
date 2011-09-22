@@ -27,11 +27,12 @@ public class LayoutablePasteCommand extends ChangeCommand {
 	public void setNewParent(Object newParent) {
 		if (newParent instanceof Container)
 			this.newParent = (Container)newParent;
-		prepareGroup();
+		prepare();
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
-	private void prepareGroup() {
+	public void prepare() {
 		/*
 		 * FIXME: If several elements with the same parent are copied and then
 		 * pasted *while the copied elements are still selected*, then

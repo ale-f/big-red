@@ -18,8 +18,9 @@ public class LayoutableAddCommand extends ChangeCommand {
 	private Container parent = null;
 	private LayoutableModelObject child = null;
 	private Rectangle constraint = null;
-	
-	private void prepareGroup() {
+
+	@Override
+	public void prepare() {
 		cg.clear();
 		if (parent != null && child != null && constraint != null) {
 			setTarget(parent.getBigraph());
@@ -45,18 +46,18 @@ public class LayoutableAddCommand extends ChangeCommand {
 	public void setParent(Object parent) {
 		if (parent instanceof Container)
 			this.parent = (Container)parent;
-		prepareGroup();
+		prepare();
 	}
 	
 	public void setChild(Object child) {
 		if (child instanceof LayoutableModelObject)
 			this.child = (LayoutableModelObject)child;
-		prepareGroup();
+		prepare();
 	}
 	
 	public void setConstraint(Object constraint) {
 		if (constraint instanceof Rectangle)
 			this.constraint = (Rectangle)constraint;
-		prepareGroup();
+		prepare();
 	}
 }

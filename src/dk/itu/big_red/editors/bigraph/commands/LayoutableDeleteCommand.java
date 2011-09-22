@@ -23,26 +23,10 @@ public class LayoutableDeleteCommand extends ChangeCommand {
 		if (model instanceof LayoutableModelObject) {
 			this.object = (LayoutableModelObject)model;
 			this.parent = this.object.getParent();
-			if (this.parent == null) {
+			if (this.parent == null)
 				this.object = null;
-			} else {
-				cg.clear();
-				setTarget(this.object.getBigraph());
-				
-				if (this.object instanceof Link) {
-					Link l = (Link)this.object;
-					for (Point p : l.getPoints())
-						cg.add(new BigraphChangeDisconnect(p, l));
-				} else if (this.object instanceof Point) {
-					Point p = (Point)this.object;
-					if (p.getLink() != null)
-						cg.add(new BigraphChangeDisconnect(p, p.getLink()));
-				} else if (this.object instanceof Container) {
-					iterativelyRemoveConnections((Container)this.object);
-				}
-				cg.add(new BigraphChangeRemoveChild(this.parent, this.object));
-			}
 		}
+		prepare();
 	}
 	
 	private void iterativelyRemoveConnections(Container c) {
@@ -58,5 +42,26 @@ public class LayoutableDeleteCommand extends ChangeCommand {
 			if (i instanceof Container)
 				iterativelyRemoveConnections((Container)i);
 		}
+	}
+
+	@Override
+	public void prepare() {
+		cg.clear();
+		if (this.object == null)
+			return;
+		setTarget(this.object.getBigraph());
+		
+		if (this.object instanceof Link) {
+			Link l = (Link)this.object;
+			for (Point p : l.getPoints())
+				cg.add(new BigraphChangeDisconnect(p, l));
+		} else if (this.object instanceof Point) {
+			Point p = (Point)this.object;
+			if (p.getLink() != null)
+				cg.add(new BigraphChangeDisconnect(p, p.getLink()));
+		} else if (this.object instanceof Container) {
+			iterativelyRemoveConnections((Container)this.object);
+		}
+		cg.add(new BigraphChangeRemoveChild(this.parent, this.object));
 	}
 }

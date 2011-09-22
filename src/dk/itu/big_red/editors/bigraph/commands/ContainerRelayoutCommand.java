@@ -14,15 +14,21 @@ public class ContainerRelayoutCommand extends ChangeCommand {
 	protected Container model = null;
 	
 	public void setModel(Object model) {
-		if (model instanceof Container && !(model instanceof Bigraph)) {
+		if (model instanceof Container && !(model instanceof Bigraph))
 			this.model = (Container)model;
-			super.setTarget(this.model.getBigraph());
-			cg.clear();
-			this.model.relayout(cg);
-		}
+		prepare();
 	}
 
 	public Container getModel() {
 		return model;
+	}
+	
+	@Override
+	public void prepare() {
+		cg.clear();
+		if (this.model == null)
+			return;
+		super.setTarget(this.model.getBigraph());
+		this.model.relayout(cg);
 	}
 }

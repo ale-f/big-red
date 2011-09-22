@@ -11,8 +11,18 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
  *
  */
 public class LinkConnectionDeleteCommand extends ChangeCommand {
+	private LinkConnection lc = null;
+	
 	public void setModel(LinkConnection l) {
-		setTarget(l.getLink().getBigraph());
-		setChange(new BigraphChangeDisconnect(l.getPoint(), l.getLink()));
+		if (l != null)
+			lc = l;
+		prepare();
+	}
+
+	@Override
+	public void prepare() {
+		if (lc == null)
+			return;
+		setChange(new BigraphChangeDisconnect(lc.getPoint(), lc.getLink()));
 	}
 }

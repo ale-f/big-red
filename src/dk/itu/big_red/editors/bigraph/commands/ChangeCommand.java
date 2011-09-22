@@ -7,7 +7,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.util.UI;
 
-public class ChangeCommand extends Command {
+public abstract class ChangeCommand extends Command {
 	private Change change;
 	private IChangeable target;
 	
@@ -31,6 +31,8 @@ public class ChangeCommand extends Command {
 	public void setTarget(IChangeable target) {
 		this.target = target;
 	}
+	
+	public abstract void prepare();
 	
 	@Override
 	public boolean canExecute() {
