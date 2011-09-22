@@ -46,7 +46,9 @@ public abstract class LayoutableModelObject extends ModelObject implements IAdap
 
 	@Override
 	public Bigraph getBigraph() {
-		return getParent().getBigraph();
+		if (getParent() == null) {
+			return null;
+		} else return getParent().getBigraph();
 	}
 
 	@Override
