@@ -60,7 +60,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 			Node j = (Node)c;
 			for (Point p : j.getPorts()) {
 				Link l = p.getLink();
-				if (l != null) // && !objects.contains(l))
+				if (l != null && !objects.contains(l))
 					cg.add(new BigraphChangeDisconnect(p, l));
 			}
 		}
