@@ -10,7 +10,6 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
 public class LayoutablePasteCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -62,8 +61,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 			} else if (i instanceof Node || i instanceof Root ||
 					i instanceof Site) {
 				LayoutableModelObject j = i.clone();
-				cg.add(new BigraphChangeAddChild(newParent, j),
-						new BigraphChangeLayout(j, j.getLayout().getCopy().translate(20, 20)));
+				cg.add(new BigraphChangeAddChild(newParent, j, j.getLayout().getCopy().translate(20, 20)));
 			}
 		}
 	}

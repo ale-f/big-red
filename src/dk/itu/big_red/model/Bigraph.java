@@ -121,27 +121,33 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 				throw new ChangeRejectedException(this, b, this,
 					c.parent.getClass().getSimpleName() + "s can't contain " +
 					c.child.getClass().getSimpleName() + "s");
+			scratch.setLayoutFor(c.child, c.newLayout);
+			if (!(c.child instanceof Edge))
+				scratch.setParentFor(c.child, c.parent);
+		} else if (b instanceof BigraphChangeRemoveChild) {
+			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
+			scratch.setParentFor(c.child, null);
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
 			Rectangle trLayout = c.newLayout.getCopy().setLocation(0, 0);
 			if (c.model instanceof Container) {
 				Container model = (Container)c.model;
 				for (LayoutableModelObject i : model.getChildren()) {
-					Rectangle layout = scratch.getRectangle(i.getLayout());
+					Rectangle layout = scratch.getLayoutFor(i);
 					if (!trLayout.contains(layout))
 						throw new ChangeRejectedException(this, b, this,
 							"The new size is too small");
 				}
-				scratch.getRectangle(c.model.getLayout()).setBounds(c.newLayout);
 			}
-			LayoutableModelObject parent = c.model.getParent();
+			LayoutableModelObject parent = scratch.getParentFor(c.model);
 			if (parent != null && !(parent instanceof Bigraph)) {
 				trLayout =
-					scratch.getRectangle(parent.getLayout()).getCopy().setLocation(0, 0);
+					scratch.getLayoutFor(parent).getCopy().setLocation(0, 0);
 				if (!trLayout.contains(c.newLayout))
 					throw new ChangeRejectedException(this, b, this,
 						"The object can no longer fit into its container");
 			}
+			scratch.setLayoutFor(c.model, c.newLayout);
 		}
 	}
 	
@@ -158,10 +164,13 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			c.link.removePoint(c.point);
 		} else if (b instanceof BigraphChangeAddChild) {
 			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
-			c.parent.addChild(c.child);
+			if (!(c.child instanceof Edge))
+				c.parent.addChild(c.child);
+			c.child.setLayout(c.newLayout);
 		} else if (b instanceof BigraphChangeRemoveChild) {
 			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
-			c.parent.removeChild(c.child);
+			if (!(c.child instanceof Edge))
+				c.parent.removeChild(c.child);
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
 			c.model.setLayout(c.newLayout);
@@ -176,7 +185,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	@Override
 	public boolean canContain(LayoutableModelObject child) {
 		Class<? extends LayoutableModelObject> c = child.getClass();
-		return (c == Root.class || c == InnerName.class || c == OuterName.class);
+		return (c == Root.class || c == InnerName.class || c == OuterName.class || c == Edge.class);
 	}
 	
 	@Override

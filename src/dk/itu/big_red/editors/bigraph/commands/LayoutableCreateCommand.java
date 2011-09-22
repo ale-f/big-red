@@ -10,7 +10,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
 public class LayoutableCreateCommand extends ChangeCommand {
 	ChangeGroup cg = new ChangeGroup();
@@ -49,8 +48,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 					return;
 			}
 		}
-		cg.add(new BigraphChangeAddChild(container, node),
-				new BigraphChangeLayout(node, layout));
+		cg.add(new BigraphChangeAddChild(container, node, layout));
 	}
 	
 	public void setObject(Object s) {
