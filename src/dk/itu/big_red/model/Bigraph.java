@@ -285,7 +285,10 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	protected void _tryValidateChange(Change b)
 			throws ChangeRejectedException {
-		if (b instanceof ChangeGroup) {
+		if (!b.isReady()) {
+			throw new ChangeRejectedException(this, b, this,
+				"The Change is not ready");
+		} else if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				_tryValidateChange(c);
 		} else if (b instanceof BigraphChangeConnect) {

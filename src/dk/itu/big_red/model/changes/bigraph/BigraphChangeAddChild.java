@@ -21,4 +21,9 @@ public class BigraphChangeAddChild extends Change {
 	public Change inverse() {
 		return new BigraphChangeRemoveChild(parent, child);
 	}
+	
+	@Override
+	public boolean isReady() {
+		return (parent != null && child != null && newLayout != null);
+	}
 }

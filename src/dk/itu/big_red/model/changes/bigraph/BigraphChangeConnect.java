@@ -17,4 +17,9 @@ public class BigraphChangeConnect extends Change {
 	public Change inverse() {
 		return new BigraphChangeDisconnect(point, link);
 	}
+	
+	@Override
+	public boolean isReady() {
+		return (point != null && link != null);
+	}
 }

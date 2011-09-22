@@ -27,4 +27,9 @@ public class BigraphChangeEdgeReposition extends Change {
 	public boolean canInvert() {
 		return (oldLayout != null);
 	}
+	
+	@Override
+	public boolean isReady() {
+		return (edge != null);
+	}
 }

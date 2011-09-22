@@ -29,4 +29,9 @@ public class BigraphChangeLayout extends Change {
 	public boolean canInvert() {
 		return (oldLayout != null);
 	}
+	
+	@Override
+	public boolean isReady() {
+		return (model != null && newLayout != null);
+	}
 }
