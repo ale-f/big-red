@@ -103,6 +103,16 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		return lastRejection;
 	}
 	
+	private void checkObjectCanContain(Change b, LayoutableModelObject o, Rectangle nl) throws ChangeRejectedException {
+		if (o != null && !(o instanceof Bigraph)) {
+			Rectangle tr =
+				scratch.getLayoutFor(o).getCopy().setLocation(0, 0);
+			if (!tr.contains(nl))
+				throw new ChangeRejectedException(this, b, this,
+					"The object can no longer fit into its container");
+		}
+	}
+	
 	@Override
 	public void tryValidateChange(Change b) throws ChangeRejectedException {
 		if (b instanceof ChangeGroup) {
@@ -121,6 +131,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 				throw new ChangeRejectedException(this, b, this,
 					c.parent.getClass().getSimpleName() + "s can't contain " +
 					c.child.getClass().getSimpleName() + "s");
+			checkObjectCanContain(b, c.parent, c.newLayout);
 			scratch.setLayoutFor(c.child, c.newLayout);
 			if (!(c.child instanceof Edge))
 				scratch.setParentFor(c.child, c.parent);
@@ -139,14 +150,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 							"The new size is too small");
 				}
 			}
-			LayoutableModelObject parent = scratch.getParentFor(c.model);
-			if (parent != null && !(parent instanceof Bigraph)) {
-				trLayout =
-					scratch.getLayoutFor(parent).getCopy().setLocation(0, 0);
-				if (!trLayout.contains(c.newLayout))
-					throw new ChangeRejectedException(this, b, this,
-						"The object can no longer fit into its container");
-			}
+			checkObjectCanContain(b, scratch.getParentFor(c.model), c.newLayout);
 			scratch.setLayoutFor(c.model, c.newLayout);
 		}
 	}
