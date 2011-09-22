@@ -302,7 +302,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			BigraphChangeDisconnect c = (BigraphChangeDisconnect)b;
 			if (scratch.getLinkFor(c.point) == null)
 				throw new ChangeRejectedException(this, b, this,
-					"The Point is already disconnedted");
+					"The Point is already disconnected");
 			scratch.setLinkFor(c.point, null);
 		} else if (b instanceof BigraphChangeAddChild) {
 			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
