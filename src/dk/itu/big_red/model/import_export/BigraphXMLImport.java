@@ -17,6 +17,8 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
+import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
@@ -41,8 +43,16 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		}
 	}
 	
-	private void connect(String linkName, Point object) {
-		bigraph.applyChange(
+	private void applyChange(Change c) throws ImportFailedException {
+		try {
+			bigraph.tryApplyChange(c);
+		} catch (ChangeRejectedException e) {
+			throw new ImportFailedException(e);
+		}
+	}
+	
+	private void connect(String linkName, Point object) throws ImportFailedException {
+		applyChange(
 			new BigraphChangeConnect(object,
 				(Link)bigraph.getNamespaceManager().getObject(Link.class, linkName)));
 	}
