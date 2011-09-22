@@ -53,6 +53,7 @@ public class ContainerRelayoutAction extends SelectionAction {
 				if (m instanceof Container) {
 					command = new ContainerRelayoutCommand();
 					command.setModel(m);
+					command.prepare();
 					lastCommands.add(command);
 				}
 			}

@@ -23,7 +23,6 @@ public class LayoutableOrphanCommand extends ChangeCommand {
 	public void setParent(Object parent) {
 		if (parent instanceof Container)
 			this.parent = (Container)parent;
-		prepare();
 	}
 	
 	@SuppressWarnings("rawtypes")
@@ -36,7 +35,6 @@ public class LayoutableOrphanCommand extends ChangeCommand {
 					this.children.add(((AbstractPart)i).getModel());
 			}
 		}
-		prepare();
 	}
 	
 	@Override

@@ -27,7 +27,6 @@ public class LayoutablePasteCommand extends ChangeCommand {
 	public void setNewParent(Object newParent) {
 		if (newParent instanceof Container)
 			this.newParent = (Container)newParent;
-		prepare();
 	}
 	
 	@Override

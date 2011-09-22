@@ -16,7 +16,6 @@ public class ContainerRelayoutCommand extends ChangeCommand {
 	public void setModel(Object model) {
 		if (model instanceof Container && !(model instanceof Bigraph))
 			this.model = (Container)model;
-		prepare();
 	}
 
 	public Container getModel() {

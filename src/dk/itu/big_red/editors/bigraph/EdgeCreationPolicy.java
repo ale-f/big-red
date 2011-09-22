@@ -23,6 +23,7 @@ public class EdgeCreationPolicy extends GraphicalNodeEditPolicy {
 		LinkConnectionCreateCommand cmd = 
 			(LinkConnectionCreateCommand) request.getStartCommand();
 		cmd.setSecond(getHost().getModel());
+		cmd.prepare();
 		return cmd;
 	}
 	

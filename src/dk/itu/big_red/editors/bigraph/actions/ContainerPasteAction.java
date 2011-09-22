@@ -60,6 +60,7 @@ public class ContainerPasteAction extends SelectionAction {
 		}
 		LayoutablePasteCommand c = new LayoutablePasteCommand();
 		c.setNewParent(newParent);
+		c.prepare();
 		return c;
 	}
 	

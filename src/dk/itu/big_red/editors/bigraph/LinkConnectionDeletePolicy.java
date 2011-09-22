@@ -55,6 +55,7 @@ public class LinkConnectionDeletePolicy extends ConnectionEditPolicy {
     	}
     	LinkConnectionDeleteCommand dc = new LinkConnectionDeleteCommand();
 		dc.setModel((LinkConnection)getHost().getModel());
+		dc.prepare();
 		return dc;
     }
 }

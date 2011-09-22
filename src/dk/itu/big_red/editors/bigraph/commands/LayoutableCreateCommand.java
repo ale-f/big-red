@@ -27,6 +27,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		cg.clear();
 		if (layout == null || container == null || node == null)
 			return;
+		setTarget(container.getBigraph());
 		for (LayoutableModelObject i : container.getChildren()) {
 			if (i instanceof Edge)
 				continue;
@@ -55,20 +56,15 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	public void setObject(Object s) {
 		if (s instanceof LayoutableModelObject)
 			node = (LayoutableModelObject)s;
-		prepare();
 	}
 	
 	public void setContainer(Object e) {
-		if (e instanceof Container) {
+		if (e instanceof Container)
 			container = (Container)e;
-			setTarget(container.getBigraph());
-		}
-		prepare();
 	}
 	
 	public void setLayout(Object r) {
 		if (r instanceof Rectangle)
 			layout = (Rectangle)r;
-		prepare();
 	}
 }

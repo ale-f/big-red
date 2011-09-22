@@ -16,7 +16,6 @@ public class LinkConnectionDeleteCommand extends ChangeCommand {
 	public void setModel(LinkConnection l) {
 		if (l != null)
 			lc = l;
-		prepare();
 	}
 
 	@Override

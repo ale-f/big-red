@@ -26,7 +26,6 @@ public class LayoutableDeleteCommand extends ChangeCommand {
 			if (this.parent == null)
 				this.object = null;
 		}
-		prepare();
 	}
 	
 	private void iterativelyRemoveConnections(Container c) {

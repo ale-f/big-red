@@ -33,14 +33,12 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 		if (!(e instanceof LinkConnection)) {
 			first = e;
 		} else first = ((LinkConnection)e).getLink();
-		prepare();
 	}
 	
 	public void setSecond(Object e) {
 		if (!(e instanceof LinkConnection)) {
 			second = e;
 		} else second = ((LinkConnection)e).getLink();
-		prepare();
 	}
 
 	@Override

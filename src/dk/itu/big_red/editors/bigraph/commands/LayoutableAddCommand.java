@@ -46,18 +46,15 @@ public class LayoutableAddCommand extends ChangeCommand {
 	public void setParent(Object parent) {
 		if (parent instanceof Container)
 			this.parent = (Container)parent;
-		prepare();
 	}
 	
 	public void setChild(Object child) {
 		if (child instanceof LayoutableModelObject)
 			this.child = (LayoutableModelObject)child;
-		prepare();
 	}
 	
 	public void setConstraint(Object constraint) {
 		if (constraint instanceof Rectangle)
 			this.constraint = (Rectangle)constraint;
-		prepare();
 	}
 }

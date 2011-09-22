@@ -24,24 +24,21 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	public void setConstraint(Object rect) {
 		if (rect instanceof Rectangle)
 			layout = (Rectangle)rect;
-		prepare();
 	}
 
 	public void setModel(Object model) {
-		if (model instanceof LayoutableModelObject) {
+		if (model instanceof LayoutableModelObject)
 			this.model = (LayoutableModelObject)model;
-			setTarget(this.model.getBigraph());
-		}
-		prepare();
 	}
 	
 	@Override
 	public void prepare() {
 		cg.clear();
-		if (model != null && layout != null &&
-				noOverlap() && boundariesSatisfied()) {
+		if (model == null || layout == null)
+			return;
+		setTarget(this.model.getBigraph());
+		if (noOverlap() && boundariesSatisfied())
 			cg.add(new BigraphChangeLayout(model, layout));
-		}
 	}
 	
 	public boolean noOverlap() {

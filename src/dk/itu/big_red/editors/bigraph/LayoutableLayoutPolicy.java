@@ -27,6 +27,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			
 			command.setModel(child.getModel());
 			command.setConstraint(constraint);
+			command.prepare();
 		}
 		return command;
 	}
@@ -37,6 +38,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		command.setParent(getHost().getModel());
 		command.setChild(child.getModel());
 		command.setConstraint(constraint);
+		command.prepare();
 		return command;
 	}
 	
@@ -53,6 +55,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 				command.setParent(((ILayoutable)model).getParent());
 			
 			command.setChildren(groupRequest.getEditParts());
+			command.prepare();
 		}
 		return command;
 	}
@@ -80,6 +83,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		constraint.width = (constraint.width <= 0 ? size.width : constraint.width);
 		constraint.height = (constraint.height <= 0 ? size.height : constraint.height);
 		cmd.setLayout(constraint);
+		cmd.prepare();
 		
 		return cmd;
 	}

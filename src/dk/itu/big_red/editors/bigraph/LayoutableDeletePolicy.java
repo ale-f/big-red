@@ -12,6 +12,7 @@ public class LayoutableDeletePolicy extends ComponentEditPolicy {
 	protected Command createDeleteCommand(GroupRequest deleteRequest) {
 		LayoutableDeleteCommand command = new LayoutableDeleteCommand();
 		command.setObject(getHost().getModel());
+		command.prepare();
 		return command;
 	}
 }
