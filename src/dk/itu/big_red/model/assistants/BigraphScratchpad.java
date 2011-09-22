@@ -5,6 +5,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.Point;
 
 /**
  * The BigraphScratchpad is a wrapper around various kinds of {@link
@@ -20,9 +22,12 @@ public class BigraphScratchpad {
 	private HashMap<LayoutableModelObject, Container> parents =
 			new HashMap<LayoutableModelObject, Container>();
 	
+	private HashMap<Point, Link> links = new HashMap<Point, Link>();
+	
 	public void clear() {
 		layouts.clear();
 		parents.clear();
+		links.clear();
 	}
 	
 	public Rectangle getLayoutFor(LayoutableModelObject a) {
@@ -49,5 +54,18 @@ public class BigraphScratchpad {
 	
 	public void setParentFor(LayoutableModelObject a, Container b) {
 		parents.put(a, b);
+	}
+	
+	public Link getLinkFor(Point a) {
+		Link b = links.get(a);
+		if (b == null) {
+			b = a.getLink();
+			links.put(a, b);
+		}
+		return b;
+	}
+	
+	public void setLinkFor(Point a, Link b) {
+		links.put(a, b);
 	}
 }

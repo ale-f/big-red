@@ -121,10 +121,17 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			}
 		} else if (b instanceof BigraphChangeConnect) {
 			BigraphChangeConnect c = (BigraphChangeConnect)b;
-			if (c.point.getLink() != null)
+			if (scratch.getLinkFor(c.point) != null)
 				throw new ChangeRejectedException(this, b, this,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
+			scratch.setLinkFor(c.point, c.link);
+		} else if (b instanceof BigraphChangeDisconnect) {
+			BigraphChangeDisconnect c = (BigraphChangeDisconnect)b;
+			if (scratch.getLinkFor(c.point) == null)
+				throw new ChangeRejectedException(this, b, this,
+					"The Point is already disconnedted");
+			scratch.setLinkFor(c.point, null);
 		} else if (b instanceof BigraphChangeAddChild) {
 			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
 			if (!c.parent.canContain(c.child))
