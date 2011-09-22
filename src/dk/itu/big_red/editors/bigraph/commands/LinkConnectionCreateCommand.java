@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
@@ -48,7 +50,7 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			Bigraph b = ((Point)first).getBigraph();
 			setTarget(b);
 			Edge ed = new Edge();
-			cg.add(new BigraphChangeAddChild(b, ed, null),
+			cg.add(new BigraphChangeAddChild(b, ed, new Rectangle()),
 					new BigraphChangeConnect((Point)first, ed),
 					new BigraphChangeConnect((Point)second, ed),
 					new BigraphChangeEdgeReposition(ed));
