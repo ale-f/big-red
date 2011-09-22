@@ -2,7 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.ArrayList;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.swt.graphics.RGB;
 
@@ -93,17 +93,17 @@ public class Control extends ModelObject implements IFillColourable, IOutlineCol
 	private Control.Shape shape;
 	private String longName;
 	private String label;
-	private Point defaultSize;
+	private Dimension defaultSize;
 	private boolean resizable;
 	public Control() {
 		setLongName("Unknown");
 		setLabel("?");
 		setShape(Control.Shape.SHAPE_POLYGON, POINTS_QUAD);
-		setDefaultSize(new Point(50, 50));
+		setDefaultSize(new Dimension(50, 50));
 		setResizable(true);
 	}
 	
-	public Control(String longName, String label, Control.Shape shape, PointList points, Point defaultSize, boolean constraintModifiable) {
+	public Control(String longName, String label, Control.Shape shape, PointList points, Dimension defaultSize, boolean constraintModifiable) {
 		setLongName(longName);
 		setLabel(label);
 		setShape(shape, points);
@@ -171,13 +171,13 @@ public class Control extends ModelObject implements IFillColourable, IOutlineCol
 		return longName;
 	}
 	
-	public Point getDefaultSize() {
+	public Dimension getDefaultSize() {
 		return defaultSize;
 	}
 	
-	public void setDefaultSize(Point defaultSize) {
+	public void setDefaultSize(Dimension defaultSize) {
 		if (defaultSize != null) {
-			Point oldSize = this.defaultSize;
+			Dimension oldSize = this.defaultSize;
 			this.defaultSize = defaultSize;
 			firePropertyChange(PROPERTY_DEFAULT_SIZE, oldSize, defaultSize);
 		}

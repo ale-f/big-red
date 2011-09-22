@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
@@ -98,13 +97,9 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 			for (Port p : ports)
 				p.setParent(this);
 			
-			Point c = control.getDefaultSize();
-			if (!control.isResizable()) {
-				Rectangle nr = getLayout().getCopy();
-				nr.width = c.x;
-				nr.height = c.y;
-				super.setLayout(nr);
-			}
+			if (!control.isResizable())
+				super.setLayout(
+					getLayout().getCopy().setSize(control.getDefaultSize()));
 		}
 		firePropertyChange(PROPERTY_CONTROL, oldControl, control);
 	}
