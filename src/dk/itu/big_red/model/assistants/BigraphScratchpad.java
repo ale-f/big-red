@@ -1,21 +1,19 @@
-package dk.itu.big_red.util;
+package dk.itu.big_red.model.assistants;
 
 import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.LayoutableModelObject;
 
 /**
- * The ObjectScratchpad is a wrapper around a {@link Map Map<Object, Object>}
- * which maps objects to copies of themselves, allowing the copies to be
- * modified without affecting the original.
+ * The BigraphScratchpad is a wrapper around various kinds of {@link
+ * LayoutableModelObject} which maps objects to copies of themselves, allowing
+ * the copies to be modified without affecting the original.
  * @author alec
  *
  */
-public class ObjectScratchpad {
+public class BigraphScratchpad {
 	private HashMap<LayoutableModelObject, Rectangle> layouts =
 			new HashMap<LayoutableModelObject, Rectangle>();
 	
@@ -40,7 +38,7 @@ public class ObjectScratchpad {
 		layouts.put(a, b);
 	}
 	
-	public LayoutableModelObject getParentFor(LayoutableModelObject a) {
+	public Container getParentFor(LayoutableModelObject a) {
 		Container b = parents.get(a);
 		if (b == null) {
 			b = a.getParent();

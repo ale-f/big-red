@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -22,7 +23,6 @@ import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.HomogeneousIterable;
-import dk.itu.big_red.util.ObjectScratchpad;
 import dk.itu.big_red.util.resources.ResourceWrapper;
 
 /**
@@ -84,7 +84,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	private ChangeRejectedException lastRejection = null;
-	private ObjectScratchpad scratch = new ObjectScratchpad();
+	private BigraphScratchpad scratch = new BigraphScratchpad();
 	
 	@Override
 	public boolean validateChange(Change b) {
