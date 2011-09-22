@@ -11,7 +11,16 @@ public interface IChangeable extends IChangeValidator {
 	 * Applies the given {@link Change} to this {@link IChangeable}.
 	 * <p>This function will do nothing if the {@link Change} fails {@link
 	 * #validateChange(Change) validation}.
-	 * @param c a {@link Change}
+	 * @param b a {@link Change}
 	 */
 	public void applyChange(Change b);
+	
+	/**
+	 * Validates and applies the given {@link Change} to this {@link
+	 * IChangeable}.
+	 * @param b a {@link Change}
+	 * @throws ChangeRejectedException if {@link #tryValidateChange(Change)}
+	 * fails
+	 */
+	public void tryApplyChange(Change b) throws ChangeRejectedException;
 }

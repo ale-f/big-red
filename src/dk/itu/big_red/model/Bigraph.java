@@ -78,9 +78,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	@Override
 	public void applyChange(Change b) {
-		if (!validateChange(b))
+		try {
+			tryApplyChange(b);
+		} catch (ChangeRejectedException e) {
 			return;
-		doChange(b);
+		}
 	}
 	
 	private ChangeRejectedException lastRejection = null;
@@ -88,7 +90,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	@Override
 	public boolean validateChange(Change b) {
-		scratch.clear();
 		try {
 			tryValidateChange(b);
 		} catch (ChangeRejectedException e) {
@@ -114,11 +115,23 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public void tryValidateChange(Change b) throws ChangeRejectedException {
+	public void tryApplyChange(Change b) throws ChangeRejectedException {
+		tryValidateChange(b);
+		doChange(b);
+	}
+	
+	@Override
+	public void tryValidateChange(Change b)
+			throws ChangeRejectedException {
+		scratch.clear();
+		_tryValidateChange(b);
+	}
+	
+	protected void _tryValidateChange(Change b)
+			throws ChangeRejectedException {
 		if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b) {
-				tryValidateChange(c);
-			}
+			for (Change c : (ChangeGroup)b)
+				_tryValidateChange(c);
 		} else if (b instanceof BigraphChangeConnect) {
 			BigraphChangeConnect c = (BigraphChangeConnect)b;
 			if (scratch.getLinkFor(c.point) != null)
