@@ -3,12 +3,14 @@ package dk.itu.big_red.editors.bigraph.commands;
 import java.util.ArrayList;
 
 import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
@@ -31,12 +33,21 @@ public class ModelDeleteCommand extends ChangeCommand {
 			objects.add(m);
 	}
 	
+	private BigraphScratchpad scratch = new BigraphScratchpad();
+	
+	private void removePoint(Link l, Point p) {
+		cg.add(new BigraphChangeDisconnect(p, l));
+		scratch.removePointFor(l, p);
+		if (scratch.getPointsFor(l).size() == 0 && l instanceof Edge)
+			cg.add(new BigraphChangeRemoveChild(l.getBigraph(), l));
+	}
+	
 	private void remove(ModelObject m) {
 		if (m instanceof LinkConnection) {
 			LinkConnection l = (LinkConnection)m;
-			setTarget(l.getLink().getBigraph());
-			cg.add(new BigraphChangeDisconnect(l.getPoint(), l.getLink()));
-			/* XXX! */
+			Link link = l.getLink(); Point point = l.getPoint();
+			setTarget(link.getBigraph());
+			removePoint(link, point);
 		} else if (m instanceof LayoutableModelObject) {
 			LayoutableModelObject n = (LayoutableModelObject)m;
 			setTarget(n.getBigraph());
@@ -45,12 +56,14 @@ public class ModelDeleteCommand extends ChangeCommand {
 				iterativelyRemoveConnections(c);
 			} else if (n instanceof Link) {
 				Link l = (Link)n;
-				for (Point p : l.getPoints())
+				for (Point p : scratch.getPointsFor(l)) {
 					cg.add(new BigraphChangeDisconnect(p, l));
+					scratch.removePointFor(l, p);
+				}
 			} else if (n instanceof Point) {
 				Point p = (Point)n;
 				if (p.getLink() != null)
-					cg.add(new BigraphChangeDisconnect(p, p.getLink()));
+					removePoint(p.getLink(), p);
 			}
 			cg.add(new BigraphChangeRemoveChild(n.getParent(), n));
 		}
@@ -62,7 +75,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 			for (Point p : j.getPorts()) {
 				Link l = p.getLink();
 				if (l != null && !objects.contains(l))
-					cg.add(new BigraphChangeDisconnect(p, l));
+					removePoint(l, p);
 			}
 		}
 		for (LayoutableModelObject i : c.getChildren()) {
@@ -98,6 +111,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 	@Override
 	public void prepare() {
 		cg.clear();
+		scratch.clear();
 		for (ModelObject m : objects) {
 			if ((m instanceof LayoutableModelObject &&
 					!parentScheduledForDeletion((LayoutableModelObject)m) &&
