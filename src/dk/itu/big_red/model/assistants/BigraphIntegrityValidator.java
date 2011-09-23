@@ -14,6 +14,7 @@ import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 
@@ -96,6 +97,10 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 				checkLayoutCanContainChildren(b, (Container)c.model, c.newLayout);
 			checkObjectCanContain(b, scratch.getParentFor(c.model), c.newLayout);
 			scratch.setLayoutFor(c.model, c.newLayout);
+		} else if (b instanceof BigraphChangeEdgeReposition) {
+			/* nothing to do? */
+		} else {
+			rejectChange(b, "The change was not recognised by the validator");
 		}
 	}
 }
