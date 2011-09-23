@@ -9,8 +9,11 @@ package dk.itu.big_red.model.changes;
  *
  */
 public abstract class ChangeValidator implements IChangeValidator {
-	private ChangeRejectedException lastRejection = null;
 	private IChangeable changeable;
+	
+	public ChangeValidator(IChangeable changeable) {
+		this.changeable = changeable;
+	}
 	
 	/**
 	 * Sets the {@link IChangeable} that this {@link ChangeValidator} is acting
@@ -30,22 +33,16 @@ public abstract class ChangeValidator implements IChangeValidator {
 		return changeable;
 	}
 	
-	@Override
-	public boolean validateChange(Change b) {
-		try {
-			tryValidateChange(b);
-		} catch (ChangeRejectedException e) {
-			lastRejection = e;
-			return false;
-		}
-		return true;
+	/**
+	 * Rejects a {@link Change}.
+	 * @param b the {@link Change}
+	 * @param rationale why the {@link Change} was rejected
+	 * @throws ChangeRejectedException always and forever
+	 */
+	protected void rejectChange(Change b, String rationale) throws ChangeRejectedException {
+		throw new ChangeRejectedException(getChangeable(), b, this, rationale);
 	}
-
-	@Override
-	public ChangeRejectedException getLastRejection() {
-		return lastRejection;
-	}
-
+	
 	@Override
 	public abstract void tryValidateChange(Change b) throws ChangeRejectedException;
 }

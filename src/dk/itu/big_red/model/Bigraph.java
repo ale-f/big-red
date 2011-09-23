@@ -1,13 +1,16 @@
 package dk.itu.big_red.model;
 
+import java.util.ArrayList;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.assistants.BigraphScratchpad;
+import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
@@ -67,6 +70,13 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	              lowerOuterNameBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN,
 	              upperInnerNameBoundary = Integer.MIN_VALUE + BOUNDARY_MARGIN,
 	              lowerRootBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN;
+	
+	private ArrayList<IChangeValidator> validators =
+			new ArrayList<IChangeValidator>();
+	
+	public Bigraph() {
+		validators.add(new BigraphIntegrityValidator(this));
+	}
 	
 	/**
 	 * Gets the {@link NamespaceManager} for this bigraph.
@@ -222,28 +232,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		return signature.getModel();
 	}
 	
-	private void checkObjectCanContain(Change b, LayoutableModelObject o, Rectangle nl) throws ChangeRejectedException {
-		if (o != null && !(o instanceof Bigraph)) {
-			Rectangle tr =
-				scratch.getLayoutFor(o).getCopy().setLocation(0, 0);
-			if (!tr.contains(nl))
-				throw new ChangeRejectedException(this, b, this,
-					"The object can no longer fit into its container");
-		}
-	}
-	
-	private void checkLayoutCanContainChildren(Change b, Container c, Rectangle nl) throws ChangeRejectedException {
-		nl = nl.getCopy().setLocation(0, 0);
-		for (LayoutableModelObject i : c.getChildren()) {
-			Rectangle layout = scratch.getLayoutFor(i);
-			if (!nl.contains(layout))
-				throw new ChangeRejectedException(this, b, this,
-					"The new size is too small");
-		}
-	}
-	
 	private ChangeRejectedException lastRejection = null;
-	private BigraphScratchpad scratch = new BigraphScratchpad();
 	
 	@Override
 	public void applyChange(Change b) {
@@ -253,7 +242,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			return;
 		}
 	}
-		
+	
 	@Override
 	public boolean validateChange(Change b) {
 		try {
@@ -271,59 +260,15 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public void tryApplyChange(Change b) throws ChangeRejectedException {
-		tryValidateChange(b);
-		doChange(b);
+	public void tryValidateChange(Change b) throws ChangeRejectedException {
+		for (IChangeValidator i : validators)
+			i.tryValidateChange(b);
 	}
 	
 	@Override
-	public void tryValidateChange(Change b)
-			throws ChangeRejectedException {
-		scratch.clear();
-		_tryValidateChange(b);
-	}
-	
-	protected void _tryValidateChange(Change b)
-			throws ChangeRejectedException {
-		if (!b.isReady()) {
-			throw new ChangeRejectedException(this, b, this,
-				"The Change is not ready");
-		} else if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b)
-				_tryValidateChange(c);
-		} else if (b instanceof BigraphChangeConnect) {
-			BigraphChangeConnect c = (BigraphChangeConnect)b;
-			if (scratch.getLinkFor(c.point) != null)
-				throw new ChangeRejectedException(this, b, this,
-					"Connections can only be established to Points that " +
-					"aren't already connected");
-			scratch.setLinkFor(c.point, c.link);
-		} else if (b instanceof BigraphChangeDisconnect) {
-			BigraphChangeDisconnect c = (BigraphChangeDisconnect)b;
-			if (scratch.getLinkFor(c.point) == null)
-				throw new ChangeRejectedException(this, b, this,
-					"The Point is already disconnected");
-			scratch.setLinkFor(c.point, null);
-		} else if (b instanceof BigraphChangeAddChild) {
-			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
-			if (!c.parent.canContain(c.child))
-				throw new ChangeRejectedException(this, b, this,
-					c.parent.getClass().getSimpleName() + "s can't contain " +
-					c.child.getClass().getSimpleName() + "s");
-			checkObjectCanContain(b, c.parent, c.newLayout);
-			scratch.setLayoutFor(c.child, c.newLayout);
-			if (!(c.child instanceof Edge))
-				scratch.setParentFor(c.child, c.parent);
-		} else if (b instanceof BigraphChangeRemoveChild) {
-			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
-			scratch.setParentFor(c.child, null);
-		} else if (b instanceof BigraphChangeLayout) {
-			BigraphChangeLayout c = (BigraphChangeLayout)b;
-			if (c.model instanceof Container)
-				checkLayoutCanContainChildren(b, (Container)c.model, c.newLayout);
-			checkObjectCanContain(b, scratch.getParentFor(c.model), c.newLayout);
-			scratch.setLayoutFor(c.model, c.newLayout);
-		}
+	public void tryApplyChange(Change b) throws ChangeRejectedException {
+		tryValidateChange(b);
+		doChange(b);
 	}
 	
 	private void doChange(Change b) {
