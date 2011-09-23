@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
+import java.util.List;
+
 import org.eclipse.draw2d.IFigure;
 import dk.itu.big_red.editors.bigraph.figures.EdgeFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
@@ -25,6 +27,13 @@ public class EdgePart extends LinkPart {
 	public void refreshVisuals() {
 		super.refreshVisuals();
 		setResizable(false);
+	}
+	
+	@Override
+	protected List<LinkConnection> getModelTargetConnections() {
+		List<LinkConnection> lc = super.getModelTargetConnections();
+		getFigure().setVisible(lc.size() != 0);
+		return lc;
 	}
 	
 	@Override

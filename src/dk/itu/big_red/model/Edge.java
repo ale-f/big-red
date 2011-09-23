@@ -43,28 +43,6 @@ public class Edge extends Link implements IEdge {
 	}
 	
 	@Override
-	public void addPoint(Point point) {
-		if (getParent() == null)
-			point.getBigraph().addChild(this);
-		
-		super.addPoint(point);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * <p>If this Edge has no points left after this operation, then it'll be
-	 * removed from the Bigraph.
-	 */
-	@Override
-	public void removePoint(Point point) {
-		super.removePoint(point);
-		
-		if (getPoints().size() == 0)
-			getBigraph().removeChild(this);
-	}
-	
-	@Override
 	public Edge clone() {
 		return new Edge();
 	}

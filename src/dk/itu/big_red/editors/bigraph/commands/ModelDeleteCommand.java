@@ -36,6 +36,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 			LinkConnection l = (LinkConnection)m;
 			setTarget(l.getLink().getBigraph());
 			cg.add(new BigraphChangeDisconnect(l.getPoint(), l.getLink()));
+			/* XXX! */
 		} else if (m instanceof LayoutableModelObject) {
 			LayoutableModelObject n = (LayoutableModelObject)m;
 			setTarget(n.getBigraph());

@@ -6,7 +6,6 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.LayoutableModelObject;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
 public class LayoutableAddCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -36,10 +35,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 			
 			Rectangle nr = constraint;
 			
-			if (child instanceof Edge) {
-				cg.add(new BigraphChangeLayout(child,
-						new Rectangle(constraint).translate(parent.getRootLayout().getTopLeft())));
-			} else cg.add(new BigraphChangeAddChild(parent, child, nr));
+			cg.add(new BigraphChangeAddChild(parent, child, nr));
 		}
 	}
 	
