@@ -14,11 +14,11 @@
    height="295"
    id="svg2"
    sodipodi:version="0.32"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.1 r9760"
    version="1.0"
    sodipodi:docname="splash.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/alec/workspace/big-red/content/splash.png"
+   inkscape:export-filename="/home/alec/branches/big-red/content/splash.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <sodipodi:namedview
@@ -31,18 +31,18 @@
      objecttolerance="10"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="361.08839"
-     inkscape:cy="213.51802"
+     inkscape:zoom="1"
+     inkscape:cx="389.97008"
+     inkscape:cy="117.00516"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="950"
+     inkscape:window-width="1440"
+     inkscape:window-height="877"
      inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <defs
      id="defs4">
@@ -260,63 +260,144 @@
        d="M 2,2 453,2 453,293 2,293 2,2 z"
        style="fill:#ffffff;stroke-width:2.5;stroke-miterlimit:4;stroke-dasharray:none"
        sodipodi:nodetypes="ccccc" />
+    <rect
+       style="fill:#fff5f5;fill-opacity:1;stroke:none"
+       id="rect3062"
+       width="25.455845"
+       height="407.29349"
+       x="4.0606751"
+       y="-72.744659"
+       transform="matrix(0.8660254,0.5,-0.5,0.8660254,0,0)"
+       inkscape:tile-cx="-50.91169"
+       inkscape:tile-cy="121.75883"
+       inkscape:tile-w="225.69215"
+       inkscape:tile-h="365.45443"
+       inkscape:tile-x0="-163.75777"
+       inkscape:tile-y0="-60.968385" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(56.423038,0)"
+       id="use3950" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(112.84608,0)"
+       id="use3952" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(169.26911,0)"
+       id="use3954" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(225.69215,0)"
+       id="use3956" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(282.11519,0)"
+       id="use3958" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(338.53823,0)"
+       id="use3960" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(394.96127,0)"
+       id="use3962" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(451.38431,0)"
+       id="use3964" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(507.80734,0)"
+       id="use3966" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#rect3062"
+       xlink:href="#rect3062"
+       transform="translate(564.23038,0)"
+       id="use3968" />
+    <g
+       id="g7705"
+       transform="matrix(1.25,0,0,-1.25,-1067.7959,477.45279)" />
+    <text
+       xml:space="preserve"
+       style="font-size:90px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
+       x="399.07315"
+       y="229.17593"
+       id="text3025"><tspan
+         sodipodi:role="line"
+         id="tspan3027"
+         x="399.07315"
+         y="229.17593"><tspan
+           style="font-size:50px;text-align:end;text-anchor:end"
+           id="tspan3040">2.1</tspan></tspan></text>
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
+       transform="matrix(1.7491135,0,0,1.7568024,-105.77974,-37.301128)"
+       d="m 166.78572,83.5 a 36.42857,36.42857 0 1 1 -72.857143,0 36.42857,36.42857 0 1 1 72.857143,0 z"
+       sodipodi:ry="36.42857"
+       sodipodi:rx="36.42857"
+       sodipodi:cy="83.5"
+       sodipodi:cx="130.35715"
+       id="path2916"
+       style="fill:url(#radialGradient3074);fill-opacity:1;stroke:none"
+       sodipodi:type="arc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path2938"
+       d="m 118.89971,180.74967 c 0,-2.21995 1.08,-3.32995 3.24,-3.33 2.27999,5e-5 3.41999,1.11005 3.42,3.33 l 0,44.91 c -10e-6,2.28 -1.11001,3.42 -3.33,3.42 -2.22,0 -3.33,-1.14 -3.33,-3.42 l 0,-44.91"
+       style="font-size:90px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
+       inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       id="text3062"
+       y="229.17593"
+       x="68.330956"
+       style="font-size:90px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
+       xml:space="preserve"
+       inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         y="229.17593"
+         x="68.330956"
+         id="tspan3064"
+         sodipodi:role="line">b<tspan
+   id="tspan3066"
+   style="fill:none">i</tspan>gred</tspan></text>
     <path
        style="fill:#000000;stroke-width:2.50000000000000000;stroke-miterlimit:4;stroke-dasharray:none"
        d="M 0 0 L 0 295 L 455 295 L 455 0 L 0 0 z M 2 2 L 453 2 L 453 293 L 2 293 L 2 2 z "
        id="rect4138" />
-    <g
-       id="g7705"
-       transform="matrix(1.25,0,0,-1.25,-1067.7959,477.45279)" />
-    <g
-       id="g3064"
-       transform="translate(14.511998,-1.0893781)">
-      <text
-         id="text3025"
-         y="230.2653"
-         x="384.56116"
-         style="font-size:90px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
-         xml:space="preserve"><tspan
-           y="230.2653"
-           x="384.56116"
-           id="tspan3027"
-           sodipodi:role="line"><tspan
-             id="tspan3040"
-             style="font-size:50px;text-align:end;text-anchor:end">2.0</tspan></tspan></text>
-      <path
-         sodipodi:type="arc"
-         style="fill:url(#radialGradient3074);fill-opacity:1;stroke:none"
-         id="path2916"
-         sodipodi:cx="130.35715"
-         sodipodi:cy="83.5"
-         sodipodi:rx="36.42857"
-         sodipodi:ry="36.42857"
-         d="m 166.78572,83.5 c 0,20.11894 -16.30963,36.42857 -36.42857,36.42857 -20.11895,0 -36.428573,-16.30963 -36.428573,-36.42857 0,-20.118944 16.309623,-36.42857 36.428573,-36.42857 20.11894,0 36.42857,16.309626 36.42857,36.42857 z"
-         transform="matrix(1.7491135,0,0,1.7568024,-120.29174,-36.21175)"
-         inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
-         inkscape:export-xdpi="90"
-         inkscape:export-ydpi="90" />
-      <path
-         inkscape:export-ydpi="90"
-         inkscape:export-xdpi="90"
-         inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
-         style="font-size:90px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
-         d="m 104.38771,181.83905 c 0,-2.21995 1.08,-3.32995 3.24,-3.33 2.27999,5e-5 3.41999,1.11005 3.42,3.33 l 0,44.91 c -10e-6,2.28 -1.11001,3.42 -3.33,3.42 -2.22,0 -3.33,-1.14 -3.33,-3.42 l 0,-44.91"
-         id="path2938" />
-      <text
-         inkscape:export-ydpi="90"
-         inkscape:export-xdpi="90"
-         inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
-         xml:space="preserve"
-         style="font-size:90px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
-         x="53.818958"
-         y="230.2653"
-         id="text3062"><tspan
-           sodipodi:role="line"
-           id="tspan3064"
-           x="53.818958"
-           y="230.2653">b<tspan
-   style="fill:none"
-   id="tspan3066">i</tspan>gred</tspan></text>
-    </g>
   </g>
 </svg>
