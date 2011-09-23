@@ -91,6 +91,8 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 			scratch.removeChildFor(c.parent, c.child);
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
+			if (c.model instanceof Bigraph)
+				return;
 			if (c.model instanceof Container)
 				checkLayoutCanContainChildren(b, (Container)c.model, c.newLayout);
 			checkObjectCanContain(b, scratch.getParentFor(c.model), c.newLayout);

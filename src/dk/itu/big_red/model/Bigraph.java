@@ -118,8 +118,12 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
+	public Rectangle getLayout() {
+		return new Rectangle(0, 0, 1000000000, 1000000000);
+	}
+	
+	@Override
 	public void setLayout(Rectangle newLayout) {
-		super.setLayout(newLayout);
 		updateBoundaries();
 	}
 	
@@ -130,7 +134,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	@Override
 	public Rectangle getRootLayout() {
-		return new Rectangle();
+		return getLayout();
 	}
 	
 	@Override
