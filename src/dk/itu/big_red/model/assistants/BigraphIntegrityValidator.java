@@ -71,12 +71,12 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 				rejectChange(b,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
-			scratch.setLinkFor(c.point, c.link);
+			scratch.addPointFor(c.link, c.point);
 		} else if (b instanceof BigraphChangeDisconnect) {
 			BigraphChangeDisconnect c = (BigraphChangeDisconnect)b;
 			if (scratch.getLinkFor(c.point) == null)
 				rejectChange(b, "The Point is already disconnected");
-			scratch.setLinkFor(c.point, null);
+			scratch.removePointFor(c.link, c.point);
 		} else if (b instanceof BigraphChangeAddChild) {
 			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
 			if (!c.parent.canContain(c.child))
@@ -85,10 +85,10 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 					c.child.getClass().getSimpleName() + "s");
 			checkObjectCanContain(b, c.parent, c.newLayout);
 			scratch.setLayoutFor(c.child, c.newLayout);
-			scratch.setParentFor(c.child, c.parent);
+			scratch.addChildFor(c.parent, c.child);
 		} else if (b instanceof BigraphChangeRemoveChild) {
 			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
-			scratch.setParentFor(c.child, null);
+			scratch.removeChildFor(c.parent, c.child);
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
 			if (c.model instanceof Container)
