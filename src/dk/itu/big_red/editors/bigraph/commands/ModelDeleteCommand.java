@@ -56,10 +56,9 @@ public class ModelDeleteCommand extends ChangeCommand {
 				iterativelyRemoveConnections(c);
 			} else if (n instanceof Link) {
 				Link l = (Link)n;
-				for (Point p : scratch.getPointsFor(l)) {
+				for (Point p : scratch.getPointsFor(l))
 					cg.add(new BigraphChangeDisconnect(p, l));
-					scratch.removePointFor(l, p);
-				}
+				scratch.getPointsFor(l).clear();
 			} else if (n instanceof Point) {
 				Point p = (Point)n;
 				if (p.getLink() != null)
@@ -113,7 +112,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 		cg.clear();
 		scratch.clear();
 		for (ModelObject m : objects) {
-			if ((m instanceof LayoutableModelObject &&
+			if (!(m instanceof Port) &&
+				(m instanceof LayoutableModelObject &&
 					!parentScheduledForDeletion((LayoutableModelObject)m) &&
 					allIsWell((LayoutableModelObject)m)) ||
 				(m instanceof LinkConnection &&
