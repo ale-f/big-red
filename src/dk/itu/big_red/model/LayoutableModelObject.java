@@ -27,7 +27,7 @@ public abstract class LayoutableModelObject extends ModelObject implements IAdap
 	
 	@Override
 	public Rectangle getLayout() {
-		return new Rectangle(layout);
+		return layout;
 	}
 
 	@Override
