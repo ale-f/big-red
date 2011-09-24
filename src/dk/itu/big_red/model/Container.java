@@ -72,22 +72,25 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 	}
 	
 	public void relayout(ChangeGroup cg) {
-		int leftProgress = 10;
-		int maxHeight = 0;
-		int topOffset = 10;
+		int left = 20, maxHeight = 10;
 		
-		if (this instanceof Bigraph)
-			topOffset += ((Bigraph)this).upperRootBoundary;
-		
-		for (LayoutableModelObject i : getChildren()) {
-			Rectangle layout = i.getLayout().getCopy();
-			if (maxHeight < layout.height)
-				maxHeight = layout.height;
-			layout.setLocation(leftProgress, topOffset);
-			leftProgress += layout.width + 10;
-			cg.add(new BigraphChangeLayout(i, layout));
+		for (LayoutableModelObject i : children) {
+			int height = i.getLayout().height;
+			if (height > maxHeight)
+				maxHeight = height;
 		}
+		
+		for (LayoutableModelObject i : children) {
+			Rectangle nl = i.getLayout().getCopy();
+			cg.add(new BigraphChangeLayout(i,
+				nl.setLocation(left, 20 + ((maxHeight - nl.height) / 2))));
+			left += nl.width + 20;
+		}
+		
+		if (left < 50)
+			left = 50;
+		
 		cg.add(new BigraphChangeLayout(this,
-				getLayout().getCopy().setSize(leftProgress, maxHeight + 20)));
+			getLayout().getCopy().setSize(left, maxHeight + 40)));
 	}
 }
