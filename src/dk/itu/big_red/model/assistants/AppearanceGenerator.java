@@ -131,13 +131,9 @@ public class AppearanceGenerator {
 		
 		if (shape == Shape.SHAPE_POLYGON) {
 			pl = new PointList();
-			for (int j = 0; j < e.getChildNodes().getLength(); j++) {
-				if (!(e.getChildNodes().item(j) instanceof Element))
-					continue;
-				Element pE = (Element)e.getChildNodes().item(j);
+			for (Element pE : DOM.getChildElements(e))
 				pl.addPoint(DOM.getIntAttribute(pE, XMLNS.BIG_RED, "x"),
 						DOM.getIntAttribute(pE, XMLNS.BIG_RED, "y"));
-			}
 		}
 		
 		c.setShape(shape, pl);
