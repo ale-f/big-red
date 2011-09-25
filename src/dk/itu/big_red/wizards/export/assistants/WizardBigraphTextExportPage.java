@@ -28,9 +28,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
-import dk.itu.big_red.model.import_export.ModelExport;
 import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.Types;
 import dk.itu.big_red.util.UI;
@@ -95,7 +95,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			return false;
 		}
 		
-		ModelExport<Bigraph> ex = getWizard().getExporter();
+		Export<Bigraph> ex = getWizard().getExporter();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
 			ex.setModel(model);

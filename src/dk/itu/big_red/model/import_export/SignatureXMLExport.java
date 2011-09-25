@@ -4,6 +4,7 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Port;
@@ -11,7 +12,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.util.DOM;
 
-public class SignatureXMLExport extends ModelExport<Signature> {
+public class SignatureXMLExport extends Export<Signature> {
 	private Document doc = null;
 	
 	@Override

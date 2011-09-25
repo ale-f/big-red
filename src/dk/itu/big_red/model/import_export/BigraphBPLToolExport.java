@@ -3,6 +3,7 @@ package dk.itu.big_red.model.import_export;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.interfaces.IBigraph;
@@ -20,7 +21,7 @@ import dk.itu.big_red.model.interfaces.ISite;
 /**
  * An exporter to the BPL Tool term language (which actually in some cases should produce proper BPL Terms!).
  */
-public class BigraphBPLToolExport extends ModelExport<Bigraph> {
+public class BigraphBPLToolExport extends Export<Bigraph> {
 	private OutputStreamWriter osw = null;
 	
 	@Override

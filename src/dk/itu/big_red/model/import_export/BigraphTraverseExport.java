@@ -3,6 +3,7 @@ package dk.itu.big_red.model.import_export;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.interfaces.IBigraph;
@@ -17,7 +18,7 @@ import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
 
-public class BigraphTraverseExport extends ModelExport<Bigraph> {
+public class BigraphTraverseExport extends Export<Bigraph> {
 	private OutputStreamWriter osw = null;
 	
 	@Override

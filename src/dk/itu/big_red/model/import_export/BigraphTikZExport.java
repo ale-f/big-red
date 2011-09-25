@@ -10,6 +10,7 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 
+import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -27,7 +28,7 @@ import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
-public class BigraphTikZExport extends ModelExport<Bigraph> {
+public class BigraphTikZExport extends Export<Bigraph> {
 	private BufferedWriter writer;
 	
 	@Override

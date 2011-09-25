@@ -7,8 +7,8 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
+import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.import_export.ModelExport;
 import dk.itu.big_red.wizards.export.assistants.WizardBigraphTextExportPage;
 import dk.itu.big_red.wizards.export.assistants.WizardBigraphTextExportSelectorPage;
 
@@ -17,7 +17,7 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 	private WizardBigraphTextExportPage page2 = null;
 	
 	private IConfigurationElement cfe = null;
-	private ModelExport<Bigraph> exporter = null;
+	private Export<Bigraph> exporter = null;
 	
 	@Override
 	public boolean performFinish() {
@@ -43,7 +43,7 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 			if (cfe != e) {
 				try {
 					exporter =
-						(ModelExport<Bigraph>)e.createExecutableExtension("class");
+						(Export<Bigraph>)e.createExecutableExtension("class");
 					cfe = e;
 					page2.setTitle("Export as " + e.getAttribute("name"));
 					setWindowTitle("Export as " + e.getAttribute("name"));
@@ -61,7 +61,7 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 		}
 	}
 
-	public ModelExport<Bigraph> getExporter() {
+	public Export<Bigraph> getExporter() {
 		return exporter;
 	}
 }
