@@ -30,7 +30,6 @@ import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.xml.sax.SAXException;
 
@@ -153,16 +152,11 @@ public class DOM {
 	 * @param n the tag name to search for
 	 * @return an ArrayList of child elements
 	 */
-	public static ArrayList<Element> getNamedChildElements(Element d, String nsURI, String n) {
+	public static ArrayList<Element> getNamedChildElements(Element d, String ns, String n) {
 		ArrayList<Element> r = new ArrayList<Element>();
-		NodeList p = d.getChildNodes();
-		for (int i = 0; i < p.getLength(); i++) {
-			Node t = p.item(i);
-			if (t instanceof Element &&
-					t.getNamespaceURI().equals(nsURI) &&
-					t.getLocalName().equals(n))
-				r.add((Element)t);
-		}
+		for (Element t : getChildElements(d))
+			if (t.getNamespaceURI().equals(ns) && t.getLocalName().equals(n))
+				r.add(t);
 		return r;
 	}
 
