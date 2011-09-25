@@ -39,20 +39,16 @@ public class SignatureXMLImport extends ModelImport<Signature> {
 		
 		AppearanceGenerator.attributesToModel(e, model);
 		
-		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
-			if (!(e.getChildNodes().item(j) instanceof Element))
-				continue;
-			Object i = process((Element)e.getChildNodes().item(j));
+		for (Element j : DOM.getChildElements(e)) {
+			Object i = process(j);
 			if (i instanceof Port)
 				model.addPort((Port)i);
 		}
 	}
 	
 	private void processSignature(Element e, Signature model) throws ImportFailedException {
-		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
-			if (!(e.getChildNodes().item(j) instanceof Element))
-				continue;
-			Object i = process((Element)e.getChildNodes().item(j));
+		for (Element j : DOM.getChildElements(e)) {
+			Object i = process(j);
 			if (i instanceof Control)
 				model.addControl((Control)i);
 		}
