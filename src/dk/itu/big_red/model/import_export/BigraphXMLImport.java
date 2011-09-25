@@ -51,12 +51,6 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		}
 	}
 	
-	private void connect(String linkName, Point object) throws ImportFailedException {
-		applyChange(
-			new BigraphChangeConnect(object,
-				(Link)bigraph.getNamespaceManager().getObject(Link.class, linkName)));
-	}
-	
 	private Bigraph bigraph = null;
 	
 	private void processBigraph(Element e, Bigraph model) throws ImportFailedException {
@@ -90,14 +84,6 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		}
 	}
 	
-	private void processPort(Element e, Port model) throws ImportFailedException {
-		String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"),
-	           link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
-		model.setName(name);
-		
-		connect(link, model);
-	}
-	
 	private boolean processLink(Element e, Link model) throws ImportFailedException {
 		boolean rv = false;
 		model.setName(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"));
@@ -105,12 +91,14 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		return rv;
 	}
 	
-	private void processInnerName(Element e, InnerName model) throws ImportFailedException {
+	private void processPoint(Element e, Point model) throws ImportFailedException {
 		String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"),
-        link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
+			   link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
 		model.setName(name);
 		
-		connect(link, model);
+		applyChange(
+			new BigraphChangeConnect(model,
+				(Link)bigraph.getNamespaceManager().getObject(Link.class, link)));
 	}
 	
 	private Object process(Container context, Element e) throws ImportFailedException {
@@ -132,7 +120,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 				Node n = (Node)context;
 				for (Port p : n.getPorts()) {
 					if (p.getName().equals(e.getAttribute("name"))) {
-						processPort(e, p);
+						processPoint(e, p);
 						break;
 					}
 				}
@@ -142,7 +130,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {
-			processInnerName(e, (InnerName)model);
+			processPoint(e, (InnerName)model);
 		}
 		
 		return model;
