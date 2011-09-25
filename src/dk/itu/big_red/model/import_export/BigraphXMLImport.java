@@ -37,7 +37,7 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getPluginResource("schema/bigraph.xsd"));
 			source.close();
-			return (Bigraph)process(null, d.getDocumentElement());
+			return makeBigraph(d.getDocumentElement());
 		} catch (Exception e) {
 			throw new ImportFailedException(e);
 		}
@@ -53,7 +53,9 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 	
 	private Bigraph bigraph = null;
 	
-	private void processBigraph(Element e, Bigraph model) throws ImportFailedException {
+	private Bigraph makeBigraph(Element e) throws ImportFailedException {
+		bigraph = new Bigraph();
+		
 		String signaturePath = e.getAttribute("signature");
 		
 		IFile sigFile =
@@ -61,37 +63,32 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		SignatureXMLImport si = new SignatureXMLImport();
 		try {
 			si.setInputStream(sigFile.getContents());
-			model.setSignature(sigFile, si.importObject());
+			bigraph.setSignature(sigFile, si.importObject());
 		} catch (Exception ex) {
 			throw new ImportFailedException(ex);
 		}
 		
-    	bigraph = model;
-		processThing(e, model);
+		return (Bigraph)processContainer(e, bigraph);
 	}
 	
-	private void processThing(Element e, Container model) throws ImportFailedException {
+	private Container processContainer(Element e, Container model) throws ImportFailedException {
 		if (model instanceof Node)
 			((Node)model).setControl(bigraph.getSignature().getControl(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control")));
 		
 		if (model instanceof INameable)
 			((INameable)model).setName(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"));
 		
-		for (int j = 0; j < e.getChildNodes().getLength(); j++) {
-			if (!(e.getChildNodes().item(j) instanceof Element))
-				continue;
-			process(model, (Element)e.getChildNodes().item(j));
-		}
+		for (Element i : DOM.getChildElements(e))
+			addChild(model, i);
+		return model;
 	}
 	
-	private boolean processLink(Element e, Link model) throws ImportFailedException {
-		boolean rv = false;
+	private Link processLink(Element e, Link model) throws ImportFailedException {
 		model.setName(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"));
-		
-		return rv;
+		return model;
 	}
 	
-	private void processPoint(Element e, Point model) throws ImportFailedException {
+	private Point processPoint(Element e, Point model) throws ImportFailedException {
 		String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"),
 			   link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
 		model.setName(name);
@@ -99,22 +96,22 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 		applyChange(
 			new BigraphChangeConnect(model,
 				(Link)bigraph.getNamespaceManager().getObject(Link.class, link)));
+		return model;
 	}
 	
-	private Object process(Container context, Element e) throws ImportFailedException {
+	private void addChild(Container context, Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
 		
 		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
 		
-		if (model instanceof LayoutableModelObject && context != null)
+		if (model instanceof LayoutableModelObject && context != null &&
+			!(model instanceof Port))
 			context.addChild((LayoutableModelObject)model);
 		
-		if (model instanceof Bigraph) {
-			processBigraph(e, (Bigraph)model);
-		} else if (model instanceof Container) {
-			processThing(e, (Container)model);
+		if (model instanceof Container) {
+			processContainer(e, (Container)model);
 		} else if (model instanceof Port) {
 			if (context instanceof Node) {
 				Node n = (Node)context;
@@ -125,14 +122,12 @@ public class BigraphXMLImport extends ModelImport<Bigraph> {
 					}
 				}
 			}
-			context.removeChild((LayoutableModelObject)model);
-			model = null;
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {
 			processPoint(e, (InnerName)model);
+		} else {
+			/* fail in some other way? */;
 		}
-		
-		return model;
 	}
 }
