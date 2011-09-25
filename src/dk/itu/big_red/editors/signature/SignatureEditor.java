@@ -131,6 +131,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	
 	protected void controlToFields() {
 		fireModify = false;
+		
 		boolean polygon = (currentControl.getShape() == Shape.SHAPE_POLYGON);
 		
 		label.setText(currentControl.getLabel());
@@ -165,13 +166,28 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	@Override
 	public void createPartControl(Composite parent) {
 		final class DirtListener implements ModifyListener, SelectionListener, PointListener, PortListener {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
+			private boolean canvasActive = true;
+			
+			private void go() {
 				if (fireModify) {
 					fieldsToControl();
+					
+					canvasActive = false;
+					boolean polygon = polygonMode.getSelection();
+					if (polygon && appearance.getMode() != Shape.SHAPE_POLYGON) {
+						appearance.setMode(Shape.SHAPE_POLYGON);
+					} else if (!polygon && appearance.getMode() == Shape.SHAPE_POLYGON) {
+						appearance.setMode(Shape.SHAPE_OVAL);
+					}
+					canvasActive = true;
+					
 					setDirty(true);
 				}
+			}
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				go();
 			}
 
 			@Override
@@ -180,26 +196,19 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				if (fireModify) {
-					fieldsToControl();
-					setDirty(true);
-				}
+				go();
 			}
 
 			@Override
 			public void pointChange(PointEvent e) {
-				if (fireModify) {
-					fieldsToControl();
-					setDirty(true);
-				}
+				if (canvasActive)
+					go();
 			}
 			
 			@Override
 			public void portChange(PortEvent e) {
-				if (fireModify) {
-					fieldsToControl();
-					setDirty(true);
-				}
+				if (canvasActive)
+					go();
 			}
 		}
 		
