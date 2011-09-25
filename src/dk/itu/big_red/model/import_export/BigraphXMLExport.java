@@ -59,11 +59,9 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 		DOMImplementation impl = DOM.getImplementation();
 		doc = impl.createDocument(
 				XMLNS.BIGRAPH, "bigraph", null);
-		Element e = doc.getDocumentElement();
-		DOM.applyAttributesToElement(e,
+		return DOM.applyAttributesToElement(doc.getDocumentElement(),
 			"signature", obj.getSignatureFile().getFullPath().makeRelative().toString(),
 			"xmlns:big-red", XMLNS.BIG_RED);
-		return e;
 	}
 	
 	private Element process(Node n) throws ExportFailedException {
@@ -84,12 +82,10 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	private Element process(Point p) throws ExportFailedException {
 		Link link = p.getLink();
 		if (link != null) {
-			Element e =
-				doc.createElement(p.getClass().getSimpleName().toLowerCase());
-			DOM.applyAttributesToElement(e,
+			return DOM.applyAttributesToElement(
+					doc.createElement(p.getClass().getSimpleName().toLowerCase()),
 					"name", p.getName(),
 					"link", link.getName());
-			return e;
 		} else if (p instanceof InnerName) {
 			throw new ExportFailedException("Inner name \"" + p.getName() + "\" isn't connected to anything.");
 		}
@@ -97,10 +93,9 @@ public class BigraphXMLExport extends ModelExport<Bigraph> {
 	}
 	
 	private Element process(INameable e) {
-		Element el = doc.createElement(e.getClass().getSimpleName().toLowerCase());
-		DOM.applyAttributesToElement(el,
+		return DOM.applyAttributesToElement(
+				doc.createElement(e.getClass().getSimpleName().toLowerCase()),
 				"name", e.getName());
-		return el;
 	}
 	
 	private Element process(ILayoutable obj) throws ExportFailedException {
