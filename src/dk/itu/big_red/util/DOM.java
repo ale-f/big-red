@@ -135,10 +135,12 @@ public class DOM {
 	 * strings.)
 	 * @param d an Element
 	 * @param attrs a vararg list of name-value pairs of any type
+	 * @return d, for convenience
 	 */
-	public static void applyAttributesToElement(Element d, Object... attrs) {
+	public static Element applyAttributesToElement(Element d, Object... attrs) {
 		for (int i = 0; i < attrs.length; i += 2)
 			d.setAttribute(attrs[i].toString(), attrs[i + 1].toString());
+		return d;
 	}
 	
 	/**
