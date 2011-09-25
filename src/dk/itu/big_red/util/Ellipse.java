@@ -1,6 +1,7 @@
 package dk.itu.big_red.util;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public class Ellipse {
@@ -24,7 +25,7 @@ public class Ellipse {
 		double t = offset * (2 * Math.PI),
 		       a = bb.width / 2,
 		       b = bb.height / 2;
-		return new Point(centre.x + (a * Math.cos(t)),
+		return new PrecisionPoint(centre.x + (a * Math.cos(t)),
 				centre.y + (b * Math.sin(t)));
 	}
 	
@@ -67,8 +68,8 @@ public class Ellipse {
 		       y0 = (Math.abs(dy) * sqrt) / dr2,
 		       y1 = (-(Math.abs(dy) * sqrt)) / dr2;
 		
-		Point p0 = new Point(x0, y0),
-		      p1 = new Point(x1, y1);
+		Point p0 = new PrecisionPoint(x0, y0),
+		      p1 = new PrecisionPoint(x1, y1);
 		
 		double d0 = p.getDistance(p0),
 		       d1 = p.getDistance(p1),
