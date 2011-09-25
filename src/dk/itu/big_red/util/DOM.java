@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -196,6 +197,23 @@ public class DOM {
 		return r;
 	}
 
+	/**
+	 * Returns all the child {@link Node}s of the specified {@link Element}
+	 * which are themselves {@link Element}s.
+	 * @param e an Element containing children
+	 * @return a list of child {@link Element}s
+	 */
+	public static List<Element> getChildElements(Element e) {
+		ArrayList<Element> children = new ArrayList<Element>();
+		int length = e.getChildNodes().getLength();
+		for (int h = 0; h < length; h++) {
+			Node i = e.getChildNodes().item(h);
+			if (i instanceof Element)
+				children.add((Element)i);
+		}
+		return children;
+	}
+	
 	/**
 	 * Retrieves the given named attribute from the given Element. (Either the
 	 * attribute or the Element must have the given namespace; see Neil
