@@ -42,7 +42,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
-import dk.itu.big_red.editors.bigraph.actions.ContainerRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
@@ -138,10 +137,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	getSelectionActions().add(action.getId());
     	
     	action = new ContainerPasteAction(this);
-    	registry.registerAction(action);
-    	getSelectionActions().add(action.getId());
-    	
-    	action = new ContainerRelayoutAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	

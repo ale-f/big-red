@@ -7,9 +7,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Node;
 
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
-
 /**
  * The <code>Container</code> provides the basic functionality shared by most
  * elements of a bigraph. <code>Container</code>s can be moved around, copied, and
@@ -69,28 +66,5 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 			c.addChild(child.clone());
 		
 		return c;
-	}
-	
-	public void relayout(ChangeGroup cg) {
-		int left = 20, maxHeight = 10;
-		
-		for (LayoutableModelObject i : children) {
-			int height = i.getLayout().height;
-			if (height > maxHeight)
-				maxHeight = height;
-		}
-		
-		for (LayoutableModelObject i : children) {
-			Rectangle nl = i.getLayout().getCopy();
-			cg.add(new BigraphChangeLayout(i,
-				nl.setLocation(left, 20 + ((maxHeight - nl.height) / 2))));
-			left += nl.width + 20;
-		}
-		
-		if (left < 50)
-			left = 50;
-		
-		cg.add(new BigraphChangeLayout(this,
-			getLayout().getCopy().setSize(left, maxHeight + 40)));
 	}
 }

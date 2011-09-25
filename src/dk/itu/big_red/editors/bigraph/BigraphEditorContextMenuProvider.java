@@ -13,8 +13,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.editors.bigraph.actions.ContainerRelayoutAction;
-
 public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
 	
@@ -47,9 +45,6 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 		
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT,
 				getActionRegistry().getAction(ActionFactory.PROPERTIES.getId()));
-		
-		menu.appendToGroup(GEFActionConstants.GROUP_EDIT,
-				getActionRegistry().getAction(ContainerRelayoutAction.ID));
 		
 		final PaletteViewer pv = getViewer().getEditDomain().getPaletteViewer();
 		for (Object i :
