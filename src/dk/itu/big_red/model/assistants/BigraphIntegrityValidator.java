@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.assistants;
 
+import java.util.ArrayList;
+
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
@@ -25,9 +27,28 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
  *
  */
 public class BigraphIntegrityValidator extends ChangeValidator {
-	
 	public BigraphIntegrityValidator(IChangeable changeable) {
 		super(changeable);
+	}
+	
+	private class QueuedLayoutCheck {
+		public Change c;
+		public Layoutable l;
+		public QueuedLayoutCheck(Change c, Layoutable l) {
+			this.c = c; this.l = l;
+		}
+	}
+	private ArrayList<QueuedLayoutCheck> layoutChecks =
+		new ArrayList<QueuedLayoutCheck>();
+	
+	private void runLayoutChecks() throws ChangeRejectedException {
+		for (QueuedLayoutCheck i : layoutChecks) {
+			Container parent = scratch.getParentFor(i.l);
+			Rectangle layout = scratch.getLayoutFor(i.l);
+			checkObjectCanContain(i.c, parent, layout);
+			if (i.l instanceof Container)
+				checkLayoutCanContainChildren(i.c, (Container)i.l, layout);
+		}
 	}
 	
 	private BigraphScratchpad scratch = new BigraphScratchpad();
@@ -56,6 +77,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 			throws ChangeRejectedException {
 		scratch.clear();
 		_tryValidateChange(b);
+		runLayoutChecks();
 	}
 	
 	protected void _tryValidateChange(Change b)
@@ -83,7 +105,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 				rejectChange(b,
 					c.parent.getClass().getSimpleName() + "s can't contain " +
 					c.child.getClass().getSimpleName() + "s");
-			checkObjectCanContain(b, c.parent, c.newLayout);
+			layoutChecks.add(new QueuedLayoutCheck(b, c.child));
 			scratch.setLayoutFor(c.child, c.newLayout);
 			scratch.addChildFor(c.parent, c.child);
 		} else if (b instanceof BigraphChangeRemoveChild) {
@@ -93,9 +115,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
 			if (c.model instanceof Bigraph)
 				return;
-			if (c.model instanceof Container)
-				checkLayoutCanContainChildren(b, (Container)c.model, c.newLayout);
-			checkObjectCanContain(b, scratch.getParentFor(c.model), c.newLayout);
+			layoutChecks.add(new QueuedLayoutCheck(b, c.model));
 			scratch.setLayoutFor(c.model, c.newLayout);
 		} else if (b instanceof BigraphChangeEdgeReposition) {
 			/* nothing to do? */
