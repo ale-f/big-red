@@ -2,6 +2,7 @@ package dk.itu.big_red.model.import_export;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.SWT;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -24,6 +25,7 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Project;
+import dk.itu.big_red.util.UI;
 
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.
@@ -34,10 +36,11 @@ import dk.itu.big_red.util.Project;
 public class BigraphXMLImport extends Import<Bigraph> {
 	private enum AppearanceStatus {
 		NOTHING_YET,
-		APPEARANCE_MANDATORY,
-		APPEARANCE_FORBIDDEN
+		MANDATORY,
+		FORBIDDEN
 	}
 	
+	boolean warnedAboutLayouts = false;
 	private AppearanceStatus as = AppearanceStatus.NOTHING_YET;
 	
 	@Override
@@ -79,7 +82,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		
 		processContainer(e, bigraph);
 		
-		if (as == AppearanceStatus.APPEARANCE_FORBIDDEN)
+		if (as == AppearanceStatus.FORBIDDEN)
 			applyChange(bigraph.relayout());
 		
 		return bigraph;
@@ -116,18 +119,34 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	private void addChild(Container context, Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
 		
+		boolean warn = false;
+		
 		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
-		if (el != null && as != AppearanceStatus.APPEARANCE_FORBIDDEN) {
+		switch (as) {
+		case FORBIDDEN:
+			warn = (el != null);
+			break;
+		case MANDATORY:
+			warn = (el == null && !(model instanceof Port));
+			break;
+		case NOTHING_YET:
+			as = (el != null ? AppearanceStatus.MANDATORY :
+				AppearanceStatus.FORBIDDEN);
+			break;
+		}
+
+		if (warn && !warnedAboutLayouts) {
+			UI.showMessageBox(SWT.ICON_WARNING, "All or nothing!",
+				"Some objects in this bigraph have layout data, and some don't. " +
+				"Big Red ignores layout data unless all objects have it.");
+			as = AppearanceStatus.FORBIDDEN;
+			warnedAboutLayouts = true;
+		}
+		
+		if (el != null && as == AppearanceStatus.MANDATORY) {
 			if (as == AppearanceStatus.NOTHING_YET)
-				as = AppearanceStatus.APPEARANCE_MANDATORY;
+				as = AppearanceStatus.MANDATORY;
 			AppearanceGenerator.setAppearance(el, model);
-		} else if (!(model instanceof Port)) {
-			if (as == AppearanceStatus.NOTHING_YET) {
-				as = AppearanceStatus.APPEARANCE_FORBIDDEN;
-			} else if (as == AppearanceStatus.APPEARANCE_MANDATORY) {
-				/* Report an error? */
-				as = AppearanceStatus.APPEARANCE_FORBIDDEN;
-			}
 		}
 		
 		if (model instanceof Layoutable && context != null &&
