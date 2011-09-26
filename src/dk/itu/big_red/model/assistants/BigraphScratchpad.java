@@ -7,26 +7,26 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 
 /**
  * The BigraphScratchpad is a wrapper around various kinds of {@link
- * LayoutableModelObject} which maps objects to copies of themselves, allowing
+ * Layoutable} which maps objects to copies of themselves, allowing
  * the copies to be modified without affecting the original.
  * @author alec
  *
  */
 public class BigraphScratchpad {
-	private HashMap<LayoutableModelObject, Rectangle> layouts =
-			new HashMap<LayoutableModelObject, Rectangle>();
+	private HashMap<Layoutable, Rectangle> layouts =
+			new HashMap<Layoutable, Rectangle>();
 	
-	private HashMap<LayoutableModelObject, Container> parents =
-			new HashMap<LayoutableModelObject, Container>();
+	private HashMap<Layoutable, Container> parents =
+			new HashMap<Layoutable, Container>();
 	
-	private HashMap<Container, List<LayoutableModelObject>> children =
-			new HashMap<Container, List<LayoutableModelObject>>();
+	private HashMap<Container, List<Layoutable>> children =
+			new HashMap<Container, List<Layoutable>>();
 	
 	private HashMap<Link, List<Point>> points =
 			new HashMap<Link, List<Point>>();
@@ -40,7 +40,7 @@ public class BigraphScratchpad {
 		parents.clear();
 	}
 	
-	public Rectangle getLayoutFor(LayoutableModelObject a) {
+	public Rectangle getLayoutFor(Layoutable a) {
 		Rectangle b;
 		if (!layouts.containsKey(a)) {
 			b = a.getLayout();
@@ -49,11 +49,11 @@ public class BigraphScratchpad {
 		return b;
 	}
 	
-	public void setLayoutFor(LayoutableModelObject a, Rectangle b) {
+	public void setLayoutFor(Layoutable a, Rectangle b) {
 		layouts.put(a, b);
 	}
 	
-	public Container getParentFor(LayoutableModelObject a) {
+	public Container getParentFor(Layoutable a) {
 		Container b;
 		if (!parents.containsKey(a)) {
 			b = a.getParent();
@@ -62,25 +62,25 @@ public class BigraphScratchpad {
 		return b;
 	}
 	
-	public void setParentFor(LayoutableModelObject a, Container b) {
+	public void setParentFor(Layoutable a, Container b) {
 		parents.put(a, b);
 	}
 	
-	public List<LayoutableModelObject> getChildrenFor(Container a) {
-		List<LayoutableModelObject> b;
+	public List<Layoutable> getChildrenFor(Container a) {
+		List<Layoutable> b;
 		if (!children.containsKey(a)) {
-			b = new ArrayList<LayoutableModelObject>(a.getChildren());
+			b = new ArrayList<Layoutable>(a.getChildren());
 			children.put(a, b);
 		} else b = children.get(a);
 		return b;
 	}
 	
-	public void removeChildFor(Container a, LayoutableModelObject b) {
+	public void removeChildFor(Container a, Layoutable b) {
 		getChildrenFor(a).remove(b);
 		setParentFor(b, null);
 	}
 	
-	public void addChildFor(Container a, LayoutableModelObject b) {
+	public void addChildFor(Container a, Layoutable b) {
 		getChildrenFor(a).add(b);
 		setParentFor(b, a);
 	}

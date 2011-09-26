@@ -8,13 +8,13 @@ import org.eclipse.ui.ISharedImages;
 
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.parts.AbstractTreePart;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.util.UI;
 
 public class NodePlaceTreePart extends AbstractTreePart {
 	@Override
-	protected List<LayoutableModelObject> getModelChildren() {
+	protected List<Layoutable> getModelChildren() {
 		return ((Node)getModel()).getChildren();
 	}
 

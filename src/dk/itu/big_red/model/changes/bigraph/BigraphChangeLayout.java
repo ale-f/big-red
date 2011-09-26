@@ -2,14 +2,14 @@ package dk.itu.big_red.model.changes.bigraph;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.Change;
 
 public class BigraphChangeLayout extends Change {
-	public LayoutableModelObject model;
+	public Layoutable model;
 	public Rectangle newLayout;
 	
-	public BigraphChangeLayout(LayoutableModelObject model, Rectangle newLayout) {
+	public BigraphChangeLayout(Layoutable model, Rectangle newLayout) {
 		this.model = model;
 		this.newLayout = newLayout;
 	}

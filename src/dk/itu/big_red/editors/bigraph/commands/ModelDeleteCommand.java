@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
@@ -48,8 +48,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 			Link link = l.getLink(); Point point = l.getPoint();
 			setTarget(link.getBigraph());
 			removePoint(link, point);
-		} else if (m instanceof LayoutableModelObject) {
-			LayoutableModelObject n = (LayoutableModelObject)m;
+		} else if (m instanceof Layoutable) {
+			Layoutable n = (Layoutable)m;
 			setTarget(n.getBigraph());
 			if (n instanceof Container) {
 				Container c = (Container)n;
@@ -77,13 +77,13 @@ public class ModelDeleteCommand extends ChangeCommand {
 					removePoint(l, p);
 			}
 		}
-		for (LayoutableModelObject i : c.getChildren()) {
+		for (Layoutable i : c.getChildren()) {
 			if (i instanceof Container)
 				iterativelyRemoveConnections((Container)i);
 		}
 	}
 	
-	private boolean parentScheduledForDeletion(LayoutableModelObject i) {
+	private boolean parentScheduledForDeletion(Layoutable i) {
 		Container parent = i.getParent();
 		while (parent != null) {
 			if (objects.contains(parent))
@@ -103,7 +103,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		return false;
 	}
 
-	private boolean allIsWell(LayoutableModelObject m) {
+	private boolean allIsWell(Layoutable m) {
 		return m.getBigraph() != null;
 	}
 	
@@ -113,9 +113,9 @@ public class ModelDeleteCommand extends ChangeCommand {
 		scratch.clear();
 		for (ModelObject m : objects) {
 			if (!(m instanceof Port) &&
-				(m instanceof LayoutableModelObject &&
-					!parentScheduledForDeletion((LayoutableModelObject)m) &&
-					allIsWell((LayoutableModelObject)m)) ||
+				(m instanceof Layoutable &&
+					!parentScheduledForDeletion((Layoutable)m) &&
+					allIsWell((Layoutable)m)) ||
 				(m instanceof LinkConnection &&
 					!linkOrPointScheduledForDeletion((LinkConnection)m)))
 				remove(m);

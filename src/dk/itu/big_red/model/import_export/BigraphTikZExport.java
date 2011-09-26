@@ -18,7 +18,7 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
@@ -97,7 +97,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		line("tikzset{internal outer name/.style={draw=none,rectangle}}");
 		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
 		
-		List<LayoutableModelObject> ch = b.getChildren();
+		List<Layoutable> ch = b.getChildren();
 		if (ch.size() > 0) {
 			Rectangle bounding = ch.get(0).getLayout().getCopy();
 			for (ILayoutable i : ch)

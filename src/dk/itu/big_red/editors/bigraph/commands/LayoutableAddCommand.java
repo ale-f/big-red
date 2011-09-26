@@ -3,7 +3,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 
@@ -15,7 +15,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 	}
 	
 	private Container parent = null;
-	private LayoutableModelObject child = null;
+	private Layoutable child = null;
 	private Rectangle constraint = null;
 
 	@Override
@@ -25,7 +25,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 			setTarget(parent.getBigraph());
 			
 			if (!(child instanceof Edge)) {
-				for (LayoutableModelObject i : parent.getChildren()) {
+				for (Layoutable i : parent.getChildren()) {
 					if (i.getLayout().intersects(constraint))
 						return;
 				}
@@ -45,8 +45,8 @@ public class LayoutableAddCommand extends ChangeCommand {
 	}
 	
 	public void setChild(Object child) {
-		if (child instanceof LayoutableModelObject)
-			this.child = (LayoutableModelObject)child;
+		if (child instanceof Layoutable)
+			this.child = (Layoutable)child;
 	}
 	
 	public void setConstraint(Object constraint) {

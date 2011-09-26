@@ -4,7 +4,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -32,7 +32,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 	
 	private BigraphScratchpad scratch = new BigraphScratchpad();
 	
-	private void checkObjectCanContain(Change b, LayoutableModelObject o, Rectangle nl) throws ChangeRejectedException {
+	private void checkObjectCanContain(Change b, Layoutable o, Rectangle nl) throws ChangeRejectedException {
 		if (o != null && !(o instanceof Bigraph)) {
 			Rectangle tr =
 				scratch.getLayoutFor(o).getCopy().setLocation(0, 0);
@@ -44,7 +44,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 	
 	private void checkLayoutCanContainChildren(Change b, Container c, Rectangle nl) throws ChangeRejectedException {
 		nl = nl.getCopy().setLocation(0, 0);
-		for (LayoutableModelObject i : c.getChildren()) {
+		for (Layoutable i : c.getChildren()) {
 			Rectangle layout = scratch.getLayoutFor(i);
 			if (!nl.contains(layout))
 				rejectChange(b, "The new size is too small");

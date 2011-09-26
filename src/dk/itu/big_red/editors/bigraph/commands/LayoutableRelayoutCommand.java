@@ -4,7 +4,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -18,7 +18,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		setChange(cg);
 	}
 	
-	private LayoutableModelObject model;
+	private Layoutable model;
 	private Rectangle layout;
 	
 	public void setConstraint(Object rect) {
@@ -27,8 +27,8 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	}
 
 	public void setModel(Object model) {
-		if (model instanceof LayoutableModelObject)
-			this.model = (LayoutableModelObject)model;
+		if (model instanceof Layoutable)
+			this.model = (Layoutable)model;
 	}
 	
 	@Override

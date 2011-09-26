@@ -9,7 +9,7 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  * @see ISite
  */
-public class Site extends LayoutableModelObject implements INameable, ISite {
+public class Site extends Layoutable implements INameable, ISite {
 	@Override
 	public Site clone() {
 		Site s = new Site();

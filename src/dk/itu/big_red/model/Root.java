@@ -14,8 +14,8 @@ import dk.itu.big_red.util.HomogeneousIterable;
 public class Root extends NameableContainer implements IRoot {
 	
 	@Override
-	public boolean canContain(LayoutableModelObject child) {
-		Class<? extends LayoutableModelObject> c = child.getClass();
+	public boolean canContain(Layoutable child) {
+		Class<? extends Layoutable> c = child.getClass();
 		return (c == Node.class || c == Site.class);
 	}
 

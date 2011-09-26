@@ -10,9 +10,9 @@ import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
  * model. It provides an implementation of {@link IPropertyChangeNotifier}.
  * 
  * <p>Objects which can appear on a bigraph are instances of the subclass
- * {@link LayoutableModelObject}.
+ * {@link Layoutable}.
  * @author alec
- * @see LayoutableModelObject
+ * @see Layoutable
  *
  */
 public class ModelObject implements IPropertyChangeNotifier {

@@ -5,7 +5,7 @@ import java.util.List;
 
 import dk.itu.big_red.editors.bigraph.parts.AbstractPart;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 
@@ -17,8 +17,8 @@ public class LayoutableOrphanCommand extends ChangeCommand {
 	}
 	
 	private Container parent = null;
-	private ArrayList<LayoutableModelObject> children =
-			new ArrayList<LayoutableModelObject>();
+	private ArrayList<Layoutable> children =
+			new ArrayList<Layoutable>();
 	
 	public void setParent(Object parent) {
 		if (parent instanceof Container)
@@ -42,7 +42,7 @@ public class LayoutableOrphanCommand extends ChangeCommand {
 		cg.clear();
 		if (parent != null && children.size() != 0) {
 			setTarget(parent.getBigraph());
-			for (LayoutableModelObject i : children)
+			for (Layoutable i : children)
 				cg.add(new BigraphChangeRemoveChild(parent, i));
 		}
 	}

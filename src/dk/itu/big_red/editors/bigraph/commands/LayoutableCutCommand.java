@@ -2,11 +2,11 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.HashMap;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 
 public class LayoutableCutCommand extends LayoutableCopyCommand {
-	private HashMap<LayoutableModelObject, Container> parents =
-		new HashMap<LayoutableModelObject, Container>();
+	private HashMap<Layoutable, Container> parents =
+		new HashMap<Layoutable, Container>();
 	
 	@Override
 	public void execute() {
@@ -23,7 +23,7 @@ public class LayoutableCutCommand extends LayoutableCopyCommand {
 	
 	@Override
 	public void redo() {
-		for (LayoutableModelObject n : list) {
+		for (Layoutable n : list) {
 			parents.put(n, n.getParent());
 			n.getParent().removeChild(n);
 		}
@@ -36,7 +36,7 @@ public class LayoutableCutCommand extends LayoutableCopyCommand {
 		 * operation; this seems to be the behaviour preferred by every
 		 * other program in the universe. No sense in diverging, eh?
 		 */
-		for (LayoutableModelObject n : list)
+		for (Layoutable n : list)
 			parents.get(n).addChild(n);
 	}
 }

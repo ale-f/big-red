@@ -87,8 +87,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public boolean canContain(LayoutableModelObject child) {
-		Class<? extends LayoutableModelObject> c = child.getClass();
+	public boolean canContain(Layoutable child) {
+		Class<? extends Layoutable> c = child.getClass();
 		return (c == Root.class || c == InnerName.class || c == OuterName.class || c == Edge.class);
 	}
 	
@@ -138,13 +138,13 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public void addChild(LayoutableModelObject child) {
+	public void addChild(Layoutable child) {
 		super.addChild(child);
 		updateBoundaries();
 	}
 	
 	@Override
-	public void removeChild(LayoutableModelObject child) {
+	public void removeChild(Layoutable child) {
 		super.removeChild(child);
 		updateBoundaries();
 	}

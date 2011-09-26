@@ -57,8 +57,8 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	private Control control = null;
 	
 	@Override
-	public boolean canContain(LayoutableModelObject child) {
-		Class<? extends LayoutableModelObject> c = child.getClass();
+	public boolean canContain(Layoutable child) {
+		Class<? extends Layoutable> c = child.getClass();
 		return (c == Node.class || c == Site.class);
 	}
 	

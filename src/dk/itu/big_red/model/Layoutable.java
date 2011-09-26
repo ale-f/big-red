@@ -10,18 +10,18 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * All of the objects which can actually appear on a bigraph are instances of
- * {@link LayoutableModelObject}. This extends {@link ModelObject} with
+ * {@link Layoutable}. This extends {@link ModelObject} with
  * implementations of {@link ILayoutable}, {@link ICommentable}, and {@link
  * IAdaptable}.
  * @author alec
  * @see ModelObject
  *
  */
-public abstract class LayoutableModelObject extends ModelObject implements IAdaptable, ILayoutable, ICommentable {
+public abstract class Layoutable extends ModelObject implements IAdaptable, ILayoutable, ICommentable {
 	protected Rectangle layout;
 	protected Container parent;
 	
-	public LayoutableModelObject() {
+	public Layoutable() {
 		layout = new Rectangle(10, 10, 100, 100);
 	}
 	
@@ -92,12 +92,12 @@ public abstract class LayoutableModelObject extends ModelObject implements IAdap
 	}
 	
 	/**
-	 * Returns a new instance of this {@link LayoutableModelObject}'s class,
+	 * Returns a new instance of this {@link Layoutable}'s class,
 	 * created as though by <code>this.getClass().newInstance()</code>.
-	 * @return a new instance of this LayoutableModelObject's class, or
+	 * @return a new instance of this Layoutable's class, or
 	 * <code>null</code>
 	 */
-	protected LayoutableModelObject newInstance() {
+	protected Layoutable newInstance() {
 		try {
 			return getClass().newInstance();
 		} catch (Exception e) {
@@ -106,14 +106,14 @@ public abstract class LayoutableModelObject extends ModelObject implements IAdap
 	}
 	
 	/**
-	 * Creates and returns a new copy of this {@link LayoutableModelObject}.
-	 * <p>(Although the returned copy is a {@link LayoutableModelObject}, it's
+	 * Creates and returns a new copy of this {@link Layoutable}.
+	 * <p>(Although the returned copy is a {@link Layoutable}, it's
 	 * really an instance of whatever subclass this object is.)
-	 * @return a new copy of this {@link LayoutableModelObject}
+	 * @return a new copy of this {@link Layoutable}
 	 */
 	@Override
-	public LayoutableModelObject clone() {
-		LayoutableModelObject m = newInstance();
+	public Layoutable clone() {
+		Layoutable m = newInstance();
 		m.setLayout(getLayout());
 		m.setComment(getComment());
 		return m;

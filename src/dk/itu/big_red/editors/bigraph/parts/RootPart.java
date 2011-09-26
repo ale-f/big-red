@@ -9,7 +9,7 @@ import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.RootFigure;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Root;
 
 /**
@@ -47,7 +47,7 @@ public class RootPart extends ContainerPart {
 	}
 	
 	@Override
-	public List<LayoutableModelObject> getModelChildren() {
+	public List<Layoutable> getModelChildren() {
 		return getModel().getChildren();
 	}
 }

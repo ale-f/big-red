@@ -3,14 +3,14 @@ package dk.itu.big_red.model.changes.bigraph;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.Change;
 
 public class BigraphChangeRemoveChild extends Change {
 	public Container parent;
-	public LayoutableModelObject child;
+	public Layoutable child;
 	
-	public BigraphChangeRemoveChild(Container parent, LayoutableModelObject child) {
+	public BigraphChangeRemoveChild(Container parent, Layoutable child) {
 		this.parent = parent;
 		this.child = child;
 	}

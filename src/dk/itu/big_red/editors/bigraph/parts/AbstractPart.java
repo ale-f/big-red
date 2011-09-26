@@ -16,7 +16,7 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
@@ -32,11 +32,11 @@ import dk.itu.big_red.util.UI;
  */
 public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 	/**
-	 * Gets the model object, cast to a {@link LayoutableModelObject}.
+	 * Gets the model object, cast to a {@link Layoutable}.
 	 */
 	@Override
-	public LayoutableModelObject getModel() {
-		return (LayoutableModelObject)super.getModel();
+	public Layoutable getModel() {
+		return (Layoutable)super.getModel();
 	}
 	
 	@Override
@@ -112,8 +112,8 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	 * children should probably override this method!
 	 */
 	@Override
-	public List<LayoutableModelObject> getModelChildren() {
-		return new ArrayList<LayoutableModelObject>();
+	public List<Layoutable> getModelChildren() {
+		return new ArrayList<Layoutable>();
 	}
 	
 	/**
@@ -144,7 +144,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	
 	@Override
 	protected void refreshVisuals() {
-		LayoutableModelObject model = getModel();
+		Layoutable model = getModel();
 		AbstractFigure figure = getFigure();
 		
 		figure.setConstraint(model.getLayout());

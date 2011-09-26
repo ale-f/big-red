@@ -21,7 +21,7 @@ import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
  * @author alec
  * @see ILink
  */
-public abstract class Link extends LayoutableModelObject implements IAdaptable, INameable, IOutlineColourable, ILink {
+public abstract class Link extends Layoutable implements IAdaptable, INameable, IOutlineColourable, ILink {
 	/**
 	 * The property name fired when a point is added to, or removed from, this
 	 * Link.

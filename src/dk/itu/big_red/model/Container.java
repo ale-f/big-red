@@ -18,8 +18,8 @@ import org.w3c.dom.Node;
  * @author alec
  *
  */
-public class Container extends LayoutableModelObject implements IAdaptable {
-	protected ArrayList<LayoutableModelObject> children = new ArrayList<LayoutableModelObject>();
+public class Container extends Layoutable implements IAdaptable {
+	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
 
 	/**
 	 * The property name fired when a child is added or removed.
@@ -30,11 +30,11 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		layout = new Rectangle(10, 10, 100, 100);
 	}
 	
-	public boolean canContain(LayoutableModelObject child) {
+	public boolean canContain(Layoutable child) {
 		return false;
 	}
 	
-	public void addChild(LayoutableModelObject child) {
+	public void addChild(Layoutable child) {
 		boolean added = children.add(child);
 		if (added) {
 			child.setParent(this);
@@ -42,7 +42,7 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		}
 	}
 	
-	public void removeChild(LayoutableModelObject child) {
+	public void removeChild(Layoutable child) {
 		boolean removed = children.remove(child);
 		if (removed) {
 			child.setParent(null);
@@ -50,11 +50,11 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 		}
 	}
 	
-	public List<LayoutableModelObject> getChildren() {
+	public List<Layoutable> getChildren() {
 		return children;
 	}
 
-	public boolean hasChild(LayoutableModelObject child) {
+	public boolean hasChild(Layoutable child) {
 		return children.contains(child);
 	}
 	
@@ -62,7 +62,7 @@ public class Container extends LayoutableModelObject implements IAdaptable {
 	public Container clone() {
 		Container c = (Container)super.clone();
 		
-		for (LayoutableModelObject child : getChildren())
+		for (Layoutable child : getChildren())
 			c.addChild(child.clone());
 		
 		return c;

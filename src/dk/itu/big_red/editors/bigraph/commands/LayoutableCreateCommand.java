@@ -5,7 +5,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -20,7 +20,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	
 	private Rectangle layout = null;
 	private Container container = null;
-	private LayoutableModelObject node = null;
+	private Layoutable node = null;
 	
 	@Override
 	public void prepare() {
@@ -28,7 +28,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (layout == null || container == null || node == null)
 			return;
 		setTarget(container.getBigraph());
-		for (LayoutableModelObject i : container.getChildren()) {
+		for (Layoutable i : container.getChildren()) {
 			if (i instanceof Edge)
 				continue;
 			else if (i.getLayout().intersects(layout))
@@ -54,8 +54,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	}
 	
 	public void setObject(Object s) {
-		if (s instanceof LayoutableModelObject)
-			node = (LayoutableModelObject)s;
+		if (s instanceof Layoutable)
+			node = (Layoutable)s;
 	}
 	
 	public void setContainer(Object e) {

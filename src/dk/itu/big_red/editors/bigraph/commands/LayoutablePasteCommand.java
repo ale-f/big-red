@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import org.eclipse.gef.ui.actions.Clipboard;
 
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
@@ -45,22 +45,22 @@ public class LayoutablePasteCommand extends ChangeCommand {
 			return;
 		setTarget(newParent.getBigraph());
 		
-		ArrayList<LayoutableModelObject> bList;
+		ArrayList<Layoutable> bList;
 		try {
-			bList = (ArrayList<LayoutableModelObject>)Clipboard.getDefault().getContents();
+			bList = (ArrayList<Layoutable>)Clipboard.getDefault().getContents();
 			if (bList == null)
 				return;
 		} catch (Exception e) {
 			return;
 		}
 		
-		for (LayoutableModelObject i : bList) {
+		for (Layoutable i : bList) {
 			if (!newParent.canContain(i)) {
 				cg.clear();
 				return;
 			} else if (i instanceof Node || i instanceof Root ||
 					i instanceof Site) {
-				LayoutableModelObject j = i.clone();
+				Layoutable j = i.clone();
 				cg.add(new BigraphChangeAddChild(newParent, j, j.getLayout().getCopy().translate(20, 20)));
 			}
 		}

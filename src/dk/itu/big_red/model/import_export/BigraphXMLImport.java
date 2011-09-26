@@ -11,7 +11,7 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
@@ -107,9 +107,9 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model);
 		
-		if (model instanceof LayoutableModelObject && context != null &&
+		if (model instanceof Layoutable && context != null &&
 			!(model instanceof Port))
-			context.addChild((LayoutableModelObject)model);
+			context.addChild((Layoutable)model);
 		
 		if (model instanceof Container) {
 			processContainer(e, (Container)model);

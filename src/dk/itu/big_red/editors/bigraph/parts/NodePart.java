@@ -12,7 +12,7 @@ import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.LayoutableModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 
 /**
@@ -102,8 +102,8 @@ public class NodePart extends ContainerPart {
 	}
 	
 	@Override
-	public List<LayoutableModelObject> getModelChildren() {
-		ArrayList<LayoutableModelObject> children = new ArrayList<LayoutableModelObject>(getModel().getChildren());
+	public List<Layoutable> getModelChildren() {
+		ArrayList<Layoutable> children = new ArrayList<Layoutable>(getModel().getChildren());
 		children.addAll(getModel().getPorts());
 		return children;
 	}

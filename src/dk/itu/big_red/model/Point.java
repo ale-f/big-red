@@ -12,7 +12,7 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  * @see IPoint
  */
-public abstract class Point extends LayoutableModelObject implements IAdaptable, IPoint {
+public abstract class Point extends Layoutable implements IAdaptable, IPoint {
 	/**
 	 * The property name fired when the source edge changes.
 	 */
