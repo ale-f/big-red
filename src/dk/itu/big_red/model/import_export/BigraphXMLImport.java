@@ -32,6 +32,14 @@ import dk.itu.big_red.util.Project;
  *
  */
 public class BigraphXMLImport extends Import<Bigraph> {
+	private enum AppearanceStatus {
+		NOTHING_YET,
+		APPEARANCE_MANDATORY,
+		APPEARANCE_FORBIDDEN
+	}
+	
+	private AppearanceStatus as = AppearanceStatus.NOTHING_YET;
+	
 	@Override
 	public Bigraph importObject() throws ImportFailedException {
 		try {
@@ -69,7 +77,12 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			throw new ImportFailedException(ex);
 		}
 		
-		return (Bigraph)processContainer(e, bigraph);
+		processContainer(e, bigraph);
+		
+		if (as == AppearanceStatus.APPEARANCE_FORBIDDEN)
+			applyChange(bigraph.relayout());
+		
+		return bigraph;
 	}
 	
 	private Container processContainer(Element e, Container model) throws ImportFailedException {
@@ -104,8 +117,18 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
 		
 		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
-		if (el != null)
+		if (el != null && as != AppearanceStatus.APPEARANCE_FORBIDDEN) {
+			if (as == AppearanceStatus.NOTHING_YET)
+				as = AppearanceStatus.APPEARANCE_MANDATORY;
 			AppearanceGenerator.setAppearance(el, model);
+		} else if (!(model instanceof Port)) {
+			if (as == AppearanceStatus.NOTHING_YET) {
+				as = AppearanceStatus.APPEARANCE_FORBIDDEN;
+			} else if (as == AppearanceStatus.APPEARANCE_MANDATORY) {
+				/* Report an error? */
+				as = AppearanceStatus.APPEARANCE_FORBIDDEN;
+			}
+		}
 		
 		if (model instanceof Layoutable && context != null &&
 			!(model instanceof Port))
