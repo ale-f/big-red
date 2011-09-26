@@ -1,11 +1,17 @@
 package dk.itu.big_red.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Node;
+
+import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
 /**
  * The <code>Container</code> provides the basic functionality shared by most
@@ -66,5 +72,47 @@ public class Container extends Layoutable implements IAdaptable {
 			c.addChild(child.clone());
 		
 		return c;
+	}
+	
+	/**
+	 * Creates {@link Change}s which will resize this object to a sensible
+	 * default size and resize and reposition all of its children.
+	 * @param cg a {@link ChangeGroup} to which changes should be appended
+	 * @return the proposed new size of this object
+	 */
+	@Override
+	protected Dimension relayout(ChangeGroup cg) {
+		int maxHeight = 0;
+		
+		HashMap<Layoutable, Dimension> sizes =
+				new HashMap<Layoutable, Dimension>();
+		
+		for (Layoutable i : getChildren()) {
+			Dimension childSize = i.relayout(cg);
+			sizes.put(i, childSize);
+			if (childSize.height > maxHeight)
+				maxHeight = childSize.height;
+		}
+		
+		Rectangle nl = new Rectangle();
+		
+		int width = PADDING;
+		
+		for (Layoutable i : getChildren()) {
+			Rectangle cl =
+				new Rectangle().setSize(sizes.get(i));
+			cl.setLocation(width,
+					PADDING + ((maxHeight - cl.height) / 2));
+			cg.add(new BigraphChangeLayout(i, cl));
+			width += cl.width + PADDING;
+		}
+		
+		if (width < 50)
+			width = 50;
+		
+		Dimension r =
+			new Dimension(width, maxHeight + (PADDING * 2));
+		cg.add(new BigraphChangeLayout(this, nl.setSize(r)));
+		return r;
 	}
 }

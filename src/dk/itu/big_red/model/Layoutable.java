@@ -1,10 +1,14 @@
 package dk.itu.big_red.model;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
+import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
@@ -113,5 +117,22 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ILay
 		m.setLayout(getLayout());
 		m.setComment(getComment());
 		return m;
+	}
+	
+	/**
+	 * The space that should be present between any two {@link Layoutable}s
+	 * after a <i>relayout</i> has been applied.
+	 */
+	protected static final int PADDING = 25;
+	
+	/**
+	 * Creates {@link Change}s which will resize this object to a sensible
+	 * default size.
+	 * @param cg a {@link ChangeGroup} to which changes should be appended
+	 * @return the proposed new size of this object
+	 */
+	protected Dimension relayout(ChangeGroup cg) {
+		cg.add(new BigraphChangeLayout(this, new Rectangle(0, 0, 50, 50)));
+		return new Dimension(50, 50);
 	}
 }
