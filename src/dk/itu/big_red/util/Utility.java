@@ -3,7 +3,11 @@ package dk.itu.big_red.util;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+
 import org.eclipse.swt.graphics.RGB;
+
+import dk.itu.big_red.application.plugin.RedPlugin;
 
 /**
  * Miscellaneous utility methods.
@@ -75,5 +79,14 @@ public final class Utility {
 			}
 		}
 		return r;
+	}
+	
+	/**
+	 * Returns a random colour.
+	 * @return a new {@link RGB} with random red, green, and blue values
+	 */
+	public static RGB randomRGB() {
+		Random r = RedPlugin.getRandom();
+		return new RGB(r.nextInt(256), r.nextInt(256), r.nextInt(256));
 	}
 }
