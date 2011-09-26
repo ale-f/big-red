@@ -56,7 +56,7 @@ public class ModelFactory implements CreationFactory {
 	 * @return a new object of the appropriate type, or <code>null</code> if
 	 *         the tag name was unrecognised
 	 */
-	public static Object getNewObject(String namedObject) {
+	public static ModelObject getNewObject(String namedObject) {
 		namedObject = namedObject.toLowerCase();
 		if (namedObject.equals("bigraph"))
 			return new Bigraph();
