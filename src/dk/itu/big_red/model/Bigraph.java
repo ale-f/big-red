@@ -19,6 +19,7 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.interfaces.IBigraph;
@@ -350,6 +351,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof BigraphChangeEdgeReposition) {
 			BigraphChangeEdgeReposition c = (BigraphChangeEdgeReposition)b;
 			c.edge.averagePosition();
+		} else if (b instanceof BigraphChangeOutlineColour) {
+			BigraphChangeOutlineColour c = (BigraphChangeOutlineColour)b;
+			c.model.setOutlineColour(c.newColour);
 		}
 	}
 }
