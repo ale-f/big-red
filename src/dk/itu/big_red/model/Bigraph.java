@@ -280,8 +280,12 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			cg.add(new BigraphChangeLayout(i, r));
 		}
 		
-		for (Layoutable i : Utility.groupListByClass(getChildren(), Edge.class))
-			cg.add(new BigraphChangeEdgeReposition((Edge)i));
+		for (Layoutable i_ : Utility.groupListByClass(getChildren(), Link.class)) {
+			Link i = (Link)i_;
+			if (i instanceof Edge)
+				cg.add(new BigraphChangeEdgeReposition((Edge)i));
+			cg.add(new BigraphChangeOutlineColour(i, Utility.randomRGB()));
+		}
 		
 		return cg;
 	}
