@@ -18,12 +18,8 @@ import dk.itu.big_red.model.interfaces.internal.ILayoutable;
  *
  */
 public abstract class Layoutable extends ModelObject implements IAdaptable, ILayoutable, ICommentable {
-	protected Rectangle layout;
-	protected Container parent;
-	
-	public Layoutable() {
-		layout = new Rectangle(10, 10, 100, 100);
-	}
+	protected Rectangle layout = null;
+	protected Container parent = null;
 	
 	@Override
 	public Rectangle getLayout() {
