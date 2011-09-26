@@ -3,6 +3,7 @@ package dk.itu.big_red.application.plugin;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Random;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
@@ -81,5 +82,12 @@ public class RedPlugin extends AbstractUIPlugin {
 	 */
 	public static Status getThrowableStatus(Throwable t) {
 		return new Status(IStatus.ERROR, PLUGIN_ID, t.getLocalizedMessage(), t);
+	}
+	
+	private static Random r = null;
+	public static Random getRandom() {
+		if (r == null)
+			r = new Random();
+		return r;
 	}
 }
