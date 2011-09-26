@@ -1,8 +1,10 @@
 package dk.itu.big_red.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
@@ -18,6 +20,7 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
+import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.IInnerName;
@@ -26,6 +29,7 @@ import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.HomogeneousIterable;
+import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.resources.ResourceWrapper;
 
 /**
@@ -234,6 +238,51 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	@Override
 	public ISignature getISignature() {
 		return signature.getModel();
+	}
+	
+	/**
+	 * Creates {@link Change}s which will (<i>almost</i> sensibly) resize and
+	 * reposition all of this {@link Bigraph}'s children.
+	 * @param cg a {@link ChangeGroup} to which changes should be appended
+	 * @return a {@link ChangeGroup} containing relayout changes
+	 */
+	public ChangeGroup relayout() {
+		ChangeGroup cg = new ChangeGroup();
+		
+		HashMap<Layoutable, Dimension> sizes =
+				new HashMap<Layoutable, Dimension>();
+		
+		boolean outerNameEncountered = false;
+		int outerNameProgress = PADDING,
+			innerNameProgress = PADDING,
+			top = PADDING;
+		
+		for (Layoutable i :
+			Utility.groupListByClass(getChildren(), BigraphXMLExport.SCHEMA_ORDER)) {
+			Dimension size = i.relayout(cg);
+			sizes.put(i, size);
+			Rectangle r = new Rectangle().setSize(size);
+			if (i instanceof OuterName) {
+				r.setLocation(outerNameProgress, PADDING);
+				outerNameProgress += size.width + PADDING;
+				if (!outerNameEncountered) {
+					top += size.height + PADDING;
+					outerNameEncountered = true;
+				}
+			} else if (i instanceof Root) {
+				r.setLocation(PADDING, top);
+				top += size.height + PADDING;
+			} else if (i instanceof InnerName) {
+				r.setLocation(innerNameProgress, top);
+				innerNameProgress += size.width + PADDING;
+			}
+			cg.add(new BigraphChangeLayout(i, r));
+		}
+		
+		for (Layoutable i : Utility.groupListByClass(getChildren(), Edge.class))
+			cg.add(new BigraphChangeEdgeReposition((Edge)i));
+		
+		return cg;
 	}
 	
 	private ChangeRejectedException lastRejection = null;
