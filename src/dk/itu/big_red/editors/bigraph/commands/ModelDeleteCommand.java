@@ -38,8 +38,10 @@ public class ModelDeleteCommand extends ChangeCommand {
 	private void removePoint(Link l, Point p) {
 		cg.add(new BigraphChangeDisconnect(p, l));
 		scratch.removePointFor(l, p);
-		if (scratch.getPointsFor(l).size() == 0 && l instanceof Edge)
+		if (scratch.getPointsFor(l).size() == 0 && l instanceof Edge) {
 			cg.add(new BigraphChangeRemoveChild(l.getBigraph(), l));
+			scratch.removeChildFor(l.getBigraph(), l);
+		}
 	}
 	
 	private void remove(ModelObject m) {
