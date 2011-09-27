@@ -14,13 +14,10 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
 /**
- * The <code>Container</code> provides the basic functionality shared by most
- * elements of a bigraph. <code>Container</code>s can be moved around, copied, and
- * deleted by the user, so {@link Root}s, {@link Node}s, and {@link Site}s are
- * all <code>Container</code>s.
- * 
- * <p><code>Container</code>s are only useful if they've been added to a {@link
- * Bigraph} - make sure you do that before you manipulate them.
+ * The <code>Container</code> is the superclass of anything which can contain
+ * {@link Layoutable}s: {@link Bigraph}s, {@link Root}s, and {@link Node}s.
+ * With the notable exception of {@link Bigraph}s, they can all be moved around
+ * and resized.
  * @author alec
  *
  */
