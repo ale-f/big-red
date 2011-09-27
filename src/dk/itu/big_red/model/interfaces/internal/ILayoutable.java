@@ -42,12 +42,6 @@ public interface ILayoutable extends IPropertyChangeNotifier {
 	public Rectangle getRootLayout();
 	
 	/**
-	 * Sets the layout of this object.
-	 * @param layout the new layout (which will belong to this object)
-	 */
-	public void setLayout(Rectangle layout);
-	
-	/**
 	 * Returns the {@link Bigraph} that ultimately contains this object.
 	 * @return a Bigraph
 	 */

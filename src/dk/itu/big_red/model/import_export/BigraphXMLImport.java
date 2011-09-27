@@ -118,6 +118,9 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	
 	private void addChild(Container context, Element e) throws ImportFailedException {
 		Object model = ModelFactory.getNewObject(e.getNodeName());
+		if (model instanceof Layoutable && context != null &&
+				!(model instanceof Port))
+				context.addChild((Layoutable)model);
 		
 		boolean warn = false;
 		
@@ -148,10 +151,6 @@ public class BigraphXMLImport extends Import<Bigraph> {
 				as = AppearanceStatus.MANDATORY;
 			AppearanceGenerator.setAppearance(el, model);
 		}
-		
-		if (model instanceof Layoutable && context != null &&
-			!(model instanceof Port))
-			context.addChild((Layoutable)model);
 		
 		if (model instanceof Container) {
 			processContainer(e, (Container)model);

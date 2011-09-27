@@ -35,8 +35,12 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ILay
 		return getLayout().getCopy().translate(getParent().getRootLayout().getTopLeft());
 	}
 
-	@Override
-	public void setLayout(Rectangle newLayout) {
+	
+	/**
+	 * Sets the layout of this object.
+	 * @param layout the new layout (which will belong to this object)
+	 */
+	protected void setLayout(Rectangle newLayout) {
 		if (newLayout == null)
 			return;
 		Rectangle oldLayout = layout;

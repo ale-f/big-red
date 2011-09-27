@@ -119,7 +119,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public void setParent(Container parent) {
+	protected void setParent(Container parent) {
 		/* do nothing */
 	}
 	
@@ -129,7 +129,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public void setLayout(Rectangle newLayout) {
+	protected void setLayout(Rectangle newLayout) {
 		updateBoundaries();
 	}
 	

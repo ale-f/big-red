@@ -9,6 +9,8 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.import_export.XMLNS;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
@@ -71,14 +73,15 @@ public class AppearanceGenerator {
 		if (!DOM.nameEqualsNS(e, XMLNS.BIG_RED, "appearance"))
 			return;
 		
-		if (o instanceof ILayoutable) {
+		if (o instanceof Layoutable) {
+			Layoutable l = (Layoutable)o;
 			Rectangle r = new Rectangle(
 					DOM.getIntAttribute(e, XMLNS.BIG_RED, "x"),
 					DOM.getIntAttribute(e, XMLNS.BIG_RED, "y"),
 					DOM.getIntAttribute(e, XMLNS.BIG_RED, "width"),
 					DOM.getIntAttribute(e, XMLNS.BIG_RED, "height"));
 			
-			((ILayoutable)o).setLayout(r);
+			l.getBigraph().applyChange(new BigraphChangeLayout(l, r));
 		}
 		
 		if (o instanceof IFillColourable)
