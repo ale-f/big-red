@@ -19,7 +19,7 @@ public class SignatureXMLImport extends Import<Signature> {
 	public Signature importObject() throws ImportFailedException {
 		try {
 			Document d =
-				DOM.validate(DOM.parse(source), RedPlugin.getPluginResource("schema/signature.xsd"));
+				DOM.validate(DOM.parse(source), RedPlugin.getResource("schema/signature.xsd"));
 			source.close();
 			return (Signature)process(d.getDocumentElement());
 		} catch (Exception e) {

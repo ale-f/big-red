@@ -15,7 +15,7 @@ import org.osgi.framework.BundleContext;
 
 /**
  * The RedPlugin class is responsible for starting and stopping the Big Red
- * plugin.
+ * plugin &mdash; and for keeping track of plugin-wide shared objects.
  */
 public class RedPlugin extends AbstractUIPlugin {
 
@@ -40,7 +40,7 @@ public class RedPlugin extends AbstractUIPlugin {
 	 *
 	 * @return the shared instance
 	 */
-	public static RedPlugin getDefault() {
+	public static RedPlugin getInstance() {
 		return plugin;
 	}
 
@@ -61,10 +61,10 @@ public class RedPlugin extends AbstractUIPlugin {
 	 * @param path a (plugin root-relative) path to a file
 	 * @return an InputStream, or <code>null</code> if the file wasn't found
 	 */
-	public static InputStream getPluginResource(String path) {
+	public static InputStream getResource(String path) {
 		try {
 			URL u = FileLocator.find(
-					getDefault().getBundle(), new Path(path), null);
+					getInstance().getBundle(), new Path(path), null);
 			if (u != null)
 				return u.openStream();
 			else return null;
@@ -85,6 +85,11 @@ public class RedPlugin extends AbstractUIPlugin {
 	}
 	
 	private static Random r = null;
+	
+	/**
+	 * Returns the plugin's random number generator, creating it if necessary.
+	 * @return the plugin's {@link Random}
+	 */
 	public static Random getRandom() {
 		if (r == null)
 			r = new Random();
