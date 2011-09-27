@@ -40,7 +40,7 @@ public class Container extends Layoutable implements IAdaptable {
 		return false;
 	}
 	
-	public void addChild(Layoutable child) {
+	protected void addChild(Layoutable child) {
 		boolean added = children.add(child);
 		if (added) {
 			child.setParent(this);
@@ -48,7 +48,7 @@ public class Container extends Layoutable implements IAdaptable {
 		}
 	}
 	
-	public void removeChild(Layoutable child) {
+	protected void removeChild(Layoutable child) {
 		boolean removed = children.remove(child);
 		if (removed) {
 			child.setParent(null);

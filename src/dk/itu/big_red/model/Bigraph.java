@@ -144,13 +144,13 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public void addChild(Layoutable child) {
+	protected void addChild(Layoutable child) {
 		super.addChild(child);
 		updateBoundaries();
 	}
 	
 	@Override
-	public void removeChild(Layoutable child) {
+	protected void removeChild(Layoutable child) {
 		super.removeChild(child);
 		updateBoundaries();
 	}
