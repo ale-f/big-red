@@ -14,8 +14,8 @@ import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
+import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.Utility;
 
 public class AppearanceGenerator {
 	/**
@@ -47,13 +47,13 @@ public class AppearanceGenerator {
 		if (o instanceof IFillColourable) {
 			alive = true;
 			DOM.applyAttributesToElement(aE,
-					"fillColor", Utility.colourToString(((IFillColourable)o).getFillColour()));
+					"fillColor", Colour.colourToString(((IFillColourable)o).getFillColour()));
 		}
 		
 		if (o instanceof IOutlineColourable) {
 			alive = true;
 			DOM.applyAttributesToElement(aE,
-					"outlineColor", Utility.colourToString(((IOutlineColourable)o).getOutlineColour()));
+					"outlineColor", Colour.colourToString(((IOutlineColourable)o).getOutlineColour()));
 		}
 		
 		if (o instanceof ICommentable) {

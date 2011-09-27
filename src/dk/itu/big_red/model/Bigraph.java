@@ -29,6 +29,7 @@ import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.HomogeneousIterable;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.resources.ResourceWrapper;
@@ -284,7 +285,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			Link i = (Link)i_;
 			if (i instanceof Edge)
 				cg.add(new BigraphChangeEdgeReposition((Edge)i));
-			cg.add(new BigraphChangeOutlineColour(i, Utility.randomRGB()));
+			cg.add(new BigraphChangeOutlineColour(i, Colour.randomRGB()));
 		}
 		
 		return cg;
