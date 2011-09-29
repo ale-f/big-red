@@ -2,6 +2,12 @@ package dk.itu.big_red.model.changes;
 
 import dk.itu.big_red.util.RedException;
 
+/**
+ * {@link IChangeValidator}s throw {@link ChangeRejectedException}s when a
+ * {@link Change} could not be applied.
+ * @author alec
+ *
+ */
 public class ChangeRejectedException extends RedException {
 	private static final long serialVersionUID = 7181613421769493596L;
 
@@ -17,18 +23,36 @@ public class ChangeRejectedException extends RedException {
 		this.rationale = rationale;
 	}
 	
+	/**
+	 * Gets the {@link IChangeable} that was the target of the rejected {@link
+	 * Change}.
+	 * @return an {@link IChangeable}
+	 */
 	public IChangeable getChangeable() {
 		return changeable;
 	}
 	
+	/**
+	 * Gets the rejected {@link Change}.
+	 * @return a {@link Change}
+	 */
 	public Change getRejectedChange() {
 		return rejectedChange;
 	}
 	
-	public Object getRejector() {
+	/**
+	 * Gets the {@link IChangeValidator} that rejected the {@link Change}.
+	 * @return an {@link IChangeValidator}
+	 */
+	public IChangeValidator getRejector() {
 		return rejector;
 	}
 	
+	/**
+	 * Gets the reason why the {@link IChangeValidator} rejected the {@link
+	 * Change}.
+	 * @return the rationale, which would <i>ideally</i> be human-readable
+	 */
 	public String getRationale() {
 		return rationale;
 	}

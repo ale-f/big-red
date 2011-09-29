@@ -18,7 +18,7 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	 * @param c a {@link Change} to add
 	 */
 	public void add(Change c) {
-		this.changes.add(c);
+		changes.add(c);
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	 * @param c a {@link Change}s to add
 	 */
 	public void prepend(Change c) {
-		this.changes.add(0, c);
+		changes.add(0, c);
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	 * Removes all {@link Change}s from this ChangeGroup.
 	 */
 	public void clear() {
-		this.changes.clear();
+		changes.clear();
 	}
 	
 	@Override
