@@ -25,7 +25,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Utility;
 
 public class BigraphTikZExport extends Export<Bigraph> {
@@ -35,7 +34,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	public void exportObject() throws ExportFailedException {
 		writer = new BufferedWriter(new OutputStreamWriter(target));
 		
-		process((ILayoutable)model);
+		process((Layoutable)model);
 		
 		try {
 			writer.close();
@@ -100,7 +99,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		List<Layoutable> ch = b.getChildren();
 		if (ch.size() > 0) {
 			Rectangle bounding = ch.get(0).getLayout().getCopy();
-			for (ILayoutable i : ch)
+			for (Layoutable i : ch)
 				bounding.union(i.getLayout());
 			translate = bounding.getTopLeft().getNegated();
 			System.out.println("(translating everything by " + translate + ")");
@@ -166,10 +165,10 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		line("node at (" + rltl.x + "," + rltl.y + ") {" + con.getLabel() + "};");
 		
 		beginScope(n);
-		for (ILayoutable c : Utility.groupListByClass(n.getChildren(),
+		for (Layoutable c : Utility.groupListByClass(n.getChildren(),
 				BigraphXMLExport.SCHEMA_ORDER))
 			process(c);
-		for (ILayoutable c : n.getPorts())
+		for (Layoutable c : n.getPorts())
 			process(c);
 		endScope();
 	}
@@ -262,13 +261,13 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	
 	private void process(Container t) throws ExportFailedException {
 		beginScope(t);
-		for (ILayoutable c : Utility.groupListByClass(t.getChildren(),
+		for (Layoutable c : Utility.groupListByClass(t.getChildren(),
 				BigraphXMLExport.SCHEMA_ORDER))
 			process(c);
 		endScope();
 	}
 	
-	private void process(ILayoutable obj) throws ExportFailedException {
+	private void process(Layoutable obj) throws ExportFailedException {
 		if (obj instanceof Bigraph) {
 			process((Bigraph)obj);
 		} else if (obj instanceof Node) {

@@ -15,7 +15,7 @@ import dk.itu.big_red.editors.bigraph.commands.LayoutableOrphanCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableRelayoutCommand;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.Layoutable;
 
 public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 
@@ -51,8 +51,8 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			
 			Object model =
 				((EditPart)groupRequest.getEditParts().get(0)).getModel();
-			if (model instanceof ILayoutable)
-				command.setParent(((ILayoutable)model).getParent());
+			if (model instanceof Layoutable)
+				command.setParent(((Layoutable)model).getParent());
 			
 			command.setChildren(groupRequest.getEditParts());
 			command.prepare();
@@ -66,11 +66,11 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		
 		requestObject.getClass();
 		Dimension size = new Dimension(100, 100);
-		ILayoutable parent = (ILayoutable)getHost().getModel();
+		Layoutable parent = (Layoutable)getHost().getModel();
 		if (!(parent instanceof Container)) {
 			return null;
 		} else {
-			size.setSize(((ILayoutable)requestObject).getLayout().getSize());
+			size.setSize(((Layoutable)requestObject).getLayout().getSize());
 		}
 		
 		LayoutableCreateCommand cmd = new LayoutableCreateCommand();

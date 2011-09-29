@@ -10,7 +10,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.editors.bigraph.commands.LayoutablePasteCommand;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.util.UI;
 
 public class ContainerPasteAction extends SelectionAction {
@@ -34,14 +34,14 @@ public class ContainerPasteAction extends SelectionAction {
 	
 	@SuppressWarnings("rawtypes")
 	private Command createPasteCommand(List selectedObjects) {
-		ILayoutable newParent = null;
+		Layoutable newParent = null;
 		if (selectedObjects.size() == 0) {
 			return null;
 		} else if (selectedObjects.size() == 1) {
 			Object i = selectedObjects.get(0);
 			if (i instanceof EditPart && ((EditPart)i).getModel() instanceof
-					ILayoutable)
-				newParent = (ILayoutable)((EditPart)i).getModel();
+					Layoutable)
+				newParent = (Layoutable)((EditPart)i).getModel();
 			else return null;
 		} else {
 			EditPart sharedParent = null;
@@ -55,8 +55,8 @@ public class ContainerPasteAction extends SelectionAction {
 					return null;
 				}
 			}
-			if (sharedParent.getModel() instanceof ILayoutable)
-				newParent = (ILayoutable)sharedParent.getModel();
+			if (sharedParent.getModel() instanceof Layoutable)
+				newParent = (Layoutable)sharedParent.getModel();
 		}
 		LayoutablePasteCommand c = new LayoutablePasteCommand();
 		c.setNewParent(newParent);

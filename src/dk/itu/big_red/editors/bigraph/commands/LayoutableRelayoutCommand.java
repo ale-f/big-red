@@ -9,7 +9,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -36,13 +35,13 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		cg.clear();
 		if (model == null || layout == null)
 			return;
-		setTarget(this.model.getBigraph());
+		setTarget(model.getBigraph());
 		if (noOverlap() && boundariesSatisfied())
 			cg.add(new BigraphChangeLayout(model, layout));
 	}
 	
 	public boolean noOverlap() {
-		for (ILayoutable i : model.getParent().getChildren()) {
+		for (Layoutable i : model.getParent().getChildren()) {
 			if (i instanceof Edge || i == model)
 				continue;
 			else if (i.getLayout().intersects(layout))

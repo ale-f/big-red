@@ -9,8 +9,8 @@ import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.figures.PortFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * PortParts represent {@link Port}s, sites on {@link Node}s which can be
@@ -57,7 +57,7 @@ public class PortPart extends PointPart {
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
 		if (source == getModel().getParent()) {
-			if (prop.equals(ILayoutable.PROPERTY_LAYOUT))
+			if (prop.equals(Layoutable.PROPERTY_LAYOUT))
 				refreshVisuals();
 		}
 	}

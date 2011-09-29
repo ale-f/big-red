@@ -10,6 +10,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
@@ -18,7 +19,6 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
@@ -46,7 +46,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	@Override
 	public void exportObject() throws ExportFailedException {
 		try {
-			process((ILayoutable)model);
+			process((Layoutable)model);
 			DOM.write(target, doc);
 			target.close();
 		} catch (ExportFailedException e) {
@@ -99,7 +99,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 				"name", e.getName());
 	}
 	
-	private Element process(ILayoutable obj) throws ExportFailedException {
+	private Element process(Layoutable obj) throws ExportFailedException {
 		Element e = null;
 		if (obj instanceof Bigraph) {
 			e = process((Bigraph)obj);
@@ -115,7 +115,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		
 		if (obj instanceof Container) {
 			Container c = (Container)obj;
-			for (ILayoutable i : Utility.groupListByClass(c.getChildren(),
+			for (Layoutable i : Utility.groupListByClass(c.getChildren(),
 					BigraphXMLExport.SCHEMA_ORDER))
 				e.appendChild(process(i));
 		}

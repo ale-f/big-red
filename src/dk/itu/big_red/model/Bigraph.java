@@ -28,7 +28,6 @@ import dk.itu.big_red.model.interfaces.IInnerName;
 import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.HomogeneousIterable;
 import dk.itu.big_red.util.Utility;
@@ -169,7 +168,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		upperInnerNameBoundary = Integer.MIN_VALUE;
 		lowerRootBoundary = Integer.MAX_VALUE;
 		
-		for (ILayoutable i : children) {
+		for (Layoutable i : children) {
 			int top = i.getLayout().getTopLeft().y,
 				bottom = i.getLayout().getBottomLeft().y;
 			if (i instanceof OuterName) {

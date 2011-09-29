@@ -10,27 +10,42 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 
 /**
  * All of the objects which can actually appear on a bigraph are instances of
- * {@link Layoutable}. This extends {@link ModelObject} with
- * implementations of {@link ILayoutable}, {@link ICommentable}, and {@link
+ * {@link Layoutable}:
+ * 
+ * <ul>
+ * <li>they have a <i>layout</i> (a {@link Rectangle}) which defines their
+ * bounding box and which can change under some circumstances; and
+ * <li>they have a <i>parent</i> (a {@link Container}), which contains them.
+ * </ul>
+ * 
+ * <p>{@link Layoutable}s are subclasses of {@link ModelObject}, and
+ * additionally provide implementations of {@link ICommentable} and {@link
  * IAdaptable}.
+ * 
  * @author alec
  * @see ModelObject
  *
  */
-public abstract class Layoutable extends ModelObject implements IAdaptable, ILayoutable, ICommentable {
+public abstract class Layoutable extends ModelObject implements IAdaptable, ICommentable {
 	protected Rectangle layout = new Rectangle();
 	protected Container parent = null;
 	
-	@Override
+	/**
+	 * Gets the current layout of this object.
+	 * @return the current layout
+	 */
 	public Rectangle getLayout() {
 		return layout;
 	}
 
-	@Override
+	/**
+	 * Gets a copy of the layout of this object relative to the top-left of the
+	 * root {@link Bigraph} rather than the immediate parent.
+	 * @return the current layout relative to the root
+	 */
 	public Rectangle getRootLayout() {
 		return getLayout().getCopy().translate(getParent().getRootLayout().getTopLeft());
 	}
@@ -45,17 +60,23 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ILay
 			return;
 		Rectangle oldLayout = layout;
 		layout = newLayout;
-		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
+		firePropertyChange(Layoutable.PROPERTY_LAYOUT, oldLayout, layout);
 	}
 
-	@Override
+	/**
+	 * Returns the {@link Bigraph} that ultimately contains this object.
+	 * @return a Bigraph
+	 */
 	public Bigraph getBigraph() {
 		if (getParent() == null) {
 			return null;
 		} else return getParent().getBigraph();
 	}
 
-	@Override
+	/**
+	 * Returns the parent of this object.
+	 * @return an {@link Container}
+	 */
 	public Container getParent() {
 		return parent;
 	}
@@ -83,6 +104,11 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ILay
 	}
 	
 	private ModelPropertySource propertySource;
+	/**
+	 * The property name fired when the ILayoutable's layout changes (i.e.,
+	 * it's resized or moved).
+	 */
+	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
 	
 	@SuppressWarnings("rawtypes")
 	@Override

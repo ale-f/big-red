@@ -14,7 +14,6 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.import_export.XMLNS;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
-import dk.itu.big_red.model.interfaces.internal.ILayoutable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.DOM;
@@ -35,9 +34,9 @@ public class AppearanceGenerator {
 					"big-red:appearance");
 		boolean alive = false;
 		
-		if (o instanceof ILayoutable) {
+		if (o instanceof Layoutable) {
 			alive = true;
-			Rectangle r = ((ILayoutable)o).getLayout();
+			Rectangle r = ((Layoutable)o).getLayout();
 			
 			DOM.applyAttributesToElement(aE,
 					"width", r.width,
