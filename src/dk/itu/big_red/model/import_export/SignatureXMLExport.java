@@ -1,6 +1,5 @@
 package dk.itu.big_red.model.import_export;
 
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -28,9 +27,7 @@ public class SignatureXMLExport extends Export<Signature> {
 	}
 
 	private void process(Signature s) {
-		DOMImplementation impl = DOM.getImplementation();
-		doc = impl.createDocument(
-				XMLNS.SIGNATURE, "signature", null);
+		doc = DOM.createDocument(XMLNS.SIGNATURE, "signature");
 		Element e = doc.getDocumentElement();
 		DOM.applyAttributesToElement(e,
 			"xmlns:big-red", XMLNS.BIG_RED);

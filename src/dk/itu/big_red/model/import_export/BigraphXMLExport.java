@@ -1,6 +1,5 @@
 package dk.itu.big_red.model.import_export;
 
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -57,9 +56,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	}
 
 	private Element process(Bigraph obj) {
-		DOMImplementation impl = DOM.getImplementation();
-		doc = impl.createDocument(
-				XMLNS.BIGRAPH, "bigraph", null);
+		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph");
 		return DOM.applyAttributesToElement(doc.getDocumentElement(),
 			"signature", obj.getSignatureFile().getFullPath().makeRelative().toString(),
 			"xmlns:big-red", XMLNS.BIG_RED);
