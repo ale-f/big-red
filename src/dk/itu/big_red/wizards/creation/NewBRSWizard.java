@@ -12,7 +12,7 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.ImportFailedException;
-import dk.itu.big_red.util.Project;
+import dk.itu.big_red.util.resources.Project;
 
 public class NewBRSWizard extends Wizard implements INewWizard {
 	private WizardNewProjectCreationPage page = null;

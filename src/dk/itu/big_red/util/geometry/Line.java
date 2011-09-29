@@ -1,4 +1,4 @@
-package dk.itu.big_red.util;
+package dk.itu.big_red.util.geometry;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;

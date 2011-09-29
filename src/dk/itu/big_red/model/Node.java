@@ -17,8 +17,8 @@ import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
-import dk.itu.big_red.util.Geometry;
 import dk.itu.big_red.util.HomogeneousIterable;
+import dk.itu.big_red.util.geometry.Geometry;
 
 /**
  * 

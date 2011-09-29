@@ -7,7 +7,6 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 
-import dk.itu.big_red.util.Project;
 
 /**
  * SpecificResourceChangeListeners are special cases of {@link

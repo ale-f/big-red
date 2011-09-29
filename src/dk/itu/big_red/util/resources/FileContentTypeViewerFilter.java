@@ -10,7 +10,6 @@ import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.Viewer;
 
-import dk.itu.big_red.util.Types;
 
 /**
  * ContentTypeViewerFilters filter {@link IResource} trees based on Eclipse

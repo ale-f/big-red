@@ -26,8 +26,8 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.resources.Project;
 
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.

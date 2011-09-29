@@ -1,4 +1,4 @@
-package dk.itu.big_red.util;
+package dk.itu.big_red.util.resources;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -23,6 +23,8 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
+import dk.itu.big_red.util.FileResourceOutputStream;
+import dk.itu.big_red.util.NullInputStream;
 
 /**
  * Utility functions for manipulating an Eclipse {@link IProject project} and

@@ -11,8 +11,8 @@ import org.eclipse.ui.IWorkbench;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.resources.Project;
 import dk.itu.big_red.wizards.creation.assistants.WizardNewAgentCreationPage;
 
 /**

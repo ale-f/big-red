@@ -10,8 +10,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.import_export.ExportFailedException;
-import dk.itu.big_red.util.Project;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.resources.Project;
 
 public class NewSignatureWizard extends Wizard implements INewWizard {
 	private WizardNewFileCreationPage page = null;
