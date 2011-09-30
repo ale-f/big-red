@@ -21,8 +21,16 @@ import org.eclipse.draw2d.IFigure;
  *
  */
 public abstract class Export<T> {
-	protected T model = null;
+	private T model = null;
 	
+	/**
+	 * Returns the model object previously set with {@link #setModel(T)}.
+	 * @return the model object
+	 */
+	public T getModel() {
+		return model;
+	}
+
 	/**
 	 * Sets the model object to be exported.
 	 * @param model

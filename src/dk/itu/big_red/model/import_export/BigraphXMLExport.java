@@ -45,7 +45,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	@Override
 	public void exportObject() throws ExportFailedException {
 		try {
-			process((Layoutable)model);
+			process((Layoutable)getModel());
 			DOM.write(target, doc);
 			target.close();
 		} catch (ExportFailedException e) {

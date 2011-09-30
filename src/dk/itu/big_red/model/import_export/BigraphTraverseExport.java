@@ -24,7 +24,7 @@ public class BigraphTraverseExport extends Export<Bigraph> {
 	@Override
 	public void exportObject() throws ExportFailedException {
 		osw = new OutputStreamWriter(target);
-		process(model);
+		process(getModel());
 		try {
 			osw.close();
 		} catch (IOException e) {

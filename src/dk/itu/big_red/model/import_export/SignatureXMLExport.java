@@ -16,7 +16,7 @@ public class SignatureXMLExport extends Export<Signature> {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		process(model);
+		process(getModel());
 		
 		try {
 			DOM.write(target, doc);

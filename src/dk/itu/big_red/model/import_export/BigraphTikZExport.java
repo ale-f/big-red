@@ -34,7 +34,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	public void exportObject() throws ExportFailedException {
 		writer = new BufferedWriter(new OutputStreamWriter(target));
 		
-		process((Layoutable)model);
+		process((Layoutable)getModel());
 		
 		try {
 			writer.close();
