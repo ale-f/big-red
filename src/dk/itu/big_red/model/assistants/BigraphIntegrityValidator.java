@@ -104,7 +104,8 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 		} else if (b instanceof BigraphChangeAddChild) {
 			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
 			if (c.child instanceof Edge) {
-				/* nothing? */
+				if (!(c.parent instanceof Bigraph))
+					rejectChange(b, "Edges must be children of the top-level Bigraph");
 			} else {
 				if (!c.parent.canContain(c.child))
 					rejectChange(b,
