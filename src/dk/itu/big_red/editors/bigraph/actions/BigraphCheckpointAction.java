@@ -45,5 +45,6 @@ public class BigraphCheckpointAction extends SelectionAction {
 	@Override
 	public void run() {
 		System.out.println("Checkpoint");
+		System.out.println(((BigraphPart)getSelectedObjects().get(0)).getModel().checkpoint());
 	}
 }
