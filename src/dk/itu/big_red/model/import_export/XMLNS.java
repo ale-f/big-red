@@ -23,4 +23,7 @@ public interface XMLNS {
 	 */
 	public static final String BIG_RED =
 		"http://www.itu.dk/research/pls/xmlns/2010/big-red";
+
+	public static final String CHANGE =
+		"http://www.itu.dk/research/pls/xmlns/2010/change";
 }
