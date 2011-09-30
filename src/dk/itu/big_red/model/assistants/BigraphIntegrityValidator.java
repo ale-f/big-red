@@ -6,6 +6,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -102,11 +103,15 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 			scratch.removePointFor(c.link, c.point);
 		} else if (b instanceof BigraphChangeAddChild) {
 			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
-			if (!c.parent.canContain(c.child))
-				rejectChange(b,
-					c.parent.getClass().getSimpleName() + "s can't contain " +
-					c.child.getClass().getSimpleName() + "s");
-			layoutChecks.add(new QueuedLayoutCheck(b, c.child));
+			if (c.child instanceof Edge) {
+				/* nothing? */
+			} else {
+				if (!c.parent.canContain(c.child))
+					rejectChange(b,
+						c.parent.getClass().getSimpleName() + "s can't contain " +
+						c.child.getClass().getSimpleName() + "s");
+				layoutChecks.add(new QueuedLayoutCheck(b, c.child));
+			}
 			scratch.setLayoutFor(c.child, c.newLayout);
 			scratch.addChildFor(c.parent, c.child);
 		} else if (b instanceof BigraphChangeRemoveChild) {
