@@ -16,7 +16,7 @@ public class BigraphPNGExport extends FigureExport<IFigure> {
 
 	@Override
 	public void exportObject() throws ExportFailedException {
-		Rectangle r = model.getBounds();
+		Rectangle r = getModel().getBounds();
 		
 		Image image = null;
 		GC graphicsContext = null;
@@ -27,7 +27,7 @@ public class BigraphPNGExport extends FigureExport<IFigure> {
 			graphics = new SWTGraphics(graphicsContext = new GC(image));
 			graphics.translate(r.x * -1, r.y * -1);
 			
-			model.paint(graphics);
+			getModel().paint(graphics);
 			
 			ImageLoader il = new ImageLoader();
 			il.data = new ImageData[] {
