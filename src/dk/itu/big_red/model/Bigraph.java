@@ -359,5 +359,23 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			BigraphChangeOutlineColour c = (BigraphChangeOutlineColour)b;
 			c.model.setOutlineColour(c.newColour);
 		}
+		if (changes != null && !(b instanceof ChangeGroup))
+			changes.add(b);
+	}
+	
+	private ArrayList<Change> changes = null;
+	
+	/**
+	 * Returns all the {@link Change}s applied to this bigraph since the last
+	 * call to {@link #checkpoint()}.
+	 * <p>{@link ChangeGroup}s will not be present in the return value, but
+	 * the {@link Change}s they contained will be.
+	 * @return an {@link ArrayList} of {@link Change}s, or <code>null</code>
+	 * when called for the first time
+	 */
+	public ArrayList<Change> checkpoint() {
+		ArrayList<Change> ch = changes;
+		changes = new ArrayList<Change>();
+		return ch;
 	}
 }
