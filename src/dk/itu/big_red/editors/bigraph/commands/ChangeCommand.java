@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import org.eclipse.gef.commands.Command;
-import org.eclipse.jface.action.IStatusLineManager;
 
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.IChangeable;
@@ -15,11 +14,6 @@ import dk.itu.big_red.util.UI;
 public abstract class ChangeCommand extends Command {
 	private Change change;
 	private IChangeable target;
-	
-	private static IStatusLineManager getActiveStatusLine() {
-		return UI.getWorkbenchPage().getActiveEditor().getEditorSite().
-				getActionBars().getStatusLineManager();
-	}
 	
 	/**
 	 * Gets the {@link Change} that will be applied by this command.
@@ -72,7 +66,7 @@ public abstract class ChangeCommand extends Command {
 				change.isReady());
 		if (status) {
 			status = status && target.validateChange(change);
-			getActiveStatusLine().setErrorMessage(status ? null :
+			UI.getActiveStatusLine().setErrorMessage(status ? null :
 				target.getLastRejection().getRationale());
 		}
 		return status;

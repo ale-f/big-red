@@ -1,6 +1,7 @@
 package dk.itu.big_red.util;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -59,6 +60,15 @@ public class UI {
 	 */
 	public static Shell getShell() {
 		return getWorkbench().getActiveWorkbenchWindow().getShell();		
+	}
+	
+	/**
+	 * Gets the status line manager for the currently active editor.
+	 * @return an {@link IStatusLineManager}
+	 */
+	public static IStatusLineManager getActiveStatusLine() {
+		return getWorkbenchPage().getActiveEditor().getEditorSite().
+				getActionBars().getStatusLineManager();
 	}
 	
 	/**
