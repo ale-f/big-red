@@ -38,6 +38,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.bigraph.actions.BigraphCheckpointAction;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
@@ -142,6 +143,10 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	getSelectionActions().add(action.getId());
     	
     	action = new BigraphRelayoutAction(this);
+    	registry.registerAction(action);
+    	getSelectionActions().add(action.getId());
+    	
+    	action = new BigraphCheckpointAction(this);
     	registry.registerAction(action);
     	getSelectionActions().add(action.getId());
     	
