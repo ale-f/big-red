@@ -42,6 +42,19 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	
 	private Document doc = null;
 	
+	private boolean exportAppearance = true;
+	
+	/**
+	 * Specifies whether or not <code>&lt;big-red:appearance&gt;</code> tags,
+	 * containing Big Red-specific layout and visual data, should be present in
+	 * the output.
+	 * @param ea <code>true</code> if layout data should be exported, or
+	 * <code>false</code> otherwise
+	 */
+	public void setAppearanceExport(boolean ea) {
+		exportAppearance = ea;
+	}
+	
 	@Override
 	public void exportObject() throws ExportFailedException {
 		try {
@@ -57,9 +70,11 @@ public class BigraphXMLExport extends Export<Bigraph> {
 
 	private Element process(Bigraph obj) {
 		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph");
-		return DOM.applyAttributesToElement(doc.getDocumentElement(),
-			"signature", obj.getSignatureFile().getFullPath().makeRelative().toString(),
-			"xmlns:big-red", XMLNS.BIG_RED);
+		Element e = DOM.applyAttributesToElement(doc.getDocumentElement(),
+			"signature", obj.getSignatureFile().getFullPath().makeRelative().toString());
+		if (exportAppearance)
+			DOM.applyAttributesToElement(e, "xmlns:big-red", XMLNS.BIG_RED);
+		return e;
 	}
 	
 	private Element process(Node n) throws ExportFailedException {
@@ -117,7 +132,8 @@ public class BigraphXMLExport extends Export<Bigraph> {
 				e.appendChild(process(i));
 		}
 		
-		DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
+		if (exportAppearance)
+			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
 		
 		return e;
 	}
