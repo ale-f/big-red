@@ -39,7 +39,7 @@ public class NodePart extends ContainerPart {
 		 * Trap attempts to install a PRIMARY_DRAG_ROLE EditPolicy so that they
 		 * can be tweaked to better fit the model.
 		 */
-		if (key == EditPolicy.PRIMARY_DRAG_ROLE && getModel().getControl() != null)
+		if (key == EditPolicy.PRIMARY_DRAG_ROLE)
 			setResizable(getModel().getControl().isResizable());
 	}
 	

@@ -39,6 +39,9 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	
+	/**
+	 * Returns a new {@link Node} with the same {@link Control} as this one.
+	 */
 	@Override
 	protected Node newInstance() {
 		try {
@@ -79,7 +82,7 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	
 	@Override
 	public void setLayout(Rectangle layout) {
-		if (control != null && !control.isResizable()) {
+		if (!control.isResizable()) {
 			layout.width = getLayout().width;
 			layout.height = getLayout().height;
 		}
@@ -140,13 +143,9 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	 * @return the fitted polygon
 	 */
 	public PointList getFittedPolygon() {
-		if (fittedPolygon == null) {
-			if (getControl() == null) {
-				fittedPolygon = Geometry.fitPolygonToRectangle(Control.POINTS_QUAD, getLayout());
-			} else if (getControl().getShape() == Shape.SHAPE_POLYGON) {
+		if (fittedPolygon == null)
+			if (getControl().getShape() == Shape.SHAPE_POLYGON)
 				fittedPolygon = Geometry.fitPolygonToRectangle(getControl().getPoints(), getLayout());
-			}
-		}
 		return fittedPolygon;
 	}
 
