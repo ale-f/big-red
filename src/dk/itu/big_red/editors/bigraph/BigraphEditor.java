@@ -213,11 +213,14 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	} else return super.getAdapter(type);
     }
     
+    private PaletteGroup nodeGroup;
+    
 	@Override
 	protected PaletteRoot getPaletteRoot() {
 		PaletteRoot root = new PaletteRoot();
 		
 		PaletteGroup selectGroup = new PaletteGroup("Object selection");
+		selectGroup.setId("BigraphEditor.palette.selection");
 		root.add(selectGroup);
 		
 		selectGroup.add(new SelectionToolEntry());
@@ -226,10 +229,16 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		root.add(new PaletteSeparator());
 		
 		PaletteGroup creationGroup = new PaletteGroup("Object creation");
+		creationGroup.setId("BigraphEditor.palette.creation");
 		root.add(creationGroup);
 		
-		creationGroup.add(new CombinedTemplateCreationEntry("Node", "Add a new node to the bigraph",
+		nodeGroup = new PaletteGroup("Node...");
+		nodeGroup.setId("BigraphEditor.palette.node-creation");
+		creationGroup.add(nodeGroup);
+		
+		nodeGroup.add(new CombinedTemplateCreationEntry("Node", "Add a new node to the bigraph",
 				Node.class, new ModelFactory(Node.class), null, null));
+		
 		creationGroup.add(new CombinedTemplateCreationEntry("Site", "Add a new site to the bigraph",
 				Site.class, new ModelFactory(Site.class), null, null));
 		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",

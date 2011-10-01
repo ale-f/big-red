@@ -9,10 +9,11 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
-
 import dk.itu.big_red.editors.bigraph.actions.BigraphCheckpointAction;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 
@@ -22,6 +23,28 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 	public BigraphEditorContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
 		super(viewer);
 		setActionRegistry(registry);
+	}
+	
+	private void populateMenu(final PaletteViewer pv, final PaletteContainer pc, final IMenuManager menu) {
+		for (Object j : pc.getChildren()) {
+			if (j instanceof ToolEntry) {
+				final ToolEntry k = (ToolEntry)j;
+				Action toolAction = new Action() {
+					@Override
+					public void run() {
+						pv.setActiveTool(k);
+					}
+				};
+				toolAction.setText(k.getLabel());
+				menu.appendToGroup(GEFActionConstants.GROUP_REST, toolAction);
+			} else if (j instanceof PaletteContainer) {
+				PaletteContainer k = (PaletteContainer)j;
+				MenuManager sub = new MenuManager(k.getLabel());
+				sub.add(new GroupMarker(GEFActionConstants.GROUP_REST));
+				populateMenu(pv, k, sub);
+				menu.appendToGroup(GEFActionConstants.GROUP_REST, sub);
+			}
+		}
 	}
 	
 	@Override
@@ -70,19 +93,7 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 				menuAction.setText(pc.getLabel());
 				menu.appendToGroup(GEFActionConstants.GROUP_REST, menuAction);
 				
-				for (Object j : pc.getChildren()) {
-					if (j instanceof ToolEntry) {
-						final ToolEntry k = (ToolEntry)j;
-						Action toolAction = new Action() {
-							@Override
-							public void run() {
-								pv.setActiveTool(k);
-							}
-						};
-						toolAction.setText(k.getLabel());
-						menu.appendToGroup(GEFActionConstants.GROUP_REST, toolAction);
-					}
-				}
+				populateMenu(pv, pc, menu);
 			} else if (i instanceof PaletteSeparator) {
 				menu.appendToGroup(GEFActionConstants.GROUP_REST, new Separator());
 			}
