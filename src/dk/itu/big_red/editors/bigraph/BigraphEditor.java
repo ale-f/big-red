@@ -210,7 +210,11 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	private void updateNodePalette() {
     	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
 		
-		for (Control c : model.getModel().getSignature().getControls()) {
+    	Bigraph b = model.getModel();
+    	if (b == null)
+    		return;
+    	
+		for (Control c : b.getSignature().getControls()) {
 			palette.add(new CombinedTemplateCreationEntry(c.getName(), "",
 					Node.class, new NodeFactory(c), null, null));
 		}
