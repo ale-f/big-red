@@ -218,13 +218,6 @@ public class Control extends ModelObject implements IFillColourable, IOutlineCol
 		return (getPort(port) != null);
 	}
 	
-	public ArrayList<String> getPortNames() {
-		ArrayList<String> names = new ArrayList<String>();
-		for (Port i : ports)
-			names.add(i.getName());
-		return names;
-	}
-	
 	/**
 	 * Produces a <i>new</i> array of {@link Port}s to give to a {@link Node}.
 	 * @return an array of Ports
