@@ -121,7 +121,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
 			if (c.model instanceof Bigraph)
-				return;
+				rejectChange(b, "Bigraphs cannot be moved or resized");
 			layoutChecks.add(new QueuedLayoutCheck(b, c.model));
 			scratch.setLayoutFor(c.model, c.newLayout);
 		} else if (b instanceof BigraphChangeEdgeReposition) {

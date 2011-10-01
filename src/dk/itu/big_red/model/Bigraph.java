@@ -129,7 +129,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	@Override
 	protected void setLayout(Rectangle newLayout) {
-		updateBoundaries();
+		/* do nothing */
 	}
 	
 	@Override

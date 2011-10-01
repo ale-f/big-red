@@ -26,7 +26,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	}
 
 	public void setModel(Object model) {
-		if (model instanceof Layoutable)
+		if (model instanceof Layoutable && !(model instanceof Bigraph))
 			this.model = (Layoutable)model;
 	}
 	
