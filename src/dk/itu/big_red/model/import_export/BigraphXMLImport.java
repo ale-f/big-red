@@ -12,6 +12,7 @@ import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
@@ -91,9 +92,6 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	}
 	
 	private Container processContainer(Element e, Container model) throws ImportFailedException {
-		if (model instanceof Node)
-			((Node)model).setControl(bigraph.getSignature().getControl(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control")));
-		
 		if (model instanceof INameable)
 			((INameable)model).setName(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"));
 		
@@ -119,7 +117,15 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	}
 	
 	private void addChild(Container context, Element e) throws ImportFailedException {
-		Object model = ModelFactory.getNewObject(e.getNodeName());
+		Object model;
+		if (!e.getNodeName().equals("node")) {
+			model = ModelFactory.getNewObject(e.getNodeName());
+		} else {
+			String controlName =
+					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control");
+			Control c = bigraph.getSignature().getControl(controlName);
+			model = new Node(c);
+		}
 		if (model instanceof Layoutable && context != null &&
 				!(model instanceof Port))
 				applyChange(new BigraphChangeAddChild(context,

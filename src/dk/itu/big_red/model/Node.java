@@ -39,17 +39,31 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	
-	public Node() {
+	@Override
+	protected Node newInstance() {
+		try {
+			return new Node(control);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public Node(Control control) {
-		setControl(control);
+		control.addPropertyChangeListener(this);
+		this.control = control;
+		
+		ports = control.getPortsArray();
+		for (Port p : ports)
+			p.setParent(this);
+		
+		if (!control.isResizable())
+			super.setLayout(
+				getLayout().getCopy().setSize(control.getDefaultSize()));
 	}
 	
 	@Override
 	public Node clone(CloneMap m) {
 		Node n = (Node)super.clone(m);
-		n.setControl(getControl());
 		n.setFillColour(getFillColour());
 		n.setOutlineColour(getOutlineColour());
 		return n;
@@ -71,38 +85,6 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 		}
 		fittedPolygon = null;
 		super.setLayout(layout);
-	}
-	
-	/**
-	 * Changes the {@link Control} of this Node. (Note that this operation will
-	 * give the Node a new set of {@link Port}s, which means that all of its
-	 * old ones will be disconnected.)
-	 * 
-	 * @param control the new Control; if <code>null</code>, the <i>default
-	 *        control</i> will be used
-	 */
-	public void setControl(Control control) {
-		Control oldControl = this.control;
-		this.control = control;
-		
-		fittedPolygon = null;
-		/* XXX: disconnect old ports */
-		ports.clear();
-		
-		if (control != null) {
-			if (oldControl != null)
-				oldControl.removePropertyChangeListener(this);
-			control.addPropertyChangeListener(this);
-			
-			ports = control.getPortsArray();
-			for (Port p : ports)
-				p.setParent(this);
-			
-			if (!control.isResizable())
-				super.setLayout(
-					getLayout().getCopy().setSize(control.getDefaultSize()));
-		}
-		firePropertyChange(PROPERTY_CONTROL, oldControl, control);
 	}
 	
 	/**
@@ -143,15 +125,7 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent arg) {
-		/*
-		 * At the moment, this is unsophisticated - but it does at least
-		 * propagate the visual changes immediately.
-		 */
-		if (arg.getSource() == control) {
-			setControl((Control)arg.getSource());
-		} else {
-			System.out.println(this + ": unexpected property change notification of type " + arg.getPropertyName());
-		}
+		System.out.println(this + ": unexpected property change notification of type " + arg.getPropertyName());
 	}
 	
 	private PointList fittedPolygon = null;

@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
-import org.eclipse.ui.views.properties.ComboBoxLabelProvider;
-import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.INameable;
@@ -30,33 +26,12 @@ public class ModelPropertySource implements IPropertySource {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	private String[] controlNames = null;
 	
 	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		ArrayList<IPropertyDescriptor> properties =
 			new ArrayList<IPropertyDescriptor>();
 		properties.add(new PropertyDescriptor("Class", "Class"));
-		if (object instanceof Node) {
-			setControlNames(((Node)object).getBigraph().getSignature().getControlNames());
-			ComboBoxPropertyDescriptor cbpd =
-				new ComboBoxPropertyDescriptor(Node.PROPERTY_CONTROL, "Control", getControlNames());
-			cbpd.setLabelProvider(new ComboBoxLabelProvider(controlNames) {
-				@Override
-				public String getText(Object element) {
-					if (element instanceof Integer) {
-						Integer i = (Integer)element;
-						if (i == -1)
-							return "No control";
-						else if (i == -2)
-							return "Invalid control";
-					}
-					return super.getText(element);
-				}
-			});
-			properties.add(cbpd);
-		}
 		
 		if (object instanceof IFillColourable)
 			properties.add(new ColorPropertyDescriptor(IFillColourable.PROPERTY_FILL_COLOUR, "Fill colour"));
@@ -74,20 +49,6 @@ public class ModelPropertySource implements IPropertySource {
 	public Object getPropertyValue(Object id) {
 		if (id.equals("Class")) {
 			return object.getClass().getSimpleName();
-		} else if (id.equals(Node.PROPERTY_CONTROL)) {
-			Control c = ((Node)object).getControl();
-			if (c != null) {
-				String targetName = ((Node)object).getControl().getLongName();
-				String[] names = getControlNames();
-				for (int i = 0; i < names.length; i++) {
-					if (names[i].equals(targetName)) {
-						return new Integer(i);
-					}
-				}
-				return -2;
-			} else {
-				return -1;
-			}
 		} else if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
 			return ((IFillColourable)object).getFillColour();
 		} else if (id.equals(IOutlineColourable.PROPERTY_OUTLINE_COLOUR)) {
@@ -121,16 +82,7 @@ public class ModelPropertySource implements IPropertySource {
 		 * their original shape back (because "Undo Set Control property"
 		 * just calls this function with the previous Control value).
 		 */
-		if (id.equals(Node.PROPERTY_CONTROL)) {
-			Node n = (Node)object;
-			int x = (Integer)value;
-			if (x >= 0) {
-				String control = n.getBigraph().getSignature().getControlNames()[x];
-				n.setControl((n.getBigraph().getSignature().getControl(control)));
-			} else {
-				n.setControl(null);
-			}
-		} else if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
+		if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
 			((IFillColourable)object).setFillColour((RGB)value);
 		} else if (id.equals(IOutlineColourable.PROPERTY_OUTLINE_COLOUR)) {
 			((IOutlineColourable)object).setOutlineColour((RGB)value);
@@ -141,14 +93,6 @@ public class ModelPropertySource implements IPropertySource {
 			String name = (String)value;
 			((INameable)object).setName(name.length() == 0 ? null : name);
 		}
-	}
-
-	public void setControlNames(String[] controlNames) {
-		this.controlNames = controlNames;
-	}
-
-	public String[] getControlNames() {
-		return controlNames;
 	}
 
 }

@@ -14,9 +14,7 @@ public class NodeFactory implements CreationFactory {
 	
 	@Override
 	public Object getNewObject() {
-		Node n = new Node();
-		n.setControl(template);
-		return n;
+		return new Node(template);
 	}
 
 	@Override
