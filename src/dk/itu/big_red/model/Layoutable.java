@@ -122,20 +122,6 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	}
 	
 	/**
-	 * Returns a new instance of this {@link Layoutable}'s class,
-	 * created as though by <code>this.getClass().newInstance()</code>.
-	 * @return a new instance of this Layoutable's class, or
-	 * <code>null</code>
-	 */
-	protected Layoutable newInstance() {
-		try {
-			return getClass().newInstance();
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	/**
 	 * Creates and returns a new copy of this {@link Layoutable}.
 	 * <p>(Although the returned copy is a {@link Layoutable}, it's
 	 * really an instance of whatever subclass this object is.)
@@ -143,7 +129,7 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	 */
 	@Override
 	public Layoutable clone() {
-		Layoutable m = newInstance();
+		Layoutable m = (Layoutable)super.clone();
 		m.setLayout(getLayout());
 		m.setComment(getComment());
 		return m;

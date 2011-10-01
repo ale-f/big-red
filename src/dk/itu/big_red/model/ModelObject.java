@@ -39,4 +39,29 @@ public class ModelObject implements IPropertyChangeNotifier {
 			Object newValue) {
 		listeners.firePropertyChange(propertyName, oldValue, newValue);
 	}
+	
+	/**
+	 * Returns a new instance of this {@link ModelObject}'s class,
+	 * created as though by <code>this.getClass().newInstance()</code>.
+	 * @return a new instance of this ModelObject's class, or
+	 * <code>null</code>
+	 */
+	protected ModelObject newInstance() {
+		try {
+			return getClass().newInstance();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	/**
+	 * Creates and returns a new copy of this {@link ModelObject}.
+	 * <p>(Although the returned copy is a {@link ModelObject}, it's
+	 * really an instance of whatever subclass this object is.)
+	 * @return a new copy of this {@link ModelObject}
+	 */
+	@Override
+	public ModelObject clone() {
+		return newInstance();
+	}
 }
