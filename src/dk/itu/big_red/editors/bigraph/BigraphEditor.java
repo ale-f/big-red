@@ -2,7 +2,6 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.util.ArrayList;
 import java.util.EventObject;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
@@ -18,6 +17,7 @@ import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
+import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
@@ -49,6 +49,7 @@ import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
@@ -56,6 +57,7 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.ModelFactory;
+import dk.itu.big_red.model.assistants.NodeFactory;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.util.FileResourceOutputStream;
@@ -199,11 +201,24 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    	}
 	    }
 	    
+	    updateNodePalette();
+	    
 	    viewer.setContents(model.getModel());
 	    setPartName(getEditorInput().getName());
     }
     
-    @Override
+	private void updateNodePalette() {
+    	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
+		
+		for (Control c : model.getModel().getSignature().getControls()) {
+			palette.add(new CombinedTemplateCreationEntry(c.getName(), "",
+					Node.class, new NodeFactory(c), null, null));
+		}
+		
+		nodeGroup.setChildren(palette);
+	}
+
+	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
     	if (type == ZoomManager.class) {
@@ -235,10 +250,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		nodeGroup = new PaletteGroup("Node...");
 		nodeGroup.setId("BigraphEditor.palette.node-creation");
 		creationGroup.add(nodeGroup);
-		
-		nodeGroup.add(new CombinedTemplateCreationEntry("Node", "Add a new node to the bigraph",
-				Node.class, new ModelFactory(Node.class), null, null));
-		
+				
 		creationGroup.add(new CombinedTemplateCreationEntry("Site", "Add a new site to the bigraph",
 				Site.class, new ModelFactory(Site.class), null, null));
 		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
