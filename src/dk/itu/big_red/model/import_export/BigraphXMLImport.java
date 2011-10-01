@@ -124,6 +124,10 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			String controlName =
 					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control");
 			Control c = bigraph.getSignature().getControl(controlName);
+			if (c == null)
+				throw new ImportFailedException(
+					"The control \"" + controlName + "\" isn't defined by " +
+							"this bigraph's signature.");
 			model = new Node(c);
 		}
 		if (model instanceof Layoutable && context != null &&
