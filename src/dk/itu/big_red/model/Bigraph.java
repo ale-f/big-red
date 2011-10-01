@@ -8,6 +8,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
+import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -81,6 +82,31 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	public Bigraph() {
 		validators.add(new BigraphIntegrityValidator(this));
+	}
+	
+	/**
+	 * Creates and returns a complete copy of this {@link Bigraph}, complete
+	 * with {@link Point}s and {@link Link} connections.
+	 * @param m a {@link CloneMap}; can be <code>null</code>
+	 * @return an exact copy of this {@link Bigraph}
+	 */
+	@Override
+	public Bigraph clone(CloneMap m) {
+		if (m == null)
+			m = new CloneMap();
+		Bigraph b = (Bigraph)super.clone(m);
+		
+		for (Layoutable i_ :
+			Utility.groupListByClass(getChildren(), Link.class)) {
+			Link i = (Link)i_,
+			     iD = (Link)m.getCloneOf(i);
+			for (Point p : i.getPoints()) {
+				System.out.println("");
+				iD.addPoint((Point)m.getCloneOf(p));
+			}
+		}
+		
+		return b;
 	}
 	
 	/**
