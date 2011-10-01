@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 
 /**
@@ -58,10 +59,14 @@ public class ModelObject implements IPropertyChangeNotifier {
 	 * Creates and returns a new copy of this {@link ModelObject}.
 	 * <p>(Although the returned copy is a {@link ModelObject}, it's
 	 * really an instance of whatever subclass this object is.)
+	 * @param m a {@link CloneMap} to be notified of the new copy, or
+	 * <code>null</code>
 	 * @return a new copy of this {@link ModelObject}
 	 */
-	@Override
-	public ModelObject clone() {
-		return newInstance();
+	public ModelObject clone(CloneMap m) {
+		ModelObject i = newInstance();
+		if (m != null)
+			m.addCloneOf(this, i);
+		return i;
 	}
 }

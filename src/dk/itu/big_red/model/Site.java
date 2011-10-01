@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
@@ -11,13 +12,8 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  */
 public class Site extends Layoutable implements INameable, ISite {
 	@Override
-	public Site clone() {
-		Site s = new Site();
-		
-		s.setParent(getParent());
-		s.setLayout(getLayout().getCopy());
-		
-		return s;
+	public Site clone(CloneMap m) {
+		return (Site)super.clone(m);
 	}
 	
 	@Override

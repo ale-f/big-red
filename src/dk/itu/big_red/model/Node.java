@@ -9,6 +9,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
@@ -46,8 +47,8 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	}
 	
 	@Override
-	public Node clone() {
-		Node n = (Node)super.clone();
+	public Node clone(CloneMap m) {
+		Node n = (Node)super.clone(m);
 		n.setControl(getControl());
 		n.setFillColour(getFillColour());
 		n.setOutlineColour(getOutlineColour());

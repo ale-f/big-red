@@ -119,9 +119,6 @@ public abstract class Link extends Layoutable implements IAdaptable, INameable, 
 	}
 	
 	@Override
-	public abstract Link clone();
-	
-	@Override
 	public Iterable<IPoint> getIPoints() {
 		ArrayList<IPoint> points = new ArrayList<IPoint>();
 		for (Point c : this.points)

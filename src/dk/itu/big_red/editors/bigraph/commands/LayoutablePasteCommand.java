@@ -60,7 +60,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 				return;
 			} else if (i instanceof Node || i instanceof Root ||
 					i instanceof Site) {
-				Layoutable j = i.clone();
+				Layoutable j = i.clone(null);
 				cg.add(new BigraphChangeAddChild(newParent, j, j.getLayout().getCopy().translate(20, 20)));
 			}
 		}

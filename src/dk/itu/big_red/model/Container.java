@@ -9,6 +9,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Node;
 
+import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
@@ -62,11 +63,11 @@ public class Container extends Layoutable implements IAdaptable {
 	}
 	
 	@Override
-	public Container clone() {
-		Container c = (Container)super.clone();
+	public Container clone(CloneMap m) {
+		Container c = (Container)super.clone(m);
 		
 		for (Layoutable child : getChildren())
-			c.addChild(child.clone());
+			c.addChild(child.clone(m));
 		
 		return c;
 	}

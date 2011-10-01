@@ -5,6 +5,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -121,18 +122,12 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 		return null;
 	}
 	
-	/**
-	 * Creates and returns a new copy of this {@link Layoutable}.
-	 * <p>(Although the returned copy is a {@link Layoutable}, it's
-	 * really an instance of whatever subclass this object is.)
-	 * @return a new copy of this {@link Layoutable}
-	 */
 	@Override
-	public Layoutable clone() {
-		Layoutable m = (Layoutable)super.clone();
-		m.setLayout(getLayout());
-		m.setComment(getComment());
-		return m;
+	public Layoutable clone(CloneMap m) {
+		Layoutable l = (Layoutable)super.clone(m);
+		l.setLayout(getLayout());
+		l.setComment(getComment());
+		return l;
 	}
 	
 	/**

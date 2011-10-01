@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.interfaces.IEdge;
 
 /**
@@ -43,8 +44,8 @@ public class Edge extends Link implements IEdge {
 	}
 	
 	@Override
-	public Edge clone() {
-		return new Edge();
+	public Edge clone(CloneMap m) {
+		return (Edge)super.clone(m);
 	}
 
 	@Override
