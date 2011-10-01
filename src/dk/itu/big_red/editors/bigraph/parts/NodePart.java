@@ -52,8 +52,7 @@ public class NodePart extends ContainerPart {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
-		if (evt.getPropertyName().equals(Node.PROPERTY_CONTROL) ||
-			evt.getPropertyName().equals(Node.PROPERTY_FILL_COLOUR) ||
+		if (evt.getPropertyName().equals(Node.PROPERTY_FILL_COLOUR) ||
 	        evt.getPropertyName().equals(Node.PROPERTY_OUTLINE_COLOUR) ||
 	        evt.getPropertyName().equals(Node.PROPERTY_COMMENT)) {
 	    	refreshVisuals();

@@ -27,13 +27,6 @@ import dk.itu.big_red.util.geometry.Geometry;
  * @see INode
  */
 public class Node extends NameableContainer implements PropertyChangeListener, IFillColourable, IOutlineColourable, INode {
-	/**
-	 * The property name fired when the control changes. (Note that this
-	 * property name is fired <i>after</i> any other changes required to change
-	 * the control have been made.)
-	 */
-	public static final String PROPERTY_CONTROL = "NodeControl";
-	
 	private RGB fillColour = new RGB(255, 255, 255);
 	private RGB outlineColour = new RGB(0, 0, 0);
 	
