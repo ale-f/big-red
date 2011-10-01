@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -60,6 +61,14 @@ public class UI {
 	 */
 	public static Shell getShell() {
 		return getWorkbench().getActiveWorkbenchWindow().getShell();		
+	}
+	
+	/**
+	 * Gets the active workbench's shared image registry.
+	 * @return an {@link ISharedImages}
+	 */
+	public static ISharedImages getSharedImages() {
+		return getWorkbench().getSharedImages();
 	}
 	
 	/**
