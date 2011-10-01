@@ -62,6 +62,17 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 		Node n = (Node)super.clone(m);
 		n.setFillColour(getFillColour());
 		n.setOutlineColour(getOutlineColour());
+		if (m != null) {
+			/* Manually claim that the new Node's Ports are clones. */
+			for (Port i : getPorts()) {
+				for (Port j : n.getPorts()) {
+					if (i.getName().equals(j.getName())) {
+						m.addCloneOf(i, j);
+						break;
+					}
+				}
+			}
+		}
 		return n;
 	}
 	
