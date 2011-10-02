@@ -13,6 +13,7 @@ import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
+import dk.itu.big_red.util.Utility;
 
 /**
  * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;
@@ -119,9 +120,6 @@ public abstract class Link extends Layoutable implements INameable, IOutlineColo
 	
 	@Override
 	public Iterable<IPoint> getIPoints() {
-		ArrayList<IPoint> points = new ArrayList<IPoint>();
-		for (Point c : this.points)
-			points.add(c);
-		return points;
+		return Utility.only(points, IPoint.class);
 	}
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.ISignature;
-import dk.itu.big_red.util.HomogeneousIterable;
+import dk.itu.big_red.util.Utility;
 
 /**
  * The Signature is a central storage point for {@link Control}s and their
@@ -53,6 +53,6 @@ public class Signature extends ModelObject implements ISignature {
 
 	@Override
 	public Iterable<IControl> getIControls() {
-		return new HomogeneousIterable<IControl>(controls, IControl.class);
+		return Utility.only(controls, IControl.class);
 	}
 }

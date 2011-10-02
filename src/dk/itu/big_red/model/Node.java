@@ -17,7 +17,7 @@ import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
-import dk.itu.big_red.util.HomogeneousIterable;
+import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.geometry.Geometry;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -158,7 +158,7 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 
 	@Override
 	public Iterable<INode> getINodes() {
-		return new HomogeneousIterable<INode>(children, INode.class);
+		return Utility.only(children, INode.class);
 	}
 
 	@Override
@@ -168,12 +168,12 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 
 	@Override
 	public Iterable<ISite> getISites() {
-		return new HomogeneousIterable<ISite>(children, ISite.class);
+		return Utility.only(children, ISite.class);
 	}
 	
 	@Override
 	public Iterable<IChild> getIChildren() {
-		return new HomogeneousIterable<IChild>(children, IChild.class);
+		return Utility.only(children, IChild.class);
 	}
 	
 	@Override

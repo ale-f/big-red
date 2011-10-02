@@ -38,4 +38,14 @@ public final class Utility {
 		}
 		return r;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T, V>
+	ArrayList<V> only(List<T> list, Class<V> klass) {
+		ArrayList<V> r = new ArrayList<V>();
+		for (T i : list)
+			if (klass.isInstance(i))
+				r.add((V)i);
+		return r;
+	}
 }

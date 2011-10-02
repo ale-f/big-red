@@ -29,7 +29,6 @@ import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.util.Colour;
-import dk.itu.big_red.util.HomogeneousIterable;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.geometry.Rectangle;
 import dk.itu.big_red.util.resources.ResourceWrapper;
@@ -244,22 +243,22 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 
 	@Override
 	public Iterable<IEdge> getIEdges() {
-		return new HomogeneousIterable<IEdge>(children, IEdge.class);
+		return Utility.only(children, IEdge.class);
 	}
 
 	@Override
 	public Iterable<IRoot> getIRoots() {
-		return new HomogeneousIterable<IRoot>(children, IRoot.class);
+		return Utility.only(children, IRoot.class);
 	}
 
 	@Override
 	public Iterable<IInnerName> getIInnerNames() {
-		return new HomogeneousIterable<IInnerName>(children, IInnerName.class);
+		return Utility.only(children, IInnerName.class);
 	}
 	
 	@Override
 	public Iterable<IOuterName> getIOuterNames() {
-		return new HomogeneousIterable<IOuterName>(children, IOuterName.class);
+		return Utility.only(children, IOuterName.class);
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.util.HomogeneousIterable;
+import dk.itu.big_red.util.Utility;
 
 /**
  * 
@@ -21,17 +21,17 @@ public class Root extends NameableContainer implements IRoot {
 
 	@Override
 	public Iterable<INode> getINodes() {
-		return new HomogeneousIterable<INode>(children, INode.class);
+		return Utility.only(children, INode.class);
 	}
 
 	@Override
 	public Iterable<ISite> getISites() {
-		return new HomogeneousIterable<ISite>(children, ISite.class);
+		return Utility.only(children, ISite.class);
 	}
 
 	@Override
 	public Iterable<IChild> getIChildren() {
-		return new HomogeneousIterable<IChild>(children, IChild.class);
+		return Utility.only(children, IChild.class);
 	}
 
 	@Override
