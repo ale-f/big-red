@@ -10,12 +10,25 @@ public class CloneMap {
 		objects.clear();
 	}
 	
-	public Object addCloneOf(Object original, Object clone) {
+	/**
+	 * Sets an object's clone.
+	 * @param original the original object
+	 * @param clone its clone
+	 * @return <code>clone</code>, for convenience
+	 */
+	public <T> T setCloneOf(T original, T clone) {
 		objects.put(original, clone);
 		return clone;
 	}
 	
-	public Object getCloneOf(Object original) {
-		return objects.get(original);
+	/**
+	 * Gets an object's clone.
+	 * @param original the original object
+	 * @return its clone, if this {@link CloneMap} knows of one, or
+	 * <code>null</code>
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T getCloneOf(T original) {
+		return (T)objects.get(original);
 	}
 }

@@ -66,7 +66,7 @@ public class ModelObject implements IPropertyChangeNotifier {
 	public ModelObject clone(CloneMap m) {
 		ModelObject i = newInstance();
 		if (m != null)
-			m.addCloneOf(this, i);
+			m.setCloneOf(this, i);
 		return i;
 	}
 }

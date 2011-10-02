@@ -67,7 +67,7 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 			for (Port i : getPorts()) {
 				for (Port j : n.getPorts()) {
 					if (i.getName().equals(j.getName())) {
-						m.addCloneOf(i, j);
+						m.setCloneOf(i, j);
 						break;
 					}
 				}
