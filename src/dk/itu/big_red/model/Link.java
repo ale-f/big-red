@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
@@ -21,7 +20,7 @@ import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
  * @author alec
  * @see ILink
  */
-public abstract class Link extends Layoutable implements IAdaptable, INameable, IOutlineColourable, ILink {
+public abstract class Link extends Layoutable implements INameable, IOutlineColourable, ILink {
 	/**
 	 * The property name fired when a point is added to, or removed from, this
 	 * Link.

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.w3c.dom.Node;
 
@@ -22,7 +21,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  * @author alec
  *
  */
-public class Container extends Layoutable implements IAdaptable {
+public class Container extends Layoutable {
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
 
 	/**

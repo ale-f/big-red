@@ -1,6 +1,5 @@
 package dk.itu.big_red.model;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.swt.graphics.RGB;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
@@ -12,7 +11,7 @@ import dk.itu.big_red.model.interfaces.internal.INameable;
  * @author alec
  * @see IPoint
  */
-public abstract class Point extends Layoutable implements IAdaptable, IPoint {
+public abstract class Point extends Layoutable implements IPoint {
 	/**
 	 * The property name fired when the source edge changes.
 	 */
