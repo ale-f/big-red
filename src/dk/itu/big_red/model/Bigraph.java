@@ -45,36 +45,16 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	protected NamespaceManager namespaceManager = new NamespaceManager();
 	
 	/**
-	 * The property name fired when the <i>lower outer name</i> boundary is
-	 * changed.
+	 * The property name fired when a boundary has changed.
+	 * (<code>oldValue</code> and <code>newValue</code> are both meaningless.)
 	 */
 	public static final String
-		PROPERTY_BOUNDARY_LON = "BigraphBoundaryLowerOuterName";
+		PROPERTY_BOUNDARY = "BigraphBoundary";
 	
-	/**
-	 * The property name fired when the <i>upper root</i> boundary is changed.
-	 */
-	public static final String
-		PROPERTY_BOUNDARY_UR = "BigraphBoundaryUpperRoot";
-	
-	/**
-	 * The property name fired when the <i>lower root</i> boundary is changed.
-	 */
-	public static final String
-		PROPERTY_BOUNDARY_LR = "BigraphBoundaryLowerRoot";
-	
-	/**
-	 * The property name fired when the <i>upper inner name</i> boundary is
-	 * changed.
-	 */
-	public static final String
-		PROPERTY_BOUNDARY_UIN = "BigraphBoundaryUpperInnerName";
-	
-	protected static int BOUNDARY_MARGIN = 20;
-	protected int upperRootBoundary = Integer.MIN_VALUE + BOUNDARY_MARGIN,
-	              lowerOuterNameBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN,
-	              upperInnerNameBoundary = Integer.MIN_VALUE + BOUNDARY_MARGIN,
-	              lowerRootBoundary = Integer.MAX_VALUE - BOUNDARY_MARGIN;
+	protected int upperRootBoundary = Integer.MIN_VALUE,
+	              lowerOuterNameBoundary = Integer.MAX_VALUE,
+	              upperInnerNameBoundary = Integer.MIN_VALUE,
+	              lowerRootBoundary = Integer.MAX_VALUE;
 	
 	private ArrayList<IChangeValidator> validators =
 			new ArrayList<IChangeValidator>();
@@ -182,18 +162,18 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	 * OuterName}s, {@link Root}s, and {@link InnerName}s.
 	 */
 	public void updateBoundaries() {
-		int oldLON = upperRootBoundary,
-		    oldHR = lowerOuterNameBoundary,
-		    oldLR = upperInnerNameBoundary,
-		    oldHIN = lowerRootBoundary;
+		int oldUR = upperRootBoundary,
+		    oldLON = lowerOuterNameBoundary,
+		    oldUIN = upperInnerNameBoundary,
+		    oldLR = lowerRootBoundary;
 		upperRootBoundary = Integer.MIN_VALUE;
 		lowerOuterNameBoundary = Integer.MAX_VALUE;
 		upperInnerNameBoundary = Integer.MIN_VALUE;
 		lowerRootBoundary = Integer.MAX_VALUE;
 		
 		for (Layoutable i : children) {
-			int top = i.getLayout().getTopLeft().y,
-				bottom = i.getLayout().getBottomLeft().y;
+			int top = i.getLayout().getTop(),
+				bottom = i.getLayout().getBottom();
 			if (i instanceof OuterName) {
 				if (bottom > upperRootBoundary)
 					upperRootBoundary = bottom;
@@ -208,19 +188,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			}
 		}
 		
-		lowerOuterNameBoundary -= BOUNDARY_MARGIN;
-		upperRootBoundary += BOUNDARY_MARGIN;
-		lowerRootBoundary -= BOUNDARY_MARGIN;
-		upperInnerNameBoundary += BOUNDARY_MARGIN;
-		
-		if (oldHR != lowerOuterNameBoundary)
-			firePropertyChange(PROPERTY_BOUNDARY_LON, oldHR, lowerOuterNameBoundary);
-		if (oldLON != upperRootBoundary)
-			firePropertyChange(PROPERTY_BOUNDARY_UR, oldLON, upperRootBoundary);
-		if (oldHIN != lowerRootBoundary)
-			firePropertyChange(PROPERTY_BOUNDARY_LR, oldHIN, lowerRootBoundary);
-		if (oldLR != upperInnerNameBoundary)
-			firePropertyChange(PROPERTY_BOUNDARY_UIN, oldLR, upperInnerNameBoundary);
+		if (oldUR != upperRootBoundary ||
+			oldLON != lowerOuterNameBoundary ||
+			oldUIN != upperInnerNameBoundary ||
+			oldLR != lowerRootBoundary)
+			firePropertyChange(PROPERTY_BOUNDARY, null, null);
 	}
 	
 	public int getLowerOuterNameBoundary() {

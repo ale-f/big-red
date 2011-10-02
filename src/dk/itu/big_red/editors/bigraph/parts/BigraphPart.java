@@ -35,10 +35,7 @@ public class BigraphPart extends ContainerPart {
 		if (evt.getSource() == getModel()) {
 			if (prop.equals(Container.PROPERTY_CHILD)) {
 				refreshChildren();
-			} else if (prop.equals(Bigraph.PROPERTY_BOUNDARY_LON) ||
-					prop.equals(Bigraph.PROPERTY_BOUNDARY_LR) ||
-					prop.equals(Bigraph.PROPERTY_BOUNDARY_UIN) ||
-					prop.equals(Bigraph.PROPERTY_BOUNDARY_UR)) {
+			} else if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
 				refreshVisuals();
 			}
 		}
