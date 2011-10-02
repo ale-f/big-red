@@ -95,10 +95,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			m = new CloneMap();
 		Bigraph b = (Bigraph)super.clone(m);
 		
-		for (Layoutable i_ :
-			Utility.groupListByClass(getChildren(), Link.class)) {
-			Link i = (Link)i_,
-			     iD = m.getCloneOf(i);
+		for (Link i : Utility.only(getChildren(), Link.class)) {
+			Link iD = m.getCloneOf(i);
 			for (Point p : i.getPoints()) {
 				System.out.println("");
 				iD.addPoint(m.getCloneOf(p));
@@ -305,8 +303,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			cg.add(new BigraphChangeLayout(i, r));
 		}
 		
-		for (Layoutable i_ : Utility.groupListByClass(getChildren(), Link.class)) {
-			Link i = (Link)i_;
+		for (Link i : Utility.only(getChildren(), Link.class)) {
 			if (i instanceof Edge)
 				cg.add(new BigraphChangeEdgeReposition((Edge)i));
 			cg.add(new BigraphChangeOutlineColour(i, Colour.randomRGB()));
