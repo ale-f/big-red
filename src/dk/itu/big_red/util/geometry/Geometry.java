@@ -2,7 +2,6 @@ package dk.itu.big_red.util.geometry;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Utility functions for geometry.
@@ -41,7 +40,7 @@ public class Geometry {
 		 * (Note that adjustedBounds.width and adjustedBounds.height are
 		 * both off-by-one - getBounds() prefers < to <=, it seems.)
 		 */
-		Rectangle adjustedBounds = adjustedPoints.getBounds();
+		Rectangle adjustedBounds = new Rectangle(adjustedPoints.getBounds());
 		double xScale = rectangle.width - 2,
 		       yScale = rectangle.height - 2;
 		xScale /= adjustedBounds.width - 1; yScale /= adjustedBounds.height - 1;
