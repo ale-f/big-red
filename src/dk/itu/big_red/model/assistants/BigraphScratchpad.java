@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
  * The BigraphScratchpad is a wrapper around various kinds of {@link

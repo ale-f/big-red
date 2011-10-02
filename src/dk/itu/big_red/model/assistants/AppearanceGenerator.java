@@ -2,7 +2,6 @@ package dk.itu.big_red.model.assistants;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -17,6 +16,7 @@ import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 public class AppearanceGenerator {
 	/**
@@ -39,10 +39,10 @@ public class AppearanceGenerator {
 			Rectangle r = ((Layoutable)o).getLayout();
 			
 			DOM.applyAttributesToElement(aE,
-					"width", r.width,
-					"height", r.height,
-					"x", r.x,
-					"y", r.y);
+					"width", r.getWidth(),
+					"height", r.getHeight(),
+					"x", r.getX(),
+					"y", r.getY());
 		}
 		
 		if (o instanceof IFillColourable) {

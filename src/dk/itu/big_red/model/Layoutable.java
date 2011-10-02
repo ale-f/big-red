@@ -2,7 +2,6 @@ package dk.itu.big_red.model;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.CloneMap;
@@ -11,6 +10,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
  * All of the objects which can actually appear on a bigraph are instances of

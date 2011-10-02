@@ -2,7 +2,6 @@ package dk.itu.big_red.model.import_export;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,6 +27,7 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.geometry.Rectangle;
 import dk.itu.big_red.util.resources.Project;
 
 /**

@@ -2,8 +2,6 @@ package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -20,6 +18,7 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that

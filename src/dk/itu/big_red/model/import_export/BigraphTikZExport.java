@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.import_export.Export;
@@ -26,6 +25,7 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 public class BigraphTikZExport extends Export<Bigraph> {
 	private BufferedWriter writer;
@@ -143,7 +143,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		if (con.getShape() == Shape.SHAPE_OVAL) {
 			tmp = rl.getCenter();
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ") ellipse (" +
-				(rl.width / 2) + " and " + (rl.height / 2) + ")";
+				(rl.getWidth() / 2) + " and " + (rl.getHeight() / 2) + ")";
 		} else if (con.getShape() == Shape.SHAPE_POLYGON) {
 			PointList fp = n.getFittedPolygon().getCopy();
 			fp.translate(rltl);

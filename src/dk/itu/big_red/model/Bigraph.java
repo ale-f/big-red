@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.assistants.CloneMap;
@@ -32,6 +31,7 @@ import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.HomogeneousIterable;
 import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.geometry.Rectangle;
 import dk.itu.big_red.util.resources.ResourceWrapper;
 
 /**
@@ -99,10 +99,10 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		for (Layoutable i_ :
 			Utility.groupListByClass(getChildren(), Link.class)) {
 			Link i = (Link)i_,
-			     iD = (Link)m.getCloneOf(i);
+			     iD = m.getCloneOf(i);
 			for (Point p : i.getPoints()) {
 				System.out.println("");
-				iD.addPoint((Point)m.getCloneOf(p));
+				iD.addPoint(m.getCloneOf(p));
 			}
 		}
 		

@@ -146,6 +146,6 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 		Layoutable model = getModel();
 		AbstractFigure figure = getFigure();
 		
-		figure.setConstraint(model.getLayout());
+		figure.setConstraint(model.getLayout().getDraw2DRectangle());
 	}
 }

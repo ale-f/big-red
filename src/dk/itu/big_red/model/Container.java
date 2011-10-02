@@ -6,13 +6,13 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain
@@ -100,9 +100,9 @@ public class Container extends Layoutable implements IAdaptable {
 			Rectangle cl =
 				new Rectangle().setSize(sizes.get(i));
 			cl.setLocation(width,
-					PADDING + ((maxHeight - cl.height) / 2));
+					PADDING + ((maxHeight - cl.getHeight()) / 2));
 			cg.add(new BigraphChangeLayout(i, cl));
-			width += cl.width + PADDING;
+			width += cl.getWidth() + PADDING;
 		}
 		
 		if (width < 50)

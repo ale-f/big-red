@@ -1,9 +1,8 @@
 package dk.itu.big_red.model.changes.bigraph;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 public class BigraphChangeEdgeReposition extends Change {
 	public Edge edge;

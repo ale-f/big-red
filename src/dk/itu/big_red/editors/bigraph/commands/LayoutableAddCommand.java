@@ -1,11 +1,11 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
-import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 public class LayoutableAddCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

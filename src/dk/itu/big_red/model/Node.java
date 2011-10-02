@@ -5,7 +5,6 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.model.Control.Shape;
@@ -20,6 +19,7 @@ import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.HomogeneousIterable;
 import dk.itu.big_red.util.geometry.Geometry;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
  * 
@@ -86,10 +86,8 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	
 	@Override
 	public void setLayout(Rectangle layout) {
-		if (!control.isResizable()) {
-			layout.width = getLayout().width;
-			layout.height = getLayout().height;
-		}
+		if (!control.isResizable())
+			layout.setSize(getLayout().getSize());
 		fittedPolygon = null;
 		super.setLayout(layout);
 	}

@@ -9,7 +9,6 @@ import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
@@ -36,6 +35,7 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.geometry.Ellipse;
 import dk.itu.big_red.util.geometry.Line;
+import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
  * SignatureEditorPolygonCanvases are widgets based on {@link Canvas} that let
@@ -232,9 +232,9 @@ MenuListener {
 	private void centrePolygon() {
 		org.eclipse.swt.graphics.Point s = getSize();
 		
-		Rectangle polyBounds = points.getBounds();
+		Rectangle polyBounds = new Rectangle(points.getBounds());
 		points.translate(
-			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.width / 2, -polyBounds.height / 2)));
+			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.getWidth() / 2, -polyBounds.getHeight() / 2)));
 		firePointChange(PointEvent.MOVED, null);
 		redraw();
 	}
