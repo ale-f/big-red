@@ -1,9 +1,18 @@
 package dk.itu.big_red.model.assistants;
 
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.parts.GraphicalViewerImpl;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.model.Bigraph;
 
@@ -16,6 +25,9 @@ import dk.itu.big_red.model.Bigraph;
  */
 public class BigraphCanvas extends Canvas {
 	private GraphicalViewerImpl gvi = null;
+	private ScalableRootEditPart rep = null;
+	private ZoomManager zm = null;
+	private Dimension preferredSize = null;
 	
 	public BigraphCanvas(Composite parent, int style) {
 		super(parent, style);
@@ -23,6 +35,15 @@ public class BigraphCanvas extends Canvas {
 		gvi = new GraphicalViewerImpl();
 		gvi.setEditPartFactory(new PartFactory());
 		gvi.setControl(this);
+		gvi.setRootEditPart(rep = new ScalableRootEditPart());
+		zm = rep.getZoomManager();
+		
+		addListener(SWT.Resize, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				fit();
+			}
+		});
 	}
 	
 	/**
@@ -31,5 +52,32 @@ public class BigraphCanvas extends Canvas {
 	 */
 	public void setContents(Bigraph b) {
 		gvi.setContents(b);
+		
+		IFigure f = rep.getFigure();
+		f.validate();
+		preferredSize = f.getLayoutManager().getPreferredSize(f, -1, -1);
+		
+		fit();
+	}
+	
+	private void fit() {
+		getParent().layout();
+		
+		Point availableSize = getSize();
+		double widthRatio = (double)preferredSize.width / availableSize.x,
+				heightRatio = (double)preferredSize.height / availableSize.y;
+		
+		double scale = 1;
+		if (widthRatio < 1 && heightRatio < 1) {
+			scale = 1 / Math.max(widthRatio, heightRatio);
+		} else if (widthRatio < 1 && heightRatio > 1) {
+			scale = 1 / heightRatio;
+		} else if (widthRatio > 1 && heightRatio < 1) {
+			scale = 1 / widthRatio;
+		} else if (widthRatio > 1 && heightRatio > 1) {
+			scale = 1 / Math.min(widthRatio, heightRatio);
+		}
+		
+		zm.setZoom(scale);
 	}
 }
