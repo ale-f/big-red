@@ -39,6 +39,13 @@ public final class Utility {
 		return r;
 	}
 	
+	/**
+	 * Returns a subset of the given {@link List} which contains only those
+	 * objects of the given {@link Class}.
+	 * @param list a {@link List}
+	 * @param klass the {@link Class} to filter by
+	 * @return a {@link List} of objects of the given {@link Class}
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T, V>
 	ArrayList<V> only(List<T> list, Class<V> klass) {
