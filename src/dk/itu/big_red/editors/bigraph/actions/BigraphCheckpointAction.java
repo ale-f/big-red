@@ -9,8 +9,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 
+import dk.itu.big_red.editors.bigraph.RuleDialog;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.util.UI;
 
@@ -61,6 +63,12 @@ public class BigraphCheckpointAction extends SelectionAction {
 			if (ch.size() > 1)
 				form += "s";
 			sl.setMessage(si.getImage(ISharedImages.IMG_OBJS_INFO_TSK), ch.size() + " " + form + " since last checkpoint");
+			
+			CloneMap m = new CloneMap();
+			RuleDialog rd = new RuleDialog(UI.getShell());
+			rd.setLHS(b.clone(m));
+			rd.setChanges(ch);
+			rd.open();
 		}
 	}
 }
