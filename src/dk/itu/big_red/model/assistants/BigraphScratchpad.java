@@ -8,6 +8,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
+import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
@@ -18,8 +19,8 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public class BigraphScratchpad {
-	private HashMap<Layoutable, Rectangle> layouts =
-			new HashMap<Layoutable, Rectangle>();
+	private HashMap<Layoutable, ReadonlyRectangle> layouts =
+			new HashMap<Layoutable, ReadonlyRectangle>();
 	
 	private HashMap<Layoutable, Container> parents =
 			new HashMap<Layoutable, Container>();
@@ -39,8 +40,8 @@ public class BigraphScratchpad {
 		parents.clear();
 	}
 	
-	public Rectangle getLayoutFor(Layoutable a) {
-		Rectangle b;
+	public ReadonlyRectangle getLayoutFor(Layoutable a) {
+		ReadonlyRectangle b;
 		if (!layouts.containsKey(a)) {
 			b = a.getLayout();
 			layouts.put(a, b);

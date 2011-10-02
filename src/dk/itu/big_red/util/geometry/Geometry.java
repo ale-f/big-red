@@ -24,7 +24,7 @@ public class Geometry {
 	 * @param rectangle a {@link Rectangle}
 	 * @return
 	 */
-	public static PointList fitPolygonToRectangle(PointList points, Rectangle rectangle) {
+	public static PointList fitPolygonToRectangle(PointList points, ReadonlyRectangle rectangle) {
 		PointList adjustedPoints = points.getCopy();
 
 		/*
@@ -41,8 +41,8 @@ public class Geometry {
 		 * both off-by-one - getBounds() prefers < to <=, it seems.)
 		 */
 		Rectangle adjustedBounds = new Rectangle(adjustedPoints.getBounds());
-		double xScale = rectangle.width - 2,
-		       yScale = rectangle.height - 2;
+		double xScale = rectangle.getWidth() - 2,
+		       yScale = rectangle.getHeight() - 2;
 		xScale /= adjustedBounds.width - 1; yScale /= adjustedBounds.height - 1;
 		
 		/*

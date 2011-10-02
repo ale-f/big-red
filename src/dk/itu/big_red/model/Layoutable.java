@@ -10,6 +10,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
@@ -38,7 +39,7 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	 * Gets the current layout of this object.
 	 * @return the current layout
 	 */
-	public Rectangle getLayout() {
+	public ReadonlyRectangle getLayout() {
 		return layout;
 	}
 
@@ -125,7 +126,7 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	@Override
 	public Layoutable clone(CloneMap m) {
 		Layoutable l = (Layoutable)super.clone(m);
-		l.setLayout(getLayout());
+		l.setLayout(getLayout().getCopy());
 		l.setComment(getComment());
 		return l;
 	}

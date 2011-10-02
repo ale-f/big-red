@@ -16,7 +16,7 @@ public class BigraphChangeLayout extends Change {
 	private Rectangle oldLayout;
 	@Override
 	public void beforeApply() {
-		oldLayout = model.getLayout();
+		oldLayout = model.getLayout().getCopy();
 	}
 	
 	@Override

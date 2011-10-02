@@ -16,6 +16,7 @@ import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 public class AppearanceGenerator {
@@ -36,7 +37,7 @@ public class AppearanceGenerator {
 		
 		if (o instanceof Layoutable) {
 			alive = true;
-			Rectangle r = ((Layoutable)o).getLayout();
+			ReadonlyRectangle r = ((Layoutable)o).getLayout();
 			
 			DOM.applyAttributesToElement(aE,
 					"width", r.getWidth(),

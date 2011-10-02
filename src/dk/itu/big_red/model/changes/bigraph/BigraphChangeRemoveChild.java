@@ -17,7 +17,7 @@ public class BigraphChangeRemoveChild extends Change {
 	private Rectangle oldLayout;
 	@Override
 	public void beforeApply() {
-		oldLayout = child.getLayout();
+		oldLayout = child.getLayout().getCopy();
 	}
 	
 	@Override

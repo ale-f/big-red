@@ -18,6 +18,7 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
+import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
@@ -45,7 +46,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 	private void runLayoutChecks() throws ChangeRejectedException {
 		for (QueuedLayoutCheck i : layoutChecks) {
 			Container parent = scratch.getParentFor(i.l);
-			Rectangle layout = scratch.getLayoutFor(i.l);
+			ReadonlyRectangle layout = scratch.getLayoutFor(i.l);
 			checkObjectCanContain(i.c, parent, layout);
 			if (i.l instanceof Container)
 				checkLayoutCanContainChildren(i.c, (Container)i.l, layout);
@@ -54,7 +55,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 	
 	private BigraphScratchpad scratch = new BigraphScratchpad();
 	
-	private void checkObjectCanContain(Change b, Layoutable o, Rectangle nl) throws ChangeRejectedException {
+	private void checkObjectCanContain(Change b, Layoutable o, ReadonlyRectangle nl) throws ChangeRejectedException {
 		if (o != null && !(o instanceof Bigraph)) {
 			Rectangle tr =
 				scratch.getLayoutFor(o).getCopy().setLocation(0, 0);
@@ -64,10 +65,10 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 		}
 	}
 	
-	private void checkLayoutCanContainChildren(Change b, Container c, Rectangle nl) throws ChangeRejectedException {
+	private void checkLayoutCanContainChildren(Change b, Container c, ReadonlyRectangle nl) throws ChangeRejectedException {
 		nl = nl.getCopy().setLocation(0, 0);
 		for (Layoutable i : c.getChildren()) {
-			Rectangle layout = scratch.getLayoutFor(i);
+			ReadonlyRectangle layout = scratch.getLayoutFor(i);
 			if (!nl.contains(layout))
 				rejectChange(b, "The new size is too small");
 		}
