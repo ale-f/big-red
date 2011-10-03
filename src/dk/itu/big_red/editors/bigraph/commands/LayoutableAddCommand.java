@@ -37,8 +37,8 @@ public class LayoutableAddCommand extends ChangeCommand {
 			Rectangle nr = constraint;
 			
 			if (child instanceof Edge) {
-				parent = parent.getBigraph();
 				nr.translate(parent.getRootLayout().getTopLeft());
+				parent = parent.getBigraph();
 			}
 			
 			cg.add(new BigraphChangeAddChild(parent, child),
