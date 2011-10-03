@@ -73,6 +73,13 @@ public class BigraphScratchpad {
 		return b;
 	}
 	
+	public Bigraph getBigraphFor(Layoutable l) {
+		Container c = getParentFor(l);
+		while (c != null && !(c instanceof Bigraph))
+			c = getParentFor(c);
+		return (Bigraph)c;
+	}
+	
 	public void setParentFor(Layoutable a, Container b) {
 		parents.put(a, b);
 	}

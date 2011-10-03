@@ -64,17 +64,10 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 		}
 	}
 	
-	private Bigraph getBigraphFor(Layoutable l) {
-		Container c = scratch.getParentFor(l);
-		while (c != null && !(c instanceof Bigraph)) {
-			c = scratch.getParentFor(c);
-		}
-		return (Bigraph)c;
-	}
-	
 	private void runNameChecks() throws ChangeRejectedException {
 		for (QueuedLayoutableCheck i : nameChecks) {
-			if (getBigraphFor(i.l) != null && scratch.getNamespaceFor(i.l).get(i.l) == null)
+			if (scratch.getBigraphFor(i.l) != null &&
+					scratch.getNamespaceFor(i.l).get(i.l) == null)
 				rejectChange(i.c, "All objects on a bigraph must have a name");
 		}
 	}
