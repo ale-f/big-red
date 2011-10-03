@@ -173,4 +173,10 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 		this.name = name;
 		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
+	
+	@Override
+	public String toString() {
+		String name = (this.name != null ? this.name : "(anonymous)");
+		return getClass().getSimpleName() + " " + name;
+	}
 }

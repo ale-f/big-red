@@ -112,4 +112,12 @@ public abstract class Container extends Layoutable {
 		cg.add(new BigraphChangeLayout(this, nl.setSize(r)));
 		return r;
 	}
+	
+	@Override
+	public String toString() {
+		String name = getName();
+		if (name == null)
+			name = "(anonymous)";
+		return getClass().getSimpleName() + " " + name + " " + getChildren();
+	}
 }
