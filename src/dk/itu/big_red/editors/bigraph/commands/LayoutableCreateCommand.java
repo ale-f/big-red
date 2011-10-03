@@ -1,7 +1,5 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
-import java.util.HashMap;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -24,26 +22,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	private Rectangle layout = null;
 	private Container container = null;
 	private Layoutable node = null;
-	
-	private final static String _IAS_ALPHA = "0123456789abcdefghijklmnopqrstuvwxyz";
-
-	private static String intAsString(int x) {
-		String s = "";
-		boolean nonZeroEncountered = false;
-		for (int i = 5; i >= 0; i--) {
-			int y = (int)Math.pow(36, i);
-			int z = x / y;
-
-			if (z == 0 && !nonZeroEncountered && i != 0)
-				continue;
-
-			nonZeroEncountered = true;
-			s += _IAS_ALPHA.charAt(z);
-
-			x -= y * z;
-		}
-		return s;
-	}
 	
 	@Override
 	public void prepare() {
@@ -74,13 +52,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			}
 		}
 		
-		HashMap<Layoutable, String> ns =
-			container.getBigraph().getNamespace(Bigraph.getNSI(node));
-		int i = 0;
-		String name = null;
-		do {
-			name = intAsString(i++);
-		} while (ns.containsValue(name));
+		String name = container.getBigraph().getFirstUnusedName(node);
 		
 		cg.add(new BigraphChangeAddChild(container, node, layout),
 				new BigraphChangeName(node, name));

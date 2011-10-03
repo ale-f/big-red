@@ -68,6 +68,67 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	/**
+	 * The characters one might want to use to represent a base-36 number.
+	 */
+	private final static String _IAS_ALPHA =
+		"0123456789abcdefghijklmnopqrstuvwxyz";
+
+	/**
+	 * The first six powers of thirty-six, because premature optimisation is
+	 * great.
+	 */
+	private final static int powersOf36[] = {
+		1, /* 36 ^^ 0 */
+		36, /* 36 ^^ 1 */
+		1296, /* 36 ^^ 2 */
+		46656, /* 36 ^^ 3 */
+		1679616, /* 36 ^^ 4 */
+		60466176, /* 36 ^^ 5 */
+	};
+	
+	/**
+	 * Returns <code>x</code> as a base-36 string.
+	 * <p>This is used by {@link #getFirstUnusedName(Layoutable)}.
+	 * @param x a number (which would ideally be less than 62,193,781)
+	 * @return <code>x</code> in base-36
+	 */
+	private static String intAsString(int x) {
+		String s = "";
+		boolean nonZeroEncountered = false;
+		for (int i = 5; i >= 0; i--) {
+			int y = powersOf36[i];
+			int z = x / y;
+
+			if (z == 0 && !nonZeroEncountered && i != 0)
+				continue;
+
+			nonZeroEncountered = true;
+			s += _IAS_ALPHA.charAt(z);
+
+			x -= y * z;
+		}
+		return s;
+	}
+	
+	/**
+	 * Gets the first unused name suitable for the given {@link Layoutable}.
+	 * @param l a {@link Layoutable}
+	 * @return a {@link String} suitable for a {@link BigraphChangeName}, or
+	 * &mdash; in the highly unlikely event that there are 62,193,781 objects
+	 * of the same type as <code>l</code> in this {@link Bigraph} &mdash; the
+	 * empty string
+	 */
+	public String getFirstUnusedName(Layoutable l) {
+		HashMap<Layoutable, String> ns = getNamespace(getNSI(l));
+		int i = 0;
+		String name = null;
+		do {
+			name = intAsString(i++);
+		} while (ns.containsValue(name));
+		return name;
+	}
+	
+	/**
 	 * The property name fired when a boundary has changed.
 	 * (<code>oldValue</code> and <code>newValue</code> are both meaningless.)
 	 */
