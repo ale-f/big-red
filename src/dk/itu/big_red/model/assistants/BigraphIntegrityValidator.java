@@ -136,7 +136,6 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 						c.child.getClass().getSimpleName() + "s");
 				layoutChecks.add(new QueuedLayoutableCheck(b, c.child));
 			}
-			scratch.setLayoutFor(c.child, c.newLayout);
 			scratch.addChildFor(c.parent, c.child);
 			nameChecks.add(new QueuedLayoutableCheck(b, c.child));
 		} else if (b instanceof BigraphChangeRemoveChild) {

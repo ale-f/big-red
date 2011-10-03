@@ -413,7 +413,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof BigraphChangeAddChild) {
 			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
 			c.parent.addChild(c.child);
-			c.child.setLayout(c.newLayout);
 		} else if (b instanceof BigraphChangeRemoveChild) {
 			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
 			c.parent.removeChild(c.child);

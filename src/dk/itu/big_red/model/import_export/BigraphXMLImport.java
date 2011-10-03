@@ -30,7 +30,6 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.geometry.Rectangle;
 import dk.itu.big_red.util.resources.Project;
 
 /**
@@ -145,8 +144,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 
 		
 		if (model instanceof Layoutable) {
-			enqueueChange(new BigraphChangeAddChild(context,
-					(Layoutable)model, new Rectangle()));
+			enqueueChange(
+				new BigraphChangeAddChild(context, (Layoutable)model));
 			
 			if (!(model instanceof Bigraph)) {
 				String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");

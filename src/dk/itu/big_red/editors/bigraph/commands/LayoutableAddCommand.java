@@ -5,6 +5,7 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 public class LayoutableAddCommand extends ChangeCommand {
@@ -36,9 +37,12 @@ public class LayoutableAddCommand extends ChangeCommand {
 			Rectangle nr = constraint;
 			
 			if (child instanceof Edge) {
-				cg.add(new BigraphChangeAddChild(parent.getBigraph(), child,
-						new Rectangle(constraint).translate(parent.getRootLayout().getTopLeft())));
-			} else cg.add(new BigraphChangeAddChild(parent, child, nr));
+				parent = parent.getBigraph();
+				nr.translate(parent.getRootLayout().getTopLeft());
+			}
+			
+			cg.add(new BigraphChangeAddChild(parent, child),
+					new BigraphChangeLayout(child, nr));
 		}
 	}
 	
@@ -55,5 +59,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 	public void setConstraint(Object constraint) {
 		if (constraint instanceof Rectangle)
 			this.constraint = (Rectangle)constraint;
+		else if (constraint instanceof org.eclipse.draw2d.geometry.Rectangle)
+			this.constraint = new Rectangle((org.eclipse.draw2d.geometry.Rectangle)constraint);
 	}
 }

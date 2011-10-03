@@ -3,7 +3,6 @@ package dk.itu.big_red.model.changes.bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.util.geometry.Rectangle;
 
 public class BigraphChangeRemoveChild extends Change {
 	public Container parent;
@@ -13,16 +12,10 @@ public class BigraphChangeRemoveChild extends Change {
 		this.parent = parent;
 		this.child = child;
 	}
-
-	private Rectangle oldLayout;
-	@Override
-	public void beforeApply() {
-		oldLayout = child.getLayout().getCopy();
-	}
 	
 	@Override
 	public Change inverse() {
-		return new BigraphChangeAddChild(parent, child, oldLayout);
+		return new BigraphChangeAddChild(parent, child);
 	}
 	
 	@Override

@@ -9,7 +9,6 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
-import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
  * A LinkConnectionCreateCommand is in charge of creating and updating {@link
@@ -47,7 +46,7 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			Bigraph b = ((Point)first).getBigraph();
 			setTarget(b);
 			Edge ed = new Edge();
-			cg.add(new BigraphChangeAddChild(b, ed, new Rectangle()),
+			cg.add(new BigraphChangeAddChild(b, ed),
 					new BigraphChangeConnect((Point)first, ed),
 					new BigraphChangeConnect((Point)second, ed),
 					new BigraphChangeEdgeReposition(ed));
