@@ -122,10 +122,9 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	}
 	
 	private void addChild(Container context, Element e) throws ImportFailedException {
-		Object model;
-		if (!e.getNodeName().equals("node")) {
-			model = ModelFactory.getNewObject(e.getNodeName());
-		} else {
+		Object model = null;
+		boolean port = false;
+		if (e.getNodeName().equals("node")) {
 			String controlName =
 					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control");
 			Control c = bigraph.getSignature().getControl(controlName);
@@ -134,52 +133,65 @@ public class BigraphXMLImport extends Import<Bigraph> {
 					"The control \"" + controlName + "\" isn't defined by " +
 							"this bigraph's signature.");
 			model = new Node(c);
-		}
-		if (model instanceof Layoutable && context != null &&
-				!(model instanceof Port))
-				enqueueChange(new BigraphChangeAddChild(context,
-						(Layoutable)model, new Rectangle()));
-		
-		boolean warn = false;
-		
-		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
-		switch (as) {
-		case FORBIDDEN:
-			warn = (el != null);
-			break;
-		case MANDATORY:
-			warn = (el == null && !(model instanceof Port));
-			break;
-		case NOTHING_YET:
-			as = (el != null ? AppearanceStatus.MANDATORY :
-				AppearanceStatus.FORBIDDEN);
-			break;
+		} else if (e.getNodeName().equals("port") && context instanceof Node) {
+			/*
+			 * <port /> tags shouldn't actually create anything, so let the
+			 * special handling commence!
+			 */
+			port = true;
+		} else {
+			model = ModelFactory.getNewObject(e.getNodeName());
 		}
 
-		if (warn && !warnedAboutLayouts) {
-			UI.showMessageBox(SWT.ICON_WARNING, "All or nothing!",
-				"Some objects in this bigraph have layout data, and some don't. " +
-				"Big Red ignores layout data unless all objects have it.");
-			as = AppearanceStatus.FORBIDDEN;
-			warnedAboutLayouts = true;
-		}
 		
-		if (el != null && as == AppearanceStatus.MANDATORY) {
-			if (as == AppearanceStatus.NOTHING_YET)
-				as = AppearanceStatus.MANDATORY;
-			AppearanceGenerator.setAppearance(el, model, cg);
+		if (model instanceof Layoutable) {
+			enqueueChange(new BigraphChangeAddChild(context,
+					(Layoutable)model, new Rectangle()));
+			
+			if (!(model instanceof Bigraph)) {
+				String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
+				enqueueChange(new BigraphChangeName((Layoutable)model, name));
+			}
+			
+			boolean warn = false;
+			Element appearance =
+					DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
+			switch (as) {
+			case FORBIDDEN:
+				warn = (appearance != null);
+				break;
+			case MANDATORY:
+				warn = (appearance == null && !(model instanceof Port));
+				break;
+			case NOTHING_YET:
+				as = (appearance != null ? AppearanceStatus.MANDATORY :
+					AppearanceStatus.FORBIDDEN);
+				break;
+			}
+			
+			if (warn && !warnedAboutLayouts) {
+				UI.showMessageBox(SWT.ICON_WARNING, "All or nothing!",
+					"Some objects in this bigraph have layout data, and some don't. " +
+					"Big Red ignores layout data unless all objects have it.");
+				as = AppearanceStatus.FORBIDDEN;
+				warnedAboutLayouts = true;
+			}
+			
+			if (appearance != null && as == AppearanceStatus.MANDATORY) {
+				if (as == AppearanceStatus.NOTHING_YET)
+					as = AppearanceStatus.MANDATORY;
+				AppearanceGenerator.setAppearance(appearance, model, cg);
+			}
 		}
 		
 		if (model instanceof Container) {
 			processContainer(e, (Container)model);
-		} else if (model instanceof Port) {
-			if (context instanceof Node) {
-				Node n = (Node)context;
-				for (Port p : n.getPorts()) {
-					if (p.getName().equals(e.getAttribute("name"))) {
-						processPoint(e, p);
-						break;
-					}
+		} else if (port) {
+			Node n = (Node)context;
+			for (Port p : n.getPorts()) {
+				if (p.getName().equals(e.getAttribute("name"))) {
+					processPoint(e, p);
+					break;
 				}
 			}
 		} else if (model instanceof Link) {
@@ -188,12 +200,6 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			processPoint(e, (InnerName)model);
 		} else {
 			/* fail in some other way? */;
-		}
-		
-		if (model instanceof Layoutable &&
-			!(model instanceof Bigraph) && !(model instanceof Port)) {
-			String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
-			enqueueChange(new BigraphChangeName((Layoutable)model, name));
 		}
 	}
 }
