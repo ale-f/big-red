@@ -39,6 +39,15 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	}
 	
 	/**
+	 * Adds some {@link Change}s to the end of this ChangeGroup.
+	 * @param changes some {@link Change}s to add
+	 */
+	public void add(ChangeGroup changes) {
+		for (Change c : changes)
+			this.changes.add(c);
+	}
+	
+	/**
 	 * Adds a {@link Change} to the beginning of this ChangeGroup.
 	 * @param c a {@link Change}s to add
 	 */
