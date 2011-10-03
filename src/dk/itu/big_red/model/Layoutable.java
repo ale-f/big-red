@@ -112,6 +112,11 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	 */
 	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
 	
+	/**
+	 * The property name fired when the name changes.
+	 */
+	public static final String PROPERTY_NAME = "LayoutableName";
+	
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class adapter) {
@@ -146,5 +151,25 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	protected Dimension relayout(ChangeGroup cg) {
 		cg.add(new BigraphChangeLayout(this, new Rectangle(0, 0, 50, 50)));
 		return new Dimension(50, 50);
+	}
+	
+	private String name = null;
+	
+	/**
+	 * Gets this object's name.
+	 * @return a String
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * Sets this object's name.
+	 * @param name the new name for this object
+	 */
+	protected void setName(String name) {
+		String oldName = this.name;
+		this.name = name;
+		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 }

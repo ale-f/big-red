@@ -9,9 +9,10 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
+import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
-import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 
 public class ModelPropertySource implements IPropertySource {
@@ -39,8 +40,8 @@ public class ModelPropertySource implements IPropertySource {
 			properties.add(new ColorPropertyDescriptor(IOutlineColourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
 		if (object instanceof ICommentable)
 			properties.add(new TextPropertyDescriptor(ICommentable.PROPERTY_COMMENT, "Comment"));
-		if (object instanceof INameable)
-			properties.add(new TextPropertyDescriptor(INameable.PROPERTY_NAME, "Name"));
+		if (object instanceof Layoutable)
+			properties.add(new TextPropertyDescriptor(Layoutable.PROPERTY_NAME, "Name"));
 		
 		return properties.toArray(new IPropertyDescriptor[0]);
 	}
@@ -56,8 +57,8 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String result = ((ICommentable)object).getComment();
 			return (result == null ? "" : result);
-		} else if (id.equals(INameable.PROPERTY_NAME)){
-			return ((INameable)object).getName();
+		} else if (id.equals(Layoutable.PROPERTY_NAME)){
+			return ((Layoutable)object).getName();
 		} else {
 			return null;
 		}
@@ -89,9 +90,10 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String comment = (String)value;
 			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));
-		} else if (id.equals(INameable.PROPERTY_NAME)) {
+		} else if (id.equals(Layoutable.PROPERTY_NAME)) {
 			String name = (String)value;
-			((INameable)object).setName(name.length() == 0 ? null : name);
+			Layoutable l = (Layoutable)object;
+			l.getBigraph().applyChange(new BigraphChangeName(l, name));
 		}
 	}
 

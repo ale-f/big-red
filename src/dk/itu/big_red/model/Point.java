@@ -3,7 +3,6 @@ package dk.itu.big_red.model;
 import org.eclipse.swt.graphics.RGB;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
-import dk.itu.big_red.model.interfaces.internal.INameable;
 
 /**
  * Points are objects which can be connected to <em>at most one</em> {@link
@@ -44,27 +43,5 @@ public abstract class Point extends Layoutable implements IPoint {
 	
 	public Link getLink() {
 		return link;
-	}
-
-	protected String name = "?";
-	
-	/**
-	 * Gets the name of this Point.
-	 * @return the current name
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	/**
-	 * Sets the name of this Point.
-	 * @param name the new name
-	 */
-	public void setName(String name) {
-		if (name != null) {
-			String oldName = this.name;
-			this.name = name;
-			firePropertyChange(INameable.PROPERTY_NAME, oldName, name);
-		}
 	}
 }

@@ -81,7 +81,8 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == getModel()) {
 			String property = evt.getPropertyName();
-			if (property.equals(ICommentable.PROPERTY_COMMENT) ||
+			if (property.equals(Layoutable.PROPERTY_NAME) ||
+				property.equals(ICommentable.PROPERTY_COMMENT) ||
 				property.equals(Layoutable.PROPERTY_LAYOUT)) {
 				refreshVisuals();
 			}

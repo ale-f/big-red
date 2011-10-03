@@ -2,7 +2,7 @@ package dk.itu.big_red.editors.signature;
 
 import org.eclipse.swt.widgets.Canvas;
 
-import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.PortSpec;
 
 /**
  * PortListeners are used to subscribe to change notifications from a
@@ -61,7 +61,7 @@ public interface PortListener {
 		 * <p>If this property is <code>null</code>, then the event represents
 		 * a mass change to all Ports.
 		 */
-		Port object;
+		PortSpec object;
 	}
 	
 	/**

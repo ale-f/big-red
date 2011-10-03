@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -10,12 +11,12 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
@@ -29,22 +30,32 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public class BigraphIntegrityValidator extends ChangeValidator {
-	public BigraphIntegrityValidator(IChangeable changeable) {
+	private BigraphScratchpad scratch = null;
+	
+	public BigraphIntegrityValidator(Bigraph changeable) {
 		super(changeable);
+		scratch = new BigraphScratchpad(changeable);
 	}
 	
-	private class QueuedLayoutCheck {
+	@Override
+	public Bigraph getChangeable() {
+		return (Bigraph)super.getChangeable();
+	}
+	
+	private class QueuedLayoutableCheck {
 		public Change c;
 		public Layoutable l;
-		public QueuedLayoutCheck(Change c, Layoutable l) {
+		public QueuedLayoutableCheck(Change c, Layoutable l) {
 			this.c = c; this.l = l;
 		}
 	}
-	private ArrayList<QueuedLayoutCheck> layoutChecks =
-		new ArrayList<QueuedLayoutCheck>();
+	private ArrayList<QueuedLayoutableCheck> layoutChecks =
+		new ArrayList<QueuedLayoutableCheck>();
+	private ArrayList<QueuedLayoutableCheck> nameChecks =
+		new ArrayList<QueuedLayoutableCheck>();
 	
 	private void runLayoutChecks() throws ChangeRejectedException {
-		for (QueuedLayoutCheck i : layoutChecks) {
+		for (QueuedLayoutableCheck i : layoutChecks) {
 			Container parent = scratch.getParentFor(i.l);
 			ReadonlyRectangle layout = scratch.getLayoutFor(i.l);
 			checkObjectCanContain(i.c, parent, layout);
@@ -53,7 +64,20 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 		}
 	}
 	
-	private BigraphScratchpad scratch = new BigraphScratchpad();
+	private Bigraph getBigraphFor(Layoutable l) {
+		Container c = scratch.getParentFor(l);
+		while (c != null && !(c instanceof Bigraph)) {
+			c = scratch.getParentFor(c);
+		}
+		return (Bigraph)c;
+	}
+	
+	private void runNameChecks() throws ChangeRejectedException {
+		for (QueuedLayoutableCheck i : nameChecks) {
+			if (getBigraphFor(i.l) != null && scratch.getNamespaceFor(i.l).get(i.l) == null)
+				rejectChange(i.c, "All objects on a bigraph must have a name");
+		}
+	}
 	
 	private void checkObjectCanContain(Change b, Layoutable o, ReadonlyRectangle nl) throws ChangeRejectedException {
 		if (o != null && !(o instanceof Bigraph)) {
@@ -78,8 +102,14 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 	public void tryValidateChange(Change b)
 			throws ChangeRejectedException {
 		scratch.clear();
+		
+		layoutChecks.clear();
+		nameChecks.clear();
+		
 		_tryValidateChange(b);
+		
 		runLayoutChecks();
+		runNameChecks();
 	}
 	
 	protected void _tryValidateChange(Change b)
@@ -111,10 +141,11 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 					rejectChange(b,
 						c.parent.getClass().getSimpleName() + "s can't contain " +
 						c.child.getClass().getSimpleName() + "s");
-				layoutChecks.add(new QueuedLayoutCheck(b, c.child));
+				layoutChecks.add(new QueuedLayoutableCheck(b, c.child));
 			}
 			scratch.setLayoutFor(c.child, c.newLayout);
 			scratch.addChildFor(c.parent, c.child);
+			nameChecks.add(new QueuedLayoutableCheck(b, c.child));
 		} else if (b instanceof BigraphChangeRemoveChild) {
 			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
 			scratch.removeChildFor(c.parent, c.child);
@@ -122,12 +153,20 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
 			if (c.model instanceof Bigraph)
 				rejectChange(b, "Bigraphs cannot be moved or resized");
-			layoutChecks.add(new QueuedLayoutCheck(b, c.model));
+			layoutChecks.add(new QueuedLayoutableCheck(b, c.model));
 			scratch.setLayoutFor(c.model, c.newLayout);
 		} else if (b instanceof BigraphChangeEdgeReposition) {
 			/* nothing to do? */
 		} else if (b instanceof BigraphChangeOutlineColour) {
 			/* totally nothing to do */
+		} else if (b instanceof BigraphChangeName) {
+			BigraphChangeName c = (BigraphChangeName)b;
+			HashMap<Layoutable, String> ns = scratch.getNamespaceFor(c.model);
+			if (c.newName != null && ns.containsValue(c.newName))
+				if (!ns.containsKey(c.model) || !ns.get(c.model).equals(c.newName))
+					rejectChange(b, "Names must be unique");
+			scratch.setNameFor(c.model, c.newName);
+			nameChecks.add(new QueuedLayoutableCheck(b, c.model));
 		} else {
 			rejectChange(b, "The change was not recognised by the validator");
 		}

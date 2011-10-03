@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
@@ -19,6 +20,12 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public class BigraphScratchpad {
+	private Bigraph bigraph = null;
+	
+	public BigraphScratchpad(Bigraph bigraph) {
+		this.bigraph = bigraph;
+	}
+	
 	private HashMap<Layoutable, ReadonlyRectangle> layouts =
 			new HashMap<Layoutable, ReadonlyRectangle>();
 	
@@ -33,11 +40,15 @@ public class BigraphScratchpad {
 	
 	private HashMap<Point, Link> links = new HashMap<Point, Link>();
 	
+	private HashMap<Object, HashMap<Layoutable, String>> names =
+			new HashMap<Object, HashMap<Layoutable, String>>();
+	
 	public void clear() {
 		links.clear();
 		points.clear();
 		layouts.clear();
 		parents.clear();
+		names.clear();
 	}
 	
 	public ReadonlyRectangle getLayoutFor(Layoutable a) {
@@ -117,4 +128,17 @@ public class BigraphScratchpad {
 		setLinkFor(b, a);
 	}
 
+	public HashMap<Layoutable, String> getNamespaceFor(Layoutable a) {
+		Object nsi = Bigraph.getNSI(a);
+		HashMap<Layoutable, String> b;
+		if (!names.containsKey(nsi)) {
+			b = new HashMap<Layoutable, String>(bigraph.getNamespace(nsi));
+			names.put(nsi, b);
+		} else b = names.get(nsi);
+		return b;
+	}
+	
+	public void setNameFor(Layoutable a, String b) {
+		getNamespaceFor(a).put(a, b);
+	}
 }

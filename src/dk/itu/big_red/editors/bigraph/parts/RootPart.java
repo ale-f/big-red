@@ -35,7 +35,7 @@ public class RootPart extends ContainerPart {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}
-
+	
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();

@@ -8,10 +8,8 @@ import org.eclipse.swt.graphics.RGB;
 
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.LinkConnection;
-import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
-import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Utility;
 
@@ -21,7 +19,7 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  * @see ILink
  */
-public abstract class Link extends Layoutable implements INameable, IOutlineColourable, ILink {
+public abstract class Link extends Layoutable implements IOutlineColourable, ILink {
 	/**
 	 * The property name fired when a point is added to, or removed from, this
 	 * Link.
@@ -83,25 +81,6 @@ public abstract class Link extends Layoutable implements INameable, IOutlineColo
 			connections.put(p, l);
 		}
 		return l;
-	}
-	
-	@Override
-	public String getName() {
-		return getBigraph().getNamespaceManager().requireName(Link.class, this);
-	}
-	
-	@Override
-	public void setName(String name) {
-		NamespaceManager nm = getBigraph().getNamespaceManager();
-		String oldName = nm.getName(Link.class, this);
-		if (name != null) {
-			if (nm.setName(Link.class, this, name))
-				firePropertyChange(PROPERTY_NAME, oldName, name);
-		} else {
-			String newName = nm.requireName(Link.class, this);
-			if (!newName.equals(oldName))
-				firePropertyChange(PROPERTY_NAME, oldName, newName);
-		}
 	}
 	
 	private RGB outlineColour = new RGB(0, 127, 0);

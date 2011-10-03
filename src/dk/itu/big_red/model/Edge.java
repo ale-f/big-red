@@ -47,9 +47,4 @@ public class Edge extends Link implements IEdge {
 		return (Edge)super.clone(m);
 	}
 
-	@Override
-	public NameType getNameType() {
-		return NameType.NAME_ALPHABETIC;
-	}
-
 }

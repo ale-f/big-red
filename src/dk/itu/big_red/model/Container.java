@@ -21,7 +21,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  * @author alec
  *
  */
-public class Container extends Layoutable {
+public abstract class Container extends Layoutable {
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
 
 	/**

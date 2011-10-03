@@ -26,7 +26,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  * @author alec
  * @see INode
  */
-public class Node extends NameableContainer implements PropertyChangeListener, IFillColourable, IOutlineColourable, INode {
+public class Node extends Container implements PropertyChangeListener, IFillColourable, IOutlineColourable, INode {
 	private RGB fillColour = new RGB(255, 255, 255);
 	private RGB outlineColour = new RGB(0, 0, 0);
 	
@@ -179,10 +179,5 @@ public class Node extends NameableContainer implements PropertyChangeListener, I
 	@Override
 	public IControl getIControl() {
 		return control;
-	}
-
-	@Override
-	public NameType getNameType() {
-		return NameType.NAME_ALPHABETIC;
 	}
 }

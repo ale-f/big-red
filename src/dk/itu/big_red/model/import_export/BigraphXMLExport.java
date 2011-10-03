@@ -18,7 +18,6 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.model.interfaces.internal.INameable;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Utility;
 
@@ -104,13 +103,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		}
 		return null;
 	}
-	
-	private Element process(INameable e) {
-		return DOM.applyAttributesToElement(
-				doc.createElement(e.getClass().getSimpleName().toLowerCase()),
-				"name", e.getName());
-	}
-	
+		
 	private Element process(Layoutable obj) throws ExportFailedException {
 		Element e = null;
 		if (obj instanceof Bigraph) {
@@ -119,11 +112,12 @@ public class BigraphXMLExport extends Export<Bigraph> {
 			e = process((Node)obj);
 		} else if (obj instanceof Point) {
 			e = process((Point)obj);
-		} else if (obj instanceof INameable) {
-			e = process((INameable)obj);
 		} else {
 			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
 		}
+		
+		if (!(obj instanceof Bigraph))
+			DOM.applyAttributesToElement(e, "name", obj.getName());
 		
 		if (obj instanceof Container) {
 			Container c = (Container)obj;

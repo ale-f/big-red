@@ -11,7 +11,7 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  * @see IRoot
  */
-public class Root extends NameableContainer implements IRoot {
+public class Root extends Container implements IRoot {
 	
 	@Override
 	public boolean canContain(Layoutable child) {
@@ -32,10 +32,5 @@ public class Root extends NameableContainer implements IRoot {
 	@Override
 	public Iterable<IChild> getIChildren() {
 		return Utility.only(children, IChild.class);
-	}
-
-	@Override
-	public NameType getNameType() {
-		return NameType.NAME_NUMERIC;
 	}
 }

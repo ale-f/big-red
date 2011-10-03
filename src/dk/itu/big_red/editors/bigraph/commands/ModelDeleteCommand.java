@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
 
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
@@ -14,9 +15,15 @@ import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 
 public class ModelDeleteCommand extends ChangeCommand {
+	@Override
+	public Bigraph getTarget() {
+		return (Bigraph)super.getTarget();
+	}
+	
 	private ChangeGroup cg = new ChangeGroup();
 	
 	public ModelDeleteCommand() {
@@ -33,7 +40,13 @@ public class ModelDeleteCommand extends ChangeCommand {
 			objects.add(m);
 	}
 	
-	private BigraphScratchpad scratch = new BigraphScratchpad();
+	private BigraphScratchpad scratch = null;
+
+	public void setTarget(Bigraph target) {
+		super.setTarget(target);
+		if (scratch == null)
+			scratch = new BigraphScratchpad(target);
+	}
 	
 	private void removePoint(Link l, Point p) {
 		cg.add(new BigraphChangeDisconnect(p, l));
@@ -66,7 +79,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 				if (p.getLink() != null)
 					removePoint(p.getLink(), p);
 			}
-			cg.add(new BigraphChangeRemoveChild(n.getParent(), n));
+			cg.add(new BigraphChangeName(n, null),
+					new BigraphChangeRemoveChild(n.getParent(), n));
 		}
 	}
 	
@@ -112,7 +126,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 	@Override
 	public void prepare() {
 		cg.clear();
-		scratch.clear();
+		if (scratch != null)
+			scratch.clear();
 		for (ModelObject m : objects) {
 			if (!(m instanceof Port) &&
 				(m instanceof Layoutable &&

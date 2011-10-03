@@ -37,7 +37,7 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
@@ -139,7 +139,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearance.setMode(polygon ? Shape.SHAPE_POLYGON : Shape.SHAPE_OVAL);
 		if (polygon)
 			appearance.setPoints(currentControl.getPoints());
-		appearance.setPorts(currentControl.getPortsArray());
+		appearance.setPorts(currentControl.getPorts());
 		resizable.setSelection(currentControl.isResizable());
 		currentControlItem.setText(currentControl.getLongName());
 		
@@ -154,7 +154,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			currentControl.setLabel(label.getText());
 			currentControl.setLongName(name.getText());
 			currentControl.clearPorts();
-			for (Port p : appearance.getPorts())
+			for (PortSpec p : appearance.getPorts())
 				currentControl.addPort(p);
 			currentControl.setResizable(resizable.getSelection());
 			if (polygonMode.getSelection()) {

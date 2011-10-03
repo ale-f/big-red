@@ -1,6 +1,7 @@
 package dk.itu.big_red.model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
@@ -87,7 +88,7 @@ public class Control extends ModelObject implements IFillColourable, IOutlineCol
 			-20, 0
 	});
 	
-	private ArrayList<Port> ports = new ArrayList<Port>();
+	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
 	private PointList points = new PointList();
 	
 	private Control.Shape shape;
@@ -198,16 +199,16 @@ public class Control extends ModelObject implements IFillColourable, IOutlineCol
 		firePropertyChange(PROPERTY_PORT, null, null);
 	}
 	
-	public void addPort(Port p) {
+	public void addPort(PortSpec p) {
 		if (p != null) {
-			Port q = new Port(p.getName(), p.getSegment(), p.getDistance());
+			PortSpec q = new PortSpec(p.getName(), p.getSegment(), p.getDistance());
 			ports.add(q);
 			firePropertyChange(PROPERTY_PORT, null, q);
 		}
 	}
 	
 	public void removePort(String port) {
-		Port p = getPort(port);
+		PortSpec p = getPort(port);
 		if (p != null) {
 			ports.remove(p);
 			firePropertyChange(PROPERTY_PORT, p, null);
@@ -218,19 +219,23 @@ public class Control extends ModelObject implements IFillColourable, IOutlineCol
 		return (getPort(port) != null);
 	}
 	
+	public List<PortSpec> getPorts() {
+		return ports;
+	}
+	
 	/**
 	 * Produces a <i>new</i> array of {@link Port}s to give to a {@link Node}.
 	 * @return an array of Ports
 	 */
 	public ArrayList<Port> getPortsArray() {
 		ArrayList<Port> r = new ArrayList<Port>();
-		for (Port i : ports)
+		for (PortSpec i : ports)
 			r.add(new Port(i.getName(), i.getSegment(), i.getDistance()));
 		return r;
 	}
 	
-	public Port getPort(String name) {
-		for (Port i : ports)
+	public PortSpec getPort(String name) {
+		for (PortSpec i : ports)
 			if (i.getName().equals(name))
 				return i;
 		return null;

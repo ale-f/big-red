@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import dk.itu.big_red.editors.signature.PointListener.PointEvent;
 import dk.itu.big_red.editors.signature.PortListener.PortEvent;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.geometry.Ellipse;
 import dk.itu.big_red.util.geometry.Line;
@@ -78,7 +78,7 @@ MenuListener {
 	
 	private int dragPortIndex = -1;
 	
-	private ArrayList<Port> ports = new ArrayList<Port>();
+	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
 	
 	protected ArrayList<PointListener> pointListeners =
 		new ArrayList<PointListener>();
@@ -150,7 +150,7 @@ MenuListener {
 			if (dragPointIndex == deleteIndex)
 				dragPointIndex = -1;
 			firePointChange(PointEvent.REMOVED, points.removePoint(deleteIndex));
-			for (Port port : ports) {
+			for (PortSpec port : ports) {
 				int segment = port.getSegment();
 				double distance = port.getDistance();
 				if (segment == deleteIndex - 1) {
@@ -190,7 +190,7 @@ MenuListener {
 		if (mode == Shape.SHAPE_POLYGON) {
 			Line l = new Line();
 			for (int i = 0; i < ports.size(); i++) {
-				Port p = ports.get(i);
+				PortSpec p = ports.get(i);
 				int segment = p.getSegment();
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -203,7 +203,7 @@ MenuListener {
 			Ellipse e = new Ellipse();
 			e.setBounds(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10));
 			for (int i = 0; i < ports.size(); i++) {
-				Port p = ports.get(i);
+				PortSpec p = ports.get(i);
 				tmp.setLocation(e.getPointFromOffset(p.getDistance()));
 				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
 					y >= tmp.y - 4 && y <= tmp.y + 4)
@@ -306,7 +306,7 @@ MenuListener {
 	@Override
 	public void mouseUp(MouseEvent e) {
 		if (dragPortIndex != -1) { /* a port is being moved */
-			Port p = ports.get(dragPortIndex);
+			PortSpec p = ports.get(dragPortIndex);
 			Line l = new Line();
 			int segment;
 			double offset;
@@ -344,7 +344,7 @@ MenuListener {
 					Line l1 = new Line(getPoint(dragPointIndex - 1), p),
 							l2 = new Line(p, getPoint(dragPointIndex));
 					double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
-					for (Port port : ports) {
+					for (PortSpec port : ports) {
 						int segment = port.getSegment();
 						double distance = port.getDistance();
 						if (segment == (dragPointIndex - 1)) {
@@ -411,7 +411,7 @@ MenuListener {
 			}
 			
 			e.gc.setBackground(ColorConstants.red);
-			for (Port p : ports) {
+			for (PortSpec p : ports) {
 				int segment = p.getSegment();
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -425,7 +425,7 @@ MenuListener {
 			e.gc.drawOval(30, 30, w, h);
 			
 			e.gc.setBackground(ColorConstants.red);
-			for (Port p : ports) {
+			for (PortSpec p : ports) {
 				Point pt = new Ellipse(new Rectangle(30, 30, w, h)).getPointFromOffset(p.getDistance());
 				e.gc.fillOval(pt.x - 4, pt.y - 4, 8, 8);
 			}
@@ -612,7 +612,7 @@ MenuListener {
 								distance = 0;
 							}
 							
-							Port p = new Port();
+							PortSpec p = new PortSpec();
 							p.setSegment(lsegment);
 							p.setDistance(distance);
 							
@@ -630,7 +630,7 @@ MenuListener {
 					
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						Port p = new Port();
+						PortSpec p = new PortSpec();
 						p.setSegment(0);
 						p.setDistance(new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10)).getClosestOffset(mousePosition));
 						
@@ -650,15 +650,17 @@ MenuListener {
 				
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					final Port p = ports.get(foundPort);
+					final PortSpec p = ports.get(foundPort);
 					InputDialog d = new InputDialog(getShell(),
 							"Port name", "Choose a name for this port:",
-							p.getName(), new IInputValidator() {
+							p.getName() == null ? "" : p.getName(), new IInputValidator() {
 								
 								@Override
 								public String isValid(String newText) {
-									for (Port i : ports)
-										if (i.getName().equals(newText) && i != p)
+									if (newText.length() == 0)
+										return "Port names must not be empty.";
+									for (PortSpec i : ports)
+										if (i != p && i.getName().equals(newText))
 											return "This port name is already in use.";
 									return null;
 								}
@@ -695,13 +697,13 @@ MenuListener {
 				UI.createMenuItem(m, 0, "&Remove point", new SelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						for (Iterator<Port> it = ports.iterator(); it.hasNext(); ) {
-							Port p = it.next();
+						for (Iterator<PortSpec> it = ports.iterator(); it.hasNext(); ) {
+							PortSpec p = it.next();
 							if (p.getSegment() == foundPoint) {
 								it.remove();
 								firePortChange(PortEvent.REMOVED, p);
 							}
-							for (Port port : ports) {
+							for (PortSpec port : ports) {
 								int segment = port.getSegment();
 								if (segment >= foundPoint)
 									port.setSegment(segment - 1);
@@ -790,7 +792,7 @@ MenuListener {
 		portListeners.remove(listener);
 	}
 	
-	private void firePortChange(int type, Port object) {
+	private void firePortChange(int type, PortSpec object) {
 		PortEvent e = new PortEvent();
 		e.source = this;
 		e.type = type;
@@ -804,7 +806,7 @@ MenuListener {
 	 * Canvas.
 	 * @return a PointList specifying a polygon
 	 */
-	public List<Port> getPorts() {
+	public List<PortSpec> getPorts() {
 		return ports;
 	}
 
@@ -813,7 +815,7 @@ MenuListener {
 	 * {@link List}.
 	 * @param ports a list of Ports
 	 */
-	public void setPorts(List<Port> ports) {
+	public void setPorts(List<PortSpec> ports) {
 		if (ports != null) {
 			this.ports.clear();
 			this.ports.addAll(ports);

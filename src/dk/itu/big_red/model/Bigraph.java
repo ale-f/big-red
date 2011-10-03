@@ -8,7 +8,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.assistants.CloneMap;
-import dk.itu.big_red.model.assistants.NamespaceManager;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -19,6 +18,7 @@ import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
@@ -42,7 +42,30 @@ import dk.itu.big_red.util.resources.ResourceWrapper;
 public class Bigraph extends Container implements IBigraph, IChangeable {
 	protected ResourceWrapper<Signature> signature =
 		new ResourceWrapper<Signature>();
-	protected NamespaceManager namespaceManager = new NamespaceManager();
+
+	private HashMap<Object, HashMap<Layoutable, String>> names =
+		new HashMap<Object, HashMap<Layoutable, String>>();
+	
+	public static Object getNSI(Layoutable object) {
+		if (object instanceof Link) {
+			return Link.class;
+		} else if (object instanceof InnerName ||
+				object instanceof Root ||
+				object instanceof Site ||
+				object instanceof Node) {
+			return object.getClass();
+		}
+		return object;
+	}
+	
+	public HashMap<Layoutable, String> getNamespace(Object nsi) {
+		HashMap<Layoutable, String> r = names.get(nsi);
+		if (r == null) {
+			r = new HashMap<Layoutable, String>();
+			names.put(nsi, r);
+		}
+		return r;
+	}
 	
 	/**
 	 * The property name fired when a boundary has changed.
@@ -84,14 +107,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		}
 		
 		return b;
-	}
-	
-	/**
-	 * Gets the {@link NamespaceManager} for this bigraph.
-	 * @return a NamespaceManager
-	 */
-	public NamespaceManager getNamespaceManager() {
-		return namespaceManager;
 	}
 	
 	@Override
@@ -352,6 +367,10 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof BigraphChangeOutlineColour) {
 			BigraphChangeOutlineColour c = (BigraphChangeOutlineColour)b;
 			c.model.setOutlineColour(c.newColour);
+		} else if (b instanceof BigraphChangeName) {
+			BigraphChangeName c = (BigraphChangeName)b;
+			c.model.setName(c.newName);
+			getNamespace(getNSI(c.model)).put(c.model, c.newName);
 		}
 		if (changes != null && !(b instanceof ChangeGroup))
 			changes.add(b);

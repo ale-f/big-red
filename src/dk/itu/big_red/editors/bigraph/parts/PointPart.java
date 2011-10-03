@@ -13,11 +13,11 @@ import org.eclipse.gef.Request;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.INameable;
 
 public abstract class PointPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 
@@ -52,7 +52,7 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
 		if (source == getModel()) {
-			if (prop.equals(INameable.PROPERTY_NAME)) {
+			if (prop.equals(Layoutable.PROPERTY_NAME)) {
 				refreshVisuals();
 			} else if (prop.equals(Point.PROPERTY_LINK)) {
 				Link oldLink = (Link)evt.getOldValue(),

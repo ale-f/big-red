@@ -15,9 +15,4 @@ public class OuterName extends Link implements IOuterName {
 		return (OuterName)super.clone(m);
 	}
 
-	@Override
-	public NameType getNameType() {
-		return NameType.NAME_ALPHABETIC;
-	}
-
 }

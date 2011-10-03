@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.import_export;
 
+import java.util.HashMap;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.SWT;
@@ -21,10 +23,11 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
-import dk.itu.big_red.model.interfaces.internal.INameable;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -45,6 +48,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	
 	boolean warnedAboutLayouts = false;
 	private AppearanceStatus as = AppearanceStatus.NOTHING_YET;
+	private ChangeGroup cg = new ChangeGroup();
 	
 	@Override
 	public Bigraph importObject() throws ImportFailedException {
@@ -54,16 +58,14 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			source.close();
 			return makeBigraph(d.getDocumentElement());
 		} catch (Exception e) {
-			throw new ImportFailedException(e);
+			if (e instanceof ImportFailedException) {
+				throw (ImportFailedException)e;
+			} else throw new ImportFailedException(e);
 		}
 	}
 	
-	private void applyChange(Change c) throws ImportFailedException {
-		try {
-			bigraph.tryApplyChange(c);
-		} catch (ChangeRejectedException e) {
-			throw new ImportFailedException(e);
-		}
+	private void enqueueChange(Change c) throws ImportFailedException {
+		cg.add(c);
 	}
 	
 	private Bigraph bigraph = null;
@@ -86,33 +88,36 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		processContainer(e, bigraph);
 		
 		if (as == AppearanceStatus.FORBIDDEN)
-			applyChange(bigraph.relayout());
+			enqueueChange(bigraph.relayout());
+		
+		try {
+			bigraph.tryApplyChange(cg);
+		} catch (ChangeRejectedException f) {
+			throw new ImportFailedException(f);
+		}
 		
 		return bigraph;
 	}
 	
 	private Container processContainer(Element e, Container model) throws ImportFailedException {
-		if (model instanceof INameable)
-			((INameable)model).setName(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"));
-		
 		for (Element i : DOM.getChildElements(e))
 			addChild(model, i);
 		return model;
 	}
 	
+	private HashMap<String, Link> links =
+			new HashMap<String, Link>();
+	
 	private Link processLink(Element e, Link model) throws ImportFailedException {
-		model.setName(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"));
+		String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
+		links.put(name, model);
+		
 		return model;
 	}
 	
 	private Point processPoint(Element e, Point model) throws ImportFailedException {
-		String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name"),
-			   link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
-		model.setName(name);
-		
-		applyChange(
-			new BigraphChangeConnect(model,
-				(Link)bigraph.getNamespaceManager().getObject(Link.class, link)));
+		String link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
+		enqueueChange(new BigraphChangeConnect(model, links.get(link)));
 		return model;
 	}
 	
@@ -132,7 +137,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		}
 		if (model instanceof Layoutable && context != null &&
 				!(model instanceof Port))
-				applyChange(new BigraphChangeAddChild(context,
+				enqueueChange(new BigraphChangeAddChild(context,
 						(Layoutable)model, new Rectangle()));
 		
 		boolean warn = false;
@@ -162,7 +167,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		if (el != null && as == AppearanceStatus.MANDATORY) {
 			if (as == AppearanceStatus.NOTHING_YET)
 				as = AppearanceStatus.MANDATORY;
-			AppearanceGenerator.setAppearance(el, model);
+			AppearanceGenerator.setAppearance(el, model, cg);
 		}
 		
 		if (model instanceof Container) {
@@ -183,6 +188,12 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			processPoint(e, (InnerName)model);
 		} else {
 			/* fail in some other way? */;
+		}
+		
+		if (model instanceof Layoutable &&
+			!(model instanceof Bigraph) && !(model instanceof Port)) {
+			String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
+			enqueueChange(new BigraphChangeName((Layoutable)model, name));
 		}
 	}
 }

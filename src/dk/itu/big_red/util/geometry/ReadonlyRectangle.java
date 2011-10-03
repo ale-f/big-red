@@ -107,4 +107,10 @@ public abstract class ReadonlyRectangle {
 	}
 	
 	public static final Rectangle SINGLETON = new Rectangle();
+	
+	@Override
+	public String toString() {
+		return "Rectangle((" + getX() + ", " + getY() + "), " +
+				getWidth() + " x " + getHeight() + ")";
+	}
 }

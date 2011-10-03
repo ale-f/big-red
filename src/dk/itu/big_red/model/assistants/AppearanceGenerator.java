@@ -9,6 +9,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.import_export.XMLNS;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
@@ -69,7 +70,7 @@ public class AppearanceGenerator {
 		return (alive ? aE : null);
 	}
 	
-	public static void setAppearance(Element e, Object o) {
+	public static void setAppearance(Element e, Object o, ChangeGroup cg) {
 		if (!DOM.nameEqualsNS(e, XMLNS.BIG_RED, "appearance"))
 			return;
 		
@@ -81,7 +82,7 @@ public class AppearanceGenerator {
 					DOM.getIntAttribute(e, XMLNS.BIG_RED, "width"),
 					DOM.getIntAttribute(e, XMLNS.BIG_RED, "height"));
 			
-			l.getBigraph().applyChange(new BigraphChangeLayout(l, r));
+			cg.add(new BigraphChangeLayout(l, r));
 		}
 		
 		if (o instanceof IFillColourable)
