@@ -22,7 +22,6 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
@@ -63,10 +62,6 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		}
 	}
 	
-	private void enqueueChange(Change c) throws ImportFailedException {
-		cg.add(c);
-	}
-	
 	private Bigraph bigraph = null;
 	
 	private Bigraph makeBigraph(Element e) throws ImportFailedException {
@@ -87,7 +82,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		processContainer(e, bigraph);
 		
 		if (as == AppearanceStatus.FORBIDDEN)
-			enqueueChange(bigraph.relayout());
+			cg.add(bigraph.relayout());
 		
 		try {
 			bigraph.tryApplyChange(cg);
@@ -116,7 +111,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	
 	private Point processPoint(Element e, Point model) throws ImportFailedException {
 		String link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
-		enqueueChange(new BigraphChangeConnect(model, links.get(link)));
+		cg.add(new BigraphChangeConnect(model, links.get(link)));
 		return model;
 	}
 	
@@ -144,12 +139,11 @@ public class BigraphXMLImport extends Import<Bigraph> {
 
 		
 		if (model instanceof Layoutable) {
-			enqueueChange(
-				new BigraphChangeAddChild(context, (Layoutable)model));
+			cg.add(new BigraphChangeAddChild(context, (Layoutable)model));
 			
 			if (!(model instanceof Bigraph)) {
 				String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
-				enqueueChange(new BigraphChangeName((Layoutable)model, name));
+				cg.add(new BigraphChangeName((Layoutable)model, name));
 			}
 			
 			boolean warn = false;
