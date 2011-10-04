@@ -46,8 +46,6 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	}
 	private ArrayList<QueuedLayoutableCheck> layoutChecks =
 		new ArrayList<QueuedLayoutableCheck>();
-	private ArrayList<QueuedLayoutableCheck> nameChecks =
-		new ArrayList<QueuedLayoutableCheck>();
 	
 	private void runLayoutChecks() throws ChangeRejectedException {
 		for (QueuedLayoutableCheck i : layoutChecks) {
@@ -56,14 +54,6 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			checkObjectCanContain(i.c, parent, layout);
 			if (i.l instanceof Container)
 				checkLayoutCanContainChildren(i.c, (Container)i.l, layout);
-		}
-	}
-	
-	private void runNameChecks() throws ChangeRejectedException {
-		for (QueuedLayoutableCheck i : nameChecks) {
-			if (scratch.getBigraphFor(i.l) != null &&
-					!scratch.getNamespaceFor(i.l).containsValue(i.l))
-				rejectChange(i.c, "All objects on a bigraph must have a name");
 		}
 	}
 	
@@ -86,18 +76,38 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		}
 	}
 	
+	private boolean checkNames = false;
+	
+	private void recursivelyCheckNames(Change b, Container c) throws ChangeRejectedException {
+		for (Layoutable i : scratch.getChildrenFor(c)) {
+			Map<String, Layoutable> ns = scratch.getNamespaceFor(i);
+			String name = i.getName();
+			if (name == null) {
+				if (!ns.containsValue(i))
+					rejectChange(b, i.toString() + " doesn't have a name");
+			} else {
+				if (!ns.get(name).equals(i))
+					rejectChange(b, "The name \"" + name + "\" is already in use");
+			}
+			
+			if (i instanceof Container)
+				recursivelyCheckNames(b, (Container)i);
+		}
+	}
+	
 	@Override
 	public void tryValidateChange(Change b)
 			throws ChangeRejectedException {
 		scratch.clear();
 		
 		layoutChecks.clear();
-		nameChecks.clear();
+		checkNames = false;
 		
 		_tryValidateChange(b);
 		
 		runLayoutChecks();
-		runNameChecks();
+		if (checkNames)
+			recursivelyCheckNames(b, getChangeable());
 	}
 	
 	protected void _tryValidateChange(Change b)
@@ -132,7 +142,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				layoutChecks.add(new QueuedLayoutableCheck(b, c.child));
 			}
 			scratch.addChildFor(c.parent, c.child);
-			nameChecks.add(new QueuedLayoutableCheck(b, c.child));
+			checkNames = true;
 		} else if (b instanceof BigraphChangeRemoveChild) {
 			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
 			scratch.removeChildFor(c.parent, c.child);
@@ -153,7 +163,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				if (!ns.get(c.newName).equals(c.model))
 					rejectChange(b, "Names must be unique");
 			scratch.setNameFor(c.model, c.newName);
-			nameChecks.add(new QueuedLayoutableCheck(b, c.model));
+			checkNames = true;
 		} else {
 			rejectChange(b, "The change was not recognised by the validator");
 		}
