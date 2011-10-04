@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -193,6 +194,31 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	public Bigraph() {
 		validators.add(new BigraphIntegrityValidator(this));
+	}
+	
+	/**
+	 * Gets the list of {@link IChangeValidator}s currently validating changes
+	 * to this {@link Bigraph}.
+	 * @return a {@link List} of {@link IChangeValidator}s
+	 */
+	public List<IChangeValidator> getValidators() {
+		return validators;
+	}
+	
+	/**
+	 * Adds a new {@link IChangeValidator} to this {@link Bigraph}.
+	 * @param cv an {@link IChangeValidator}
+	 */
+	public void addValidator(IChangeValidator cv) {
+		validators.add(cv);
+	}
+	
+	/**
+	 * Removes an {@link IChangeValidator} from this {@link Bigraph}.
+	 * @param cv an {@link IChangeValidator}
+	 */
+	public void removeValidator(IChangeValidator cv) {
+		validators.remove(cv);
 	}
 	
 	/**
