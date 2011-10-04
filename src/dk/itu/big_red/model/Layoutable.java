@@ -131,7 +131,6 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	@Override
 	public Layoutable clone(CloneMap m) {
 		Layoutable l = (Layoutable)super.clone(m);
-		l.setName(l.getName());
 		l.setLayout(getLayout().getCopy());
 		l.setComment(getComment());
 		return l;
