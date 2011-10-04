@@ -1,17 +1,16 @@
 package dk.itu.big_red.model.changes;
 
 /**
- * This is a sensible concrete implementation of most of {@link
- * IChangeValidator}; subclasses only need to implement {@link
- * #tryValidateChange(Change)}.
+ * <strong>ChangeValidator</strong> is a sensible concrete implementation of
+ * {@link IChangeValidator}.
  * <p>
  * @author alec
  *
  */
-public abstract class ChangeValidator implements IChangeValidator {
-	private IChangeable changeable;
+public abstract class ChangeValidator<T extends IChangeable> implements IChangeValidator {
+	private T changeable;
 	
-	public ChangeValidator(IChangeable changeable) {
+	public ChangeValidator(T changeable) {
 		this.changeable = changeable;
 	}
 	
@@ -20,7 +19,7 @@ public abstract class ChangeValidator implements IChangeValidator {
 	 * for.
 	 * @param changeable an {@link IChangeable}
 	 */
-	public void setChangeable(IChangeable changeable) {
+	public void setChangeable(T changeable) {
 		this.changeable = changeable;
 	}
 	
@@ -29,7 +28,7 @@ public abstract class ChangeValidator implements IChangeValidator {
 	 * for.
 	 * @return an {@link IChangeable}
 	 */
-	public IChangeable getChangeable() {
+	public T getChangeable() {
 		return changeable;
 	}
 	

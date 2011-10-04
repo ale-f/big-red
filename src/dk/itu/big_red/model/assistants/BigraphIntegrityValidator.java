@@ -29,17 +29,12 @@ import dk.itu.big_red.util.geometry.Rectangle;
  * @author alec
  *
  */
-public class BigraphIntegrityValidator extends ChangeValidator {
+public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	private BigraphScratchpad scratch = null;
 	
 	public BigraphIntegrityValidator(Bigraph changeable) {
 		super(changeable);
 		scratch = new BigraphScratchpad(changeable);
-	}
-	
-	@Override
-	public Bigraph getChangeable() {
-		return (Bigraph)super.getChangeable();
 	}
 	
 	private class QueuedLayoutableCheck {
