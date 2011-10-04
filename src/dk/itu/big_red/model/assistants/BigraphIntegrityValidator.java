@@ -1,7 +1,7 @@
 package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -67,7 +67,7 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 	private void runNameChecks() throws ChangeRejectedException {
 		for (QueuedLayoutableCheck i : nameChecks) {
 			if (scratch.getBigraphFor(i.l) != null &&
-					scratch.getNamespaceFor(i.l).get(i.l) == null)
+					!scratch.getNamespaceFor(i.l).containsValue(i.l))
 				rejectChange(i.c, "All objects on a bigraph must have a name");
 		}
 	}
@@ -153,9 +153,9 @@ public class BigraphIntegrityValidator extends ChangeValidator {
 			/* totally nothing to do */
 		} else if (b instanceof BigraphChangeName) {
 			BigraphChangeName c = (BigraphChangeName)b;
-			HashMap<Layoutable, String> ns = scratch.getNamespaceFor(c.model);
-			if (c.newName != null && ns.containsValue(c.newName))
-				if (!ns.containsKey(c.model) || !ns.get(c.model).equals(c.newName))
+			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.model);
+			if (c.newName != null && ns.get(c.newName) != null)
+				if (!ns.get(c.newName).equals(c.model))
 					rejectChange(b, "Names must be unique");
 			scratch.setNameFor(c.model, c.newName);
 			nameChecks.add(new QueuedLayoutableCheck(b, c.model));

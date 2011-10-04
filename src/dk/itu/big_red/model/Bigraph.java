@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -43,8 +44,16 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	protected ResourceWrapper<Signature> signature =
 		new ResourceWrapper<Signature>();
 
-	private HashMap<Object, HashMap<Layoutable, String>> names =
-		new HashMap<Object, HashMap<Layoutable, String>>();
+	private HashMap<Object, Map<String, Layoutable>> names =
+		new HashMap<Object, Map<String, Layoutable>>();
+	
+	public static Map<String, Layoutable> newNamespace() {
+		return new HashMap<String, Layoutable>();
+	}
+	
+	public static Map<String, Layoutable> newNamespace(Map<? extends String, ? extends Layoutable> m) {
+		return new HashMap<String, Layoutable>(m);
+	}
 	
 	public static Object getNSI(Layoutable object) {
 		if (object instanceof Link) {
@@ -58,12 +67,10 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		return object;
 	}
 	
-	public HashMap<Layoutable, String> getNamespace(Object nsi) {
-		HashMap<Layoutable, String> r = names.get(nsi);
-		if (r == null) {
-			r = new HashMap<Layoutable, String>();
-			names.put(nsi, r);
-		}
+	public Map<String, Layoutable> getNamespace(Object nsi) {
+		Map<String, Layoutable> r = names.get(nsi);
+		if (r == null)
+			names.put(nsi, r = newNamespace());
 		return r;
 	}
 	
@@ -119,12 +126,12 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	 * empty string
 	 */
 	public String getFirstUnusedName(Layoutable l) {
-		HashMap<Layoutable, String> ns = getNamespace(getNSI(l));
+		Map<String, Layoutable> ns = getNamespace(getNSI(l));
 		int i = 0;
 		String name = null;
 		do {
 			name = intAsString(i++);
-		} while (ns.containsValue(name));
+		} while (ns.get(name) != null);
 		return name;
 	}
 	
@@ -429,8 +436,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			c.model.setOutlineColour(c.newColour);
 		} else if (b instanceof BigraphChangeName) {
 			BigraphChangeName c = (BigraphChangeName)b;
+			if (c.model.getName() != null)
+				getNamespace(getNSI(c.model)).remove(c.model.getName());
 			c.model.setName(c.newName);
-			getNamespace(getNSI(c.model)).put(c.model, c.newName);
+			if (c.newName != null)
+				getNamespace(getNSI(c.model)).put(c.newName, c.model);
 		}
 		if (changes != null && !(b instanceof ChangeGroup))
 			changes.add(b);
