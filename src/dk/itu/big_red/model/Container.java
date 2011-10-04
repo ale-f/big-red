@@ -118,6 +118,9 @@ public abstract class Container extends Layoutable {
 		String name = getName();
 		if (name == null)
 			name = "(anonymous)";
-		return getClass().getSimpleName() + " " + name + " " + getChildren();
+		String children = "";
+		if (getChildren().size() != 0)
+			children = " " + getChildren();
+		return getClass().getSimpleName() + " " + name + children;
 	}
 }
