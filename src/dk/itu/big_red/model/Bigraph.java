@@ -47,14 +47,36 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	private HashMap<Object, Map<String, Layoutable>> names =
 		new HashMap<Object, Map<String, Layoutable>>();
 	
+	/**
+	 * Creates a <i>namespace</i>, a mapping from {@link String}s to {@link
+	 * Layoutable}s.
+	 * @return a new namespace
+	 */
 	public static Map<String, Layoutable> newNamespace() {
 		return new HashMap<String, Layoutable>();
 	}
 	
+	/**
+	 * Creates a <i>namespace</i>, a mapping from {@link String}s to {@link
+	 * Layoutable}s.
+	 * @param m an existing namespace to copy mappings from
+	 * @return a new namespace
+	 */
 	public static Map<String, Layoutable> newNamespace(Map<? extends String, ? extends Layoutable> m) {
 		return new HashMap<String, Layoutable>(m);
 	}
 	
+	/**
+	 * Returns the <i>namespace identifier</i> for the given {@link
+	 * Layoutable}, which identifies the scope in which its name must be
+	 * unique.
+	 * <p>{@link InnerName}s, {@link Root}s, {@link Site}s and {@link Node}s
+	 * all have separate namespaces, all {@link Link}s occupy the same
+	 * namespace, and all other objects have no restrictions on their names.
+	 * @param object a {@link Layoutable}
+	 * @return the scope within which <code>object</code>'s name must be
+	 * unique, or <code>object</code> if there are no restrictions on its name
+	 */
 	public static Object getNSI(Layoutable object) {
 		if (object instanceof Link) {
 			return Link.class;
@@ -67,6 +89,13 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		return object;
 	}
 	
+	/**
+	 * Gets the namespace with the given namespace identifier, creating it if
+	 * necessary.
+	 * @param nsi a value returned from a call to {@link #getNSI(Layoutable)},
+	 * unless you're <i>very</i> sure you know what you're doing
+	 * @return the specified namespace
+	 */
 	public Map<String, Layoutable> getNamespace(Object nsi) {
 		Map<String, Layoutable> r = names.get(nsi);
 		if (r == null)
@@ -119,6 +148,24 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	/**
 	 * Gets the first unused name suitable for the given {@link Layoutable}.
+	 * @param ns the namespace to search
+	 * @param l a {@link Layoutable}
+	 * @return a {@link String} suitable for a {@link BigraphChangeName}, or
+	 * &mdash; in the highly unlikely event that there are 62,193,781 objects
+	 * of the same type as <code>l</code> in this {@link Bigraph} &mdash; the
+	 * empty string
+	 */
+	public static String getFirstUnusedName(Map<String, Layoutable> ns, Layoutable l) {
+		int i = 0;
+		String name = null;
+		do {
+			name = intAsString(i++);
+		} while (ns.get(name) != null);
+		return name;
+	}
+	
+	/**
+	 * Gets the first unused name suitable for the given {@link Layoutable}.
 	 * @param l a {@link Layoutable}
 	 * @return a {@link String} suitable for a {@link BigraphChangeName}, or
 	 * &mdash; in the highly unlikely event that there are 62,193,781 objects
@@ -126,13 +173,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	 * empty string
 	 */
 	public String getFirstUnusedName(Layoutable l) {
-		Map<String, Layoutable> ns = getNamespace(getNSI(l));
-		int i = 0;
-		String name = null;
-		do {
-			name = intAsString(i++);
-		} while (ns.get(name) != null);
-		return name;
+		return Bigraph.getFirstUnusedName(getNamespace(getNSI(l)), l);
 	}
 	
 	/**
