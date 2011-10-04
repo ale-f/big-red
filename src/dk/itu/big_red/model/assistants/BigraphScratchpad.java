@@ -47,6 +47,7 @@ public class BigraphScratchpad {
 	public void clear() {
 		links.clear();
 		points.clear();
+		children.clear();
 		layouts.clear();
 		parents.clear();
 		names.clear();
