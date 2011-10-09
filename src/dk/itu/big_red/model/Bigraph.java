@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -231,6 +232,15 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			for (Point p : i.getPoints()) {
 				System.out.println("");
 				iD.addPoint(m.getCloneOf(p));
+			}
+		}
+		
+		for (Entry<Object, Object> e : m.getMap().entrySet()) {
+			Object o = e.getKey();
+			if (o instanceof Layoutable) {
+				Layoutable l = (Layoutable)o,
+						lD = (Layoutable)e.getValue();
+				lD.setName(l.getName());
 			}
 		}
 		

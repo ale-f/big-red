@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.assistants;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class CloneMap {
 	private HashMap<Object, Object> objects =
@@ -30,5 +31,13 @@ public class CloneMap {
 	@SuppressWarnings("unchecked")
 	public <T> T getCloneOf(T original) {
 		return (T)objects.get(original);
+	}
+	
+	/**
+	 * Returns the underlying {@link Map} object.
+	 * @return the {@link Map} from originals to clones
+	 */
+	public Map<Object, Object> getMap() {
+		return objects;
 	}
 }
