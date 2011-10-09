@@ -227,10 +227,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		
 		for (Link i : Utility.only(getChildren(), Link.class)) {
 			Link iD = m.getCloneOf(i);
-			for (Point p : i.getPoints()) {
-				System.out.println("");
+			for (Point p : i.getPoints())
 				iD.addPoint(m.getCloneOf(p));
-			}
 		}
 		
 		for (Entry<Object, Object> e : m.getMap().entrySet()) {
