@@ -25,73 +25,74 @@ import dk.itu.big_red.util.geometry.Rectangle;
  */
 public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	private BigraphScratchpad scratch = null;
+	private Change activeChange = null;
 	
 	public BigraphIntegrityValidator(Bigraph changeable) {
 		super(changeable);
 		scratch = new BigraphScratchpad(changeable);
 	}
 	
-	private class QueuedLayoutableCheck {
-		public Change c;
-		public Layoutable l;
-		public QueuedLayoutableCheck(Change c, Layoutable l) {
-			this.c = c; this.l = l;
-		}
+	private ArrayList<Layoutable> layoutChecks =
+		new ArrayList<Layoutable>();
+	
+	protected void rejectChange(String rationale)
+			throws ChangeRejectedException {
+		super.rejectChange(activeChange, rationale);
 	}
-	private ArrayList<QueuedLayoutableCheck> layoutChecks =
-		new ArrayList<QueuedLayoutableCheck>();
 	
 	private void runLayoutChecks() throws ChangeRejectedException {
-		for (QueuedLayoutableCheck i : layoutChecks) {
-			Container parent = scratch.getParentFor(i.l);
-			ReadonlyRectangle layout = scratch.getLayoutFor(i.l);
-			checkObjectCanContain(i.c, parent, layout);
-			if (i.l instanceof Container)
-				checkLayoutCanContainChildren(i.c, (Container)i.l, layout);
+		for (Layoutable i : layoutChecks) {
+			Container parent = scratch.getParentFor(i);
+			ReadonlyRectangle layout = scratch.getLayoutFor(i);
+			checkObjectCanContain(parent, layout);
+			if (i instanceof Container)
+				checkLayoutCanContainChildren((Container)i, layout);
 		}
 	}
 	
-	private void checkObjectCanContain(Change b, Layoutable o, ReadonlyRectangle nl) throws ChangeRejectedException {
+	private void checkObjectCanContain(Layoutable o, ReadonlyRectangle nl) throws ChangeRejectedException {
 		if (o != null && !(o instanceof Bigraph)) {
 			Rectangle tr =
 				scratch.getLayoutFor(o).getCopy().setLocation(0, 0);
 			if (!tr.contains(nl))
-				rejectChange(b,
+				rejectChange(
 					"The object can no longer fit into its container");
 		}
 	}
 	
-	private void checkLayoutCanContainChildren(Change b, Container c, ReadonlyRectangle nl) throws ChangeRejectedException {
+	private void checkLayoutCanContainChildren(Container c, ReadonlyRectangle nl) throws ChangeRejectedException {
 		nl = nl.getCopy().setLocation(0, 0);
 		for (Layoutable i : c.getChildren()) {
 			ReadonlyRectangle layout = scratch.getLayoutFor(i);
 			if (!nl.contains(layout))
-				rejectChange(b, "The new size is too small");
+				rejectChange("The new size is too small");
 		}
 	}
 	
 	private boolean checkNames = false;
 	
-	private void recursivelyCheckNames(Change b, Container c) throws ChangeRejectedException {
+	private void recursivelyCheckNames(Container c) throws ChangeRejectedException {
 		for (Layoutable i : scratch.getChildrenFor(c)) {
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(i);
 			String name = i.getName();
 			if (name == null) {
 				if (!ns.containsValue(i))
-					rejectChange(b, i.toString() + " doesn't have a name");
+					rejectChange(i.toString() + " doesn't have a name");
 			} else {
 				if (!ns.get(name).equals(i))
-					rejectChange(b, "The name \"" + name + "\" is already in use");
+					rejectChange("The name \"" + name + "\" is already in use");
 			}
 			
 			if (i instanceof Container)
-				recursivelyCheckNames(b, (Container)i);
+				recursivelyCheckNames((Container)i);
 		}
 	}
 	
 	@Override
 	public void tryValidateChange(Change b)
 			throws ChangeRejectedException {
+		activeChange = b;
+		
 		scratch.clear();
 		
 		layoutChecks.clear();
@@ -101,13 +102,15 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		
 		runLayoutChecks();
 		if (checkNames)
-			recursivelyCheckNames(b, getChangeable());
+			recursivelyCheckNames(getChangeable());
+		
+		activeChange = null;
 	}
 	
 	protected void _tryValidateChange(Change b)
 			throws ChangeRejectedException {
 		if (!b.isReady()) {
-			rejectChange(b, "The Change is not ready");
+			rejectChange("The Change is not ready");
 		} else if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				_tryValidateChange(c);
@@ -121,19 +124,20 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			if (scratch.getLinkFor(c.point) == null)
-				rejectChange(b, "The Point is already disconnected");
+				rejectChange("The Point is already disconnected");
 			scratch.removePointFor(c.link, c.point);
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			if (c.child instanceof Edge) {
 				if (!(c.parent instanceof Bigraph))
-					rejectChange(b, "Edges must be children of the top-level Bigraph");
+					rejectChange("Edges must be children of the top-level Bigraph");
 			} else {
 				if (!c.parent.canContain(c.child))
 					rejectChange(b,
 						c.parent.getClass().getSimpleName() + "s can't contain " +
 						c.child.getClass().getSimpleName() + "s");
-				layoutChecks.add(new QueuedLayoutableCheck(b, c.child));
+				if (!layoutChecks.contains(c.child))
+					layoutChecks.add(c.child);
 			}
 			scratch.addChildFor(c.parent, c.child);
 			checkNames = true;
@@ -143,8 +147,9 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			if (c.model instanceof Bigraph)
-				rejectChange(b, "Bigraphs cannot be moved or resized");
-			layoutChecks.add(new QueuedLayoutableCheck(b, c.model));
+				rejectChange("Bigraphs cannot be moved or resized");
+			if (!layoutChecks.contains(c.model))
+				layoutChecks.add(c.model);
 			scratch.setLayoutFor(c.model, c.newLayout);
 		} else if (b instanceof Edge.ChangeReposition) {
 			/* nothing to do? */
@@ -155,11 +160,11 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.model);
 			if (c.newName != null && ns.get(c.newName) != null)
 				if (!ns.get(c.newName).equals(c.model))
-					rejectChange(b, "Names must be unique");
+					rejectChange("Names must be unique");
 			scratch.setNameFor(c.model, c.newName);
 			checkNames = true;
 		} else {
-			rejectChange(b, "The change was not recognised by the validator");
+			rejectChange("The change was not recognised by the validator");
 		}
 	}
 }
