@@ -10,7 +10,9 @@ import org.w3c.dom.Node;
 import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
@@ -122,5 +124,13 @@ public abstract class Container extends Layoutable {
 		if (getChildren().size() != 0)
 			children = " " + getChildren();
 		return getClass().getSimpleName() + " " + name + children;
+	}
+	
+	public Change changeAddChild(Layoutable child) {
+		return new BigraphChangeAddChild(this, child);
+	}
+	
+	public Change changeRemoveChild(Layoutable child) {
+		return new BigraphChangeRemoveChild(this, child);
 	}
 }
