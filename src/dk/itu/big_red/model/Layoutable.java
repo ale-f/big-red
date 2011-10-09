@@ -248,8 +248,10 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	
 	@Override
 	public String toString() {
-		String name = (this.name != null ? this.name : "(anonymous)");
-		return getClass().getSimpleName() + " " + name;
+		String base = getClass().getSimpleName();
+		if (name != null) {
+			return base + " " + name;
+		} else return base;
 	}
 	
 	public Change changeLayout(Rectangle newLayout) {
