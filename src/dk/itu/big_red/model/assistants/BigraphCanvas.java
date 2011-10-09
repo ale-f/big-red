@@ -67,17 +67,6 @@ public class BigraphCanvas extends Canvas {
 		double widthRatio = (double)preferredSize.width / availableSize.x,
 				heightRatio = (double)preferredSize.height / availableSize.y;
 		
-		double scale = 1;
-		if (widthRatio < 1 && heightRatio < 1) {
-			scale = 1 / Math.max(widthRatio, heightRatio);
-		} else if (widthRatio < 1 && heightRatio > 1) {
-			scale = 1 / heightRatio;
-		} else if (widthRatio > 1 && heightRatio < 1) {
-			scale = 1 / widthRatio;
-		} else if (widthRatio > 1 && heightRatio > 1) {
-			scale = 1 / Math.min(widthRatio, heightRatio);
-		}
-		
-		zm.setZoom(scale);
+		zm.setZoom(1 / Math.max(widthRatio, heightRatio));
 	}
 }
