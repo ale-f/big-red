@@ -87,11 +87,9 @@ public abstract class Container extends Layoutable {
 	}
 	
 	protected void addChild(Layoutable child) {
-		boolean added = children.add(child);
-		if (added) {
-			child.setParent(this);
-			firePropertyChange(PROPERTY_CHILD, null, child);
-		}
+		children.add(child);
+		child.setParent(this);
+		firePropertyChange(PROPERTY_CHILD, null, child);
 	}
 	
 	protected void removeChild(Layoutable child) {
