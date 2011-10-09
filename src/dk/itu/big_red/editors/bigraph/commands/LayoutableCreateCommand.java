@@ -8,9 +8,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 public class LayoutableCreateCommand extends ChangeCommand {
@@ -55,9 +52,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		
 		String name = container.getBigraph().getFirstUnusedName(node);
 		
-		cg.add(new BigraphChangeAddChild(container, node),
-				new BigraphChangeLayout(node, layout),
-				new BigraphChangeName(node, name));
+		cg.add(container.changeAddChild(node), node.changeLayout(layout),
+				node.changeName(name));
 	}
 	
 	public void setObject(Object s) {

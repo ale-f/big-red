@@ -15,7 +15,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.assistants.BigraphCanvas;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 
 public class RuleDialog extends Dialog {
 	private Bigraph lhs;
@@ -50,7 +49,7 @@ public class RuleDialog extends Dialog {
 		
 		ChangeGroup cg = new ChangeGroup();
 		for (Layoutable i : lhs.getChildren())
-			cg.add(new BigraphChangeLayout(i, i.getLayout().getCopy().translate(-25, -25)));
+			cg.add(i.changeLayout(i.getLayout().getCopy().translate(-25, -25)));
 		lhs.applyChange(cg);
 		
 		bd.setContents(lhs);

@@ -7,7 +7,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {
@@ -39,7 +38,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 			return;
 		setTarget(model.getBigraph());
 		if (noOverlap() && boundariesSatisfied())
-			cg.add(new BigraphChangeLayout(model, layout));
+			cg.add(model.changeLayout(layout));
 	}
 	
 	public boolean noOverlap() {

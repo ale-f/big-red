@@ -4,8 +4,6 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 public class LayoutableAddCommand extends ChangeCommand {
@@ -41,8 +39,8 @@ public class LayoutableAddCommand extends ChangeCommand {
 				parent = parent.getBigraph();
 			}
 			
-			cg.add(new BigraphChangeAddChild(parent, child),
-					new BigraphChangeLayout(child, nr));
+			cg.add(parent.changeAddChild(child),
+					child.changeLayout(nr));
 		}
 	}
 	

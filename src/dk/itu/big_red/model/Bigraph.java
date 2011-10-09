@@ -422,7 +422,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 				r.setLocation(innerNameProgress, top);
 				innerNameProgress += size.width + PADDING;
 			}
-			cg.add(new BigraphChangeLayout(i, r));
+			cg.add(i.changeLayout(r));
 		}
 		
 		for (Link i : Utility.only(getChildren(), Link.class)) {

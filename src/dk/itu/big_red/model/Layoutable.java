@@ -9,6 +9,7 @@ import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
+import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -149,7 +150,7 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	 * @return the proposed new size of this object
 	 */
 	protected Dimension relayout(ChangeGroup cg) {
-		cg.add(new BigraphChangeLayout(this, new Rectangle(0, 0, 50, 50)));
+		cg.add(changeLayout(new Rectangle(0, 0, 50, 50)));
 		return new Dimension(50, 50);
 	}
 	
@@ -177,5 +178,13 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	public String toString() {
 		String name = (this.name != null ? this.name : "(anonymous)");
 		return getClass().getSimpleName() + " " + name;
+	}
+	
+	public Change changeLayout(Rectangle newLayout) {
+		return new BigraphChangeLayout(this, newLayout);
+	}
+	
+	public Change changeName(String newName) {
+		return new BigraphChangeName(this, newName);
 	}
 }

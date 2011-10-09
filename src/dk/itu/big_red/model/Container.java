@@ -11,7 +11,6 @@ import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -102,7 +101,7 @@ public abstract class Container extends Layoutable {
 				new Rectangle().setSize(sizes.get(i));
 			cl.setLocation(width,
 					PADDING + ((maxHeight - cl.getHeight()) / 2));
-			cg.add(new BigraphChangeLayout(i, cl));
+			cg.add(i.changeLayout(cl));
 			width += cl.getWidth() + PADDING;
 		}
 		
@@ -111,7 +110,7 @@ public abstract class Container extends Layoutable {
 		
 		Dimension r =
 			new Dimension(width, maxHeight + (PADDING * 2));
-		cg.add(new BigraphChangeLayout(this, nl.setSize(r)));
+		cg.add(changeLayout(nl.setSize(r)));
 		return r;
 	}
 	

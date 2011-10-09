@@ -9,9 +9,6 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 
 public class LayoutablePasteCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -64,9 +61,9 @@ public class LayoutablePasteCommand extends ChangeCommand {
 					i instanceof Site) {
 				Layoutable j = i.clone(null);
 				String name = newParent.getBigraph().getFirstUnusedName(j);
-				cg.add(new BigraphChangeAddChild(newParent, j),
-						new BigraphChangeLayout(j, j.getLayout().getCopy().translate(20, 20)),
-						new BigraphChangeName(j, name));
+				cg.add(newParent.changeAddChild(j),
+						j.changeLayout(j.getLayout().getCopy().translate(20, 20)),
+						j.changeName(name));
 			}
 		}
 	}
