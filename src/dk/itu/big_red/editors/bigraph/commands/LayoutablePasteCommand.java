@@ -1,13 +1,17 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
+import java.util.Map;
+
 import org.eclipse.gef.ui.actions.Clipboard;
 
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class LayoutablePasteCommand extends ChangeCommand {
@@ -28,6 +32,8 @@ public class LayoutablePasteCommand extends ChangeCommand {
 			this.newParent = (Container)newParent;
 	}
 	
+	private BigraphScratchpad scratch = null;
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void prepare() {
@@ -42,7 +48,11 @@ public class LayoutablePasteCommand extends ChangeCommand {
 		cg.clear();
 		if (newParent == null)
 			return;
+		
 		setTarget(newParent.getBigraph());
+		if (scratch != null) {
+			scratch.clear();
+		} else scratch = new BigraphScratchpad(newParent.getBigraph());
 		
 		ArrayList<Layoutable> bList;
 		try {
@@ -60,11 +70,24 @@ public class LayoutablePasteCommand extends ChangeCommand {
 			} else if (i instanceof Node || i instanceof Root ||
 					i instanceof Site) {
 				Layoutable j = i.clone(null);
-				String name = newParent.getBigraph().getFirstUnusedName(j);
+				
 				cg.add(newParent.changeAddChild(j),
-						j.changeLayout(j.getLayout().getCopy().translate(20, 20)),
-						j.changeName(name));
+						j.changeLayout(j.getLayout().getCopy().translate(20, 20)));
+				fixNames(j, cg);
 			}
+		}
+	}
+	
+	private void fixNames(Layoutable l, ChangeGroup cg) {
+		Map<String, Layoutable> ns = scratch.getNamespaceFor(l);
+		String name = Bigraph.getFirstUnusedName(ns, l);
+		cg.add(l.changeName(name));
+		ns.put(name, l);
+		
+		if (l instanceof Container) {
+			Container c = (Container)l;
+			for (Layoutable j : c.getChildren())
+				fixNames(j, cg);
 		}
 	}
 }
