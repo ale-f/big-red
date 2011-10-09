@@ -142,15 +142,13 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	/**
-	 * Gets the first unused name suitable for the given {@link Layoutable}.
+	 * Gets the first unused name in a namespace.
 	 * @param ns the namespace to search
-	 * @param l a {@link Layoutable}
 	 * @return a {@link String} suitable for a {@link BigraphChangeName}, or
 	 * &mdash; in the highly unlikely event that there are 62,193,781 objects
-	 * of the same type as <code>l</code> in this {@link Bigraph} &mdash; the
-	 * empty string
+	 * named by this function in the given namespace &mdash; the empty string
 	 */
-	public static String getFirstUnusedName(Map<String, Layoutable> ns, Layoutable l) {
+	public static String getFirstUnusedName(Map<String, Layoutable> ns) {
 		int i = 0;
 		String name = null;
 		do {
@@ -168,7 +166,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	 * empty string
 	 */
 	public String getFirstUnusedName(Layoutable l) {
-		return Bigraph.getFirstUnusedName(getNamespace(getNSI(l)), l);
+		return Bigraph.getFirstUnusedName(getNamespace(getNSI(l)));
 	}
 	
 	/**

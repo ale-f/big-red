@@ -80,7 +80,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 	
 	private void fixNames(Layoutable l, ChangeGroup cg) {
 		Map<String, Layoutable> ns = scratch.getNamespaceFor(l);
-		String name = Bigraph.getFirstUnusedName(ns, l);
+		String name = Bigraph.getFirstUnusedName(ns);
 		cg.add(l.changeName(name));
 		ns.put(name, l);
 		
