@@ -1,6 +1,7 @@
 package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.assistants.CloneMap;
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -18,6 +19,40 @@ import dk.itu.big_red.util.geometry.Rectangle;
   *
   */
 public class Edge extends Link implements IEdge {
+	public class ChangeReposition extends Change {
+		public Edge edge;
+		
+		public ChangeReposition(Edge edge) {
+			this.edge = edge;
+		}
+
+		private Rectangle oldLayout;
+		@Override
+		public void beforeApply() {
+			oldLayout = edge.getLayout().getCopy();
+		}
+		
+		@Override
+		public Change inverse() {
+			return edge.changeLayout(oldLayout);
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldLayout != null);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (edge != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(recalculate position of " + edge + ")";
+		}
+	}
+	
 	/**
 	 * Moves this EdgeTarget to the average position of all the
 	 * {@link Point}s connected to it.
@@ -47,4 +82,7 @@ public class Edge extends Link implements IEdge {
 		return (Edge)super.clone(m);
 	}
 
+	public Change changeReposition() {
+		return new ChangeReposition(this);
+	}
 }

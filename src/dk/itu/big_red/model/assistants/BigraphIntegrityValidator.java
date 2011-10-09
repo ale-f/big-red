@@ -12,7 +12,6 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -147,7 +146,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				rejectChange(b, "Bigraphs cannot be moved or resized");
 			layoutChecks.add(new QueuedLayoutableCheck(b, c.model));
 			scratch.setLayoutFor(c.model, c.newLayout);
-		} else if (b instanceof BigraphChangeEdgeReposition) {
+		} else if (b instanceof Edge.ChangeReposition) {
 			/* nothing to do? */
 		} else if (b instanceof BigraphChangeOutlineColour) {
 			/* totally nothing to do */

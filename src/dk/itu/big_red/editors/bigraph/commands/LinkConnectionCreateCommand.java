@@ -6,7 +6,6 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 
 /**
  * A LinkConnectionCreateCommand is in charge of creating and updating {@link
@@ -47,7 +46,7 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			cg.add(b.changeAddChild(ed),
 					((Point)first).changeConnect(ed),
 					((Point)second).changeConnect(ed),
-					new BigraphChangeEdgeReposition(ed));
+					ed.changeReposition());
 		} else if (first instanceof Point && second instanceof Link) {
 			setTarget(((Point)first).getBigraph());
 			cg.add(((Point)first).changeConnect((Link)second));
