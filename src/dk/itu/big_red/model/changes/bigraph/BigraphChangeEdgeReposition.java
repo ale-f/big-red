@@ -19,7 +19,7 @@ public class BigraphChangeEdgeReposition extends Change {
 	
 	@Override
 	public Change inverse() {
-		return new BigraphChangeLayout(edge, oldLayout);
+		return edge.changeLayout(oldLayout);
 	}
 	
 	@Override

@@ -8,8 +8,6 @@ import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -33,6 +31,80 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public abstract class Layoutable extends ModelObject implements IAdaptable, ICommentable {
+	public class ChangeLayout extends Change {
+		public Layoutable model;
+		public Rectangle newLayout;
+		
+		public ChangeLayout(Layoutable model, Rectangle newLayout) {
+			this.model = model;
+			this.newLayout = newLayout;
+		}
+
+		private Rectangle oldLayout;
+		@Override
+		public void beforeApply() {
+			oldLayout = model.getLayout().getCopy();
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeLayout(model, oldLayout);
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldLayout != null);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (model != null && newLayout != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set layout of " + model + " to " + newLayout + ")";
+		}
+	}
+
+	public class ChangeName extends Change {
+		public Layoutable model;
+		public String newName;
+		
+		public ChangeName(Layoutable model, String newName) {
+			this.model = model;
+			this.newName = newName;
+		}
+
+		private boolean oldNameRecorded = false;
+		private String oldName;
+		@Override
+		public void beforeApply() {
+			oldName = model.getName();
+			oldNameRecorded = true;
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeName(model, oldName);
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return oldNameRecorded;
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (model != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set name of " + model + " to " + newName + ")";
+		}
+	}
+	
 	protected Rectangle layout = new Rectangle();
 	protected Container parent = null;
 	
@@ -181,10 +253,10 @@ public abstract class Layoutable extends ModelObject implements IAdaptable, ICom
 	}
 	
 	public Change changeLayout(Rectangle newLayout) {
-		return new BigraphChangeLayout(this, newLayout);
+		return new ChangeLayout(this, newLayout);
 	}
 	
 	public Change changeName(String newName) {
-		return new BigraphChangeName(this, newName);
+		return new ChangeName(this, newName);
 	}
 }

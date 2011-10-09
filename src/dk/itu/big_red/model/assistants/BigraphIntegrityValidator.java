@@ -13,8 +13,6 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -143,8 +141,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			scratch.removeChildFor(c.parent, c.child);
-		} else if (b instanceof BigraphChangeLayout) {
-			BigraphChangeLayout c = (BigraphChangeLayout)b;
+		} else if (b instanceof Layoutable.ChangeLayout) {
+			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			if (c.model instanceof Bigraph)
 				rejectChange(b, "Bigraphs cannot be moved or resized");
 			layoutChecks.add(new QueuedLayoutableCheck(b, c.model));
@@ -153,8 +151,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			/* nothing to do? */
 		} else if (b instanceof BigraphChangeOutlineColour) {
 			/* totally nothing to do */
-		} else if (b instanceof BigraphChangeName) {
-			BigraphChangeName c = (BigraphChangeName)b;
+		} else if (b instanceof Layoutable.ChangeName) {
+			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.model);
 			if (c.newName != null && ns.get(c.newName) != null)
 				if (!ns.get(c.newName).equals(c.model))

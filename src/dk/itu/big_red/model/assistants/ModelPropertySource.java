@@ -10,7 +10,6 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.model.interfaces.internal.IFillColourable;
 import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
@@ -93,7 +92,7 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (id.equals(Layoutable.PROPERTY_NAME)) {
 			String name = (String)value;
 			Layoutable l = (Layoutable)object;
-			l.getBigraph().applyChange(new BigraphChangeName(l, name));
+			l.getBigraph().applyChange(l.changeName(name));
 		}
 	}
 

@@ -16,8 +16,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.interfaces.IBigraph;
@@ -486,8 +484,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			c.parent.removeChild(c.child);
-		} else if (b instanceof BigraphChangeLayout) {
-			BigraphChangeLayout c = (BigraphChangeLayout)b;
+		} else if (b instanceof Layoutable.ChangeLayout) {
+			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			c.model.setLayout(c.newLayout);
 			if (c.model.getParent() instanceof Bigraph)
 				((Bigraph)c.model.getParent()).updateBoundaries();
@@ -497,8 +495,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof BigraphChangeOutlineColour) {
 			BigraphChangeOutlineColour c = (BigraphChangeOutlineColour)b;
 			c.model.setOutlineColour(c.newColour);
-		} else if (b instanceof BigraphChangeName) {
-			BigraphChangeName c = (BigraphChangeName)b;
+		} else if (b instanceof Layoutable.ChangeName) {
+			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			if (c.model.getName() != null)
 				getNamespace(getNSI(c.model)).remove(c.model.getName());
 			c.model.setName(c.newName);
