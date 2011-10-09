@@ -78,10 +78,6 @@ public abstract class Container extends Layoutable {
 	 */
 	public static final String PROPERTY_CHILD = "ContainerChild";
 	
-	public Container() {
-		layout = new Rectangle(10, 10, 100, 100);
-	}
-	
 	public boolean canContain(Layoutable child) {
 		return false;
 	}
