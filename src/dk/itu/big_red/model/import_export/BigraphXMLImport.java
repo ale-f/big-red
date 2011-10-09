@@ -24,7 +24,6 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.util.DOM;
@@ -139,7 +138,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 
 		
 		if (model instanceof Layoutable) {
-			cg.add(new BigraphChangeAddChild(context, (Layoutable)model));
+			cg.add(context.changeAddChild((Layoutable)model));
 			
 			if (!(model instanceof Bigraph)) {
 				String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");

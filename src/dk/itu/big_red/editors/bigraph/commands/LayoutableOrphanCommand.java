@@ -7,7 +7,6 @@ import dk.itu.big_red.editors.bigraph.parts.AbstractPart;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 
 public class LayoutableOrphanCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -43,7 +42,7 @@ public class LayoutableOrphanCommand extends ChangeCommand {
 		if (parent != null && children.size() != 0) {
 			setTarget(parent.getBigraph());
 			for (Layoutable i : children)
-				cg.add(new BigraphChangeRemoveChild(parent, i));
+				cg.add(parent.changeRemoveChild(i));
 		}
 	}
 }

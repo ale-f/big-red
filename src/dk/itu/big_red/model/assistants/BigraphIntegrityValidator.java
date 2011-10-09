@@ -11,14 +11,12 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -129,8 +127,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			if (scratch.getLinkFor(c.point) == null)
 				rejectChange(b, "The Point is already disconnected");
 			scratch.removePointFor(c.link, c.point);
-		} else if (b instanceof BigraphChangeAddChild) {
-			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
+		} else if (b instanceof Container.ChangeAddChild) {
+			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			if (c.child instanceof Edge) {
 				if (!(c.parent instanceof Bigraph))
 					rejectChange(b, "Edges must be children of the top-level Bigraph");
@@ -143,8 +141,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			}
 			scratch.addChildFor(c.parent, c.child);
 			checkNames = true;
-		} else if (b instanceof BigraphChangeRemoveChild) {
-			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
+		} else if (b instanceof Container.ChangeRemoveChild) {
+			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			scratch.removeChildFor(c.parent, c.child);
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;

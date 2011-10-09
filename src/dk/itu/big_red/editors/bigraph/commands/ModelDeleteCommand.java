@@ -15,8 +15,6 @@ import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 
 public class ModelDeleteCommand extends ChangeCommand {
 	@Override
@@ -52,7 +50,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		cg.add(new BigraphChangeDisconnect(p, l));
 		scratch.removePointFor(l, p);
 		if (scratch.getPointsFor(l).size() == 0 && l instanceof Edge) {
-			cg.add(new BigraphChangeRemoveChild(l.getBigraph(), l));
+			cg.add(l.getBigraph().changeRemoveChild(l));
 			scratch.removeChildFor(l.getBigraph(), l);
 		}
 	}
@@ -79,8 +77,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 				if (p.getLink() != null)
 					removePoint(p.getLink(), p);
 			}
-			cg.add(new BigraphChangeName(n, null),
-					new BigraphChangeRemoveChild(n.getParent(), n));
+			cg.add(n.changeName(null),
+					n.getParent().changeRemoveChild(n));
 		}
 	}
 	

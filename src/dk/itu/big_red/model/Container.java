@@ -10,8 +10,6 @@ import org.w3c.dom.Node;
 import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 /**
@@ -23,6 +21,56 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public abstract class Container extends Layoutable {
+	public class ChangeAddChild extends Change {
+		public Container parent;
+		public Layoutable child;
+		
+		public ChangeAddChild(Container parent, Layoutable child) {
+			this.parent = parent;
+			this.child = child;
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeRemoveChild(parent, child);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (parent != null && child != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(add child " + child + " to parent " + parent + ")";
+		}
+	}
+	
+	public class ChangeRemoveChild extends Change {
+		public Container parent;
+		public Layoutable child;
+		
+		public ChangeRemoveChild(Container parent, Layoutable child) {
+			this.parent = parent;
+			this.child = child;
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeAddChild(parent, child);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (parent != null && child != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove child " + child + " from " + parent + ")";
+		}
+	}
+	
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
 
 	/**
@@ -126,10 +174,10 @@ public abstract class Container extends Layoutable {
 	}
 	
 	public Change changeAddChild(Layoutable child) {
-		return new BigraphChangeAddChild(this, child);
+		return new ChangeAddChild(this, child);
 	}
 	
 	public Change changeRemoveChild(Layoutable child) {
-		return new BigraphChangeRemoveChild(this, child);
+		return new ChangeRemoveChild(this, child);
 	}
 }

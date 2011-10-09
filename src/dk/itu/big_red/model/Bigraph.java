@@ -15,14 +15,12 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeable;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeAddChild;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeRemoveChild;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IEdge;
@@ -484,11 +482,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof BigraphChangeDisconnect) {
 			BigraphChangeDisconnect c = (BigraphChangeDisconnect)b;
 			c.link.removePoint(c.point);
-		} else if (b instanceof BigraphChangeAddChild) {
-			BigraphChangeAddChild c = (BigraphChangeAddChild)b;
+		} else if (b instanceof Container.ChangeAddChild) {
+			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			c.parent.addChild(c.child);
-		} else if (b instanceof BigraphChangeRemoveChild) {
-			BigraphChangeRemoveChild c = (BigraphChangeRemoveChild)b;
+		} else if (b instanceof Container.ChangeRemoveChild) {
+			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			c.parent.removeChild(c.child);
 		} else if (b instanceof BigraphChangeLayout) {
 			BigraphChangeLayout c = (BigraphChangeLayout)b;
