@@ -6,7 +6,6 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 
 /**
@@ -46,15 +45,15 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			setTarget(b);
 			Edge ed = new Edge();
 			cg.add(b.changeAddChild(ed),
-					new BigraphChangeConnect((Point)first, ed),
-					new BigraphChangeConnect((Point)second, ed),
+					((Point)first).changeConnect(ed),
+					((Point)second).changeConnect(ed),
 					new BigraphChangeEdgeReposition(ed));
 		} else if (first instanceof Point && second instanceof Link) {
 			setTarget(((Point)first).getBigraph());
-			cg.add(new BigraphChangeConnect((Point)first, (Link)second));
+			cg.add(((Point)first).changeConnect((Link)second));
 		} else if (first instanceof Link && second instanceof Point) {
 			setTarget(((Link)first).getBigraph());
-			cg.add(new BigraphChangeConnect((Point)second, (Link)first));
+			cg.add(((Point)second).changeConnect((Link)first));
 		}
 	}
 }

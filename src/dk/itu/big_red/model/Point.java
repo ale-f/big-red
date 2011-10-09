@@ -1,6 +1,8 @@
 package dk.itu.big_red.model;
 
 import org.eclipse.swt.graphics.RGB;
+
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 
@@ -11,6 +13,56 @@ import dk.itu.big_red.model.interfaces.IPoint;
  * @see IPoint
  */
 public abstract class Point extends Layoutable implements IPoint {
+	public class ChangeConnect extends Change {
+		public Point point;
+		public Link link;
+		
+		public ChangeConnect(Point point, Link link) {
+			this.point = point;
+			this.link = link;
+		}
+
+		@Override
+		public Change inverse() {
+			return new ChangeDisconnect(point, link);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (point != null && link != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(connect " + point + " to " + link + ")";
+		}
+	}
+	
+	public class ChangeDisconnect extends Change {
+		public Point point;
+		public Link link;
+		
+		public ChangeDisconnect(Point point, Link link) {
+			this.point = point;
+			this.link = link;
+		}
+
+		@Override
+		public Change inverse() {
+			return new ChangeConnect(point, link);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (point != null && link != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(disconnect " + point + " from " + link + ")";
+		}
+	}
+	
 	/**
 	 * The property name fired when the source edge changes.
 	 */
@@ -43,5 +95,13 @@ public abstract class Point extends Layoutable implements IPoint {
 	
 	public Link getLink() {
 		return link;
+	}
+	
+	public Change changeConnect(Link l) {
+		return new ChangeConnect(this, l);
+	}
+	
+	public Change changeDisconnect(Link l) {
+		return new ChangeDisconnect(this, l);
 	}
 }

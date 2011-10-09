@@ -15,8 +15,6 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeable;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
@@ -476,11 +474,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				doChange(c);
-		} else if (b instanceof BigraphChangeConnect) {
-			BigraphChangeConnect c = (BigraphChangeConnect)b;
+		} else if (b instanceof Point.ChangeConnect) {
+			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			c.link.addPoint(c.point);
-		} else if (b instanceof BigraphChangeDisconnect) {
-			BigraphChangeDisconnect c = (BigraphChangeDisconnect)b;
+		} else if (b instanceof Point.ChangeDisconnect) {
+			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			c.link.removePoint(c.point);
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;

@@ -7,12 +7,11 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeDisconnect;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeEdgeReposition;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeLayout;
 import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
@@ -115,15 +114,15 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				_tryValidateChange(c);
-		} else if (b instanceof BigraphChangeConnect) {
-			BigraphChangeConnect c = (BigraphChangeConnect)b;
+		} else if (b instanceof Point.ChangeConnect) {
+			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			if (scratch.getLinkFor(c.point) != null)
 				rejectChange(b,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
 			scratch.addPointFor(c.link, c.point);
-		} else if (b instanceof BigraphChangeDisconnect) {
-			BigraphChangeDisconnect c = (BigraphChangeDisconnect)b;
+		} else if (b instanceof Point.ChangeDisconnect) {
+			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			if (scratch.getLinkFor(c.point) == null)
 				rejectChange(b, "The Point is already disconnected");
 			scratch.removePointFor(c.link, c.point);

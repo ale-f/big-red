@@ -24,8 +24,6 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeConnect;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeName;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.resources.Project;
@@ -110,7 +108,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	
 	private Point processPoint(Element e, Point model) throws ImportFailedException {
 		String link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
-		cg.add(new BigraphChangeConnect(model, links.get(link)));
+		cg.add(model.changeConnect(links.get(link)));
 		return model;
 	}
 	
@@ -138,11 +136,12 @@ public class BigraphXMLImport extends Import<Bigraph> {
 
 		
 		if (model instanceof Layoutable) {
-			cg.add(context.changeAddChild((Layoutable)model));
+			Layoutable l = (Layoutable)model;
+			cg.add(context.changeAddChild(l));
 			
 			if (!(model instanceof Bigraph)) {
 				String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
-				cg.add(new BigraphChangeName((Layoutable)model, name));
+				cg.add(l.changeName(name));
 			}
 			
 			boolean warn = false;
