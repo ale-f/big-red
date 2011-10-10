@@ -209,9 +209,7 @@ public class Colour {
 	}
 	
 	private static final int percentage(String pc) {
-		int pq = (int)(2.55 * Integer.parseInt(pc));
-		System.out.println(pq);
-		return pq;
+		return (int)(2.55 * Integer.parseInt(pc));
 	}
 	
 	private static final double num(String pc) {
@@ -283,7 +281,8 @@ public class Colour {
 	}
 	
 	public Colour setColour(Colour c) {
-		return setRed(c.getRed()).setGreen(c.getGreen()).setBlue(c.getBlue()).setAlpha(c.getAlpha());
+		return setRed(c.getRed()).setGreen(c.getGreen()).
+				setBlue(c.getBlue()).setAlpha(c.getAlpha());
 	}
 	
 	public Colour setRed(int red) {
@@ -398,5 +397,4 @@ public class Colour {
 		Random r = RedPlugin.getRandom();
 		return new RGB(r.nextInt(256), r.nextInt(256), r.nextInt(256));
 	}
-
 }
