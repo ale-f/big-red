@@ -87,13 +87,11 @@ public class AppearanceGenerator {
 		if (o instanceof IFillColourable)
 			((IFillColourable)o).setFillColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "fillColor"));
 		
-		if (o instanceof IOutlineColourable) {
+		if (o instanceof IOutlineColourable)
 			((IOutlineColourable)o).setOutlineColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor"));
-		}
 		
-		if (o instanceof ICommentable) {
+		if (o instanceof ICommentable)
 			((ICommentable)o).setComment(DOM.getAttributeNS(e, XMLNS.BIG_RED, "comment"));
-		}
 	}
 	
 	public static Element getShape(Document doc, Control c) {
