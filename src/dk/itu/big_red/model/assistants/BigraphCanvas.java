@@ -29,6 +29,11 @@ public class BigraphCanvas extends Canvas {
 	private ZoomManager zm = null;
 	private Dimension preferredSize = null;
 	
+	public static final double zoomBounds[] = {
+		0.05,
+		1
+	};
+	
 	public BigraphCanvas(Composite parent, int style) {
 		super(parent, style);
 		
@@ -37,6 +42,7 @@ public class BigraphCanvas extends Canvas {
 		gvi.setControl(this);
 		gvi.setRootEditPart(rep = new ScalableRootEditPart());
 		zm = rep.getZoomManager();
+		zm.setZoomLevels(zoomBounds);
 		
 		addListener(SWT.Resize, new Listener() {
 			@Override
