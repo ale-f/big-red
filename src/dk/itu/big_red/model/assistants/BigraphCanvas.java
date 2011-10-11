@@ -70,6 +70,9 @@ public class BigraphCanvas extends Canvas {
 		getParent().layout();
 		
 		Point availableSize = getSize();
+		if (availableSize == null || preferredSize == null)
+			return;
+		
 		double widthRatio = (double)preferredSize.width / availableSize.x,
 				heightRatio = (double)preferredSize.height / availableSize.y;
 		
