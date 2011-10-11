@@ -54,12 +54,9 @@ public class BigraphScratchpad {
 	}
 	
 	public ReadonlyRectangle getLayoutFor(Layoutable a) {
-		ReadonlyRectangle b;
 		if (!layouts.containsKey(a)) {
-			b = a.getLayout();
-			layouts.put(a, b);
-		} else b = layouts.get(a);
-		return b;
+			return a.getLayout();
+		} else return layouts.get(a);
 	}
 	
 	public void setLayoutFor(Layoutable a, Rectangle b) {
@@ -67,12 +64,9 @@ public class BigraphScratchpad {
 	}
 	
 	public Container getParentFor(Layoutable a) {
-		Container b;
 		if (!parents.containsKey(a)) {
-			b = a.getParent();
-			parents.put(a, b);
-		} else b = parents.get(a);
-		return b;
+			return a.getParent();
+		} else return parents.get(a);
 	}
 	
 	public Bigraph getBigraphFor(Layoutable l) {
@@ -106,12 +100,9 @@ public class BigraphScratchpad {
 	}
 	
 	public Link getLinkFor(Point a) {
-		Link b;
 		if (!links.containsKey(a)) {
-			b = a.getLink();
-			links.put(a, b);
-		} else b = links.get(a);
-		return b;
+			return a.getLink();
+		} else return links.get(a);
 	}
 	
 	public void setLinkFor(Point a, Link b) {
