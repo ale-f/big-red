@@ -34,7 +34,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		"dk.itu.big_red.editors.bigraph.commands.ModelDeleteCommand";
 	
 	public void addObject(ModelObject m) {
-		if (m != null)
+		if (m != null && !(m instanceof Bigraph))
 			objects.add(m);
 	}
 	
