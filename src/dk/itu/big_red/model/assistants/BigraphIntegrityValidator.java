@@ -143,6 +143,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			checkNames = true;
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
+			if (scratch.getParentFor(c.child) != c.parent)
+				rejectChange(c.parent + " is not the parent of " + c.child);
 			scratch.removeChildFor(c.parent, c.child);
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
