@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -49,12 +50,14 @@ public class ModelDeleteCommand extends ChangeCommand {
 		cg.add(p.changeDisconnect(l));
 		scratch.removePointFor(l, p);
 		if (scratch.getPointsFor(l).size() == 0 && l instanceof Edge) {
-			cg.add(l.getBigraph().changeRemoveChild(l));
+			cg.add(l.changeName(null),
+					l.getBigraph().changeRemoveChild(l));
 			scratch.removeChildFor(l.getBigraph(), l);
 		}
 	}
 	
 	private void remove(ModelObject m) {
+		System.out.println(this + ".remove(" + m + ")");
 		if (m instanceof LinkConnection) {
 			LinkConnection l = (LinkConnection)m;
 			Link link = l.getLink(); Point point = l.getPoint();
@@ -68,16 +71,20 @@ public class ModelDeleteCommand extends ChangeCommand {
 				iterativelyRemoveConnections(c);
 			} else if (n instanceof Link) {
 				Link l = (Link)n;
-				for (Point p : scratch.getPointsFor(l))
-					cg.add(p.changeDisconnect(l));
-				scratch.getPointsFor(l).clear();
+				List<Point> points =
+					new ArrayList<Point>(scratch.getPointsFor(l));
+				for (Point p : points)
+					removePoint(l, p);
+				if (l instanceof Edge)
+					return;
 			} else if (n instanceof Point) {
 				Point p = (Point)n;
-				if (p.getLink() != null)
+				if (scratch.getLinkFor(p) != null)
 					removePoint(p.getLink(), p);
 			}
 			cg.add(n.changeName(null),
 					n.getParent().changeRemoveChild(n));
+			scratch.removeChildFor(n.getParent(), n);
 		}
 	}
 	
