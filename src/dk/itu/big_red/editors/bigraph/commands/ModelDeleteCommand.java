@@ -57,7 +57,6 @@ public class ModelDeleteCommand extends ChangeCommand {
 	}
 	
 	private void remove(ModelObject m) {
-		System.out.println(this + ".remove(" + m + ")");
 		if (m instanceof LinkConnection) {
 			LinkConnection l = (LinkConnection)m;
 			Link link = l.getLink(); Point point = l.getPoint();
