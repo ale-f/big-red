@@ -500,6 +500,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof Colourable.ChangeOutlineColour) {
 			Colourable.ChangeOutlineColour c = (Colourable.ChangeOutlineColour)b;
 			c.model.setOutlineColour(c.newColour);
+		} else if (b instanceof Colourable.ChangeFillColour) {
+			Colourable.ChangeFillColour c = (Colourable.ChangeFillColour)b;
+			c.model.setFillColour(c.newColour);
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			if (c.model.getName() != null)

@@ -155,7 +155,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			scratch.setLayoutFor(c.model, c.newLayout);
 		} else if (b instanceof Edge.ChangeReposition) {
 			/* nothing to do? */
-		} else if (b instanceof Colourable.ChangeOutlineColour) {
+		} else if (b instanceof Colourable.ChangeOutlineColour ||
+				b instanceof Colourable.ChangeFillColour) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
