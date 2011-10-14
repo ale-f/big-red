@@ -3,6 +3,11 @@ package dk.itu.big_red.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.itu.big_red.model.assistants.SignatureChangeValidator;
+import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.util.Utility;
@@ -15,7 +20,7 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  * @see ISignature
  */
-public class Signature extends ModelObject implements ISignature {
+public class Signature extends ModelObject implements ISignature, IChangeable {
 	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
 	
 	private ArrayList<Control> controls = new ArrayList<Control>();
@@ -47,5 +52,59 @@ public class Signature extends ModelObject implements ISignature {
 	@Override
 	public Iterable<IControl> getIControls() {
 		return Utility.only(controls, IControl.class);
+	}
+
+	private SignatureChangeValidator validator =
+		new SignatureChangeValidator(this);
+	private ChangeRejectedException lastRejection = null;
+	
+	@Override
+	public void applyChange(Change b) {
+		try {
+			tryApplyChange(b);
+		} catch (ChangeRejectedException e) {
+			return;
+		}
+	}
+	
+	@Override
+	public boolean validateChange(Change b) {
+		try {
+			tryValidateChange(b);
+		} catch (ChangeRejectedException e) {
+			lastRejection = e;
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public ChangeRejectedException getLastRejection() {
+		return lastRejection;
+	}
+	
+	@Override
+	public void tryValidateChange(Change b) throws ChangeRejectedException {
+		validator.tryValidateChange(b);
+	}
+	
+	@Override
+	public void tryApplyChange(Change b) throws ChangeRejectedException {
+		tryValidateChange(b);
+		doChange(b);
+	}
+
+	private void doChange(Change b) {
+		if (b instanceof ChangeGroup) {
+			ChangeGroup c = (ChangeGroup)b;
+			for (Change i : c)
+				doChange(i);
+		} else if (b instanceof Colourable.ChangeFillColour) {
+			Colourable.ChangeFillColour c = (Colourable.ChangeFillColour)b;
+			c.model.setFillColour(c.newColour);
+		} else if (b instanceof Colourable.ChangeOutlineColour) {
+			Colourable.ChangeOutlineColour c = (Colourable.ChangeOutlineColour)b;
+			c.model.setOutlineColour(c.newColour);
+		}
 	}
 }
