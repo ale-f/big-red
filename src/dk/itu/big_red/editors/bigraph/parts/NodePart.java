@@ -11,6 +11,7 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
@@ -52,8 +53,8 @@ public class NodePart extends ContainerPart {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
-		if (evt.getPropertyName().equals(Node.PROPERTY_FILL_COLOUR) ||
-	        evt.getPropertyName().equals(Node.PROPERTY_OUTLINE_COLOUR) ||
+		if (evt.getPropertyName().equals(Colourable.PROPERTY_FILL_COLOUR) ||
+	        evt.getPropertyName().equals(Colourable.PROPERTY_OUTLINE_COLOUR) ||
 	        evt.getPropertyName().equals(Node.PROPERTY_COMMENT)) {
 	    	refreshVisuals();
 	    	refreshChildren();

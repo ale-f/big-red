@@ -17,6 +17,7 @@ import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.assistants.LinkConnection;
@@ -40,7 +41,7 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 			if (property.equals(Link.PROPERTY_POINT)) {
 		    	refreshTargetConnections();
 		    } else if (property.equals(Link.PROPERTY_NAME) ||
-		    		property.equals(Link.PROPERTY_OUTLINE_COLOUR)) {
+		    		property.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
 		    	refreshVisuals();
 		    }
 		}

@@ -5,12 +5,8 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.model.interfaces.internal.IFillColourable;
-import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Utility;
 
 /**
@@ -24,7 +20,7 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  * @see IControl
  */
-public class Control extends ModelObject implements IFillColourable, IOutlineColourable, IControl {
+public class Control extends Colourable implements IControl {
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -239,29 +235,6 @@ public class Control extends ModelObject implements IFillColourable, IOutlineCol
 			if (i.getName().equals(name))
 				return i;
 		return null;
-	}
-
-	private RGB fillColour = new RGB(255, 255, 255);
-	private RGB outlineColour = new RGB(0, 0, 0);
-	
-	@Override
-	public RGB getFillColour() {
-		return fillColour;
-	}
-
-	@Override
-	public void setFillColour(RGB fillColour) {
-		this.fillColour = fillColour;
-	}
-
-	@Override
-	public RGB getOutlineColour() {
-		return outlineColour;
-	}
-
-	@Override
-	public void setOutlineColour(RGB outlineColour) {
-		this.outlineColour = outlineColour;
 	}
 	
 	@Override

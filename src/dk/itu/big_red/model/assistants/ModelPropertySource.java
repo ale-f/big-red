@@ -9,10 +9,9 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IFillColourable;
-import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 
 public class ModelPropertySource implements IPropertySource {
 	private Object object;
@@ -33,10 +32,11 @@ public class ModelPropertySource implements IPropertySource {
 			new ArrayList<IPropertyDescriptor>();
 		properties.add(new PropertyDescriptor("Class", "Class"));
 		
-		if (object instanceof IFillColourable)
-			properties.add(new ColorPropertyDescriptor(IFillColourable.PROPERTY_FILL_COLOUR, "Fill colour"));
-		if (object instanceof IOutlineColourable)
-			properties.add(new ColorPropertyDescriptor(IOutlineColourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
+		if (object instanceof Colourable) {
+			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL_COLOUR, "Fill colour"));
+			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
+		}
+		
 		if (object instanceof ICommentable)
 			properties.add(new TextPropertyDescriptor(ICommentable.PROPERTY_COMMENT, "Comment"));
 		if (object instanceof Layoutable)
@@ -49,10 +49,10 @@ public class ModelPropertySource implements IPropertySource {
 	public Object getPropertyValue(Object id) {
 		if (id.equals("Class")) {
 			return object.getClass().getSimpleName();
-		} else if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
-			return ((IFillColourable)object).getFillColour();
-		} else if (id.equals(IOutlineColourable.PROPERTY_OUTLINE_COLOUR)) {
-			return ((IOutlineColourable)object).getOutlineColour();
+		} else if (id.equals(Colourable.PROPERTY_FILL_COLOUR)) {
+			return ((Colourable)object).getFillColour();
+		} else if (id.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
+			return ((Colourable)object).getOutlineColour();
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String result = ((ICommentable)object).getComment();
 			return (result == null ? "" : result);
@@ -82,10 +82,10 @@ public class ModelPropertySource implements IPropertySource {
 		 * their original shape back (because "Undo Set Control property"
 		 * just calls this function with the previous Control value).
 		 */
-		if (id.equals(IFillColourable.PROPERTY_FILL_COLOUR)) {
-			((IFillColourable)object).setFillColour((RGB)value);
-		} else if (id.equals(IOutlineColourable.PROPERTY_OUTLINE_COLOUR)) {
-			((IOutlineColourable)object).setOutlineColour((RGB)value);
+		if (id.equals(Colourable.PROPERTY_FILL_COLOUR)) {
+			((Colourable)object).setFillColour((RGB)value);
+		} else if (id.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
+			((Colourable)object).setOutlineColour((RGB)value);
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String comment = (String)value;
 			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));

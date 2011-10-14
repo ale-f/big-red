@@ -6,14 +6,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.import_export.XMLNS;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
-import dk.itu.big_red.model.interfaces.internal.IFillColourable;
-import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
@@ -46,19 +45,12 @@ public class AppearanceGenerator {
 					"y", r.getY());
 		}
 		
-		if (o instanceof IFillColourable) {
+		if (o instanceof Colourable) {
 			alive = true;
-			IFillColourable c = (IFillColourable)o;
+			Colourable c = (Colourable)o;
 			
 			DOM.applyAttributesToElement(aE,
-					"fillColor", new Colour(c.getFillColour()).toHexString());
-		}
-		
-		if (o instanceof IOutlineColourable) {
-			alive = true;
-			IOutlineColourable c = (IOutlineColourable)o;
-			
-			DOM.applyAttributesToElement(aE,
+					"fillColor", new Colour(c.getFillColour()).toHexString(),
 					"outlineColor", new Colour(c.getOutlineColour()).toHexString());
 		}
 		
@@ -88,11 +80,11 @@ public class AppearanceGenerator {
 			cg.add(l.changeLayout(r));
 		}
 		
-		if (o instanceof IFillColourable)
-			((IFillColourable)o).setFillColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "fillColor"));
-		
-		if (o instanceof IOutlineColourable)
-			((IOutlineColourable)o).setOutlineColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor"));
+		if (o instanceof Colourable) {
+			Colourable c = (Colourable)o;
+			c.setFillColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "fillColor"));
+			c.setOutlineColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor"));
+		}
 		
 		if (o instanceof ICommentable)
 			((ICommentable)o).setComment(DOM.getAttributeNS(e, XMLNS.BIG_RED, "comment"));

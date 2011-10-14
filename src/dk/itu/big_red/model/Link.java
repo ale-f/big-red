@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
-import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Utility;
 
 /**
@@ -19,7 +16,7 @@ import dk.itu.big_red.util.Utility;
  * @author alec
  * @see ILink
  */
-public abstract class Link extends Layoutable implements IOutlineColourable, ILink {
+public abstract class Link extends Layoutable implements ILink {
 	/**
 	 * The property name fired when a point is added to, or removed from, this
 	 * Link.
@@ -81,20 +78,6 @@ public abstract class Link extends Layoutable implements IOutlineColourable, ILi
 			connections.put(p, l);
 		}
 		return l;
-	}
-	
-	private RGB outlineColour = new RGB(0, 127, 0);
-	
-	@Override
-	public void setOutlineColour(RGB outlineColour) {
-		RGB oldColour = getOutlineColour();
-		this.outlineColour = outlineColour;
-		firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
-	}
-
-	@Override
-	public RGB getOutlineColour() {
-		return outlineColour;
 	}
 	
 	@Override

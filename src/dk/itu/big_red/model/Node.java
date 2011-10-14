@@ -5,8 +5,6 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.interfaces.IChild;
@@ -15,8 +13,6 @@ import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.model.interfaces.internal.IFillColourable;
-import dk.itu.big_red.model.interfaces.internal.IOutlineColourable;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.geometry.Geometry;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -26,10 +22,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  * @author alec
  * @see INode
  */
-public class Node extends Container implements PropertyChangeListener, IFillColourable, IOutlineColourable, INode {
-	private RGB fillColour = new RGB(255, 255, 255);
-	private RGB outlineColour = new RGB(0, 0, 0);
-	
+public class Node extends Container implements PropertyChangeListener, INode {
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	
 	/**
@@ -102,30 +95,6 @@ public class Node extends Container implements PropertyChangeListener, IFillColo
 
 	public ArrayList<Port> getPorts() {
 		return ports;
-	}
-	
-	@Override
-	public void setFillColour(RGB fillColour) {
-		RGB oldColour = getFillColour();
-		this.fillColour = fillColour;
-		firePropertyChange(PROPERTY_FILL_COLOUR, oldColour, fillColour);
-	}
-
-	@Override
-	public RGB getFillColour() {
-		return fillColour;
-	}
-
-	@Override
-	public void setOutlineColour(RGB outlineColour) {
-		RGB oldColour = getOutlineColour();
-		this.outlineColour = outlineColour;
-		firePropertyChange(PROPERTY_OUTLINE_COLOUR, oldColour, outlineColour);
-	}
-
-	@Override
-	public RGB getOutlineColour() {
-		return outlineColour;
 	}
 	
 	@Override

@@ -13,6 +13,7 @@ import org.eclipse.gef.Request;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
@@ -68,7 +69,7 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 		    }
 		} else if (source == getModel().getLink()) {
 			if (prop.equals(Link.PROPERTY_NAME) ||
-				prop.equals(Link.PROPERTY_OUTLINE_COLOUR)) {
+				prop.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
 				refreshVisuals();
 			}
 		}

@@ -22,7 +22,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  * <li>they have a <i>parent</i> (a {@link Container}), which contains them.
  * </ul>
  * 
- * <p>{@link Layoutable}s are subclasses of {@link ModelObject}, and
+ * <p>{@link Layoutable}s are subclasses of {@link Colourable}, and
  * additionally provide implementations of {@link ICommentable} and {@link
  * IAdaptable}.
  * 
@@ -30,7 +30,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  * @see ModelObject
  *
  */
-public abstract class Layoutable extends ModelObject implements IAdaptable, ICommentable {
+public abstract class Layoutable extends Colourable implements IAdaptable, ICommentable {
 	public class ChangeLayout extends Change {
 		public Layoutable model;
 		public Rectangle newLayout;
