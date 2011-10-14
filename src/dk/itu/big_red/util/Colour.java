@@ -7,8 +7,8 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.application.plugin.RedPlugin;
 
 /**
@@ -17,6 +17,8 @@ import dk.itu.big_red.application.plugin.RedPlugin;
  *
  */
 public class Colour {
+	private Color swtColor = null;
+	
 	private static final void putNamed(String s, int r, int g, int b) {
 		NAMED_COLOURS.put(s, new Colour(r, g, b));
 	}
@@ -286,6 +288,9 @@ public class Colour {
 	}
 	
 	public Colour setRed(int red) {
+		if (red == this.red) {
+			return this;
+		} else invalidateSWTColor();
 		if (red < 0)
 			red = 0;
 		else if (red > 255)
@@ -293,8 +298,11 @@ public class Colour {
 		this.red = red;
 		return this;
 	}
-	
+
 	public Colour setGreen(int green) {
+		if (green == this.green) {
+			return this;
+		} else invalidateSWTColor();
 		if (green < 0)
 			green = 0;
 		else if (green > 255)
@@ -304,6 +312,9 @@ public class Colour {
 	}
 	
 	public Colour setBlue(int blue) {
+		if (blue == this.blue) {
+			return this;
+		} else invalidateSWTColor();
 		if (blue < 0)
 			blue = 0;
 		else if (blue > 255)
@@ -313,12 +324,26 @@ public class Colour {
 	}
 	
 	public Colour setAlpha(double alpha) {
+		if (alpha == this.alpha) {
+			return this;
+		} else invalidateSWTColor();
 		if (alpha < 0)
 			alpha = 0;
 		else if (alpha > 1)
 			alpha = 1;
 		this.alpha = alpha;
 		return this;
+	}
+	
+	/**
+	 * Disposes of this {@link Colour}'s corresponding SWT {@link Color}, if
+	 * one has been created (by a call to {@link #getSWTColor()}).
+	 */
+	public void invalidateSWTColor() {
+		if (swtColor != null) {
+			swtColor.dispose();
+			swtColor = null;
+		}
 	}
 	
 	public int getRed() {
@@ -368,6 +393,19 @@ public class Colour {
 
 	public RGB getRGB() {
 		return new RGB(red, green, blue);
+	}
+	
+	/**
+	 * Returns the SWT {@link Color} corresponding to this {@link Colour},
+	 * creating it if necessary.
+	 * <p>Changing any of this {@link Colour}'s properties will invalidate the
+	 * object returned by this function.
+	 * @return a {@link Color}
+	 */
+	public Color getSWTColor() {
+		if (swtColor == null)
+			swtColor = new Color(null, red, green, blue);
+		return swtColor;
 	}
 	
 	/**
