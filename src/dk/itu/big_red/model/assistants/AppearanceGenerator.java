@@ -48,14 +48,18 @@ public class AppearanceGenerator {
 		
 		if (o instanceof IFillColourable) {
 			alive = true;
+			IFillColourable c = (IFillColourable)o;
+			
 			DOM.applyAttributesToElement(aE,
-					"fillColor", Colour.colourToString(((IFillColourable)o).getFillColour()));
+					"fillColor", new Colour(c.getFillColour()).toHexString());
 		}
 		
 		if (o instanceof IOutlineColourable) {
 			alive = true;
+			IOutlineColourable c = (IOutlineColourable)o;
+			
 			DOM.applyAttributesToElement(aE,
-					"outlineColor", Colour.colourToString(((IOutlineColourable)o).getOutlineColour()));
+					"outlineColor", new Colour(c.getOutlineColour()).toHexString());
 		}
 		
 		if (o instanceof ICommentable) {

@@ -272,7 +272,7 @@ public class DOM {
 	 * @see DOM#getAttribute
 	 */
 	public static RGB getColorAttribute(Element d, String nsURI, String n) {
-		return Colour.colourFromString(getAttributeNS(d, nsURI, n));
+		return new Colour(getAttributeNS(d, nsURI, n)).getRGB();
 	}
 	
 	/**

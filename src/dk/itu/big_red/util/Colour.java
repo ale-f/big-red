@@ -353,30 +353,13 @@ public class Colour extends ReadonlyColour {
 	}
 	
 	/**
-	 * Converts a string description of a colour to a {@link RGB} colour. CSS
-	 * @param c a string description of a colour
-	 * @return a new RGB colour, or <code>null</code> if the string was invalid
+	 * Randomises the red, green, and blue values of this {@link Colour}, and
+	 * sets its alpha value to <code>1.0</code>.
+	 * @return <code>this</code>, for convenience
 	 */
-	public static String colourToString(RGB fillColour) {
-		return new Colour(fillColour).toHexString();
-	}
-	
-	/**
-	 * Converts a {@link RGB} colour to a string of the format
-	 * <code>#rrggbb</code>.
-	 * @param c a RGB colour
-	 * @return a string representation of the specified colour
-	 */
-	public static RGB colourFromString(String c) {
-		return new Colour(c).getRGB();
-	}
-
-	/**
-	 * Returns a random colour.
-	 * @return a new {@link RGB} with random red, green, and blue values
-	 */
-	public static RGB randomRGB() {
+	public Colour randomise() {
 		Random r = RedPlugin.getRandom();
-		return new RGB(r.nextInt(256), r.nextInt(256), r.nextInt(256));
+		return setRed(r.nextInt(256)).setGreen(r.nextInt(256)).
+				setBlue(r.nextInt(256)).setAlpha(1);
 	}
 }
