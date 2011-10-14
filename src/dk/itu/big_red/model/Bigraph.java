@@ -511,23 +511,56 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			if (c.newName != null)
 				getNamespace(getNSI(c.model)).put(c.newName, c.model);
 		}
-		if (changes != null && !(b instanceof ChangeGroup))
-			changes.add(b);
+		if (checkpointChanges != null && !(b instanceof ChangeGroup))
+			checkpointChanges.add(b);
 	}
 	
-	private ArrayList<Change> changes = null;
+	private Bigraph checkpointBigraph = null;
+	private CloneMap checkpointBigraphCloneMap = null;
+	private ArrayList<Change> checkpointChanges = null;
 	
 	/**
-	 * Returns all the {@link Change}s applied to this bigraph since the last
-	 * call to {@link #checkpoint()}.
-	 * <p>{@link ChangeGroup}s will not be present in the return value, but
-	 * the {@link Change}s they contained will be.
-	 * @return an {@link ArrayList} of {@link Change}s, or <code>null</code>
-	 * when called for the first time
+	 * Checkpoints the {@link Bigraph}.
+	 * @see #getCheckpointBigraph()
+	 * @see #getCheckpointBigraphCloneMap()
+	 * @see #getCheckpointChanges()
 	 */
-	public ArrayList<Change> checkpoint() {
-		ArrayList<Change> ch = changes;
-		changes = new ArrayList<Change>();
-		return ch;
+	public void checkpoint() {
+		checkpointBigraphCloneMap = new CloneMap();
+		checkpointBigraph = this.clone(checkpointBigraphCloneMap);
+		checkpointChanges = new ArrayList<Change>();
+	}
+	
+	/**
+	 * Returns the state of the {@link Bigraph} at the time of the last call to
+	 * {@link #checkpoint()}.
+	 * @return a clone of an earlier state of this {@link Bigraph}, or
+	 *         <code>null</code> if {@link #checkpoint()} has not yet been
+	 *         called
+	 * @see #getCheckpointBigraphCloneMap()
+	 */
+	public Bigraph getCheckpointBigraph() {
+		return checkpointBigraph;
+	}
+	
+	/**
+	 * Returns the {@link CloneMap} mapping objects in this {@link Bigraph} to
+	 * their clones in the result of {@link #getCheckpointBigraph()}.
+	 * @return a {@link CloneMap}, or <code>null</code> if
+	 *         {@link #checkpoint()} has not yet been called
+	 * @see #getCheckpointBigraph()
+	 */
+	public CloneMap getCheckpointBigraphCloneMap() {
+		return checkpointBigraphCloneMap;
+	}
+	
+	/**
+	 * Returns the list of {@link Change}s made to this {@link Bigraph} since
+	 * the last call to {@link #checkpoint()}.
+	 * @return an {@link ArrayList} of {@link Change}s, or <code>null</code> if
+	 *         {@link #checkpoint()} has not yet been called
+	 */
+	public ArrayList<Change> getCheckpointChanges() {
+		return checkpointChanges;
 	}
 }

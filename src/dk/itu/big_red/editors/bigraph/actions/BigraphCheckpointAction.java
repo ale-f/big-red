@@ -12,7 +12,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import dk.itu.big_red.editors.bigraph.RuleDialog;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.util.UI;
 
@@ -51,7 +50,7 @@ public class BigraphCheckpointAction extends SelectionAction {
 	@Override
 	public void run() {
 		Bigraph b = ((BigraphPart)getSelectedObjects().get(0)).getModel();
-		ArrayList<Change> ch = b.checkpoint();
+		ArrayList<Change> ch = b.getCheckpointChanges();
 		IStatusLineManager sl = UI.getActiveStatusLine();
 		ISharedImages si = UI.getSharedImages();
 		if (ch == null) {
@@ -64,11 +63,11 @@ public class BigraphCheckpointAction extends SelectionAction {
 				form += "s";
 			sl.setMessage(si.getImage(ISharedImages.IMG_OBJS_INFO_TSK), ch.size() + " " + form + " since last checkpoint");
 			
-			CloneMap m = new CloneMap();
 			RuleDialog rd = new RuleDialog(UI.getShell());
-			rd.setLHS(b.clone(m));
+			rd.setLHS(b.getCheckpointBigraph());
 			rd.setChanges(ch);
 			rd.open();
 		}
+		b.checkpoint();
 	}
 }
