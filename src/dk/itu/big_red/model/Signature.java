@@ -39,13 +39,6 @@ public class Signature extends ModelObject implements ISignature {
 				return c;
 		return null;
 	}
-
-	public String[] getControlNames() {
-		ArrayList<String> controlNames = new ArrayList<String>();
-		for (Control c : controls)
-			controlNames.add(c.getLongName());
-		return controlNames.toArray(EMPTY_STRING_ARRAY);
-	}
 	
 	public List<Control> getControls() {
 		return controls;
