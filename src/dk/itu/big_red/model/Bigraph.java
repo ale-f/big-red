@@ -225,17 +225,18 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		Bigraph b = (Bigraph)super.clone(m);
 		
 		for (Link i : Utility.only(getChildren(), Link.class)) {
-			Link iD = m.getCloneOf(i);
+			Link iClone = m.getCloneOf(i);
 			for (Point p : i.getPoints())
-				iD.addPoint(m.getCloneOf(p));
+				iClone.addPoint(m.getCloneOf(p));
 		}
 		
 		for (Entry<Object, Object> e : m.getMap().entrySet()) {
 			Object o = e.getKey();
 			if (o instanceof Layoutable) {
 				Layoutable l = (Layoutable)o,
-						lD = (Layoutable)e.getValue();
-				lD.setName(l.getName());
+						lClone = (Layoutable)e.getValue();
+				lClone.setName(l.getName());
+				b.getNamespace(lClone).put(lClone.getName(), lClone);
 			}
 		}
 		
