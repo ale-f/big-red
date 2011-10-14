@@ -7,7 +7,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import dk.itu.big_red.application.plugin.RedPlugin;
 
@@ -16,9 +15,7 @@ import dk.itu.big_red.application.plugin.RedPlugin;
  * @author alec
  *
  */
-public class Colour {
-	private Color swtColor = null;
-	
+public class Colour extends ReadonlyColour {
 	private static final void putNamed(String s, int r, int g, int b) {
 		NAMED_COLOURS.put(s, new Colour(r, g, b));
 	}
@@ -190,7 +187,7 @@ public class Colour {
 		setRed(r).setGreen(g).setBlue(b).setAlpha(a);
 	}
 	
-	public Colour(Colour c) {
+	public Colour(ReadonlyColour c) {
 		setColour(c);
 	}
 	
@@ -282,7 +279,7 @@ public class Colour {
 		return setRed(r.red).setGreen(r.green).setBlue(r.blue).setAlpha(1);
 	}
 	
-	public Colour setColour(Colour c) {
+	public Colour setColour(ReadonlyColour c) {
 		return setRed(c.getRed()).setGreen(c.getGreen()).
 				setBlue(c.getBlue()).setAlpha(c.getAlpha());
 	}
@@ -335,77 +332,24 @@ public class Colour {
 		return this;
 	}
 	
-	/**
-	 * Disposes of this {@link Colour}'s corresponding SWT {@link Color}, if
-	 * one has been created (by a call to {@link #getSWTColor()}).
-	 */
-	public void invalidateSWTColor() {
-		if (swtColor != null) {
-			swtColor.dispose();
-			swtColor = null;
-		}
-	}
-	
+	@Override
 	public int getRed() {
 		return red;
 	}
 	
+	@Override
 	public int getGreen() {
 		return green;
 	}
 	
+	@Override
 	public int getBlue() {
 		return blue;
 	}
 	
+	@Override
 	public double getAlpha() {
 		return alpha;
-	}
-	
-	private String leftPad(String s, char pad, int length) {
-		while (s.length() < length)
-			s = pad + s;
-		return s;
-	}
-	
-	public String toHexString() {
-		return "#" +
-				leftPad(Integer.toHexString(red), '0', 2) +
-				leftPad(Integer.toHexString(green), '0', 2) +
-				leftPad(Integer.toHexString(blue), '0', 2);
-	}
-	
-	public String toFunctionString() {
-		StringBuilder s = new StringBuilder();
-		s.append(alpha == 1 ? "rgb(" : "rgba(");
-		s.append(Integer.toString(red));
-		s.append(", ");
-		s.append(Integer.toString(blue));
-		s.append(", ");
-		s.append(Integer.toString(green));
-		if (alpha == 1) {
-			s.append(", ");
-			s.append(alpha);
-		}
-		s.append(")");
-		return s.toString();
-	}
-
-	public RGB getRGB() {
-		return new RGB(red, green, blue);
-	}
-	
-	/**
-	 * Returns the SWT {@link Color} corresponding to this {@link Colour},
-	 * creating it if necessary.
-	 * <p>Changing any of this {@link Colour}'s properties will invalidate the
-	 * object returned by this function.
-	 * @return a {@link Color}
-	 */
-	public Color getSWTColor() {
-		if (swtColor == null)
-			swtColor = new Color(null, red, green, blue);
-		return swtColor;
 	}
 	
 	/**
