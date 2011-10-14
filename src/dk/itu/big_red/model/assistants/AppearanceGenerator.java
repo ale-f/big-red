@@ -82,8 +82,8 @@ public class AppearanceGenerator {
 		
 		if (o instanceof Colourable) {
 			Colourable c = (Colourable)o;
-			c.setFillColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "fillColor"));
-			c.setOutlineColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor"));
+			cg.add(c.changeFillColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "fillColor")),
+					c.changeOutlineColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor")));
 		}
 		
 		if (o instanceof ModelObject)

@@ -109,7 +109,7 @@ public abstract class Colourable extends ModelObject {
 	 * Changes the outline colour used to render this object.
 	 * @param outlineColour the new outline colour
 	 */
-	public final void setOutlineColour(Colour c) {
+	protected final void setOutlineColour(Colour c) {
 		Colour old = outlineColour;
 		outlineColour = c;
 		firePropertyChange(PROPERTY_OUTLINE, old, c);
@@ -129,7 +129,7 @@ public abstract class Colourable extends ModelObject {
 	 * Changes the fill colour used to render this object.
 	 * @param fillColour the new fill colour
 	 */
-	public final void setFillColour(Colour c) {
+	protected final void setFillColour(Colour c) {
 		Colour old = fillColour;
 		fillColour = c;
 		firePropertyChange(PROPERTY_FILL, old, c);

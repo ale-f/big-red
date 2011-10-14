@@ -84,9 +84,15 @@ public class ModelPropertySource implements IPropertySource {
 		 * just calls this function with the previous Control value).
 		 */
 		if (id.equals(Colourable.PROPERTY_FILL)) {
-			((Colourable)object).setFillColour(new Colour((RGB)value));
+			Colourable c = (Colourable)object;
+			Colour co = new Colour((RGB)value);
+			if (c instanceof Layoutable)
+				((Layoutable)c).getBigraph().applyChange(c.changeFillColour(co));
 		} else if (id.equals(Colourable.PROPERTY_OUTLINE)) {
-			((Colourable)object).setOutlineColour(new Colour((RGB)value));
+			Colourable c = (Colourable)object;
+			Colour co = new Colour((RGB)value);
+			if (c instanceof Layoutable)
+				((Layoutable)c).getBigraph().applyChange(c.changeOutlineColour(co));
 		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
 			String comment = (String)value;
 			((ModelObject)object).setComment((comment.length() == 0 ? null : comment));

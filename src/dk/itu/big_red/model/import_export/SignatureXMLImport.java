@@ -12,12 +12,15 @@ import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.util.DOM;
 
 public class SignatureXMLImport extends Import<Signature> {
-
+	private ChangeGroup cg = new ChangeGroup();
+	
 	@Override
 	public Signature importObject() throws ImportFailedException {
+		cg.clear();
 		try {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("schema/signature.xsd"));
@@ -37,7 +40,7 @@ public class SignatureXMLImport extends Import<Signature> {
 		
 		el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
 		if (el != null)
-			AppearanceGenerator.setAppearance(el, model, null);
+			AppearanceGenerator.setAppearance(el, model, cg);
 		
 		AppearanceGenerator.attributesToModel(e, model);
 		
