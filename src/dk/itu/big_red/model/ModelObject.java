@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 import dk.itu.big_red.model.assistants.CloneMap;
-import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
@@ -17,15 +16,23 @@ import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
  * @see Layoutable
  *
  */
-public class ModelObject implements IPropertyChangeNotifier {
+public class ModelObject {
 	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
-	@Override
+	/**
+	 * Registers a {@link PropertyChangeListener} to receive property change
+	 * notifications from this object.
+	 * @param listener the PropertyChangeListener
+	 */
 	public final void addPropertyChangeListener(PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
 	}
 
-	@Override
+	/**
+	 * Unregisters a {@link PropertyChangeListener} from receiving property
+	 * change notifications from this object.
+	 * @param listener the PropertyChangeListener
+	 */
 	public final void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
 	}

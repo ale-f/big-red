@@ -11,13 +11,13 @@ import org.eclipse.gef.tools.SelectEditPartTracker;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 
-import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.util.UI;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart implements PropertyChangeListener {
 	@Override
-	public IPropertyChangeNotifier getModel() {
-		return (IPropertyChangeNotifier)super.getModel();
+	public ModelObject getModel() {
+		return (ModelObject)super.getModel();
 	}
 	
 	@Override
