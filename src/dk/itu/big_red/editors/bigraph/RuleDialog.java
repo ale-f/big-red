@@ -2,7 +2,6 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.util.ArrayList;
 
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -67,23 +66,13 @@ public class RuleDialog extends Dialog {
 		BigraphCanvas be = new BigraphCanvas(c, SWT.BORDER);
 		be.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		ScrolledComposite sc = new ScrolledComposite(c, SWT.BORDER | SWT.V_SCROLL);
+		List list = new List(c, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 		gd.heightHint = 100;
-		sc.setLayoutData(gd);
-		
-		sc.setMinHeight(100);
-		sc.setExpandVertical(true);
-		sc.setExpandHorizontal(true);
-		sc.setAlwaysShowScrollBars(true);
-		
-		List list = new List(sc, SWT.SINGLE);
+		list.setLayoutData(gd);
 		
 		for (Change i : changes)
 			list.add(i.toString());
-		
-		sc.setContent(list);
-		sc.layout();
 				
 		ChangeGroup cg = new ChangeGroup();
 		for (Layoutable i : lhs.getChildren())
