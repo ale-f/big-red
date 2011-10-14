@@ -44,6 +44,7 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			setTarget(b);
 			Edge ed = new Edge();
 			cg.add(b.changeAddChild(ed),
+					ed.changeName(b.getFirstUnusedName(ed)),
 					((Point)first).changeConnect(ed),
 					((Point)second).changeConnect(ed),
 					ed.changeReposition());
