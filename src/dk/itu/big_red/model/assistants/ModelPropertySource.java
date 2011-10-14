@@ -34,8 +34,8 @@ public class ModelPropertySource implements IPropertySource {
 		properties.add(new PropertyDescriptor("Class", "Class"));
 		
 		if (object instanceof Colourable) {
-			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL_COLOUR, "Fill colour"));
-			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
+			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL, "Fill colour"));
+			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Outline colour"));
 		}
 		
 		if (object instanceof ModelObject)
@@ -50,9 +50,9 @@ public class ModelPropertySource implements IPropertySource {
 	public Object getPropertyValue(Object id) {
 		if (id.equals("Class")) {
 			return object.getClass().getSimpleName();
-		} else if (id.equals(Colourable.PROPERTY_FILL_COLOUR)) {
+		} else if (id.equals(Colourable.PROPERTY_FILL)) {
 			return ((Colourable)object).getFillColour().getRGB();
-		} else if (id.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
+		} else if (id.equals(Colourable.PROPERTY_OUTLINE)) {
 			return ((Colourable)object).getOutlineColour().getRGB();
 		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
 			String result = ((ModelObject)object).getComment();
@@ -83,9 +83,9 @@ public class ModelPropertySource implements IPropertySource {
 		 * their original shape back (because "Undo Set Control property"
 		 * just calls this function with the previous Control value).
 		 */
-		if (id.equals(Colourable.PROPERTY_FILL_COLOUR)) {
+		if (id.equals(Colourable.PROPERTY_FILL)) {
 			((Colourable)object).setFillColour(new Colour((RGB)value));
-		} else if (id.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
+		} else if (id.equals(Colourable.PROPERTY_OUTLINE)) {
 			((Colourable)object).setOutlineColour(new Colour((RGB)value));
 		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
 			String comment = (String)value;

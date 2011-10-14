@@ -85,7 +85,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (evt.getSource() == getModel().getLink()) {
-			if (prop.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
+			if (prop.equals(Colourable.PROPERTY_OUTLINE)) {
 				refreshVisuals();
 			}
 		}

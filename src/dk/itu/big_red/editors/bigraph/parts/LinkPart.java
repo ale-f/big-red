@@ -41,7 +41,7 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 			if (property.equals(Link.PROPERTY_POINT)) {
 		    	refreshTargetConnections();
 		    } else if (property.equals(Link.PROPERTY_NAME) ||
-		    		property.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
+		    		property.equals(Colourable.PROPERTY_OUTLINE)) {
 		    	refreshVisuals();
 		    }
 		}

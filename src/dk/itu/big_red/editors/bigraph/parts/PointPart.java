@@ -69,7 +69,7 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 		    }
 		} else if (source == getModel().getLink()) {
 			if (prop.equals(Link.PROPERTY_NAME) ||
-				prop.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
+				prop.equals(Colourable.PROPERTY_OUTLINE)) {
 				refreshVisuals();
 			}
 		}

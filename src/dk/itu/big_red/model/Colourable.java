@@ -54,12 +54,12 @@ public abstract class Colourable extends ModelObject {
 	/**
 	 * The property name fired when the outline colour changes.
 	 */
-	public static final String PROPERTY_OUTLINE_COLOUR = "ColourableOutline";
+	public static final String PROPERTY_OUTLINE = "ColourableOutline";
 	
 	/**
 	 * The property name fired when the fill colour changes.
 	 */
-	public static final String PROPERTY_FILL_COLOUR = "ColourableFill";
+	public static final String PROPERTY_FILL = "ColourableFill";
 	
 	/**
 	 * Returns the current outline colour used when rendering this object.
@@ -76,7 +76,7 @@ public abstract class Colourable extends ModelObject {
 	public final void setOutlineColour(Colour c) {
 		Colour old = outlineColour;
 		outlineColour = c;
-		firePropertyChange(PROPERTY_OUTLINE_COLOUR, old, c);
+		firePropertyChange(PROPERTY_OUTLINE, old, c);
 		
 		old.invalidateSWTColor();
 	}
@@ -96,7 +96,7 @@ public abstract class Colourable extends ModelObject {
 	public final void setFillColour(Colour c) {
 		Colour old = fillColour;
 		fillColour = c;
-		firePropertyChange(PROPERTY_FILL_COLOUR, old, c);
+		firePropertyChange(PROPERTY_FILL, old, c);
 		
 		old.invalidateSWTColor();
 	}
