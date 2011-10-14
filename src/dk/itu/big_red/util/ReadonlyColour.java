@@ -105,4 +105,21 @@ public abstract class ReadonlyColour {
 	public Colour getCopy() {
 		return new Colour(this);
 	}
+	
+	@Override
+	public int hashCode() {
+		int alpha = (int)(getAlpha() * 255.0);
+		return (getRed() << 24) | (getGreen() << 16) | (getBlue() << 8) + alpha;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof ReadonlyColour) {
+			ReadonlyColour c = (ReadonlyColour)obj;
+			return (c.getRed() == getRed() &&
+					c.getGreen() == getGreen() &&
+					c.getBlue() == getBlue() &&
+					c.getAlpha() == getAlpha());
+		} else return false;
+	}
 }
