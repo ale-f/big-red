@@ -4,9 +4,32 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 
 public abstract class ReadonlyColour {
+	/**
+	 * Returns the red component of this colour.
+	 * @return a red component (between <code>0</code> and <code>255</code>
+	 * inclusive)
+	 */
 	public abstract int getRed();
+	
+	/**
+	 * Returns the green component of this colour.
+	 * @return a green component (between <code>0</code> and <code>255</code>
+	 * inclusive)
+	 */
 	public abstract int getGreen();
+	
+	/**
+	 * Returns the blue component of this colour.
+	 * @return a blue component (between <code>0</code> and <code>255</code>
+	 * inclusive)
+	 */
 	public abstract int getBlue();
+	
+	/**
+	 * Returns the alpha value of this colour.
+	 * @return an alpha value (between <code>0.0</code> and <code>1.0</code>
+	 * inclusive)
+	 */
 	public abstract double getAlpha();
 	
 	private String leftPad(String s, char pad, int length) {
@@ -38,6 +61,10 @@ public abstract class ReadonlyColour {
 		return s.toString();
 	}
 
+	/**
+	 * Returns a new {@link RGB} object corresponding to this colour.
+	 * @return a new {@link RGB} object
+	 */
 	public RGB getRGB() {
 		return new RGB(getRed(), getGreen(), getBlue());
 	}
@@ -45,11 +72,12 @@ public abstract class ReadonlyColour {
 	private Color swtColor = null;
 	
 	/**
-	 * Returns the SWT {@link Color} corresponding to this {@link Colour},
-	 * creating it if necessary.
+	 * Returns the SWT {@link Color} corresponding to this colour, creating it
+	 * if necessary.
 	 * <p>Changing any of this {@link Colour}'s properties will invalidate the
 	 * object returned by this function.
 	 * @return a {@link Color}
+	 * @see #invalidateSWTColor()
 	 */
 	public Color getSWTColor() {
 		if (swtColor == null)
@@ -60,6 +88,7 @@ public abstract class ReadonlyColour {
 	/**
 	 * Disposes of this {@link Colour}'s corresponding SWT {@link Color}, if
 	 * one has been created (by a call to {@link #getSWTColor()}).
+	 * @see #getSWTColor()
 	 */
 	public void invalidateSWTColor() {
 		if (swtColor != null) {
