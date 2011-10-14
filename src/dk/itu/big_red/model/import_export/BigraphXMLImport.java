@@ -82,7 +82,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			cg.add(bigraph.relayout());
 		
 		try {
-			bigraph.tryApplyChange(cg);
+			if (cg.size() != 0)
+				bigraph.tryApplyChange(cg);
 		} catch (ChangeRejectedException f) {
 			throw new ImportFailedException(f);
 		}
