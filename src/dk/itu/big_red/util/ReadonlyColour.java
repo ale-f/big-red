@@ -98,7 +98,7 @@ public abstract class ReadonlyColour {
 	}
 	
 	@Override
-	protected Colour clone() {
+	public Colour clone() {
 		return getCopy();
 	}
 	
