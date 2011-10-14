@@ -8,11 +8,11 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.import_export.XMLNS;
-import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
@@ -54,9 +54,9 @@ public class AppearanceGenerator {
 					"outlineColor", new Colour(c.getOutlineColour()).toHexString());
 		}
 		
-		if (o instanceof ICommentable) {
+		if (o instanceof ModelObject) {
 			alive = true;
-			String comment = ((ICommentable)o).getComment();
+			String comment = ((ModelObject)o).getComment();
 			if (comment != null)
 				DOM.applyAttributesToElement(aE,
 						"comment", comment);
@@ -86,8 +86,8 @@ public class AppearanceGenerator {
 			c.setOutlineColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor"));
 		}
 		
-		if (o instanceof ICommentable)
-			((ICommentable)o).setComment(DOM.getAttributeNS(e, XMLNS.BIG_RED, "comment"));
+		if (o instanceof ModelObject)
+			((ModelObject)o).setComment(DOM.getAttributeNS(e, XMLNS.BIG_RED, "comment"));
 	}
 	
 	public static Element getShape(Document doc, Control c) {

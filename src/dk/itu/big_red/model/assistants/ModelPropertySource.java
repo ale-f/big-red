@@ -11,7 +11,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.util.Colour;
 
 public class ModelPropertySource implements IPropertySource {
@@ -38,8 +38,8 @@ public class ModelPropertySource implements IPropertySource {
 			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE_COLOUR, "Outline colour"));
 		}
 		
-		if (object instanceof ICommentable)
-			properties.add(new TextPropertyDescriptor(ICommentable.PROPERTY_COMMENT, "Comment"));
+		if (object instanceof ModelObject)
+			properties.add(new TextPropertyDescriptor(ModelObject.PROPERTY_COMMENT, "Comment"));
 		if (object instanceof Layoutable)
 			properties.add(new TextPropertyDescriptor(Layoutable.PROPERTY_NAME, "Name"));
 		
@@ -54,8 +54,8 @@ public class ModelPropertySource implements IPropertySource {
 			return ((Colourable)object).getFillColour().getRGB();
 		} else if (id.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
 			return ((Colourable)object).getOutlineColour().getRGB();
-		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
-			String result = ((ICommentable)object).getComment();
+		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
+			String result = ((ModelObject)object).getComment();
 			return (result == null ? "" : result);
 		} else if (id.equals(Layoutable.PROPERTY_NAME)){
 			return ((Layoutable)object).getName();
@@ -87,9 +87,9 @@ public class ModelPropertySource implements IPropertySource {
 			((Colourable)object).setFillColour(new Colour((RGB)value));
 		} else if (id.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
 			((Colourable)object).setOutlineColour(new Colour((RGB)value));
-		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
+		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
 			String comment = (String)value;
-			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));
+			((ModelObject)object).setComment((comment.length() == 0 ? null : comment));
 		} else if (id.equals(Layoutable.PROPERTY_NAME)) {
 			String name = (String)value;
 			Layoutable l = (Layoutable)object;

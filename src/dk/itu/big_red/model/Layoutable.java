@@ -8,7 +8,6 @@ import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.interfaces.internal.ICommentable;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -30,7 +29,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  * @see ModelObject
  *
  */
-public abstract class Layoutable extends Colourable implements IAdaptable, ICommentable {
+public abstract class Layoutable extends Colourable implements IAdaptable {
 	public class ChangeLayout extends Change {
 		public Layoutable model;
 		public Rectangle newLayout;
@@ -162,20 +161,6 @@ public abstract class Layoutable extends Colourable implements IAdaptable, IComm
 	 */
 	protected void setParent(Container parent) {
 		this.parent = parent;
-	}
-	
-	private String comment = null;
-	
-	@Override
-	public String getComment() {
-		return comment;
-	}
-
-	@Override
-	public void setComment(String comment) {
-		String oldComment = this.comment;
-		this.comment = comment;
-		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
 	private ModelPropertySource propertySource;

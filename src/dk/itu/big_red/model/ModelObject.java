@@ -8,7 +8,8 @@ import dk.itu.big_red.model.interfaces.internal.IPropertyChangeNotifier;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
- * model. It provides an implementation of {@link IPropertyChangeNotifier}.
+ * model. It provides an implementation of {@link IPropertyChangeNotifier}, and
+ * allows for a {@link String} comment to be set and retrieved.
  * 
  * <p>Objects which can appear on a bigraph are instances of the subclass
  * {@link Layoutable}.
@@ -68,5 +69,30 @@ public class ModelObject implements IPropertyChangeNotifier {
 		if (m != null)
 			m.setCloneOf(this, i);
 		return i;
+	}
+	
+	private String comment = null;
+	
+	/**
+	 * The property name fired when the comment changes.
+	 */
+	public static final String PROPERTY_COMMENT = "ICommentableComment";
+	
+	/**
+	 * Returns the current comment for this object.
+	 * @return the current comment
+	 */
+	public String getComment() {
+		return comment;
+	}
+	
+	/**
+     * Changes this object's comment.
+     * @param comment the new comment
+     */
+	public void setComment(String comment) {
+		String oldComment = this.comment;
+		this.comment = comment;
+		firePropertyChange(ModelObject.PROPERTY_COMMENT, oldComment, comment);
 	}
 }

@@ -16,9 +16,9 @@ import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orient
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.assistants.LinkConnection;
-import dk.itu.big_red.model.interfaces.internal.ICommentable;
 
 public abstract class PointPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 
@@ -64,7 +64,7 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 					newLink.addPropertyChangeListener(this);
 				refreshSourceConnections();
 				refreshVisuals();
-		    } else if (prop.equals(ICommentable.PROPERTY_COMMENT)) {
+		    } else if (prop.equals(ModelObject.PROPERTY_COMMENT)) {
 		    	refreshVisuals();
 		    }
 		} else if (source == getModel().getLink()) {
