@@ -226,6 +226,8 @@ public class Colour extends ReadonlyColour {
 		hex6 = Pattern.compile("^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$");
 	
 	public Colour setColour(String s) {
+		if (s == null)
+			return this;
 		Colour n = NAMED_COLOURS.get(s.toLowerCase(Locale.ENGLISH));
 		if (n != null)
 			return setColour(n);
