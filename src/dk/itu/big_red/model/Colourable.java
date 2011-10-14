@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.ReadonlyColour;
 
@@ -10,6 +11,42 @@ import dk.itu.big_red.util.ReadonlyColour;
  *
  */
 public abstract class Colourable extends ModelObject {
+	public class ChangeOutlineColour extends Change {
+		public Colourable model;
+		public Colour newColour;
+		
+		public ChangeOutlineColour(Colourable model, Colour newColour) {
+			this.model = model;
+			this.newColour = newColour;
+		}
+
+		private Colour oldColour;
+		@Override
+		public void beforeApply() {
+			oldColour = model.getOutlineColour().getCopy();
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeOutlineColour(model, oldColour);
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldColour != null);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (model != null && newColour != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set outline colour of " + model + " to " + newColour + ")";
+		}
+	}
+	
 	private Colour
 		outlineColour = new Colour("black"),
 		fillColour = new Colour("white");
@@ -64,4 +101,7 @@ public abstract class Colourable extends ModelObject {
 		old.invalidateSWTColor();
 	}
 
+	public Change changeOutlineColour(Colour c) {
+		return new ChangeOutlineColour(this, c);
+	}
 }

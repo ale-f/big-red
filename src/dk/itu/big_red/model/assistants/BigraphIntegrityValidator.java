@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
@@ -12,7 +13,6 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -155,7 +155,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			scratch.setLayoutFor(c.model, c.newLayout);
 		} else if (b instanceof Edge.ChangeReposition) {
 			/* nothing to do? */
-		} else if (b instanceof BigraphChangeOutlineColour) {
+		} else if (b instanceof Colourable.ChangeOutlineColour) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;

@@ -16,7 +16,6 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeable;
-import dk.itu.big_red.model.changes.bigraph.BigraphChangeOutlineColour;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IEdge;
@@ -427,7 +426,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		for (Link i : Utility.only(getChildren(), Link.class)) {
 			if (i instanceof Edge)
 				cg.add(((Edge)i).changeReposition());
-			cg.add(new BigraphChangeOutlineColour(i, new Colour().randomise()));
+			cg.add(i.changeOutlineColour(new Colour().randomise()));
 		}
 		
 		return cg;
@@ -497,8 +496,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof Edge.ChangeReposition) {
 			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
 			c.edge.averagePosition();
-		} else if (b instanceof BigraphChangeOutlineColour) {
-			BigraphChangeOutlineColour c = (BigraphChangeOutlineColour)b;
+		} else if (b instanceof Colourable.ChangeOutlineColour) {
+			Colourable.ChangeOutlineColour c = (Colourable.ChangeOutlineColour)b;
 			c.model.setOutlineColour(c.newColour);
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
