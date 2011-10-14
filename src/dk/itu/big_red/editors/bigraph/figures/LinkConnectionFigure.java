@@ -7,14 +7,11 @@ import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
 
 public class LinkConnectionFigure extends PolylineConnection {
 	public LinkConnectionFigure() {
 		setAntialias(SWT.ON);
         setLineStyle(org.eclipse.swt.SWT.LINE_SOLID);
-        setOutlineColour(new RGB(0, 127, 0));
 	}
 	
 	@Override
@@ -47,13 +44,5 @@ public class LinkConnectionFigure extends PolylineConnection {
 		Label label = new Label(labelText);
 		label.setBorder(new MarginBorder(4));
 		super.setToolTip(label);
-	}
-	
-	public void setOutlineColour(RGB outlineColour) {
-		if (outlineColour != null) {
-			if (getLocalForegroundColor() != null)
-				getLocalForegroundColor().dispose();
-			setForegroundColor(new Color(null, outlineColour));
-		}
 	}
 }

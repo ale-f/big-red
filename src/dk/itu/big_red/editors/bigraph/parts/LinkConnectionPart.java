@@ -98,7 +98,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		
 		figure.setToolTip(model.getLink().getComment());
 		
-		figure.setOutlineColour(model.getLink().getOutlineColour());
+		figure.setForegroundColor(model.getLink().getOutlineColour().getSWTColor());
 	}
 
 	/**

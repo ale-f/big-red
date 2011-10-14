@@ -25,7 +25,6 @@ import javax.xml.validation.SchemaFactory;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.swt.graphics.RGB;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -262,17 +261,16 @@ public class DOM {
 	
 	/**
 	 * Retrieves the given named attribute from the specified Element,
-	 * automatically converting the result from a string into a {@link RGB}
-	 * colour.
+	 * automatically converting the result from a string into a {@link Colour}.
 	 * @param d an Element with attributes set
 	 * @param nsURI the attribute's namespace
 	 * @param n the attribute name to search for
-	 * @return the attribute's value as a RGB colour, or <code>null</code> if
-	 *         the attribute couldn't be found
+	 * @return the attribute's value as a {@link Colour}, or <code>null</code>
+	 *         if the attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
-	public static RGB getColorAttribute(Element d, String nsURI, String n) {
-		return new Colour(getAttributeNS(d, nsURI, n)).getRGB();
+	public static Colour getColorAttribute(Element d, String nsURI, String n) {
+		return new Colour(getAttributeNS(d, nsURI, n));
 	}
 	
 	/**

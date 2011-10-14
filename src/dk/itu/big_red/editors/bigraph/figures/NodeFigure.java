@@ -6,8 +6,6 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.model.Control;
 
 public class NodeFigure extends AbstractFigure {
@@ -21,9 +19,6 @@ public class NodeFigure extends AbstractFigure {
 		labelControl.setForegroundColor(ColorConstants.black);
 		add(labelControl, 0);
 		setConstraint(labelControl, new Rectangle(1, 1, -1, -1));
-		
-		setBackgroundColor(new RGB(255, 255, 255));
-		setForegroundColor(new RGB(0, 0, 0));
 	}
 	
 	public void setLabel(String text) {

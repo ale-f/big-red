@@ -12,6 +12,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.interfaces.internal.ICommentable;
+import dk.itu.big_red.util.Colour;
 
 public class ModelPropertySource implements IPropertySource {
 	private Object object;
@@ -50,9 +51,9 @@ public class ModelPropertySource implements IPropertySource {
 		if (id.equals("Class")) {
 			return object.getClass().getSimpleName();
 		} else if (id.equals(Colourable.PROPERTY_FILL_COLOUR)) {
-			return ((Colourable)object).getFillColour();
+			return ((Colourable)object).getFillColour().getRGB();
 		} else if (id.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
-			return ((Colourable)object).getOutlineColour();
+			return ((Colourable)object).getOutlineColour().getRGB();
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String result = ((ICommentable)object).getComment();
 			return (result == null ? "" : result);
@@ -83,9 +84,9 @@ public class ModelPropertySource implements IPropertySource {
 		 * just calls this function with the previous Control value).
 		 */
 		if (id.equals(Colourable.PROPERTY_FILL_COLOUR)) {
-			((Colourable)object).setFillColour((RGB)value);
+			((Colourable)object).setFillColour(new Colour((RGB)value));
 		} else if (id.equals(Colourable.PROPERTY_OUTLINE_COLOUR)) {
-			((Colourable)object).setOutlineColour((RGB)value);
+			((Colourable)object).setOutlineColour(new Colour((RGB)value));
 		} else if (id.equals(ICommentable.PROPERTY_COMMENT)) {
 			String comment = (String)value;
 			((ICommentable)object).setComment((comment.length() == 0 ? null : comment));

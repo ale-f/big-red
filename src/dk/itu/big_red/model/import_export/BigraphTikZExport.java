@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -24,6 +22,7 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.util.ReadonlyColour;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -156,11 +155,12 @@ public class BigraphTikZExport extends Export<Bigraph> {
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ")";
 		}
 		
-		RGB fillColour = n.getFillColour(),
+		ReadonlyColour
+			fillColour = n.getFillColour(),
 		    outlineColour = n.getOutlineColour();
 		
-		line("definecolor{" + n.getName() + " fill}{RGB}{" + fillColour.red + "," + fillColour.green + "," + fillColour.blue + "}");
-		line("definecolor{" + n.getName() + " outline}{RGB}{" + outlineColour.red + "," + outlineColour.green + "," + outlineColour.blue + "}");
+		line("definecolor{" + n.getName() + " fill}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
+		line("definecolor{" + n.getName() + " outline}{RGB}{" + outlineColour.getRed() + "," + outlineColour.getGreen() + "," + outlineColour.getBlue() + "}");
 		line("draw [" + n.getControl().getLongName() + ",fill=" + n.getName() + " fill,draw=" + n.getName()+ " outline] " + shapeDescriptor + ";");
 		line("node at (" + rltl.x + "," + rltl.y + ") {" + con.getLabel() + "};");
 		
@@ -187,8 +187,8 @@ public class BigraphTikZExport extends Export<Bigraph> {
 			tl = rl.getTopLeft(),
 			br = rl.getBottomRight(),
 			c = rl.getCenter();
-		RGB outlineColour = e.getOutlineColour();
-		line("definecolor{" + getNiceName(e) + " color}{RGB}{" + outlineColour.red + "," + outlineColour.green + "," + outlineColour.blue + "}"); 
+		ReadonlyColour outlineColour = e.getOutlineColour();
+		line("definecolor{" + getNiceName(e) + " color}{RGB}{" + outlineColour.getRed() + "," + outlineColour.getGreen() + "," + outlineColour.getBlue() + "}"); 
 		if (e instanceof OuterName) {
 			line("draw [internal outer name,fill=" + getNiceName(e) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 			line("node [internal name] (" + getNiceName(e) + ") at (" + c.x + "," + c.y + ") {" + e.getName() + "};");
@@ -204,8 +204,9 @@ public class BigraphTikZExport extends Export<Bigraph> {
 			br = rl.getBottomRight(),
 			c = rl.getCenter();
 		System.out.println(rl);
-		RGB fillColour = (i.getLink() == null ? dk.itu.big_red.model.Point.DEFAULT_COLOUR : i.getLink().getOutlineColour());
-		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.red + "," + fillColour.green + "," + fillColour.blue + "}");
+		ReadonlyColour fillColour =
+			(i.getLink() == null ? dk.itu.big_red.model.Point.DEFAULT_COLOUR : i.getLink().getOutlineColour());
+		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
 		line("draw [internal inner name,fill=" + getNiceName(i) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 		process((dk.itu.big_red.model.Point)i);

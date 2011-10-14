@@ -7,9 +7,6 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.editors.bigraph.figures.assistants.SlightlyOvergenerousClippingStrategy;
 
 public abstract class AbstractFigure extends Shape {
@@ -58,32 +55,6 @@ public abstract class AbstractFigure extends Shape {
 	 */
 	public void stop(Graphics g) {
 		g.popState();
-	}
-	
-	@Override
-	public void setBackgroundColor(Color c) {
-		setBackgroundColor(c.getRGB());
-	}
-	
-	@Override
-	public void setForegroundColor(Color c) {
-		setForegroundColor(c.getRGB());
-	}
-	
-	public void setBackgroundColor(RGB c) {
-		if (c != null) {
-			if (getLocalBackgroundColor() != null)
-				getLocalBackgroundColor().dispose();
-			super.setBackgroundColor(new Color(null, c));
-		}
-	}
-	
-	public void setForegroundColor(RGB c) {
-		if (c != null) {
-			if (getLocalForegroundColor() != null)
-				getLocalForegroundColor().dispose();
-			super.setForegroundColor(new Color(null, c));
-		}
 	}
 	
 	@Override

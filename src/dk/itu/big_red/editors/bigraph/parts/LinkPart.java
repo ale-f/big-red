@@ -55,7 +55,7 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 		Link model = getModel();
 		
 		setToolTip(model.getName());
-		figure.setBackgroundColor(model.getOutlineColour());
+		figure.setBackgroundColor(model.getOutlineColour().getSWTColor());
 	}
 	
 	/**

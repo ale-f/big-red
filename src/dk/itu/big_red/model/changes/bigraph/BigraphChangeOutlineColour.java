@@ -1,23 +1,22 @@
 package dk.itu.big_red.model.changes.bigraph;
 
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.util.Colour;
 
 public class BigraphChangeOutlineColour extends Change {
 	public Colourable model;
-	public RGB newColour;
+	public Colour newColour;
 	
-	public BigraphChangeOutlineColour(Colourable model, RGB newColour) {
+	public BigraphChangeOutlineColour(Colourable model, Colour newColour) {
 		this.model = model;
 		this.newColour = newColour;
 	}
 
-	private RGB oldColour;
+	private Colour oldColour;
 	@Override
 	public void beforeApply() {
-		oldColour = model.getOutlineColour();
+		oldColour = model.getOutlineColour().getCopy();
 	}
 	
 	@Override

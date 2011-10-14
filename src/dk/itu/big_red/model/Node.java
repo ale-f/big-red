@@ -53,8 +53,8 @@ public class Node extends Container implements PropertyChangeListener, INode {
 	@Override
 	public Node clone(CloneMap m) {
 		Node n = (Node)super.clone(m);
-		n.setFillColour(getFillColour());
-		n.setOutlineColour(getOutlineColour());
+		n.setFillColour(getFillColour().getCopy());
+		n.setOutlineColour(getOutlineColour().getCopy());
 		if (m != null) {
 			/* Manually claim that the new Node's Ports are clones. */
 			for (Port i : getPorts()) {

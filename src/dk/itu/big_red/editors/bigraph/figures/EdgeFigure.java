@@ -2,13 +2,10 @@ package dk.itu.big_red.editors.bigraph.figures;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.RGB;
 
 public class EdgeFigure extends AbstractFigure {
 	public EdgeFigure() {
 		super();
-		
-		setBackgroundColor(new RGB(0, 127, 0));
 	}
 	
 	@Override

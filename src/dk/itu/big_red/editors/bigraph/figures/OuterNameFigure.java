@@ -7,8 +7,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.util.UI;
 
 public class OuterNameFigure extends AbstractFigure {
@@ -21,8 +19,6 @@ public class OuterNameFigure extends AbstractFigure {
 		label.setText("?");
 		label.setForegroundColor(ColorConstants.white);
 		add(label, 0);
-		
-		setBackgroundColor(new RGB(255, 0, 0));
 	}
 	
 	@Override

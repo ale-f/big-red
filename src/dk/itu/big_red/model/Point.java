@@ -1,10 +1,10 @@
 package dk.itu.big_red.model;
 
-import org.eclipse.swt.graphics.RGB;
-
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
+import dk.itu.big_red.util.Colour;
+import dk.itu.big_red.util.ReadonlyColour;
 
 /**
  * Points are objects which can be connected to <em>at most one</em> {@link
@@ -71,7 +71,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	/**
 	 * The colour to be given to Points not connected to a {@link Link}.
 	 */
-	public static final RGB DEFAULT_COLOUR = new RGB(255, 0, 0);
+	public static final ReadonlyColour DEFAULT_COLOUR = new Colour("red");
 	
 	@Override
 	public ILink getILink() {

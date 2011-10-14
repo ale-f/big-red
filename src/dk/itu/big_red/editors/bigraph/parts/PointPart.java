@@ -89,7 +89,7 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 		setToolTip(toolTip);
 		
 		figure.setBackgroundColor(l != null ?
-				l.getOutlineColour() : Point.DEFAULT_COLOUR);
+				l.getOutlineColour().getSWTColor() : Point.DEFAULT_COLOUR.getSWTColor());
 	}
 	
 	@Override
