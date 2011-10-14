@@ -89,4 +89,12 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	public String toString() {
 		return changes.toString();
 	}
+	
+	/**
+	 * Returns the number of {@link Change}s in this {@link ChangeGroup}.
+	 * @return exactly what it says on the tin
+	 */
+	public int size() {
+		return changes.size();
+	}
 }
