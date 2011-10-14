@@ -11,7 +11,7 @@ import org.eclipse.swt.graphics.RGB;
 import dk.itu.big_red.application.plugin.RedPlugin;
 
 /**
- * Utility methods for dealing with {@link RGB} colours.
+ * {@link Colour} objects represent RGBA colours.
  * @author alec
  *
  */
@@ -20,8 +20,8 @@ public class Colour extends ReadonlyColour {
 		NAMED_COLOURS.put(s, new Colour(r, g, b));
 	}
 	
-	public static final Map<String, Colour> NAMED_COLOURS =
-		new HashMap<String, Colour>();
+	private static final Map<String, ReadonlyColour> NAMED_COLOURS =
+		new HashMap<String, ReadonlyColour>();
 	static {
 		putNamed("aliceblue", 240, 248, 255);
 		putNamed("antiquewhite", 250, 235, 215);
@@ -179,22 +179,50 @@ public class Colour extends ReadonlyColour {
 		
 	}
 	
+	/**
+	 * Initialises this {@link Colour} with the components given.
+	 * @param r the red component
+	 * @param g the green component
+	 * @param b the blue component
+	 */
 	public Colour(int r, int g, int b) {
 		setRed(r).setGreen(g).setBlue(b);
 	}
 	
+	/**
+	 * Initialises this {@link Colour} with the components given.
+	 * @param r the red component
+	 * @param g the green component
+	 * @param b the blue component
+	 * @param a the alpha value
+	 */
 	public Colour(int r, int g, int b, double a) {
 		setRed(r).setGreen(g).setBlue(b).setAlpha(a);
 	}
 	
+	/**
+	 * Initialises this {@link Colour} from another colour.
+	 * @see #setColour(ReadonlyColour)
+	 * @param s a {@link ReadonlyColour}
+	 */
 	public Colour(ReadonlyColour c) {
 		setColour(c);
 	}
 	
+	/**
+	 * Initialises this {@link Colour} from another colour.
+	 * @see #setColour(RGB)
+	 * @param s a {@link RGB} colour
+	 */
 	public Colour(RGB r) {
 		setColour(r);
 	}
 	
+	/**
+	 * Initialises this {@link Colour} from a string.
+	 * @see #setColour(String)
+	 * @param s a {@link String} specifying a colour
+	 */
 	public Colour(String s) {
 		setColour(s);
 	}
@@ -225,10 +253,28 @@ public class Colour extends ReadonlyColour {
 		hex3 = Pattern.compile("^#([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])$"),
 		hex6 = Pattern.compile("^#([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$");
 	
+	/**
+	 * Parses the given {@link String} into a colour. Most of the colours
+	 * specified by CSS Color Module Level 3 are supported:
+	 * <ul>
+	 * <li>all extended colour keywords;
+	 * <li><code>#RGB</code> and <code>#RRGGBB</code>;
+	 * <li><code>rgb(r, g, b)</code> and <code>rgb(r%, g%,
+	 * b%)</code>; and
+	 * <li><code>rgba(r, g, b, alpha)</code> and <code>rgba(r%, g%, b%,
+	 * alpha)</code>.
+	 * </ul>
+	 * <p>HSL colours are <i>not</i> currently supported, and they will cause
+	 * this function to return <code>null</code>.
+	 * @param s a {@link String} specifying a colour
+	 * @return <code>this</code>, for convenience, or <code>null</code> if the
+	 * colour string couldn't be parsed
+	 */
 	public Colour setColour(String s) {
 		if (s == null)
 			return this;
-		Colour n = NAMED_COLOURS.get(s.toLowerCase(Locale.ENGLISH));
+		
+		ReadonlyColour n = NAMED_COLOURS.get(s.toLowerCase(Locale.ENGLISH));
 		if (n != null)
 			return setColour(n);
 		
