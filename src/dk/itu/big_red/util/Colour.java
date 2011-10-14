@@ -172,8 +172,7 @@ public class Colour extends ReadonlyColour {
 		putNamed("yellowgreen", 154, 205, 50);
 	}
 	
-	private int red = 0, green = 0, blue = 0;
-	private double alpha = 1;
+	private int red = 0, green = 0, blue = 0, alpha = 255;
 	
 	public Colour() {
 		
@@ -196,7 +195,7 @@ public class Colour extends ReadonlyColour {
 	 * @param b the blue component
 	 * @param a the alpha value
 	 */
-	public Colour(int r, int g, int b, double a) {
+	public Colour(int r, int g, int b, int a) {
 		setRed(r).setGreen(g).setBlue(b).setAlpha(a);
 	}
 	
@@ -287,22 +286,22 @@ public class Colour extends ReadonlyColour {
 			setRed(integer(rgbm.group(1))).
 				setGreen(integer(rgbm.group(2))).
 				setBlue(integer(rgbm.group(3))).
-				setAlpha(1);
+				setAlpha(255);
 		} else if (rgbam.matches()) {
 			setRed(integer(rgbam.group(1))).
 				setGreen(integer(rgbam.group(2))).
 				setBlue(integer(rgbam.group(3))).
-				setAlpha(num(rgbam.group(4)));
+				setAlpha((int)(num(rgbam.group(4)) * 255.0));
 		} else if (rgbpm.matches()) {
 			setRed(percentage(rgbpm.group(1))).
 				setGreen(percentage(rgbpm.group(2))).
 				setBlue(percentage(rgbpm.group(3))).
-				setAlpha(1);
+				setAlpha(255);
 		} else if (rgbapm.matches()) {
 			setRed(percentage(rgbapm.group(1))).
 				setGreen(percentage(rgbapm.group(2))).
 				setBlue(percentage(rgbapm.group(3))).
-				setAlpha(num(rgbam.group(4)));
+				setAlpha((int)(num(rgbam.group(4)) * 255.0));
 		} else if (hslm.matches()) {
 			return null;
 		} else if (hslam.matches()) {
@@ -311,12 +310,12 @@ public class Colour extends ReadonlyColour {
 			setRed(hex(hex3m.group(1) + hex3m.group(1))).
 				setGreen(hex(hex3m.group(2) + hex3m.group(2))).
 				setBlue(hex(hex3m.group(3) + hex3m.group(3))).
-				setAlpha(1);
+				setAlpha(255);
 		} else if (hex6m.matches()) {
 			setRed(hex(hex6m.group(1))).
 				setGreen(hex(hex6m.group(2))).
 				setBlue(hex(hex6m.group(3))).
-				setAlpha(1);
+				setAlpha(255);
 		} else {
 			return null;
 		}
@@ -324,7 +323,7 @@ public class Colour extends ReadonlyColour {
 	}
 	
 	public Colour setColour(RGB r) {
-		return setRed(r.red).setGreen(r.green).setBlue(r.blue).setAlpha(1);
+		return setRed(r.red).setGreen(r.green).setBlue(r.blue).setAlpha(255);
 	}
 	
 	public Colour setColour(ReadonlyColour c) {
@@ -368,14 +367,13 @@ public class Colour extends ReadonlyColour {
 		return this;
 	}
 	
-	public Colour setAlpha(double alpha) {
-		if (alpha == this.alpha) {
+	public Colour setAlpha(int alpha) {
+		if (alpha == this.alpha)
 			return this;
-		} else invalidateSWTColor();
 		if (alpha < 0)
 			alpha = 0;
-		else if (alpha > 1)
-			alpha = 1;
+		else if (alpha > 255)
+			alpha = 255;
 		this.alpha = alpha;
 		return this;
 	}
@@ -396,18 +394,18 @@ public class Colour extends ReadonlyColour {
 	}
 	
 	@Override
-	public double getAlpha() {
+	public int getAlpha() {
 		return alpha;
 	}
 	
 	/**
 	 * Randomises the red, green, and blue values of this {@link Colour}, and
-	 * sets its alpha value to <code>1.0</code>.
+	 * sets its alpha value to <code>255</code>.
 	 * @return <code>this</code>, for convenience
 	 */
 	public Colour randomise() {
 		Random r = RedPlugin.getRandom();
 		return setRed(r.nextInt(256)).setGreen(r.nextInt(256)).
-				setBlue(r.nextInt(256)).setAlpha(1);
+				setBlue(r.nextInt(256)).setAlpha(255);
 	}
 }

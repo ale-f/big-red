@@ -27,10 +27,10 @@ public abstract class ReadonlyColour {
 	
 	/**
 	 * Returns the alpha value of this colour.
-	 * @return an alpha value (between <code>0.0</code> and <code>1.0</code>
+	 * @return an alpha value (between <code>0</code> and <code>255</code>
 	 * inclusive)
 	 */
-	public abstract double getAlpha();
+	public abstract int getAlpha();
 	
 	private String leftPad(String s, char pad, int length) {
 		while (s.length() < length)
@@ -108,8 +108,7 @@ public abstract class ReadonlyColour {
 	
 	@Override
 	public int hashCode() {
-		int alpha = (int)(getAlpha() * 255.0);
-		return (getRed() << 24) | (getGreen() << 16) | (getBlue() << 8) + alpha;
+		return (getRed() << 24) | (getGreen() << 16) | (getBlue() << 8) + getAlpha();
 	}
 	
 	@Override
