@@ -98,7 +98,7 @@ public abstract class Colourable extends ModelObject {
 	public static final String PROPERTY_FILL = "ColourableFill";
 	
 	/**
-	 * Returns the current outline colour used when rendering this object.
+	 * Gets the current outline colour used to render this object.
 	 * @return the current outline colour
 	 */
 	public final ReadonlyColour getOutlineColour() {
@@ -106,8 +106,8 @@ public abstract class Colourable extends ModelObject {
 	}
 
 	/**
-	 * Changes the outline colour used to render this object.
-	 * @param outlineColour the new outline colour
+	 * Sets the outline colour used to render this object.
+	 * @param c the new outline colour (which will belong to this object)
 	 */
 	protected final void setOutlineColour(Colour c) {
 		Colour old = outlineColour;
@@ -118,7 +118,7 @@ public abstract class Colourable extends ModelObject {
 	}
 
 	/**
-	 * Returns the current fill colour used when rendering this object.
+	 * Gets the current fill colour used to render this object.
 	 * @return the current fill colour
 	 */
 	public final ReadonlyColour getFillColour() {
@@ -126,8 +126,8 @@ public abstract class Colourable extends ModelObject {
 	}
 
 	/**
-	 * Changes the fill colour used to render this object.
-	 * @param fillColour the new fill colour
+	 * Sets the fill colour used to render this object.
+	 * @param c the new fill colour (which will belong to this object)
 	 */
 	protected final void setFillColour(Colour c) {
 		Colour old = fillColour;
