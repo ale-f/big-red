@@ -88,6 +88,12 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		}
 	}
 	
+	private void checkEligibility(Layoutable... l) throws ChangeRejectedException {
+		for (Layoutable i : l)
+			if (scratch.getBigraphFor(i) != getChangeable() && i != getChangeable())
+				rejectChange(i + " is not part of this Bigraph");
+	}
+	
 	@Override
 	public void tryValidateChange(Change b)
 			throws ChangeRejectedException {
@@ -116,6 +122,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				_tryValidateChange(c);
 		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
+			checkEligibility(c.link, c.point);
 			if (scratch.getLinkFor(c.point) != null)
 				rejectChange(b,
 					"Connections can only be established to Points that " +
@@ -123,6 +130,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			scratch.addPointFor(c.link, c.point);
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
+			checkEligibility(c.link, c.point);
 			if (scratch.getLinkFor(c.point) == null)
 				rejectChange("The Point is already disconnected");
 			scratch.removePointFor(c.link, c.point);
@@ -143,23 +151,27 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			checkNames = true;
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
+			checkEligibility(c.child, c.parent);
 			if (scratch.getParentFor(c.child) != c.parent)
 				rejectChange(c.parent + " is not the parent of " + c.child);
 			scratch.removeChildFor(c.parent, c.child);
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
+			checkEligibility(c.model);
 			if (c.model instanceof Bigraph)
 				rejectChange("Bigraphs cannot be moved or resized");
 			if (!layoutChecks.contains(c.model))
 				layoutChecks.add(c.model);
 			scratch.setLayoutFor(c.model, c.newLayout);
 		} else if (b instanceof Edge.ChangeReposition) {
-			/* nothing to do? */
+			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
+			checkEligibility(c.edge);
 		} else if (b instanceof Colourable.ChangeOutlineColour ||
 				b instanceof Colourable.ChangeFillColour) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
+			checkEligibility(c.model);
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.model);
 			if (c.newName != null && ns.get(c.newName) != null)
 				if (!ns.get(c.newName).equals(c.model))
