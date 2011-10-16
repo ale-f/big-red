@@ -11,16 +11,33 @@ import dk.itu.big_red.util.ReadonlyColour;
  *
  */
 public abstract class Colourable extends ModelObject {
-	public class ChangeOutlineColour extends Change {
+	public abstract class ChangeColour extends Change {
 		public Colourable model;
 		public Colour newColour;
 		
-		public ChangeOutlineColour(Colourable model, Colour newColour) {
+		private ChangeColour(Colourable model, Colour newColour) {
 			this.model = model;
 			this.newColour = newColour;
 		}
 
-		private Colour oldColour;
+		protected Colour oldColour;
+		
+		@Override
+		public boolean canInvert() {
+			return (oldColour != null);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (model != null && newColour != null);
+		}
+	}
+	
+	public class ChangeOutlineColour extends ChangeColour {
+		public ChangeOutlineColour(Colourable model, Colour newColour) {
+			super(model, newColour);
+		}
+
 		@Override
 		public void beforeApply() {
 			oldColour = model.getOutlineColour().getCopy();
@@ -32,31 +49,16 @@ public abstract class Colourable extends ModelObject {
 		}
 		
 		@Override
-		public boolean canInvert() {
-			return (oldColour != null);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (model != null && newColour != null);
-		}
-		
-		@Override
 		public String toString() {
 			return "Change(set outline colour of " + model + " to " + newColour + ")";
 		}
 	}
 	
-	public class ChangeFillColour extends Change {
-		public Colourable model;
-		public Colour newColour;
-		
+	public class ChangeFillColour extends ChangeColour {
 		public ChangeFillColour(Colourable model, Colour newColour) {
-			this.model = model;
-			this.newColour = newColour;
+			super(model, newColour);
 		}
 
-		private Colour oldColour;
 		@Override
 		public void beforeApply() {
 			oldColour = model.getFillColour().getCopy();
@@ -64,17 +66,7 @@ public abstract class Colourable extends ModelObject {
 		
 		@Override
 		public Change inverse() {
-			return new ChangeOutlineColour(model, oldColour);
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldColour != null);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (model != null && newColour != null);
+			return new ChangeFillColour(model, oldColour);
 		}
 		
 		@Override
