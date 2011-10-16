@@ -121,4 +121,10 @@ public abstract class ReadonlyColour {
 					c.getAlpha() == getAlpha());
 		} else return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "Colour(" + getRed() + ", " + getGreen() +
+				", " + getBlue() + ", " + getAlpha() + ")";
+	}
 }
