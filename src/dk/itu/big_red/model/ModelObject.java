@@ -7,8 +7,9 @@ import dk.itu.big_red.model.assistants.CloneMap;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
- * model. It provides an implementation of {@link IPropertyChangeNotifier}, and
- * allows for a {@link String} comment to be set and retrieved.
+ * model. It allows {@link PropertyChangeListener}s to register for, and
+ * unregister from, change notifications, and has a {@link String} comment
+ * which can be set and retrieved.
  * 
  * <p>Objects which can appear on a bigraph are instances of the subclass
  * {@link Layoutable}.
