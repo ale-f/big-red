@@ -19,7 +19,7 @@ import dk.itu.big_red.util.Utility;
 public abstract class Link extends Layoutable implements ILink {
 	/**
 	 * The property name fired when a point is added to, or removed from, this
-	 * Link.
+	 * Link. The property values are {@link Point}s.
 	 */
 	public static final String PROPERTY_POINT = "LinkPoint";
 	

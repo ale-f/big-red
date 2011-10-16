@@ -166,12 +166,13 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	private ModelPropertySource propertySource;
 	/**
 	 * The property name fired when the ILayoutable's layout changes (i.e.,
-	 * it's resized or moved).
+	 * it's resized or moved). The property values are {@link Rectangle}s.
 	 */
 	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
 	
 	/**
-	 * The property name fired when the name changes.
+	 * The property name fired when the name changes. The property values are
+	 * {@link String}s.
 	 */
 	public static final String PROPERTY_NAME = "LayoutableName";
 	

@@ -74,7 +74,8 @@ public abstract class Container extends Layoutable {
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
 
 	/**
-	 * The property name fired when a child is added or removed.
+	 * The property name fired when a child is added or removed. The property
+	 * values are {@link Layoutable}s.
 	 */
 	public static final String PROPERTY_CHILD = "ContainerChild";
 	

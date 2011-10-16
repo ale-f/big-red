@@ -16,12 +16,14 @@ import dk.itu.big_red.util.geometry.Rectangle;
  */
 public class Port extends Point implements IPort {
 	/**
-	 * The property name fired when this Port's {@link #segment} changes.
+	 * The property name fired when this Port's {@link #segment} changes. The
+	 * property values are {@link Integer}s.
 	 */
 	public static final String PROPERTY_SEGMENT = "PortSegment";
 	
 	/**
-	 * The property name fired when this Port's {@link #distance} changes.
+	 * The property name fired when this Port's {@link #distance} changes. The
+	 * property values are {@link Double}s.
 	 */
 	public static final String PROPERTY_DISTANCE = "PortDistance";
 	

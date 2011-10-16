@@ -81,7 +81,8 @@ public class ModelObject {
 	private String comment = null;
 	
 	/**
-	 * The property name fired when the comment changes.
+	 * The property name fired when the comment changes. The property values
+	 * are {@link String}s.
 	 */
 	public static final String PROPERTY_COMMENT = "ICommentableComment";
 	

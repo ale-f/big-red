@@ -35,39 +35,49 @@ public class Control extends Colourable implements IControl {
 	/**
 	 * The property name fired when the label (the one- or two-character
 	 * caption that appears next to {@link Node}s on the bigraph) changes.
+	 * The property values are {@link String}s.
 	 */
 	public static final String PROPERTY_LABEL = "ControlLabel";
+	
 	/**
-	 * The property name fired when the name changes.
+	 * The property name fired when the name changes. The property values are
+	 * {@link String}s.
 	 */
 	public static final String PROPERTY_NAME = "ControlName";
+	
 	/**
-	 * The property name fired when the shape changes.
+	 * The property name fired when the shape changes. The property values are
+	 * {@link Control.Shape}s.
 	 */
 	public static final String PROPERTY_SHAPE = "ControlShape";
+	
 	/**
 	 * The property name fired when the set of points defining this control's
-	 * polygon changes.
+	 * polygon changes. The property values are {@link PointList}s.
 	 */
 	public static final String PROPERTY_POINTS = "ControlPoints";
+	
 	/**
 	 * The property name fired when the default size changes. (This only
 	 * really matters for existing {@link Node}s if they aren't resizable.)
+	 * The property values are {@link Dimension}s.
 	 */
 	public static final String PROPERTY_DEFAULT_SIZE = "ControlDefaultSize";
+	
 	/**
 	 * The property name fired when the resizability changes. If this changes
 	 * from <code>true</code> to <code>false</code>, listeners should make sure
 	 * that any {@link Node}s with this Control are resized to the default
-	 * size.
+	 * size. The property values are {@link Boolean}s.
 	 * @see Control#getDefaultSize
 	 */
 	public static final String PROPERTY_RESIZABLE = "ControlResizable";
+	
 	/**
 	 * The property name fired when the set of ports changes. If this changes
 	 * from <code>null</code> to a non-null value, then a port has been added;
 	 * if it changes from a non-null value to <code>null</code>, one has been
-	 * removed.
+	 * removed. The property values are {@link Port}s.
 	 */
 	public static final String PROPERTY_PORT = "ControlPort";
 	

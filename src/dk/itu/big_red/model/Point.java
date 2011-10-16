@@ -64,7 +64,8 @@ public abstract class Point extends Layoutable implements IPoint {
 	}
 	
 	/**
-	 * The property name fired when the source edge changes.
+	 * The property name fired when the source edge changes. The property
+	 * values are {@link Link}s.
 	 */
 	public static final String PROPERTY_LINK = "PointLink";
 	

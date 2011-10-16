@@ -88,12 +88,14 @@ public abstract class Colourable extends ModelObject {
 		fillColour = new Colour("white");
 
 	/**
-	 * The property name fired when the outline colour changes.
+	 * The property name fired when the outline colour changes. The property
+	 * values are {@link Colour}s.
 	 */
 	public static final String PROPERTY_OUTLINE = "ColourableOutline";
 	
 	/**
-	 * The property name fired when the fill colour changes.
+	 * The property name fired when the fill colour changes. The property
+	 * values are {@link Colour}s.
 	 */
 	public static final String PROPERTY_FILL = "ColourableFill";
 	
