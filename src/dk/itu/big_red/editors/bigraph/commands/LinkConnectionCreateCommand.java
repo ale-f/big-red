@@ -4,7 +4,6 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -25,15 +24,15 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 	}
 
 	public void setFirst(Object e) {
-		if (!(e instanceof LinkConnection)) {
+		if (!(e instanceof Link.Connection)) {
 			first = e;
-		} else first = ((LinkConnection)e).getLink();
+		} else first = ((Link.Connection)e).getLink();
 	}
 	
 	public void setSecond(Object e) {
-		if (!(e instanceof LinkConnection)) {
+		if (!(e instanceof Link.Connection)) {
 			second = e;
-		} else second = ((LinkConnection)e).getLink();
+		} else second = ((Link.Connection)e).getLink();
 	}
 
 	@Override

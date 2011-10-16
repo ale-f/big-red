@@ -20,7 +20,6 @@ import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orient
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.assistants.LinkConnection;
 
 public abstract class LinkPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 
@@ -67,8 +66,8 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 	 * AbstractPart#getModelSourceConnections()} implementation.
 	 */
 	@Override
-	protected List<LinkConnection> getModelTargetConnections() {
-        ArrayList<LinkConnection> l = new ArrayList<LinkConnection>();
+	protected List<Link.Connection> getModelTargetConnections() {
+        ArrayList<Link.Connection> l = new ArrayList<Link.Connection>();
         for (Point p : getModel().getPoints())
         	l.add(getModel().getConnectionFor(p));
         return l;

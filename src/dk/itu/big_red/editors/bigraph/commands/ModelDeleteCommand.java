@@ -13,7 +13,6 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.BigraphScratchpad;
-import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class ModelDeleteCommand extends ChangeCommand {
@@ -57,8 +56,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 	}
 	
 	private void remove(ModelObject m) {
-		if (m instanceof LinkConnection) {
-			LinkConnection l = (LinkConnection)m;
+		if (m instanceof Link.Connection) {
+			Link.Connection l = (Link.Connection)m;
 			Link link = l.getLink(); Point point = l.getPoint();
 			setTarget(link.getBigraph());
 			removePoint(link, point);
@@ -112,7 +111,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		return false;
 	}
 	
-	private boolean linkOrPointScheduledForDeletion(LinkConnection l) {
+	private boolean linkOrPointScheduledForDeletion(Link.Connection l) {
 		if (objects.contains(l.getLink()) ||
 			objects.contains(l.getPoint())) {
 			return true;
@@ -136,8 +135,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 				(m instanceof Layoutable &&
 					!parentScheduledForDeletion((Layoutable)m) &&
 					allIsWell((Layoutable)m)) ||
-				(m instanceof LinkConnection &&
-					!linkOrPointScheduledForDeletion((LinkConnection)m)))
+				(m instanceof Link.Connection &&
+					!linkOrPointScheduledForDeletion((Link.Connection)m)))
 				remove(m);
 		}
 	}

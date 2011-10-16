@@ -17,8 +17,8 @@ import org.eclipse.ui.PartInitException;
 
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.util.UI;
 
 /**
@@ -94,8 +94,8 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	 * should probably override this method!
 	 */
 	@Override
-	protected List<LinkConnection> getModelSourceConnections() {
-        return new ArrayList<LinkConnection>();
+	protected List<Link.Connection> getModelSourceConnections() {
+        return new ArrayList<Link.Connection>();
     }
 
 	/**
@@ -103,8 +103,8 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	 * should probably override this method!
 	 */
 	@Override
-	protected List<LinkConnection> getModelTargetConnections() {
-        return new ArrayList<LinkConnection>();
+	protected List<Link.Connection> getModelTargetConnections() {
+        return new ArrayList<Link.Connection>();
     }
 
 	/**

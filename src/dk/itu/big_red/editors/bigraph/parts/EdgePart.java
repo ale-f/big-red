@@ -6,7 +6,7 @@ import org.eclipse.draw2d.IFigure;
 import dk.itu.big_red.editors.bigraph.figures.EdgeFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.assistants.LinkConnection;
+import dk.itu.big_red.model.Link;
 
 /**
  * EdgeParts represent {@link Edge}s, the container for - and target point of -
@@ -30,8 +30,8 @@ public class EdgePart extends LinkPart {
 	}
 	
 	@Override
-	protected List<LinkConnection> getModelTargetConnections() {
-		List<LinkConnection> lc = super.getModelTargetConnections();
+	protected List<Link.Connection> getModelTargetConnections() {
+		List<Link.Connection> lc = super.getModelTargetConnections();
 		getFigure().setVisible(lc.size() != 0);
 		return lc;
 	}

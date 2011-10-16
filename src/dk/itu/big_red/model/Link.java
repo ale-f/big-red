@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.views.properties.IPropertySource;
+
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
-import dk.itu.big_red.model.assistants.LinkConnection;
+import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.util.Colour;
@@ -18,6 +21,48 @@ import dk.itu.big_red.util.Utility;
  * @see ILink
  */
 public abstract class Link extends Layoutable implements ILink {
+	/**
+	 * <strong>Connection</strong>s are fake, transient model objects, created
+	 * on demand by {@link Link}s. They represent a single {@link
+	 * org.eclipse.draw2d.Connection} on the bigraph, joining a {@link Link} to
+	 * a {@link Point}.
+	 * @author alec
+	 *
+	 */
+	public class Connection extends ModelObject implements IAdaptable {
+		private Point point;
+		private Link link;
+		
+		private Connection(Link link, Point point) {
+			this.link = link;
+			this.point = point;
+		}
+		
+		/**
+		 * Gets the {@link Point} at one end of this connection.
+		 * @return the current Point
+		 */
+		public Point getPoint() {
+			return point;
+		}
+		
+		/**
+		 * Gets the {@link Link} which manages and contains this connection.
+		 * @return the current Link
+		 */
+		public Link getLink() {
+			return link;
+		}
+		
+		@SuppressWarnings("rawtypes")
+		@Override
+		public Object getAdapter(Class adapter) {
+			if (adapter == IPropertySource.class) {
+				return new ModelPropertySource(getLink());
+			} else return null;
+		}
+	}
+	
 	/**
 	 * The property name fired when a point is added to, or removed from, this
 	 * Link. The property values are {@link Point}s.
@@ -62,8 +107,8 @@ public abstract class Link extends Layoutable implements ILink {
 		return points;
 	}
 	
-	private HashMap<Point, LinkConnection> connections =
-		new HashMap<Point, LinkConnection>();
+	private HashMap<Point, Link.Connection> connections =
+		new HashMap<Point, Link.Connection>();
 	
 	/**
 	 * Lazily creates and returns a {@link LinkConnection} connecting the given
@@ -74,12 +119,12 @@ public abstract class Link extends Layoutable implements ILink {
 	 * @param p a {@link Point}
 	 * @return a {@link LinkConnection}, which could go away at any point
 	 */
-	public LinkConnection getConnectionFor(Point p) {
+	public Link.Connection getConnectionFor(Point p) {
 		if (!points.contains(p))
 			return null;
-		LinkConnection l = connections.get(p);
+		Link.Connection l = connections.get(p);
 		if (l == null) {
-			l = new LinkConnection(this, p);
+			l = new Link.Connection(this, p);
 			connections.put(p, l);
 		}
 		return l;

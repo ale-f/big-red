@@ -18,7 +18,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.assistants.LinkConnection;
 
 public abstract class PointPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
 
@@ -93,8 +92,8 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 	}
 	
 	@Override
-	protected List<LinkConnection> getModelSourceConnections() {
-		ArrayList<LinkConnection> l = new ArrayList<LinkConnection>();
+	protected List<Link.Connection> getModelSourceConnections() {
+		ArrayList<Link.Connection> l = new ArrayList<Link.Connection>();
 		Link link = getModel().getLink();
 		if (link != null)
 			l.add(link.getConnectionFor(getModel()));

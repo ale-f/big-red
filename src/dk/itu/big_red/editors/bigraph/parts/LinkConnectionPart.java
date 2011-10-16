@@ -19,13 +19,12 @@ import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.assistants.LinkConnection;
 
 /**
- * EdgeConnectionParts represent {@link LinkConnection}s, the individual
+ * EdgeConnectionParts represent {@link Link.Connection}s, the individual
  * connections that together comprise an {@link Edge}.
  * @see Edge
- * @see LinkConnection
+ * @see Link.Connection
  * @see EdgePart
  * @author alec
  *
@@ -41,8 +40,8 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	}
 	
 	@Override
-	public LinkConnection getModel() {
-		return (LinkConnection)super.getModel();
+	public Link.Connection getModel() {
+		return (Link.Connection)super.getModel();
 	}
 	
 	@Override
@@ -94,7 +93,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	public void refreshVisuals() {
 		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
-		LinkConnection model = getModel();
+		Link.Connection model = getModel();
 		
 		figure.setToolTip(model.getLink().getComment());
 		
