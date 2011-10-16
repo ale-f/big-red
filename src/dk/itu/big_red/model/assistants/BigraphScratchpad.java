@@ -70,6 +70,8 @@ public class BigraphScratchpad {
 	}
 	
 	public Bigraph getBigraphFor(Layoutable l) {
+		if (l instanceof Bigraph)
+			return (Bigraph)l;
 		Container c = getParentFor(l);
 		while (c != null && !(c instanceof Bigraph))
 			c = getParentFor(c);

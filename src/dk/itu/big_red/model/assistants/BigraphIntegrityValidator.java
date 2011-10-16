@@ -90,7 +90,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	
 	private void checkEligibility(Layoutable... l) throws ChangeRejectedException {
 		for (Layoutable i : l)
-			if (scratch.getBigraphFor(i) != getChangeable() && i != getChangeable())
+			if (scratch.getBigraphFor(i) != getChangeable())
 				rejectChange(i + " is not part of this Bigraph");
 	}
 	
