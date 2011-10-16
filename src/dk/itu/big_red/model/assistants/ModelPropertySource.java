@@ -15,9 +15,9 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.util.Colour;
 
 public class ModelPropertySource implements IPropertySource {
-	private Object object;
+	private ModelObject object;
 	
-	public ModelPropertySource(Object node) {
+	public ModelPropertySource(ModelObject node) {
 		object = node;
 	}
 	
@@ -50,17 +50,11 @@ public class ModelPropertySource implements IPropertySource {
 	public Object getPropertyValue(Object id) {
 		if (id.equals("Class")) {
 			return object.getClass().getSimpleName();
-		} else if (id.equals(Colourable.PROPERTY_FILL)) {
-			return ((Colourable)object).getFillColour().getRGB();
-		} else if (id.equals(Colourable.PROPERTY_OUTLINE)) {
-			return ((Colourable)object).getOutlineColour().getRGB();
-		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
-			String result = ((ModelObject)object).getComment();
-			return (result == null ? "" : result);
-		} else if (id.equals(Layoutable.PROPERTY_NAME)){
-			return ((Layoutable)object).getName();
 		} else {
-			return null;
+			Object value = object.getProperty((String)id);
+			if (value instanceof Colour)
+				value = ((Colour)value).getRGB();
+			return value;
 		}
 	}
 
@@ -95,7 +89,7 @@ public class ModelPropertySource implements IPropertySource {
 				((Layoutable)c).getBigraph().applyChange(c.changeOutlineColour(co));
 		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
 			String comment = (String)value;
-			((ModelObject)object).setComment((comment.length() == 0 ? null : comment));
+			object.setComment((comment.length() == 0 ? null : comment));
 		} else if (id.equals(Layoutable.PROPERTY_NAME)) {
 			String name = (String)value;
 			Layoutable l = (Layoutable)object;
