@@ -10,9 +10,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
-import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.util.Colour;
-import dk.itu.big_red.util.Utility;
 
 /**
  * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;
@@ -131,8 +129,8 @@ public abstract class Link extends Layoutable implements ILink {
 	}
 	
 	@Override
-	public Iterable<IPoint> getIPoints() {
-		return Utility.only(points, IPoint.class);
+	public Iterable<Point> getIPoints() {
+		return points;
 	}
 	
 	/**

@@ -8,9 +8,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
-import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.ISignature;
-import dk.itu.big_red.util.Utility;
 
 /**
  * The Signature is a central storage point for {@link Control}s and their
@@ -50,8 +48,8 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 	}
 
 	@Override
-	public Iterable<IControl> getIControls() {
-		return Utility.only(controls, IControl.class);
+	public Iterable<Control> getIControls() {
+		return controls;
 	}
 
 	private SignatureChangeValidator validator =

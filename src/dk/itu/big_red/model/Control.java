@@ -6,8 +6,6 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 import dk.itu.big_red.model.interfaces.IControl;
-import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.util.Utility;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -248,8 +246,8 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	@Override
-	public Iterable<IPort> getIPorts() {
-		return Utility.only(ports, IPort.class);
+	public Iterable<PortSpec> getIPorts() {
+		return ports;
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
-import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.geometry.Geometry;
@@ -134,7 +133,7 @@ public class Node extends Container implements PropertyChangeListener, INode {
 	}
 
 	@Override
-	public Iterable<? extends IPort> getIPorts() {
+	public Iterable<Port> getIPorts() {
 		return ports;
 	}
 
