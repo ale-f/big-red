@@ -77,7 +77,7 @@ public class Control extends Colourable implements IControl {
 	 * The property name fired when the set of ports changes. If this changes
 	 * from <code>null</code> to a non-null value, then a port has been added;
 	 * if it changes from a non-null value to <code>null</code>, one has been
-	 * removed. The property values are {@link Port}s.
+	 * removed. The property values are {@link PortSpec}s.
 	 */
 	public static final String PROPERTY_PORT = "ControlPort";
 	
@@ -255,5 +255,32 @@ public class Control extends Colourable implements IControl {
 	@Override
 	public String getName() {
 		return getLongName();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * <p><strong>Special notes for {@link Control}:</strong>
+	 * <ul>
+	 * <li>Passing {@link #PROPERTY_PORT} will return a {@link List}&lt;{@link
+	 * PortSpec}&gt;, <strong>not</strong> a {@link PortSpec}.
+	 * </ul>
+	 */
+	@Override
+	public Object getProperty(String name) {
+		if (name.equals(PROPERTY_DEFAULT_SIZE)) {
+			return getDefaultSize();
+		} else if (name.equals(PROPERTY_LABEL)) {
+			return getLabel();
+		} else if (name.equals(PROPERTY_NAME)) {
+			return getName();
+		} else if (name.equals(PROPERTY_POINTS)) {
+			return getPoints();
+		} else if (name.equals(PROPERTY_PORT)) {
+			return getPorts();
+		} else if (name.equals(PROPERTY_RESIZABLE)) {
+			return isResizable();
+		} else if (name.equals(PROPERTY_SHAPE)) {
+			return getShape();
+		} else return super.getProperty(name);
 	}
 }

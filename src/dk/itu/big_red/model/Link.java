@@ -84,4 +84,19 @@ public abstract class Link extends Layoutable implements ILink {
 	public Iterable<IPoint> getIPoints() {
 		return Utility.only(points, IPoint.class);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 * <p><strong>Special notes for {@link Link}:</strong>
+	 * <ul>
+	 * <li>Passing {@link #PROPERTY_POINT} will return a {@link List}&lt;{@link
+	 * Point}&gt;, <strong>not</strong> a {@link Point}.
+	 * </ul>
+	 */
+	@Override
+	public Object getProperty(String name) {
+		if (name.equals(PROPERTY_POINT)) {
+			return getPoints();
+		} else return super.getProperty(name);
+	}
 }

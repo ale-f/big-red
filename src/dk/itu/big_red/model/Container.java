@@ -172,4 +172,19 @@ public abstract class Container extends Layoutable {
 	public Change changeRemoveChild(Layoutable child) {
 		return new ChangeRemoveChild(this, child);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 * <p><strong>Special notes for {@link Container}:</strong>
+	 * <ul>
+	 * <li>Passing {@link #PROPERTY_CHILD} will return a {@link List}&lt;{@link
+	 * Layoutable}&gt;, <strong>not</strong> a {@link Layoutable}.
+	 * </ul>
+	 */
+	@Override
+	public Object getProperty(String name) {
+		if (name.equals(PROPERTY_CHILD)) {
+			return getChildren();
+		} else return super.getProperty(name);
+	}
 }

@@ -103,4 +103,16 @@ public class ModelObject {
 		this.comment = comment;
 		firePropertyChange(ModelObject.PROPERTY_COMMENT, oldComment, comment);
 	}
+	
+	/**
+	 * Retrieves a named property's value from this {@link ModelObject}.
+	 * @param name a property name
+	 * @return the value of the named property, or <code>null</code> if this
+	 * object does not have the named property
+	 */
+	public Object getProperty(String name) {
+		if (name.equals(PROPERTY_COMMENT)) {
+			return getComment();
+		} else return null;
+	}
 }

@@ -139,4 +139,13 @@ public class Port extends Point implements IPort {
 	public Point clone() {
 		return null;
 	}
+	
+	@Override
+	public Object getProperty(String name) {
+		if (name.equals(PROPERTY_DISTANCE)) {
+			return getDistance();
+		} else if (name.equals(PROPERTY_SEGMENT)) {
+			return getSegment();
+		} else return super.getProperty(name);
+	}
 }

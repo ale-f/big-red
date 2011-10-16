@@ -105,4 +105,11 @@ public abstract class Point extends Layoutable implements IPoint {
 	public Change changeDisconnect(Link l) {
 		return new ChangeDisconnect(this, l);
 	}
+	
+	@Override
+	public Object getProperty(String name) {
+		if (name.equals(PROPERTY_LINK)) {
+			return getLink();
+		} else return super.getProperty(name);
+	}
 }
