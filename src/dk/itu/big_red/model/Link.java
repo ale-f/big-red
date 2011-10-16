@@ -8,6 +8,7 @@ import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.LinkConnection;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
+import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.Utility;
 
 /**
@@ -28,6 +29,10 @@ public abstract class Link extends Layoutable implements ILink {
 	 */
 	private ArrayList<Point> points =
 		new ArrayList<Point>();
+	
+	public Link() {
+		setOutlineColour(new Colour("green"));
+	}
 	
 	/**
 	 * Adds the given {@link Point} to this Link's set of points.
