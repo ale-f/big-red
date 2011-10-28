@@ -67,7 +67,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	private Bigraph makeBigraph(Element e) throws ImportFailedException {
 		bigraph = new Bigraph();
 		
-		String signaturePath = e.getAttribute("signature");
+		String signaturePath =
+			DOM.getAttributeNS(e, XMLNS.BIGRAPH, "signature");
 		
 		IFile sigFile =
 			Project.findFileByPath(null, new Path(signaturePath));
@@ -180,8 +181,9 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			processContainer(e, (Container)model);
 		} else if (port) {
 			Node n = (Node)context;
+			String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
 			for (Port p : n.getPorts()) {
-				if (p.getName().equals(e.getAttribute("name"))) {
+				if (p.getName().equals(name)) {
 					processPoint(e, p);
 					break;
 				}
