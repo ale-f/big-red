@@ -388,10 +388,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			FileEditorInput fi = (FileEditorInput)input;
 			model.setResource(fi.getFile());
 			try {
-				SignatureXMLImport im = new SignatureXMLImport();
-				im.setInputStream(fi.getFile().getContents());
-				
-				model.setModel(im.importObject());
+				model.setModel(SignatureXMLImport.importFile(fi.getFile()));
 			} catch (Exception e) {
 				e.printStackTrace();
 				model.setModel(new Signature());

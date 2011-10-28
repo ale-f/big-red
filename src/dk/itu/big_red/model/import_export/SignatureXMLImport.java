@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.import_export;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -81,5 +83,15 @@ public class SignatureXMLImport extends Import<Signature> {
 		else if (model instanceof PortSpec)
 			processPort(e, (PortSpec)model);
 		return model;
+	}
+	
+	public static Signature importFile(IFile file) throws ImportFailedException {
+		SignatureXMLImport s = new SignatureXMLImport();
+		try {
+			s.setInputStream(file.getContents());
+		} catch (CoreException e) {
+			throw new ImportFailedException(e);
+		}
+		return s.importObject().setFile(file);
 	}
 }

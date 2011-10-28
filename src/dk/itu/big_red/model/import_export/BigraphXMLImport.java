@@ -21,6 +21,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -69,13 +70,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		
 		IFile sigFile =
 			Project.findFileByPath(null, new Path(signaturePath));
-		SignatureXMLImport si = new SignatureXMLImport();
-		try {
-			si.setInputStream(sigFile.getContents());
-			bigraph.setSignature(sigFile, si.importObject());
-		} catch (Exception ex) {
-			throw new ImportFailedException(ex);
-		}
+		Signature sig = SignatureXMLImport.importFile(sigFile);
+		bigraph.setSignature(sigFile, sig);
 		
 		processContainer(e, bigraph);
 		
