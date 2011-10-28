@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.UUID;
 
 import dk.itu.big_red.model.assistants.CloneMap;
 
@@ -115,5 +116,29 @@ public class ModelObject {
 		if (name.equals(PROPERTY_COMMENT)) {
 			return getComment();
 		} else return null;
+	}
+	
+	private String persistentID = null;
+	
+	/**
+	 * Gets the persistent ID of this {@link ModelObject}, creating it if
+	 * necessary.
+	 * @return a persistent ID (by default, the string representation of a new
+	 * random {@link UUID})
+	 * @see #setPersistentID(String)
+	 */
+	public String getPersistentID() {
+		if (persistentID == null)
+			persistentID = UUID.randomUUID().toString();
+		return persistentID;
+	}
+	
+	/**
+	 * Sets the persistent ID of this {@link ModelObject}.
+	 * @param persistentID the new persistent ID (can be <code>null</code>)
+	 * @see #getPersistentID()
+	 */
+	public void setPersistentID(String persistentID) {
+		this.persistentID = persistentID;
 	}
 }
