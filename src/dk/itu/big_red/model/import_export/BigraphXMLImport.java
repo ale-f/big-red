@@ -17,6 +17,7 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
@@ -114,7 +115,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	}
 	
 	private void addChild(Container context, Element e) throws ImportFailedException {
-		Object model = null;
+		ModelObject model = null;
 		boolean port = false;
 		if (e.getNodeName().equals("node")) {
 			String controlName =
@@ -135,6 +136,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			model = ModelFactory.getNewObject(e.getNodeName());
 		}
 
+		if (model != null)
+			model.setPersistentID(DOM.getAttributeNS(e, XMLNS.BIG_RED, "big-red:pid"));
 		
 		if (model instanceof Layoutable) {
 			Layoutable l = (Layoutable)model;

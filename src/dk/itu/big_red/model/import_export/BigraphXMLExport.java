@@ -41,7 +41,8 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	
 	private Document doc = null;
 	
-	private boolean exportAppearance = true;
+	private boolean exportAppearance = true,
+			exportPersistentID = true;
 	
 	/**
 	 * Specifies whether or not <code>&lt;big-red:appearance&gt;</code> tags,
@@ -52,6 +53,10 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	 */
 	public void setAppearanceExport(boolean ea) {
 		exportAppearance = ea;
+	}
+	
+	public void setPersistentIDExport(boolean epi) {
+		exportPersistentID = epi;
 	}
 	
 	@Override
@@ -71,7 +76,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph");
 		Element e = DOM.applyAttributesToElement(doc.getDocumentElement(),
 			"signature", obj.getSignatureFile().getFullPath().makeRelative().toString());
-		if (exportAppearance)
+		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributesToElement(e, "xmlns:big-red", XMLNS.BIG_RED);
 		return e;
 	}
@@ -129,6 +134,9 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		if (exportAppearance)
 			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
 		
+		if (exportPersistentID)
+			DOM.applyAttributesToElementNS(e, XMLNS.BIG_RED, "big-red:pid", obj.getPersistentID());
+					
 		return e;
 	}
 }
