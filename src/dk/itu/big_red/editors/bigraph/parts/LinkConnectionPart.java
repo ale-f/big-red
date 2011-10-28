@@ -9,9 +9,12 @@ import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
+import org.eclipse.ui.IPageLayout;
+import org.eclipse.ui.PartInitException;
 
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
@@ -19,6 +22,7 @@ import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.util.UI;
 
 /**
  * LinkConnectionParts represent {@link Link.Connection}s, the individual
@@ -136,5 +140,20 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return getLinkPart().getTargetConnectionAnchor(request);
+	}
+	
+	/**
+	 * Handles {@link RequestConstants#REQ_OPEN} requests by opening the
+	 * property sheet.
+	 */
+	@Override
+	public void performRequest(Request req) {
+		if (req.getType().equals(RequestConstants.REQ_OPEN)) {
+			try {
+				UI.getWorkbenchPage().showView(IPageLayout.ID_PROP_SHEET);
+			} catch (PartInitException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
