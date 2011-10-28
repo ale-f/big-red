@@ -114,7 +114,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	private void addChild(Container context, Element e) throws ImportFailedException {
 		ModelObject model = null;
 		boolean port = false;
-		if (e.getNodeName().equals("node")) {
+		if (e.getLocalName().equals("node")) {
 			String controlName =
 					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control");
 			Control c = bigraph.getSignature().getControl(controlName);
@@ -123,14 +123,14 @@ public class BigraphXMLImport extends Import<Bigraph> {
 					"The control \"" + controlName + "\" isn't defined by " +
 							"this bigraph's signature.");
 			model = new Node(c);
-		} else if (e.getNodeName().equals("port") && context instanceof Node) {
+		} else if (e.getLocalName().equals("port") && context instanceof Node) {
 			/*
 			 * <port /> tags shouldn't actually create anything, so let the
 			 * special handling commence!
 			 */
 			port = true;
 		} else {
-			model = ModelFactory.getNewObject(e.getNodeName());
+			model = ModelFactory.getNewObject(e.getLocalName());
 		}
 
 		if (model != null)

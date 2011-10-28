@@ -59,6 +59,10 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		exportPersistentID = epi;
 	}
 	
+	private Element elem(String name) {
+		return doc.createElementNS(XMLNS.BIGRAPH, "bigraph:" + name);
+	}
+	
 	@Override
 	public void exportObject() throws ExportFailedException {
 		try {
@@ -73,7 +77,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	}
 
 	private Element process(Bigraph obj) {
-		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph");
+		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph");
 		Element e = DOM.applyAttributes(doc.getDocumentElement(),
 			"signature", obj.getSignature().getFile().getFullPath().makeRelative().toString());
 		if (exportAppearance || exportPersistentID)
@@ -82,7 +86,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	}
 	
 	private Element process(Node n) throws ExportFailedException {
-		Element e = doc.createElement("node");
+		Element e = elem("node");
 		try {
 			e.setAttribute("control", n.getControl().getLongName());
 		} catch (NullPointerException ex) {
@@ -100,7 +104,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		Link link = p.getLink();
 		if (link != null) {
 			return DOM.applyAttributes(
-					doc.createElement(p.getClass().getSimpleName().toLowerCase()),
+					elem(p.getClass().getSimpleName().toLowerCase()),
 					"name", p.getName(),
 					"link", link.getName());
 		} else if (p instanceof InnerName) {
@@ -118,7 +122,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		} else if (obj instanceof Point) {
 			e = process((Point)obj);
 		} else {
-			e = doc.createElement(obj.getClass().getSimpleName().toLowerCase());
+			e = elem(obj.getClass().getSimpleName().toLowerCase());
 		}
 		
 		if (!(obj instanceof Bigraph))
