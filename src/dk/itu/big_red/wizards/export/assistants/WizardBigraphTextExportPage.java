@@ -86,10 +86,9 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		
 		Bigraph model;
 		
-		BigraphXMLImport im = new BigraphXMLImport();
 		try {
-			im.setInputStream(Project.findFileByPath(null, bigraphPath).getContents());
-			model = im.importObject();
+			model = BigraphXMLImport.importFile(
+					Project.findFileByPath(null, bigraphPath));
 		} catch (Exception e) {
 			setErrorMessage(e.getLocalizedMessage());
 			return false;

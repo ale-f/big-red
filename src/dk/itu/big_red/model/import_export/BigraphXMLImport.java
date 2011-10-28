@@ -3,6 +3,7 @@ package dk.itu.big_red.model.import_export;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.SWT;
 import org.w3c.dom.Document;
@@ -192,5 +193,15 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		} else {
 			/* fail in some other way? */;
 		}
+	}
+	
+	public static Bigraph importFile(IFile file) throws ImportFailedException {
+		BigraphXMLImport b = new BigraphXMLImport();
+		try {
+			b.setInputStream(file.getContents());
+		} catch (CoreException e) {
+			throw new ImportFailedException(e);
+		}
+		return b.importObject().setFile(file);
 	}
 }

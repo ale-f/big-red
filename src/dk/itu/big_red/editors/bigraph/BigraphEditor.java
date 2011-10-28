@@ -184,10 +184,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	model.setResource(fi.getFile());
 	    	try {
-	    		BigraphXMLImport im = new BigraphXMLImport();
-	    		im.setInputStream(fi.getFile().getContents());
-	    		
-	    		model.setModel(im.importObject());
+	    		model.setModel(BigraphXMLImport.importFile(fi.getFile()));
 	    	} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
