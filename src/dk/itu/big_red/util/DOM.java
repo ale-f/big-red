@@ -141,10 +141,28 @@ public class DOM {
 	 * @param d an Element
 	 * @param attrs a vararg list of name-value pairs of any type
 	 * @return d, for convenience
+	 * @see #applyAttributesToElementNS(Element, Object...)
 	 */
 	public static Element applyAttributesToElement(Element d, Object... attrs) {
 		for (int i = 0; i < attrs.length; i += 2)
 			d.setAttribute(attrs[i].toString(), attrs[i + 1].toString());
+		return d;
+	}
+	
+	/**
+	 * The namespace-aware counterpart of {@link #applyAttributesToElement}.
+	 * @param d an Element
+	 * @param attrs a vararg list of namespace-name-value tuples of any type
+	 * @return d, for convenience
+	 * @see #applyAttributesToElement(Element, Object...)
+	 */
+	public static Element applyAttributesToElementNS(Element d, Object... attrs) {
+		for (int i = 0; i < attrs.length; i += 3) {
+			String nsURI = attrs[i].toString(),
+					name = attrs[i + 1].toString(),
+					value = attrs[i + 2].toString();
+			d.setAttributeNS(nsURI, name, value);
+		}
 		return d;
 	}
 	
