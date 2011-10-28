@@ -21,7 +21,7 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 
 /**
- * EdgeConnectionParts represent {@link Link.Connection}s, the individual
+ * LinkConnectionParts represent {@link Link.Connection}s, the individual
  * connections that together comprise an {@link Edge}.
  * @see Edge
  * @see Link.Connection

@@ -14,7 +14,7 @@ import dk.itu.big_red.util.Colour;
 
 /**
  * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;
- * model objects which have multiple {@link LinkConnection}s to {@link Point}s.
+ * model objects which have multiple connections to {@link Point}s.
  * @author alec
  * @see ILink
  */
@@ -109,13 +109,13 @@ public abstract class Link extends Layoutable implements ILink {
 		new HashMap<Point, Link.Connection>();
 	
 	/**
-	 * Lazily creates and returns a {@link LinkConnection} connecting the given
-	 * {@link Point} to this Link.
+	 * Lazily creates and returns a {@link Link.Connection} connecting the
+	 * given {@link Point} to this Link.
 	 * 
 	 * <p><strong>Do not call this function</strong>; it's intended only for
 	 * the use of {@link PortPart}s and {@link LinkPart}s.
 	 * @param p a {@link Point}
-	 * @return a {@link LinkConnection}, which could go away at any point
+	 * @return a {@link Link.Connection}, which could go away at any point
 	 */
 	public Link.Connection getConnectionFor(Point p) {
 		if (!points.contains(p))

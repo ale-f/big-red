@@ -74,8 +74,8 @@ public abstract class ReadonlyColour {
 	/**
 	 * Returns the SWT {@link Color} corresponding to this colour, creating it
 	 * if necessary.
-	 * <p>Changing any of this {@link Colour}'s properties will invalidate the
-	 * object returned by this function.
+	 * <p>Changing this {@link Colour}'s red, green, or blue components will
+	 * invalidate the object returned by this function.
 	 * @return a {@link Color}
 	 * @see #invalidateSWTColor()
 	 */

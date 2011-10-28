@@ -10,9 +10,9 @@ import dk.itu.big_red.model.Link;
 
 /**
  * EdgeParts represent {@link Edge}s, the container for - and target point of -
- * {@link LinkConnection}s.
+ * {@link Link.Connection}s.
  * @see Edge
- * @see LinkConnection
+ * @see Link.Connection
  * @see LinkConnectionPart
  * @author alec
  *

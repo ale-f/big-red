@@ -90,7 +90,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	}
 
 	/**
-	 * Returns an empty list of {@link LinkConnection}s. {@link PointPart}s
+	 * Returns an empty list of {@link Link.Connection}s. {@link PointPart}s
 	 * should probably override this method!
 	 */
 	@Override
@@ -99,7 +99,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
     }
 
 	/**
-	 * Returns an empty list of {@link LinkConnection}s. {@link LinkPart}s
+	 * Returns an empty list of {@link Link.Connection}s. {@link LinkPart}s
 	 * should probably override this method!
 	 */
 	@Override
