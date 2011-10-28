@@ -75,7 +75,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	private Element process(Bigraph obj) {
 		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph");
 		Element e = DOM.applyAttributes(doc.getDocumentElement(),
-			"signature", obj.getSignatureFile().getFullPath().makeRelative().toString());
+			"signature", obj.getSignature().getFile().getFullPath().makeRelative().toString());
 		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributes(e, "xmlns:big-red", XMLNS.BIG_RED);
 		return e;

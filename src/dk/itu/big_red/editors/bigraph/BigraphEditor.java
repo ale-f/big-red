@@ -62,12 +62,11 @@ import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.util.FileResourceOutputStream;
 import dk.itu.big_red.util.ValidationFailedException;
-import dk.itu.big_red.util.resources.ResourceWrapper;
 
 public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
-	private ResourceWrapper<Bigraph> model = new ResourceWrapper<Bigraph>();
+	private Bigraph model = null;
 	private KeyHandler keyHandler;
 	
 	public BigraphEditor() {
@@ -182,9 +181,8 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    IEditorInput input = getEditorInput();
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
-	    	model.setResource(fi.getFile());
 	    	try {
-	    		model.setModel(BigraphXMLImport.importFile(fi.getFile()));
+	    		model = BigraphXMLImport.importFile(fi.getFile());
 	    	} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
@@ -200,18 +198,14 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    
 	    updateNodePalette();
 	    
-	    viewer.setContents(model.getModel());
+	    viewer.setContents(model);
 	    setPartName(getEditorInput().getName());
     }
     
 	private void updateNodePalette() {
     	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
 		
-    	Bigraph b = model.getModel();
-    	if (b == null)
-    		return;
-    	
-		for (Control c : b.getSignature().getControls()) {
+		for (Control c : model.getSignature().getControls()) {
 			palette.add(new CombinedTemplateCreationEntry(c.getName(), "",
 					Node.class, new NodeFactory(c), null, null));
 		}

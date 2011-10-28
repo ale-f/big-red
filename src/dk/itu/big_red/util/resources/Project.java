@@ -219,7 +219,7 @@ public class Project {
 	
 	public static void createBigraph(IFile sigFile, IFile bigFile) throws ImportFailedException, ExportFailedException, CoreException {
 		Bigraph b = new Bigraph();
-		b.setSignature(sigFile, SignatureXMLImport.importFile(sigFile));
+		b.setSignature(SignatureXMLImport.importFile(sigFile));
 		new BigraphXMLExport().setModel(b).setOutputStream(new FileResourceOutputStream(bigFile)).exportObject();
 	}
 	

@@ -42,7 +42,6 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.resources.ResourceWrapper;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
@@ -62,7 +61,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
         	ByteArrayOutputStream os = new ByteArrayOutputStream();
         	SignatureXMLExport ex = new SignatureXMLExport();
         	
-        	ex.setModel(model.getModel());
+        	ex.setModel(model);
         	ex.setOutputStream(os);
         	ex.exportObject();
         	
@@ -113,7 +112,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		return false;
 	}
 
-	private ResourceWrapper<Signature> model = new ResourceWrapper<Signature>();
+	private Signature model = null;
 	
 	private dk.itu.big_red.model.Control currentControl;
 	
@@ -232,7 +231,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				currentControlItem = controls.getSelection()[0];
-				currentControl = model.getModel().getControl(currentControlItem.getText());
+				currentControl = model.getControl(currentControlItem.getText());
 				controlToFields();
 				name.setFocus();
 				setEnablement(true);
@@ -255,7 +254,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				currentControlItem = new TreeItem(controls, SWT.NONE);
-				currentControl = model.getModel().addControl(new dk.itu.big_red.model.Control());
+				currentControl = model.addControl(new dk.itu.big_red.model.Control());
 				controlToFields();
 				controls.select(currentControlItem);
 				name.setFocus();
@@ -276,14 +275,14 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				model.getModel().removeControl(currentControl);
+				model.removeControl(currentControl);
 				currentControlItem.dispose();
 				controls.update();
 				
 				if (controls.getItemCount() > 0) {
 					controls.select(controls.getItem(0));
 					currentControlItem = controls.getItem(0);
-					currentControl = model.getModel().getControl(currentControlItem.getText());
+					currentControl = model.getControl(currentControlItem.getText());
 					controlToFields();
 					name.setFocus();
 				} else setEnablement(false);
@@ -386,16 +385,15 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		IEditorInput input = getEditorInput();
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
-			model.setResource(fi.getFile());
 			try {
-				model.setModel(SignatureXMLImport.importFile(fi.getFile()));
+				model = SignatureXMLImport.importFile(fi.getFile());
 			} catch (Exception e) {
 				e.printStackTrace();
-				model.setModel(new Signature());
+				model = new Signature();
 			}
 		}
 		
-		for (dk.itu.big_red.model.Control c : model.getModel().getControls())
+		for (dk.itu.big_red.model.Control c : model.getControls())
 			new TreeItem(controls, 0).setText(c.getLongName());
 		setPartName(input.getName());
 	}

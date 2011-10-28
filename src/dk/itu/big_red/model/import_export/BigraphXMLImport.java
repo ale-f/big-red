@@ -72,7 +72,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		IFile sigFile =
 			Project.findFileByPath(null, new Path(signaturePath));
 		Signature sig = SignatureXMLImport.importFile(sigFile);
-		bigraph.setSignature(sigFile, sig);
+		bigraph.setSignature(sig);
 		
 		processContainer(e, bigraph);
 		

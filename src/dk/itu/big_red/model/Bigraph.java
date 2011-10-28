@@ -27,7 +27,6 @@ import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.geometry.Rectangle;
 import dk.itu.big_red.util.resources.IFileBackable;
-import dk.itu.big_red.util.resources.ResourceWrapper;
 
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link
@@ -36,8 +35,7 @@ import dk.itu.big_red.util.resources.ResourceWrapper;
  * @see IBigraph
  */
 public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable {
-	protected ResourceWrapper<Signature> signature =
-		new ResourceWrapper<Signature>();
+	protected Signature signature = null;
 
 	private HashMap<Object, Map<String, Layoutable>> names =
 		new HashMap<Object, Map<String, Layoutable>>();
@@ -255,19 +253,13 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		return this;
 	}
 	
-	public void setSignature(IFile file, Signature signature) {
-		if (file != null && signature != null) {
-			this.signature.setResource(file);
-			this.signature.setModel(signature);
-		}
+	public void setSignature(Signature signature) {
+		if (signature != null)
+			this.signature = signature;
 	}
 	
 	public Signature getSignature() {
-		return signature.getModel();
-	}
-	
-	public IFile getSignatureFile() {
-		return signature.getResource();
+		return signature;
 	}
 	
 	@Override
@@ -383,7 +375,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 
 	@Override
 	public ISignature getISignature() {
-		return signature.getModel();
+		return signature;
 	}
 	
 	/**
