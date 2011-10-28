@@ -6,7 +6,7 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
-import dk.itu.big_red.editors.bigraph.figures.InnerNameFigure;
+import dk.itu.big_red.editors.bigraph.figures.NameFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.InnerName;
 
@@ -21,7 +21,7 @@ public class InnerNamePart extends PointPart {
 	
 	@Override
 	protected IFigure createFigure() {
-		return new InnerNameFigure();
+		return new NameFigure();
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class InnerNamePart extends PointPart {
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();
-		((InnerNameFigure)getFigure()).setName(getModel().getName());
+		((NameFigure)getFigure()).setName(getModel().getName());
 	}
 
 	@Override

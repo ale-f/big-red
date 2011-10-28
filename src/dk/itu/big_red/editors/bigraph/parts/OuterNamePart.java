@@ -3,7 +3,7 @@ package dk.itu.big_red.editors.bigraph.parts;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.IFigure;
-import dk.itu.big_red.editors.bigraph.figures.OuterNameFigure;
+import dk.itu.big_red.editors.bigraph.figures.NameFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.ModelObject;
@@ -11,7 +11,7 @@ import dk.itu.big_red.model.ModelObject;
 public class OuterNamePart extends LinkPart {
 	@Override
 	protected IFigure createFigure() {
-		return new OuterNameFigure();
+		return new NameFigure();
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class OuterNamePart extends LinkPart {
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();
-		((OuterNameFigure)getFigure()).setName(getModel().getName());
+		((NameFigure)getFigure()).setName(getModel().getName());
 	}
 	
 	@Override

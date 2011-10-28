@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.bigraph.figures;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.XYLayout;
@@ -22,6 +23,13 @@ public abstract class AbstractFigure extends Shape {
 	
 	public void setConstraint(Rectangle rect) {
 		getParent().setConstraint(this, rect);
+	}
+	
+	public Rectangle getConstraint() {
+		LayoutManager lm = getParent().getLayoutManager();
+		if (lm == null)
+			return null;
+		return (Rectangle)lm.getConstraint(this);
 	}
 	
 	public void setToolTip(String content) {

@@ -10,17 +10,16 @@ import org.eclipse.swt.graphics.Font;
 
 import dk.itu.big_red.util.UI;
 
-public class InnerNameFigure extends AbstractFigure {
+public class NameFigure extends AbstractFigure {
 	private static Font italicFont = null;
 	private Label label = new Label();
 	
-	public InnerNameFigure() {
+	public NameFigure() {
 		super();
 		
 		label.setText("?");
 		label.setForegroundColor(ColorConstants.white);
 		add(label, 0);
-		
 	}
 	
 	@Override
@@ -30,17 +29,25 @@ public class InnerNameFigure extends AbstractFigure {
 		label.setFont(italicFont);
 	}
 	
-	@Override
-	public void setConstraint(Rectangle r) {
-		super.setConstraint(r);
+	private void repositionLabel() {
+		Rectangle r = getConstraint();
+		if (r == null)
+			return;
 		Dimension s = label.getPreferredSize();
 		setConstraint(label, new Rectangle(
 				(r.width / 2) - (s.width / 2),
 				(r.height / 2) - (s.height / 2), -1, -1));
 	}
 	
+	@Override
+	public void setConstraint(Rectangle r) {
+		super.setConstraint(r);
+		repositionLabel();
+	}
+	
 	public void setName(String s) {
 		label.setText(s);
+		repositionLabel();
 	}
 	
 	@Override
