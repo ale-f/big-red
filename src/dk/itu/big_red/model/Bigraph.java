@@ -26,6 +26,7 @@ import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.Utility;
 import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.util.resources.IFileBackable;
 import dk.itu.big_red.util.resources.ResourceWrapper;
 
 /**
@@ -34,7 +35,7 @@ import dk.itu.big_red.util.resources.ResourceWrapper;
  * @author alec
  * @see IBigraph
  */
-public class Bigraph extends Container implements IBigraph, IChangeable {
+public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable {
 	protected ResourceWrapper<Signature> signature =
 		new ResourceWrapper<Signature>();
 
@@ -562,5 +563,18 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	 */
 	public ArrayList<Change> getCheckpointChanges() {
 		return checkpointChanges;
+	}
+
+	private IFile file = null;
+	
+	@Override
+	public IFile getFile() {
+		return file;
+	}
+
+	@Override
+	public Bigraph setFile(IFile file) {
+		this.file = file;
+		return this;
 	}
 }
