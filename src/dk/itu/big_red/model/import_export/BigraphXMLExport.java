@@ -74,10 +74,10 @@ public class BigraphXMLExport extends Export<Bigraph> {
 
 	private Element process(Bigraph obj) {
 		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph");
-		Element e = DOM.applyAttributesToElement(doc.getDocumentElement(),
+		Element e = DOM.applyAttributes(doc.getDocumentElement(),
 			"signature", obj.getSignatureFile().getFullPath().makeRelative().toString());
 		if (exportAppearance || exportPersistentID)
-			DOM.applyAttributesToElement(e, "xmlns:big-red", XMLNS.BIG_RED);
+			DOM.applyAttributes(e, "xmlns:big-red", XMLNS.BIG_RED);
 		return e;
 	}
 	
@@ -99,7 +99,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	private Element process(Point p) throws ExportFailedException {
 		Link link = p.getLink();
 		if (link != null) {
-			return DOM.applyAttributesToElement(
+			return DOM.applyAttributes(
 					doc.createElement(p.getClass().getSimpleName().toLowerCase()),
 					"name", p.getName(),
 					"link", link.getName());
@@ -122,7 +122,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		}
 		
 		if (!(obj instanceof Bigraph))
-			DOM.applyAttributesToElement(e, "name", obj.getName());
+			DOM.applyAttributes(e, "name", obj.getName());
 		
 		if (obj instanceof Container) {
 			Container c = (Container)obj;
@@ -135,7 +135,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
 		
 		if (exportPersistentID)
-			DOM.applyAttributesToElementNS(e, XMLNS.BIG_RED, "big-red:pid", obj.getPersistentID());
+			DOM.applyAttributesNS(e, XMLNS.BIG_RED, "big-red:pid", obj.getPersistentID());
 					
 		return e;
 	}

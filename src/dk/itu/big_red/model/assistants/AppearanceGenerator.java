@@ -38,7 +38,7 @@ public class AppearanceGenerator {
 			alive = true;
 			ReadonlyRectangle r = ((Layoutable)o).getLayout();
 			
-			DOM.applyAttributesToElement(aE,
+			DOM.applyAttributes(aE,
 					"width", r.getWidth(),
 					"height", r.getHeight(),
 					"x", r.getX(),
@@ -49,7 +49,7 @@ public class AppearanceGenerator {
 			alive = true;
 			Colourable c = (Colourable)o;
 			
-			DOM.applyAttributesToElement(aE,
+			DOM.applyAttributes(aE,
 					"fillColor", new Colour(c.getFillColour()).toHexString(),
 					"outlineColor", new Colour(c.getOutlineColour()).toHexString());
 		}
@@ -58,7 +58,7 @@ public class AppearanceGenerator {
 			alive = true;
 			String comment = ((ModelObject)o).getComment();
 			if (comment != null)
-				DOM.applyAttributesToElement(aE,
+				DOM.applyAttributes(aE,
 						"comment", comment);
 		}
 		
@@ -95,7 +95,7 @@ public class AppearanceGenerator {
 			doc.createElementNS(XMLNS.BIG_RED,
 					"big-red:shape");
 
-		DOM.applyAttributesToElement(aE,
+		DOM.applyAttributes(aE,
 				"shape", (c.getShape() == Shape.SHAPE_POLYGON ? "polygon" : "oval"));
 		
 		PointList pl = c.getPoints();
@@ -103,7 +103,7 @@ public class AppearanceGenerator {
 			for (int i = 0; i < pl.size(); i++) {
 				Point p = pl.getPoint(i);
 				Element pE = doc.createElement("big-red:point");
-				DOM.applyAttributesToElement(pE,
+				DOM.applyAttributes(pE,
 						"x", p.x,
 						"y", p.y);
 				aE.appendChild(pE);

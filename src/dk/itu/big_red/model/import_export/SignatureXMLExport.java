@@ -29,7 +29,7 @@ public class SignatureXMLExport extends Export<Signature> {
 	private void process(Signature s) {
 		doc = DOM.createDocument(XMLNS.SIGNATURE, "signature");
 		Element e = doc.getDocumentElement();
-		DOM.applyAttributesToElement(e,
+		DOM.applyAttributes(e,
 			"xmlns:big-red", XMLNS.BIG_RED);
 
 		for (Control c : s.getControls())
@@ -38,7 +38,7 @@ public class SignatureXMLExport extends Export<Signature> {
 	
 	private Element process(Control c) {
 		Element e = doc.createElement("control");
-		DOM.applyAttributesToElement(e,
+		DOM.applyAttributes(e,
 				"name", c.getLongName());
 		
 		for (Port p : c.getPortsArray())
@@ -53,11 +53,11 @@ public class SignatureXMLExport extends Export<Signature> {
 	
 	private Element process(Port p) {
 		Element e = doc.createElement("port");
-		DOM.applyAttributesToElement(e,
+		DOM.applyAttributes(e,
 				"name", p.getName());
 		
 		Element pa = doc.createElement("big-red:port-appearance");
-		DOM.applyAttributesToElement(pa,
+		DOM.applyAttributes(pa,
 				"segment", p.getSegment(),
 				"distance", p.getDistance());
 		e.appendChild(pa);
