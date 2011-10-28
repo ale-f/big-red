@@ -24,8 +24,10 @@ public class CurvyConnectionRouter extends AbstractRouter {
 		b.setPoint1(new Point(target.x, source.y));
 		b.setPoint2(target);
 		
-		for (double i = 0.0; i < 1.0; i += 0.1)
+		pl.addPoint(source);
+		for (double i = 0.0; i < 1.0; i += 0.05)
 			pl.addPoint(b.getPoint(i));
+		pl.addPoint(target);
 		
 		connection.setPoints(pl);
 	}
