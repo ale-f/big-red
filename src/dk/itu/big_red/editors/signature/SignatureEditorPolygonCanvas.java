@@ -10,7 +10,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.jface.dialogs.IInputValidator;
-import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -47,6 +46,21 @@ import dk.itu.big_red.util.geometry.Rectangle;
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
 MenuListener {
+	private IInputValidator getValidator(final PortSpec current) {
+		return new IInputValidator() {
+			@Override
+			public String isValid(String newText) {
+				if (newText.length() == 0)
+					return "Port names must not be empty.";
+				for (PortSpec i : ports)
+					if (i != current && i.getName().equals(newText))
+						return "This port name is already in use.";
+				return null;
+
+			}
+		};
+	}
+	
 	/**
 	 * The property name fired when the set of points changes.
 	 */
@@ -616,9 +630,18 @@ MenuListener {
 							p.setSegment(lsegment);
 							p.setDistance(distance);
 							
-							ports.add(p);
-							firePortChange(PortEvent.ADDED, p);
-							redraw();
+							String newName = UI.promptFor("New port name",
+									"Choose a name for the new port:", "",
+									getValidator(p));
+							if (newName != null) {
+								ports.add(p);
+								firePortChange(PortEvent.ADDED, p);
+								
+								p.setName(newName);
+								firePortChange(PortEvent.RENAMED, p);
+								
+								redraw();
+							}
 						}
 			
 						@Override
@@ -633,10 +656,19 @@ MenuListener {
 						PortSpec p = new PortSpec();
 						p.setSegment(0);
 						p.setDistance(new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10)).getClosestOffset(mousePosition));
-						
-						ports.add(p);
-						firePortChange(PortEvent.ADDED, p);
-						redraw();
+
+						String newName = UI.promptFor("New port name",
+								"Choose a name for the new port:", "",
+								getValidator(p));
+						if (newName != null) {
+							ports.add(p);
+							firePortChange(PortEvent.ADDED, p);
+							
+							p.setName(newName);
+							firePortChange(PortEvent.RENAMED, p);
+							
+							redraw();
+						}
 					}
 		
 					@Override
@@ -650,23 +682,13 @@ MenuListener {
 				
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					final PortSpec p = ports.get(foundPort);
-					InputDialog d = new InputDialog(getShell(),
-							"Port name", "Choose a name for this port:",
-							p.getName() == null ? "" : p.getName(), new IInputValidator() {
-								
-								@Override
-								public String isValid(String newText) {
-									if (newText.length() == 0)
-										return "Port names must not be empty.";
-									for (PortSpec i : ports)
-										if (i != p && i.getName().equals(newText))
-											return "This port name is already in use.";
-									return null;
-								}
-							});
-					if (d.open() == InputDialog.OK) {
-						p.setName(d.getValue());
+					PortSpec p = ports.get(foundPort);
+					String newName = UI.promptFor("Port name",
+							"Choose a name for this port:",
+							(p.getName() == null ? "" : p.getName()),
+							getValidator(p));
+					if (newName != null) {
+						p.setName(newName);
 						firePortChange(PortEvent.RENAMED, p);
 					}
 				}
