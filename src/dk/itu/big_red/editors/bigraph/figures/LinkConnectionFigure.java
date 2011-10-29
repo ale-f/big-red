@@ -2,7 +2,6 @@ package dk.itu.big_red.editors.bigraph.figures;
 
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.SWT;
@@ -33,9 +32,11 @@ public class LinkConnectionFigure extends PolylineConnection {
 		}
 	}
 	
+	private Label toolTip = null;
+	
 	public void setToolTip(String content) {
-		Label label = new Label(content);
-		label.setBorder(new MarginBorder(4));
-		super.setToolTip(label);
+		if (toolTip == null)
+			toolTip = AbstractFigure.createToolTipFor(this);
+		toolTip.setText(content);
 	}
 }

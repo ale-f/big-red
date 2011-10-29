@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.bigraph.figures;
 
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.MarginBorder;
@@ -30,12 +31,6 @@ public abstract class AbstractFigure extends Shape {
 		if (lm == null)
 			return null;
 		return (Rectangle)lm.getConstraint(this);
-	}
-	
-	public void setToolTip(String content) {
-		Label label = new Label(content);
-		label.setBorder(new MarginBorder(4));
-		setToolTip(label);
 	}
 	
 	/**
@@ -71,5 +66,21 @@ public abstract class AbstractFigure extends Shape {
 	
 	@Override
 	protected void outlineShape(Graphics graphics) {
+		
+	}
+	
+	private Label toolTip = null;
+	
+	public void setToolTip(String content) {
+		if (toolTip == null)
+			toolTip = AbstractFigure.createToolTipFor(this);
+		toolTip.setText(content);
+	}
+	
+	public static Label createToolTipFor(IFigure f) {
+		Label toolTip = new Label();
+		toolTip.setBorder(new MarginBorder(4));
+		f.setToolTip(toolTip);
+		return toolTip;
 	}
 }
