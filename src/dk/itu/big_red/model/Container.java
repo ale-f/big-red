@@ -157,14 +157,6 @@ public abstract class Container extends Layoutable {
 		return r;
 	}
 	
-	@Override
-	public String toString() {
-		String s = super.toString();
-		if (getChildren().size() != 0)
-			s += " " + getChildren();
-		return s;
-	}
-	
 	public Change changeAddChild(Layoutable child) {
 		return new ChangeAddChild(this, child);
 	}

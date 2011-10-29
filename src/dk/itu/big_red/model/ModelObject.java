@@ -141,4 +141,9 @@ public class ModelObject {
 	public void setPersistentID(String persistentID) {
 		this.persistentID = persistentID;
 	}
+	
+	@Override
+	public String toString() {
+		return "<" + getClass().getSimpleName() + "#" + getPersistentID() + ">";
+	}
 }

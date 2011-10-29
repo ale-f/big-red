@@ -232,14 +232,6 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
-	@Override
-	public String toString() {
-		String base = getClass().getSimpleName();
-		if (name != null) {
-			return base + " " + name;
-		} else return base;
-	}
-	
 	public Change changeLayout(Rectangle newLayout) {
 		return new ChangeLayout(this, newLayout);
 	}
