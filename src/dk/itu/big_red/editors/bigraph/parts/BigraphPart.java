@@ -70,4 +70,9 @@ public class BigraphPart extends ContainerPart {
 		figure.setUpperInnerNameBoundary(model.getUpperInnerNameBoundary());
 		figure.repaint();
 	}
+	
+	@Override
+	public String getDisplayName() {
+		return "Bigraph " + getModel().getName();
+	}
 }

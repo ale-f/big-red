@@ -81,7 +81,7 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 		Point model = getModel();
 		AbstractFigure figure = getFigure();
 		
-		String toolTip = model.getName();
+		String toolTip = getDisplayName();
 		Link l = model.getLink();
 		if (l != null)
 			toolTip += "\n(connected to " + l.getName() + ")";

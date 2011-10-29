@@ -29,6 +29,6 @@ public abstract class ContainerPart extends AbstractPart {
 	protected void refreshVisuals() {
 		super.refreshVisuals();
 		
-		setToolTip(getModel().getClass().getSimpleName());
+		setToolTip(getDisplayName());
 	}
 }

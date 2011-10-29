@@ -70,23 +70,11 @@ public class NodePart extends ContainerPart {
 		Node model = getModel();
 		Control control = model.getControl();
 		
-		String toolTip;
-		if (control != null) {
-			setResizable(getModel().getControl().isResizable());
-			
-			figure.setShape(model.getControl().getShape());
-			figure.setLabel(model.getControl().getLabel());
-			
-			toolTip = model.getControl().getLongName();
-		} else {
-			setResizable(true);
-			
-			figure.setShape(Control.Shape.SHAPE_POLYGON);
-			figure.setLabel("?");
-			
-			toolTip = "Node with no control";
-		}
-		setToolTip(toolTip);
+		setResizable(control.isResizable());
+		
+		figure.setShape(control.getShape());
+		figure.setLabel(control.getLabel());
+		figure.setToolTip(getDisplayName());
 		
 		PointList points = model.getFittedPolygon();
 		if (points != null)
@@ -107,5 +95,10 @@ public class NodePart extends ContainerPart {
 		ArrayList<Layoutable> children = new ArrayList<Layoutable>(getModel().getChildren());
 		children.addAll(getModel().getPorts());
 		return children;
+	}
+	
+	@Override
+	public String getDisplayName() {
+		return getModel().getControl().getLongName() + " " + getModel().getName();
 	}
 }

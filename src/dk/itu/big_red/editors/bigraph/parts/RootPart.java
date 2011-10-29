@@ -50,4 +50,9 @@ public class RootPart extends ContainerPart {
 	public List<Layoutable> getModelChildren() {
 		return getModel().getChildren();
 	}
+	
+	@Override
+	public String getDisplayName() {
+		return "Root " + getModel().getName();
+	}
 }

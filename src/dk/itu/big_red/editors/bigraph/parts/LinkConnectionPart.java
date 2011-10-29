@@ -22,6 +22,7 @@ import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.util.UI;
 
 /**
@@ -99,7 +100,10 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
 		Link.Connection model = getModel();
 		
-		figure.setToolTip(model.getLink().getComment());
+		String s = getDisplayName();
+		if (model.getComment() != null)
+			s += "\n\n" + model.getComment();
+		figure.setToolTip(s);
 		
 		figure.setForegroundColor(model.getLink().getOutlineColour().getSWTColor());
 	}
@@ -155,5 +159,12 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public String getDisplayName() {
+		Link l = getModel().getLink();
+		return "Connection to " +
+				(l instanceof OuterName ? "outer name" :
+					l instanceof Edge ? "edge" : "link") + " " + l.getName();
 	}
 }

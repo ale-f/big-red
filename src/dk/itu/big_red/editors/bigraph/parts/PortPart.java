@@ -72,4 +72,9 @@ public class PortPart extends PointPart {
 	public Orientation getAnchorOrientation() {
 		return Orientation.CENTER;
 	}
+	
+	@Override
+	public String getDisplayName() {
+		return "Port " + getModel().getName();
+	}
 }

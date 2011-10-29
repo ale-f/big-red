@@ -33,4 +33,9 @@ public class OuterNamePart extends LinkPart {
 	public Orientation getAnchorOrientation() {
 		return Orientation.SOUTH;
 	}
+	
+	@Override
+	public String getDisplayName() {
+		return "Outer name " + getModel().getName();
+	}
 }

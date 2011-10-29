@@ -34,11 +34,7 @@ public class LinkConnectionFigure extends PolylineConnection {
 	}
 	
 	public void setToolTip(String content) {
-		String labelText = "Edge";
-		if (content != null)
-			labelText += "\n\n" + content;
-		
-		Label label = new Label(labelText);
+		Label label = new Label(content);
 		label.setBorder(new MarginBorder(4));
 		super.setToolTip(label);
 	}

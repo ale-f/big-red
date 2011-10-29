@@ -36,6 +36,11 @@ public class SitePart extends AbstractPart {
 		Site model = getModel();
 
 		figure.setName(model.getName());
-		setToolTip("Site " + model.getName());
+		setToolTip(getDisplayName());
+	}
+	
+	@Override
+	public String getDisplayName() {
+		return "Site " + getModel().getName();
 	}
 }

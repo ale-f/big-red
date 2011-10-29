@@ -41,4 +41,9 @@ public class InnerNamePart extends PointPart {
 	public Orientation getAnchorOrientation() {
 		return Orientation.NORTH;
 	}
+	
+	@Override
+	public String getDisplayName() {
+		return "Inner name " + getModel().getName();
+	}
 }

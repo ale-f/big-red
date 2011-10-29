@@ -40,4 +40,9 @@ public class EdgePart extends LinkPart {
 	public Orientation getAnchorOrientation() {
 		return Orientation.CENTER;
 	}
+	
+	@Override
+	public String getDisplayName() {
+		return "Edge " + getModel().getName();
+	}
 }

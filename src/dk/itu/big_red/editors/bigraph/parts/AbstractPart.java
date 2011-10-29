@@ -149,4 +149,6 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 		
 		figure.setConstraint(model.getLayout().getDraw2DRectangle());
 	}
+	
+	public abstract String getDisplayName();
 }
