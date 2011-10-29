@@ -2,6 +2,8 @@ package dk.itu.big_red.util;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -212,6 +214,18 @@ public class UI {
 		return tweakFont(original, 0, properties);
 	}
 
+	public static String promptFor(String title, String caption, String initialValue, IInputValidator validator) {
+		InputDialog id =
+			new InputDialog(getShell(), title,
+				caption, initialValue, validator);
+		id.setBlockOnOpen(true);
+		if (id.open() == InputDialog.OK) {
+			return id.getValue();
+		} else {
+			return null;
+		}
+	}
+	
 	public static Image getImage(String symbolicName) {
 		return getWorkbench().getSharedImages().getImage(symbolicName);
 	}
