@@ -60,6 +60,8 @@ public class ModelPropertySource implements IPropertySource {
 			Object value = object.getProperty((String)id);
 			if (value instanceof Colour)
 				value = ((Colour)value).getRGB();
+			if (value == null && id == ModelObject.PROPERTY_COMMENT)
+				value = "";
 			return value;
 		}
 	}
