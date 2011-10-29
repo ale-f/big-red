@@ -11,6 +11,31 @@ import dk.itu.big_red.util.ReadonlyColour;
  *
  */
 public abstract class Colourable extends ModelObject {
+	/**
+	 * The <strong>UserColourable</strong> enumeration specifies the degree of
+	 * direct control that the user should be given over a {@link Colourable}'s
+	 * colour.
+	 * @author alec
+	 *
+	 */
+	public enum UserControl {
+		/**
+		 * Neither of this {@link Colourable}'s colours can be configured
+		 * directly by the user.
+		 */
+		NONE,
+		/**
+		 * Only the outline colour of this {@link Colourable} can be configured
+		 * directly by the user.
+		 */
+		OUTLINE,
+		/**
+		 * Both the outline and fill colours of this {@link Colourable} can be
+		 * configured directly by the user.
+		 */
+		OUTLINE_AND_FILL
+	}
+	
 	public abstract class ChangeColour extends Change {
 		public Colourable model;
 		public Colour newColour;
@@ -147,4 +172,11 @@ public abstract class Colourable extends ModelObject {
 			return getOutlineColour();
 		} else return super.getProperty(name);
 	}
+	
+	/**
+	 * Returns the degree of direct control over this {@link Colourable}'s
+	 * colours that should be given to the user.
+	 * @return a {@link UserControl}
+	 */
+	public abstract UserControl getUserControl();
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
+
 import dk.itu.big_red.model.interfaces.IControl;
 
 /**
@@ -280,5 +281,10 @@ public class Control extends Colourable implements IControl {
 		} else if (name.equals(PROPERTY_SHAPE)) {
 			return getShape();
 		} else return super.getProperty(name);
+	}
+	
+	@Override
+	public UserControl getUserControl() {
+		return UserControl.OUTLINE_AND_FILL;
 	}
 }

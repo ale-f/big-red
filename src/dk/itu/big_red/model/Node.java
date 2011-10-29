@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
 import org.eclipse.draw2d.geometry.PointList;
+
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.interfaces.IChild;
@@ -150,5 +151,10 @@ public class Node extends Container implements PropertyChangeListener, INode {
 	@Override
 	public IControl getIControl() {
 		return control;
+	}
+	
+	@Override
+	public UserControl getUserControl() {
+		return UserControl.OUTLINE_AND_FILL;
 	}
 }

@@ -12,6 +12,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Colourable.UserControl;
 import dk.itu.big_red.util.Colour;
 
 public class ModelPropertySource implements IPropertySource {
@@ -34,8 +35,13 @@ public class ModelPropertySource implements IPropertySource {
 		properties.add(new PropertyDescriptor("Class", "Class"));
 		
 		if (object instanceof Colourable) {
-			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL, "Fill colour"));
-			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Outline colour"));
+			Colourable c = (Colourable)object;
+			if (c.getUserControl() == UserControl.OUTLINE){
+				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Colour"));
+			} else if (c.getUserControl() == UserControl.OUTLINE_AND_FILL) {
+				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL, "Fill colour"));
+				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Outline colour"));
+			}
 		}
 		
 		if (object instanceof ModelObject)
