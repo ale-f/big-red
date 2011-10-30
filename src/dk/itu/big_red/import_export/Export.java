@@ -23,7 +23,7 @@ import org.eclipse.draw2d.IFigure;
  *
  */
 public abstract class Export<T> {
-	public class OptionDescriptor {
+	public static class OptionDescriptor {
 		private String id, description;
 		
 		public OptionDescriptor(String id, String description) {
