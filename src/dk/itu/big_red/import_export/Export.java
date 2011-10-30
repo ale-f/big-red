@@ -3,6 +3,8 @@ package dk.itu.big_red.import_export;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 
@@ -21,6 +23,23 @@ import org.eclipse.draw2d.IFigure;
  *
  */
 public abstract class Export<T> {
+	public class OptionDescriptor {
+		private String id, description;
+		
+		protected OptionDescriptor(String id, String description) {
+			this.id = id;
+			this.description = description;
+		}
+		
+		public String getID() {
+			return id;
+		}
+		
+		public String getDescription() {
+			return description;
+		}
+	};
+	
 	private T model = null;
 	
 	/**
@@ -84,4 +103,52 @@ public abstract class Export<T> {
 	 * @throws ExportFailedException if the export failed
 	 */
 	public abstract void exportObject() throws ExportFailedException;
+	
+	private ArrayList<OptionDescriptor> options =
+			new ArrayList<OptionDescriptor>();
+	
+	/**
+	 * Adds an option to this {@link Export}.
+	 * @param d an {@link OptionDescriptor} specifying the new option
+	 */
+	protected void addOption(OptionDescriptor d) {
+		options.add(d);
+	}
+	
+	/**
+	 * Returns all of the options supported by this {@link Export}.
+	 * @return a list of {@link OptionDescriptor}s
+	 */
+	public final List<OptionDescriptor> getOptions() {
+		return options;
+	}
+	
+	/**
+	 * Changes the value of the option specified by a descriptor.
+	 * @param d one of this {@link Export}'s {@link OptionDescriptor}s
+	 * @param value the option's new value
+	 */
+	public final void setOption(OptionDescriptor d, Object value) {
+		setOption(d.getID(), value);
+	}
+	
+	/**
+	 * Retrieves the value of the named option.
+	 * <p>Subclasses should override this method.
+	 * @param id the ID of one of this {@link Export}'s options
+	 * @return the current value of this option, or <code>null</code>
+	 */
+	public Object getOption(String id) {
+		return null;
+	}
+	
+	/**
+	 * Changes the value of the named option.
+	 * <p>Subclasses should override this method.
+	 * @param id the ID of one of this {@link Export}'s options
+	 * @param value the option's new value
+	 */
+	public void setOption(String id, Object value) {
+		return;
+	}
 }
