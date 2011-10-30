@@ -26,7 +26,7 @@ public abstract class Export<T> {
 	public class OptionDescriptor {
 		private String id, description;
 		
-		protected OptionDescriptor(String id, String description) {
+		public OptionDescriptor(String id, String description) {
 			this.id = id;
 			this.description = description;
 		}
@@ -111,8 +111,15 @@ public abstract class Export<T> {
 	 * Adds an option to this {@link Export}.
 	 * @param d an {@link OptionDescriptor} specifying the new option
 	 */
-	protected void addOption(OptionDescriptor d) {
+	protected final void addOption(OptionDescriptor d) {
 		options.add(d);
+	}
+	
+	/**
+	 * @see #addOption(OptionDescriptor)
+	 */
+	protected final void addOption(String id, String description) {
+		addOption(new OptionDescriptor(id, description));
 	}
 	
 	/**

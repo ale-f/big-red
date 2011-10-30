@@ -44,19 +44,31 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	private boolean exportAppearance = true,
 			exportPersistentID = true;
 	
-	/**
-	 * Specifies whether or not <code>&lt;big-red:appearance&gt;</code> tags,
-	 * containing Big Red-specific layout and visual data, should be present in
-	 * the output.
-	 * @param ea <code>true</code> if layout data should be exported, or
-	 * <code>false</code> otherwise
-	 */
-	public void setAppearanceExport(boolean ea) {
-		exportAppearance = ea;
+	public static final String
+		OPTION_APPEARANCE = "BigraphXMLExportAppearance",
+		OPTION_PERSISTENT_ID = "BigraphXMLExportPersistentID";
+	
+	{
+		addOption(OPTION_APPEARANCE, "Export Big Red-specific appearance data");
+		addOption(OPTION_PERSISTENT_ID, "Export a persistent ID for each object");
 	}
 	
-	public void setPersistentIDExport(boolean epi) {
-		exportPersistentID = epi;
+	@Override
+	public Object getOption(String id) {
+		if (id.equals(OPTION_APPEARANCE)) {
+			return exportAppearance;
+		} else if (id.equals(OPTION_PERSISTENT_ID)) {
+			return exportPersistentID;
+		} else return super.getOption(id);
+	}
+	
+	@Override
+	public void setOption(String id, Object value) {
+		if (id.equals(OPTION_APPEARANCE)) {
+			exportAppearance = (Boolean)value;
+		} else if (id.equals(OPTION_PERSISTENT_ID)) {
+			exportPersistentID = (Boolean)value;
+		} else super.setOption(id, value);
 	}
 	
 	private Element elem(String name) {
