@@ -148,10 +148,24 @@ public class UI {
 	 * Enables, or disables, a group of {@link Control}s.
 	 * @param enabled the new enabled state
 	 * @param controls the controls to enable or disable
+	 * @return <code>enabled</code>, for convenience
 	 */
-	public static void setEnabled(boolean enabled, Control... controls) {
+	public static boolean setEnabled(boolean enabled, Control... controls) {
 		for (Control c : controls)
 			c.setEnabled(enabled);
+		return enabled;
+	}
+	
+	/**
+	 * Shows, or hides, a group of {@link Control}s.
+	 * @param visible the new visibility state
+	 * @param controls the controls to show or hide
+	 * @return <code>visible</code>, for convenience
+	 */
+	public static boolean setVisible(boolean visible, Control... controls) {
+		for (Control c : controls)
+			c.setVisible(visible);
+		return visible;
 	}
 	
 	private static Clipboard cb = null;
