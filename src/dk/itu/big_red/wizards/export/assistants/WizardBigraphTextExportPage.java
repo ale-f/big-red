@@ -229,8 +229,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		groupLayoutData.horizontalSpan = 2;
 		optionsGroup.setLayoutData(groupLayoutData);
 		
-		optionsLabel.setVisible(false);
-		optionsGroup.setVisible(false);
+		UI.setVisible(false, optionsLabel, optionsGroup);
 		
 		Composite group = new Composite(root, SWT.NONE);
 		group.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -314,11 +313,9 @@ public class WizardBigraphTextExportPage extends WizardPage {
 				}
 			}
 			
-			optionsLabel.setVisible(true);
-			optionsGroup.setVisible(true);
+			UI.setVisible(true, optionsLabel, optionsGroup);
 		} else {
-			optionsLabel.setVisible(false);
-			optionsGroup.setVisible(false);
+			UI.setVisible(false, optionsLabel, optionsGroup);
 		}
 		
 		getShell().layout(true, true);
