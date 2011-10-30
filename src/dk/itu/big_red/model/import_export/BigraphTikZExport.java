@@ -57,7 +57,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	public void exportObject() throws ExportFailedException {
 		writer = new BufferedWriter(new OutputStreamWriter(target));
 		
-		process((Layoutable)getModel());
+		processBigraph(getModel());
 		
 		try {
 			writer.close();
@@ -98,7 +98,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	
 	private Point translate = null;
 	
-	private void process(Bigraph b) throws ExportFailedException {
+	private void processBigraph(Bigraph b) throws ExportFailedException {
 		if (completeDocument) {
 			line("documentclass{article}");
 			line("usepackage{tikz}");
@@ -140,7 +140,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		
 		line("begin{tikzpicture}[x=0.02cm,y=-0.02cm]");
 		
-		process((Container)b);
+		processContainer(b);
 		
 		line("end{tikzpicture}");
 		
@@ -167,7 +167,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		} else return o.toString();
 	}
 	
-	private void process(Node n) throws ExportFailedException {
+	private void processNode(Node n) throws ExportFailedException {
 		Control con = n.getControl();
 		Rectangle rl = n.getRootLayout().translate(translate);
 		Point rltl = rl.getTopLeft();
@@ -208,15 +208,15 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		endScope();
 	}
 	
-	private void process(Port p) throws ExportFailedException {
+	private void processPort(Port p) throws ExportFailedException {
 		Rectangle rl = p.getRootLayout().translate(translate);
 		Point tmp =
 			rl.getCenter();
 		line("node [internal port] (" + getNiceName(p) + ") at (" + tmp.x + "," + tmp.y + ") {};");
-		process((dk.itu.big_red.model.Point)p);
+		processPoint(p);
 	}
 	
-	private void process(Link e) throws ExportFailedException {
+	private void processLink(Link e) throws ExportFailedException {
 		Rectangle rl = e.getRootLayout().translate(translate);
 		Point
 			tl = rl.getTopLeft(),
@@ -232,7 +232,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		}
 	}
 	
-	private void process(InnerName i) throws ExportFailedException {
+	private void processInnerName(InnerName i) throws ExportFailedException {
 		Rectangle rl = i.getRootLayout().translate(translate);
 		Point
 			tl = rl.getTopLeft(),
@@ -244,10 +244,10 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
 		line("draw [internal inner name,fill=" + getNiceName(i) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
-		process((dk.itu.big_red.model.Point)i);
+		processPoint(i);
 	}
 	
-	private void process(dk.itu.big_red.model.Point p) throws ExportFailedException {
+	private void processPoint(dk.itu.big_red.model.Point p) throws ExportFailedException {
 		Link l = p.getLink();
 		if (l != null) {
 			String in, out;
@@ -273,7 +273,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		}
 	}
 	
-	private void process(Site r) throws ExportFailedException {
+	private void processSite(Site r) throws ExportFailedException {
 		Rectangle rl = r.getRootLayout().translate(translate);
 		Point
 			ptl = rl.getTopLeft(),
@@ -283,7 +283,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
 	}
 	
-	private void process(Root r) throws ExportFailedException {
+	private void processRoot(Root r) throws ExportFailedException {
 		Rectangle rl = r.getRootLayout().translate(translate);
 		Point
 			ptl = rl.getTopLeft(),
@@ -292,10 +292,10 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		line("draw [internal root] (" + ptl.x + "," +
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
 		
-		process((Container)r);
+		processContainer(r);
 	}
 	
-	private void process(Container t) throws ExportFailedException {
+	private void processContainer(Container t) throws ExportFailedException {
 		beginScope(t);
 		for (Layoutable c : Utility.groupListByClass(t.getChildren(),
 				BigraphXMLExport.SCHEMA_ORDER))
@@ -304,22 +304,20 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	}
 	
 	private void process(Layoutable obj) throws ExportFailedException {
-		if (obj instanceof Bigraph) {
-			process((Bigraph)obj);
-		} else if (obj instanceof Node) {
-			process((Node)obj);
+		if (obj instanceof Node) {
+			processNode((Node)obj);
 		} else if (obj instanceof Port) {
-			process((Port)obj);
+			processPort((Port)obj);
 		} else if (obj instanceof Link) {
-			process((Link)obj);
+			processLink((Link)obj);
 		} else if (obj instanceof InnerName) {
-			process((InnerName)obj);
+			processInnerName((InnerName)obj);
 		} else if (obj instanceof Site) {
-			process((Site)obj);
+			processSite((Site)obj);
 		} else if (obj instanceof Root) {
-			process((Root)obj);
+			processRoot((Root)obj);
 		} else if (obj instanceof Container) {
-			process((Container)obj);
+			processContainer((Container)obj);
 		} else {
 			/* do nothing */
 		}
