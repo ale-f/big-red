@@ -16,6 +16,16 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 	private WizardBigraphTextExportSelectorPage page1 = null;
 	private WizardBigraphTextExportPage page2 = null;
 	
+	private Bigraph source = null;
+	
+	public Bigraph getSource() {
+		return source;
+	}
+	
+	public void setSource(Bigraph source) {
+		this.source = source;
+	}
+	
 	private IConfigurationElement cfe = null;
 	private Export<Bigraph> exporter = null;
 	

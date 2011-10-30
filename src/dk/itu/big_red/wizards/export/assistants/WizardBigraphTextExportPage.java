@@ -61,11 +61,8 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		setPageComplete(false);
 	}
 	
-	private boolean validate() {
-		setMessage(getDescription());
-		setPageComplete(false);
-		resultText.setText("");
-		UI.setEnabled(false, clipboardButton, saveButton, resultText);
+	private boolean tryToLoadModel() {
+		getWizard().setSource(null);
 		
 		String bT = bigraphText.getText();
 		bigraphPath = new Path(bT);
@@ -90,20 +87,22 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			}
 		}
 		
-		Bigraph model;
-		
 		try {
-			model = BigraphXMLImport.importFile(
-					Project.findFileByPath(null, bigraphPath));
+			getWizard().setSource(BigraphXMLImport.importFile(
+					Project.findFileByPath(null, bigraphPath)));
 		} catch (Exception e) {
 			setErrorMessage(e.getLocalizedMessage());
 			return false;
 		}
 		
+		return true;
+	}
+	
+	private boolean tryToExport() {
 		Export<Bigraph> ex = getWizard().getExporter();
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		try {
-			ex.setModel(model);
+			ex.setModel(getWizard().getSource());
 			ex.setOutputStream(os);
 			ex.exportObject();
 		} catch (Exception e) {
@@ -130,14 +129,29 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			setErrorMessage(e.getLocalizedMessage());
 			return false;
 		}
+
+		resultText.setText(result.toString());
+		return true;
+	}
+	
+	private boolean validate() {
+		setMessage(getDescription());
+		setPageComplete(false);
+		resultText.setText("");
+		UI.setEnabled(false, clipboardButton, saveButton, resultText);
+		
+		if (!tryToLoadModel())
+			return false;
+
+		if (!tryToExport())
+			return false;
 		
 		UI.setEnabled(true, clipboardButton, saveButton, resultText);
-		resultText.setText(result.toString());
 		setPageComplete(true);
 		setErrorMessage(null);
 		return true;
 	}
-	
+
 	private void setBigraphPath(IPath path) {
 		bigraphPath = path;
 		bigraphText.setText(path.makeRelative().toString());
@@ -167,19 +181,17 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		Composite root = new Composite(parent, SWT.NONE);
 		root.setLayout(new GridLayout(3, false));
 		
-		ModifyListener sharedModifyListener = new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				setPageComplete(validate());
-			}
-		};
-		
 		Label folderLabel = new Label(root, 0);
 		folderLabel.setText("&Bigraph:");
 		
 		bigraphText = new Text(root, SWT.BORDER);
 		bigraphText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		bigraphText.addModifyListener(sharedModifyListener);
+		bigraphText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				setPageComplete(validate());
+			}
+		});
 		
 		Button bigraphButton = new Button(root, SWT.CENTER);
 		bigraphButton.setText("&Browse...");
@@ -302,7 +314,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
 							exporter.setOption(od.getID(), b.getSelection());
-							validate();
+							tryToExport();
 						}
 						
 						@Override
