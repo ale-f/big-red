@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -24,11 +25,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.import_export.Export;
+import dk.itu.big_red.import_export.Export.OptionDescriptor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.util.UI;
@@ -41,6 +44,9 @@ public class WizardBigraphTextExportPage extends WizardPage {
 	private Text bigraphText, resultText;
 	private IPath bigraphPath;
 	private Button clipboardButton, saveButton;
+	
+	private Label optionsLabel;
+	private Composite optionsGroup;
 	
 	private IStructuredSelection selection = null;
 	
@@ -152,6 +158,8 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			Project.tryDesperatelyToGetAnIResourceOutOfAnIStructuredSelection(selection);
 		if (r != null)
 			bigraphText.setText(r.getFullPath().makeRelative().toString());
+		
+		populateOptionGroup();
 	}
 	
 	@Override
@@ -211,12 +219,23 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		targetTextLayoutData.horizontalSpan = 2;
 		resultText.setLayoutData(targetTextLayoutData);
 		
-		new Label(root, SWT.NONE); /* padding */
+		optionsLabel = new Label(root, SWT.NONE);
+		optionsLabel.setText("&Options:");
+		optionsLabel.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true));
+		
+		optionsGroup = new Composite(root, SWT.NONE);
+		optionsGroup.setLayout(new RowLayout(SWT.VERTICAL));
+		GridData groupLayoutData = new GridData(SWT.FILL, SWT.NONE, true, false);
+		groupLayoutData.horizontalSpan = 2;
+		optionsGroup.setLayoutData(groupLayoutData);
+		
+		optionsLabel.setVisible(false);
+		optionsGroup.setVisible(false);
 		
 		Composite group = new Composite(root, SWT.NONE);
 		group.setLayout(new RowLayout(SWT.HORIZONTAL));
-		GridData groupLayoutData = new GridData(SWT.RIGHT, SWT.FILL, true, false);
-		groupLayoutData.horizontalSpan = 2;
+		groupLayoutData = new GridData(SWT.RIGHT, SWT.FILL, true, false);
+		groupLayoutData.horizontalSpan = 3;
 		group.setLayoutData(groupLayoutData);
 		
 		clipboardButton = new Button(group, SWT.NONE);
@@ -262,5 +281,46 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		
 		UI.setEnabled(false, clipboardButton, saveButton, resultText);
 		setControl(root);
+	}
+
+	public void populateOptionGroup() {
+		for (Control c : optionsGroup.getChildren())
+			c.dispose();
+		
+		final Export<Bigraph> exporter = getWizard().getExporter();
+		
+		List<OptionDescriptor> options = exporter.getOptions();
+		
+		if (options.size() != 0) {	
+			for (final OptionDescriptor od : options) {
+				Object ov = exporter.getOption(od.getID());
+				if (ov instanceof Boolean) {
+					final Button b = new Button(optionsGroup, SWT.CHECK);
+					b.setSelection((Boolean)ov);
+					b.setText(od.getDescription());
+					b.addSelectionListener(new SelectionListener() {
+						
+						@Override
+						public void widgetSelected(SelectionEvent e) {
+							exporter.setOption(od.getID(), b.getSelection());
+							validate();
+						}
+						
+						@Override
+						public void widgetDefaultSelected(SelectionEvent e) {
+							widgetSelected(e);
+						}
+					});
+				}
+			}
+			
+			optionsLabel.setVisible(true);
+			optionsGroup.setVisible(true);
+		} else {
+			optionsLabel.setVisible(false);
+			optionsGroup.setVisible(false);
+		}
+		
+		getShell().layout(true, true);
 	}
 }
