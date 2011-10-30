@@ -72,6 +72,10 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		
 		IFile sigFile =
 			Project.findFileByPath(null, new Path(signaturePath));
+		
+		if (sigFile == null)
+			throw new ImportFailedException("The signature \"" + signaturePath + "\" does not exist.");
+			
 		Signature sig = SignatureXMLImport.importFile(sigFile);
 		bigraph.setSignature(sig);
 		

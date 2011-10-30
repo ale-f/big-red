@@ -196,7 +196,11 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    	}
 	    }
 	    
-	    updateNodePalette();
+	    if (model == null) {
+	    	model = new Bigraph();
+	    } else {
+	    	updateNodePalette();
+	    }
 	    
 	    viewer.setContents(model);
 	    setPartName(getEditorInput().getName());
