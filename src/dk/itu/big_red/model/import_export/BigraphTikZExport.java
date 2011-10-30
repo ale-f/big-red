@@ -29,6 +29,30 @@ import dk.itu.big_red.util.geometry.Rectangle;
 public class BigraphTikZExport extends Export<Bigraph> {
 	private BufferedWriter writer;
 	
+	private boolean completeDocument = false;
+	
+	public static final String OPTION_COMPLETE_DOCUMENT =
+		"BigraphTikZExportWholeDocument";
+	
+	{
+		addOption(OPTION_COMPLETE_DOCUMENT,
+				"Produce a complete LaTeX document");
+	}
+	
+	@Override
+	public Object getOption(String id) {
+		if (id.equals(OPTION_COMPLETE_DOCUMENT)) {
+			return completeDocument;
+		} else return super.getOption(id);
+	}
+	
+	@Override
+	public void setOption(String id, Object value) {
+		if (id.equals(OPTION_COMPLETE_DOCUMENT)) {
+			completeDocument = (Boolean)value;
+		} else super.setOption(id, value);
+	}
+	
 	@Override
 	public void exportObject() throws ExportFailedException {
 		writer = new BufferedWriter(new OutputStreamWriter(target));
@@ -75,6 +99,14 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	private Point translate = null;
 	
 	private void process(Bigraph b) throws ExportFailedException {
+		if (completeDocument) {
+			line("documentclass{article}");
+			line("usepackage{tikz}");
+			line("begin{document}");
+			
+			newLine();
+		}
+		
 		line("pgfdeclarelayer{connection}");
 		line("pgfsetlayers{main,connection}");
 		
@@ -111,6 +143,9 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		process((Container)b);
 		
 		line("end{tikzpicture}");
+		
+		if (completeDocument)
+			line("end{document}");
 	}
 	
 	private String getNiceName(Object o) {
