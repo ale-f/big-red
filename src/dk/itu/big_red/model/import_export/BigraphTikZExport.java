@@ -148,23 +148,27 @@ public class BigraphTikZExport extends Export<Bigraph> {
 			line("end{document}");
 	}
 	
-	private String getNiceName(Object o) {
+	private String getNiceName(Layoutable o) {
+		String objectName = o.getName();
+		if (objectName == null)
+			objectName = o.toString();
+		objectName = objectName.replaceAll("[^a-zA-Z0-9 ]", "_");
 		if (o instanceof Node) {
-			return "node " + ((Node)o).getName();
+			return "node " + objectName;
 		} if (o instanceof Site) {
-			return "site " + ((Site)o).getName();
+			return "site " + objectName;
 		} else if (o instanceof Root) {
-			return "root " + ((Root)o).getName();
+			return "root " + objectName;
 		} else if (o instanceof InnerName) {
-			return "inner name " + ((InnerName)o).getName();
+			return "inner name " + objectName;
 		} else if (o instanceof Edge) {
-			return "edge " + ((Edge)o).getName();
+			return "edge " + objectName;
 		} else if (o instanceof OuterName) {
-			return "outer name " + ((OuterName)o).getName();
+			return "outer name " + objectName;
 		} else if (o instanceof Port) {
 			Port p = (Port)o;
 			return "port " + p.getName() + " on " + getNiceName(p.getParent());
-		} else return o.toString();
+		} else return objectName;
 	}
 	
 	private void processNode(Node n) throws ExportFailedException {
