@@ -66,7 +66,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 			setTarget(n.getBigraph());
 			if (n instanceof Container) {
 				Container c = (Container)n;
-				iterativelyRemoveConnections(c);
+				recursivelyRemoveConnections(c);
 			} else if (n instanceof Link) {
 				Link l = (Link)n;
 				List<Point> points =
@@ -86,18 +86,18 @@ public class ModelDeleteCommand extends ChangeCommand {
 		}
 	}
 	
-	private void iterativelyRemoveConnections(Container c) {
+	private void recursivelyRemoveConnections(Container c) {
 		if (c instanceof Node) {
 			Node j = (Node)c;
 			for (Point p : j.getPorts()) {
-				Link l = p.getLink();
-				if (l != null && !objects.contains(l))
+				Link l = scratch.getLinkFor(p);
+				if (l != null)
 					removePoint(l, p);
 			}
 		}
-		for (Layoutable i : c.getChildren()) {
+		for (Layoutable i : scratch.getChildrenFor(c)) {
 			if (i instanceof Container)
-				iterativelyRemoveConnections((Container)i);
+				recursivelyRemoveConnections((Container)i);
 		}
 	}
 	
