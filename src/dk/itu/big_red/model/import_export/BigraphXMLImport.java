@@ -81,12 +81,11 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		
 		processContainer(e, bigraph);
 		
-		if (as == AppearanceStatus.FORBIDDEN)
-			cg.add(bigraph.relayout());
-		
 		try {
 			if (cg.size() != 0)
 				bigraph.tryApplyChange(cg);
+			if (as == AppearanceStatus.FORBIDDEN)
+				bigraph.tryApplyChange(bigraph.relayout());
 		} catch (ChangeRejectedException f) {
 			throw new ImportFailedException(f);
 		}
