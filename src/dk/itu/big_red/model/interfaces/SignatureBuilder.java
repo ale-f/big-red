@@ -27,7 +27,7 @@ public class SignatureBuilder {
 		return p;
 	}
 	
-	public Signature finish() {
+	public ISignature finish() {
 		for (Control c : s.getControls()) {
 			double l = c.getPorts().size();
 			for (int i = 0; i < l; i++) {
