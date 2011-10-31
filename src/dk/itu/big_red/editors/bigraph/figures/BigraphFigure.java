@@ -23,16 +23,20 @@ public class BigraphFigure extends AbstractFigure {
 			
 			g.setFont(UI.tweakFont(g.getFont(), 8, SWT.ITALIC));
 			
-			g.drawLine(0, lowerOuterNameBoundary, width, lowerOuterNameBoundary);
-			g.drawText("outer name boundary", 10, lowerOuterNameBoundary + 2);
+			if (lowerOuterNameBoundary < Integer.MAX_VALUE) {
+				g.drawLine(0, lowerOuterNameBoundary, width, lowerOuterNameBoundary);
+				g.drawText("outer name boundary", 10, lowerOuterNameBoundary + 2);
+			}
 			
 			if (upperRootBoundary >= 0) {
 				g.drawLine(0, upperRootBoundary, width, upperRootBoundary);
 				g.drawText("upper root boundary", 10, upperRootBoundary + 2);
 			}
 			
-			g.drawLine(0, lowerRootBoundary, width, lowerRootBoundary);
-			g.drawText("lower root boundary", 10, lowerRootBoundary + 2);
+			if (lowerRootBoundary < Integer.MAX_VALUE) {
+				g.drawLine(0, lowerRootBoundary, width, lowerRootBoundary);
+				g.drawText("lower root boundary", 10, lowerRootBoundary + 2);
+			}
 			
 			if (upperInnerNameBoundary >= 0) {
 				g.drawLine(0, upperInnerNameBoundary, width, upperInnerNameBoundary);
