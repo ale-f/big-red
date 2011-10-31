@@ -106,6 +106,18 @@
                contentTypeId="dk.itu.big_red.signature">
          </contentTypeBinding>
       </editor>
+      <editor
+            class="dk.itu.big_red.editors.rule.RuleEditor"
+            contributorClass="dk.itu.big_red.editors.rule.RuleEditorActionBarContributor"
+            default="false"
+            extensions="bigraph-rule"
+            icon="icons/icon16.png"
+            id="dk.itu.big_red.RuleEditor"
+            name="Rule Editor">
+         <contentTypeBinding
+               contentTypeId="dk.itu.big_red.rule">
+         </contentTypeBinding>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.exportWizards">
@@ -176,6 +188,17 @@
             project="false">
          <description>
             Create a new signature in an existing bigraphical reactive system.
+         </description>
+      </wizard>
+      <wizard
+            category="dk.itu.big_red"
+            class="dk.itu.big_red.wizards.creation.NewRuleWizard"
+            finalPerspective="dk.itu.big_red.perspective"
+            icon="icons/icon16.png"
+            id="dk.itu.big_red.NewRuleWizard"
+            name="Rule">
+         <description>
+            Create a new rule in an existing bigraphical reactive system.
          </description>
       </wizard>
    </extension>
