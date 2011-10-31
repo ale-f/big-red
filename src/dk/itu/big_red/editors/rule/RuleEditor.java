@@ -5,9 +5,7 @@ import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
@@ -36,14 +34,15 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ImportFailedException;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.import_export.BigraphXMLImport;
+import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
 import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.resources.Project;
+import dk.itu.big_red.util.ValidationFailedException;
 
 public class RuleEditor extends EditorPart implements
 	CommandStackListener, ISelectionListener {
@@ -166,16 +165,30 @@ public class RuleEditor extends EditorPart implements
 		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 		getSite().setSelectionProvider(redexViewer);
 		
-		Bigraph model, model2;
-		try {
-			IFile f = Project.findFileByPath(null, new Path("dangerous/agents/dangerous.bigraph-agent"));
-			model = BigraphXMLImport.importFile(f);
-			model2 = BigraphXMLImport.importFile(f);
-			redexViewer.setContents(model);
-			reactumViewer.setContents(model2);
-		} catch (ImportFailedException e) {
-			e.printStackTrace();
-		}
+		ReactionRule model = null;
+		
+		IEditorInput input = getEditorInput();
+	    if (input instanceof FileEditorInput) {
+	    	FileEditorInput fi = (FileEditorInput)input;
+	    	try {
+	    		model = ReactionRuleXMLImport.importFile(fi.getFile());
+	    	} catch (ImportFailedException e) {
+	    		e.printStackTrace();
+	    		Throwable cause = e.getCause();
+	    		if (cause instanceof ValidationFailedException) {
+	    			return;
+	    		} else {
+	    			return;
+	    		}
+	    	} catch (Exception e) {
+	    		return;
+	    	}
+	    }
+	    
+	    if (model == null)
+	    	model = new ReactionRule();
+	    
+	    redexViewer.setContents(model.getRedex());
 	}
 
 	/**
