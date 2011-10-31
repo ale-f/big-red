@@ -26,4 +26,7 @@ public interface XMLNS {
 
 	public static final String CHANGE =
 		"http://www.itu.dk/research/pls/xmlns/2010/change";
+	
+	public static final String RULE =
+		"http://www.itu.dk/research/pls/xmlns/2011/rule";
 }
