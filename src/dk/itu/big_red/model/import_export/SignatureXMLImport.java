@@ -8,11 +8,9 @@ import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.util.DOM;
 
@@ -26,13 +24,15 @@ public class SignatureXMLImport extends Import<Signature> {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("schema/signature.xsd"));
 			source.close();
-			return (Signature)process(d.getDocumentElement());
+			return makeSignature(d.getDocumentElement());
 		} catch (Exception e) {
 			throw new ImportFailedException(e);
 		}
 	}
 
-	private void processControl(Element e, Control model) throws ImportFailedException {
+	private Control makeControl(Element e) throws ImportFailedException {
+		Control model = new Control();
+		
 		model.setLongName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
 		
 		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "shape");
@@ -45,22 +45,32 @@ public class SignatureXMLImport extends Import<Signature> {
 		
 		AppearanceGenerator.attributesToModel(e, model);
 		
-		for (Element j : DOM.getChildElements(e)) {
-			Object i = process(j);
-			if (i instanceof PortSpec)
-				model.addPort((PortSpec)i);
+		for (Element j :
+			DOM.getNamedChildElements(e, XMLNS.SIGNATURE, "port")) {
+			PortSpec i = makePortSpec(j);
+			if (i != null)
+				model.addPort(i);
 		}
+		
+		return model;
 	}
 	
-	private void processSignature(Element e, Signature model) throws ImportFailedException {
-		for (Element j : DOM.getChildElements(e)) {
-			Object i = process(j);
-			if (i instanceof Control)
-				model.addControl((Control)i);
+	public Signature makeSignature(Element e) throws ImportFailedException {
+		Signature sig = new Signature();
+		
+		for (Element j :
+			DOM.getNamedChildElements(e, XMLNS.SIGNATURE, "control")) {
+			Control i = makeControl(j);
+			if (i != null)
+				sig.addControl(i);
 		}
+		
+		return sig;
 	}
 	
-	private void processPort(Element e, PortSpec model) {
+	private PortSpec makePortSpec(Element e) {
+		PortSpec model = new PortSpec();
+		
 		model.setName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
 		
 		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "port-appearance");
@@ -68,19 +78,7 @@ public class SignatureXMLImport extends Import<Signature> {
 			model.setDistance(DOM.getDoubleAttribute(el, XMLNS.BIG_RED, "distance"));
 			model.setSegment(DOM.getIntAttribute(el, XMLNS.BIG_RED, "segment"));
 		}
-	}
-	
-	private Object process(Element e) throws ImportFailedException {
-		Object model = ModelFactory.getNewObject(e.getTagName());
-		if (model instanceof Port)
-			model = new PortSpec();
 		
-		if (model instanceof Signature)
-			processSignature(e, (Signature)model);
-		else if (model instanceof Control)
-			processControl(e, (Control)model);
-		else if (model instanceof PortSpec)
-			processPort(e, (PortSpec)model);
 		return model;
 	}
 	
