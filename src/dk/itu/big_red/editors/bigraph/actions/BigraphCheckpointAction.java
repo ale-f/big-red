@@ -66,6 +66,7 @@ public class BigraphCheckpointAction extends SelectionAction {
 			RuleDialog rd = new RuleDialog(UI.getShell());
 			rd.setLHS(b.getCheckpointBigraph());
 			rd.setChanges(ch);
+			rd.setRHS(b.clone(null));
 			rd.open();
 		}
 		b.checkpoint();

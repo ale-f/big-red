@@ -22,7 +22,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.util.UI;
 
 public class RuleDialog extends Dialog {
-	private Bigraph lhs;
+	private Bigraph lhs, rhs;
 	private ArrayList<Change> changes;
 	private static Font jumbo = null;
 	
@@ -79,8 +79,10 @@ public class RuleDialog extends Dialog {
 			cg.add(i.changeLayout(i.getLayout().getCopy().translate(-25, -25)));
 		lhs.applyChange(cg);
 		
+		rhs.applyChange(rhs.relayout());
+				
 		bd.setContents(lhs);
-		be.setContents(lhs);
+		be.setContents(rhs);
 		return c;
 	}
 	
@@ -92,7 +94,7 @@ public class RuleDialog extends Dialog {
 		this.changes = changes;
 	}
 	
-	public void calculateRHS() {
-		
+	public void setRHS(Bigraph current) {
+		rhs = current;
 	}
 }
