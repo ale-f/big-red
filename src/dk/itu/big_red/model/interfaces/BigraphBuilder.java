@@ -5,12 +5,12 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -19,46 +19,42 @@ public class BigraphBuilder {
 	private Bigraph b = new Bigraph();
 	private ChangeGroup cg = new ChangeGroup();
 	
-	public BigraphBuilder() {
-		
+	public BigraphBuilder(ISignature s) {
+		b.setSignature((Signature)s);
 	}
 	
-	private final String FUN(Layoutable l) {
-		return b.getFirstUnusedName(l);
-	}
-	
-	public IEdge newEdge() {
+	public IEdge newEdge(String name) {
 		Edge e = new Edge();
 		cg.add(b.changeAddChild(e),
-				e.changeName(FUN(e)));
+				e.changeName(name));
 		return e;
 	}
 	
-	public IOuterName newOuterName() {
+	public IOuterName newOuterName(String name) {
 		OuterName o = new OuterName();
 		cg.add(b.changeAddChild(o),
-				o.changeName(FUN(o)));
+				o.changeName(name));
 		return o;
 	}
 	
-	public IInnerName newInnerName() {
+	public IInnerName newInnerName(String name) {
 		InnerName i = new InnerName();
 		cg.add(b.changeAddChild(i),
-				i.changeName(FUN(i)));
+				i.changeName(name));
 		return i;
 	}
 	
-	public IRoot newRoot() {
+	public IRoot newRoot(String name) {
 		Root r = new Root();
 		cg.add(b.changeAddChild(r),
-				r.changeName(FUN(r)));
+				r.changeName(name));
 		return r;
 	}
 	
-	public INode newNode(IParent parent, IControl c) {
+	public INode newNode(IParent parent, IControl c, String name) {
 		Node n = new Node((Control)c);
 		cg.add(((Container)parent).changeAddChild(n),
-				n.changeName(FUN(n)));
+				n.changeName(name));
 		return n;
 	}
 	
@@ -66,10 +62,10 @@ public class BigraphBuilder {
 		cg.add(((Point)p).changeConnect((Link)l));
 	}
 	
-	public ISite newSite(IParent parent) {
+	public ISite newSite(IParent parent, String name) {
 		Site s = new Site();
 		cg.add(((Container)parent).changeAddChild(s),
-				s.changeName(FUN(s)));
+				s.changeName(name));
 		return s;
 	}
 	
