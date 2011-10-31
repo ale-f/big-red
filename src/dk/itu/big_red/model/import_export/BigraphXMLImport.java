@@ -65,6 +65,9 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	private Bigraph bigraph = null;
 	
 	public Bigraph makeBigraph(Element e) throws ImportFailedException {
+		if (e == null)
+			throw new ImportFailedException("Element is null");
+		
 		bigraph = new Bigraph();
 		
 		warnedAboutLayouts = false;
