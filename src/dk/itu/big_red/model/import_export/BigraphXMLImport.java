@@ -44,8 +44,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		FORBIDDEN
 	}
 	
-	boolean warnedAboutLayouts = false;
-	private AppearanceStatus as = AppearanceStatus.NOTHING_YET;
+	private boolean warnedAboutLayouts;
+	private AppearanceStatus as;
 	private ChangeGroup cg = new ChangeGroup();
 	
 	@Override
@@ -64,8 +64,12 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	
 	private Bigraph bigraph = null;
 	
-	private Bigraph makeBigraph(Element e) throws ImportFailedException {
+	public Bigraph makeBigraph(Element e) throws ImportFailedException {
 		bigraph = new Bigraph();
+		
+		warnedAboutLayouts = false;
+		as = AppearanceStatus.NOTHING_YET;
+		cg.clear();
 		
 		String signaturePath =
 			DOM.getAttributeNS(e, XMLNS.BIGRAPH, "signature");
