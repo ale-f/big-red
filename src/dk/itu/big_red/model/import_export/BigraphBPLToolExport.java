@@ -107,13 +107,13 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 	}
 
 	public void process(ISite site) throws ExportFailedException {
-		print("[(* ");
+		print("`[(* ");
 		print(site.getName());
-		print(" *)]");
+		print(" *)]`");
 	}
 	
 	public void process(IParent parent) throws ExportFailedException {
-		processIterable(parent.getIChildren(), "<->", "(", " | ", ")", new Processor<IChild>() {
+		processIterable(parent.getIChildren(), "<->", "(", " `|` ", ")", new Processor<IChild>() {
 			public void proc(IChild c) throws ExportFailedException {
 				if (c instanceof INode)
 					process((INode) c);
