@@ -16,6 +16,7 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.util.DOM;
@@ -88,10 +89,21 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		}
 	}
 
-	private Element process(Bigraph obj) {
+	private Element processSignature(Signature s) throws ExportFailedException {
+		Element e = elem("signature");
+		if (s.getFile() != null) {
+			DOM.applyAttributes(e,
+				"src", s.getFile().getFullPath().makeRelative().toString());	
+		} else {
+			throw new ExportFailedException("Bigraphs with an embedded signature are currently read-only.");
+		}
+		return e;
+	}
+	
+	private Element process(Bigraph obj) throws ExportFailedException {
 		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph");
-		Element e = DOM.applyAttributes(doc.getDocumentElement(),
-			"signature", obj.getSignature().getFile().getFullPath().makeRelative().toString());
+		Element e = doc.getDocumentElement();
+		DOM.appendChildIfNotNull(e, processSignature(obj.getSignature()));
 		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributes(e, "xmlns:big-red", XMLNS.BIG_RED);
 		return e;

@@ -74,17 +74,32 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		as = AppearanceStatus.NOTHING_YET;
 		cg.clear();
 		
-		String signaturePath =
-			DOM.getAttributeNS(e, XMLNS.BIGRAPH, "signature");
+		Element signatureElement =
+			DOM.removeNamedChildElement(e, XMLNS.BIGRAPH, "signature");
 		
-		IFile sigFile =
-			Project.findFileByPath(null, new Path(signaturePath));
+		String signaturePath;
+		if (signatureElement != null) {
+			signaturePath =
+				DOM.getAttributeNS(signatureElement, XMLNS.BIGRAPH, "src");
+		} else {
+			signaturePath = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "signature");
+		}
 		
-		if (sigFile == null)
-			throw new ImportFailedException("The signature \"" + signaturePath + "\" does not exist.");
+		if (signaturePath != null) {
+			IFile sigFile =
+				Project.findFileByPath(null, new Path(signaturePath));
 			
-		Signature sig = SignatureXMLImport.importFile(sigFile);
-		bigraph.setSignature(sig);
+			if (sigFile == null)
+				throw new ImportFailedException("The signature \"" + signaturePath + "\" does not exist.");
+				
+			Signature sig = SignatureXMLImport.importFile(sigFile);
+			bigraph.setSignature(sig);
+		} else if (signatureElement != null) {
+			SignatureXMLImport si = new SignatureXMLImport();
+			bigraph.setSignature(si.makeSignature(signatureElement));
+		} else {
+			throw new ImportFailedException("The bigraph does not define or reference a signature.");
+		}
 		
 		processContainer(e, bigraph);
 		

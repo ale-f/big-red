@@ -64,6 +64,9 @@
 					</p>
 					<ul>
 						<li>
+							at most one <a href="#signature">signature</a>, followed by
+						</li>
+						<li>
 							zero or more <a href="#edge">edge</a>s, followed by
 						</li>
 						<li>
@@ -83,11 +86,11 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>must</strong> be present:
+						The following attributes <strong>may</strong> be present:
 					</p>
 					<ul>
+						<a id="bigraph_signature" />
 						<li>
-							<a id="bigraph_signature" />
 							<code>signature</code> (<code>string</code>): specifies the path to this bigraph's <i>signature</i>.
 						</li>
 					</ul>
@@ -102,13 +105,14 @@
 	<xsd:element name="bigraph">
 		<xsd:complexType>
 			<xsd:sequence>
+				<xsd:element ref="bigraph:signature" minOccurs="0" />
 				<xsd:element ref="bigraph:edge" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:element ref="bigraph:outername" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:element ref="bigraph:root" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:element ref="bigraph:innername" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:group ref="bigraph:anyForeignElements" />
 			</xsd:sequence>
-			<xsd:attribute name="signature" type="xsd:string" use="required" />
+			<xsd:attribute name="signature" type="xsd:string" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>
@@ -144,6 +148,57 @@
 		</xsd:keyref>
 	</xsd:element>
 		
+	<xsd:annotation>
+		<xsd:documentation>
+			<html xmlns="http://www.w3.org/1999/xhtml">
+				<body>
+					<a id="signature" />
+					<h2>
+						<code>signature</code>
+					</h2>
+					<h3>
+						Children
+					</h3>
+					<p>
+						<code>signatures</code>s <strong>may</strong> contain:
+					</p>
+					<ul>>
+						<li>
+							zero or more elements from other namespaces.
+						</li>
+					</ul>
+					<h3>
+						Attributes
+					</h3>
+					<p>
+						The following attributes <strong>may</strong> be present:
+					</p>
+					<ul>
+						<a id="signature_src" />
+						<li>
+							<code>src</code> (<code>string</code>): specifies the path to this bigraph's <i>signature</i>.
+							<br />
+						</li>
+					</ul>
+					<p>
+						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>root</code>s.
+					</p>
+					<hr />
+				</body>
+			</html>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="signature">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="bigraph:anyForeignElements" />
+			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string" />
+			<xsd:anyAttribute namespace="##other"
+				processContents="lax" />
+		</xsd:complexType>
+	</xsd:element>
+	
 	<xsd:annotation>
 		<xsd:documentation>
 			<html xmlns="http://www.w3.org/1999/xhtml">
