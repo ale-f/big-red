@@ -4,12 +4,12 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 
 /**
- * The <strong>QuadraticBézierCurve</strong> does exactly what it says on the
+ * The <strong>QuadraticBezierCurve</strong> does exactly what it says on the
  * tin: it models quadratic Bézier curves.
  * @author alec
  *
  */
-public class QuadraticBézierCurve {
+public class QuadraticBezierCurve {
 	private PrecisionPoint p0, p1, p2;
 	
 	/**
@@ -17,7 +17,7 @@ public class QuadraticBézierCurve {
 	 * @param p a {@link Point}
 	 * @return <code>this</code>, for convenience
 	 */
-	public QuadraticBézierCurve setPoint0(Point p) {
+	public QuadraticBezierCurve setPoint0(Point p) {
 		p0 = new PrecisionPoint(p);
 		return this;
 	}
@@ -27,7 +27,7 @@ public class QuadraticBézierCurve {
 	 * @param p a {@link Point}
 	 * @return <code>this</code>, for convenience
 	 */
-	public QuadraticBézierCurve setPoint1(Point p) {
+	public QuadraticBezierCurve setPoint1(Point p) {
 		p1 = new PrecisionPoint(p);
 		return this;
 	}
@@ -37,7 +37,7 @@ public class QuadraticBézierCurve {
 	 * @param p a {@link Point}
 	 * @return <code>this</code>, for convenience
 	 */
-	public QuadraticBézierCurve setPoint2(Point p) {
+	public QuadraticBezierCurve setPoint2(Point p) {
 		p2 = new PrecisionPoint(p);
 		return this;
 	}

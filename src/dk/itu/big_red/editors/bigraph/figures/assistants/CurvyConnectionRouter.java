@@ -5,7 +5,7 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
-import dk.itu.big_red.util.geometry.QuadraticBézierCurve;
+import dk.itu.big_red.util.geometry.QuadraticBezierCurve;
 
 public class CurvyConnectionRouter extends AbstractRouter {
 	@Override
@@ -19,7 +19,7 @@ public class CurvyConnectionRouter extends AbstractRouter {
 		connection.translateToRelative(source);
 		connection.translateToRelative(target);
 		
-		QuadraticBézierCurve b = new QuadraticBézierCurve();
+		QuadraticBezierCurve b = new QuadraticBezierCurve();
 		b.setPoint0(source);
 		b.setPoint1(new Point(target.x, source.y));
 		b.setPoint2(target);
