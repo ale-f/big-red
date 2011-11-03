@@ -2,7 +2,6 @@ package dk.itu.big_red.editors.rule;
 
 import java.util.ArrayList;
 import java.util.EventObject;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -185,9 +184,9 @@ public class RuleEditor extends EditorPart implements
 		createActions();
 		
 		redexViewer.setContextMenu(
-			new BigraphEditorContextMenuProvider(redexViewer, actionRegistry));
+			new BigraphEditorContextMenuProvider(redexViewer, getActionRegistry()));
 		reactumViewer.setContextMenu(
-			new BigraphEditorContextMenuProvider(reactumViewer, actionRegistry));
+			new BigraphEditorContextMenuProvider(reactumViewer, getActionRegistry()));
 		
 		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 		redexViewer.addSelectionChangedListener(this);
@@ -337,14 +336,12 @@ public class RuleEditor extends EditorPart implements
 	 * @param actionIds
 	 *            the list of IDs to update
 	 */
-	@SuppressWarnings("rawtypes")
-	protected void updateActions(List actionIds) {
+	protected void updateActions(List<String> actionIDs) {
 		ActionRegistry registry = getActionRegistry();
-		Iterator iter = actionIds.iterator();
-		while (iter.hasNext()) {
-			IAction action = registry.getAction(iter.next());
+		for (String i : actionIDs) {
+			IAction action = registry.getAction(i);
 			if (action instanceof UpdateAction)
-				((UpdateAction) action).update();
+				((UpdateAction)action).update();
 		}
 	}
 	
