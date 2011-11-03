@@ -167,6 +167,10 @@ public class RuleEditor extends EditorPart implements
 		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 		getSite().setSelectionProvider(redexViewer);
 		
+		loadInput();
+	}
+
+	protected void loadInput() {
 		ReactionRule model = null;
 		
 		IEditorInput input = getEditorInput();
@@ -191,8 +195,9 @@ public class RuleEditor extends EditorPart implements
 	    	model = new ReactionRule();
 	    
 	    redexViewer.setContents(model.getRedex());
-	}
-
+	    setPartName(getEditorInput().getName());
+    }
+	
 	/**
 	 * Returns the command stack.
 	 * @return the command stack
