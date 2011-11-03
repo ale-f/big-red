@@ -21,7 +21,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public abstract class Container extends Layoutable {
-	public class ChangeAddChild extends Change {
+	public static class ChangeAddChild extends Change {
 		public Container parent;
 		public Layoutable child;
 		
@@ -46,7 +46,7 @@ public abstract class Container extends Layoutable {
 		}
 	}
 	
-	public class ChangeRemoveChild extends Change {
+	public static class ChangeRemoveChild extends Change {
 		public Container parent;
 		public Layoutable child;
 		

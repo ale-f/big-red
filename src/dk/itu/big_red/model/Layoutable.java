@@ -31,7 +31,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public abstract class Layoutable extends Colourable implements IAdaptable {
-	public class ChangeLayout extends Change {
+	public static class ChangeLayout extends Change {
 		public Layoutable model;
 		public Rectangle newLayout;
 		
@@ -67,7 +67,7 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 		}
 	}
 
-	public class ChangeName extends Change {
+	public static class ChangeName extends Change {
 		public Layoutable model;
 		public String newName;
 		

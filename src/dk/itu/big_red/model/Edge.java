@@ -20,7 +20,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
   *
   */
 public class Edge extends Link implements IEdge {
-	public class ChangeReposition extends Change {
+	public static class ChangeReposition extends Change {
 		public Edge edge;
 		
 		public ChangeReposition(Edge edge) {

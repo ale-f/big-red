@@ -13,7 +13,7 @@ import dk.itu.big_red.util.ReadonlyColour;
  * @see IPoint
  */
 public abstract class Point extends Layoutable implements IPoint {
-	public class ChangeConnect extends Change {
+	public static class ChangeConnect extends Change {
 		public Point point;
 		public Link link;
 		
@@ -38,7 +38,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 	}
 	
-	public class ChangeDisconnect extends Change {
+	public static class ChangeDisconnect extends Change {
 		public Point point;
 		public Link link;
 		

@@ -38,7 +38,7 @@ public abstract class Colourable extends ModelObject {
 		OUTLINE_AND_FILL
 	}
 	
-	public abstract class ChangeColour extends Change {
+	public static abstract class ChangeColour extends Change {
 		public Colourable model;
 		public Colour newColour;
 		
@@ -60,7 +60,7 @@ public abstract class Colourable extends ModelObject {
 		}
 	}
 	
-	public class ChangeOutlineColour extends ChangeColour {
+	public static class ChangeOutlineColour extends ChangeColour {
 		public ChangeOutlineColour(Colourable model, Colour newColour) {
 			super(model, newColour);
 		}
@@ -81,7 +81,7 @@ public abstract class Colourable extends ModelObject {
 		}
 	}
 	
-	public class ChangeFillColour extends ChangeColour {
+	public static class ChangeFillColour extends ChangeColour {
 		public ChangeFillColour(Colourable model, Colour newColour) {
 			super(model, newColour);
 		}
