@@ -192,6 +192,8 @@ public class RuleEditor extends EditorPart implements
 		redexViewer.addSelectionChangedListener(this);
 		reactumViewer.addSelectionChangedListener(this);
 		getSite().setSelectionProvider(this);
+	
+		getCommandStack().addCommandStackListener(this);
 		
 		loadInput();
 	}
@@ -242,9 +244,6 @@ public class RuleEditor extends EditorPart implements
 
 	@Override
     public void commandStackChanged(EventObject event) {
-		/*
-		 * Why on earth is this necessary?
-		 */
         firePropertyChange(IEditorPart.PROP_DIRTY);
         updateActions(stackActions);
     }
