@@ -9,12 +9,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.DeleteAction;
-import org.eclipse.gef.ui.actions.PrintAction;
 import org.eclipse.gef.ui.actions.RedoAction;
 import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
@@ -29,6 +29,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
@@ -37,6 +38,12 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
+import dk.itu.big_red.editors.bigraph.actions.BigraphCheckpointAction;
+import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
+import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
+import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
+import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
+import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.ReactionRule;
@@ -79,12 +86,6 @@ public class RuleEditor extends EditorPart implements
 	}
 
 	@Override
-	public void commandStackChanged(EventObject event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void doSave(IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
 		
@@ -108,8 +109,7 @@ public class RuleEditor extends EditorPart implements
 
 	@Override
 	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
+		return getCommandStack().isDirty();
 	}
 
 	@Override
@@ -157,6 +157,8 @@ public class RuleEditor extends EditorPart implements
 		redexViewer.setRootEditPart(new ScalableRootEditPart());
 		reactumViewer.setRootEditPart(new ScalableRootEditPart());
 
+		createActions();
+		
 		redexViewer.setContextMenu(
 			new BigraphEditorContextMenuProvider(redexViewer, actionRegistry));
 		reactumViewer.setContextMenu(
@@ -192,9 +194,35 @@ public class RuleEditor extends EditorPart implements
 	}
 
 	/**
+	 * Returns the command stack.
+	 * @return the command stack
+	 */
+	protected CommandStack getCommandStack() {
+		return getEditDomain().getCommandStack();
+	}
+	
+	/**
+	 * Returns the edit domain.
+	 * @return the edit domain
+	 */
+	protected DefaultEditDomain getEditDomain() {
+		return editDomain;
+	}
+
+	@Override
+    public void commandStackChanged(EventObject event) {
+		/*
+		 * Why on earth is this necessary?
+		 */
+        firePropertyChange(IEditorPart.PROP_DIRTY);
+        updateActions(stackActions);
+    }
+	
+	/**
 	 * Creates actions for this editor. Subclasses should override this method
 	 * to create and register actions with the {@link ActionRegistry}.
 	 */
+	@SuppressWarnings("unchecked")
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
 		IAction action;
@@ -218,7 +246,29 @@ public class RuleEditor extends EditorPart implements
 		registry.registerAction(action);
 		propertyActions.add(action.getId());
 
-		registry.registerAction(new PrintAction(this));
+    	action = new ContainerPropertiesAction(this);
+    	registry.registerAction(action);
+    	selectionActions.add(action.getId());
+    	
+    	action = new ContainerCutAction(this);
+    	registry.registerAction(action);
+    	selectionActions.add(action.getId());
+    	
+    	action = new ContainerCopyAction(this);
+    	registry.registerAction(action);
+    	selectionActions.add(action.getId());
+    	
+    	action = new ContainerPasteAction(this);
+    	registry.registerAction(action);
+    	selectionActions.add(action.getId());
+    	
+    	action = new BigraphRelayoutAction(this);
+    	registry.registerAction(action);
+    	selectionActions.add(action.getId());
+    	
+    	action = new BigraphCheckpointAction(this);
+    	registry.registerAction(action);
+    	selectionActions.add(action.getId());
 	}
 
 	/**
@@ -255,6 +305,7 @@ public class RuleEditor extends EditorPart implements
 	 * @param actionIds
 	 *            the list of IDs to update
 	 */
+	@SuppressWarnings("rawtypes")
 	protected void updateActions(List actionIds) {
 		ActionRegistry registry = getActionRegistry();
 		Iterator iter = actionIds.iterator();
@@ -263,5 +314,13 @@ public class RuleEditor extends EditorPart implements
 			if (action instanceof UpdateAction)
 				((UpdateAction) action).update();
 		}
+	}
+	
+	@Override
+	@SuppressWarnings("rawtypes")
+	public Object getAdapter(Class adapter) {
+		if (adapter == CommandStack.class) {
+			return getCommandStack();
+		} else return super.getAdapter(adapter);
 	}
 }
