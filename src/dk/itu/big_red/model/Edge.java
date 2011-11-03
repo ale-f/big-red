@@ -1,6 +1,7 @@
 package dk.itu.big_red.model;
 
-import dk.itu.big_red.model.assistants.CloneMap;
+import java.util.Map;
+
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -78,7 +79,7 @@ public class Edge extends Link implements IEdge {
 	}
 	
 	@Override
-	public Edge clone(CloneMap m) {
+	public Edge clone(Map<ModelObject, ModelObject> m) {
 		return (Edge)super.clone(m);
 	}
 

@@ -3,11 +3,11 @@ package dk.itu.big_red.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.w3c.dom.Node;
 
-import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -106,7 +106,7 @@ public abstract class Container extends Layoutable {
 	}
 	
 	@Override
-	public Container clone(CloneMap m) {
+	public Container clone(Map<ModelObject, ModelObject> m) {
 		Container c = (Container)super.clone(m);
 		
 		for (Layoutable child : getChildren())

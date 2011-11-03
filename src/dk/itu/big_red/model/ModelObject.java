@@ -2,9 +2,8 @@ package dk.itu.big_red.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Map;
 import java.util.UUID;
-
-import dk.itu.big_red.model.assistants.CloneMap;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
@@ -73,10 +72,10 @@ public class ModelObject {
 	 * <code>null</code>
 	 * @return a new copy of this {@link ModelObject}
 	 */
-	public ModelObject clone(CloneMap m) {
+	public ModelObject clone(Map<ModelObject, ModelObject> m) {
 		ModelObject i = newInstance();
 		if (m != null)
-			m.setCloneOf(this, i);
+			m.put(this, i);
 		return i;
 	}
 	

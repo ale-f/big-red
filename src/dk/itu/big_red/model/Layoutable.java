@@ -1,10 +1,11 @@
 package dk.itu.big_red.model;
 
+import java.util.Map;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -188,7 +189,7 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	}
 	
 	@Override
-	public Layoutable clone(CloneMap m) {
+	public Layoutable clone(Map<ModelObject, ModelObject> m) {
 		Layoutable l = (Layoutable)super.clone(m);
 		l.setLayout(getLayout().getCopy());
 		l.setComment(getComment());

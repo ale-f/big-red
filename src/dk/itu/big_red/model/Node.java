@@ -3,11 +3,11 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
@@ -54,7 +54,7 @@ public class Node extends Container implements PropertyChangeListener, INode {
 	}
 	
 	@Override
-	public Node clone(CloneMap m) {
+	public Node clone(Map<ModelObject, ModelObject> m) {
 		Node n = (Node)super.clone(m);
 		n.setFillColour(getFillColour().getCopy());
 		n.setOutlineColour(getOutlineColour().getCopy());
@@ -63,7 +63,7 @@ public class Node extends Container implements PropertyChangeListener, INode {
 			for (Port i : getPorts()) {
 				for (Port j : n.getPorts()) {
 					if (i.getName().equals(j.getName())) {
-						m.setCloneOf(i, j);
+						m.put(i, j);
 						break;
 					}
 				}

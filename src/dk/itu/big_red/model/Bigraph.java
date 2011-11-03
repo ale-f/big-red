@@ -10,7 +10,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
-import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -218,19 +217,19 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	 * @return an exact copy of this {@link Bigraph}
 	 */
 	@Override
-	public Bigraph clone(CloneMap m) {
+	public Bigraph clone(Map<ModelObject, ModelObject> m) {
 		if (m == null)
-			m = new CloneMap();
+			m = new HashMap<ModelObject, ModelObject>();
 		Bigraph b = (Bigraph)super.clone(m);
 		
 		for (Link i : Utility.only(getChildren(), Link.class)) {
-			Link iClone = m.getCloneOf(i);
+			Link iClone = (Link)m.get(i);
 			for (Point p : i.getPoints())
-				iClone.addPoint(m.getCloneOf(p));
+				iClone.addPoint((Point)m.get(p));
 		}
 		
-		for (Entry<Object, Object> e : m.getMap().entrySet()) {
-			Object o = e.getKey();
+		for (Entry<ModelObject, ModelObject> e : m.entrySet()) {
+			ModelObject o = e.getKey();
 			if (o instanceof Layoutable) {
 				Layoutable l = (Layoutable)o,
 						lClone = (Layoutable)e.getValue();
@@ -509,7 +508,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	}
 	
 	private Bigraph checkpointBigraph = null;
-	private CloneMap checkpointBigraphCloneMap = null;
+	private Map<ModelObject, ModelObject> checkpointBigraphCloneMap = null;
 	private ArrayList<Change> checkpointChanges = null;
 	
 	/**
@@ -519,7 +518,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	 * @see #getCheckpointChanges()
 	 */
 	public void checkpoint() {
-		checkpointBigraphCloneMap = new CloneMap();
+		checkpointBigraphCloneMap = new HashMap<ModelObject, ModelObject>();
 		checkpointBigraph = this.clone(checkpointBigraphCloneMap);
 		checkpointChanges = new ArrayList<Change>();
 	}
@@ -543,7 +542,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	 *         {@link #checkpoint()} has not yet been called
 	 * @see #getCheckpointBigraph()
 	 */
-	public CloneMap getCheckpointBigraphCloneMap() {
+	public Map<ModelObject, ModelObject> getCheckpointBigraphCloneMap() {
 		return checkpointBigraphCloneMap;
 	}
 	

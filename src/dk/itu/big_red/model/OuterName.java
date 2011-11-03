@@ -1,6 +1,5 @@
 package dk.itu.big_red.model;
 
-import dk.itu.big_red.model.assistants.CloneMap;
 import dk.itu.big_red.model.interfaces.IOuterName;
 
 /**
@@ -9,10 +8,4 @@ import dk.itu.big_red.model.interfaces.IOuterName;
  * @see IOuterName
  */
 public class OuterName extends Link implements IOuterName {
-
-	@Override
-	public OuterName clone(CloneMap m) {
-		return (OuterName)super.clone(m);
-	}
-
 }
