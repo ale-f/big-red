@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -55,25 +56,9 @@ import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.ValidationFailedException;
 
 public class RuleEditor extends EditorPart implements
-	CommandStackListener, ISelectionListener, ISelectionChangedListener, ISelectionProvider {
+	CommandStackListener, ISelectionListener, INullSelectionListener,
+	ISelectionChangedListener, ISelectionProvider {
 	private DefaultEditDomain editDomain = new DefaultEditDomain(this);
-	
-	private static class ActionIDList extends ArrayList {
-		@Override
-		public boolean add(Object o) {
-			if (o instanceof IAction) {
-				try {
-					IAction action = (IAction) o;
-					o = action.getId();
-					throw new IllegalArgumentException(
-							"Action IDs should be added to lists, not the action: " + action); //$NON-NLS-1$
-				} catch (IllegalArgumentException exc) {
-					exc.printStackTrace();
-				}
-			}
-			return super.add(o);
-		}
-	}
 
 	private ArrayList<ISelectionChangedListener> listeners =
 		new ArrayList<ISelectionChangedListener>();
@@ -102,9 +87,9 @@ public class RuleEditor extends EditorPart implements
 	}
 	
 	private ActionRegistry actionRegistry = new ActionRegistry();
-	private List selectionActions = new ActionIDList();
-	private List stackActions = new ActionIDList();
-	private List propertyActions = new ActionIDList();
+	private List<String> selectionActions = new ArrayList<String>();
+	private List<String> stackActions = new ArrayList<String>();
+	private List<String> propertyActions = new ArrayList<String>();
 	
 	private ScrollingGraphicalViewer redexViewer, reactumViewer;
 	
