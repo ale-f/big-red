@@ -61,6 +61,7 @@ import dk.itu.big_red.model.assistants.NodeFactory;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.util.FileResourceOutputStream;
+import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.ValidationFailedException;
 
 public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
@@ -170,11 +171,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	getStackActions().add(ActionFactory.REVERT.getId());
     }
     
-    private void loadingError(String error, Throwable cause) {
-		ErrorDialog.openError(getSite().getShell(), null, error,
-				RedPlugin.getThrowableStatus(cause));
-    }
-    
     @Override
 	protected void initializeGraphicalViewer() {
 	    GraphicalViewer viewer = getGraphicalViewer();
@@ -187,12 +183,12 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
-	    			loadingError("Validation has failed.", cause);
+	    			UI.openError("Validation has failed.", cause);
 	    		} else {
-	    			loadingError("Opening the document failed.", e);
+	    			UI.openError("Opening the document failed.", e);
 	    		}
 	    	} catch (Exception e) {
-	    		loadingError("An unexpected error occurred.", e);
+	    		UI.openError("An unexpected error occurred.", e);
 	    	}
 	    }
 	    

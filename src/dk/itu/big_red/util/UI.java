@@ -2,6 +2,7 @@ package dk.itu.big_red.util;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -25,6 +26,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+
+import dk.itu.big_red.application.plugin.RedPlugin;
 
 /**
  * Utility methods for the SWT user interface.
@@ -239,6 +242,11 @@ public class UI {
 			return null;
 		}
 	}
+	
+	public static void openError(String error, Throwable cause) {
+		ErrorDialog.openError(getShell(), null, error,
+				RedPlugin.getThrowableStatus(cause));
+    }
 	
 	public static Image getImage(String symbolicName) {
 		return getWorkbench().getSharedImages().getImage(symbolicName);
