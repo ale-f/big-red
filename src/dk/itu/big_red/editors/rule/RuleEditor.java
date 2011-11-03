@@ -23,6 +23,9 @@ import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -52,7 +55,7 @@ import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.ValidationFailedException;
 
 public class RuleEditor extends EditorPart implements
-	CommandStackListener, ISelectionListener {
+	CommandStackListener, ISelectionListener, ISelectionChangedListener, ISelectionProvider {
 	private DefaultEditDomain editDomain = new DefaultEditDomain(this);
 	
 	private static class ActionIDList extends ArrayList {
@@ -72,6 +75,32 @@ public class RuleEditor extends EditorPart implements
 		}
 	}
 
+	private ArrayList<ISelectionChangedListener> listeners =
+		new ArrayList<ISelectionChangedListener>();
+	
+	private ISelection selection = null;
+	
+	@Override
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public ISelection getSelection() {
+		return selection;
+	}
+
+	@Override
+	public void removeSelectionChangedListener(
+			ISelectionChangedListener listener) {
+		listeners.remove(listener);
+	}
+
+	@Override
+	public void setSelection(ISelection selection) {
+		this.selection = selection;
+	}
+	
 	private ActionRegistry actionRegistry = new ActionRegistry();
 	private List selectionActions = new ActionIDList();
 	private List stackActions = new ActionIDList();
@@ -79,12 +108,23 @@ public class RuleEditor extends EditorPart implements
 	
 	private ScrollingGraphicalViewer redexViewer, reactumViewer;
 	
+	/**
+	 * Fired by the workbench when some kind of global overarching selection
+	 * changes.
+	 */
 	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		// TODO Auto-generated method stub
 		
 	}
 
+	/**
+	 * Fired by the redex and reactum viewers when their selections change.
+	 */
+	@Override
+	public void selectionChanged(SelectionChangedEvent event) {
+		setSelection(event.getSelection());
+	}
+	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		// TODO Auto-generated method stub
@@ -165,7 +205,9 @@ public class RuleEditor extends EditorPart implements
 			new BigraphEditorContextMenuProvider(reactumViewer, actionRegistry));
 		
 		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
-		getSite().setSelectionProvider(redexViewer);
+		redexViewer.addSelectionChangedListener(this);
+		reactumViewer.addSelectionChangedListener(this);
+		getSite().setSelectionProvider(this);
 		
 		loadInput();
 	}
