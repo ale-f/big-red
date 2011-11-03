@@ -1,5 +1,7 @@
 package dk.itu.big_red.model;
 
+import java.util.Map;
+
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.ReadonlyColour;
@@ -171,6 +173,14 @@ public abstract class Colourable extends ModelObject {
 		} else if (name.equals(PROPERTY_OUTLINE)) {
 			return getOutlineColour();
 		} else return super.getProperty(name);
+	}
+	
+	@Override
+	public Colourable clone(Map<ModelObject, ModelObject> m) {
+		Colourable c = (Colourable)super.clone(m);
+		c.setFillColour(getFillColour().getCopy());
+		c.setOutlineColour(getOutlineColour().getCopy());
+		return c;
 	}
 	
 	/**
