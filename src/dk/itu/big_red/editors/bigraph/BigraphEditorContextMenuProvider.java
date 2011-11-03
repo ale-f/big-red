@@ -82,20 +82,21 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 				new Separator());
 		
 		final PaletteViewer pv = getViewer().getEditDomain().getPaletteViewer();
-		for (Object i :
-			pv.getPaletteRoot().getChildren()) {
-			if (i instanceof PaletteContainer) {
-				PaletteContainer pc = (PaletteContainer)i;
-				
-				Action menuAction = new Action() {
-				};
-				menuAction.setEnabled(false);
-				menuAction.setText(pc.getLabel());
-				menu.appendToGroup(GEFActionConstants.GROUP_REST, menuAction);
-				
-				populateMenu(pv, pc, menu);
-			} else if (i instanceof PaletteSeparator) {
-				menu.appendToGroup(GEFActionConstants.GROUP_REST, new Separator());
+		if (pv != null) {
+			for (Object i : pv.getPaletteRoot().getChildren()) {
+				if (i instanceof PaletteContainer) {
+					PaletteContainer pc = (PaletteContainer)i;
+					
+					Action menuAction = new Action() {
+					};
+					menuAction.setEnabled(false);
+					menuAction.setText(pc.getLabel());
+					menu.appendToGroup(GEFActionConstants.GROUP_REST, menuAction);
+					
+					populateMenu(pv, pc, menu);
+				} else if (i instanceof PaletteSeparator) {
+					menu.appendToGroup(GEFActionConstants.GROUP_REST, new Separator());
+				}
 			}
 		}
 	}
