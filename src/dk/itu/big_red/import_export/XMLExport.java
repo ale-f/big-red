@@ -23,8 +23,8 @@ public abstract class XMLExport<T> extends Export<T> {
 	
 	protected XMLExport<T> finish() throws ExportFailedException {
 		try {
-			DOM.write(target, getDocument());
-			target.close();
+			DOM.write(getOutputStream(), getDocument());
+			getOutputStream().close();
 			return this;
 		} catch (Exception e) {
 			throw new ExportFailedException(e);

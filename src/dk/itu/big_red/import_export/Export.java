@@ -60,7 +60,15 @@ public abstract class Export<T> {
 		return this;
 	}
 	
-	protected OutputStream target = null;
+	private OutputStream target = null;
+	
+	/**
+	 * Returns the export's target {@link OutputStream}, if one has been set.
+	 * @return an {@link OutputStream}
+	 */
+	public OutputStream getOutputStream() {
+		return target;
+	}
 	
 	/**
 	 * Sets the target of the export to the given {@link OutputStream}. The

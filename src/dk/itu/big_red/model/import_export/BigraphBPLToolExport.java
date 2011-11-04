@@ -26,7 +26,7 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		osw = new OutputStreamWriter(target);
+		osw = new OutputStreamWriter(getOutputStream());
 		process(getModel());
 		try {
 			osw.close();
@@ -92,6 +92,7 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 	public void process(INode node) throws ExportFailedException {
 		print(SMLify(node.getIControl().getName()));
 		processIterable(node.getIPorts(), "[]", "[", ", ", "]", new Processor<IPort>() {
+			@Override
 			public void proc(IPort p) throws ExportFailedException {
 				print(p.getName());
 				print(" == ");
@@ -114,6 +115,7 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 	
 	public void process(IParent parent) throws ExportFailedException {
 		processIterable(parent.getIChildren(), "<->", "(", " `|` ", ")", new Processor<IChild>() {
+			@Override
 			public void proc(IChild c) throws ExportFailedException {
 				if (c instanceof INode)
 					process((INode) c);
@@ -141,6 +143,7 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 		printLine("");
 		printLine("(* signature *)");
 		processIterable(bigraph.getISignature().getIControls(), null, "", "\n", "\n", new Processor<IControl>() {
+			@Override
 			public void proc(IControl c) throws ExportFailedException {
 				String name = SMLify(c.getName());
 				print("val ");
@@ -149,6 +152,7 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 				print(name);
 				print(" --: ");
 				processIterable(c.getIPorts(), null, "[", ", ", "]", new Processor<IPort>() {
+					@Override
 					public void proc(IPort p) throws ExportFailedException {
 						print(SMLify(p.getName()));
 					}
@@ -164,11 +168,13 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 		
 		print("(");
 		processIterable(bigraph.getIOuterNames(), "idw[]", "idw[", ", ", "]", new Processor<IOuterName>() {
+			@Override
 			public void proc(IOuterName o) throws ExportFailedException {
 				print(SMLify(o.getName()));
 			}
 		});
 		processIterable(bigraph.getIEdges(), "", " * -//[", ", ", "]", new Processor<IEdge>() {
+			@Override
 			public void proc(IEdge e) throws ExportFailedException {
 				print(SMLify(e.getName()));
 			}
@@ -178,12 +184,14 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 		scope++;
 
 		processIterable(bigraph.getIInnerNames(), "", "", " || ", " || ", new Processor<IInnerName>() {
+			@Override
 			public void proc(IInnerName i) throws ExportFailedException {
 				print(SMLify(i.getILink().getName()) + "/" + SMLify(i.getName()));
 			}
 		});
 		
 		processIterable(bigraph.getIRoots(), "idp(0)", "", "|| ", "", new Processor<IRoot>() {
+			@Override
 			public void proc(IRoot r) throws ExportFailedException {
 				scope++;
 				process(r);

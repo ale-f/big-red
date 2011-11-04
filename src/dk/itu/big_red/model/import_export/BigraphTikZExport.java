@@ -55,7 +55,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		writer = new BufferedWriter(new OutputStreamWriter(target));
+		writer = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
 		
 		processBigraph(getModel());
 		

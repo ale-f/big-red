@@ -34,7 +34,7 @@ public class BigraphPNGExport extends Export<IFigure> {
 			il.data = new ImageData[] {
 				image.getImageData()
 			};
-			il.save(target, SWT.IMAGE_PNG);
+			il.save(getOutputStream(), SWT.IMAGE_PNG);
 		} catch (Exception e) {
 			throw new ExportFailedException(e);
 		} finally {
