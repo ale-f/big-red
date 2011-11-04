@@ -30,6 +30,11 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 	private Export<Bigraph> exporter = null;
 	
 	@Override
+	public boolean canFinish() {
+		return (getContainer().getCurrentPage() == page2);
+	}
+	
+	@Override
 	public boolean performFinish() {
 		return true;
 	}
