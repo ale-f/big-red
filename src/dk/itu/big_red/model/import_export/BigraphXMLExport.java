@@ -1,10 +1,9 @@
 package dk.itu.big_red.model.import_export;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.import_export.XMLExport;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -28,7 +27,7 @@ import dk.itu.big_red.util.Utility;
  * @see BigraphXMLImport
  *
  */
-public class BigraphXMLExport extends Export<Bigraph> {
+public class BigraphXMLExport extends XMLExport<Bigraph> {
 	/**
 	 * An array of model {@link Class}es in the appropriate order for the
 	 * <code>&lt;bigraph&gt;</code> XML schema, suitable for giving as the
@@ -39,8 +38,6 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		Edge.class, OuterName.class, Root.class, InnerName.class,
 		Port.class, Node.class, Site.class
 	};
-	
-	private Document doc = null;
 	
 	private boolean exportAppearance = true,
 			exportPersistentID = true;
@@ -73,20 +70,13 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	}
 	
 	private Element elem(String name) {
-		return doc.createElementNS(XMLNS.BIGRAPH, "bigraph:" + name);
+		return newElement(XMLNS.BIGRAPH, "bigraph:" + name);
 	}
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		try {
-			process((Layoutable)getModel());
-			DOM.write(target, doc);
-			target.close();
-		} catch (ExportFailedException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ExportFailedException(e);
-		}
+		process((Layoutable)getModel());
+		finish();
 	}
 
 	private Element processSignature(Signature s) throws ExportFailedException {
@@ -101,8 +91,8 @@ public class BigraphXMLExport extends Export<Bigraph> {
 	}
 	
 	private Element process(Bigraph obj) throws ExportFailedException {
-		doc = DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph");
-		Element e = doc.getDocumentElement();
+		setDocument(DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
+		Element e = getDocument().getDocumentElement();
 		DOM.appendChildIfNotNull(e, processSignature(obj.getSignature()));
 		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributes(e, "xmlns:big-red", XMLNS.BIG_RED);
@@ -160,7 +150,7 @@ public class BigraphXMLExport extends Export<Bigraph> {
 		}
 		
 		if (exportAppearance)
-			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(doc, obj));
+			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), obj));
 		
 		if (exportPersistentID)
 			DOM.applyAttributesNS(e, XMLNS.BIG_RED, "big-red:pid", obj.getPersistentID());
