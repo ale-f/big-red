@@ -75,7 +75,8 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		process((Layoutable)getModel());
+		setDocument(DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
+		processBigraph(getDocumentElement(), getModel());
 		finish();
 	}
 
@@ -90,23 +91,56 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 		return e;
 	}
 	
-	private Element process(Bigraph obj) throws ExportFailedException {
-		setDocument(DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
-		Element e = getDocument().getDocumentElement();
-		DOM.appendChildIfNotNull(e, processSignature(obj.getSignature()));
+	public Element processBigraph(Element e, Bigraph obj) throws ExportFailedException {
 		if (exportAppearance || exportPersistentID)
-			DOM.applyAttributes(e, "xmlns:big-red", XMLNS.BIG_RED);
+			DOM.applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
+		DOM.appendChildIfNotNull(e, processSignature(obj.getSignature()));
+		
+		for (Layoutable i :
+			Utility.groupListByClass(obj.getChildren(),
+					BigraphXMLExport.SCHEMA_ORDER)) {
+			Element f = null;
+			if (i instanceof Edge) {
+				f = newElement(XMLNS.BIGRAPH, "bigraph:edge");
+			} else if (i instanceof OuterName) {
+				f = newElement(XMLNS.BIGRAPH, "bigraph:outername");
+			} else if (i instanceof Root) {
+				f = processRoot(
+						newElement(XMLNS.BIGRAPH, "bigraph:root"), (Root)i);
+			} else if (i instanceof InnerName) {
+				f = processPoint(
+						newElement(XMLNS.BIGRAPH, "bigraph:innername"), (Point)i);
+			}
+			DOM.appendChildIfNotNull(e, applyCommonProperties(f, i));
+		}
+		
 		return e;
 	}
 	
-	private Element process(Node n) throws ExportFailedException {
-		Element e = elem("node");
-		try {
-			e.setAttribute("control", n.getControl().getLongName());
-		} catch (NullPointerException ex) {
-			throw new ExportFailedException("Node \"" + n.getName() + "\" has no control.", ex);
+	private Element processRoot(Element e, Root r) throws ExportFailedException {
+		for (Layoutable i :
+			Utility.groupListByClass(r.getChildren(),
+					BigraphXMLExport.SCHEMA_ORDER)) {
+			Element f = null;
+			if (i instanceof Node) {
+				f = processNode(
+						newElement(XMLNS.BIGRAPH, "bigraph:node"), (Node)i);
+			} else if (i instanceof Site) {
+				f = processSite(
+						newElement(XMLNS.BIGRAPH, "bigraph:site"), (Site)i);
+			}
+			DOM.appendChildIfNotNull(e, applyCommonProperties(f, i));
 		}
-		e.setAttribute("name", n.getName());
+		return e;
+	}
+	
+	private Element processSite(Element e, Site s) {
+		return e;
+	}
+	
+	private Element processNode(Element e, Node n) throws ExportFailedException {
+		e.setAttributeNS(null, "control", n.getControl().getLongName());
+		e.setAttributeNS(null, "name", n.getName());
 		
 		for (Port p : n.getPorts()) 
 			DOM.appendChildIfNotNull(e, process(p));
@@ -114,11 +148,11 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 		return e;
 	}
 	
-	private Element process(Point p) throws ExportFailedException {
+	private Element processPoint(Element e, Point p) throws ExportFailedException {
 		Link link = p.getLink();
 		if (link != null) {
 			return DOM.applyAttributes(
-					elem(p.getClass().getSimpleName().toLowerCase()),
+					e,
 					"name", p.getName(),
 					"link", link.getName());
 		} else if (p instanceof InnerName) {
@@ -127,14 +161,22 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 		return null;
 	}
 		
+	private Element applyCommonProperties(Element e, Layoutable l) {
+		if (!(l instanceof Bigraph))
+			DOM.applyAttributes(e, "name", l.getName());
+		if (exportAppearance)
+			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), l));
+		if (exportPersistentID)
+			DOM.applyAttributesNS(e, XMLNS.BIG_RED, "big-red:pid", l.getPersistentID());
+		return e;
+	}
+	
 	private Element process(Layoutable obj) throws ExportFailedException {
 		Element e = null;
-		if (obj instanceof Bigraph) {
-			e = process((Bigraph)obj);
-		} else if (obj instanceof Node) {
-			e = process((Node)obj);
+		if (obj instanceof Node) {
+			e = process(obj);
 		} else if (obj instanceof Point) {
-			e = process((Point)obj);
+			e = process(obj);
 		} else {
 			e = elem(obj.getClass().getSimpleName().toLowerCase());
 		}
@@ -149,11 +191,7 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 				e.appendChild(process(i));
 		}
 		
-		if (exportAppearance)
-			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), obj));
 		
-		if (exportPersistentID)
-			DOM.applyAttributesNS(e, XMLNS.BIG_RED, "big-red:pid", obj.getPersistentID());
 					
 		return e;
 	}

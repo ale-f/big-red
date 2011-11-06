@@ -12,6 +12,12 @@ public abstract class XMLExport<T> extends Export<T> {
 		return doc;
 	}
 	
+	public Element getDocumentElement() {
+		if (getDocument() != null) {
+			return getDocument().getDocumentElement();
+		} else return null;
+	}
+	
 	public XMLExport<T> setDocument(Document doc) {
 		this.doc = doc;
 		return this;

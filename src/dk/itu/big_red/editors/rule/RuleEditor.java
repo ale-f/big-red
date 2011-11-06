@@ -21,6 +21,7 @@ import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -40,6 +41,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.actions.BigraphCheckpointAction;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -50,7 +52,9 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
+import dk.itu.big_red.util.FileResourceOutputStream;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.ValidationFailedException;
 
@@ -111,8 +115,20 @@ public class RuleEditor extends EditorPart implements
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-		
+		try {
+        	FileEditorInput i = (FileEditorInput)getEditorInput();
+        	ReactionRuleXMLExport ex = new ReactionRuleXMLExport();
+        	
+        	ex.setModel(getModel()).setOutputStream(new FileResourceOutputStream(i.getFile())).exportObject();
+        	
+    		getCommandStack().markSaveLocation();
+    		firePropertyChange(IEditorPart.PROP_DIRTY);
+        } catch (Exception ex) {
+        	if (monitor != null)
+        		monitor.setCanceled(true);
+        	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
+	    		RedPlugin.getThrowableStatus(ex));
+        }		
 	}
 
 	@Override
@@ -198,14 +214,22 @@ public class RuleEditor extends EditorPart implements
 		loadInput();
 	}
 
+	private ReactionRule model;
+	
+	public ReactionRule getModel() {
+		return model;
+	}
+	
+	public void setModel(ReactionRule model) {
+		this.model = model;
+	}
+	
 	protected void loadInput() {
-		ReactionRule model = null;
-		
 		IEditorInput input = getEditorInput();
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		model = ReactionRuleXMLImport.importFile(fi.getFile());
+	    		setModel(ReactionRuleXMLImport.importFile(fi.getFile()));
 	    	} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
@@ -219,8 +243,8 @@ public class RuleEditor extends EditorPart implements
 	    	}
 	    }
 	    
-	    if (model == null)
-	    	model = new ReactionRule();
+	    if (getModel() == null)
+	    	setModel(new ReactionRule());
 	    
 	    redexViewer.setContents(model.getRedex());
 	    setPartName(getEditorInput().getName());
