@@ -17,7 +17,7 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		finish();
 	}
 
-	private Element processRule(Element e, ReactionRule rr) throws ExportFailedException {
+	public Element processRule(Element e, ReactionRule rr) throws ExportFailedException {
 		DOM.appendChildIfNotNull(e,
 			processRedex(newElement(XMLNS.RULE, "rule:redex"), rr.getRedex()));
 		return e;
