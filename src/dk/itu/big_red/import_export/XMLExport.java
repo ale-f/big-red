@@ -23,6 +23,11 @@ public abstract class XMLExport<T> extends Export<T> {
 		return this;
 	}
 	
+	@Override
+	public boolean canExport() {
+		return (super.canExport() && doc != null);
+	}
+	
 	protected Element newElement(String nsURI, String qualifiedName) {
 		return doc.createElementNS(nsURI, qualifiedName);
 	}
