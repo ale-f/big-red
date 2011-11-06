@@ -60,9 +60,9 @@ import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.NodeFactory;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
-import dk.itu.big_red.util.FileResourceOutputStream;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.ValidationFailedException;
+import dk.itu.big_red.util.resources.FileResourceOutputStream;
 
 public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";

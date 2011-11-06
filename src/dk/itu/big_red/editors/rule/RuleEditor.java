@@ -53,9 +53,9 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
-import dk.itu.big_red.util.FileResourceOutputStream;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.ValidationFailedException;
+import dk.itu.big_red.util.resources.FileResourceOutputStream;
 
 public class RuleEditor extends EditorPart implements
 	CommandStackListener, ISelectionListener, INullSelectionListener,

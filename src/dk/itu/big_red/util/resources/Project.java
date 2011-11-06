@@ -23,7 +23,6 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
-import dk.itu.big_red.util.FileResourceOutputStream;
 import dk.itu.big_red.util.NullInputStream;
 
 /**
