@@ -5,7 +5,6 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.XMLExport;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
@@ -132,25 +131,35 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 				f = processNode(
 						newElement(XMLNS.BIGRAPH, "bigraph:node"), (Node)i);
 			} else if (i instanceof Site) {
-				f = processSite(
-						newElement(XMLNS.BIGRAPH, "bigraph:site"), (Site)i);
+				f = newElement(XMLNS.BIGRAPH, "bigraph:site");
 			}
 			DOM.appendChildIfNotNull(e, applyCommonProperties(f, i));
 		}
 		return e;
 	}
 	
-	private Element processSite(Element e, Site s) {
-		return e;
-	}
-	
 	private Element processNode(Element e, Node n) throws ExportFailedException {
-		e.setAttributeNS(null, "control", n.getControl().getLongName());
-		e.setAttributeNS(null, "name", n.getName());
+		DOM.applyAttributes(e,
+			"control", n.getControl().getLongName(),
+			"name", n.getName());
 		
 		for (Port p : n.getPorts()) 
-			DOM.appendChildIfNotNull(e, process(p));
+			DOM.appendChildIfNotNull(e, processPoint(
+					newElement(XMLNS.BIGRAPH, "bigraph:port"), p));
 		
+		for (Layoutable l :
+			Utility.groupListByClass(n.getChildren(),
+					BigraphXMLExport.SCHEMA_ORDER)) {
+			Element f = null;
+			if (l instanceof Node) {
+				f = processNode(
+					newElement(XMLNS.BIGRAPH, "bigraph:node"), (Node)l);
+			} else if (l instanceof Site) {
+				f = newElement(XMLNS.BIGRAPH, "bigraph:site");
+			}
+			DOM.appendChildIfNotNull(e, applyCommonProperties(f, l));
+		}
+				
 		return e;
 	}
 	
@@ -168,37 +177,14 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	}
 		
 	private Element applyCommonProperties(Element e, Layoutable l) {
+		if (e == null || l == null)
+			return e;
 		if (!(l instanceof Bigraph))
 			DOM.applyAttributes(e, "name", l.getName());
 		if (exportAppearance)
 			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), l));
 		if (exportPersistentID)
 			DOM.applyAttributesNS(e, XMLNS.BIG_RED, "big-red:pid", l.getPersistentID());
-		return e;
-	}
-	
-	private Element process(Layoutable obj) throws ExportFailedException {
-		Element e = null;
-		if (obj instanceof Node) {
-			e = process(obj);
-		} else if (obj instanceof Point) {
-			e = process(obj);
-		} else {
-			e = elem(obj.getClass().getSimpleName().toLowerCase());
-		}
-		
-		if (!(obj instanceof Bigraph))
-			DOM.applyAttributes(e, "name", obj.getName());
-		
-		if (obj instanceof Container) {
-			Container c = (Container)obj;
-			for (Layoutable i : Utility.groupListByClass(c.getChildren(),
-					BigraphXMLExport.SCHEMA_ORDER))
-				e.appendChild(process(i));
-		}
-		
-		
-					
 		return e;
 	}
 }
