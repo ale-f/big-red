@@ -24,6 +24,8 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 	}
 	
 	private Element processRedex(Element e, Bigraph redex) throws ExportFailedException {
+		DOM.applyAttributes(e,
+				"xmlns:bigraph", XMLNS.BIGRAPH);
 		BigraphXMLExport ex = new BigraphXMLExport();
 		ex.setModel(redex);
 		ex.setDocument(getDocument());

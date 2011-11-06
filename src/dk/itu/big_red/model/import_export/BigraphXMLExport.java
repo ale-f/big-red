@@ -85,6 +85,8 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 			DOM.applyAttributes(e,
 				"src", s.getFile().getFullPath().makeRelative().toString());	
 		} else {
+			DOM.applyAttributes(e,
+				"xmlns:signature", XMLNS.SIGNATURE);
 			SignatureXMLExport ex = new SignatureXMLExport();
 			ex.setModel(s);
 			ex.setDocument(getDocument());
