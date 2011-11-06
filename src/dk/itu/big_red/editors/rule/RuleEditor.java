@@ -47,7 +47,6 @@ import dk.itu.big_red.editors.bigraph.actions.BigraphCheckpointAction;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
-import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ImportFailedException;
@@ -272,57 +271,36 @@ public class RuleEditor extends EditorPart implements
         updateActions(stackActions);
     }
 	
+	public static void registerActions(ActionRegistry registry,
+			List<String> actionIDList, IAction... actions) {
+		for (IAction i : actions) {
+			registry.registerAction(i);
+			if (actionIDList != null)
+				actionIDList.add(i.getId());
+		}
+	}
+	
 	/**
 	 * Creates actions for this editor. Subclasses should override this method
 	 * to create and register actions with the {@link ActionRegistry}.
 	 */
-	@SuppressWarnings("unchecked")
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
-		IAction action;
+		
+		registerActions(registry, stackActions,
+			new UndoAction(this), new RedoAction(this));
+		
+		registerActions(registry, selectionActions,
+			new DeleteAction((IWorkbenchPart)this),
+			new ContainerPropertiesAction(this), new ContainerCutAction(this),
+			new ContainerCopyAction(this), new BigraphRelayoutAction(this),
+			new BigraphCheckpointAction(this));
 
-		action = new UndoAction(this);
-		registry.registerAction(action);
-		stackActions.add(action.getId());
-
-		action = new RedoAction(this);
-		registry.registerAction(action);
-		stackActions.add(action.getId());
-
-		action = new SelectAllAction(this);
-		registry.registerAction(action);
-
-		action = new DeleteAction((IWorkbenchPart) this);
-		registry.registerAction(action);
-		selectionActions.add(action.getId());
-
-		action = new SaveAction(this);
-		registry.registerAction(action);
-		propertyActions.add(action.getId());
-
-    	action = new ContainerPropertiesAction(this);
-    	registry.registerAction(action);
-    	selectionActions.add(action.getId());
-    	
-    	action = new ContainerCutAction(this);
-    	registry.registerAction(action);
-    	selectionActions.add(action.getId());
-    	
-    	action = new ContainerCopyAction(this);
-    	registry.registerAction(action);
-    	selectionActions.add(action.getId());
-    	
-    	action = new ContainerPasteAction(this);
-    	registry.registerAction(action);
-    	selectionActions.add(action.getId());
-    	
-    	action = new BigraphRelayoutAction(this);
-    	registry.registerAction(action);
-    	selectionActions.add(action.getId());
-    	
-    	action = new BigraphCheckpointAction(this);
-    	registry.registerAction(action);
-    	selectionActions.add(action.getId());
+		registerActions(registry, null,
+			new SelectAllAction(this));
+		
+		registerActions(registry, propertyActions,
+			new SaveAction(this));
 	}
 
 	/**
