@@ -45,7 +45,7 @@
 
 	<xsd:attributeGroup name="pointAttributes">
 		<xsd:attribute name="name" type="xsd:string" use="required" />
-		<xsd:attribute name="link" type="xsd:string" use="required" />
+		<xsd:attribute name="link" type="xsd:string"/>
 	</xsd:attributeGroup>
 
 	<xsd:annotation>
@@ -347,7 +347,7 @@
 						Children
 					</h3>
 					<p>
-						<code>site</code>s <strong>must</strong> contain:
+						<code>site</code>s <strong>may</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -399,7 +399,7 @@
 						Children
 					</h3>
 					<p>
-						<code>port</code>s <strong>must</strong> contain:
+						<code>port</code>s <strong>may</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -419,11 +419,16 @@
 							<br />
 							This attribute <strong>must</strong> be unique across all ports within a <a href="#node">node</a>.
 						</li>
+					</ul>
+					<p>
+						The following attributes <strong>may</strong> be present:
+					</p>
+					<ul>
 						<li>
 							<a id="port_link" />
 							<code>link</code> (<code>string</code>): the identifier of the <a href="#edge">edge</a> or <a href="#outername">outername</a> to which this port is connected.
 							<br />
-							This attribute <strong>must</strong> be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
+							If this attribute is present, it <strong>must</strong> be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -457,7 +462,7 @@
 						Children
 					</h3>
 					<p>
-						<code>innername</code>s <strong>must</strong> contain:
+						<code>innername</code>s <strong>may</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -477,11 +482,16 @@
 							<br />
 							This attribute <strong>must</strong> be unique across all innernames in this <a href="#bigraph">bigraph</a>.
 						</li>
+					</ul>
+					<p>
+						The following attributes <strong>may</strong> be present:
+					</p>
+					<ul>
 						<li>
 							<a id="innername_link" />
 							<code>link</code> (<code>string</code>): the identifier of the <a href="#edge">edge</a> or <a href="#outername">outername</a> to which this innername is connected.
 							<br />
-							This attribute <strong>must</strong> be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
+							If this attribute is present, it <strong>must</strong> be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
@@ -515,7 +525,7 @@
 						Children
 					</h3>
 					<p>
-						<code>edges</code>s <strong>must</strong> contain:
+						<code>edges</code>s <strong>may</strong> contain:
 					</p>
 					<ul>
 						<li>
@@ -567,7 +577,7 @@
 						Children
 					</h3>
 					<p>
-						<code>outername</code>s <strong>must</strong> contain:
+						<code>outername</code>s <strong>may</strong> contain:
 					</p>
 					<ul>
 						<li>

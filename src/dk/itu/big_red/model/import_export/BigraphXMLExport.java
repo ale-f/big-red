@@ -165,15 +165,14 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	
 	private Element processPoint(Element e, Point p) throws ExportFailedException {
 		Link link = p.getLink();
+		DOM.applyAttributes(e,
+			"name", p.getName());
 		if (link != null) {
-			return DOM.applyAttributes(
-					e,
-					"name", p.getName(),
-					"link", link.getName());
-		} else if (p instanceof InnerName) {
-			throw new ExportFailedException("Inner name \"" + p.getName() + "\" isn't connected to anything.");
+			DOM.applyAttributes(
+				e,
+				"link", link.getName());
 		}
-		return null;
+		return e;
 	}
 		
 	private Element applyCommonProperties(Element e, Layoutable l) {

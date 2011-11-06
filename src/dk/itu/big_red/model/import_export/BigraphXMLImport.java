@@ -133,7 +133,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 	
 	private Point processPoint(Element e, Point model) throws ImportFailedException {
 		String link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
-		cg.add(model.changeConnect(links.get(link)));
+		if (link != null)
+			cg.add(model.changeConnect(links.get(link)));
 		return model;
 	}
 	
