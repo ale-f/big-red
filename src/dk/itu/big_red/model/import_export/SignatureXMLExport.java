@@ -13,27 +13,29 @@ import dk.itu.big_red.util.DOM;
 public class SignatureXMLExport extends XMLExport<Signature> {
 	@Override
 	public void exportObject() throws ExportFailedException {
-		process(getModel());
+		setDocument(DOM.createDocument(XMLNS.SIGNATURE, "signature:signature"));
+		processSignature(getDocumentElement(), getModel());
 		finish();
 	}
 
-	private void process(Signature s) {
-		setDocument(DOM.createDocument(XMLNS.SIGNATURE, "signature"));
-		Element e = getDocument().getDocumentElement();
+	public Element processSignature(Element e, Signature s) {
 		DOM.applyAttributes(e,
-			"xmlns:big-red", XMLNS.BIG_RED);
+			"xmlns:big-red", XMLNS.BIG_RED,
+			"xmlns:signature", XMLNS.SIGNATURE);
 
 		for (Control c : s.getControls())
-			DOM.appendChildIfNotNull(e, process(c));
+			DOM.appendChildIfNotNull(e,
+				processControl(newElement(XMLNS.SIGNATURE, "signature:control"), c));
+		return e;
 	}
 	
-	private Element process(Control c) {
-		Element e = newElement(XMLNS.SIGNATURE, "control");
+	private Element processControl(Element e, Control c) {
 		DOM.applyAttributes(e,
 				"name", c.getLongName());
 		
 		for (Port p : c.getPortsArray())
-			e.appendChild(process(p));
+			e.appendChild(processPort(
+				newElement(XMLNS.SIGNATURE, "signature:port"), p));
 		
 		DOM.appendChildIfNotNull(e,
 				AppearanceGenerator.getShape(getDocument(), c));
@@ -44,16 +46,15 @@ public class SignatureXMLExport extends XMLExport<Signature> {
 		return e;
 	}
 	
-	private Element process(Port p) {
-		Element e = newElement(XMLNS.SIGNATURE, "port");
+	private Element processPort(Element e, Port p) {
 		DOM.applyAttributes(e,
 				"name", p.getName());
 		
-		Element pa = newElement(XMLNS.BIG_RED, "big-red:port-appearance");
-		DOM.applyAttributes(pa,
+		e.appendChild(
+			DOM.applyAttributes(
+				newElement(XMLNS.BIG_RED, "big-red:port-appearance"),
 				"segment", p.getSegment(),
-				"distance", p.getDistance());
-		e.appendChild(pa);
+				"distance", p.getDistance()));
 		
 		return e;
 	}
