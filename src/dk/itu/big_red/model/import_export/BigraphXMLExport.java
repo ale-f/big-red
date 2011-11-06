@@ -80,13 +80,15 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 		finish();
 	}
 
-	private Element processSignature(Signature s) throws ExportFailedException {
-		Element e = elem("signature");
+	private Element processSignature(Element e, Signature s) throws ExportFailedException {
 		if (s.getFile() != null) {
 			DOM.applyAttributes(e,
 				"src", s.getFile().getFullPath().makeRelative().toString());	
 		} else {
-			throw new ExportFailedException("Bigraphs with an embedded signature are currently read-only.");
+			SignatureXMLExport ex = new SignatureXMLExport();
+			ex.setModel(s);
+			ex.setDocument(getDocument());
+			ex.processSignature(e, s);
 		}
 		return e;
 	}
@@ -94,7 +96,9 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	public Element processBigraph(Element e, Bigraph obj) throws ExportFailedException {
 		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
-		DOM.appendChildIfNotNull(e, processSignature(obj.getSignature()));
+		DOM.appendChildIfNotNull(e,
+			processSignature(
+				newElement(XMLNS.BIGRAPH, "bigraph:signature"), obj.getSignature()));
 		
 		for (Layoutable i :
 			Utility.groupListByClass(obj.getChildren(),
