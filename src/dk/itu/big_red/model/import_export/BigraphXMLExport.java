@@ -68,10 +68,6 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 		} else super.setOption(id, value);
 	}
 	
-	private Element elem(String name) {
-		return newElement(XMLNS.BIGRAPH, "bigraph:" + name);
-	}
-	
 	@Override
 	public void exportObject() throws ExportFailedException {
 		setDocument(DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
