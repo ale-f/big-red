@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.rule;
 
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -9,7 +8,8 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.commands.CommandStackEvent;
+import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -58,8 +58,8 @@ import dk.itu.big_red.util.ValidationFailedException;
 import dk.itu.big_red.util.resources.FileResourceOutputStream;
 
 public class RuleEditor extends EditorPart implements
-	CommandStackListener, ISelectionListener, INullSelectionListener,
-	ISelectionChangedListener, ISelectionProvider {
+	ISelectionListener, INullSelectionListener, ISelectionChangedListener,
+	ISelectionProvider, CommandStackEventListener {
 	private DefaultEditDomain editDomain = new DefaultEditDomain(this);
 
 	private ArrayList<ISelectionChangedListener> listeners =
@@ -207,8 +207,8 @@ public class RuleEditor extends EditorPart implements
 		redexViewer.addSelectionChangedListener(this);
 		reactumViewer.addSelectionChangedListener(this);
 		getSite().setSelectionProvider(this);
-	
-		getCommandStack().addCommandStackListener(this);
+		
+		getCommandStack().addCommandStackEventListener(this);
 		
 		loadInput();
 	}
@@ -264,12 +264,12 @@ public class RuleEditor extends EditorPart implements
 	protected DefaultEditDomain getEditDomain() {
 		return editDomain;
 	}
-
+	
 	@Override
-    public void commandStackChanged(EventObject event) {
-        firePropertyChange(IEditorPart.PROP_DIRTY);
-        updateActions(stackActions);
-    }
+	public void stackChanged(CommandStackEvent event) {
+		firePropertyChange(IEditorPart.PROP_DIRTY);
+		updateActions(stackActions);
+	}
 	
 	public static void registerActions(ActionRegistry registry,
 			List<String> actionIDList, IAction... actions) {
