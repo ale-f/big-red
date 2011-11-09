@@ -33,8 +33,14 @@ public class ModelDeleteCommand extends ChangeCommand {
 		"dk.itu.big_red.editors.bigraph.commands.ModelDeleteCommand";
 	
 	public void addObject(ModelObject m) {
-		if (m != null && !(m instanceof Bigraph))
+		if (m != null && !(m instanceof Bigraph) && !(m instanceof Port)) {
 			objects.add(m);
+			if (m instanceof Link.Connection) {
+				setTarget(((Link.Connection)m).getLink().getBigraph());
+			} else if (m instanceof Layoutable) {
+				setTarget(((Layoutable)m).getBigraph());
+			}
+		}
 	}
 	
 	private BigraphScratchpad scratch = null;
@@ -49,8 +55,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		cg.add(p.changeDisconnect(l));
 		scratch.removePointFor(l, p);
 		if (scratch.getPointsFor(l).size() == 0 && l instanceof Edge) {
-			cg.add(l.changeName(null),
-					l.getBigraph().changeRemoveChild(l));
+			cg.add(l.getBigraph().changeRemoveChild(l));
 			scratch.removeChildFor(l.getBigraph(), l);
 		}
 	}
@@ -63,10 +68,25 @@ public class ModelDeleteCommand extends ChangeCommand {
 			removePoint(link, point);
 		} else if (m instanceof Layoutable) {
 			Layoutable n = (Layoutable)m;
-			setTarget(n.getBigraph());
+			if (scratch.getParentFor(n) == null)
+				return;
+			
 			if (n instanceof Container) {
 				Container c = (Container)n;
-				recursivelyRemoveConnections(c);
+				
+				if (n instanceof Node) {
+					Node j = (Node)n;
+					for (Point p : j.getPorts()) {
+						Link l = scratch.getLinkFor(p);
+						if (l != null)
+							removePoint(l, p);
+					}
+				}
+				
+				ArrayList<Layoutable> chi =
+					new ArrayList<Layoutable>(scratch.getChildrenFor(c));
+				for (Layoutable i : chi)
+					remove(i);
 			} else if (n instanceof Link) {
 				Link l = (Link)n;
 				List<Point> points =
@@ -78,50 +98,12 @@ public class ModelDeleteCommand extends ChangeCommand {
 			} else if (n instanceof Point) {
 				Point p = (Point)n;
 				if (scratch.getLinkFor(p) != null)
-					removePoint(p.getLink(), p);
+					return;
+				removePoint(p.getLink(), p);
 			}
 			cg.add(n.getParent().changeRemoveChild(n));
 			scratch.removeChildFor(n.getParent(), n);
 		}
-	}
-	
-	private void recursivelyRemoveConnections(Container c) {
-		if (c instanceof Node) {
-			Node j = (Node)c;
-			for (Point p : j.getPorts()) {
-				Link l = scratch.getLinkFor(p);
-				if (l != null)
-					removePoint(l, p);
-			}
-		}
-		for (Layoutable i : scratch.getChildrenFor(c)) {
-			if (i instanceof Container)
-				recursivelyRemoveConnections((Container)i);
-		}
-	}
-	
-	private boolean parentScheduledForDeletion(Layoutable i) {
-		Container parent = i.getParent();
-		while (parent != null) {
-			if (objects.contains(parent))
-				return true;
-			parent = parent.getParent();
-		}
-		return false;
-	}
-	
-	private boolean linkOrPointScheduledForDeletion(Link.Connection l) {
-		if (objects.contains(l.getLink()) ||
-			objects.contains(l.getPoint())) {
-			return true;
-		} else if (l.getPoint() instanceof Port) {
-			return parentScheduledForDeletion(l.getPoint());
-		}
-		return false;
-	}
-
-	private boolean allIsWell(Layoutable m) {
-		return m.getBigraph() != null;
 	}
 	
 	@Override
@@ -129,14 +111,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		cg.clear();
 		if (scratch != null)
 			scratch.clear();
-		for (ModelObject m : objects) {
-			if (!(m instanceof Port) &&
-				(m instanceof Layoutable &&
-					!parentScheduledForDeletion((Layoutable)m) &&
-					allIsWell((Layoutable)m)) ||
-				(m instanceof Link.Connection &&
-					!linkOrPointScheduledForDeletion((Link.Connection)m)))
-				remove(m);
-		}
+		for (ModelObject m : objects)
+			remove(m);
 	}
 }
