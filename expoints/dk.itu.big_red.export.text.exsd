@@ -72,10 +72,10 @@
          <attribute name="class" type="string">
             <annotation>
                <documentation>
-                  The fully-qualified name of the exporter class (extending dk.itu.big_red.model.import_export.ModelExport).
+                  The fully-qualified name of the exporter class (extending dk.itu.big_red.model.import_export.Export).
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="dk.itu.big_red.model.import_export.ModelExport:"/>
+                  <meta.attribute kind="java" basedOn="dk.itu.big_red.import_export.Export:"/>
                </appinfo>
             </annotation>
          </attribute>
