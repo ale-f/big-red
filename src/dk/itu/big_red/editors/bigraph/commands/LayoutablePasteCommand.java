@@ -74,7 +74,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 				cg.add(newParent.changeAddChild(j, name),
 						j.changeLayout(j.getLayout().getCopy().translate(20, 20)));
 				
-				scratch.addChildFor(newParent, j);
+				scratch.addChildFor(newParent, j, name);
 				scratch.setNameFor(j, name);
 			}
 		}

@@ -94,11 +94,13 @@ public class BigraphScratchpad {
 	public void removeChildFor(Container a, Layoutable b) {
 		getChildrenFor(a).remove(b);
 		setParentFor(b, null);
+		getNamespaceFor(b).remove(b.getName());
 	}
 	
-	public void addChildFor(Container a, Layoutable b) {
+	public void addChildFor(Container a, Layoutable b, String name) {
 		getChildrenFor(a).add(b);
 		setParentFor(b, a);
+		setNameFor(b, name);
 	}
 	
 	public Link getLinkFor(Point a) {

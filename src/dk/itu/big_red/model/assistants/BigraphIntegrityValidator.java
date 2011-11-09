@@ -136,8 +136,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 					layoutChecks.add(c.child);
 			}
 			
-			scratch.addChildFor(c.parent, c.child);
-			scratch.setNameFor(c.child, c.name);
+			scratch.addChildFor(c.parent, c.child, c.name);
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			checkEligibility(c.child, c.parent);
