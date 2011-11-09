@@ -140,6 +140,9 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				if (!(c.parent instanceof Bigraph))
 					rejectChange("Edges must be children of the top-level Bigraph");
 			} else {
+				if (c.child instanceof Container)
+					if (scratch.getChildrenFor((Container)c.child).size() != 0)
+						rejectChange(b, c.child + " already has child objects");
 				if (!c.parent.canContain(c.child))
 					rejectChange(b,
 						c.parent.getClass().getSimpleName() + "s can't contain " +
@@ -152,6 +155,9 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			checkEligibility(c.child, c.parent);
+			if (c.child instanceof Container)
+				if (scratch.getChildrenFor((Container)c.child).size() != 0)
+					rejectChange(b, c.child + " has child objects which must be removed first");
 			if (scratch.getParentFor(c.child) != c.parent)
 				rejectChange(c.parent + " is not the parent of " + c.child);
 			scratch.removeChildFor(c.parent, c.child);
