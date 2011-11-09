@@ -1,8 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -14,6 +12,7 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.util.Utility;
 
 public class ModelDeleteCommand extends ChangeCommand {
 	@Override
@@ -83,15 +82,11 @@ public class ModelDeleteCommand extends ChangeCommand {
 					}
 				}
 				
-				ArrayList<Layoutable> chi =
-					new ArrayList<Layoutable>(scratch.getChildrenFor(c));
-				for (Layoutable i : chi)
+				for (Layoutable i : Utility.copy(scratch.getChildrenFor(c)))
 					remove(i);
 			} else if (n instanceof Link) {
 				Link l = (Link)n;
-				List<Point> points =
-					new ArrayList<Point>(scratch.getPointsFor(l));
-				for (Point p : points)
+				for (Point p : Utility.copy(scratch.getPointsFor(l)))
 					removePoint(l, p);
 				if (l instanceof Edge)
 					return;

@@ -1,6 +1,7 @@
 package dk.itu.big_red.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public final class Utility {
 	public static <T> ArrayList<T>
 	groupListByClass(List<T> list, Object... classes) {
 		ArrayList<T> r = new ArrayList<T>(),
-				working = new ArrayList<T>(list);
+				working = Utility.copy(list);
 		for (Object o : classes) {
 			@SuppressWarnings("unchecked")
 			Class<? extends T> c = (Class<? extends T>)o;
@@ -54,5 +55,14 @@ public final class Utility {
 			if (klass.isInstance(i))
 				r.add((V)i);
 		return r;
+	}
+	
+	/**
+	 * Copies a {@link Collection} into a new {@link ArrayList}.
+	 * @param c a {@link Collection}
+	 * @return a new {@link ArrayList}
+	 */
+	public static <T> ArrayList<T> copy(Collection<? extends T> c) {
+		return new ArrayList<T>(c);
 	}
 }
