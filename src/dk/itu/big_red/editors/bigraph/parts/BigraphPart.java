@@ -13,7 +13,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.Lists;
 
 /**
  * BigraphParts represent {@link Bigraph}s, the top-level container of the
@@ -54,7 +54,7 @@ public class BigraphPart extends ContainerPart {
 	@Override
 	public List<Layoutable> getModelChildren() {
 		List<Layoutable> r =
-				Utility.groupListByClass(getModel().getChildren(), Edge.class, Object.class);
+				Lists.group(getModel().getChildren(), Edge.class, Object.class);
 		Collections.reverse(r);
 		return r;
 	}

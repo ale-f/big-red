@@ -23,7 +23,7 @@ import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.util.Colour;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.Lists;
 import dk.itu.big_red.util.geometry.Rectangle;
 import dk.itu.big_red.util.resources.IFileBackable;
 
@@ -222,7 +222,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			m = new HashMap<ModelObject, ModelObject>();
 		Bigraph b = (Bigraph)super.clone(m);
 		
-		for (Link i : Utility.only(getChildren(), Link.class)) {
+		for (Link i : Lists.only(getChildren(), Link.class)) {
 			Link iClone = (Link)m.get(i);
 			for (Point p : i.getPoints())
 				iClone.addPoint((Point)m.get(p));
@@ -354,22 +354,22 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 
 	@Override
 	public Iterable<IEdge> getIEdges() {
-		return Utility.only(children, IEdge.class);
+		return Lists.only(children, IEdge.class);
 	}
 
 	@Override
 	public Iterable<IRoot> getIRoots() {
-		return Utility.only(children, IRoot.class);
+		return Lists.only(children, IRoot.class);
 	}
 
 	@Override
 	public Iterable<IInnerName> getIInnerNames() {
-		return Utility.only(children, IInnerName.class);
+		return Lists.only(children, IInnerName.class);
 	}
 	
 	@Override
 	public Iterable<IOuterName> getIOuterNames() {
-		return Utility.only(children, IOuterName.class);
+		return Lists.only(children, IOuterName.class);
 	}
 
 	@Override
@@ -395,7 +395,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			top = PADDING;
 		
 		for (Layoutable i :
-			Utility.groupListByClass(getChildren(), BigraphXMLExport.SCHEMA_ORDER)) {
+			Lists.group(getChildren(), BigraphXMLExport.SCHEMA_ORDER)) {
 			Dimension size = i.relayout(cg);
 			sizes.put(i, size);
 			Rectangle r = new Rectangle().setSize(size);
@@ -416,7 +416,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			cg.add(i.changeLayout(r));
 		}
 		
-		for (Link i : Utility.only(getChildren(), Link.class)) {
+		for (Link i : Lists.only(getChildren(), Link.class)) {
 			if (i instanceof Edge)
 				cg.add(((Edge)i).changeReposition());
 			cg.add(i.changeOutlineColour(new Colour().randomise()));

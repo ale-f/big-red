@@ -18,7 +18,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.Lists;
 
 /**
  * XMLExport writes a {@link Bigraph} out as an XML document.
@@ -30,7 +30,7 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	/**
 	 * An array of model {@link Class}es in the appropriate order for the
 	 * <code>&lt;bigraph&gt;</code> XML schema, suitable for giving as the
-	 * last argument to {@link Utility#groupListByClass(java.util.List,
+	 * last argument to {@link Lists#group(java.util.List,
 	 * Object...)}.
 	 */
 	public static final Object SCHEMA_ORDER[] = {
@@ -98,7 +98,7 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 				newElement(XMLNS.BIGRAPH, "bigraph:signature"), obj.getSignature()));
 		
 		for (Layoutable i :
-			Utility.groupListByClass(obj.getChildren(),
+			Lists.group(obj.getChildren(),
 					BigraphXMLExport.SCHEMA_ORDER)) {
 			Element f = null;
 			if (i instanceof Edge) {
@@ -120,7 +120,7 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	
 	private Element processRoot(Element e, Root r) throws ExportFailedException {
 		for (Layoutable i :
-			Utility.groupListByClass(r.getChildren(),
+			Lists.group(r.getChildren(),
 					BigraphXMLExport.SCHEMA_ORDER)) {
 			Element f = null;
 			if (i instanceof Node) {
@@ -144,7 +144,7 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 					newElement(XMLNS.BIGRAPH, "bigraph:port"), p));
 		
 		for (Layoutable l :
-			Utility.groupListByClass(n.getChildren(),
+			Lists.group(n.getChildren(),
 					BigraphXMLExport.SCHEMA_ORDER)) {
 			Element f = null;
 			if (l instanceof Node) {

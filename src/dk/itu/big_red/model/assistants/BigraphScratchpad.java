@@ -9,7 +9,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.Lists;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -85,7 +85,7 @@ public class BigraphScratchpad {
 	public List<Layoutable> getChildrenFor(Container a) {
 		List<Layoutable> b;
 		if (!children.containsKey(a)) {
-			b = Utility.copy(a.getChildren());
+			b = Lists.copy(a.getChildren());
 			children.put(a, b);
 		} else b = children.get(a);
 		return b;
@@ -116,7 +116,7 @@ public class BigraphScratchpad {
 	public List<Point> getPointsFor(Link a) {
 		List<Point> b;
 		if (!points.containsKey(a)) {
-			b = Utility.copy(a.getPoints());
+			b = Lists.copy(a.getPoints());
 			points.put(a, b);
 		} else b = points.get(a);
 		return b;

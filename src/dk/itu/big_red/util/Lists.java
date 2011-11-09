@@ -6,11 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Miscellaneous utility methods.
+ * Utility methods for manipulating and creating {@link List}s and {@link
+ * Collection}s.
  * @author alec
  *
  */
-public final class Utility {
+public final class Lists {
 	/**
 	 * Returns a <i>class-grouped</i> copy of the given {@link List}; elements
 	 * of any of the {@link Class}es passed as varargs will be grouped
@@ -22,9 +23,9 @@ public final class Utility {
 	 * @return a class-grouped {@link ArrayList}
 	 */
 	public static <T> ArrayList<T>
-	groupListByClass(List<T> list, Object... classes) {
+	group(List<? extends T> list, Object... classes) {
 		ArrayList<T> r = new ArrayList<T>(),
-				working = Utility.copy(list);
+				working = copy(list);
 		for (Object o : classes) {
 			@SuppressWarnings("unchecked")
 			Class<? extends T> c = (Class<? extends T>)o;
@@ -49,7 +50,7 @@ public final class Utility {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T, V>
-	ArrayList<V> only(List<T> list, Class<V> klass) {
+	ArrayList<V> only(List<? extends T> list, Class<V> klass) {
 		ArrayList<V> r = new ArrayList<V>();
 		for (T i : list)
 			if (klass.isInstance(i))

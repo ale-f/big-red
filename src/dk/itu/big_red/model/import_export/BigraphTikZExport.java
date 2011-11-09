@@ -23,7 +23,7 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.util.ReadonlyColour;
-import dk.itu.big_red.util.Utility;
+import dk.itu.big_red.util.Lists;
 import dk.itu.big_red.util.geometry.Rectangle;
 
 public class BigraphTikZExport extends Export<Bigraph> {
@@ -204,7 +204,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		line("node at (" + rltl.x + "," + rltl.y + ") {" + con.getLabel() + "};");
 		
 		beginScope(n);
-		for (Layoutable c : Utility.groupListByClass(n.getChildren(),
+		for (Layoutable c : Lists.group(n.getChildren(),
 				BigraphXMLExport.SCHEMA_ORDER))
 			process(c);
 		for (Layoutable c : n.getPorts())
@@ -301,7 +301,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 	
 	private void processContainer(Container t) throws ExportFailedException {
 		beginScope(t);
-		for (Layoutable c : Utility.groupListByClass(t.getChildren(),
+		for (Layoutable c : Lists.group(t.getChildren(),
 				BigraphXMLExport.SCHEMA_ORDER))
 			process(c);
 		endScope();
