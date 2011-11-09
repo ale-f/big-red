@@ -73,6 +73,8 @@ public class DOM {
 		return getImplementation().createDocument(ns, qualifiedName, null);
 	}
 	
+	private static DocumentBuilderFactory dbf = null;
+	
 	/**
 	 * Attempts to parse the specified {@link InputStream} into a DOM {@link
 	 * Document}.
@@ -85,13 +87,17 @@ public class DOM {
 	 */
 	public static Document parse(InputStream is) throws SAXException, CoreException, IOException, ParserConfigurationException {
 		try {
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setNamespaceAware(true);
+			if (dbf == null) {
+				dbf = DocumentBuilderFactory.newInstance();
+				dbf.setNamespaceAware(true);
+			}
 			return dbf.newDocumentBuilder().parse(is);
 		} finally {
 			is.close();
 		}
 	}
+	
+	private static TransformerFactory tf = null;
 	
 	/**
 	 * Converts the specified {@link Document} into a textual representation of
@@ -102,12 +108,13 @@ public class DOM {
 	 * @throws TransformerException if the Node couldn't be converted to XML
 	 */
 	public static void write(OutputStream os, Document d) throws CoreException, TransformerException {
-		TransformerFactory f = TransformerFactory.newInstance();
+		if (tf == null)
+			tf = TransformerFactory.newInstance();
 		
 		Source source = new DOMSource(d);
 		Result result = new StreamResult(os);
 		
-		Transformer t = f.newTransformer();
+		Transformer t = tf.newTransformer();
 		t.setOutputProperty(OutputKeys.INDENT, "yes");
 		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 		t.transform(source, result);
