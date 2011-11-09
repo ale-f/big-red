@@ -69,25 +69,6 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		}
 	}
 	
-	private boolean checkNames = false;
-	
-	private void recursivelyCheckNames(Container c) throws ChangeRejectedException {
-		for (Layoutable i : scratch.getChildrenFor(c)) {
-			Map<String, Layoutable> ns = scratch.getNamespaceFor(i);
-			String name = i.getName();
-			if (name == null) {
-				if (!ns.containsValue(i))
-					rejectChange(i.toString() + " doesn't have a name");
-			} else {
-				if (!ns.get(name).equals(i))
-					rejectChange("The name \"" + name + "\" is already in use");
-			}
-			
-			if (i instanceof Container)
-				recursivelyCheckNames((Container)i);
-		}
-	}
-	
 	private void checkEligibility(Layoutable... l) throws ChangeRejectedException {
 		for (Layoutable i : l)
 			if (scratch.getBigraphFor(i) != getChangeable())
@@ -102,13 +83,10 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		scratch.clear();
 		
 		layoutChecks.clear();
-		checkNames = false;
 		
 		_tryValidateChange(b);
 		
 		runLayoutChecks();
-		if (checkNames)
-			recursivelyCheckNames(getChangeable());
 		
 		activeChange = null;
 	}
@@ -136,6 +114,13 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			scratch.removePointFor(c.link, c.point);
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
+			
+			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.child);
+			if (ns.containsKey(c.name) &&
+				/* FIXME: hack to make reparenting work */
+					!c.child.equals(ns.get(c.name)))
+				rejectChange("The name \"" + c.name + "\", proposed for " + c.child + ", is already in use");
+			
 			if (c.child instanceof Edge) {
 				if (!(c.parent instanceof Bigraph))
 					rejectChange("Edges must be children of the top-level Bigraph");
@@ -150,8 +135,9 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				if (!layoutChecks.contains(c.child))
 					layoutChecks.add(c.child);
 			}
+			
 			scratch.addChildFor(c.parent, c.child);
-			checkNames = true;
+			scratch.setNameFor(c.child, c.name);
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			checkEligibility(c.child, c.parent);
@@ -161,6 +147,9 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			if (scratch.getParentFor(c.child) != c.parent)
 				rejectChange(c.parent + " is not the parent of " + c.child);
 			scratch.removeChildFor(c.parent, c.child);
+			
+			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.child);
+			ns.remove(c.child.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			checkEligibility(c.model);
@@ -178,12 +167,13 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(c.model);
+			if (c.newName == null)
+				rejectChange(b, "Setting an object's name to null is no longer supported");
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.model);
-			if (c.newName != null && ns.get(c.newName) != null)
+			if (ns.get(c.newName) != null)
 				if (!ns.get(c.newName).equals(c.model))
 					rejectChange("Names must be unique");
 			scratch.setNameFor(c.model, c.newName);
-			checkNames = true;
 		} else {
 			rejectChange("The change was not recognised by the validator");
 		}

@@ -25,36 +25,31 @@ public class BigraphBuilder {
 	
 	public IEdge newEdge(String name) {
 		Edge e = new Edge();
-		cg.add(b.changeAddChild(e),
-				e.changeName(name));
+		cg.add(b.changeAddChild(e, name));
 		return e;
 	}
 	
 	public IOuterName newOuterName(String name) {
 		OuterName o = new OuterName();
-		cg.add(b.changeAddChild(o),
-				o.changeName(name));
+		cg.add(b.changeAddChild(o, name));
 		return o;
 	}
 	
 	public IInnerName newInnerName(String name) {
 		InnerName i = new InnerName();
-		cg.add(b.changeAddChild(i),
-				i.changeName(name));
+		cg.add(b.changeAddChild(i, name));
 		return i;
 	}
 	
 	public IRoot newRoot(String name) {
 		Root r = new Root();
-		cg.add(b.changeAddChild(r),
-				r.changeName(name));
+		cg.add(b.changeAddChild(r, name));
 		return r;
 	}
 	
 	public INode newNode(IParent parent, IControl c, String name) {
 		Node n = new Node((Control)c);
-		cg.add(((Container)parent).changeAddChild(n),
-				n.changeName(name));
+		cg.add(((Container)parent).changeAddChild(n, name));
 		return n;
 	}
 	
@@ -64,8 +59,7 @@ public class BigraphBuilder {
 	
 	public ISite newSite(IParent parent, String name) {
 		Site s = new Site();
-		cg.add(((Container)parent).changeAddChild(s),
-				s.changeName(name));
+		cg.add(((Container)parent).changeAddChild(s, name));
 		return s;
 	}
 	

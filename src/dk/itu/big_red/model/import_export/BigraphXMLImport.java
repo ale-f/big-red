@@ -165,12 +165,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		
 		if (model instanceof Layoutable) {
 			Layoutable l = (Layoutable)model;
-			cg.add(context.changeAddChild(l));
-			
-			if (!(model instanceof Bigraph)) {
-				String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
-				cg.add(l.changeName(name));
-			}
+			cg.add(context.changeAddChild(l,
+					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name")));
 			
 			boolean warn = false;
 			Element appearance =

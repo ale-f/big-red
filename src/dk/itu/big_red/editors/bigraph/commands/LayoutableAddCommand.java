@@ -39,7 +39,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 				parent = parent.getBigraph();
 			}
 			
-			cg.add(parent.changeAddChild(child),
+			cg.add(parent.changeAddChild(child, child.getName()),
 					child.changeLayout(nr));
 		}
 	}

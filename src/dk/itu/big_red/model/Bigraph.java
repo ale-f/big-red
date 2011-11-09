@@ -478,9 +478,12 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			c.parent.addChild(c.child);
+			c.child.setName(c.name);
+			getNamespace(getNSI(c.child)).put(c.name, c.child);
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			c.parent.removeChild(c.child);
+			getNamespace(getNSI(c.child)).remove(c.child.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			c.model.setLayout(c.newLayout);
@@ -497,11 +500,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			c.model.setFillColour(c.newColour);
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			if (c.model.getName() != null)
-				getNamespace(getNSI(c.model)).remove(c.model.getName());
+			getNamespace(getNSI(c.model)).remove(c.model.getName());
 			c.model.setName(c.newName);
-			if (c.newName != null)
-				getNamespace(getNSI(c.model)).put(c.newName, c.model);
+			getNamespace(getNSI(c.model)).put(c.newName, c.model);
 		}
 		if (checkpointChanges != null && !(b instanceof ChangeGroup))
 			checkpointChanges.add(b);

@@ -42,8 +42,7 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			Bigraph b = ((Point)first).getBigraph();
 			setTarget(b);
 			Edge ed = new Edge();
-			cg.add(b.changeAddChild(ed),
-					ed.changeName(b.getFirstUnusedName(ed)),
+			cg.add(b.changeAddChild(ed, b.getFirstUnusedName(ed)),
 					((Point)first).changeConnect(ed),
 					((Point)second).changeConnect(ed),
 					ed.changeReposition());

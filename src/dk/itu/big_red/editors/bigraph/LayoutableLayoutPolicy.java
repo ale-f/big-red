@@ -18,7 +18,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 
 public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
-
+	
 	@Override
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 		LayoutableRelayoutCommand command = null;

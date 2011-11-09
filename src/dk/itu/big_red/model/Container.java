@@ -24,10 +24,12 @@ public abstract class Container extends Layoutable {
 	public static class ChangeAddChild extends Change {
 		public Container parent;
 		public Layoutable child;
+		public String name;
 		
-		public ChangeAddChild(Container parent, Layoutable child) {
+		public ChangeAddChild(Container parent, Layoutable child, String name) {
 			this.parent = parent;
 			this.child = child;
+			this.name = name;
 		}
 		
 		@Override
@@ -37,12 +39,12 @@ public abstract class Container extends Layoutable {
 		
 		@Override
 		public boolean isReady() {
-			return (parent != null && child != null);
+			return (parent != null && child != null && name != null);
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(add child " + child + " to parent " + parent + ")";
+			return "Change(add child " + child + " to parent " + parent + " with name \"" + name + "\")";
 		}
 	}
 	
@@ -55,9 +57,21 @@ public abstract class Container extends Layoutable {
 			this.child = child;
 		}
 		
+		private String oldName = null;
+		
+		@Override
+		public void beforeApply() {
+			oldName = child.getName();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null);
+		}
+		
 		@Override
 		public Change inverse() {
-			return new ChangeAddChild(parent, child);
+			return new ChangeAddChild(parent, child, oldName);
 		}
 		
 		@Override
@@ -157,8 +171,8 @@ public abstract class Container extends Layoutable {
 		return r;
 	}
 	
-	public Change changeAddChild(Layoutable child) {
-		return new ChangeAddChild(this, child);
+	public Change changeAddChild(Layoutable child, String name) {
+		return new ChangeAddChild(this, child, name);
 	}
 	
 	public Change changeRemoveChild(Layoutable child) {
