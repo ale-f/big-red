@@ -29,7 +29,7 @@ public class Node extends Container implements PropertyChangeListener, INode {
 	 * Returns a new {@link Node} with the same {@link Control} as this one.
 	 */
 	@Override
-	protected Node newInstance() {
+	public Node newInstance() {
 		try {
 			return new Node(control);
 		} catch (Exception e) {

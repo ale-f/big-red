@@ -56,7 +56,7 @@ public class ModelObject {
 	 * @return a new instance of this ModelObject's class, or
 	 * <code>null</code>
 	 */
-	protected ModelObject newInstance() {
+	public ModelObject newInstance() {
 		try {
 			return getClass().newInstance();
 		} catch (Exception e) {
