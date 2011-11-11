@@ -13,17 +13,17 @@ import java.util.List;
  */
 public final class Lists {
 	/**
-	 * Returns a <i>class-grouped</i> copy of the given {@link List}; elements
-	 * of any of the {@link Class}es passed as varargs will be grouped
+	 * Returns a <i>class-grouped</i> copy of the given {@link Collection};
+	 * elements of any of the {@link Class}es passed as varargs will be grouped
 	 * together. (All other elements will be omitted by default; to put them at
 	 * the end of the list, pass {@link Object Object.class} as the last
 	 * vararg.)
-	 * @param list a List
+	 * @param list a {@link Collection}
 	 * @param classes an array of {@link Class Class&lt;? extends T&gt;}
 	 * @return a class-grouped {@link ArrayList}
 	 */
 	public static <T> ArrayList<T>
-	group(List<? extends T> list, Object... classes) {
+	group(Collection<? extends T> list, Object... classes) {
 		ArrayList<T> r = new ArrayList<T>(),
 				working = copy(list);
 		for (Object o : classes) {
@@ -42,15 +42,15 @@ public final class Lists {
 	}
 	
 	/**
-	 * Returns a subset of the given {@link List} which contains only those
-	 * objects of the given {@link Class}.
-	 * @param list a {@link List}
+	 * Returns a subset of the given {@link Collection} which contains only
+	 * those objects of the given {@link Class}.
+	 * @param list a {@link Collection}
 	 * @param klass the {@link Class} to filter by
 	 * @return a {@link List} of objects of the given {@link Class}
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T, V>
-	ArrayList<V> only(List<? extends T> list, Class<V> klass) {
+	ArrayList<V> only(Collection<? extends T> list, Class<V> klass) {
 		ArrayList<V> r = new ArrayList<V>();
 		for (T i : list)
 			if (klass.isInstance(i))
