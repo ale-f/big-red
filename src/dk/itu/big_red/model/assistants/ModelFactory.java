@@ -19,7 +19,6 @@ import dk.itu.big_red.model.Site;
  *
  */
 public class ModelFactory implements CreationFactory {
-
 	private Class<? extends ModelObject> type;
 	
 	/**

@@ -13,12 +13,12 @@ public class NodeFactory implements CreationFactory {
 	}
 	
 	@Override
-	public Object getNewObject() {
+	public Node getNewObject() {
 		return new Node(template);
 	}
 
 	@Override
-	public Object getObjectType() {
+	public Control getObjectType() {
 		return template;
 	}
 
