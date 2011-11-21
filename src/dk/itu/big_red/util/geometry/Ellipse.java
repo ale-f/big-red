@@ -18,9 +18,22 @@ public class Ellipse {
 		this.bb.setBounds(bb);
 	}
 	
+	/**
+	 * Forces the argument into the interval <code>[0, 1)</code>.
+	 * @param offset a double
+	 * @return a value in the interval <code>[0, 1)</code>
+	 */
+	private static double fix(double offset) {
+		if (offset < 0.0) {
+			return 1.0 - (Math.abs(offset) - Math.ceil(offset));
+		} else if (offset >= 1.0) {
+			return offset - Math.ceil(offset);
+		} else return offset;
+	}
+	
 	public Point getPointFromOffset(double offset) {
 		Point centre = bb.getCenter();
-		offset -= 0.25;
+		offset = fix(offset) - 0.25;
 		double t = offset * (2 * Math.PI),
 		       a = bb.width / 2,
 		       b = bb.height / 2;
