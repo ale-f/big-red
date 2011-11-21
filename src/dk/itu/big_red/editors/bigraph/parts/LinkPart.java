@@ -39,6 +39,7 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart, Pro
 			String property = evt.getPropertyName();
 			if (property.equals(Link.PROPERTY_POINT)) {
 		    	refreshTargetConnections();
+		    	refreshVisuals();
 		    } else if (property.equals(Link.PROPERTY_NAME) ||
 		    		property.equals(Colourable.PROPERTY_OUTLINE)) {
 		    	refreshVisuals();
