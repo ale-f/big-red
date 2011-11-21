@@ -32,4 +32,10 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 		this.file = file;
 		return this;
 	}
+	
+	public ChangeGroup getChanges() {
+		if (changes == null)
+			changes = new ChangeGroup();
+		return changes;
+	}
 }
