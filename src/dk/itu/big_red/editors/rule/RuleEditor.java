@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.rule;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -48,9 +49,17 @@ import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
+import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ImportFailedException;
+import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
 import dk.itu.big_red.util.UI;
@@ -66,6 +75,17 @@ public class RuleEditor extends EditorPart implements
 		new ArrayList<ISelectionChangedListener>();
 	
 	private ISelection selection = null;
+	
+	/**
+	 * A map from entities in the redex to entities in the reactum.
+	 */
+	private HashMap<ModelObject, ModelObject> reactumEntities =
+		new HashMap<ModelObject, ModelObject>();
+	
+	@SuppressWarnings("unchecked")
+	private <T> T getReactumEntity(T redexEntity) {
+		return (T)reactumEntities.get(redexEntity);
+	}
 	
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
@@ -246,6 +266,8 @@ public class RuleEditor extends EditorPart implements
 	    	setModel(new ReactionRule());
 	    
 	    redexViewer.setContents(model.getRedex());
+	    reactumViewer.setContents(model.getRedex().clone(reactumEntities));
+	    
 	    setPartName(getEditorInput().getName());
     }
 	
@@ -265,12 +287,72 @@ public class RuleEditor extends EditorPart implements
 		return editDomain;
 	}
 	
+	@SuppressWarnings("unchecked")
+	private static <V, T> V ac(T x) {
+		return (V)x;
+	}
+	
+	private Change createReactumChange(Change redexChange, ChangeGroup cg) {
+		Change copy = null;
+		if (redexChange instanceof ChangeGroup) {
+			ChangeGroup cg_ = (ChangeGroup)redexChange;
+			for (Change i : cg_)
+				createReactumChange(i, cg);
+		} else if (redexChange instanceof Container.ChangeAddChild) {
+			Container.ChangeAddChild ch = ac(redexChange);
+			
+			Container reactumParent = getReactumEntity(ch.parent);
+			Layoutable reactumChild = getReactumEntity(ch.child);
+			
+			if (reactumParent == null)
+				System.exit(-1);
+			if (reactumChild == null)
+				reactumChild = ch.child.clone(reactumEntities);
+			
+			copy = new Container.ChangeAddChild(reactumParent, reactumChild, ch.name);
+		} else if (redexChange instanceof Layoutable.ChangeLayout) {
+			Layoutable.ChangeLayout ch = ac(redexChange);
+			
+			Layoutable reactumModel = getReactumEntity(ch.model);
+			
+			if (reactumModel == null)
+				System.exit(-1);
+			
+			copy =
+				new Layoutable.ChangeLayout(reactumModel, ch.newLayout.getCopy());
+		}
+		if (copy != null)
+			cg.add(copy);
+		return cg;
+	}
+	
+	private Bigraph getRedex() {
+		return (Bigraph)redexViewer.getContents().getModel();
+	}
+	
+	private Bigraph getReactum() {
+		return (Bigraph)reactumViewer.getContents().getModel();
+	}
+	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
+		if ((event.getDetail() & CommandStack.PRE_MASK) != 0 &&
+			event.getCommand() instanceof ChangeCommand) {
+			ChangeCommand c = (ChangeCommand)event.getCommand();
+			
+			IChangeable target = c.getTarget();
+			if (target == getRedex()) {
+				System.out.println("Event from redex: " + c.getChange());
+				getReactum().applyChange(
+					createReactumChange(c.getChange(), new ChangeGroup()));
+			} else if (target == getReactum()) {
+				System.out.println("Event from reactum: " + c.getChange());
+			}
+		}
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 		updateActions(stackActions);
 	}
-	
+
 	public static void registerActions(ActionRegistry registry,
 			List<String> actionIDList, IAction... actions) {
 		for (IAction i : actions) {
