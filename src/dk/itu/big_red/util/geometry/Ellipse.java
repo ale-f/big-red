@@ -1,6 +1,7 @@
 package dk.itu.big_red.util.geometry;
 
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 
 public class Ellipse {
@@ -95,5 +96,22 @@ public class Ellipse {
 	
 	public Point getClosestPoint(Point p) {
 		return getPointFromOffset(getClosestOffset(p));
+	}
+
+	/**
+	 * Gets a polygon that fits within this {@link Ellipse}.
+	 * <p>The polygon's <i>i</i>th point will be located at offset <code>i /
+	 * sides</code>.
+	 * @param sides the number of sides the polygon should have (must be 3 or
+	 * more)
+	 * @return a {@link PointList} specifying a polygon
+	 */
+	public PointList getPolygon(int sides) {
+		if (sides < 3)
+			return null;
+		PointList r = new PointList(sides);
+		for (int i = 0; i < sides; i++)
+			r.addPoint(getPointFromOffset(((double)i) / sides));
+		return r;
 	}
 }
