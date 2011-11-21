@@ -29,10 +29,8 @@ public abstract class Link extends Layoutable implements ILink {
 	 */
 	public class Connection extends ModelObject implements IAdaptable {
 		private Point point;
-		private Link link;
 		
-		private Connection(Link link, Point point) {
-			this.link = link;
+		private Connection(Point point) {
 			this.point = point;
 		}
 		
@@ -49,7 +47,7 @@ public abstract class Link extends Layoutable implements ILink {
 		 * @return the current Link
 		 */
 		public Link getLink() {
-			return link;
+			return Link.this;
 		}
 		
 		@SuppressWarnings("rawtypes")
@@ -122,7 +120,7 @@ public abstract class Link extends Layoutable implements ILink {
 			return null;
 		Link.Connection l = connections.get(p);
 		if (l == null) {
-			l = new Link.Connection(this, p);
+			l = new Link.Connection(p);
 			connections.put(p, l);
 		}
 		return l;
