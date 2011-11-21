@@ -59,6 +59,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
@@ -345,8 +346,17 @@ public class RuleEditor extends EditorPart implements
 				System.out.println("Event from redex: " + c.getChange());
 				getReactum().applyChange(
 					createReactumChange(c.getChange(), new ChangeGroup()));
+				
+				if (getModel().getChanges().size() > 0) {
+					try {
+						getReactum().tryApplyChange(getModel().getChanges());
+					} catch (ChangeRejectedException cre) {
+						cre.killVM();
+					}
+				}
 			} else if (target == getReactum()) {
 				System.out.println("Event from reactum: " + c.getChange());
+				getModel().getChanges().add(c.getChange());
 			}
 		}
 		firePropertyChange(IEditorPart.PROP_DIRTY);
