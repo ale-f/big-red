@@ -362,12 +362,16 @@ public class RuleEditor extends EditorPart implements
 		return (Bigraph)reactumViewer.getContents().getModel();
 	}
 	
-	private void processChangeCommand(ChangeCommand c) {
+	private void processChangeCommand(int detail, ChangeCommand c) {
 		IChangeable target = c.getTarget();
+		Change ch;
+		if (detail != CommandStack.POST_UNDO) {
+			ch = c.getChange();
+		} else ch = c.getChange().inverse();
 		if (target == getRedex()) {
 			System.out.println("Event from redex: " + c.getChange());
 			getReactum().applyChange(
-				createReactumChange(c.getChange(), new ChangeGroup()));
+				createReactumChange(ch, new ChangeGroup()));
 			
 			if (getModel().getChanges().size() > 0) {
 				try {
@@ -378,23 +382,23 @@ public class RuleEditor extends EditorPart implements
 			}
 		} else if (target == getReactum()) {
 			System.out.println("Event from reactum: " + c.getChange());
-			getModel().getChanges().add(c.getChange());
+			getModel().getChanges().add(ch);
 		}
 	}
 	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
-		if ((event.getDetail() & CommandStack.PRE_MASK) != 0) {
+		int detail = event.getDetail() & CommandStack.POST_MASK;
+		if (detail != 0) {
 			Command c = event.getCommand();
 			if (c instanceof CompoundCommand) {
 				@SuppressWarnings("unchecked")
 				List<Command> cmds = ((CompoundCommand)c).getCommands();
 				for (Command i : cmds)
 					if (i instanceof ChangeCommand)
-						processChangeCommand((ChangeCommand)i);
-					
+						processChangeCommand(detail, (ChangeCommand)i);
 			} else if (c instanceof ChangeCommand) {
-				processChangeCommand((ChangeCommand)c);
+				processChangeCommand(detail, (ChangeCommand)c);
 			}
 		}
 		
