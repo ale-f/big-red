@@ -173,8 +173,9 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     
     @Override
 	protected void initializeGraphicalViewer() {
-	    GraphicalViewer viewer = getGraphicalViewer();
 	    IEditorInput input = getEditorInput();
+	    setPartName(input.getName());
+	    
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
@@ -198,8 +199,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    	updateNodePalette();
 	    }
 	    
-	    viewer.setContents(model);
-	    setPartName(getEditorInput().getName());
+	    getGraphicalViewer().setContents(model);
     }
     
 	private void updateNodePalette() {

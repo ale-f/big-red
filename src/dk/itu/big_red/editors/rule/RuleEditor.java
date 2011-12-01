@@ -258,6 +258,8 @@ public class RuleEditor extends EditorPart implements
 	
 	protected void loadInput() {
 		IEditorInput input = getEditorInput();
+		setPartName(input.getName());
+		
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
@@ -280,8 +282,6 @@ public class RuleEditor extends EditorPart implements
 	    
 	    redexViewer.setContents(model.getRedex());
 	    reactumViewer.setContents(model.getRedex().clone(reactumEntities));
-	    
-	    setPartName(getEditorInput().getName());
     }
 	
 	/**

@@ -383,6 +383,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	
 	private void initialiseSignatureEditor() {
 		IEditorInput input = getEditorInput();
+		setPartName(input.getName());
+		
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
@@ -395,7 +397,6 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		for (dk.itu.big_red.model.Control c : model.getControls())
 			new TreeItem(controls, 0).setText(c.getLongName());
-		setPartName(input.getName());
 	}
 
 	@Override
