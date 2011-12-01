@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -36,6 +37,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
@@ -45,6 +47,8 @@ import dk.itu.big_red.util.UI;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
+	
+	private static final String[] kinds = { "active", "atomic", "passive" };
 	
 	public SignatureEditor() {
 		 /*
@@ -123,10 +127,13 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	private Text name, label;
 	private SignatureEditorPolygonCanvas appearance;
 	private Button ovalMode, polygonMode, resizable;
+	private Combo kind;
 	
 	private boolean fireModify = true;
 
-	private Label appearanceDescription;
+	private Label
+		appearanceDescription, kindLabel, labelLabel,
+		nameLabel, appearanceLabel;
 	
 	protected void controlToFields() {
 		fireModify = false;
@@ -145,6 +152,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		ovalMode.setSelection(!polygon);
 		polygonMode.setSelection(polygon);
 		
+		kind.setText(currentControl.getKind().toString());
+		
 		fireModify = true;
 	}
 	
@@ -159,6 +168,9 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			if (polygonMode.getSelection()) {
 				currentControl.setShape(Shape.POLYGON, appearance.getPoints().getCopy());
 			} else currentControl.setShape(Shape.OVAL, null);
+			currentControl.setKind(
+				kind.getText().equals("active") ? Kind.ACTIVE :
+				kind.getText().equals("passive") ? Kind.PASSIVE : Kind.ATOMIC);
 		}
 	}
 	
@@ -301,7 +313,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		GridLayout rightLayout = new GridLayout(2, false);
 		right.setLayout(rightLayout);
 		
-		Label nameLabel = new Label(right, SWT.NONE);
+		nameLabel = new Label(right, SWT.NONE);
 		nameLabel.setText("Name:");
 		
 		name = new Text(right, SWT.BORDER);
@@ -318,14 +330,14 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			}
 		});
 		
-		Label labelLabel = new Label(right, SWT.NONE);
+		labelLabel = new Label(right, SWT.NONE);
 		labelLabel.setText("Label:");
 		
 		label = new Text(right, SWT.BORDER);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		label.addModifyListener(sharedDirtListener);
 		
-		Label appearanceLabel = new Label(right, SWT.NONE);
+		appearanceLabel = new Label(right, SWT.NONE);
 		GridData appearanceLabelLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
 		appearanceLabel.setText("Appearance:");
@@ -372,13 +384,23 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		resizable.setText("Resizable?");
 		resizable.addSelectionListener(sharedDirtListener);
 		
+		kindLabel = new Label(right, SWT.NONE);
+		kindLabel.setText("Kind:");
+		
+		kind = new Combo(right, SWT.DROP_DOWN | SWT.READ_ONLY);
+		kind.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		kind.setItems(kinds);
+		kind.addModifyListener(sharedDirtListener);
+		
 		setEnablement(false);
 		initialiseSignatureEditor();
 	}
 
 	private void setEnablement(boolean enabled) {
 		UI.setEnabled(enabled,
-			name, label, appearance, appearanceDescription, resizable, ovalMode, polygonMode);
+			name, label, appearance, appearanceDescription, resizable, kind,
+			ovalMode, polygonMode, kindLabel, nameLabel, appearanceLabel,
+			labelLabel);
 	}
 	
 	private void initialiseSignatureEditor() {
