@@ -96,7 +96,7 @@ public class AppearanceGenerator {
 					"big-red:shape");
 
 		DOM.applyAttributes(aE,
-				"shape", (c.getShape() == Shape.SHAPE_POLYGON ? "polygon" : "oval"));
+				"shape", (c.getShape() == Shape.POLYGON ? "polygon" : "oval"));
 		
 		PointList pl = c.getPoints();
 		if (pl != null) {
@@ -117,16 +117,16 @@ public class AppearanceGenerator {
 		if (!DOM.nameEqualsNS(e, XMLNS.BIG_RED, "shape"))
 			return;
 
-		Control.Shape shape = Shape.SHAPE_OVAL;
+		Control.Shape shape = Shape.OVAL;
 		PointList pl = null;
 		
 		String s = DOM.getAttributeNS(e, XMLNS.BIG_RED, "shape");
 		if (s != null) {
 			if (s.equals("polygon"))
-				shape = Shape.SHAPE_POLYGON;
+				shape = Shape.POLYGON;
 		}
 		
-		if (shape == Shape.SHAPE_POLYGON) {
+		if (shape == Shape.POLYGON) {
 			pl = new PointList();
 			for (Element pE : DOM.getChildElements(e))
 				pl.addPoint(DOM.getIntAttribute(pE, XMLNS.BIG_RED, "x"),

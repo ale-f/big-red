@@ -118,7 +118,7 @@ public class Node extends Container implements PropertyChangeListener, INode {
 	 */
 	public PointList getFittedPolygon() {
 		if (fittedPolygon == null)
-			if (getControl().getShape() == Shape.SHAPE_POLYGON)
+			if (getControl().getShape() == Shape.POLYGON)
 				fittedPolygon = Geometry.fitPolygonToRectangle(getControl().getPoints(), getLayout());
 		return fittedPolygon;
 	}

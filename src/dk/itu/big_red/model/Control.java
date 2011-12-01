@@ -24,11 +24,11 @@ public class Control extends Colourable implements IControl {
 		/**
 		 * An oval.
 		 */
-		SHAPE_OVAL,
+		OVAL,
 		/**
 		 * A polygon.
 		 */
-		SHAPE_POLYGON
+		POLYGON
 	}
 
 	public static enum Kind {
@@ -129,10 +129,11 @@ public class Control extends Colourable implements IControl {
 	private Dimension defaultSize;
 	private boolean resizable;
 	private Control.Kind kind;
+	
 	public Control() {
 		setLongName("Unknown");
 		setLabel("?");
-		setShape(Control.Shape.SHAPE_POLYGON, POINTS_QUAD);
+		setShape(Control.Shape.POLYGON, POINTS_QUAD);
 		setDefaultSize(new Dimension(50, 50));
 		setKind(Kind.ACTIVE);
 		setResizable(true);
@@ -153,15 +154,15 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	/**
-	 * If this object's shape is {@link Shape#SHAPE_POLYGON}, then gets a copy
+	 * If this object's shape is {@link Shape#POLYGON}, then gets a copy
 	 * of the list of points defining its polygon.
 	 * @return a list of points defining a polygon, or <code>null</code> if
-	 *         this object's shape is not {@link Shape#SHAPE_POLYGON}
+	 *         this object's shape is not {@link Shape#POLYGON}
 	 * @see Control#getShape
 	 * @see Control#setShape
 	 */
 	public PointList getPoints() {
-		if (shape == Shape.SHAPE_POLYGON)
+		if (shape == Shape.POLYGON)
 			return points.getCopy();
 		else return null;
 	}
@@ -169,13 +170,13 @@ public class Control extends Colourable implements IControl {
 	/**
 	 * Sets this Control's {@link Shape}. <code>points</code> must <i>not</i>
 	 * be <code>null</code> if <code>shape</code> is {@link
-	 * Shape#SHAPE_POLYGON}, but it <i>must</i> be <code>null</code> otherwise.
+	 * Shape#POLYGON}, but it <i>must</i> be <code>null</code> otherwise.
 	 * @param shape the new Shape
 	 * @param points a {@link PointList} specifying a polygon
 	 */
 	public void setShape(Control.Shape shape, PointList points) {
-		if ((points == null && shape == Shape.SHAPE_POLYGON) ||
-			(points != null && shape == Shape.SHAPE_OVAL))
+		if ((points == null && shape == Shape.POLYGON) ||
+			(points != null && shape == Shape.OVAL))
 			return;
 		Control.Shape oldShape = this.shape;
 		this.shape = shape;

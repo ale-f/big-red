@@ -9,7 +9,7 @@ import org.eclipse.swt.SWT;
 import dk.itu.big_red.model.Control;
 
 public class NodeFigure extends AbstractFigure {
-	private Control.Shape shape = Control.Shape.SHAPE_POLYGON;
+	private Control.Shape shape = Control.Shape.POLYGON;
 	private PointList points = Control.POINTS_QUAD;
 	private Label labelControl = new Label();    
     
@@ -46,10 +46,10 @@ public class NodeFigure extends AbstractFigure {
 		Rectangle a = start(graphics);
 		try {
 			switch (shape) {
-			case SHAPE_OVAL:
+			case OVAL:
 				graphics.fillOval(1, 1, a.width - 1, a.height - 1);
 				break;
-			case SHAPE_POLYGON:
+			case POLYGON:
 				graphics.fillPolygon(points);
 				break;
 			}
@@ -66,10 +66,10 @@ public class NodeFigure extends AbstractFigure {
 			graphics.setLineStyle(SWT.LINE_SOLID);
 			
 			switch (shape) {
-			case SHAPE_OVAL:
+			case OVAL:
 				graphics.drawOval(1, 1, a.width - 2, a.height - 2);
 				break;
-			case SHAPE_POLYGON:
+			case POLYGON:
 				graphics.drawPolygon(points);
 				break;
 			}

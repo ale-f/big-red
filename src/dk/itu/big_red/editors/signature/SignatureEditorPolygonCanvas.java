@@ -71,7 +71,7 @@ MenuListener {
 	 */
 	public static final String PROPERTY_PORT = "SignatureEditorPolygonCanvasPort";
 	
-	private Shape mode = Shape.SHAPE_POLYGON;
+	private Shape mode = Shape.POLYGON;
 	private PointList points = new PointList();
 	private Point tmp = new Point();
 	private Dimension controlSize = new Dimension();
@@ -128,11 +128,11 @@ MenuListener {
 		ports.clear();
 		firePortChange(PortEvent.REMOVED, null);
 				
-		if (mode == Shape.SHAPE_POLYGON) {
+		if (mode == Shape.POLYGON) {
 			firePointChange(PointEvent.ADDED, new Point(0, 0));
 
 			centrePolygon();
-		} else if (mode == Shape.SHAPE_OVAL) {
+		} else if (mode == Shape.OVAL) {
 			/* no special handling */
 		}
 
@@ -150,7 +150,7 @@ MenuListener {
 	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
-		if (mode == Shape.SHAPE_OVAL)
+		if (mode == Shape.OVAL)
 			return;
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p);
@@ -201,7 +201,7 @@ MenuListener {
 	}
 	
 	protected int findPortAt(int x, int y) {
-		if (mode == Shape.SHAPE_POLYGON) {
+		if (mode == Shape.POLYGON) {
 			Line l = new Line();
 			for (int i = 0; i < ports.size(); i++) {
 				PortSpec p = ports.get(i);
@@ -213,7 +213,7 @@ MenuListener {
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
 			}
-		} else if (mode == Shape.SHAPE_OVAL) {
+		} else if (mode == Shape.OVAL) {
 			Ellipse e = new Ellipse();
 			e.setBounds(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10));
 			for (int i = 0; i < ports.size(); i++) {
@@ -232,7 +232,7 @@ MenuListener {
 	}
 	
 	protected int findPointAt(int x, int y) {
-		if (mode != Shape.SHAPE_POLYGON)
+		if (mode != Shape.POLYGON)
 			return -1;
 		for (int i = 0; i < points.size(); i++) {
 			points.getPoint(tmp, i);
@@ -254,7 +254,7 @@ MenuListener {
 	}
 	
 	private int getNearestSegment(Point up, double threshold) {
-		if (mode == Shape.SHAPE_OVAL)
+		if (mode == Shape.OVAL)
 			return 0;
 		int index = -1;
 		Line l = new Line();
@@ -296,7 +296,7 @@ MenuListener {
 		dragPortIndex = findPortAt(up);
 		if (dragPortIndex == -1) {
 			dragPointIndex = findPointAt(p);
-			if (dragPointIndex == -1 && mode == Shape.SHAPE_POLYGON) {
+			if (dragPointIndex == -1 && mode == Shape.POLYGON) {
 				if (points.size() == 1) {
 					dragPointIndex = 0;
 					newPoint = true;
@@ -325,7 +325,7 @@ MenuListener {
 			int segment;
 			double offset;
 			
-			if (mode == Shape.SHAPE_POLYGON) {
+			if (mode == Shape.POLYGON) {
 				segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -413,7 +413,7 @@ MenuListener {
 		
 		Line l = new Line();
 		
-		if (mode == Shape.SHAPE_POLYGON) {
+		if (mode == Shape.POLYGON) {
 			e.gc.drawPolyline(points.toIntArray());
 			Point first = getPoint(0), last = getPoint(points.size() - 1);
 			e.gc.drawLine(first.x, first.y, last.x, last.y);
@@ -448,7 +448,7 @@ MenuListener {
 		if (dragPortIndex != -1) {
 			e.gc.setAlpha(127);
 			
-			if (mode == Shape.SHAPE_POLYGON) {
+			if (mode == Shape.POLYGON) {
 				int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -456,7 +456,7 @@ MenuListener {
 				if (intersection == null)
 					intersection = getPoint(segment);
 				tmp.setLocation(intersection);
-			} else if (mode == Shape.SHAPE_OVAL) {
+			} else if (mode == Shape.OVAL) {
 				tmp.setLocation(new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10))
 					.getClosestPoint(mousePosition));
 			}
@@ -608,7 +608,7 @@ MenuListener {
 		
 		if (foundPort == -1) {
 			if (segment != -1) {
-				if (mode == Shape.SHAPE_POLYGON)
+				if (mode == Shape.POLYGON)
 					UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
 			
 						@Override

@@ -178,11 +178,11 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		
 		Point tmp;
 		String shapeDescriptor = "";
-		if (con.getShape() == Shape.SHAPE_OVAL) {
+		if (con.getShape() == Shape.OVAL) {
 			tmp = rl.getCenter();
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ") ellipse (" +
 				(rl.getWidth() / 2) + " and " + (rl.getHeight() / 2) + ")";
-		} else if (con.getShape() == Shape.SHAPE_POLYGON) {
+		} else if (con.getShape() == Shape.POLYGON) {
 			PointList fp = n.getFittedPolygon().getCopy();
 			fp.translate(rltl);
 			tmp = new Point();

@@ -32,7 +32,7 @@ public class Port extends Point implements IPort {
 	 * Node}'s polygon that this Port falls on. Together with {@link
 	 * #distance}, it defines this Port's position.
 	 * 
-	 * <p>(If the {@link Control} defines an {@link Control.Shape#SHAPE_OVAL
+	 * <p>(If the {@link Control} defines an {@link Control.Shape#OVAL
 	 * oval} appearance, this value will be <code>0</code>.)
 	 */
 	private int segment = 0;

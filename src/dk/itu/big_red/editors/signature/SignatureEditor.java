@@ -131,11 +131,11 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	protected void controlToFields() {
 		fireModify = false;
 		
-		boolean polygon = (currentControl.getShape() == Shape.SHAPE_POLYGON);
+		boolean polygon = (currentControl.getShape() == Shape.POLYGON);
 		
 		label.setText(currentControl.getLabel());
 		name.setText(currentControl.getLongName());
-		appearance.setMode(polygon ? Shape.SHAPE_POLYGON : Shape.SHAPE_OVAL);
+		appearance.setMode(polygon ? Shape.POLYGON : Shape.OVAL);
 		if (polygon)
 			appearance.setPoints(currentControl.getPoints());
 		appearance.setPorts(currentControl.getPorts());
@@ -157,8 +157,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 				currentControl.addPort(p);
 			currentControl.setResizable(resizable.getSelection());
 			if (polygonMode.getSelection()) {
-				currentControl.setShape(Shape.SHAPE_POLYGON, appearance.getPoints().getCopy());
-			} else currentControl.setShape(Shape.SHAPE_OVAL, null);
+				currentControl.setShape(Shape.POLYGON, appearance.getPoints().getCopy());
+			} else currentControl.setShape(Shape.OVAL, null);
 		}
 	}
 	
@@ -173,10 +173,10 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 					
 					canvasActive = false;
 					boolean polygon = polygonMode.getSelection();
-					if (polygon && appearance.getMode() != Shape.SHAPE_POLYGON) {
-						appearance.setMode(Shape.SHAPE_POLYGON);
-					} else if (!polygon && appearance.getMode() == Shape.SHAPE_POLYGON) {
-						appearance.setMode(Shape.SHAPE_OVAL);
+					if (polygon && appearance.getMode() != Shape.POLYGON) {
+						appearance.setMode(Shape.POLYGON);
+					} else if (!polygon && appearance.getMode() == Shape.POLYGON) {
+						appearance.setMode(Shape.OVAL);
 					}
 					canvasActive = true;
 					
