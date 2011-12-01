@@ -31,6 +31,12 @@ public class Control extends Colourable implements IControl {
 		SHAPE_POLYGON
 	}
 
+	public static enum Kind {
+		ATOMIC,
+		ACTIVE,
+		PASSIVE
+	}
+	
 	/**
 	 * The property name fired when the label (the one- or two-character
 	 * caption that appears next to {@link Node}s on the bigraph) changes.
@@ -80,6 +86,12 @@ public class Control extends Colourable implements IControl {
 	 */
 	public static final String PROPERTY_PORT = "ControlPort";
 	
+	/**
+	 * The property name fired when the kind changes. The property values are
+	 * {@link Kind}s.
+	 */
+	public static final String PROPERTY_KIND = "ControlKind";
+	
 	public static final PointList POINTS_QUAD = new PointList(new int[] {
 			0, 0,
 			0, 40,
@@ -101,20 +113,14 @@ public class Control extends Colourable implements IControl {
 	private String label;
 	private Dimension defaultSize;
 	private boolean resizable;
+	private Control.Kind kind;
 	public Control() {
 		setLongName("Unknown");
 		setLabel("?");
 		setShape(Control.Shape.SHAPE_POLYGON, POINTS_QUAD);
 		setDefaultSize(new Dimension(50, 50));
+		setKind(Kind.ACTIVE);
 		setResizable(true);
-	}
-	
-	public Control(String longName, String label, Control.Shape shape, PointList points, Dimension defaultSize, boolean constraintModifiable) {
-		setLongName(longName);
-		setLabel(label);
-		setShape(shape, points);
-		setDefaultSize(defaultSize);
-		setResizable(constraintModifiable);
 	}
 	
 	public String getLabel() {
@@ -187,6 +193,16 @@ public class Control extends Colourable implements IControl {
 			this.defaultSize = defaultSize;
 			firePropertyChange(PROPERTY_DEFAULT_SIZE, oldSize, defaultSize);
 		}
+	}
+	
+	public Kind getKind() {
+		return kind;
+	}
+	
+	public void setKind(Kind kind) {
+		Kind oldKind = this.kind;
+		this.kind = kind;
+		firePropertyChange(PROPERTY_KIND, oldKind, kind);
 	}
 	
 	public boolean isResizable() {
@@ -280,6 +296,8 @@ public class Control extends Colourable implements IControl {
 			return isResizable();
 		} else if (name.equals(PROPERTY_SHAPE)) {
 			return getShape();
+		} else if (name.equals(PROPERTY_KIND)) {
+			return getKind();
 		} else return super.getProperty(name);
 	}
 	
