@@ -10,6 +10,7 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.util.DOM;
@@ -34,6 +35,13 @@ public class SignatureXMLImport extends Import<Signature> {
 		Control model = new Control();
 		
 		model.setLongName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
+		
+		String kind = DOM.getAttributeNS(e, XMLNS.SIGNATURE, "kind");
+		if (kind != null) {
+			model.setKind(
+				kind.equals("active") ? Kind.ACTIVE :
+				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC);
+		}
 		
 		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "shape");
 		if (el != null)
