@@ -8,9 +8,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
+import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -335,6 +337,17 @@ public class RuleEditor extends EditorPart implements
 			
 			copy =
 				new Layoutable.ChangeLayout(reactumModel, ch.newLayout.getCopy());
+		} else if (redexChange instanceof Container.ChangeRemoveChild) {
+			Container.ChangeRemoveChild ch = ac(redexChange);
+			
+			Container reactumParent = getReactumEntity(ch.parent);
+			Layoutable reactumChild = getReactumEntity(ch.child);
+			
+			if (reactumParent == null || reactumChild == null)
+				System.exit(-1);
+			
+			copy =
+				new Container.ChangeRemoveChild(reactumParent, reactumChild);
 		}
 		if (copy != null)
 			cg.add(copy);
@@ -349,30 +362,42 @@ public class RuleEditor extends EditorPart implements
 		return (Bigraph)reactumViewer.getContents().getModel();
 	}
 	
+	private void processChangeCommand(ChangeCommand c) {
+		IChangeable target = c.getTarget();
+		if (target == getRedex()) {
+			System.out.println("Event from redex: " + c.getChange());
+			getReactum().applyChange(
+				createReactumChange(c.getChange(), new ChangeGroup()));
+			
+			if (getModel().getChanges().size() > 0) {
+				try {
+					getReactum().tryApplyChange(getModel().getChanges());
+				} catch (ChangeRejectedException cre) {
+					cre.killVM();
+				}
+			}
+		} else if (target == getReactum()) {
+			System.out.println("Event from reactum: " + c.getChange());
+			getModel().getChanges().add(c.getChange());
+		}
+	}
+	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
-		if ((event.getDetail() & CommandStack.PRE_MASK) != 0 &&
-			event.getCommand() instanceof ChangeCommand) {
-			ChangeCommand c = (ChangeCommand)event.getCommand();
-			
-			IChangeable target = c.getTarget();
-			if (target == getRedex()) {
-				System.out.println("Event from redex: " + c.getChange());
-				getReactum().applyChange(
-					createReactumChange(c.getChange(), new ChangeGroup()));
-				
-				if (getModel().getChanges().size() > 0) {
-					try {
-						getReactum().tryApplyChange(getModel().getChanges());
-					} catch (ChangeRejectedException cre) {
-						cre.killVM();
-					}
-				}
-			} else if (target == getReactum()) {
-				System.out.println("Event from reactum: " + c.getChange());
-				getModel().getChanges().add(c.getChange());
+		if ((event.getDetail() & CommandStack.PRE_MASK) != 0) {
+			Command c = event.getCommand();
+			if (c instanceof CompoundCommand) {
+				@SuppressWarnings("unchecked")
+				List<Command> cmds = ((CompoundCommand)c).getCommands();
+				for (Command i : cmds)
+					if (i instanceof ChangeCommand)
+						processChangeCommand((ChangeCommand)i);
+					
+			} else if (c instanceof ChangeCommand) {
+				processChangeCommand((ChangeCommand)c);
 			}
 		}
+		
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 		updateActions(stackActions);
 	}
