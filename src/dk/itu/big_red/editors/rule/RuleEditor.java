@@ -108,6 +108,7 @@ public class RuleEditor extends EditorPart implements
 	@Override
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
+		updateActions(selectionActions);
 	}
 	
 	private ActionRegistry actionRegistry = new ActionRegistry();
