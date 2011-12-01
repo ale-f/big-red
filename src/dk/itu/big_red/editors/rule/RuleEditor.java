@@ -48,6 +48,7 @@ import dk.itu.big_red.editors.bigraph.actions.BigraphCheckpointAction;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
+import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
@@ -398,7 +399,7 @@ public class RuleEditor extends EditorPart implements
 			new DeleteAction((IWorkbenchPart)this),
 			new ContainerPropertiesAction(this), new ContainerCutAction(this),
 			new ContainerCopyAction(this), new BigraphRelayoutAction(this),
-			new BigraphCheckpointAction(this));
+			new BigraphCheckpointAction(this), new ContainerPasteAction(this));
 
 		registerActions(registry, null,
 			new SelectAllAction(this));
