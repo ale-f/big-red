@@ -8,7 +8,9 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -114,6 +116,12 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			scratch.removePointFor(c.link, c.point);
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
+			
+			if (c.parent instanceof Node &&
+				((Node)c.parent).getControl().getKind() == Kind.ATOMIC)
+				rejectChange(
+						((Node)c.parent).getControl().getLongName() +
+						" is an atomic control");
 			
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.child);
 			if (ns.containsKey(c.name) &&
