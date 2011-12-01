@@ -178,9 +178,21 @@ public class RuleEditor extends EditorPart implements
 		return false;
 	}
 
+	private Composite parent, self;
+	
+	private void error(Throwable t) {
+		self.dispose(); self = null;
+		Label l = new Label(parent, SWT.CENTER);
+		l.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		l.setText(t.toString());
+	}
+	
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite c = new Composite(parent, SWT.NONE);
+		this.parent = parent;
+		self = new Composite(parent, SWT.NONE);
+		
+		Composite c = self;
 		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		GridLayout gl = new GridLayout(3, false);
@@ -254,17 +266,17 @@ public class RuleEditor extends EditorPart implements
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
+	    			error(e);
 	    			return;
 	    		} else {
+	    			error(e);
 	    			return;
 	    		}
 	    	} catch (Exception e) {
+	    		error(e);
 	    		return;
 	    	}
 	    }
-	    
-	    if (getModel() == null)
-	    	setModel(new ReactionRule());
 	    
 	    redexViewer.setContents(model.getRedex());
 	    reactumViewer.setContents(model.getRedex().clone(reactumEntities));
