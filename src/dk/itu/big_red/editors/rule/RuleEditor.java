@@ -348,6 +348,7 @@ public class RuleEditor extends EditorPart implements
 			
 			copy =
 				new Container.ChangeRemoveChild(reactumParent, reactumChild);
+			reactumEntities.remove(ch.child);
 		}
 		if (copy != null)
 			cg.add(copy);
@@ -369,7 +370,7 @@ public class RuleEditor extends EditorPart implements
 			ch = c.getChange();
 		} else ch = c.getChange().inverse();
 		if (target == getRedex()) {
-			System.out.println("Event from redex: " + c.getChange());
+			System.out.println("Event (" + detail + ") from redex: " + c.getChange());
 			getReactum().applyChange(
 				createReactumChange(ch, new ChangeGroup()));
 			
@@ -381,7 +382,7 @@ public class RuleEditor extends EditorPart implements
 				}
 			}
 		} else if (target == getReactum()) {
-			System.out.println("Event from reactum: " + c.getChange());
+			System.out.println("Event (" + detail + ") from reactum: " + c.getChange());
 			getModel().getChanges().add(ch);
 		}
 	}
