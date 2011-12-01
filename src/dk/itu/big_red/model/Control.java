@@ -32,9 +32,24 @@ public class Control extends Colourable implements IControl {
 	}
 
 	public static enum Kind {
-		ATOMIC,
-		ACTIVE,
-		PASSIVE
+		ATOMIC {
+			@Override
+			public String toString() {
+				return "atomic";
+			}
+		},
+		ACTIVE {
+			@Override
+			public String toString() {
+				return "active";
+			}
+		},
+		PASSIVE {
+			@Override
+			public String toString() {
+				return "passive";
+			}
+		};
 	}
 	
 	/**

@@ -31,7 +31,8 @@ public class SignatureXMLExport extends XMLExport<Signature> {
 	
 	private Element processControl(Element e, Control c) {
 		DOM.applyAttributes(e,
-				"name", c.getLongName());
+				"name", c.getLongName(),
+				"kind", c.getKind().toString());
 		
 		for (Port p : c.getPortsArray())
 			e.appendChild(processPort(

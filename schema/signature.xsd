@@ -2,7 +2,7 @@
 <!--
 	signature.xsd, the IT University of Copenhagen's proposed XML Schema
 	for <signature> documents
-	Copyright © Alexander Faithfull 2010
+	Copyright © Alexander Faithfull 2010, 2011
 	
 	Copying and distribution of this file, with or without modification,
 	are permitted in any medium without royalty provided that the copyright
@@ -132,6 +132,17 @@
 						</li>
 					</ul>
 					<p>
+						The following attributes <strong>may</strong> be present:
+					</p>
+					<ul>
+						<a id="control_kind" />
+						<li>
+							<code>kind</code> (<code>string</code>): this control's kind.
+							<br />
+							This attribute, if present, <strong>must</strong> be one of: <code>atomic</code>, <code>active</code>, <code>passive</code>.
+						</li>
+					</ul>
+					<p>
 						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>root</code>s.
 					</p>
 					<hr />
@@ -146,6 +157,7 @@
 				<xsd:group ref="signature:anyForeignElements" />
 			</xsd:sequence>
 			<xsd:attribute name="name" type="xsd:string" use="required" />
+			<xsd:attribute name="kind" type="xsd:string" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>
