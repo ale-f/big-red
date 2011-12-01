@@ -504,57 +504,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			c.model.setName(c.newName);
 			getNamespace(getNSI(c.model)).put(c.newName, c.model);
 		}
-		if (checkpointChanges != null && !(b instanceof ChangeGroup))
-			checkpointChanges.add(b);
-	}
-	
-	private Bigraph checkpointBigraph = null;
-	private Map<ModelObject, ModelObject> checkpointBigraphCloneMap = null;
-	private ArrayList<Change> checkpointChanges = null;
-	
-	/**
-	 * Checkpoints the {@link Bigraph}.
-	 * @see #getCheckpointBigraph()
-	 * @see #getCheckpointBigraphCloneMap()
-	 * @see #getCheckpointChanges()
-	 */
-	public void checkpoint() {
-		checkpointBigraphCloneMap = new HashMap<ModelObject, ModelObject>();
-		checkpointBigraph = this.clone(checkpointBigraphCloneMap);
-		checkpointChanges = new ArrayList<Change>();
-	}
-	
-	/**
-	 * Returns the state of the {@link Bigraph} at the time of the last call to
-	 * {@link #checkpoint()}.
-	 * @return a clone of an earlier state of this {@link Bigraph}, or
-	 *         <code>null</code> if {@link #checkpoint()} has not yet been
-	 *         called
-	 * @see #getCheckpointBigraphCloneMap()
-	 */
-	public Bigraph getCheckpointBigraph() {
-		return checkpointBigraph;
-	}
-	
-	/**
-	 * Returns the {@link CloneMap} mapping objects in this {@link Bigraph} to
-	 * their clones in the result of {@link #getCheckpointBigraph()}.
-	 * @return a {@link CloneMap}, or <code>null</code> if
-	 *         {@link #checkpoint()} has not yet been called
-	 * @see #getCheckpointBigraph()
-	 */
-	public Map<ModelObject, ModelObject> getCheckpointBigraphCloneMap() {
-		return checkpointBigraphCloneMap;
-	}
-	
-	/**
-	 * Returns the list of {@link Change}s made to this {@link Bigraph} since
-	 * the last call to {@link #checkpoint()}.
-	 * @return an {@link ArrayList} of {@link Change}s, or <code>null</code> if
-	 *         {@link #checkpoint()} has not yet been called
-	 */
-	public ArrayList<Change> getCheckpointChanges() {
-		return checkpointChanges;
 	}
 
 	private IFile file = null;

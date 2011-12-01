@@ -46,7 +46,6 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
-import dk.itu.big_red.editors.bigraph.actions.BigraphCheckpointAction;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
@@ -430,7 +429,7 @@ public class RuleEditor extends EditorPart implements
 			new DeleteAction((IWorkbenchPart)this),
 			new ContainerPropertiesAction(this), new ContainerCutAction(this),
 			new ContainerCopyAction(this), new BigraphRelayoutAction(this),
-			new BigraphCheckpointAction(this), new ContainerPasteAction(this));
+			new ContainerPasteAction(this));
 
 		registerActions(registry, null,
 			new SelectAllAction(this));
