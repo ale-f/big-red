@@ -93,8 +93,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 			} else if (n instanceof Point) {
 				Point p = (Point)n;
 				if (scratch.getLinkFor(p) != null)
-					return;
-				removePoint(p.getLink(), p);
+					removePoint(scratch.getLinkFor(p), p);
 			}
 			cg.add(n.getParent().changeRemoveChild(n));
 			scratch.removeChildFor(n.getParent(), n);
