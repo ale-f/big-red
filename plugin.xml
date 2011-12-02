@@ -264,6 +264,11 @@
             id="big-red.exporter4"
             name="BPL Tool">
       </exporter>
+      <exporter
+            class="dk.itu.big_red.model.import_export.BigraphBigMCExport"
+            id="big-red.exporter.bigmc"
+            name="BigMC">
+      </exporter>
    </extension>
 
 </plugin>
