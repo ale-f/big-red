@@ -10,6 +10,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.interfaces.IEdge;
+import dk.itu.big_red.model.interfaces.IInnerName;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IOuterName;
@@ -19,7 +20,7 @@ import dk.itu.big_red.model.interfaces.IRoot;
 public class BigraphBigMCExport extends Export<Bigraph> {
 	private OutputStreamWriter osw = null;
 	
-	private int indentation;
+	private int indentation = -1;
 	
 	private void newline() throws ExportFailedException {
 		write("\n");
@@ -107,7 +108,6 @@ public class BigraphBigMCExport extends Export<Bigraph> {
 				processNode(in.next());
 			}
 		}
-		write(";"); newline();
 	}
 	
 	private void process(Bigraph b) throws ExportFailedException {
@@ -122,6 +122,9 @@ public class BigraphBigMCExport extends Export<Bigraph> {
 			write("%name n_" + i.getName() + ";"); newline();
 		}
 		
+		if (any)
+			newline();
+		
 		any = false;
 		for (IEdge e : b.getIEdges()) {
 			if (!any) {
@@ -131,8 +134,27 @@ public class BigraphBigMCExport extends Export<Bigraph> {
 			write("%name n_" + e.getName() + ";"); newline();
 		}
 		
-		for (IRoot i : b.getIRoots())
-			processRoot(i);
+		if (any)
+			newline();
+		
+		any = false;
+		for (IInnerName i : b.getIInnerNames()) {
+			if (!any) {
+				write("# Inner names"); newline();
+				any = true;
+			}
+			write("%inner in_" + i.getName() + ";"); newline();
+		}
+		
+		Iterator<? extends IRoot> ir = b.getIRoots().iterator();
+		if (ir.hasNext()) {
+			processRoot(ir.next());
+			while (ir.hasNext()) {
+				write(" || ");
+				processRoot(ir.next());
+			}
+		}
+		write(";"); newline();
 		
 		newline(); write("%check;"); newline();
 	}
