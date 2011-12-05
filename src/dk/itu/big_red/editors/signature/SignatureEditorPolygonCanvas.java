@@ -641,24 +641,6 @@ MenuListener {
 		
 		UI.createMenuItem(m, SWT.NONE, "Polygon canvas", null).setEnabled(false);
 		new MenuItem(m, SWT.SEPARATOR);
-		if (mode == Shape.POLYGON) {
-			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new ADSelectionListener() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					String polySides =
-						UI.promptFor("Specify the number of sides",
-							"How many sides should your regular polygon have?\n(All ports will be deleted.)",
-							"3", getIntegerValidator(3, Integer.MAX_VALUE));
-					if (polySides != null) {
-						setMode(mode);
-						
-						setPoints(new Ellipse().
-								setBounds(new Rectangle(0, 0, 60, 60)).
-								getPolygon(Integer.parseInt(polySides)));
-					}
-				}
-			});
-		}
 				
 		if (foundPort == -1) {
 			if (segment != -1) {
@@ -779,6 +761,24 @@ MenuListener {
 		}
 		if (m.getItemCount() > 0)
 			new MenuItem(m, SWT.SEPARATOR);
+		if (mode == Shape.POLYGON) {
+			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new ADSelectionListener() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					String polySides =
+						UI.promptFor("Specify the number of sides",
+							"How many sides should your regular polygon have?\n(All ports will be deleted.)",
+							"3", getIntegerValidator(3, Integer.MAX_VALUE));
+					if (polySides != null) {
+						setMode(mode);
+						
+						setPoints(new Ellipse().
+								setBounds(new Rectangle(0, 0, 60, 60)).
+								getPolygon(Integer.parseInt(polySides)));
+					}
+				}
+			});
+		}
 		UI.createMenuItem(m, 0, "Centre &polygon on canvas", new ADSelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
