@@ -46,6 +46,16 @@ import dk.itu.big_red.util.geometry.Rectangle;
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
 MenuListener {
+	private abstract static class ADSelectionListener implements SelectionListener {
+		@Override
+		public final void widgetDefaultSelected(SelectionEvent e) {
+			widgetSelected(e);
+		}
+		
+		@Override
+		public abstract void widgetSelected(SelectionEvent e);
+	}
+	
 	private IInputValidator getPortNameValidator(final PortSpec current) {
 		return new IInputValidator() {
 			@Override
@@ -627,8 +637,7 @@ MenuListener {
 		UI.createMenuItem(m, SWT.NONE, "Polygon canvas", null).setEnabled(false);
 		new MenuItem(m, SWT.SEPARATOR);
 		if (mode == Shape.POLYGON) {
-			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new SelectionListener() {
-				
+			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new ADSelectionListener() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					String polySides =
@@ -643,19 +652,13 @@ MenuListener {
 								getPolygon(Integer.parseInt(polySides)));
 					}
 				}
-				
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-					widgetSelected(e);
-				}
 			});
 		}
 				
 		if (foundPort == -1) {
 			if (segment != -1) {
 				if (mode == Shape.POLYGON)
-					UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
-			
+					UI.createMenuItem(m, 0, "Add &port", new ADSelectionListener() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
 							Line l = new Line();
@@ -688,14 +691,8 @@ MenuListener {
 								redraw();
 							}
 						}
-			
-						@Override
-						public void widgetDefaultSelected(SelectionEvent e) {
-							widgetSelected(e);
-						}
 					});
-				else UI.createMenuItem(m, 0, "Add &port", new SelectionListener() {
-					
+				else UI.createMenuItem(m, 0, "Add &port", new ADSelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						PortSpec p = new PortSpec();
@@ -715,16 +712,10 @@ MenuListener {
 							redraw();
 						}
 					}
-		
-					@Override
-					public void widgetDefaultSelected(SelectionEvent e) {
-						widgetSelected(e);
-					}
 				});
 			}
 		} else {
-			UI.createMenuItem(m, 0, "Re&name port", new SelectionListener() {
-				
+			UI.createMenuItem(m, 0, "Re&name port", new ADSelectionListener() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					PortSpec p = ports.get(foundPort);
@@ -737,31 +728,20 @@ MenuListener {
 						firePortChange(PortEvent.RENAMED, p);
 					}
 				}
-				
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-					widgetSelected(e);
-				}
 			});
 			
-			UI.createMenuItem(m, 0, "&Remove port", new SelectionListener() {
-				
+			UI.createMenuItem(m, 0, "&Remove port", new ADSelectionListener() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					firePortChange(PortEvent.REMOVED, ports.remove(foundPort));
 					redraw();
-				}
-				
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-					widgetSelected(e);
 				}
 			});
 		}
 		
 		if (foundPoint != -1) {
 			if (foundPoint != 0 || points.size() > 1) {
-				UI.createMenuItem(m, 0, "&Remove point", new SelectionListener() {
+				UI.createMenuItem(m, 0, "&Remove point", new ADSelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						for (Iterator<PortSpec> it = ports.iterator(); it.hasNext(); ) {
@@ -779,37 +759,25 @@ MenuListener {
 						firePointChange(PointEvent.REMOVED, points.removePoint(foundPoint));
 						redraw();
 					}
-					
-					@Override
-					public void widgetDefaultSelected(SelectionEvent e) {
-					}
 				});
 			} else {
 				UI.createMenuItem(m, 0, "Cannot remove last point", null).setEnabled(false);
 			}
 		}
 		if (points.size() > 1) {
-			UI.createMenuItem(m, 0, "Remove &all points and ports", new SelectionListener() {
+			UI.createMenuItem(m, 0, "Remove &all points and ports", new ADSelectionListener() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					setMode(mode);
-				}
-				
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
 				}
 			});
 		}
 		if (m.getItemCount() > 0)
 			new MenuItem(m, SWT.SEPARATOR);
-		UI.createMenuItem(m, 0, "Centre &polygon on canvas", new SelectionListener() {
+		UI.createMenuItem(m, 0, "Centre &polygon on canvas", new ADSelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				centrePolygon();
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 	}
