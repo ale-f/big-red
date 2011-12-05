@@ -22,6 +22,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -409,23 +410,28 @@ MenuListener {
 			redraw();
 		}
 	}
-
+	
+	private void fillCircleCentredAt(GC gc, Point p, int radius) {
+		gc.fillOval(p.x - radius, p.y - radius, radius * 2, radius * 2);
+	}
+	
 	@Override
 	public void paintControl(PaintEvent e) {
 		e.gc.setAntialias(SWT.ON);
 		setCursor(Cursors.ARROW);
 		
+		/* Draw the grid and crosshairs */
 		e.gc.setForeground(ColorConstants.lightGray);
 		for (int x = 0; x <= controlSize.width; x += 10) {
-			if (x != roundedMousePosition.x)
-				e.gc.setAlpha(63);
-			else e.gc.setAlpha(255);
+			if (x != roundedMousePosition.x) {
+				e.gc.setAlpha(63); /* grid */
+			} else e.gc.setAlpha(255); /* crosshairs */
 			e.gc.drawLine(x, 0, x, controlSize.height);
 		}
 		for (int y = 0; y <= controlSize.height; y += 10) {
-			if (y != roundedMousePosition.y)
-				e.gc.setAlpha(63);
-			else e.gc.setAlpha(255);
+			if (y != roundedMousePosition.y) {
+				e.gc.setAlpha(63); /* grid */
+			} else e.gc.setAlpha(255); /* crosshairs */
 			e.gc.drawLine(0, y, controlSize.width, y);
 		}
 		
@@ -447,10 +453,8 @@ MenuListener {
 			e.gc.drawLine(first.x, first.y, last.x, last.y);
 			
 			e.gc.setBackground(ColorConstants.black);
-			for (int i = 0; i < points.size(); i++) {
-				points.getPoint(tmp, i);
-				e.gc.fillOval(tmp.x - 3, tmp.y - 3, 6, 6);
-			}
+			for (int i = 0; i < points.size(); i++)
+				fillCircleCentredAt(e.gc, points.getPoint(tmp, i), 3);
 			
 			e.gc.setBackground(ColorConstants.red);
 			for (PortSpec p : ports) {
@@ -458,8 +462,8 @@ MenuListener {
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
 				
-				Point pt = l.getPointFromOffset(p.getDistance());
-				e.gc.fillOval(pt.x - 4, pt.y - 4, 8, 8);
+				fillCircleCentredAt(e.gc,
+						l.getPointFromOffset(p.getDistance()), 4);
 			}
 		} else {
 			int w = ((controlSize.width - 60) / 10) * 10,
@@ -468,8 +472,9 @@ MenuListener {
 			
 			e.gc.setBackground(ColorConstants.red);
 			for (PortSpec p : ports) {
-				Point pt = new Ellipse(new Rectangle(30, 30, w, h)).getPointFromOffset(p.getDistance());
-				e.gc.fillOval(pt.x - 4, pt.y - 4, 8, 8);
+				fillCircleCentredAt(e.gc,
+					new Ellipse(new Rectangle(30, 30, w, h)).
+						getPointFromOffset(p.getDistance()), 4);
 			}
 		}
 		
@@ -489,7 +494,7 @@ MenuListener {
 					.getClosestPoint(mousePosition));
 			}
 			
-			e.gc.fillOval(tmp.x - 4, tmp.y - 4, 8, 8);
+			fillCircleCentredAt(e.gc, tmp, 4);
 		} else if (dragPointIndex != -1) {
 			e.gc.setAlpha(127);
 			Point previous, next;
@@ -506,7 +511,7 @@ MenuListener {
 			
 			e.gc.drawLine(previous.x, previous.y, roundedMousePosition.x, roundedMousePosition.y);
 			e.gc.drawLine(next.x, next.y, roundedMousePosition.x, roundedMousePosition.y);
-			e.gc.fillOval(roundedMousePosition.x - 3, roundedMousePosition.y - 3, 6, 6);
+			fillCircleCentredAt(e.gc, roundedMousePosition, 3);
 			
 			int pointAtCursor = findPointAt(roundedMousePosition);
 			if (pointAtCursor != -1 && pointAtCursor != dragPointIndex)
