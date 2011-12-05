@@ -122,8 +122,10 @@ public class ModelObject {
 	/**
 	 * Gets the persistent ID of this {@link ModelObject}, creating it if
 	 * necessary.
-	 * @return a persistent ID (by default, the string representation of a new
-	 * random {@link UUID})
+	 * <p>Persistent IDs are <i>not</i> supposed to be universally unique, but
+	 * they are supposed to be persistent &mdash; they should be preserved
+	 * across editing sessions, and there should be no UI for changing them.
+	 * @return this object's persistent ID
 	 * @see #setPersistentID(String)
 	 */
 	public String getPersistentID() {
@@ -134,6 +136,8 @@ public class ModelObject {
 	
 	/**
 	 * Sets the persistent ID of this {@link ModelObject}.
+	 * <p>(This method should only <i>really</i> be called with the result of
+	 * a previous call to {@link #getPersistentID()}.)
 	 * @param persistentID the new persistent ID (can be <code>null</code>)
 	 * @see #getPersistentID()
 	 */
