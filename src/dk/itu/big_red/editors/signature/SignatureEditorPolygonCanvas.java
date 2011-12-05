@@ -46,7 +46,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
 MenuListener {
-	private IInputValidator getValidator(final PortSpec current) {
+	private IInputValidator getPortNameValidator(final PortSpec current) {
 		return new IInputValidator() {
 			@Override
 			public String isValid(String newText) {
@@ -57,6 +57,22 @@ MenuListener {
 						return "This port name is already in use.";
 				return null;
 
+			}
+		};
+	}
+	
+	private static IInputValidator getIntegerValidator(final int min, final int max) {
+		return new IInputValidator() {
+			@Override
+			public String isValid(String newText) {
+				try {
+					int x = Integer.parseInt(newText);
+					if (x < min || x > max)
+						return "The value must not be less than " + min + " or greater than " + max;
+					return null;
+				} catch (NumberFormatException e) {
+					return "The value is not an integer";
+				}
 			}
 		};
 	}
@@ -606,6 +622,33 @@ MenuListener {
 		          foundPort = findPortAt(mousePosition),
 		          segment = getNearestSegment(roundedMousePosition, 15);
 		
+		UI.createMenuItem(m, SWT.NONE, "Polygon canvas", null).setEnabled(false);
+		new MenuItem(m, SWT.SEPARATOR);
+		if (mode == Shape.POLYGON) {
+			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new SelectionListener() {
+				
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					String polySides =
+						UI.promptFor("Specify the number of sides",
+							"How many sides should your regular polygon have?\n(All ports will be deleted.)",
+							"3", getIntegerValidator(3, Integer.MAX_VALUE));
+					if (polySides != null) {
+						setMode(mode);
+						
+						Ellipse el = new Ellipse();
+						el.setBounds(new Rectangle(0, 0, 60, 60));
+						setPoints(el.getPolygon(Integer.parseInt(polySides)));
+					}
+				}
+				
+				@Override
+				public void widgetDefaultSelected(SelectionEvent e) {
+					widgetSelected(e);
+				}
+			});
+		}
+				
 		if (foundPort == -1) {
 			if (segment != -1) {
 				if (mode == Shape.POLYGON)
@@ -632,7 +675,7 @@ MenuListener {
 							
 							String newName = UI.promptFor("New port name",
 									"Choose a name for the new port:", "",
-									getValidator(p));
+									getPortNameValidator(p));
 							if (newName != null) {
 								ports.add(p);
 								firePortChange(PortEvent.ADDED, p);
@@ -659,7 +702,7 @@ MenuListener {
 
 						String newName = UI.promptFor("New port name",
 								"Choose a name for the new port:", "",
-								getValidator(p));
+								getPortNameValidator(p));
 						if (newName != null) {
 							ports.add(p);
 							firePortChange(PortEvent.ADDED, p);
@@ -686,7 +729,7 @@ MenuListener {
 					String newName = UI.promptFor("Port name",
 							"Choose a name for this port:",
 							(p.getName() == null ? "" : p.getName()),
-							getValidator(p));
+							getPortNameValidator(p));
 					if (newName != null) {
 						p.setName(newName);
 						firePortChange(PortEvent.RENAMED, p);
