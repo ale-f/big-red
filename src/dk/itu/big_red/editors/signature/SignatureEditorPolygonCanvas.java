@@ -230,8 +230,10 @@ MenuListener {
 					return i;
 			}
 		} else if (mode == Shape.OVAL) {
-			Ellipse e = new Ellipse();
-			e.setBounds(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10));
+			Ellipse e =
+				new Ellipse().setBounds(new Rectangle(30, 30,
+					((controlSize.width - 60) / 10) * 10,
+					((controlSize.height - 60) / 10) * 10));
 			for (int i = 0; i < ports.size(); i++) {
 				PortSpec p = ports.get(i);
 				tmp.setLocation(e.getPointFromOffset(p.getDistance()));
@@ -636,9 +638,9 @@ MenuListener {
 					if (polySides != null) {
 						setMode(mode);
 						
-						Ellipse el = new Ellipse();
-						el.setBounds(new Rectangle(0, 0, 60, 60));
-						setPoints(el.getPolygon(Integer.parseInt(polySides)));
+						setPoints(new Ellipse().
+								setBounds(new Rectangle(0, 0, 60, 60)).
+								getPolygon(Integer.parseInt(polySides)));
 					}
 				}
 				

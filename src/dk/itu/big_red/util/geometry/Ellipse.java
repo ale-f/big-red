@@ -15,8 +15,12 @@ public class Ellipse {
 		setBounds(bb);
 	}
 	
-	public void setBounds(Rectangle bb) {
+	/**
+	 * @return <code>this</code>, for convenience
+	 */
+	public Ellipse setBounds(Rectangle bb) {
 		this.bb.setBounds(bb);
+		return this;
 	}
 	
 	/**
