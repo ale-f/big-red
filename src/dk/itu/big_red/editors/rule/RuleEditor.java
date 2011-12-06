@@ -139,7 +139,6 @@ public class RuleEditor extends EditorPart implements
 			return;
 		ignoringSelectionUpdates = true;
 		
-		System.out.println(event.getSource());
 		if (!event.getSelection().isEmpty())
 			(event.getSource() == reactumViewer ?
 					redexViewer : reactumViewer).deselectAll();
