@@ -128,12 +128,24 @@ public class RuleEditor extends EditorPart implements
 		
 	}
 
+	private boolean ignoringSelectionUpdates = false;
+	
 	/**
 	 * Fired by the redex and reactum viewers when their selections change.
 	 */
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
+		if (ignoringSelectionUpdates)
+			return;
+		ignoringSelectionUpdates = true;
+		
+		System.out.println(event.getSource());
+		if (!event.getSelection().isEmpty())
+			(event.getSource() == reactumViewer ?
+					redexViewer : reactumViewer).deselectAll();
+		
 		setSelection(event.getSelection());
+		ignoringSelectionUpdates = false;
 	}
 	
 	@Override
