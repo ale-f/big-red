@@ -157,7 +157,15 @@
 				<xsd:group ref="signature:anyForeignElements" />
 			</xsd:sequence>
 			<xsd:attribute name="name" type="xsd:string" use="required" />
-			<xsd:attribute name="kind" type="xsd:string" />
+			<xsd:attribute name="kind">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:enumeration value="atomic" />
+						<xsd:enumeration value="active" />
+						<xsd:enumeration value="passive" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:attribute>
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>
