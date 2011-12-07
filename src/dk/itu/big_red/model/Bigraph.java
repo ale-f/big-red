@@ -234,7 +234,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 				Layoutable l = (Layoutable)o,
 						lClone = (Layoutable)e.getValue();
 				lClone.setName(l.getName());
-				b.getNamespace(lClone).put(lClone.getName(), lClone);
+				b.getNamespace(getNSI(lClone)).put(lClone.getName(), lClone);
 			}
 		}
 		
