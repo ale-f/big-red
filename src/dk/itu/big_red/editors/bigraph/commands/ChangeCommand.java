@@ -3,6 +3,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.util.UI;
 
@@ -100,5 +101,14 @@ public abstract class ChangeCommand extends Command {
 	@Override
 	public final void redo() {
 		execute();
+	}
+	
+	@Override
+	public void dispose() {
+		if (change instanceof ChangeGroup)
+			((ChangeGroup)change).clear();
+		if (inverse instanceof ChangeGroup)
+			((ChangeGroup)inverse).clear();
+		change = inverse = null;
 	}
 }
