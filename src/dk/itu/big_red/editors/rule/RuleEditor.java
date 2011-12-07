@@ -3,6 +3,7 @@ package dk.itu.big_red.editors.rule;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
@@ -370,7 +371,19 @@ public class RuleEditor extends EditorPart implements
 			if (reactumChild == null)
 				reactumChild = ch.child.clone(reactumEntities);
 			
-			reactumChange = new Container.ChangeAddChild(reactumParent, reactumChild, ch.name);
+			/*
+			 * XXX: a BigraphScratchpad should really be used here so that
+			 * ChangeGroups will actually work properly
+			 */
+			String reactumName;
+			Map<String, Layoutable> reactumNamespace =
+				getReactum().getNamespace(Bigraph.getNSI(reactumChild));
+			if (reactumNamespace.get(ch.name) == null) {
+				reactumName = ch.name;
+			} else reactumName = Bigraph.getFirstUnusedName(reactumNamespace);
+			
+			reactumChange =
+				new Container.ChangeAddChild(reactumParent, reactumChild, reactumName);
 		} else if (redexChange instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout ch = ac(redexChange);
 			
@@ -408,10 +421,12 @@ public class RuleEditor extends EditorPart implements
 	
 	private void processChangeCommand(int detail, ChangeCommand c) {
 		IChangeable target = c.getTarget();
+		
 		Change ch;
 		if (detail != CommandStack.POST_UNDO) {
 			ch = c.getChange();
 		} else ch = c.getChange().inverse();
+		
 		if (target == getRedex()) {
 			System.out.println("Event (" + detail + ") from redex: " + c.getChange());
 			Change reactumChange = createReactumChange(ch);
