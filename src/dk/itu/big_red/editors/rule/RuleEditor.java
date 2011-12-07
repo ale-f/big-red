@@ -350,12 +350,15 @@ public class RuleEditor extends EditorPart implements
 		return (V)x;
 	}
 	
-	private Change createReactumChange(Change redexChange, ChangeGroup cg) {
-		Change copy = null;
+	private Change createReactumChange(Change redexChange) {
+		Change reactumChange = null;
 		if (redexChange instanceof ChangeGroup) {
-			ChangeGroup cg_ = (ChangeGroup)redexChange;
+			ChangeGroup cg_ = (ChangeGroup)redexChange,
+				cg = new ChangeGroup();
 			for (Change i : cg_)
-				createReactumChange(i, cg);
+				cg.add(createReactumChange(i));
+			
+			reactumChange = cg;
 		} else if (redexChange instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild ch = ac(redexChange);
 			
@@ -367,7 +370,7 @@ public class RuleEditor extends EditorPart implements
 			if (reactumChild == null)
 				reactumChild = ch.child.clone(reactumEntities);
 			
-			copy = new Container.ChangeAddChild(reactumParent, reactumChild, ch.name);
+			reactumChange = new Container.ChangeAddChild(reactumParent, reactumChild, ch.name);
 		} else if (redexChange instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout ch = ac(redexChange);
 			
@@ -376,7 +379,7 @@ public class RuleEditor extends EditorPart implements
 			if (reactumModel == null)
 				System.exit(-1);
 			
-			copy =
+			reactumChange =
 				new Layoutable.ChangeLayout(reactumModel, ch.newLayout.getCopy());
 		} else if (redexChange instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild ch = ac(redexChange);
@@ -387,13 +390,12 @@ public class RuleEditor extends EditorPart implements
 			if (reactumParent == null || reactumChild == null)
 				System.exit(-1);
 			
-			copy =
+			reactumChange =
 				new Container.ChangeRemoveChild(reactumParent, reactumChild);
 			reactumEntities.remove(ch.child);
 		}
-		if (copy != null)
-			cg.add(copy);
-		return cg;
+		System.out.println(redexChange + "\n\t->" + reactumChange);
+		return reactumChange;
 	}
 	
 	private Bigraph getRedex() {
@@ -412,8 +414,12 @@ public class RuleEditor extends EditorPart implements
 		} else ch = c.getChange().inverse();
 		if (target == getRedex()) {
 			System.out.println("Event (" + detail + ") from redex: " + c.getChange());
-			getReactum().applyChange(
-				createReactumChange(ch, new ChangeGroup()));
+			Change reactumChange = createReactumChange(ch);
+			try {
+				getReactum().tryApplyChange(reactumChange);
+			} catch (ChangeRejectedException cre) {
+				cre.killVM();
+			}
 			
 			if (getModel().getChanges().size() > 0) {
 				try {
