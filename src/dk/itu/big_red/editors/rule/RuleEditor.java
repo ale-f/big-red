@@ -14,14 +14,10 @@ import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
-import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.SelectionToolEntry;
-import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.DeleteAction;
@@ -34,7 +30,6 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -55,8 +50,8 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
-import dk.itu.big_red.editors.bigraph.ConnectionDragCreationToolEntry;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
@@ -67,15 +62,9 @@ import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -293,38 +282,12 @@ public class RuleEditor extends EditorPart implements
 		PaletteToolbar tb = new PaletteToolbar("Horizontal palette");
 		root.add(tb);
 		
-		PaletteGroup selectGroup = new PaletteGroup("Object selection");
-		selectGroup.setId("BigraphEditor.palette.selection");
-		tb.add(selectGroup);
-		
-		selectGroup.add(new SelectionToolEntry());
-		selectGroup.add(new MarqueeToolEntry());
-		
-		tb.add(new PaletteSeparator());
-		
-		PaletteGroup creationGroup = new PaletteGroup("Object creation");
-		creationGroup.setId("BigraphEditor.palette.creation");
-		tb.add(creationGroup);
-		
+		SelectionToolEntry ste = new SelectionToolEntry();
 		nodeGroup = new PaletteGroup("Node...");
-		nodeGroup.setId("BigraphEditor.palette.node-creation");
-		creationGroup.add(nodeGroup);
-				
-		ImageDescriptor imd = ImageDescriptor.getMissingImageDescriptor();
 		
-		creationGroup.add(new CombinedTemplateCreationEntry("Site", "Add a new site to the bigraph",
-				Site.class, new ModelFactory(Site.class), imd, imd));
-		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
-				Root.class, new ModelFactory(Root.class), imd, imd));
-		creationGroup.add(new ConnectionDragCreationToolEntry("Edge", "Connect two nodes with a new edge",
-				new ModelFactory(Edge.class), imd, imd));
+		BigraphEditor.populatePalette(tb, nodeGroup, ste);
 		
-		creationGroup.add(new CombinedTemplateCreationEntry("Inner name", "Add a new inner name to the bigraph",
-				InnerName.class, new ModelFactory(InnerName.class), imd, imd));
-		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
-				OuterName.class, new ModelFactory(OuterName.class), imd, imd));
-		
-		root.setDefaultEntry((ToolEntry) selectGroup.getChildren().get(0));
+		root.setDefaultEntry(ste);
 		return root;
 	}
 	

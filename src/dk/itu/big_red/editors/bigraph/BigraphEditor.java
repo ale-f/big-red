@@ -17,12 +17,12 @@ import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
+import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
-import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.ZoomInAction;
@@ -220,24 +220,22 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     
     private PaletteGroup nodeGroup;
     
-	@Override
-	protected PaletteRoot getPaletteRoot() {
-		PaletteRoot root = new PaletteRoot();
-		
-		PaletteGroup selectGroup = new PaletteGroup("Object selection");
+    public static <T extends PaletteContainer> T populatePalette(T container, PaletteGroup nodeGroup, SelectionToolEntry defaultTool) {
+    	PaletteGroup selectGroup = new PaletteGroup("Object selection");
 		selectGroup.setId("BigraphEditor.palette.selection");
-		root.add(selectGroup);
+		container.add(selectGroup);
 		
-		selectGroup.add(new SelectionToolEntry());
+		selectGroup.add((defaultTool != null ? defaultTool : new SelectionToolEntry()));
 		selectGroup.add(new MarqueeToolEntry());
 		
-		root.add(new PaletteSeparator());
+		container.add(new PaletteSeparator());
 		
 		PaletteGroup creationGroup = new PaletteGroup("Object creation");
 		creationGroup.setId("BigraphEditor.palette.creation");
-		root.add(creationGroup);
+		container.add(creationGroup);
 		
-		nodeGroup = new PaletteGroup("Node...");
+		if (nodeGroup == null)
+			nodeGroup = new PaletteGroup("Node...");
 		nodeGroup.setId("BigraphEditor.palette.node-creation");
 		creationGroup.add(nodeGroup);
 				
@@ -253,7 +251,18 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
 				OuterName.class, new ModelFactory(OuterName.class), null, null));
 		
-		root.setDefaultEntry((ToolEntry) selectGroup.getChildren().get(0));
+    	return container;
+    }
+    
+	@Override
+	protected PaletteRoot getPaletteRoot() {
+		PaletteRoot root = new PaletteRoot();
+		nodeGroup = new PaletteGroup("Node...");
+		SelectionToolEntry ste = new SelectionToolEntry();
+		
+		BigraphEditor.populatePalette(root, nodeGroup, ste);
+		
+		root.setDefaultEntry(ste);
 		return root;
 	}
 	
