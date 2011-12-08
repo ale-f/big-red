@@ -30,6 +30,7 @@ import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -54,6 +55,7 @@ import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.NodeFactory;
@@ -190,18 +192,16 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    
 	    if (model == null) {
 	    	model = new Bigraph();
-	    } else {
-	    	updateNodePalette();
-	    }
+	    } else updateNodePalette(nodeGroup, model.getSignature());
 	    
 	    getGraphicalViewer().setContents(model);
     }
     
-	private void updateNodePalette() {
+	public static void updateNodePalette(PaletteContainer nodeGroup, Signature signature) {
     	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
 		
-		for (Control c : model.getSignature().getControls()) {
-			palette.add(new CombinedTemplateCreationEntry(c.getName(), "",
+		for (Control c : signature.getControls()) {
+			palette.add(new CombinedTemplateCreationEntry(c.getName(), "Node",
 					Node.class, new NodeFactory(c), null, null));
 		}
 		
@@ -238,18 +238,20 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 			nodeGroup = new PaletteGroup("Node...");
 		nodeGroup.setId("BigraphEditor.palette.node-creation");
 		creationGroup.add(nodeGroup);
-				
+
+		ImageDescriptor idm = ImageDescriptor.getMissingImageDescriptor();
+		
 		creationGroup.add(new CombinedTemplateCreationEntry("Site", "Add a new site to the bigraph",
-				Site.class, new ModelFactory(Site.class), null, null));
+				Site.class, new ModelFactory(Site.class), idm, idm));
 		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
-				Root.class, new ModelFactory(Root.class), null, null));
+				Root.class, new ModelFactory(Root.class), idm, idm));
 		creationGroup.add(new ConnectionDragCreationToolEntry("Edge", "Connect two nodes with a new edge",
-				new ModelFactory(Edge.class), null, null));
+				new ModelFactory(Edge.class), idm, idm));
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Inner name", "Add a new inner name to the bigraph",
-				InnerName.class, new ModelFactory(InnerName.class), null, null));
+				InnerName.class, new ModelFactory(InnerName.class), idm, idm));
 		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
-				OuterName.class, new ModelFactory(OuterName.class), null, null));
+				OuterName.class, new ModelFactory(OuterName.class), idm, idm));
 		
     	return container;
     }

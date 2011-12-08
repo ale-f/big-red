@@ -326,6 +326,9 @@ public class RuleEditor extends EditorPart implements
 	    	}
 	    }
 	    
+	    BigraphEditor.updateNodePalette(nodeGroup,
+	    	model.getRedex().getSignature());
+	    
 	    redexViewer.setContents(model.getRedex());
 	    reactumViewer.setContents(model.getRedex().clone(reactumEntities));
     }
