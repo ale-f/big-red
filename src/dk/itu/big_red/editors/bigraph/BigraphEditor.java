@@ -241,19 +241,26 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 		nodeGroup.setId("BigraphEditor.palette.node-creation");
 		creationGroup.add(nodeGroup);
 
-		ImageDescriptor idm = ImageDescriptor.getMissingImageDescriptor();
+		ImageDescriptor
+			site = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/site.png"),
+			root = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/root.png"),
+			edge = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/edge.png");
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Site", "Add a new site to the bigraph",
-				Site.class, new ModelFactory(Site.class), idm, idm));
+				Site.class, new ModelFactory(Site.class), site, site));
 		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
-				Root.class, new ModelFactory(Root.class), idm, idm));
+				Root.class, new ModelFactory(Root.class), root, root));
 		creationGroup.add(new ConnectionDragCreationToolEntry("Edge", "Connect two nodes with a new edge",
-				new ModelFactory(Edge.class), idm, idm));
+				new ModelFactory(Edge.class), edge, edge));
+		
+		ImageDescriptor
+			inner = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/inner.png"),
+			outer = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/outer.png");
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Inner name", "Add a new inner name to the bigraph",
-				InnerName.class, new ModelFactory(InnerName.class), idm, idm));
+				InnerName.class, new ModelFactory(InnerName.class), inner, inner));
 		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
-				OuterName.class, new ModelFactory(OuterName.class), idm, idm));
+				OuterName.class, new ModelFactory(OuterName.class), outer, outer));
 		
     	return container;
     }
