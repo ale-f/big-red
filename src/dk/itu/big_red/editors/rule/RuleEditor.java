@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.rule;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,7 +63,6 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -86,15 +84,9 @@ public class RuleEditor extends EditorPart implements
 	
 	private ISelection selection = null;
 	
-	/**
-	 * A map from entities in the redex to entities in the reactum.
-	 */
-	private HashMap<ModelObject, ModelObject> reactumEntities =
-		new HashMap<ModelObject, ModelObject>();
-	
 	@SuppressWarnings("unchecked")
 	private <T> T getReactumEntity(T redexEntity) {
-		return (T)reactumEntities.get(redexEntity);
+		return (T)model.getRedexToReactumMap().get(redexEntity);
 	}
 	
 	@Override
@@ -330,7 +322,7 @@ public class RuleEditor extends EditorPart implements
 	    	model.getRedex().getSignature());
 	    
 	    redexViewer.setContents(model.getRedex());
-	    reactumViewer.setContents(model.getRedex().clone(reactumEntities));
+	    reactumViewer.setContents(model.getReactum());
     }
 	
 	/**
@@ -372,7 +364,7 @@ public class RuleEditor extends EditorPart implements
 			if (reactumParent == null)
 				System.exit(-1);
 			if (reactumChild == null)
-				reactumChild = ch.child.clone(reactumEntities);
+				reactumChild = ch.child.clone(model.getRedexToReactumMap());
 			
 			/*
 			 * XXX: a BigraphScratchpad should really be used here so that
@@ -408,7 +400,7 @@ public class RuleEditor extends EditorPart implements
 			
 			reactumChange =
 				new Container.ChangeRemoveChild(reactumParent, reactumChild);
-			reactumEntities.remove(ch.child);
+			model.getRedexToReactumMap().remove(ch.child);
 		}
 		System.out.println(redexChange + "\n\t->" + reactumChange);
 		return reactumChange;
