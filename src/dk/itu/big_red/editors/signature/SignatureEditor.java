@@ -8,6 +8,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.preference.ColorSelector;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -41,8 +44,10 @@ import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
+import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.UI;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
@@ -133,7 +138,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 	private Label
 		appearanceDescription, kindLabel, labelLabel,
-		nameLabel, appearanceLabel;
+		outlineLabel, fillLabel, nameLabel, appearanceLabel;
+	private ColorSelector outline, fill;
 	
 	protected void controlToFields() {
 		fireModify = false;
@@ -152,6 +158,9 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		ovalMode.setSelection(!polygon);
 		polygonMode.setSelection(polygon);
 		
+		outline.setColorValue(currentControl.getOutlineColour().getRGB());
+		fill.setColorValue(currentControl.getFillColour().getRGB());
+		
 		kind.setText(currentControl.getKind().toString());
 		
 		fireModify = true;
@@ -168,6 +177,14 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			if (polygonMode.getSelection()) {
 				currentControl.setShape(Shape.POLYGON, appearance.getPoints().getCopy());
 			} else currentControl.setShape(Shape.OVAL, null);
+			
+			ChangeGroup cg = new ChangeGroup();
+			cg.add(currentControl.changeOutlineColour(
+					new Colour(outline.getColorValue())));
+			cg.add(currentControl.changeFillColour(
+					new Colour(fill.getColorValue())));
+			model.applyChange(cg);
+			
 			currentControl.setKind(
 				kind.getText().equals("active") ? Kind.ACTIVE :
 				kind.getText().equals("passive") ? Kind.PASSIVE : Kind.ATOMIC);
@@ -176,7 +193,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		final class DirtListener implements ModifyListener, SelectionListener, PointListener, PortListener {
+		final class DirtListener implements ModifyListener, SelectionListener, PointListener, PortListener, IPropertyChangeListener {
 			private boolean canvasActive = true;
 			
 			private void go() {
@@ -220,6 +237,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			public void portChange(PortEvent e) {
 				if (canvasActive)
 					go();
+			}
+
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				/* only from colour selectors */
+				go();
 			}
 		}
 		
@@ -337,6 +360,14 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		label.addModifyListener(sharedDirtListener);
 		
+		kindLabel = new Label(right, SWT.NONE);
+		kindLabel.setText("Kind:");
+		
+		kind = new Combo(right, SWT.DROP_DOWN | SWT.READ_ONLY);
+		kind.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		kind.setItems(kinds);
+		kind.addModifyListener(sharedDirtListener);
+		
 		appearanceLabel = new Label(right, SWT.NONE);
 		GridData appearanceLabelLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
@@ -348,14 +379,24 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		GridLayout appearanceGroupLayout = new GridLayout(1, false);
 		appearanceGroup.setLayout(appearanceGroupLayout);		
 		
-		ovalMode = new Button(appearanceGroup, SWT.RADIO);
+		/* XXX: the addition of this row leads to really weird oversizing of
+		 * the polygon canvas! */
+		Composite firstLine = new Composite(appearanceGroup, SWT.NONE);
+		firstLine.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		firstLine.setLayout(new RowLayout(SWT.HORIZONTAL));
+		
+		ovalMode = new Button(firstLine, SWT.RADIO);
 		ovalMode.setText("Oval");
 		ovalMode.addSelectionListener(sharedDirtListener);
 		
-		polygonMode = new Button(appearanceGroup, SWT.RADIO);
+		polygonMode = new Button(firstLine, SWT.RADIO);
 		polygonMode.setText("Polygon");
 		polygonMode.setSelection(true);
 		polygonMode.addSelectionListener(sharedDirtListener);
+		
+		resizable = new Button(firstLine, SWT.CHECK);
+		resizable.setText("Resizable?");
+		resizable.addSelectionListener(sharedDirtListener);
 		
 		appearance = new SignatureEditorPolygonCanvas(appearanceGroup, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -380,17 +421,19 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceDescription.setLayoutData(appearanceDescriptionData);
 		appearanceDescription.setFont(smiff);
 		
-		resizable = new Button(appearanceGroup, SWT.CHECK);
-		resizable.setText("Resizable?");
-		resizable.addSelectionListener(sharedDirtListener);
+		outlineLabel = new Label(right, SWT.NONE);
+		outlineLabel.setText("Outline:");
 		
-		kindLabel = new Label(right, SWT.NONE);
-		kindLabel.setText("Kind:");
+		outline = new ColorSelector(right);
+		outline.getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		outline.addListener(sharedDirtListener);
 		
-		kind = new Combo(right, SWT.DROP_DOWN | SWT.READ_ONLY);
-		kind.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-		kind.setItems(kinds);
-		kind.addModifyListener(sharedDirtListener);
+		fillLabel = new Label(right, SWT.NONE);
+		fillLabel.setText("Fill:");
+		
+		fill = new ColorSelector(right);
+		fill.getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		fill.addListener(sharedDirtListener);
 		
 		setEnablement(false);
 		initialiseSignatureEditor();
@@ -399,8 +442,9 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	private void setEnablement(boolean enabled) {
 		UI.setEnabled(enabled,
 			name, label, appearance, appearanceDescription, resizable, kind,
-			ovalMode, polygonMode, kindLabel, nameLabel, appearanceLabel,
-			labelLabel);
+			outline.getButton(), outlineLabel, fill.getButton(),
+			ovalMode, fillLabel, polygonMode, kindLabel, nameLabel,
+			appearanceLabel, labelLabel);
 	}
 	
 	private void initialiseSignatureEditor() {
