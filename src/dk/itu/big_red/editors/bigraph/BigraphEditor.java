@@ -199,11 +199,13 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     
 	public static void updateNodePalette(PaletteContainer nodeGroup, Signature signature) {
     	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
-		
-		for (Control c : signature.getControls()) {
+
+    	ImageDescriptor id =
+    		RedPlugin.getImageDescriptor("resources/icons/triangle.png");
+    	
+		for (Control c : signature.getControls())
 			palette.add(new CombinedTemplateCreationEntry(c.getName(), "Node",
-					Node.class, new NodeFactory(c), null, null));
-		}
+					Node.class, new NodeFactory(c), id, id));
 		
 		nodeGroup.setChildren(palette);
 	}
