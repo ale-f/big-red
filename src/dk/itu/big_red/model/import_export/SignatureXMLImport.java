@@ -23,7 +23,7 @@ public class SignatureXMLImport extends Import<Signature> {
 		cg.clear();
 		try {
 			Document d =
-				DOM.validate(DOM.parse(source), RedPlugin.getResource("schema/signature.xsd"));
+				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/signature.xsd"));
 			source.close();
 			return makeSignature(d.getDocumentElement());
 		} catch (Exception e) {

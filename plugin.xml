@@ -16,7 +16,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="dk.itu.big_red.application.plugin.Perspective"
-            icon="icons/icon32.png"
+            icon="resources/icons/icon32.png"
             id="dk.itu.big_red.perspective"
             name="Big Red">
       </perspective>
@@ -87,7 +87,7 @@
             contributorClass="dk.itu.big_red.editors.bigraph.BigraphEditorActionBarContributor"
             default="true"
             extensions="bigraph, bigraph-agent"
-            icon="icons/icon16.png"
+            icon="resources/icons/icon16.png"
             id="dk.itu.big_red.BigraphEditor"
             name="Bigraph Editor">
          <contentTypeBinding
@@ -99,7 +99,7 @@
             contributorClass="dk.itu.big_red.editors.signature.SignatureEditorActionBarContributor"
             default="false"
             extensions="bigraph-signature"
-            icon="icons/icon16.png"
+            icon="resources/icons/icon16.png"
             id="dk.itu.big_red.SignatureEditor"
             name="Signature Editor">
          <contentTypeBinding
@@ -111,7 +111,7 @@
             contributorClass="dk.itu.big_red.editors.rule.RuleEditorActionBarContributor"
             default="false"
             extensions="bigraph-rule"
-            icon="icons/icon16.png"
+            icon="resources/icons/icon16.png"
             id="dk.itu.big_red.RuleEditor"
             name="Rule Editor">
          <contentTypeBinding
@@ -128,7 +128,7 @@
       <wizard
             category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.export.BigraphPNGExportWizard"
-            icon="icons/wizards/bitmap.png"
+            icon="resources/icons/wizards/bitmap.png"
             id="Big Red.BitmapExportWizard"
             name="Export as bitmap image">
          <description>
@@ -138,7 +138,7 @@
       <wizard
             category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.export.BigraphTextExportWizard"
-            icon="icons/wizards/text.png"
+            icon="resources/icons/wizards/text.png"
             id="Big Red.TikZExportWizard"
             name="Export as text">
          <description>
@@ -159,7 +159,7 @@
             category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.creation.NewBRSWizard"
             finalPerspective="dk.itu.big_red.perspective"
-            icon="icons/icon16.png"
+            icon="resources/icons/icon16.png"
             id="dk.itu.big_red.NewBRSWizard"
             name="Bigraphical reactive system"
             project="true">
@@ -171,7 +171,7 @@
             category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.creation.NewAgentWizard"
             finalPerspective="dk.itu.big_red.perspective"
-            icon="icons/icon16.png"
+            icon="resources/icons/icon16.png"
             id="dk.itu.big_red.NewAgentWizard"
             name="Agent">
          <description>
@@ -182,7 +182,7 @@
             category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.creation.NewSignatureWizard"
             finalPerspective="dk.itu.big_red.perspective"
-            icon="icons/icon16.png"
+            icon="resources/icons/icon16.png"
             id="dk.itu.big_red.NewSignatureWizard"
             name="Signature"
             project="false">
@@ -194,7 +194,7 @@
             category="dk.itu.big_red"
             class="dk.itu.big_red.wizards.creation.NewRuleWizard"
             finalPerspective="dk.itu.big_red.perspective"
-            icon="icons/icon16.png"
+            icon="resources/icons/icon16.png"
             id="dk.itu.big_red.NewRuleWizard"
             name="Rule">
          <description>
@@ -237,7 +237,7 @@
          point="dk.itu.big_red.export.text">
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphTikZExport"
-            icon="icons/wizards/vector.png"
+            icon="resources/icons/wizards/vector.png"
             id="big-red.exporter1"
             name="TikZ image">
          <description>
@@ -246,7 +246,7 @@
       </exporter>
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphXMLExport"
-            icon="icons/icon16.png"
+            icon="resources/icons/icon16.png"
             id="big-red.exporter2"
             name="XML">
          <description>
@@ -255,7 +255,7 @@
       </exporter>
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphTraverseExport"
-            icon="icons/wizards/text.png"
+            icon="resources/icons/wizards/text.png"
             id="big-red.exporter3"
             name="Traverse">
       </exporter>
