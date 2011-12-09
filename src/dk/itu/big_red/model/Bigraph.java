@@ -503,6 +503,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			getNamespace(getNSI(c.model)).remove(c.model.getName());
 			c.model.setName(c.newName);
 			getNamespace(getNSI(c.model)).put(c.newName, c.model);
+		} else if (b instanceof ModelObject.ChangeComment) {
+			ModelObject.ChangeComment c = (ModelObject.ChangeComment)b;
+			c.model.setComment(c.comment);
 		}
 	}
 

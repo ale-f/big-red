@@ -5,6 +5,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.Map;
 import java.util.UUID;
 
+import dk.itu.big_red.model.changes.Change;
+
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
  * model. It allows {@link PropertyChangeListener}s to register for, and
@@ -18,6 +20,35 @@ import java.util.UUID;
  *
  */
 public class ModelObject {
+	public static class ChangeComment extends Change {
+		public ModelObject model;
+		public String comment;
+		
+		public ChangeComment(ModelObject model, String comment) {
+			this.model = model;
+			this.comment = comment;
+		}
+
+		private boolean oldCommentSet = false;
+		private String oldComment;
+		
+		@Override
+		public void beforeApply() {
+			oldComment = model.getComment();
+			oldCommentSet = true;
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return oldCommentSet;
+		};
+		
+		@Override
+		public Change inverse() {
+			return new ChangeComment(model, oldComment);
+		}
+	}
+	
 	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	/**
@@ -148,5 +179,9 @@ public class ModelObject {
 	@Override
 	public String toString() {
 		return "<" + getClass().getSimpleName() + "#" + getPersistentID() + ">";
+	}
+	
+	public ChangeComment changeComment(String comment) {
+		return new ChangeComment(this, comment);
 	}
 }

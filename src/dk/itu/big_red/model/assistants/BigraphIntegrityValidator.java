@@ -8,6 +8,7 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
@@ -169,7 +170,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
 			checkEligibility(c.edge);
 		} else if (b instanceof Colourable.ChangeOutlineColour ||
-				b instanceof Colourable.ChangeFillColour) {
+				b instanceof Colourable.ChangeFillColour ||
+				b instanceof ModelObject.ChangeComment) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;

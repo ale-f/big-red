@@ -10,6 +10,7 @@ import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
@@ -47,8 +48,11 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			Object oldValue = propertySource.getPropertyValue(propertyID);
 			Object newValue = child.getValues()[i];
 			
-			if (propertyID.equals(Layoutable.PROPERTY_NAME))
+			if (propertyID.equals(Layoutable.PROPERTY_NAME)) {
 				cg.add(((Layoutable)j.getModel()).changeName((String)newValue));
+			} else if (propertyID.equals(ModelObject.PROPERTY_COMMENT)) {
+				cg.add(((Layoutable)j.getModel()).changeComment((String)newValue));
+			}
 		}
 		if (getParent() != null) {
 			((ChangePropertySheetEntry)getParent()).valueChanged(this, cg, target);
