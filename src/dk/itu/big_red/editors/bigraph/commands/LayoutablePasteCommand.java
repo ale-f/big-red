@@ -34,7 +34,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 	
 	@Override
 	@SuppressWarnings("unchecked")
-	public void prepare() {
+	public LayoutablePasteCommand prepare() {
 		/*
 		 * FIXME: If several elements with the same parent are copied and then
 		 * pasted *while the copied elements are still selected*, then
@@ -45,7 +45,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 		 */
 		cg.clear();
 		if (newParent == null)
-			return;
+			return this;
 		
 		setTarget(newParent.getBigraph());
 		if (scratch != null) {
@@ -56,15 +56,15 @@ public class LayoutablePasteCommand extends ChangeCommand {
 		try {
 			bList = (ArrayList<Layoutable>)Clipboard.getDefault().getContents();
 			if (bList == null)
-				return;
+				return this;
 		} catch (Exception e) {
-			return;
+			return this;
 		}
 		
 		for (Layoutable i : bList) {
 			if (!newParent.canContain(i)) {
 				cg.clear();
-				return;
+				return this;
 			} else if (i instanceof Node || i instanceof Root ||
 					i instanceof Site) {
 				Layoutable j = i.clone(null);
@@ -78,5 +78,6 @@ public class LayoutablePasteCommand extends ChangeCommand {
 				scratch.setNameFor(j, name);
 			}
 		}
+		return this;
 	}
 }

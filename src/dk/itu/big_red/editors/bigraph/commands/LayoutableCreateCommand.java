@@ -22,16 +22,16 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	private Layoutable node = null;
 	
 	@Override
-	public void prepare() {
+	public LayoutableCreateCommand prepare() {
 		cg.clear();
 		if (layout == null || container == null || node == null)
-			return;
+			return this;
 		setTarget(container.getBigraph());
 		for (Layoutable i : container.getChildren()) {
 			if (i instanceof Edge)
 				continue;
 			else if (i.getLayout().intersects(layout))
-				return;
+				return this;
 		}
 		if (container instanceof Bigraph) {
 			Bigraph bigraph = (Bigraph)container;
@@ -39,21 +39,21 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			    bottom = layout.getY() + layout.getHeight();
 			if (node instanceof OuterName) {
 				if (bottom > bigraph.getLowerOuterNameBoundary())
-					return;
+					return this;
 			} else if (node instanceof Root) {
 				if (top < bigraph.getUpperRootBoundary() ||
 						bottom > bigraph.getLowerRootBoundary())
-					return;
+					return this;
 			} else if (node instanceof InnerName) {
 				if (top < bigraph.getUpperInnerNameBoundary())
-					return;
+					return this;
 			}
 		}
 		
 		String name = container.getBigraph().getFirstUnusedName(node);
-		
 		cg.add(container.changeAddChild(node, name),
 			node.changeLayout(layout));
+		return this;
 	}
 	
 	public void setObject(Object s) {

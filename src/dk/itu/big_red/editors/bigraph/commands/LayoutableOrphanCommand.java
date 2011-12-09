@@ -37,12 +37,13 @@ public class LayoutableOrphanCommand extends ChangeCommand {
 	}
 	
 	@Override
-	public void prepare() {
+	public LayoutableOrphanCommand prepare() {
 		cg.clear();
 		if (parent != null && children.size() != 0) {
 			setTarget(parent.getBigraph());
 			for (Layoutable i : children)
 				cg.add(parent.changeRemoveChild(i));
 		}
+		return this;
 	}
 }

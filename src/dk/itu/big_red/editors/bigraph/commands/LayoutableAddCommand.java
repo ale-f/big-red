@@ -18,7 +18,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 	private Rectangle constraint = null;
 
 	@Override
-	public void prepare() {
+	public LayoutableAddCommand prepare() {
 		cg.clear();
 		if (parent != null && child != null && constraint != null) {
 			setTarget(parent.getBigraph());
@@ -26,10 +26,10 @@ public class LayoutableAddCommand extends ChangeCommand {
 			if (!(child instanceof Edge)) {
 				for (Layoutable i : parent.getChildren()) {
 					if (i.getLayout().intersects(constraint))
-						return;
+						return this;
 				}
 				if (!parent.getLayout().getCopy().setLocation(0, 0).contains(constraint))
-					return;
+					return this;
 			}
 			
 			Rectangle nr = constraint;
@@ -42,6 +42,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 			cg.add(parent.changeAddChild(child, child.getName()),
 					child.changeLayout(nr));
 		}
+		return this;
 	}
 	
 	public void setParent(Object parent) {

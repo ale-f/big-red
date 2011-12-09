@@ -11,11 +11,12 @@ public class BigraphRelayoutCommand extends ChangeCommand {
 	}
 	
 	@Override
-	public void prepare() {
+	public BigraphRelayoutCommand prepare() {
 		if (bigraph != null) {
 			setTarget(bigraph);
 			setChange(bigraph.relayout());
 		}
+		return this;
 	}
 
 }

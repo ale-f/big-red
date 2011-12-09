@@ -32,13 +32,14 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	}
 	
 	@Override
-	public void prepare() {
+	public LayoutableRelayoutCommand prepare() {
 		cg.clear();
 		if (model == null || layout == null)
-			return;
+			return this;
 		setTarget(model.getBigraph());
 		if (noOverlap() && boundariesSatisfied())
 			cg.add(model.changeLayout(layout));
+		return this;
 	}
 	
 	public boolean noOverlap() {

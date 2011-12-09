@@ -27,9 +27,11 @@ public abstract class ChangeCommand extends Command {
 	/**
 	 * Sets the {@link Change} that will be applied by this command.
 	 * @param change a {@link Change}
+	 * @return <code>this</code>, for convenience
 	 */
-	public void setChange(Change change) {
+	public ChangeCommand setChange(Change change) {
 		this.change = change;
+		return this;
 	}
 
 	/**
@@ -43,16 +45,19 @@ public abstract class ChangeCommand extends Command {
 	/**
 	 * Sets the {@link IChangeable} that will be modified by this command.
 	 * @param target an {@link IChangeable}
+	 * @return <code>this</code>, for convenience
 	 */
-	public void setTarget(IChangeable target) {
+	public ChangeCommand setTarget(IChangeable target) {
 		this.target = target;
+		return this;
 	}
 	
 	/**
 	 * Prepares this command for execution once all of its parameters have been
 	 * set.
+	 * @return <code>this</code>, for convenience
 	 */
-	public abstract void prepare();
+	public abstract ChangeCommand prepare();
 	
 	/**
 	 * If this command's {@link Change change} and {@link IChangeable target}

@@ -36,7 +36,7 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 	}
 
 	@Override
-	public void prepare() {
+	public LinkConnectionCreateCommand prepare() {
 		cg.clear();
 		if (first instanceof Point && second instanceof Point) {
 			Bigraph b = ((Point)first).getBigraph();
@@ -53,5 +53,6 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			setTarget(((Link)first).getBigraph());
 			cg.add(((Point)second).changeConnect((Link)first));
 		}
+		return this;
 	}
 }
