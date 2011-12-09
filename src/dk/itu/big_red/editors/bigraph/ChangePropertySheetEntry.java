@@ -3,15 +3,18 @@ package dk.itu.big_red.editors.bigraph;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.ui.properties.UndoablePropertySheetEntry;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertySheetEntry;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.util.Colour;
 
 public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 
@@ -48,10 +51,17 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			Object oldValue = propertySource.getPropertyValue(propertyID);
 			Object newValue = child.getValues()[i];
 			
+			if (newValue instanceof RGB)
+				newValue = new Colour((RGB)newValue);
+			
 			if (propertyID.equals(Layoutable.PROPERTY_NAME)) {
 				cg.add(((Layoutable)j.getModel()).changeName((String)newValue));
 			} else if (propertyID.equals(ModelObject.PROPERTY_COMMENT)) {
 				cg.add(((Layoutable)j.getModel()).changeComment((String)newValue));
+			} else if (propertyID.equals(Colourable.PROPERTY_FILL)) {
+				cg.add(((Colourable)j.getModel()).changeFillColour((Colour)newValue));
+			} else if (propertyID.equals(Colourable.PROPERTY_OUTLINE)) {
+				cg.add(((Colourable)j.getModel()).changeOutlineColour((Colour)newValue));
 			}
 		}
 		if (getParent() != null) {
