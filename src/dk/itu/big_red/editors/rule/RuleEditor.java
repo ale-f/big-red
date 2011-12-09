@@ -48,10 +48,13 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
+import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
@@ -544,6 +547,10 @@ public class RuleEditor extends EditorPart implements
 	public Object getAdapter(Class adapter) {
 		if (adapter == CommandStack.class) {
 			return getCommandStack();
+		} else if (adapter == IPropertySheetPage.class) {
+			PropertySheetPage psp = new PropertySheetPage();
+			psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
+			return psp;
 		} else return super.getAdapter(adapter);
 	}
 }
