@@ -2,7 +2,6 @@ package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
 
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -80,29 +79,6 @@ public class ModelPropertySource implements IPropertySource {
 
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		/*
-		 * XXX: as currently implemented, there's no way for Nodes to get
-		 * their original shape back (because "Undo Set Control property"
-		 * just calls this function with the previous Control value).
-		 */
-		if (id.equals(Colourable.PROPERTY_FILL)) {
-			Colourable c = (Colourable)object;
-			Colour co = new Colour((RGB)value);
-			if (c instanceof Layoutable)
-				((Layoutable)c).getBigraph().applyChange(c.changeFillColour(co));
-		} else if (id.equals(Colourable.PROPERTY_OUTLINE)) {
-			Colourable c = (Colourable)object;
-			Colour co = new Colour((RGB)value);
-			if (c instanceof Layoutable)
-				((Layoutable)c).getBigraph().applyChange(c.changeOutlineColour(co));
-		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
-			String comment = (String)value;
-			object.setComment((comment.length() == 0 ? null : comment));
-		} else if (id.equals(Layoutable.PROPERTY_NAME)) {
-			String name = (String)value;
-			Layoutable l = (Layoutable)object;
-			l.getBigraph().applyChange(l.changeName(name));
-		}
+		/* does nothing; never called (see ChangePropertySheetEntry) */
 	}
-
 }
