@@ -16,6 +16,7 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
@@ -29,7 +30,7 @@ import dk.itu.big_red.util.UI;
  * @author alec
  *
  */
-public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
+public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener, IBigraphPart {
 	/**
 	 * Gets the model object, cast to a {@link Layoutable}.
 	 */
@@ -41,6 +42,11 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart implements 
 	@Override
 	public AbstractFigure getFigure() {
 		return (AbstractFigure)super.getFigure();
+	}
+	
+	@Override
+	public Bigraph getBigraph() {
+		return getModel().getBigraph();
 	}
 	
 	/**
