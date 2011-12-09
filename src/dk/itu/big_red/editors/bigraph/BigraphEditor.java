@@ -37,6 +37,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -215,6 +217,10 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	public Object getAdapter(Class type) {
     	if (type == ZoomManager.class) {
     		return ((ScalableRootEditPart)getGraphicalViewer().getRootEditPart()).getZoomManager();
+    	} else if (type == IPropertySheetPage.class) {
+    		PropertySheetPage psp = new PropertySheetPage();
+    		psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
+    		return psp;
     	} else if (type == IContentOutlinePage.class) {
     		return new BigraphEditorOutlinePage(this);
     	} else return super.getAdapter(type);
