@@ -13,6 +13,8 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
+import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
@@ -140,6 +142,32 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				DOM.applyAttributes(f,
 						"name", i.model.getName(),
 						"new-name", i.newName);
+			} else if (i_ instanceof Point.ChangeConnect) {
+				Point.ChangeConnect i = ac(i_);
+				if (i.point instanceof InnerName) {
+					f = DOM.applyAttributes(
+							newElement(XMLNS.CHANGE, "change:connect-inner-name"),
+							"name", i.point.getName(),
+							"link", i.link.getName());
+				} else if (i.point instanceof Port) {
+					f = DOM.applyAttributes(
+							newElement(XMLNS.CHANGE, "change:connect-port"),
+							"node", i.point.getParent().getName(),
+							"name", i.point.getName(),
+							"link", i.link.getName());
+				} else hurl();
+			} else if (i_ instanceof Point.ChangeDisconnect) {
+				Point.ChangeDisconnect i = ac(i_);
+				if (i.point instanceof InnerName) {
+					f = DOM.applyAttributes(
+							newElement(XMLNS.CHANGE, "change:disconnect-inner-name"),
+							"name", i.point.getName());
+				} else if (i.point instanceof Port) {
+					f = DOM.applyAttributes(
+							newElement(XMLNS.CHANGE, "change:disconnect-port"),
+							"node", i.point.getParent().getName(),
+							"name", i.point.getName());
+				} else hurl();
 			} else hurl();
 			
 			/**
