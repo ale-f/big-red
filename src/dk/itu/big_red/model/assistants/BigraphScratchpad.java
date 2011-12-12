@@ -44,13 +44,19 @@ public class BigraphScratchpad {
 	private HashMap<Object, Map<String, Layoutable>> names =
 			new HashMap<Object, Map<String, Layoutable>>();
 	
-	public void clear() {
+	/**
+	 * Clears everything in this {@link BigraphScratchpad}.
+	 * @return <code>this</code>, for convenience
+	 */
+	public BigraphScratchpad clear() {
 		links.clear();
 		points.clear();
 		children.clear();
 		layouts.clear();
 		parents.clear();
 		names.clear();
+		
+		return this;
 	}
 	
 	public ReadonlyRectangle getLayoutFor(Layoutable a) {
