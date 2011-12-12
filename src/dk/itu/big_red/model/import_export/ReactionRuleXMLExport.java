@@ -1,8 +1,5 @@
 package dk.itu.big_red.model.import_export;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.import_export.ExportFailedException;
@@ -19,9 +16,9 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.util.DOM;
 
 public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
@@ -36,6 +33,14 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 	public Element processRule(Element e, ReactionRule rr) throws ExportFailedException {
 		DOM.appendChildIfNotNull(e,
 			processRedex(newElement(XMLNS.RULE, "rule:redex"), rr.getRedex()));
+		
+		try {
+			getModel().getReactum().tryApplyChange(
+					getModel().getChanges().inverse());
+		} catch (ChangeRejectedException ex) {
+			throw new ExportFailedException(ex);
+		}
+		
 		DOM.appendChildIfNotNull(e,
 			processChanges(newElement(XMLNS.RULE, "rule:changes"), rr.getChanges()));
 		return e;
@@ -55,33 +60,26 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		return (T)i;
 	}
 	
-	private <T, V> T findKey(Map<T, V> map, V value) {
-		for (Entry<T, V> i : map.entrySet())
-			if (i.getValue().equals(value))
-				return i.getKey();
-		return null;
-	}
-	
 	private static void hurl() {
 		throw new RuntimeException("Fatal");
 	}
 	
-	private Element processChanges(Element e, ChangeGroup changes) {
-		try {
+	private Element processChanges(Element e, ChangeGroup changes) throws ExportFailedException {
 		DOM.applyAttributes(e,
 				"xmlns:change", XMLNS.CHANGE);
 		
-		BigraphScratchpad scratch =
-				new BigraphScratchpad(getModel().getReactum());
-		
+		return _processChanges(e, changes);
+	}
+	
+	private Element _processChanges(Element e, ChangeGroup changes) throws ExportFailedException {
 		for (Change i_ : changes) {
 			Element f = null;
 			
 			if (i_ instanceof Colourable.ChangeColour ||
 					i_ instanceof Layoutable.ChangeLayout) {
-				continue;
+				/* do nothing */;
 			} else if (i_ instanceof ChangeGroup) {
-				processChanges(e, (ChangeGroup)i_);
+				_processChanges(e, (ChangeGroup)i_);
 			} else if (i_ instanceof Container.ChangeAddChild) {
 				Container.ChangeAddChild i = ac(i_);
 				if (i.child instanceof Root) {
@@ -105,27 +103,26 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-node-to-root"),
 								"name", i.name,
-								"parent", findKey(scratch.getNamespaceFor(i.parent), i.parent));
+								"parent", i.parent.getName());
 					} else if (i.parent instanceof Node) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-node-to-node"),
 								"name", i.name,
-								"parent", findKey(scratch.getNamespaceFor(i.parent), i.parent));
+								"parent", i.parent.getName());
 					} else hurl();
 				} else if (i.child instanceof Site) {
 					if (i.parent instanceof Root) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-site-to-root"),
 								"name", i.name,
-								"parent", findKey(scratch.getNamespaceFor(i.parent), i.parent));
+								"parent", i.parent.getName());
 					} else if (i.parent instanceof Node) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-site-to-node"),
 								"name", i.name,
-								"parent", findKey(scratch.getNamespaceFor(i.parent), i.parent));
+								"parent", i.parent.getName());
 					} else hurl();
 				} else hurl();
-				scratch.addChildFor(i.parent, i.child, i.name);
 			} else if (i_ instanceof Layoutable.ChangeName) {
 				Layoutable.ChangeName i = ac(i_);
 				if (i.model instanceof Root) {
@@ -140,23 +137,25 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 					f = newElement(XMLNS.CHANGE, "change:rename-inner-name");
 				} else hurl();
 				
-				String oldName =
-					findKey(scratch.getNamespaceFor(i.model), i.model);
 				DOM.applyAttributes(f,
-						"name", oldName,
+						"name", i.model.getName(),
 						"new-name", i.newName);
-				scratch.getNamespaceFor(i.model).remove(oldName);
-				scratch.setNameFor(i.model, i.newName);
 			} else hurl();
 			
-			DOM.appendChildIfNotNull(e, f);
+			/**
+			 * Don't try to do anything with ChangeGroups - their Changes are
+			 * individually dealt with.
+			 */
+			if (!(i_ instanceof ChangeGroup)) {
+				DOM.appendChildIfNotNull(e, f);
+				try {
+					getModel().getReactum().tryApplyChange(i_);
+				} catch (ChangeRejectedException ex) {
+					throw new ExportFailedException(ex);
+				}
+			}
 		}
 		
 		return e;
-		} catch (Throwable t) {
-			t.printStackTrace();
-			System.exit(-1);
-		}
-		return null;
 	}
 }
