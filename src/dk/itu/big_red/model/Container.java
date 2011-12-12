@@ -98,6 +98,8 @@ public abstract class Container extends Layoutable {
 	}
 	
 	protected void addChild(Layoutable child) {
+		if (children.contains(child))
+			throw new RuntimeException("BUG: " + this + " already contains " + child);
 		children.add(child);
 		child.setParent(this);
 		firePropertyChange(PROPERTY_CHILD, null, child);
