@@ -9,7 +9,9 @@ import java.util.Map.Entry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 
+import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
+import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -460,6 +462,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	
 	@Override
 	public void tryApplyChange(Change b) throws ChangeRejectedException {
+		getScratchpad().clear();
 		tryValidateChange(b);
 		doChange(b);
 	}
@@ -520,5 +523,23 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	public Bigraph setFile(IFile file) {
 		this.file = file;
 		return this;
+	}
+	
+	private BigraphScratchpad scratch = null;
+	
+	/**
+	 * Returns the {@link BigraphScratchpad} used to track impending changes to
+	 * the state of this {@link Bigraph}. Objects which mutate the state of a
+	 * Bigraph &mdash; for instance, {@link ChangeCommand}s &mdash; should use
+	 * this scratchpad to ensure that validation can work properly, even when
+	 * changes are distributed across several such mutators.
+	 * <p>The scratchpad will be cleared by calls to {@link
+	 * #applyChange(Change)} or {@link #tryApplyChange(Change)}.
+	 * @return a {@link BigraphScratchpad}
+	 */
+	public BigraphScratchpad getScratchpad() {
+		if (scratch == null)
+			scratch = new BigraphScratchpad(this);
+		return scratch;
 	}
 }
