@@ -114,12 +114,6 @@ public class Control extends Colourable implements IControl {
 			-40, 0
 	});
 	
-	public static final PointList POINTS_TRIANGLE = new PointList(new int[] {
-			0, -40,
-			20, 0,
-			-20, 0
-	});
-	
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
 	private PointList points = new PointList();
 	
@@ -276,6 +270,49 @@ public class Control extends Colourable implements IControl {
 			if (i.getName().equals(name))
 				return i;
 		return null;
+	}
+	
+	private ArrayList<Parameter> parameters;
+	
+	protected static class Parameter {
+		private String name;
+		
+		public Parameter setName(String name) {
+			this.name = name;
+			return this;
+		}
+		
+		public String getName() {
+			return name;
+		}
+	}
+	
+	protected static class LongParameter extends Parameter {
+		private long minimum = Long.MIN_VALUE, maximum = Long.MAX_VALUE;
+		
+		public Parameter setMin(long minimum) {
+			this.minimum = minimum;
+			return this;
+		}
+		
+		public long getMinimum() {
+			return minimum;
+		}
+		
+		public Parameter setMaximum(long maximum) {
+			this.maximum = maximum;
+			return this;
+		}
+		
+		public long getMaximum() {
+			return maximum;
+		}
+	}
+	
+	protected List<Parameter> getParameters() {
+		if (parameters == null)
+			parameters = new ArrayList<Parameter>();
+		return parameters;
 	}
 	
 	@Override
