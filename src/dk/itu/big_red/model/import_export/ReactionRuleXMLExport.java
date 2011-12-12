@@ -62,8 +62,8 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		return (T)i;
 	}
 	
-	private static void hurl() {
-		throw new RuntimeException("Fatal");
+	private static void hurl() throws ExportFailedException {
+		throw new ExportFailedException("Aieee!");
 	}
 	
 	private Element processChanges(Element e, ChangeGroup changes) throws ExportFailedException {
