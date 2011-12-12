@@ -85,46 +85,36 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 			} else if (i_ instanceof Container.ChangeAddChild) {
 				Container.ChangeAddChild i = ac(i_);
 				if (i.child instanceof Root) {
-					f = DOM.applyAttributes(
-							newElement(XMLNS.CHANGE, "change:add-root"),
-							"name", i.name);
+					f = newElement(XMLNS.CHANGE, "change:add-root");
 				} else if (i.child instanceof Edge) {
-					f = DOM.applyAttributes(
-							newElement(XMLNS.CHANGE, "change:add-edge"),
-							"name", i.name);
+					f = newElement(XMLNS.CHANGE, "change:add-edge");
 				} else if (i.child instanceof OuterName) {
-					f = DOM.applyAttributes(
-							newElement(XMLNS.CHANGE, "change:add-outer-name"),
-							"name", i.name);
+					f = newElement(XMLNS.CHANGE, "change:add-outer-name");
 				} else if (i.child instanceof InnerName) {
-					f = DOM.applyAttributes(
-							newElement(XMLNS.CHANGE, "change:add-inner-name"),
-							"name", i.name);
+					f = newElement(XMLNS.CHANGE, "change:add-inner-name");
 				} else if (i.child instanceof Node) {
 					if (i.parent instanceof Root) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-node-to-root"),
-								"name", i.name,
 								"parent", i.parent.getName());
 					} else if (i.parent instanceof Node) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-node-to-node"),
-								"name", i.name,
 								"parent", i.parent.getName());
 					} else hurl();
 				} else if (i.child instanceof Site) {
 					if (i.parent instanceof Root) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-site-to-root"),
-								"name", i.name,
 								"parent", i.parent.getName());
 					} else if (i.parent instanceof Node) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-site-to-node"),
-								"name", i.name,
 								"parent", i.parent.getName());
 					} else hurl();
 				} else hurl();
+				DOM.applyAttributes(f,
+						"name", i.name);
 			} else if (i_ instanceof Layoutable.ChangeName) {
 				Layoutable.ChangeName i = ac(i_);
 				if (i.model instanceof Root) {
@@ -145,29 +135,26 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 			} else if (i_ instanceof Point.ChangeConnect) {
 				Point.ChangeConnect i = ac(i_);
 				if (i.point instanceof InnerName) {
-					f = DOM.applyAttributes(
-							newElement(XMLNS.CHANGE, "change:connect-inner-name"),
-							"name", i.point.getName(),
-							"link", i.link.getName());
+					f = newElement(XMLNS.CHANGE, "change:connect-inner-name");
 				} else if (i.point instanceof Port) {
 					f = DOM.applyAttributes(
 							newElement(XMLNS.CHANGE, "change:connect-port"),
-							"node", i.point.getParent().getName(),
-							"name", i.point.getName(),
-							"link", i.link.getName());
+							"node", i.point.getParent().getName());
 				} else hurl();
+				DOM.applyAttributes(f,
+						"name", i.point.getName(),
+						"link", i.link.getName());
 			} else if (i_ instanceof Point.ChangeDisconnect) {
 				Point.ChangeDisconnect i = ac(i_);
 				if (i.point instanceof InnerName) {
-					f = DOM.applyAttributes(
-							newElement(XMLNS.CHANGE, "change:disconnect-inner-name"),
-							"name", i.point.getName());
+					f = newElement(XMLNS.CHANGE, "change:disconnect-inner-name");
 				} else if (i.point instanceof Port) {
 					f = DOM.applyAttributes(
 							newElement(XMLNS.CHANGE, "change:disconnect-port"),
-							"node", i.point.getParent().getName(),
-							"name", i.point.getName());
+							"node", i.point.getParent().getName());
 				} else hurl();
+				DOM.applyAttributes(f,
+						"name", i.point.getName());
 			} else hurl();
 			
 			/**
