@@ -47,7 +47,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 	public void setTarget(Bigraph target) {
 		super.setTarget(target);
 		if (scratch == null)
-			scratch = target.getScratchpad().clear();
+			scratch = new BigraphScratchpad(target);
 	}
 	
 	private void removePoint(Link l, Point p) {

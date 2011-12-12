@@ -48,7 +48,9 @@ public class LayoutablePasteCommand extends ChangeCommand {
 			return this;
 		
 		setTarget(newParent.getBigraph());
-		scratch = newParent.getBigraph().getScratchpad().clear();
+		if (scratch != null) {
+			scratch.clear();
+		} else scratch = new BigraphScratchpad(newParent.getBigraph());
 		
 		ArrayList<Layoutable> bList;
 		try {
