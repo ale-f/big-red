@@ -84,7 +84,7 @@ public class BigraphScratchpad {
 		return (Bigraph)c;
 	}
 	
-	public void setParentFor(Layoutable a, Container b) {
+	protected void setParentFor(Layoutable a, Container b) {
 		parents.put(a, b);
 	}
 	
@@ -115,7 +115,7 @@ public class BigraphScratchpad {
 		} else return links.get(a);
 	}
 	
-	public void setLinkFor(Point a, Link b) {
+	protected void setLinkFor(Point a, Link b) {
 		links.put(a, b);
 	}
 	
