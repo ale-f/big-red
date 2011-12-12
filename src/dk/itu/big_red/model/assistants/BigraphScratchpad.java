@@ -41,8 +41,11 @@ public class BigraphScratchpad {
 	
 	private HashMap<Point, Link> links = new HashMap<Point, Link>();
 	
-	private HashMap<Object, Map<String, Layoutable>> names =
+	private HashMap<Object, Map<String, Layoutable>> namespaces =
 			new HashMap<Object, Map<String, Layoutable>>();
+
+	private HashMap<Layoutable, String> names =
+			new HashMap<Layoutable, String>();
 	
 	/**
 	 * Clears everything in this {@link BigraphScratchpad}.
@@ -54,6 +57,7 @@ public class BigraphScratchpad {
 		children.clear();
 		layouts.clear();
 		parents.clear();
+		namespaces.clear();
 		names.clear();
 		
 		return this;
@@ -137,18 +141,30 @@ public class BigraphScratchpad {
 		getPointsFor(a).add(b);
 		setLinkFor(b, a);
 	}
-
+	
 	public Map<String, Layoutable> getNamespaceFor(Layoutable a) {
 		Object nsi = Bigraph.getNSI(a);
 		Map<String, Layoutable> b;
-		if (!names.containsKey(nsi)) {
+		if (!namespaces.containsKey(nsi)) {
 			b = Bigraph.newNamespace(bigraph.getNamespace(nsi));
-			names.put(nsi, b);
-		} else b = names.get(nsi);
+			namespaces.put(nsi, b);
+		} else b = namespaces.get(nsi);
 		return b;
 	}
 	
+	public String getNameFor(Layoutable a) {
+		if (!names.containsKey(a)) {
+			return a.getName();
+		} else return names.get(a);
+	}
+	
 	public void setNameFor(Layoutable a, String b) {
+		String oldName = getNameFor(a);
+		
+		names.remove(a);
+		names.put(a, b);
+		
+		getNamespaceFor(a).remove(oldName);
 		getNamespaceFor(a).put(b, a);
 	}
 }
