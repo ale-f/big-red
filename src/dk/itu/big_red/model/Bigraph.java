@@ -222,6 +222,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			m = new HashMap<ModelObject, ModelObject>();
 		Bigraph b = (Bigraph)super.clone(m);
 		
+		b.setSignature(getSignature());
+		
 		for (Link i : Lists.only(getChildren(), Link.class)) {
 			Link iClone = (Link)m.get(i);
 			for (Point p : i.getPoints())
