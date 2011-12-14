@@ -97,10 +97,12 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 					if (i.getCreator() instanceof Root) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-node-to-root"),
+								"control", ((Node)i.child).getControl().getLongName(),
 								"parent", i.getCreator().getName());
 					} else if (i.getCreator() instanceof Node) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-node-to-node"),
+								"control", ((Node)i.child).getControl().getLongName(),
 								"parent", i.getCreator().getName());
 					} else hurl();
 				} else if (i.child instanceof Site) {
