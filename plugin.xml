@@ -270,5 +270,19 @@
             name="BigMC">
       </exporter>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="dk.itu.big_red.preferences.RedPreferencePage"
+            id="dk.itu.big_red.preferences.RedPreferencePage"
+            name="Big Red">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="dk.itu.big_red.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>

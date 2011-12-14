@@ -64,7 +64,8 @@ public class RedApplicationActionBarAdvisor extends ActionBarAdvisor {
 		};
 		
 		actionWindow = new Object[] {
-			new MenuManager("Show &View")
+			new MenuManager("Show &View"),
+			ActionFactory.PREFERENCES.create(window)
 		};
 		
 		actionWindowShowView = new Object[] {
