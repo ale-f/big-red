@@ -361,7 +361,7 @@ public class RuleEditor extends EditorPart implements
 		} else if (redexChange instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild ch = ac(redexChange);
 			
-			Container reactumParent = getReactumEntity(ch.parent);
+			Container reactumParent = getReactumEntity(ch.getCreator());
 			Layoutable reactumChild = getReactumEntity(ch.child);
 			
 			if (reactumParent == null)
@@ -381,28 +381,28 @@ public class RuleEditor extends EditorPart implements
 			} else reactumName = Bigraph.getFirstUnusedName(reactumNamespace);
 			
 			reactumChange =
-				new Container.ChangeAddChild(reactumParent, reactumChild, reactumName);
+				reactumParent.changeAddChild(reactumChild, reactumName);
 		} else if (redexChange instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout ch = ac(redexChange);
 			
-			Layoutable reactumModel = getReactumEntity(ch.model);
+			Layoutable reactumModel = getReactumEntity(ch.getCreator());
 			
 			if (reactumModel == null)
 				System.exit(-1);
 			
 			reactumChange =
-				new Layoutable.ChangeLayout(reactumModel, ch.newLayout.getCopy());
+				reactumModel.changeLayout(ch.newLayout.getCopy());
 		} else if (redexChange instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild ch = ac(redexChange);
 			
-			Container reactumParent = getReactumEntity(ch.parent);
+			Container reactumParent = getReactumEntity(ch.getCreator());
 			Layoutable reactumChild = getReactumEntity(ch.child);
 			
 			if (reactumParent == null || reactumChild == null)
 				System.exit(-1);
 			
 			reactumChange =
-				new Container.ChangeRemoveChild(reactumParent, reactumChild);
+				reactumParent.changeRemoveChild(reactumChild);
 			model.getRedexToReactumMap().remove(ch.child);
 		}
 		System.out.println(redexChange + "\n\t->" + reactumChange);

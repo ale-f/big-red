@@ -378,7 +378,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	}
 	
 	/**
-	 * Creates {@link Change}s which will (<i>almost</i> sensibly) resize and
+	 * Creates {@link ContainerChange}s which will (<i>almost</i> sensibly) resize and
 	 * reposition all of this {@link Bigraph}'s children.
 	 * @param cg a {@link ChangeGroup} to which changes should be appended
 	 * @return a {@link ChangeGroup} containing relayout changes
@@ -471,41 +471,41 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 				doChange(c);
 		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
-			c.link.addPoint(c.point);
+			c.link.addPoint(c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			c.link.removePoint(c.point);
+			c.link.removePoint(c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
-			c.parent.addChild(c.child);
+			c.getCreator().addChild(c.child);
 			c.child.setName(c.name);
 			getNamespace(getNSI(c.child)).put(c.name, c.child);
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
-			c.parent.removeChild(c.child);
+			c.getCreator().removeChild(c.child);
 			getNamespace(getNSI(c.child)).remove(c.child.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
-			c.model.setLayout(c.newLayout);
-			if (c.model.getParent() instanceof Bigraph)
-				((Bigraph)c.model.getParent()).updateBoundaries();
+			c.getCreator().setLayout(c.newLayout);
+			if (c.getCreator().getParent() instanceof Bigraph)
+				((Bigraph)c.getCreator().getParent()).updateBoundaries();
 		} else if (b instanceof Edge.ChangeReposition) {
 			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
-			c.edge.averagePosition();
+			c.getCreator().averagePosition();
 		} else if (b instanceof Colourable.ChangeOutlineColour) {
 			Colourable.ChangeOutlineColour c = (Colourable.ChangeOutlineColour)b;
-			c.model.setOutlineColour(c.newColour);
+			c.getCreator().setOutlineColour(c.newColour);
 		} else if (b instanceof Colourable.ChangeFillColour) {
 			Colourable.ChangeFillColour c = (Colourable.ChangeFillColour)b;
-			c.model.setFillColour(c.newColour);
+			c.getCreator().setFillColour(c.newColour);
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			getNamespace(getNSI(c.model)).remove(c.model.getName());
-			c.model.setName(c.newName);
-			getNamespace(getNSI(c.model)).put(c.newName, c.model);
+			getNamespace(getNSI(c.getCreator())).remove(c.getCreator().getName());
+			c.getCreator().setName(c.newName);
+			getNamespace(getNSI(c.getCreator())).put(c.newName, c.getCreator());
 		} else if (b instanceof ModelObject.ChangeComment) {
 			ModelObject.ChangeComment c = (ModelObject.ChangeComment)b;
-			c.model.setComment(c.comment);
+			c.getCreator().setComment(c.comment);
 		}
 	}
 

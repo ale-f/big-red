@@ -2,7 +2,6 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -20,22 +19,24 @@ import dk.itu.big_red.util.geometry.Rectangle;
   *
   */
 public class Edge extends Link implements IEdge {
-	public static class ChangeReposition extends Change {
-		public Edge edge;
+	public class ChangeReposition extends LayoutableChange {
+		@Override
+		public Edge getCreator() {
+			return Edge.this;
+		}
 		
-		public ChangeReposition(Edge edge) {
-			this.edge = edge;
+		protected ChangeReposition() {
 		}
 
 		private Rectangle oldLayout;
 		@Override
 		public void beforeApply() {
-			oldLayout = edge.getLayout().getCopy();
+			oldLayout = getCreator().getLayout().getCopy();
 		}
 		
 		@Override
-		public Change inverse() {
-			return edge.changeLayout(oldLayout);
+		public LayoutableChange inverse() {
+			return getCreator().changeLayout(oldLayout);
 		}
 		
 		@Override
@@ -45,12 +46,12 @@ public class Edge extends Link implements IEdge {
 		
 		@Override
 		public boolean isReady() {
-			return (edge != null);
+			return true;
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(recalculate position of " + edge + ")";
+			return "Change(recalculate position of " + getCreator() + ")";
 		}
 	}
 	
@@ -83,7 +84,7 @@ public class Edge extends Link implements IEdge {
 		return (Edge)super.clone(m);
 	}
 
-	public Change changeReposition() {
-		return new ChangeReposition(this);
+	public LayoutableChange changeReposition() {
+		return new ChangeReposition();
 	}
 }

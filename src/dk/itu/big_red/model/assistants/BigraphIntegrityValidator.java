@@ -103,25 +103,25 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				_tryValidateChange(c);
 		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
-			checkEligibility(c.link, c.point);
-			if (scratch.getLinkFor(c.point) != null)
+			checkEligibility(c.link, c.getCreator());
+			if (scratch.getLinkFor(c.getCreator()) != null)
 				rejectChange(b,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
-			scratch.addPointFor(c.link, c.point);
+			scratch.addPointFor(c.link, c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			checkEligibility(c.link, c.point);
-			if (scratch.getLinkFor(c.point) == null)
+			checkEligibility(c.link, c.getCreator());
+			if (scratch.getLinkFor(c.getCreator()) == null)
 				rejectChange("The Point is already disconnected");
-			scratch.removePointFor(c.link, c.point);
+			scratch.removePointFor(c.link, c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			
-			if (c.parent instanceof Node &&
-				((Node)c.parent).getControl().getKind() == Kind.ATOMIC)
+			if (c.getCreator() instanceof Node &&
+				((Node)c.getCreator()).getControl().getKind() == Kind.ATOMIC)
 				rejectChange(
-						((Node)c.parent).getControl().getLongName() +
+						((Node)c.getCreator()).getControl().getLongName() +
 						" is an atomic control");
 			
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.child);
@@ -131,58 +131,58 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				rejectChange("The name \"" + c.name + "\", proposed for " + c.child + ", is already in use");
 			
 			if (c.child instanceof Edge) {
-				if (!(c.parent instanceof Bigraph))
+				if (!(c.getCreator() instanceof Bigraph))
 					rejectChange("Edges must be children of the top-level Bigraph");
 			} else {
 				if (c.child instanceof Container)
 					if (scratch.getChildrenFor((Container)c.child).size() != 0)
 						rejectChange(b, c.child + " already has child objects");
-				if (!c.parent.canContain(c.child))
+				if (!c.getCreator().canContain(c.child))
 					rejectChange(b,
-						c.parent.getClass().getSimpleName() + "s can't contain " +
+						c.getCreator().getClass().getSimpleName() + "s can't contain " +
 						c.child.getClass().getSimpleName() + "s");
 				if (!layoutChecks.contains(c.child))
 					layoutChecks.add(c.child);
 			}
 			
-			scratch.addChildFor(c.parent, c.child, c.name);
+			scratch.addChildFor(c.getCreator(), c.child, c.name);
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
-			checkEligibility(c.child, c.parent);
+			checkEligibility(c.child, c.getCreator());
 			if (c.child instanceof Container)
 				if (scratch.getChildrenFor((Container)c.child).size() != 0)
 					rejectChange(b, c.child + " has child objects which must be removed first");
-			if (scratch.getParentFor(c.child) != c.parent)
-				rejectChange(c.parent + " is not the parent of " + c.child);
-			scratch.removeChildFor(c.parent, c.child);
+			if (scratch.getParentFor(c.child) != c.getCreator())
+				rejectChange(c.getCreator() + " is not the parent of " + c.child);
+			scratch.removeChildFor(c.getCreator(), c.child);
 			
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.child);
 			ns.remove(c.child.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
-			checkEligibility(c.model);
-			if (c.model instanceof Bigraph)
+			checkEligibility(c.getCreator());
+			if (c.getCreator() instanceof Bigraph)
 				rejectChange("Bigraphs cannot be moved or resized");
-			if (!layoutChecks.contains(c.model))
-				layoutChecks.add(c.model);
-			scratch.setLayoutFor(c.model, c.newLayout);
+			if (!layoutChecks.contains(c.getCreator()))
+				layoutChecks.add(c.getCreator());
+			scratch.setLayoutFor(c.getCreator(), c.newLayout);
 		} else if (b instanceof Edge.ChangeReposition) {
 			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
-			checkEligibility(c.edge);
+			checkEligibility(c.getCreator());
 		} else if (b instanceof Colourable.ChangeOutlineColour ||
 				b instanceof Colourable.ChangeFillColour ||
 				b instanceof ModelObject.ChangeComment) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			checkEligibility(c.model);
+			checkEligibility(c.getCreator());
 			if (c.newName == null)
 				rejectChange(b, "Setting an object's name to null is no longer supported");
-			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.model);
+			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.getCreator());
 			if (ns.get(c.newName) != null)
-				if (!ns.get(c.newName).equals(c.model))
+				if (!ns.get(c.newName).equals(c.getCreator()))
 					rejectChange("Names must be unique");
-			scratch.setNameFor(c.model, c.newName);
+			scratch.setNameFor(c.getCreator(), c.newName);
 		} else {
 			rejectChange("The change was not recognised by the validator");
 		}

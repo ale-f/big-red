@@ -8,7 +8,6 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.w3c.dom.Node;
 
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.util.geometry.Rectangle;
 
@@ -21,39 +20,43 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public abstract class Container extends Layoutable {
-	public static class ChangeAddChild extends Change {
-		public Container parent;
+	protected abstract class ContainerChange
+	extends dk.itu.big_red.model.Layoutable.LayoutableChange {
+		@Override
+		public Container getCreator() {
+			return (Container)super.getCreator();
+		}
+	}
+	
+	public class ChangeAddChild extends ContainerChange {
 		public Layoutable child;
 		public String name;
 		
-		public ChangeAddChild(Container parent, Layoutable child, String name) {
-			this.parent = parent;
+		public ChangeAddChild(Layoutable child, String name) {
 			this.child = child;
 			this.name = name;
 		}
 		
 		@Override
-		public Change inverse() {
-			return new ChangeRemoveChild(parent, child);
+		public ContainerChange inverse() {
+			return getCreator().changeRemoveChild(child);
 		}
 		
 		@Override
 		public boolean isReady() {
-			return (parent != null && child != null && name != null);
+			return (child != null && name != null);
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(add child " + child + " to parent " + parent + " with name \"" + name + "\")";
+			return "Change(add child " + child + " to parent " + getCreator() + " with name \"" + name + "\")";
 		}
 	}
 	
-	public static class ChangeRemoveChild extends Change {
-		public Container parent;
+	public class ChangeRemoveChild extends ContainerChange {
 		public Layoutable child;
 		
-		public ChangeRemoveChild(Container parent, Layoutable child) {
-			this.parent = parent;
+		public ChangeRemoveChild(Layoutable child) {
 			this.child = child;
 		}
 		
@@ -70,18 +73,18 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public Change inverse() {
-			return new ChangeAddChild(parent, child, oldName);
+		public ContainerChange inverse() {
+			return getCreator().changeAddChild(child, oldName);
 		}
 		
 		@Override
 		public boolean isReady() {
-			return (parent != null && child != null);
+			return (child != null);
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(remove child " + child + " from " + parent + ")";
+			return "Change(remove child " + child + " from " + getCreator() + ")";
 		}
 	}
 	
@@ -132,7 +135,7 @@ public abstract class Container extends Layoutable {
 	}
 	
 	/**
-	 * Creates {@link Change}s which will resize this object to a sensible
+	 * Creates {@link ContainerChange}s which will resize this object to a sensible
 	 * default size and resize and reposition all of its children.
 	 * @param cg a {@link ChangeGroup} to which changes should be appended
 	 * @return the proposed new size of this object
@@ -173,12 +176,12 @@ public abstract class Container extends Layoutable {
 		return r;
 	}
 	
-	public Change changeAddChild(Layoutable child, String name) {
-		return new ChangeAddChild(this, child, name);
+	public ContainerChange changeAddChild(Layoutable child, String name) {
+		return new ChangeAddChild(child, name);
 	}
 	
-	public Change changeRemoveChild(Layoutable child) {
-		return new ChangeRemoveChild(this, child);
+	public ContainerChange changeRemoveChild(Layoutable child) {
+		return new ChangeRemoveChild(child);
 	}
 	
 	/**

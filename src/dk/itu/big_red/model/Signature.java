@@ -102,10 +102,10 @@ public class Signature extends ModelObject implements ISignature, IChangeable, I
 				doChange(i);
 		} else if (b instanceof Colourable.ChangeFillColour) {
 			Colourable.ChangeFillColour c = (Colourable.ChangeFillColour)b;
-			c.model.setFillColour(c.newColour);
+			c.getCreator().setFillColour(c.newColour);
 		} else if (b instanceof Colourable.ChangeOutlineColour) {
 			Colourable.ChangeOutlineColour c = (Colourable.ChangeOutlineColour)b;
-			c.model.setOutlineColour(c.newColour);
+			c.getCreator().setOutlineColour(c.newColour);
 		}
 	}
 	

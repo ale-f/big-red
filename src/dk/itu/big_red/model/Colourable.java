@@ -2,7 +2,6 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.ReadonlyColour;
 
@@ -38,12 +37,11 @@ public abstract class Colourable extends ModelObject {
 		OUTLINE_AND_FILL
 	}
 	
-	public static abstract class ChangeColour extends Change {
-		public Colourable model;
+	protected abstract class ColourableChange
+	extends dk.itu.big_red.model.ModelObject.ModelObjectChange {
 		public Colour newColour;
 		
-		private ChangeColour(Colourable model, Colour newColour) {
-			this.model = model;
+		private ColourableChange(Colour newColour) {
 			this.newColour = newColour;
 		}
 
@@ -56,49 +54,54 @@ public abstract class Colourable extends ModelObject {
 		
 		@Override
 		public boolean isReady() {
-			return (model != null && newColour != null);
+			return (newColour != null);
+		}
+		
+		@Override
+		public Colourable getCreator() {
+			return Colourable.this;
 		}
 	}
 	
-	public static class ChangeOutlineColour extends ChangeColour {
-		public ChangeOutlineColour(Colourable model, Colour newColour) {
-			super(model, newColour);
+	public class ChangeOutlineColour extends ColourableChange {
+		protected ChangeOutlineColour(Colour newColour) {
+			super(newColour);
 		}
 
 		@Override
 		public void beforeApply() {
-			oldColour = model.getOutlineColour().getCopy();
+			oldColour = getCreator().getOutlineColour().getCopy();
 		}
 		
 		@Override
-		public Change inverse() {
-			return new ChangeOutlineColour(model, oldColour);
+		public ColourableChange inverse() {
+			return getCreator().changeOutlineColour(oldColour);
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(set outline colour of " + model + " to " + newColour + ")";
+			return "Change(set outline colour of " + getCreator() + " to " + newColour + ")";
 		}
 	}
 	
-	public static class ChangeFillColour extends ChangeColour {
-		public ChangeFillColour(Colourable model, Colour newColour) {
-			super(model, newColour);
+	public class ChangeFillColour extends ColourableChange {
+		protected ChangeFillColour(Colour newColour) {
+			super(newColour);
 		}
 
 		@Override
 		public void beforeApply() {
-			oldColour = model.getFillColour().getCopy();
+			oldColour = getCreator().getFillColour().getCopy();
 		}
 		
 		@Override
-		public Change inverse() {
-			return new ChangeFillColour(model, oldColour);
+		public ColourableChange inverse() {
+			return getCreator().changeFillColour(oldColour);
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(set fill colour of " + model + " to " + newColour + ")";
+			return "Change(set fill colour of " + getCreator() + " to " + newColour + ")";
 		}
 	}
 	
@@ -158,12 +161,12 @@ public abstract class Colourable extends ModelObject {
 		old.invalidateSWTColor();
 	}
 
-	public Change changeOutlineColour(Colour c) {
-		return new ChangeOutlineColour(this, c);
+	public ColourableChange changeOutlineColour(Colour c) {
+		return new ChangeOutlineColour(c);
 	}
 	
-	public Change changeFillColour(Colour c) {
-		return new ChangeFillColour(this, c);
+	public ColourableChange changeFillColour(Colour c) {
+		return new ChangeFillColour(c);
 	}
 	
 	@Override

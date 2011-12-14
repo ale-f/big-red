@@ -1,6 +1,5 @@
 package dk.itu.big_red.model;
 
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.util.Colour;
@@ -13,53 +12,57 @@ import dk.itu.big_red.util.ReadonlyColour;
  * @see IPoint
  */
 public abstract class Point extends Layoutable implements IPoint {
-	public static class ChangeConnect extends Change {
-		public Point point;
-		public Link link;
-		
-		public ChangeConnect(Point point, Link link) {
-			this.point = point;
-			this.link = link;
-		}
-
+	protected abstract class PointChange
+	extends dk.itu.big_red.model.Layoutable.LayoutableChange {
 		@Override
-		public Change inverse() {
-			return new ChangeDisconnect(point, link);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (point != null && link != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(connect " + point + " to " + link + ")";
+		public Point getCreator() {
+			return Point.this;
 		}
 	}
 	
-	public static class ChangeDisconnect extends Change {
-		public Point point;
+	public class ChangeConnect extends PointChange {
 		public Link link;
 		
-		public ChangeDisconnect(Point point, Link link) {
-			this.point = point;
+		public ChangeConnect(Link link) {
 			this.link = link;
 		}
 
 		@Override
-		public Change inverse() {
-			return new ChangeConnect(point, link);
+		public LayoutableChange inverse() {
+			return getCreator().changeDisconnect(link);
 		}
 		
 		@Override
 		public boolean isReady() {
-			return (point != null && link != null);
+			return (link != null);
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(disconnect " + point + " from " + link + ")";
+			return "Change(connect " + getCreator() + " to " + link + ")";
+		}
+	}
+	
+	public class ChangeDisconnect extends PointChange {
+		public Link link;
+		
+		public ChangeDisconnect(Link link) {
+			this.link = link;
+		}
+
+		@Override
+		public LayoutableChange inverse() {
+			return new ChangeConnect(link);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (link != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(disconnect " + getCreator() + " from " + link + ")";
 		}
 	}
 	
@@ -98,12 +101,12 @@ public abstract class Point extends Layoutable implements IPoint {
 		return link;
 	}
 	
-	public Change changeConnect(Link l) {
-		return new ChangeConnect(this, l);
+	public LayoutableChange changeConnect(Link l) {
+		return new ChangeConnect(l);
 	}
 	
-	public Change changeDisconnect(Link l) {
-		return new ChangeDisconnect(this, l);
+	public LayoutableChange changeDisconnect(Link l) {
+		return new ChangeDisconnect(l);
 	}
 	
 	@Override

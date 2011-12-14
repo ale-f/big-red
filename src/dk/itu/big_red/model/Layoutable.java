@@ -7,7 +7,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.util.geometry.ReadonlyRectangle;
 import dk.itu.big_red.util.geometry.Rectangle;
@@ -31,24 +30,30 @@ import dk.itu.big_red.util.geometry.Rectangle;
  *
  */
 public abstract class Layoutable extends Colourable implements IAdaptable {
-	public static class ChangeLayout extends Change {
-		public Layoutable model;
+	protected abstract class LayoutableChange
+	extends dk.itu.big_red.model.ModelObject.ModelObjectChange {
+		@Override
+		public Layoutable getCreator() {
+			return Layoutable.this;
+		}
+	}
+	
+	public class ChangeLayout extends LayoutableChange {
 		public Rectangle newLayout;
 		
-		public ChangeLayout(Layoutable model, Rectangle newLayout) {
-			this.model = model;
+		protected ChangeLayout(Rectangle newLayout) {
 			this.newLayout = newLayout;
 		}
 
 		private Rectangle oldLayout;
 		@Override
 		public void beforeApply() {
-			oldLayout = model.getLayout().getCopy();
+			oldLayout = getCreator().getLayout().getCopy();
 		}
 		
 		@Override
-		public Change inverse() {
-			return new ChangeLayout(model, oldLayout);
+		public LayoutableChange inverse() {
+			return getCreator().changeLayout(oldLayout);
 		}
 		
 		@Override
@@ -58,21 +63,19 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 		
 		@Override
 		public boolean isReady() {
-			return (model != null && newLayout != null);
+			return (newLayout != null);
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(set layout of " + model + " to " + newLayout + ")";
+			return "Change(set layout of " + getCreator() + " to " + newLayout + ")";
 		}
 	}
 
-	public static class ChangeName extends Change {
-		public Layoutable model;
+	public class ChangeName extends LayoutableChange {
 		public String newName;
 		
-		public ChangeName(Layoutable model, String newName) {
-			this.model = model;
+		protected ChangeName(String newName) {
 			this.newName = newName;
 		}
 
@@ -80,13 +83,13 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 		private String oldName;
 		@Override
 		public void beforeApply() {
-			oldName = model.getName();
+			oldName = getCreator().getName();
 			oldNameRecorded = true;
 		}
 		
 		@Override
-		public Change inverse() {
-			return new ChangeName(model, oldName);
+		public LayoutableChange inverse() {
+			return getCreator().changeName(oldName);
 		}
 		
 		@Override
@@ -96,12 +99,12 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 		
 		@Override
 		public boolean isReady() {
-			return (model != null);
+			return (newName != null);
 		}
 		
 		@Override
 		public String toString() {
-			return "Change(set name of " + model + " to " + newName + ")";
+			return "Change(set name of " + getCreator() + " to " + newName + ")";
 		}
 	}
 	
@@ -203,7 +206,7 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	protected static final int PADDING = 25;
 	
 	/**
-	 * Creates {@link Change}s which will resize this object to a sensible
+	 * Creates {@link LayoutableChange}s which will resize this object to a sensible
 	 * default size.
 	 * @param cg a {@link ChangeGroup} to which changes should be appended
 	 * @return the proposed new size of this object
@@ -233,12 +236,12 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
-	public Change changeLayout(Rectangle newLayout) {
-		return new ChangeLayout(this, newLayout);
+	public LayoutableChange changeLayout(Rectangle newLayout) {
+		return new ChangeLayout(newLayout);
 	}
 	
-	public Change changeName(String newName) {
-		return new ChangeName(this, newName);
+	public LayoutableChange changeName(String newName) {
+		return new ChangeName(newName);
 	}
 	
 	@Override

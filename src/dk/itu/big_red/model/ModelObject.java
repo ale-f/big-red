@@ -20,12 +20,23 @@ import dk.itu.big_red.model.changes.Change;
  *
  */
 public class ModelObject {
-	public static class ChangeComment extends Change {
-		public ModelObject model;
+	public abstract class ModelObjectChange extends Change {
+		protected ModelObjectChange() {
+		}
+		
+		/**
+		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
+		 * @return
+		 */
+		public ModelObject getCreator() {
+			return ModelObject.this;
+		}
+	}
+	
+	public class ChangeComment extends ModelObjectChange {
 		public String comment;
 		
-		public ChangeComment(ModelObject model, String comment) {
-			this.model = model;
+		protected ChangeComment(String comment) {
 			this.comment = comment;
 		}
 
@@ -34,7 +45,7 @@ public class ModelObject {
 		
 		@Override
 		public void beforeApply() {
-			oldComment = model.getComment();
+			oldComment = getCreator().getComment();
 			oldCommentSet = true;
 		}
 		
@@ -44,8 +55,8 @@ public class ModelObject {
 		};
 		
 		@Override
-		public Change inverse() {
-			return new ChangeComment(model, oldComment);
+		public ModelObjectChange inverse() {
+			return getCreator().changeComment(oldComment);
 		}
 	}
 	
@@ -182,6 +193,6 @@ public class ModelObject {
 	}
 	
 	public ChangeComment changeComment(String comment) {
-		return new ChangeComment(this, comment);
+		return new ChangeComment(comment);
 	}
 }

@@ -77,7 +77,8 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		for (Change i_ : changes) {
 			Element f = null;
 			
-			if (i_ instanceof Colourable.ChangeColour ||
+			if (i_ instanceof Colourable.ChangeFillColour ||
+					i_ instanceof Colourable.ChangeOutlineColour ||
 					i_ instanceof Layoutable.ChangeLayout) {
 				/* do nothing */;
 			} else if (i_ instanceof ChangeGroup) {
@@ -93,68 +94,68 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				} else if (i.child instanceof InnerName) {
 					f = newElement(XMLNS.CHANGE, "change:add-inner-name");
 				} else if (i.child instanceof Node) {
-					if (i.parent instanceof Root) {
+					if (i.getCreator() instanceof Root) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-node-to-root"),
-								"parent", i.parent.getName());
-					} else if (i.parent instanceof Node) {
+								"parent", i.getCreator().getName());
+					} else if (i.getCreator() instanceof Node) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-node-to-node"),
-								"parent", i.parent.getName());
+								"parent", i.getCreator().getName());
 					} else hurl();
 				} else if (i.child instanceof Site) {
-					if (i.parent instanceof Root) {
+					if (i.getCreator() instanceof Root) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-site-to-root"),
-								"parent", i.parent.getName());
-					} else if (i.parent instanceof Node) {
+								"parent", i.getCreator().getName());
+					} else if (i.getCreator() instanceof Node) {
 						f = DOM.applyAttributes(
 								newElement(XMLNS.CHANGE, "change:add-site-to-node"),
-								"parent", i.parent.getName());
+								"parent", i.getCreator().getName());
 					} else hurl();
 				} else hurl();
 				DOM.applyAttributes(f,
 						"name", i.name);
 			} else if (i_ instanceof Layoutable.ChangeName) {
 				Layoutable.ChangeName i = ac(i_);
-				if (i.model instanceof Root) {
+				if (i.getCreator() instanceof Root) {
 					f = newElement(XMLNS.CHANGE, "change:rename-root");
-				} else if (i.model instanceof Node) {
+				} else if (i.getCreator() instanceof Node) {
 					f = newElement(XMLNS.CHANGE, "change:rename-node");
-				} else if (i.model instanceof Site) {
+				} else if (i.getCreator() instanceof Site) {
 					f = newElement(XMLNS.CHANGE, "change:rename-site");
-				} else if (i.model instanceof Link) {
+				} else if (i.getCreator() instanceof Link) {
 					f = newElement(XMLNS.CHANGE, "change:rename-link");
-				} else if (i.model instanceof InnerName) {
+				} else if (i.getCreator() instanceof InnerName) {
 					f = newElement(XMLNS.CHANGE, "change:rename-inner-name");
 				} else hurl();
 				
 				DOM.applyAttributes(f,
-						"name", i.model.getName(),
+						"name", i.getCreator().getName(),
 						"new-name", i.newName);
 			} else if (i_ instanceof Point.ChangeConnect) {
 				Point.ChangeConnect i = ac(i_);
-				if (i.point instanceof InnerName) {
+				if (i.getCreator() instanceof InnerName) {
 					f = newElement(XMLNS.CHANGE, "change:connect-inner-name");
-				} else if (i.point instanceof Port) {
+				} else if (i.getCreator() instanceof Port) {
 					f = DOM.applyAttributes(
 							newElement(XMLNS.CHANGE, "change:connect-port"),
-							"node", i.point.getParent().getName());
+							"node", i.getCreator().getParent().getName());
 				} else hurl();
 				DOM.applyAttributes(f,
-						"name", i.point.getName(),
+						"name", i.getCreator().getName(),
 						"link", i.link.getName());
 			} else if (i_ instanceof Point.ChangeDisconnect) {
 				Point.ChangeDisconnect i = ac(i_);
-				if (i.point instanceof InnerName) {
+				if (i.getCreator() instanceof InnerName) {
 					f = newElement(XMLNS.CHANGE, "change:disconnect-inner-name");
-				} else if (i.point instanceof Port) {
+				} else if (i.getCreator() instanceof Port) {
 					f = DOM.applyAttributes(
 							newElement(XMLNS.CHANGE, "change:disconnect-port"),
-							"node", i.point.getParent().getName());
+							"node", i.getCreator().getParent().getName());
 				} else hurl();
 				DOM.applyAttributes(f,
-						"name", i.point.getName());
+						"name", i.getCreator().getName());
 			} else hurl();
 			
 			/**
