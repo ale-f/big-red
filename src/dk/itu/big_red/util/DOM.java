@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
@@ -30,6 +32,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.xml.sax.SAXException;
 
@@ -311,5 +314,42 @@ public class DOM {
 	
 	public static boolean nameEqualsNS(Element e, String nsURI, String nodeName) {
 		return (e.getNamespaceURI().equals(nsURI) && e.getLocalName().equals(nodeName));
+	}
+	
+	public static Iterable<Node> iterableChildren(Node n) {
+		if (n != null) {
+			return iterable(n.getChildNodes());
+		} else return null;
+	}
+	
+	public static Iterable<Node> iterable(final NodeList nl_) {
+		if (nl_ != null) {
+			return new Iterable<Node>() {
+				@Override
+				public Iterator<Node> iterator() {
+					return new Iterator<Node>() {
+						private NodeList nl = nl_;
+						private int position = 0;
+						
+						@Override
+						public boolean hasNext() {
+							return (position < nl.getLength());
+						}
+	
+						@Override
+						public Node next() {
+							if (hasNext()) {
+								return nl.item(position++);
+							} else throw new NoSuchElementException();
+						}
+	
+						@Override
+						public void remove() {
+							throw new UnsupportedOperationException();
+						}
+					};
+				}
+			};
+		} else return null;
 	}
 }
