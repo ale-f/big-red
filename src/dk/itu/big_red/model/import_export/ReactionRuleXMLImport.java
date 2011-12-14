@@ -60,6 +60,7 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 			if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.CHANGE)) {
 				Element el = (Element)i;
+				System.out.println(el.getLocalName());
 				if (el.getLocalName().equals("add-root")) {
 					c = reactum.changeAddChild(new Root(),
 							chattr(el, "name"));
@@ -72,12 +73,22 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 				} else if (el.getLocalName().equals("add-outer-name")) {
 					c = reactum.changeAddChild(new OuterName(),
 							chattr(el, "name"));
+				} else if (el.getLocalName().equals("add-node-to-root")) {
+					c = ((Root)reactum.getNamespace(Root.class).
+							get(chattr(el, "parent"))).
+							changeAddChild(
+									new dk.itu.big_red.model.Node(
+											reactum.getSignature().
+											getControl(chattr(el, "control"))),
+											chattr(el, "name"));
 				}
 			}
 			if (c != null) {
 				try {
+					System.out.print(c + "...");
 					reactum.tryApplyChange(c);
 					rr.getChanges().add(c);
+					System.out.println("success!");
 				} catch (ChangeRejectedException cre) {
 					throw new ImportFailedException(cre);
 				}
