@@ -231,6 +231,14 @@ public class UI {
 		return tweakFont(original, 0, properties);
 	}
 
+	/**
+	 * Prompts the user for a string.
+	 * @param title the title to be given to the {@link InputDialog}
+	 * @param caption the <i>caption</i> to be given to the {@link InputDialog}
+	 * @param initialValue the initial string value
+	 * @param validator an {@link IInputValidator} to validate the string 
+	 * @return a string, or <code>null</code> if the user cancelled the dialog
+	 */
 	public static String promptFor(String title, String caption, String initialValue, IInputValidator validator) {
 		InputDialog id =
 			new InputDialog(getShell(), title,
@@ -243,19 +251,43 @@ public class UI {
 		}
 	}
 	
+	/**
+	 * Opens a generic error message with the given {@link Throwable} as a
+	 * cause.
+	 * @param error the error message to accompany the {@link Throwable}
+	 * @param cause the {@link Throwable} that caused this error
+	 */
 	public static void openError(String error, Throwable cause) {
 		ErrorDialog.openError(getShell(), null, error,
 				RedPlugin.getThrowableStatus(cause));
     }
 	
+	/**
+	 * Gets a shared image from the workbench's shared image registry.
+	 * <p>The usual caveats for {@link ISharedImages#getImage(String)} apply
+	 * here &mdash; in particular, don't dispose of the returned {@link Image}.
+	 * @param symbolicName the symbolic name of the image to retrieve
+	 * @return a shared {@link Image}
+	 */
 	public static Image getImage(String symbolicName) {
 		return getWorkbench().getSharedImages().getImage(symbolicName);
 	}
 
+	/**
+	 * Gets an image descriptor from the workbench's shared image registry.
+	 * @param symbolicName the symbolic name of the image whose descriptor
+	 * should be retrieved
+	 * @return an {@link ImageDescriptor}
+	 */
 	public static ImageDescriptor getImageDescriptor(String symbolicName) {
 		return getWorkbench().getSharedImages().getImageDescriptor(symbolicName);
 	}
 	
+	/**
+	 * Schedules a {@link Runnable} to be run as part of the workbench's
+	 * event loop.
+	 * @param r a {@link Runnable}
+	 */
 	public static void asyncExec(Runnable r) {
 		getWorkbench().getDisplay().asyncExec(r);
 	}
