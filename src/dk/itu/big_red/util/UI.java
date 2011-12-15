@@ -255,4 +255,8 @@ public class UI {
 	public static ImageDescriptor getImageDescriptor(String symbolicName) {
 		return getWorkbench().getSharedImages().getImageDescriptor(symbolicName);
 	}
+	
+	public static void asyncExec(Runnable r) {
+		getWorkbench().getDisplay().asyncExec(r);
+	}
 }
