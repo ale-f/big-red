@@ -55,7 +55,8 @@ public class ProcessDialog extends Dialog {
 	
 	public void signalData(int length, byte[] buffer) {
 		if (output == null) {
-			output = buffer;
+			output = new byte[length];
+			System.arraycopy(buffer, 0, output, 0, length);
 		} else if (length != 0) {
 			byte[] newOutput = new byte[output.length + length];
 			System.arraycopy(output, 0, newOutput, 0, output.length);
