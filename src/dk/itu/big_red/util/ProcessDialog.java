@@ -53,6 +53,12 @@ public class ProcessDialog extends Dialog {
 	
 	private static final Charset UTF8 = Charset.forName("UTF-8");
 	
+	/**
+	 * Called (in the main thread) when the worker thread has finished a read
+	 * operation.
+	 * @param length the number of bytes actually present in <code>buffer</code>
+	 * @param buffer a buffer containing a number of bytes
+	 */
 	private void signalData(int length, byte[] buffer) {
 		if (output == null) {
 			output = new byte[length];
@@ -67,9 +73,17 @@ public class ProcessDialog extends Dialog {
 		text.setTopIndex(Integer.MAX_VALUE);
 	}
 	
+	/**
+	 * Called (in the main thread) when there's nothing left for the worker
+	 * thread to read.
+	 */
 	private void signalDataComplete() {
 	}
 	
+	/**
+	 * Called (in the main thread) when the worker thread encounters an error.
+	 * @param e an {@link IOException}
+	 */
 	private void signalDataError(IOException e) {
 	}
 	
@@ -87,7 +101,7 @@ public class ProcessDialog extends Dialog {
 				public void run() {
 					InputStream is = process.getInputStream();
 					try {
-						byte[] buffer = new byte[32];
+						byte[] buffer = new byte[64];
 						int length;
 						while ((length = is.read(buffer)) != -1) {
 							final byte[] tBuffer = buffer;
