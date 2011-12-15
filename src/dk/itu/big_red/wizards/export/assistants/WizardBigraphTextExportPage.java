@@ -30,10 +30,13 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.Export.OptionDescriptor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
+import dk.itu.big_red.preferences.RedPreferencePage;
+import dk.itu.big_red.util.ProcessDialog;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.resources.Project;
 import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
@@ -43,7 +46,7 @@ import dk.itu.big_red.wizards.export.BigraphTextExportWizard;
 public class WizardBigraphTextExportPage extends WizardPage {
 	private Text bigraphText, resultText;
 	private IPath bigraphPath;
-	private Button clipboardButton, saveButton;
+	private Button clipboardButton, saveButton, bonusButton;
 	
 	private Label optionsLabel;
 	private Composite optionsGroup;
@@ -288,6 +291,26 @@ public class WizardBigraphTextExportPage extends WizardPage {
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
+		});
+		
+		bonusButton = new Button(group, SWT.NONE);
+		bonusButton.setText("Bonus...");
+		bonusButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ProcessDialog rd =
+					new ProcessDialog(UI.getShell(),
+						new ProcessBuilder(
+							RedPlugin.getInstance().getPreferenceStore().
+							getString(RedPreferencePage.PREFERENCE_BIGMC_PATH)));
+				rd.setBlockOnOpen(true);
+				rd.open();
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
 		});
 		
 		UI.setEnabled(false, clipboardButton, saveButton, resultText);
