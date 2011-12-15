@@ -53,7 +53,7 @@ public class ProcessDialog extends Dialog {
 	
 	private static final Charset UTF8 = Charset.forName("UTF-8");
 	
-	public void signalData(int length, byte[] buffer) {
+	private void signalData(int length, byte[] buffer) {
 		if (output == null) {
 			output = new byte[length];
 			System.arraycopy(buffer, 0, output, 0, length);
@@ -67,10 +67,10 @@ public class ProcessDialog extends Dialog {
 		text.setTopIndex(Integer.MAX_VALUE);
 	}
 	
-	public void signalDataComplete() {
+	private void signalDataComplete() {
 	}
 	
-	public void signalDataError(IOException e) {
+	private void signalDataError(IOException e) {
 	}
 	
 	private Process process;
