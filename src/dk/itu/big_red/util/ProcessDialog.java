@@ -101,9 +101,10 @@ public class ProcessDialog extends Dialog {
 				public void run() {
 					InputStream is = process.getInputStream();
 					try {
-						byte[] buffer = new byte[64];
+						byte[] buffer = new byte[128];
 						int length;
-						while ((length = is.read(buffer)) != -1) {
+						while (process != null &&
+								(length = is.read(buffer)) != -1) {
 							final byte[] tBuffer = buffer;
 							final int tLength = length;
 							UI.asyncExec(new Runnable() {
@@ -112,14 +113,18 @@ public class ProcessDialog extends Dialog {
 									ProcessDialog.this.signalData(tLength, tBuffer);
 								}
 							});
-							buffer = new byte[1024];
+							buffer = new byte[128];
 						}
-						UI.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								ProcessDialog.this.signalDataComplete();
-							}
-						});
+						/* Don't call signalDataComplete if the parent thread
+						 * has stopped caring. */
+						if (process != null) {
+							UI.asyncExec(new Runnable() {
+								@Override
+								public void run() {
+									ProcessDialog.this.signalDataComplete();
+								}
+							});
+						}
 					} catch (final IOException e) {
 						UI.asyncExec(new Runnable() {
 							@Override
@@ -127,6 +132,17 @@ public class ProcessDialog extends Dialog {
 								ProcessDialog.this.signalDataError(e);
 							}
 						});
+					} finally {
+						try {
+							is.close();
+						} catch (final IOException e) {
+							UI.asyncExec(new Runnable() {
+								@Override
+								public void run() {
+									ProcessDialog.this.signalDataError(e);
+								}
+							});
+						}
 					}
 				}
 			};
@@ -135,6 +151,7 @@ public class ProcessDialog extends Dialog {
 			int r = super.open();
 			
 			process.destroy();
+			process = null;
 			return r;
 		} catch (IOException e) {
 			return -1;
