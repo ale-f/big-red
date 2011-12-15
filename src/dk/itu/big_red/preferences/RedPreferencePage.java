@@ -23,15 +23,12 @@ public class RedPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 
-	public static final String P_PATH = "pathPreference";
-	public static final String P_BOOLEAN = "booleanPreference";
-	public static final String P_CHOICE = "choicePreference";
-	public static final String P_STRING = "stringPreference";
+	public static final String PREFERENCE_BIGMC_PATH = "dk.itu.big_red.preferences.paths.bigmc";
 
 	public RedPreferencePage() {
 		super(GRID);
 		setPreferenceStore(RedPlugin.getInstance().getPreferenceStore());
-		setDescription("A demonstration of a preference page implementation");
+		setDescription("Miscellaneous preferences for Big Red.");
 	}
 	
 	/**
@@ -42,23 +39,8 @@ public class RedPreferencePage
 	 */
 	@Override
 	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(RedPreferencePage.P_PATH, 
-				"&Directory preference:", getFieldEditorParent()));
-		addField(
-			new BooleanFieldEditor(
-				RedPreferencePage.P_BOOLEAN,
-				"&An example of a boolean preference",
-				getFieldEditorParent()));
-
-		addField(new RadioGroupFieldEditor(
-				RedPreferencePage.P_CHOICE,
-			"An example of a multiple-choice preference",
-			1,
-			new String[][] { { "&Choice 1", "choice1" }, {
-				"C&hoice 2", "choice2" }
-		}, getFieldEditorParent()));
-		addField(
-			new StringFieldEditor(RedPreferencePage.P_STRING, "A &text preference:", getFieldEditorParent()));
+		addField(new StringFieldEditor(PREFERENCE_BIGMC_PATH,
+				"Path to BigMC", getFieldEditorParent()));
 	}
 
 	/* (non-Javadoc)
