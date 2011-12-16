@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.import_export;
 
+import java.util.Map;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
@@ -11,9 +13,11 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.util.DOM;
@@ -81,6 +85,21 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 											reactum.getSignature().
 											getControl(chattr(el, "control"))),
 											chattr(el, "name"));
+				}
+			} else if (i instanceof Element &&
+					i.getNamespaceURI().equals(XMLNS.BIG_RED)) {
+				Element el = (Element)i;
+				
+				if (el.getLocalName().equals("layout")) {
+					String
+						type =
+							DOM.getAttributeNS(el, XMLNS.BIG_RED, "type"),
+						name =
+							DOM.getAttributeNS(el, XMLNS.BIG_RED, "name");
+					Map<String, Layoutable> ns =
+							reactum.getNamespace(Bigraph.getNSI(type));
+					c = ns.get(name).changeLayout(
+							AppearanceGenerator.elementToRectangle(el));
 				}
 			}
 			if (c != null) {
