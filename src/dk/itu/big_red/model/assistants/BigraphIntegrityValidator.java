@@ -121,7 +121,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			if (c.getCreator() instanceof Node &&
 				((Node)c.getCreator()).getControl().getKind() == Kind.ATOMIC)
 				rejectChange(
-						((Node)c.getCreator()).getControl().getLongName() +
+						((Node)c.getCreator()).getControl().getName() +
 						" is an atomic control");
 			
 			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.child);

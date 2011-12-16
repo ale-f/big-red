@@ -60,7 +60,7 @@ public class BigraphBigMCExport extends Export<Bigraph> {
 				write("%passive ");
 				break;
 			}
-			write(c.getLongName() + " : ");
+			write(c.getName() + " : ");
 			write(c.getPorts().size() + ";"); newline();
 		}
 		newline();

@@ -147,13 +147,13 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		boolean polygon = (currentControl.getShape() == Shape.POLYGON);
 		
 		label.setText(currentControl.getLabel());
-		name.setText(currentControl.getLongName());
+		name.setText(currentControl.getName());
 		appearance.setMode(polygon ? Shape.POLYGON : Shape.OVAL);
 		if (polygon)
 			appearance.setPoints(currentControl.getPoints());
 		appearance.setPorts(currentControl.getPorts());
 		resizable.setSelection(currentControl.isResizable());
-		currentControlItem.setText(currentControl.getLongName());
+		currentControlItem.setText(currentControl.getName());
 		
 		ovalMode.setSelection(!polygon);
 		polygonMode.setSelection(polygon);
@@ -462,7 +462,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		}
 		
 		for (dk.itu.big_red.model.Control c : model.getControls())
-			new TreeItem(controls, 0).setText(c.getLongName());
+			new TreeItem(controls, 0).setText(c.getName());
 	}
 
 	@Override

@@ -41,7 +41,7 @@ public class Signature extends ModelObject implements ISignature, IChangeable, I
 	
 	public Control getControl(String name) {
 		for (Control c : controls)
-			if (c.getLongName().equals(name))
+			if (c.getName().equals(name))
 				return c;
 		return null;
 	}

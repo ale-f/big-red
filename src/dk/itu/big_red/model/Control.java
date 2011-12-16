@@ -118,7 +118,7 @@ public class Control extends Colourable implements IControl {
 	private PointList points = new PointList();
 	
 	private Control.Shape shape;
-	private String longName;
+	private String name;
 	private String label;
 	private Dimension defaultSize;
 	private boolean resizable;
@@ -183,14 +183,15 @@ public class Control extends Colourable implements IControl {
 
 	public void setLongName(String longName) {
 		if (longName != null) {
-			this.longName = longName;
+			this.name = longName;
 			if (longName.length() > 1)
 				setLabel(longName.substring(0, 1).toUpperCase());
 		}
 	}
 
-	public String getLongName() {
-		return longName;
+	@Override
+	public String getName() {
+		return name;
 	}
 	
 	public Dimension getDefaultSize() {
@@ -318,11 +319,6 @@ public class Control extends Colourable implements IControl {
 	@Override
 	public Iterable<PortSpec> getIPorts() {
 		return ports;
-	}
-
-	@Override
-	public String getName() {
-		return getLongName();
 	}
 	
 	/**

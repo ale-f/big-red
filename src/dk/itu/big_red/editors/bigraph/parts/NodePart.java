@@ -96,6 +96,6 @@ public class NodePart extends ContainerPart {
 	
 	@Override
 	public String getDisplayName() {
-		return getModel().getControl().getLongName() + " " + getModel().getName();
+		return getModel().getControl().getName() + " " + getModel().getName();
 	}
 }

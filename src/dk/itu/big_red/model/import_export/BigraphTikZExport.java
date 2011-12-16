@@ -113,7 +113,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		newLine();
 		
 		for (Control c : b.getSignature().getControls()) {
-			String cN = c.getLongName();
+			String cN = c.getName();
 			line("tikzset{" + cN + "/.style={}}");
 		}
 		
@@ -200,7 +200,7 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		
 		line("definecolor{" + n.getName() + " fill}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
 		line("definecolor{" + n.getName() + " outline}{RGB}{" + outlineColour.getRed() + "," + outlineColour.getGreen() + "," + outlineColour.getBlue() + "}");
-		line("draw [" + n.getControl().getLongName() + ",fill=" + n.getName() + " fill,draw=" + n.getName()+ " outline] " + shapeDescriptor + ";");
+		line("draw [" + n.getControl().getName() + ",fill=" + n.getName() + " fill,draw=" + n.getName()+ " outline] " + shapeDescriptor + ";");
 		line("node at (" + rltl.x + "," + rltl.y + ") {" + con.getLabel() + "};");
 		
 		beginScope(n);

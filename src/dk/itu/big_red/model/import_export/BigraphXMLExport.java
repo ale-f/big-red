@@ -130,7 +130,7 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	
 	private Element processNode(Element e, Node n) throws ExportFailedException {
 		DOM.applyAttributes(e,
-			"control", n.getControl().getLongName(),
+			"control", n.getControl().getName(),
 			"name", n.getName());
 		
 		for (Port p : n.getPorts()) 
