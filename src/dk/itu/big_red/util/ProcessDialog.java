@@ -60,6 +60,8 @@ public class ProcessDialog extends Dialog {
 	 * @param buffer a buffer containing a number of bytes
 	 */
 	private void signalData(int length, byte[] buffer) {
+		if (text.isDisposed())
+			return;
 		if (output == null) {
 			output = new byte[length];
 			System.arraycopy(buffer, 0, output, 0, length);
