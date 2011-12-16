@@ -42,20 +42,16 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 			exportPersistentID = true;
 	
 	public static final String
-		OPTION_APPEARANCE = "BigraphXMLExportAppearance",
-		OPTION_PERSISTENT_ID = "BigraphXMLExportPersistentID";
+		OPTION_APPEARANCE = "BigraphXMLExportAppearance";
 	
 	{
 		addOption(OPTION_APPEARANCE, "Export Big Red-specific appearance data");
-		addOption(OPTION_PERSISTENT_ID, "Export a persistent ID for each object");
 	}
 	
 	@Override
 	public Object getOption(String id) {
 		if (id.equals(OPTION_APPEARANCE)) {
 			return exportAppearance;
-		} else if (id.equals(OPTION_PERSISTENT_ID)) {
-			return exportPersistentID;
 		} else return super.getOption(id);
 	}
 	
@@ -63,8 +59,6 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	public void setOption(String id, Object value) {
 		if (id.equals(OPTION_APPEARANCE)) {
 			exportAppearance = (Boolean)value;
-		} else if (id.equals(OPTION_PERSISTENT_ID)) {
-			exportPersistentID = (Boolean)value;
 		} else super.setOption(id, value);
 	}
 	
@@ -178,8 +172,6 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 			DOM.applyAttributes(e, "name", l.getName());
 		if (exportAppearance)
 			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), l));
-		if (exportPersistentID)
-			DOM.applyAttributesNS(e, XMLNS.BIG_RED, "big-red:pid", l.getPersistentID());
 		return e;
 	}
 }

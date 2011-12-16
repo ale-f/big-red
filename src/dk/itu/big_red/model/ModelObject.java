@@ -3,8 +3,6 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
-import java.util.UUID;
-
 import dk.itu.big_red.model.changes.Change;
 
 /**
@@ -159,37 +157,9 @@ public class ModelObject {
 		} else return null;
 	}
 	
-	private String persistentID = null;
-	
-	/**
-	 * Gets the persistent ID of this {@link ModelObject}, creating it if
-	 * necessary.
-	 * <p>Persistent IDs are <i>not</i> supposed to be universally unique, but
-	 * they are supposed to be persistent &mdash; they should be preserved
-	 * across editing sessions, and there should be no UI for changing them.
-	 * @return this object's persistent ID
-	 * @see #setPersistentID(String)
-	 */
-	public String getPersistentID() {
-		if (persistentID == null)
-			persistentID = UUID.randomUUID().toString();
-		return persistentID;
-	}
-	
-	/**
-	 * Sets the persistent ID of this {@link ModelObject}.
-	 * <p>(This method should only <i>really</i> be called with the result of
-	 * a previous call to {@link #getPersistentID()}.)
-	 * @param persistentID the new persistent ID (can be <code>null</code>)
-	 * @see #getPersistentID()
-	 */
-	public void setPersistentID(String persistentID) {
-		this.persistentID = persistentID;
-	}
-	
 	@Override
 	public String toString() {
-		return "<" + getClass().getSimpleName() + "#" + getPersistentID() + ">";
+		return "<" + getClass().getSimpleName() + "@" + System.identityHashCode(this) + ">";
 	}
 	
 	public ChangeComment changeComment(String comment) {

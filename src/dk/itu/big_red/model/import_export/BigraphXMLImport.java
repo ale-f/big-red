@@ -160,9 +160,6 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			model = ModelFactory.getNewObject(e.getLocalName());
 		}
 
-		if (model != null)
-			model.setPersistentID(DOM.getAttributeNS(e, XMLNS.BIG_RED, "big-red:pid"));
-		
 		if (model instanceof Layoutable) {
 			Layoutable l = (Layoutable)model;
 			cg.add(context.changeAddChild(l,
