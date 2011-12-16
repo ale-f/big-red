@@ -84,20 +84,11 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				_processChanges(e, (ChangeGroup)i_);
 			} else if (i_ instanceof Layoutable.ChangeLayout) {
 				Layoutable.ChangeLayout i = ac(i_);
-				if (i.getCreator() instanceof Root) {
-					f = newElement(XMLNS.BIG_RED, "big-red:layout-root");
-				} else if (i.getCreator() instanceof Edge) {
-					f = newElement(XMLNS.BIG_RED, "big-red:layout-edge");
-				} else if (i.getCreator() instanceof InnerName) {
-					f = newElement(XMLNS.BIG_RED, "big-red:layout-inner-name");
-				} else if (i.getCreator() instanceof OuterName) {
-					f = newElement(XMLNS.BIG_RED, "big-red:layout-outer-name");
-				} else if (i.getCreator() instanceof Node) {
-					f = newElement(XMLNS.BIG_RED, "big-red:layout-node");
-				} else if (i.getCreator() instanceof Site) {
-					f = newElement(XMLNS.BIG_RED, "big-red:layout-site");
-				} else hurl();
-				DOM.applyAttributes(f,
+				f = DOM.applyAttributes(
+						newElement(XMLNS.BIG_RED, "big-red:layout"),
+						"name", i.getCreator().getName(),
+						"type", i.getCreator().getClass().
+									getSimpleName().toLowerCase(),
 						"x", i.newLayout.getX(),
 						"y", i.newLayout.getY(),
 						"width", i.newLayout.getWidth(),
