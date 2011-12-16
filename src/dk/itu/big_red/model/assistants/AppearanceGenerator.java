@@ -36,13 +36,7 @@ public class AppearanceGenerator {
 		
 		if (o instanceof Layoutable) {
 			alive = true;
-			ReadonlyRectangle r = ((Layoutable)o).getLayout();
-			
-			DOM.applyAttributes(aE,
-					"width", r.getWidth(),
-					"height", r.getHeight(),
-					"x", r.getX(),
-					"y", r.getY());
+			rectangleToElement(aE, ((Layoutable)o).getLayout());
 		}
 		
 		if (o instanceof Colourable) {
@@ -71,12 +65,7 @@ public class AppearanceGenerator {
 		
 		if (o instanceof Layoutable) {
 			Layoutable l = (Layoutable)o;
-			Rectangle r = new Rectangle(
-					DOM.getIntAttribute(e, XMLNS.BIG_RED, "x"),
-					DOM.getIntAttribute(e, XMLNS.BIG_RED, "y"),
-					DOM.getIntAttribute(e, XMLNS.BIG_RED, "width"),
-					DOM.getIntAttribute(e, XMLNS.BIG_RED, "height"));
-			
+			Rectangle r = elementToRectangle(e);
 			cg.add(l.changeLayout(r));
 		}
 		
@@ -145,5 +134,21 @@ public class AppearanceGenerator {
 	public static void attributesToModel(Element e, Object o) {
 		if (o instanceof Control && e.hasAttributeNS(XMLNS.BIG_RED, "label"))
 			((Control)o).setLabel(e.getAttributeNS(XMLNS.BIG_RED, "label"));
+	}
+	
+	public static Element rectangleToElement(Element e, ReadonlyRectangle r) {
+		return DOM.applyAttributes(e,
+				"width", r.getWidth(),
+				"height", r.getHeight(),
+				"x", r.getX(),
+				"y", r.getY());
+	}
+	
+	public static Rectangle elementToRectangle(Element e) {
+		return new Rectangle(
+				DOM.getIntAttribute(e, XMLNS.BIG_RED, "x"),
+				DOM.getIntAttribute(e, XMLNS.BIG_RED, "y"),
+				DOM.getIntAttribute(e, XMLNS.BIG_RED, "width"),
+				DOM.getIntAttribute(e, XMLNS.BIG_RED, "height"));
 	}
 }
