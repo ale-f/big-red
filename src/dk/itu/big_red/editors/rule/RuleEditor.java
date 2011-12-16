@@ -73,9 +73,10 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
+import dk.itu.big_red.util.IOAdapter;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.ValidationFailedException;
-import dk.itu.big_red.util.resources.FileResourceOutputStream;
+import dk.itu.big_red.util.resources.Project;
 
 public class RuleEditor extends EditorPart implements
 	ISelectionListener, INullSelectionListener, ISelectionChangedListener,
@@ -152,10 +153,12 @@ public class RuleEditor extends EditorPart implements
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		try {
+			IOAdapter io = new IOAdapter();
         	FileEditorInput i = (FileEditorInput)getEditorInput();
         	ReactionRuleXMLExport ex = new ReactionRuleXMLExport();
         	
-        	ex.setModel(getModel()).setOutputStream(new FileResourceOutputStream(i.getFile())).exportObject();
+        	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
+        	Project.setContents(i.getFile(), io.getInputStream());
         	
     		getCommandStack().markSaveLocation();
     		firePropertyChange(IEditorPart.PROP_DIRTY);

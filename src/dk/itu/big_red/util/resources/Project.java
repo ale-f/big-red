@@ -1,5 +1,7 @@
 package dk.itu.big_red.util.resources;
 
+import java.io.InputStream;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -23,7 +25,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
-import dk.itu.big_red.util.NullInputStream;
+import dk.itu.big_red.util.IOAdapter;
 
 /**
  * Utility functions for manipulating an Eclipse {@link IProject project} and
@@ -112,7 +114,7 @@ public class Project {
 	public static IFile getFile(IContainer c, String name) throws CoreException {
 		IFile f = c.getFile(new Path(name));
 		if (!f.exists())
-			f.create(NullInputStream.getInstance(), true, null);
+			f.create(IOAdapter.getNullInputStream(), true, null);
 		return f;
 	}
 	
@@ -211,18 +213,28 @@ public class Project {
 	 * @param two the second {@link IFile} to compare
 	 * @return whether the two IFiles belong to the same project or not
 	 */
-	public boolean compareProjects(IFile one, IFile two) {
+	public static boolean compareProjects(IFile one, IFile two) {
 		return (one != null && two != null &&
 				one.getProject().equals(two.getProject()));
 	}
 	
+	public static void setContents(IFile file, InputStream contents) throws CoreException {
+		file.setContents(contents, 0, null);
+	}
+	
 	public static void createBigraph(IFile sigFile, IFile bigFile) throws ImportFailedException, ExportFailedException, CoreException {
+		IOAdapter io = new IOAdapter();
 		Bigraph b = new Bigraph();
+		
 		b.setSignature(SignatureXMLImport.importFile(sigFile));
-		new BigraphXMLExport().setModel(b).setOutputStream(new FileResourceOutputStream(bigFile)).exportObject();
+		new BigraphXMLExport().setModel(b).setOutputStream(io.getOutputStream()).exportObject();
+		bigFile.setContents(io.getInputStream(), 0, null);
 	}
 	
 	public static void createSignature(IFile sigFile) throws ExportFailedException, CoreException {
-		new SignatureXMLExport().setModel(new Signature()).setOutputStream(new FileResourceOutputStream(sigFile)).exportObject();
+		IOAdapter io = new IOAdapter();
+		
+		new SignatureXMLExport().setModel(new Signature()).setOutputStream(io.getOutputStream()).exportObject();
+		sigFile.setContents(io.getInputStream(), 0, null);
 	}
 }
