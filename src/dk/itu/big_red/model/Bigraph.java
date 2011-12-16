@@ -82,6 +82,23 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	}
 	
 	/**
+	 * @see #getNSI(Layoutable)
+	 */
+	public static Object getNSI(String objectType) {
+		if (objectType.equals("edge") || objectType.equals("outername")) {
+			return Link.class;
+		} else if (objectType.equals("innername")) {
+			return InnerName.class;
+		} else if (objectType.equals("root")) {
+			return Root.class;
+		} else if (objectType.equals("site")) {
+			return Site.class;
+		} else if (objectType.equals("node")) {
+			return Node.class;
+		} else return new Object();
+	}
+	
+	/**
 	 * Gets the namespace with the given namespace identifier, creating it if
 	 * necessary.
 	 * @param nsi a value returned from a call to {@link #getNSI(Layoutable)},
