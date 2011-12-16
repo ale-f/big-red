@@ -64,17 +64,20 @@ public class IOAdapter {
 		return new IOAdapterOutput();
 	}
 	
+	private static final InputStream nullInputStream = new InputStream() {
+		@Override
+		public int read() throws IOException {
+			// TODO Auto-generated method stub
+			return -1;
+		}
+	};
+	
 	/**
-	 * Returns a new {@link InputStream} with no data; all calls to {@link
+	 * Returns an {@link InputStream} with no data; all calls to {@link
 	 * InputStream#read()} return <code>-1</code>.
-	 * @return a new, empty {@link InputStream}
+	 * @return an empty {@link InputStream}
 	 */
 	public static InputStream getNullInputStream() {
-		return new InputStream() {
-			@Override
-			public int read() {
-				return -1;
-			}
-		};
+		return nullInputStream;
 	}
 }
