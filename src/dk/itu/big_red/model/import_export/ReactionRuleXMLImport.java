@@ -11,13 +11,11 @@ import org.w3c.dom.Node;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
+import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.util.DOM;
@@ -65,26 +63,24 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 					i.getNamespaceURI().equals(XMLNS.CHANGE)) {
 				Element el = (Element)i;
 				System.out.println(el.getLocalName());
-				if (el.getLocalName().equals("add-root")) {
-					c = reactum.changeAddChild(new Root(),
-							chattr(el, "name"));
-				} else if (el.getLocalName().equals("add-edge")) {
-					c = reactum.changeAddChild(new Edge(),
-							chattr(el, "name"));
-				} else if (el.getLocalName().equals("add-inner-name")) {
-					c = reactum.changeAddChild(new InnerName(),
-							chattr(el, "name"));
-				} else if (el.getLocalName().equals("add-outer-name")) {
-					c = reactum.changeAddChild(new OuterName(),
-							chattr(el, "name"));
-				} else if (el.getLocalName().equals("add-node-to-root")) {
-					c = ((Root)reactum.getNamespace(Root.class).
-							get(chattr(el, "parent"))).
-							changeAddChild(
-									new dk.itu.big_red.model.Node(
-											reactum.getSignature().
-											getControl(chattr(el, "control"))),
-											chattr(el, "name"));
+				if (el.getLocalName().equals("add")) {
+					String
+						name = chattr(el, "name"),
+						type = chattr(el, "type"),
+						parentName = chattr(el, "parent"),
+						parentType = chattr(el, "parent-type");
+					Map<String, Layoutable> ns =
+						reactum.getNamespace(Bigraph.getNSI(parentType));
+					Layoutable child = null;
+					
+					if (type.equals("node")) {
+						String control = chattr(el, "control");
+						child =
+							new dk.itu.big_red.model.Node(
+								reactum.getSignature().getControl(control));
+					} else child = (Layoutable)ModelFactory.getNewObject(type);
+					
+					c = ((Container)ns.get(parentName)).changeAddChild(child, name);
 				}
 			} else if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.BIG_RED)) {

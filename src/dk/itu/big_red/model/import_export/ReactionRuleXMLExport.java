@@ -7,12 +7,10 @@ import dk.itu.big_red.import_export.XMLExport;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
@@ -95,39 +93,15 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 						"height", i.newLayout.getHeight());
 			} else if (i_ instanceof Container.ChangeAddChild) {
 				Container.ChangeAddChild i = ac(i_);
-				if (i.child instanceof Root) {
-					f = newElement(XMLNS.CHANGE, "change:add-root");
-				} else if (i.child instanceof Edge) {
-					f = newElement(XMLNS.CHANGE, "change:add-edge");
-				} else if (i.child instanceof OuterName) {
-					f = newElement(XMLNS.CHANGE, "change:add-outer-name");
-				} else if (i.child instanceof InnerName) {
-					f = newElement(XMLNS.CHANGE, "change:add-inner-name");
-				} else if (i.child instanceof Node) {
-					if (i.getCreator() instanceof Root) {
-						f = DOM.applyAttributes(
-								newElement(XMLNS.CHANGE, "change:add-node-to-root"),
-								"control", ((Node)i.child).getControl().getName(),
-								"parent", i.getCreator().getName());
-					} else if (i.getCreator() instanceof Node) {
-						f = DOM.applyAttributes(
-								newElement(XMLNS.CHANGE, "change:add-node-to-node"),
-								"control", ((Node)i.child).getControl().getName(),
-								"parent", i.getCreator().getName());
-					} else hurl();
-				} else if (i.child instanceof Site) {
-					if (i.getCreator() instanceof Root) {
-						f = DOM.applyAttributes(
-								newElement(XMLNS.CHANGE, "change:add-site-to-root"),
-								"parent", i.getCreator().getName());
-					} else if (i.getCreator() instanceof Node) {
-						f = DOM.applyAttributes(
-								newElement(XMLNS.CHANGE, "change:add-site-to-node"),
-								"parent", i.getCreator().getName());
-					} else hurl();
-				} else hurl();
-				DOM.applyAttributes(f,
-						"name", i.name);
+				f = DOM.applyAttributes(
+						newElement(XMLNS.CHANGE, "change:add"),
+						"name", i.name,
+						"type", i.child.getClass().getSimpleName().toLowerCase(),
+						"parent", i.getCreator().getName(),
+						"parent-type", i.getCreator().getClass().getSimpleName().toLowerCase());
+				if (i.child instanceof Node)
+					DOM.applyAttributes(f,
+							"control", ((Node)i.child).getControl().getName());
 			} else if (i_ instanceof Layoutable.ChangeName) {
 				Layoutable.ChangeName i = ac(i_);
 				if (i.getCreator() instanceof Root) {
