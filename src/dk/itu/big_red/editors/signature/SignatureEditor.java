@@ -18,7 +18,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -191,6 +190,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 				passiveKind.getSelection() ? Kind.PASSIVE : Kind.ATOMIC);
 		}
 	}
+	
+	private static Font smiff;
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -419,10 +420,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearance.addPortListener(sharedDirtListener);
 		appearance.addPointListener(sharedDirtListener);
 		
-		FontData smif = appearanceLabel.getFont().getFontData()[0];
-		smif.setStyle(SWT.ITALIC);
-		smif.setHeight(8);
-		Font smiff = new Font(null, smif);
+		if (smiff == null)
+			smiff = UI.tweakFont(appearanceLabel.getFont(), 8, SWT.ITALIC);
 		
 		appearanceDescription = new Label(appearanceGroup, SWT.CENTER | SWT.WRAP);
 		GridData appearanceDescriptionData = new GridData();
