@@ -85,7 +85,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	 * @see #getNSI(Layoutable)
 	 */
 	public static Object getNSI(String objectType) {
-		if (objectType.equals("edge") || objectType.equals("outername")) {
+		if (objectType.equals("edge") || objectType.equals("outername") || objectType.equals("link")) {
 			return Link.class;
 		} else if (objectType.equals("innername")) {
 			return InnerName.class;
