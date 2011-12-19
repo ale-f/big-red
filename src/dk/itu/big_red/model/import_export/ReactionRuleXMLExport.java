@@ -9,13 +9,10 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -104,20 +101,10 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 							"control", ((Node)i.child).getControl().getName());
 			} else if (i_ instanceof Layoutable.ChangeName) {
 				Layoutable.ChangeName i = ac(i_);
-				if (i.getCreator() instanceof Root) {
-					f = newElement(XMLNS.CHANGE, "change:rename-root");
-				} else if (i.getCreator() instanceof Node) {
-					f = newElement(XMLNS.CHANGE, "change:rename-node");
-				} else if (i.getCreator() instanceof Site) {
-					f = newElement(XMLNS.CHANGE, "change:rename-site");
-				} else if (i.getCreator() instanceof Link) {
-					f = newElement(XMLNS.CHANGE, "change:rename-link");
-				} else if (i.getCreator() instanceof InnerName) {
-					f = newElement(XMLNS.CHANGE, "change:rename-inner-name");
-				} else hurl();
-				
-				DOM.applyAttributes(f,
-						"name", i.getCreator().getName(),
+				f = DOM.applyAttributes(
+						newElement(XMLNS.CHANGE, "change:rename"),
+						"name", i.getCreator().getName(), 
+						"type", i.getCreator().getClass().getSimpleName().toLowerCase(),
 						"new-name", i.newName);
 			} else if (i_ instanceof Point.ChangeConnect) {
 				Point.ChangeConnect i = ac(i_);

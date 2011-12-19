@@ -81,6 +81,15 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 					} else child = (Layoutable)ModelFactory.getNewObject(type);
 					
 					c = ((Container)ns.get(parentName)).changeAddChild(child, name);
+				} else if (el.getLocalName().equals("rename")) {
+					String
+						name = chattr(el, "name"),
+						type = chattr(el, "type"),
+						newName = chattr(el, "new-name");
+					Map<String, Layoutable> ns =
+						reactum.getNamespace(Bigraph.getNSI(type));
+					
+					c = ns.get(name).changeName(newName);
 				}
 			} else if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.BIG_RED)) {
