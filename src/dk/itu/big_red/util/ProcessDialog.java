@@ -1,7 +1,6 @@
 package dk.itu.big_red.util;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.Charset;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -14,7 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-public class ProcessDialog extends Dialog {
+public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient {
 	private ProcessBuilder pb;
 	
 	public ProcessDialog(Shell parentShell, ProcessBuilder pb) {
@@ -59,7 +58,8 @@ public class ProcessDialog extends Dialog {
 	 * @param length the number of bytes actually present in <code>buffer</code>
 	 * @param buffer a buffer containing a number of bytes
 	 */
-	private void signalData(int length, byte[] buffer) {
+	@Override
+	public void signalData(int length, byte[] buffer) {
 		if (text.isDisposed())
 			return;
 		if (output == null) {
@@ -79,81 +79,34 @@ public class ProcessDialog extends Dialog {
 	 * Called (in the main thread) when there's nothing left for the worker
 	 * thread to read.
 	 */
-	private void signalDataComplete() {
+	@Override
+	public void signalDataComplete() {
 	}
 	
 	/**
 	 * Called (in the main thread) when the worker thread encounters an error.
 	 * @param e an {@link IOException}
 	 */
-	private void signalDataError(IOException e) {
+	@Override
+	public void signalError(IOException e) {
 	}
-	
-	private Process process;
 	
 	@Override
 	public int open() {
 		try {
-			process = pb.start();
+			Process process = pb.start();
 			
 			process.getOutputStream().close();
 			
-			Thread runner = new Thread() {
-				@Override
-				public void run() {
-					InputStream is = process.getInputStream();
-					try {
-						byte[] buffer = new byte[128];
-						int length;
-						while (process != null &&
-								(length = is.read(buffer)) != -1) {
-							final byte[] tBuffer = buffer;
-							final int tLength = length;
-							UI.asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									ProcessDialog.this.signalData(tLength, tBuffer);
-								}
-							});
-							buffer = new byte[128];
-						}
-						/* Don't call signalDataComplete if the parent thread
-						 * has stopped caring. */
-						if (process != null) {
-							UI.asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									ProcessDialog.this.signalDataComplete();
-								}
-							});
-						}
-					} catch (final IOException e) {
-						UI.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								ProcessDialog.this.signalDataError(e);
-							}
-						});
-					} finally {
-						try {
-							is.close();
-						} catch (final IOException e) {
-							UI.asyncExec(new Runnable() {
-								@Override
-								public void run() {
-									ProcessDialog.this.signalDataError(e);
-								}
-							});
-						}
-					}
-				}
-			};
-			runner.start();
+			AsynchronousInputThread t =
+				new AsynchronousInputThread(this).
+					setInputStream(process.getInputStream());
+			t.start();
 			
 			int r = super.open();
 			
+			t.kill();
 			process.destroy();
-			process = null;
 			return r;
 		} catch (IOException e) {
 			return -1;
