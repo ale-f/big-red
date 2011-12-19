@@ -338,9 +338,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		GridLayout rightLayout = new GridLayout(2, false);
 		right.setLayout(rightLayout);
 		
-		nameLabel = new Label(right, SWT.NONE);
-		nameLabel.setText("Name:");
-		
+		nameLabel = UI.newLabel(right, SWT.NONE, "Name:");
 		name = new Text(right, SWT.BORDER);
 		name.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		name.addModifyListener(sharedDirtListener);
@@ -355,15 +353,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			}
 		});
 		
-		labelLabel = new Label(right, SWT.NONE);
-		labelLabel.setText("Label:");
-		
+		labelLabel = UI.newLabel(right, SWT.NONE, "Label:");
 		label = new Text(right, SWT.BORDER);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		label.addModifyListener(sharedDirtListener);
 		
-		kindLabel = new Label(right, SWT.NONE);
-		kindLabel.setText("Kind:");
+		kindLabel = UI.newLabel(right, SWT.NONE, "Kind:");
 		
 		Composite kindGroup = new Composite(right, SWT.NONE);
 		kindGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
@@ -381,10 +376,9 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		passiveKind.setText("Passive");
 		passiveKind.addSelectionListener(sharedDirtListener);
 		
-		appearanceLabel = new Label(right, SWT.NONE);
+		appearanceLabel = UI.newLabel(right, SWT.NONE, "Appearance:");
 		GridData appearanceLabelLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
-		appearanceLabel.setText("Appearance:");
 		
 		Composite appearanceGroup = new Composite(right, SWT.NONE);
 		GridData appearanceGroupLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
@@ -432,16 +426,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceDescription.setLayoutData(appearanceDescriptionData);
 		appearanceDescription.setFont(smiff);
 		
-		outlineLabel = new Label(right, SWT.NONE);
-		outlineLabel.setText("Outline:");
-		
+		outlineLabel = UI.newLabel(right, SWT.NONE, "Outline:");
 		outline = new ColorSelector(right);
 		outline.getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		outline.addListener(sharedDirtListener);
 		
-		fillLabel = new Label(right, SWT.NONE);
-		fillLabel.setText("Fill:");
-		
+		fillLabel = UI.newLabel(right, SWT.NONE, "Fill:");
 		fill = new ColorSelector(right);
 		fill.getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		fill.addListener(sharedDirtListener);
