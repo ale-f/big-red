@@ -100,6 +100,13 @@ public class Node extends Container implements PropertyChangeListener, INode {
 		return ports;
 	}
 	
+	public Port getPort(String name) {
+		for (Port p : getPorts())
+			if (p.getName().equals(name))
+				return p;
+		return null;
+	}
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent arg) {
 		System.out.println(this + ": unexpected property change notification of type " + arg.getPropertyName());
