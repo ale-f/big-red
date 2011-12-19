@@ -52,12 +52,6 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 	
 	private static final Charset UTF8 = Charset.forName("UTF-8");
 	
-	/**
-	 * Called (in the main thread) when the worker thread has finished a read
-	 * operation.
-	 * @param length the number of bytes actually present in <code>buffer</code>
-	 * @param buffer a buffer containing a number of bytes
-	 */
 	@Override
 	public void signalData(int length, byte[] buffer) {
 		if (text.isDisposed())
@@ -75,18 +69,10 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 		text.setTopIndex(Integer.MAX_VALUE);
 	}
 	
-	/**
-	 * Called (in the main thread) when there's nothing left for the worker
-	 * thread to read.
-	 */
 	@Override
 	public void signalDataComplete() {
 	}
 	
-	/**
-	 * Called (in the main thread) when the worker thread encounters an error.
-	 * @param e an {@link IOException}
-	 */
 	@Override
 	public void signalError(IOException e) {
 	}
