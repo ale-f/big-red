@@ -1,19 +1,18 @@
 package dk.itu.big_red.model.import_export;
 
-import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
@@ -58,9 +57,13 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 		return DOM.getAttributeNS(e, XMLNS.CHANGE, name);
 	}
 	
+	private static Layoutable getNamed(Bigraph b, String type, String name) {
+		return b.getNamespace(Bigraph.getNSI(type)).get(name);
+	}
+	
 	private void updateReactum(ReactionRule rr, Element e) throws ImportFailedException {
 		Bigraph reactum = rr.getReactum();
-		for (Node i : DOM.iterableChildren(e)) {
+		for (org.w3c.dom.Node i : DOM.iterableChildren(e)) {
 			Change c = null;
 			if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.CHANGE)) {
@@ -76,16 +79,13 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 					if (parentName == null && parentType == null) {
 						parent = reactum;
 					} else {
-						Map<String, Layoutable> ns =
-							reactum.getNamespace(Bigraph.getNSI(parentType));
-						parent = ((Container)ns.get(parentName));
+						parent = (Container)getNamed(reactum, parentType, parentName);
 					}
 					Layoutable child = null;
 					
 					if (type.equals("node")) {
 						String control = chattr(el, "control");
-						child =
-							new dk.itu.big_red.model.Node(
+						child = new Node(
 								reactum.getSignature().getControl(control));
 					} else child = (Layoutable)ModelFactory.getNewObject(type);
 					
@@ -95,23 +95,15 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 						name = chattr(el, "name"),
 						type = chattr(el, "type"),
 						newName = chattr(el, "new-name");
-					Map<String, Layoutable> ns =
-						reactum.getNamespace(Bigraph.getNSI(type));
-					
-					c = ns.get(name).changeName(newName);
+					c = getNamed(reactum, type, name).changeName(newName);
 				} else if (el.getLocalName().equals("connect")) {
 					String
 						name = chattr(el, "name"),
 						link = chattr(el, "link"),
 						node = chattr(el, "node");
-					Map<String, Layoutable> nsl =
-						reactum.getNamespace(Bigraph.getNSI("link"));
-					Link l = (Link)nsl.get(link);
+					Link l = (Link)getNamed(reactum, "link", link);
 					if (node != null) {
-						Map<String, Layoutable> ns =
-							reactum.getNamespace(Bigraph.getNSI("node"));
-						Port p =
-							((dk.itu.big_red.model.Node)ns.get(node)).getPort(name);
+						Port p = ((Node)getNamed(reactum, "node", node)).getPort(name);
 						if (p != null) {
 							c = p.changeConnect(l);
 						} else throw new ImportFailedException("Port failed");
@@ -120,14 +112,11 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 					String
 						name = chattr(el, "name"),
 						node = chattr(el, "node");
-					Map<String, Layoutable> ns = null;
 					Point p;
 					if (node != null) {
-						ns = reactum.getNamespace(Bigraph.getNSI("node"));
-						p = ((dk.itu.big_red.model.Node)ns.get(node)).getPort(name);
+						p = ((Node)getNamed(reactum, "node", node)).getPort(name);
 					} else {
-						ns = reactum.getNamespace(Bigraph.getNSI("innername"));
-						p = (Point)ns.get(name);
+						p = (InnerName)getNamed(reactum, "innername", name);
 					}
 					if (p != null) {
 						c = p.changeDisconnect(p.getLink());
@@ -143,9 +132,7 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 							DOM.getAttributeNS(el, XMLNS.BIG_RED, "type"),
 						name =
 							DOM.getAttributeNS(el, XMLNS.BIG_RED, "name");
-					Map<String, Layoutable> ns =
-							reactum.getNamespace(Bigraph.getNSI(type));
-					c = ns.get(name).changeLayout(
+					c = getNamed(reactum, type, name).changeLayout(
 							AppearanceGenerator.elementToRectangle(el));
 				}
 			}
