@@ -23,7 +23,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -132,7 +131,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	private Text name, label;
 	private SignatureEditorPolygonCanvas appearance;
 	private Button ovalMode, polygonMode, resizable;
-	private Combo kind;
+	private Button activeKind, atomicKind, passiveKind;
 	
 	private boolean fireModify = true;
 
@@ -161,7 +160,9 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		outline.setColorValue(currentControl.getOutlineColour().getRGB());
 		fill.setColorValue(currentControl.getFillColour().getRGB());
 		
-		kind.setText(currentControl.getKind().toString());
+		activeKind.setSelection(currentControl.getKind() == Kind.ACTIVE);
+		atomicKind.setSelection(currentControl.getKind() == Kind.ATOMIC);
+		passiveKind.setSelection(currentControl.getKind() == Kind.PASSIVE);
 		
 		fireModify = true;
 	}
@@ -186,8 +187,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			model.applyChange(cg);
 			
 			currentControl.setKind(
-				kind.getText().equals("active") ? Kind.ACTIVE :
-				kind.getText().equals("passive") ? Kind.PASSIVE : Kind.ATOMIC);
+				activeKind.getSelection() ? Kind.ACTIVE :
+				passiveKind.getSelection() ? Kind.PASSIVE : Kind.ATOMIC);
 		}
 	}
 	
@@ -363,10 +364,21 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		kindLabel = new Label(right, SWT.NONE);
 		kindLabel.setText("Kind:");
 		
-		kind = new Combo(right, SWT.DROP_DOWN | SWT.READ_ONLY);
-		kind.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-		kind.setItems(kinds);
-		kind.addModifyListener(sharedDirtListener);
+		Composite kindGroup = new Composite(right, SWT.NONE);
+		kindGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		kindGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
+		
+		atomicKind = new Button(kindGroup, SWT.RADIO);
+		atomicKind.setText("Atomic");
+		atomicKind.addSelectionListener(sharedDirtListener);
+		
+		activeKind = new Button(kindGroup, SWT.RADIO);
+		activeKind.setText("Active");
+		activeKind.addSelectionListener(sharedDirtListener);
+		
+		passiveKind = new Button(kindGroup, SWT.RADIO);
+		passiveKind.setText("Passive");
+		passiveKind.addSelectionListener(sharedDirtListener);
 		
 		appearanceLabel = new Label(right, SWT.NONE);
 		GridData appearanceLabelLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
@@ -441,10 +453,10 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 	private void setEnablement(boolean enabled) {
 		UI.setEnabled(enabled,
-			name, label, appearance, appearanceDescription, resizable, kind,
-			outline.getButton(), outlineLabel, fill.getButton(),
-			ovalMode, fillLabel, polygonMode, kindLabel, nameLabel,
-			appearanceLabel, labelLabel);
+			name, label, appearance, appearanceDescription, resizable,
+			atomicKind, activeKind, passiveKind, outline.getButton(),
+			outlineLabel, fill.getButton(), ovalMode, fillLabel, polygonMode,
+			kindLabel, nameLabel, appearanceLabel, labelLabel);
 	}
 	
 	private void initialiseSignatureEditor() {
