@@ -13,6 +13,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.util.DOM;
 
 public class SignatureXMLImport extends Import<Signature> {
@@ -20,7 +21,6 @@ public class SignatureXMLImport extends Import<Signature> {
 	
 	@Override
 	public Signature importObject() throws ImportFailedException {
-		cg.clear();
 		try {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/signature.xsd"));
@@ -66,11 +66,20 @@ public class SignatureXMLImport extends Import<Signature> {
 	public Signature makeSignature(Element e) throws ImportFailedException {
 		Signature sig = new Signature();
 		
+		cg.clear();
+		
 		for (Element j :
 			DOM.getNamedChildElements(e, XMLNS.SIGNATURE, "control")) {
 			Control i = makeControl(j);
 			if (i != null)
 				sig.addControl(i);
+		}
+		
+		try {
+			if (cg.size() != 0)
+				sig.tryApplyChange(cg);
+		} catch (ChangeRejectedException ex) {
+			throw new ImportFailedException(ex);
 		}
 		
 		return sig;
