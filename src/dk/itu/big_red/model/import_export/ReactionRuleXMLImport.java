@@ -13,6 +13,9 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
@@ -69,8 +72,14 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 						type = chattr(el, "type"),
 						parentName = chattr(el, "parent"),
 						parentType = chattr(el, "parent-type");
-					Map<String, Layoutable> ns =
-						reactum.getNamespace(Bigraph.getNSI(parentType));
+					Container parent = null;
+					if (parentName == null && parentType == null) {
+						parent = reactum;
+					} else {
+						Map<String, Layoutable> ns =
+							reactum.getNamespace(Bigraph.getNSI(parentType));
+						parent = ((Container)ns.get(parentName));
+					}
 					Layoutable child = null;
 					
 					if (type.equals("node")) {
@@ -80,7 +89,7 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 								reactum.getSignature().getControl(control));
 					} else child = (Layoutable)ModelFactory.getNewObject(type);
 					
-					c = ((Container)ns.get(parentName)).changeAddChild(child, name);
+					c = parent.changeAddChild(child, name);
 				} else if (el.getLocalName().equals("rename")) {
 					String
 						name = chattr(el, "name"),
@@ -90,6 +99,39 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 						reactum.getNamespace(Bigraph.getNSI(type));
 					
 					c = ns.get(name).changeName(newName);
+				} else if (el.getLocalName().equals("connect")) {
+					String
+						name = chattr(el, "name"),
+						link = chattr(el, "link"),
+						node = chattr(el, "node");
+					Map<String, Layoutable> nsl =
+						reactum.getNamespace(Bigraph.getNSI("link"));
+					Link l = (Link)nsl.get(link);
+					if (node != null) {
+						Map<String, Layoutable> ns =
+							reactum.getNamespace(Bigraph.getNSI("node"));
+						Port p =
+							((dk.itu.big_red.model.Node)ns.get(node)).getPort(name);
+						if (p != null) {
+							c = p.changeConnect(l);
+						} else throw new ImportFailedException("Port failed");
+					}
+				} else if (el.getLocalName().equals("disconnect")) {
+					String
+						name = chattr(el, "name"),
+						node = chattr(el, "node");
+					Map<String, Layoutable> ns = null;
+					Point p;
+					if (node != null) {
+						ns = reactum.getNamespace(Bigraph.getNSI("node"));
+						p = ((dk.itu.big_red.model.Node)ns.get(node)).getPort(name);
+					} else {
+						ns = reactum.getNamespace(Bigraph.getNSI("innername"));
+						p = (Point)ns.get(name);
+					}
+					if (p != null) {
+						c = p.changeDisconnect(p.getLink());
+					} else throw new ImportFailedException("Can't disconnect");
 				}
 			} else if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.BIG_RED)) {

@@ -7,7 +7,6 @@ import dk.itu.big_red.import_export.XMLExport;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
@@ -93,9 +92,11 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:add"),
 						"name", i.name,
-						"type", i.child.getClass().getSimpleName().toLowerCase(),
-						"parent", i.getCreator().getName(),
-						"parent-type", i.getCreator().getClass().getSimpleName().toLowerCase());
+						"type", i.child.getClass().getSimpleName().toLowerCase());
+				if (!(i.getCreator() instanceof Bigraph))
+					DOM.applyAttributes(f,
+							"parent", i.getCreator().getName(),
+							"parent-type", i.getCreator().getClass().getSimpleName().toLowerCase());
 				if (i.child instanceof Node)
 					DOM.applyAttributes(f,
 							"control", ((Node)i.child).getControl().getName());
@@ -108,27 +109,21 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 						"new-name", i.newName);
 			} else if (i_ instanceof Point.ChangeConnect) {
 				Point.ChangeConnect i = ac(i_);
-				if (i.getCreator() instanceof InnerName) {
-					f = newElement(XMLNS.CHANGE, "change:connect-inner-name");
-				} else if (i.getCreator() instanceof Port) {
-					f = DOM.applyAttributes(
-							newElement(XMLNS.CHANGE, "change:connect-port"),
-							"node", i.getCreator().getParent().getName());
-				} else hurl();
-				DOM.applyAttributes(f,
+				f = DOM.applyAttributes(
+						newElement(XMLNS.CHANGE, "change:connect"),
 						"name", i.getCreator().getName(),
 						"link", i.link.getName());
+				if (i.getCreator() instanceof Port)
+					DOM.applyAttributes(f,
+							"node", ((Port)i.getCreator()).getParent().getName());
 			} else if (i_ instanceof Point.ChangeDisconnect) {
 				Point.ChangeDisconnect i = ac(i_);
-				if (i.getCreator() instanceof InnerName) {
-					f = newElement(XMLNS.CHANGE, "change:disconnect-inner-name");
-				} else if (i.getCreator() instanceof Port) {
-					f = DOM.applyAttributes(
-							newElement(XMLNS.CHANGE, "change:disconnect-port"),
-							"node", i.getCreator().getParent().getName());
-				} else hurl();
-				DOM.applyAttributes(f,
+				f = DOM.applyAttributes(
+						newElement(XMLNS.CHANGE, "change:disconnect"),
 						"name", i.getCreator().getName());
+				if (i.getCreator() instanceof Port)
+					DOM.applyAttributes(f,
+							"node", ((Port)i.getCreator()).getParent().getName());
 			} else hurl();
 			
 			/**
