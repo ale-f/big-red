@@ -29,7 +29,6 @@ import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -51,7 +50,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
@@ -165,8 +163,7 @@ public class RuleEditor extends EditorPart implements
         } catch (Exception ex) {
         	if (monitor != null)
         		monitor.setCanceled(true);
-        	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
-	    		RedPlugin.getThrowableStatus(ex));
+        	UI.openError("Unable to save the document.", ex);
         }		
 	}
 

@@ -7,7 +7,6 @@ import java.util.EventObject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.commands.CommandStackListener;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -37,7 +36,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.PortSpec;
@@ -80,8 +78,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
         } catch (Exception ex) {
         	if (monitor != null)
         		monitor.setCanceled(true);
-        	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
-        			RedPlugin.getThrowableStatus(ex));
+        	UI.openError("Unable to save the document.", ex);
         }
 	}
 

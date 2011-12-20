@@ -260,6 +260,7 @@ public class UI {
 	 * @param cause the {@link Throwable} that caused this error
 	 */
 	public static void openError(String error, Throwable cause) {
+		cause.printStackTrace();
 		ErrorDialog.openError(getShell(), null, error,
 				RedPlugin.getThrowableStatus(cause));
     }

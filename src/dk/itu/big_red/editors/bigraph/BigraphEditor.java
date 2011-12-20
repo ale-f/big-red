@@ -29,7 +29,6 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
@@ -318,8 +317,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
         } catch (Exception ex) {
         	if (monitor != null)
         		monitor.setCanceled(true);
-        	ErrorDialog.openError(getSite().getShell(), null, "Unable to save the document.",
-	    		RedPlugin.getThrowableStatus(ex));
+        	UI.openError("Unable to save the document.", ex);
         }
 	}
 	
