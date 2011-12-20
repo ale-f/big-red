@@ -1,7 +1,5 @@
 package dk.itu.big_red.editors.signature;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -45,12 +43,12 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.Colour;
+import dk.itu.big_red.util.IOAdapter;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.resources.Project;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
-	
-	private static final String[] kinds = { "active", "atomic", "passive" };
 	
 	public SignatureEditor() {
 		 /*
@@ -63,16 +61,13 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		try {
+			IOAdapter io = new IOAdapter();
         	FileEditorInput i = (FileEditorInput)getEditorInput();
-        	ByteArrayOutputStream os = new ByteArrayOutputStream();
         	SignatureXMLExport ex = new SignatureXMLExport();
         	
-        	ex.setModel(model);
-        	ex.setOutputStream(os);
-        	ex.exportObject();
-        	
-    		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
-    		i.getFile().setContents(is, 0, null);
+        	ex.setModel(model).setOutputStream(io.getOutputStream()).
+        		exportObject();
+        	Project.setContents(i.getFile(), io.getInputStream());
         	
     		setDirty(false);
         } catch (Exception ex) {
