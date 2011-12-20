@@ -18,7 +18,7 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 	                        MODE_CONTAINER = 1,
 	                        MODE_FILE = 2;
 	
-	public ResourceTreeSelectionDialog(Shell parent, IContainer input, int mode, Object... extra) {
+	public ResourceTreeSelectionDialog(Shell parent, IContainer input, int mode, String... contentTypes) {
 		super(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 		setAllowMultiple(false);
 		setInput(input);
@@ -26,8 +26,8 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 			setValidator(new FileSelectionStatusValidator());
 			FileContentTypeViewerFilter fv = new FileContentTypeViewerFilter();
 			addFilter(fv);
-			for (Object i : extra)
-				fv.addContentType((String)i);
+			for (String i : contentTypes)
+				fv.addContentType(i);
 		} else if (mode == MODE_CONTAINER) {
 			setValidator(new ContainerSelectionStatusValidator());
 			addFilter(new ContainerViewerFilter());
