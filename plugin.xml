@@ -118,6 +118,18 @@
                contentTypeId="dk.itu.big_red.rule">
          </contentTypeBinding>
       </editor>
+      <editor
+            class="dk.itu.big_red.editors.simulation_spec.SimulationSpecEditor"
+            contributorClass="dk.itu.big_red.editors.rule.RuleEditorActionBarContributor"
+            default="false"
+            extensions="bigraph-simulation-spec"
+            icon="resources/icons/icon16.png"
+            id="dk.itu.big_red.SimulationSpecEditor"
+            name="Simulation Spec Editor">
+         <contentTypeBinding
+               contentTypeId="dk.itu.big_red.simulation_spec">
+         </contentTypeBinding>
+      </editor>
    </extension>
    <extension
          point="org.eclipse.ui.exportWizards">
