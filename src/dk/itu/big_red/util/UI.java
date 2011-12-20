@@ -299,4 +299,9 @@ public class UI {
 		l.setText(text);
 		return l;
 	}
+	
+	public static <T extends Control> T setLayoutData(T widget, Object layoutData) {
+		widget.setLayoutData(layoutData);
+		return widget;
+	}
 }
