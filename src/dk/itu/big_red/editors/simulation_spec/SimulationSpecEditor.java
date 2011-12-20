@@ -1,8 +1,9 @@
 package dk.itu.big_red.editors.simulation_spec;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -15,6 +16,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.resources.Project;
+import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
 
 public class SimulationSpecEditor extends EditorPart {
 
@@ -56,7 +59,15 @@ public class SimulationSpecEditor extends EditorPart {
 		base.setLayout(new GridLayout(3, false));
 		
 		UI.newLabel(base, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		new ColorSelector(base).getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		UI.setLayoutData(new Button(base, SWT.NONE), new GridData(SWT.FILL, SWT.FILL, true, false)).addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				new ResourceTreeSelectionDialog(getSite().getShell(),
+						Project.getWorkspaceRoot(),
+						ResourceTreeSelectionDialog.MODE_FILE,
+						"dk.itu.big_red.signature").open();
+			}
+		});
 		Button b = new Button(base, SWT.NONE);
 		b.setText("&Change..."); b.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, false));
 		
@@ -66,14 +77,22 @@ public class SimulationSpecEditor extends EditorPart {
 		b.setText("Something..."); b.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, false));
 		
 		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		new ColorSelector(base).getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		UI.setLayoutData(new Button(base, SWT.NONE), new GridData(SWT.FILL, SWT.FILL, true, false)).addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				new ResourceTreeSelectionDialog(getSite().getShell(),
+						Project.getWorkspaceRoot(),
+						ResourceTreeSelectionDialog.MODE_FILE,
+						"dk.itu.big_red.bigraph").open();
+			}
+		});
 		b = new Button(base, SWT.NONE);
 		b.setText("A thing..."); b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		
 		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		new ColorSelector(base).getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		new Button(base, SWT.NONE).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		b = new Button(base, SWT.NONE);
 		b.setText("Two thing(s)..."); b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 	}
