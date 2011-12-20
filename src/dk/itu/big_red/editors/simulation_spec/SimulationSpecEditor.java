@@ -14,9 +14,9 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.util.UI;
-import dk.itu.big_red.util.resources.Project;
 import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
 
 public class SimulationSpecEditor extends EditorPart {
@@ -63,7 +63,7 @@ public class SimulationSpecEditor extends EditorPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				new ResourceTreeSelectionDialog(getSite().getShell(),
-						Project.getWorkspaceRoot(),
+						((FileEditorInput)getEditorInput()).getFile().getProject(),
 						ResourceTreeSelectionDialog.MODE_FILE,
 						"dk.itu.big_red.signature").open();
 			}
@@ -81,7 +81,7 @@ public class SimulationSpecEditor extends EditorPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				new ResourceTreeSelectionDialog(getSite().getShell(),
-						Project.getWorkspaceRoot(),
+						((FileEditorInput)getEditorInput()).getFile().getProject(),
 						ResourceTreeSelectionDialog.MODE_FILE,
 						"dk.itu.big_red.bigraph").open();
 			}
