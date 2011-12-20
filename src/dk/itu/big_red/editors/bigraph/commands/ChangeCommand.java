@@ -4,6 +4,7 @@ import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.util.UI;
 
@@ -71,9 +72,14 @@ public abstract class ChangeCommand extends Command {
 		boolean status = (change != null && target != null &&
 				change.isReady());
 		if (status) {
-			status = status && target.validateChange(change);
-			UI.getActiveStatusLine().setErrorMessage(status ? null :
-				target.getLastRejection().getRationale());
+			try {
+				target.tryValidateChange(change);
+				status = true;
+			} catch (ChangeRejectedException cre) {
+				status = false;
+				UI.getActiveStatusLine().
+					setErrorMessage(status ? null : cre.getRationale());
+			}
 		}
 		return status;
 	}
@@ -83,7 +89,11 @@ public abstract class ChangeCommand extends Command {
 	 */
 	@Override
 	public final void execute() {
-		target.applyChange(change);
+		try {
+			target.tryApplyChange(change);
+		} catch (ChangeRejectedException cre) {
+			/* do nothing */
+		}
 	}
 	
 	private Change inverse = null;
@@ -96,7 +106,11 @@ public abstract class ChangeCommand extends Command {
 	public final void undo() {
 		if (inverse == null)
 			inverse = change.inverse();
-		target.applyChange(inverse);
+		try {
+			target.tryApplyChange(inverse);
+		} catch (ChangeRejectedException cre) {
+			/* do nothing */
+		}
 	}
 	
 	/**

@@ -444,33 +444,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		return cg;
 	}
 	
-	private ChangeRejectedException lastRejection = null;
-	
-	@Override
-	public void applyChange(Change b) {
-		try {
-			tryApplyChange(b);
-		} catch (ChangeRejectedException e) {
-			return;
-		}
-	}
-	
-	@Override
-	public boolean validateChange(Change b) {
-		try {
-			tryValidateChange(b);
-		} catch (ChangeRejectedException e) {
-			lastRejection = e;
-			return false;
-		}
-		return true;
-	}
-	
-	@Override
-	public ChangeRejectedException getLastRejection() {
-		return lastRejection;
-	}
-	
 	@Override
 	public void tryValidateChange(Change b) throws ChangeRejectedException {
 		for (IChangeValidator i : validators)

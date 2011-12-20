@@ -43,6 +43,7 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.Colour;
@@ -183,7 +184,11 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 					new Colour(outline.getColorValue())));
 			cg.add(currentControl.changeFillColour(
 					new Colour(fill.getColorValue())));
-			model.applyChange(cg);
+			try {
+				model.tryApplyChange(cg);
+			} catch (ChangeRejectedException cre) {
+				/* should never happen */
+			}
 			
 			currentControl.setKind(
 				activeKind.getSelection() ? Kind.ACTIVE :
