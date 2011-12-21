@@ -1,17 +1,21 @@
 package dk.itu.big_red.editors.simulation_spec;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
@@ -56,43 +60,67 @@ public class SimulationSpecEditor extends EditorPart {
 	public void createPartControl(Composite parent) {
 		Composite base = new Composite(parent, SWT.NONE);
 		base.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		base.setLayout(new GridLayout(3, false));
+		base.setLayout(new GridLayout(4, false));
 		
 		UI.newLabel(base, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		UI.setLayoutData(new Button(base, SWT.NONE), new GridData(SWT.FILL, SWT.FILL, true, false)).addSelectionListener(new SelectionAdapter() {
+		final Button signatureSelector = new Button(base, SWT.NONE);
+		UI.setLayoutData(signatureSelector,
+				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1)).
+			addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				new ResourceTreeSelectionDialog(getSite().getShell(),
+				ResourceTreeSelectionDialog rtsd =
+					new ResourceTreeSelectionDialog(getSite().getShell(),
 						((FileEditorInput)getEditorInput()).getFile().getProject(),
 						ResourceTreeSelectionDialog.MODE_FILE,
-						"dk.itu.big_red.signature").open();
+						"dk.itu.big_red.signature");
+				int r = rtsd.open();
+				if (r == ResourceTreeSelectionDialog.OK)
+					signatureSelector.setText(rtsd.getFirstResult().getProjectRelativePath().toString());
 			}
 		});
-		Button b = new Button(base, SWT.NONE);
-		b.setText("&Change..."); b.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, false));
 		
 		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		new List(base, SWT.BORDER).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		b = new Button(base, SWT.NONE);
-		b.setText("Something..."); b.setLayoutData(new GridData(SWT.FILL, SWT.BOTTOM, false, false));
+		
+		Composite br = new Composite(base, SWT.NONE);
+		br.setBackground(ColorConstants.red);
+		br.setLayoutData(new GridData(SWT.END, SWT.BOTTOM, false, false, 2, 1));
+		RowLayout brl = new RowLayout(SWT.VERTICAL);
+		brl.marginBottom = brl.marginLeft = brl.marginRight =
+				brl.marginTop = 0;
+		brl.pack = false;
+		br.setLayout(brl);
+		
+		Button b = new Button(br, SWT.NONE);
+		b.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
+		b.setText("&Add...");
+		
+		b = new Button(br, SWT.NONE);
+		b.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
+		b.setText("&Remove...");
 		
 		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		UI.setLayoutData(new Button(base, SWT.NONE), new GridData(SWT.FILL, SWT.FILL, true, false)).addSelectionListener(new SelectionAdapter() {
+		final Button modelSelector = new Button(base, SWT.NONE);
+		UI.setLayoutData(modelSelector, new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1)).addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				new ResourceTreeSelectionDialog(getSite().getShell(),
+				ResourceTreeSelectionDialog rtsd =
+					new ResourceTreeSelectionDialog(getSite().getShell(),
 						((FileEditorInput)getEditorInput()).getFile().getProject(),
 						ResourceTreeSelectionDialog.MODE_FILE,
-						"dk.itu.big_red.bigraph").open();
+						"dk.itu.big_red.bigraph");
+				if (rtsd.open() == ResourceTreeSelectionDialog.OK)
+					modelSelector.setText(rtsd.getFirstResult().getProjectRelativePath().toString());
 			}
 		});
-		b = new Button(base, SWT.NONE);
-		b.setText("A thing..."); b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		
-		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		new Button(base, SWT.NONE).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		Combo c = new Combo(base, SWT.READ_ONLY);
+		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		c.setItems(new String[] {"BigMC", "BPL Tool"});
 		b = new Button(base, SWT.NONE);
 		b.setText("Two thing(s)..."); b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 	}
