@@ -260,7 +260,7 @@ public class Control extends Colourable implements IControl {
 	 * Produces a <i>new</i> array of {@link Port}s to give to a {@link Node}.
 	 * @return an array of Ports
 	 */
-	public ArrayList<Port> getPortsArray() {
+	public ArrayList<Port> createPorts() {
 		ArrayList<Port> r = new ArrayList<Port>();
 		for (PortSpec i : ports)
 			r.add(new Port(i.getName(), i.getSegment(), i.getDistance()));
@@ -373,7 +373,7 @@ public class Control extends Colourable implements IControl {
 		return parameters;
 	}
 	
-	public ArrayList<Parameter> getParametersArray() {
+	public ArrayList<Parameter> createParameters() {
 		ArrayList<Parameter> params = new ArrayList<Parameter>();
 		for (ParameterSpec spec : getParameters())
 			params.add(spec.instantiate());

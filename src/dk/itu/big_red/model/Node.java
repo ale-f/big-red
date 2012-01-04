@@ -44,7 +44,7 @@ public class Node extends Container implements PropertyChangeListener, INode {
 		setFillColour(control.getFillColour().getCopy());
 		setOutlineColour(control.getOutlineColour().getCopy());
 		
-		ports = control.getPortsArray();
+		ports = control.createPorts();
 		for (Port p : ports)
 			p.setParent(this);
 		

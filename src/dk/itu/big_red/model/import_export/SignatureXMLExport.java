@@ -34,7 +34,7 @@ public class SignatureXMLExport extends XMLExport<Signature> {
 				"name", c.getName(),
 				"kind", c.getKind().toString());
 		
-		for (Port p : c.getPortsArray())
+		for (Port p : c.createPorts())
 			e.appendChild(processPort(
 				newElement(XMLNS.SIGNATURE, "signature:port"), p));
 		
