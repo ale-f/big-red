@@ -1,4 +1,4 @@
-package dk.itu.big_red.util;
+package dk.itu.big_red.util.io;
 
 import java.io.IOException;
 import java.io.InputStream;

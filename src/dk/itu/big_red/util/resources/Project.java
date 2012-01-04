@@ -25,7 +25,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
-import dk.itu.big_red.util.IOAdapter;
+import dk.itu.big_red.util.io.IOAdapter;
 
 /**
  * Utility functions for manipulating an Eclipse {@link IProject project} and
