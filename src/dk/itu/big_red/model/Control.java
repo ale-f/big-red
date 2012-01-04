@@ -279,6 +279,8 @@ public class Control extends Colourable implements IControl {
 	public abstract static class ParameterSpec {
 		public abstract class Parameter {
 			protected abstract ParameterSpec getSpec();
+			
+			public abstract Object getValue();
 		}
 		
 		protected ParameterSpec(String name) {
@@ -326,11 +328,12 @@ public class Control extends Colourable implements IControl {
 			
 			protected long value;
 			
-			public long getValue() {
+			@Override
+			public Long getValue() {
 				return value;
 			}
 		
-			public LongParameter setValue(long value) {
+			public LongParameter setValue(Long value) {
 				if (getSpec().validate(value))
 					this.value = value;
 				return this;
