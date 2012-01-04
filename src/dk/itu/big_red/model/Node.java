@@ -3,11 +3,13 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.Control.ParameterSpec.Parameter;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
@@ -24,6 +26,7 @@ import dk.itu.big_red.util.geometry.Rectangle;
  */
 public class Node extends Container implements PropertyChangeListener, INode {
 	private ArrayList<Port> ports = new ArrayList<Port>();
+	private ArrayList<Parameter> parameters = new ArrayList<Parameter>();
 	
 	/**
 	 * Returns a new {@link Node} with the same {@link Control} as this one.
@@ -48,6 +51,8 @@ public class Node extends Container implements PropertyChangeListener, INode {
 		for (Port p : ports)
 			p.setParent(this);
 		
+		parameters = control.createParameters();
+				
 		if (!control.isResizable())
 			super.setLayout(
 				getLayout().getCopy().setSize(control.getDefaultSize()));
@@ -98,6 +103,10 @@ public class Node extends Container implements PropertyChangeListener, INode {
 
 	public ArrayList<Port> getPorts() {
 		return ports;
+	}
+	
+	public List<Parameter> getParameters() {
+		return parameters;
 	}
 	
 	public Port getPort(String name) {
