@@ -101,7 +101,7 @@ public class Node extends Container implements PropertyChangeListener, INode {
 		return control;
 	}
 
-	public ArrayList<Port> getPorts() {
+	public List<Port> getPorts() {
 		return ports;
 	}
 	
