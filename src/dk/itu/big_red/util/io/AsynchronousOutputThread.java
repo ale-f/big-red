@@ -81,12 +81,6 @@ public class AsynchronousOutputThread extends AsynchronousIOThread {
 					});
 					kill();
 				}
-				
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException ex) {
-					/* do nothing */
-				}
 			} while (true);
 		} finally {
 			try {

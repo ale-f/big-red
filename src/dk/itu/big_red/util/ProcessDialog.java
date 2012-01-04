@@ -95,13 +95,7 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 				new AsynchronousOutputThread(this).
 					setOutputStream(process.getOutputStream());
 			ot.start();
-			
-			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
-			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
-			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
-			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
-			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
-			ot.enqueue(null);
+			ot.kill();
 			
 			AsynchronousInputThread it =
 				new AsynchronousInputThread(this).
@@ -111,7 +105,6 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 			int r = super.open();
 			
 			it.kill();
-			ot.kill();
 			
 			process.destroy();
 			return r;
