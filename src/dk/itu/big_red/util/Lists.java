@@ -66,4 +66,30 @@ public final class Lists {
 	public static <T> ArrayList<T> copy(Collection<? extends T> c) {
 		return new ArrayList<T>(c);
 	}
+	
+	public static class Pair<T, V> {
+		private T a;
+		private V b;
+		
+		private Pair(T a, V b) {
+			this.a = a;
+			this.b = b;
+		}
+		
+		public T getA() {
+			return a;
+		}
+		
+		public V getB() {
+			return b;
+		}
+	}
+	
+	public static <T, V> List<Pair<T, V>>
+	zip(List<? extends T> a, List<? extends V> b) {
+		ArrayList<Pair<T, V>> r = new ArrayList<Pair<T,V>>();
+		for (int i = 0; i < Math.min(a.size(), b.size()); i++)
+			r.add(new Pair<T, V>(a.get(i), b.get(i)));
+		return r;
+	}
 }
