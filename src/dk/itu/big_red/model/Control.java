@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 
+import dk.itu.big_red.model.Control.ParameterSpec.Parameter;
 import dk.itu.big_red.model.interfaces.IControl;
 
 /**
@@ -366,10 +367,17 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
-	protected List<ParameterSpec> getParameters() {
+	public List<ParameterSpec> getParameters() {
 		if (parameters == null)
 			parameters = new ArrayList<ParameterSpec>();
 		return parameters;
+	}
+	
+	public ArrayList<Parameter> getParametersArray() {
+		ArrayList<Parameter> params = new ArrayList<Parameter>();
+		for (ParameterSpec spec : getParameters())
+			params.add(spec.instantiate());
+		return params;
 	}
 	
 	@Override
