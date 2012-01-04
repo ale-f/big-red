@@ -13,7 +13,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient {
+import dk.itu.big_red.util.io.AsynchronousInputThread;
+import dk.itu.big_red.util.io.AsynchronousOutputThread;
+import dk.itu.big_red.util.io.IAsynchronousInputRecipient;
+import dk.itu.big_red.util.io.IAsynchronousOutputRecipient;
+
+public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
 	private ProcessBuilder pb;
 	
 	public ProcessDialog(Shell parentShell, ProcessBuilder pb) {
@@ -53,7 +58,7 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 	private static final Charset UTF8 = Charset.forName("UTF-8");
 	
 	@Override
-	public void signalData(int length, byte[] buffer) {
+	public void signalInput(int length, byte[] buffer) {
 		if (text.isDisposed())
 			return;
 		if (output == null) {
@@ -70,11 +75,15 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 	}
 	
 	@Override
-	public void signalDataComplete() {
+	public void signalInputComplete() {
 	}
 	
 	@Override
-	public void signalError(IOException e) {
+	public void signalInputError(IOException e) {
+	}
+	
+	@Override
+	public void signalOutputError(IOException e) {
 	}
 	
 	@Override
@@ -82,19 +91,32 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 		try {
 			Process process = pb.start();
 			
-			process.getOutputStream().close();
+			AsynchronousOutputThread ot =
+				new AsynchronousOutputThread(this).
+					setOutputStream(process.getOutputStream());
+			ot.start();
 			
-			AsynchronousInputThread t =
+			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
+			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
+			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
+			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
+			ot.enqueue(new byte[] { 'a', 'b', 'c', '\n' });
+			ot.enqueue(null);
+			
+			AsynchronousInputThread it =
 				new AsynchronousInputThread(this).
 					setInputStream(process.getInputStream());
-			t.start();
+			it.start();
 			
 			int r = super.open();
 			
-			t.kill();
+			it.kill();
+			ot.kill();
+			
 			process.destroy();
 			return r;
 		} catch (IOException e) {
+			e.printStackTrace();
 			return -1;
 		}
 	}

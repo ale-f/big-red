@@ -1,9 +1,9 @@
-package dk.itu.big_red.util;
+package dk.itu.big_red.util.io;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AsynchronousInputThread extends Thread {
+public class AsynchronousInputThread extends AsynchronousIOThread {
 	private final IAsynchronousInputRecipient air;
 	
 	public AsynchronousInputThread(IAsynchronousInputRecipient air) {
@@ -17,22 +17,6 @@ public class AsynchronousInputThread extends Thread {
 		return this;
 	}
 	
-	private Boolean go = true;
-	
-	public void kill() {
-		synchronized (go) {
-			go = false;
-		}
-	}
-	
-	private boolean conditionalDispatch(Runnable r) {
-		synchronized (go) {
-			if (go)
-				UI.asyncExec(r);
-			return go;
-		}
-	}
-	
 	@Override
 	public void run() {
 		try {
@@ -44,7 +28,7 @@ public class AsynchronousInputThread extends Thread {
 				if (!conditionalDispatch(new Runnable() {
 					@Override
 					public void run() {
-						air.signalData(tLength, tBuffer);
+						air.signalInput(tLength, tBuffer);
 					}
 				})) break;
 				buffer = new byte[128];
@@ -52,14 +36,14 @@ public class AsynchronousInputThread extends Thread {
 			conditionalDispatch(new Runnable() {
 				@Override
 				public void run() {
-					air.signalDataComplete();
+					air.signalInputComplete();
 				}
 			});
 		} catch (final IOException e) {
 			conditionalDispatch(new Runnable() {
 				@Override
 				public void run() {
-					air.signalError(e);
+					air.signalInputError(e);
 				}
 			});
 		} finally {
@@ -69,7 +53,7 @@ public class AsynchronousInputThread extends Thread {
 				conditionalDispatch(new Runnable() {
 					@Override
 					public void run() {
-						air.signalError(e);
+						air.signalInputError(e);
 					}
 				});
 			}
