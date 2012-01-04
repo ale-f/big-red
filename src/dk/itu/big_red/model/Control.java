@@ -281,6 +281,10 @@ public class Control extends Colourable implements IControl {
 			protected abstract ParameterSpec getSpec();
 		}
 		
+		protected ParameterSpec(String name) {
+			setName(name);
+		}
+		
 		private String name;
 		
 		public ParameterSpec setName(String name) {
@@ -331,6 +335,10 @@ public class Control extends Colourable implements IControl {
 					this.value = value;
 				return this;
 			}
+		}
+		
+		protected LongParameterSpec(String name) {
+			super(name);
 		}
 		
 		private long minimum = Long.MIN_VALUE, maximum = Long.MAX_VALUE;
