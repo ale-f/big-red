@@ -183,7 +183,7 @@ public class Control extends Colourable implements IControl {
 
 	public void setLongName(String longName) {
 		if (longName != null) {
-			this.name = longName;
+			name = longName;
 			if (longName.length() > 1)
 				setLabel(longName.substring(0, 1).toUpperCase());
 		}
@@ -273,12 +273,16 @@ public class Control extends Colourable implements IControl {
 		return null;
 	}
 	
-	private ArrayList<Parameter> parameters;
+	private ArrayList<ParameterSpec> parameters;
 	
-	protected static class Parameter {
+	protected abstract static class ParameterSpec {
+		protected abstract class Parameter {
+			protected abstract ParameterSpec getSpec();
+		}
+		
 		private String name;
 		
-		public Parameter setName(String name) {
+		public ParameterSpec setName(String name) {
 			this.name = name;
 			return this;
 		}
@@ -286,12 +290,51 @@ public class Control extends Colourable implements IControl {
 		public String getName() {
 			return name;
 		}
+		
+		/**
+		 * Indicates whether or not a {@link Parameter} instantiated from this
+		 * {@link ParameterSpec} could have the given value.
+		 * @param value an {@link Object}
+		 * @return <code>true</code> if <code>value</code> represents a
+		 * permissible value, or <code>false</code> otherwise
+		 */
+		public abstract boolean validate(Object value);
+		
+		/**
+		 * Instantiates a {@link Parameter} governed by this {@link
+		 * ParameterSpec}.
+		 * @return a new {@link Parameter}
+		 * @see #validate(Object)
+		 */
+		public abstract Parameter instantiate();
 	}
 	
-	protected static class LongParameter extends Parameter {
+	protected static class LongParameterSpec extends ParameterSpec {
+		public class LongParameter extends Parameter {
+			protected LongParameter() {
+			}
+			
+			@Override
+			protected LongParameterSpec getSpec() {
+				return LongParameterSpec.this;
+			}
+			
+			protected long value;
+			
+			public long getValue() {
+				return value;
+			}
+		
+			public LongParameter setValue(long value) {
+				if (getSpec().validate(value))
+					this.value = value;
+				return this;
+			}
+		}
+		
 		private long minimum = Long.MIN_VALUE, maximum = Long.MAX_VALUE;
 		
-		public Parameter setMin(long minimum) {
+		public ParameterSpec setMinimum(long minimum) {
 			this.minimum = minimum;
 			return this;
 		}
@@ -300,7 +343,7 @@ public class Control extends Colourable implements IControl {
 			return minimum;
 		}
 		
-		public Parameter setMaximum(long maximum) {
+		public ParameterSpec setMaximum(long maximum) {
 			this.maximum = maximum;
 			return this;
 		}
@@ -308,11 +351,24 @@ public class Control extends Colourable implements IControl {
 		public long getMaximum() {
 			return maximum;
 		}
+		
+		@Override
+		public boolean validate(Object value) {
+			if (value instanceof Long) {
+				Long l = (Long)value;
+				return (l >= minimum && l <= maximum);
+			} else return false;
+		}
+		
+		@Override
+		public Parameter instantiate() {
+			return new LongParameter();
+		}
 	}
 	
-	protected List<Parameter> getParameters() {
+	protected List<ParameterSpec> getParameters() {
 		if (parameters == null)
-			parameters = new ArrayList<Parameter>();
+			parameters = new ArrayList<ParameterSpec>();
 		return parameters;
 	}
 	
