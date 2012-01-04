@@ -15,7 +15,7 @@ public class SignatureBuilder {
 		Control c = new Control();
 		
 		c.setLabel(name.substring(0, 1));
-		c.setLongName(name);
+		c.setName(name);
 		
 		s.addControl(c);
 		return c;

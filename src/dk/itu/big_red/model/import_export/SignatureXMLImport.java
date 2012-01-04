@@ -34,7 +34,7 @@ public class SignatureXMLImport extends Import<Signature> {
 	private Control makeControl(Element e) throws ImportFailedException {
 		Control model = new Control();
 		
-		model.setLongName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
+		model.setName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
 		
 		String kind = DOM.getAttributeNS(e, XMLNS.SIGNATURE, "kind");
 		if (kind != null) {

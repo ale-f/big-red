@@ -126,7 +126,7 @@ public class Control extends Colourable implements IControl {
 	private Control.Kind kind;
 	
 	public Control() {
-		setLongName("Unknown");
+		setName("Unknown");
 		setLabel("?");
 		setShape(Control.Shape.POLYGON, POINTS_QUAD);
 		setDefaultSize(new Dimension(50, 50));
@@ -182,11 +182,13 @@ public class Control extends Colourable implements IControl {
 		firePropertyChange(PROPERTY_POINTS, oldPoints, points);
 	}
 
-	public void setLongName(String longName) {
-		if (longName != null) {
-			name = longName;
-			if (longName.length() > 1)
-				setLabel(longName.substring(0, 1).toUpperCase());
+	public void setName(String name) {
+		if (name != null) {
+			String oldName = name;
+			this.name = name;
+			firePropertyChange(PROPERTY_NAME, oldName, name);
+			if (name.length() > 1)
+				setLabel(name.substring(0, 1).toUpperCase());
 		}
 	}
 

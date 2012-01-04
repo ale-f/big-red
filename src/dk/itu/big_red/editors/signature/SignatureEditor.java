@@ -162,7 +162,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	protected void fieldsToControl() {
 		if (currentControl != null) {
 			currentControl.setLabel(label.getText());
-			currentControl.setLongName(name.getText());
+			currentControl.setName(name.getText());
 			currentControl.clearPorts();
 			for (PortSpec p : appearance.getPorts())
 				currentControl.addPort(p);
