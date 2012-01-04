@@ -276,8 +276,8 @@ public class Control extends Colourable implements IControl {
 	
 	private ArrayList<ParameterSpec> parameters;
 	
-	protected abstract static class ParameterSpec {
-		protected abstract class Parameter {
+	public abstract static class ParameterSpec {
+		public abstract class Parameter {
 			protected abstract ParameterSpec getSpec();
 		}
 		
@@ -314,7 +314,7 @@ public class Control extends Colourable implements IControl {
 		public abstract Parameter instantiate();
 	}
 	
-	protected static class LongParameterSpec extends ParameterSpec {
+	public static class LongParameterSpec extends ParameterSpec {
 		public class LongParameter extends Parameter {
 			protected LongParameter() {
 			}
