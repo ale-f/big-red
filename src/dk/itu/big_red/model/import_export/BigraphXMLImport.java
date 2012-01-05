@@ -53,7 +53,6 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		try {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/bigraph.xsd"));
-			source.close();
 			return makeBigraph(d.getDocumentElement());
 		} catch (Exception e) {
 			if (e instanceof ImportFailedException) {

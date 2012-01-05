@@ -81,7 +81,8 @@ public class DOM {
 	/**
 	 * Attempts to parse the specified {@link InputStream} into a DOM {@link
 	 * Document}.
-	 * @param is an InputStream
+	 * @param is an InputStream, which will be closed &mdash; even in the
+	 * event of an exception
 	 * @return a Document
 	 * @throws SAXException as {@link DocumentBuilder#parse(File)}
 	 * @throws CoreException as {@link IFile#getContents()}
