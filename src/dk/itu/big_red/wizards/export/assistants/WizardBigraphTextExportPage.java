@@ -303,7 +303,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 					new ProcessDialog(UI.getShell(),
 						new ProcessBuilder(
 							RedPlugin.getInstance().getPreferenceStore().
-							getString(RedPreferencePage.PREFERENCE_BIGMC_PATH)));
+							getString(RedPreferencePage.PREFERENCE_BIGMC_PATH).split(" ")));
 				rd.setInput(resultText.getText());
 				rd.setBlockOnOpen(true);
 				rd.open();
