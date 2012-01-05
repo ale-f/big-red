@@ -1,7 +1,5 @@
 package dk.itu.big_red.wizards.export.assistants;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,6 +36,7 @@ import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.preferences.RedPreferencePage;
 import dk.itu.big_red.util.ProcessDialog;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
 import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.util.resources.Types;
@@ -103,10 +102,10 @@ public class WizardBigraphTextExportPage extends WizardPage {
 	
 	private boolean tryToExport() {
 		Export<Bigraph> ex = getWizard().getExporter();
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		IOAdapter ad = new IOAdapter();
 		try {
 			ex.setModel(getWizard().getSource());
-			ex.setOutputStream(os);
+			ex.setOutputStream(ad.getOutputStream());
 			ex.exportObject();
 		} catch (Exception e) {
 			String message = e.getLocalizedMessage();
@@ -118,16 +117,13 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		
 		StringBuilder result = new StringBuilder();
 		
-		InputStreamReader r =
-			new InputStreamReader(new ByteArrayInputStream(os.toByteArray()));
+		InputStreamReader r = new InputStreamReader(ad.getInputStream());
 		char[] buffer = new char[1024];
-		int read = 0;
+		int count = 0;
 		try {
-			while (read != -1) {
-				read = r.read(buffer);
-				if (read > 0)
-					result.append(buffer, 0, read);
-			}
+			while ((count = r.read(buffer)) != -1)
+				if (count > 0)
+					result.append(buffer, 0, count);
 		} catch (IOException e) {
 			setErrorMessage(e.getLocalizedMessage());
 			return false;
