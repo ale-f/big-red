@@ -5,12 +5,17 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
+/**
+ * An <strong>IOAdapter</strong> is a buffer which can be written to as an
+ * {@link OutputStream} and read from as an {@link InputStream}.
+ * @author alec
+ *
+ */
 public class IOAdapter {
 	private boolean bufferClosed = false;
 	private ArrayList<Integer> buffer = new ArrayList<Integer>();
 	
 	private class IOAdapterInput extends InputStream {
-
 		@Override
 		public int read() throws IOException {
 			synchronized (buffer) {
@@ -28,11 +33,9 @@ public class IOAdapter {
 				return i;
 			}
 		}
-		
 	}
 	
 	private class IOAdapterOutput extends OutputStream {
-
 		@Override
 		public void write(int i) throws IOException {
 			synchronized (buffer) {
@@ -53,13 +56,26 @@ public class IOAdapter {
 				} else throw new IOException("The stream is closed");
 			}
 		}
-		
 	}
 	
+	/**
+	 * Returns an {@link InputStream} that can be used to read the contents of
+	 * this {@link IOAdapter}'s buffer.
+	 * <p>Calling {@link InputStream#close()} on the resultant {@link
+	 * InputStream} is unnecessary, but harmless.
+	 * @return an {@link InputStream}
+	 */
 	public InputStream getInputStream() {
 		return new IOAdapterInput();
 	}
 	
+	/**
+	 * Returns an {@link OutputStream} that can be used to add to the contents
+	 * of this {@link IOAdapter}'s buffer.
+	 * <p>Calling {@link OutputStream#close() close()} on the resultant
+	 * {@link OutputStream} will close this {@link IOAdapter}'s buffer.
+	 * @return an {@link OutputStream}
+	 */
 	public OutputStream getOutputStream() {
 		return new IOAdapterOutput();
 	}
