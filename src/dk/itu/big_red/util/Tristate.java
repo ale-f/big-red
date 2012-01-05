@@ -20,5 +20,9 @@ public enum Tristate {
 	/**
 	 * False.
 	 */
-	FALSE
+	FALSE;
+	
+	public static Tristate fromBoolean(boolean b) {
+		return (b ? Tristate.TRUE : Tristate.FALSE);
+	}
 }

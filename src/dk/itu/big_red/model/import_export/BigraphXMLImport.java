@@ -21,7 +21,6 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
@@ -159,23 +158,15 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			cg.add(context.changeAddChild(l,
 					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name")));
 			
-			boolean warn = false;
 			Element appearance =
 				DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
-			switch (appearanceAllowed) {
-			case FALSE:
-				warn = (appearance != null);
-				break;
-			case TRUE:
-				warn = (appearance == null && !(model instanceof Port));
-				break;
-			case UNKNOWN:
-				appearanceAllowed =
-					(appearance != null ? Tristate.TRUE : Tristate.FALSE);
-				break;
-			}
-			
-			if (warn && !partialAppearanceWarning) {
+			if (appearanceAllowed == Tristate.UNKNOWN) {
+				appearanceAllowed = Tristate.fromBoolean(appearance != null);
+			} else if (!partialAppearanceWarning &&
+					    (appearanceAllowed == Tristate.FALSE &&
+					     appearance != null) ||
+					    (appearanceAllowed == Tristate.TRUE &&
+					     appearance == null)) {
 				UI.showMessageBox(SWT.ICON_WARNING, "All or nothing!",
 					"Some objects in this bigraph have layout data, and some don't. " +
 					"Big Red ignores layout data unless all objects have it.");
