@@ -86,6 +86,16 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 	public void signalOutputError(IOException e) {
 	}
 	
+	private String input;
+	
+	public String getInput() {
+		return input;
+	}
+	
+	public void setInput(String input) {
+		this.input = input;
+	}
+	
 	@Override
 	public int open() {
 		try {
@@ -95,7 +105,9 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 				new AsynchronousOutputThread(this).
 					setOutputStream(process.getOutputStream());
 			ot.start();
-			ot.kill();
+			
+			ot.add(getInput());
+			ot.done();
 			
 			AsynchronousInputThread it =
 				new AsynchronousInputThread(this).
