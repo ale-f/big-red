@@ -10,7 +10,10 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
 
 public class NewSignatureWizard extends Wizard implements INewWizard {
@@ -23,7 +26,7 @@ public class NewSignatureWizard extends Wizard implements INewWizard {
 		if (c != null) {
 			try {
 				IFile sigFile = Project.getFile(c, page.getFileName());
-				Project.createSignature(sigFile);
+				NewSignatureWizard.createSignature(sigFile);
 				UI.openInEditor(sigFile);
 				return true;
 			} catch (CoreException e) {
@@ -44,5 +47,12 @@ public class NewSignatureWizard extends Wizard implements INewWizard {
 		page.setFileExtension("bigraph-signature");
 		
 		addPage(page);
+	}
+
+	public static void createSignature(IFile sigFile) throws ExportFailedException, CoreException {
+		IOAdapter io = new IOAdapter();
+		
+		new SignatureXMLExport().setModel(new Signature()).setOutputStream(io.getOutputStream()).exportObject();
+		sigFile.setContents(io.getInputStream(), 0, null);
 	}
 }

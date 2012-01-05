@@ -18,13 +18,6 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IFileEditorInput;
 
-import dk.itu.big_red.import_export.ExportFailedException;
-import dk.itu.big_red.import_export.ImportFailedException;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.import_export.BigraphXMLExport;
-import dk.itu.big_red.model.import_export.SignatureXMLExport;
-import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.io.IOAdapter;
 
 /**
@@ -220,21 +213,5 @@ public class Project {
 	
 	public static void setContents(IFile file, InputStream contents) throws CoreException {
 		file.setContents(contents, 0, null);
-	}
-	
-	public static void createBigraph(IFile sigFile, IFile bigFile) throws ImportFailedException, ExportFailedException, CoreException {
-		IOAdapter io = new IOAdapter();
-		Bigraph b = new Bigraph();
-		
-		b.setSignature(SignatureXMLImport.importFile(sigFile));
-		new BigraphXMLExport().setModel(b).setOutputStream(io.getOutputStream()).exportObject();
-		bigFile.setContents(io.getInputStream(), 0, null);
-	}
-	
-	public static void createSignature(IFile sigFile) throws ExportFailedException, CoreException {
-		IOAdapter io = new IOAdapter();
-		
-		new SignatureXMLExport().setModel(new Signature()).setOutputStream(io.getOutputStream()).exportObject();
-		sigFile.setContents(io.getInputStream(), 0, null);
 	}
 }

@@ -11,7 +11,10 @@ import org.eclipse.ui.IWorkbench;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.import_export.BigraphXMLExport;
+import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
 import dk.itu.big_red.wizards.creation.assistants.WizardNewAgentCreationPage;
 
@@ -33,7 +36,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 				IFile sigFile =
 					Project.findFileByPath(null, page.getSignaturePath());
 				IFile bigFile = Project.getFile(c, page.getFileName());
-				Project.createBigraph(sigFile, bigFile);
+				NewAgentWizard.createBigraph(sigFile, bigFile);
 				UI.openInEditor(bigFile);
 				return true;
 			} catch (CoreException e) {
@@ -55,5 +58,14 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 		page.setDescription("Create a new agent in an existing bigraphical reactive system.");
 		
 		addPage(page);
+	}
+
+	public static void createBigraph(IFile sigFile, IFile bigFile) throws ImportFailedException, ExportFailedException, CoreException {
+		IOAdapter io = new IOAdapter();
+		Bigraph b = new Bigraph();
+		
+		b.setSignature(SignatureXMLImport.importFile(sigFile));
+		new BigraphXMLExport().setModel(b).setOutputStream(io.getOutputStream()).exportObject();
+		bigFile.setContents(io.getInputStream(), 0, null);
 	}
 }
