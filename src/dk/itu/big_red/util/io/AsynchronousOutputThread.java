@@ -2,6 +2,7 @@ package dk.itu.big_red.util.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class AsynchronousOutputThread extends AsynchronousIOThread {
@@ -29,15 +30,28 @@ public class AsynchronousOutputThread extends AsynchronousIOThread {
 		}
 	}
 	
-	public void enqueue(byte[] buf) {
+	public void add(byte[] buf) {
 		synchronized (buffer) {
-			if (buf == null) {
-				bufferFinished = true;
+			if (!bufferFinished && buf != null)
 				buffer.add(buf);
-			} else if (!bufferFinished) {
-				buffer.add(buf);
-			}
 			buffer.notify();
+		}
+	}
+	
+	private static final Charset UTF8 = Charset.forName("UTF-8");
+	
+	public void add(String buf) {
+		if (!bufferFinished && buf != null)
+			add(UTF8.encode(buf).array());
+	}
+	
+	public void done() {
+		synchronized (buffer) {
+			if (!bufferFinished) {
+				bufferFinished = true;
+				buffer.add(null);
+				buffer.notify();
+			}
 		}
 	}
 	
