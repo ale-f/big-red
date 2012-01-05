@@ -199,13 +199,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			processContainer(e, (Container)model);
 		} else if (port) {
 			Node n = (Node)context;
-			String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
-			for (Port p : n.getPorts()) {
-				if (p.getName().equals(name)) {
-					processPoint(e, p);
-					break;
-				}
-			}
+			processPoint(e,
+				n.getPort(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name")));
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {
