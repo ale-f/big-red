@@ -3,8 +3,6 @@ package dk.itu.big_red.editors.simulation_spec;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -20,6 +18,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.util.ResourceSelector;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
 
@@ -63,22 +62,12 @@ public class SimulationSpecEditor extends EditorPart {
 		base.setLayout(new GridLayout(4, false));
 		
 		UI.newLabel(base, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		final Button signatureSelector = new Button(base, SWT.NONE);
-		UI.setLayoutData(signatureSelector,
-				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1)).
-			addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ResourceTreeSelectionDialog rtsd =
-					new ResourceTreeSelectionDialog(getSite().getShell(),
-						((FileEditorInput)getEditorInput()).getFile().getProject(),
-						ResourceTreeSelectionDialog.MODE_FILE,
-						"dk.itu.big_red.signature");
-				int r = rtsd.open();
-				if (r == ResourceTreeSelectionDialog.OK)
-					signatureSelector.setText(rtsd.getFirstResult().getProjectRelativePath().toString());
-			}
-		});
+		new ResourceSelector(base,
+			((FileEditorInput)getEditorInput()).getFile().getProject(),
+			ResourceTreeSelectionDialog.MODE_FILE,
+			"dk.itu.big_red.signature").
+			getButton().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		new List(base, SWT.BORDER).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -101,19 +90,12 @@ public class SimulationSpecEditor extends EditorPart {
 		b.setText("&Remove...");
 		
 		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		final Button modelSelector = new Button(base, SWT.NONE);
-		UI.setLayoutData(modelSelector, new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1)).addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ResourceTreeSelectionDialog rtsd =
-					new ResourceTreeSelectionDialog(getSite().getShell(),
-						((FileEditorInput)getEditorInput()).getFile().getProject(),
-						ResourceTreeSelectionDialog.MODE_FILE,
-						"dk.itu.big_red.bigraph");
-				if (rtsd.open() == ResourceTreeSelectionDialog.OK)
-					modelSelector.setText(rtsd.getFirstResult().getProjectRelativePath().toString());
-			}
-		});
+		new ResourceSelector(base,
+				((FileEditorInput)getEditorInput()).getFile().getProject(),
+				ResourceTreeSelectionDialog.MODE_FILE,
+				"dk.itu.big_red.bigraph").
+				getButton().setLayoutData(
+					new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
 		
@@ -128,7 +110,7 @@ public class SimulationSpecEditor extends EditorPart {
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
-
+		UI.getWorkbenchPage().activate(this);
 	}
 
 }
