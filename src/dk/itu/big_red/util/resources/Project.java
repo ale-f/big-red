@@ -214,4 +214,17 @@ public class Project {
 	public static void setContents(IFile file, InputStream contents) throws CoreException {
 		file.setContents(contents, 0, null);
 	}
+	
+	public static IPath getRelativePath(IResource relativeTo, IResource resource) {
+		IPath relativeToContainer = null;
+		if (relativeTo instanceof IContainer) {
+			relativeToContainer = relativeTo.getFullPath();
+		} else if (relativeTo instanceof IFile) {
+			relativeToContainer = relativeTo.getFullPath().removeLastSegments(1);
+		}
+		
+		if (relativeToContainer != null) {
+			return resource.getFullPath().makeRelativeTo(relativeToContainer);
+		} else return resource.getFullPath();
+	}
 }
