@@ -28,6 +28,7 @@ import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.util.Tristate;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.resources.Project;
 
@@ -38,14 +39,8 @@ import dk.itu.big_red.util.resources.Project;
  *
  */
 public class BigraphXMLImport extends Import<Bigraph> {
-	private enum AppearanceStatus {
-		NOTHING_YET,
-		MANDATORY,
-		FORBIDDEN
-	}
-	
-	private boolean warnedAboutLayouts;
-	private AppearanceStatus as;
+	private boolean partialAppearanceWarning;
+	private Tristate appearanceAllowed;
 	private ChangeGroup cg = new ChangeGroup();
 	
 	@Override
@@ -69,8 +64,8 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		
 		bigraph = new Bigraph();
 		
-		warnedAboutLayouts = false;
-		as = AppearanceStatus.NOTHING_YET;
+		partialAppearanceWarning = false;
+		appearanceAllowed = Tristate.UNKNOWN;
 		cg.clear();
 		
 		Element signatureElement =
@@ -105,7 +100,7 @@ public class BigraphXMLImport extends Import<Bigraph> {
 		try {
 			if (cg.size() != 0)
 				bigraph.tryApplyChange(cg);
-			if (as == AppearanceStatus.FORBIDDEN)
+			if (appearanceAllowed == Tristate.FALSE)
 				bigraph.tryApplyChange(bigraph.relayout());
 		} catch (ChangeRejectedException f) {
 			throw new ImportFailedException(f);
@@ -166,33 +161,30 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			
 			boolean warn = false;
 			Element appearance =
-					DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
-			switch (as) {
-			case FORBIDDEN:
+				DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
+			switch (appearanceAllowed) {
+			case FALSE:
 				warn = (appearance != null);
 				break;
-			case MANDATORY:
+			case TRUE:
 				warn = (appearance == null && !(model instanceof Port));
 				break;
-			case NOTHING_YET:
-				as = (appearance != null ? AppearanceStatus.MANDATORY :
-					AppearanceStatus.FORBIDDEN);
+			case UNKNOWN:
+				appearanceAllowed =
+					(appearance != null ? Tristate.TRUE : Tristate.FALSE);
 				break;
 			}
 			
-			if (warn && !warnedAboutLayouts) {
+			if (warn && !partialAppearanceWarning) {
 				UI.showMessageBox(SWT.ICON_WARNING, "All or nothing!",
 					"Some objects in this bigraph have layout data, and some don't. " +
 					"Big Red ignores layout data unless all objects have it.");
-				as = AppearanceStatus.FORBIDDEN;
-				warnedAboutLayouts = true;
+				appearanceAllowed = Tristate.FALSE;
+				partialAppearanceWarning = true;
 			}
 			
-			if (appearance != null && as == AppearanceStatus.MANDATORY) {
-				if (as == AppearanceStatus.NOTHING_YET)
-					as = AppearanceStatus.MANDATORY;
+			if (appearance != null && appearanceAllowed == Tristate.TRUE)
 				AppearanceGenerator.setAppearance(appearance, model, cg);
-			}
 		}
 		
 		if (model instanceof Container) {
