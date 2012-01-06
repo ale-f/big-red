@@ -87,6 +87,15 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 					} else child = (Layoutable)ModelFactory.getNewObject(type);
 					
 					c = parent.changeAddChild(child, name);
+				} else if (el.getLocalName().equals("remove")) {
+					String
+						name = chattr(el, "name"),
+						type = chattr(el, "type");
+					Layoutable child =
+						getNamed(reactum, type, name);
+					Container parent = child.getParent();
+					
+					c = parent.changeRemoveChild(child);
 				} else if (el.getLocalName().equals("rename")) {
 					String
 						name = chattr(el, "name"),

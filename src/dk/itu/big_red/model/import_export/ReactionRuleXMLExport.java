@@ -57,8 +57,8 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		return (T)i;
 	}
 	
-	private static void hurl() throws ExportFailedException {
-		throw new ExportFailedException("Aieee!");
+	private static void hurl(Object i) throws ExportFailedException {
+		throw new ExportFailedException("Aieee! " + i.toString());
 	}
 	
 	private Element processChanges(Element e, ChangeGroup changes) throws ExportFailedException {
@@ -101,6 +101,12 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				if (i.child instanceof Node)
 					DOM.applyAttributes(f,
 							"control", ((Node)i.child).getControl().getName());
+			} else if (i_ instanceof Container.ChangeRemoveChild) {
+				Container.ChangeRemoveChild i = ac(i_);
+				f = DOM.applyAttributes(
+						newElement(XMLNS.CHANGE, "change:remove"),
+						"name", i.child.getName(),
+						"type", i.child.getClass().getSimpleName().toLowerCase());
 			} else if (i_ instanceof Layoutable.ChangeName) {
 				Layoutable.ChangeName i = ac(i_);
 				f = DOM.applyAttributes(
@@ -125,7 +131,7 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				if (i.getCreator() instanceof Port)
 					DOM.applyAttributes(f,
 							"node", ((Port)i.getCreator()).getParent().getName());
-			} else hurl();
+			}
 			
 			/**
 			 * Don't try to do anything with ChangeGroups - their Changes are
