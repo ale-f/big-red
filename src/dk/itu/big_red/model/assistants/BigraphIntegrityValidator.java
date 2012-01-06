@@ -139,8 +139,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 						rejectChange(b, c.child + " already has child objects");
 				if (!c.getCreator().canContain(c.child))
 					rejectChange(b,
-						c.getCreator().getClass().getSimpleName() + "s can't contain " +
-						c.child.getClass().getSimpleName() + "s");
+						c.getCreator().getType() + "s can't contain " +
+						c.child.getType() + "s");
 				if (!layoutChecks.contains(c.child))
 					layoutChecks.add(c.child);
 			}

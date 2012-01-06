@@ -159,7 +159,11 @@ public class ModelObject {
 	
 	@Override
 	public String toString() {
-		return "<" + getClass().getSimpleName() + "@" + System.identityHashCode(this) + ">";
+		return "<" + getType() + "@" + System.identityHashCode(this) + ">";
+	}
+	
+	public String getType() {
+		return getClass().getSimpleName();
 	}
 	
 	public ChangeComment changeComment(String comment) {

@@ -54,7 +54,7 @@ public class ModelPropertySource implements IPropertySource {
 	@Override
 	public Object getPropertyValue(Object id) {
 		if (id.equals("Class")) {
-			return object.getClass().getSimpleName();
+			return object.getType();
 		} else {
 			Object value = object.getProperty((String)id);
 			if (value instanceof Colour)

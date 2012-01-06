@@ -82,8 +82,7 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				f = DOM.applyAttributes(
 						newElement(XMLNS.BIG_RED, "big-red:layout"),
 						"name", i.getCreator().getName(),
-						"type", i.getCreator().getClass().
-									getSimpleName().toLowerCase(),
+						"type", i.getCreator().getType().toLowerCase(),
 						"x", i.newLayout.getX(),
 						"y", i.newLayout.getY(),
 						"width", i.newLayout.getWidth(),
@@ -93,11 +92,11 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:add"),
 						"name", i.name,
-						"type", i.child.getClass().getSimpleName().toLowerCase());
+						"type", i.child.getType().toLowerCase());
 				if (!(i.getCreator() instanceof Bigraph))
 					DOM.applyAttributes(f,
 							"parent", i.getCreator().getName(),
-							"parent-type", i.getCreator().getClass().getSimpleName().toLowerCase());
+							"parent-type", i.getCreator().getType().toLowerCase());
 				if (i.child instanceof Node)
 					DOM.applyAttributes(f,
 							"control", ((Node)i.child).getControl().getName());
@@ -106,13 +105,13 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:remove"),
 						"name", i.child.getName(),
-						"type", i.child.getClass().getSimpleName().toLowerCase());
+						"type", i.child.getType().toLowerCase());
 			} else if (i_ instanceof Layoutable.ChangeName) {
 				Layoutable.ChangeName i = ac(i_);
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:rename"),
 						"name", i.getCreator().getName(), 
-						"type", i.getCreator().getClass().getSimpleName().toLowerCase(),
+						"type", i.getCreator().getType().toLowerCase(),
 						"new-name", i.newName);
 			} else if (i_ instanceof Point.ChangeConnect) {
 				Point.ChangeConnect i = ac(i_);
