@@ -28,6 +28,11 @@
 					<p>
 						The <code>bigraph</code> XML namespace name is <code><a href="http://www.itu.dk/research/pls/xmlns/2010/bigraph">http://www.itu.dk/research/pls/xmlns/2010/bigraph</a></code>.
 					</p>
+					<p>
+						The key words <q>MUST</q>, <q>MUST NOT</q>, <q>REQUIRED</q>, <q>SHALL</q>, <q>SHALL NOT</q>,
+						<q>SHOULD</q>, <q>SHOULD NOT</q>, <q>RECOMMENDED</q>,  <q>MAY</q>, and <q>OPTIONAL</q> in
+						this document are to be interpreted as described in <a href="http://www.ietf.org/rfc/rfc2119.txt">RFC 2119</a>.
+					</p>
 					<hr />
 				</body>
 			</html>
@@ -60,7 +65,7 @@
 						Children
 					</h3>
 					<p>
-						<code>bigraph</code>s <strong>must</strong> contain:
+						<code>bigraph</code>s MUST contain:
 					</p>
 					<ul>
 						<li>
@@ -86,16 +91,20 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>may</strong> be present:
+						The following attributes MAY be present:
 					</p>
 					<ul>
 						<a id="bigraph_signature" />
 						<li>
 							<code>signature</code> (<code>string</code>): specifies the path to this bigraph's <i>signature</i>.
+							<br />
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this bigraph, to a signature file.
+							<br />
+							<strong>This attribute is deprecated</strong> in favour of the <a href="#signature_src"><code>src</code> attribute on <code>signature</code></a>.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>bigraph</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>bigraph</code>s.
 					</p>
 					<hr />
 				</body>
@@ -160,7 +169,7 @@
 						Children
 					</h3>
 					<p>
-						<code>signature</code>s <strong>may</strong> contain:
+						<code>signature</code>s MAY contain:
 					</p>
 					<ul>
 						<li>
@@ -171,17 +180,18 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>may</strong> be present:
+						The following attributes MAY be present:
 					</p>
 					<ul>
 						<a id="signature_src" />
 						<li>
 							<code>src</code> (<code>string</code>): specifies the path to this bigraph's <i>signature</i>.
 							<br />
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this bigraph, to a signature file.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>signature</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>signature</code>s.
 					</p>
 					<hr />
 				</body>
@@ -211,7 +221,7 @@
 						Children
 					</h3>
 					<p>
-						<code>root</code>s <strong>must</strong> contain:
+						<code>root</code>s MUST contain:
 					</p>
 					<ul>
 						<li>
@@ -228,18 +238,18 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>must</strong> be present:
+						The following attributes MUST be present:
 					</p>
 					<ul>
 						<a id="root_name" />
 						<li>
 							<code>name</code> (<code>string</code>): this root's identifier.
 							<br />
-							This attribute <strong>must</strong> be unique across all roots in this <a href="#bigraph">bigraph</a>.
+							This attribute MUST be unique across all roots in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>root</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>root</code>s.
 					</p>
 					<hr />
 				</body>
@@ -271,7 +281,7 @@
 						Children
 					</h3>
 					<p>
-						<code>node</code>s <strong>must</strong> contain:
+						<code>node</code>s MUST contain:
 					</p>
 					<ul>
 						<li>
@@ -291,24 +301,24 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>must</strong> be present:
+						The following attributes MUST be present:
 					</p>
 					<ul>
 						<li>
 							<a id="node_name" />
 							<code>name</code> (<code>string</code>): this node's identifier.
 							<br />
-							This attribute <strong>must</strong> be unique across all nodes in this <a href="#bigraph">bigraph</a>.
+							This attribute MUST be unique across all nodes in this <a href="#bigraph">bigraph</a>.
 						</li>
 						<li>
 							<a id="control_name" />
 							<code>control</code> (<code>string</code>): this node's control.
 							<br />
-							This attribute <strong>should</strong> be the <code>name</code> of a <a href="#">control</a> defined in the <a href="#bigraph_signature">signature</a>.
+							This attribute MUST be the <code>name</code> of a <a href="#">control</a> defined in the <a href="#bigraph_signature">signature</a>.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>node</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>node</code>s.
 					</p>
 					<hr />
 				</body>
@@ -347,7 +357,7 @@
 						Children
 					</h3>
 					<p>
-						<code>site</code>s <strong>may</strong> contain:
+						<code>site</code>s MAY contain:
 					</p>
 					<ul>
 						<li>
@@ -358,18 +368,18 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>must</strong> be present:
+						The following attributes MUST be present:
 					</p>
 					<ul>
 						<li>
 							<a id="site_name" />
 							<code>name</code> (<code>string</code>): this site's identifier.
 							<br />
-							This attribute <strong>must</strong> be unique across all sites in this <a href="#bigraph">bigraph</a>.
+							This attribute MUST be unique across all sites in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>site</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>site</code>s.
 					</p>
 					<hr />
 				</body>
@@ -399,7 +409,7 @@
 						Children
 					</h3>
 					<p>
-						<code>port</code>s <strong>may</strong> contain:
+						<code>port</code>s MAY contain:
 					</p>
 					<ul>
 						<li>
@@ -410,29 +420,29 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>must</strong> be present:
+						The following attributes MUST be present:
 					</p>
 					<ul>
 						<li>
 							<a id="port_name" />
 							<code>name</code> (<code>string</code>): this port's identifier.
 							<br />
-							This attribute <strong>must</strong> be unique across all ports within a <a href="#node">node</a>.
+							This attribute MUST be unique across all ports within a <a href="#node">node</a>.
 						</li>
 					</ul>
 					<p>
-						The following attributes <strong>may</strong> be present:
+						The following attributes MAY be present:
 					</p>
 					<ul>
 						<li>
 							<a id="port_link" />
 							<code>link</code> (<code>string</code>): the identifier of the <a href="#edge">edge</a> or <a href="#outername">outername</a> to which this port is connected.
 							<br />
-							If this attribute is present, it <strong>must</strong> be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
+							If this attribute is present, it MUST be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>port</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>port</code>s.
 					</p>
 					<hr />
 				</body>
@@ -462,7 +472,7 @@
 						Children
 					</h3>
 					<p>
-						<code>innername</code>s <strong>may</strong> contain:
+						<code>innername</code>s MAY contain:
 					</p>
 					<ul>
 						<li>
@@ -473,29 +483,29 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>must</strong> be present:
+						The following attributes MUST be present:
 					</p>
 					<ul>
 						<li>
 							<a id="innername_name" />
 							<code>name</code> (<code>string</code>): this innername's identifier.
 							<br />
-							This attribute <strong>must</strong> be unique across all innernames in this <a href="#bigraph">bigraph</a>.
+							This attribute MUST be unique across all innernames in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
-						The following attributes <strong>may</strong> be present:
+						The following attributes MAY be present:
 					</p>
 					<ul>
 						<li>
 							<a id="innername_link" />
 							<code>link</code> (<code>string</code>): the identifier of the <a href="#edge">edge</a> or <a href="#outername">outername</a> to which this innername is connected.
 							<br />
-							If this attribute is present, it <strong>must</strong> be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
+							If this attribute is present, it MUST be the <code>name</code> of an <a href="#edge_name">edge</a> or <a href="#outername_name">outername</a> in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>innername</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>innername</code>s.
 					</p>
 					<hr />
 				</body>
@@ -525,7 +535,7 @@
 						Children
 					</h3>
 					<p>
-						<code>edges</code>s <strong>may</strong> contain:
+						<code>edges</code>s MAY contain:
 					</p>
 					<ul>
 						<li>
@@ -536,18 +546,18 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>must</strong> be present:
+						The following attributes MUST be present:
 					</p>
 					<ul>
 						<li>
 							<a id="edge_name" />
 							<code>name</code> (<code>string</code>): this edge's identifier.
 							<br />
-							This attribute <strong>must</strong> be unique across all edges <i>and</i> <a href="#outername">outername</a>s in this <a href="#bigraph">bigraph</a>.
+							This attribute MUST be unique across all edges <i>and</i> <a href="#outername">outername</a>s in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>innername</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>innername</code>s.
 					</p>
 					<hr />
 				</body>
@@ -577,7 +587,7 @@
 						Children
 					</h3>
 					<p>
-						<code>outername</code>s <strong>may</strong> contain:
+						<code>outername</code>s MAY contain:
 					</p>
 					<ul>
 						<li>
@@ -588,18 +598,18 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes <strong>must</strong> be present:
+						The following attributes MUST be present:
 					</p>
 					<ul>
 						<li>
 							<a id="outername_name" />
 							<code>name</code> (<code>string</code>): this outername's identifier.
 							<br />
-							This attribute <strong>must</strong> be unique across all outernames <i>and</i> <a href="#edge">edge</a>s in this <a href="#bigraph">bigraph</a>.
+							This attribute MUST be unique across all outernames <i>and</i> <a href="#edge">edge</a>s in this <a href="#bigraph">bigraph</a>.
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces <strong>may</strong> be present on <code>outername</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>outername</code>s.
 					</p>
 					<hr />
 				</body>
