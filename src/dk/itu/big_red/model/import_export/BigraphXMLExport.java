@@ -19,6 +19,7 @@ import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Lists;
+import dk.itu.big_red.util.resources.Project;
 
 /**
  * XMLExport writes a {@link Bigraph} out as an XML document.
@@ -72,7 +73,8 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	private Element processSignature(Element e, Signature s) throws ExportFailedException {
 		if (s.getFile() != null) {
 			DOM.applyAttributes(e,
-				"src", s.getFile().getFullPath().makeRelative().toString());	
+				"src", Project.getRelativePath(
+						getModel().getFile(), s.getFile()).toString());	
 		} else {
 			DOM.applyAttributes(e,
 				"xmlns:signature", XMLNS.SIGNATURE);

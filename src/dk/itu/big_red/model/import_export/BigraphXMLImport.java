@@ -80,11 +80,18 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 		}
 		
 		if (signaturePath != null) {
-			IFile sigFile =
-				Project.findFileByPath(null, new Path(signaturePath));
+			IFile sigFile = null;
+			if (getFile() != null)
+				sigFile =
+					Project.findFileByPath(getFile().getParent(),
+							new Path(signaturePath));
 			
-			if (sigFile == null)
-				throw new ImportFailedException("The signature \"" + signaturePath + "\" does not exist.");
+			if (sigFile == null) { /* backwards compatibility */
+				sigFile = 
+					Project.findFileByPath(null, new Path(signaturePath));
+				if (sigFile == null)
+					throw new ImportFailedException("The signature \"" + signaturePath + "\" does not exist.");
+			}
 				
 			Signature sig = SignatureXMLImport.importFile(sigFile);
 			bigraph.setSignature(sig);
@@ -195,7 +202,7 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 	}
 	
 	public static Bigraph importFile(IFile file) throws ImportFailedException {
-		BigraphXMLImport b = new BigraphXMLImport();
+		BigraphXMLImport b = new BigraphXMLImport().setFile(file);
 		try {
 			b.setInputStream(file.getContents());
 		} catch (CoreException e) {

@@ -220,7 +220,7 @@ public class Project {
 		if (relativeTo instanceof IContainer) {
 			relativeToContainer = relativeTo.getFullPath();
 		} else if (relativeTo instanceof IFile) {
-			relativeToContainer = relativeTo.getFullPath().removeLastSegments(1);
+			relativeToContainer = relativeTo.getParent().getFullPath();
 		}
 		
 		if (relativeToContainer != null) {

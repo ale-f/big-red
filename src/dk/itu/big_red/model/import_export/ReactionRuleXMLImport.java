@@ -20,8 +20,9 @@ import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.util.resources.IFileBackable;
 
-public class ReactionRuleXMLImport extends Import<ReactionRule> {
+public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFileBackable {
 	private ReactionRule rr = null;
 	
 	@Override
@@ -46,8 +47,8 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 	}
 	
 	private Bigraph makeRedex(Element e) throws ImportFailedException {
-		BigraphXMLImport im = new BigraphXMLImport();
-		return im.makeBigraph(e);
+		BigraphXMLImport im = new BigraphXMLImport().setFile(getFile());
+		return im.makeBigraph(e).setFile(getFile());
 	}
 	
 	private static String chattr(Element e, String name) {
@@ -156,12 +157,25 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> {
 	}
 	
 	public static ReactionRule importFile(IFile file) throws ImportFailedException {
-		ReactionRuleXMLImport b = new ReactionRuleXMLImport();
+		ReactionRuleXMLImport b = new ReactionRuleXMLImport().setFile(file);
 		try {
 			b.setInputStream(file.getContents());
 		} catch (CoreException e) {
 			throw new ImportFailedException(e);
 		}
 		return b.importObject().setFile(file);
+	}
+	
+	private IFile file;
+	
+	@Override
+	public IFile getFile() {
+		return file;
+	}
+
+	@Override
+	public ReactionRuleXMLImport setFile(IFile file) {
+		this.file = file;
+		return this;
 	}
 }
