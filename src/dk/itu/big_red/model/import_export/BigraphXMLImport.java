@@ -29,6 +29,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.util.DOM;
 import dk.itu.big_red.util.Tristate;
 import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.resources.IFileBackable;
 import dk.itu.big_red.util.resources.Project;
 
 /**
@@ -37,7 +38,7 @@ import dk.itu.big_red.util.resources.Project;
  * @see BigraphXMLExport
  *
  */
-public class BigraphXMLImport extends Import<Bigraph> {
+public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 	private boolean partialAppearanceWarning;
 	private Tristate appearanceAllowed;
 	private ChangeGroup cg = new ChangeGroup();
@@ -201,5 +202,18 @@ public class BigraphXMLImport extends Import<Bigraph> {
 			throw new ImportFailedException(e);
 		}
 		return b.importObject().setFile(file);
+	}
+
+	private IFile file;
+	
+	@Override
+	public IFile getFile() {
+		return file;
+	}
+
+	@Override
+	public BigraphXMLImport setFile(IFile file) {
+		this.file = file;
+		return this;
 	}
 }
