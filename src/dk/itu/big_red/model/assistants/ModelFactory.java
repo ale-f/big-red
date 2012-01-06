@@ -49,30 +49,31 @@ public class ModelFactory implements CreationFactory {
 	}
 
 	/**
-	 * Creates a new object from a XML tag name.
-	 * @param namedObject a XML tag name
+	 * Creates a new object of the named type.
+	 * @param typeName a type name (not case sensitive)
 	 * @return a new object of the appropriate type, or <code>null</code> if
-	 *         the tag name was unrecognised
+	 *          the type name was unrecognised
+	 * @see ModelObject#getType()
 	 */
-	public static ModelObject getNewObject(String namedObject) {
-		namedObject = namedObject.toLowerCase();
-		if (namedObject.equals("bigraph"))
+	public static ModelObject getNewObject(String typeName) {
+		typeName = typeName.toLowerCase();
+		if (typeName.equals("bigraph"))
 			return new Bigraph();
-		else if (namedObject.equals("root"))
+		else if (typeName.equals("root"))
 			return new Root();
-		else if (namedObject.equals("site"))
+		else if (typeName.equals("site"))
 			return new Site();
-		else if (namedObject.equals("innername"))
+		else if (typeName.equals("innername"))
 			return new InnerName();
-		else if (namedObject.equals("outername"))
+		else if (typeName.equals("outername"))
 			return new OuterName();
-		else if (namedObject.equals("signature"))
+		else if (typeName.equals("signature"))
 			return new Signature();
-		else if (namedObject.equals("port"))
+		else if (typeName.equals("port"))
 			return new Port();
-		else if (namedObject.equals("control"))
+		else if (typeName.equals("control"))
 			return new Control();
-		else if (namedObject.equals("edge"))
+		else if (typeName.equals("edge"))
 			return new Edge();
 		else return null;
 	}

@@ -162,6 +162,10 @@ public class ModelObject {
 		return "<" + getType() + "@" + System.identityHashCode(this) + ">";
 	}
 	
+	/**
+	 * Returns the name of this object's type.
+	 * @return the name, as a {@link String}
+	 */
 	public String getType() {
 		return getClass().getSimpleName();
 	}
