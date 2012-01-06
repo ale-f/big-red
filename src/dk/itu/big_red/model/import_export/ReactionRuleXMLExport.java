@@ -31,8 +31,9 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 			processRedex(newElement(XMLNS.RULE, "rule:redex"), rr.getRedex()));
 		
 		try {
-			getModel().getReactum().tryApplyChange(
-					getModel().getChanges().inverse());
+			if (getModel().getChanges().size() != 0)
+				getModel().getReactum().tryApplyChange(
+						getModel().getChanges().inverse());
 		} catch (ChangeRejectedException ex) {
 			throw new ExportFailedException(ex);
 		}
