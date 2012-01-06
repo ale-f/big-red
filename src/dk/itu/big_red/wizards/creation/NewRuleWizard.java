@@ -7,8 +7,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
-
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -18,20 +16,32 @@ import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
+import dk.itu.big_red.wizards.creation.assistants.WizardNewRuleCreationPage;
 
 
 public class NewRuleWizard extends Wizard implements INewWizard {
-	private WizardNewFileCreationPage page = null;
+	private WizardNewRuleCreationPage page = null;
 	
 	@Override
 	public boolean performFinish() {
 		IContainer c =
-			Project.findContainerByPath(null, page.getContainerFullPath());
-		if (c != null) {
+			Project.findContainerByPath(null, page.getFolderPath());
+		if (c != null) {			
 			try {
+				IFile sigFile =
+						Project.findFileByPath(null, page.getSignaturePath());
+				IFile rrFile = Project.getFile(c, page.getFileName());
+				NewRuleWizard.createReactionRule(sigFile, rrFile);
 				UI.openInEditor(Project.getFile(c, page.getFileName()));
 				return true;
 			} catch (CoreException e) {
+				e.printStackTrace();
+				page.setErrorMessage(e.getLocalizedMessage());
+			} catch (ImportFailedException e) {
+				e.printStackTrace();
+				page.setErrorMessage(e.getLocalizedMessage());
+			} catch (ExportFailedException e) {
+				e.printStackTrace();
 				page.setErrorMessage(e.getLocalizedMessage());
 			}
 		}
@@ -40,11 +50,10 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		page = new WizardNewFileCreationPage("newRuleWizardPage", selection);
+		page = new WizardNewRuleCreationPage("newRuleWizardPage", selection);
 		
 		page.setTitle("Rule");
 		page.setDescription("Create a new rule in an existing bigraphical reactive system.");
-		page.setFileExtension("bigraph-rule");
 		
 		addPage(page);
 	}
@@ -55,7 +64,8 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 		ReactionRule rr = new ReactionRule();
 		rr.setRedex(new Bigraph());
 		rr.getRedex().setSignature(SignatureXMLImport.importFile(sigFile));
+		
 		new ReactionRuleXMLExport().setModel(rr).setOutputStream(io.getOutputStream()).exportObject();
-		sigFile.setContents(io.getInputStream(), 0, null);
+		rrFile.setContents(io.getInputStream(), 0, null);
 	}
 }
