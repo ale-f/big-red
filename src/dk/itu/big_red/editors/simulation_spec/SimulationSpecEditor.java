@@ -23,12 +23,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.util.ResourceSelector;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
-import dk.itu.big_red.wizards.export.assistants.WizardBigraphTextExportSelectorPage;
 
 public class SimulationSpecEditor extends EditorPart {
 
@@ -68,7 +68,7 @@ public class SimulationSpecEditor extends EditorPart {
 		Map<String, Export<SimulationSpec>> exporters =
 				new HashMap<String, Export<SimulationSpec>>();
 		for (IConfigurationElement ce :
-		     WizardBigraphTextExportSelectorPage.getExporters()) {
+		     RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export.text")) {
 			try {
 				String id = ce.getAttribute("name");
 				Object exporter_ = ce.createExecutableExtension("class");

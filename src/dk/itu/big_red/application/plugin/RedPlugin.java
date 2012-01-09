@@ -6,8 +6,10 @@ import java.net.URL;
 import java.util.Random;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -33,6 +35,10 @@ public class RedPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
+	}
+
+	public static IConfigurationElement[] getConfigurationElementsFor(String extensionPointID) {
+		return RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPointID);
 	}
 
 	/**

@@ -1,7 +1,6 @@
 package dk.itu.big_red.wizards.export.assistants;
 
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -17,16 +16,13 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.wizards.export.BigraphTextExportWizard;
 
 public class WizardBigraphTextExportSelectorPage extends WizardPage {
 	@Override
 	public BigraphTextExportWizard getWizard() {
 		return (BigraphTextExportWizard)super.getWizard();
-	}
-	
-	public static IConfigurationElement[] getExporters() {
-		return RegistryFactory.getRegistry().getConfigurationElementsFor("dk.itu.big_red.export.text");
 	}
 	
 	public WizardBigraphTextExportSelectorPage(String pageName) {
@@ -88,7 +84,7 @@ public class WizardBigraphTextExportSelectorPage extends WizardPage {
 				return null;
 			}
 		});
-		tree.setInput(getExporters());
+		tree.setInput(RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export.text"));
 		tree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		tree.addSelectionChangedListener(new ISelectionChangedListener() {
