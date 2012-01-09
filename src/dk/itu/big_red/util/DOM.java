@@ -124,6 +124,8 @@ public class DOM {
 		t.transform(source, result);
 	}
 	
+	private static SchemaFactory sf = null;
+	
 	/**
 	 * Validates the given {@link Document} with the {@link Schema} constructed
 	 * from the given {@link InputStream}.
@@ -135,9 +137,10 @@ public class DOM {
 	 */
 	public static Document validate(Document d, InputStream schema) throws ValidationFailedException {
 		try {
-			SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).
-				newSchema(new StreamSource(schema)).newValidator().validate(
-					new DOMSource(d));
+			if (sf == null)
+				sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			sf.newSchema(new StreamSource(schema)).newValidator().
+				validate(new DOMSource(d));
 			return d;
 		} catch (Exception e) {
 			throw new ValidationFailedException(e);
