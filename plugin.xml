@@ -281,6 +281,11 @@
             id="big-red.exporter.bigmc"
             name="BigMC">
       </exporter>
+      <exporter
+            class="dk.itu.big_red.model.import_export.SimulationSpecBigMCExport"
+            id="big-red.exporter.bigmc-ss"
+            name="BigMC (simulation spec)">
+      </exporter>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
