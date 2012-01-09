@@ -1,5 +1,10 @@
 package dk.itu.big_red.editors.simulation_spec;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
@@ -18,9 +23,12 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.import_export.Export;
+import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.util.ResourceSelector;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
+import dk.itu.big_red.wizards.export.assistants.WizardBigraphTextExportSelectorPage;
 
 public class SimulationSpecEditor extends EditorPart {
 
@@ -55,6 +63,27 @@ public class SimulationSpecEditor extends EditorPart {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
+	private static Map<String, Export<SimulationSpec>> getExporters() {
+		Map<String, Export<SimulationSpec>> exporters =
+				new HashMap<String, Export<SimulationSpec>>();
+		for (IConfigurationElement ce :
+		     WizardBigraphTextExportSelectorPage.getExporters()) {
+			try {
+				String id = ce.getAttribute("name");
+				Object exporter_ = ce.createExecutableExtension("class");
+				if (exporter_ instanceof Export<?>) {
+					Export<?> exporter = (Export<?>)exporter_;
+					if (exporter.getType() == SimulationSpec.class)
+						exporters.put(id, (Export<SimulationSpec>)exporter);
+				}
+			} catch (CoreException e) {
+				
+			}
+		}
+		return exporters;
+	}
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite base = new Composite(parent, SWT.NONE);
@@ -102,7 +131,10 @@ public class SimulationSpecEditor extends EditorPart {
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		Combo c = new Combo(base, SWT.READ_ONLY);
 		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		c.setItems(new String[] {"BigMC", "BPL Tool"});
+		String[] exporters = getExporters().keySet().toArray(new String[0]);
+		c.setItems(exporters);
+		c.setText(exporters[0]);
+		
 		b = new Button(base, SWT.NONE);
 		b.setText("Two thing(s)..."); b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 	}

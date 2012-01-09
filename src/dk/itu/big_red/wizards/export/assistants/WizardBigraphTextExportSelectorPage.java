@@ -25,7 +25,7 @@ public class WizardBigraphTextExportSelectorPage extends WizardPage {
 		return (BigraphTextExportWizard)super.getWizard();
 	}
 	
-	public IConfigurationElement[] getExporters() {
+	public static IConfigurationElement[] getExporters() {
 		return RegistryFactory.getRegistry().getConfigurationElementsFor("dk.itu.big_red.export.text");
 	}
 	
