@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
+
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -325,5 +326,10 @@ public class BigraphTikZExport extends Export<Bigraph> {
 		} else {
 			/* do nothing */
 		}
+	}
+
+	@Override
+	public Class<?> getType() {
+		return Bigraph.class;
 	}
 }

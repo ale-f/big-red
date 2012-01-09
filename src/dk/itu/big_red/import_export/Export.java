@@ -166,4 +166,11 @@ public abstract class Export<T> {
 	public void setOption(String id, Object value) {
 		return;
 	}
+	
+	/**
+	 * Returns the type of object that this {@link Export} knows how to
+	 * export.
+	 * @return a {@link Class}. Incidentally, I hate Java generics
+	 */
+	public abstract Class<?> getType();
 }

@@ -148,4 +148,9 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		
 		return e;
 	}
+	
+	@Override
+	public Class<?> getType() {
+		return ReactionRule.class;
+	}
 }

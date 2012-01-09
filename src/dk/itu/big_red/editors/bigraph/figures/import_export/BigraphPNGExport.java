@@ -44,4 +44,9 @@ public class BigraphPNGExport extends Export<IFigure> {
 		}
 	}
 
+	@Override
+	public Class<?> getType() {
+		return IFigure.class;
+	}
+
 }

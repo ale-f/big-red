@@ -128,4 +128,9 @@ public class BigraphTraverseExport extends Export<Bigraph> {
 		for (IInnerName i : bigraph.getIInnerNames())
 			line(niceName(i));
 	}
+
+	@Override
+	public Class<?> getType() {
+		return Bigraph.class;
+	}
 }

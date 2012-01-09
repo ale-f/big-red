@@ -176,4 +176,9 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), l));
 		return e;
 	}
+	
+	@Override
+	public Class<?> getType() {
+		return Bigraph.class;
+	}
 }
