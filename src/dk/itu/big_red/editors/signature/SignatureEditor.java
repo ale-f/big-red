@@ -168,7 +168,13 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		uiUpdateInProgress = false;
 	}
 	
-	private boolean starsAligned() {
+	/**
+	 * Indicates whether or not changes made to the UI should be propagated
+	 * to the current {@link Control}.
+	 * @return <code>true</code> if the {@link Control} is valid and is not
+	 * itself currently changing the UI, or <code>false</code> otherwise
+	 */
+	private boolean shouldPropagateUI() {
 		return (!uiUpdateInProgress && currentControl != null);
 	}
 	
@@ -275,7 +281,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (starsAligned())
+				if (shouldPropagateUI())
 					go();
 			}
 
@@ -286,7 +292,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				if (starsAligned())
+				if (shouldPropagateUI())
 					go();
 			}
 			
@@ -329,7 +335,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		atomicKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (starsAligned())
+				if (shouldPropagateUI())
 					currentControl.setKind(Kind.ATOMIC);
 			}
 		});
@@ -339,7 +345,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		activeKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (starsAligned())
+				if (shouldPropagateUI())
 					currentControl.setKind(Kind.ACTIVE);
 			}
 		});
@@ -349,7 +355,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		passiveKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (starsAligned())
+				if (shouldPropagateUI())
 					currentControl.setKind(Kind.PASSIVE);
 			}
 		});
@@ -375,7 +381,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		ovalMode.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (starsAligned())
+				if (shouldPropagateUI())
 					currentControl.setShape(Shape.OVAL);
 			}
 		});
@@ -386,7 +392,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		polygonMode.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (starsAligned())
+				if (shouldPropagateUI())
 					currentControl.setShape(Shape.POLYGON);
 			}
 		});
@@ -396,7 +402,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		resizable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (starsAligned())
+				if (shouldPropagateUI())
 					currentControl.setResizable(resizable.getSelection());
 			}
 		});
@@ -410,7 +416,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearance.addPortListener(new PortListener() {
 			@Override
 			public void portChange(PortEvent e) {
-				if (!starsAligned())
+				if (!shouldPropagateUI())
 					return;
 				for (PortSpec p : Lists.copy(currentControl.getPorts()))
 					currentControl.removePort(p.getName());
@@ -421,7 +427,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearance.addPointListener(new PointListener() {
 			@Override
 			public void pointChange(PointEvent e) {
-				if (!starsAligned())
+				if (!shouldPropagateUI())
 					return;
 				currentControl.setPoints(appearance.getPoints().getCopy());
 			}
@@ -445,7 +451,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		outline.addListener(new IPropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
-				if (!starsAligned())
+				if (!shouldPropagateUI())
 					return;
 				try {
 					model.tryApplyChange(
@@ -463,7 +469,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		fill.addListener(new IPropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent event) {
-				if (!starsAligned())
+				if (!shouldPropagateUI())
 					return;
 				try {
 					model.tryApplyChange(
