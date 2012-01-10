@@ -331,8 +331,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		kindGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		kindGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
 		
-		atomicKind = new Button(kindGroup, SWT.RADIO);
-		atomicKind.setText("Atomic");
+		atomicKind = UI.newButton(kindGroup, SWT.RADIO, "Atomic");
 		atomicKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -341,8 +340,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			}
 		});
 		
-		activeKind = new Button(kindGroup, SWT.RADIO);
-		activeKind.setText("Active");
+		activeKind = UI.newButton(kindGroup, SWT.RADIO, "Passive");
 		activeKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -351,8 +349,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			}
 		});
 		
-		passiveKind = new Button(kindGroup, SWT.RADIO);
-		passiveKind.setText("Passive");
+		passiveKind = UI.newButton(kindGroup, SWT.RADIO, "Passive");
 		passiveKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -377,8 +374,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		firstLine.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		firstLine.setLayout(new RowLayout(SWT.HORIZONTAL));
 		
-		ovalMode = new Button(firstLine, SWT.RADIO);
-		ovalMode.setText("Oval");
+		ovalMode = UI.newButton(firstLine, SWT.RADIO, "Oval");
 		ovalMode.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -387,8 +383,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			}
 		});
 		
-		polygonMode = new Button(firstLine, SWT.RADIO);
-		polygonMode.setText("Polygon");
+		polygonMode = UI.newButton(firstLine, SWT.RADIO, "Polygon");
 		polygonMode.setSelection(true);
 		polygonMode.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -398,8 +393,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			}
 		});
 		
-		resizable = new Button(firstLine, SWT.CHECK);
-		resizable.setText("Resizable?");
+		resizable = UI.newButton(firstLine, SWT.CHECK, "Resizable?");
 		resizable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

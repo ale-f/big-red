@@ -192,8 +192,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			}
 		});
 		
-		Button bigraphButton = new Button(root, SWT.CENTER);
-		bigraphButton.setText("&Browse...");
+		Button bigraphButton = UI.newButton(root, SWT.CENTER, "&Browse...");
 		bigraphButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -248,8 +247,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		groupLayoutData.horizontalSpan = 3;
 		group.setLayoutData(groupLayoutData);
 		
-		clipboardButton = new Button(group, SWT.NONE);
-		clipboardButton.setText("Copy to clipboard");
+		clipboardButton = UI.newButton(group, SWT.NONE, "Copy to clipboard");
 		clipboardButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -263,8 +261,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			}
 		});
 		
-		saveButton = new Button(group, SWT.NONE);
-		saveButton.setText("Save...");
+		saveButton = UI.newButton(group, SWT.NONE, "Save...");
 		saveButton.addSelectionListener(new SelectionListener() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -289,8 +286,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 				}
 		});
 		
-		bonusButton = new Button(group, SWT.NONE);
-		bonusButton.setText("Bonus...");
+		bonusButton = UI.newButton(group, SWT.NONE, "Bonus...");
 		bonusButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -326,9 +322,8 @@ public class WizardBigraphTextExportPage extends WizardPage {
 			for (final OptionDescriptor od : options) {
 				Object ov = exporter.getOption(od.getID());
 				if (ov instanceof Boolean) {
-					final Button b = new Button(optionsGroup, SWT.CHECK);
+					final Button b = UI.newButton(optionsGroup, SWT.CHECK, od.getDescription());
 					b.setSelection((Boolean)ov);
-					b.setText(od.getDescription());
 					b.addSelectionListener(new SelectionListener() {
 						
 						@Override

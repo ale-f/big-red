@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.Types;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class WizardNewAgentCreationPage extends WizardPage {
 	private IStructuredSelection selection = null;
@@ -58,8 +59,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		folderText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		folderText.addModifyListener(sharedModifyListener);
 		
-		Button folderButton = new Button(root, SWT.CENTER);
-		folderButton.setText("&Browse...");
+		Button folderButton = UI.newButton(root, SWT.CENTER, "&Browse...");
 		folderButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -109,8 +109,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		signatureText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		signatureText.addModifyListener(sharedModifyListener);
 		
-		Button signatureButton = new Button(root, SWT.NONE);
-		signatureButton.setText("B&rowse...");
+		Button signatureButton = UI.newButton(root, SWT.NONE, "B&rowse...");
 		signatureButton.addSelectionListener(new SelectionListener() {
 			
 			@Override

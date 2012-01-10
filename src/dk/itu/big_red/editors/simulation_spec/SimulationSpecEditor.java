@@ -110,13 +110,11 @@ public class SimulationSpecEditor extends EditorPart {
 		brl.pack = false;
 		br.setLayout(brl);
 		
-		Button b = new Button(br, SWT.NONE);
+		Button b = UI.newButton(br, SWT.NONE, "&Add...");
 		b.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
-		b.setText("&Add...");
 		
-		b = new Button(br, SWT.NONE);
+		b = UI.newButton(br, SWT.NONE, "&Remove...");
 		b.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
-		b.setText("&Remove...");
 		
 		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		new ResourceSelector(base,
@@ -135,8 +133,8 @@ public class SimulationSpecEditor extends EditorPart {
 		c.setItems(exporters);
 		c.setText(exporters[0]);
 		
-		b = new Button(base, SWT.NONE);
-		b.setText("Two thing(s)..."); b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		b = UI.newButton(base, SWT.NONE, "Two thing(s)...");
+		b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 	}
 
 	@Override

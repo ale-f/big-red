@@ -14,6 +14,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -300,6 +301,12 @@ public class UI {
 		Label l = new Label(parent, style);
 		l.setText(text);
 		return l;
+	}
+	
+	public static Button newButton(Composite parent, int style, String text) {
+		Button b = new Button(parent, style);
+		b.setText(text);
+		return b;
 	}
 	
 	public static <T extends Control> T setLayoutData(T widget, Object layoutData) {
