@@ -222,6 +222,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Control c = new Control();
+				model.addControl(c);
 				currentControlItem =
 					UI.data(new TreeItem(controls, SWT.NONE), controlKey, c);
 				setControl(c);
