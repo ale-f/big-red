@@ -222,11 +222,6 @@ public class Control extends Colourable implements IControl {
 		this.resizable = resizable;
 		firePropertyChange(PROPERTY_RESIZABLE, oldResizable, resizable);
 	}
-
-	public void clearPorts() {
-		ports.clear();
-		firePropertyChange(PROPERTY_PORT, null, null);
-	}
 	
 	public void addPort(PortSpec p) {
 		if (p != null) {

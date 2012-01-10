@@ -177,9 +177,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		if (currentControl != null) {
 			currentControl.setLabel(label.getText());
 			currentControl.setName(name.getText());
-			currentControl.clearPorts();
+			
+			for (PortSpec p : Lists.copy(currentControl.getPorts()))
+				currentControl.removePort(p.getName());
 			for (PortSpec p : appearance.getPorts())
 				currentControl.addPort(p);
+			
 			currentControl.setResizable(resizable.getSelection());
 			if (polygonMode.getSelection()) {
 				currentControl.setShape(Shape.POLYGON);
