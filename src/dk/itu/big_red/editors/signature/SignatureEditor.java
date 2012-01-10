@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.signature;
 
+import java.beans.PropertyChangeListener;
 import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -34,6 +35,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.PortSpec;
@@ -43,11 +45,12 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.Colour;
+import dk.itu.big_red.util.Lists;
 import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
 
-public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener {
+public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener, PropertyChangeListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
 	
 	public SignatureEditor() {
@@ -131,6 +134,17 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceDescription, kindLabel, labelLabel,
 		outlineLabel, fillLabel, nameLabel, appearanceLabel;
 	private ColorSelector outline, fill;
+	
+	protected void setControl(Control c) {
+		fieldsToControl();
+		
+		if (currentControl != null)
+			currentControl.removePropertyChangeListener(this);
+		currentControl = c;
+		c.addPropertyChangeListener(this);
+		
+		controlToFields();
+	}
 	
 	protected void controlToFields() {
 		fireModify = false;
@@ -266,8 +280,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				currentControlItem = controls.getSelection()[0];
-				currentControl = model.getControl(currentControlItem.getText());
-				controlToFields();
+				setControl(model.getControl(currentControlItem.getText()));
 				name.setFocus();
 				setEnablement(true);
 			}
@@ -482,4 +495,11 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 	}
 
+	@Override
+	public void propertyChange(java.beans.PropertyChangeEvent evt) {
+		System.out.println("PropertyChangeEvent[source=" +
+				evt.getSource() + ", propertyName=" + evt.getPropertyName() +
+				", oldValue=" + evt.getOldValue() + ", newValue=" +
+				evt.getNewValue() + "]");
+	}
 }
