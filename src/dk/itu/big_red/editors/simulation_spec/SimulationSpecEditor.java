@@ -25,7 +25,9 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
+import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.SimulationSpec;
+import dk.itu.big_red.model.import_export.SimulationSpecXMLImport;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.UI;
@@ -49,8 +51,29 @@ public class SimulationSpecEditor extends EditorPart {
 			throws PartInitException {
 		setSite(site);
 		setInputWithNotify(input);
+		
+		loadInput();
 	}
 
+	private SimulationSpec model = null;
+	
+	protected SimulationSpec getModel() {
+		return model;
+	}
+	
+	protected void loadInput() {
+		IEditorInput input = getEditorInput();
+		if (input instanceof FileEditorInput) {
+			FileEditorInput fi = (FileEditorInput)input;
+			try {
+				model = SimulationSpecXMLImport.importFile(fi.getFile());
+			} catch (ImportFailedException ex) {
+				
+			}
+		}
+		setPartName(input.getName());
+	}
+	
 	@Override
 	public boolean isDirty() {
 		// TODO Auto-generated method stub
