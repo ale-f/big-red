@@ -12,8 +12,8 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -239,7 +239,6 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			public void widgetSelected(SelectionEvent e) {
 				model.removeControl(currentControl);
 				currentControlItem.dispose();
-				controls.update();
 				
 				if (controls.getItemCount() > 0) {
 					controls.select(controls.getItem(0));
@@ -263,27 +262,58 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		GridLayout rightLayout = new GridLayout(2, false);
 		right.setLayout(rightLayout);
 		
+		abstract class TextListener implements SelectionListener, FocusListener {
+			abstract void go();
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				/* nothing */
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (starsAligned())
+					go();
+			}
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				/* nothing */
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				if (starsAligned())
+					go();
+			}
+			
+		}
+		
+		TextListener nameListener = new TextListener() {
+			@Override
+			void go() {
+				currentControl.setName(name.getText());
+			}
+		};
+		
 		nameLabel = UI.newLabel(right, SWT.NONE, "Name:");
 		name = new Text(right, SWT.BORDER);
 		name.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		name.addModifyListener(new ModifyListener() {
+		name.addSelectionListener(nameListener);
+		name.addFocusListener(nameListener);
+		
+		TextListener labelListener = new TextListener() {
 			@Override
-			public void modifyText(ModifyEvent e) {
-				if (starsAligned())
-					currentControl.setName(name.getText());
+			void go() {
+				currentControl.setLabel(label.getText());
 			}
-		});
+		};
 		
 		labelLabel = UI.newLabel(right, SWT.NONE, "Label:");
 		label = new Text(right, SWT.BORDER);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		label.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				if (starsAligned())
-					currentControl.setLabel(label.getText());
-			}
-		});
+		label.addSelectionListener(labelListener);
+		label.addFocusListener(labelListener);
 		
 		kindLabel = UI.newLabel(right, SWT.NONE, "Kind:");
 		
