@@ -178,7 +178,7 @@ public class Control extends Colourable implements IControl {
 
 	public void setName(String name) {
 		if (name != null) {
-			String oldName = name;
+			String oldName = this.name;
 			this.name = name;
 			firePropertyChange(PROPERTY_NAME, oldName, name);
 			if (name.length() > 1)
