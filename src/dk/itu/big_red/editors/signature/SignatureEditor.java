@@ -5,6 +5,7 @@ import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -13,6 +14,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Font;
@@ -38,9 +40,9 @@ import org.eclipse.ui.part.FileEditorInput;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
@@ -54,11 +56,6 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
 	
 	public SignatureEditor() {
-		 /*
-		  * Don't fire any modifications until the first control has been
-		  * loaded.
-		  */
-		fireModify = false;
 	}
 	
 	@Override
@@ -128,16 +125,12 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	private Button ovalMode, polygonMode, resizable;
 	private Button activeKind, atomicKind, passiveKind;
 	
-	private boolean fireModify = true;
-
 	private Label
 		appearanceDescription, kindLabel, labelLabel,
 		outlineLabel, fillLabel, nameLabel, appearanceLabel;
 	private ColorSelector outline, fill;
 	
 	protected void setControl(Control c) {
-		fieldsToControl();
-		
 		if (currentControl != null)
 			currentControl.removePropertyChangeListener(this);
 		currentControl = c;
@@ -146,8 +139,10 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		controlToFields();
 	}
 	
+	private boolean uiUpdateInProgress = false;
+	
 	protected void controlToFields() {
-		fireModify = false;
+		uiUpdateInProgress = true;
 		
 		boolean polygon = (currentControl.getShape() == Shape.POLYGON);
 		
@@ -170,101 +165,17 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		atomicKind.setSelection(currentControl.getKind() == Kind.ATOMIC);
 		passiveKind.setSelection(currentControl.getKind() == Kind.PASSIVE);
 		
-		fireModify = true;
+		uiUpdateInProgress = false;
 	}
 	
-	protected void fieldsToControl() {
-		if (currentControl != null) {
-			currentControl.setLabel(label.getText());
-			currentControl.setName(name.getText());
-			
-			for (PortSpec p : Lists.copy(currentControl.getPorts()))
-				currentControl.removePort(p.getName());
-			for (PortSpec p : appearance.getPorts())
-				currentControl.addPort(p);
-			
-			currentControl.setResizable(resizable.getSelection());
-			if (polygonMode.getSelection()) {
-				currentControl.setShape(Shape.POLYGON);
-				currentControl.setPoints(appearance.getPoints().getCopy());
-			} else currentControl.setShape(Shape.OVAL);
-			
-			ChangeGroup cg = new ChangeGroup();
-			cg.add(currentControl.changeOutlineColour(
-					new Colour(outline.getColorValue())));
-			cg.add(currentControl.changeFillColour(
-					new Colour(fill.getColorValue())));
-			try {
-				model.tryApplyChange(cg);
-			} catch (ChangeRejectedException cre) {
-				/* should never happen */
-			}
-			
-			currentControl.setKind(
-				activeKind.getSelection() ? Kind.ACTIVE :
-				passiveKind.getSelection() ? Kind.PASSIVE : Kind.ATOMIC);
-		}
+	private boolean starsAligned() {
+		return (!uiUpdateInProgress && currentControl != null);
 	}
 	
 	private static Font smiff;
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		final class DirtListener implements ModifyListener, SelectionListener, PointListener, PortListener, IPropertyChangeListener {
-			private boolean canvasActive = true;
-			
-			private void go() {
-				if (fireModify) {
-					fieldsToControl();
-					
-					canvasActive = false;
-					boolean polygon = polygonMode.getSelection();
-					if (polygon && appearance.getMode() != Shape.POLYGON) {
-						appearance.setMode(Shape.POLYGON);
-					} else if (!polygon && appearance.getMode() == Shape.POLYGON) {
-						appearance.setMode(Shape.OVAL);
-					}
-					canvasActive = true;
-					
-					setDirty(true);
-				}
-			}
-			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				go();
-			}
-
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
-
-			@Override
-			public void modifyText(ModifyEvent e) {
-				go();
-			}
-
-			@Override
-			public void pointChange(PointEvent e) {
-				if (canvasActive)
-					go();
-			}
-			
-			@Override
-			public void portChange(PortEvent e) {
-				if (canvasActive)
-					go();
-			}
-
-			@Override
-			public void propertyChange(PropertyChangeEvent event) {
-				/* only from colour selectors */
-				go();
-			}
-		}
-		
-		DirtListener sharedDirtListener = new DirtListener();
-		
 		GridLayout layout = new GridLayout(2, false);
 		parent.setLayout(layout);
 		
@@ -283,7 +194,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				currentControlItem = controls.getSelection()[0];
-				setControl(model.getControl(currentControlItem.getText()));
+				setControl((Control)UI.data(currentControlItem, controlKey));
 				name.setFocus();
 				setEnablement(true);
 			}
@@ -355,22 +266,24 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		nameLabel = UI.newLabel(right, SWT.NONE, "Name:");
 		name = new Text(right, SWT.BORDER);
 		name.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		name.addModifyListener(sharedDirtListener);
 		name.addModifyListener(new ModifyListener() {
-			
 			@Override
 			public void modifyText(ModifyEvent e) {
-				String nT = name.getText();
-				if (nT.length() > 0)
-					label.setText(name.getText().substring(0, 1));
-				currentControlItem.setText(name.getText());
+				if (starsAligned())
+					currentControl.setName(name.getText());
 			}
 		});
 		
 		labelLabel = UI.newLabel(right, SWT.NONE, "Label:");
 		label = new Text(right, SWT.BORDER);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		label.addModifyListener(sharedDirtListener);
+		label.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				if (starsAligned())
+					currentControl.setLabel(label.getText());
+			}
+		});
 		
 		kindLabel = UI.newLabel(right, SWT.NONE, "Kind:");
 		
@@ -380,15 +293,33 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		atomicKind = new Button(kindGroup, SWT.RADIO);
 		atomicKind.setText("Atomic");
-		atomicKind.addSelectionListener(sharedDirtListener);
+		atomicKind.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (starsAligned())
+					currentControl.setKind(Kind.ATOMIC);
+			}
+		});
 		
 		activeKind = new Button(kindGroup, SWT.RADIO);
 		activeKind.setText("Active");
-		activeKind.addSelectionListener(sharedDirtListener);
+		activeKind.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (starsAligned())
+					currentControl.setKind(Kind.ACTIVE);
+			}
+		});
 		
 		passiveKind = new Button(kindGroup, SWT.RADIO);
 		passiveKind.setText("Passive");
-		passiveKind.addSelectionListener(sharedDirtListener);
+		passiveKind.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (starsAligned())
+					currentControl.setKind(Kind.PASSIVE);
+			}
+		});
 		
 		appearanceLabel = UI.newLabel(right, SWT.NONE, "Appearance:");
 		GridData appearanceLabelLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
@@ -408,16 +339,34 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		
 		ovalMode = new Button(firstLine, SWT.RADIO);
 		ovalMode.setText("Oval");
-		ovalMode.addSelectionListener(sharedDirtListener);
+		ovalMode.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (starsAligned())
+					currentControl.setShape(Shape.OVAL);
+			}
+		});
 		
 		polygonMode = new Button(firstLine, SWT.RADIO);
 		polygonMode.setText("Polygon");
 		polygonMode.setSelection(true);
-		polygonMode.addSelectionListener(sharedDirtListener);
+		polygonMode.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (starsAligned())
+					currentControl.setShape(Shape.POLYGON);
+			}
+		});
 		
 		resizable = new Button(firstLine, SWT.CHECK);
 		resizable.setText("Resizable?");
-		resizable.addSelectionListener(sharedDirtListener);
+		resizable.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (starsAligned())
+					currentControl.setResizable(resizable.getSelection());
+			}
+		});
 		
 		appearance = new SignatureEditorPolygonCanvas(appearanceGroup, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -425,8 +374,25 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceLayoutData.heightHint = 100;
 		appearance.setLayoutData(appearanceLayoutData);
 		appearance.setBackground(ColorConstants.listBackground);
-		appearance.addPortListener(sharedDirtListener);
-		appearance.addPointListener(sharedDirtListener);
+		appearance.addPortListener(new PortListener() {
+			@Override
+			public void portChange(PortEvent e) {
+				if (!starsAligned())
+					return;
+				for (PortSpec p : Lists.copy(currentControl.getPorts()))
+					currentControl.removePort(p.getName());
+				for (PortSpec p : appearance.getPorts())
+					currentControl.addPort(p);
+			}
+		});
+		appearance.addPointListener(new PointListener() {
+			@Override
+			public void pointChange(PointEvent e) {
+				if (!starsAligned())
+					return;
+				currentControl.setPoints(appearance.getPoints().getCopy());
+			}
+		});
 		
 		if (smiff == null)
 			smiff = UI.tweakFont(appearanceLabel.getFont(), 8, SWT.ITALIC);
@@ -443,12 +409,38 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		outlineLabel = UI.newLabel(right, SWT.NONE, "Outline:");
 		outline = new ColorSelector(right);
 		outline.getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		outline.addListener(sharedDirtListener);
+		outline.addListener(new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (!starsAligned())
+					return;
+				try {
+					model.tryApplyChange(
+							currentControl.changeOutlineColour(
+									new Colour(outline.getColorValue())));
+				} catch (ChangeRejectedException cre) {
+					cre.printStackTrace();
+				}
+			}
+		});
 		
 		fillLabel = UI.newLabel(right, SWT.NONE, "Fill:");
 		fill = new ColorSelector(right);
 		fill.getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		fill.addListener(sharedDirtListener);
+		fill.addListener(new IPropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent event) {
+				if (!starsAligned())
+					return;
+				try {
+					model.tryApplyChange(
+							currentControl.changeFillColour(
+									new Colour(fill.getColorValue())));
+				} catch (ChangeRejectedException cre) {
+					cre.printStackTrace();
+				}
+			}
+		});
 		
 		setEnablement(false);
 		initialiseSignatureEditor();
@@ -461,6 +453,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			outlineLabel, fill.getButton(), ovalMode, fillLabel, polygonMode,
 			kindLabel, nameLabel, appearanceLabel, labelLabel);
 	}
+	
+	private static final String controlKey = ID + ".control";
 	
 	private void initialiseSignatureEditor() {
 		IEditorInput input = getEditorInput();
@@ -477,7 +471,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		}
 		
 		for (dk.itu.big_red.model.Control c : model.getControls())
-			new TreeItem(controls, 0).setText(c.getName());
+			UI.data(new TreeItem(controls, 0), controlKey, c).setText(c.getName());
 	}
 
 	@Override
@@ -500,9 +494,43 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 
 	@Override
 	public void propertyChange(java.beans.PropertyChangeEvent evt) {
-		System.out.println("PropertyChangeEvent[source=" +
-				evt.getSource() + ", propertyName=" + evt.getPropertyName() +
-				", oldValue=" + evt.getOldValue() + ", newValue=" +
-				evt.getNewValue() + "]");
+		if (evt.getSource().equals(currentControl)) {
+			if (uiUpdateInProgress)
+				return;
+			uiUpdateInProgress = true;
+			try {
+				String propertyName = evt.getPropertyName();
+				Object newValue = evt.getNewValue();
+				if (propertyName.equals(Control.PROPERTY_LABEL)) {
+					label.setText((String)newValue);
+				} else if (propertyName.equals(Control.PROPERTY_NAME)) {
+					name.setText((String)newValue);
+					currentControlItem.setText((String)newValue);
+				} else if (propertyName.equals(Control.PROPERTY_SHAPE)) {
+					appearance.setMode((Shape)newValue);
+					ovalMode.setSelection(Shape.OVAL.equals(newValue));
+					polygonMode.setSelection(Shape.POLYGON.equals(newValue));
+				} else if (propertyName.equals(Control.PROPERTY_POINTS)) {
+					if (appearance.getMode() == Shape.POLYGON)
+						appearance.setPoints((PointList)newValue);
+				} else if (propertyName.equals(Control.PROPERTY_PORT)) {
+					/* XXX: add and remove rather than overwriting */
+					appearance.setPorts(currentControl.getPorts());
+				} else if (propertyName.equals(Control.PROPERTY_RESIZABLE)) {
+					resizable.setSelection((Boolean)newValue);
+				} else if (propertyName.equals(Colourable.PROPERTY_FILL)) {
+					fill.setColorValue(((Colour)newValue).getRGB());
+				} else if (propertyName.equals(Colourable.PROPERTY_OUTLINE)) {
+					outline.setColorValue(((Colour)newValue).getRGB());
+				} else if (propertyName.equals(Control.PROPERTY_KIND)) {
+					activeKind.setSelection(Kind.ACTIVE.equals(newValue));
+					atomicKind.setSelection(Kind.ATOMIC.equals(newValue));
+					passiveKind.setSelection(Kind.PASSIVE.equals(newValue));
+				}
+			} finally {
+				uiUpdateInProgress = false;
+			}
+		}
+		setDirty(true);
 	}
 }
