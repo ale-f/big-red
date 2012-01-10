@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -303,6 +304,31 @@ public class UI {
 	
 	public static <T extends Control> T setLayoutData(T widget, Object layoutData) {
 		widget.setLayoutData(layoutData);
+		return widget;
+	}
+	
+	/**
+	 * Retrieves a value from the given widget's application-defined property
+	 * store.
+	 * @param widget a {@link Widget}
+	 * @param key the key of the value to retrieve
+	 * @return the value, or <code>null</code>
+	 */
+	public static <T extends Widget> Object data(T widget, String key) {
+		return (widget != null ? widget.getData(key) : null);
+	}
+	
+	/**
+	 * Inserts a value into the given widget's application-defined property
+	 * store.
+	 * @param widget a {@link Widget}
+	 * @param key the key of the value to retrieve
+	 * @param value the value to be associated with the key
+	 * @return <code>widget</code>, for convenience
+	 */
+	public static <T extends Widget> T data(T widget, String key, Object value) {
+		if (widget != null)
+			widget.setData(key, value);
 		return widget;
 	}
 }
