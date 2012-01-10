@@ -243,7 +243,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 				if (controls.getItemCount() > 0) {
 					controls.select(controls.getItem(0));
 					currentControlItem = controls.getItem(0);
-					currentControl = model.getControl(currentControlItem.getText());
+					currentControl =
+							(Control)UI.data(currentControlItem, controlKey);
 					controlToFields();
 					name.setFocus();
 				} else setEnablement(false);
