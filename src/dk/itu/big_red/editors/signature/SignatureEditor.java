@@ -215,13 +215,15 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		addControl.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				currentControlItem = new TreeItem(controls, SWT.NONE);
-				currentControl = model.addControl(new dk.itu.big_red.model.Control());
-				controlToFields();
+				Control c = new Control();
+				currentControlItem =
+					UI.data(new TreeItem(controls, SWT.NONE), controlKey, c);
+				setControl(c);
+				
 				controls.select(currentControlItem);
 				name.setFocus();
-				setEnablement(true);
 				
+				setEnablement(true);
 				setDirty(true);
 			}
 			
