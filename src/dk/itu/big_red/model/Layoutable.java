@@ -8,8 +8,8 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.util.geometry.ReadonlyRectangle;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * All of the objects which can actually appear on a bigraph are instances of

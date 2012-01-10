@@ -16,8 +16,8 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.util.geometry.ReadonlyRectangle;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that

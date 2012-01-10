@@ -13,7 +13,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.util.Lists;
+import dk.itu.big_red.utilities.Lists;
 
 /**
  * BigraphParts represent {@link Bigraph}s, the top-level container of the

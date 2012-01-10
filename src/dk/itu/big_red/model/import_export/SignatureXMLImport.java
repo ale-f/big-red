@@ -15,9 +15,9 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.geometry.Ellipse;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.DOM;
+import dk.itu.big_red.utilities.geometry.Ellipse;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class SignatureXMLImport extends Import<Signature> {
 	private ChangeGroup cg = new ChangeGroup();

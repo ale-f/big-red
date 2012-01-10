@@ -18,7 +18,7 @@ import org.eclipse.ui.IWorkbench;
 
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.figures.import_export.BigraphPNGExport;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphPNGExportWizard extends Wizard implements IExportWizard {
 	private WizardPage page = null;

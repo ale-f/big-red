@@ -23,9 +23,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.util.resources.Project;
-import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
-import dk.itu.big_red.util.resources.Types;
+import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
+import dk.itu.big_red.utilities.resources.Types;
 
 public class WizardNewAgentCreationPage extends WizardPage {
 	private IStructuredSelection selection = null;

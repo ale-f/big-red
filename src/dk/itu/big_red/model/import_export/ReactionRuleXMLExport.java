@@ -15,7 +15,7 @@ import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.utilities.DOM;
 
 public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 

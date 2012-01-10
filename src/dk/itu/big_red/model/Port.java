@@ -4,8 +4,8 @@ import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.util.geometry.Geometry;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.geometry.Geometry;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * Ports are one of the two kinds of object that can be connected by an

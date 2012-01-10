@@ -10,7 +10,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
-import dk.itu.big_red.util.Colour;
+import dk.itu.big_red.utilities.Colour;
 
 /**
  * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;

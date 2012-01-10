@@ -8,8 +8,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import dk.itu.big_red.util.resources.Project;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 	private WizardNewFileCreationPage page = null;

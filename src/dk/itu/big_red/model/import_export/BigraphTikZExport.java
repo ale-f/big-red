@@ -23,9 +23,9 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.util.ReadonlyColour;
-import dk.itu.big_red.util.Lists;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.Lists;
+import dk.itu.big_red.utilities.ReadonlyColour;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class BigraphTikZExport extends Export<Bigraph> {
 	private BufferedWriter writer;

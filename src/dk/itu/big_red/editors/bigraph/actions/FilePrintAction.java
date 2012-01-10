@@ -11,7 +11,7 @@ import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class FilePrintAction extends org.eclipse.gef.ui.actions.PrintAction {
 	/*

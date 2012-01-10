@@ -9,7 +9,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import dk.itu.big_red.editors.bigraph.commands.BigraphRelayoutCommand;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphRelayoutAction extends SelectionAction {
 	public static final String ID =

@@ -12,7 +12,7 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.ui.UI;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart implements PropertyChangeListener {
 	@Override

@@ -12,7 +12,7 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Colourable.UserControl;
-import dk.itu.big_red.util.Colour;
+import dk.itu.big_red.utilities.Colour;
 
 public class ModelPropertySource implements IPropertySource {
 	private ModelObject object;

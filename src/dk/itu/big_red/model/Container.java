@@ -9,7 +9,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain

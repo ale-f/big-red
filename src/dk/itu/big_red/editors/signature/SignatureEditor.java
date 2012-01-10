@@ -46,11 +46,11 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
-import dk.itu.big_red.util.Colour;
-import dk.itu.big_red.util.Lists;
-import dk.itu.big_red.util.io.IOAdapter;
-import dk.itu.big_red.util.resources.Project;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.Colour;
+import dk.itu.big_red.utilities.Lists;
+import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener, PropertyChangeListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";

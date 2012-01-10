@@ -22,10 +22,10 @@ import dk.itu.big_red.model.interfaces.IInnerName;
 import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
-import dk.itu.big_red.util.Colour;
-import dk.itu.big_red.util.Lists;
-import dk.itu.big_red.util.geometry.Rectangle;
-import dk.itu.big_red.util.resources.IFileBackable;
+import dk.itu.big_red.utilities.Colour;
+import dk.itu.big_red.utilities.Lists;
+import dk.itu.big_red.utilities.geometry.Rectangle;
+import dk.itu.big_red.utilities.resources.IFileBackable;
 
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link

@@ -4,7 +4,7 @@ import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.util.Lists;
+import dk.itu.big_red.utilities.Lists;
 
 /**
  * 

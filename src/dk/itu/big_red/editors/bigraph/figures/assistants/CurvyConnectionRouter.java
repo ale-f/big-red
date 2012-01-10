@@ -5,7 +5,7 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
-import dk.itu.big_red.util.geometry.QuadraticBezierCurve;
+import dk.itu.big_red.utilities.geometry.QuadraticBezierCurve;
 
 public class CurvyConnectionRouter extends AbstractRouter {
 	@Override

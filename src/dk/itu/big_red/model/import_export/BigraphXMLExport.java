@@ -17,9 +17,9 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.Lists;
-import dk.itu.big_red.util.resources.Project;
+import dk.itu.big_red.utilities.DOM;
+import dk.itu.big_red.utilities.Lists;
+import dk.itu.big_red.utilities.resources.Project;
 
 /**
  * XMLExport writes a {@link Bigraph} out as an XML document.

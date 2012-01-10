@@ -16,7 +16,7 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.util.Lists;
+import dk.itu.big_red.utilities.Lists;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.

@@ -16,10 +16,10 @@ import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.util.Lists;
-import dk.itu.big_red.util.Lists.Pair;
-import dk.itu.big_red.util.geometry.Geometry;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.Lists;
+import dk.itu.big_red.utilities.Lists.Pair;
+import dk.itu.big_red.utilities.geometry.Geometry;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * 

@@ -23,7 +23,7 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.ui.UI;
 
 /**
  * LinkConnectionParts represent {@link Link.Connection}s, the individual

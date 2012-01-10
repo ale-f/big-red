@@ -12,7 +12,7 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.util.Lists;
+import dk.itu.big_red.utilities.Lists;
 
 public class ModelDeleteCommand extends ChangeCommand {
 	@Override

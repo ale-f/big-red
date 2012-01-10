@@ -7,7 +7,7 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

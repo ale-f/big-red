@@ -1,6 +1,6 @@
 package dk.itu.big_red.model.changes;
 
-import dk.itu.big_red.util.RedException;
+import dk.itu.big_red.utilities.RedException;
 
 /**
  * {@link IChangeValidator}s throw {@link ChangeRejectedException}s when a

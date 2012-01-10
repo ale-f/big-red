@@ -11,7 +11,7 @@ import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.editors.bigraph.commands.LayoutablePasteCommand;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class ContainerPasteAction extends SelectionAction {
 

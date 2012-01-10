@@ -3,7 +3,7 @@ package dk.itu.big_red.import_export;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.utilities.DOM;
 
 public abstract class XMLExport<T> extends Export<T> {
 	private Document doc = null;

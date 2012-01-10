@@ -3,7 +3,7 @@ package dk.itu.big_red.model;
 import java.util.Map;
 
 import dk.itu.big_red.model.interfaces.IEdge;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
   * An Edge is a connection which connects any number of {@link Port}s and

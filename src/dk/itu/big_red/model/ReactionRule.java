@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.util.resources.IFileBackable;
+import dk.itu.big_red.utilities.resources.IFileBackable;
 
 public class ReactionRule extends ModelObject implements IFileBackable {
 	private Bigraph redex, reactum;

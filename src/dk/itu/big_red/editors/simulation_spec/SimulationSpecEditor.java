@@ -26,9 +26,9 @@ import org.eclipse.ui.part.FileEditorInput;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.model.SimulationSpec;
-import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
-import dk.itu.big_red.util.ui.ResourceSelector;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
+import dk.itu.big_red.utilities.ui.ResourceSelector;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends EditorPart {
 

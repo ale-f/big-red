@@ -26,11 +26,11 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.Tristate;
-import dk.itu.big_red.util.resources.IFileBackable;
-import dk.itu.big_red.util.resources.Project;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.DOM;
+import dk.itu.big_red.utilities.Tristate;
+import dk.itu.big_red.utilities.resources.IFileBackable;
+import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.ui.UI;
 
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.

@@ -13,9 +13,9 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
-import dk.itu.big_red.util.io.IOAdapter;
-import dk.itu.big_red.util.resources.Project;
-import dk.itu.big_red.util.ui.UI;
+import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.ui.UI;
 import dk.itu.big_red.wizards.creation.assistants.WizardNewAgentCreationPage;
 
 /**

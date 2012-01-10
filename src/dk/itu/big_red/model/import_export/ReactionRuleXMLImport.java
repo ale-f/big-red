@@ -19,8 +19,8 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.resources.IFileBackable;
+import dk.itu.big_red.utilities.DOM;
+import dk.itu.big_red.utilities.resources.IFileBackable;
 
 public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFileBackable {
 	private ReactionRule rr = null;

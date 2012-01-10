@@ -8,7 +8,7 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.util.DOM;
+import dk.itu.big_red.utilities.DOM;
 
 public class SignatureXMLExport extends XMLExport<Signature> {
 	@Override

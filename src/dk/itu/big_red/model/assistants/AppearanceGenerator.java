@@ -13,10 +13,10 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.import_export.XMLNS;
-import dk.itu.big_red.util.Colour;
-import dk.itu.big_red.util.DOM;
-import dk.itu.big_red.util.geometry.ReadonlyRectangle;
-import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.utilities.Colour;
+import dk.itu.big_red.utilities.DOM;
+import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class AppearanceGenerator {
 	/**
