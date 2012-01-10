@@ -16,6 +16,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -248,47 +249,37 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		group.setLayoutData(groupLayoutData);
 		
 		clipboardButton = UI.newButton(group, SWT.NONE, "Copy to clipboard");
-		clipboardButton.addSelectionListener(new SelectionListener() {
-			
+		clipboardButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				UI.setClipboardText(resultText.getText());
 				setMessage("Copied to the clipboard.", IMessageProvider.INFORMATION);
 			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-			}
 		});
 		
 		saveButton = UI.newButton(group, SWT.NONE, "Save...");
-		saveButton.addSelectionListener(new SelectionListener() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					FileDialog d = UI.getFileDialog(getShell(), SWT.SAVE | SWT.APPLICATION_MODAL);
-					d.setText("Save exported model as...");
-					
-					String filename = d.open();
-					if (filename != null) {
-						try {
-							FileWriter fw = new FileWriter(filename);
-							fw.write(resultText.getText());
-							fw.close();
-							setMessage("Saved as \"" + filename + "\".", IMessageProvider.INFORMATION);
-						} catch (IOException x) {
-							setErrorMessage(x.getLocalizedMessage());
-						}
+		saveButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog d = UI.getFileDialog(getShell(), SWT.SAVE | SWT.APPLICATION_MODAL);
+				d.setText("Save exported model as...");
+				
+				String filename = d.open();
+				if (filename != null) {
+					try {
+						FileWriter fw = new FileWriter(filename);
+						fw.write(resultText.getText());
+						fw.close();
+						setMessage("Saved as \"" + filename + "\".", IMessageProvider.INFORMATION);
+					} catch (IOException x) {
+						setErrorMessage(x.getLocalizedMessage());
 					}
 				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
+			}
 		});
 		
 		bonusButton = UI.newButton(group, SWT.NONE, "Bonus...");
-		bonusButton.addSelectionListener(new SelectionListener() {
-			
+		bonusButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				ProcessDialog rd =
@@ -299,10 +290,6 @@ public class WizardBigraphTextExportPage extends WizardPage {
 				rd.setInput(resultText.getText());
 				rd.setBlockOnOpen(true);
 				rd.open();
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 		
