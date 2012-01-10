@@ -4,7 +4,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
-import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.ui.UI;
 
 public class BigraphFigure extends AbstractFigure {
 	protected int upperRootBoundary = Integer.MIN_VALUE,

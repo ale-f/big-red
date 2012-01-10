@@ -12,9 +12,9 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
-import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
+import dk.itu.big_red.util.ui.UI;
 
 public class NewSignatureWizard extends Wizard implements INewWizard {
 	private WizardNewFileCreationPage page = null;

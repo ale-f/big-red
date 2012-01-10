@@ -1,4 +1,4 @@
-package dk.itu.big_red.util;
+package dk.itu.big_red.util.ui;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IStatusLineManager;

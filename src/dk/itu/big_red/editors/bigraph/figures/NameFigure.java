@@ -8,7 +8,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 
-import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.ui.UI;
 
 public class NameFigure extends AbstractFigure {
 	private static Font italicFont = null;

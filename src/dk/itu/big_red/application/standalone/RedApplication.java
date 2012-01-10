@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.ui.UI;
 
 /**
  * When Big Red is running as a stand-alone Eclipse application, this class

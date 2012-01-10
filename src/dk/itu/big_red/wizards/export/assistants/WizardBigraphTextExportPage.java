@@ -34,12 +34,12 @@ import dk.itu.big_red.import_export.Export.OptionDescriptor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.preferences.RedPreferencePage;
-import dk.itu.big_red.util.ProcessDialog;
-import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
 import dk.itu.big_red.util.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.util.resources.Types;
+import dk.itu.big_red.util.ui.ProcessDialog;
+import dk.itu.big_red.util.ui.UI;
 import dk.itu.big_red.wizards.export.BigraphTextExportWizard;
 
 public class WizardBigraphTextExportPage extends WizardPage {

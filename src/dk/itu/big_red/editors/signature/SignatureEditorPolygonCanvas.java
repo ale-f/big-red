@@ -32,10 +32,10 @@ import dk.itu.big_red.editors.signature.PointListener.PointEvent;
 import dk.itu.big_red.editors.signature.PortListener.PortEvent;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.PortSpec;
-import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.geometry.Ellipse;
 import dk.itu.big_red.util.geometry.Line;
 import dk.itu.big_red.util.geometry.Rectangle;
+import dk.itu.big_red.util.ui.UI;
 
 /**
  * SignatureEditorPolygonCanvases are widgets based on {@link Canvas} that let

@@ -10,7 +10,7 @@ import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.parts.AbstractTreePart;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.ui.UI;
 
 public class RootPlaceTreePart extends AbstractTreePart {
 	@Override

@@ -1,6 +1,6 @@
 package dk.itu.big_red.util.io;
 
-import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.ui.UI;
 
 abstract class AsynchronousIOThread extends Thread {
 	protected Boolean running = new Boolean(true);

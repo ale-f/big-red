@@ -48,9 +48,9 @@ import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.util.Colour;
 import dk.itu.big_red.util.Lists;
-import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
+import dk.itu.big_red.util.ui.UI;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener, PropertyChangeListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";

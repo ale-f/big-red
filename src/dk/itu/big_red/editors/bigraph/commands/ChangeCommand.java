@@ -6,7 +6,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
-import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.ui.UI;
 
 /**
  * {@link ChangeCommand}s apply a {@link Change} to an {@link IChangeable}.

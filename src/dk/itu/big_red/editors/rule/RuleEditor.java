@@ -71,10 +71,10 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
-import dk.itu.big_red.util.UI;
 import dk.itu.big_red.util.ValidationFailedException;
 import dk.itu.big_red.util.io.IOAdapter;
 import dk.itu.big_red.util.resources.Project;
+import dk.itu.big_red.util.ui.UI;
 
 public class RuleEditor extends EditorPart implements
 	ISelectionListener, INullSelectionListener, ISelectionChangedListener,

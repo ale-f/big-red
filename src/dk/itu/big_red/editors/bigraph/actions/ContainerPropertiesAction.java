@@ -8,7 +8,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.ui.UI;
 
 public class ContainerPropertiesAction extends SelectionAction {
 

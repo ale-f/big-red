@@ -11,7 +11,7 @@ import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.parts.AbstractTreePart;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.util.UI;
+import dk.itu.big_red.util.ui.UI;
 
 public class SitePlaceTreePart extends AbstractTreePart {
 	@Override
