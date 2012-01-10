@@ -168,8 +168,9 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 				currentControl.addPort(p);
 			currentControl.setResizable(resizable.getSelection());
 			if (polygonMode.getSelection()) {
-				currentControl.setShape(Shape.POLYGON, appearance.getPoints().getCopy());
-			} else currentControl.setShape(Shape.OVAL, null);
+				currentControl.setShape(Shape.POLYGON);
+				currentControl.setPoints(appearance.getPoints().getCopy());
+			} else currentControl.setShape(Shape.OVAL);
 			
 			ChangeGroup cg = new ChangeGroup();
 			cg.add(currentControl.changeOutlineColour(

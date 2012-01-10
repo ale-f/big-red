@@ -122,7 +122,8 @@ public class AppearanceGenerator {
 						DOM.getIntAttribute(pE, XMLNS.BIG_RED, "y"));
 		}
 		
-		c.setShape(shape, pl);
+		c.setShape(shape);
+		c.setPoints(pl);
 	}
 	
 	public static void modelToAttributes(Element e, Object o) {

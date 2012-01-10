@@ -65,7 +65,8 @@ public class SignatureXMLImport extends Import<Signature> {
 		}
 		
 		if (generatePolygon) {
-			model.setShape(Shape.POLYGON,
+			model.setShape(Shape.POLYGON);
+			model.setPoints(
 				new Ellipse(new Rectangle(0, 0, 30, 30)).
 					getPolygon(Math.max(3, model.getPorts().size())));
 			int i = 0;

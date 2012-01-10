@@ -128,7 +128,8 @@ public class Control extends Colourable implements IControl {
 	public Control() {
 		setName("Unknown");
 		setLabel("?");
-		setShape(Control.Shape.POLYGON, POINTS_QUAD);
+		setShape(Control.Shape.POLYGON);
+		setPoints(POINTS_QUAD);
 		setDefaultSize(new Dimension(50, 50));
 		setKind(Kind.ACTIVE);
 		setResizable(true);
@@ -148,6 +149,12 @@ public class Control extends Colourable implements IControl {
 		return shape;
 	}
 	
+	public void setShape(Control.Shape shape) {
+		Control.Shape oldShape = this.shape;
+		this.shape = shape;
+		firePropertyChange(PROPERTY_SHAPE, oldShape, shape);
+	}
+	
 	/**
 	 * If this object's shape is {@link Shape#POLYGON}, then gets a copy
 	 * of the list of points defining its polygon.
@@ -162,24 +169,11 @@ public class Control extends Colourable implements IControl {
 		else return null;
 	}
 	
-	/**
-	 * Sets this Control's {@link Shape}. <code>points</code> must <i>not</i>
-	 * be <code>null</code> if <code>shape</code> is {@link
-	 * Shape#POLYGON}, but it <i>must</i> be <code>null</code> otherwise.
-	 * @param shape the new Shape
-	 * @param points a {@link PointList} specifying a polygon
-	 */
-	public void setShape(Control.Shape shape, PointList points) {
-		if ((points == null && shape == Shape.POLYGON) ||
-			(points != null && shape == Shape.OVAL))
-			return;
-		Control.Shape oldShape = this.shape;
-		this.shape = shape;
-		firePropertyChange(PROPERTY_SHAPE, oldShape, shape);
-		
+	public void setPoints(PointList points) {
 		PointList oldPoints = this.points;
 		this.points = points;
-		firePropertyChange(PROPERTY_POINTS, oldPoints, points);
+		if (shape == Shape.POLYGON)
+			firePropertyChange(PROPERTY_POINTS, oldPoints, points);
 	}
 
 	public void setName(String name) {
