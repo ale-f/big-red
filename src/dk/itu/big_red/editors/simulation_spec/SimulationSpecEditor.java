@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,12 +31,22 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
+import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.ImportFailedException;
+import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.import_export.BigraphXMLImport;
+import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
+import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLImport;
+import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
+import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends EditorPart {
@@ -77,6 +88,8 @@ public class SimulationSpecEditor extends EditorPart {
 				
 			}
 		}
+		if (model == null)
+			model = new SimulationSpec();
 		setPartName(input.getName());
 	}
 	
@@ -93,20 +106,27 @@ public class SimulationSpecEditor extends EditorPart {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private static Map<String, Export<SimulationSpec>> getExporters() {
-		Map<String, Export<SimulationSpec>> exporters =
-				new HashMap<String, Export<SimulationSpec>>();
+	private Export<SimulationSpec> getExporter(IConfigurationElement e) {
+		try {
+			return
+				(Export<SimulationSpec>)e.createExecutableExtension("class");
+		} catch (CoreException ex) {
+			return null;
+		}
+	}
+	
+	private Export<SimulationSpec> getExporter(String id) {
+		return getExporter(getExporters().get(id));
+	}
+	
+	private static Map<String, IConfigurationElement> getExporters() {
+		Map<String, IConfigurationElement> exporters =
+				new HashMap<String, IConfigurationElement>();
 		for (IConfigurationElement ce :
 		     RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export.text")) {
-			try {
-				String id = ce.getAttribute("name");
-				String exports = ce.getAttribute("exports");
-				if (exports.equals("dk.itu.big_red.model.SimulationSpec"))
-					exporters.put(id, (Export<SimulationSpec>)
-							ce.createExecutableExtension("class"));
-			} catch (CoreException e) {
-				
-			}
+			String exports = ce.getAttribute("exports");
+			if (exports.equals("dk.itu.big_red.model.SimulationSpec"))
+				exporters.put(ce.getAttribute("name"), ce);
 		}
 		return exporters;
 	}
@@ -125,6 +145,19 @@ public class SimulationSpecEditor extends EditorPart {
 			Mode.FILE, "dk.itu.big_red.signature");
 		signatureSelector.getButton().setLayoutData(
 			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		signatureSelector.addListener(new ResourceListener() {
+			@Override
+			public void resourceChanged(IResource newValue) {
+				try {
+					Signature s = SignatureXMLImport.importFile((IFile)newValue);
+					getModel().tryApplyChange(getModel().changeSignature(s));
+				} catch (ChangeRejectedException cre) {
+					cre.printStackTrace();
+				} catch (ImportFailedException ife) {
+					ife.printStackTrace();
+				}
+			}
+		});
 		
 		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		final Tree rules =
@@ -153,10 +186,19 @@ public class SimulationSpecEditor extends EditorPart {
 				rtsd.setBlockOnOpen(true);
 				if (rtsd.open() == Dialog.OK) {
 					IFile f = (IFile)rtsd.getFirstResult();
-					TreeItem t = UI.data(
-							new TreeItem(rules, SWT.NONE),
-							"associatedRule", f);
-					t.setText(f.getProjectRelativePath().toString());
+					try {
+						ReactionRule r = ReactionRuleXMLImport.importFile(f);
+						model.tryApplyChange(model.changeAddRule(r));
+						
+						TreeItem t = UI.data(
+								new TreeItem(rules, SWT.NONE),
+								"associatedRule", r);
+						t.setText(f.getProjectRelativePath().toString());
+					} catch (ImportFailedException ife) {
+						ife.printStackTrace();
+					} catch (ChangeRejectedException cre) {
+						cre.printStackTrace();
+					}
 				}
 			}
 		});
@@ -166,8 +208,16 @@ public class SimulationSpecEditor extends EditorPart {
 		b.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (TreeItem i : rules.getSelection())
-					UI.data(i, "associatedRule", null).dispose();
+				for (TreeItem i : rules.getSelection()) {
+					try {
+						ReactionRule rr =
+								(ReactionRule)UI.data(i, "associatedRule");
+						getModel().tryApplyChange(getModel().changeRemoveRule(rr));
+						UI.data(i, "associatedRule", null).dispose();
+					} catch (ChangeRejectedException cre) {
+						cre.printStackTrace();
+					}
+				}
 			}
 		});
 		
@@ -177,11 +227,24 @@ public class SimulationSpecEditor extends EditorPart {
 			Mode.FILE, "dk.itu.big_red.bigraph");
 		modelSelector.getButton().setLayoutData(
 			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		modelSelector.addListener(new ResourceListener() {
+			@Override
+			public void resourceChanged(IResource newValue) {
+				try {
+					Bigraph b = BigraphXMLImport.importFile((IFile)newValue);
+					getModel().tryApplyChange(getModel().changeModel(b));
+				} catch (ChangeRejectedException cre) {
+					cre.printStackTrace();
+				} catch (ImportFailedException ife) {
+					ife.printStackTrace();
+				}
+			}
+		});
 		
 		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		Combo c = new Combo(base, SWT.READ_ONLY);
+		final Combo c = new Combo(base, SWT.READ_ONLY);
 		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		String[] exporters = getExporters().keySet().toArray(new String[0]);
 		c.setItems(exporters);
@@ -189,6 +252,20 @@ public class SimulationSpecEditor extends EditorPart {
 		
 		b = UI.newButton(base, SWT.NONE, "Two thing(s)...");
 		b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		b.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Export<SimulationSpec> exporter = getExporter(c.getText());
+				System.out.println(exporter);
+				try {
+					IOAdapter io = new IOAdapter();
+					exporter.setModel(getModel()).
+						setOutputStream(io.getOutputStream()).exportObject();
+				} catch (ExportFailedException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 	}
 
 	@Override
