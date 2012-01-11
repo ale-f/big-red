@@ -3,12 +3,15 @@ package dk.itu.big_red.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
+import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class SimulationSpec extends ModelObject implements IChangeable {
+public class SimulationSpec extends ModelObject implements IChangeable, IFileBackable {
 	private abstract class SimulationSpecChange extends ModelObjectChange {
 		@Override
 		public SimulationSpec getCreator() {
@@ -159,6 +162,7 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 	}
 	
 	private void doChange(Change b) {
+		System.out.println(this + ".doChange(" + b + ")");
 		b.beforeApply();
 		if (b instanceof ChangeGroup) {
 			for (Change i : (ChangeGroup)b)
@@ -172,5 +176,18 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 		} else if (b instanceof ChangeModel) {
 			setModel(((ChangeModel) b).model);
 		}
+	}
+
+	private IFile file = null;
+	
+	@Override
+	public IFile getFile() {
+		return file;
+	}
+
+	@Override
+	public SimulationSpec setFile(IFile file) {
+		this.file = file;
+		return this;
 	}
 }
