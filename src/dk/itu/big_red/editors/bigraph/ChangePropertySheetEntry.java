@@ -57,6 +57,8 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			if (propertyID.equals(Layoutable.PROPERTY_NAME)) {
 				cg.add(((Layoutable)j.getModel()).changeName((String)newValue));
 			} else if (propertyID.equals(ModelObject.PROPERTY_COMMENT)) {
+				if (newValue.equals(""))
+					newValue = null;
 				cg.add(((Layoutable)j.getModel()).changeComment((String)newValue));
 			} else if (propertyID.equals(Colourable.PROPERTY_FILL)) {
 				cg.add(((Colourable)j.getModel()).changeFillColour((Colour)newValue));
