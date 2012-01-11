@@ -3,11 +3,15 @@ package dk.itu.big_red.editors.simulation_spec;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -15,7 +19,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISharedImages;
@@ -122,7 +127,7 @@ public class SimulationSpecEditor extends EditorPart {
 				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-		new List(base, SWT.BORDER).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		final Tree rules = UI.setLayoutData(new Tree(base, SWT.BORDER), new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		Composite br = new Composite(base, SWT.NONE);
 		br.setBackground(ColorConstants.red);
@@ -135,6 +140,25 @@ public class SimulationSpecEditor extends EditorPart {
 		
 		Button b = UI.newButton(br, SWT.NONE, "&Add...");
 		b.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
+		b.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ResourceTreeSelectionDialog rtsd =
+					new ResourceTreeSelectionDialog(
+						getSite().getShell(),
+						((FileEditorInput)getEditorInput()).getFile().getProject(),
+						ResourceTreeSelectionDialog.MODE_FILE,
+						"dk.itu.big_red.rule");
+				rtsd.setBlockOnOpen(true);
+				if (rtsd.open() == Dialog.OK) {
+					IFile f = (IFile)rtsd.getFirstResult();
+					TreeItem t = UI.data(
+							new TreeItem(rules, SWT.NONE),
+							"associatedRule", f);
+					t.setText(f.getName());
+				}
+			}
+		});
 		
 		b = UI.newButton(br, SWT.NONE, "&Remove...");
 		b.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
