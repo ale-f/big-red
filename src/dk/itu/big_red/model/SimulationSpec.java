@@ -95,11 +95,6 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 	
 	private ArrayList<ReactionRule> rules = new ArrayList<ReactionRule>();
 	
-	protected SimulationSpec clearRules() {
-		getRules().clear();
-		return this;
-	}
-	
 	protected SimulationSpec addRule(ReactionRule r) {
 		getRules().add(r);
 		return this;
