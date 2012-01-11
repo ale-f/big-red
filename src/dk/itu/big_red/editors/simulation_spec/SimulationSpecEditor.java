@@ -127,7 +127,9 @@ public class SimulationSpecEditor extends EditorPart {
 			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-		final Tree rules = UI.setLayoutData(new Tree(base, SWT.BORDER), new GridData(SWT.FILL, SWT.FILL, true, true));
+		final Tree rules =
+			UI.setLayoutData(new Tree(base, SWT.BORDER | SWT.MULTI),
+				new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		Composite br = new Composite(base, SWT.NONE);
 		br.setBackground(ColorConstants.red);
@@ -154,13 +156,20 @@ public class SimulationSpecEditor extends EditorPart {
 					TreeItem t = UI.data(
 							new TreeItem(rules, SWT.NONE),
 							"associatedRule", f);
-					t.setText(f.getName());
+					t.setText(f.getProjectRelativePath().toString());
 				}
 			}
 		});
 		
 		b = UI.newButton(br, SWT.NONE, "&Remove...");
 		b.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
+		b.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				for (TreeItem i : rules.getSelection())
+					UI.data(i, "associatedRule", null).dispose();
+			}
+		});
 		
 		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		modelSelector = new ResourceSelector(base,
