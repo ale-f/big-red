@@ -243,6 +243,12 @@ public class Control extends Colourable implements IControl {
 		return (getPort(port) != null);
 	}
 	
+	/**
+	 * Gets the {@link List} of this {@link Control}'s {@link PortSpec}s.
+	 * @return a reference to the internal list; modify it and <s>vampire
+	 * bats</s> undocumented behaviour will steal your blood while you sleep
+	 * @see #createPorts()
+	 */
 	public List<PortSpec> getPorts() {
 		return ports;
 	}
@@ -250,6 +256,7 @@ public class Control extends Colourable implements IControl {
 	/**
 	 * Produces a <i>new</i> array of {@link Port}s to give to a {@link Node}.
 	 * @return an array of Ports
+	 * @see #getPorts()
 	 */
 	public ArrayList<Port> createPorts() {
 		ArrayList<Port> r = new ArrayList<Port>();
@@ -384,7 +391,7 @@ public class Control extends Colourable implements IControl {
 	
 	@Override
 	public Iterable<PortSpec> getIPorts() {
-		return ports;
+		return getPorts();
 	}
 	
 	/**
