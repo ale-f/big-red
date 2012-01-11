@@ -24,7 +24,7 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 		setInput(input);
 		if (mode == MODE_FILE) {
 			setValidator(new FileSelectionStatusValidator());
-			FileContentTypeViewerFilter fv = new FileContentTypeViewerFilter();
+			FileTypeViewerFilter fv = new FileTypeViewerFilter();
 			addFilter(fv);
 			for (String i : contentTypes)
 				fv.addContentType(i);

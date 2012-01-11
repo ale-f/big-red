@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.Viewer;
  * @author alec
  *
  */
-public class FileContentTypeViewerFilter extends ContainerViewerFilter {
+public class FileTypeViewerFilter extends ContainerViewerFilter {
 	private ArrayList<IContentType> contentTypes =
 		new ArrayList<IContentType>();
 	
@@ -30,7 +30,7 @@ public class FileContentTypeViewerFilter extends ContainerViewerFilter {
 	 * Default constructor; takes a list of content type IDs and calls {@link
 	 * #addContentType(String)} with each entry.
 	 */
-	public FileContentTypeViewerFilter(String... contentTypes) {
+	public FileTypeViewerFilter(String... contentTypes) {
 		for (String i : contentTypes)
 			addContentType(i);
 	}
