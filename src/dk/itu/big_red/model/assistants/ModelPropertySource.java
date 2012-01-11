@@ -11,6 +11,7 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.Colourable.UserControl;
 import dk.itu.big_red.utilities.Colour;
 
@@ -47,6 +48,8 @@ public class ModelPropertySource implements IPropertySource {
 			properties.add(new TextPropertyDescriptor(ModelObject.PROPERTY_COMMENT, "Comment"));
 		if (object instanceof Layoutable)
 			properties.add(new TextPropertyDescriptor(Layoutable.PROPERTY_NAME, "Name"));
+		if (object instanceof Site)
+			properties.add(new TextPropertyDescriptor(Site.PROPERTY_ALIAS, "Alias"));
 		
 		return properties.toArray(new IPropertyDescriptor[0]);
 	}
@@ -59,7 +62,9 @@ public class ModelPropertySource implements IPropertySource {
 			Object value = object.getProperty((String)id);
 			if (value instanceof Colour)
 				value = ((Colour)value).getRGB();
-			if (value == null && id == ModelObject.PROPERTY_COMMENT)
+			if (value == null &&
+			    (id.equals(ModelObject.PROPERTY_COMMENT) ||
+			     id.equals(Site.PROPERTY_ALIAS)))
 				value = "";
 			return value;
 		}

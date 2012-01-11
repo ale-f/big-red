@@ -13,6 +13,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.utilities.Colour;
 
@@ -51,19 +52,25 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			Object oldValue = propertySource.getPropertyValue(propertyID);
 			Object newValue = child.getValues()[i];
 			
+			if (newValue instanceof String &&
+			    ((String)newValue).length() == 0 &&
+				(propertyID.equals(ModelObject.PROPERTY_COMMENT) ||
+				 propertyID.equals(Site.PROPERTY_ALIAS)))
+				newValue = null;
+			
 			if (newValue instanceof RGB)
 				newValue = new Colour((RGB)newValue);
 			
 			if (propertyID.equals(Layoutable.PROPERTY_NAME)) {
 				cg.add(((Layoutable)j.getModel()).changeName((String)newValue));
 			} else if (propertyID.equals(ModelObject.PROPERTY_COMMENT)) {
-				if (newValue.equals(""))
-					newValue = null;
 				cg.add(((Layoutable)j.getModel()).changeComment((String)newValue));
 			} else if (propertyID.equals(Colourable.PROPERTY_FILL)) {
 				cg.add(((Colourable)j.getModel()).changeFillColour((Colour)newValue));
 			} else if (propertyID.equals(Colourable.PROPERTY_OUTLINE)) {
 				cg.add(((Colourable)j.getModel()).changeOutlineColour((Colour)newValue));
+			} else if (propertyID.equals(Site.PROPERTY_ALIAS)) {
+				cg.add(((Site)j.getModel()).changeAlias((String)newValue));
 			}
 		}
 		if (getParent() != null) {
