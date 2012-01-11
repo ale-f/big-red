@@ -1,8 +1,9 @@
 package dk.itu.big_red.editors.simulation_spec;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -261,6 +262,15 @@ public class SimulationSpecEditor extends EditorPart {
 					IOAdapter io = new IOAdapter();
 					exporter.setModel(getModel()).
 						setOutputStream(io.getOutputStream()).exportObject();
+					InputStreamReader isr =
+							new InputStreamReader(io.getInputStream());
+					int c;
+					try {
+						while ((c = isr.read()) != -1)
+							System.out.print((char)c);
+					} catch (IOException ex) {
+						/* nothing */
+					}
 				} catch (ExportFailedException ex) {
 					ex.printStackTrace();
 				}
