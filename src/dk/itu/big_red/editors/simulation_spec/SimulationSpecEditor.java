@@ -91,7 +91,7 @@ public class SimulationSpecEditor extends EditorPart {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private static Map<String, Export<SimulationSpec>> getExporters() {
 		Map<String, Export<SimulationSpec>> exporters =
@@ -100,12 +100,10 @@ public class SimulationSpecEditor extends EditorPart {
 		     RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export.text")) {
 			try {
 				String id = ce.getAttribute("name");
-				Object exporter_ = ce.createExecutableExtension("class");
-				if (exporter_ instanceof Export<?>) {
-					Export<?> exporter = (Export<?>)exporter_;
-					if (exporter.getType() == SimulationSpec.class)
-						exporters.put(id, (Export<SimulationSpec>)exporter);
-				}
+				String exports = ce.getAttribute("exports");
+				if (exports.equals("dk.itu.big_red.model.SimulationSpec"))
+					exporters.put(id, (Export<SimulationSpec>)
+							ce.createExecutableExtension("class"));
 			} catch (CoreException e) {
 				
 			}

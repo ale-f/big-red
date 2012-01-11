@@ -158,9 +158,4 @@ public class BigraphBigMCExport extends Export<Bigraph> {
 		
 		newline(); write("%check;"); newline();
 	}
-
-	@Override
-	public Class<?> getType() {
-		return Bigraph.class;
-	}
 }

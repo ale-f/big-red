@@ -12,9 +12,4 @@ public class SimulationSpecXMLExport extends XMLExport<SimulationSpec> {
 		
 	}
 
-	@Override
-	public Class<?> getType() {
-		return SimulationSpec.class;
-	}
-
 }

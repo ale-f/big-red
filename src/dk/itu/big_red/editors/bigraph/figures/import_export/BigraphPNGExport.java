@@ -43,10 +43,4 @@ public class BigraphPNGExport extends Export<IFigure> {
 			if (image != null) image.dispose();
 		}
 	}
-
-	@Override
-	public Class<?> getType() {
-		return IFigure.class;
-	}
-
 }

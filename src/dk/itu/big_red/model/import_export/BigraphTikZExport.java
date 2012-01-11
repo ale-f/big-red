@@ -327,9 +327,4 @@ public class BigraphTikZExport extends Export<Bigraph> {
 			/* do nothing */
 		}
 	}
-
-	@Override
-	public Class<?> getType() {
-		return Bigraph.class;
-	}
 }

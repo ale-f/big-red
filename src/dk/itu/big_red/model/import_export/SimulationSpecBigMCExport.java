@@ -11,9 +11,4 @@ public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public Class<?> getType() {
-		return SimulationSpec.class;
-	}
 }

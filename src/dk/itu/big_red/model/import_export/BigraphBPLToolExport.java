@@ -203,9 +203,4 @@ public class BigraphBPLToolExport extends Export<Bigraph> {
 		scope--;
 		printLine(");");
 	}
-
-	@Override
-	public Class<?> getType() {
-		return Bigraph.class;
-	}
 }

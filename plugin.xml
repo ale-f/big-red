@@ -249,6 +249,7 @@
          point="dk.itu.big_red.export.text">
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphTikZExport"
+            exports="dk.itu.big_red.model.Bigraph"
             icon="resources/icons/wizards/vector.png"
             id="big-red.exporter1"
             name="TikZ image">
@@ -258,6 +259,7 @@
       </exporter>
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphXMLExport"
+            exports="dk.itu.big_red.model.Bigraph"
             icon="resources/icons/icon16.png"
             id="big-red.exporter2"
             name="XML">
@@ -267,22 +269,26 @@
       </exporter>
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphTraverseExport"
+            exports="dk.itu.big_red.model.Bigraph"
             icon="resources/icons/wizards/text.png"
             id="big-red.exporter3"
             name="Traverse">
       </exporter>
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphBPLToolExport"
+            exports="dk.itu.big_red.model.Bigraph"
             id="big-red.exporter4"
             name="BPL Tool">
       </exporter>
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphBigMCExport"
+            exports="dk.itu.big_red.model.Bigraph"
             id="big-red.exporter.bigmc"
             name="BigMC">
       </exporter>
       <exporter
             class="dk.itu.big_red.model.import_export.SimulationSpecBigMCExport"
+            exports="dk.itu.big_red.model.SimulationSpec"
             id="big-red.exporter.bigmc-ss"
             name="BigMC (simulation spec)">
       </exporter>

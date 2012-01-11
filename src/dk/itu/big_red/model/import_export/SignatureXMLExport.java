@@ -59,9 +59,4 @@ public class SignatureXMLExport extends XMLExport<Signature> {
 		
 		return e;
 	}
-	
-	@Override
-	public Class<?> getType() {
-		return Signature.class;
-	}
 }

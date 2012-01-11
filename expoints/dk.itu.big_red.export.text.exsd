@@ -79,6 +79,16 @@
                </appinfo>
             </annotation>
          </attribute>
+         <attribute name="exports" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class of object that this exporter knows how to export.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java"/>
+               </appinfo>
+            </annotation>
+         </attribute>
          <attribute name="icon" type="string">
             <annotation>
                <documentation>
