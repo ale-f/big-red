@@ -61,7 +61,7 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 	public static void createReactionRule(IFile sigFile, IFile rrFile) throws ImportFailedException, ExportFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		
-		ReactionRule rr = new ReactionRule();
+		ReactionRule rr = new ReactionRule().setFile(rrFile);
 		rr.setRedex(new Bigraph());
 		rr.getRedex().setSignature(SignatureXMLImport.importFile(sigFile));
 		

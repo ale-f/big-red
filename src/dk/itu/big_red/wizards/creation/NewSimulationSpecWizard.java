@@ -39,5 +39,4 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 		
 		addPage(page);
 	}
-
 }

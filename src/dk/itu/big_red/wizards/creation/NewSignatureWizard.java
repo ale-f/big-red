@@ -52,7 +52,8 @@ public class NewSignatureWizard extends Wizard implements INewWizard {
 	public static void createSignature(IFile sigFile) throws ExportFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		
-		new SignatureXMLExport().setModel(new Signature()).setOutputStream(io.getOutputStream()).exportObject();
+		new SignatureXMLExport().setModel(new Signature().setFile(sigFile)).
+			setOutputStream(io.getOutputStream()).exportObject();
 		sigFile.setContents(io.getInputStream(), 0, null);
 	}
 }

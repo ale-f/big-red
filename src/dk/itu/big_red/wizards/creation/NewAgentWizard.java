@@ -62,7 +62,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 
 	public static void createBigraph(IFile sigFile, IFile bigFile) throws ImportFailedException, ExportFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
-		Bigraph b = new Bigraph();
+		Bigraph b = new Bigraph().setFile(bigFile);
 		
 		b.setSignature(SignatureXMLImport.importFile(sigFile));
 		new BigraphXMLExport().setModel(b).setOutputStream(io.getOutputStream()).exportObject();
