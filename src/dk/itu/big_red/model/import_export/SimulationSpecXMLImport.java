@@ -17,7 +17,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> {
 		SimulationSpecXMLImport s = new SimulationSpecXMLImport();
 		try {
 			s.setInputStream(file.getContents());
-			return s.importObject();
+			return s.importObject().setFile(file);
 		} catch (Exception e) {
 			throw new ImportFailedException(e);
 		}
