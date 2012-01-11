@@ -23,7 +23,6 @@ public class FileSelectionStatusValidator implements ISelectionStatusValidator {
 		IStatus r = OK_STATUS;
 		if (selection.length != 1 || !(selection[0] instanceof IFile))
 			r = ERROR_STATUS;
-		System.out.println(this + " sez " + r);
 		return r;
 	}
 }
