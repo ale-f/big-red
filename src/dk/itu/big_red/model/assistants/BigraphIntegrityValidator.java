@@ -12,6 +12,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -171,7 +172,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			checkEligibility(c.getCreator());
 		} else if (b instanceof Colourable.ChangeOutlineColour ||
 				b instanceof Colourable.ChangeFillColour ||
-				b instanceof ModelObject.ChangeComment) {
+				b instanceof ModelObject.ChangeComment ||
+				b instanceof Site.ChangeAlias) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;

@@ -498,6 +498,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		} else if (b instanceof ModelObject.ChangeComment) {
 			ModelObject.ChangeComment c = (ModelObject.ChangeComment)b;
 			c.getCreator().setComment(c.comment);
+		} else if (b instanceof Site.ChangeAlias) {
+			Site.ChangeAlias c = (Site.ChangeAlias)b;
+			c.getCreator().setAlias(c.alias);
 		}
 	}
 
