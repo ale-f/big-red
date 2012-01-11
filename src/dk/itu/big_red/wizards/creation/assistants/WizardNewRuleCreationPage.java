@@ -53,8 +53,7 @@ public class WizardNewRuleCreationPage extends WizardPage {
 			}
 		};
 		
-		Label folderLabel = new Label(root, 0);
-		folderLabel.setText("&Parent folder:");
+		UI.newLabel(root, 0, "&Parent folder:");
 		
 		folderText = new Text(root, SWT.BORDER);
 		folderText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
@@ -102,8 +101,7 @@ public class WizardNewRuleCreationPage extends WizardPage {
 		folderButtonLayoutData.widthHint = 100;
 		folderButton.setLayoutData(folderButtonLayoutData);
 		
-		Label signatureLabel = new Label(root, SWT.NONE);
-		signatureLabel.setText("&Signature:");
+		UI.newLabel(root, SWT.NONE, "&Signature:");
 		
 		signatureText = new Text(root, SWT.BORDER);
 		signatureText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
@@ -142,8 +140,7 @@ public class WizardNewRuleCreationPage extends WizardPage {
 		new Label(root, SWT.HORIZONTAL | SWT.SEPARATOR);
 		new Label(root, SWT.NONE);
 		
-		Label nameLabel = new Label(root, SWT.NONE);
-		nameLabel.setText("&Name:");
+		UI.newLabel(root, SWT.NONE, "&Name:");
 		
 		nameText = new Text(root, SWT.BORDER);
 		nameText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));

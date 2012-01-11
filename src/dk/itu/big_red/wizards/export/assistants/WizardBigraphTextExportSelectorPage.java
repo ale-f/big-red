@@ -14,9 +14,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.utilities.ui.UI;
 import dk.itu.big_red.wizards.export.BigraphTextExportWizard;
 
 public class WizardBigraphTextExportSelectorPage extends WizardPage {
@@ -45,8 +44,7 @@ public class WizardBigraphTextExportSelectorPage extends WizardPage {
 		l.numColumns = 1;
 		form.setLayout(l);
 		
-		Label label = new Label(form, SWT.NONE);
-		label.setText("&Select an export format:");
+		UI.newLabel(form, SWT.NONE, "&Select an export format:");
 		
 		TreeViewer tree = new TreeViewer(form, SWT.BORDER);
 		tree.setLabelProvider(new TextExporterLabelProvider());

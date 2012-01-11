@@ -182,8 +182,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		Composite root = new Composite(parent, SWT.NONE);
 		root.setLayout(new GridLayout(3, false));
 		
-		Label folderLabel = new Label(root, 0);
-		folderLabel.setText("&Bigraph:");
+		UI.newLabel(root, 0, "&Bigraph:");
 		
 		bigraphText = new Text(root, SWT.BORDER);
 		bigraphText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
@@ -221,8 +220,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		bigraphButtonLayoutData.widthHint = 100;
 		bigraphButton.setLayoutData(bigraphButtonLayoutData);
 		
-		Label signatureLabel = new Label(root, SWT.NONE);
-		signatureLabel.setText("&Result:");
+		Label signatureLabel = UI.newLabel(root, SWT.NONE, "&Result:");
 		signatureLabel.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true));
 		
 		resultText = new Text(root, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
@@ -230,8 +228,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 		targetTextLayoutData.horizontalSpan = 2;
 		resultText.setLayoutData(targetTextLayoutData);
 		
-		optionsLabel = new Label(root, SWT.NONE);
-		optionsLabel.setText("&Options:");
+		optionsLabel = UI.newLabel(root, SWT.NONE, "&Options:");
 		optionsLabel.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true));
 		
 		optionsGroup = new Composite(root, SWT.NONE);

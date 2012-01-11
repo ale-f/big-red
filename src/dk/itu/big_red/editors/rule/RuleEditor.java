@@ -198,9 +198,8 @@ public class RuleEditor extends EditorPart implements
 	
 	private void error(Throwable t) {
 		self.dispose(); self = null;
-		Label l = new Label(parent, SWT.CENTER);
+		Label l = UI.newLabel(parent, SWT.CENTER, t.toString());
 		l.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		l.setText(t.toString());
 	}
 	
 	@Override
@@ -227,10 +226,9 @@ public class RuleEditor extends EditorPart implements
 		redexViewer.createControl(c);
 		redexViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		Label l = new Label(c, SWT.NONE);
+		Label l = UI.newLabel(c, SWT.NONE, "→");
 		l.setFont(UI.tweakFont(l.getFont(), 40, SWT.BOLD));
 		l.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
-		l.setText("→");
 		
 		reactumViewer.createControl(c);
 		reactumViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

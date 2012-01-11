@@ -11,7 +11,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
@@ -59,15 +58,13 @@ public class BigraphPNGExportWizard extends Wizard implements IExportWizard {
 				l.numColumns = 2;
 				form.setLayout(l);
 				
-				final Label filenameCaption = new Label(form, SWT.LEFT);
-				filenameCaption.setText("Filename:");
+				UI.newLabel(form, SWT.LEFT, "Filename:");
 				
 				final Button filenameButton = new Button(form, SWT.PUSH);
 				filenameButton.setImage(UI.getImage(ISharedImages.IMG_ETOOL_SAVE_EDIT));
 				filenameButton.setText("(none)");
 				
-				final Label formatCaption = new Label(form, SWT.LEFT);
-				formatCaption.setText("Format:");
+				UI.newLabel(form, SWT.LEFT, "Format:");
 				
 				final Combo formatCombo = new Combo(form, SWT.BORDER | SWT.READ_ONLY);
 				formatCombo.setItems(new String[] {
