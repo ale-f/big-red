@@ -15,7 +15,7 @@ public class ContainerSelectionStatusValidator implements ISelectionStatusValida
 	public IStatus validate(Object[] selection) {
 		IStatus r = FileSelectionStatusValidator.OK_STATUS;
 		if (selection.length != 1 || !(selection[0] instanceof IContainer))
-			r = FileSelectionStatusValidator.CANCEL_STATUS;
+			r = FileSelectionStatusValidator.ERROR_STATUS;
 		return r;
 	}
 

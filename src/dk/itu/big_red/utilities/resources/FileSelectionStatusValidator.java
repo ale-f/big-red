@@ -16,14 +16,14 @@ import dk.itu.big_red.application.plugin.RedPlugin;
 public class FileSelectionStatusValidator implements ISelectionStatusValidator {
 	public static final IStatus
 		OK_STATUS = new Status(Status.OK, RedPlugin.PLUGIN_ID, ""),
-		CANCEL_STATUS = new Status(Status.CANCEL, RedPlugin.PLUGIN_ID, "");
+		ERROR_STATUS = new Status(Status.ERROR, RedPlugin.PLUGIN_ID, "");
 	
 	@Override
 	public IStatus validate(Object[] selection) {
 		IStatus r = OK_STATUS;
 		if (selection.length != 1 || !(selection[0] instanceof IFile))
-			r = CANCEL_STATUS;
+			r = ERROR_STATUS;
+		System.out.println(this + " sez " + r);
 		return r;
 	}
-
 }
