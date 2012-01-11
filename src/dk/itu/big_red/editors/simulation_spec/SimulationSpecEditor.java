@@ -111,6 +111,8 @@ public class SimulationSpecEditor extends EditorPart {
 		return exporters;
 	}
 	
+	private ResourceSelector signatureSelector, modelSelector;
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite base = new Composite(parent, SWT.NONE);
@@ -118,11 +120,11 @@ public class SimulationSpecEditor extends EditorPart {
 		base.setLayout(new GridLayout(4, false));
 		
 		UI.newLabel(base, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		new ResourceSelector(base,
+		signatureSelector = new ResourceSelector(base,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
-			Mode.FILE, "dk.itu.big_red.signature").
-			getButton().setLayoutData(
-				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+			Mode.FILE, "dk.itu.big_red.signature");
+		signatureSelector.getButton().setLayoutData(
+			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		final Tree rules = UI.setLayoutData(new Tree(base, SWT.BORDER), new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -161,11 +163,11 @@ public class SimulationSpecEditor extends EditorPart {
 		b.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
 		
 		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		new ResourceSelector(base,
-				((FileEditorInput)getEditorInput()).getFile().getProject(),
-				Mode.FILE, "dk.itu.big_red.bigraph").
-				getButton().setLayoutData(
-					new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+		modelSelector = new ResourceSelector(base,
+			((FileEditorInput)getEditorInput()).getFile().getProject(),
+			Mode.FILE, "dk.itu.big_red.bigraph");
+		modelSelector.getButton().setLayoutData(
+			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
 		
