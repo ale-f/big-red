@@ -379,6 +379,15 @@
 						</li>
 					</ul>
 					<p>
+						The following attributes MAY be present:
+					</p>
+					<ul>
+						<li>
+							<a id="site_alias" />
+							<code>alias</code> (<code>string</code>): this site's alias.
+						</li>
+					</ul>
+					<p>
 						Additionally, attributes from other namespaces MAY be present on <code>site</code>s.
 					</p>
 					<hr />
@@ -391,7 +400,8 @@
 			<xsd:sequence>
 				<xsd:group ref="bigraph:anyForeignElements" />
 			</xsd:sequence>
-			<xsd:attribute name="name" type="xsd:string" />
+			<xsd:attribute name="name" type="xsd:string" use="required" />
+			<xsd:attribute name="alias" type="xsd:string" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>
