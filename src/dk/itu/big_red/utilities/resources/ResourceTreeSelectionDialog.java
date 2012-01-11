@@ -14,21 +14,23 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
  *
  */
 public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
-	public static final int MODE_GENERIC = 0,
-	                        MODE_CONTAINER = 1,
-	                        MODE_FILE = 2;
+	public static enum Mode {
+		GENERIC,
+		CONTAINER,
+		FILE
+	};
 	
-	public ResourceTreeSelectionDialog(Shell parent, IContainer input, int mode, String... contentTypes) {
+	public ResourceTreeSelectionDialog(Shell parent, IContainer input, Mode mode, String... contentTypes) {
 		super(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 		setAllowMultiple(false);
 		setInput(input);
-		if (mode == MODE_FILE) {
+		if (mode == Mode.FILE) {
 			setValidator(new FileSelectionStatusValidator());
 			FileTypeViewerFilter fv = new FileTypeViewerFilter();
 			addFilter(fv);
 			for (String i : contentTypes)
 				fv.addContentType(i);
-		} else if (mode == MODE_CONTAINER) {
+		} else if (mode == Mode.CONTAINER) {
 			setValidator(new ContainerSelectionStatusValidator());
 			addFilter(new ContainerViewerFilter());
 		}

@@ -38,6 +38,7 @@ import dk.itu.big_red.preferences.RedPreferencePage;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.ProcessDialog;
 import dk.itu.big_red.utilities.ui.UI;
@@ -201,8 +202,7 @@ public class WizardBigraphTextExportPage extends WizardPage {
 				ResourceTreeSelectionDialog d =
 					new ResourceTreeSelectionDialog(getShell(),
 						Project.getWorkspaceRoot(),
-						ResourceTreeSelectionDialog.MODE_FILE,
-						"dk.itu.big_red.bigraph");
+						Mode.FILE, "dk.itu.big_red.bigraph");
 				if (bigraphText.getText().length() > 0)
 					d.setInitialSelection(Project.findFileByPath(null, new Path(bigraphText.getText())));
 				d.open();

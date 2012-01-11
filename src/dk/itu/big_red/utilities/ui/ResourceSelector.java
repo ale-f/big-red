@@ -10,15 +10,16 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 
 public class ResourceSelector {
 	private Button button;
 	private IProject project;
-	private int mode;
+	private Mode mode;
 	private String[] contentTypes;
 	private IResource resource;
 	
-	public ResourceSelector(Composite c, IProject p, int m, String... cT) {
+	public ResourceSelector(Composite c, IProject p, Mode m, String... cT) {
 		button = UI.newButton(c, SWT.PUSH, "(none)");
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override

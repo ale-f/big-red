@@ -34,6 +34,7 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLImport;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -121,8 +122,7 @@ public class SimulationSpecEditor extends EditorPart {
 		UI.newLabel(base, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		new ResourceSelector(base,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
-			ResourceTreeSelectionDialog.MODE_FILE,
-			"dk.itu.big_red.signature").
+			Mode.FILE, "dk.itu.big_red.signature").
 			getButton().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
@@ -147,8 +147,7 @@ public class SimulationSpecEditor extends EditorPart {
 					new ResourceTreeSelectionDialog(
 						getSite().getShell(),
 						((FileEditorInput)getEditorInput()).getFile().getProject(),
-						ResourceTreeSelectionDialog.MODE_FILE,
-						"dk.itu.big_red.rule");
+						Mode.FILE, "dk.itu.big_red.rule");
 				rtsd.setBlockOnOpen(true);
 				if (rtsd.open() == Dialog.OK) {
 					IFile f = (IFile)rtsd.getFirstResult();
@@ -166,8 +165,7 @@ public class SimulationSpecEditor extends EditorPart {
 		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		new ResourceSelector(base,
 				((FileEditorInput)getEditorInput()).getFile().getProject(),
-				ResourceTreeSelectionDialog.MODE_FILE,
-				"dk.itu.big_red.bigraph").
+				Mode.FILE, "dk.itu.big_red.bigraph").
 				getButton().setLayoutData(
 					new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		

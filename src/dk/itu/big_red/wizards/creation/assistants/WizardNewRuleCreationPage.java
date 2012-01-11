@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.Types;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class WizardNewRuleCreationPage extends WizardPage {
@@ -82,8 +83,7 @@ public class WizardNewRuleCreationPage extends WizardPage {
 				
 				ResourceTreeSelectionDialog d =
 					new ResourceTreeSelectionDialog(getShell(),
-						Project.getWorkspaceRoot(),
-						ResourceTreeSelectionDialog.MODE_CONTAINER);
+						Project.getWorkspaceRoot(), Mode.CONTAINER);
 				if (folderPath != null)
 					d.setInitialSelection(Project.findContainerByPath(null, folderPath));
 				d.open();
@@ -117,8 +117,7 @@ public class WizardNewRuleCreationPage extends WizardPage {
 				ResourceTreeSelectionDialog d =
 					new ResourceTreeSelectionDialog(getShell(),
 						Project.getWorkspaceRoot(),
-						ResourceTreeSelectionDialog.MODE_FILE,
-						"dk.itu.big_red.signature");
+						Mode.FILE, "dk.itu.big_red.signature");
 				if (signaturePath != null)
 					d.setInitialSelection(Project.findFileByPath(null, signaturePath));
 				d.setMessage("Select a signature file.");
