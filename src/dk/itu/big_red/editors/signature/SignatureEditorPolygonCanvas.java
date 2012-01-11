@@ -605,8 +605,8 @@ MenuListener {
 	}
 
 	/**
-	 * Overwrites the current polygon with the contents of the given {@link
-	 * PointList}.
+	 * Overwrites the current polygon with copies of the contents of the given
+	 * {@link PointList}.
 	 * <p>The points on the given PointList will not be snapped to the grid,
 	 * nor will they be checked for scale.
 	 * @param points a PointList
@@ -851,14 +851,20 @@ MenuListener {
 	}
 
 	/**
-	 * Overwrites the current list of Ports with the contents of the given
-	 * {@link List}.
+	 * Overwrites the current list of Ports with copies of the contents of the
+	 * given {@link List}.
 	 * @param ports a list of Ports
 	 */
 	public void setPorts(List<PortSpec> ports) {
 		if (ports != null) {
 			this.ports.clear();
-			this.ports.addAll(ports);
+			for (PortSpec i : ports) {
+				PortSpec p =
+					new PortSpec(i.getName(), i.getSegment(),
+						i.getDistance());
+				this.ports.add(p);
+				firePortChange(PortEvent.ADDED, p);
+			}
 		}
 	}
 }
