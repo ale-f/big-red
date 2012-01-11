@@ -22,6 +22,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -139,6 +140,13 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 		return model;
 	}
 	
+	private Site processSite(Element e, Site model) throws ImportFailedException {
+		String alias = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "alias");
+		if (alias != null)
+			cg.add(model.changeAlias(alias));
+		return model;
+	}
+	
 	private void addChild(Container context, Element e) throws ImportFailedException {
 		ModelObject model = null;
 		boolean port = false;
@@ -196,8 +204,8 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {
 			processPoint(e, (InnerName)model);
-		} else {
-			/* fail in some other way? */;
+		} else if (model instanceof Site) {
+			processSite(e, (Site)model);
 		}
 	}
 	

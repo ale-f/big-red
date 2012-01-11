@@ -123,10 +123,18 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 				f = processNode(
 						newElement(XMLNS.BIGRAPH, "bigraph:node"), (Node)i);
 			} else if (i instanceof Site) {
-				f = newElement(XMLNS.BIGRAPH, "bigraph:site");
+				f = processSite(
+						newElement(XMLNS.BIGRAPH, "bigraph:site"), (Site)i);
 			}
 			DOM.appendChildIfNotNull(e, applyCommonProperties(f, i));
 		}
+		return e;
+	}
+	
+	private Element processSite(Element e, Site s) throws ExportFailedException {
+		String alias = s.getAlias();
+		if (alias != null)
+			DOM.applyAttributes(e, "alias", alias);
 		return e;
 	}
 	
@@ -147,7 +155,8 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 				f = processNode(
 					newElement(XMLNS.BIGRAPH, "bigraph:node"), (Node)l);
 			} else if (l instanceof Site) {
-				f = newElement(XMLNS.BIGRAPH, "bigraph:site");
+				f = processSite(
+					newElement(XMLNS.BIGRAPH, "bigraph:site"), (Site)l);
 			}
 			DOM.appendChildIfNotNull(e, applyCommonProperties(f, l));
 		}
