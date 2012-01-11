@@ -38,12 +38,23 @@ public class FileContentTypeViewerFilter extends ContainerViewerFilter {
 	/**
 	 * Adds the content type with the given ID, if one exists, to the list of
 	 * permitted content types.
-	 * @param contentType
+	 * @param contentType the ID of a content type known to Eclipse
+	 * @see #addContentType(IContentType)
 	 */
 	public void addContentType(String contentType) {
-		IContentType type = Types.getContentType(contentType);
-		if (type != null)
-			contentTypes.add(type);
+		addContentType(Types.getContentType(contentType));
+	}
+	
+	/**
+	 * Adds the given content type to the list of permitted content types.
+	 * @param contentType a content type known to Eclipse
+	 * @see #addContentType(String)
+	 * @see Types#getContentType(String)
+	 * @see Types#findContentTypeFor(IFile)
+	 */
+	public void addContentType(IContentType contentType) {
+		if (contentType != null)
+			contentTypes.add(contentType);
 	}
 	
 	@Override
