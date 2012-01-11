@@ -10,8 +10,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> {
 
 	@Override
 	public SimulationSpec importObject() throws ImportFailedException {
-		// TODO Auto-generated method stub
-		return null;
+		return new SimulationSpec();
 	}
 
 	public static SimulationSpec importFile(IFile file) throws ImportFailedException {
