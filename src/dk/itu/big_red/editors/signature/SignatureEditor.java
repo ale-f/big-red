@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.signature;
 
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.EventObject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,6 +38,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
@@ -408,20 +410,23 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		appearanceLayoutData.heightHint = 100;
 		appearance.setLayoutData(appearanceLayoutData);
 		appearance.setBackground(ColorConstants.listBackground);
-		appearance.addPortListener(new PortListener() {
+		appearance.addListener(new SEPCListener() {
+			
 			@Override
-			public void portChange(PortEvent e) {
+			public void portChange() {
 				if (!shouldPropagateUI())
 					return;
+				ArrayList<PortSpec> toCopy = Lists.copy(appearance.getPorts());
 				for (PortSpec p : Lists.copy(currentControl.getPorts()))
 					currentControl.removePort(p.getName());
-				for (PortSpec p : appearance.getPorts())
-					currentControl.addPort(p);
+				for (PortSpec p : toCopy)
+					currentControl.addPort(
+						new PortSpec(p.getName(), p.getSegment(),
+								p.getDistance()));
 			}
-		});
-		appearance.addPointListener(new PointListener() {
+			
 			@Override
-			public void pointChange(PointEvent e) {
+			public void pointChange() {
 				if (!shouldPropagateUI())
 					return;
 				currentControl.setPoints(appearance.getPoints().getCopy());
@@ -550,7 +555,6 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 					if (appearance.getMode() == Shape.POLYGON)
 						appearance.setPoints((PointList)newValue);
 				} else if (propertyName.equals(Control.PROPERTY_PORT)) {
-					/* XXX: add and remove rather than overwriting */
 					appearance.setPorts(currentControl.getPorts());
 				} else if (propertyName.equals(Control.PROPERTY_RESIZABLE)) {
 					resizable.setSelection((Boolean)newValue);

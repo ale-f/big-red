@@ -28,8 +28,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import dk.itu.big_red.editors.signature.PointListener.PointEvent;
-import dk.itu.big_red.editors.signature.PortListener.PortEvent;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.utilities.geometry.Ellipse;
@@ -47,6 +45,21 @@ import dk.itu.big_red.utilities.ui.UI;
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
 MenuListener {
+	public static interface SEPCListener {
+		public void portChange();
+		public void pointChange();
+	}
+	
+	private ArrayList<SEPCListener> listeners = new ArrayList<SEPCListener>();
+	
+	public void addListener(SEPCListener l) {
+		listeners.add(l);
+	}
+	
+	public void removeListener(SEPCListener l) {
+		listeners.remove(l);
+	}
+	
 	private abstract static class ADSelectionListener implements SelectionListener {
 		@Override
 		public final void widgetDefaultSelected(SelectionEvent e) {
@@ -88,16 +101,6 @@ MenuListener {
 		};
 	}
 	
-	/**
-	 * The property name fired when the set of points changes.
-	 */
-	public static final String PROPERTY_POINT = "SignatureEditorPolygonCanvasPoint";
-	
-	/**
-	 * The property name fired when the set of ports changes.
-	 */
-	public static final String PROPERTY_PORT = "SignatureEditorPolygonCanvasPort";
-	
 	private Shape mode = Shape.POLYGON;
 	private PointList points = new PointList();
 	private Point tmp = new Point();
@@ -121,11 +124,6 @@ MenuListener {
 	
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
 	
-	protected ArrayList<PointListener> pointListeners =
-		new ArrayList<PointListener>();
-	protected ArrayList<PortListener> portListeners =
-		new ArrayList<PortListener>();
-	
 	public SignatureEditorPolygonCanvas(Composite parent, int style) {
 		super(parent, style);
 		addMouseListener(this);
@@ -148,26 +146,20 @@ MenuListener {
 	 * @param mode a {@link Shape}
 	 */
 	public void setMode(Shape mode) {
-		while (points.size() > 0)
-			firePointChange(PointEvent.REMOVED, points.removePoint(0));
-		
-		Iterator<PortSpec> it = ports.iterator();
-		while (it.hasNext()) {
-			PortSpec p = it.next();
-			it.remove();
-			firePortChange(PortEvent.REMOVED, p);
-		}
-		
+		points.removeAllPoints();
 		points.addPoint(0, 0);
+		ports.clear();
+		
 		if (mode == Shape.POLYGON) {
-			firePointChange(PointEvent.ADDED, new Point(0, 0));
-
 			centrePolygon();
 		} else if (mode == Shape.OVAL) {
 			/* no special handling */
 		}
 
 		this.mode = mode;
+		
+		firePortChange();
+		firePointChange();
 		redraw();
 	}
 	
@@ -194,7 +186,6 @@ MenuListener {
 					l1l = len1 / len;
 			if (dragPointIndex == deleteIndex)
 				dragPointIndex = -1;
-			firePointChange(PointEvent.REMOVED, points.removePoint(deleteIndex));
 			for (PortSpec port : ports) {
 				int segment = port.getSegment();
 				double distance = port.getDistance();
@@ -206,6 +197,8 @@ MenuListener {
 				if (segment >= deleteIndex)
 					port.setSegment(segment - 1);
 			}
+			firePortChange();
+			firePointChange();
 		}
 	}
 
@@ -282,8 +275,7 @@ MenuListener {
 		Rectangle polyBounds = new Rectangle(points.getBounds());
 		points.translate(
 			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.getWidth() / 2, -polyBounds.getHeight() / 2)));
-		for (int i = 0; i < points.size(); i++)
-			firePointChange(PointEvent.MOVED, points.getPoint(i));
+		firePointChange();
 		redraw();
 	}
 	
@@ -375,7 +367,7 @@ MenuListener {
 			
 			p.setSegment(segment);
 			p.setDistance(offset);
-			firePortChange(PortEvent.MOVED, p);
+			firePortChange();
 			
 			dragPortIndex = -1;
 			redraw();
@@ -387,7 +379,6 @@ MenuListener {
 					tmp = points.getPoint(dragPointIndex);
 					tmp.x = p.x; tmp.y = p.y;
 					points.setPoint(tmp, dragPointIndex);
-					firePointChange(PointEvent.MOVED, tmp);
 				} else { /* a new point is being created */
 					Line l1 = new Line(getPoint(dragPointIndex - 1), p),
 							l2 = new Line(p, getPoint(dragPointIndex));
@@ -407,8 +398,8 @@ MenuListener {
 						}
 					}
 					points.insertPoint(p, dragPointIndex);
-					firePointChange(PointEvent.ADDED, p);
 				}
+				firePointChange();
 			}
 			dragPointIndex = -1;
 			newPoint = false;
@@ -675,11 +666,8 @@ MenuListener {
 									getPortNameValidator(p));
 							if (newName != null) {
 								ports.add(p);
-								firePortChange(PortEvent.ADDED, p);
-								
 								p.setName(newName);
-								firePortChange(PortEvent.RENAMED, p);
-								
+								firePortChange();
 								redraw();
 							}
 						}
@@ -696,11 +684,8 @@ MenuListener {
 								getPortNameValidator(p));
 						if (newName != null) {
 							ports.add(p);
-							firePortChange(PortEvent.ADDED, p);
-							
 							p.setName(newName);
-							firePortChange(PortEvent.RENAMED, p);
-							
+							firePortChange();
 							redraw();
 						}
 					}
@@ -717,7 +702,7 @@ MenuListener {
 							getPortNameValidator(p));
 					if (newName != null) {
 						p.setName(newName);
-						firePortChange(PortEvent.RENAMED, p);
+						firePortChange();
 					}
 				}
 			});
@@ -725,7 +710,8 @@ MenuListener {
 			UI.createMenuItem(m, 0, "&Remove port", new ADSelectionListener() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					firePortChange(PortEvent.REMOVED, ports.remove(foundPort));
+					ports.remove(foundPort);
+					firePortChange();
 					redraw();
 				}
 			});
@@ -738,17 +724,16 @@ MenuListener {
 					public void widgetSelected(SelectionEvent e) {
 						for (Iterator<PortSpec> it = ports.iterator(); it.hasNext(); ) {
 							PortSpec p = it.next();
-							if (p.getSegment() == foundPoint) {
+							if (p.getSegment() == foundPoint)
 								it.remove();
-								firePortChange(PortEvent.REMOVED, p);
-							}
 							for (PortSpec port : ports) {
 								int segment = port.getSegment();
 								if (segment >= foundPoint)
 									port.setSegment(segment - 1);
 							}
 						}
-						firePointChange(PointEvent.REMOVED, points.removePoint(foundPoint));
+						firePortChange();
+						firePointChange();
 						redraw();
 					}
 				});
@@ -792,58 +777,14 @@ MenuListener {
 		});
 	}
 	
-	/**
-	 * Registers the given listener to be notified when the user adds or
-	 * removes a point from the canvas. 
-	 * @param listener a {@link PointListener}
-	 */
-	public void addPointListener(PointListener listener) {
-		pointListeners.add(listener);
-	}
-
-	/**
-	 * Unregisters the given listener from being notified when the user adds or
-	 * removes a point from the canvas. 
-	 * @param listener a {@link PointListener}
-	 */
-	public void removePointListener(PointListener listener) {
-		pointListeners.remove(listener);
+	private void firePointChange() {
+		for (SEPCListener i : listeners)
+			i.pointChange();
 	}
 	
-	private void firePointChange(int type, Point object) {
-		PointEvent e = new PointEvent();
-		e.source = this;
-		e.type = type;
-		e.object = object;
-		for (PointListener i : pointListeners)
-			i.pointChange(e);
-	}
-	
-	/**
-	 * Registers the given listener to be notified when the user adds or
-	 * removes a port from the canvas. 
-	 * @param listener a {@link PointListener}
-	 */
-	public void addPortListener(PortListener listener) {
-		portListeners.add(listener);
-	}
-
-	/**
-	 * Unregisters the given listener from being notified when the user adds or
-	 * removes a port from the canvas. 
-	 * @param listener a {@link PointListener}
-	 */
-	public void removePortListener(PortListener listener) {
-		portListeners.remove(listener);
-	}
-	
-	private void firePortChange(int type, PortSpec object) {
-		PortEvent e = new PortEvent();
-		e.source = this;
-		e.type = type;
-		e.object = object;
-		for (PortListener i : portListeners)
-			i.portChange(e);
+	private void firePortChange() {
+		for (SEPCListener i : listeners)
+			i.portChange();
 	}
 	
 	/**
@@ -868,8 +809,8 @@ MenuListener {
 					new PortSpec(i.getName(), i.getSegment(),
 						i.getDistance());
 				this.ports.add(p);
-				firePortChange(PortEvent.ADDED, p);
 			}
+			firePortChange();
 		}
 	}
 }
