@@ -340,7 +340,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			}
 		});
 		
-		activeKind = UI.newButton(kindGroup, SWT.RADIO, "Passive");
+		activeKind = UI.newButton(kindGroup, SWT.RADIO, "Active");
 		activeKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
