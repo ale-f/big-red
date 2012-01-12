@@ -31,24 +31,27 @@ public class PortSpec implements IPort {
 		return name;
 	}
 	
-	public void setName(String name) {
+	public PortSpec setName(String name) {
 		this.name = name;
+		return this;
 	}
 	
 	public int getSegment() {
 		return segment;
 	}
 	
-	public void setSegment(int segment) {
+	public PortSpec setSegment(int segment) {
 		this.segment = segment;
+		return this;
 	}
 	
 	public double getDistance() {
 		return distance;
 	}
 	
-	public void setDistance(double distance) {
+	public PortSpec setDistance(double distance) {
 		this.distance = distance;
+		return this;
 	}
 
 	@Override
