@@ -19,9 +19,11 @@ public class SiteFigure extends AbstractFigure {
 		setForegroundColor(ColorConstants.black);
 		setBackgroundColor(ColorConstants.lightGray);
 	}
-
-	public void setName(String name) {
+	
+	public void setName(String name, boolean alias) {
 		labelName.setText(name);
+		labelName.setForegroundColor(alias ?
+				ColorConstants.white : ColorConstants.black);
 	}
 
 	@Override

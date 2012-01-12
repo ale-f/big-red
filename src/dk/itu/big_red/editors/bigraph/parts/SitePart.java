@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
+import java.beans.PropertyChangeEvent;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
@@ -29,13 +31,23 @@ public class SitePart extends AbstractPart {
 	}
 
 	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
+		if (evt.getSource() == getModel())
+			if (evt.getPropertyName().equals(Site.PROPERTY_ALIAS))
+		    	refreshVisuals();
+	}
+	
+	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();
 		
 		SiteFigure figure = (SiteFigure)getFigure();
 		Site model = getModel();
 
-		figure.setName(model.getName());
+		if (model.getAlias() == null) {
+			figure.setName(model.getName(), false);
+		} else figure.setName(model.getAlias(), true);
 		setToolTip(getDisplayName());
 	}
 	
