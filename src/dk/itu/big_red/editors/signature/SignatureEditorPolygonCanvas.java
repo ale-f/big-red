@@ -197,6 +197,7 @@ MenuListener {
 				if (segment >= deleteIndex)
 					port.setSegment(segment - 1);
 			}
+			points.removePoint(deleteIndex);
 			firePortChange();
 			firePointChange();
 		}
@@ -733,6 +734,7 @@ MenuListener {
 									port.setSegment(segment - 1);
 							}
 						}
+						points.removePoint(foundPoint);
 						firePortChange();
 						firePointChange();
 						redraw();
