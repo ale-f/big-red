@@ -58,10 +58,6 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		return (T)i;
 	}
 	
-	private static void hurl(Object i) throws ExportFailedException {
-		throw new ExportFailedException("Aieee! " + i.toString());
-	}
-	
 	private Element processChanges(Element e, ChangeGroup changes) throws ExportFailedException {
 		DOM.applyAttributes(e,
 				"xmlns:change", XMLNS.CHANGE);
