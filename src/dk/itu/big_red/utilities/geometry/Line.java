@@ -112,7 +112,11 @@ public class Line {
 	 *         one
 	 */
 	public Point getIntersection(Point target, Point p3) {
-		if (p1.x == p2.x) {
+		if (p3.equals(p1)) {
+			return target.setLocation(p1);
+		} else if (p3.equals(p2)) {
+			return target.setLocation(p2);
+		} else if (p1.x == p2.x) {
 			target.setLocation(p1.x, p3.y);
 		} else if (p1.y == p2.y){
 			target.setLocation(p3.x, p1.y);
