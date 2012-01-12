@@ -15,6 +15,7 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
@@ -66,7 +67,6 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 			if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.CHANGE)) {
 				Element el = (Element)i;
-				System.out.println(el.getLocalName());
 				if (el.getLocalName().equals("add")) {
 					String
 						name = chattr(el, "name"),
@@ -128,6 +128,17 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 					if (p != null) {
 						c = p.changeDisconnect(p.getLink());
 					} else throw new ImportFailedException("Can't disconnect");
+				} else if (el.getLocalName().equals("site-alias")) {
+					String
+						name = chattr(el, "name"),
+						alias = chattr(el, "alias");
+					Site s = null;
+					if (name != null) {
+						s = (Site)getNamed(reactum, "site", name);
+					}
+					if (s != null) {
+						c = s.changeAlias(alias);
+					} else throw new ImportFailedException("No site");
 				}
 			} else if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.BIG_RED)) {
@@ -145,10 +156,8 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 			}
 			if (c != null) {
 				try {
-					System.out.print(c + "...");
 					reactum.tryApplyChange(c);
 					rr.getChanges().add(c);
-					System.out.println("success!");
 				} catch (ChangeRejectedException cre) {
 					throw new ImportFailedException(cre);
 				}

@@ -12,6 +12,7 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -130,6 +131,12 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 				if (i.getCreator() instanceof Port)
 					DOM.applyAttributes(f,
 							"node", ((Port)i.getCreator()).getParent().getName());
+			} else if (i_ instanceof Site.ChangeAlias) {
+				Site.ChangeAlias i = ac(i_);
+				f = DOM.applyAttributes(
+						newElement(XMLNS.CHANGE, "change:site-alias"),
+						"name", i.getCreator().getName(),
+						"alias", i.alias);
 			}
 			
 			/**
