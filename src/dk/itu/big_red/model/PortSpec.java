@@ -63,4 +63,10 @@ public class PortSpec implements IPort {
 	public INode getINode() {
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		return "PortSpec(" + getName() + ", " + getSegment() + ", " +
+				getDistance() + ")";
+	}
 }
