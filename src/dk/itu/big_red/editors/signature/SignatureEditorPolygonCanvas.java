@@ -148,13 +148,17 @@ MenuListener {
 	 * @param mode a {@link Shape}
 	 */
 	public void setMode(Shape mode) {
-		points.removeAllPoints();
-		firePointChange(PointEvent.REMOVED, null);
-		points.addPoint(0, 0);
+		while (points.size() > 0)
+			firePointChange(PointEvent.REMOVED, points.removePoint(0));
 		
-		ports.clear();
-		firePortChange(PortEvent.REMOVED, null);
-				
+		Iterator<PortSpec> it = ports.iterator();
+		while (it.hasNext()) {
+			PortSpec p = it.next();
+			it.remove();
+			firePortChange(PortEvent.REMOVED, p);
+		}
+		
+		points.addPoint(0, 0);
 		if (mode == Shape.POLYGON) {
 			firePointChange(PointEvent.ADDED, new Point(0, 0));
 
@@ -278,7 +282,8 @@ MenuListener {
 		Rectangle polyBounds = new Rectangle(points.getBounds());
 		points.translate(
 			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.getWidth() / 2, -polyBounds.getHeight() / 2)));
-		firePointChange(PointEvent.MOVED, null);
+		for (int i = 0; i < points.size(); i++)
+			firePointChange(PointEvent.MOVED, points.getPoint(i));
 		redraw();
 	}
 	

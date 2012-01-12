@@ -57,9 +57,6 @@ public interface PortListener {
 		
 		/**
 		 * The Port which caused this event to be fired.
-		 * 
-		 * <p>If this property is <code>null</code>, then the event represents
-		 * a mass change to all Ports.
 		 */
 		PortSpec object;
 	}

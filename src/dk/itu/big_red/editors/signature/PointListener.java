@@ -50,9 +50,6 @@ public interface PointListener {
 		
 		/**
 		 * The Point which caused this event to be fired.
-		 * 
-		 * <p>If this property is <code>null</code>, then the event represents
-		 * a mass change to all Points.
 		 */
 		Point object;
 	}
