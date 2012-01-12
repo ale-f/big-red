@@ -59,7 +59,7 @@ public class SignatureXMLImport extends Import<Signature> {
 		
 		for (Element j :
 			DOM.getNamedChildElements(e, XMLNS.SIGNATURE, "port")) {
-			PortSpec i = makePortSpec(j, !generatePolygon);
+			PortSpec i = makePortSpec(j, generatePolygon);
 			if (i != null)
 				model.addPort(i);
 		}
