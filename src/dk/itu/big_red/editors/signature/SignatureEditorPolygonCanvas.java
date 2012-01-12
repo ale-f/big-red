@@ -612,6 +612,7 @@ MenuListener {
 			this.points.removeAllPoints();
 			this.points.addAll(points);
 			centrePolygon();
+			firePointChange();
 		}
 	}
 	
