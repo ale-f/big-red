@@ -13,7 +13,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
@@ -109,12 +108,14 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 						link = chattr(el, "link"),
 						node = chattr(el, "node");
 					Link l = (Link)getNamed(reactum, "link", link);
+					Point p;
 					if (node != null) {
-						Port p = ((Node)getNamed(reactum, "node", node)).getPort(name);
-						if (p != null) {
-							c = p.changeConnect(l);
-						} else throw new ImportFailedException("Port failed");
-					}
+						p = ((Node)getNamed(reactum, "node", node)).getPort(name);
+					} else p = (InnerName)getNamed(reactum, "innername", name);
+					
+					if (p != null) {
+						c = p.changeConnect(l);
+					} else throw new ImportFailedException("Can't connect");
 				} else if (el.getLocalName().equals("disconnect")) {
 					String
 						name = chattr(el, "name"),
@@ -122,9 +123,8 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 					Point p;
 					if (node != null) {
 						p = ((Node)getNamed(reactum, "node", node)).getPort(name);
-					} else {
-						p = (InnerName)getNamed(reactum, "innername", name);
-					}
+					} else p = (InnerName)getNamed(reactum, "innername", name);
+					
 					if (p != null) {
 						c = p.changeDisconnect(p.getLink());
 					} else throw new ImportFailedException("Can't disconnect");
