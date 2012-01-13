@@ -114,7 +114,7 @@
             extensions="bigraph-rule"
             icon="resources/icons/icon16.png"
             id="dk.itu.big_red.RuleEditor"
-            name="Rule Editor">
+            name="Reaction Rule Editor">
          <contentTypeBinding
                contentTypeId="dk.itu.big_red.rule">
          </contentTypeBinding>
@@ -138,27 +138,12 @@
             id="dk.itu.big_red.export"
             name="Big Red">
       </category>
-      <category
-            id="dk.itu.big_red.export.bigraph"
-            name="Bigraph"
-            parentCategory="dk.itu.big_red.export">
-      </category>
       <wizard
-            category="dk.itu.big_red.export.bigraph"
-            class="dk.itu.big_red.wizards.export.BigraphPNGExportWizard"
-            icon="resources/icons/wizards/bitmap.png"
-            id="Big Red.BitmapExportWizard"
-            name="Export as bitmap image">
-         <description>
-            Export the current bigraph as a bitmap image, suitable for embedding into webpages or for low-resolution printing.
-         </description>
-      </wizard>
-      <wizard
-            category="dk.itu.big_red.export.bigraph"
+            category="dk.itu.big_red.export"
             class="dk.itu.big_red.wizards.export.BigraphTextExportWizard"
             icon="resources/icons/wizards/text.png"
             id="Big Red.TikZExportWizard"
-            name="Export bigraph as text">
+            name="Export bigraph">
          <description>
             Export a bigraph in a textual form.
          </description>
@@ -167,14 +152,14 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            id="dk.itu.big_red"
+            id="dk.itu.big_red.new"
             name="Big Red">
       </category>
       <primaryWizard
             id="dk.itu.big_red.NewBRSWizard">
       </primaryWizard>
       <wizard
-            category="dk.itu.big_red"
+            category="dk.itu.big_red.new"
             class="dk.itu.big_red.wizards.creation.NewBRSWizard"
             finalPerspective="dk.itu.big_red.perspective"
             icon="resources/icons/icon16.png"
@@ -186,20 +171,19 @@
          </description>
       </wizard>
       <wizard
-            category="dk.itu.big_red"
+            category="dk.itu.big_red.new"
             class="dk.itu.big_red.wizards.creation.NewAgentWizard"
-            finalPerspective="dk.itu.big_red.perspective"
             icon="resources/icons/icon16.png"
             id="dk.itu.big_red.NewAgentWizard"
-            name="Agent">
+            name="Agent"
+            project="false">
          <description>
             Create a new agent in an existing bigraphical reactive system.
          </description>
       </wizard>
       <wizard
-            category="dk.itu.big_red"
+            category="dk.itu.big_red.new"
             class="dk.itu.big_red.wizards.creation.NewSignatureWizard"
-            finalPerspective="dk.itu.big_red.perspective"
             icon="resources/icons/icon16.png"
             id="dk.itu.big_red.NewSignatureWizard"
             name="Signature"
@@ -209,12 +193,12 @@
          </description>
       </wizard>
       <wizard
-            category="dk.itu.big_red"
+            category="dk.itu.big_red.new"
             class="dk.itu.big_red.wizards.creation.NewRuleWizard"
-            finalPerspective="dk.itu.big_red.perspective"
             icon="resources/icons/icon16.png"
             id="dk.itu.big_red.NewRuleWizard"
-            name="Rule">
+            name="Reaction rule"
+            project="false">
          <description>
             Create a new rule in an existing bigraphical reactive system.
          </description>
@@ -233,7 +217,7 @@
             base-type="org.eclipse.core.runtime.xml"
             file-extensions="bigraph-rule"
             id="dk.itu.big_red.rule"
-            name="Rule"
+            name="Reaction rule"
             priority="normal">
       </content-type>
       <content-type
@@ -250,6 +234,17 @@
             name="Simulation spec"
             priority="normal">
       </content-type>
+   </extension>
+   <extension
+         point="dk.itu.big_red.import.text">
+      <importer
+            class="dk.itu.big_red.model.import_export.BigraphXMLImport"
+            exports="dk.itu.big_red.model.Bigraph"
+            icon="resources/icons/icon16.png"
+            id="big_red.importer1"
+            imports="dk.itu.big_red.model.Bigraph"
+            name="XML">
+      </importer>
    </extension>
    <extension
          point="dk.itu.big_red.export.text">
@@ -312,17 +307,6 @@
       <initializer
             class="dk.itu.big_red.preferences.PreferenceInitializer">
       </initializer>
-   </extension>
-   <extension
-         point="dk.itu.big_red.import.text">
-      <importer
-            class="dk.itu.big_red.model.import_export.BigraphXMLImport"
-            exports="dk.itu.big_red.model.Bigraph"
-            icon="resources/icons/icon16.png"
-            id="big_red.importer1"
-            imports="dk.itu.big_red.model.Bigraph"
-            name="XML">
-      </importer>
    </extension>
 
 </plugin>
