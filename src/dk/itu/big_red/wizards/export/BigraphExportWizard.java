@@ -1,12 +1,12 @@
 package dk.itu.big_red.wizards.export;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.wizards.export.assistants.WizardBigraphExportPage;
@@ -56,22 +56,16 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 		if (o instanceof IConfigurationElement) {
 			IConfigurationElement e = (IConfigurationElement)o;
 			if (cfe != e) {
-				try {
-					exporter =
-						(Export<Bigraph>)e.createExecutableExtension("class");
-					cfe = e;
-					page2.setTitle("Export as " + e.getAttribute("name"));
-					setWindowTitle("Export as " + e.getAttribute("name"));
-					IConfigurationElement[] description =
-						e.getChildren("description");
-					if (description.length == 1)
-						page2.setDescription(description[0].getValue());
-					else page2.setDescription("Export the current bigraph in a textual form.");
-					page2.reset();
-				} catch (CoreException x) {
-					x.printStackTrace();
-					return;
-				}
+				exporter = (Export<Bigraph>)RedPlugin.instantiate(e);
+				cfe = e;
+				page2.setTitle("Export as " + e.getAttribute("name"));
+				setWindowTitle("Export as " + e.getAttribute("name"));
+				IConfigurationElement[] description =
+					e.getChildren("description");
+				if (description.length == 1)
+					page2.setDescription(description[0].getValue());
+				else page2.setDescription("Export the current bigraph in a textual form.");
+				page2.reset();
 			}
 		}
 	}

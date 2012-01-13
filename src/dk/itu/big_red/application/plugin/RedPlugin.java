@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Random;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
@@ -41,6 +42,20 @@ public class RedPlugin extends AbstractUIPlugin {
 		return RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPointID);
 	}
 
+	/**
+	 * Creates and returns an instance of the class identified by the given
+	 * {@link IConfigurationElement}'s <code>"class"</code> property.
+	 * @param ice an {@link IConfigurationElement}
+	 * @return a new {@link Object}, or <code>null</code>
+	 */
+	public static Object instantiate(IConfigurationElement ice) {
+		try {
+			return ice.createExecutableExtension("class");
+		} catch (CoreException e) {
+			return null;
+		}
+	}
+	
 	/**
 	 * Returns the shared instance
 	 *

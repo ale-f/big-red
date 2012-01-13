@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
@@ -72,7 +71,7 @@ public class SimulationSpecEditor extends EditorPart {
 		
 		loadInput();
 	}
-
+	
 	private SimulationSpec model = null;
 	
 	protected SimulationSpec getModel() {
@@ -108,12 +107,7 @@ public class SimulationSpecEditor extends EditorPart {
 	
 	@SuppressWarnings("unchecked")
 	private Export<SimulationSpec> getExporter(IConfigurationElement e) {
-		try {
-			return
-				(Export<SimulationSpec>)e.createExecutableExtension("class");
-		} catch (CoreException ex) {
-			return null;
-		}
+		return (Export<SimulationSpec>)RedPlugin.instantiate(e);
 	}
 	
 	private Export<SimulationSpec> getExporter(String id) {
@@ -251,7 +245,7 @@ public class SimulationSpecEditor extends EditorPart {
 		c.setItems(exporters);
 		c.setText(exporters[0]);
 		
-		b = UI.newButton(base, SWT.NONE, "Two thing(s)...");
+		b = UI.newButton(base, SWT.NONE, "&Export...");
 		b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		b.addSelectionListener(new SelectionAdapter() {
 			@Override
