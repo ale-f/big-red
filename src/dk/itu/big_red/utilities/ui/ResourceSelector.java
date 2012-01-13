@@ -63,7 +63,8 @@ public class ResourceSelector {
 	
 	public ResourceSelector setResource(IResource resource) {
 		if (resource != null) {
-			button.setText(resource.getProjectRelativePath().toString());
+			button.setText(
+					Project.getRelativePath(container, resource).toString());
 		} else button.setText("(none)");
 		
 		IResource oldResource = this.resource;
