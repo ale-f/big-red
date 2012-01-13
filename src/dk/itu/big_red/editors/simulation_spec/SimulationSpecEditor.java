@@ -302,8 +302,11 @@ public class SimulationSpecEditor extends EditorPart {
 					IOAdapter io = new IOAdapter();
 					exporter.setModel(getModel()).
 						setOutputStream(io.getOutputStream()).exportObject();
-					System.out.println(
-							IOAdapter.readString(io.getInputStream()));
+					SimulationSpecUIFactory.
+						createResultsWindow(
+							getSite().getShell(),
+							IOAdapter.readString(io.getInputStream())).
+						open();
 				} catch (ExportFailedException ex) {
 					ex.printStackTrace();
 				}
