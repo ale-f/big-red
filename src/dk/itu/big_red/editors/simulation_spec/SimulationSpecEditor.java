@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.simulation_spec;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
@@ -37,6 +38,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
@@ -70,6 +72,52 @@ public class SimulationSpecEditor extends EditorPart {
 		setInputWithNotify(input);
 		
 		loadInput();
+	}
+
+	private ArrayDeque<Change>
+			undoBuffer = new ArrayDeque<Change>(),
+			redoBuffer = new ArrayDeque<Change>();
+	
+	private boolean canUndo() {
+		return (undoBuffer.size() != 0);
+	}
+	
+	private boolean canRedo() {
+		return (redoBuffer.size() != 0);
+	}
+	
+	private void doChange(Change c) {
+		try {
+			model.tryApplyChange(c);
+			redoBuffer.clear();
+			undoBuffer.push(c);
+		} catch (ChangeRejectedException cre) {
+			cre.killVM();
+		}
+	}
+	
+	private void undo() {
+		try {
+			if (!canUndo())
+				return;
+			Change c = undoBuffer.pop();
+			model.tryApplyChange(c.inverse());
+			redoBuffer.push(c);
+		} catch (ChangeRejectedException cre) {
+			/* should never happen */
+			cre.killVM();
+		}
+	}
+	
+	private void redo() {
+		try {
+			if (!canRedo())
+				return;
+			model.tryApplyChange(redoBuffer.pop());
+		} catch (ChangeRejectedException cre) {
+			/* should never happen */
+			cre.killVM();
+		}
 	}
 	
 	private SimulationSpec model = null;
