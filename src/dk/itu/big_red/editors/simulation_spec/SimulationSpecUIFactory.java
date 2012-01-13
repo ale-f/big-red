@@ -9,6 +9,8 @@ import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -31,12 +33,44 @@ public class SimulationSpecUIFactory {
 	public static final String COPY_LABEL = "Copy";
 	
 	public static Dialog createToolWindow(Shell parent, final String results) {
-		ProcessDialog d = new ProcessDialog(parent,
-			new ProcessBuilder(
-				RedPlugin.getInstance().getPreferenceStore().
-				getString(RedPreferencePage.PREFERENCE_BIGMC_PATH).split(" ")));
-		d.setInput(results);
-		return d;
+		return new Dialog(parent) {
+			private Combo tools;
+			private ProcessBuilder pb;
+			
+			@Override
+			protected Control createDialogArea(Composite parent) {
+				Composite c = new Composite(parent, SWT.NONE);
+				c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				GridLayout gl = new GridLayout(1, true);
+				gl.marginLeft = gl.marginRight = IDialogConstants.LEFT_MARGIN;
+				c.setLayout(gl);
+				
+				tools = new Combo(c, SWT.NONE);
+				tools.setLayoutData(
+						new GridData(SWT.FILL, SWT.TOP, true, false));
+				
+				return tools;
+			}
+			
+			@Override
+			protected void buttonPressed(int buttonId) {
+				if (buttonId == IDialogConstants.OK_ID) {
+					setReturnCode(Dialog.OK);
+					new ProcessDialog(getShell(), pb).setInput(results).open();
+					close();
+				} else if (buttonId == IDialogConstants.CANCEL_ID) {
+					setReturnCode(Dialog.CANCEL);
+					cancelPressed();
+				}
+			}
+			
+			{
+				pb = new ProcessBuilder(
+					RedPlugin.getInstance().getPreferenceStore().
+						getString(RedPreferencePage.PREFERENCE_BIGMC_PATH).
+							split(" "));
+			}
+		};
 	}
 	
 	public static TitleAreaDialog createResultsWindow(Shell parent, final String results) {
