@@ -47,7 +47,7 @@ public class WizardBigraphTextExportSelectorPage extends WizardPage {
 		UI.newLabel(form, SWT.NONE, "&Select an export format:");
 		
 		TreeViewer tree = new TreeViewer(form, SWT.BORDER);
-		tree.setLabelProvider(new TextExporterLabelProvider());
+		tree.setLabelProvider(new ImportExportLabelProvider());
 		tree.setContentProvider(new ITreeContentProvider() {
 			
 			@Override

@@ -11,14 +11,15 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.osgi.framework.Bundle;
 
-public class TextExporterLabelProvider extends LabelProvider {
+public class ImportExportLabelProvider extends LabelProvider {
 	@Override
 	public Image getImage(Object el) {
 		if (el instanceof IConfigurationElement) {
 			IConfigurationElement element = (IConfigurationElement)el;
 			String icon = element.getAttribute("icon");
 			if (icon != null) {
-				Bundle exb = Platform.getBundle(element.getDeclaringExtension().getNamespaceIdentifier());
+				Bundle exb = Platform.getBundle(
+					element.getDeclaringExtension().getNamespaceIdentifier());
 				URL l = FileLocator.find(exb, new Path(icon), null);
 				if (l != null) {
 					try {
