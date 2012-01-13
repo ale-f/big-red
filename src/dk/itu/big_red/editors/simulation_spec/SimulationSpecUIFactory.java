@@ -1,5 +1,8 @@
 package dk.itu.big_red.editors.simulation_spec;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -8,6 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -56,7 +60,22 @@ public class SimulationSpecUIFactory {
 				if (buttonId == TO_TOOL_ID) {
 					createToolWindow(getShell(), results).open();
 				} else if (buttonId == SAVE_ID) {
+					FileDialog d = UI.getFileDialog(getShell(),
+							SWT.SAVE | SWT.APPLICATION_MODAL);
+					d.setText("Save simulation spec as...");
 					
+					String filename = d.open();
+					if (filename != null) {
+						try {
+							FileWriter fw = new FileWriter(filename);
+							fw.write(resultsText.getText());
+							fw.close();
+							setMessage("Saved to \"" + filename + "\".",
+								IMessageProvider.INFORMATION);
+						} catch (IOException x) {
+							setErrorMessage(x.getLocalizedMessage());
+						}
+					}
 				} else if (buttonId == COPY_ID) {
 					UI.setClipboardText(resultsText.getText());
 					setMessage("Copied to the clipboard.",
