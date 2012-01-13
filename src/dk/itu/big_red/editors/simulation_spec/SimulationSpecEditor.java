@@ -168,7 +168,7 @@ public class SimulationSpecEditor extends EditorPart {
 		for (IConfigurationElement ce :
 		     RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export")) {
 			String exports = ce.getAttribute("exports");
-			if (exports.equals("dk.itu.big_red.model.SimulationSpec"))
+			if (exports.equals(SimulationSpec.class.getCanonicalName()))
 				exporters.put(ce.getAttribute("name"), ce);
 		}
 		return exporters;
