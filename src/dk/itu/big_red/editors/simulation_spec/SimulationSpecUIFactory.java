@@ -15,6 +15,9 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.preferences.RedPreferencePage;
+import dk.itu.big_red.utilities.ui.ProcessDialog;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecUIFactory {
@@ -28,11 +31,12 @@ public class SimulationSpecUIFactory {
 	public static final String COPY_LABEL = "Copy";
 	
 	public static Dialog createToolWindow(Shell parent, final String results) {
-		return new Dialog(parent) {
-			{
-				setBlockOnOpen(true);
-			}
-		};
+		ProcessDialog d = new ProcessDialog(parent,
+			new ProcessBuilder(
+				RedPlugin.getInstance().getPreferenceStore().
+				getString(RedPreferencePage.PREFERENCE_BIGMC_PATH).split(" ")));
+		d.setInput(results);
+		return d;
 	}
 	
 	public static TitleAreaDialog createResultsWindow(Shell parent, final String results) {
@@ -58,7 +62,7 @@ public class SimulationSpecUIFactory {
 			@Override
 			protected void buttonPressed(int buttonId) {
 				if (buttonId == TO_TOOL_ID) {
-					createToolWindow(getShell(), results).open();
+					createToolWindow(getShell(), resultsText.getText()).open();
 				} else if (buttonId == SAVE_ID) {
 					FileDialog d = UI.getFileDialog(getShell(),
 							SWT.SAVE | SWT.APPLICATION_MODAL);
