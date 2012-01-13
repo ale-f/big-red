@@ -2,6 +2,8 @@ package dk.itu.big_red.utilities.resources;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
@@ -20,6 +22,8 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 		FILE
 	};
 	
+	public static int CLEAR = 0x19890522;
+	
 	public ResourceTreeSelectionDialog(Shell parent, IContainer input, Mode mode, String... contentTypes) {
 		super(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 		setAllowMultiple(false);
@@ -37,6 +41,21 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 	}
 	
 	@Override
+	protected void createButtonsForButtonBar(Composite parent) {
+		super.createButtonsForButtonBar(parent);
+		createButton(parent, IDialogConstants.DESELECT_ALL_ID, "Clear", false);
+	}
+	
+	@Override
+	protected void buttonPressed(int buttonId) {
+		if (buttonId == IDialogConstants.DESELECT_ALL_ID) {
+			setResult(null);
+			setReturnCode(CLEAR);
+			close();
+		} else super.buttonPressed(buttonId);
+	}
+	
+	@Override
 	public IResource getFirstResult() {
 		return (IResource)super.getFirstResult();
 	}
@@ -47,7 +66,8 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 	 */
 	@Override
 	public void setInitialSelection(Object selection) {
-		if (selection != null)
+		if (selection != null) {
 			super.setInitialSelection(selection);
+		} else super.setInitialSelections(new Object[0]);
 	}
 }

@@ -190,7 +190,7 @@ public class SimulationSpecEditor extends EditorPart {
 			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		signatureSelector.addListener(new ResourceListener() {
 			@Override
-			public void resourceChanged(IResource newValue) {
+			public void resourceChanged(IResource oldValue, IResource newValue) {
 				try {
 					Signature s = SignatureXMLImport.importFile((IFile)newValue);
 					getModel().tryApplyChange(getModel().changeSignature(s));
@@ -272,7 +272,7 @@ public class SimulationSpecEditor extends EditorPart {
 			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		modelSelector.addListener(new ResourceListener() {
 			@Override
-			public void resourceChanged(IResource newValue) {
+			public void resourceChanged(IResource oldValue, IResource newValue) {
 				try {
 					Bigraph b = BigraphXMLImport.importFile((IFile)newValue);
 					getModel().tryApplyChange(getModel().changeModel(b));

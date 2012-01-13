@@ -17,7 +17,7 @@ import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 
 public class ResourceSelector {
 	public static interface ResourceListener {
-		public void resourceChanged(IResource newValue);
+		public void resourceChanged(IResource oldValue, IResource newValue);
 	}
 	
 	private Button button;
@@ -48,18 +48,28 @@ public class ResourceSelector {
 		ResourceTreeSelectionDialog rtsd =
 			new ResourceTreeSelectionDialog(button.getShell(), project, mode,
 					contentTypes);
+		rtsd.setInitialSelection(getResource());
 		rtsd.setBlockOnOpen(true);
 		int status = rtsd.open();
 		if (status == Dialog.OK) {
-			resource = rtsd.getFirstResult();
-			button.setText(resource.getProjectRelativePath().toString());
-			for (ResourceListener l : getListeners())
-				l.resourceChanged(resource);
+			IResource newResource = rtsd.getFirstResult();
+			button.setText(newResource.getProjectRelativePath().toString());
+			setResource(newResource);
+		} else if (status == ResourceTreeSelectionDialog.CLEAR) {
+			button.setText("(none)");
+			setResource(null);
 		}
 	}
 	
 	public IResource getResource() {
 		return resource;
+	}
+	
+	public ResourceSelector setResource(IResource resource) {
+		IResource oldResource = this.resource;
+		this.resource = resource;
+		postResourceNotification(oldResource, resource);
+		return this;
 	}
 	
 	private ArrayList<ResourceListener> listeners =
@@ -77,5 +87,12 @@ public class ResourceSelector {
 	
 	public List<ResourceListener> getListeners() {
 		return listeners;
+	}
+	
+	private void postResourceNotification(IResource oldResource, IResource newResource) {
+		if ((newResource == null && oldResource != null) ||
+			!newResource.equals(oldResource))
+			for (ResourceListener l : getListeners())
+				l.resourceChanged(oldResource, newResource);
 	}
 }
