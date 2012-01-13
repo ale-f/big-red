@@ -7,15 +7,11 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -37,16 +33,17 @@ import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.preferences.RedPreferencePage;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
-import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.ProcessDialog;
+import dk.itu.big_red.utilities.ui.ResourceSelector;
+import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 import dk.itu.big_red.wizards.export.BigraphExportWizard;
 
 public class WizardBigraphExportPage extends WizardPage {
-	private Text bigraphText, resultText;
-	private IPath bigraphPath;
+	private ResourceSelector bigraphSelector;
+	private Text resultText;
 	private Button clipboardButton, saveButton, bonusButton;
 	
 	private Label optionsLabel;
@@ -68,20 +65,15 @@ public class WizardBigraphExportPage extends WizardPage {
 	private boolean tryToLoadModel() {
 		getWizard().setSource(null);
 		
-		String bT = bigraphText.getText();
-		bigraphPath = new Path(bT);
-		
-		if (bT.length() == 0 || bigraphPath.segmentCount() == 0) {
+		if (bigraphSelector.getResource() == null) {
 			setErrorMessage("Bigraph is empty.");
 			return false;
 		}
-
-		IResource bigraph = Project.findResourceByPath(null, bigraphPath);
-		if (bigraph == null) {
-			setErrorMessage("Bigraph '" + bT + "' does not exist.");
-			return false;
-		} else if (!(bigraph instanceof IFile)) {
-			setErrorMessage("'" + bT + "' must be a signature.");
+		
+		IResource bigraph = bigraphSelector.getResource();
+		String bT = bigraph.getProjectRelativePath().toString();
+		if (!(bigraph instanceof IFile)) {
+			setErrorMessage("'" + bT + "' must be a bigraph.");
 			return false;
 		} else {
 			IContentType t = Types.findContentTypeFor((IFile)bigraph);
@@ -92,8 +84,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		}
 		
 		try {
-			getWizard().setSource(BigraphXMLImport.importFile(
-					Project.findFileByPath(null, bigraphPath)));
+			getWizard().setSource(BigraphXMLImport.importFile((IFile)bigraph));
 		} catch (Exception e) {
 			setErrorMessage(e.getLocalizedMessage());
 			return false;
@@ -139,7 +130,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		setMessage(getDescription());
 		setPageComplete(false);
 		resultText.setText("");
-		UI.setEnabled(false, clipboardButton, saveButton, resultText);
+		UI.setEnabled(false, clipboardButton, saveButton, resultText, optionsGroup);
 		
 		if (!tryToLoadModel())
 			return false;
@@ -147,24 +138,19 @@ public class WizardBigraphExportPage extends WizardPage {
 		if (!tryToExport())
 			return false;
 		
-		UI.setEnabled(true, clipboardButton, saveButton, resultText);
+		UI.setEnabled(true, clipboardButton, saveButton, resultText, optionsGroup);
 		setPageComplete(true);
 		setErrorMessage(null);
 		return true;
 	}
-
-	private void setBigraphPath(IPath path) {
-		bigraphPath = path;
-		bigraphText.setText(path.makeRelative().toString());
-	}
 	
-	public IPath getBigraphPath() {
-		return bigraphPath;
+	public IResource getBigraph() {
+		return bigraphSelector.getResource();
 	}
 	
 	public void reset() {
 		resultText.setText("");
-		bigraphText.setText("");
+		bigraphSelector.setResource(null);
 		UI.setEnabled(false, clipboardButton, saveButton, resultText);
 		setErrorMessage(null);
 		setPageComplete(false);
@@ -172,7 +158,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		IResource r =
 			Project.tryDesperatelyToGetAnIResourceOutOfAnIStructuredSelection(selection);
 		if (r != null)
-			bigraphText.setText(r.getFullPath().makeRelative().toString());
+			bigraphSelector.setResource(r);
 		
 		populateOptionGroup();
 	}
@@ -184,41 +170,17 @@ public class WizardBigraphExportPage extends WizardPage {
 		
 		UI.newLabel(root, 0, "&Bigraph:");
 		
-		bigraphText = new Text(root, SWT.BORDER);
-		bigraphText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		bigraphText.addModifyListener(new ModifyListener() {
+		bigraphSelector =
+			new ResourceSelector(root, null, Mode.FILE, "dk.itu.big_red.bigraph");
+		bigraphSelector.addListener(new ResourceListener() {
 			@Override
-			public void modifyText(ModifyEvent e) {
+			public void resourceChanged(IResource oldValue, IResource newValue) {
 				setPageComplete(validate());
 			}
 		});
-		
-		Button bigraphButton = UI.newButton(root, SWT.CENTER, "&Browse...");
-		bigraphButton.addSelectionListener(new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ResourceTreeSelectionDialog d =
-					new ResourceTreeSelectionDialog(getShell(),
-						Project.getWorkspaceRoot(),
-						Mode.FILE, "dk.itu.big_red.bigraph");
-				if (bigraphText.getText().length() > 0)
-					d.setInitialSelection(Project.findFileByPath(null, new Path(bigraphText.getText())));
-				d.open();
-				IResource result = d.getFirstResult();
-				if (result instanceof IFile)
-					setBigraphPath(result.getFullPath());
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
-			}
-		});
-		
-		GridData bigraphButtonLayoutData = new GridData();
-		bigraphButtonLayoutData.widthHint = 100;
-		bigraphButton.setLayoutData(bigraphButtonLayoutData);
+		GridData selectorLayoutData = new GridData(SWT.FILL, SWT.NONE, true, false);
+		selectorLayoutData.horizontalSpan = 2;
+		bigraphSelector.getButton().setLayoutData(selectorLayoutData);
 		
 		Label signatureLabel = UI.newLabel(root, SWT.NONE, "&Result:");
 		signatureLabel.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true));
@@ -241,7 +203,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		
 		Composite group = new Composite(root, SWT.NONE);
 		group.setLayout(new RowLayout(SWT.HORIZONTAL));
-		groupLayoutData = new GridData(SWT.RIGHT, SWT.FILL, true, false);
+		groupLayoutData = new GridData(SWT.RIGHT, SWT.TOP, true, false);
 		groupLayoutData.horizontalSpan = 3;
 		group.setLayoutData(groupLayoutData);
 		
@@ -313,7 +275,8 @@ public class WizardBigraphExportPage extends WizardPage {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
 							exporter.setOption(od.getID(), b.getSelection());
-							tryToExport();
+							if (validate())
+								tryToExport();
 						}
 						
 						@Override
