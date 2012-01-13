@@ -3,7 +3,7 @@ package dk.itu.big_red.utilities.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -12,6 +12,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
+import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 
@@ -21,12 +22,12 @@ public class ResourceSelector {
 	}
 	
 	private Button button;
-	private IProject project;
+	private IContainer container;
 	private Mode mode;
 	private String[] contentTypes;
 	private IResource resource;
 	
-	public ResourceSelector(Composite c, IProject p, Mode m, String... cT) {
+	public ResourceSelector(Composite c, IContainer k, Mode m, String... cT) {
 		button = UI.newButton(c, SWT.PUSH, "(none)");
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -35,7 +36,7 @@ public class ResourceSelector {
 			}
 		});
 		
-		project = p;
+		container = (k != null ? k : Project.getWorkspaceRoot());
 		mode = m;
 		contentTypes = cT;
 	}
@@ -46,7 +47,7 @@ public class ResourceSelector {
 	
 	public void open() {
 		ResourceTreeSelectionDialog rtsd =
-			new ResourceTreeSelectionDialog(button.getShell(), project, mode,
+			new ResourceTreeSelectionDialog(button.getShell(), container, mode,
 					contentTypes);
 		rtsd.setInitialSelection(getResource());
 		rtsd.setBlockOnOpen(true);
@@ -90,8 +91,8 @@ public class ResourceSelector {
 	}
 	
 	private void postResourceNotification(IResource oldResource, IResource newResource) {
-		if ((newResource == null && oldResource != null) ||
-			!newResource.equals(oldResource))
+		if ((newResource != null && !newResource.equals(oldResource)) ||
+			(oldResource != null && !oldResource.equals(newResource)))
 			for (ResourceListener l : getListeners())
 				l.resourceChanged(oldResource, newResource);
 	}
