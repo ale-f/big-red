@@ -52,12 +52,9 @@ public class ResourceSelector {
 		rtsd.setInitialSelection(getResource());
 		rtsd.setBlockOnOpen(true);
 		int status = rtsd.open();
-		if (status == Dialog.OK) {
-			IResource newResource = rtsd.getFirstResult();
-			setResource(newResource);
-		} else if (status == ResourceTreeSelectionDialog.CLEAR) {
-			setResource(null);
-		}
+		if (status == Dialog.OK ||
+		    status == ResourceTreeSelectionDialog.CLEAR)
+			setResource(rtsd.getFirstResult());
 	}
 	
 	public IResource getResource() {
