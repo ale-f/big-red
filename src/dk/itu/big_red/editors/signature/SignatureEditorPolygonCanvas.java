@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.signature;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -167,6 +166,39 @@ MenuListener {
 		return mode;
 	}
 	
+	private void deletePoint(int deleteIndex) {
+		Point p = getPoint(deleteIndex);
+		Line l1 = new Line(getPoint(deleteIndex - 1), p),
+				l2 = new Line(p, getPoint(deleteIndex + 1));
+		double len1 = l1.getLength(),
+				len2 = l2.getLength(),
+				len = len1 + len2,
+				l1l = len1 / len;
+		if (dragPointIndex == deleteIndex)
+			dragPointIndex = -1;
+		boolean portChange = false;
+		for (PortSpec port : ports) {
+			int segment = port.getSegment();
+			double distance = port.getDistance();
+			if (segment == deleteIndex - 1) {
+				port.setDistance(distance * l1l);
+				portChange = true;
+			} else if (segment == deleteIndex) {
+				port.setDistance(l1l + (distance * (len2 / len)));
+				portChange = true;
+			}
+			if (segment >= deleteIndex) {
+				port.setSegment(segment - 1);
+				portChange = true;
+			}
+		}
+		points.removePoint(deleteIndex);
+		if (portChange)
+			firePortChange();
+		firePointChange();
+		redraw();
+	}
+	
 	/**
 	 * Deletes the point under the crosshairs, if there is one (and if it isn't
 	 * the last point remaining).
@@ -177,30 +209,8 @@ MenuListener {
 			return;
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p);
-		if (deleteIndex != -1 && (deleteIndex != 0 || points.size() > 1)) {
-			Line l1 = new Line(getPoint(deleteIndex - 1), p),
-					l2 = new Line(p, getPoint(deleteIndex + 1));
-			double len1 = l1.getLength(),
-					len2 = l2.getLength(),
-					len = len1 + len2,
-					l1l = len1 / len;
-			if (dragPointIndex == deleteIndex)
-				dragPointIndex = -1;
-			for (PortSpec port : ports) {
-				int segment = port.getSegment();
-				double distance = port.getDistance();
-				if (segment == deleteIndex - 1) {
-					port.setDistance(distance * l1l);
-				} else if (segment == deleteIndex) {
-					port.setDistance(l1l + (distance * (len2 / len)));
-				}
-				if (segment >= deleteIndex)
-					port.setSegment(segment - 1);
-			}
-			points.removePoint(deleteIndex);
-			firePortChange();
-			firePointChange();
-		}
+		if (deleteIndex != -1 && (deleteIndex != 0 || points.size() > 1))
+			deletePoint(deleteIndex);
 	}
 
 	protected Point roundToGrid(Point p) {
@@ -384,21 +394,27 @@ MenuListener {
 					Line l1 = new Line(getPoint(dragPointIndex - 1), p),
 							l2 = new Line(p, getPoint(dragPointIndex));
 					double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
+					boolean portChange = false;
 					for (PortSpec port : ports) {
 						int segment = port.getSegment();
 						double distance = port.getDistance();
 						if (segment == (dragPointIndex - 1)) {
 							if (distance < pivot) {
 								port.setDistance((pivot - distance) / pivot);
+								portChange = true;
 							} else {
 								port.setSegment(segment + 1);
 								port.setDistance((distance - pivot) / (1 - pivot));
+								portChange = true;
 							}
 						} else if (segment >= dragPointIndex) {
 							port.setSegment(segment + 1);
+							portChange = true;
 						}
 					}
 					points.insertPoint(p, dragPointIndex);
+					if (portChange)
+						firePortChange();
 				}
 				firePointChange();
 			}
@@ -724,20 +740,7 @@ MenuListener {
 				UI.createMenuItem(m, 0, "&Remove point", new ADSelectionListener() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						for (Iterator<PortSpec> it = ports.iterator(); it.hasNext(); ) {
-							PortSpec p = it.next();
-							if (p.getSegment() == foundPoint)
-								it.remove();
-							for (PortSpec port : ports) {
-								int segment = port.getSegment();
-								if (segment >= foundPoint)
-									port.setSegment(segment - 1);
-							}
-						}
-						points.removePoint(foundPoint);
-						firePortChange();
-						firePointChange();
-						redraw();
+						deletePoint(foundPoint);
 					}
 				});
 			} else {
