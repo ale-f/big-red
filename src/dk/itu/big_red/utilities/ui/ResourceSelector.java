@@ -54,10 +54,8 @@ public class ResourceSelector {
 		int status = rtsd.open();
 		if (status == Dialog.OK) {
 			IResource newResource = rtsd.getFirstResult();
-			button.setText(newResource.getProjectRelativePath().toString());
 			setResource(newResource);
 		} else if (status == ResourceTreeSelectionDialog.CLEAR) {
-			button.setText("(none)");
 			setResource(null);
 		}
 	}
@@ -67,6 +65,10 @@ public class ResourceSelector {
 	}
 	
 	public ResourceSelector setResource(IResource resource) {
+		if (resource != null) {
+			button.setText(resource.getProjectRelativePath().toString());
+		} else button.setText("(none)");
+		
 		IResource oldResource = this.resource;
 		this.resource = resource;
 		postResourceNotification(oldResource, resource);
