@@ -2,6 +2,7 @@ package dk.itu.big_red.utilities.io;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -95,5 +96,27 @@ public class IOAdapter {
 	 */
 	public static InputStream getNullInputStream() {
 		return nullInputStream;
+	}
+	
+	/**
+	 * Returns the contents of an {@link InputStream}, which should contain
+	 * characters encoded in the system's default character set, as a {@link
+	 * String}.
+	 * @param is an {@link InputStream}
+	 * @return a {@link String}, or <code>null</code> if something went wrong
+	 */
+	public static String readString(InputStream is) {
+		StringBuilder result = new StringBuilder();
+		InputStreamReader r = new InputStreamReader(is);
+		char[] buffer = new char[1024];
+		int count = 0;
+		try {
+			while ((count = r.read(buffer)) != -1)
+				if (count > 0)
+					result.append(buffer, 0, count);
+		} catch (IOException e) {
+			return null;
+		}
+		return result.toString();
 	}
 }
