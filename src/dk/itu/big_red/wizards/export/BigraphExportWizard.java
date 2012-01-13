@@ -9,12 +9,12 @@ import org.eclipse.ui.IWorkbench;
 
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.wizards.export.assistants.WizardBigraphTextExportPage;
-import dk.itu.big_red.wizards.export.assistants.WizardBigraphTextExportSelectorPage;
+import dk.itu.big_red.wizards.export.assistants.WizardBigraphExportPage;
+import dk.itu.big_red.wizards.export.assistants.WizardBigraphExportSelectorPage;
 
-public class BigraphTextExportWizard extends Wizard implements IExportWizard {
-	private WizardBigraphTextExportSelectorPage page1 = null;
-	private WizardBigraphTextExportPage page2 = null;
+public class BigraphExportWizard extends Wizard implements IExportWizard {
+	private WizardBigraphExportSelectorPage page1 = null;
+	private WizardBigraphExportPage page2 = null;
 	
 	private Bigraph source = null;
 	
@@ -41,10 +41,10 @@ public class BigraphTextExportWizard extends Wizard implements IExportWizard {
 	
 	@Override
 	public void init(IWorkbench workbench, final IStructuredSelection selection) {
-		page1 = new WizardBigraphTextExportSelectorPage("bigraphTextExportSelectorPage");
+		page1 = new WizardBigraphExportSelectorPage("bigraphTextExportSelectorPage");
 		page1.setTitle("Select a file format.");
 		
-		page2 = new WizardBigraphTextExportPage("bigraphTikZExportPage", selection);
+		page2 = new WizardBigraphExportPage("bigraphTikZExportPage", selection);
 		setWindowTitle("Export");
 		
 		addPage(page1);

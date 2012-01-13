@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="dk.itu.big_red.export.text" name="Model exporters" schema="expoints/dk.itu.big_red.export.text.exsd"/>
-   <extension-point id="dk.itu.big_red.import.text" name="Model importers" schema="expoints/dk.itu.big_red.import.text.exsd"/>
+   <extension-point id="dk.itu.big_red.export" name="Model exporters" schema="expoints/dk.itu.big_red.export.exsd"/>
+   <extension-point id="dk.itu.big_red.import" name="Model importers" schema="expoints/dk.itu.big_red.import.exsd"/>
 
    <extension
          id="application"
@@ -140,7 +140,7 @@
       </category>
       <wizard
             category="dk.itu.big_red.export"
-            class="dk.itu.big_red.wizards.export.BigraphTextExportWizard"
+            class="dk.itu.big_red.wizards.export.BigraphExportWizard"
             icon="resources/icons/wizards/text.png"
             id="Big Red.TikZExportWizard"
             name="Export bigraph">
@@ -236,10 +236,9 @@
       </content-type>
    </extension>
    <extension
-         point="dk.itu.big_red.import.text">
+         point="dk.itu.big_red.import">
       <importer
             class="dk.itu.big_red.model.import_export.BigraphXMLImport"
-            exports="dk.itu.big_red.model.Bigraph"
             icon="resources/icons/icon16.png"
             id="big_red.importer1"
             imports="dk.itu.big_red.model.Bigraph"
@@ -247,7 +246,7 @@
       </importer>
    </extension>
    <extension
-         point="dk.itu.big_red.export.text">
+         point="dk.itu.big_red.export">
       <exporter
             class="dk.itu.big_red.model.import_export.BigraphTikZExport"
             exports="dk.itu.big_red.model.Bigraph"

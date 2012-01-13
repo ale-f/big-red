@@ -3,10 +3,10 @@
 <schema targetNamespace="dk.itu.big_red" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="dk.itu.big_red" id="dk.itu.big_red.export.text" name="Text-based model exporters"/>
+         <meta.schema plugin="dk.itu.big_red" id="dk.itu.big_red.import" name="Model importers"/>
       </appinfo>
       <documentation>
-         The text-based model exporter extension point allows plug-ins to contribute model exporters. Export wizards will be automatically created for contributed exporters.
+         The text-based model importer extension point allows plug-ins to contribute model importers. Import wizards will be automatically created for contributed importers.
       </documentation>
    </annotation>
 
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="exporter" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="importer" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,7 +47,7 @@
       </complexType>
    </element>
 
-   <element name="exporter">
+   <element name="importer">
       <complexType>
          <sequence>
             <element ref="description" minOccurs="0" maxOccurs="1"/>
@@ -55,14 +55,15 @@
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  A unique name that will be used to identify this exporter.
+                  A unique name that will be used to identify this importer.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  A translatable name used to represent this exporter in the user interface.
+                  A translatable name used to represent this importer in the
+                  user interface.
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -72,17 +73,18 @@
          <attribute name="class" type="string">
             <annotation>
                <documentation>
-                  The fully-qualified name of the exporter class (extending dk.itu.big_red.model.import_export.Export).
+                  The fully-qualified name of the importer class (extending
+                  dk.itu.big_red.model.import_export.Import).
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="dk.itu.big_red.import_export.Export:"/>
+                  <meta.attribute kind="java" basedOn="dk.itu.big_red.import_export.Import:"/>
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="exports" type="string" use="required">
+         <attribute name="imports" type="string" use="required">
             <annotation>
                <documentation>
-                  The class of object that this exporter knows how to export.
+                  The class of object that this importer knows how to import.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java"/>
@@ -92,7 +94,8 @@
          <attribute name="icon" type="string">
             <annotation>
                <documentation>
-                  A relative path to an icon that will be used in the user interface.
+                  A relative path to an icon that will be used in the user
+                  interface.
                </documentation>
                <appinfo>
                   <meta.attribute kind="resource"/>
@@ -108,7 +111,8 @@
             <meta.element translatable="true"/>
          </appinfo>
          <documentation>
-            An optional sub-element whose body should describe this text exporter.
+            An optional sub-element whose body should describe this text
+            importer.
          </documentation>
       </annotation>
    </element>
@@ -118,7 +122,7 @@
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         2.0.0
+         2.1.0
       </documentation>
    </annotation>
 
@@ -130,7 +134,7 @@
          <meta.section type="copyright"/>
       </appinfo>
       <documentation>
-         Copyright © 2010 Alexander Faithfull.
+         Copyright © 2010, 2012 Alexander Faithfull.
 &lt;p&gt;
  Copying and distribution of this file, with or without modification,
  are permitted in any medium without royalty provided that the

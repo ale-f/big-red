@@ -16,15 +16,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.utilities.ui.UI;
-import dk.itu.big_red.wizards.export.BigraphTextExportWizard;
+import dk.itu.big_red.wizards.export.BigraphExportWizard;
 
-public class WizardBigraphTextExportSelectorPage extends WizardPage {
+public class WizardBigraphExportSelectorPage extends WizardPage {
 	@Override
-	public BigraphTextExportWizard getWizard() {
-		return (BigraphTextExportWizard)super.getWizard();
+	public BigraphExportWizard getWizard() {
+		return (BigraphExportWizard)super.getWizard();
 	}
 	
-	public WizardBigraphTextExportSelectorPage(String pageName) {
+	public WizardBigraphExportSelectorPage(String pageName) {
 		super(pageName);
 		setPageComplete(false);
 		setTitle("Export bigraph to text format");
@@ -82,7 +82,7 @@ public class WizardBigraphTextExportSelectorPage extends WizardPage {
 				return null;
 			}
 		});
-		tree.setInput(RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export.text"));
+		tree.setInput(RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export"));
 		tree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		tree.addSelectionChangedListener(new ISelectionChangedListener() {

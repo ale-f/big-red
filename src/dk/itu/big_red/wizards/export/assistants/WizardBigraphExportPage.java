@@ -42,9 +42,9 @@ import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.ProcessDialog;
 import dk.itu.big_red.utilities.ui.UI;
-import dk.itu.big_red.wizards.export.BigraphTextExportWizard;
+import dk.itu.big_red.wizards.export.BigraphExportWizard;
 
-public class WizardBigraphTextExportPage extends WizardPage {
+public class WizardBigraphExportPage extends WizardPage {
 	private Text bigraphText, resultText;
 	private IPath bigraphPath;
 	private Button clipboardButton, saveButton, bonusButton;
@@ -55,11 +55,11 @@ public class WizardBigraphTextExportPage extends WizardPage {
 	private IStructuredSelection selection = null;
 	
 	@Override
-	public BigraphTextExportWizard getWizard() {
-		return (BigraphTextExportWizard)super.getWizard();
+	public BigraphExportWizard getWizard() {
+		return (BigraphExportWizard)super.getWizard();
 	}
 	
-	public WizardBigraphTextExportPage(String pageName, IStructuredSelection selection) {
+	public WizardBigraphExportPage(String pageName, IStructuredSelection selection) {
 		super(pageName);
 		this.selection = selection;
 		setPageComplete(false);

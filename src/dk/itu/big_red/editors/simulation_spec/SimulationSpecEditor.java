@@ -124,7 +124,7 @@ public class SimulationSpecEditor extends EditorPart {
 		Map<String, IConfigurationElement> exporters =
 				new HashMap<String, IConfigurationElement>();
 		for (IConfigurationElement ce :
-		     RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export.text")) {
+		     RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export")) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals("dk.itu.big_red.model.SimulationSpec"))
 				exporters.put(ce.getAttribute("name"), ce);
