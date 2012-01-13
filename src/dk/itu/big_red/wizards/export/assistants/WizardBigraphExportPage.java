@@ -2,7 +2,6 @@ package dk.itu.big_red.wizards.export.assistants;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -108,21 +107,7 @@ public class WizardBigraphExportPage extends WizardPage {
 			return false;
 		}
 		
-		StringBuilder result = new StringBuilder();
-		
-		InputStreamReader r = new InputStreamReader(ad.getInputStream());
-		char[] buffer = new char[1024];
-		int count = 0;
-		try {
-			while ((count = r.read(buffer)) != -1)
-				if (count > 0)
-					result.append(buffer, 0, count);
-		} catch (IOException e) {
-			setErrorMessage(e.getLocalizedMessage());
-			return false;
-		}
-
-		resultText.setText(result.toString());
+		resultText.setText(IOAdapter.readString(ad.getInputStream()));
 		return true;
 	}
 	
