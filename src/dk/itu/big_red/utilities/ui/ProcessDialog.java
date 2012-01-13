@@ -92,8 +92,9 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 		return input;
 	}
 	
-	public void setInput(String input) {
+	public ProcessDialog setInput(String input) {
 		this.input = input;
+		return this;
 	}
 	
 	@Override
