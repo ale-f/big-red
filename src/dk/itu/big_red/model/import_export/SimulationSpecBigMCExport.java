@@ -2,12 +2,23 @@ package dk.itu.big_red.model.import_export;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
+import dk.itu.big_red.model.interfaces.IEdge;
+import dk.itu.big_red.model.interfaces.ILink;
+import dk.itu.big_red.model.interfaces.INode;
+import dk.itu.big_red.model.interfaces.IOuterName;
+import dk.itu.big_red.model.interfaces.IPort;
+import dk.itu.big_red.model.interfaces.IRoot;
 
 public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 	private OutputStreamWriter osw = null;
@@ -57,7 +68,105 @@ public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 		newline();
 	}
 	
+	private void namesFrom(Bigraph b, ArrayList<String> bucket) {
+		for (IOuterName o : b.getIOuterNames())
+			if (!bucket.contains(o.getName()))
+				bucket.add(o.getName());
+		for (IEdge e : b.getIEdges())
+			if (!bucket.contains(e.getName()))
+				bucket.add(e.getName());
+	}
+	
+	private void processNames(SimulationSpec s) throws ExportFailedException {
+		ArrayList<String> names = new ArrayList<String>();
+		for (ReactionRule r : s.getRules()) {
+			namesFrom(r.getRedex(), names);
+			namesFrom(r.getReactum(), names);
+		}
+		namesFrom(s.getModel(), names);
+		Collections.sort(names);
+		
+		if (names.size() == 0)
+			return;
+		write("# Names"); newline();
+		for (String name : names) {
+			write("%name " + name + ";"); newline();
+		}
+		newline();
+	}
+	
+	private String getPortString(ILink l) {
+		return (l != null ? "n_" + l.getName() : "-");
+	}
+	
+	private void processNode(INode i) throws ExportFailedException {
+		indentation++;
+		newline();
+		
+		write(i.getIControl().getName());
+		
+		Iterator<? extends IPort> it = i.getIPorts().iterator();
+		if (it.hasNext()) {
+			write("[" + getPortString(it.next().getILink()));
+			while (it.hasNext())
+				write("," + getPortString(it.next().getILink()));
+			write("]");
+		}
+		
+		Iterator<? extends INode> in = i.getINodes().iterator();
+		if (in.hasNext()) {
+			write(".(");
+			processNode(in.next());
+			while (in.hasNext()) {
+				write(" | ");
+				processNode(in.next());
+				newline();
+			}
+			write(")");
+		}
+		
+		indentation--;
+	}
+	
+	private void processRoot(IRoot i) throws ExportFailedException {
+		Iterator<? extends INode> in = i.getINodes().iterator();
+		if (in.hasNext()) {
+			processNode(in.next());
+			while (in.hasNext()) {
+				write(" | ");
+				processNode(in.next());
+			}
+		}
+	}
+	
+	private void processBigraph(Bigraph b) throws ExportFailedException {
+		Iterator<? extends IRoot> ir = b.getIRoots().iterator();
+		if (ir.hasNext()) {
+			processRoot(ir.next());
+			while (ir.hasNext()) {
+				write(" || ");
+				processRoot(ir.next());
+			}
+		}
+	}
+	
+	private void processRule(ReactionRule r) throws ExportFailedException {
+		processBigraph(r.getReactum());
+		write(" -> ");
+		processBigraph(r.getRedex());
+		write(";"); newline();
+	}
+	
+	private void processModel(Bigraph b) throws ExportFailedException {
+		processBigraph(b);
+		write(";"); newline();
+	}
+	
 	private void processSimulationSpec(SimulationSpec s) throws ExportFailedException {
 		processSignature(s.getSignature());
+		processNames(s);
+		for (ReactionRule r : s.getRules())
+			processRule(r);
+		processModel(s.getModel());
 	}
 }
