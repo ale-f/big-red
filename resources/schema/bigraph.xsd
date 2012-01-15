@@ -98,8 +98,6 @@
 						<li>
 							<code>signature</code> (<code>string</code>): specifies the path to this bigraph's <i>signature</i>.
 							<br />
-							If this attribute is present, it SHOULD be a path, relative to the directory that contains this bigraph, to a signature file.
-							<br />
 							<strong>This attribute is deprecated</strong> in favour of the <a href="#signature_src"><code>src</code> attribute on <code>signature</code></a>.
 						</li>
 					</ul>
