@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
@@ -41,8 +42,10 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
+import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLImport;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
@@ -53,8 +56,20 @@ public class SimulationSpecEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		// TODO Auto-generated method stub
-
+		try {
+			IOAdapter io = new IOAdapter();
+        	FileEditorInput i = (FileEditorInput)getEditorInput();
+        	SimulationSpecXMLExport ex = new SimulationSpecXMLExport();
+        	
+        	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
+        	Project.setContents(i.getFile(), io.getInputStream());
+        	
+    		fireDirt(false);
+        } catch (Exception ex) {
+        	if (monitor != null)
+        		monitor.setCanceled(true);
+        	UI.openError("Unable to save the document.", ex);
+        }
 	}
 
 	@Override
@@ -89,6 +104,7 @@ public class SimulationSpecEditor extends EditorPart {
 			model.tryApplyChange(c);
 			redoBuffer.clear();
 			undoBuffer.push(c);
+			fireDirt(true);
 		} catch (ChangeRejectedException cre) {
 			cre.killVM();
 		}
@@ -139,12 +155,23 @@ public class SimulationSpecEditor extends EditorPart {
 		setPartName(input.getName());
 	}
 	
+	private boolean dirty = false;
+	
 	@Override
 	public boolean isDirty() {
-		// TODO Auto-generated method stub
-		return false;
+		return dirty;
 	}
 
+	/**
+	 * Fire!
+	 */
+	private void fireDirt(boolean dirty) {
+		if (this.dirty != dirty) {
+			this.dirty = dirty;
+			firePropertyChange(IEditorPart.PROP_DIRTY);
+		}
+	}
+	
 	@Override
 	public boolean isSaveAsAllowed() {
 		// TODO Auto-generated method stub
@@ -191,9 +218,7 @@ public class SimulationSpecEditor extends EditorPart {
 			public void resourceChanged(IResource oldValue, IResource newValue) {
 				try {
 					Signature s = SignatureXMLImport.importFile((IFile)newValue);
-					getModel().tryApplyChange(getModel().changeSignature(s));
-				} catch (ChangeRejectedException cre) {
-					cre.printStackTrace();
+					doChange(getModel().changeSignature(s));
 				} catch (ImportFailedException ife) {
 					ife.printStackTrace();
 				}
@@ -229,7 +254,7 @@ public class SimulationSpecEditor extends EditorPart {
 					IFile f = (IFile)rtsd.getFirstResult();
 					try {
 						ReactionRule r = ReactionRuleXMLImport.importFile(f);
-						model.tryApplyChange(model.changeAddRule(r));
+						doChange(model.changeAddRule(r));
 						
 						TreeItem t = UI.data(
 								new TreeItem(rules, SWT.NONE),
@@ -237,8 +262,6 @@ public class SimulationSpecEditor extends EditorPart {
 						t.setText(f.getProjectRelativePath().toString());
 					} catch (ImportFailedException ife) {
 						ife.printStackTrace();
-					} catch (ChangeRejectedException cre) {
-						cre.printStackTrace();
 					}
 				}
 			}
@@ -250,14 +273,10 @@ public class SimulationSpecEditor extends EditorPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				for (TreeItem i : rules.getSelection()) {
-					try {
-						ReactionRule rr =
-								(ReactionRule)UI.data(i, "associatedRule");
-						getModel().tryApplyChange(getModel().changeRemoveRule(rr));
-						UI.data(i, "associatedRule", null).dispose();
-					} catch (ChangeRejectedException cre) {
-						cre.printStackTrace();
-					}
+					ReactionRule rr =
+							(ReactionRule)UI.data(i, "associatedRule");
+					doChange(getModel().changeRemoveRule(rr));
+					UI.data(i, "associatedRule", null).dispose();
 				}
 			}
 		});
@@ -273,9 +292,7 @@ public class SimulationSpecEditor extends EditorPart {
 			public void resourceChanged(IResource oldValue, IResource newValue) {
 				try {
 					Bigraph b = BigraphXMLImport.importFile((IFile)newValue);
-					getModel().tryApplyChange(getModel().changeModel(b));
-				} catch (ChangeRejectedException cre) {
-					cre.printStackTrace();
+					doChange(getModel().changeModel(b));
 				} catch (ImportFailedException ife) {
 					ife.printStackTrace();
 				}
