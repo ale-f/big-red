@@ -29,4 +29,7 @@ public interface XMLNS {
 	
 	public static final String RULE =
 		"http://www.itu.dk/research/pls/xmlns/2011/rule";
+	
+	public static final String SPEC =
+		"http://www.itu.dk/research/pls/xmlns/2012/simulation-spec";
 }
