@@ -1,9 +1,12 @@
 package dk.itu.big_red.import_export;
 
+import org.eclipse.core.resources.IResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.utilities.DOM;
+import dk.itu.big_red.utilities.resources.IFileBackable;
+import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class XMLExport<T> extends Export<T> {
 	private Document doc = null;
@@ -44,4 +47,25 @@ public abstract class XMLExport<T> extends Export<T> {
 	
 	public abstract Element processObject(Element e, T object)
 		throws ExportFailedException;
+	
+	protected <V extends IFileBackable>
+	Element processOrReference(
+		Element e, IResource relativeTo, V object,
+		Class<? extends XMLExport<V>> klass) {
+		if (object.getFile() != null) {
+			DOM.applyAttributes(e,
+				"src", Project.getRelativePath(
+						relativeTo, object.getFile()).toString());	
+		} else {
+			XMLExport<V> ex;
+			try {
+				ex = klass.newInstance();
+				ex.setDocument(getDocument()).setModel(object);
+				ex.processObject(e, object);
+			} catch (Exception exc) {
+				return e;
+			}
+		}
+		return e;
+	}
 }

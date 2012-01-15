@@ -14,12 +14,10 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.Lists;
-import dk.itu.big_red.utilities.resources.Project;
 
 /**
  * XMLExport writes a {@link Bigraph} out as an XML document.
@@ -69,29 +67,16 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
-
-	private Element processSignature(Element e, Signature s) throws ExportFailedException {
-		if (s.getFile() != null) {
-			DOM.applyAttributes(e,
-				"src", Project.getRelativePath(
-						getModel().getFile(), s.getFile()).toString());	
-		} else {
-			DOM.applyAttributes(e,
-				"xmlns:signature", XMLNS.SIGNATURE);
-			SignatureXMLExport ex = new SignatureXMLExport();
-			ex.setModel(s);
-			ex.setDocument(getDocument());
-			ex.processObject(e, s);
-		}
-		return e;
-	}
 	
+	@Override
 	public Element processObject(Element e, Bigraph obj) throws ExportFailedException {
 		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
 		DOM.appendChildIfNotNull(e,
-			processSignature(
-				newElement(XMLNS.BIGRAPH, "bigraph:signature"), obj.getSignature()));
+			processOrReference(
+				newElement(XMLNS.BIGRAPH, "bigraph:signature"),
+				getModel().getFile(),
+				obj.getSignature(), SignatureXMLExport.class));
 		
 		for (Layoutable i :
 			Lists.group(obj.getChildren(),
