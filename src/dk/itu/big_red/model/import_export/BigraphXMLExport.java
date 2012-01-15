@@ -66,7 +66,7 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	@Override
 	public void exportObject() throws ExportFailedException {
 		setDocument(DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
-		processBigraph(getDocumentElement(), getModel());
+		processObject(getDocumentElement(), getModel());
 		finish();
 	}
 
@@ -81,12 +81,12 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 			SignatureXMLExport ex = new SignatureXMLExport();
 			ex.setModel(s);
 			ex.setDocument(getDocument());
-			ex.processSignature(e, s);
+			ex.processObject(e, s);
 		}
 		return e;
 	}
 	
-	public Element processBigraph(Element e, Bigraph obj) throws ExportFailedException {
+	public Element processObject(Element e, Bigraph obj) throws ExportFailedException {
 		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
 		DOM.appendChildIfNotNull(e,

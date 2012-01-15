@@ -16,7 +16,7 @@ public class SimulationSpecXMLExport extends XMLExport<SimulationSpec> {
 	@Override
 	public void exportObject() throws ExportFailedException {
 		setDocument(DOM.createDocument(XMLNS.SPEC, "spec:spec"));
-		processSpec(getDocumentElement(), getModel());
+		processObject(getDocumentElement(), getModel());
 		finish();
 	}
 	
@@ -30,7 +30,7 @@ public class SimulationSpecXMLExport extends XMLExport<SimulationSpec> {
 				"xmlns:signature", XMLNS.SIGNATURE);
 			SignatureXMLExport ex = new SignatureXMLExport();
 			ex.setDocument(getDocument()).setModel(s);
-			ex.processSignature(e, s);
+			ex.processObject(e, s);
 		}
 		return e;
 	}
@@ -45,7 +45,7 @@ public class SimulationSpecXMLExport extends XMLExport<SimulationSpec> {
 				"xmlns:signature", XMLNS.SIGNATURE);
 			ReactionRuleXMLExport ex = new ReactionRuleXMLExport();
 			ex.setDocument(getDocument()).setModel(rr);
-			ex.processRule(e, rr);
+			ex.processObject(e, rr);
 		}
 		return e;
 	}
@@ -60,12 +60,13 @@ public class SimulationSpecXMLExport extends XMLExport<SimulationSpec> {
 				"xmlns:signature", XMLNS.SIGNATURE);
 			BigraphXMLExport ex = new BigraphXMLExport();
 			ex.setDocument(getDocument()).setModel(b);
-			ex.processBigraph(e, b);
+			ex.processObject(e, b);
 		}
 		return e;
 	}
 
-	public Element processSpec(Element e, SimulationSpec ss) throws ExportFailedException {
+	@Override
+	public Element processObject(Element e, SimulationSpec ss) throws ExportFailedException {
 		DOM.appendChildIfNotNull(e,
 			processSignature(
 				newElement(XMLNS.SPEC, "spec:signature"),

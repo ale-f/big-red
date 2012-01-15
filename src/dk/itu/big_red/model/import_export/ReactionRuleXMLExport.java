@@ -23,11 +23,12 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 	@Override
 	public void exportObject() throws ExportFailedException {
 		setDocument(DOM.createDocument(XMLNS.RULE, "rule:rule"));
-		processRule(getDocumentElement(), getModel());
+		processObject(getDocumentElement(), getModel());
 		finish();
 	}
 
-	public Element processRule(Element e, ReactionRule rr) throws ExportFailedException {
+	@Override
+	public Element processObject(Element e, ReactionRule rr) throws ExportFailedException {
 		DOM.appendChildIfNotNull(e,
 			processRedex(newElement(XMLNS.RULE, "rule:redex"), rr.getRedex()));
 		
@@ -50,7 +51,7 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		BigraphXMLExport ex = new BigraphXMLExport();
 		ex.setModel(redex);
 		ex.setDocument(getDocument());
-		return ex.processBigraph(e, ex.getModel());
+		return ex.processObject(e, ex.getModel());
 	}
 	
 	@SuppressWarnings("unchecked")

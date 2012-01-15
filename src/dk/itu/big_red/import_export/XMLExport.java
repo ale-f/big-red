@@ -41,4 +41,7 @@ public abstract class XMLExport<T> extends Export<T> {
 			throw new ExportFailedException(e);
 		}
 	}
+	
+	public abstract Element processObject(Element e, T object)
+		throws ExportFailedException;
 }

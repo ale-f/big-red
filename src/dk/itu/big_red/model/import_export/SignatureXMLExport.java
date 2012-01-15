@@ -14,11 +14,11 @@ public class SignatureXMLExport extends XMLExport<Signature> {
 	@Override
 	public void exportObject() throws ExportFailedException {
 		setDocument(DOM.createDocument(XMLNS.SIGNATURE, "signature:signature"));
-		processSignature(getDocumentElement(), getModel());
+		processObject(getDocumentElement(), getModel());
 		finish();
 	}
 
-	public Element processSignature(Element e, Signature s) {
+	public Element processObject(Element e, Signature s) {
 		DOM.applyAttributes(e,
 			"xmlns:big-red", XMLNS.BIG_RED,
 			"xmlns:signature", XMLNS.SIGNATURE);
