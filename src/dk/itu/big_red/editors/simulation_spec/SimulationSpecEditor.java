@@ -144,6 +144,8 @@ public class SimulationSpecEditor extends EditorPart {
 	
 	protected void initialiseSimulationSpecEditor() {
 		IEditorInput input = getEditorInput();
+		setPartName(input.getName());
+		
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
@@ -165,7 +167,6 @@ public class SimulationSpecEditor extends EditorPart {
 		}
 		if (model == null)
 			model = new SimulationSpec();
-		setPartName(input.getName());
 		
 		modelToControls();
 	}
