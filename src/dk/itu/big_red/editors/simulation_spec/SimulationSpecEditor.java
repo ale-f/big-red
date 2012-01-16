@@ -278,7 +278,9 @@ public class SimulationSpecEditor extends EditorPart {
 				try {
 					if (uiUpdateInProgress)
 						return;
-					Signature s = SignatureXMLImport.importFile((IFile)newValue);
+					Signature s = null;
+					if (newValue != null)
+						s = SignatureXMLImport.importFile((IFile)newValue);
 					doChange(getModel().changeSignature(s));
 				} catch (ImportFailedException ife) {
 					ife.printStackTrace();
@@ -355,7 +357,9 @@ public class SimulationSpecEditor extends EditorPart {
 				try {
 					if (uiUpdateInProgress)
 						return;
-					Bigraph b = BigraphXMLImport.importFile((IFile)newValue);
+					Bigraph b = null;
+					if (newValue != null)
+						b = BigraphXMLImport.importFile((IFile)newValue);
 					doChange(getModel().changeModel(b));
 				} catch (ImportFailedException ife) {
 					ife.printStackTrace();
