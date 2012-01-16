@@ -116,6 +116,13 @@ public class RuleEditor extends EditorPart implements
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
 		updateActions(selectionActions);
+		
+		if (listeners.size() == 0)
+			return;
+		SelectionChangedEvent e =
+				new SelectionChangedEvent(this, getSelection());
+		for (ISelectionChangedListener l : listeners)
+			l.selectionChanged(e);
 	}
 	
 	private ActionRegistry actionRegistry = new ActionRegistry();
