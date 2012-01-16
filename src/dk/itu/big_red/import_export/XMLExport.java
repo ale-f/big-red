@@ -52,7 +52,9 @@ public abstract class XMLExport<T> extends Export<T> {
 	Element processOrReference(
 		Element e, IResource relativeTo, V object,
 		Class<? extends XMLExport<V>> klass) {
-		if (object.getFile() != null) {
+		if (e == null || object == null) {
+			return null;
+		} else if (object.getFile() != null) {
 			DOM.applyAttributes(e,
 				"src", Project.getRelativePath(
 						relativeTo, object.getFile()).toString());	
