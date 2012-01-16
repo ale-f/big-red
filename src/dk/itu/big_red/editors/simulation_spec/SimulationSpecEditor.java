@@ -84,8 +84,6 @@ public class SimulationSpecEditor extends EditorPart {
 			throws PartInitException {
 		setSite(site);
 		setInputWithNotify(input);
-		
-		loadInput();
 	}
 
 	private ArrayDeque<Change>
@@ -141,7 +139,9 @@ public class SimulationSpecEditor extends EditorPart {
 		return model;
 	}
 	
-	protected void loadInput() {
+	private boolean uiUpdateInProgress = false;
+	
+	protected void initialiseSimulationSpecEditor() {
 		IEditorInput input = getEditorInput();
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
@@ -162,6 +162,25 @@ public class SimulationSpecEditor extends EditorPart {
 		if (model == null)
 			model = new SimulationSpec();
 		setPartName(input.getName());
+		
+		modelToControls();
+	}
+	
+	private void modelToControls() {
+		uiUpdateInProgress = true;
+		
+		signatureSelector.setResource(model.getSignature().getFile());
+		
+		for (ReactionRule r : model.getRules()) {
+			TreeItem t = UI.data(
+				new TreeItem(rules, SWT.NONE),
+				"associatedRule", r);
+			t.setText(r.getFile().getProjectRelativePath().toString());
+		}
+		
+		modelSelector.setResource(model.getModel().getFile());
+		
+		uiUpdateInProgress = false;
 	}
 	
 	private boolean dirty = false;
@@ -209,6 +228,7 @@ public class SimulationSpecEditor extends EditorPart {
 	}
 	
 	private ResourceSelector signatureSelector, modelSelector;
+	private Tree rules;
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -226,6 +246,8 @@ public class SimulationSpecEditor extends EditorPart {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
 				try {
+					if (uiUpdateInProgress)
+						return;
 					Signature s = SignatureXMLImport.importFile((IFile)newValue);
 					doChange(getModel().changeSignature(s));
 				} catch (ImportFailedException ife) {
@@ -235,7 +257,7 @@ public class SimulationSpecEditor extends EditorPart {
 		});
 		
 		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-		final Tree rules =
+		rules =
 			UI.setLayoutData(new Tree(base, SWT.BORDER | SWT.MULTI),
 				new GridData(SWT.FILL, SWT.FILL, true, true));
 		
@@ -300,6 +322,8 @@ public class SimulationSpecEditor extends EditorPart {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
 				try {
+					if (uiUpdateInProgress)
+						return;
 					Bigraph b = BigraphXMLImport.importFile((IFile)newValue);
 					doChange(getModel().changeModel(b));
 				} catch (ImportFailedException ife) {
@@ -338,6 +362,8 @@ public class SimulationSpecEditor extends EditorPart {
 				}
 			}
 		});
+		
+		initialiseSimulationSpecEditor();
 	}
 
 	@Override
