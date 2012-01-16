@@ -319,7 +319,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		TextListener nameListener = new TextListener() {
 			@Override
 			void go() {
-				currentControl.setName(name.getText());
+				if (!currentControl.getName().equals(name.getText()))
+					currentControl.setName(name.getText());
 			}
 		};
 		
@@ -332,7 +333,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 		TextListener labelListener = new TextListener() {
 			@Override
 			void go() {
-				currentControl.setLabel(label.getText());
+				if (!currentControl.getLabel().equals(label.getText()))
+					currentControl.setLabel(label.getText());
 			}
 		};
 		
