@@ -237,12 +237,19 @@ public class SimulationSpecEditor extends EditorPart {
 	
 	private ResourceSelector signatureSelector, modelSelector;
 	private Tree rules;
+	private Button export;
 	
 	private Composite parent, self;
 	
 	private void error(Throwable t) {
 		self.dispose(); self = null;
 		new EditorError(parent, RedPlugin.getThrowableStatus(t));
+	}
+	
+	private void recalculateExportEnabled() {
+		export.setEnabled(
+			signatureSelector.getResource() != null &&
+			modelSelector.getResource() != null);
 	}
 	
 	@Override
@@ -267,6 +274,7 @@ public class SimulationSpecEditor extends EditorPart {
 		signatureSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
+				recalculateExportEnabled();
 				try {
 					if (uiUpdateInProgress)
 						return;
@@ -343,6 +351,7 @@ public class SimulationSpecEditor extends EditorPart {
 		modelSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
+				recalculateExportEnabled();
 				try {
 					if (uiUpdateInProgress)
 						return;
@@ -363,9 +372,9 @@ public class SimulationSpecEditor extends EditorPart {
 		c.setItems(exporters);
 		c.setText(exporters[0]);
 		
-		b = UI.newButton(base, SWT.NONE, "&Export...");
-		b.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
-		b.addSelectionListener(new SelectionAdapter() {
+		export = UI.newButton(base, SWT.NONE, "&Export...");
+		export.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
+		export.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Export<SimulationSpec> exporter = getExporter(c.getText());
@@ -384,6 +393,7 @@ public class SimulationSpecEditor extends EditorPart {
 				}
 			}
 		});
+		export.setEnabled(false);
 		
 		initialiseSimulationSpecEditor();
 	}
