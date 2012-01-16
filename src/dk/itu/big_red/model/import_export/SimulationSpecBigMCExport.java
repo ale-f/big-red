@@ -5,7 +5,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -13,21 +12,21 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
+import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
+import dk.itu.big_red.model.interfaces.ISite;
 
 public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 	private OutputStreamWriter osw = null;
-	private int indentation = -1;
 	
 	private void newline() throws ExportFailedException {
 		write("\n");
-		for (int i = 0; i < indentation; i++)
-			write("\t");
 	}
 	
 	private void write(String str) throws ExportFailedException {
@@ -99,10 +98,20 @@ public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 		return (l != null ? "n_" + l.getName() : "-");
 	}
 	
+	private void processChild(IChild i) throws ExportFailedException {
+		if (i instanceof ISite) {
+			processSite((ISite)i);
+		} else if (i instanceof INode) {
+			processNode((INode)i);
+		}
+	}
+	
+	private void processSite(ISite i) throws ExportFailedException {
+		Site s = (Site)i; /* XXX!! */
+		write("$" + (s.getAlias() == null ? s.getName() : s.getAlias()));
+	}
+	
 	private void processNode(INode i) throws ExportFailedException {
-		indentation++;
-		newline();
-		
 		write(i.getIControl().getName());
 		
 		Iterator<? extends IPort> it = i.getIPorts().iterator();
@@ -113,19 +122,16 @@ public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 			write("]");
 		}
 		
-		Iterator<? extends INode> in = i.getINodes().iterator();
+		Iterator<? extends IChild> in = i.getIChildren().iterator();
 		if (in.hasNext()) {
 			write(".(");
-			processNode(in.next());
+			processChild(in.next());
 			while (in.hasNext()) {
 				write(" | ");
-				processNode(in.next());
-				newline();
+				processChild(in.next());
 			}
 			write(")");
 		}
-		
-		indentation--;
 	}
 	
 	private void processRoot(IRoot i) throws ExportFailedException {
@@ -151,9 +157,9 @@ public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 	}
 	
 	private void processRule(ReactionRule r) throws ExportFailedException {
-		processBigraph(r.getReactum());
-		write(" -> ");
 		processBigraph(r.getRedex());
+		write(" -> ");
+		processBigraph(r.getReactum());
 		write(";"); newline();
 	}
 	
@@ -165,8 +171,11 @@ public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 	private void processSimulationSpec(SimulationSpec s) throws ExportFailedException {
 		processSignature(s.getSignature());
 		processNames(s);
+		
 		for (ReactionRule r : s.getRules())
 			processRule(r);
+		newline();
+		
 		processModel(s.getModel());
 	}
 }
