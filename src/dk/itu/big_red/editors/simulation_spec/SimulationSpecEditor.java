@@ -44,6 +44,7 @@ import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
 import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLImport;
+import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
@@ -146,9 +147,17 @@ public class SimulationSpecEditor extends EditorPart {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
 				model = SimulationSpecXMLImport.importFile(fi.getFile());
-			} catch (ImportFailedException ex) {
-				
-			}
+			} catch (ImportFailedException e) {
+	    		e.printStackTrace();
+	    		Throwable cause = e.getCause();
+	    		if (cause instanceof ValidationFailedException) {
+	    			UI.openError("Validation has failed.", cause);
+	    		} else {
+	    			UI.openError("Opening the document failed.", e);
+	    		}
+	    	} catch (Exception e) {
+	    		UI.openError("An unexpected error occurred.", e);
+	    	}
 		}
 		if (model == null)
 			model = new SimulationSpec();
