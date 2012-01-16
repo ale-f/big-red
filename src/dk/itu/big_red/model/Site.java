@@ -1,5 +1,7 @@
 package dk.itu.big_red.model;
 
+import java.util.Map;
+
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
 
@@ -81,5 +83,12 @@ public class Site extends Layoutable implements ISite {
 	
 	public ChangeAlias changeAlias(String alias) {
 		return new ChangeAlias(alias);
+	}
+	
+	@Override
+	public Site clone(Map<ModelObject, ModelObject> m) {
+		Site s = (Site)super.clone(m);
+		s.setAlias(getAlias());
+		return s;
 	}
 }
