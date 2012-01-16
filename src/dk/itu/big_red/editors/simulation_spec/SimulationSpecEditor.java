@@ -169,7 +169,9 @@ public class SimulationSpecEditor extends EditorPart {
 	private void modelToControls() {
 		uiUpdateInProgress = true;
 		
-		signatureSelector.setResource(model.getSignature().getFile());
+		Signature s = model.getSignature();
+		if (s != null)
+			signatureSelector.setResource(s.getFile());
 		
 		for (ReactionRule r : model.getRules()) {
 			TreeItem t = UI.data(
@@ -178,7 +180,9 @@ public class SimulationSpecEditor extends EditorPart {
 			t.setText(r.getFile().getProjectRelativePath().toString());
 		}
 		
-		modelSelector.setResource(model.getModel().getFile());
+		Bigraph b = model.getModel();
+		if (b != null)
+			modelSelector.setResource(b.getFile());
 		
 		uiUpdateInProgress = false;
 	}

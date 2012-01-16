@@ -71,9 +71,8 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		
 		Element signatureElement =
 				DOM.getNamedChildElement(e, XMLNS.SPEC, "signature");
-		if (signatureElement == null)
-			throw new ImportFailedException("No signature element");
-		cg.add(ss.changeSignature(makeSignature(signatureElement)));
+		if (signatureElement != null)
+			cg.add(ss.changeSignature(makeSignature(signatureElement)));
 		
 		for (Element i :
 		     DOM.getNamedChildElements(e, XMLNS.SPEC, "rule"))
@@ -81,9 +80,8 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		
 		Element modelElement =
 				DOM.getNamedChildElement(e, XMLNS.SPEC, "model");
-		if (modelElement == null)
-			throw new ImportFailedException("No model element");
-		cg.add(ss.changeModel(makeBigraph(modelElement)));
+		if (modelElement != null)
+			cg.add(ss.changeModel(makeBigraph(modelElement)));
 		
 		try {
 			if (cg.size() != 0)
