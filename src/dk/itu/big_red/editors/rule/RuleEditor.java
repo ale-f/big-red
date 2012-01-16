@@ -50,6 +50,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
@@ -74,6 +75,7 @@ import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class RuleEditor extends EditorPart implements
@@ -198,8 +200,7 @@ public class RuleEditor extends EditorPart implements
 	
 	private void error(Throwable t) {
 		self.dispose(); self = null;
-		Label l = UI.newLabel(parent, SWT.CENTER, t.toString());
-		l.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		new EditorError(parent, RedPlugin.getThrowableStatus(t));
 	}
 	
 	@Override

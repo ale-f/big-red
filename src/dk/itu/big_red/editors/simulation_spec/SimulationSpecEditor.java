@@ -49,6 +49,7 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
+import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
@@ -151,12 +152,15 @@ public class SimulationSpecEditor extends EditorPart {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
-	    			UI.openError("Validation has failed.", cause);
+	    			error(cause);
+	    			return;
 	    		} else {
-	    			UI.openError("Opening the document failed.", e);
+	    			error(e);
+	    			return;
 	    		}
 	    	} catch (Exception e) {
-	    		UI.openError("An unexpected error occurred.", e);
+	    		error(e);
+	    		return;
 	    	}
 		}
 		if (model == null)
@@ -234,11 +238,25 @@ public class SimulationSpecEditor extends EditorPart {
 	private ResourceSelector signatureSelector, modelSelector;
 	private Tree rules;
 	
+	private Composite parent, self;
+	
+	private void error(Throwable t) {
+		self.dispose(); self = null;
+		new EditorError(parent, RedPlugin.getThrowableStatus(t));
+	}
+	
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite base = new Composite(parent, SWT.NONE);
+		this.parent = parent;
+		self = new Composite(parent, SWT.NONE);
+		
+		Composite base = self;
 		base.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		base.setLayout(new GridLayout(4, false));
+		
+		GridLayout gl = new GridLayout(4, false);
+		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
+			gl.horizontalSpacing = gl.verticalSpacing = 10;
+		base.setLayout(gl);
 		
 		UI.newLabel(base, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		signatureSelector = new ResourceSelector(base,

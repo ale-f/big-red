@@ -38,6 +38,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
@@ -52,6 +53,7 @@ import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends EditorPart implements CommandStackListener, ISelectionListener, PropertyChangeListener {
@@ -182,12 +184,25 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 	
 	private static Font smiff;
 	
+	private Composite parent, self;
+	
+	private void error(Throwable t) {
+		self.dispose(); self = null;
+		new EditorError(parent, RedPlugin.getThrowableStatus(t));
+	}
+	
 	@Override
 	public void createPartControl(Composite parent) {
-		GridLayout layout = new GridLayout(2, false);
-		parent.setLayout(layout);
+		this.parent = parent;
+		self = new Composite(parent, SWT.NONE);
+		self.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		Composite left = new Composite(parent, 0);
+		GridLayout gl = new GridLayout(2, false);
+		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
+			gl.horizontalSpacing = gl.verticalSpacing = 10;
+		self.setLayout(gl);
+		
+		Composite left = new Composite(self, 0);
 		left.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		GridLayout leftLayout = new GridLayout(1, false);
 		left.setLayout(leftLayout);
@@ -269,7 +284,7 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			}
 		});
 		
-		Composite right = new Composite(parent, 0);
+		Composite right = new Composite(self, 0);
 		right.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		GridLayout rightLayout = new GridLayout(2, false);
 		right.setLayout(rightLayout);
@@ -506,8 +521,8 @@ public class SignatureEditor extends EditorPart implements CommandStackListener,
 			try {
 				model = SignatureXMLImport.importFile(fi.getFile());
 			} catch (Exception e) {
-				e.printStackTrace();
-				model = new Signature();
+				error(e);
+				return;
 			}
 		}
 		
