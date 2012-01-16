@@ -10,6 +10,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.model.SimulationSpec;
+import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
+import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -22,9 +25,13 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 			Project.findContainerByPath(null, page.getContainerFullPath());
 		if (c != null) {
 			try {
-				UI.openInEditor(Project.getFile(c, page.getFileName()));
+				IFile ssFile = Project.getFile(c, page.getFileName());
+				NewSimulationSpecWizard.createSimulationSpec(ssFile);
+				UI.openInEditor(ssFile);
 				return true;
 			} catch (CoreException e) {
+				page.setErrorMessage(e.getLocalizedMessage());
+			} catch (ExportFailedException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
 			}
 		}
@@ -43,6 +50,12 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 	}
 	
 	public static void createSimulationSpec(IFile ssFile) throws ExportFailedException, CoreException {
-		/* do nothing (for now) */
+		IOAdapter io = new IOAdapter();
+		
+		new SimulationSpecXMLExport().
+			setModel(
+				new SimulationSpec().setFile(ssFile)).
+			setOutputStream(io.getOutputStream()).exportObject();
+		ssFile.setContents(io.getInputStream(), 0, null);
 	}
 }
