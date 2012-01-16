@@ -65,7 +65,10 @@ import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -403,6 +406,40 @@ public class RuleEditor extends EditorPart implements
 			reactumChange =
 				reactumParent.changeRemoveChild(reactumChild);
 			model.getRedexToReactumMap().remove(ch.child);
+		} else if (redexChange instanceof Layoutable.ChangeName) {
+			Layoutable.ChangeName ch = ac(redexChange);
+			
+			Layoutable reactumModel = getReactumEntity(ch.getCreator());
+			if (reactumModel == null)
+				System.exit(-1);
+			
+			reactumChange = reactumModel.changeName(ch.newName);
+		} else if (redexChange instanceof Point.ChangeConnect) {
+			Point.ChangeConnect ch = ac(redexChange);
+			
+			Point reactumPoint = getReactumEntity(ch.getCreator());
+			Link reactumLink = getReactumEntity(ch.link);
+			if (reactumPoint == null || reactumLink == null)
+				System.exit(-1);
+			
+			reactumChange = reactumPoint.changeConnect(reactumLink);
+		} else if (redexChange instanceof Point.ChangeDisconnect) {
+			Point.ChangeDisconnect ch = ac(redexChange);
+			
+			Point reactumPoint = getReactumEntity(ch.getCreator());
+			Link reactumLink = getReactumEntity(ch.link);
+			if (reactumPoint == null || reactumLink == null)
+				System.exit(-1);
+			
+			reactumChange = reactumPoint.changeDisconnect(reactumLink);
+		} else if (redexChange instanceof Site.ChangeAlias) {
+			Site.ChangeAlias ch = ac(redexChange);
+			
+			Site reactumSite = getReactumEntity(ch.getCreator());
+			if (reactumSite == null)
+				System.exit(-1);
+			
+			reactumChange = reactumSite.changeAlias(ch.alias);
 		}
 		System.out.println(redexChange + "\n\t->" + reactumChange);
 		return reactumChange;
