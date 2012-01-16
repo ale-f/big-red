@@ -374,7 +374,7 @@ public class RuleEditor extends EditorPart implements
 			Layoutable reactumChild = getReactumEntity(ch.child);
 			
 			if (reactumParent == null)
-				System.exit(-1);
+				return null;
 			if (reactumChild == null)
 				reactumChild = ch.child.clone(model.getRedexToReactumMap());
 			
@@ -397,7 +397,7 @@ public class RuleEditor extends EditorPart implements
 			Layoutable reactumModel = getReactumEntity(ch.getCreator());
 			
 			if (reactumModel == null)
-				System.exit(-1);
+				return null;
 			
 			reactumChange =
 				reactumModel.changeLayout(ch.newLayout.getCopy());
@@ -408,7 +408,7 @@ public class RuleEditor extends EditorPart implements
 			Layoutable reactumChild = getReactumEntity(ch.child);
 			
 			if (reactumParent == null || reactumChild == null)
-				System.exit(-1);
+				return null;
 			
 			reactumChange =
 				reactumParent.changeRemoveChild(reactumChild);
@@ -418,7 +418,7 @@ public class RuleEditor extends EditorPart implements
 			
 			Layoutable reactumModel = getReactumEntity(ch.getCreator());
 			if (reactumModel == null)
-				System.exit(-1);
+				return null;
 			
 			reactumChange = reactumModel.changeName(ch.newName);
 		} else if (redexChange instanceof Point.ChangeConnect) {
@@ -427,7 +427,7 @@ public class RuleEditor extends EditorPart implements
 			Point reactumPoint = getReactumEntity(ch.getCreator());
 			Link reactumLink = getReactumEntity(ch.link);
 			if (reactumPoint == null || reactumLink == null)
-				System.exit(-1);
+				return null;
 			
 			reactumChange = reactumPoint.changeConnect(reactumLink);
 		} else if (redexChange instanceof Point.ChangeDisconnect) {
@@ -436,7 +436,7 @@ public class RuleEditor extends EditorPart implements
 			Point reactumPoint = getReactumEntity(ch.getCreator());
 			Link reactumLink = getReactumEntity(ch.link);
 			if (reactumPoint == null || reactumLink == null)
-				System.exit(-1);
+				return null;
 			
 			reactumChange = reactumPoint.changeDisconnect(reactumLink);
 		} else if (redexChange instanceof Site.ChangeAlias) {
@@ -444,7 +444,7 @@ public class RuleEditor extends EditorPart implements
 			
 			Site reactumSite = getReactumEntity(ch.getCreator());
 			if (reactumSite == null)
-				System.exit(-1);
+				return null;
 			
 			reactumChange = reactumSite.changeAlias(ch.alias);
 		}
