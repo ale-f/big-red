@@ -79,8 +79,13 @@ public class SimulationSpecUIFactory {
 			
 			@Override
 			protected Control createDialogArea(Composite parent) {
-				resultsText = new Text(parent, SWT.MULTI | SWT.BORDER);
-				resultsText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				resultsText =
+					new Text(parent, SWT.MULTI | SWT.BORDER | SWT.WRAP |
+							SWT.V_SCROLL);
+				GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+				gd.widthHint = 400;
+				gd.heightHint = 500;
+				resultsText.setLayoutData(gd);
 				resultsText.setText(results);
 				return resultsText;
 			}
