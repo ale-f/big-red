@@ -2,12 +2,9 @@ package dk.itu.big_red.editors.signature;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.EventObject;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -57,7 +54,7 @@ import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends AbstractEditor
-implements CommandStackListener, ISelectionListener, PropertyChangeListener {
+implements ISelectionListener, PropertyChangeListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
 	
 	public SignatureEditor() {
@@ -540,12 +537,6 @@ implements CommandStackListener, ISelectionListener, PropertyChangeListener {
 	}
 
 	@Override
-	public void commandStackChanged(EventObject event) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		// TODO Auto-generated method stub
 		
@@ -590,5 +581,17 @@ implements CommandStackListener, ISelectionListener, PropertyChangeListener {
 			}
 		}
 		setDirty(true);
+	}
+
+	@Override
+	protected void initializeActionRegistry() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void createActions() {
+		// TODO Auto-generated method stub
+		
 	}
 }

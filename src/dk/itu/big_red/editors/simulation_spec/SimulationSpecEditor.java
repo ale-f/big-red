@@ -9,8 +9,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.RedoAction;
 import org.eclipse.gef.ui.actions.UndoAction;
@@ -411,10 +409,7 @@ public class SimulationSpecEditor extends AbstractEditor {
 
 	private ArrayList<String> stackActions = new ArrayList<String>();
 	
-	/**
-	 * Creates actions for this editor. Subclasses should override this method
-	 * to create and register actions with the {@link ActionRegistry}.
-	 */
+	@Override
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
 		
@@ -422,14 +417,7 @@ public class SimulationSpecEditor extends AbstractEditor {
 			new UndoAction(this), new RedoAction(this));
 	}
 	
-	/**
-	 * Initializes the ActionRegistry. This registry may be used by
-	 * {@link ActionBarContributor ActionBarContributors} and/or
-	 * {@link ContextMenuProvider ContextMenuProviders}.
-	 * <P>
-	 * This method may be called on Editor creation, or lazily the first time
-	 * {@link #getActionRegistry()} is called.
-	 */
+	@Override
 	protected void initializeActionRegistry() {
 		createActions();
 		updateActions(stackActions);

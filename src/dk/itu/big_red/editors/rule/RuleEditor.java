@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
@@ -18,7 +17,6 @@ import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.SelectionToolEntry;
-import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.RedoAction;
@@ -499,10 +497,7 @@ public class RuleEditor extends AbstractEditor implements
 		updateActions(stackActions);
 	}
 
-	/**
-	 * Creates actions for this editor. Subclasses should override this method
-	 * to create and register actions with the {@link ActionRegistry}.
-	 */
+	@Override
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
 		
@@ -522,14 +517,7 @@ public class RuleEditor extends AbstractEditor implements
 			new SaveAction(this));
 	}
 
-	/**
-	 * Initializes the ActionRegistry. This registry may be used by
-	 * {@link ActionBarContributor ActionBarContributors} and/or
-	 * {@link ContextMenuProvider ContextMenuProviders}.
-	 * <P>
-	 * This method may be called on Editor creation, or lazily the first time
-	 * {@link #getActionRegistry()} is called.
-	 */
+	@Override
 	protected void initializeActionRegistry() {
 		createActions();
 		updateActions(propertyActions);

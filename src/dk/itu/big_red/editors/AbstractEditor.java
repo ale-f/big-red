@@ -2,6 +2,8 @@ package dk.itu.big_red.editors;
 
 import java.util.List;
 
+import org.eclipse.gef.ContextMenuProvider;
+import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
@@ -18,9 +20,13 @@ public abstract class AbstractEditor extends EditorPart {
 		}
 	}
 
-	private ActionRegistry actionRegistry = new ActionRegistry();
+	private ActionRegistry actionRegistry;
 	
 	protected ActionRegistry getActionRegistry() {
+		if (actionRegistry == null) {
+			actionRegistry = new ActionRegistry();
+			initializeActionRegistry();
+		}
 		return actionRegistry;
 	}
 	
@@ -50,4 +56,17 @@ public abstract class AbstractEditor extends EditorPart {
 			return getActionRegistry();
 		} else return super.getAdapter(adapter);
 	}
+	
+	/**
+	 * Initializes the ActionRegistry. This registry may be used by
+	 * {@link ActionBarContributor ActionBarContributors} and/or
+	 * {@link ContextMenuProvider ContextMenuProviders}.
+	 */
+	protected abstract void initializeActionRegistry();
+	
+	/**
+	 * Creates actions for this editor. Subclasses should override this method
+	 * to create and register actions with the {@link ActionRegistry}.
+	 */
+	protected abstract void createActions();
 }
