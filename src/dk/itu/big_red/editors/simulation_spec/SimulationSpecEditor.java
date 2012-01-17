@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.simulation_spec;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
@@ -8,7 +9,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.gef.ContextMenuProvider;
+import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.RedoAction;
+import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -27,10 +32,10 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.ImportFailedException;
@@ -55,7 +60,7 @@ import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class SimulationSpecEditor extends EditorPart {
+public class SimulationSpecEditor extends AbstractEditor {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -404,23 +409,35 @@ public class SimulationSpecEditor extends EditorPart {
 		initialiseSimulationSpecEditor();
 	}
 
+	private ArrayList<String> stackActions = new ArrayList<String>();
+	
+	/**
+	 * Creates actions for this editor. Subclasses should override this method
+	 * to create and register actions with the {@link ActionRegistry}.
+	 */
+	protected void createActions() {
+		ActionRegistry registry = getActionRegistry();
+		
+		AbstractEditor.registerActions(registry, stackActions,
+			new UndoAction(this), new RedoAction(this));
+	}
+	
+	/**
+	 * Initializes the ActionRegistry. This registry may be used by
+	 * {@link ActionBarContributor ActionBarContributors} and/or
+	 * {@link ContextMenuProvider ContextMenuProviders}.
+	 * <P>
+	 * This method may be called on Editor creation, or lazily the first time
+	 * {@link #getActionRegistry()} is called.
+	 */
+	protected void initializeActionRegistry() {
+		createActions();
+		updateActions(stackActions);
+	}
+	
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
 		UI.getWorkbenchPage().activate(this);
-	}
-
-	private ActionRegistry actionRegistry = new ActionRegistry();
-
-	protected ActionRegistry getActionRegistry() {
-		return actionRegistry;
-	}
-	
-	@Override
-	@SuppressWarnings("rawtypes")
-	public Object getAdapter(Class adapter) {
-		if (adapter == ActionRegistry.class) {
-			return getActionRegistry();
-		} else return super.getAdapter(adapter);
 	}
 }

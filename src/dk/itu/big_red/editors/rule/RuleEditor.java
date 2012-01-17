@@ -25,10 +25,8 @@ import org.eclipse.gef.ui.actions.RedoAction;
 import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.UndoAction;
-import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -45,12 +43,12 @@ import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
@@ -81,7 +79,7 @@ import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class RuleEditor extends EditorPart implements
+public class RuleEditor extends AbstractEditor implements
 	ISelectionListener, INullSelectionListener, ISelectionChangedListener,
 	ISelectionProvider, CommandStackEventListener {
 	private DefaultEditDomain editDomain = new DefaultEditDomain(this);
@@ -125,7 +123,6 @@ public class RuleEditor extends EditorPart implements
 			l.selectionChanged(e);
 	}
 	
-	private ActionRegistry actionRegistry = new ActionRegistry();
 	private List<String> selectionActions = new ArrayList<String>();
 	private List<String> stackActions = new ArrayList<String>();
 	private List<String> propertyActions = new ArrayList<String>();
@@ -502,16 +499,6 @@ public class RuleEditor extends EditorPart implements
 		updateActions(stackActions);
 	}
 
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public static void registerActions(ActionRegistry registry,
-		List actionIDList, IAction... actions) {
-		for (IAction i : actions) {
-			registry.registerAction(i);
-			if (actionIDList != null)
-				actionIDList.add(i.getId());
-		}
-	}
-	
 	/**
 	 * Creates actions for this editor. Subclasses should override this method
 	 * to create and register actions with the {@link ActionRegistry}.
@@ -519,19 +506,19 @@ public class RuleEditor extends EditorPart implements
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
 		
-		registerActions(registry, stackActions,
+		AbstractEditor.registerActions(registry, stackActions,
 			new UndoAction(this), new RedoAction(this));
 		
-		registerActions(registry, selectionActions,
+		AbstractEditor.registerActions(registry, selectionActions,
 			new DeleteAction((IWorkbenchPart)this),
 			new ContainerPropertiesAction(this), new ContainerCutAction(this),
 			new ContainerCopyAction(this), new BigraphRelayoutAction(this),
 			new ContainerPasteAction(this));
 
-		registerActions(registry, null,
+		AbstractEditor.registerActions(registry, null,
 			new SelectAllAction(this));
 		
-		registerActions(registry, propertyActions,
+		AbstractEditor.registerActions(registry, propertyActions,
 			new SaveAction(this));
 	}
 
@@ -549,33 +536,10 @@ public class RuleEditor extends EditorPart implements
 		updateActions(stackActions);
 	}
 	
-	protected ActionRegistry getActionRegistry() {
-		return actionRegistry;
-	}
-	
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	/**
-	 * A convenience method for updating a set of actions defined by the given
-	 * List of action IDs. The actions are found by looking up the ID in the
-	 * {@link #getActionRegistry() action registry}. If the corresponding action
-	 * is an {@link UpdateAction}, it will have its <code>update()</code> method
-	 * called.
-	 * 
-	 * @param actionIds
-	 *            the list of IDs to update
-	 */
-	protected void updateActions(List<String> actionIDs) {
-		ActionRegistry registry = getActionRegistry();
-		for (String i : actionIDs) {
-			IAction action = registry.getAction(i);
-			if (action instanceof UpdateAction)
-				((UpdateAction)action).update();
-		}
 	}
 	
 	@Override
@@ -589,8 +553,6 @@ public class RuleEditor extends EditorPart implements
 			return psp;
 		} else if (adapter == CommandStack.class) {
 			return getCommandStack();
-		} else if (adapter == ActionRegistry.class) {
-			return getActionRegistry();
 		} else return super.getAdapter(adapter);
 	}
 }

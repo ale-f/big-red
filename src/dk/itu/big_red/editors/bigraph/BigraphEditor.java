@@ -39,6 +39,7 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
@@ -47,7 +48,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
-import dk.itu.big_red.editors.rule.RuleEditor;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
@@ -130,7 +130,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	 * and I have no idea at all what ActionBarContributors do.
     	 */
     	
-    	RuleEditor.registerActions(getActionRegistry(), getSelectionActions(),
+    	AbstractEditor.registerActions(getActionRegistry(), getSelectionActions(),
     		new ContainerPropertiesAction(this), new ContainerCutAction(this),
     		new ContainerCopyAction(this), new ContainerPasteAction(this),
     		new BigraphRelayoutAction(this));
