@@ -476,14 +476,6 @@ public class RuleEditor extends EditorPart implements
 			} catch (ChangeRejectedException cre) {
 				cre.killVM();
 			}
-			
-			if (getModel().getChanges().size() > 0) {
-				try {
-					getReactum().tryApplyChange(getModel().getChanges());
-				} catch (ChangeRejectedException cre) {
-					cre.killVM();
-				}
-			}
 		} else if (target == getReactum()) {
 			System.out.println("Event (" + detail + ") from reactum: " + c.getChange());
 			getModel().getChanges().add(ch);
