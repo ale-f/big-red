@@ -594,6 +594,10 @@ public class RuleEditor extends EditorPart implements
 			PropertySheetPage psp = new PropertySheetPage();
 			psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
 			return psp;
+		} else if (adapter == CommandStack.class) {
+			return getCommandStack();
+		} else if (adapter == ActionRegistry.class) {
+			return getActionRegistry();
 		} else return super.getAdapter(adapter);
 	}
 }
