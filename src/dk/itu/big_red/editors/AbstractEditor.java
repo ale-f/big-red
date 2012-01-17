@@ -10,6 +10,14 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.part.EditorPart;
 
 public abstract class AbstractEditor extends EditorPart {
+	/**
+	 * Registers a number of {@link IAction}s with the given {@link
+	 * ActionRegistry}, optionally copying their IDs into a {@link List}.
+	 * @param registry an {@link ActionRegistry}
+	 * @param actionIDList a list to, be filled with {@link String} IDs; can be
+	 * <code>null</code>
+	 * @param actions a number of {@link IAction}s
+	 */
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static void registerActions(ActionRegistry registry,
 		List actionIDList, IAction... actions) {
@@ -22,6 +30,12 @@ public abstract class AbstractEditor extends EditorPart {
 
 	private ActionRegistry actionRegistry;
 	
+	/**
+	 * Returns this editor's {@link ActionRegistry}, creating and initialising
+	 * it if necessary.
+	 * @return a (possibly newly-initialised!) {@link ActionRegistry}
+	 * @see #initializeActionRegistry()
+	 */
 	protected ActionRegistry getActionRegistry() {
 		if (actionRegistry == null) {
 			actionRegistry = new ActionRegistry();
@@ -58,9 +72,11 @@ public abstract class AbstractEditor extends EditorPart {
 	}
 	
 	/**
-	 * Initializes the ActionRegistry. This registry may be used by
+	 * Initialises the ActionRegistry. This registry may be used by
 	 * {@link ActionBarContributor ActionBarContributors} and/or
 	 * {@link ContextMenuProvider ContextMenuProviders}.
+	 * <p>There's no need to call this method explicitly; the first call to
+	 * {@link #getActionRegistry()} will do so automatically.
 	 */
 	protected abstract void initializeActionRegistry();
 	
