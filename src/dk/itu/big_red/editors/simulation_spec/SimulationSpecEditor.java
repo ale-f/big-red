@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -409,4 +410,16 @@ public class SimulationSpecEditor extends EditorPart {
 		UI.getWorkbenchPage().activate(this);
 	}
 
+	private ActionRegistry actionRegistry = new ActionRegistry();
+
+	protected ActionRegistry getActionRegistry() {
+		return actionRegistry;
+	}
+	
+	@Override
+	public Object getAdapter(Class adapter) {
+		if (adapter == ActionRegistry.class) {
+			return getActionRegistry();
+		} else return super.getAdapter(adapter);
+	}
 }
