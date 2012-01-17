@@ -121,7 +121,7 @@
       </editor>
       <editor
             class="dk.itu.big_red.editors.simulation_spec.SimulationSpecEditor"
-            contributorClass="dk.itu.big_red.editors.rule.RuleEditorActionBarContributor"
+            contributorClass="dk.itu.big_red.editors.simulation_spec.SimulationSpecEditorActionBarContributor"
             default="false"
             extensions="bigraph-simulation-spec"
             icon="resources/icons/icon16.png"

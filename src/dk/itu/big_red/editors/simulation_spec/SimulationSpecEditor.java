@@ -417,6 +417,7 @@ public class SimulationSpecEditor extends EditorPart {
 	}
 	
 	@Override
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		if (adapter == ActionRegistry.class) {
 			return getActionRegistry();
