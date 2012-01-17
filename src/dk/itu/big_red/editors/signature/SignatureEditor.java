@@ -585,8 +585,7 @@ implements ISelectionListener, PropertyChangeListener {
 
 	@Override
 	protected void initializeActionRegistry() {
-		// TODO Auto-generated method stub
-		
+		super.initializeActionRegistry();
 	}
 
 	@Override

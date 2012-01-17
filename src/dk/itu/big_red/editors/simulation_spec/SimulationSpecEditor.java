@@ -419,7 +419,7 @@ public class SimulationSpecEditor extends AbstractEditor {
 	
 	@Override
 	protected void initializeActionRegistry() {
-		createActions();
+		super.initializeActionRegistry();
 		updateActions(stackActions);
 	}
 	

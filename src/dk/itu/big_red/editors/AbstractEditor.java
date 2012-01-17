@@ -2,8 +2,6 @@ package dk.itu.big_red.editors;
 
 import java.util.List;
 
-import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
@@ -45,14 +43,9 @@ public abstract class AbstractEditor extends EditorPart {
 	}
 	
 	/**
-	 * A convenience method for updating a set of actions defined by the given
-	 * List of action IDs. The actions are found by looking up the ID in the
-	 * {@link #getActionRegistry() action registry}. If the corresponding action
-	 * is an {@link UpdateAction}, it will have its <code>update()</code> method
-	 * called.
-	 * 
-	 * @param actionIds
-	 *            the list of IDs to update
+	 * Calls {@link UpdateAction#update()} on the actions registered with the
+	 * given IDs (if they <i>are</i> {@link UpdateAction}s, that is).
+	 * @param actionIDs the list of IDs to update
 	 */
 	protected void updateActions(List<String> actionIDs) {
 		ActionRegistry registry = getActionRegistry();
@@ -72,17 +65,20 @@ public abstract class AbstractEditor extends EditorPart {
 	}
 	
 	/**
-	 * Initialises the ActionRegistry. This registry may be used by
-	 * {@link ActionBarContributor ActionBarContributors} and/or
-	 * {@link ContextMenuProvider ContextMenuProviders}.
-	 * <p>There's no need to call this method explicitly; the first call to
-	 * {@link #getActionRegistry()} will do so automatically.
+	 * Initialises the {@link ActionRegistry}. There's no need to call this
+	 * method explicitly; the first call to {@link #getActionRegistry()} will
+	 * do so automatically.
+	 * <p>Subclasses should override this method, but they should also call
+	 * <code>super.initializeActionRegistry()</code> before doing anything
+	 * else.
 	 */
-	protected abstract void initializeActionRegistry();
+	protected void initializeActionRegistry() {
+		createActions();
+	}
 	
 	/**
-	 * Creates actions for this editor. Subclasses should override this method
-	 * to create and register actions with the {@link ActionRegistry}.
+	 * Creates actions for this editor and registers them with the {@link
+	 * ActionRegistry}.
 	 */
 	protected abstract void createActions();
 }

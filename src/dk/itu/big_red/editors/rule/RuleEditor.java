@@ -519,7 +519,7 @@ public class RuleEditor extends AbstractEditor implements
 
 	@Override
 	protected void initializeActionRegistry() {
-		createActions();
+		super.initializeActionRegistry();
 		updateActions(propertyActions);
 		updateActions(stackActions);
 	}
