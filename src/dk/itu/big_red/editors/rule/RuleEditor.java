@@ -502,8 +502,9 @@ public class RuleEditor extends EditorPart implements
 		updateActions(stackActions);
 	}
 
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static void registerActions(ActionRegistry registry,
-			List<String> actionIDList, IAction... actions) {
+		List actionIDList, IAction... actions) {
 		for (IAction i : actions) {
 			registry.registerAction(i);
 			if (actionIDList != null)

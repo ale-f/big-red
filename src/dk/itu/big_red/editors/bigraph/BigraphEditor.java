@@ -23,7 +23,6 @@ import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
-import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
@@ -48,6 +47,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.editors.rule.RuleEditor;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
@@ -130,26 +130,10 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	 * and I have no idea at all what ActionBarContributors do.
     	 */
     	
-    	ActionRegistry registry = getActionRegistry();
-    	IAction action = new ContainerPropertiesAction(this);
-    	registry.registerAction(action);
-    	getSelectionActions().add(action.getId());
-    	
-    	action = new ContainerCutAction(this);
-    	registry.registerAction(action);
-    	getSelectionActions().add(action.getId());
-    	
-    	action = new ContainerCopyAction(this);
-    	registry.registerAction(action);
-    	getSelectionActions().add(action.getId());
-    	
-    	action = new ContainerPasteAction(this);
-    	registry.registerAction(action);
-    	getSelectionActions().add(action.getId());
-    	
-    	action = new BigraphRelayoutAction(this);
-    	registry.registerAction(action);
-    	getSelectionActions().add(action.getId());
+    	RuleEditor.registerActions(getActionRegistry(), getSelectionActions(),
+    		new ContainerPropertiesAction(this), new ContainerCutAction(this),
+    		new ContainerCopyAction(this), new ContainerPasteAction(this),
+    		new BigraphRelayoutAction(this));
     	
     	/*
     	 * Does this kind of action need to be registered in the
@@ -157,16 +141,15 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
     	 * Eclipse projects comprised primarily of comments saying "What does
     	 * the <insert name here> *do*, anyway?"?)
     	 */
-    	action = new FilePrintAction(this);
-    	registry.registerAction(action);
+    	IAction action = new FilePrintAction(this);
+    	getActionRegistry().registerAction(action);
     	getEditorSite().getActionBars().
     		setGlobalActionHandler(ActionFactory.PRINT.getId(), action);
     	
     	action = new FileRevertAction(this);
-    	registry.registerAction(action);
+    	getActionRegistry().registerAction(action);
     	getEditorSite().getActionBars().
     		setGlobalActionHandler(ActionFactory.REVERT.getId(), action);    	
-    	
     	getStackActions().add(ActionFactory.REVERT.getId());
     }
     
