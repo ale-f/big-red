@@ -71,6 +71,7 @@ implements ISelectionListener, PropertyChangeListener {
         		exportObject();
         	Project.setContents(i.getFile(), io.getInputStream());
         	
+        	RedPlugin.getObjectService().setObject(i.getFile(), model);
     		setDirty(false);
         } catch (Exception ex) {
         	if (monitor != null)

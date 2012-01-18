@@ -295,6 +295,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
         	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
         	Project.setContents(i.getFile(), io.getInputStream());
         	
+        	RedPlugin.getObjectService().setObject(i.getFile(), getModel());
     		getCommandStack().markSaveLocation();
     		firePropertyChange(IEditorPart.PROP_DIRTY);
         } catch (Exception ex) {
