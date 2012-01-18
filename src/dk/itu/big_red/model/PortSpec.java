@@ -26,6 +26,11 @@ public class PortSpec implements IPort {
 		setDistance(distance);
 	}
 
+	public PortSpec(PortSpec p) {
+		setName(p.getName()).setSegment(p.getSegment()).
+			setDistance(p.getDistance());
+	}
+	
 	@Override
 	public String getName() {
 		return name;
