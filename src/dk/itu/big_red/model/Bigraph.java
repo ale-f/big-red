@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 
+import dk.itu.big_red.application.plugin.ObjectService.UpdateListener;
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -33,7 +35,7 @@ import dk.itu.big_red.utilities.resources.IFileBackable;
  * @author alec
  * @see IBigraph
  */
-public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable {
+public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable, UpdateListener {
 	protected Signature signature = null;
 
 	private HashMap<Object, Map<String, Layoutable>> names =
@@ -273,8 +275,14 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	}
 	
 	public void setSignature(Signature signature) {
-		if (signature != null)
+		if (this.signature != null)
+			RedPlugin.getObjectService().
+				removeUpdateListener(this.signature.getFile(), this);
+		if (signature != null) {
 			this.signature = signature;
+			RedPlugin.getObjectService().
+				addUpdateListener(this.signature.getFile(), this);
+		}
 	}
 	
 	public Signature getSignature() {
@@ -516,5 +524,15 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	public Bigraph setFile(IFile file) {
 		this.file = file;
 		return this;
+	}
+	
+	@Override
+	public void objectUpdated(Object identifier) {
+		if (identifier.equals(signature.getFile())) {
+			System.out.println(this + " re-syncing signature");
+			/* Bypass the checking performed in setSignature */
+			signature =
+				(Signature)RedPlugin.getObjectService().getObject(identifier);
+		}
 	}
 }
