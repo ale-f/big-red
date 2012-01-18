@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.utilities.ISafeCloneable;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
@@ -17,7 +18,7 @@ import dk.itu.big_red.model.changes.Change;
  * @see Layoutable
  *
  */
-public class ModelObject {
+public class ModelObject implements ISafeCloneable {
 	public abstract class ModelObjectChange extends Change {
 		protected ModelObjectChange() {
 		}
@@ -117,6 +118,11 @@ public class ModelObject {
 		if (m != null)
 			m.put(this, i);
 		return i;
+	}
+	
+	@Override
+	public ModelObject clone() {
+		return clone(null);
 	}
 	
 	private String comment = null;
