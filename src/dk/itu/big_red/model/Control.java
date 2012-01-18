@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
@@ -133,6 +134,25 @@ public class Control extends Colourable implements IControl {
 		setDefaultSize(new Dimension(50, 50));
 		setKind(Kind.ACTIVE);
 		setResizable(true);
+	}
+	
+	@Override
+	public Control clone(Map<ModelObject,ModelObject> m) {
+		Control c = (Control)super.clone(m);
+		
+		c.setName(getName());
+		c.setLabel(getLabel());
+		c.setShape(getShape());
+		if (getShape() == Shape.POLYGON)
+			c.setPoints(getPoints().getCopy());
+		c.setDefaultSize(getDefaultSize().getCopy());
+		c.setKind(getKind());
+		c.setResizable(isResizable());
+		
+		for (PortSpec p : getPorts())
+			c.addPort(new PortSpec(p));
+		
+		return c;
 	}
 	
 	public String getLabel() {

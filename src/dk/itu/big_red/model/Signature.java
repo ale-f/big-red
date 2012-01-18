@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 
@@ -27,6 +28,17 @@ public class Signature extends ModelObject implements ISignature, IChangeable, I
 	private ArrayList<Control> controls = new ArrayList<Control>();
 	
 	public Signature() {
+	}
+	
+	@Override
+	public Signature clone(Map<ModelObject, ModelObject> m) {
+		Signature s = (Signature)super.clone(m);
+		s.setFile(getFile());
+		
+		for (Control c : getControls())
+			s.addControl(c.clone(m));
+		
+		return s;
 	}
 	
 	public Control addControl(Control c) {
