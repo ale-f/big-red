@@ -10,8 +10,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.actions.RedoAction;
-import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -412,9 +410,6 @@ public class SimulationSpecEditor extends AbstractEditor {
 	@Override
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
-		
-		AbstractEditor.registerActions(registry, stackActions,
-			new UndoAction(this), new RedoAction(this));
 	}
 	
 	@Override
