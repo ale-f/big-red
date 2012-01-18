@@ -116,4 +116,12 @@ public class RedPlugin extends AbstractUIPlugin {
 			r = new Random();
 		return r;
 	}
+	
+	private static ObjectService m = null;
+	
+	public static ObjectService getObjectService() {
+		if (m == null)
+			m = new ObjectService();
+		return m;
+	}
 }
