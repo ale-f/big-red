@@ -116,12 +116,18 @@ public class SignatureXMLImport extends Import<Signature> {
 	}
 	
 	public static Signature importFile(IFile file) throws ImportFailedException {
-		SignatureXMLImport s = new SignatureXMLImport();
+		Object o = RedPlugin.getObjectService().getObject(file);
+		if (o != null && o instanceof Signature)
+			return (Signature)o;
+		
+		SignatureXMLImport im = new SignatureXMLImport();
 		try {
-			s.setInputStream(file.getContents());
-			return s.importObject().setFile(file);
+			im.setInputStream(file.getContents());
 		} catch (Exception e) {
 			throw new ImportFailedException(e);
 		}
+		Signature s = im.importObject().setFile(file);
+		RedPlugin.getObjectService().setObject(file, s);
+		return s;
 	}
 }
