@@ -210,13 +210,19 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 	}
 	
 	public static Bigraph importFile(IFile file) throws ImportFailedException {
-		BigraphXMLImport b = new BigraphXMLImport().setFile(file);
+		Object o = RedPlugin.getObjectService().getObject(file);
+		if (o != null && o instanceof Bigraph)
+			return (Bigraph)o;
+		
+		BigraphXMLImport im = new BigraphXMLImport().setFile(file);
 		try {
-			b.setInputStream(file.getContents());
+			im.setInputStream(file.getContents());
 		} catch (CoreException e) {
 			throw new ImportFailedException(e);
 		}
-		return b.importObject().setFile(file);
+		Bigraph b = im.importObject().setFile(file);
+		RedPlugin.getObjectService().setObject(file, b);
+		return b;
 	}
 
 	private IFile file;
