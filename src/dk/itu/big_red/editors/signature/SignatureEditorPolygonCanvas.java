@@ -810,12 +810,8 @@ MenuListener {
 	public void setPorts(List<PortSpec> ports) {
 		if (ports != null) {
 			this.ports.clear();
-			for (PortSpec i : ports) {
-				PortSpec p =
-					new PortSpec(i.getName(), i.getSegment(),
-						i.getDistance());
-				this.ports.add(p);
-			}
+			for (PortSpec i : ports)
+				this.ports.add(new PortSpec(i));
 			firePortChange();
 		}
 	}

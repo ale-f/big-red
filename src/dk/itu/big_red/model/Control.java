@@ -245,7 +245,7 @@ public class Control extends Colourable implements IControl {
 	
 	public void addPort(PortSpec p) {
 		if (p != null) {
-			PortSpec q = new PortSpec(p.getName(), p.getSegment(), p.getDistance());
+			PortSpec q = new PortSpec(p);
 			ports.add(q);
 			firePropertyChange(PROPERTY_PORT, null, q);
 		}

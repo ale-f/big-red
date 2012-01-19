@@ -436,9 +436,7 @@ implements ISelectionListener, PropertyChangeListener {
 				for (PortSpec p : Lists.copy(currentControl.getPorts()))
 					currentControl.removePort(p.getName());
 				for (PortSpec p : toCopy)
-					currentControl.addPort(
-						new PortSpec(p.getName(), p.getSegment(),
-								p.getDistance()));
+					currentControl.addPort(new PortSpec(p));
 			}
 			
 			@Override
