@@ -526,6 +526,22 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		return this;
 	}
 	
+	/**
+	 * XXX: This is <i>probably</i> not a safe operation to perform on open
+	 * Bigraphs...
+	 */
+	private void recursiveNodeUpdate(Signature newSignature, Container c) {
+		for (Layoutable l : c.getChildren()) {
+			if (l instanceof Node) {
+				Node n = (Node)l;
+				Control oldControl = n.getControl();
+				n.setControl(newSignature.getControl(oldControl.getName()));
+			}
+			if (l instanceof Container)
+				recursiveNodeUpdate(newSignature, (Container)l);
+		}
+	}
+	
 	@Override
 	public void objectUpdated(Object identifier) {
 		if (identifier.equals(signature.getFile())) {
@@ -533,6 +549,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			/* Bypass the checking performed in setSignature */
 			signature =
 				(Signature)RedPlugin.getObjectService().getObject(identifier);
+			recursiveNodeUpdate(signature, this);
 		}
 	}
 }
