@@ -41,25 +41,20 @@ public class Node extends Container implements INode {
 	}
 	
 	public Node(Control control) {
-		this.control = control;
-		
-		setFillColour(control.getFillColour().getCopy());
-		setOutlineColour(control.getOutlineColour().getCopy());
-		
-		ports = control.createPorts();
-		for (Port p : ports)
-			p.setParent(this);
-		
-		parameters = control.createParameters();
-				
-		if (!control.isResizable())
-			super.setLayout(
-				getLayout().getCopy().setSize(control.getDefaultSize()));
+		setControl(control);
 	}
 	
 	@Override
 	public Node clone(Map<ModelObject, ModelObject> m) {
 		Node n = (Node)super.clone(m);
+		
+		/*
+		 * If this Node's Control has a counterpart in the map, then use that
+		 * (the Bigraph is probably being cloned).
+		 */
+		Control cloneControl = (Control)m.get(control);
+		n.setControl(cloneControl == null ? control : cloneControl);
+		
 		n.setFillColour(getFillColour().getCopy());
 		n.setOutlineColour(getOutlineColour().getCopy());
 		
@@ -104,6 +99,19 @@ public class Node extends Container implements INode {
 
 	protected void setControl(Control c) {
 		control = c;
+		
+		setFillColour(control.getFillColour().getCopy());
+		setOutlineColour(control.getOutlineColour().getCopy());
+		
+		ports = control.createPorts();
+		for (Port p : ports)
+			p.setParent(this);
+		
+		parameters = control.createParameters();
+				
+		if (!control.isResizable())
+			super.setLayout(
+				getLayout().getCopy().setSize(control.getDefaultSize()));
 	}
 	
 	public List<Port> getPorts() {
