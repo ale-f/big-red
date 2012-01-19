@@ -107,4 +107,16 @@ public class Signature extends ModelObject implements ISignature, IChangeable, I
 		this.file = file;
 		return this;
 	}
+	
+	@Override
+	public void dispose() {
+		for (Control c : getControls())
+			c.dispose();
+		getControls().clear();
+		
+		file = null;
+		validator = null;
+		
+		super.dispose();
+	}
 }

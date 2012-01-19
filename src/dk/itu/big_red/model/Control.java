@@ -447,4 +447,21 @@ public class Control extends Colourable implements IControl {
 	public UserControl getUserControl() {
 		return UserControl.OUTLINE_AND_FILL;
 	}
+	
+	@Override
+	public void dispose() {
+		defaultSize = null;
+		kind = null;
+		label = name = null;
+		
+		if (parameters != null) {
+			parameters.clear();
+			parameters = null;
+		}
+		
+		points.removeAllPoints();
+		points = null;
+		
+		super.dispose();
+	}
 }
