@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.ui.services.IDisposable;
+
 import dk.itu.big_red.utilities.ISafeCloneable;
 
 public class ObjectService {
@@ -41,7 +43,11 @@ public class ObjectService {
 	 * @return <code>this</code>, for convenience
 	 */
 	public ObjectService setObject(Object identifier, ISafeCloneable newValue) {
-		modelObjects.put(identifier, newValue.clone());
+		ISafeCloneable oldValue =
+			modelObjects.put(identifier, newValue.clone());
+		if (oldValue instanceof IDisposable)
+			((IDisposable)oldValue).dispose();
+		
 		ArrayList<UpdateListener> toNotify = listeners.get(identifier);
 		if (toNotify != null)
 			for (UpdateListener l : toNotify)
