@@ -3,6 +3,9 @@ package dk.itu.big_red.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Map;
+
+import org.eclipse.ui.services.IDisposable;
+
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.utilities.ISafeCloneable;
 
@@ -18,7 +21,7 @@ import dk.itu.big_red.utilities.ISafeCloneable;
  * @see Layoutable
  *
  */
-public class ModelObject implements ISafeCloneable {
+public class ModelObject implements ISafeCloneable, IDisposable {
 	public abstract class ModelObjectChange extends Change {
 		protected ModelObjectChange() {
 		}
@@ -59,7 +62,7 @@ public class ModelObject implements ISafeCloneable {
 		}
 	}
 	
-	private final PropertyChangeSupport listeners = new PropertyChangeSupport(this);
+	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	/**
 	 * Registers a {@link PropertyChangeListener} to receive property change
@@ -178,5 +181,16 @@ public class ModelObject implements ISafeCloneable {
 	
 	public ChangeComment changeComment(String comment) {
 		return new ChangeComment(comment);
+	}
+
+	@Override
+	public void dispose() {
+		comment = null;
+		
+		PropertyChangeListener[] pls =
+			listeners.getPropertyChangeListeners().clone();
+		for (PropertyChangeListener i : pls)
+			listeners.removePropertyChangeListener(i);
+		listeners = null;
 	}
 }
