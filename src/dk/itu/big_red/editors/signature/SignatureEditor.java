@@ -585,6 +585,11 @@ implements ISelectionListener, PropertyChangeListener {
 	}
 
 	@Override
+	public void dispose() {
+		model.dispose();
+	}
+	
+	@Override
 	protected void initializeActionRegistry() {
 		super.initializeActionRegistry();
 	}
