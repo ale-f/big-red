@@ -1,7 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +24,7 @@ import dk.itu.big_red.utilities.geometry.Rectangle;
  * @author alec
  * @see INode
  */
-public class Node extends Container implements PropertyChangeListener, INode {
+public class Node extends Container implements INode {
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	private ArrayList<Parameter> parameters = new ArrayList<Parameter>();
 	
@@ -43,7 +41,6 @@ public class Node extends Container implements PropertyChangeListener, INode {
 	}
 	
 	public Node(Control control) {
-		control.addPropertyChangeListener(this);
 		this.control = control;
 		
 		setFillColour(control.getFillColour().getCopy());
@@ -122,11 +119,6 @@ public class Node extends Container implements PropertyChangeListener, INode {
 			if (p.getName().equals(name))
 				return p;
 		return null;
-	}
-	
-	@Override
-	public void propertyChange(PropertyChangeEvent arg) {
-		System.out.println(this + ": unexpected property change notification of type " + arg.getPropertyName());
 	}
 	
 	private PointList fittedPolygon = null;
