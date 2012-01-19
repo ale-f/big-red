@@ -239,10 +239,26 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	public Bigraph clone(Map<ModelObject, ModelObject> m) {
 		if (m == null)
 			m = new HashMap<ModelObject, ModelObject>();
-		Bigraph b = (Bigraph)super.clone(m);
+		Bigraph b = (Bigraph)newInstance();
 		
 		b.setFile(getFile());
-		b.setSignature(getSignature().clone(null));
+		b.setSignature(getSignature().clone(m));
+		
+		/* ModelObject.clone */
+		if (m != null)
+			m.put(this, b);
+		
+		/* Colourable.clone */
+		b.setFillColour(getFillColour().getCopy());
+		b.setOutlineColour(getOutlineColour().getCopy());
+		
+		/* Layoutable.clone */
+		b.setLayout(getLayout().getCopy());
+		b.setComment(getComment());
+		
+		/* Container.clone */
+		for (Layoutable child : getChildren())
+			b.addChild(child.clone(m));
 		
 		for (Link i : Lists.only(getChildren(), Link.class)) {
 			Link iClone = (Link)m.get(i);
@@ -275,11 +291,14 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	}
 	
 	public void setSignature(Signature signature) {
-		if (this.signature != null)
+		if (this.signature != null) {
+			System.out.println("rUL(" + this.signature.getFile() + ", " + this + ")");
 			RedPlugin.getObjectService().
 				removeUpdateListener(this.signature.getFile(), this);
+		}
 		this.signature = signature;
 		if (signature != null) {
+			System.out.println("aUL(" + this.signature.getFile() + ", " + this + ")");
 			RedPlugin.getObjectService().
 				addUpdateListener(this.signature.getFile(), this);
 		}
@@ -534,8 +553,10 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		for (Layoutable l : c.getChildren()) {
 			if (l instanceof Node) {
 				Node n = (Node)l;
-				Control oldControl = n.getControl();
-				n.setControl(newSignature.getControl(oldControl.getName()));
+				Control oldControl = n.getControl(),
+					newControl = newSignature.getControl(oldControl.getName());
+				n.setControl(newControl);
+				System.out.println(l + ": " + oldControl + " -> " + newControl);
 			}
 			if (l instanceof Container)
 				recursiveNodeUpdate(newSignature, (Container)l);
@@ -552,5 +573,16 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 				(Signature)RedPlugin.getObjectService().getObject(identifier);
 			recursiveNodeUpdate(signature, this);
 		}
+	}
+	
+	@Override
+	public void dispose() {
+		if (signature.getFile() != null)
+			RedPlugin.getObjectService().removeUpdateListener(
+					signature.getFile(), this);
+		signature.dispose();
+		signature = null;
+		
+		super.dispose();
 	}
 }
