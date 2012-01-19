@@ -198,4 +198,13 @@ public abstract class Container extends Layoutable {
 			return getChildren();
 		} else return super.getProperty(name);
 	}
+	
+	@Override
+	public void dispose() {
+		for (Layoutable i : children)
+			i.dispose();
+		children.clear();
+		
+		super.dispose();
+	}
 }

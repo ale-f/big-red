@@ -113,7 +113,7 @@ public class Signature extends ModelObject implements ISignature, IChangeable, I
 		for (Control c : getControls())
 			c.dispose();
 		getControls().clear();
-		
+		controls = null;
 		file = null;
 		validator = null;
 		

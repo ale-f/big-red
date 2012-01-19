@@ -257,4 +257,12 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	public UserControl getUserControl() {
 		return UserControl.NONE;
 	}
+	
+	@Override
+	public void dispose() {
+		name = null;
+		parent = null;
+		
+		super.dispose();
+	}
 }

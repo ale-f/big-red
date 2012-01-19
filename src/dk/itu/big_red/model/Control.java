@@ -459,8 +459,10 @@ public class Control extends Colourable implements IControl {
 			parameters = null;
 		}
 		
-		points.removeAllPoints();
-		points = null;
+		if (points != null) {
+			points.removeAllPoints();
+			points = null;
+		}
 		
 		super.dispose();
 	}
