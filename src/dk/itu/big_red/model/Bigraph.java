@@ -242,7 +242,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		Bigraph b = (Bigraph)super.clone(m);
 		
 		b.setFile(getFile());
-		b.setSignature(getSignature());
+		b.setSignature(getSignature().clone(null));
 		
 		for (Link i : Lists.only(getChildren(), Link.class)) {
 			Link iClone = (Link)m.get(i);
@@ -278,8 +278,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		if (this.signature != null)
 			RedPlugin.getObjectService().
 				removeUpdateListener(this.signature.getFile(), this);
+		this.signature = signature;
 		if (signature != null) {
-			this.signature = signature;
 			RedPlugin.getObjectService().
 				addUpdateListener(this.signature.getFile(), this);
 		}
@@ -547,6 +547,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		if (identifier.equals(signature.getFile())) {
 			System.out.println(this + " re-syncing signature");
 			/* Bypass the checking performed in setSignature */
+			signature.dispose();
 			signature =
 				(Signature)RedPlugin.getObjectService().getObject(identifier);
 			recursiveNodeUpdate(signature, this);
