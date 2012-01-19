@@ -556,7 +556,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 				Control oldControl = n.getControl(),
 					newControl = newSignature.getControl(oldControl.getName());
 				n.setControl(newControl);
-				System.out.println(l + ": " + oldControl + " -> " + newControl);
 			}
 			if (l instanceof Container)
 				recursiveNodeUpdate(newSignature, (Container)l);
@@ -568,10 +567,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		if (identifier.equals(signature.getFile())) {
 			System.out.println(this + " re-syncing signature");
 			/* Bypass the checking performed in setSignature */
-			signature.dispose();
+			Signature oldSignature = signature;
 			signature =
 				(Signature)RedPlugin.getObjectService().getObject(identifier);
 			recursiveNodeUpdate(signature, this);
+			oldSignature.dispose();
 		}
 	}
 	
