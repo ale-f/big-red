@@ -253,7 +253,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		b.setOutlineColour(getOutlineColour().getCopy());
 		
 		/* Layoutable.clone */
-		b.setLayout(getLayout().getCopy());
+		b.setLayout(null);
 		b.setComment(getComment());
 		
 		/* Container.clone */
@@ -315,7 +315,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	
 	@Override
 	public Rectangle getLayout() {
-		return new Rectangle(0, 0, 1000000000, 1000000000);
+		return null;
 	}
 	
 	@Override
@@ -330,7 +330,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	
 	@Override
 	public Rectangle getRootLayout() {
-		return getLayout();
+		return new Rectangle();
 	}
 	
 	@Override
