@@ -2,6 +2,8 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.util.ArrayList;
 import java.util.EventObject;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
@@ -28,11 +30,13 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -277,12 +281,23 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	
 	@Override
 	public boolean isSaveAsAllowed() {
-		return false;
+		return true;
 	}
 	
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
+		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
+		d.setBlockOnOpen(true);
+		if (d.open() == Dialog.OK) {
+			IFile f = Project.getWorkspaceFile(d.getResult());
+			getModel().setFile(f);
+			
+			FileEditorInput i = new FileEditorInput(f);
+			setInputWithNotify(i);
+			setPartName(i.getName());
+			
+			doSave(null);
+		}
 	}
 	
 	@Override
