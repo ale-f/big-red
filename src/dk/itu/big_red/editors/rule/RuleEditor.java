@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.DefaultEditDomain;
@@ -25,6 +26,7 @@ import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -41,6 +43,7 @@ import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
@@ -176,8 +179,18 @@ public class RuleEditor extends AbstractEditor implements
 
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
-		
+		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
+		d.setBlockOnOpen(true);
+		if (d.open() == Dialog.OK) {
+			IFile f = Project.getWorkspaceFile(d.getResult());
+			getModel().setFile(f);
+			
+			FileEditorInput i = new FileEditorInput(f);
+			setInputWithNotify(i);
+			setPartName(i.getName());
+			
+			doSave(null);
+		}
 	}
 
 	@Override
@@ -197,8 +210,7 @@ public class RuleEditor extends AbstractEditor implements
 
 	@Override
 	public boolean isSaveAsAllowed() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	private Composite parent, self;

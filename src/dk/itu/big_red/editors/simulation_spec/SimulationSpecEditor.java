@@ -28,6 +28,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -80,8 +81,18 @@ public class SimulationSpecEditor extends AbstractEditor implements IUndoImpleme
 
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
-
+		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
+		d.setBlockOnOpen(true);
+		if (d.open() == Dialog.OK) {
+			IFile f = Project.getWorkspaceFile(d.getResult());
+			getModel().setFile(f);
+			
+			FileEditorInput i = new FileEditorInput(f);
+			setInputWithNotify(i);
+			setPartName(i.getName());
+			
+			doSave(null);
+		}
 	}
 
 	@Override
@@ -220,8 +231,7 @@ public class SimulationSpecEditor extends AbstractEditor implements IUndoImpleme
 	
 	@Override
 	public boolean isSaveAsAllowed() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")

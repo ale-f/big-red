@@ -2,9 +2,12 @@ package dk.itu.big_red.editors.signature;
 
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -32,6 +35,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -67,11 +71,11 @@ implements ISelectionListener, PropertyChangeListener {
         	FileEditorInput i = (FileEditorInput)getEditorInput();
         	SignatureXMLExport ex = new SignatureXMLExport();
         	
-        	ex.setModel(model).setOutputStream(io.getOutputStream()).
+        	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).
         		exportObject();
         	Project.setContents(i.getFile(), io.getInputStream());
         	
-        	RedPlugin.getObjectService().setObject(i.getFile(), model);
+        	RedPlugin.getObjectService().setObject(i.getFile(), getModel());
     		setDirty(false);
         } catch (Exception ex) {
         	if (monitor != null)
@@ -82,8 +86,18 @@ implements ISelectionListener, PropertyChangeListener {
 
 	@Override
 	public void doSaveAs() {
-		// TODO Auto-generated method stub
-
+		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
+		d.setBlockOnOpen(true);
+		if (d.open() == Dialog.OK) {
+			IFile f = Project.getWorkspaceFile(d.getResult());
+			getModel().setFile(f);
+			
+			FileEditorInput i = new FileEditorInput(f);
+			setInputWithNotify(i);
+			setPartName(i.getName());
+			
+			doSave(null);
+		}
 	}
 
 	@Override
@@ -111,11 +125,14 @@ implements ISelectionListener, PropertyChangeListener {
 
 	@Override
 	public boolean isSaveAsAllowed() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	private Signature model = null;
+	
+	protected Signature getModel() {
+		return model;
+	}
 	
 	private dk.itu.big_red.model.Control currentControl;
 	
@@ -238,7 +255,7 @@ implements ISelectionListener, PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Control c = new Control();
-				model.addControl(c);
+				getModel().addControl(c);
 				currentControlItem =
 					UI.data(new TreeItem(controls, SWT.NONE), controlKey, c);
 				setControl(c);
@@ -262,7 +279,7 @@ implements ISelectionListener, PropertyChangeListener {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				model.removeControl(currentControl);
+				getModel().removeControl(currentControl);
 				currentControlItem.dispose();
 				
 				if (controls.getItemCount() > 0) {
@@ -470,7 +487,7 @@ implements ISelectionListener, PropertyChangeListener {
 				if (!shouldPropagateUI())
 					return;
 				try {
-					model.tryApplyChange(
+					getModel().tryApplyChange(
 							currentControl.changeOutlineColour(
 									new Colour(outline.getColorValue())));
 				} catch (ChangeRejectedException cre) {
@@ -488,7 +505,7 @@ implements ISelectionListener, PropertyChangeListener {
 				if (!shouldPropagateUI())
 					return;
 				try {
-					model.tryApplyChange(
+					getModel().tryApplyChange(
 							currentControl.changeFillColour(
 									new Colour(fill.getColorValue())));
 				} catch (ChangeRejectedException cre) {
@@ -525,7 +542,7 @@ implements ISelectionListener, PropertyChangeListener {
 			}
 		}
 		
-		for (dk.itu.big_red.model.Control c : model.getControls())
+		for (dk.itu.big_red.model.Control c : getModel().getControls())
 			UI.data(new TreeItem(controls, 0), controlKey, c).setText(c.getName());
 	}
 
@@ -584,7 +601,7 @@ implements ISelectionListener, PropertyChangeListener {
 
 	@Override
 	public void dispose() {
-		model.dispose();
+		getModel().dispose();
 	}
 	
 	@Override
