@@ -185,10 +185,7 @@ public class RuleEditor extends AbstractEditor implements
 			IFile f = Project.getWorkspaceFile(d.getResult());
 			getModel().setFile(f);
 			
-			FileEditorInput i = new FileEditorInput(f);
-			setInputWithNotify(i);
-			setPartName(i.getName());
-			
+			setInputWithNotify(new FileEditorInput(f));
 			doSave(null);
 		}
 	}
@@ -200,7 +197,7 @@ public class RuleEditor extends AbstractEditor implements
 		reactumViewer = new ScrollingGraphicalViewer();
 		
 		setSite(site);
-		setInput(input);
+		setInputWithNotify(input);
 	}
 
 	@Override
@@ -315,9 +312,7 @@ public class RuleEditor extends AbstractEditor implements
 	
 	protected void loadInput() {
 		IEditorInput input = getEditorInput();
-		setPartName(input.getName());
-		
-	    if (input instanceof FileEditorInput) {
+		if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
 	    		setModel(ReactionRuleXMLImport.importFile(fi.getFile()));

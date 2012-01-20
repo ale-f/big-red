@@ -5,6 +5,7 @@ import java.util.List;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.EditorPart;
 
 public abstract class AbstractEditor extends EditorPart {
@@ -81,4 +82,10 @@ public abstract class AbstractEditor extends EditorPart {
 	 * ActionRegistry}.
 	 */
 	protected abstract void createActions();
+	
+	@Override
+	protected void setInputWithNotify(IEditorInput input) {
+		super.setInputWithNotify(input);
+		setPartName(input.getName());
+	}
 }

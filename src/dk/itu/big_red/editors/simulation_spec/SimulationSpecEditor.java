@@ -87,10 +87,7 @@ public class SimulationSpecEditor extends AbstractEditor implements IUndoImpleme
 			IFile f = Project.getWorkspaceFile(d.getResult());
 			getModel().setFile(f);
 			
-			FileEditorInput i = new FileEditorInput(f);
-			setInputWithNotify(i);
-			setPartName(i.getName());
-			
+			setInputWithNotify(new FileEditorInput(f));
 			doSave(null);
 		}
 	}
@@ -164,8 +161,6 @@ public class SimulationSpecEditor extends AbstractEditor implements IUndoImpleme
 	
 	protected void initialiseSimulationSpecEditor() {
 		IEditorInput input = getEditorInput();
-		setPartName(input.getName());
-		
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {

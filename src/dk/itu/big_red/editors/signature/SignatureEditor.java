@@ -92,10 +92,7 @@ implements ISelectionListener, PropertyChangeListener {
 			IFile f = Project.getWorkspaceFile(d.getResult());
 			getModel().setFile(f);
 			
-			FileEditorInput i = new FileEditorInput(f);
-			setInputWithNotify(i);
-			setPartName(i.getName());
-			
+			setInputWithNotify(new FileEditorInput(f));
 			doSave(null);
 		}
 	}
@@ -104,8 +101,7 @@ implements ISelectionListener, PropertyChangeListener {
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		setSite(site);
-		setInput(input);
-		firePropertyChange(IWorkbenchPartConstants.PROP_INPUT);
+		setInputWithNotify(input);
 		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 	}
 
@@ -530,8 +526,6 @@ implements ISelectionListener, PropertyChangeListener {
 	
 	private void initialiseSignatureEditor() {
 		IEditorInput input = getEditorInput();
-		setPartName(input.getName());
-		
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
