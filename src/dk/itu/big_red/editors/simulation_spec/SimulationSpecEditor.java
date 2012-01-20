@@ -32,6 +32,8 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
+import dk.itu.big_red.editors.assistants.UndoProxyAction;
+import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.ImportFailedException;
@@ -56,7 +58,7 @@ import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class SimulationSpecEditor extends AbstractEditor {
+public class SimulationSpecEditor extends AbstractEditor implements IUndoImplementor {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -93,7 +95,8 @@ public class SimulationSpecEditor extends AbstractEditor {
 			undoBuffer = new ArrayDeque<Change>(),
 			redoBuffer = new ArrayDeque<Change>();
 	
-	private boolean canUndo() {
+	@Override
+	public boolean canUndo() {
 		return (undoBuffer.size() != 0);
 	}
 	
@@ -110,9 +113,11 @@ public class SimulationSpecEditor extends AbstractEditor {
 		} catch (ChangeRejectedException cre) {
 			cre.killVM();
 		}
+		updateActions(stackActions);
 	}
 	
-	private void undo() {
+	@Override
+	public void undo() {
 		try {
 			if (!canUndo())
 				return;
@@ -123,6 +128,7 @@ public class SimulationSpecEditor extends AbstractEditor {
 			/* should never happen */
 			cre.killVM();
 		}
+		updateActions(stackActions);
 	}
 	
 	private void redo() {
@@ -134,6 +140,7 @@ public class SimulationSpecEditor extends AbstractEditor {
 			/* should never happen */
 			cre.killVM();
 		}
+		updateActions(stackActions);
 	}
 	
 	private SimulationSpec model = null;
@@ -410,6 +417,8 @@ public class SimulationSpecEditor extends AbstractEditor {
 	@Override
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
+		
+		registerActions(registry, stackActions, new UndoProxyAction(this));
 	}
 	
 	@Override
