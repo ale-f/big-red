@@ -211,8 +211,25 @@ public class Project {
 				one.getProject().equals(two.getProject()));
 	}
 	
+	public static IFile getWorkspaceFile(IPath p) {
+		return getWorkspaceRoot().getFile(p);
+	}
+	
+	public static IFolder getWorkspaceFolder(IPath p) {
+		return getWorkspaceRoot().getFolder(p);
+	}
+	
+	/**
+	 * Sets the contents of the given {@link IFile} (which need not already
+	 * exist).
+	 * @param file an {@link IFile}
+	 * @param contents an {@link InputStream} specifying its contents
+	 * @throws CoreException if the file couldn't be created or modified
+	 */
 	public static void setContents(IFile file, InputStream contents) throws CoreException {
-		file.setContents(contents, 0, null);
+		if (file.exists()) {
+			file.setContents(contents, 0, null);
+		} else file.create(contents, 0, null);
 	}
 	
 	public static IPath getRelativePath(IResource relativeTo, IResource resource) {
