@@ -33,7 +33,9 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
+import dk.itu.big_red.editors.assistants.RedoProxyAction;
 import dk.itu.big_red.editors.assistants.UndoProxyAction;
+import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
@@ -59,8 +61,8 @@ import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class SimulationSpecEditor extends AbstractEditor implements IUndoImplementor {
-
+public class SimulationSpecEditor extends AbstractEditor
+implements IUndoImplementor, IRedoImplementor {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		try {
@@ -108,7 +110,8 @@ public class SimulationSpecEditor extends AbstractEditor implements IUndoImpleme
 		return (undoBuffer.size() != 0);
 	}
 	
-	private boolean canRedo() {
+	@Override
+	public boolean canRedo() {
 		return (redoBuffer.size() != 0);
 	}
 	
@@ -139,7 +142,8 @@ public class SimulationSpecEditor extends AbstractEditor implements IUndoImpleme
 		updateActions(stackActions);
 	}
 	
-	private void redo() {
+	@Override
+	public void redo() {
 		try {
 			if (!canRedo())
 				return;
@@ -423,7 +427,8 @@ public class SimulationSpecEditor extends AbstractEditor implements IUndoImpleme
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
 		
-		registerActions(registry, stackActions, new UndoProxyAction(this));
+		registerActions(registry, stackActions,
+				new UndoProxyAction(this), new RedoProxyAction(this));
 	}
 	
 	@Override
