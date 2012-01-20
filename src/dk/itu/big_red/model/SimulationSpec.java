@@ -85,10 +85,16 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		}
 	}
 	
+	public static final String PROPERTY_SIGNATURE = "SimulationSpecSignature";
+	public static final String PROPERTY_RULE = "SimulationSpecRule";
+	public static final String PROPERTY_MODEL = "SimulationSpecModel";
+	
 	private Signature signature;
 	
 	protected SimulationSpec setSignature(Signature signature) {
+		Signature oldSignature = this.signature;
 		this.signature = signature;
+		firePropertyChange(PROPERTY_SIGNATURE, oldSignature, signature);
 		return this;
 	}
 	
@@ -100,11 +106,13 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 	
 	protected SimulationSpec addRule(ReactionRule r) {
 		getRules().add(r);
+		firePropertyChange(PROPERTY_RULE, null, r);
 		return this;
 	}
 	
 	protected SimulationSpec removeRule(ReactionRule r) {
 		getRules().remove(r);
+		firePropertyChange(PROPERTY_RULE, r, null);
 		return this;
 	}
 	
@@ -115,7 +123,9 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 	private Bigraph model;
 	
 	protected SimulationSpec setModel(Bigraph model) {
+		Bigraph oldModel = this.model;
 		this.model = model;
+		firePropertyChange(PROPERTY_MODEL, oldModel, model);
 		return this;
 	}
 	
