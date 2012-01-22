@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors.simulation_spec;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +64,7 @@ import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractEditor
-implements IUndoImplementor, IRedoImplementor {
+implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		try {
@@ -187,6 +189,7 @@ implements IUndoImplementor, IRedoImplementor {
 		if (model == null)
 			model = new SimulationSpec();
 		
+		model.addPropertyChangeListener(this);
 		modelToControls();
 	}
 	
@@ -441,5 +444,28 @@ implements IUndoImplementor, IRedoImplementor {
 	public void setFocus() {
 		// TODO Auto-generated method stub
 		UI.getWorkbenchPage().activate(this);
+	}
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getSource() != getModel() || uiUpdateInProgress)
+			return;
+		uiUpdateInProgress = true;
+		try {
+			String propertyName = evt.getPropertyName();
+			Object newValue = evt.getNewValue();
+			uiUpdateInProgress = true;
+			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
+				Signature s = (Signature)newValue;
+				signatureSelector.setResource(s.getFile());
+			} else if (propertyName.equals(SimulationSpec.PROPERTY_RULE)) {
+				
+			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
+				Bigraph b = (Bigraph)newValue;
+				modelSelector.setResource(b.getFile());
+			}
+		} finally {
+			uiUpdateInProgress = false;
+		}
 	}
 }
