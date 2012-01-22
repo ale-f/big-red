@@ -37,6 +37,12 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		public Change inverse() {
 			return getCreator().changeSignature(oldSignature);
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(set signature of " + getCreator() +
+					" to " + signature + ")";
+		}
 	}
 	
 	public class ChangeAddRule extends SimulationSpecChange {
@@ -50,6 +56,12 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		public Change inverse() {
 			return getCreator().changeRemoveRule(rule);
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(add reaction rule " + rule + " to " +
+					getCreator() + ")";
+		}
 	}
 	
 	public class ChangeRemoveRule extends SimulationSpecChange {
@@ -62,6 +74,12 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		@Override
 		public Change inverse() {
 			return getCreator().changeAddRule(rule);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove reaction rule " + rule + " from " +
+					getCreator() + ")";
 		}
 	}
 	
@@ -82,6 +100,12 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		@Override
 		public Change inverse() {
 			return getCreator().changeModel(oldModel);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set signature of " + getCreator() +
+					" to " + model + ")";
 		}
 	}
 	
