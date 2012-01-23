@@ -460,12 +460,12 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			uiUpdateInProgress = true;
 			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
 				Signature s = (Signature)newValue;
-				signatureSelector.setResource(s.getFile());
+				signatureSelector.setResource((s != null ? s.getFile() : null));
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_RULE)) {
 				
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
 				Bigraph b = (Bigraph)newValue;
-				modelSelector.setResource(b.getFile());
+				modelSelector.setResource((b != null ? b.getFile() : null));
 			}
 		} finally {
 			uiUpdateInProgress = false;
