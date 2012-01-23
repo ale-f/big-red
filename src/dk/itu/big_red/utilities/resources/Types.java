@@ -1,9 +1,7 @@
 package dk.itu.big_red.utilities.resources;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
@@ -37,20 +35,10 @@ public class Types {
 	 * @return an IContentType
 	 */
 	public static IContentType findContentTypeFor(IFile file) {
-		InputStream is = null;
 		try {
-			is = file.getContents();
-			return getContentTypeManager().findContentTypeFor(is, file.getName());
-		} catch (Exception e) {
-			/* do nothing */
-		} finally {
-			try {
-				if (is != null)
-					is.close();
-			} catch (IOException e) {
-				/* do nothing */
-			}
+			return file.getContentDescription().getContentType();
+		} catch (CoreException e) {
+			return null;
 		}
-		return null;
 	}
 }
