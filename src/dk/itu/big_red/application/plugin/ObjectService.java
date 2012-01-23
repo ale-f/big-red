@@ -8,6 +8,19 @@ import org.eclipse.ui.services.IDisposable;
 
 import dk.itu.big_red.utilities.ISafeCloneable;
 
+/**
+ * The {@link ObjectService} is a map which:
+ * <ul>
+ * <li>performs deep copies of the objects inserted into, and retrieved from,
+ * it; and
+ * <li>sends notifications when its values change.
+ * </ul>
+ * <p>It's used to maintain a plugin-wide cache of model objects, and to make
+ * sure that editors are notified when model objects change.
+ * @author alec
+ * @see RedPlugin#getObjectService()
+ *
+ */
 public class ObjectService {
 	public static interface UpdateListener {
 		public void objectUpdated(Object identifier);

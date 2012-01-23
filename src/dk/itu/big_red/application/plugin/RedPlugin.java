@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Random;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -15,6 +16,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+
+import dk.itu.big_red.application.plugin.ObjectService.UpdateListener;
+import dk.itu.big_red.utilities.ISafeCloneable;
 
 /**
  * The RedPlugin class is responsible for starting and stopping the Big Red
@@ -119,6 +123,14 @@ public class RedPlugin extends AbstractUIPlugin {
 	
 	private static ObjectService m = null;
 	
+	/**
+	 * Returns Big Red's {@link ObjectService}. Model objects are identified
+	 * in the {@link ObjectService} by their {@link IFile}.
+	 * @return the Big Red-wide {@link ObjectService}
+	 * @see ObjectService#getObject(Object)
+	 * @see ObjectService#setObject(Object, ISafeCloneable)
+	 * @see ObjectService#addUpdateListener(Object, UpdateListener)
+	 */
 	public static ObjectService getObjectService() {
 		if (m == null)
 			m = new ObjectService();
