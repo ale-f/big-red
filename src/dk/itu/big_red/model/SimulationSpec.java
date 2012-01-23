@@ -104,7 +104,7 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		
 		@Override
 		public String toString() {
-			return "Change(set signature of " + getCreator() +
+			return "Change(set model of " + getCreator() +
 					" to " + model + ")";
 		}
 	}
