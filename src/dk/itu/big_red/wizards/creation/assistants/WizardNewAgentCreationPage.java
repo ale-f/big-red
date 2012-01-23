@@ -115,7 +115,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 				ResourceTreeSelectionDialog d =
 					new ResourceTreeSelectionDialog(getShell(),
 						Project.getWorkspaceRoot(),
-						Mode.FILE, "dk.itu.big_red.signature");
+						Mode.FILE, Types.SIGNATURE_XML);
 				if (signaturePath != null)
 					d.setInitialSelection(Project.findFileByPath(null, signaturePath));
 				d.setMessage("Select a signature file.");
@@ -207,7 +207,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 			return false;
 		} else {
 			IContentType t = Types.findContentTypeFor((IFile)signature);
-			if (t == null || !t.getId().equals("dk.itu.big_red.signature")) {
+			if (t == null || !t.getId().equals(Types.SIGNATURE_XML)) {
 				setErrorMessage("'" + sT + "' must be a signature.");
 				return false;
 			}

@@ -57,6 +57,7 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
+import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
@@ -293,7 +294,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		UI.newLabel(base, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		signatureSelector = new ResourceSelector(base,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
-			Mode.FILE, "dk.itu.big_red.signature");
+			Mode.FILE, Types.SIGNATURE_XML);
 		signatureSelector.getButton().setLayoutData(
 			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		signatureSelector.addListener(new ResourceListener() {
@@ -336,7 +337,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 					new ResourceTreeSelectionDialog(
 						getSite().getShell(),
 						((FileEditorInput)getEditorInput()).getFile().getProject(),
-						Mode.FILE, "dk.itu.big_red.rule");
+						Mode.FILE, Types.RULE_XML);
 				rtsd.setBlockOnOpen(true);
 				if (rtsd.open() == Dialog.OK) {
 					IFile f = (IFile)rtsd.getFirstResult();
@@ -366,7 +367,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		modelSelector = new ResourceSelector(base,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
-			Mode.FILE, "dk.itu.big_red.bigraph");
+			Mode.FILE, Types.BIGRAPH_XML);
 		modelSelector.getButton().setLayoutData(
 			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		modelSelector.addListener(new ResourceListener() {

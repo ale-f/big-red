@@ -12,6 +12,11 @@ import org.eclipse.core.runtime.content.IContentTypeManager;
  *
  */
 public class Types {
+	public static final String BIGRAPH_XML = "dk.itu.big_red.bigraph";
+	public static final String SIGNATURE_XML = "dk.itu.big_red.signature";
+	public static final String RULE_XML = "dk.itu.big_red.rule";
+	public static final String SIMULATION_SPEC_XML = "dk.itu.big_red.simulation_spec";
+	
 	/**
 	 * Gets the content type manager.
 	 * @return the content type manager
