@@ -245,8 +245,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		b.setSignature(getSignature().clone(m));
 		
 		/* ModelObject.clone */
-		if (m != null)
-			m.put(this, b);
+		m.put(this, b);
+		b.setComment(getComment());
 		
 		/* Colourable.clone */
 		b.setFillColour(getFillColour().getCopy());
@@ -254,7 +254,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		
 		/* Layoutable.clone */
 		b.setLayout(null);
-		b.setComment(getComment());
 		
 		/* Container.clone */
 		for (Layoutable child : getChildren())

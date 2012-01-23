@@ -195,7 +195,6 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	public Layoutable clone(Map<ModelObject, ModelObject> m) {
 		Layoutable l = (Layoutable)super.clone(m);
 		l.setLayout(getLayout().getCopy());
-		l.setComment(getComment());
 		return l;
 	}
 	

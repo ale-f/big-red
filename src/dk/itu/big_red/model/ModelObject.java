@@ -120,6 +120,7 @@ public class ModelObject implements ISafeCloneable, IDisposable {
 		ModelObject i = newInstance();
 		if (m != null)
 			m.put(this, i);
+		i.setComment(getComment());
 		return i;
 	}
 	
