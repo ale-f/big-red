@@ -334,6 +334,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	@Override
 	public void dispose() {
 		getModel().dispose();
+		super.dispose();
 	}
 	
 	@Override

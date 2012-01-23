@@ -596,6 +596,7 @@ implements ISelectionListener, PropertyChangeListener {
 	@Override
 	public void dispose() {
 		getModel().dispose();
+		super.dispose();
 	}
 	
 	@Override

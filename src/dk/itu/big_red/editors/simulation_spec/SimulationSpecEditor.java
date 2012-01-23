@@ -480,4 +480,10 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			uiUpdateInProgress = false;
 		}
 	}
+	
+	@Override
+	public void dispose() {
+		getModel().dispose();
+		super.dispose();
+	}
 }

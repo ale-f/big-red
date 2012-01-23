@@ -547,4 +547,10 @@ public class RuleEditor extends AbstractEditor implements
 			return getCommandStack();
 		} else return super.getAdapter(adapter);
 	}
+	
+	@Override
+	public void dispose() {
+		getModel().dispose();
+		super.dispose();
+	}
 }
