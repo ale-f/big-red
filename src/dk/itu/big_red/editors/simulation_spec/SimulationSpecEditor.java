@@ -343,11 +343,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 					try {
 						ReactionRule r = ReactionRuleXMLImport.importFile(f);
 						doChange(model.changeAddRule(r));
-						
-						TreeItem t = UI.data(
-								new TreeItem(rules, SWT.NONE),
-								"associatedRule", r);
-						t.setText(f.getProjectRelativePath().toString());
 					} catch (ImportFailedException ife) {
 						ife.printStackTrace();
 					}
@@ -364,7 +359,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 					ReactionRule rr =
 							(ReactionRule)UI.data(i, "associatedRule");
 					doChange(getModel().changeRemoveRule(rr));
-					UI.data(i, "associatedRule", null).dispose();
 				}
 			}
 		});
@@ -456,13 +450,28 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		uiUpdateInProgress = true;
 		try {
 			String propertyName = evt.getPropertyName();
-			Object newValue = evt.getNewValue();
+			Object oldValue = evt.getOldValue(),
+					newValue = evt.getNewValue();
 			uiUpdateInProgress = true;
 			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
 				Signature s = (Signature)newValue;
 				signatureSelector.setResource((s != null ? s.getFile() : null));
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_RULE)) {
-				
+				if (oldValue == null && newValue != null) { /* added */
+					ReactionRule r = (ReactionRule)newValue;
+					TreeItem t = UI.data(
+							new TreeItem(rules, SWT.NONE),
+							"associatedRule", r);
+					t.setText(r.getFile().getProjectRelativePath().toString());
+				} else if (oldValue != null && newValue == null) { /* removed */
+					ReactionRule r = (ReactionRule)oldValue;
+					for (TreeItem i : rules.getItems()) {
+						if (r.equals(UI.data(i, "associatedRule"))) {
+							UI.data(i, "associatedRule", null).dispose();
+							break;
+						}
+					}
+				}
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
 				Bigraph b = (Bigraph)newValue;
 				modelSelector.setResource((b != null ? b.getFile() : null));
