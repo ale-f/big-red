@@ -26,7 +26,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
@@ -75,7 +74,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
         	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
         	Project.setContents(i.getFile(), io.getInputStream());
         	
-    		fireDirt(false);
+    		savePoint = undoBuffer.peek();
+    		checkDirt();
         } catch (Exception ex) {
         	if (monitor != null)
         		monitor.setCanceled(true);
@@ -103,6 +103,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		setInputWithNotify(input);
 	}
 
+	private Change savePoint = null;
 	private ArrayDeque<Change>
 			undoBuffer = new ArrayDeque<Change>(),
 			redoBuffer = new ArrayDeque<Change>();
@@ -122,10 +123,10 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			model.tryApplyChange(c);
 			redoBuffer.clear();
 			undoBuffer.push(c);
-			fireDirt(true);
 		} catch (ChangeRejectedException cre) {
 			cre.killVM();
 		}
+		checkDirt();
 		updateActions(stackActions);
 	}
 	
@@ -134,13 +135,14 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		try {
 			if (!canUndo())
 				return;
-			Change c = undoBuffer.pop();
+			Change c;
+			redoBuffer.push(c = undoBuffer.pop());
 			model.tryApplyChange(c.inverse());
-			redoBuffer.push(c);
 		} catch (ChangeRejectedException cre) {
 			/* should never happen */
 			cre.killVM();
 		}
+		checkDirt();
 		updateActions(stackActions);
 	}
 	
@@ -149,12 +151,23 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		try {
 			if (!canRedo())
 				return;
-			model.tryApplyChange(redoBuffer.pop());
+			Change c;
+			model.tryApplyChange(c = redoBuffer.pop());
+			undoBuffer.push(c);
 		} catch (ChangeRejectedException cre) {
 			/* should never happen */
 			cre.killVM();
 		}
+		checkDirt();
 		updateActions(stackActions);
+	}
+	
+	private void checkDirt() {
+		boolean newDirty = (undoBuffer.peek() != savePoint);
+		if (newDirty != dirty) {
+			dirty = newDirty;
+			firePropertyChange(PROP_DIRTY);
+		}
 	}
 	
 	private SimulationSpec model = null;
@@ -219,16 +232,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	@Override
 	public boolean isDirty() {
 		return dirty;
-	}
-
-	/**
-	 * Fire!
-	 */
-	private void fireDirt(boolean dirty) {
-		if (this.dirty != dirty) {
-			this.dirty = dirty;
-			firePropertyChange(IEditorPart.PROP_DIRTY);
-		}
 	}
 	
 	@Override
