@@ -253,7 +253,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		Map<String, IConfigurationElement> exporters =
 				new HashMap<String, IConfigurationElement>();
 		for (IConfigurationElement ce :
-		     RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export")) {
+		     RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals(SimulationSpec.class.getCanonicalName()))
 				exporters.put(ce.getAttribute("name"), ce);

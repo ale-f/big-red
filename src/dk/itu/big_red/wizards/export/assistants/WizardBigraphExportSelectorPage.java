@@ -15,6 +15,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.utilities.ui.UI;
 import dk.itu.big_red.wizards.export.BigraphExportWizard;
 
@@ -82,7 +83,7 @@ public class WizardBigraphExportSelectorPage extends WizardPage {
 				return null;
 			}
 		});
-		tree.setInput(RedPlugin.getConfigurationElementsFor("dk.itu.big_red.export"));
+		tree.setInput(RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT));
 		tree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		tree.addSelectionChangedListener(new ISelectionChangedListener() {

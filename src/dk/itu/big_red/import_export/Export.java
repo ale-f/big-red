@@ -23,6 +23,8 @@ import org.eclipse.draw2d.IFigure;
  *
  */
 public abstract class Export<T> {
+	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
+	
 	public static class OptionDescriptor {
 		private String id, description;
 		
