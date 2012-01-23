@@ -52,6 +52,14 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 		return this;
 	}
 	
+	@Override
+	public ReactionRule clone(Map<ModelObject, ModelObject> m) {
+		if (m == null)
+			m = new HashMap<ModelObject, ModelObject>();
+		ReactionRule rr = (ReactionRule)super.clone(m);
+		return rr;
+	}
+	
 	public ChangeGroup getChanges() {
 		if (changes == null)
 			changes = new ChangeGroup();
