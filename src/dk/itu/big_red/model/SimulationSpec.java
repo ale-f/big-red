@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 
@@ -124,6 +125,19 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 	
 	public Signature getSignature() {
 		return signature;
+	}
+	
+	@Override
+	public SimulationSpec clone(Map<ModelObject, ModelObject> m) {
+		SimulationSpec ss = (SimulationSpec)super.clone(m);
+		ss.setFile(getFile());
+		
+		ss.setSignature(getSignature().clone(m));
+		for (ReactionRule r : getRules())
+			ss.addRule(r.clone(m));
+		ss.setModel(getModel().clone(m));
+		
+		return ss;
 	}
 	
 	private ArrayList<ReactionRule> rules = new ArrayList<ReactionRule>();
