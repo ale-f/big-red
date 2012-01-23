@@ -196,7 +196,6 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 	}
 	
 	private void doChange(Change b) {
-		System.out.println(this + ".doChange(" + b + ")");
 		b.beforeApply();
 		if (b instanceof ChangeGroup) {
 			for (Change i : (ChangeGroup)b)

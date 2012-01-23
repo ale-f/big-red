@@ -450,7 +450,6 @@ public class RuleEditor extends AbstractEditor implements
 			
 			reactumChange = reactumSite.changeAlias(ch.alias);
 		}
-		System.out.println(redexChange + "\n\t->" + reactumChange);
 		return reactumChange;
 	}
 	
@@ -471,7 +470,6 @@ public class RuleEditor extends AbstractEditor implements
 		} else ch = c.getChange().inverse();
 		
 		if (target == getRedex()) {
-			System.out.println("Event (" + detail + ") from redex: " + c.getChange());
 			Change reactumChange = createReactumChange(ch);
 			try {
 				getReactum().tryApplyChange(reactumChange);
@@ -479,7 +477,6 @@ public class RuleEditor extends AbstractEditor implements
 				cre.killVM();
 			}
 		} else if (target == getReactum()) {
-			System.out.println("Event (" + detail + ") from reactum: " + c.getChange());
 			getModel().getChanges().add(ch);
 		}
 	}

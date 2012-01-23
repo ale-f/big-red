@@ -292,13 +292,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	
 	public void setSignature(Signature signature) {
 		if (this.signature != null) {
-			System.out.println("rUL(" + this.signature.getFile() + ", " + this + ")");
 			RedPlugin.getObjectService().
 				removeUpdateListener(this.signature.getFile(), this);
 		}
 		this.signature = signature;
 		if (signature != null) {
-			System.out.println("aUL(" + this.signature.getFile() + ", " + this + ")");
 			RedPlugin.getObjectService().
 				addUpdateListener(this.signature.getFile(), this);
 		}
@@ -565,7 +563,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	@Override
 	public void objectUpdated(Object identifier) {
 		if (identifier.equals(signature.getFile())) {
-			System.out.println(this + " re-syncing signature");
 			/* Bypass the checking performed in setSignature */
 			Signature oldSignature = signature;
 			signature =

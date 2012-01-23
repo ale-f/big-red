@@ -402,7 +402,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Export<SimulationSpec> exporter = getExporter(c.getText());
-				System.out.println(exporter);
 				try {
 					IOAdapter io = new IOAdapter();
 					exporter.setModel(getModel()).
