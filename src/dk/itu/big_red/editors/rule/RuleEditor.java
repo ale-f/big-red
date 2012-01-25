@@ -2,8 +2,6 @@ package dk.itu.big_red.editors.rule;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
@@ -62,14 +60,8 @@ import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
@@ -355,104 +347,6 @@ public class RuleEditor extends AbstractEditor implements
 		return editDomain;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private static <V, T> V ac(T x) {
-		return (V)x;
-	}
-	
-	private Change createReactumChange(Change redexChange) {
-		Change reactumChange = null;
-		if (redexChange instanceof ChangeGroup) {
-			ChangeGroup cg_ = (ChangeGroup)redexChange,
-				cg = new ChangeGroup();
-			for (Change i : cg_)
-				cg.add(createReactumChange(i));
-			
-			reactumChange = cg;
-		} else if (redexChange instanceof Container.ChangeAddChild) {
-			Container.ChangeAddChild ch = ac(redexChange);
-			
-			Container reactumParent = getReactumEntity(ch.getCreator());
-			Layoutable reactumChild = getReactumEntity(ch.child);
-			
-			if (reactumParent == null)
-				return null;
-			if (reactumChild == null)
-				reactumChild = ch.child.clone(model.getRedexToReactumMap());
-			
-			/*
-			 * XXX: a BigraphScratchpad should really be used here so that
-			 * ChangeGroups will actually work properly
-			 */
-			String reactumName;
-			Map<String, Layoutable> reactumNamespace =
-				getReactum().getNamespace(Bigraph.getNSI(reactumChild));
-			if (reactumNamespace.get(ch.name) == null) {
-				reactumName = ch.name;
-			} else reactumName = Bigraph.getFirstUnusedName(reactumNamespace);
-			
-			reactumChange =
-				reactumParent.changeAddChild(reactumChild, reactumName);
-		} else if (redexChange instanceof Layoutable.ChangeLayout) {
-			Layoutable.ChangeLayout ch = ac(redexChange);
-			
-			Layoutable reactumModel = getReactumEntity(ch.getCreator());
-			
-			if (reactumModel == null)
-				return null;
-			
-			reactumChange =
-				reactumModel.changeLayout(ch.newLayout.getCopy());
-		} else if (redexChange instanceof Container.ChangeRemoveChild) {
-			Container.ChangeRemoveChild ch = ac(redexChange);
-			
-			Container reactumParent = getReactumEntity(ch.getCreator());
-			Layoutable reactumChild = getReactumEntity(ch.child);
-			
-			if (reactumParent == null || reactumChild == null)
-				return null;
-			
-			reactumChange =
-				reactumParent.changeRemoveChild(reactumChild);
-			model.getRedexToReactumMap().remove(ch.child);
-		} else if (redexChange instanceof Layoutable.ChangeName) {
-			Layoutable.ChangeName ch = ac(redexChange);
-			
-			Layoutable reactumModel = getReactumEntity(ch.getCreator());
-			if (reactumModel == null)
-				return null;
-			
-			reactumChange = reactumModel.changeName(ch.newName);
-		} else if (redexChange instanceof Point.ChangeConnect) {
-			Point.ChangeConnect ch = ac(redexChange);
-			
-			Point reactumPoint = getReactumEntity(ch.getCreator());
-			Link reactumLink = getReactumEntity(ch.link);
-			if (reactumPoint == null || reactumLink == null)
-				return null;
-			
-			reactumChange = reactumPoint.changeConnect(reactumLink);
-		} else if (redexChange instanceof Point.ChangeDisconnect) {
-			Point.ChangeDisconnect ch = ac(redexChange);
-			
-			Point reactumPoint = getReactumEntity(ch.getCreator());
-			Link reactumLink = getReactumEntity(ch.link);
-			if (reactumPoint == null || reactumLink == null)
-				return null;
-			
-			reactumChange = reactumPoint.changeDisconnect(reactumLink);
-		} else if (redexChange instanceof Site.ChangeAlias) {
-			Site.ChangeAlias ch = ac(redexChange);
-			
-			Site reactumSite = getReactumEntity(ch.getCreator());
-			if (reactumSite == null)
-				return null;
-			
-			reactumChange = reactumSite.changeAlias(ch.alias);
-		}
-		return reactumChange;
-	}
-	
 	private Bigraph getRedex() {
 		return (Bigraph)redexViewer.getContents().getModel();
 	}
@@ -470,7 +364,8 @@ public class RuleEditor extends AbstractEditor implements
 		} else ch = c.getChange().inverse();
 		
 		if (target == getRedex()) {
-			Change reactumChange = createReactumChange(ch);
+			Change reactumChange =
+				ReactionRule.translateChange(getModel().getRedexToReactumMap(), ch);
 			try {
 				getReactum().tryApplyChange(reactumChange);
 			} catch (ChangeRejectedException cre) {
