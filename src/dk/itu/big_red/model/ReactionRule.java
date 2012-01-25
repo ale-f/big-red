@@ -166,6 +166,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			m = new HashMap<ModelObject, ModelObject>();
 		ReactionRule rr = (ReactionRule)super.clone(m);
 		
+		rr.setFile(getFile());
 		rr.setRedex(getRedex().clone(m));
 		
 		try {
