@@ -65,26 +65,26 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 		return (T)m.get(k);
 	}
 	
-	protected static Change createReactumChange(
-			Map<ModelObject, ModelObject> sourceToNew, Change redexChange) {
-		Change reactumChange = null;
-		if (redexChange instanceof ChangeGroup) {
-			ChangeGroup cg_ = (ChangeGroup)redexChange,
+	public static Change translateChange(
+			Map<ModelObject, ModelObject> oldToNew, Change change) {
+		Change translatedChange = null;
+		if (change instanceof ChangeGroup) {
+			ChangeGroup cg_ = (ChangeGroup)change,
 				cg = new ChangeGroup();
 			for (Change i : cg_)
-				cg.add(createReactumChange(sourceToNew, i));
+				cg.add(translateChange(oldToNew, i));
 			
-			reactumChange = cg;
-		} else if (redexChange instanceof Container.ChangeAddChild) {
-			Container.ChangeAddChild ch = ac(redexChange);
+			translatedChange = cg;
+		} else if (change instanceof Container.ChangeAddChild) {
+			Container.ChangeAddChild ch = ac(change);
 			
-			Container reactumParent = mg(sourceToNew, ch.getCreator());
-			Layoutable reactumChild = mg(sourceToNew, ch.child);
+			Container reactumParent = mg(oldToNew, ch.getCreator());
+			Layoutable reactumChild = mg(oldToNew, ch.child);
 			
 			if (reactumParent == null)
 				return null;
 			if (reactumChild == null)
-				reactumChild = ch.child.clone(sourceToNew);
+				reactumChild = ch.child.clone(oldToNew);
 			
 			/*
 			 * XXX: a BigraphScratchpad should really be used here so that
@@ -98,66 +98,66 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 				reactumName = ch.name;
 			} else reactumName = Bigraph.getFirstUnusedName(reactumNamespace);
 			
-			reactumChange =
+			translatedChange =
 				reactumParent.changeAddChild(reactumChild, reactumName);
-		} else if (redexChange instanceof Layoutable.ChangeLayout) {
-			Layoutable.ChangeLayout ch = ac(redexChange);
+		} else if (change instanceof Layoutable.ChangeLayout) {
+			Layoutable.ChangeLayout ch = ac(change);
 			
-			Layoutable reactumModel = mg(sourceToNew, ch.getCreator());
+			Layoutable reactumModel = mg(oldToNew, ch.getCreator());
 			
 			if (reactumModel == null)
 				return null;
 			
-			reactumChange =
+			translatedChange =
 				reactumModel.changeLayout(ch.newLayout.getCopy());
-		} else if (redexChange instanceof Container.ChangeRemoveChild) {
-			Container.ChangeRemoveChild ch = ac(redexChange);
+		} else if (change instanceof Container.ChangeRemoveChild) {
+			Container.ChangeRemoveChild ch = ac(change);
 			
-			Container reactumParent = mg(sourceToNew, ch.getCreator());
-			Layoutable reactumChild = mg(sourceToNew, ch.child);
+			Container reactumParent = mg(oldToNew, ch.getCreator());
+			Layoutable reactumChild = mg(oldToNew, ch.child);
 			
 			if (reactumParent == null || reactumChild == null)
 				return null;
 			
-			reactumChange =
+			translatedChange =
 				reactumParent.changeRemoveChild(reactumChild);
-			sourceToNew.remove(ch.child);
-		} else if (redexChange instanceof Layoutable.ChangeName) {
-			Layoutable.ChangeName ch = ac(redexChange);
+			oldToNew.remove(ch.child);
+		} else if (change instanceof Layoutable.ChangeName) {
+			Layoutable.ChangeName ch = ac(change);
 			
-			Layoutable reactumModel = mg(sourceToNew, ch.getCreator());
+			Layoutable reactumModel = mg(oldToNew, ch.getCreator());
 			if (reactumModel == null)
 				return null;
 			
-			reactumChange = reactumModel.changeName(ch.newName);
-		} else if (redexChange instanceof Point.ChangeConnect) {
-			Point.ChangeConnect ch = ac(redexChange);
+			translatedChange = reactumModel.changeName(ch.newName);
+		} else if (change instanceof Point.ChangeConnect) {
+			Point.ChangeConnect ch = ac(change);
 			
-			Point reactumPoint = mg(sourceToNew, ch.getCreator());
-			Link reactumLink = mg(sourceToNew, ch.link);
+			Point reactumPoint = mg(oldToNew, ch.getCreator());
+			Link reactumLink = mg(oldToNew, ch.link);
 			if (reactumPoint == null || reactumLink == null)
 				return null;
 			
-			reactumChange = reactumPoint.changeConnect(reactumLink);
-		} else if (redexChange instanceof Point.ChangeDisconnect) {
-			Point.ChangeDisconnect ch = ac(redexChange);
+			translatedChange = reactumPoint.changeConnect(reactumLink);
+		} else if (change instanceof Point.ChangeDisconnect) {
+			Point.ChangeDisconnect ch = ac(change);
 			
-			Point reactumPoint = mg(sourceToNew, ch.getCreator());
-			Link reactumLink = mg(sourceToNew, ch.link);
+			Point reactumPoint = mg(oldToNew, ch.getCreator());
+			Link reactumLink = mg(oldToNew, ch.link);
 			if (reactumPoint == null || reactumLink == null)
 				return null;
 			
-			reactumChange = reactumPoint.changeDisconnect(reactumLink);
-		} else if (redexChange instanceof Site.ChangeAlias) {
-			Site.ChangeAlias ch = ac(redexChange);
+			translatedChange = reactumPoint.changeDisconnect(reactumLink);
+		} else if (change instanceof Site.ChangeAlias) {
+			Site.ChangeAlias ch = ac(change);
 			
-			Site reactumSite = mg(sourceToNew, ch.getCreator());
+			Site reactumSite = mg(oldToNew, ch.getCreator());
 			if (reactumSite == null)
 				return null;
 			
-			reactumChange = reactumSite.changeAlias(ch.alias);
+			translatedChange = reactumSite.changeAlias(ch.alias);
 		}
-		return reactumChange;
+		return translatedChange;
 	}
 	
 	@Override
@@ -181,7 +181,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 		ChangeGroup cg = rr.getChanges();
 		for (Change c : getChanges()) {
 			try {
-				Change cP = createReactumChange(m, c);
+				Change cP = translateChange(m, c);
 				rr.getReactum().tryApplyChange(cP);
 				cg.add(cP);
 				
