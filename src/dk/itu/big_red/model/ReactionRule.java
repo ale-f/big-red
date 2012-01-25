@@ -67,7 +67,6 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 	
 	public static Change translateChange(
 			Map<ModelObject, ModelObject> oldToNew, Change change) {
-		Change translatedChange = null;
 		if (change instanceof ChangeGroup) {
 			ChangeGroup cg_ = (ChangeGroup)change,
 				cg = new ChangeGroup();
@@ -81,7 +80,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 				}
 			}
 			
-			translatedChange = cg;
+			return cg;
 		} else if (change instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild ch = ac(change);
 			
@@ -105,8 +104,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 				reactumName = ch.name;
 			} else reactumName = Bigraph.getFirstUnusedName(reactumNamespace);
 			
-			translatedChange =
-				reactumParent.changeAddChild(reactumChild, reactumName);
+			return reactumParent.changeAddChild(reactumChild, reactumName);
 		} else if (change instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout ch = ac(change);
 			
@@ -115,8 +113,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			if (reactumModel == null)
 				return null;
 			
-			translatedChange =
-				reactumModel.changeLayout(ch.newLayout.getCopy());
+			return reactumModel.changeLayout(ch.newLayout.getCopy());
 		} else if (change instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild ch = ac(change);
 			
@@ -126,9 +123,8 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			if (reactumParent == null || reactumChild == null)
 				return null;
 			
-			translatedChange =
-				reactumParent.changeRemoveChild(reactumChild);
 			oldToNew.remove(ch.child);
+			return reactumParent.changeRemoveChild(reactumChild);
 		} else if (change instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName ch = ac(change);
 			
@@ -136,7 +132,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			if (reactumModel == null)
 				return null;
 			
-			translatedChange = reactumModel.changeName(ch.newName);
+			return reactumModel.changeName(ch.newName);
 		} else if (change instanceof Point.ChangeConnect) {
 			Point.ChangeConnect ch = ac(change);
 			
@@ -145,7 +141,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			if (reactumPoint == null || reactumLink == null)
 				return null;
 			
-			translatedChange = reactumPoint.changeConnect(reactumLink);
+			return reactumPoint.changeConnect(reactumLink);
 		} else if (change instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect ch = ac(change);
 			
@@ -154,7 +150,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			if (reactumPoint == null || reactumLink == null)
 				return null;
 			
-			translatedChange = reactumPoint.changeDisconnect(reactumLink);
+			return reactumPoint.changeDisconnect(reactumLink);
 		} else if (change instanceof Site.ChangeAlias) {
 			Site.ChangeAlias ch = ac(change);
 			
@@ -162,9 +158,8 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			if (reactumSite == null)
 				return null;
 			
-			translatedChange = reactumSite.changeAlias(ch.alias);
-		}
-		return translatedChange;
+			return reactumSite.changeAlias(ch.alias);
+		} else throw new RuntimeException(change + " unrecognised");
 	}
 	
 	@Override
