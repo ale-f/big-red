@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 
@@ -168,8 +169,18 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			m = new HashMap<ModelObject, ModelObject>();
 		ReactionRule rr = (ReactionRule)super.clone(m);
 		
+		Map<ModelObject, ModelObject>
+			/* redex to reactum */
+			rR = getRedexToReactumMap(),
+			/* redex to cloned redex */
+			rCr = new HashMap<ModelObject, ModelObject>(),
+			/* reactum to cloned reactum */
+			RCR = new HashMap<ModelObject, ModelObject>(),
+			/* cloned redex to cloned reactum */
+			CrCR = rr.getRedexToReactumMap();
+		
 		rr.setFile(getFile());
-		rr.setRedex(getRedex().clone(m));
+		rr.setRedex(getRedex().clone(rCr));
 		
 		try {
 			getReactum().tryApplyChange(getChanges().inverse());
@@ -177,13 +188,12 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			/* very bad news */
 			cre.printStackTrace();
 		}
-		/* XXX: what happens to redexToReactum? */
-		rr.setReactum(getReactum().clone(m));
+		rr.setReactum(getReactum().clone(RCR));
 		
 		ChangeGroup cg = rr.getChanges();
 		for (Change c : getChanges()) {
 			try {
-				Change cP = translateChange(m, c);
+				Change cP = translateChange(RCR, c);
 				rr.getReactum().tryApplyChange(cP);
 				cg.add(cP);
 				
@@ -192,6 +202,14 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 				/* very bad news */
 				cre.printStackTrace();
 			}
+		}
+		
+		for (Entry<ModelObject, ModelObject> e : rCr.entrySet())
+			CrCR.put(e.getValue(), RCR.get(rR.get(e.getKey())));
+		
+		if (m != null) {
+			m.putAll(rCr);
+			m.putAll(RCR);
 		}
 		
 		return rr;
