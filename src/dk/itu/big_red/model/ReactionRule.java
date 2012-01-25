@@ -71,8 +71,15 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 		if (change instanceof ChangeGroup) {
 			ChangeGroup cg_ = (ChangeGroup)change,
 				cg = new ChangeGroup();
-			for (Change i : cg_)
-				cg.add(translateChange(oldToNew, i));
+			for (Change i : cg_) {
+				Change iP = translateChange(oldToNew, i);
+				if (iP != null) {
+					cg.add(iP);
+				} else {
+					cg.clear();
+					return null;
+				}
+			}
 			
 			translatedChange = cg;
 		} else if (change instanceof Container.ChangeAddChild) {
