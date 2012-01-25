@@ -176,9 +176,4 @@ public class Node extends Container implements INode {
 	public IControl getIControl() {
 		return control;
 	}
-	
-	@Override
-	public UserControl getUserControl() {
-		return UserControl.OUTLINE_AND_FILL;
-	}
 }

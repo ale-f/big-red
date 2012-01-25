@@ -145,9 +145,4 @@ public abstract class Link extends Layoutable implements ILink {
 			return getPoints();
 		} else return super.getProperty(name);
 	}
-	
-	@Override
-	public UserControl getUserControl() {
-		return UserControl.OUTLINE;
-	}
 }

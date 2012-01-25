@@ -444,11 +444,6 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	@Override
-	public UserControl getUserControl() {
-		return UserControl.OUTLINE_AND_FILL;
-	}
-	
-	@Override
 	public void dispose() {
 		defaultSize = null;
 		kind = null;

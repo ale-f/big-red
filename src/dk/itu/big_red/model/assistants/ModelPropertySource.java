@@ -10,9 +10,10 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.Colourable.UserControl;
 import dk.itu.big_red.utilities.Colour;
 
 public class ModelPropertySource implements IPropertySource {
@@ -36,9 +37,9 @@ public class ModelPropertySource implements IPropertySource {
 		
 		if (object instanceof Colourable) {
 			Colourable c = (Colourable)object;
-			if (c.getUserControl() == UserControl.OUTLINE){
+			if (c instanceof Link) {
 				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Colour"));
-			} else if (c.getUserControl() == UserControl.OUTLINE_AND_FILL) {
+			} else if (c instanceof Node) {
 				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL, "Fill colour"));
 				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Outline colour"));
 			}
