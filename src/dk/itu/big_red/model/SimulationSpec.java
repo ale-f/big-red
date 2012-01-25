@@ -110,8 +110,22 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		}
 	}
 	
+	/**
+	 * The property name fired when the signature changes. The property values
+	 * are {@link Signature}s.
+	 */
 	public static final String PROPERTY_SIGNATURE = "SimulationSpecSignature";
+	
+	/**
+	 * The property name fired when a rule is added or removed. The property
+	 * values are {@link ReactionRule}s.
+	 */
 	public static final String PROPERTY_RULE = "SimulationSpecRule";
+	
+	/**
+	 * The property name fired when the model changes. The property values
+	 * are {@link Bigraph}s.
+	 */
 	public static final String PROPERTY_MODEL = "SimulationSpecModel";
 	
 	private Signature signature;
@@ -253,5 +267,24 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		signature = null;
 		
 		super.dispose();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * <p><strong>Special notes for {@link SimulationSpec}:</strong>
+	 * <ul>
+	 * <li>Passing {@link #PROPERTY_RULE} will return a {@link List}&lt;{@link
+	 * ReactionRule}&gt;, <strong>not</strong> a {@link ReactionRule}.
+	 * </ul>
+	 */
+	@Override
+	public Object getProperty(String name) {
+		if (name.equals(PROPERTY_SIGNATURE)) {
+			return getSignature();
+		} else if (name.equals(PROPERTY_MODEL)) {
+			return getModel();
+		} else if (name.equals(PROPERTY_RULE)) {
+			return getRules();
+		} else return super.getProperty(name);
 	}
 }
