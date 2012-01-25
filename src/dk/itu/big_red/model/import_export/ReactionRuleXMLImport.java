@@ -4,6 +4,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -166,13 +167,19 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 	}
 	
 	public static ReactionRule importFile(IFile file) throws ImportFailedException {
-		ReactionRuleXMLImport b = new ReactionRuleXMLImport().setFile(file);
+		Object o = RedPlugin.getObjectService().getObject(file);
+		if (o != null && o instanceof ReactionRule)
+			return (ReactionRule)o;
+		
+		ReactionRuleXMLImport im = new ReactionRuleXMLImport().setFile(file);
 		try {
-			b.setInputStream(file.getContents());
+			im.setInputStream(file.getContents());
 		} catch (CoreException e) {
 			throw new ImportFailedException(e);
 		}
-		return b.importObject().setFile(file);
+		ReactionRule rr = im.importObject().setFile(file);
+		RedPlugin.getObjectService().setObject(file, rr);
+		return rr;
 	}
 	
 	private IFile file;
