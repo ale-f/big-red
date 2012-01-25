@@ -175,6 +175,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			/* very bad news */
 			cre.printStackTrace();
 		}
+		/* XXX: what happens to redexToReactum? */
 		rr.setReactum(getReactum().clone(m));
 		
 		ChangeGroup cg = rr.getChanges();
@@ -202,5 +203,18 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 		if (changes == null)
 			changes = new ChangeGroup();
 		return changes;
+	}
+	
+	@Override
+	public void dispose() {
+		redex.dispose();
+		reactum.dispose();
+		redex = reactum = null;
+		redexToReactum.clear();
+		redexToReactum = null;
+		changes.clear();
+		file = null;
+		
+		super.dispose();
 	}
 }

@@ -237,4 +237,21 @@ public class SimulationSpec extends ModelObject implements IChangeable, IFileBac
 		this.file = file;
 		return this;
 	}
+	
+	@Override
+	public void dispose() {
+		model.dispose();
+		signature.dispose();
+		
+		for (ReactionRule r : rules)
+			r.dispose();
+		rules.clear();
+		
+		file = null;
+		model = null;
+		rules = null;
+		signature = null;
+		
+		super.dispose();
+	}
 }
