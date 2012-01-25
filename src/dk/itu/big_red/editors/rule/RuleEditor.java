@@ -294,6 +294,7 @@ public class RuleEditor extends AbstractEditor implements
 	
 	private ReactionRule model;
 	
+	@Override
 	public ReactionRule getModel() {
 		return model;
 	}
@@ -441,11 +442,5 @@ public class RuleEditor extends AbstractEditor implements
 		} else if (adapter == CommandStack.class) {
 			return getCommandStack();
 		} else return super.getAdapter(adapter);
-	}
-	
-	@Override
-	public void dispose() {
-		getModel().dispose();
-		super.dispose();
 	}
 }

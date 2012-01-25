@@ -7,6 +7,7 @@ import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.EditorPart;
+import dk.itu.big_red.model.ModelObject;
 
 public abstract class AbstractEditor extends EditorPart {
 	/**
@@ -87,5 +88,13 @@ public abstract class AbstractEditor extends EditorPart {
 	protected void setInputWithNotify(IEditorInput input) {
 		super.setInputWithNotify(input);
 		setPartName(input.getName());
+	}
+	
+	protected abstract ModelObject getModel();
+	
+	@Override
+	public void dispose() {
+		getModel().dispose();
+		super.dispose();
 	}
 }

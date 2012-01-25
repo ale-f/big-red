@@ -126,6 +126,7 @@ implements ISelectionListener, PropertyChangeListener {
 
 	private Signature model = null;
 	
+	@Override
 	protected Signature getModel() {
 		return model;
 	}
@@ -591,12 +592,6 @@ implements ISelectionListener, PropertyChangeListener {
 			}
 		}
 		setDirty(true);
-	}
-
-	@Override
-	public void dispose() {
-		getModel().dispose();
-		super.dispose();
 	}
 	
 	@Override

@@ -173,6 +173,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	
 	private SimulationSpec model = null;
 	
+	@Override
 	protected SimulationSpec getModel() {
 		return model;
 	}
@@ -479,11 +480,5 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		} finally {
 			uiUpdateInProgress = false;
 		}
-	}
-	
-	@Override
-	public void dispose() {
-		getModel().dispose();
-		super.dispose();
 	}
 }
