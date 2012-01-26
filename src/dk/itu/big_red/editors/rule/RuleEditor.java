@@ -85,11 +85,6 @@ public class RuleEditor extends AbstractEditor implements
 	
 	private ISelection selection = null;
 	
-	@SuppressWarnings("unchecked")
-	private <T> T getReactumEntity(T redexEntity) {
-		return (T)model.getRedexToReactumMap().get(redexEntity);
-	}
-	
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		listeners.add(listener);
@@ -163,6 +158,7 @@ public class RuleEditor extends AbstractEditor implements
         	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
         	Project.setContents(i.getFile(), io.getInputStream());
         	
+        	RedPlugin.getObjectService().setObject(i.getFile(), getModel());
     		getCommandStack().markSaveLocation();
     		firePropertyChange(IEditorPart.PROP_DIRTY);
         } catch (Exception ex) {
