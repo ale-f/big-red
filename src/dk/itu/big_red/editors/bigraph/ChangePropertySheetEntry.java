@@ -4,7 +4,6 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.ui.properties.UndoablePropertySheetEntry;
 import org.eclipse.swt.graphics.RGB;
-import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertySheetEntry;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
@@ -42,14 +41,14 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 	protected void valueChanged(ChangePropertySheetEntry child, ChangeGroup cg, Bigraph target) {
 		/* generates and enstacks Commands */
 		for (int i = 0; i < getValues().length; i++) {
-			String propertyName = child.getDisplayName();
+			// String propertyName = child.getDisplayName();
 			Object propertyID = child.getDescriptor().getId();
 			EditPart j = (EditPart)getValues()[i];
 			if (j instanceof IBigraphPart)
 				target = ((IBigraphPart)j).getBigraph();
 			
-			IPropertySource propertySource = getPropertySource(j);
-			Object oldValue = propertySource.getPropertyValue(propertyID);
+			// IPropertySource propertySource = getPropertySource(j);
+			// Object oldValue = propertySource.getPropertyValue(propertyID);
 			Object newValue = child.getValues()[i];
 			
 			if (newValue instanceof String &&
