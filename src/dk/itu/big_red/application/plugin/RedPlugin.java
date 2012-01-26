@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Random;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -19,6 +20,8 @@ import org.osgi.framework.BundleContext;
 
 import dk.itu.big_red.application.plugin.ObjectService.UpdateListener;
 import dk.itu.big_red.utilities.ISafeCloneable;
+import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.resources.ResourceChangeListener;
 
 /**
  * The RedPlugin class is responsible for starting and stopping the Big Red
@@ -30,14 +33,20 @@ public class RedPlugin extends AbstractUIPlugin {
 
 	private static RedPlugin plugin;
 
+	private ResourceChangeListener rcl;
+	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		Project.getWorkspace().addResourceChangeListener(
+				(rcl = new ResourceChangeListener()),
+				IResourceChangeEvent.POST_CHANGE);
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		Project.getWorkspace().removeResourceChangeListener(rcl);
 		plugin = null;
 		super.stop(context);
 	}
