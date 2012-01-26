@@ -1,7 +1,10 @@
 package dk.itu.big_red.editors.rule;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
@@ -356,24 +359,35 @@ public class RuleEditor extends AbstractEditor implements
 		return (Bigraph)reactumViewer.getContents().getModel();
 	}
 	
+	private Map<Change, Change> redexChangesToReactumChanges =
+			new HashMap<Change, Change>();
+	
+	private Change getReactumChange(Change redexChange) {
+		Change reactumChange = redexChangesToReactumChanges.get(redexChange);
+		if (reactumChange == null) {
+			reactumChange =
+				ReactionRule.translateChange(getModel().getRedexToReactumMap(), redexChange);
+			redexChangesToReactumChanges.put(redexChange, reactumChange);
+		}
+		return reactumChange;
+	}
+	
 	private void processChangeCommand(int detail, ChangeCommand c) {
 		IChangeable target = c.getTarget();
 		
-		Change ch;
-		if (detail != CommandStack.POST_UNDO) {
-			ch = c.getChange();
-		} else ch = c.getChange().inverse();
-		
 		if (target == getRedex()) {
-			Change reactumChange =
-				ReactionRule.translateChange(getModel().getRedexToReactumMap(), ch);
+			Change reactumChange = getReactumChange(c.getChange());
+			if (detail == CommandStack.POST_UNDO)
+				reactumChange = reactumChange.inverse();
 			try {
 				getReactum().tryApplyChange(reactumChange);
 			} catch (ChangeRejectedException cre) {
 				cre.killVM();
 			}
 		} else if (target == getReactum()) {
-			getModel().getChanges().add(ch);
+			Change ch = c.getChange();
+			getModel().getChanges().add(
+				detail != CommandStack.POST_UNDO ? ch : ch.inverse());
 		}
 	}
 	
