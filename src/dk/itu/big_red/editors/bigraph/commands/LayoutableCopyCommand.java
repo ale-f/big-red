@@ -40,7 +40,7 @@ public class LayoutableCopyCommand extends Command {
 			return false;
 		crunchList();
 		for (Layoutable i : list) {
-			if (!isCopyableNode(i))
+			if (!canCopy(i))
 				return false;
 		}
 		return true;
@@ -57,7 +57,7 @@ public class LayoutableCopyCommand extends Command {
 		return true;
 	}
 	
-	public boolean isCopyableNode(Object node) {
+	public static boolean canCopy(Object node) {
 		return (node instanceof Root || node instanceof Site || 
 				node instanceof Node);
 	}

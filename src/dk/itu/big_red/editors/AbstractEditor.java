@@ -14,7 +14,7 @@ public abstract class AbstractEditor extends EditorPart {
 	 * Registers a number of {@link IAction}s with the given {@link
 	 * ActionRegistry}, optionally copying their IDs into a {@link List}.
 	 * @param registry an {@link ActionRegistry}
-	 * @param actionIDList a list to, be filled with {@link String} IDs; can be
+	 * @param actionIDList a list to be filled with {@link String} IDs; can be
 	 * <code>null</code>
 	 * @param actions a number of {@link IAction}s
 	 */

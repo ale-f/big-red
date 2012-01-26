@@ -41,7 +41,7 @@ public class ContainerCopyAction extends SelectionAction {
 			if (!(i instanceof EditPart))
 				continue;
 			Object node = ((EditPart)i).getModel();
-			if (!cmd.isCopyableNode(node))
+			if (!LayoutableCopyCommand.canCopy(node))
 				return null;
 			else
 				cmd.addElement(node);

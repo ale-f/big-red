@@ -9,6 +9,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
+import dk.itu.big_red.editors.bigraph.commands.LayoutableCopyCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableCutCommand;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -41,7 +42,7 @@ public class ContainerCutAction extends SelectionAction {
 			if (!(i instanceof EditPart))
 				continue;
 			Object node = ((EditPart)i).getModel();
-			if (!cmd.isCopyableNode(node))
+			if (!LayoutableCopyCommand.canCopy(node))
 				return null;
 			else
 				cmd.addElement(node);
