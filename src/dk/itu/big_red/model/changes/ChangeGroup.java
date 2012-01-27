@@ -55,6 +55,14 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 		changes.add(0, c);
 	}
 	
+	/**
+	 * Removes any instances of a {@link Change} from this {@link ChangeGroup}.
+	 * @param c a {@link Change} to remove
+	 */
+	public void remove(Change c) {
+		changes.remove(c);
+	}
+	
 	@Override
 	public boolean isReady() {
 		if (changes.isEmpty())
