@@ -24,17 +24,14 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.Export.OptionDescriptor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
-import dk.itu.big_red.preferences.RedPreferences;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.resources.Types;
-import dk.itu.big_red.utilities.ui.ProcessDialog;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
@@ -43,7 +40,7 @@ import dk.itu.big_red.wizards.export.BigraphExportWizard;
 public class WizardBigraphExportPage extends WizardPage {
 	private ResourceSelector bigraphSelector;
 	private Text resultText;
-	private Button clipboardButton, saveButton, bonusButton;
+	private Button clipboardButton, saveButton;
 	
 	private Label optionsLabel;
 	private Composite optionsGroup;
@@ -219,21 +216,6 @@ public class WizardBigraphExportPage extends WizardPage {
 						setErrorMessage(x.getLocalizedMessage());
 					}
 				}
-			}
-		});
-		
-		bonusButton = UI.newButton(group, SWT.NONE, "Bonus...");
-		bonusButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ProcessDialog rd =
-					new ProcessDialog(UI.getShell(),
-						new ProcessBuilder(
-							RedPlugin.getInstance().getPreferenceStore().
-							getString(RedPreferences.PREFERENCE_BIGMC_PATH).split(" ")));
-				rd.setInput(resultText.getText());
-				rd.setBlockOnOpen(true);
-				rd.open();
 			}
 		});
 		

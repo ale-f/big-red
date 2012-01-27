@@ -21,9 +21,6 @@ public class RedPreferencePage
 	
 	@Override
 	public void createFieldEditors() {
-		addField(new StringFieldEditor(RedPreferences.PREFERENCE_BIGMC_PATH,
-				"Path to BigMC", getFieldEditorParent()));
-		
 		addField(
 			new ListEditor(
 				RedPreferences.PREFERENCE_EXTERNAL_TOOLS,
