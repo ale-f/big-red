@@ -18,8 +18,9 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.geometry.Ellipse;
 import dk.itu.big_red.utilities.geometry.Rectangle;
+import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class SignatureXMLImport extends Import<Signature> {
+public class SignatureXMLImport extends Import<Signature> implements IFileBackable {
 	private ChangeGroup cg = new ChangeGroup();
 	
 	@Override
@@ -27,7 +28,7 @@ public class SignatureXMLImport extends Import<Signature> {
 		try {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/signature.xsd"));
-			return makeSignature(d.getDocumentElement());
+			return makeSignature(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			throw new ImportFailedException(e);
 		}
@@ -120,14 +121,21 @@ public class SignatureXMLImport extends Import<Signature> {
 		if (o != null && o instanceof Signature)
 			return (Signature)o;
 		
-		SignatureXMLImport im = new SignatureXMLImport();
-		try {
-			im.setInputStream(file.getContents());
-		} catch (Exception e) {
-			throw new ImportFailedException(e);
-		}
-		Signature s = im.importObject().setFile(file);
+		Signature s = (Signature)Import.importFile(file);
 		RedPlugin.getObjectService().setObject(file, s);
 		return s;
+	}
+
+	private IFile file;
+	
+	@Override
+	public IFile getFile() {
+		return file;
+	}
+
+	@Override
+	public IFileBackable setFile(IFile file) {
+		this.file = file;
+		return this;
 	}
 }

@@ -1,7 +1,6 @@
 package dk.itu.big_red.model.import_export;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -29,7 +28,8 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 	@Override
 	public ReactionRule importObject() throws ImportFailedException {
 		try {
-			return makeRule(DOM.parse(source).getDocumentElement());
+			return makeRule(DOM.parse(source).getDocumentElement()).
+					setFile(getFile());
 		} catch (Exception e) {
 			if (e instanceof ImportFailedException) {
 				throw (ImportFailedException)e;
@@ -171,13 +171,7 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 		if (o != null && o instanceof ReactionRule)
 			return (ReactionRule)o;
 		
-		ReactionRuleXMLImport im = new ReactionRuleXMLImport().setFile(file);
-		try {
-			im.setInputStream(file.getContents());
-		} catch (CoreException e) {
-			throw new ImportFailedException(e);
-		}
-		ReactionRule rr = im.importObject().setFile(file);
+		ReactionRule rr = (ReactionRule)Import.importFile(file);
 		RedPlugin.getObjectService().setObject(file, rr);
 		return rr;
 	}

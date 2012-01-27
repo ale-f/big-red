@@ -3,7 +3,6 @@ package dk.itu.big_red.model.import_export;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.SWT;
 import org.w3c.dom.Document;
@@ -49,7 +48,7 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 		try {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/bigraph.xsd"));
-			return makeBigraph(d.getDocumentElement());
+			return makeBigraph(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			if (e instanceof ImportFailedException) {
 				throw (ImportFailedException)e;
@@ -214,13 +213,7 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 		if (o != null && o instanceof Bigraph)
 			return (Bigraph)o;
 		
-		BigraphXMLImport im = new BigraphXMLImport().setFile(file);
-		try {
-			im.setInputStream(file.getContents());
-		} catch (CoreException e) {
-			throw new ImportFailedException(e);
-		}
-		Bigraph b = im.importObject().setFile(file);
+		Bigraph b = (Bigraph)Import.importFile(file);
 		RedPlugin.getObjectService().setObject(file, b);
 		return b;
 	}

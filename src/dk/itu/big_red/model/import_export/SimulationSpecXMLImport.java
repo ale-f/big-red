@@ -1,7 +1,6 @@
 package dk.itu.big_red.model.import_export;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -25,7 +24,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 	public SimulationSpec importObject() throws ImportFailedException {
 		try {
 			Document d = DOM.parse(source);
-			return makeSpec(d.getDocumentElement());
+			return makeSpec(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			throw new ImportFailedException(e);
 		}
@@ -100,15 +99,9 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		if (o != null && o instanceof SimulationSpec)
 			return (SimulationSpec)o;
 		
-		SimulationSpecXMLImport im = new SimulationSpecXMLImport().setFile(file);
-		try {
-			im.setInputStream(file.getContents());
-		} catch (CoreException e) {
-			throw new ImportFailedException(e);
-		}
-		SimulationSpec rr = im.importObject().setFile(file);
-		RedPlugin.getObjectService().setObject(file, rr);
-		return rr;
+		SimulationSpec ss = (SimulationSpec)Import.importFile(file);
+		RedPlugin.getObjectService().setObject(file, ss);
+		return ss;
 	}
 
 	private IFile file;
