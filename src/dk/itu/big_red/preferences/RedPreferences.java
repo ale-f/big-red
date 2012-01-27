@@ -8,7 +8,7 @@ import dk.itu.big_red.application.plugin.RedPlugin;
 /**
  * Class used to initialize default preference values.
  */
-public class PreferenceInitializer extends AbstractPreferenceInitializer {
+public class RedPreferences extends AbstractPreferenceInitializer {
 	
 	/*
 	 * (non-Javadoc)

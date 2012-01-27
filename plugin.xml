@@ -316,7 +316,7 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="dk.itu.big_red.preferences.PreferenceInitializer">
+            class="dk.itu.big_red.preferences.RedPreferences">
       </initializer>
    </extension>
 
