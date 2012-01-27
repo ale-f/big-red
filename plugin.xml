@@ -3,6 +3,7 @@
 <plugin>
    <extension-point id="dk.itu.big_red.export" name="Model exporters" schema="expoints/dk.itu.big_red.export.exsd"/>
    <extension-point id="dk.itu.big_red.import" name="Model importers" schema="expoints/dk.itu.big_red.import.exsd"/>
+   <extension-point id="dk.itu.big_red.externalTools" name="External tools" schema="expoints/dk.itu.big_red.externalTools.exsd"/>
 
    <extension
          id="application"
