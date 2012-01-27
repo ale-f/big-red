@@ -3,7 +3,7 @@ package dk.itu.big_red.utilities.io;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AsynchronousInputThread extends AsynchronousIOThread {
+public class AsynchronousInputThread extends AbstractAsynchronousIOThread {
 	private final IAsynchronousInputRecipient air;
 	
 	public AsynchronousInputThread(IAsynchronousInputRecipient air) {

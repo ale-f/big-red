@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
-public class AsynchronousOutputThread extends AsynchronousIOThread {
+public class AsynchronousOutputThread extends AbstractAsynchronousIOThread {
 	private IAsynchronousOutputRecipient aor;
 	
 	public AsynchronousOutputThread(IAsynchronousOutputRecipient aor) {
