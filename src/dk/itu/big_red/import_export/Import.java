@@ -16,6 +16,8 @@ import java.io.InputStream;
  */
 
 public abstract class Import<T> {
+	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
+	
 	protected InputStream source = null;
 	
 	/**
