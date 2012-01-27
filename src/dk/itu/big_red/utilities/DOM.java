@@ -5,10 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
-
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -328,30 +325,15 @@ public class DOM {
 	
 	public static Iterable<Node> iterable(final NodeList nl_) {
 		if (nl_ != null) {
-			return new Iterable<Node>() {
+			return new IterableWrapper<Node>() {
 				@Override
-				public Iterator<Node> iterator() {
-					return new Iterator<Node>() {
-						private NodeList nl = nl_;
-						private int position = 0;
-						
-						@Override
-						public boolean hasNext() {
-							return (position < nl.getLength());
-						}
-	
-						@Override
-						public Node next() {
-							if (hasNext()) {
-								return nl.item(position++);
-							} else throw new NoSuchElementException();
-						}
-	
-						@Override
-						public void remove() {
-							throw new UnsupportedOperationException();
-						}
-					};
+				protected Node item(int index) {
+					return nl_.item(index);
+				}
+
+				@Override
+				protected int count() {
+					return nl_.getLength();
 				}
 			};
 		} else return null;
