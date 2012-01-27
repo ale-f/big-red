@@ -64,7 +64,7 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 		
 		ReactionRule rr = new ReactionRule().setFile(rrFile);
 		rr.setRedex(new Bigraph());
-		rr.getRedex().setSignature((Signature)Import.importFile(sigFile));
+		rr.getRedex().setSignature((Signature)Import.fromFile(sigFile));
 		
 		new ReactionRuleXMLExport().setModel(rr).setOutputStream(io.getOutputStream()).exportObject();
 		rrFile.setContents(io.getInputStream(), 0, null);

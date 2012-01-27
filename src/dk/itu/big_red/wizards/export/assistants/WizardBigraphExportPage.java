@@ -80,7 +80,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		}
 		
 		try {
-			getWizard().setSource((Bigraph)Import.importFile((IFile)bigraph));
+			getWizard().setSource((Bigraph)Import.fromFile((IFile)bigraph));
 		} catch (Exception e) {
 			setErrorMessage(e.getLocalizedMessage());
 			return false;

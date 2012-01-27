@@ -182,7 +182,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
-				model = (SimulationSpec)Import.importFile(fi.getFile());
+				model = (SimulationSpec)Import.fromFile(fi.getFile());
 			} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
@@ -304,7 +304,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 						return;
 					Signature s = null;
 					if (newValue != null)
-						s = (Signature)Import.importFile((IFile)newValue);
+						s = (Signature)Import.fromFile((IFile)newValue);
 					doChange(getModel().changeSignature(s));
 				} catch (ImportFailedException ife) {
 					ife.printStackTrace();
@@ -340,7 +340,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 				if (rtsd.open() == Dialog.OK) {
 					IFile f = (IFile)rtsd.getFirstResult();
 					try {
-						ReactionRule r = (ReactionRule)Import.importFile(f);
+						ReactionRule r = (ReactionRule)Import.fromFile(f);
 						doChange(model.changeAddRule(r));
 					} catch (ImportFailedException ife) {
 						ife.printStackTrace();
@@ -377,7 +377,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 						return;
 					Bigraph b = null;
 					if (newValue != null)
-						b = (Bigraph)Import.importFile((IFile)newValue);
+						b = (Bigraph)Import.fromFile((IFile)newValue);
 					doChange(getModel().changeModel(b));
 				} catch (ImportFailedException ife) {
 					ife.printStackTrace();

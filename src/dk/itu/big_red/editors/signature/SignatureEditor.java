@@ -529,7 +529,7 @@ implements ISelectionListener, PropertyChangeListener {
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
-				model = (Signature)Import.importFile(fi.getFile());
+				model = (Signature)Import.fromFile(fi.getFile());
 			} catch (Exception e) {
 				error(e);
 				return;

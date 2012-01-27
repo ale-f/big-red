@@ -71,7 +71,7 @@ public abstract class Import<T> {
 	 */
 	public abstract T importObject() throws ImportFailedException;
 	
-	public static Object importFile(IFile f) throws ImportFailedException {
+	public static Object fromFile(IFile f) throws ImportFailedException {
 		IContentType ct = Types.findContentTypeFor(f);
 		IConfigurationElement[] ices =
 				RedPlugin.getConfigurationElementsFor(EXTENSION_POINT);

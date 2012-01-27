@@ -306,7 +306,7 @@ public class RuleEditor extends AbstractEditor implements
 		if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		setModel((ReactionRule)Import.importFile(fi.getFile()));
+	    		setModel((ReactionRule)Import.fromFile(fi.getFile()));
 	    	} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();

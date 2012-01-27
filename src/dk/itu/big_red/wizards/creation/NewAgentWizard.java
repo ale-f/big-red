@@ -65,7 +65,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 		IOAdapter io = new IOAdapter();
 		Bigraph b = new Bigraph().setFile(bigFile);
 		
-		b.setSignature((Signature)Import.importFile(sigFile));
+		b.setSignature((Signature)Import.fromFile(sigFile));
 		new BigraphXMLExport().setModel(b).setOutputStream(io.getOutputStream()).exportObject();
 		bigFile.setContents(io.getInputStream(), 0, null);
 	}

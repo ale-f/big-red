@@ -165,7 +165,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		model = (Bigraph)Import.importFile(fi.getFile());
+	    		model = (Bigraph)Import.fromFile(fi.getFile());
 	    	} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();

@@ -93,7 +93,7 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 					throw new ImportFailedException("The signature \"" + signaturePath + "\" does not exist.");
 			}
 				
-			Signature sig = (Signature)Import.importFile(sigFile);
+			Signature sig = (Signature)Import.fromFile(sigFile);
 			bigraph.setSignature(sig);
 		} else if (signatureElement != null) {
 			SignatureXMLImport si = new SignatureXMLImport();

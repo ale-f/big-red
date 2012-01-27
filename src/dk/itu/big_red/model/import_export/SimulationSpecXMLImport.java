@@ -33,7 +33,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		String signaturePath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (signaturePath != null && getFile() != null) {
-			return (Signature)Import.importFile(
+			return (Signature)Import.fromFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(signaturePath)));
 		} else {
@@ -45,7 +45,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		String bigraphPath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (bigraphPath != null && getFile() != null) {
-			return (Bigraph)Import.importFile(
+			return (Bigraph)Import.fromFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(bigraphPath)));
 		} else {
@@ -57,7 +57,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		String rulePath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (rulePath != null && getFile() != null) {
-			return (ReactionRule)Import.importFile(
+			return (ReactionRule)Import.fromFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(rulePath)));
 		} else {
