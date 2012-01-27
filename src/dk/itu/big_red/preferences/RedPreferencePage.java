@@ -12,12 +12,6 @@ import dk.itu.big_red.utilities.ui.UI;
 public class RedPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
-
-	public static final String PREFERENCE_BIGMC_PATH =
-			"dk.itu.big_red.preferences.paths.bigmc";
-
-	public static final String PREFERENCE_EXTERNAL_TOOLS =
-			"dk.itu.big_red.preferences.externalTools";
 	
 	public RedPreferencePage() {
 		super(GRID);
@@ -27,12 +21,12 @@ public class RedPreferencePage
 	
 	@Override
 	public void createFieldEditors() {
-		addField(new StringFieldEditor(PREFERENCE_BIGMC_PATH,
+		addField(new StringFieldEditor(RedPreferences.PREFERENCE_BIGMC_PATH,
 				"Path to BigMC", getFieldEditorParent()));
 		
 		addField(
 			new ListEditor(
-				PREFERENCE_EXTERNAL_TOOLS,
+				RedPreferences.PREFERENCE_EXTERNAL_TOOLS,
 				"User-defined external tools",
 				getFieldEditorParent()) {
 			@Override

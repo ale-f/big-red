@@ -29,7 +29,7 @@ import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.Export.OptionDescriptor;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.import_export.BigraphXMLImport;
-import dk.itu.big_red.preferences.RedPreferencePage;
+import dk.itu.big_red.preferences.RedPreferences;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
@@ -230,7 +230,7 @@ public class WizardBigraphExportPage extends WizardPage {
 					new ProcessDialog(UI.getShell(),
 						new ProcessBuilder(
 							RedPlugin.getInstance().getPreferenceStore().
-							getString(RedPreferencePage.PREFERENCE_BIGMC_PATH).split(" ")));
+							getString(RedPreferences.PREFERENCE_BIGMC_PATH).split(" ")));
 				rd.setInput(resultText.getText());
 				rd.setBlockOnOpen(true);
 				rd.open();

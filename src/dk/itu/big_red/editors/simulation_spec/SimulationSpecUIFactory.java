@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.preferences.RedPreferencePage;
+import dk.itu.big_red.preferences.RedPreferences;
 import dk.itu.big_red.utilities.ui.ProcessDialog;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -67,7 +67,7 @@ public class SimulationSpecUIFactory {
 			{
 				pb = new ProcessBuilder(
 					RedPlugin.getInstance().getPreferenceStore().
-						getString(RedPreferencePage.PREFERENCE_BIGMC_PATH).
+						getString(RedPreferences.PREFERENCE_BIGMC_PATH).
 							split(" "));
 			}
 		};
