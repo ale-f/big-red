@@ -14,7 +14,7 @@ public class RedPreferencePage
 	implements IWorkbenchPreferencePage {
 	
 	public RedPreferencePage() {
-		super(GRID);
+		super(FLAT);
 		setPreferenceStore(RedPlugin.getInstance().getPreferenceStore());
 		setDescription("Miscellaneous preferences for Big Red.");
 	}
