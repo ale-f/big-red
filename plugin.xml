@@ -257,6 +257,30 @@
             imports="dk.itu.big_red.model.Bigraph"
             name="Bigraph from XML">
       </importer>
+      <importer
+            class="dk.itu.big_red.model.import_export.SignatureXMLImport"
+            contentType="dk.itu.big_red.signature"
+            icon="resources/icons/icon16.png"
+            id="big_red.importer2"
+            imports="dk.itu.big_red.model.Signature"
+            name="Signature from XML">
+      </importer>
+      <importer
+            class="dk.itu.big_red.model.import_export.ReactionRuleXMLImport"
+            contentType="dk.itu.big_red.rule"
+            icon="resources/icons/icon16.png"
+            id="big_red.importer3"
+            imports="dk.itu.big_red.model.ReactionRule"
+            name="Reaction rule from XML">
+      </importer>
+      <importer
+            class="dk.itu.big_red.model.import_export.SimulationSpecXMLImport"
+            contentType="dk.itu.big_red.simulation_spec"
+            icon="resources/icons/icon16.png"
+            id="big_red.importer4"
+            imports="dk.itu.big_red.model.SimulationSpec"
+            name="Simulation spec from XML">
+      </importer>
    </extension>
    <extension
          point="dk.itu.big_red.export">
@@ -319,6 +343,9 @@
       <initializer
             class="dk.itu.big_red.preferences.RedPreferences">
       </initializer>
+   </extension>
+   <extension
+         point="dk.itu.big_red.import">
    </extension>
 
 </plugin>
