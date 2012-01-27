@@ -34,7 +34,10 @@ public class SimulationSpecUIFactory {
 	public static Dialog createToolWindow(Shell parent, final String results) {
 		return new Dialog(parent) {
 			private Combo tools;
-			private ProcessBuilder pb;
+			
+			private void setProgress(boolean progress) {
+				UI.setEnabled(progress, tools);
+			}
 			
 			@Override
 			protected Control createDialogArea(Composite parent) {
@@ -47,6 +50,11 @@ public class SimulationSpecUIFactory {
 				tools = new Combo(c, SWT.NONE);
 				tools.setLayoutData(
 						new GridData(SWT.FILL, SWT.TOP, true, false));
+				tools.setItems(RedPreferences.getExternalTools());
+				if (tools.getItemCount() > 0) {
+					tools.select(0);
+					setProgress(true);
+				} else setProgress(false);
 				
 				return tools;
 			}
@@ -55,17 +63,14 @@ public class SimulationSpecUIFactory {
 			protected void buttonPressed(int buttonId) {
 				if (buttonId == IDialogConstants.OK_ID) {
 					setReturnCode(Dialog.OK);
-					new ProcessDialog(getShell(), pb).setInput(results).open();
+					new ProcessDialog(getShell(),
+							new ProcessBuilder(tools.getText().split(" ")))
+						.setInput(results).open();
 					close();
 				} else if (buttonId == IDialogConstants.CANCEL_ID) {
 					setReturnCode(Dialog.CANCEL);
 					cancelPressed();
 				}
-			}
-			
-			{
-				pb = new ProcessBuilder(
-					RedPreferences.getExternalTools()[0].split(" "));
 			}
 		};
 	}
