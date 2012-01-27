@@ -382,8 +382,9 @@ public class RuleEditor extends AbstractEditor implements
 			}
 		} else if (target == getReactum()) {
 			Change ch = c.getChange();
-			getModel().getChanges().add(
-				detail != CommandStack.POST_UNDO ? ch : ch.inverse());
+			if (detail != CommandStack.POST_UNDO) {
+				getModel().getChanges().add(ch);
+			} else getModel().getChanges().remove(ch);
 		}
 	}
 	
