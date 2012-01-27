@@ -4,6 +4,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.content.IContentType;
+
+import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.utilities.resources.IFileBackable;
+import dk.itu.big_red.utilities.resources.Types;
+
 
 /**
  * Classes extending Import can read objects from an {@link InputStream}.
@@ -61,4 +70,31 @@ public abstract class Import<T> {
 	 * @throws ImportFailedException if the import failed
 	 */
 	public abstract T importObject() throws ImportFailedException;
+	
+	public static Object importFile(IFile f) throws ImportFailedException {
+		IContentType ct = Types.findContentTypeFor(f);
+		IConfigurationElement[] ices =
+				RedPlugin.getConfigurationElementsFor(EXTENSION_POINT);
+		for (IConfigurationElement ice : ices) {
+			if (ct.getId().equals(ice.getAttribute("contentType"))) {
+				Import<?> i = (Import<?>)RedPlugin.instantiate(ice);
+				try {
+					i.setInputStream(f.getContents());
+				} catch (CoreException e) {
+					return null;
+				}
+				/*
+				 * Importers implementing IFileBackable indicate that they need
+				 * the file as part of the import process (i.e., to resolve
+				 * relative paths).
+				 */
+				if (i instanceof IFileBackable)
+					((IFileBackable)i).setFile(f);
+				if (i.canImport()) {
+					return i.importObject();
+				} else return null;
+			}
+		}
+		return null;
+	}
 }
