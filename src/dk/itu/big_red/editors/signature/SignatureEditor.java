@@ -41,6 +41,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
+import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
@@ -49,7 +50,6 @@ import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
-import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.io.IOAdapter;
@@ -75,7 +75,6 @@ implements ISelectionListener, PropertyChangeListener {
         		exportObject();
         	Project.setContents(i.getFile(), io.getInputStream());
         	
-        	RedPlugin.getObjectService().setObject(i.getFile(), getModel());
     		setDirty(false);
         } catch (Exception ex) {
         	if (monitor != null)
@@ -530,7 +529,7 @@ implements ISelectionListener, PropertyChangeListener {
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
-				model = SignatureXMLImport.importFile(fi.getFile());
+				model = (Signature)Import.importFile(fi.getFile());
 			} catch (Exception e) {
 				error(e);
 				return;

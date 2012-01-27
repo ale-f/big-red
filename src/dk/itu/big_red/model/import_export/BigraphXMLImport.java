@@ -93,7 +93,7 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 					throw new ImportFailedException("The signature \"" + signaturePath + "\" does not exist.");
 			}
 				
-			Signature sig = SignatureXMLImport.importFile(sigFile);
+			Signature sig = (Signature)Import.importFile(sigFile);
 			bigraph.setSignature(sig);
 		} else if (signatureElement != null) {
 			SignatureXMLImport si = new SignatureXMLImport();
@@ -206,16 +206,6 @@ public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
 		} else if (model instanceof Site) {
 			processSite(e, (Site)model);
 		}
-	}
-	
-	public static Bigraph importFile(IFile file) throws ImportFailedException {
-		Object o = RedPlugin.getObjectService().getObject(file);
-		if (o != null && o instanceof Bigraph)
-			return (Bigraph)o;
-		
-		Bigraph b = (Bigraph)Import.importFile(file);
-		RedPlugin.getObjectService().setObject(file, b);
-		return b;
 	}
 
 	private IFile file;

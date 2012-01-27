@@ -9,10 +9,11 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
-import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
@@ -64,7 +65,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 		IOAdapter io = new IOAdapter();
 		Bigraph b = new Bigraph().setFile(bigFile);
 		
-		b.setSignature(SignatureXMLImport.importFile(sigFile));
+		b.setSignature((Signature)Import.importFile(sigFile));
 		new BigraphXMLExport().setModel(b).setOutputStream(io.getOutputStream()).exportObject();
 		bigFile.setContents(io.getInputStream(), 0, null);
 	}

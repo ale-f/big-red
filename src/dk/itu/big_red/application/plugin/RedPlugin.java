@@ -18,7 +18,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import dk.itu.big_red.application.plugin.ObjectService.UpdateListener;
 import dk.itu.big_red.utilities.ISafeCloneable;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceChangeListener;
@@ -128,21 +127,5 @@ public class RedPlugin extends AbstractUIPlugin {
 		if (r == null)
 			r = new Random();
 		return r;
-	}
-	
-	private static ObjectService m = null;
-	
-	/**
-	 * Returns Big Red's {@link ObjectService}. Model objects are identified
-	 * in the {@link ObjectService} by their {@link IFile}.
-	 * @return the Big Red-wide {@link ObjectService}
-	 * @see ObjectService#getObject(Object)
-	 * @see ObjectService#setObject(Object, ISafeCloneable)
-	 * @see ObjectService#addUpdateListener(Object, UpdateListener)
-	 */
-	public static ObjectService getObjectService() {
-		if (m == null)
-			m = new ObjectService();
-		return m;
 	}
 }

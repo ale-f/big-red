@@ -9,8 +9,6 @@ import java.util.Map.Entry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 
-import dk.itu.big_red.application.plugin.ObjectService.UpdateListener;
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -35,7 +33,7 @@ import dk.itu.big_red.utilities.resources.IFileBackable;
  * @author alec
  * @see IBigraph
  */
-public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable, UpdateListener {
+public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable {
 	protected Signature signature = null;
 
 	private HashMap<Object, Map<String, Layoutable>> names =
@@ -290,15 +288,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	}
 	
 	public void setSignature(Signature signature) {
-		if (this.signature != null) {
-			RedPlugin.getObjectService().
-				removeUpdateListener(this.signature.getFile(), this);
-		}
 		this.signature = signature;
-		if (signature != null) {
-			RedPlugin.getObjectService().
-				addUpdateListener(this.signature.getFile(), this);
-		}
 	}
 	
 	public Signature getSignature() {
@@ -560,22 +550,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	}
 	
 	@Override
-	public void objectUpdated(Object identifier) {
-		if (identifier.equals(signature.getFile())) {
-			/* Bypass the checking performed in setSignature */
-			Signature oldSignature = signature;
-			signature =
-				(Signature)RedPlugin.getObjectService().getObject(identifier);
-			recursiveNodeUpdate(signature, this);
-			oldSignature.dispose();
-		}
-	}
-	
-	@Override
 	public void dispose() {
-		if (signature.getFile() != null)
-			RedPlugin.getObjectService().removeUpdateListener(
-					signature.getFile(), this);
 		signature.dispose();
 		signature = null;
 		

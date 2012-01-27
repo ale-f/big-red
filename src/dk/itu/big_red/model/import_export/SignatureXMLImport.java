@@ -115,16 +115,6 @@ public class SignatureXMLImport extends Import<Signature> implements IFileBackab
 		
 		return model;
 	}
-	
-	public static Signature importFile(IFile file) throws ImportFailedException {
-		Object o = RedPlugin.getObjectService().getObject(file);
-		if (o != null && o instanceof Signature)
-			return (Signature)o;
-		
-		Signature s = (Signature)Import.importFile(file);
-		RedPlugin.getObjectService().setObject(file, s);
-		return s;
-	}
 
 	private IFile file;
 	

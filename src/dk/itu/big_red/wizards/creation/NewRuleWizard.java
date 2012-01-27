@@ -8,11 +8,12 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
-import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
@@ -63,7 +64,7 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 		
 		ReactionRule rr = new ReactionRule().setFile(rrFile);
 		rr.setRedex(new Bigraph());
-		rr.getRedex().setSignature(SignatureXMLImport.importFile(sigFile));
+		rr.getRedex().setSignature((Signature)Import.importFile(sigFile));
 		
 		new ReactionRuleXMLExport().setModel(rr).setOutputStream(io.getOutputStream()).exportObject();
 		rrFile.setContents(io.getInputStream(), 0, null);

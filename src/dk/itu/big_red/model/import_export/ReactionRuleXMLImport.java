@@ -3,7 +3,6 @@ package dk.itu.big_red.model.import_export;
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -164,16 +163,6 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 				}
 			}
 		}
-	}
-	
-	public static ReactionRule importFile(IFile file) throws ImportFailedException {
-		Object o = RedPlugin.getObjectService().getObject(file);
-		if (o != null && o instanceof ReactionRule)
-			return (ReactionRule)o;
-		
-		ReactionRule rr = (ReactionRule)Import.importFile(file);
-		RedPlugin.getObjectService().setObject(file, rr);
-		return rr;
 	}
 	
 	private IFile file;

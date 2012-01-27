@@ -52,6 +52,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
@@ -65,7 +66,6 @@ import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.NodeFactory;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
-import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
@@ -165,7 +165,7 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		model = BigraphXMLImport.importFile(fi.getFile());
+	    		model = (Bigraph)Import.importFile(fi.getFile());
 	    	} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
@@ -310,7 +310,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
         	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
         	Project.setContents(i.getFile(), io.getInputStream());
         	
-        	RedPlugin.getObjectService().setObject(i.getFile(), getModel());
     		getCommandStack().markSaveLocation();
     		firePropertyChange(IEditorPart.PROP_DIRTY);
         } catch (Exception ex) {

@@ -5,7 +5,6 @@ import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -34,7 +33,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		String signaturePath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (signaturePath != null && getFile() != null) {
-			return SignatureXMLImport.importFile(
+			return (Signature)Import.importFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(signaturePath)));
 		} else {
@@ -46,7 +45,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		String bigraphPath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (bigraphPath != null && getFile() != null) {
-			return BigraphXMLImport.importFile(
+			return (Bigraph)Import.importFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(bigraphPath)));
 		} else {
@@ -58,7 +57,7 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 		String rulePath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (rulePath != null && getFile() != null) {
-			return ReactionRuleXMLImport.importFile(
+			return (ReactionRule)Import.importFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(rulePath)));
 		} else {
@@ -91,16 +90,6 @@ public class SimulationSpecXMLImport extends Import<SimulationSpec> implements I
 			throw new ImportFailedException(cre);
 		}
 		
-		return ss;
-	}
-	
-	public static SimulationSpec importFile(IFile file) throws ImportFailedException {
-		Object o = RedPlugin.getObjectService().getObject(file);
-		if (o != null && o instanceof SimulationSpec)
-			return (SimulationSpec)o;
-		
-		SimulationSpec ss = (SimulationSpec)Import.importFile(file);
-		RedPlugin.getObjectService().setObject(file, ss);
 		return ss;
 	}
 

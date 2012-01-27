@@ -40,6 +40,7 @@ import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ReactionRule;
@@ -47,11 +48,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.import_export.BigraphXMLImport;
-import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
-import dk.itu.big_red.model.import_export.SignatureXMLImport;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
-import dk.itu.big_red.model.import_export.SimulationSpecXMLImport;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
@@ -185,7 +182,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
-				model = SimulationSpecXMLImport.importFile(fi.getFile());
+				model = (SimulationSpec)Import.importFile(fi.getFile());
 			} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
@@ -307,7 +304,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 						return;
 					Signature s = null;
 					if (newValue != null)
-						s = SignatureXMLImport.importFile((IFile)newValue);
+						s = (Signature)Import.importFile((IFile)newValue);
 					doChange(getModel().changeSignature(s));
 				} catch (ImportFailedException ife) {
 					ife.printStackTrace();
@@ -343,7 +340,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 				if (rtsd.open() == Dialog.OK) {
 					IFile f = (IFile)rtsd.getFirstResult();
 					try {
-						ReactionRule r = ReactionRuleXMLImport.importFile(f);
+						ReactionRule r = (ReactionRule)Import.importFile(f);
 						doChange(model.changeAddRule(r));
 					} catch (ImportFailedException ife) {
 						ife.printStackTrace();
@@ -380,7 +377,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 						return;
 					Bigraph b = null;
 					if (newValue != null)
-						b = BigraphXMLImport.importFile((IFile)newValue);
+						b = (Bigraph)Import.importFile((IFile)newValue);
 					doChange(getModel().changeModel(b));
 				} catch (ImportFailedException ife) {
 					ife.printStackTrace();

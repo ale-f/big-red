@@ -26,8 +26,8 @@ import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.Export.OptionDescriptor;
+import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.import_export.BigraphXMLImport;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
@@ -80,7 +80,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		}
 		
 		try {
-			getWizard().setSource(BigraphXMLImport.importFile((IFile)bigraph));
+			getWizard().setSource((Bigraph)Import.importFile((IFile)bigraph));
 		} catch (Exception e) {
 			setErrorMessage(e.getLocalizedMessage());
 			return false;

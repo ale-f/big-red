@@ -61,6 +61,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ReactionRule;
@@ -68,7 +69,6 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
-import dk.itu.big_red.model.import_export.ReactionRuleXMLImport;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
@@ -158,7 +158,6 @@ public class RuleEditor extends AbstractEditor implements
         	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
         	Project.setContents(i.getFile(), io.getInputStream());
         	
-        	RedPlugin.getObjectService().setObject(i.getFile(), getModel());
     		getCommandStack().markSaveLocation();
     		firePropertyChange(IEditorPart.PROP_DIRTY);
         } catch (Exception ex) {
@@ -307,7 +306,7 @@ public class RuleEditor extends AbstractEditor implements
 		if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		setModel(ReactionRuleXMLImport.importFile(fi.getFile()));
+	    		setModel((ReactionRule)Import.importFile(fi.getFile()));
 	    	} catch (ImportFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
