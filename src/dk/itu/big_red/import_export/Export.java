@@ -1,7 +1,5 @@
 package dk.itu.big_red.import_export;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,20 +80,6 @@ public abstract class Export<T> {
 		if (os != null)
 			this.target = os;
 		return this;
-	}
-	
-	/**
-	 * Sets the target of the export to the file specified.
-	 * 
-	 * <p>Equivalent to
-	 * <code>setOutputStream(new FileOutputStream(path))</code>.
-	 * @param path a path to a file
-	 * @throws FileNotFoundException if
-	 *         {@link FileOutputStream#FileOutputStream(String)} fails
-	 * @return <code>this</code>, for convenience
-	 */
-	public Export<T> setOutputFile(String path) throws FileNotFoundException {
-		return setOutputStream(new FileOutputStream(path));
 	}
 	
 	/**

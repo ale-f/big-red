@@ -1,7 +1,5 @@
 package dk.itu.big_red.import_export;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import org.eclipse.core.resources.IFile;
@@ -39,20 +37,6 @@ public abstract class Import<T> {
 		if (is != null)
 			this.source = is;
 		return this;
-	}
-	
-	/**
-	 * Sets the source of the import to the file specified.
-	 * 
-	 * <p>Equivalent to
-	 * <code>setInputStream(new FileInputStream(path))</code>.
-	 * @param path a path to a file
-	 * @throws FileNotFoundException if
-	 *         {@link FileInputStream#FileInputStream(String)} fails
-	 * @return <code>this</code>, for convenience
-	 */
-	public Import<T> setInputFile(String path) throws FileNotFoundException {
-		return setInputStream(new FileInputStream(path));
 	}
 	
 	/**
