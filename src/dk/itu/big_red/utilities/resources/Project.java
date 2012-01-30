@@ -7,6 +7,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -243,5 +244,15 @@ public class Project {
 		if (relativeToContainer != null) {
 			return resource.getFullPath().makeRelativeTo(relativeToContainer);
 		} else return resource.getFullPath();
+	}
+	
+	public static IResourceDelta getSpecificDelta(IResourceDelta rootDelta, IResource r) {
+		return getSpecificDelta(rootDelta, r.getFullPath());
+	}
+	
+	public static IResourceDelta getSpecificDelta(IResourceDelta rootDelta, IPath p) {
+		if (rootDelta != null) {
+			return rootDelta.findMember(p);
+		} else return null;
 	}
 }
