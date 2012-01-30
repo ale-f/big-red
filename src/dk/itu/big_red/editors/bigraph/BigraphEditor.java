@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.EventObject;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
@@ -28,6 +31,7 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
+import org.eclipse.gef.ui.parts.GraphicalEditorWithPalette;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
@@ -71,7 +75,7 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithPalette {
+public class BigraphEditor extends GraphicalEditorWithPalette implements IResourceChangeListener {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
 	private Bigraph model = null;
@@ -79,6 +83,17 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	
 	public BigraphEditor() {
 		setEditDomain(new DefaultEditDomain(this));
+		
+		Project.getWorkspace().
+			addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
+	}
+	
+	@Override
+	public void dispose() {
+		Project.getWorkspace().removeResourceChangeListener(this);
+		
+		getModel().dispose();
+		super.dispose();
 	}
 	
     @Override
@@ -331,12 +346,6 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	}
 	
 	@Override
-	public void dispose() {
-		getModel().dispose();
-		super.dispose();
-	}
-	
-	@Override
 	public GraphicalViewer getGraphicalViewer() {
 		return super.getGraphicalViewer();
 	}
@@ -354,5 +363,16 @@ public class BigraphEditor extends org.eclipse.gef.ui.parts.GraphicalEditorWithP
 	@Override
 	public DefaultEditDomain getEditDomain() {
 		return super.getEditDomain();
+	}
+
+	@Override
+	public void resourceChanged(IResourceChangeEvent event) {
+		IResourceDelta d = event.getDelta();
+		if (d == null)
+			return;
+		IResourceDelta specificDelta =
+				d.findMember(getModel().getFile().getFullPath());
+		if (specificDelta != null)
+			System.out.println("!" + specificDelta);
 	}
 }

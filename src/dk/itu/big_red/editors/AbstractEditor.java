@@ -2,14 +2,30 @@ package dk.itu.big_red.editors;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.EditorPart;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.utilities.resources.Project;
 
-public abstract class AbstractEditor extends EditorPart {
+public abstract class AbstractEditor extends EditorPart
+implements IResourceChangeListener {
+	public AbstractEditor() {
+		Project.getWorkspace().
+			addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
+	}
+	
+	@Override
+	public void dispose() {
+		Project.getWorkspace().removeResourceChangeListener(this);
+		getModel().dispose();
+		super.dispose();
+	}
+	
 	/**
 	 * Registers a number of {@link IAction}s with the given {@link
 	 * ActionRegistry}, optionally copying their IDs into a {@link List}.
@@ -93,8 +109,8 @@ public abstract class AbstractEditor extends EditorPart {
 	protected abstract ModelObject getModel();
 	
 	@Override
-	public void dispose() {
-		getModel().dispose();
-		super.dispose();
+	public void resourceChanged(IResourceChangeEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 }
