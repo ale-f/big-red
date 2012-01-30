@@ -382,8 +382,11 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
 	private boolean changeNotificationWaiting = false;
 	
 	private void doChangeDialog() {
-		UI.promptFor("WHAT YOU WANT DO?", "WHAT YOU WANT DO?",
-				"I DON'T KNOW!!", null);
+		UI.askFor(getSite().getShell(),
+			"File changed",
+			"The file '" + getModel().getFile() + "' has been changed on " +
+			"the file system. Do you want to replace the editor contents " +
+			"with these changes?", UI.YES_NO);
 	}
 	
 	@Override

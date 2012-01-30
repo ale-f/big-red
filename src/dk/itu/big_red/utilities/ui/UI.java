@@ -256,6 +256,8 @@ public class UI {
 		}
 	}
 	
+	public final static String[] YES_NO = new String[] { "Yes", "No" };
+	
 	public static String askFor(Shell s, String title, String caption,
 			String[] buttons) {
 		return buttons[new MessageDialog(
