@@ -5,6 +5,7 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -253,6 +254,12 @@ public class UI {
 		} else {
 			return null;
 		}
+	}
+	
+	public static String askFor(Shell s, String title, String caption,
+			String[] buttons) {
+		return buttons[new MessageDialog(
+		s, title, null, caption, MessageDialog.QUESTION, buttons, 0).open()];
 	}
 	
 	/**
