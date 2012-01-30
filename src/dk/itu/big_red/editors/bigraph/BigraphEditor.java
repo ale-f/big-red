@@ -315,8 +315,15 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
 		}
 	}
 	
+	private boolean saving = false;
+	
+	protected boolean isSaving() {
+		return saving;
+	}
+	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		saving = true;
 		try {
 			IOAdapter io = new IOAdapter();
         	FileEditorInput i = (FileEditorInput)getEditorInput();
@@ -331,6 +338,8 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
         	if (monitor != null)
         		monitor.setCanceled(true);
         	UI.openError("Unable to save the document.", ex);
+        } finally {
+        	saving = false;
         }
 	}
 	
@@ -364,15 +373,37 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
 	public DefaultEditDomain getEditDomain() {
 		return super.getEditDomain();
 	}
-
+	
+	private boolean hasFocus() {
+		return UI.getWorkbenchPage().getActiveEditor().equals(this);
+		
+	}
+	
+	private boolean changeNotificationWaiting = false;
+	
+	private void doChangeDialog() {
+		UI.promptFor("WHAT YOU WANT DO?", "WHAT YOU WANT DO?",
+				"I DON'T KNOW!!", null);
+	}
+	
+	@Override
+	public void setFocus() {
+		super.setFocus();
+		
+		if (changeNotificationWaiting) {
+			changeNotificationWaiting = false;
+			doChangeDialog();
+		}
+	}
+	
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		IResourceDelta d = event.getDelta();
-		if (d == null)
-			return;
 		IResourceDelta specificDelta =
-				d.findMember(getModel().getFile().getFullPath());
-		if (specificDelta != null)
-			System.out.println("!" + specificDelta);
+			Project.getSpecificDelta(event.getDelta(), getModel().getFile());
+		if (specificDelta != null && !isSaving()) {
+			if (hasFocus()) {
+				doChangeDialog();
+			} else changeNotificationWaiting = true;
+		}
 	}
 }
