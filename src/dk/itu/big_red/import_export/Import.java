@@ -71,6 +71,19 @@ public abstract class Import<T> {
 	 */
 	public abstract T importObject() throws ImportFailedException;
 	
+	/**
+	 * Loads an object from an {@link IFile} by:
+	 * <ul>
+	 * <li>getting its content type;
+	 * <li>finding an importer for that content type registered with the
+	 * <code>{@value #EXTENSION_POINT}</code> extension point; and
+	 * <li>instantiating that importer, passing it the {@link IFile}, and
+	 * calling {@link #importObject()}.
+	 * </ul>
+	 * @param f an {@link IFile}
+	 * @return an object, or <code>null</code>
+	 * @throws ImportFailedException if {@link #importObject()} fails
+	 */
 	public static Object fromFile(IFile f) throws ImportFailedException {
 		IContentType ct = Types.findContentTypeFor(f);
 		IConfigurationElement[] ices =
