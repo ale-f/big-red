@@ -344,8 +344,5 @@
             class="dk.itu.big_red.preferences.RedPreferences">
       </initializer>
    </extension>
-   <extension
-         point="dk.itu.big_red.import">
-   </extension>
 
 </plugin>
