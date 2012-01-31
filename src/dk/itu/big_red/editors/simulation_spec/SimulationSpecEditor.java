@@ -4,6 +4,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -13,6 +15,8 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -23,8 +27,6 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISharedImages;
@@ -51,6 +53,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
@@ -206,6 +209,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		if (model == null)
 			model = new SimulationSpec();
 		
+		rules.setInput(model);
 		model.addPropertyChangeListener(this);
 		modelToControls();
 	}
@@ -216,13 +220,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		Signature s = model.getSignature();
 		if (s != null)
 			signatureSelector.setResource(s.getFile());
-		
-		for (ReactionRule r : model.getRules()) {
-			TreeItem t = UI.data(
-				new TreeItem(rules, SWT.NONE),
-				"associatedRule", r);
-			t.setText(r.getFile().getProjectRelativePath().toString());
-		}
 		
 		Bigraph b = model.getModel();
 		if (b != null)
@@ -256,7 +253,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	}
 	
 	private ResourceSelector signatureSelector, modelSelector;
-	private Tree rules;
+	private ListViewer rules;
 	private Button export;
 	
 	private Composite parent, self;
@@ -309,8 +306,16 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		});
 		
 		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-		rules =
-			UI.setLayoutData(new Tree(base, SWT.BORDER | SWT.MULTI),
+		rules = new ListViewer(base);
+		UI.setProviders(rules, new SimulationSpecRRContentProvider(rules),
+			new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					return ((IFileBackable)element).getFile().
+							getProjectRelativePath().toString();
+				}
+		});
+		rules.getList().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		Composite br = new Composite(base, SWT.NONE);
@@ -350,9 +355,11 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		b.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (TreeItem i : rules.getSelection()) {
-					ReactionRule rr =
-							(ReactionRule)UI.data(i, "associatedRule");
+				IStructuredSelection is =
+						(IStructuredSelection)rules.getSelection();
+				Iterator it = is.iterator();
+				while (it.hasNext()) {
+					ReactionRule rr = (ReactionRule)it.next();
 					doChange(getModel().changeRemoveRule(rr));
 				}
 			}
@@ -453,28 +460,11 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		uiUpdateInProgress = true;
 		try {
 			String propertyName = evt.getPropertyName();
-			Object oldValue = evt.getOldValue(),
-					newValue = evt.getNewValue();
+			Object newValue = evt.getNewValue();
 			uiUpdateInProgress = true;
 			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
 				Signature s = (Signature)newValue;
 				signatureSelector.setResource((s != null ? s.getFile() : null));
-			} else if (propertyName.equals(SimulationSpec.PROPERTY_RULE)) {
-				if (oldValue == null && newValue != null) { /* added */
-					ReactionRule r = (ReactionRule)newValue;
-					TreeItem t = UI.data(
-							new TreeItem(rules, SWT.NONE),
-							"associatedRule", r);
-					t.setText(r.getFile().getProjectRelativePath().toString());
-				} else if (oldValue != null && newValue == null) { /* removed */
-					ReactionRule r = (ReactionRule)oldValue;
-					for (TreeItem i : rules.getItems()) {
-						if (r.equals(UI.data(i, "associatedRule"))) {
-							UI.data(i, "associatedRule", null).dispose();
-							break;
-						}
-					}
-				}
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
 				Bigraph b = (Bigraph)newValue;
 				modelSelector.setResource((b != null ? b.getFile() : null));
