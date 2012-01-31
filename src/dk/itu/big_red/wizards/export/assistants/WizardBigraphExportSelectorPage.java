@@ -4,11 +4,9 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -18,6 +16,7 @@ import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.utilities.ui.UI;
 import dk.itu.big_red.utilities.ui.jface.ConfigurationElementLabelProvider;
+import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.wizards.export.BigraphExportWizard;
 
 public class WizardBigraphExportSelectorPage extends WizardPage {
@@ -48,42 +47,9 @@ public class WizardBigraphExportSelectorPage extends WizardPage {
 		
 		UI.newLabel(form, SWT.NONE, "&Select an export format:");
 		
-		TreeViewer tree = new TreeViewer(form, SWT.BORDER);
+		TableViewer tree = new TableViewer(form, SWT.BORDER);
 		tree.setLabelProvider(new ConfigurationElementLabelProvider());
-		tree.setContentProvider(new ITreeContentProvider() {
-			
-			@Override
-			public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-			}
-			
-			@Override
-			public void dispose() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public boolean hasChildren(Object element) {
-				return false;
-			}
-			
-			@Override
-			public Object getParent(Object element) {
-				return null;
-			}
-			
-			@Override
-			public Object[] getElements(Object inputElement) {
-				if (inputElement instanceof IConfigurationElement[])
-					return (IConfigurationElement[])inputElement;
-				else return null;
-			}
-			
-			@Override
-			public Object[] getChildren(Object parentElement) {
-				return null;
-			}
-		});
+		tree.setContentProvider(new ListContentProvider());
 		tree.setInput(RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT));
 		tree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
@@ -91,7 +57,9 @@ public class WizardBigraphExportSelectorPage extends WizardPage {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				IConfigurationElement e = 
-					(IConfigurationElement)((ITreeSelection)event.getSelection()).getFirstElement();
+					(IConfigurationElement)
+						((IStructuredSelection)event.getSelection()).
+							getFirstElement();
 				setSelectedExporter(e);
 			}
 		});
