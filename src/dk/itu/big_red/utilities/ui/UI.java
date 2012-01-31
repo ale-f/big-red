@@ -7,6 +7,9 @@ import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.ContentViewer;
+import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -316,6 +319,13 @@ public class UI {
 		Button b = new Button(parent, style);
 		b.setText(text);
 		return b;
+	}
+	
+	public static <T extends ContentViewer> T setProviders(T viewer,
+			IContentProvider cp, ILabelProvider lp) {
+		viewer.setContentProvider(cp);
+		viewer.setLabelProvider(lp);
+		return viewer;
 	}
 	
 	public static <T extends Control> T setLayoutData(T widget, Object layoutData) {
