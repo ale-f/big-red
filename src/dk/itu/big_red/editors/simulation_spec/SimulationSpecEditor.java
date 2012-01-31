@@ -4,8 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -13,6 +11,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -20,7 +21,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Tree;
@@ -58,6 +58,8 @@ import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
+import dk.itu.big_red.utilities.ui.jface.ArrayListContentProvider;
+import dk.itu.big_red.utilities.ui.jface.ConfigurationElementLabelProvider;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractEditor
@@ -243,20 +245,16 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		return (Export<SimulationSpec>)RedPlugin.instantiate(e);
 	}
 	
-	private Export<SimulationSpec> getExporter(String id) {
-		return getExporter(getExporters().get(id));
-	}
-	
-	private static Map<String, IConfigurationElement> getExporters() {
-		Map<String, IConfigurationElement> exporters =
-				new HashMap<String, IConfigurationElement>();
+	private static ArrayList<IConfigurationElement> getExporters() {
+		ArrayList<IConfigurationElement> ices =
+				new ArrayList<IConfigurationElement>();
 		for (IConfigurationElement ce :
 		     RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals(SimulationSpec.class.getCanonicalName()))
-				exporters.put(ce.getAttribute("name"), ce);
+				ices.add(ce);
 		}
-		return exporters;
+		return ices;
 	}
 	
 	private ResourceSelector signatureSelector, modelSelector;
@@ -388,18 +386,28 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		final Combo c = new Combo(base, SWT.READ_ONLY);
-		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		String[] exporters = getExporters().keySet().toArray(new String[0]);
-		c.setItems(exporters);
-		c.setText(exporters[0]);
+		final ComboViewer cv = new ComboViewer(base);
+		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		cv.setContentProvider(new ArrayListContentProvider());
+		cv.setLabelProvider(new ConfigurationElementLabelProvider());
+		ArrayList<IConfigurationElement> exporters = getExporters();
+		cv.setInput(exporters);
+		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
 		export = UI.newButton(base, SWT.NONE, "&Export...");
 		export.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		export.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Export<SimulationSpec> exporter = getExporter(c.getText());
+				IConfigurationElement ice =
+					(IConfigurationElement)
+						((IStructuredSelection)cv.getSelection())
+							.getFirstElement();
+				
+				@SuppressWarnings("unchecked")
+				Export<SimulationSpec> exporter =
+						(Export<SimulationSpec>)RedPlugin.instantiate(ice);
+				
 				try {
 					IOAdapter io = new IOAdapter();
 					exporter.setModel(getModel()).
