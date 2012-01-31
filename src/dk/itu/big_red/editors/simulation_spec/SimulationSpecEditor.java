@@ -58,7 +58,7 @@ import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
-import dk.itu.big_red.utilities.ui.jface.ArrayListContentProvider;
+import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.jface.ConfigurationElementLabelProvider;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -388,7 +388,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		final ComboViewer cv = new ComboViewer(base);
 		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		cv.setContentProvider(new ArrayListContentProvider());
+		cv.setContentProvider(new ListContentProvider());
 		cv.setLabelProvider(new ConfigurationElementLabelProvider());
 		ArrayList<IConfigurationElement> exporters = getExporters();
 		cv.setInput(exporters);
