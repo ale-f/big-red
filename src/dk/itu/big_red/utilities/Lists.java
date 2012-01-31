@@ -59,12 +59,16 @@ public final class Lists {
 	}
 	
 	/**
-	 * Copies a {@link Collection} into a new {@link ArrayList}.
-	 * @param c a {@link Collection}
+	 * Copies an {@link Iterable} into a new {@link ArrayList}.
+	 * @param c an {@link Iterable}
 	 * @return a new {@link ArrayList}
 	 */
-	public static <T> ArrayList<T> copy(Collection<? extends T> c) {
-		return new ArrayList<T>(c);
+	public static <T> ArrayList<T> copy(Iterable<? extends T> c) {
+		ArrayList<T> r = new ArrayList<T>();
+		Iterator<? extends T> it = c.iterator();
+		while (it.hasNext())
+			r.add(it.next());
+		return r;
 	}
 	
 	public static class Pair<T, V> {
