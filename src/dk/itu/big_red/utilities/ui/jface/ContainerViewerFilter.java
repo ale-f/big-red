@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities.resources;
+package dk.itu.big_red.utilities.ui.jface;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
@@ -11,12 +11,10 @@ import org.eclipse.jface.viewers.ViewerFilter;
  *
  */
 public class ContainerViewerFilter extends ViewerFilter {
-
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 		if (element instanceof IContainer)
 			return true;
 		else return false;
 	}
-
 }

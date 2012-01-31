@@ -9,6 +9,9 @@ import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import dk.itu.big_red.utilities.ui.jface.ContainerViewerFilter;
+import dk.itu.big_red.utilities.ui.jface.FileTypeViewerFilter;
+
 /**
  * ResourceTreeSelectionDialogs are reasonably customisable dialogs designed
  * for selecting a single resource from a tree.

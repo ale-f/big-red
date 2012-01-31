@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities.resources;
+package dk.itu.big_red.utilities.ui.jface;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.Viewer;
+
+import dk.itu.big_red.utilities.resources.Types;
 
 
 /**
