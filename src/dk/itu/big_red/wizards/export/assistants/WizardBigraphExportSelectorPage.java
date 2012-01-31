@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.utilities.ui.UI;
+import dk.itu.big_red.utilities.ui.jface.ConfigurationElementLabelProvider;
 import dk.itu.big_red.wizards.export.BigraphExportWizard;
 
 public class WizardBigraphExportSelectorPage extends WizardPage {
@@ -48,7 +49,7 @@ public class WizardBigraphExportSelectorPage extends WizardPage {
 		UI.newLabel(form, SWT.NONE, "&Select an export format:");
 		
 		TreeViewer tree = new TreeViewer(form, SWT.BORDER);
-		tree.setLabelProvider(new ImportExportLabelProvider());
+		tree.setLabelProvider(new ConfigurationElementLabelProvider());
 		tree.setContentProvider(new ITreeContentProvider() {
 			
 			@Override
