@@ -150,6 +150,7 @@ public class RuleEditor extends AbstractEditor implements
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		setSaving(true);
 		try {
 			IOAdapter io = new IOAdapter();
         	FileEditorInput i = (FileEditorInput)getEditorInput();
@@ -164,7 +165,9 @@ public class RuleEditor extends AbstractEditor implements
         	if (monitor != null)
         		monitor.setCanceled(true);
         	UI.openError("Unable to save the document.", ex);
-        }		
+        } finally {
+        	setSaving(false);
+        }
 	}
 
 	@Override

@@ -66,6 +66,7 @@ implements ISelectionListener, PropertyChangeListener {
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
+		setSaving(true);
 		try {
 			IOAdapter io = new IOAdapter();
         	FileEditorInput i = (FileEditorInput)getEditorInput();
@@ -80,6 +81,8 @@ implements ISelectionListener, PropertyChangeListener {
         	if (monitor != null)
         		monitor.setCanceled(true);
         	UI.openError("Unable to save the document.", ex);
+        } finally {
+        	setSaving(false);
         }
 	}
 

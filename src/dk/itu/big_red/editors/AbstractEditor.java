@@ -2,14 +2,19 @@ package dk.itu.big_red.editors;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.FileEditorInput;
+
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class AbstractEditor extends EditorPart
@@ -94,6 +99,16 @@ implements IResourceChangeListener {
 		createActions();
 	}
 	
+	private boolean saving;
+	
+	protected void setSaving(boolean saving) {
+		this.saving = saving;
+	}
+	
+	public boolean isSaving() {
+		return saving;
+	}
+	
 	/**
 	 * Creates actions for this editor and registers them with the {@link
 	 * ActionRegistry}.
@@ -108,9 +123,18 @@ implements IResourceChangeListener {
 	
 	protected abstract ModelObject getModel();
 	
+	protected IFile getFile() {
+		return (getModel() instanceof IFileBackable ?
+				((IFileBackable)getModel()).getFile() :
+					(getEditorInput() instanceof FileEditorInput ?
+						((FileEditorInput)getEditorInput()).getFile() : null));
+	}
+	
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		// TODO Auto-generated method stub
-		
+		IResourceDelta specificDelta =
+				Project.getSpecificDelta(event.getDelta(), getFile());
+		if (specificDelta != null && !isSaving())
+			;
 	}
 }
