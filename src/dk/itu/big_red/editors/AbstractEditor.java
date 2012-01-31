@@ -116,9 +116,15 @@ implements IResourceChangeListener {
 	protected abstract void createActions();
 	
 	@Override
-	protected void setInputWithNotify(IEditorInput input) {
-		super.setInputWithNotify(input);
+	protected void setInput(IEditorInput input) {
+		super.setInput(input);
 		setPartName(input.getName());
+	}
+	
+	@Override
+	protected void setInputWithNotify(IEditorInput input) {
+		setInput(input);
+        firePropertyChange(PROP_INPUT);
 	}
 	
 	protected abstract ModelObject getModel();
