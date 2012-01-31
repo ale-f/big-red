@@ -70,9 +70,8 @@ public abstract class Import<T> {
 	 */
 	public static Object fromFile(IFile f) throws ImportFailedException {
 		IContentType ct = Types.findContentTypeFor(f);
-		IConfigurationElement[] ices =
-				RedPlugin.getConfigurationElementsFor(EXTENSION_POINT);
-		for (IConfigurationElement ice : ices) {
+		for (IConfigurationElement ice :
+			RedPlugin.getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
 				Import<?> i = (Import<?>)RedPlugin.instantiate(ice);
 				try {

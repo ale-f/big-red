@@ -3,6 +3,8 @@ package dk.itu.big_red.application.plugin;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.eclipse.core.runtime.CoreException;
@@ -38,8 +40,14 @@ public class RedPlugin extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	public static IConfigurationElement[] getConfigurationElementsFor(String extensionPointID) {
-		return RegistryFactory.getRegistry().getConfigurationElementsFor(extensionPointID);
+	public static List<IConfigurationElement> getConfigurationElementsFor(String extensionPointID) {
+		ArrayList<IConfigurationElement> r =
+			new ArrayList<IConfigurationElement>();
+		for (IConfigurationElement ice :
+			RegistryFactory.getRegistry().
+				getConfigurationElementsFor(extensionPointID))
+			r.add(ice);
+		return r;
 	}
 
 	/**
