@@ -47,9 +47,8 @@ public class WizardBigraphExportSelectorPage extends WizardPage {
 		
 		UI.newLabel(form, SWT.NONE, "&Select an export format:");
 		
-		TableViewer tree = new TableViewer(form, SWT.BORDER);
-		tree.setLabelProvider(new ConfigurationElementLabelProvider());
-		tree.setContentProvider(new ListContentProvider());
+		TableViewer tree = UI.setProviders(new TableViewer(form, SWT.BORDER),
+			new ListContentProvider(), new ConfigurationElementLabelProvider());
 		tree.setInput(RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT));
 		tree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		

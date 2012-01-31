@@ -240,11 +240,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private Export<SimulationSpec> getExporter(IConfigurationElement e) {
-		return (Export<SimulationSpec>)RedPlugin.instantiate(e);
-	}
-	
 	private static ArrayList<IConfigurationElement> getExporters() {
 		ArrayList<IConfigurationElement> ices =
 				new ArrayList<IConfigurationElement>();
@@ -386,10 +381,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
 		
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		final ComboViewer cv = new ComboViewer(base);
+		final ComboViewer cv = UI.setProviders(new ComboViewer(base),
+			new ListContentProvider(), new ConfigurationElementLabelProvider());
 		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		cv.setContentProvider(new ListContentProvider());
-		cv.setLabelProvider(new ConfigurationElementLabelProvider());
 		ArrayList<IConfigurationElement> exporters = getExporters();
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
