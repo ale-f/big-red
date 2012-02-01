@@ -86,7 +86,6 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 						child = new Node(
 								reactum.getSignature().getControl(control));
 					} else child = (Layoutable)ModelFactory.getNewObject(type);
-					
 					c = parent.changeAddChild(child, name);
 				} else if (el.getLocalName().equals("remove")) {
 					String
@@ -95,7 +94,6 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 					Layoutable child =
 						getNamed(reactum, type, name);
 					Container parent = child.getParent();
-					
 					c = parent.changeRemoveChild(child);
 				} else if (el.getLocalName().equals("rename")) {
 					String
@@ -108,15 +106,11 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 						name = chattr(el, "name"),
 						link = chattr(el, "link"),
 						node = chattr(el, "node");
-					Link l = (Link)getNamed(reactum, "link", link);
 					Point p;
 					if (node != null) {
 						p = ((Node)getNamed(reactum, "node", node)).getPort(name);
 					} else p = (InnerName)getNamed(reactum, "innername", name);
-					
-					if (p != null) {
-						c = p.changeConnect(l);
-					} else throw new ImportFailedException("Can't connect");
+					c = p.changeConnect((Link)getNamed(reactum, "link", link));
 				} else if (el.getLocalName().equals("disconnect")) {
 					String
 						name = chattr(el, "name"),
@@ -125,21 +119,13 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 					if (node != null) {
 						p = ((Node)getNamed(reactum, "node", node)).getPort(name);
 					} else p = (InnerName)getNamed(reactum, "innername", name);
-					
-					if (p != null) {
-						c = p.changeDisconnect(p.getLink());
-					} else throw new ImportFailedException("Can't disconnect");
+					c = p.changeDisconnect(p.getLink());
 				} else if (el.getLocalName().equals("site-alias")) {
 					String
 						name = chattr(el, "name"),
 						alias = chattr(el, "alias");
-					Site s = null;
-					if (name != null) {
-						s = (Site)getNamed(reactum, "site", name);
-					}
-					if (s != null) {
-						c = s.changeAlias(alias);
-					} else throw new ImportFailedException("No site");
+					c = ((Site)getNamed(reactum, "site", name)).
+							changeAlias(alias);
 				}
 			} else if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.BIG_RED)) {
