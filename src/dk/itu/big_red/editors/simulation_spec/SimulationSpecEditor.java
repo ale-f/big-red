@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.simulation_spec;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.OutputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,7 +10,6 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.dialogs.Dialog;
@@ -40,6 +40,7 @@ import dk.itu.big_red.editors.assistants.UndoProxyAction;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.import_export.Export;
+import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -52,9 +53,7 @@ import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
 import dk.itu.big_red.tools.BasicCommandLineInteractionManager;
 import dk.itu.big_red.tools.IInteractionManager;
 import dk.itu.big_red.utilities.ValidationFailedException;
-import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.IFileBackable;
-import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.resources.Types;
@@ -67,25 +66,11 @@ import dk.itu.big_red.utilities.ui.UI;
 public class SimulationSpecEditor extends AbstractEditor
 implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	@Override
-	public void doSave(IProgressMonitor monitor) {
-		setSaving(true);
-		try {
-			IOAdapter io = new IOAdapter();
-        	FileEditorInput i = (FileEditorInput)getEditorInput();
-        	SimulationSpecXMLExport ex = new SimulationSpecXMLExport();
-        	
-        	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
-        	Project.setContents(i.getFile(), io.getInputStream());
-        	
-    		savePoint = undoBuffer.peek();
-    		checkDirt();
-        } catch (Exception ex) {
-        	if (monitor != null)
-        		monitor.setCanceled(true);
-        	UI.openError("Unable to save the document.", ex);
-        } finally {
-        	setSaving(false);
-        }
+	public void doActualSave(OutputStream os) throws ExportFailedException {
+    	new SimulationSpecXMLExport().setModel(getModel()).setOutputStream(os).
+    		exportObject();
+    	savePoint = undoBuffer.peek();
+		checkDirt();
 	}
 
 	@Override

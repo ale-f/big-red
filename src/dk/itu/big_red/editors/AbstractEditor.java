@@ -1,21 +1,27 @@
 package dk.itu.big_red.editors;
 
+import java.io.OutputStream;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
@@ -149,6 +155,29 @@ implements IResourceChangeListener {
 	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
+	}
+	
+	abstract protected void doActualSave(OutputStream os)
+		throws ExportFailedException;
+	
+	@Override
+	public void doSave(IProgressMonitor monitor) {
+		setSaving(true);
+		try {
+			IOAdapter io = new IOAdapter();
+        	FileEditorInput i = (FileEditorInput)getEditorInput();
+        	
+        	doActualSave(io.getOutputStream());
+        	
+        	Project.setContents(i.getFile(), io.getInputStream());
+    		firePropertyChange(IEditorPart.PROP_DIRTY);
+		} catch (ExportFailedException cre) {
+			cre.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		} finally {
+			setSaving(false);
+		}
 	}
 	
 	@Override

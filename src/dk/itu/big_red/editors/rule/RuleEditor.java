@@ -1,11 +1,11 @@
 package dk.itu.big_red.editors.rule;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.commands.Command;
@@ -58,6 +58,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -67,8 +68,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.utilities.ValidationFailedException;
-import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -146,25 +145,10 @@ public class RuleEditor extends AbstractEditor implements
 	}
 	
 	@Override
-	public void doSave(IProgressMonitor monitor) {
-		setSaving(true);
-		try {
-			IOAdapter io = new IOAdapter();
-        	FileEditorInput i = (FileEditorInput)getEditorInput();
-        	ReactionRuleXMLExport ex = new ReactionRuleXMLExport();
-        	
-        	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
-        	Project.setContents(i.getFile(), io.getInputStream());
-        	
-    		getCommandStack().markSaveLocation();
-    		firePropertyChange(IEditorPart.PROP_DIRTY);
-        } catch (Exception ex) {
-        	if (monitor != null)
-        		monitor.setCanceled(true);
-        	UI.openError("Unable to save the document.", ex);
-        } finally {
-        	setSaving(false);
-        }
+	public void doActualSave(OutputStream os) throws ExportFailedException {
+    	new ReactionRuleXMLExport().setModel(getModel()).
+    		setOutputStream(os).exportObject();
+		getCommandStack().markSaveLocation();
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package dk.itu.big_red.editors.signature;
 
 import java.beans.PropertyChangeListener;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.jface.preference.ColorSelector;
@@ -38,6 +38,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
+import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
@@ -49,8 +50,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
-import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -62,25 +61,10 @@ implements ISelectionListener, PropertyChangeListener {
 	}
 	
 	@Override
-	public void doSave(IProgressMonitor monitor) {
-		setSaving(true);
-		try {
-			IOAdapter io = new IOAdapter();
-        	FileEditorInput i = (FileEditorInput)getEditorInput();
-        	SignatureXMLExport ex = new SignatureXMLExport();
-        	
-        	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).
-        		exportObject();
-        	Project.setContents(i.getFile(), io.getInputStream());
-        	
-    		setDirty(false);
-        } catch (Exception ex) {
-        	if (monitor != null)
-        		monitor.setCanceled(true);
-        	UI.openError("Unable to save the document.", ex);
-        } finally {
-        	setSaving(false);
-        }
+	public void doActualSave(OutputStream os) throws ExportFailedException {
+    	new SignatureXMLExport().setModel(getModel()).setOutputStream(os).
+    		exportObject();
+		setDirty(false);
 	}
 
 	@Override
