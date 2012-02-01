@@ -355,13 +355,11 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		b.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				IStructuredSelection is =
-						(IStructuredSelection)rules.getSelection();
-				Iterator it = is.iterator();
-				while (it.hasNext()) {
-					ReactionRule rr = (ReactionRule)it.next();
-					doChange(getModel().changeRemoveRule(rr));
-				}
+				Iterator<?> it =
+					((IStructuredSelection)rules.getSelection()).iterator();
+				while (it.hasNext())
+					doChange(getModel().
+							changeRemoveRule((ReactionRule)it.next()));
 			}
 		});
 		
