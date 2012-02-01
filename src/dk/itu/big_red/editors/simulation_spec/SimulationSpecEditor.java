@@ -40,7 +40,6 @@ import dk.itu.big_red.editors.assistants.UndoProxyAction;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.import_export.Export;
-import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
@@ -50,6 +49,8 @@ import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
+import dk.itu.big_red.tools.BasicCommandLineInteractionManager;
+import dk.itu.big_red.tools.IInteractionManager;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.IFileBackable;
@@ -61,7 +62,6 @@ import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
-import dk.itu.big_red.utilities.ui.jface.ConfigurationElementLabelProvider;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractEditor
@@ -221,16 +221,18 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		return dirty;
 	}
 	
-	private static ArrayList<IConfigurationElement> getExporters() {
-		ArrayList<IConfigurationElement> ices =
-				new ArrayList<IConfigurationElement>();
+	@SuppressWarnings("unchecked")
+	private static ArrayList<IInteractionManager> getExporters() {
+		ArrayList<IInteractionManager> managers =
+				new ArrayList<IInteractionManager>();
 		for (IConfigurationElement ce :
 		     RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals(SimulationSpec.class.getCanonicalName()))
-				ices.add(ce);
+				managers.add(new BasicCommandLineInteractionManager(
+						(Export<SimulationSpec>)RedPlugin.instantiate(ce)));
 		}
-		return ices;
+		return managers;
 	}
 	
 	private ResourceSelector signatureSelector, modelSelector;
@@ -371,9 +373,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		final ComboViewer cv = UI.setProviders(new ComboViewer(base),
-			new ListContentProvider(), new ConfigurationElementLabelProvider());
+			new ListContentProvider(), new LabelProvider());
 		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		ArrayList<IConfigurationElement> exporters = getExporters();
+		ArrayList<IInteractionManager> exporters = getExporters();
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
@@ -382,27 +384,12 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		export.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				IConfigurationElement ice =
-					(IConfigurationElement)
-						((IStructuredSelection)cv.getSelection())
-							.getFirstElement();
-				
-				@SuppressWarnings("unchecked")
-				Export<SimulationSpec> exporter =
-						(Export<SimulationSpec>)RedPlugin.instantiate(ice);
-				
-				try {
-					IOAdapter io = new IOAdapter();
-					exporter.setModel(getModel()).
-						setOutputStream(io.getOutputStream()).exportObject();
-					SimulationSpecUIFactory.
-						createResultsWindow(
-							getSite().getShell(),
-							IOAdapter.readString(io.getInputStream())).
-						open();
-				} catch (ExportFailedException ex) {
-					ex.printStackTrace();
-				}
+				IInteractionManager im =
+					(IInteractionManager)
+						((IStructuredSelection)cv.getSelection()).
+							getFirstElement();
+				im.setSimulationSpec(getModel());
+				im.run();
 			}
 		});
 		export.setEnabled(false);
