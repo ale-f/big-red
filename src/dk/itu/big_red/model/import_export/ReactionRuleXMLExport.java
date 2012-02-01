@@ -70,9 +70,26 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 		for (Change i_ : changes) {
 			Element f = null;
 			
-			if (i_ instanceof Colourable.ChangeFillColour ||
-					i_ instanceof Colourable.ChangeOutlineColour) {
-				/* do nothing */;
+			if (i_ instanceof Colourable.ChangeFillColour) {
+				Colourable.ChangeFillColour i = ac(i_);
+				if ((i.getCreator() instanceof Layoutable)) {
+					Layoutable l = (Layoutable)i.getCreator();
+					f = DOM.applyAttributes(
+							newElement(XMLNS.BIG_RED, "big-red:fill"),
+							"name", l.getName(),
+							"type", l.getType().toLowerCase(),
+							"colour", i.newColour.toHexString());
+				}
+			} else if (i_ instanceof Colourable.ChangeOutlineColour) {
+				Colourable.ChangeOutlineColour i = ac(i_);
+				if ((i.getCreator() instanceof Layoutable)) {
+					Layoutable l = (Layoutable)i.getCreator();
+					f = DOM.applyAttributes(
+							newElement(XMLNS.BIG_RED, "big-red:outline"),
+							"name", l.getName(),
+							"type", l.getType().toLowerCase(),
+							"colour", i.newColour.toHexString());
+				}
 			} else if (i_ instanceof ChangeGroup) {
 				_processChanges(e, (ChangeGroup)i_);
 			} else if (i_ instanceof Layoutable.ChangeLayout) {

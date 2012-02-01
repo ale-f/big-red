@@ -18,6 +18,7 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
@@ -152,6 +153,26 @@ public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFile
 							DOM.getAttributeNS(el, XMLNS.BIG_RED, "name");
 					c = getNamed(reactum, type, name).changeLayout(
 							AppearanceGenerator.elementToRectangle(el));
+				} else if (el.getLocalName().equals("fill")) {
+					String
+						colour =
+							DOM.getAttributeNS(el, XMLNS.BIG_RED, "colour"),
+						type =
+							DOM.getAttributeNS(el, XMLNS.BIG_RED, "type"),
+						name =
+							DOM.getAttributeNS(el, XMLNS.BIG_RED, "name");
+					c = getNamed(reactum, type, name).changeFillColour(
+							new Colour(colour));
+				} else if (el.getLocalName().equals("outline")) {
+					String
+						colour =
+							DOM.getAttributeNS(el, XMLNS.BIG_RED, "colour"),
+						type =
+							DOM.getAttributeNS(el, XMLNS.BIG_RED, "type"),
+						name =
+							DOM.getAttributeNS(el, XMLNS.BIG_RED, "name");
+					c = getNamed(reactum, type, name).changeOutlineColour(
+							new Colour(colour));
 				}
 			}
 			if (c != null) {
