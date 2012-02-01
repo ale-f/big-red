@@ -3,11 +3,9 @@ package dk.itu.big_red.editors.signature;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -35,7 +33,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -87,19 +84,6 @@ implements ISelectionListener, PropertyChangeListener {
 	}
 
 	@Override
-	public void doSaveAs() {
-		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
-		d.setBlockOnOpen(true);
-		if (d.open() == Dialog.OK) {
-			IFile f = Project.getWorkspaceFile(d.getResult());
-			getModel().setFile(f);
-			
-			setInputWithNotify(new FileEditorInput(f));
-			doSave(null);
-		}
-	}
-
-	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		setSite(site);
@@ -119,11 +103,6 @@ implements ISelectionListener, PropertyChangeListener {
 	@Override
 	public boolean isDirty() {
 		return dirty;
-	}
-
-	@Override
-	public boolean isSaveAsAllowed() {
-		return true;
 	}
 
 	private Signature model = null;

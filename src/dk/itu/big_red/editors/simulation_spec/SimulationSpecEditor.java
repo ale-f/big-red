@@ -31,7 +31,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -87,19 +86,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
         } finally {
         	setSaving(false);
         }
-	}
-
-	@Override
-	public void doSaveAs() {
-		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
-		d.setBlockOnOpen(true);
-		if (d.open() == Dialog.OK) {
-			IFile f = Project.getWorkspaceFile(d.getResult());
-			getModel().setFile(f);
-			
-			setInputWithNotify(new FileEditorInput(f));
-			doSave(null);
-		}
 	}
 
 	@Override
@@ -233,11 +219,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	@Override
 	public boolean isDirty() {
 		return dirty;
-	}
-	
-	@Override
-	public boolean isSaveAsAllowed() {
-		return true;
 	}
 	
 	private static ArrayList<IConfigurationElement> getExporters() {

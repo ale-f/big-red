@@ -9,7 +9,9 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -142,5 +144,24 @@ implements IResourceChangeListener {
 				Project.getSpecificDelta(event.getDelta(), getFile());
 		if (specificDelta != null && !isSaving())
 			;
+	}
+	
+	@Override
+	public boolean isSaveAsAllowed() {
+		return true;
+	}
+	
+	@Override
+	public void doSaveAs() {
+		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
+		d.setBlockOnOpen(true);
+		if (d.open() == Dialog.OK) {
+			IFile f = Project.getWorkspaceFile(d.getResult());
+			if (getModel() instanceof IFileBackable)
+				((IFileBackable)getModel()).setFile(f);
+			
+			setInputWithNotify(new FileEditorInput(f));
+			doSave(null);
+		}
 	}
 }
