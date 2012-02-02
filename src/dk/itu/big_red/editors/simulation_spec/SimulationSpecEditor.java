@@ -248,6 +248,11 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	private static ArrayList<IInteractionManagerFactory> getIMFactories() {
 		ArrayList<IInteractionManagerFactory> factories =
 				new ArrayList<IInteractionManagerFactory>();
+		
+		for (IConfigurationElement ce :
+			 RedPlugin.getConfigurationElementsFor("dk.itu.big_red.externalTools"))
+			factories.add(new ConfigurationElementInteractionManagerFactory(ce));
+		
 		for (IConfigurationElement ce :
 		     RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
