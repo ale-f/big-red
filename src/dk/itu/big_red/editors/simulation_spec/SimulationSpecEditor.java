@@ -66,24 +66,41 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractEditor
 implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
-	private static class SimpleExportInteractionManagerFactory
+	private static class ConfigurationElementInteractionManagerFactory
 		implements IInteractionManagerFactory {
 		private IConfigurationElement ice = null;
 		
-		public SimpleExportInteractionManagerFactory(IConfigurationElement ice) {
+		protected IConfigurationElement getCE() {
+			return ice;
+		}
+		
+		public ConfigurationElementInteractionManagerFactory(IConfigurationElement ice) {
 			this.ice = ice;
 		}
 		
 		@Override
 		public String getName() {
-			return ice.getAttribute("name");
+			return getCE().getAttribute("name");
+		}
+		
+		@Override
+		public IInteractionManager createInteractionManager() {
+			return (IInteractionManager)RedPlugin.instantiate(getCE());
+		}
+	}
+	
+	private static class SimpleExportInteractionManagerFactory
+		extends ConfigurationElementInteractionManagerFactory {
+		
+		public SimpleExportInteractionManagerFactory(IConfigurationElement ice) {
+			super(ice);
 		}
 		
 		@SuppressWarnings("unchecked")
 		@Override
 		public IInteractionManager createInteractionManager() {
 			return new BasicCommandLineInteractionManager(
-					(Export<SimulationSpec>)RedPlugin.instantiate(ice));
+					(Export<SimulationSpec>)RedPlugin.instantiate(getCE()));
 		}
 	}
 	
