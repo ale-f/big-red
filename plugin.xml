@@ -344,5 +344,14 @@
             class="dk.itu.big_red.preferences.RedPreferences">
       </initializer>
    </extension>
+   <extension
+         point="dk.itu.big_red.externalTools">
+      <externalTool
+            class="dk.itu.big_red.tools.TestInteractionManager"
+            icon="resources/icons/bigraph-palette/site.png"
+            id="dk.itu.big_red.TestInteractionManager"
+            name="Test &quot;external&quot; tool">
+      </externalTool>
+   </extension>
 
 </plugin>
