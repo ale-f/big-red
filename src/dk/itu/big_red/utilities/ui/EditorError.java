@@ -1,5 +1,8 @@
 package dk.itu.big_red.utilities.ui;
 
+import java.io.IOException;
+import java.io.PrintStream;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
@@ -12,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.utilities.io.IOAdapter;
 
 public class EditorError {
 	private static Font font;
@@ -47,6 +51,20 @@ public class EditorError {
 		
 		Text t = new Text(rhs, SWT.WRAP | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL);
 		t.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		t.setText(reason.toString());
+		
+		String errorText = reason.toString();
+		
+		Throwable ex;
+		if ((ex = reason.getException()) != null) {
+			IOAdapter io = new IOAdapter();
+			ex.printStackTrace(new PrintStream(io.getOutputStream()));
+			try {
+				io.getOutputStream().close();
+				errorText += "\n\n" + IOAdapter.readString(io.getInputStream());
+			} catch (IOException e) {
+			}
+		}
+		
+		t.setText(errorText);
 	}
 }
