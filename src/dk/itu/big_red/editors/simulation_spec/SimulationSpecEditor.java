@@ -51,6 +51,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
 import dk.itu.big_red.tools.BasicCommandLineInteractionManager;
+import dk.itu.big_red.tools.ConfigurationElementInteractionManagerFactory;
 import dk.itu.big_red.tools.IInteractionManager;
 import dk.itu.big_red.tools.IInteractionManagerFactory;
 import dk.itu.big_red.utilities.ValidationFailedException;
@@ -66,29 +67,6 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractEditor
 implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
-	private static class ConfigurationElementInteractionManagerFactory
-		implements IInteractionManagerFactory {
-		private IConfigurationElement ice = null;
-		
-		protected IConfigurationElement getCE() {
-			return ice;
-		}
-		
-		public ConfigurationElementInteractionManagerFactory(IConfigurationElement ice) {
-			this.ice = ice;
-		}
-		
-		@Override
-		public String getName() {
-			return getCE().getAttribute("name");
-		}
-		
-		@Override
-		public IInteractionManager createInteractionManager() {
-			return (IInteractionManager)RedPlugin.instantiate(getCE());
-		}
-	}
-	
 	private static class SimpleExportInteractionManagerFactory
 		extends ConfigurationElementInteractionManagerFactory {
 		
