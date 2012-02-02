@@ -52,6 +52,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
 import dk.itu.big_red.tools.BasicCommandLineInteractionManager;
 import dk.itu.big_red.tools.IInteractionManager;
+import dk.itu.big_red.tools.IInteractionManagerFactory;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
@@ -65,6 +66,27 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractEditor
 implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
+	private static class SimpleExportInteractionManagerFactory
+		implements IInteractionManagerFactory {
+		private IConfigurationElement ice = null;
+		
+		public SimpleExportInteractionManagerFactory(IConfigurationElement ice) {
+			this.ice = ice;
+		}
+		
+		@Override
+		public String getName() {
+			return ice.getAttribute("name");
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public IInteractionManager createInteractionManager() {
+			return new BasicCommandLineInteractionManager(
+					(Export<SimulationSpec>)RedPlugin.instantiate(ice));
+		}
+	}
+	
 	@Override
 	public void doActualSave(OutputStream os) throws ExportFailedException {
     	new SimulationSpecXMLExport().setModel(getModel()).setOutputStream(os).
@@ -206,18 +228,16 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		return dirty;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private static ArrayList<IInteractionManager> getExporters() {
-		ArrayList<IInteractionManager> managers =
-				new ArrayList<IInteractionManager>();
+	private static ArrayList<IInteractionManagerFactory> getIMFactories() {
+		ArrayList<IInteractionManagerFactory> factories =
+				new ArrayList<IInteractionManagerFactory>();
 		for (IConfigurationElement ce :
 		     RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals(SimulationSpec.class.getCanonicalName()))
-				managers.add(new BasicCommandLineInteractionManager(
-						(Export<SimulationSpec>)RedPlugin.instantiate(ce)));
+				factories.add(new SimpleExportInteractionManagerFactory(ce));
 		}
-		return managers;
+		return factories;
 	}
 	
 	private ResourceSelector signatureSelector, modelSelector;
@@ -358,9 +378,14 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		
 		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		final ComboViewer cv = UI.setProviders(new ComboViewer(base),
-			new ListContentProvider(), new LabelProvider());
+			new ListContentProvider(), new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					return ((IInteractionManagerFactory)element).getName();
+				}
+			});
 		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		ArrayList<IInteractionManager> exporters = getExporters();
+		ArrayList<IInteractionManagerFactory> exporters = getIMFactories();
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
@@ -370,9 +395,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				IInteractionManager im =
-					(IInteractionManager)
+					((IInteractionManagerFactory)
 						((IStructuredSelection)cv.getSelection()).
-							getFirstElement();
+							getFirstElement()).createInteractionManager();
 				im.setSimulationSpec(getModel());
 				im.run();
 			}
