@@ -59,7 +59,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="name" type="string">
+         <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
                   
@@ -72,7 +72,7 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  The interaction manager class for this tool (implementing dk.itu.big_red.tools.IInteractionManager).
+                  The interaction manager class for this tool (implementing dk.itu.big_red.tools.IInteractionManager). The class must have a nullary constructor.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":dk.itu.big_red.tools.IInteractionManager"/>
