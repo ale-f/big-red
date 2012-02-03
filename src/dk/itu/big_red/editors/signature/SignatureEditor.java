@@ -226,8 +226,6 @@ implements ISelectionListener, PropertyChangeListener {
 				Control c = new Control();
 				getModel().addControl(c);
 				controls.setSelection(new StructuredSelection(c), true);
-				
-				setControl(c);
 			}
 			
 			@Override
@@ -246,6 +244,7 @@ implements ISelectionListener, PropertyChangeListener {
 					((IStructuredSelection)controls.getSelection()).iterator();
 				while (it.hasNext())
 					getModel().removeControl((Control)it.next());
+				controls.setSelection(StructuredSelection.EMPTY);
 			}
 			
 			@Override
