@@ -3,6 +3,7 @@ package dk.itu.big_red.editors.signature;
 import java.beans.PropertyChangeListener;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
@@ -10,6 +11,12 @@ import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -24,8 +31,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.ISelectionListener;
@@ -96,8 +101,7 @@ implements ISelectionListener, PropertyChangeListener {
 	
 	private dk.itu.big_red.model.Control currentControl;
 	
-	private Tree controls;
-	private TreeItem currentControlItem;
+	private ListViewer controls;
 	private Button addControl, removeControl;
 	
 	private Text name, label;
@@ -117,9 +121,18 @@ implements ISelectionListener, PropertyChangeListener {
 		c.addPropertyChangeListener(this);
 		
 		controlToFields();
+
+		name.setFocus();
 	}
 	
 	private boolean uiUpdateInProgress = false;
+	
+	private Control getSelectedControl() {
+		return
+			(Control)
+				((IStructuredSelection)controls.getSelection()).
+					getFirstElement();
+	}
 	
 	protected void controlToFields() {
 		uiUpdateInProgress = true;
@@ -133,7 +146,8 @@ implements ISelectionListener, PropertyChangeListener {
 			appearance.setPoints(currentControl.getPoints());
 		appearance.setPorts(currentControl.getPorts());
 		resizable.setSelection(currentControl.isResizable());
-		currentControlItem.setText(currentControl.getName());
+		if (getSelectedControl() != currentControl)
+			controls.setSelection(new StructuredSelection(currentControl), true);
 		
 		ovalMode.setSelection(!polygon);
 		polygonMode.setSelection(polygon);
@@ -176,27 +190,29 @@ implements ISelectionListener, PropertyChangeListener {
 		GridLayout leftLayout = new GridLayout(1, false);
 		left.setLayout(leftLayout);
 		
-		controls = new Tree(left, SWT.SINGLE | SWT.BORDER | SWT.VIRTUAL);
+		controls = new ListViewer(left);
+		UI.setProviders(controls, new SignatureControlsContentProvider(controls),
+			new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					return ((Control)element).getName();
+				}
+		});
 		GridData controlsLayoutData =
 			new GridData(SWT.FILL, SWT.FILL, true, true);
 		controlsLayoutData.widthHint = 100;
-		controls.setLayoutData(controlsLayoutData);
-		controls.addSelectionListener(new SelectionListener() {
+		controls.getList().setLayoutData(controlsLayoutData);
+		controls.addSelectionChangedListener(new ISelectionChangedListener() {
 			
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				currentControlItem = controls.getSelection()[0];
-				setControl((Control)UI.data(currentControlItem, controlKey));
-				name.setFocus();
-				setEnablement(true);
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
+			public void selectionChanged(SelectionChangedEvent event) {
+				Control c = getSelectedControl();
+				if (c != null) {
+					setControl(c);
+					setEnablement(true);
+				} else setEnablement(false);
 			}
 		});
-		
 		Composite controlButtons = new Composite(left, SWT.NONE);
 		RowLayout controlButtonsLayout = new RowLayout();
 		controlButtons.setLayout(controlButtonsLayout);
@@ -209,15 +225,9 @@ implements ISelectionListener, PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				Control c = new Control();
 				getModel().addControl(c);
-				currentControlItem =
-					UI.data(new TreeItem(controls, SWT.NONE), controlKey, c);
+				controls.setSelection(new StructuredSelection(c), true);
+				
 				setControl(c);
-				
-				controls.select(currentControlItem);
-				name.setFocus();
-				
-				setEnablement(true);
-				setDirty(true);
 			}
 			
 			@Override
@@ -232,19 +242,10 @@ implements ISelectionListener, PropertyChangeListener {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				getModel().removeControl(currentControl);
-				currentControlItem.dispose();
-				
-				if (controls.getItemCount() > 0) {
-					controls.select(controls.getItem(0));
-					currentControlItem = controls.getItem(0);
-					currentControl =
-							(Control)UI.data(currentControlItem, controlKey);
-					controlToFields();
-					name.setFocus();
-				} else setEnablement(false);
-				
-				setDirty(true);
+				Iterator<?> it =
+					((IStructuredSelection)controls.getSelection()).iterator();
+				while (it.hasNext())
+					getModel().removeControl((Control)it.next());
 			}
 			
 			@Override
@@ -479,8 +480,6 @@ implements ISelectionListener, PropertyChangeListener {
 			kindLabel, nameLabel, appearanceLabel, labelLabel);
 	}
 	
-	private static final String controlKey = ID + ".control";
-	
 	@Override
 	protected void initialiseActual() throws Throwable {
 		IEditorInput input = getEditorInput();
@@ -489,8 +488,8 @@ implements ISelectionListener, PropertyChangeListener {
 			model = (Signature)Import.fromFile(fi.getFile());
 		}
 		
-		for (dk.itu.big_red.model.Control c : getModel().getControls())
-			UI.data(new TreeItem(controls, 0), controlKey, c).setText(c.getName());
+		getModel().addPropertyChangeListener(this);
+		controls.setInput(getModel());
 	}
 
 	@Override
@@ -507,7 +506,10 @@ implements ISelectionListener, PropertyChangeListener {
 
 	@Override
 	public void propertyChange(java.beans.PropertyChangeEvent evt) {
-		if (evt.getSource().equals(currentControl)) {
+		if (evt.getSource().equals(getModel())) {
+			if (evt.getPropertyName().equals(Signature.PROPERTY_CONTROL))
+				setDirty(true);
+		} else if (evt.getSource().equals(currentControl)) {
 			if (uiUpdateInProgress)
 				return;
 			uiUpdateInProgress = true;
@@ -518,7 +520,7 @@ implements ISelectionListener, PropertyChangeListener {
 					label.setText((String)newValue);
 				} else if (propertyName.equals(Control.PROPERTY_NAME)) {
 					name.setText((String)newValue);
-					currentControlItem.setText((String)newValue);
+					controls.refresh(currentControl);
 				} else if (propertyName.equals(Control.PROPERTY_SHAPE)) {
 					appearance.setMode((Shape)newValue);
 					ovalMode.setSelection(Shape.OVAL.equals(newValue));
