@@ -10,7 +10,6 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ComboViewer;
@@ -249,7 +248,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		self.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		setComposite(self);
 		
-		GridLayout gl = new GridLayout(4, false);
+		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
 			gl.horizontalSpacing = gl.verticalSpacing = 10;
 		self.setLayout(gl);
@@ -259,7 +258,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
 			Mode.FILE, Types.SIGNATURE_XML);
 		signatureSelector.getButton().setLayoutData(
-			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+			new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		signatureSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
@@ -291,8 +290,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 				new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		Composite br = new Composite(self, SWT.NONE);
-		br.setBackground(ColorConstants.red);
-		br.setLayoutData(new GridData(SWT.END, SWT.BOTTOM, false, false, 2, 1));
+		br.setLayoutData(new GridData(SWT.END, SWT.BOTTOM, false, false));
 		RowLayout brl = new RowLayout(SWT.VERTICAL);
 		brl.marginBottom = brl.marginLeft = brl.marginRight =
 				brl.marginTop = 0;
@@ -340,7 +338,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
 			Mode.FILE, Types.BIGRAPH_XML);
 		modelSelector.getButton().setLayoutData(
-			new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
+			new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		modelSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
@@ -358,7 +356,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		new Label(self, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
+		new Label(self, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		UI.newLabel(self, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		final ComboViewer cv = UI.setProviders(new ComboViewer(self),
@@ -368,7 +366,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 					return ((IInteractionManagerFactory)element).getName();
 				}
 			});
-		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
+		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		ArrayList<IInteractionManagerFactory> exporters = getIMFactories();
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
