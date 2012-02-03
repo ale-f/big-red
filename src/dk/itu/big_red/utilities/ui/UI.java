@@ -23,10 +23,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
@@ -310,15 +312,11 @@ public class UI {
 	}
 	
 	public static Label newLabel(Composite parent, int style, String text) {
-		Label l = new Label(parent, style);
-		l.setText(text);
-		return l;
+		return UI.chain(new Label(parent, style)).text(text).done();
 	}
 	
 	public static Button newButton(Composite parent, int style, String text) {
-		Button b = new Button(parent, style);
-		b.setText(text);
-		return b;
+		return UI.chain(new Button(parent, style)).text(text).done();
 	}
 	
 	public static <T extends ContentViewer> T setProviders(T viewer,
@@ -329,8 +327,7 @@ public class UI {
 	}
 	
 	public static <T extends Control> T setLayoutData(T widget, Object layoutData) {
-		widget.setLayoutData(layoutData);
-		return widget;
+		return UI.chain(widget).layoutData(layoutData).done();
 	}
 	
 	/**
@@ -356,5 +353,48 @@ public class UI {
 		if (widget != null)
 			widget.setData(key, value);
 		return widget;
+	}
+
+	public static class ChainHelper<T extends Control> {
+		private T object;
+		
+		public ChainHelper(T object) {
+			this.object = object;
+		}
+		
+		public T done() {
+			return object;
+		}
+		
+		public ChainHelper<T> visible(boolean visible) {
+			done().setVisible(true);
+			return this;
+		}
+		
+		public ChainHelper<T> layout(Layout layout) {
+			T object = done();
+			if (object instanceof Composite)
+				((Composite)object).setLayout(layout);
+			return this;
+		}
+		
+		public ChainHelper<T> layoutData(Object data) {
+			done().setLayoutData(data);
+			return this;
+		}
+		
+		public ChainHelper<T> text(String text) {
+			T object = done();
+			if (object instanceof Button) {
+				((Button)object).setText(text);
+			} else if (object instanceof Text) {
+				((Text)object).setText(text);
+			}
+			return this;
+		}
+	}
+	
+	public static <T extends Control> ChainHelper<T> chain(T object) {
+		return new ChainHelper<T>(object);
 	}
 }
