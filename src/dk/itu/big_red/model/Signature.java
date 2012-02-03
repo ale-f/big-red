@@ -41,14 +41,23 @@ public class Signature extends ModelObject implements ISignature, IChangeable, I
 		return s;
 	}
 	
+	/**
+	 * The property name fired when a control is added or removed. The property
+	 * values are {@link Control}s.
+	 */
+	public static final String PROPERTY_CONTROL = "SignatureControl";
+	
 	public Control addControl(Control c) {
 		controls.add(c);
+		firePropertyChange(PROPERTY_CONTROL, null, c);
 		return c;
 	}
 	
 	public void removeControl(Control m) {
-		if (controls.contains(m))
+		if (controls.contains(m)) {
 			controls.remove(m);
+			firePropertyChange(PROPERTY_CONTROL, m, null);
+		}
 	}
 	
 	public Control getControl(String name) {
@@ -118,5 +127,21 @@ public class Signature extends ModelObject implements ISignature, IChangeable, I
 		validator = null;
 		
 		super.dispose();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 * <p><strong>Special notes for {@link Signature}:</strong>
+	 * <ul>
+	 * <li>Passing {@link #PROPERTY_CONTROL} will return a
+	 * {@link List}&lt;{@link Control}&gt;, <strong>not</strong> a {@link
+	 * Control}.
+	 * </ul>
+	 */
+	@Override
+	public Object getProperty(String name) {
+		if (name.equals(PROPERTY_CONTROL)) {
+			return getControls();
+		} else return super.getProperty(name);
 	}
 }
