@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities.ui;
+package dk.itu.big_red.editors;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class EditorError {
 	private static Font font;
@@ -49,7 +50,7 @@ public class EditorError {
 		header.setFont(font);
 		header.setText("Oh no!");
 		
-		Text t = new Text(rhs, SWT.WRAP | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL);
+		Text t = new Text(rhs, SWT.BORDER | SWT.WRAP | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL);
 		t.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		String errorText = reason.toString();

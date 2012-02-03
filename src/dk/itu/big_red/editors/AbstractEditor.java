@@ -26,7 +26,6 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
-import dk.itu.big_red.utilities.ui.EditorError;
 
 public abstract class AbstractEditor extends EditorPart
 implements IResourceChangeListener {
