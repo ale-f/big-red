@@ -59,7 +59,6 @@ import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.resources.Types;
-import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
@@ -183,14 +182,14 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
-	    			error(cause);
+	    			error(parent, self, cause);
 	    			return;
 	    		} else {
-	    			error(e);
+	    			error(parent, self, e);
 	    			return;
 	    		}
 	    	} catch (Exception e) {
-	    		error(e);
+	    		error(parent, self, e);
 	    		return;
 	    	}
 		}
@@ -245,11 +244,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	private Button export;
 	
 	private Composite parent, self;
-	
-	private void error(Throwable t) {
-		self.dispose(); self = null;
-		new EditorError(parent, RedPlugin.getThrowableStatus(t));
-	}
 	
 	private void recalculateExportEnabled() {
 		export.setEnabled(

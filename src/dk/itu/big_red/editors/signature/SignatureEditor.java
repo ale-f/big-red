@@ -35,7 +35,6 @@ import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
 import dk.itu.big_red.import_export.ExportFailedException;
@@ -50,7 +49,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
-import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends AbstractEditor
@@ -163,11 +161,6 @@ implements ISelectionListener, PropertyChangeListener {
 	private static Font smiff;
 	
 	private Composite parent, self;
-	
-	private void error(Throwable t) {
-		self.dispose(); self = null;
-		new EditorError(parent, RedPlugin.getThrowableStatus(t));
-	}
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -497,7 +490,7 @@ implements ISelectionListener, PropertyChangeListener {
 			try {
 				model = (Signature)Import.fromFile(fi.getFile());
 			} catch (Exception e) {
-				error(e);
+				error(parent, self, e);
 				return;
 			}
 		}

@@ -46,7 +46,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
@@ -68,7 +67,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.utilities.ValidationFailedException;
-import dk.itu.big_red.utilities.ui.EditorError;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class RuleEditor extends AbstractEditor implements
@@ -167,11 +165,6 @@ public class RuleEditor extends AbstractEditor implements
 	}
 
 	private Composite parent, self;
-	
-	private void error(Throwable t) {
-		self.dispose(); self = null;
-		new EditorError(parent, RedPlugin.getThrowableStatus(t));
-	}
 	
 	@Override
 	public void createPartControl(Composite parent) {
@@ -277,14 +270,14 @@ public class RuleEditor extends AbstractEditor implements
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
-	    			error(e);
+	    			error(parent, self, e);
 	    			return;
 	    		} else {
-	    			error(e);
+	    			error(parent, self, e);
 	    			return;
 	    		}
 	    	} catch (Exception e) {
-	    		error(e);
+	    		error(parent, self, e);
 	    		return;
 	    	}
 	    }

@@ -13,17 +13,21 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.ui.EditorError;
 
 public abstract class AbstractEditor extends EditorPart
 implements IResourceChangeListener {
@@ -192,5 +196,10 @@ implements IResourceChangeListener {
 			setInputWithNotify(new FileEditorInput(f));
 			doSave(null);
 		}
+	}
+	
+	public static void error(Composite parent, Control content, Throwable t) {
+		content.dispose(); content = null;
+		new EditorError(parent, RedPlugin.getThrowableStatus(t));
 	}
 }
