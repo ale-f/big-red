@@ -468,7 +468,7 @@ implements ISelectionListener, PropertyChangeListener {
 		});
 		
 		setEnablement(false);
-		initialiseSignatureEditor();
+		initialise();
 	}
 
 	private void setEnablement(boolean enabled) {
@@ -481,16 +481,12 @@ implements ISelectionListener, PropertyChangeListener {
 	
 	private static final String controlKey = ID + ".control";
 	
-	private void initialiseSignatureEditor() {
+	@Override
+	protected void initialiseActual() throws Throwable {
 		IEditorInput input = getEditorInput();
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
-			try {
-				model = (Signature)Import.fromFile(fi.getFile());
-			} catch (Exception e) {
-				replaceWithError(e);
-				return;
-			}
+			model = (Signature)Import.fromFile(fi.getFile());
 		}
 		
 		for (dk.itu.big_red.model.Control c : getModel().getControls())

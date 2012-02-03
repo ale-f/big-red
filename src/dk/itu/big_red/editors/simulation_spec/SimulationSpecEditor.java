@@ -172,7 +172,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	
 	private boolean uiUpdateInProgress = false;
 	
-	protected void initialiseSimulationSpecEditor() {
+	@Override
+	protected void initialiseActual() throws Throwable {
 		IEditorInput input = getEditorInput();
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
@@ -182,15 +183,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
-	    			replaceWithError(cause);
-	    			return;
-	    		} else {
-	    			replaceWithError(e);
-	    			return;
-	    		}
-	    	} catch (Exception e) {
-	    		replaceWithError(e);
-	    		return;
+	    			throw cause;
+	    		} else throw e;
 	    	}
 		}
 		if (model == null)
@@ -394,7 +388,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		});
 		export.setEnabled(false);
 		
-		initialiseSimulationSpecEditor();
+		initialise();
 	}
 
 	private ArrayList<String> stackActions = new ArrayList<String>();

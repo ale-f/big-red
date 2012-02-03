@@ -225,7 +225,7 @@ public class RuleEditor extends AbstractEditor implements
 		
 		getCommandStack().addCommandStackEventListener(this);
 		
-		loadInput();
+		initialise();
 	}
 	
 	private PaletteGroup nodeGroup;
@@ -256,7 +256,8 @@ public class RuleEditor extends AbstractEditor implements
 		this.model = model;
 	}
 	
-	protected void loadInput() {
+	@Override
+	protected void initialiseActual() throws Throwable {
 		IEditorInput input = getEditorInput();
 		if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
@@ -266,15 +267,8 @@ public class RuleEditor extends AbstractEditor implements
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
-	    			replaceWithError(e);
-	    			return;
-	    		} else {
-	    			replaceWithError(e);
-	    			return;
-	    		}
-	    	} catch (Exception e) {
-	    		replaceWithError(e);
-	    		return;
+	    			throw cause;
+	    		} else throw e;
 	    	}
 	    }
 	    

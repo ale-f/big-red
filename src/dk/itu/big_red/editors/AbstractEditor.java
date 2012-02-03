@@ -183,6 +183,22 @@ implements IResourceChangeListener {
 		}
 	}
 	
+	/**
+	 * Initialises the editor once the controls have been created.
+	 * <p>Anything thrown by this method will cause the editor to be torn down
+	 * and replaced with an {@link EditorError}.
+	 * @throws Throwable if something went wrong
+	 */
+	abstract protected void initialiseActual() throws Throwable;
+	
+	protected void initialise() {
+		try {
+			initialiseActual();
+		} catch (Throwable t) {
+			replaceWithError(t);
+		}
+	}
+	
 	private Composite self;
 	
 	protected void setComposite(Composite self) {
