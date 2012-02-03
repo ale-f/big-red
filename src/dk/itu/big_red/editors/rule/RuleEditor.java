@@ -164,15 +164,11 @@ public class RuleEditor extends AbstractEditor implements
 		return getCommandStack().isDirty();
 	}
 
-	private Composite parent, self;
-	
 	@Override
 	public void createPartControl(Composite parent) {
-		this.parent = parent;
-		self = new Composite(parent, SWT.NONE);
-		
-		Composite c = self;
+		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		setComposite(c);
 		
 		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
@@ -270,14 +266,14 @@ public class RuleEditor extends AbstractEditor implements
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
-	    			error(parent, self, e);
+	    			replaceWithError(e);
 	    			return;
 	    		} else {
-	    			error(parent, self, e);
+	    			replaceWithError(e);
 	    			return;
 	    		}
 	    	} catch (Exception e) {
-	    		error(parent, self, e);
+	    		replaceWithError(e);
 	    		return;
 	    	}
 	    }

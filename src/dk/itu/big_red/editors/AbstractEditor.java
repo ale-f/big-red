@@ -14,7 +14,6 @@ import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.dialogs.SaveAsDialog;
@@ -184,6 +183,16 @@ implements IResourceChangeListener {
 		}
 	}
 	
+	private Composite self;
+	
+	protected void setComposite(Composite self) {
+		this.self = self;
+	}
+	
+	protected Composite getComposite() {
+		return self;
+	}
+	
 	@Override
 	public void doSaveAs() {
 		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
@@ -198,8 +207,9 @@ implements IResourceChangeListener {
 		}
 	}
 	
-	public static void error(Composite parent, Control content, Throwable t) {
-		content.dispose(); content = null;
+	protected void replaceWithError(Throwable t) {
+		Composite parent = getComposite().getParent();
+		getComposite().dispose(); setComposite(null);
 		new EditorError(parent, RedPlugin.getThrowableStatus(t));
 	}
 }

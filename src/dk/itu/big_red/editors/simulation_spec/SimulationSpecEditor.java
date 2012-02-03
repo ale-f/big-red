@@ -182,14 +182,14 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
-	    			error(parent, self, cause);
+	    			replaceWithError(cause);
 	    			return;
 	    		} else {
-	    			error(parent, self, e);
+	    			replaceWithError(e);
 	    			return;
 	    		}
 	    	} catch (Exception e) {
-	    		error(parent, self, e);
+	    		replaceWithError(e);
 	    		return;
 	    	}
 		}
@@ -243,8 +243,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	private ListViewer rules;
 	private Button export;
 	
-	private Composite parent, self;
-	
 	private void recalculateExportEnabled() {
 		export.setEnabled(
 			signatureSelector.getResource() != null &&
@@ -253,19 +251,17 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		this.parent = parent;
-		self = new Composite(parent, SWT.NONE);
-		
-		Composite base = self;
-		base.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Composite self = new Composite(parent, SWT.NONE);
+		self.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		setComposite(self);
 		
 		GridLayout gl = new GridLayout(4, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
 			gl.horizontalSpacing = gl.verticalSpacing = 10;
-		base.setLayout(gl);
+		self.setLayout(gl);
 		
-		UI.newLabel(base, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		signatureSelector = new ResourceSelector(base,
+		UI.newLabel(self, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		signatureSelector = new ResourceSelector(self,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
 			Mode.FILE, Types.SIGNATURE_XML);
 		signatureSelector.getButton().setLayoutData(
@@ -287,8 +283,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		UI.newLabel(base, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
-		rules = new ListViewer(base);
+		UI.newLabel(self, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+		rules = new ListViewer(self);
 		UI.setProviders(rules, new SimulationSpecRRContentProvider(rules),
 			new LabelProvider() {
 				@Override
@@ -300,7 +296,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		rules.getList().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		Composite br = new Composite(base, SWT.NONE);
+		Composite br = new Composite(self, SWT.NONE);
 		br.setBackground(ColorConstants.red);
 		br.setLayoutData(new GridData(SWT.END, SWT.BOTTOM, false, false, 2, 1));
 		RowLayout brl = new RowLayout(SWT.VERTICAL);
@@ -345,8 +341,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		UI.newLabel(base, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		modelSelector = new ResourceSelector(base,
+		UI.newLabel(self, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		modelSelector = new ResourceSelector(self,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
 			Mode.FILE, Types.BIGRAPH_XML);
 		modelSelector.getButton().setLayoutData(
@@ -368,10 +364,10 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		new Label(base, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
+		new Label(self, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 4, 1));
 		
-		UI.newLabel(base, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		final ComboViewer cv = UI.setProviders(new ComboViewer(base),
+		UI.newLabel(self, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		final ComboViewer cv = UI.setProviders(new ComboViewer(self),
 			new ListContentProvider(), new LabelProvider() {
 				@Override
 				public String getText(Object element) {
@@ -383,7 +379,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
-		export = UI.newButton(base, SWT.NONE, "&Export...");
+		export = UI.newButton(self, SWT.NONE, "&Export...");
 		export.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		export.addSelectionListener(new SelectionAdapter() {
 			@Override

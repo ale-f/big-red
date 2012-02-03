@@ -160,13 +160,11 @@ implements ISelectionListener, PropertyChangeListener {
 	
 	private static Font smiff;
 	
-	private Composite parent, self;
-	
 	@Override
 	public void createPartControl(Composite parent) {
-		this.parent = parent;
-		self = new Composite(parent, SWT.NONE);
+		Composite self = new Composite(parent, SWT.NONE);
 		self.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		setComposite(self);
 		
 		GridLayout gl = new GridLayout(2, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
@@ -490,7 +488,7 @@ implements ISelectionListener, PropertyChangeListener {
 			try {
 				model = (Signature)Import.fromFile(fi.getFile());
 			} catch (Exception e) {
-				error(parent, self, e);
+				replaceWithError(e);
 				return;
 			}
 		}
