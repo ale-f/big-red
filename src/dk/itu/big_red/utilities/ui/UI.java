@@ -389,6 +389,8 @@ public class UI {
 				((Button)object).setText(text);
 			} else if (object instanceof Text) {
 				((Text)object).setText(text);
+			} else if (object instanceof Label) {
+				((Label)object).setText(text);
 			}
 			return this;
 		}
