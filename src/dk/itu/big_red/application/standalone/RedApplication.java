@@ -33,9 +33,9 @@ public class RedApplication implements IApplication {
 	@Override
 	public void stop() {
 		final IWorkbench workbench = UI.getWorkbench();
-		if (workbench == null)
+		if (UI.getWorkbench() == null)
 			return;
-		final Display display = workbench.getDisplay();
+		final Display display = UI.getDisplay();
 		display.syncExec(new Runnable() {
 			@Override
 			public void run() {

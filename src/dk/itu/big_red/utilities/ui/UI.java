@@ -325,7 +325,7 @@ public class UI {
 	 * @param r a {@link Runnable}
 	 */
 	public static void asyncExec(Runnable r) {
-		getWorkbench().getDisplay().asyncExec(r);
+		getDisplay().asyncExec(r);
 	}
 	
 	public static Label newLabel(Composite parent, int style, String text) {
