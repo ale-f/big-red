@@ -116,7 +116,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			redoBuffer.clear();
 			undoBuffer.push(c);
 		} catch (ChangeRejectedException cre) {
-			cre.killVM();
+			cre.printStackTrace();
+			throw new Error("Unhandled Change application failure", cre);
 		}
 		checkDirt();
 		updateActions(stackActions);
@@ -131,8 +132,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			redoBuffer.push(c = undoBuffer.pop());
 			model.tryApplyChange(c.inverse());
 		} catch (ChangeRejectedException cre) {
-			/* should never happen */
-			cre.killVM();
+			throw new Error("Unhandled Change undo failure", cre);
 		}
 		checkDirt();
 		updateActions(stackActions);
@@ -147,8 +147,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			model.tryApplyChange(c = redoBuffer.pop());
 			undoBuffer.push(c);
 		} catch (ChangeRejectedException cre) {
-			/* should never happen */
-			cre.killVM();
+			throw new Error("Unhandled Change redo failure", cre);
 		}
 		checkDirt();
 		updateActions(stackActions);

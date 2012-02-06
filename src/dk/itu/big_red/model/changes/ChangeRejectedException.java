@@ -1,14 +1,12 @@
 package dk.itu.big_red.model.changes;
 
-import dk.itu.big_red.utilities.RedException;
-
 /**
  * {@link IChangeValidator}s throw {@link ChangeRejectedException}s when a
  * {@link Change} could not be applied.
  * @author alec
  *
  */
-public class ChangeRejectedException extends RedException {
+public class ChangeRejectedException extends Exception {
 	private static final long serialVersionUID = 7181613421769493596L;
 
 	private IChangeable changeable;

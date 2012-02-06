@@ -326,7 +326,7 @@ public class RuleEditor extends AbstractEditor implements
 			try {
 				getReactum().tryApplyChange(reactumChange);
 			} catch (ChangeRejectedException cre) {
-				cre.killVM();
+				throw new Error("Unhandled Change failure", cre);
 			}
 		} else if (target == getReactum()) {
 			Change ch = c.getChange();

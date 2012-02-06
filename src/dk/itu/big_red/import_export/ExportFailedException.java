@@ -1,17 +1,12 @@
 package dk.itu.big_red.import_export;
 
-import dk.itu.big_red.utilities.RedException;
-
 /**
  * Classes extending {@link Export} throw an ExportFailedException if the
  * export went wrong for some reason.
  * @author alec
  *
  */
-public class ExportFailedException extends RedException {
-	/**
-	 * 
-	 */
+public class ExportFailedException extends Exception {
 	private static final long serialVersionUID = 8144216377045944049L;
 
 	public ExportFailedException() {
@@ -28,5 +23,4 @@ public class ExportFailedException extends RedException {
 	public ExportFailedException(String message, Throwable cause) {
 		super(message, cause);
 	}
-
 }

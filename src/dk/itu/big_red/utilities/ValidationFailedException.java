@@ -1,6 +1,5 @@
 package dk.itu.big_red.utilities;
 
-
 /**
  * ValidationFailedExceptions are thrown when {@link
  * DOM#validate(org.w3c.dom.Document, java.io.InputStream)} fails to validate
@@ -8,11 +7,7 @@ package dk.itu.big_red.utilities;
  * @author alec
  *
  */
-public class ValidationFailedException extends RedException {
-
-	/**
-	 * 
-	 */
+public class ValidationFailedException extends Exception {
 	private static final long serialVersionUID = 2568746474807403861L;
 
 	public ValidationFailedException() {
