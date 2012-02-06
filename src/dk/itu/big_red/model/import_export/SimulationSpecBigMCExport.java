@@ -124,13 +124,17 @@ public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
 		
 		Iterator<? extends IChild> in = i.getIChildren().iterator();
 		if (in.hasNext()) {
-			write(".(");
-			processChild(in.next());
-			while (in.hasNext()) {
-				write(" | ");
-				processChild(in.next());
-			}
-			write(")");
+			write(".");
+			IChild firstChild = in.next();
+			if (in.hasNext()) {
+				write("(");
+				processChild(firstChild);
+				while (in.hasNext()) {
+					write(" | ");
+					processChild(in.next());
+				}
+				write(")");
+			} else processChild(firstChild);
 		}
 	}
 	
