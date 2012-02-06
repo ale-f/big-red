@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
@@ -76,6 +77,25 @@ public class UI {
 	 */
 	public static Shell getShell() {
 		return getWorkbench().getActiveWorkbenchWindow().getShell();		
+	}
+	
+	/**
+	 * Gets the active workbench's {@link Display}.
+	 * @return a Display
+	 */
+	public static Display getDisplay() {
+		return getWorkbench().getDisplay();
+	}
+	
+	/**
+	 * Performs a single iteration of the SWT event loop. This method may
+	 * block.
+	 * @see Display#sleep()
+	 */
+	public static void tick() {
+		Display d = getDisplay();
+		if (!d.readAndDispatch())
+			d.sleep();
 	}
 	
 	/**
@@ -378,6 +398,11 @@ public class UI {
 			return this;
 		}
 		
+		public ChainHelper<T> size(int width, int height) {
+			done().setSize(width, height);
+			return this;
+		}
+		
 		public ChainHelper<T> layoutData(Object data) {
 			done().setLayoutData(data);
 			return this;
@@ -391,6 +416,8 @@ public class UI {
 				((Text)object).setText(text);
 			} else if (object instanceof Label) {
 				((Label)object).setText(text);
+			} else if (object instanceof Shell) {
+				((Shell)object).setText(text);
 			}
 			return this;
 		}
