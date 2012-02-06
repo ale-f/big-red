@@ -2,6 +2,7 @@ package dk.itu.big_red.utilities.io;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -39,8 +40,12 @@ public class AsynchronousOutputThread extends AbstractAsynchronousIOThread {
 	}
 	
 	public void add(String buf) {
-		if (!bufferFinished && buf != null)
-			add(Charset.defaultCharset().encode(buf).array());
+		if (!bufferFinished && buf != null) {
+			ByteBuffer bb = Charset.defaultCharset().encode(buf);
+			byte[] a = new byte[bb.remaining()];
+			bb.get(a);
+			add(a);
+		}
 	}
 	
 	public void done() {
