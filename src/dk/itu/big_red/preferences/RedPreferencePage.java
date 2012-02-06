@@ -1,12 +1,9 @@
 package dk.itu.big_red.preferences;
 
-import java.util.Iterator;
-
 import org.eclipse.jface.preference.*;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.utilities.IterableWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class RedPreferencePage
@@ -28,9 +25,7 @@ public class RedPreferencePage
 				getFieldEditorParent()) {
 			@Override
 			protected String[] parseString(String stringList) {
-				if (stringList == null || stringList.length() == 0)
-					return new String[0];
-				return stringList.split(":");
+				return RedPreferences.splitString(stringList);
 			}
 			
 			@Override
@@ -41,15 +36,7 @@ public class RedPreferencePage
 			
 			@Override
 			protected String createList(String[] items) {
-				Iterator<String> it =
-					IterableWrapper.createArrayIterator(items);
-				String result = "";
-				while (it.hasNext()) {
-					result += it.next().toString();
-					if (it.hasNext())
-						result += ":";
-				}
-				return result;
+				return RedPreferences.joinString(items);
 			}
 		});
 	}
