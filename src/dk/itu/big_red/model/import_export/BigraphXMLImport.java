@@ -27,7 +27,6 @@ import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.utilities.DOM;
-import dk.itu.big_red.utilities.Tristate;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
@@ -39,6 +38,16 @@ import dk.itu.big_red.utilities.ui.UI;
  *
  */
 public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
+	private enum Tristate {
+		TRUE,
+		FALSE,
+		UNKNOWN;
+		
+		private static Tristate fromBoolean(boolean b) {
+			return (b ? TRUE : FALSE);
+		}
+	}
+	
 	private boolean partialAppearanceWarning;
 	private Tristate appearanceAllowed;
 	private ChangeGroup cg = new ChangeGroup();
