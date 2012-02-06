@@ -10,6 +10,8 @@ import dk.itu.big_red.model.SimulationSpec;
  *
  */
 public interface IInteractionManager {
+	public static final String EXTENSION_POINT = "dk.itu.big_red.interactionManagers";
+	
 	/**
 	 * Sets the {@link SimulationSpec} for this {@link IInteractionManager}.
 	 * @param s a {@link SimulationSpec}

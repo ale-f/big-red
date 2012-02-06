@@ -219,7 +219,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 				new ArrayList<IInteractionManagerFactory>();
 		
 		for (IConfigurationElement ce :
-			 RedPlugin.getConfigurationElementsFor("dk.itu.big_red.externalTools"))
+			 RedPlugin.getConfigurationElementsFor(IInteractionManager.EXTENSION_POINT))
 			factories.add(new ConfigurationElementInteractionManagerFactory(ce));
 		
 		for (IConfigurationElement ce :

@@ -3,10 +3,10 @@
 <schema targetNamespace="dk.itu.big_red" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="dk.itu.big_red" id="dk.itu.big_red.externalTools" name="External tools"/>
+         <meta.schema plugin="dk.itu.big_red" id="dk.itu.big_red.interactionManagers" name="Interaction managers"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         The interaction managers extension point allows plug-ins to contribute &lt;strong&gt;interaction managers&lt;/strong&gt;, classes responsible for the interaction between Big Red and external tools.
       </documentation>
    </annotation>
 
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="externalTool" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="interactionManager" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,7 +47,7 @@
       </complexType>
    </element>
 
-   <element name="externalTool">
+   <element name="interactionManager">
       <complexType>
          <sequence>
             <element ref="description" minOccurs="0" maxOccurs="1"/>
@@ -55,14 +55,14 @@
          <attribute name="id" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  A unique name that will be used to identify this interaction manager.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="name" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  A translatable name used to represent this interaction manager in the user interface.
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -72,7 +72,7 @@
          <attribute name="class" type="string" use="required">
             <annotation>
                <documentation>
-                  The interaction manager class for this tool (implementing dk.itu.big_red.tools.IInteractionManager). The class must have a nullary constructor.
+                  The class for this interaction manager (implementing dk.itu.big_red.tools.IInteractionManager). The class must have a nullary constructor.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":dk.itu.big_red.tools.IInteractionManager"/>
@@ -82,7 +82,7 @@
          <attribute name="icon" type="string">
             <annotation>
                <documentation>
-                  
+                  A relative path to an icon that will be used in the user interface.
                </documentation>
                <appinfo>
                   <meta.attribute kind="resource"/>
@@ -97,6 +97,9 @@
          <appinfo>
             <meta.element translatable="true"/>
          </appinfo>
+         <documentation>
+            An optional sub-element whose body should describe this interaction manager.
+         </documentation>
       </annotation>
    </element>
 
@@ -105,36 +108,26 @@
          <meta.section type="since"/>
       </appinfo>
       <documentation>
-         [Enter the first release in which this extension point appears.]
+         2.1
       </documentation>
    </annotation>
+
+
+
 
    <annotation>
       <appinfo>
-         <meta.section type="examples"/>
+         <meta.section type="copyright"/>
       </appinfo>
       <documentation>
-         [Enter extension point usage example here.]
+         Copyright © 2012 Alexander Faithfull.
+&lt;p&gt;
+ Copying and distribution of this file, with or without modification,
+ are permitted in any medium without royalty provided that the
+ copyright notice and this notice are preserved. This file is offered
+ as-is, without any warranty.
+&lt;/p&gt;
       </documentation>
    </annotation>
-
-   <annotation>
-      <appinfo>
-         <meta.section type="apiinfo"/>
-      </appinfo>
-      <documentation>
-         [Enter API information here.]
-      </documentation>
-   </annotation>
-
-   <annotation>
-      <appinfo>
-         <meta.section type="implementation"/>
-      </appinfo>
-      <documentation>
-         [Enter information about supplied implementation of this extension point.]
-      </documentation>
-   </annotation>
-
 
 </schema>

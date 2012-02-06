@@ -3,7 +3,7 @@
 <plugin>
    <extension-point id="dk.itu.big_red.export" name="Model exporters" schema="expoints/dk.itu.big_red.export.exsd"/>
    <extension-point id="dk.itu.big_red.import" name="Model importers" schema="expoints/dk.itu.big_red.import.exsd"/>
-   <extension-point id="dk.itu.big_red.externalTools" name="External tools" schema="expoints/dk.itu.big_red.externalTools.exsd"/>
+   <extension-point id="dk.itu.big_red.interactionManagers" name="Interaction managers" schema="expoints/dk.itu.big_red.interactionManagers.exsd"/>
 
    <extension
          id="application"
@@ -341,13 +341,13 @@
       </initializer>
    </extension>
    <extension
-         point="dk.itu.big_red.externalTools">
-      <externalTool
+         point="dk.itu.big_red.interactionManagers">
+      <interactionManager
             class="dk.itu.big_red.tools.TestInteractionManager"
             icon="resources/icons/bigraph-palette/site.png"
             id="dk.itu.big_red.TestInteractionManager"
             name="Test &quot;external&quot; tool">
-      </externalTool>
+      </interactionManager>
    </extension>
 
 </plugin>
