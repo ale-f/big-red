@@ -1,7 +1,6 @@
 package dk.itu.big_red.utilities.ui;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.IShellProvider;
@@ -55,8 +54,6 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 	
 	byte[] output = null;
 	
-	private static final Charset UTF8 = Charset.forName("UTF-8");
-	
 	@Override
 	public void signalInput(int length, byte[] buffer) {
 		if (text.isDisposed())
@@ -70,7 +67,7 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 			System.arraycopy(buffer, 0, newOutput, output.length, length);
 			output = newOutput;
 		}
-		text.setText(new String(output, UTF8));
+		text.setText(new String(output));
 		text.setTopIndex(Integer.MAX_VALUE);
 	}
 	

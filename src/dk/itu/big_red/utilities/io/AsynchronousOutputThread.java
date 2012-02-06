@@ -38,11 +38,9 @@ public class AsynchronousOutputThread extends AbstractAsynchronousIOThread {
 		}
 	}
 	
-	private static final Charset UTF8 = Charset.forName("UTF-8");
-	
 	public void add(String buf) {
 		if (!bufferFinished && buf != null)
-			add(UTF8.encode(buf).array());
+			add(Charset.defaultCharset().encode(buf).array());
 	}
 	
 	public void done() {
