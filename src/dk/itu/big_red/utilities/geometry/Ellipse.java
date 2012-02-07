@@ -30,9 +30,10 @@ public class Ellipse {
 	 */
 	private static double fix(double offset) {
 		if (offset < 0.0) {
-			return 1.0 - (Math.abs(offset) - Math.ceil(offset));
+			offset = Math.abs(offset);
+			return 1.0 - (offset - Math.floor(offset));
 		} else if (offset >= 1.0) {
-			return offset - Math.ceil(offset);
+			return offset - Math.floor(offset);
 		} else return offset;
 	}
 	
