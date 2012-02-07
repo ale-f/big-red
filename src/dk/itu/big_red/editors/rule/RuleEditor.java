@@ -17,7 +17,6 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
-import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
@@ -101,7 +100,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	private List<String> selectionActions = new ArrayList<String>();
-	private List<String> propertyActions = new ArrayList<String>();
 	
 	private ScrollingGraphicalViewer redexViewer, reactumViewer;
 	
@@ -334,13 +332,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 			new ContainerPasteAction(this));
 
 		registerActions(null, new SelectAllAction(this));
-		registerActions(propertyActions, new SaveAction(this));
 	}
 
 	@Override
 	protected void initializeActionRegistry() {
 		super.initializeActionRegistry();
-		updateActions(propertyActions);
 		updateActions(getStateActions());
 	}
 	

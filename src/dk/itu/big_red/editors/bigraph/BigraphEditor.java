@@ -30,7 +30,6 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
@@ -90,7 +89,6 @@ implements IResourceChangeListener, ISelectionListener {
 	private KeyHandler keyHandler;
 	
 	private List<String> selectionActions = new ArrayList<String>();
-	private List<String> propertyActions = new ArrayList<String>();
 
 	@Override
 	public void dispose() {
@@ -141,17 +139,10 @@ implements IResourceChangeListener, ISelectionListener {
 	    viewer.setContextMenu(
 	    	new BigraphEditorContextMenuProvider(viewer, getActionRegistry()));
 	}
-    
-	@Override
-	protected void firePropertyChange(int propertyId) {
-		super.firePropertyChange(propertyId);
-		updateActions(propertyActions);
-	}
 	
 	@Override
     public void createActions() {
     	registerActions(null, new SelectAllAction(this));
-    	registerActions(propertyActions, new SaveAction(this));
     	
     	/*
     	 * Note to self: actions which are conditionally enabled only when
@@ -435,7 +426,6 @@ implements IResourceChangeListener, ISelectionListener {
 	@Override
 	protected void initializeActionRegistry() {
 		super.initializeActionRegistry();
-		updateActions(propertyActions);
 		updateActions(getStateActions());
 	}
 
