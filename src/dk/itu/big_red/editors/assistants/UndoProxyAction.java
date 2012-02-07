@@ -2,7 +2,10 @@ package dk.itu.big_red.editors.assistants;
 
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.Action;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.actions.ActionFactory;
+
+import dk.itu.big_red.utilities.ui.UI;
 
 public class UndoProxyAction extends Action implements UpdateAction {
 	public static interface IUndoImplementor {
@@ -16,6 +19,9 @@ public class UndoProxyAction extends Action implements UpdateAction {
 		this.undoImplementor = undoImplementor;
 		setId(ActionFactory.UNDO.getId());
 		setText("Undo");
+		setImageDescriptor(UI.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO));
+		setDisabledImageDescriptor(
+				UI.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO_DISABLED));
 	}
 	
 	@Override
