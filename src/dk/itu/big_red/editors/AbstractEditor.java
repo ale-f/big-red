@@ -49,9 +49,8 @@ implements IResourceChangeListener {
 	 * <code>null</code>
 	 * @param actions a number of {@link IAction}s
 	 */
-	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static void registerActions(ActionRegistry registry,
-		List actionIDList, IAction... actions) {
+		List<String> actionIDList, IAction... actions) {
 		for (IAction i : actions) {
 			registry.registerAction(i);
 			if (actionIDList != null)
