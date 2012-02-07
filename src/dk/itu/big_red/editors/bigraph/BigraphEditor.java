@@ -30,7 +30,6 @@ import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
-import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.RedoAction;
@@ -275,8 +274,6 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 			return getGraphicalViewer();
     	} else if (type == CommandStack.class) {
 			return getCommandStack();
-    	} else if (type == ActionRegistry.class) {
-			return getActionRegistry();
     	} else if (type == EditPart.class && getGraphicalViewer() != null) {
 			return getGraphicalViewer().getRootEditPart();
     	} else if (type == IFigure.class && getGraphicalViewer() != null) {

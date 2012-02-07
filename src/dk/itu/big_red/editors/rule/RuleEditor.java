@@ -397,8 +397,6 @@ public class RuleEditor extends AbstractEditor implements
 			PropertySheetPage psp = new PropertySheetPage();
 			psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
 			return psp;
-		} else if (adapter == CommandStack.class) {
-			return getCommandStack();
 		} else return super.getAdapter(adapter);
 	}
 }
