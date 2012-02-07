@@ -2,7 +2,6 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -19,7 +18,6 @@ import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
@@ -88,7 +86,7 @@ import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphEditor extends AbstractGEFEditor
-implements IResourceChangeListener, CommandStackListener, ISelectionListener {
+implements IResourceChangeListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
 	private Bigraph model;
@@ -99,7 +97,6 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 
 	@Override
 	public void dispose() {
-		getCommandStack().removeCommandStackListener(this);
 		getSite().getWorkbenchWindow().getSelectionService()
 				.removeSelectionListener(this);
 		getEditDomain().setActiveTool(null);
@@ -339,12 +336,6 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 		return root;
 	}
 	
-	@Override
-    public void commandStackChanged(EventObject event) {
-        firePropertyChange(IEditorPart.PROP_DIRTY);
-        updateActions(getStateActions());
-    }
-	
 	public void revert() {
 		CommandStack cs = getCommandStack();
 		while (isDirty())
@@ -444,9 +435,9 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
+		super.init(site, input);
 		setSite(site);
 		setInput(input);
-		getCommandStack().addCommandStackListener(this);
 		getSite().getWorkbenchWindow().getSelectionService()
 				.addSelectionListener(this);
 		initializeActionRegistry();

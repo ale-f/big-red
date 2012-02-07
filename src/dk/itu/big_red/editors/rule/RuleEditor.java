@@ -10,7 +10,6 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
-import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.palette.PaletteGroup;
@@ -35,7 +34,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.ISelectionListener;
@@ -71,7 +69,7 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public class RuleEditor extends AbstractGEFEditor implements
 	ISelectionListener, INullSelectionListener, ISelectionChangedListener,
-	ISelectionProvider, CommandStackEventListener {
+	ISelectionProvider {
 	private ArrayList<ISelectionChangedListener> listeners =
 		new ArrayList<ISelectionChangedListener>();
 	
@@ -149,16 +147,12 @@ public class RuleEditor extends AbstractGEFEditor implements
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
+		super.init(site, input);
 		redexViewer = new ScrollingGraphicalViewer();
 		reactumViewer = new ScrollingGraphicalViewer();
 		
 		setSite(site);
 		setInputWithNotify(input);
-	}
-
-	@Override
-	public boolean isDirty() {
-		return getCommandStack().isDirty();
 	}
 
 	@Override
@@ -334,8 +328,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 			}
 		}
 		
-		firePropertyChange(IEditorPart.PROP_DIRTY);
-		updateActions(getStateActions());
+		super.stackChanged(event);
 	}
 
 	@Override
