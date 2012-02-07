@@ -5,8 +5,6 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.ui.actions.RedoAction;
-import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -60,9 +58,23 @@ implements CommandStackEventListener {
 	}
 	
 	@Override
-	protected void createActions() {
-		registerActions(getStateActions(),
-	    	new UndoAction(this), new RedoAction(this));
+	public boolean canRedo() {
+		return getCommandStack().canRedo();
+	}
+	
+	@Override
+	public void redo() {
+		getCommandStack().redo();
+	}
+	
+	@Override
+	public boolean canUndo() {
+		return getCommandStack().canUndo();
+	}
+	
+	@Override
+	public void undo() {
+		getCommandStack().undo();
 	}
 	
 	@Override

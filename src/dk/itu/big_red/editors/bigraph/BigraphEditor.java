@@ -150,9 +150,7 @@ implements IResourceChangeListener, ISelectionListener {
 	
 	@Override
     public void createActions() {
-    	super.createActions();
-		
-		registerActions(null, new SelectAllAction(this));
+    	registerActions(null, new SelectAllAction(this));
     	registerActions(propertyActions, new SaveAction(this));
     	
     	/*

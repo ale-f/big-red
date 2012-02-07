@@ -327,8 +327,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 	@Override
 	protected void createActions() {
-		super.createActions();
-		
 		registerActions(selectionActions,
 			new DeleteAction((IWorkbenchPart)this),
 			new ContainerPropertiesAction(this), new ContainerCutAction(this),

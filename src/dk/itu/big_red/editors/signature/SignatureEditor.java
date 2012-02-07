@@ -557,4 +557,22 @@ implements ISelectionListener, PropertyChangeListener {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean canUndo() {
+		return false;
+	}
+
+	@Override
+	public void undo() {
+	}
+
+	@Override
+	public boolean canRedo() {
+		return false;
+	}
+
+	@Override
+	public void redo() {
+	}
 }

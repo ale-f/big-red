@@ -24,6 +24,10 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.assistants.RedoProxyAction;
+import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
+import dk.itu.big_red.editors.assistants.UndoProxyAction;
+import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.io.IOAdapter;
@@ -31,7 +35,7 @@ import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class AbstractEditor extends EditorPart
-implements IResourceChangeListener {
+implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	public AbstractEditor() {
 		Project.getWorkspace().
 			addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
@@ -133,6 +137,8 @@ implements IResourceChangeListener {
 	 * else.
 	 */
 	protected void initializeActionRegistry() {
+		registerActions(getStateActions(),
+				new UndoProxyAction(this), new RedoProxyAction(this));
 		createActions();
 	}
 	
