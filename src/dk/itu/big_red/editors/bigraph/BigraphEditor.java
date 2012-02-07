@@ -109,7 +109,6 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 		getSite().getWorkbenchWindow().getSelectionService()
 				.removeSelectionListener(this);
 		getEditDomain().setActiveTool(null);
-		getActionRegistry().dispose();
 		
 		super.dispose();
 	}

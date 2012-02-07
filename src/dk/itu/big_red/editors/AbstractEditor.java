@@ -38,6 +38,10 @@ implements IResourceChangeListener {
 	public void dispose() {
 		Project.getWorkspace().removeResourceChangeListener(this);
 		getModel().dispose();
+		
+		if (actionRegistry != null)
+			getActionRegistry().dispose();
+		
 		super.dispose();
 	}
 	
