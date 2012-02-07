@@ -40,7 +40,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
-import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
@@ -330,17 +329,14 @@ public class RuleEditor extends AbstractGEFEditor implements
 	protected void createActions() {
 		super.createActions();
 		
-		AbstractEditor.registerActions(getActionRegistry(), selectionActions,
+		registerActions(selectionActions,
 			new DeleteAction((IWorkbenchPart)this),
 			new ContainerPropertiesAction(this), new ContainerCutAction(this),
 			new ContainerCopyAction(this), new BigraphRelayoutAction(this),
 			new ContainerPasteAction(this));
 
-		AbstractEditor.registerActions(getActionRegistry(), null,
-			new SelectAllAction(this));
-		
-		AbstractEditor.registerActions(getActionRegistry(), propertyActions,
-			new SaveAction(this));
+		registerActions(null, new SelectAllAction(this));
+		registerActions(propertyActions, new SaveAction(this));
 	}
 
 	@Override

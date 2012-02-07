@@ -61,7 +61,7 @@ implements CommandStackEventListener {
 	
 	@Override
 	protected void createActions() {
-		AbstractEditor.registerActions(getActionRegistry(), getStateActions(),
+		registerActions(getStateActions(),
 	    	new UndoAction(this), new RedoAction(this));
 	}
 	

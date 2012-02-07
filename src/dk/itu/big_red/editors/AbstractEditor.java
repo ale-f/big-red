@@ -73,16 +73,16 @@ implements IResourceChangeListener {
 	 * Registers a number of {@link IAction}s with the given {@link
 	 * ActionRegistry}, optionally copying their IDs into a {@link List}.
 	 * @param registry an {@link ActionRegistry}
-	 * @param actionIDList a list to be filled with {@link String} IDs; can be
+	 * @param idList a list to be filled with {@link String} IDs; can be
 	 * <code>null</code>
 	 * @param actions a number of {@link IAction}s
 	 */
-	public static void registerActions(ActionRegistry registry,
-		List<String> actionIDList, IAction... actions) {
+	public void registerActions(List<String> idList, IAction... actions) {
+		ActionRegistry registry = getActionRegistry();
 		for (IAction i : actions) {
 			registry.registerAction(i);
-			if (actionIDList != null)
-				actionIDList.add(i.getId());
+			if (idList != null)
+				idList.add(i.getId());
 		}
 	}
 

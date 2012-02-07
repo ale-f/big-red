@@ -10,7 +10,6 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -390,9 +389,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	
 	@Override
 	protected void createActions() {
-		ActionRegistry registry = getActionRegistry();
-		
-		registerActions(registry, getStateActions(),
+		registerActions(null,
 				new UndoProxyAction(this), new RedoProxyAction(this));
 	}
 	

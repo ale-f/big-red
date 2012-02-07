@@ -56,7 +56,6 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
@@ -153,11 +152,8 @@ implements IResourceChangeListener, ISelectionListener {
     public void createActions() {
     	super.createActions();
 		
-		AbstractEditor.registerActions(getActionRegistry(), null,
-    		new SelectAllAction(this));
-    	
-    	AbstractEditor.registerActions(getActionRegistry(), propertyActions,
-    		new SaveAction(this));
+		registerActions(null, new SelectAllAction(this));
+    	registerActions(propertyActions, new SaveAction(this));
     	
     	/*
     	 * Note to self: actions which are conditionally enabled only when
@@ -167,7 +163,7 @@ implements IResourceChangeListener, ISelectionListener {
     	 * and I have no idea at all what ActionBarContributors do.
     	 */
     	
-    	AbstractEditor.registerActions(getActionRegistry(), selectionActions,
+    	registerActions(selectionActions,
     		new ContainerPropertiesAction(this), new ContainerCutAction(this),
     		new ContainerCopyAction(this), new ContainerPasteAction(this),
     		new BigraphRelayoutAction(this),
