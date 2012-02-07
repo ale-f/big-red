@@ -1,23 +1,25 @@
 package dk.itu.big_red.editors.bigraph;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.EventObject;
+import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
-import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.editparts.LayerManager;
+import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
@@ -28,19 +30,31 @@ import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.actions.RedoAction;
+import org.eclipse.gef.ui.actions.SaveAction;
+import org.eclipse.gef.ui.actions.SelectAllAction;
+import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
-import org.eclipse.gef.ui.parts.GraphicalEditorWithPalette;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -56,8 +70,8 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.Import;
-import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
@@ -70,35 +84,40 @@ import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.NodeFactory;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
-import dk.itu.big_red.utilities.ValidationFailedException;
-import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class BigraphEditor extends GraphicalEditorWithPalette implements IResourceChangeListener {
+public class BigraphEditor extends AbstractEditor
+implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
-	private Bigraph model = null;
+	private Bigraph model;
 	private KeyHandler keyHandler;
+	private DefaultEditDomain editDomain;
 	
+	private List<String> selectionActions = new ArrayList<String>();
+	private List<String> stackActions = new ArrayList<String>();
+	private List<String> propertyActions = new ArrayList<String>();
+
 	public BigraphEditor() {
 		setEditDomain(new DefaultEditDomain(this));
-		
-		Project.getWorkspace().
-			addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
 	}
 	
 	@Override
 	public void dispose() {
-		Project.getWorkspace().removeResourceChangeListener(this);
+		getCommandStack().removeCommandStackListener(this);
+		getSite().getWorkbenchWindow().getSelectionService()
+				.removeSelectionListener(this);
+		getEditDomain().setActiveTool(null);
+		getActionRegistry().dispose();
 		
-		getModel().dispose();
 		super.dispose();
 	}
 	
-    @Override
 	protected void configureGraphicalViewer() {
-	    super.configureGraphicalViewer();   
+    	getGraphicalViewer().getControl().setBackground(
+				ColorConstants.listBackground);
+    	
 	    GraphicalViewer viewer = getGraphicalViewer();
 	    viewer.setEditPartFactory(new PartFactory());
 	    
@@ -136,10 +155,22 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
 	    	new BigraphEditorContextMenuProvider(viewer, getActionRegistry()));
 	}
     
-    @SuppressWarnings("unchecked")
+	@Override
+	protected void firePropertyChange(int propertyId) {
+		super.firePropertyChange(propertyId);
+		updateActions(propertyActions);
+	}
+	
 	@Override
     public void createActions() {
-    	super.createActions();
+    	AbstractEditor.registerActions(getActionRegistry(), stackActions,
+    		new UndoAction(this), new RedoAction(this));
+    	
+    	AbstractEditor.registerActions(getActionRegistry(), null,
+    		new SelectAllAction(this));
+    	
+    	AbstractEditor.registerActions(getActionRegistry(), propertyActions,
+    		new SaveAction(this));
     	
     	/*
     	 * Note to self: actions which are conditionally enabled only when
@@ -149,10 +180,11 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
     	 * and I have no idea at all what ActionBarContributors do.
     	 */
     	
-    	AbstractEditor.registerActions(getActionRegistry(), getSelectionActions(),
+    	AbstractEditor.registerActions(getActionRegistry(), selectionActions,
     		new ContainerPropertiesAction(this), new ContainerCutAction(this),
     		new ContainerCopyAction(this), new ContainerPasteAction(this),
-    		new BigraphRelayoutAction(this));
+    		new BigraphRelayoutAction(this),
+    		new DeleteAction((IWorkbenchPart)this));
     	
     	/*
     	 * Does this kind of action need to be registered in the
@@ -169,37 +201,53 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
     	getActionRegistry().registerAction(action);
     	getEditorSite().getActionBars().
     		setGlobalActionHandler(ActionFactory.REVERT.getId(), action);    	
-    	getStackActions().add(ActionFactory.REVERT.getId());
+    	stackActions.add(ActionFactory.REVERT.getId());
     }
     
+    protected void createPaletteViewer(Composite parent) {
+		PaletteViewer viewer = new PaletteViewer();
+		setPaletteViewer(viewer);
+		viewer.createControl(parent);
+		getEditDomain().setPaletteViewer(getPaletteViewer());
+	}
+	
+	private PaletteViewer paletteViewer;
+	
+	protected void setPaletteViewer(PaletteViewer paletteViewer) {
+		this.paletteViewer = paletteViewer;
+	}
+    
+	protected PaletteViewer getPaletteViewer() {
+		return paletteViewer;
+	}
+	
+	private static final int INITIAL_SASH_WEIGHTS[] = { 30, 70 };
+	
     @Override
-	protected void initializeGraphicalViewer() {
-	    IEditorInput input = getEditorInput();
-	    setPartName(input.getName());
-	    
-	    if (input instanceof FileEditorInput) {
-	    	FileEditorInput fi = (FileEditorInput)input;
-	    	try {
-	    		model = (Bigraph)Import.fromFile(fi.getFile());
-	    	} catch (ImportFailedException e) {
-	    		e.printStackTrace();
-	    		Throwable cause = e.getCause();
-	    		if (cause instanceof ValidationFailedException) {
-	    			UI.openError("Validation has failed.", cause);
-	    		} else {
-	    			UI.openError("Opening the document failed.", e);
-	    		}
-	    	} catch (Exception e) {
-	    		UI.openError("An unexpected error occurred.", e);
-	    	}
-	    }
-	    
-	    if (model == null) {
-	    	model = new Bigraph();
-	    } else updateNodePalette(nodeGroup, model.getSignature());
-	    
-	    getGraphicalViewer().setContents(model);
-    }
+	public void createPartControl(Composite parent) {
+		SashForm splitter = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
+		setComposite(splitter);
+		
+		createPaletteViewer(splitter);
+		createGraphicalViewer(splitter);
+		splitter.setWeights(INITIAL_SASH_WEIGHTS);
+		
+		try {
+			initialiseActual();
+		} catch (Throwable t) {
+			replaceWithError(t);
+		}
+	}
+    
+    protected void createGraphicalViewer(Composite parent) {
+		GraphicalViewer viewer = new ScrollingGraphicalViewer();
+		viewer.createControl(parent);
+		setGraphicalViewer(viewer);
+		configureGraphicalViewer();
+		
+		getSelectionSynchronizer().addViewer(getGraphicalViewer());
+		getSite().setSelectionProvider(getGraphicalViewer());
+	}
     
 	public static void updateNodePalette(PaletteContainer nodeGroup, Signature signature) {
     	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
@@ -225,7 +273,18 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
     		return psp;
     	} else if (type == IContentOutlinePage.class) {
     		return new BigraphEditorOutlinePage(this);
-    	} else return super.getAdapter(type);
+    	} else if (type == GraphicalViewer.class) {
+			return getGraphicalViewer();
+    	} else if (type == CommandStack.class) {
+			return getCommandStack();
+    	} else if (type == ActionRegistry.class) {
+			return getActionRegistry();
+    	} else if (type == EditPart.class && getGraphicalViewer() != null) {
+			return getGraphicalViewer().getRootEditPart();
+    	} else if (type == IFigure.class && getGraphicalViewer() != null) {
+			return ((GraphicalEditPart) getGraphicalViewer().getRootEditPart())
+					.getFigure();
+		} else return super.getAdapter(type);
     }
     
     private PaletteGroup nodeGroup;
@@ -273,7 +332,6 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
     	return container;
     }
     
-	@Override
 	protected PaletteRoot getPaletteRoot() {
 		PaletteRoot root = new PaletteRoot();
 		nodeGroup = new PaletteGroup("Node...");
@@ -287,61 +345,9 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
 	
 	@Override
     public void commandStackChanged(EventObject event) {
-		/*
-		 * Why on earth is this necessary?
-		 */
         firePropertyChange(IEditorPart.PROP_DIRTY);
-        super.commandStackChanged(event);
+        updateActions(stackActions);
     }
-	
-	@Override
-	public boolean isSaveAsAllowed() {
-		return true;
-	}
-	
-	@Override
-	public void doSaveAs() {
-		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
-		d.setBlockOnOpen(true);
-		if (d.open() == Dialog.OK) {
-			IFile f = Project.getWorkspaceFile(d.getResult());
-			getModel().setFile(f);
-			
-			FileEditorInput i = new FileEditorInput(f);
-			setInputWithNotify(i);
-			setPartName(i.getName());
-			
-			doSave(null);
-		}
-	}
-	
-	private boolean saving = false;
-	
-	protected boolean isSaving() {
-		return saving;
-	}
-	
-	@Override
-	public void doSave(IProgressMonitor monitor) {
-		saving = true;
-		try {
-			IOAdapter io = new IOAdapter();
-        	FileEditorInput i = (FileEditorInput)getEditorInput();
-        	BigraphXMLExport ex = new BigraphXMLExport();
-        	
-        	ex.setModel(getModel()).setOutputStream(io.getOutputStream()).exportObject();
-        	Project.setContents(i.getFile(), io.getInputStream());
-        	
-    		getCommandStack().markSaveLocation();
-    		firePropertyChange(IEditorPart.PROP_DIRTY);
-        } catch (Exception ex) {
-        	if (monitor != null)
-        		monitor.setCanceled(true);
-        	UI.openError("Unable to save the document.", ex);
-        } finally {
-        	saving = false;
-        }
-	}
 	
 	public void revert() {
 		CommandStack cs = getCommandStack();
@@ -350,33 +356,41 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
 		cs.flush();
 	}
 	
+	@Override
 	public Bigraph getModel() {
-		return (Bigraph) getGraphicalViewer().getContents().getModel();
+		return model;
 	}
 	
-	@Override
-	public GraphicalViewer getGraphicalViewer() {
-		return super.getGraphicalViewer();
+	protected GraphicalViewer graphicalViewer;
+	
+	protected GraphicalViewer getGraphicalViewer() {
+		return graphicalViewer;
 	}
 	
-	public IFigure getPrintLayer() {
-		return ((LayerManager)getGraphicalViewer().getEditPartRegistry().get(LayerManager.ID)).
-			getLayer(LayerConstants.PRINTABLE_LAYERS);
+	protected void setGraphicalViewer(GraphicalViewer viewer) {
+		getEditDomain().addViewer(viewer);
+		graphicalViewer = viewer;
 	}
 	
-	@Override
-	public SelectionSynchronizer getSelectionSynchronizer() {
-		return super.getSelectionSynchronizer();
+	private SelectionSynchronizer selectionSynchronizer;
+	
+	protected SelectionSynchronizer getSelectionSynchronizer() {
+		if (selectionSynchronizer == null)
+			selectionSynchronizer = new SelectionSynchronizer();
+		return selectionSynchronizer;
 	}
 	
-	@Override
 	public DefaultEditDomain getEditDomain() {
-		return super.getEditDomain();
+		return editDomain;
+	}
+	
+	protected void setEditDomain(DefaultEditDomain ed) {
+		editDomain = ed;
+		getEditDomain().setPaletteRoot(getPaletteRoot());
 	}
 	
 	private boolean hasFocus() {
 		return UI.getWorkbenchPage().getActiveEditor().equals(this);
-		
 	}
 	
 	private boolean changeNotificationWaiting = false;
@@ -391,7 +405,7 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
 	
 	@Override
 	public void setFocus() {
-		super.setFocus();
+		getGraphicalViewer().getControl().setFocus();
 		
 		if (changeNotificationWaiting) {
 			changeNotificationWaiting = false;
@@ -408,5 +422,68 @@ public class BigraphEditor extends GraphicalEditorWithPalette implements IResour
 				doChangeDialog();
 			} else changeNotificationWaiting = true;
 		}
+	}
+
+	@Override
+	protected void doActualSave(OutputStream os) throws ExportFailedException {
+		new BigraphXMLExport().setModel(getModel()).setOutputStream(os).
+			exportObject();
+		
+		getCommandStack().markSaveLocation();
+		firePropertyChange(IEditorPart.PROP_DIRTY);
+	}
+
+	@Override
+	protected void initialiseActual() throws Throwable {
+		IEditorInput input = getEditorInput();
+	    setPartName(input.getName());
+	    
+	    if (input instanceof FileEditorInput) {
+	    	FileEditorInput fi = (FileEditorInput)input;
+	    	try {
+	    		model = (Bigraph)Import.fromFile(fi.getFile());
+	    	} catch (Exception e) {
+	    		throw e;
+	    	}
+	    }
+	    
+	    if (model == null) {
+	    	model = new Bigraph();
+	    } else updateNodePalette(nodeGroup, model.getSignature());
+	    
+	    getGraphicalViewer().setContents(model);
+	}
+
+	@Override
+	public void init(IEditorSite site, IEditorInput input)
+			throws PartInitException {
+		setSite(site);
+		setInput(input);
+		getCommandStack().addCommandStackListener(this);
+		getSite().getWorkbenchWindow().getSelectionService()
+				.addSelectionListener(this);
+		initializeActionRegistry();
+	}
+
+	@Override
+	protected void initializeActionRegistry() {
+		super.initializeActionRegistry();
+		updateActions(propertyActions);
+		updateActions(stackActions);
+	}
+	
+	protected CommandStack getCommandStack() {
+		return getEditDomain().getCommandStack();
+	}
+	
+	@Override
+	public boolean isDirty() {
+		return getCommandStack().isDirty();
+	}
+
+	@Override
+	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+		if (equals(getSite().getPage().getActiveEditor()))
+			updateActions(selectionActions);
 	}
 }
