@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors;
 
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -32,6 +33,20 @@ implements IResourceChangeListener {
 	public AbstractEditor() {
 		Project.getWorkspace().
 			addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
+	}
+
+	private List<String> stateActions;
+	
+	/**
+	 * Returns the list of <i>state actions</i>, those actions which want to be
+	 * updated when the state of the model object is reversibly modified.
+	 * @return a list of action IDs
+	 * @see #updateActions(List)
+	 */
+	protected List<String> getStateActions() {
+		if (stateActions == null)
+			stateActions = new ArrayList<String>();
+		return stateActions;
 	}
 	
 	@Override

@@ -120,7 +120,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			throw new Error("Unhandled Change application failure", cre);
 		}
 		checkDirt();
-		updateActions(stackActions);
+		updateActions(getStateActions());
 	}
 	
 	@Override
@@ -135,7 +135,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			throw new Error("Unhandled Change undo failure", cre);
 		}
 		checkDirt();
-		updateActions(stackActions);
+		updateActions(getStateActions());
 	}
 	
 	@Override
@@ -150,7 +150,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			throw new Error("Unhandled Change redo failure", cre);
 		}
 		checkDirt();
-		updateActions(stackActions);
+		updateActions(getStateActions());
 	}
 	
 	private void checkDirt() {
@@ -387,21 +387,19 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		
 		initialise();
 	}
-
-	private ArrayList<String> stackActions = new ArrayList<String>();
 	
 	@Override
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
 		
-		registerActions(registry, stackActions,
+		registerActions(registry, getStateActions(),
 				new UndoProxyAction(this), new RedoProxyAction(this));
 	}
 	
 	@Override
 	protected void initializeActionRegistry() {
 		super.initializeActionRegistry();
-		updateActions(stackActions);
+		updateActions(getStateActions());
 	}
 	
 	@Override

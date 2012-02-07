@@ -109,7 +109,6 @@ public class RuleEditor extends AbstractEditor implements
 	}
 	
 	private List<String> selectionActions = new ArrayList<String>();
-	private List<String> stackActions = new ArrayList<String>();
 	private List<String> propertyActions = new ArrayList<String>();
 	
 	private ScrollingGraphicalViewer redexViewer, reactumViewer;
@@ -353,14 +352,14 @@ public class RuleEditor extends AbstractEditor implements
 		}
 		
 		firePropertyChange(IEditorPart.PROP_DIRTY);
-		updateActions(stackActions);
+		updateActions(getStateActions());
 	}
 
 	@Override
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
 		
-		AbstractEditor.registerActions(registry, stackActions,
+		AbstractEditor.registerActions(registry, getStateActions(),
 			new UndoAction(this), new RedoAction(this));
 		
 		AbstractEditor.registerActions(registry, selectionActions,
@@ -380,7 +379,7 @@ public class RuleEditor extends AbstractEditor implements
 	protected void initializeActionRegistry() {
 		super.initializeActionRegistry();
 		updateActions(propertyActions);
-		updateActions(stackActions);
+		updateActions(getStateActions());
 	}
 	
 	@Override

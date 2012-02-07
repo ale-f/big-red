@@ -96,7 +96,6 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 	private DefaultEditDomain editDomain;
 	
 	private List<String> selectionActions = new ArrayList<String>();
-	private List<String> stackActions = new ArrayList<String>();
 	private List<String> propertyActions = new ArrayList<String>();
 
 	public BigraphEditor() {
@@ -162,7 +161,7 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 	
 	@Override
     public void createActions() {
-    	AbstractEditor.registerActions(getActionRegistry(), stackActions,
+    	AbstractEditor.registerActions(getActionRegistry(), getStateActions(),
     		new UndoAction(this), new RedoAction(this));
     	
     	AbstractEditor.registerActions(getActionRegistry(), null,
@@ -200,7 +199,7 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
     	getActionRegistry().registerAction(action);
     	getEditorSite().getActionBars().
     		setGlobalActionHandler(ActionFactory.REVERT.getId(), action);    	
-    	stackActions.add(ActionFactory.REVERT.getId());
+    	getStateActions().add(ActionFactory.REVERT.getId());
     }
     
     protected void createPaletteViewer(Composite parent) {
@@ -345,7 +344,7 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 	@Override
     public void commandStackChanged(EventObject event) {
         firePropertyChange(IEditorPart.PROP_DIRTY);
-        updateActions(stackActions);
+        updateActions(getStateActions());
     }
 	
 	public void revert() {
@@ -468,7 +467,7 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 	protected void initializeActionRegistry() {
 		super.initializeActionRegistry();
 		updateActions(propertyActions);
-		updateActions(stackActions);
+		updateActions(getStateActions());
 	}
 	
 	protected CommandStack getCommandStack() {
