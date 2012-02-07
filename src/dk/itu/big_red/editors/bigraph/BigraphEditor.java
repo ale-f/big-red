@@ -30,10 +30,8 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.actions.RedoAction;
 import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
-import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -153,10 +151,9 @@ implements IResourceChangeListener, ISelectionListener {
 	
 	@Override
     public void createActions() {
-    	AbstractEditor.registerActions(getActionRegistry(), getStateActions(),
-    		new UndoAction(this), new RedoAction(this));
-    	
-    	AbstractEditor.registerActions(getActionRegistry(), null,
+    	super.createActions();
+		
+		AbstractEditor.registerActions(getActionRegistry(), null,
     		new SelectAllAction(this));
     	
     	AbstractEditor.registerActions(getActionRegistry(), propertyActions,
@@ -446,11 +443,6 @@ implements IResourceChangeListener, ISelectionListener {
 		super.initializeActionRegistry();
 		updateActions(propertyActions);
 		updateActions(getStateActions());
-	}
-	
-	@Override
-	public boolean isDirty() {
-		return getCommandStack().isDirty();
 	}
 
 	@Override

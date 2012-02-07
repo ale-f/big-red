@@ -16,12 +16,9 @@ import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.SelectionToolEntry;
-import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.DeleteAction;
-import org.eclipse.gef.ui.actions.RedoAction;
 import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
-import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelection;
@@ -331,21 +328,18 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 	@Override
 	protected void createActions() {
-		ActionRegistry registry = getActionRegistry();
+		super.createActions();
 		
-		AbstractEditor.registerActions(registry, getStateActions(),
-			new UndoAction(this), new RedoAction(this));
-		
-		AbstractEditor.registerActions(registry, selectionActions,
+		AbstractEditor.registerActions(getActionRegistry(), selectionActions,
 			new DeleteAction((IWorkbenchPart)this),
 			new ContainerPropertiesAction(this), new ContainerCutAction(this),
 			new ContainerCopyAction(this), new BigraphRelayoutAction(this),
 			new ContainerPasteAction(this));
 
-		AbstractEditor.registerActions(registry, null,
+		AbstractEditor.registerActions(getActionRegistry(), null,
 			new SelectAllAction(this));
 		
-		AbstractEditor.registerActions(registry, propertyActions,
+		AbstractEditor.registerActions(getActionRegistry(), propertyActions,
 			new SaveAction(this));
 	}
 
