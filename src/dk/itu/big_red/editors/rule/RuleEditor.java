@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
@@ -47,6 +46,7 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.editors.AbstractEditor;
+import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
@@ -69,11 +69,9 @@ import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class RuleEditor extends AbstractEditor implements
+public class RuleEditor extends AbstractGEFEditor implements
 	ISelectionListener, INullSelectionListener, ISelectionChangedListener,
 	ISelectionProvider, CommandStackEventListener {
-	private DefaultEditDomain editDomain = new DefaultEditDomain(this);
-
 	private ArrayList<ISelectionChangedListener> listeners =
 		new ArrayList<ISelectionChangedListener>();
 	
@@ -201,8 +199,8 @@ public class RuleEditor extends AbstractEditor implements
 		redexViewer.getControl().setBackground(ColorConstants.listBackground);
 		reactumViewer.getControl().setBackground(ColorConstants.listBackground);
 		
-		redexViewer.setEditDomain(editDomain);
-		reactumViewer.setEditDomain(editDomain);
+		redexViewer.setEditDomain(getEditDomain());
+		reactumViewer.setEditDomain(getEditDomain());
 		
 		redexViewer.setEditPartFactory(new PartFactory());
 		reactumViewer.setEditPartFactory(new PartFactory());
@@ -229,7 +227,8 @@ public class RuleEditor extends AbstractEditor implements
 	
 	private PaletteGroup nodeGroup;
 	
-	private PaletteRoot getPaletteRoot() {
+	@Override
+	protected PaletteRoot getPaletteRoot() {
 		PaletteRoot root = new PaletteRoot();
 		
 		PaletteToolbar tb = new PaletteToolbar("Horizontal palette");
@@ -277,22 +276,6 @@ public class RuleEditor extends AbstractEditor implements
 	    redexViewer.setContents(model.getRedex());
 	    reactumViewer.setContents(model.getReactum());
     }
-	
-	/**
-	 * Returns the command stack.
-	 * @return the command stack
-	 */
-	protected CommandStack getCommandStack() {
-		return getEditDomain().getCommandStack();
-	}
-	
-	/**
-	 * Returns the edit domain.
-	 * @return the edit domain
-	 */
-	protected DefaultEditDomain getEditDomain() {
-		return editDomain;
-	}
 	
 	private Bigraph getRedex() {
 		return (Bigraph)redexViewer.getContents().getModel();
@@ -391,9 +374,7 @@ public class RuleEditor extends AbstractEditor implements
 	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
-		if (adapter == CommandStack.class) {
-			return getCommandStack();
-		} else if (adapter == IPropertySheetPage.class) {
+		if (adapter == IPropertySheetPage.class) {
 			PropertySheetPage psp = new PropertySheetPage();
 			psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
 			return psp;

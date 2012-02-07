@@ -61,6 +61,7 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
+import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
@@ -86,21 +87,16 @@ import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class BigraphEditor extends AbstractEditor
+public class BigraphEditor extends AbstractGEFEditor
 implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
 	private Bigraph model;
 	private KeyHandler keyHandler;
-	private DefaultEditDomain editDomain;
 	
 	private List<String> selectionActions = new ArrayList<String>();
 	private List<String> propertyActions = new ArrayList<String>();
 
-	public BigraphEditor() {
-		setEditDomain(new DefaultEditDomain(this));
-	}
-	
 	@Override
 	public void dispose() {
 		getCommandStack().removeCommandStackListener(this);
@@ -272,8 +268,6 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
     		return new BigraphEditorOutlinePage(this);
     	} else if (type == GraphicalViewer.class) {
 			return getGraphicalViewer();
-    	} else if (type == CommandStack.class) {
-			return getCommandStack();
     	} else if (type == EditPart.class && getGraphicalViewer() != null) {
 			return getGraphicalViewer().getRootEditPart();
     	} else if (type == IFigure.class && getGraphicalViewer() != null) {
@@ -282,6 +276,12 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 		} else return super.getAdapter(type);
     }
     
+	
+	@Override
+	/* Provisionally */ public DefaultEditDomain getEditDomain() {
+		return super.getEditDomain();
+	}
+	
     private PaletteGroup nodeGroup;
     
     public static <T extends PaletteContainer> T populatePalette(T container, PaletteGroup nodeGroup, SelectionToolEntry defaultTool) {
@@ -327,6 +327,7 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
     	return container;
     }
     
+	@Override
 	protected PaletteRoot getPaletteRoot() {
 		PaletteRoot root = new PaletteRoot();
 		nodeGroup = new PaletteGroup("Node...");
@@ -373,15 +374,6 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 		if (selectionSynchronizer == null)
 			selectionSynchronizer = new SelectionSynchronizer();
 		return selectionSynchronizer;
-	}
-	
-	public DefaultEditDomain getEditDomain() {
-		return editDomain;
-	}
-	
-	protected void setEditDomain(DefaultEditDomain ed) {
-		editDomain = ed;
-		getEditDomain().setPaletteRoot(getPaletteRoot());
 	}
 	
 	private boolean hasFocus() {
@@ -465,10 +457,6 @@ implements IResourceChangeListener, CommandStackListener, ISelectionListener {
 		super.initializeActionRegistry();
 		updateActions(propertyActions);
 		updateActions(getStateActions());
-	}
-	
-	protected CommandStack getCommandStack() {
-		return getEditDomain().getCommandStack();
 	}
 	
 	@Override
