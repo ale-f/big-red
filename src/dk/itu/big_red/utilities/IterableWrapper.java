@@ -32,6 +32,15 @@ public abstract class IterableWrapper<T> implements Iterable<T> {
 		};
 	}
 	
+	public static <T> Iterable<T> createIterable(final Iterator<T> iterator) {
+		return new Iterable<T>() {
+			@Override
+			public Iterator<T> iterator() {
+				return iterator;
+			}
+		};
+	}
+	
 	public static <T> Iterator<T> createArrayIterator(final T[] array) {
 		return new IterableWrapper<T>() {
 			@Override

@@ -65,9 +65,8 @@ public final class Lists {
 	 */
 	public static <T> ArrayList<T> copy(Iterable<? extends T> c) {
 		ArrayList<T> r = new ArrayList<T>();
-		Iterator<? extends T> it = c.iterator();
-		while (it.hasNext())
-			r.add(it.next());
+		for (T i : c)
+			r.add(i);
 		return r;
 	}
 	
