@@ -436,8 +436,6 @@ implements IResourceChangeListener, ISelectionListener {
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		super.init(site, input);
-		setSite(site);
-		setInput(input);
 		getSite().getWorkbenchWindow().getSelectionService()
 				.addSelectionListener(this);
 		initializeActionRegistry();

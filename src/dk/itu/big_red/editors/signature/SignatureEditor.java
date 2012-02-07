@@ -73,9 +73,9 @@ implements ISelectionListener, PropertyChangeListener {
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
-		setSite(site);
-		setInputWithNotify(input);
+		super.init(site, input);
 		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
+		firePropertyChange(PROP_INPUT);
 	}
 
 	protected boolean dirty = false;

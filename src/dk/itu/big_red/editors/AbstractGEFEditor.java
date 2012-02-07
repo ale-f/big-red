@@ -47,6 +47,7 @@ implements CommandStackEventListener {
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
+		super.init(site, input);
 		getCommandStack().addCommandStackEventListener(this);
 	}
 	

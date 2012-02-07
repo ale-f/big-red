@@ -150,9 +150,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 		super.init(site, input);
 		redexViewer = new ScrollingGraphicalViewer();
 		reactumViewer = new ScrollingGraphicalViewer();
-		
-		setSite(site);
-		setInputWithNotify(input);
+		firePropertyChange(PROP_INPUT);
 	}
 
 	@Override

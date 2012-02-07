@@ -91,8 +91,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	@Override
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
-		setSite(site);
-		setInputWithNotify(input);
+		super.init(site, input);
+		firePropertyChange(PROP_INPUT);
 	}
 
 	private Change savePoint = null;
