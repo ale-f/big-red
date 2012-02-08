@@ -336,6 +336,8 @@ public class BigraphEditor extends AbstractGEFEditor {
 	
 	@Override
 	public void setFocus() {
+		if (getComposite() == null)
+			return;
 		getGraphicalViewer().getControl().setFocus();
 	}
 }

@@ -493,8 +493,9 @@ implements ISelectionListener, PropertyChangeListener {
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
+		if (getComposite() == null)
+			return;
+		controls.getControl().setFocus();
 	}
 
 	@Override

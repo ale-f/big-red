@@ -397,8 +397,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-		UI.getWorkbenchPage().activate(this);
+		if (getComposite() == null)
+			return;
+		signatureSelector.getButton().setFocus();
 	}
 	
 	@Override

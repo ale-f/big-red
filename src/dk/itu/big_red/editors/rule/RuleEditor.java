@@ -318,7 +318,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-		
+		if (getComposite() == null)
+			return;
+		getComposite().setFocus();
 	}
 }
