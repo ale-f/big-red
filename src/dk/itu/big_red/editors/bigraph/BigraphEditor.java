@@ -350,6 +350,8 @@ implements IResourceChangeListener, ISelectionListener {
 	
 	@Override
 	public void setFocus() {
+		if (getComposite() == null)
+			return;
 		getGraphicalViewer().getControl().setFocus();
 		
 		if (changeNotificationWaiting) {
