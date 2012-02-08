@@ -2,9 +2,6 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
-import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
@@ -67,11 +64,8 @@ import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.assistants.NodeFactory;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
-import dk.itu.big_red.utilities.resources.Project;
-import dk.itu.big_red.utilities.ui.UI;
 
-public class BigraphEditor extends AbstractGEFEditor
-implements IResourceChangeListener {
+public class BigraphEditor extends AbstractGEFEditor {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
 	private Bigraph model;
@@ -296,43 +290,6 @@ implements IResourceChangeListener {
 			selectionSynchronizer = new SelectionSynchronizer();
 		return selectionSynchronizer;
 	}
-	
-	private boolean hasFocus() {
-		return UI.getWorkbenchPage().getActiveEditor().equals(this);
-	}
-	
-	private boolean changeNotificationWaiting = false;
-	
-	private void doChangeDialog() {
-		UI.askFor(getSite().getShell(),
-			"File changed",
-			"The file '" + getModel().getFile() + "' has been changed on " +
-			"the file system. Do you want to replace the editor contents " +
-			"with these changes?", UI.YES_NO);
-	}
-	
-	@Override
-	public void setFocus() {
-		if (getComposite() == null)
-			return;
-		getGraphicalViewer().getControl().setFocus();
-		
-		if (changeNotificationWaiting) {
-			changeNotificationWaiting = false;
-			doChangeDialog();
-		}
-	}
-	
-	@Override
-	public void resourceChanged(IResourceChangeEvent event) {
-		IResourceDelta specificDelta =
-			Project.getSpecificDelta(event.getDelta(), getModel().getFile());
-		if (specificDelta != null && !isSaving()) {
-			if (hasFocus()) {
-				doChangeDialog();
-			} else changeNotificationWaiting = true;
-		}
-	}
 
 	@Override
 	protected void doActualSave(OutputStream os) throws ExportFailedException {
@@ -375,5 +332,10 @@ implements IResourceChangeListener {
 	protected void initializeActionRegistry() {
 		super.initializeActionRegistry();
 		updateActions(getStateActions());
+	}
+	
+	@Override
+	public void setFocus() {
+		getGraphicalViewer().getControl().setFocus();
 	}
 }
