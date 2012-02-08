@@ -30,8 +30,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.INullSelectionListener;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
@@ -58,8 +56,7 @@ import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class RuleEditor extends AbstractGEFEditor implements
-	ISelectionListener, INullSelectionListener, ISelectionChangedListener,
-	ISelectionProvider {
+	ISelectionChangedListener, ISelectionProvider {
 	private ArrayList<ISelectionChangedListener> listeners =
 		new ArrayList<ISelectionChangedListener>();
 	
@@ -84,7 +81,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	@Override
 	public void setSelection(ISelection selection) {
 		this.selection = selection;
-		updateActions(selectionActions);
+		updateActions(getSelectionActions());
 		
 		if (listeners.size() == 0)
 			return;
@@ -94,18 +91,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 			l.selectionChanged(e);
 	}
 	
-	private List<String> selectionActions = new ArrayList<String>();
-	
 	private ScrollingGraphicalViewer redexViewer, reactumViewer;
-	
-	/**
-	 * Fired by the workbench when some kind of global overarching selection
-	 * changes.
-	 */
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		
-	}
 
 	private boolean ignoringSelectionUpdates = false;
 	
@@ -192,7 +178,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 		reactumViewer.setContextMenu(
 			new BigraphEditorContextMenuProvider(reactumViewer, getActionRegistry()));
 		
-		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 		redexViewer.addSelectionChangedListener(this);
 		reactumViewer.addSelectionChangedListener(this);
 		getSite().setSelectionProvider(this);
@@ -316,7 +301,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 	@Override
 	protected void createActions() {
-		registerActions(selectionActions,
+		registerActions(getSelectionActions(),
 			new DeleteAction((IWorkbenchPart)this),
 			new ContainerPropertiesAction(this), new ContainerCutAction(this),
 			new ContainerCopyAction(this), new BigraphRelayoutAction(this),

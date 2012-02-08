@@ -2,8 +2,6 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
@@ -35,14 +33,12 @@ import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
@@ -75,20 +71,15 @@ import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphEditor extends AbstractGEFEditor
-implements IResourceChangeListener, ISelectionListener {
+implements IResourceChangeListener {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
 	
 	private Bigraph model;
 	private KeyHandler keyHandler;
-	
-	private List<String> selectionActions = new ArrayList<String>();
 
 	@Override
 	public void dispose() {
-		getSite().getWorkbenchWindow().getSelectionService()
-				.removeSelectionListener(this);
 		getEditDomain().setActiveTool(null);
-		
 		super.dispose();
 	}
 	
@@ -145,7 +136,7 @@ implements IResourceChangeListener, ISelectionListener {
     	 * and I have no idea at all what ActionBarContributors do.
     	 */
     	
-    	registerActions(selectionActions,
+    	registerActions(getSelectionActions(),
     		new ContainerPropertiesAction(this), new ContainerCutAction(this),
     		new ContainerCopyAction(this), new ContainerPasteAction(this),
     		new BigraphRelayoutAction(this),
@@ -377,8 +368,6 @@ implements IResourceChangeListener, ISelectionListener {
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		super.init(site, input);
-		getSite().getWorkbenchWindow().getSelectionService()
-				.addSelectionListener(this);
 		initializeActionRegistry();
 	}
 
@@ -386,11 +375,5 @@ implements IResourceChangeListener, ISelectionListener {
 	protected void initializeActionRegistry() {
 		super.initializeActionRegistry();
 		updateActions(getStateActions());
-	}
-
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		if (equals(getSite().getPage().getActiveEditor()))
-			updateActions(selectionActions);
 	}
 }
