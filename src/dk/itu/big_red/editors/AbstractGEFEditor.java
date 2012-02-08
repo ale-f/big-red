@@ -9,6 +9,10 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.PropertySheetPage;
+
+import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
 
 public abstract class AbstractGEFEditor extends AbstractEditor
 implements CommandStackEventListener {
@@ -82,6 +86,10 @@ implements CommandStackEventListener {
 	public Object getAdapter(Class adapter) {
 		if (adapter == CommandStack.class) {
 			return getCommandStack();
-		} else return super.getAdapter(adapter);
+		} else if (adapter == IPropertySheetPage.class) {
+    		PropertySheetPage psp = new PropertySheetPage();
+    		psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
+    		return psp;
+    	} else return super.getAdapter(adapter);
 	}
 }
