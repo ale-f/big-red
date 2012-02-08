@@ -57,7 +57,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
-import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.Import;
@@ -161,8 +160,6 @@ implements IResourceChangeListener, ISelectionListener {
     	 */
     	setGlobalActionHandlers(registerActions(null,
     			new FilePrintAction(this)));
-    	setGlobalActionHandlers(registerActions(getStateActions(),
-    			new FileRevertAction(this)));
     }
     
     protected void createPaletteViewer(Composite parent) {

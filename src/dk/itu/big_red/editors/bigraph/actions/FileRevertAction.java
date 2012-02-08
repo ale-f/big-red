@@ -4,14 +4,12 @@ import org.eclipse.gef.ui.actions.EditorPartAction;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.actions.ActionFactory;
 
-import dk.itu.big_red.editors.bigraph.BigraphEditor;
+import dk.itu.big_red.editors.AbstractGEFEditor;
 
 public class FileRevertAction extends EditorPartAction {
-
 	public FileRevertAction(IEditorPart part) {
 		super(part);
 		setLazyEnablementCalculation(true);
-		
 	}
 
 	@Override
@@ -28,6 +26,6 @@ public class FileRevertAction extends EditorPartAction {
 
 	@Override
 	public void run() {
-		((BigraphEditor)getEditorPart()).revert();
+		((AbstractGEFEditor)getEditorPart()).revert();
 	}
 }
