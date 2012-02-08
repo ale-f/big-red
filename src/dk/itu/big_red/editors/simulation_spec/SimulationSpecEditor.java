@@ -389,8 +389,13 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	
 	@Override
 	protected void createActions() {
-		registerActions(null,
-				new UndoProxyAction(this), new RedoProxyAction(this));
+		UndoProxyAction undo = new UndoProxyAction(this);
+		RedoProxyAction redo = new RedoProxyAction(this);
+		
+		registerActions(null, undo, redo);
+		
+		setGlobalActionHandler(undo.getId(), undo);
+		setGlobalActionHandler(redo.getId(), redo, true);
 	}
 	
 	@Override
