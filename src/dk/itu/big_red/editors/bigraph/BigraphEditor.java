@@ -32,7 +32,6 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -161,23 +160,6 @@ implements IResourceChangeListener, ISelectionListener {
     	setGlobalActionHandlers(registerActions(null,
     			new FilePrintAction(this)));
     }
-    
-    protected void createPaletteViewer(Composite parent) {
-		PaletteViewer viewer = new PaletteViewer();
-		setPaletteViewer(viewer);
-		viewer.createControl(parent);
-		getEditDomain().setPaletteViewer(getPaletteViewer());
-	}
-	
-	private PaletteViewer paletteViewer;
-	
-	protected void setPaletteViewer(PaletteViewer paletteViewer) {
-		this.paletteViewer = paletteViewer;
-	}
-    
-	protected PaletteViewer getPaletteViewer() {
-		return paletteViewer;
-	}
 	
 	private static final int INITIAL_SASH_WEIGHTS[] = { 30, 70 };
 	

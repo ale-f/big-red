@@ -18,7 +18,6 @@ import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
-import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -154,13 +153,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 			gl.horizontalSpacing = gl.verticalSpacing = 10;
 		c.setLayout(gl);
 		
-		PaletteViewer pv = new PaletteViewer();
-		pv.createControl(c);
-		pv.getControl().setLayoutData(
+		createPaletteViewer(c);
+		getPaletteViewer().getControl().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
-		pv.setPaletteRoot(getPaletteRoot());
-		
-		getEditDomain().setPaletteViewer(pv);
+
+		getEditDomain().setPaletteViewer(getPaletteViewer());
 		
 		redexViewer.createControl(c);
 		redexViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));

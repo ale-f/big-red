@@ -5,6 +5,8 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -42,6 +44,23 @@ implements CommandStackEventListener {
 	}
 	
 	protected abstract PaletteRoot getPaletteRoot();
+	
+	protected void createPaletteViewer(Composite parent) {
+		PaletteViewer viewer = new PaletteViewer();
+		setPaletteViewer(viewer);
+		viewer.createControl(parent);
+		getEditDomain().setPaletteViewer(getPaletteViewer());
+	}
+	
+	private PaletteViewer paletteViewer;
+	
+	protected void setPaletteViewer(PaletteViewer paletteViewer) {
+		this.paletteViewer = paletteViewer;
+	}
+    
+	protected PaletteViewer getPaletteViewer() {
+		return paletteViewer;
+	}
 	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
