@@ -33,8 +33,6 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
-import dk.itu.big_red.editors.assistants.RedoProxyAction;
-import dk.itu.big_red.editors.assistants.UndoProxyAction;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.import_export.Export;
@@ -389,13 +387,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	
 	@Override
 	protected void createActions() {
-		UndoProxyAction undo = new UndoProxyAction(this);
-		RedoProxyAction redo = new RedoProxyAction(this);
-		
-		registerActions(null, undo, redo);
-		
-		setGlobalActionHandler(undo.getId(), undo);
-		setGlobalActionHandler(redo.getId(), redo, true);
 	}
 	
 	@Override

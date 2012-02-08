@@ -123,5 +123,4 @@ public class RedApplicationActionBarAdvisor extends ActionBarAdvisor {
 		populateMenu(windowShowViewMenu, actionWindowShowView);
 		populateMenu(helpMenu, actionHelp);
 	}
-
 }

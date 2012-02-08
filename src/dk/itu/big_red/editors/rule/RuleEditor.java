@@ -189,8 +189,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 		
 		redexViewer.setRootEditPart(new ScalableRootEditPart());
 		reactumViewer.setRootEditPart(new ScalableRootEditPart());
-
-		createActions();
 		
 		redexViewer.setContextMenu(
 			new BigraphEditorContextMenuProvider(redexViewer, getActionRegistry()));

@@ -2,6 +2,7 @@ package dk.itu.big_red.editors;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -31,6 +32,7 @@ import dk.itu.big_red.editors.assistants.UndoProxyAction;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.utilities.IterableWrapper;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
@@ -81,14 +83,16 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	 * @param idList a list to be filled with {@link String} IDs; can be
 	 * <code>null</code>
 	 * @param actions a number of {@link IAction}s
+	 * @return <code>actions</code>, for convenience
 	 */
-	public void registerActions(List<String> idList, IAction... actions) {
+	public IAction[] registerActions(List<String> idList, IAction... actions) {
 		ActionRegistry registry = getActionRegistry();
 		for (IAction i : actions) {
 			registry.registerAction(i);
 			if (idList != null)
 				idList.add(i.getId());
 		}
+		return actions;
 	}
 
 	private ActionRegistry actionRegistry;
@@ -138,8 +142,8 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	 * else.
 	 */
 	protected void initializeActionRegistry() {
-		registerActions(getStateActions(),
-				new UndoProxyAction(this), new RedoProxyAction(this));
+		setGlobalActionHandlers(registerActions(getStateActions(),
+				new UndoProxyAction(this), new RedoProxyAction(this)));
 		createActions();
 	}
 	
@@ -262,6 +266,14 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		new EditorError(parent, RedPlugin.getThrowableStatus(t));
 	}
 	
+	/**
+	 * Registers the given {@link IAction} as a global action handler for this
+	 * editor.
+	 * @param actionID the ID the action should handle
+	 * @param handler the {@link IAction} which should be registered
+	 * @param update whether or not to call {@link
+	 * IActionBars#updateActionBars()} after registering the action
+	 */
 	protected void setGlobalActionHandler(String actionID, IAction handler, boolean update) {
 		IActionBars bars = getEditorSite().getActionBars();
 		bars.setGlobalActionHandler(actionID, handler);
@@ -269,7 +281,16 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 			bars.updateActionBars();
 	}
 	
-	protected void setGlobalActionHandler(String actionID, IAction handler) {
-		setGlobalActionHandler(actionID, handler, false);
+	/**
+	 * Registers the given {@link IAction}s as global action handlers for this
+	 * editor.
+	 * @param actions a number of {@link IAction}s
+	 */
+	protected void setGlobalActionHandlers(IAction... actions) {
+		Iterator<IAction> it = IterableWrapper.createArrayIterator(actions);
+		while (it.hasNext()) {
+			IAction i = it.next();
+			setGlobalActionHandler(i.getId(), i, !it.hasNext());
+		}
 	}
 }
