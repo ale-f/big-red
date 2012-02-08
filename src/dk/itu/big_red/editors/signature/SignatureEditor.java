@@ -10,7 +10,6 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -32,12 +31,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartConstants;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.AbstractEditor;
@@ -57,7 +52,7 @@ import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends AbstractEditor
-implements ISelectionListener, PropertyChangeListener {
+implements PropertyChangeListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
 	
 	public SignatureEditor() {
@@ -68,14 +63,6 @@ implements ISelectionListener, PropertyChangeListener {
     	new SignatureXMLExport().setModel(getModel()).setOutputStream(os).
     		exportObject();
 		setDirty(false);
-	}
-
-	@Override
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
-		super.init(site, input);
-		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
-		firePropertyChange(PROP_INPUT);
 	}
 
 	protected boolean dirty = false;
@@ -496,12 +483,6 @@ implements ISelectionListener, PropertyChangeListener {
 		if (getComposite() == null)
 			return;
 		controls.getControl().setFocus();
-	}
-
-	@Override
-	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
