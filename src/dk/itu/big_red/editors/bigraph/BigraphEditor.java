@@ -35,7 +35,6 @@ import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
@@ -160,16 +159,10 @@ implements IResourceChangeListener, ISelectionListener {
     	 * Eclipse projects comprised primarily of comments saying "What does
     	 * the <insert name here> *do*, anyway?"?)
     	 */
-    	IAction action = new FilePrintAction(this);
-    	getActionRegistry().registerAction(action);
-    	getEditorSite().getActionBars().
-    		setGlobalActionHandler(ActionFactory.PRINT.getId(), action);
-    	
-    	action = new FileRevertAction(this);
-    	getActionRegistry().registerAction(action);
-    	getEditorSite().getActionBars().
-    		setGlobalActionHandler(ActionFactory.REVERT.getId(), action);    	
-    	getStateActions().add(ActionFactory.REVERT.getId());
+    	setGlobalActionHandlers(registerActions(null,
+    			new FilePrintAction(this)));
+    	setGlobalActionHandlers(registerActions(getStateActions(),
+    			new FileRevertAction(this)));
     }
     
     protected void createPaletteViewer(Composite parent) {
