@@ -17,7 +17,6 @@ import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
-import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
@@ -309,13 +308,6 @@ implements IResourceChangeListener, ISelectionListener {
 		
 		root.setDefaultEntry(ste);
 		return root;
-	}
-	
-	public void revert() {
-		CommandStack cs = getCommandStack();
-		while (isDirty())
-			cs.undo();
-		cs.flush();
 	}
 	
 	@Override

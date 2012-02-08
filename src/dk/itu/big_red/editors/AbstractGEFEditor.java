@@ -81,6 +81,13 @@ implements CommandStackEventListener {
 		getCommandStack().undo();
 	}
 	
+	public void revert() {
+		CommandStack cs = getCommandStack();
+		while (cs.canUndo())
+			cs.undo();
+		cs.flush();
+	}
+	
 	@Override
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
