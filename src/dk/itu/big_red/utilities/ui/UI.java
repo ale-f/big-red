@@ -2,7 +2,6 @@ package dk.itu.big_red.utilities.ui;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IStatusLineManager;
-import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -34,8 +33,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-
-import dk.itu.big_red.application.plugin.RedPlugin;
 
 /**
  * Utility methods for the SWT user interface.
@@ -285,18 +282,6 @@ public class UI {
 		return buttons[new MessageDialog(
 		s, title, null, caption, MessageDialog.QUESTION, buttons, 0).open()];
 	}
-	
-	/**
-	 * Opens a generic error message with the given {@link Throwable} as a
-	 * cause.
-	 * @param error the error message to accompany the {@link Throwable}
-	 * @param cause the {@link Throwable} that caused this error
-	 */
-	public static void openError(String error, Throwable cause) {
-		cause.printStackTrace();
-		ErrorDialog.openError(getShell(), null, error,
-				RedPlugin.getThrowableStatus(cause));
-    }
 	
 	/**
 	 * Gets a shared image from the workbench's shared image registry.
