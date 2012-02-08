@@ -15,6 +15,7 @@ import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -259,5 +260,16 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		Composite parent = getComposite().getParent();
 		getComposite().dispose(); setComposite(null);
 		new EditorError(parent, RedPlugin.getThrowableStatus(t));
+	}
+	
+	protected void setGlobalActionHandler(String actionID, IAction handler, boolean update) {
+		IActionBars bars = getEditorSite().getActionBars();
+		bars.setGlobalActionHandler(actionID, handler);
+		if (update)
+			bars.updateActionBars();
+	}
+	
+	protected void setGlobalActionHandler(String actionID, IAction handler) {
+		setGlobalActionHandler(actionID, handler, false);
 	}
 }
