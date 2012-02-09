@@ -46,4 +46,24 @@ public abstract class Change {
 	public boolean isReady() {
 		return true /* by default; subclasses can override */;
 	}
+	
+	/**
+	 * A {@link Change} which can't be inverted and isn't ready to be executed.
+	 */
+	public static final Change INVALID = new Change() {
+		@Override
+		public Change inverse() {
+			return this;
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return false;
+		}
+		
+		@Override
+		public boolean isReady() {
+			return false;
+		}
+	};
 }
