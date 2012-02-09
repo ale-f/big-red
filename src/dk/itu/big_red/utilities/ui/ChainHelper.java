@@ -20,12 +20,16 @@ public class ChainHelper<T extends Control> {
 	}
 	
 	public ChainHelper<T> enabled(boolean enabled) {
-		done().setEnabled(enabled);
+		T object = done();
+		if (object != null)
+			object.setEnabled(enabled);
 		return this;
 	}
 	
 	public ChainHelper<T> visible(boolean visible) {
-		done().setVisible(visible);
+		T object = done();
+		if (object != null)
+			object.setVisible(visible);
 		return this;
 	}
 	
@@ -37,12 +41,16 @@ public class ChainHelper<T extends Control> {
 	}
 	
 	public ChainHelper<T> size(int width, int height) {
-		done().setSize(width, height);
+		T object = done();
+		if (object != null)
+			object.setSize(width, height);
 		return this;
 	}
 	
 	public ChainHelper<T> layoutData(Object data) {
-		done().setLayoutData(data);
+		T object = done();
+		if (object != null)
+			object.setLayoutData(data);
 		return this;
 	}
 	
