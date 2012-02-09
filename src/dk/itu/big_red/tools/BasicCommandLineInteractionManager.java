@@ -104,15 +104,21 @@ public class BasicCommandLineInteractionManager extends InteractionManager {
 			
 			@Override
 			protected Control createDialogArea(Composite parent) {
+				Composite c = new Composite(parent, SWT.NONE);
+				c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				GridLayout gl = new GridLayout(1, true);
+				gl.marginLeft = gl.marginRight = gl.marginTop = 10;
+				c.setLayout(gl);
+				
 				resultsText =
-					new Text(parent, SWT.MULTI | SWT.BORDER | SWT.WRAP |
+					new Text(c, SWT.MULTI | SWT.BORDER | SWT.WRAP |
 							SWT.V_SCROLL);
 				GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 				gd.widthHint = 400;
 				gd.heightHint = 500;
 				resultsText.setLayoutData(gd);
 				resultsText.setText(results);
-				return resultsText;
+				return c;
 			}
 			
 			@Override
