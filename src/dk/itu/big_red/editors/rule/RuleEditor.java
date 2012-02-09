@@ -3,7 +3,6 @@ package dk.itu.big_red.editors.rule;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -182,8 +181,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 		reactumViewer.addSelectionChangedListener(this);
 		getSite().setSelectionProvider(this);
 		
-		getCommandStack().addCommandStackEventListener(this);
-		
 		initialise();
 	}
 	
@@ -286,9 +283,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 		if (detail != 0) {
 			Command c = event.getCommand();
 			if (c instanceof CompoundCommand) {
-				@SuppressWarnings("unchecked")
-				List<Command> cmds = ((CompoundCommand)c).getCommands();
-				for (Command i : cmds)
+				for (Object i : ((CompoundCommand)c).getCommands())
 					if (i instanceof ChangeCommand)
 						processChangeCommand(detail, (ChangeCommand)i);
 			} else if (c instanceof ChangeCommand) {
