@@ -261,13 +261,21 @@ public class RuleEditor extends AbstractGEFEditor implements
 		IChangeable target = c.getTarget();
 		
 		if (target == getRedex()) {
-			Change reactumChange = getReactumChange(c.getChange());
-			if (detail == CommandStack.POST_UNDO)
+			Change redexChange = c.getChange(),
+			       reactumChange = getReactumChange(c.getChange());
+			
+			if (reactumChange == Change.INVALID) {
+				/* This is a redex change that doesn't make sense in the
+				 * reactum */
+				return;
+			} else if (detail == CommandStack.POST_UNDO) {
 				reactumChange = reactumChange.inverse();
+			}
+			
 			try {
 				getReactum().tryApplyChange(reactumChange);
 			} catch (ChangeRejectedException cre) {
-				throw new Error("Unhandled Change failure", cre);
+				redexChangesToReactumChanges.put(redexChange, Change.INVALID);
 			}
 		} else if (target == getReactum()) {
 			Change ch = c.getChange();
