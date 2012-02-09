@@ -27,8 +27,7 @@ public final class Lists {
 		ArrayList<T> r = new ArrayList<T>(),
 				working = copy(list);
 		for (Object o : classes) {
-			@SuppressWarnings("unchecked")
-			Class<? extends T> c = (Class<? extends T>)o;
+			Class<?> c = (Class<?>)o;
 			Iterator<T> it = working.iterator();
 			while (it.hasNext()) {
 				T i = it.next();

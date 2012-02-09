@@ -33,7 +33,6 @@ public class LayoutablePasteCommand extends ChangeCommand {
 	private BigraphScratchpad scratch = null;
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public LayoutablePasteCommand prepare() {
 		/*
 		 * FIXME: If several elements with the same parent are copied and then
@@ -52,16 +51,20 @@ public class LayoutablePasteCommand extends ChangeCommand {
 			scratch.clear();
 		} else scratch = new BigraphScratchpad(newParent.getBigraph());
 		
-		ArrayList<Layoutable> bList;
+		ArrayList<?> bList;
 		try {
-			bList = (ArrayList<Layoutable>)Clipboard.getDefault().getContents();
+			bList = (ArrayList<?>)Clipboard.getDefault().getContents();
 			if (bList == null)
 				return this;
 		} catch (Exception e) {
 			return this;
 		}
 		
-		for (Layoutable i : bList) {
+		for (Object i_ : bList) {
+			if (!(i_ instanceof Layoutable))
+				continue;
+			Layoutable i = (Layoutable)i_;
+			
 			if (!newParent.canContain(i)) {
 				cg.clear();
 				return this;
