@@ -17,7 +17,7 @@ import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
-public class SimulationSpecXMLImport extends Import<SimulationSpec> implements IFileBackable {
+public class SimulationSpecXMLImport extends Import implements IFileBackable {
 
 	@Override
 	public SimulationSpec importObject() throws ImportFailedException {

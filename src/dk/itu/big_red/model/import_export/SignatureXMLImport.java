@@ -20,7 +20,7 @@ import dk.itu.big_red.utilities.geometry.Ellipse;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class SignatureXMLImport extends Import<Signature> implements IFileBackable {
+public class SignatureXMLImport extends Import implements IFileBackable {
 	private ChangeGroup cg = new ChangeGroup();
 	
 	@Override

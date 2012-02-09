@@ -22,7 +22,7 @@ import dk.itu.big_red.utilities.resources.Types;
  *
  */
 
-public abstract class Import<T> {
+public abstract class Import {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 	
 	protected InputStream source = null;
@@ -33,9 +33,9 @@ public abstract class Import<T> {
 	 * @param is an InputStream
 	 * @return <code>this</code>, for convenience
 	 */
-	public Import<T> setInputStream(InputStream is) {
+	public Import setInputStream(InputStream is) {
 		if (is != null)
-			this.source = is;
+			source = is;
 		return this;
 	}
 	
@@ -53,7 +53,7 @@ public abstract class Import<T> {
 	 * Import#canImport canImport} returns <code>true</code>.
 	 * @throws ImportFailedException if the import failed
 	 */
-	public abstract T importObject() throws ImportFailedException;
+	public abstract Object importObject() throws ImportFailedException;
 	
 	/**
 	 * Loads an object from an {@link IFile} by:
@@ -73,7 +73,7 @@ public abstract class Import<T> {
 		for (IConfigurationElement ice :
 			RedPlugin.getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
-				Import<?> i = (Import<?>)RedPlugin.instantiate(ice);
+				Import i = (Import)RedPlugin.instantiate(ice);
 				try {
 					i.setInputStream(f.getContents());
 				} catch (CoreException e) {

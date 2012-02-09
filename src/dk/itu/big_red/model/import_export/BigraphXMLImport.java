@@ -37,7 +37,7 @@ import dk.itu.big_red.utilities.ui.UI;
  * @see BigraphXMLExport
  *
  */
-public class BigraphXMLImport extends Import<Bigraph> implements IFileBackable {
+public class BigraphXMLImport extends Import implements IFileBackable {
 	private enum Tristate {
 		TRUE,
 		FALSE,

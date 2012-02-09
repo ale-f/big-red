@@ -22,7 +22,7 @@ import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class ReactionRuleXMLImport extends Import<ReactionRule> implements IFileBackable {
+public class ReactionRuleXMLImport extends Import implements IFileBackable {
 	private ReactionRule rr = null;
 	
 	@Override
