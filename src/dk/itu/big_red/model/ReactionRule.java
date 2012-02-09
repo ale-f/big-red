@@ -6,6 +6,13 @@ import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 
+import dk.itu.big_red.model.Container.ChangeAddChild;
+import dk.itu.big_red.model.Container.ChangeRemoveChild;
+import dk.itu.big_red.model.Layoutable.ChangeLayout;
+import dk.itu.big_red.model.Layoutable.ChangeName;
+import dk.itu.big_red.model.Point.ChangeConnect;
+import dk.itu.big_red.model.Point.ChangeDisconnect;
+import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -56,16 +63,6 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 		return this;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private static final <T, V extends T> V ac(T o) {
-		return (V)o;
-	}
-	
-	@SuppressWarnings("unchecked")
-	private static final <T extends ModelObject> T mg(Map<ModelObject, ModelObject> m, T k) {
-		return (T)m.get(k);
-	}
-	
 	public static Change translateChange(
 			Map<ModelObject, ModelObject> oldToNew, Change change) {
 		if (change instanceof ChangeGroup) {
@@ -82,11 +79,11 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			}
 			
 			return cg;
-		} else if (change instanceof Container.ChangeAddChild) {
-			Container.ChangeAddChild ch = ac(change);
+		} else if (change instanceof ChangeAddChild) {
+			ChangeAddChild ch = (ChangeAddChild)change;
 			
-			Container reactumParent = mg(oldToNew, ch.getCreator());
-			Layoutable reactumChild = mg(oldToNew, ch.child);
+			Container reactumParent = (Container)oldToNew.get(ch.getCreator());
+			Layoutable reactumChild = (Layoutable)oldToNew.get(ch.child);
 			
 			if (reactumParent == null)
 				return null;
@@ -106,56 +103,56 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			} else reactumName = Bigraph.getFirstUnusedName(reactumNamespace);
 			
 			return reactumParent.changeAddChild(reactumChild, reactumName);
-		} else if (change instanceof Layoutable.ChangeLayout) {
-			Layoutable.ChangeLayout ch = ac(change);
+		} else if (change instanceof ChangeLayout) {
+			ChangeLayout ch = (ChangeLayout)change;
 			
-			Layoutable reactumModel = mg(oldToNew, ch.getCreator());
+			Layoutable reactumModel = (Layoutable)oldToNew.get(ch.getCreator());
 			
 			if (reactumModel == null)
 				return null;
 			
 			return reactumModel.changeLayout(ch.newLayout.getCopy());
-		} else if (change instanceof Container.ChangeRemoveChild) {
-			Container.ChangeRemoveChild ch = ac(change);
+		} else if (change instanceof ChangeRemoveChild) {
+			ChangeRemoveChild ch = (ChangeRemoveChild)change;
 			
-			Container reactumParent = mg(oldToNew, ch.getCreator());
-			Layoutable reactumChild = mg(oldToNew, ch.child);
+			Container reactumParent = (Container)oldToNew.get(ch.getCreator());
+			Layoutable reactumChild = (Layoutable)oldToNew.get(ch.child);
 			
 			if (reactumParent == null || reactumChild == null)
 				return null;
 			
 			oldToNew.remove(ch.child);
 			return reactumParent.changeRemoveChild(reactumChild);
-		} else if (change instanceof Layoutable.ChangeName) {
-			Layoutable.ChangeName ch = ac(change);
+		} else if (change instanceof ChangeName) {
+			ChangeName ch = (ChangeName)change;
 			
-			Layoutable reactumModel = mg(oldToNew, ch.getCreator());
+			Layoutable reactumModel = (Layoutable)oldToNew.get(ch.getCreator());
 			if (reactumModel == null)
 				return null;
 			
 			return reactumModel.changeName(ch.newName);
-		} else if (change instanceof Point.ChangeConnect) {
-			Point.ChangeConnect ch = ac(change);
+		} else if (change instanceof ChangeConnect) {
+			ChangeConnect ch = (ChangeConnect)change;
 			
-			Point reactumPoint = mg(oldToNew, ch.getCreator());
-			Link reactumLink = mg(oldToNew, ch.link);
+			Point reactumPoint = (Point)oldToNew.get(ch.getCreator());
+			Link reactumLink = (Link)oldToNew.get(ch.link);
 			if (reactumPoint == null || reactumLink == null)
 				return null;
 			
 			return reactumPoint.changeConnect(reactumLink);
-		} else if (change instanceof Point.ChangeDisconnect) {
-			Point.ChangeDisconnect ch = ac(change);
+		} else if (change instanceof ChangeDisconnect) {
+			ChangeDisconnect ch = (ChangeDisconnect)change;
 			
-			Point reactumPoint = mg(oldToNew, ch.getCreator());
-			Link reactumLink = mg(oldToNew, ch.link);
+			Point reactumPoint = (Point)oldToNew.get(ch.getCreator());
+			Link reactumLink = (Link)oldToNew.get(ch.link);
 			if (reactumPoint == null || reactumLink == null)
 				return null;
 			
 			return reactumPoint.changeDisconnect(reactumLink);
-		} else if (change instanceof Site.ChangeAlias) {
-			Site.ChangeAlias ch = ac(change);
+		} else if (change instanceof ChangeAlias) {
+			ChangeAlias ch = (ChangeAlias)change;
 			
-			Site reactumSite = mg(oldToNew, ch.getCreator());
+			Site reactumSite = (Site)oldToNew.get(ch.getCreator());
 			if (reactumSite == null)
 				return null;
 			

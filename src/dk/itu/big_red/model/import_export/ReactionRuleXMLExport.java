@@ -5,14 +5,19 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.XMLExport;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Colourable;
-import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.Colourable.ChangeFillColour;
+import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Container.ChangeRemoveChild;
+import dk.itu.big_red.model.Layoutable.ChangeLayout;
+import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.Point.ChangeConnect;
+import dk.itu.big_red.model.Point.ChangeDisconnect;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -70,11 +75,6 @@ public class ReactionRuleXMLExport extends XMLExport {
 		return ex.processObject(e, ex.getModel());
 	}
 	
-	@SuppressWarnings("unchecked")
-	private static <T, V> T ac(V i) {
-		return (T)i;
-	}
-	
 	private Element processChanges(Element e, ChangeGroup changes) throws ExportFailedException {
 		DOM.applyAttributes(e,
 				"xmlns:change", XMLNS.CHANGE);
@@ -86,8 +86,8 @@ public class ReactionRuleXMLExport extends XMLExport {
 		for (Change i_ : changes) {
 			Element f = null;
 			
-			if (i_ instanceof Colourable.ChangeFillColour) {
-				Colourable.ChangeFillColour i = ac(i_);
+			if (i_ instanceof ChangeFillColour) {
+				ChangeFillColour i = (ChangeFillColour)i_;
 				if ((i.getCreator() instanceof Layoutable)) {
 					Layoutable l = (Layoutable)i.getCreator();
 					f = DOM.applyAttributes(
@@ -96,8 +96,8 @@ public class ReactionRuleXMLExport extends XMLExport {
 							"type", l.getType().toLowerCase(),
 							"colour", i.newColour.toHexString());
 				}
-			} else if (i_ instanceof Colourable.ChangeOutlineColour) {
-				Colourable.ChangeOutlineColour i = ac(i_);
+			} else if (i_ instanceof ChangeOutlineColour) {
+				ChangeOutlineColour i = (ChangeOutlineColour)i_;
 				if ((i.getCreator() instanceof Layoutable)) {
 					Layoutable l = (Layoutable)i.getCreator();
 					f = DOM.applyAttributes(
@@ -108,8 +108,8 @@ public class ReactionRuleXMLExport extends XMLExport {
 				}
 			} else if (i_ instanceof ChangeGroup) {
 				_processChanges(e, (ChangeGroup)i_);
-			} else if (i_ instanceof Layoutable.ChangeLayout) {
-				Layoutable.ChangeLayout i = ac(i_);
+			} else if (i_ instanceof ChangeLayout) {
+				ChangeLayout i = (ChangeLayout)i_;
 				f = DOM.applyAttributes(
 						newElement(XMLNS.BIG_RED, "big-red:layout"),
 						"name", i.getCreator().getName(),
@@ -118,8 +118,8 @@ public class ReactionRuleXMLExport extends XMLExport {
 						"y", i.newLayout.getY(),
 						"width", i.newLayout.getWidth(),
 						"height", i.newLayout.getHeight());
-			} else if (i_ instanceof Container.ChangeAddChild) {
-				Container.ChangeAddChild i = ac(i_);
+			} else if (i_ instanceof ChangeAddChild) {
+				ChangeAddChild i = (ChangeAddChild)i_;
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:add"),
 						"name", i.name,
@@ -131,21 +131,21 @@ public class ReactionRuleXMLExport extends XMLExport {
 				if (i.child instanceof Node)
 					DOM.applyAttributes(f,
 							"control", ((Node)i.child).getControl().getName());
-			} else if (i_ instanceof Container.ChangeRemoveChild) {
-				Container.ChangeRemoveChild i = ac(i_);
+			} else if (i_ instanceof ChangeRemoveChild) {
+				ChangeRemoveChild i = (ChangeRemoveChild)i_;
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:remove"),
 						"name", i.child.getName(),
 						"type", i.child.getType().toLowerCase());
-			} else if (i_ instanceof Layoutable.ChangeName) {
-				Layoutable.ChangeName i = ac(i_);
+			} else if (i_ instanceof ChangeName) {
+				ChangeName i = (ChangeName)i_;
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:rename"),
 						"name", i.getCreator().getName(), 
 						"type", i.getCreator().getType().toLowerCase(),
 						"new-name", i.newName);
-			} else if (i_ instanceof Point.ChangeConnect) {
-				Point.ChangeConnect i = ac(i_);
+			} else if (i_ instanceof ChangeConnect) {
+				ChangeConnect i = (ChangeConnect)i_;
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:connect"),
 						"name", i.getCreator().getName(),
@@ -153,16 +153,16 @@ public class ReactionRuleXMLExport extends XMLExport {
 				if (i.getCreator() instanceof Port)
 					DOM.applyAttributes(f,
 							"node", ((Port)i.getCreator()).getParent().getName());
-			} else if (i_ instanceof Point.ChangeDisconnect) {
-				Point.ChangeDisconnect i = ac(i_);
+			} else if (i_ instanceof ChangeDisconnect) {
+				ChangeDisconnect i = (ChangeDisconnect)i_;
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:disconnect"),
 						"name", i.getCreator().getName());
 				if (i.getCreator() instanceof Port)
 					DOM.applyAttributes(f,
 							"node", ((Port)i.getCreator()).getParent().getName());
-			} else if (i_ instanceof Site.ChangeAlias) {
-				Site.ChangeAlias i = ac(i_);
+			} else if (i_ instanceof ChangeAlias) {
+				ChangeAlias i = (ChangeAlias)i_;
 				f = DOM.applyAttributes(
 						newElement(XMLNS.CHANGE, "change:site-alias"),
 						"name", i.getCreator().getName(),
