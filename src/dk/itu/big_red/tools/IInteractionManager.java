@@ -20,9 +20,11 @@ public interface IInteractionManager {
 	public IInteractionManager setSimulationSpec(SimulationSpec s);
 	
 	/**
-	 * Starts this {@link IInteractionManager}.
-	 * <p>This method will block until the {@link IInteractionManager} has
-	 * finished.
+	 * Starts this {@link IInteractionManager}. This method will block until
+	 * the {@link IInteractionManager} has finished.
+	 * <p>(<strong>Important note:</strong> this method is allowed to do
+	 * <i>anything</i>, including &mdash; but by no means limited to &mdash;
+	 * modifying the Eclipse workspace and displaying modal dialogs.)
 	 */
 	public void run();
 }
