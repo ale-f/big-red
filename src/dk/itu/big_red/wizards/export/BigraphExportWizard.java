@@ -27,7 +27,7 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 	}
 	
 	private IConfigurationElement cfe = null;
-	private Export<Bigraph> exporter = null;
+	private Export exporter = null;
 	
 	@Override
 	public boolean canFinish() {
@@ -51,12 +51,11 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 		addPage(page2); 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setExporter(Object o) {
 		if (o instanceof IConfigurationElement) {
 			IConfigurationElement e = (IConfigurationElement)o;
 			if (cfe != e) {
-				exporter = (Export<Bigraph>)RedPlugin.instantiate(e);
+				exporter = (Export)RedPlugin.instantiate(e);
 				cfe = e;
 				page2.setTitle("Export as " + e.getAttribute("name"));
 				setWindowTitle("Export as " + e.getAttribute("name"));
@@ -70,7 +69,7 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 		}
 	}
 
-	public Export<Bigraph> getExporter() {
+	public Export getExporter() {
 		return exporter;
 	}
 }

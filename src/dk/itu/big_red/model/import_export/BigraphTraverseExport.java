@@ -18,8 +18,20 @@ import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
 
-public class BigraphTraverseExport extends Export<Bigraph> {
+public class BigraphTraverseExport extends Export {
 	private OutputStreamWriter osw = null;
+	
+	@Override
+	public Bigraph getModel() {
+		return (Bigraph)super.getModel();
+	}
+	
+	@Override
+	public BigraphTraverseExport setModel(Object model) {
+		if (model instanceof Bigraph)
+			super.setModel(model);
+		return this;
+	}
 	
 	@Override
 	public void exportObject() throws ExportFailedException {

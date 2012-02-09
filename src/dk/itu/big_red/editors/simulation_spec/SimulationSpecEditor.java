@@ -69,11 +69,10 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			super(ice);
 		}
 		
-		@SuppressWarnings("unchecked")
 		@Override
 		public IInteractionManager createInteractionManager() {
 			return new BasicCommandLineInteractionManager(
-					(Export<SimulationSpec>)RedPlugin.instantiate(getCE()));
+					(Export)RedPlugin.instantiate(getCE()));
 		}
 	}
 	

@@ -8,8 +8,19 @@ import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.utilities.DOM;
 
-public class SimulationSpecXMLExport extends XMLExport<SimulationSpec> {
-
+public class SimulationSpecXMLExport extends XMLExport {
+	@Override
+	public SimulationSpec getModel() {
+		return (SimulationSpec)super.getModel();
+	}
+	
+	@Override
+	public SimulationSpecXMLExport setModel(Object model) {
+		if (model instanceof SimulationSpec)
+			super.setModel(model);
+		return this;
+	}
+	
 	@Override
 	public void exportObject() throws ExportFailedException {
 		setDocument(DOM.createDocument(XMLNS.SPEC, "spec:spec"));
@@ -18,7 +29,11 @@ public class SimulationSpecXMLExport extends XMLExport<SimulationSpec> {
 	}
 	
 	@Override
-	public Element processObject(Element e, SimulationSpec ss) throws ExportFailedException {
+	public Element processObject(Element e, Object ss_) throws ExportFailedException {
+		if (!(ss_ instanceof SimulationSpec))
+			throw new ExportFailedException(ss_ + " isn't a SimulationSpec");
+		SimulationSpec ss = (SimulationSpec)ss_;
+		
 		DOM.appendChildIfNotNull(e,
 			processOrReference(
 				newElement(XMLNS.SPEC, "spec:signature"),

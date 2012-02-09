@@ -20,7 +20,7 @@ import org.eclipse.draw2d.IFigure;
  * @author alec
  *
  */
-public abstract class Export<T> {
+public abstract class Export {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
 	
 	public static class OptionDescriptor {
@@ -40,13 +40,13 @@ public abstract class Export<T> {
 		}
 	};
 	
-	private T model = null;
+	private Object model = null;
 	
 	/**
 	 * Returns the model object previously set with {@link #setModel(T)}.
 	 * @return the model object
 	 */
-	public T getModel() {
+	public Object getModel() {
 		return model;
 	}
 
@@ -55,7 +55,7 @@ public abstract class Export<T> {
 	 * @param model
 	 * @return <code>this</code>, for convenience
 	 */
-	public Export<T> setModel(T model) {
+	public Export setModel(Object model) {
 		this.model = model;
 		return this;
 	}
@@ -76,9 +76,9 @@ public abstract class Export<T> {
 	 * @param os an OutputStream
 	 * @return <code>this</code>, for convenience
 	 */
-	public Export<T> setOutputStream(OutputStream os) {
+	public Export setOutputStream(OutputStream os) {
 		if (os != null)
-			this.target = os;
+			target = os;
 		return this;
 	}
 	
@@ -88,7 +88,7 @@ public abstract class Export<T> {
 	 *         <code>false</code> otherwise
 	 */
 	public boolean canExport() {
-		return (this.model != null && this.target != null);
+		return (model != null && target != null);
 	}
 	
 	/**

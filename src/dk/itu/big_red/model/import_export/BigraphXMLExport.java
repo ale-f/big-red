@@ -25,7 +25,19 @@ import dk.itu.big_red.utilities.Lists;
  * @see BigraphXMLImport
  *
  */
-public class BigraphXMLExport extends XMLExport<Bigraph> {
+public class BigraphXMLExport extends XMLExport {
+	@Override
+	public Bigraph getModel() {
+		return (Bigraph)super.getModel();
+	}
+	
+	@Override
+	public BigraphXMLExport setModel(Object model) {
+		if (model instanceof Bigraph)
+			super.setModel(model);
+		return this;
+	}
+	
 	/**
 	 * An array of model {@link Class}es in the appropriate order for the
 	 * <code>&lt;bigraph&gt;</code> XML schema, suitable for giving as the
@@ -69,7 +81,11 @@ public class BigraphXMLExport extends XMLExport<Bigraph> {
 	}
 	
 	@Override
-	public Element processObject(Element e, Bigraph obj) throws ExportFailedException {
+	public Element processObject(Element e, Object obj_) throws ExportFailedException {
+		if (!(obj_ instanceof Bigraph))
+			throw new ExportFailedException(obj_ + " isn't a Bigraph");
+		Bigraph obj = (Bigraph)obj_;
+		
 		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
 		DOM.appendChildIfNotNull(e,

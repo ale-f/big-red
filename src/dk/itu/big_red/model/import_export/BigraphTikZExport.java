@@ -27,8 +27,20 @@ import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.ReadonlyColour;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
-public class BigraphTikZExport extends Export<Bigraph> {
+public class BigraphTikZExport extends Export {
 	private BufferedWriter writer;
+	
+	@Override
+	public Bigraph getModel() {
+		return (Bigraph)super.getModel();
+	}
+	
+	@Override
+	public BigraphTikZExport setModel(Object model) {
+		if (model instanceof Bigraph)
+			super.setModel(model);
+		return this;
+	}
 	
 	private boolean completeDocument = false;
 	

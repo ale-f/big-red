@@ -18,8 +18,20 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.utilities.DOM;
 
-public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
+public class ReactionRuleXMLExport extends XMLExport {
 
+	@Override
+	public ReactionRule getModel() {
+		return (ReactionRule)super.getModel();
+	}
+	
+	@Override
+	public ReactionRuleXMLExport setModel(Object model) {
+		if (model instanceof ReactionRule)
+			super.setModel(model);
+		return this;
+	}
+	
 	@Override
 	public void exportObject() throws ExportFailedException {
 		setDocument(DOM.createDocument(XMLNS.RULE, "rule:rule"));
@@ -28,7 +40,11 @@ public class ReactionRuleXMLExport extends XMLExport<ReactionRule> {
 	}
 
 	@Override
-	public Element processObject(Element e, ReactionRule rr) throws ExportFailedException {
+	public Element processObject(Element e, Object rr_) throws ExportFailedException {
+		if (!(rr_ instanceof ReactionRule))
+			throw new ExportFailedException(rr_ + " isn't a ReactionRule");
+		ReactionRule rr = (ReactionRule)rr_;
+		
 		DOM.appendChildIfNotNull(e,
 			processRedex(newElement(XMLNS.RULE, "rule:redex"), rr.getRedex()));
 		

@@ -10,7 +10,19 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.utilities.DOM;
 
-public class SignatureXMLExport extends XMLExport<Signature> {
+public class SignatureXMLExport extends XMLExport {
+	@Override
+	public Signature getModel() {
+		return (Signature)super.getModel();
+	}
+	
+	@Override
+	public SignatureXMLExport setModel(Object model) {
+		if (model instanceof Signature)
+			super.setModel(model);
+		return this;
+	}
+	
 	@Override
 	public void exportObject() throws ExportFailedException {
 		setDocument(DOM.createDocument(XMLNS.SIGNATURE, "signature:signature"));
@@ -18,7 +30,12 @@ public class SignatureXMLExport extends XMLExport<Signature> {
 		finish();
 	}
 
-	public Element processObject(Element e, Signature s) {
+	@Override
+	public Element processObject(Element e, Object s_) throws ExportFailedException {
+		if (!(s_ instanceof Signature))
+			throw new ExportFailedException(s_ + " isn't a Signature");
+		Signature s = (Signature)s_;
+		
 		DOM.applyAttributes(e,
 			"xmlns:big-red", XMLNS.BIG_RED,
 			"xmlns:signature", XMLNS.SIGNATURE);

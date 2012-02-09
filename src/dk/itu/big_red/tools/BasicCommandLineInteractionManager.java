@@ -19,7 +19,6 @@ import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
-import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.preferences.RedPreferences;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.ui.ProcessDialog;
@@ -35,9 +34,9 @@ public class BasicCommandLineInteractionManager extends InteractionManager {
 	public static final int COPY_ID = 1002;
 	public static final String COPY_LABEL = "Copy";
 	
-	private Export<SimulationSpec> exporter;
+	private Export exporter;
 	
-	public BasicCommandLineInteractionManager(Export<SimulationSpec> exporter) {
+	public BasicCommandLineInteractionManager(Export exporter) {
 		this.exporter = exporter;
 	}
 	

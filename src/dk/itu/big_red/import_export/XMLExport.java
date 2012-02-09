@@ -8,7 +8,7 @@ import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
-public abstract class XMLExport<T> extends Export<T> {
+public abstract class XMLExport extends Export {
 	private Document doc = null;
 	
 	public Document getDocument() {
@@ -21,7 +21,7 @@ public abstract class XMLExport<T> extends Export<T> {
 		} else return null;
 	}
 	
-	public XMLExport<T> setDocument(Document doc) {
+	public XMLExport setDocument(Document doc) {
 		this.doc = doc;
 		return this;
 	}
@@ -35,7 +35,7 @@ public abstract class XMLExport<T> extends Export<T> {
 		return doc.createElementNS(nsURI, qualifiedName);
 	}
 	
-	protected XMLExport<T> finish() throws ExportFailedException {
+	protected XMLExport finish() throws ExportFailedException {
 		try {
 			DOM.write(getOutputStream(), getDocument());
 			getOutputStream().close();
@@ -45,13 +45,12 @@ public abstract class XMLExport<T> extends Export<T> {
 		}
 	}
 	
-	public abstract Element processObject(Element e, T object)
+	public abstract Element processObject(Element e, Object object)
 		throws ExportFailedException;
 	
-	protected <V extends IFileBackable>
-	Element processOrReference(
-		Element e, IResource relativeTo, V object,
-		Class<? extends XMLExport<V>> klass) {
+	protected Element processOrReference(
+		Element e, IResource relativeTo, IFileBackable object,
+		Class<? extends XMLExport> klass) {
 		if (e == null || object == null) {
 			return null;
 		} else if (object.getFile() != null) {
@@ -59,7 +58,7 @@ public abstract class XMLExport<T> extends Export<T> {
 				"src", Project.getRelativePath(
 						relativeTo, object.getFile()).toString());	
 		} else {
-			XMLExport<V> ex;
+			XMLExport ex;
 			try {
 				ex = klass.newInstance();
 				ex.setDocument(getDocument()).setModel(object);

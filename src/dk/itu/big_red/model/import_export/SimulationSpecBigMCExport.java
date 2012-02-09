@@ -22,8 +22,20 @@ import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
 
-public class SimulationSpecBigMCExport extends Export<SimulationSpec> {
+public class SimulationSpecBigMCExport extends Export {
 	private OutputStreamWriter osw = null;
+	
+	@Override
+	public SimulationSpec getModel() {
+		return (SimulationSpec)super.getModel();
+	}
+	
+	@Override
+	public SimulationSpecBigMCExport setModel(Object model) {
+		if (model instanceof SimulationSpec)
+			super.setModel(model);
+		return this;
+	}
 	
 	private void newline() throws ExportFailedException {
 		write("\n");

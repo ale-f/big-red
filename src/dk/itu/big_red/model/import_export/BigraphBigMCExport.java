@@ -17,8 +17,20 @@ import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
 
-public class BigraphBigMCExport extends Export<Bigraph> {
+public class BigraphBigMCExport extends Export {
 	private OutputStreamWriter osw = null;
+	
+	@Override
+	public Bigraph getModel() {
+		return (Bigraph)super.getModel();
+	}
+	
+	@Override
+	public BigraphBigMCExport setModel(Object model) {
+		if (model instanceof Bigraph)
+			super.setModel(model);
+		return this;
+	}
 	
 	private int indentation = -1;
 	

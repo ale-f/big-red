@@ -21,8 +21,20 @@ import dk.itu.big_red.model.interfaces.ISite;
 /**
  * An exporter to the BPL Tool term language (which actually in some cases should produce proper BPL Terms!).
  */
-public class BigraphBPLToolExport extends Export<Bigraph> {
+public class BigraphBPLToolExport extends Export {
 	private OutputStreamWriter osw = null;
+	
+	@Override
+	public Bigraph getModel() {
+		return (Bigraph)super.getModel();
+	}
+	
+	@Override
+	public BigraphBPLToolExport setModel(Object model) {
+		if (model instanceof Bigraph)
+			super.setModel(model);
+		return this;
+	}
 	
 	@Override
 	public void exportObject() throws ExportFailedException {

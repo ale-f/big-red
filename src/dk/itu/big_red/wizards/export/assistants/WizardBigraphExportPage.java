@@ -90,7 +90,7 @@ public class WizardBigraphExportPage extends WizardPage {
 	}
 	
 	private boolean tryToExport() {
-		Export<Bigraph> ex = getWizard().getExporter();
+		Export ex = getWizard().getExporter();
 		IOAdapter ad = new IOAdapter();
 		try {
 			ex.setModel(getWizard().getSource());
@@ -227,7 +227,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		for (Control c : optionsGroup.getChildren())
 			c.dispose();
 		
-		final Export<Bigraph> exporter = getWizard().getExporter();
+		final Export exporter = getWizard().getExporter();
 		
 		List<OptionDescriptor> options = exporter.getOptions();
 		
