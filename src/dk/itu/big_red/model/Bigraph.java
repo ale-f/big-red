@@ -92,8 +92,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	}
 	
 	/**
-	 * Gets the namespace with the given namespace identifier, creating it if
-	 * necessary.
+	 * Gets the namespace with the given namespace identifier.
 	 * @param nsi a value returned from a call to {@link #getNSI(Layoutable)},
 	 * unless you're <i>very</i> sure you know what you're doing
 	 * @return the specified namespace
@@ -105,10 +104,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	/**
 	 * Gets the first unused name suitable for the given {@link Layoutable}.
 	 * @param l a {@link Layoutable}
-	 * @return a {@link String} suitable for a {@link BigraphChangeName}, or
-	 * &mdash; in the highly unlikely event that there are 62,193,781 objects
-	 * of the same type as <code>l</code> in this {@link Bigraph} &mdash; the
-	 * empty string
+	 * @return a {@link String} suitable for a {@link BigraphChangeName}
 	 */
 	public String getFirstUnusedName(Layoutable l) {
 		return getNamespace(getNSI(l)).getNextName();
@@ -200,7 +196,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 				Layoutable l = (Layoutable)o,
 						lClone = (Layoutable)e.getValue();
 				lClone.setName(l.getName());
-				b.getNamespace(getNSI(lClone)).put(lClone.getName(), lClone);
+				INamespace<Layoutable> ns = b.getNamespace(getNSI(lClone));
+				if (ns != null)
+					ns.put(lClone.getName(), lClone);
 			}
 		}
 		
