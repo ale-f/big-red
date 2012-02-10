@@ -31,7 +31,7 @@ public class HashMapNamespace<T> extends Namespace<T> {
 	public HashMapNamespace<T> clone() {
 		HashMapNamespace<T> copy = new HashMapNamespace<T>();
 		copy.map.putAll(map);
-		copy.setPolicy(getPolicy().clone());
+		copy.setPolicy(getPolicy());
 		return copy;
 	}
 }

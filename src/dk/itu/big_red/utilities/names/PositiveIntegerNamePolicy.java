@@ -19,9 +19,4 @@ public class PositiveIntegerNamePolicy implements INamePolicy {
 	public String getName(int value) {
 		return Integer.toString(Math.abs(value) + 1);
 	}
-	
-	@Override
-	public PositiveIntegerNamePolicy clone() {
-		return new PositiveIntegerNamePolicy();
-	}
 }

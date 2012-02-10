@@ -26,9 +26,4 @@ public class StringNamePolicy implements INamePolicy {
 		}
 		return s;
 	}
-
-	@Override
-	public StringNamePolicy clone() {
-		return new StringNamePolicy();
-	}
 }
