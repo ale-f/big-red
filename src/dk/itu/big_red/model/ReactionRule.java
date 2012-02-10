@@ -16,6 +16,7 @@ import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.utilities.names.INamespace;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
 public class ReactionRule extends ModelObject implements IFileBackable {
@@ -95,12 +96,12 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 			 * ChangeGroups will actually work properly
 			 */
 			String reactumName;
-			Map<String, Layoutable> reactumNamespace =
+			INamespace<Layoutable> reactumNamespace =
 				reactumParent.getBigraph().
 				getNamespace(Bigraph.getNSI(reactumChild));
 			if (reactumNamespace.get(ch.name) == null) {
 				reactumName = ch.name;
-			} else reactumName = Bigraph.getFirstUnusedName(reactumNamespace);
+			} else reactumName = reactumNamespace.getNextName();
 			
 			return reactumParent.changeAddChild(reactumChild, reactumName);
 		} else if (change instanceof ChangeLayout) {

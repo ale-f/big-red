@@ -25,6 +25,10 @@ import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.geometry.Rectangle;
+import dk.itu.big_red.utilities.names.INamespace;
+import dk.itu.big_red.utilities.names.NamespaceGroup;
+import dk.itu.big_red.utilities.names.PositiveIntegerNamePolicy;
+import dk.itu.big_red.utilities.names.StringNamePolicy;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
 /**
@@ -36,26 +40,15 @@ import dk.itu.big_red.utilities.resources.IFileBackable;
 public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable {
 	protected Signature signature = null;
 
-	private HashMap<Object, Map<String, Layoutable>> names =
-		new HashMap<Object, Map<String, Layoutable>>();
+	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();
 	
-	/**
-	 * Creates a <i>namespace</i>, a mapping from {@link String}s to {@link
-	 * Layoutable}s.
-	 * @return a new namespace
-	 */
-	public static Map<String, Layoutable> newNamespace() {
-		return new HashMap<String, Layoutable>();
-	}
-	
-	/**
-	 * Creates a <i>namespace</i>, a mapping from {@link String}s to {@link
-	 * Layoutable}s.
-	 * @param m an existing namespace to copy mappings from
-	 * @return a new namespace
-	 */
-	public static Map<String, Layoutable> newNamespace(Map<? extends String, ? extends Layoutable> m) {
-		return new HashMap<String, Layoutable>(m);
+	{
+		nsg.createNamespace(Link.class).setPolicy(new StringNamePolicy());
+		nsg.createNamespace(Node.class).setPolicy(new StringNamePolicy());
+		nsg.createNamespace(InnerName.class).setPolicy(new StringNamePolicy());
+		
+		nsg.createNamespace(Root.class).setPolicy(new PositiveIntegerNamePolicy());
+		nsg.createNamespace(Site.class).setPolicy(new PositiveIntegerNamePolicy());
 	}
 	
 	/**
@@ -78,7 +71,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 				object instanceof Node) {
 			return object.getClass();
 		}
-		return object;
+		return null;
 	}
 	
 	/**
@@ -95,7 +88,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			return Site.class;
 		} else if (objectType.equals("node")) {
 			return Node.class;
-		} else return new Object();
+		} else return null;
 	}
 	
 	/**
@@ -105,70 +98,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	 * unless you're <i>very</i> sure you know what you're doing
 	 * @return the specified namespace
 	 */
-	public Map<String, Layoutable> getNamespace(Object nsi) {
-		Map<String, Layoutable> r = names.get(nsi);
-		if (r == null)
-			names.put(nsi, r = newNamespace());
-		return r;
-	}
-	
-	/**
-	 * The characters one might want to use to represent a base-36 number.
-	 */
-	private final static String _IAS_ALPHA =
-		"0123456789abcdefghijklmnopqrstuvwxyz";
-
-	/**
-	 * The first six powers of thirty-six, because premature optimisation is
-	 * great.
-	 */
-	private final static int powersOf36[] = {
-		1, /* 36 ^^ 0 */
-		36, /* 36 ^^ 1 */
-		1296, /* 36 ^^ 2 */
-		46656, /* 36 ^^ 3 */
-		1679616, /* 36 ^^ 4 */
-		60466176, /* 36 ^^ 5 */
-	};
-	
-	/**
-	 * Returns <code>x</code> as a base-36 string.
-	 * <p>This is used by {@link #getFirstUnusedName(Layoutable)}.
-	 * @param x a number (which would ideally be less than 62,193,781)
-	 * @return <code>x</code> in base-36
-	 */
-	private static String intAsString(int x) {
-		String s = "";
-		boolean nonZeroEncountered = false;
-		for (int i = 5; i >= 0; i--) {
-			int y = powersOf36[i];
-			int z = x / y;
-
-			if (z == 0 && !nonZeroEncountered && i != 0)
-				continue;
-
-			nonZeroEncountered = true;
-			s += _IAS_ALPHA.charAt(z);
-
-			x -= y * z;
-		}
-		return s;
-	}
-	
-	/**
-	 * Gets the first unused name in a namespace.
-	 * @param ns the namespace to search
-	 * @return a {@link String} suitable for a {@link BigraphChangeName}, or
-	 * &mdash; in the highly unlikely event that there are 62,193,781 objects
-	 * named by this function in the given namespace &mdash; the empty string
-	 */
-	public static String getFirstUnusedName(Map<String, Layoutable> ns) {
-		int i = 0;
-		String name = null;
-		do {
-			name = intAsString(i++);
-		} while (ns.get(name) != null);
-		return name;
+	public INamespace<Layoutable> getNamespace(Object nsi) {
+		return nsg.getNamespace(nsi);
 	}
 	
 	/**
@@ -180,7 +111,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	 * empty string
 	 */
 	public String getFirstUnusedName(Layoutable l) {
-		return Bigraph.getFirstUnusedName(getNamespace(getNSI(l)));
+		return getNamespace(getNSI(l)).getNextName();
 	}
 	
 	/**

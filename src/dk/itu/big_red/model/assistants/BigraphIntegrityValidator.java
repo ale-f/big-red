@@ -1,8 +1,6 @@
 package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
-import java.util.Map;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
@@ -19,6 +17,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
+import dk.itu.big_red.utilities.names.INamespace;
 
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that
@@ -95,6 +94,21 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		activeChange = null;
 	}
 	
+	private void checkName(Change b, Layoutable l, String cdt) throws ChangeRejectedException {
+		if (cdt == null)
+			rejectChange(b, "Setting an object's name to null is no longer supported");
+		INamespace<Layoutable> ns = scratch.getNamespaceFor(l);
+		if (ns == null)
+			return; /* not subject to checks */
+		if (ns.get(cdt) != null)
+			if (!ns.get(cdt).equals(l))
+				rejectChange("Names must be unique");
+		System.out.print("Performing name validation for " + l + "... ");
+		if (!ns.getPolicy().validate(cdt))
+			rejectChange(b, "\"" + cdt + "\" is not a valid name for " + l);
+		System.out.println("okay");
+	}
+	
 	protected void _tryValidateChange(Change b)
 			throws ChangeRejectedException {
 		if (!b.isReady()) {
@@ -125,12 +139,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 						((Node)c.getCreator()).getControl().getName() +
 						" is an atomic control");
 			
-			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.child);
-			if (ns.containsKey(c.name) &&
-				/* FIXME: hack to make reparenting work */
-					!c.child.equals(ns.get(c.name)))
-				rejectChange("The name \"" + c.name + "\", proposed for " + c.child + ", is already in use");
-			
+			checkName(b, c.child, c.name);
+
 			if (c.child instanceof Edge) {
 				if (!(c.getCreator() instanceof Bigraph))
 					rejectChange("Edges must be children of the top-level Bigraph");
@@ -157,7 +167,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				rejectChange(c.getCreator() + " is not the parent of " + c.child);
 			scratch.removeChildFor(c.getCreator(), c.child);
 			
-			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.child);
+			INamespace<Layoutable> ns = scratch.getNamespaceFor(c.child);
 			ns.remove(c.child.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
@@ -178,12 +188,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(c.getCreator());
-			if (c.newName == null)
-				rejectChange(b, "Setting an object's name to null is no longer supported");
-			Map<String, Layoutable> ns = scratch.getNamespaceFor(c.getCreator());
-			if (ns.get(c.newName) != null)
-				if (!ns.get(c.newName).equals(c.getCreator()))
-					rejectChange("Names must be unique");
+			checkName(b, c.getCreator(), c.newName);
 			scratch.setNameFor(c.getCreator(), c.newName);
 		} else {
 			rejectChange("The change was not recognised by the validator");

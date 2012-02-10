@@ -2,8 +2,6 @@ package dk.itu.big_red.model.assistants;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
@@ -12,6 +10,7 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
+import dk.itu.big_red.utilities.names.INamespace;
 
 /**
  * The BigraphScratchpad is a wrapper around various kinds of {@link
@@ -41,8 +40,8 @@ public class BigraphScratchpad {
 	
 	private HashMap<Point, Link> links = new HashMap<Point, Link>();
 	
-	private HashMap<Object, Map<String, Layoutable>> namespaces =
-			new HashMap<Object, Map<String, Layoutable>>();
+	private HashMap<Object, INamespace<Layoutable>> namespaces =
+			new HashMap<Object, INamespace<Layoutable>>();
 
 	private HashMap<Layoutable, String> names =
 			new HashMap<Layoutable, String>();
@@ -142,11 +141,11 @@ public class BigraphScratchpad {
 		setLinkFor(b, a);
 	}
 	
-	public Map<String, Layoutable> getNamespaceFor(Layoutable a) {
+	public INamespace<Layoutable> getNamespaceFor(Layoutable a) {
 		Object nsi = Bigraph.getNSI(a);
-		Map<String, Layoutable> b;
+		INamespace<Layoutable> b;
 		if (!namespaces.containsKey(nsi)) {
-			b = Bigraph.newNamespace(bigraph.getNamespace(nsi));
+			b = bigraph.getNamespace(nsi).clone();
 			namespaces.put(nsi, b);
 		} else b = namespaces.get(nsi);
 		return b;
@@ -164,7 +163,10 @@ public class BigraphScratchpad {
 		names.remove(a);
 		names.put(a, b);
 		
-		getNamespaceFor(a).remove(oldName);
-		getNamespaceFor(a).put(b, a);
+		INamespace<Layoutable> ns = getNamespaceFor(a);
+		if (ns != null) {
+			ns.remove(oldName);
+			ns.put(b, a);
+		}
 	}
 }

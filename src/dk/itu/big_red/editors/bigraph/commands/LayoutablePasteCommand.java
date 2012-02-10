@@ -3,7 +3,6 @@ package dk.itu.big_red.editors.bigraph.commands;
 import java.util.ArrayList;
 import org.eclipse.gef.ui.actions.Clipboard;
 
-import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
@@ -72,8 +71,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 					i instanceof Site) {
 				Layoutable j = i.clone(null);
 				
-				String name =
-					Bigraph.getFirstUnusedName(scratch.getNamespaceFor(j));
+				String name = scratch.getNamespaceFor(j).getNextName();
 				cg.add(newParent.changeAddChild(j, name),
 						j.changeLayout(j.getLayout().getCopy().translate(20, 20)));
 				
