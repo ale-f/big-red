@@ -10,6 +10,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
+import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -17,6 +18,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
+import dk.itu.big_red.utilities.names.INamePolicy;
 import dk.itu.big_red.utilities.names.INamespace;
 
 /**
@@ -99,14 +101,12 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			rejectChange(b, "Setting an object's name to null is no longer supported");
 		INamespace<Layoutable> ns = scratch.getNamespaceFor(l);
 		if (ns == null)
-			return; /* not subject to checks */
+			return; /* not subject to any checks */
 		if (ns.get(cdt) != null)
 			if (!ns.get(cdt).equals(l))
 				rejectChange("Names must be unique");
-		System.out.print("Performing name validation for " + l + "... ");
 		if (!ns.getPolicy().validate(cdt))
 			rejectChange(b, "\"" + cdt + "\" is not a valid name for " + l);
-		System.out.println("okay");
 	}
 	
 	protected void _tryValidateChange(Change b)
@@ -182,14 +182,23 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			checkEligibility(c.getCreator());
 		} else if (b instanceof Colourable.ChangeOutlineColour ||
 				b instanceof Colourable.ChangeFillColour ||
-				b instanceof ModelObject.ChangeComment ||
-				b instanceof Site.ChangeAlias) {
+				b instanceof ModelObject.ChangeComment) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(c.getCreator());
 			checkName(b, c.getCreator(), c.newName);
 			scratch.setNameFor(c.getCreator(), c.newName);
+		} else if (b instanceof ChangeAlias) {
+			ChangeAlias c = (ChangeAlias)b;
+			/* Although Site aliases don't have to be unique, they should still
+			 * be valid (or null) */
+			INamePolicy siteNamePolicy =
+				scratch.getBigraph().getNamespace(Site.class).getPolicy();
+			if (siteNamePolicy != null && c.alias != null)
+				if (!siteNamePolicy.validate(c.alias))
+					rejectChange("\"" + c.alias + "\" is not a valid alias " +
+							"for " + c.getCreator());
 		} else {
 			rejectChange("The change was not recognised by the validator");
 		}
