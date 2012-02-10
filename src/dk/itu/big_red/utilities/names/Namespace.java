@@ -8,8 +8,11 @@ public abstract class Namespace<T> implements INamespace<T> {
 
 	@Override
 	public String getNextName() {
-		int i = 0;
 		INamePolicy policy = getPolicy();
+		if (policy == null)
+			return null;
+		
+		int i = 0;
 		String name;
 		do {
 			name = policy.getName(i++);

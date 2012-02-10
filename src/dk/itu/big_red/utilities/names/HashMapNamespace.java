@@ -6,24 +6,24 @@ public class HashMapNamespace<T> extends Namespace<T> {
 	private HashMap<String, T> map = new HashMap<String, T>();
 	
 	@Override
-	public T get(String key) {
-		if (checkName(key)) {
-			return map.get(key);
+	public T get(String name) {
+		if (checkName(name)) {
+			return map.get(name);
 		} else return null;
 	}
 
 	@Override
-	public boolean put(String key, T value) {
-		if (checkName(key) && !has(key)) {
-			map.put(key, value);
+	public boolean put(String name, T value) {
+		if (value != null && checkName(name) && !has(name)) {
+			map.put(name, value);
 			return true;
 		} else return false;
 	}
 	
 	@Override
-	public boolean remove(String key) {
-		if (checkName(key)) {
-			return (map.remove(key) != null);
+	public boolean remove(String name) {
+		if (checkName(name)) {
+			return (map.remove(name) != null);
 		} else return false;
 	}
 	
