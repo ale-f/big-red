@@ -62,6 +62,10 @@ public class BigraphScratchpad {
 		return this;
 	}
 	
+	public Bigraph getBigraph() {
+		return bigraph;
+	}
+	
 	public ReadonlyRectangle getLayoutFor(Layoutable a) {
 		if (!layouts.containsKey(a)) {
 			return a.getLayout();
