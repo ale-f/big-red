@@ -61,7 +61,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
 
 public class BigraphEditor extends AbstractGEFEditor {
