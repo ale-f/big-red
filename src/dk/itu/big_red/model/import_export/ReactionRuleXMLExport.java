@@ -38,7 +38,7 @@ public class ReactionRuleXMLExport extends XMLExport {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		setDocument(DOM.createDocument(XMLNS.RULE, "rule:rule"));
+		setDocument(XMLExport.createDocument(XMLNS.RULE, "rule:rule"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}

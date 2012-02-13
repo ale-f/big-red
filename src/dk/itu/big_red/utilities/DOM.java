@@ -16,15 +16,11 @@ import javax.xml.validation.SchemaFactory;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
-import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.xml.sax.SAXException;
-
 
 /**
  * Utility functions for manipulating DOM {@link Document}s and
@@ -33,38 +29,6 @@ import org.xml.sax.SAXException;
  *
  */
 public class DOM {
-	private static DOMImplementation impl = null;
-	
-	/**
-	 * Gets the shared DOM implementation object (required to actually
-	 * <i>do</i> anything XML-related), creating it if necessary.
-	 * @return the shared DOM implementation object, or <code>null</code> if it
-	 *         couldn't be created
-	 */
-	public static DOMImplementation getImplementation() {
-		if (impl == null) {
-			try {
-				impl = DOMImplementationRegistry.newInstance().
-				       getDOMImplementation("XML 3.0");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
-		return impl;
-	}
-	
-	/**
-	 * Creates a {@link Document} (with no {@link DocumentType}) using the
-	 * shared DOM implementation.
-	 * @param ns the namespace URI of the document to create
-	 * @param qualifiedName the qualified name of the root element
-	 * @return a new {@link Document}
-	 */
-	public static Document createDocument(String ns, String qualifiedName) {
-		return getImplementation().createDocument(ns, qualifiedName, null);
-	}
-	
 	private static DocumentBuilderFactory dbf = null;
 	
 	/**

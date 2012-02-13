@@ -74,7 +74,7 @@ public class BigraphXMLExport extends XMLExport {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		setDocument(DOM.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
+		setDocument(XMLExport.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}

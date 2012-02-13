@@ -24,7 +24,7 @@ public class SignatureXMLExport extends XMLExport {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		setDocument(DOM.createDocument(XMLNS.SIGNATURE, "signature:signature"));
+		setDocument(XMLExport.createDocument(XMLNS.SIGNATURE, "signature:signature"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}

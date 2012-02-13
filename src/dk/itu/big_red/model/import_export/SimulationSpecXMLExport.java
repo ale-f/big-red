@@ -22,7 +22,7 @@ public class SimulationSpecXMLExport extends XMLExport {
 	
 	@Override
 	public void exportObject() throws ExportFailedException {
-		setDocument(DOM.createDocument(XMLNS.SPEC, "spec:spec"));
+		setDocument(XMLExport.createDocument(XMLNS.SPEC, "spec:spec"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
