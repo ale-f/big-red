@@ -1,4 +1,4 @@
-package dk.itu.big_red.import_export;
+package dk.itu.big_red.model.import_export;
 
 /**
  * Classes extending {@link Import} throw an ImportFailedException if the

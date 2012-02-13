@@ -2,8 +2,6 @@ package dk.itu.big_red.model.import_export;
 
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.import_export.ExportFailedException;
-import dk.itu.big_red.import_export.XMLExport;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;

@@ -5,8 +5,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.import_export.Import;
-import dk.itu.big_red.import_export.ImportFailedException;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;

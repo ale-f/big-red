@@ -24,10 +24,10 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.import_export.Export;
-import dk.itu.big_red.import_export.Export.OptionDescriptor;
-import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.import_export.Export;
+import dk.itu.big_red.model.import_export.Import;
+import dk.itu.big_red.model.import_export.Export.OptionDescriptor;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;

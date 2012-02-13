@@ -1,4 +1,4 @@
-package dk.itu.big_red.import_export;
+package dk.itu.big_red.model.import_export;
 
 import java.io.OutputStream;
 import java.util.ArrayList;

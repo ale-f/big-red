@@ -9,8 +9,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
-import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.import_export.ExportFailedException;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;

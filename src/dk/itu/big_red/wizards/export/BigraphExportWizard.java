@@ -7,8 +7,8 @@ import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.import_export.Export;
 import dk.itu.big_red.wizards.export.assistants.WizardBigraphExportPage;
 import dk.itu.big_red.wizards.export.assistants.WizardBigraphExportSelectorPage;
 

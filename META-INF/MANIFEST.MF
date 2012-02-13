@@ -17,8 +17,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.views.log
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Export-Package: dk.itu.big_red.import_export,
- dk.itu.big_red.model,
+Export-Package: dk.itu.big_red.model,
  dk.itu.big_red.model.import_export,
  dk.itu.big_red.model.interfaces,
  dk.itu.big_red.tools,

@@ -37,8 +37,6 @@ import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
-import dk.itu.big_red.import_export.ExportFailedException;
-import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
@@ -46,6 +44,8 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.import_export.ExportFailedException;
+import dk.itu.big_red.model.import_export.Import;
 import dk.itu.big_red.model.import_export.SignatureXMLExport;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;

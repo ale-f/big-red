@@ -50,8 +50,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
-import dk.itu.big_red.import_export.ExportFailedException;
-import dk.itu.big_red.import_export.Import;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
@@ -62,6 +60,8 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.import_export.BigraphXMLExport;
+import dk.itu.big_red.model.import_export.ExportFailedException;
+import dk.itu.big_red.model.import_export.Import;
 
 public class BigraphEditor extends AbstractGEFEditor {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";

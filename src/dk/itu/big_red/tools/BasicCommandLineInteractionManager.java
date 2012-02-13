@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.import_export.Export;
-import dk.itu.big_red.import_export.ExportFailedException;
+import dk.itu.big_red.model.import_export.Export;
+import dk.itu.big_red.model.import_export.ExportFailedException;
 import dk.itu.big_red.preferences.RedPreferences;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.ui.ProcessDialog;

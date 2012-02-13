@@ -13,7 +13,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.import_export.Export;
+import dk.itu.big_red.model.import_export.Export;
 import dk.itu.big_red.utilities.ui.UI;
 import dk.itu.big_red.utilities.ui.jface.ConfigurationElementLabelProvider;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
