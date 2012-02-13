@@ -1,10 +1,17 @@
 package dk.itu.big_red.import_export;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.core.resources.IResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
@@ -35,10 +42,23 @@ public abstract class XMLExport extends Export {
 		return doc.createElementNS(nsURI, qualifiedName);
 	}
 	
+	private TransformerFactory tf;
+	
 	protected XMLExport finish() throws ExportFailedException {
 		try {
-			DOM.write(getOutputStream(), getDocument());
+			if (tf == null)
+				tf = TransformerFactory.newInstance();
+			
+			Source source = new DOMSource(getDocument());
+			Result result = new StreamResult(getOutputStream());
+			
+			Transformer t = tf.newTransformer();
+			t.setOutputProperty(OutputKeys.INDENT, "yes");
+			t.setOutputProperty(
+					"{http://xml.apache.org/xslt}indent-amount", "2");
+			t.transform(source, result);
 			getOutputStream().close();
+			
 			return this;
 		} catch (Exception e) {
 			throw new ExportFailedException(e);
@@ -54,8 +74,8 @@ public abstract class XMLExport extends Export {
 		if (e == null || object == null) {
 			return null;
 		} else if (object.getFile() != null) {
-			DOM.applyAttributes(e,
-				"src", Project.getRelativePath(
+			e.setAttributeNS(null, "src",
+					Project.getRelativePath(
 						relativeTo, object.getFile()).toString());	
 		} else {
 			XMLExport ex;

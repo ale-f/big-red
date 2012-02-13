@@ -3,21 +3,13 @@ package dk.itu.big_red.utilities;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -96,29 +88,6 @@ public class DOM {
 		} finally {
 			is.close();
 		}
-	}
-	
-	private static TransformerFactory tf = null;
-	
-	/**
-	 * Converts the specified {@link Document} into a textual representation of
-	 * a XML document, then writes it to the specified {@link OutputStream}.
-	 * @param os an OutputStream
-	 * @param d a Document
-	 * @throws CoreException if the file couldn't be overwritten
-	 * @throws TransformerException if the Node couldn't be converted to XML
-	 */
-	public static void write(OutputStream os, Document d) throws CoreException, TransformerException {
-		if (tf == null)
-			tf = TransformerFactory.newInstance();
-		
-		Source source = new DOMSource(d);
-		Result result = new StreamResult(os);
-		
-		Transformer t = tf.newTransformer();
-		t.setOutputProperty(OutputKeys.INDENT, "yes");
-		t.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-		t.transform(source, result);
 	}
 	
 	private static SchemaFactory sf = null;
