@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.content.IContentType;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Types;
 
@@ -53,7 +54,7 @@ public abstract class Import {
 	 * Import#canImport canImport} returns <code>true</code>.
 	 * @throws ImportFailedException if the import failed
 	 */
-	public abstract Object importObject() throws ImportFailedException;
+	public abstract ModelObject importObject() throws ImportFailedException;
 	
 	/**
 	 * Loads an object from an {@link IFile} by:
@@ -68,7 +69,7 @@ public abstract class Import {
 	 * @return an object, or <code>null</code>
 	 * @throws ImportFailedException if {@link #importObject()} fails
 	 */
-	public static Object fromFile(IFile f) throws ImportFailedException {
+	public static ModelObject fromFile(IFile f) throws ImportFailedException {
 		IContentType ct = Types.findContentTypeFor(f);
 		for (IConfigurationElement ice :
 			RedPlugin.getConfigurationElementsFor(EXTENSION_POINT)) {
