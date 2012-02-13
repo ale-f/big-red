@@ -8,6 +8,7 @@ import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.IInnerName;
@@ -26,7 +27,7 @@ public class BigraphBigMCExport extends Export {
 	}
 	
 	@Override
-	public BigraphBigMCExport setModel(Object model) {
+	public BigraphBigMCExport setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;

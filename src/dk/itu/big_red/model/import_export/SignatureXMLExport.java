@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.XMLExport;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
@@ -17,7 +18,7 @@ public class SignatureXMLExport extends XMLExport {
 	}
 	
 	@Override
-	public SignatureXMLExport setModel(Object model) {
+	public SignatureXMLExport setModel(ModelObject model) {
 		if (model instanceof Signature)
 			super.setModel(model);
 		return this;

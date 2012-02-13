@@ -12,6 +12,7 @@ import org.eclipse.core.resources.IResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
@@ -81,7 +82,7 @@ public abstract class XMLExport extends Export {
 			XMLExport ex;
 			try {
 				ex = klass.newInstance();
-				ex.setDocument(getDocument()).setModel(object);
+				ex.setDocument(getDocument()).setModel((ModelObject)object);
 				ex.processObject(e, object);
 			} catch (Exception exc) {
 				return e;

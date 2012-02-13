@@ -9,6 +9,7 @@ import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
@@ -31,7 +32,7 @@ public class SimulationSpecBigMCExport extends Export {
 	}
 	
 	@Override
-	public SimulationSpecBigMCExport setModel(Object model) {
+	public SimulationSpecBigMCExport setModel(ModelObject model) {
 		if (model instanceof SimulationSpec)
 			super.setModel(model);
 		return this;

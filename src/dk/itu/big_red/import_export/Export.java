@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 
+import dk.itu.big_red.model.ModelObject;
+
 
 /**
  * Classes extending Export can write objects to an {@link OutputStream}. (The
@@ -40,13 +42,13 @@ public abstract class Export {
 		}
 	};
 	
-	private Object model = null;
+	private ModelObject model = null;
 	
 	/**
-	 * Returns the model object previously set with {@link #setModel(T)}.
+	 * Returns the model object previously set with {@link #setModel(ModelObject)}.
 	 * @return the model object
 	 */
-	public Object getModel() {
+	public ModelObject getModel() {
 		return model;
 	}
 
@@ -55,7 +57,7 @@ public abstract class Export {
 	 * @param model
 	 * @return <code>this</code>, for convenience
 	 */
-	public Export setModel(Object model) {
+	public Export setModel(ModelObject model) {
 		this.model = model;
 		return this;
 	}

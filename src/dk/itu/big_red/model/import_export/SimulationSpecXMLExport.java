@@ -4,6 +4,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.import_export.XMLExport;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.utilities.DOM;
@@ -15,7 +16,7 @@ public class SimulationSpecXMLExport extends XMLExport {
 	}
 	
 	@Override
-	public SimulationSpecXMLExport setModel(Object model) {
+	public SimulationSpecXMLExport setModel(ModelObject model) {
 		if (model instanceof SimulationSpec)
 			super.setModel(model);
 		return this;

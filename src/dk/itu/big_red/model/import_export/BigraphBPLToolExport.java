@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
@@ -30,7 +31,7 @@ public class BigraphBPLToolExport extends Export {
 	}
 	
 	@Override
-	public BigraphBPLToolExport setModel(Object model) {
+	public BigraphBPLToolExport setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;

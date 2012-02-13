@@ -9,6 +9,7 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
@@ -32,7 +33,7 @@ public class BigraphXMLExport extends XMLExport {
 	}
 	
 	@Override
-	public BigraphXMLExport setModel(Object model) {
+	public BigraphXMLExport setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;

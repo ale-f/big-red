@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import dk.itu.big_red.import_export.Export;
 import dk.itu.big_red.import_export.ExportFailedException;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.IEdge;
@@ -27,7 +28,7 @@ public class BigraphTraverseExport extends Export {
 	}
 	
 	@Override
-	public BigraphTraverseExport setModel(Object model) {
+	public BigraphTraverseExport setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;

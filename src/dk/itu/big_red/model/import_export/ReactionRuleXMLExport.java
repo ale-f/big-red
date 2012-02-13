@@ -12,6 +12,7 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Container.ChangeRemoveChild;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
@@ -31,7 +32,7 @@ public class ReactionRuleXMLExport extends XMLExport {
 	}
 	
 	@Override
-	public ReactionRuleXMLExport setModel(Object model) {
+	public ReactionRuleXMLExport setModel(ModelObject model) {
 		if (model instanceof ReactionRule)
 			super.setModel(model);
 		return this;
