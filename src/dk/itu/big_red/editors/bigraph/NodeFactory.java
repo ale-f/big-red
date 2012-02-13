@@ -1,11 +1,11 @@
-package dk.itu.big_red.model.assistants;
+package dk.itu.big_red.editors.bigraph;
 
 import org.eclipse.gef.requests.CreationFactory;
 
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Node;
 
-public class NodeFactory implements CreationFactory {
+class NodeFactory implements CreationFactory {
 	private Control template;
 	
 	public NodeFactory(Control template) {
@@ -21,5 +21,4 @@ public class NodeFactory implements CreationFactory {
 	public Control getObjectType() {
 		return template;
 	}
-
 }
