@@ -329,10 +329,6 @@ public final class UI {
 		viewer.setLabelProvider(lp);
 		return viewer;
 	}
-	
-	public static <T extends Control> T setLayoutData(T widget, Object layoutData) {
-		return UI.chain(widget).layoutData(layoutData).done();
-	}
 
 	public static <T extends Control> ChainHelper<T> chain(T object) {
 		return new ChainHelper<T>(object);
