@@ -21,7 +21,6 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.Colour;
-import dk.itu.big_red.utilities.DOM;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
 	private ReactionRule rr = null;
@@ -55,7 +54,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	}
 	
 	private static String chattr(Element e, String name) {
-		return DOM.getAttributeNS(e, XMLNS.CHANGE, name);
+		return getAttributeNS(e, XMLNS.CHANGE, name);
 	}
 	
 	private static Layoutable getNamed(Bigraph b, String type, String name) {
@@ -138,29 +137,29 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				if (el.getLocalName().equals("layout")) {
 					String
 						type =
-							DOM.getAttributeNS(el, XMLNS.BIG_RED, "type"),
+							getAttributeNS(el, XMLNS.BIG_RED, "type"),
 						name =
-							DOM.getAttributeNS(el, XMLNS.BIG_RED, "name");
+							getAttributeNS(el, XMLNS.BIG_RED, "name");
 					c = getNamed(reactum, type, name).changeLayout(
 							AppearanceGenerator.elementToRectangle(el));
 				} else if (el.getLocalName().equals("fill")) {
 					String
 						colour =
-							DOM.getAttributeNS(el, XMLNS.BIG_RED, "colour"),
+							getAttributeNS(el, XMLNS.BIG_RED, "colour"),
 						type =
-							DOM.getAttributeNS(el, XMLNS.BIG_RED, "type"),
+							getAttributeNS(el, XMLNS.BIG_RED, "type"),
 						name =
-							DOM.getAttributeNS(el, XMLNS.BIG_RED, "name");
+							getAttributeNS(el, XMLNS.BIG_RED, "name");
 					c = getNamed(reactum, type, name).changeFillColour(
 							new Colour(colour));
 				} else if (el.getLocalName().equals("outline")) {
 					String
 						colour =
-							DOM.getAttributeNS(el, XMLNS.BIG_RED, "colour"),
+							getAttributeNS(el, XMLNS.BIG_RED, "colour"),
 						type =
-							DOM.getAttributeNS(el, XMLNS.BIG_RED, "type"),
+							getAttributeNS(el, XMLNS.BIG_RED, "type"),
 						name =
-							DOM.getAttributeNS(el, XMLNS.BIG_RED, "name");
+							getAttributeNS(el, XMLNS.BIG_RED, "name");
 					c = getNamed(reactum, type, name).changeOutlineColour(
 							new Colour(colour));
 				}

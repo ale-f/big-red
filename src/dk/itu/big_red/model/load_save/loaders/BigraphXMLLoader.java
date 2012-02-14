@@ -30,7 +30,6 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.Project;
 
 /**
@@ -87,9 +86,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		String signaturePath;
 		if (signatureElement != null) {
 			signaturePath =
-				DOM.getAttributeNS(signatureElement, XMLNS.BIGRAPH, "src");
+				getAttributeNS(signatureElement, XMLNS.BIGRAPH, "src");
 		} else {
-			signaturePath = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "signature");
+			signaturePath = getAttributeNS(e, XMLNS.BIGRAPH, "signature");
 		}
 		
 		if (signaturePath != null) {
@@ -139,21 +138,21 @@ public class BigraphXMLLoader extends XMLLoader {
 			new HashMap<String, Link>();
 	
 	private Link processLink(Element e, Link model) throws LoadFailedException {
-		String name = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name");
+		String name = getAttributeNS(e, XMLNS.BIGRAPH, "name");
 		links.put(name, model);
 		
 		return model;
 	}
 	
 	private Point processPoint(Element e, Point model) throws LoadFailedException {
-		String link = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "link");
+		String link = getAttributeNS(e, XMLNS.BIGRAPH, "link");
 		if (link != null)
 			cg.add(model.changeConnect(links.get(link)));
 		return model;
 	}
 	
 	private Site processSite(Element e, Site model) throws LoadFailedException {
-		String alias = DOM.getAttributeNS(e, XMLNS.BIGRAPH, "alias");
+		String alias = getAttributeNS(e, XMLNS.BIGRAPH, "alias");
 		if (alias != null)
 			cg.add(model.changeAlias(alias));
 		return model;
@@ -164,7 +163,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		boolean port = false;
 		if (e.getLocalName().equals("node")) {
 			String controlName =
-					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "control");
+					getAttributeNS(e, XMLNS.BIGRAPH, "control");
 			Control c = bigraph.getSignature().getControl(controlName);
 			if (c == null)
 				throw new LoadFailedException(
@@ -184,7 +183,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		if (model instanceof Layoutable) {
 			Layoutable l = (Layoutable)model;
 			cg.add(context.changeAddChild(l,
-					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name")));
+					getAttributeNS(e, XMLNS.BIGRAPH, "name")));
 			
 			Element appearance =
 				removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
@@ -211,7 +210,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		} else if (port) {
 			Node n = (Node)context;
 			processPoint(e,
-				n.getPort(DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name")));
+				n.getPort(getAttributeNS(e, XMLNS.BIGRAPH, "name")));
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {

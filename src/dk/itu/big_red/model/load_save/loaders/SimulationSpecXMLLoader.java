@@ -14,7 +14,6 @@ import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
-import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.Project;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
@@ -30,7 +29,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	
 	private Signature makeSignature(Element e) throws LoadFailedException {
 		String signaturePath =
-				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
+				getAttributeNS(e, XMLNS.SPEC, "src");
 		if (signaturePath != null && getFile() != null) {
 			return (Signature)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),
@@ -42,7 +41,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
 		String bigraphPath =
-				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
+				getAttributeNS(e, XMLNS.SPEC, "src");
 		if (bigraphPath != null && getFile() != null) {
 			return (Bigraph)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),
@@ -54,7 +53,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	
 	private ReactionRule makeRule(Element e) throws LoadFailedException {
 		String rulePath =
-				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
+				getAttributeNS(e, XMLNS.SPEC, "src");
 		if (rulePath != null && getFile() != null) {
 			return (ReactionRule)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),

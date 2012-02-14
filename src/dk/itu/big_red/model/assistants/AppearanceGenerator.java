@@ -74,12 +74,12 @@ public final class AppearanceGenerator {
 		
 		if (o instanceof Colourable) {
 			Colourable c = (Colourable)o;
-			cg.add(c.changeFillColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "fillColor")),
-					c.changeOutlineColour(DOM.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor")));
+			cg.add(c.changeFillColour(XMLLoader.getColorAttribute(e, XMLNS.BIG_RED, "fillColor")),
+					c.changeOutlineColour(XMLLoader.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor")));
 		}
 		
 		if (o instanceof ModelObject)
-			((ModelObject)o).setComment(DOM.getAttributeNS(e, XMLNS.BIG_RED, "comment"));
+			((ModelObject)o).setComment(XMLLoader.getAttributeNS(e, XMLNS.BIG_RED, "comment"));
 	}
 	
 	public static Element getShape(Document doc, Control c) {
@@ -112,7 +112,7 @@ public final class AppearanceGenerator {
 		Control.Shape shape = Shape.OVAL;
 		PointList pl = null;
 		
-		String s = DOM.getAttributeNS(e, XMLNS.BIG_RED, "shape");
+		String s = XMLLoader.getAttributeNS(e, XMLNS.BIG_RED, "shape");
 		if (s != null) {
 			if (s.equals("polygon"))
 				shape = Shape.POLYGON;
@@ -121,8 +121,8 @@ public final class AppearanceGenerator {
 		if (shape == Shape.POLYGON) {
 			pl = new PointList();
 			for (Element pE : XMLLoader.getChildElements(e))
-				pl.addPoint(DOM.getIntAttribute(pE, XMLNS.BIG_RED, "x"),
-						DOM.getIntAttribute(pE, XMLNS.BIG_RED, "y"));
+				pl.addPoint(XMLLoader.getIntAttribute(pE, XMLNS.BIG_RED, "x"),
+						XMLLoader.getIntAttribute(pE, XMLNS.BIG_RED, "y"));
 		}
 		
 		c.setShape(shape);
@@ -150,10 +150,10 @@ public final class AppearanceGenerator {
 	
 	public static Rectangle elementToRectangle(Element e) {
 		return new Rectangle(
-				DOM.getIntAttribute(e, XMLNS.BIG_RED, "x"),
-				DOM.getIntAttribute(e, XMLNS.BIG_RED, "y"),
-				DOM.getIntAttribute(e, XMLNS.BIG_RED, "width"),
-				DOM.getIntAttribute(e, XMLNS.BIG_RED, "height"));
+				XMLLoader.getIntAttribute(e, XMLNS.BIG_RED, "x"),
+				XMLLoader.getIntAttribute(e, XMLNS.BIG_RED, "y"),
+				XMLLoader.getIntAttribute(e, XMLNS.BIG_RED, "width"),
+				XMLLoader.getIntAttribute(e, XMLNS.BIG_RED, "height"));
 	}
 
 	private static boolean nameEqualsNS(Element e, String nsURI, String nodeName) {

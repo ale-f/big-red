@@ -22,6 +22,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import dk.itu.big_red.utilities.Colour;
+import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
 public abstract class XMLLoader extends Loader implements IFileBackable {
@@ -92,6 +94,63 @@ public abstract class XMLLoader extends Loader implements IFileBackable {
 	}
 	
 	public abstract Object makeObject(Element e) throws LoadFailedException;
+
+	/**
+	 * Retrieves the given named attribute from the given Element. (Either the
+	 * attribute or the Element must have the given namespace; see Neil
+	 * Bradley's <q>The XML Companion</q>, third edition, page 160 for why this
+	 * is necessary.)
+	 * @param d an Element with attributes set
+	 * @param nsURI the attribute (or Element's) namespace
+	 * @param n the attribute name to search for
+	 * @return the attribute's value, or <code>null</code> if it wasn't present
+	 */
+	public static String getAttributeNS(Element d, String nsURI, String n) {
+		String r = d.getAttributeNS(nsURI, n);
+		if (r.length() == 0 && d.getNamespaceURI().equals(nsURI))
+			r = d.getAttributeNS(null, n);
+		return (r.length() != 0 ? r : null);
+	}
+
+	public static int getIntAttribute(Element d, String nsURI, String n) {
+		try {
+			return Integer.parseInt(getAttributeNS(d, nsURI, n));
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Retrieves the given named attribute from the specified Element,
+	 * automatically converting the result from a string into a double.
+	 * @param d an Element with attributes set
+	 * @param nsURI the attribute's namespace
+	 * @param n the attribute name to search for
+	 * @return the attribute's value as an double, or <code>0</code> if the
+	 *         attribute couldn't be found
+	 * @see DOM#getAttribute
+	 */
+	public static double getDoubleAttribute(Element d, String nsURI, String n) {
+		try {
+			return Double.parseDouble(getAttributeNS(d, nsURI, n));
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Retrieves the given named attribute from the specified Element,
+	 * automatically converting the result from a string into a {@link Colour}.
+	 * @param d an Element with attributes set
+	 * @param nsURI the attribute's namespace
+	 * @param n the attribute name to search for
+	 * @return the attribute's value as a {@link Colour}, or <code>null</code>
+	 *         if the attribute couldn't be found
+	 * @see DOM#getAttribute
+	 */
+	public static Colour getColorAttribute(Element d, String nsURI, String n) {
+		return new Colour(getAttributeNS(d, nsURI, n));
+	}
 
 	/**
 	 * Returns all the child {@link Node}s of the specified {@link Element}

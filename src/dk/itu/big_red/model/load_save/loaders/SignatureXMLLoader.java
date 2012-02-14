@@ -16,7 +16,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
-import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.geometry.Ellipse;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
@@ -38,9 +37,9 @@ public class SignatureXMLLoader extends XMLLoader {
 	private Control makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
 		
-		model.setName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
+		model.setName(getAttributeNS(e, XMLNS.SIGNATURE, "name"));
 		
-		String kind = DOM.getAttributeNS(e, XMLNS.SIGNATURE, "kind");
+		String kind = getAttributeNS(e, XMLNS.SIGNATURE, "kind");
 		if (kind != null) {
 			model.setKind(
 				kind.equals("active") ? Kind.ACTIVE :
@@ -107,12 +106,12 @@ public class SignatureXMLLoader extends XMLLoader {
 	private PortSpec makePortSpec(Element e, boolean ignoreAppearanceData) {
 		PortSpec model = new PortSpec();
 		
-		model.setName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
+		model.setName(getAttributeNS(e, XMLNS.SIGNATURE, "name"));
 		
 		Element el = removeNamedChildElement(e, XMLNS.BIG_RED, "port-appearance");
 		if (el != null && !ignoreAppearanceData) {
-			model.setDistance(DOM.getDoubleAttribute(el, XMLNS.BIG_RED, "distance"));
-			model.setSegment(DOM.getIntAttribute(el, XMLNS.BIG_RED, "segment"));
+			model.setDistance(getDoubleAttribute(el, XMLNS.BIG_RED, "distance"));
+			model.setSegment(getIntAttribute(el, XMLNS.BIG_RED, "segment"));
 		}
 		
 		return model;
