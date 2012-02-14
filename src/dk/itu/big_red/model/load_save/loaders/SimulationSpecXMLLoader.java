@@ -13,13 +13,12 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.DOM;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
-public class SimulationSpecXMLLoader extends Loader implements IFileBackable {
-
+public class SimulationSpecXMLLoader extends XMLLoader {
 	@Override
 	public SimulationSpec importObject() throws LoadFailedException {
 		try {
@@ -93,17 +92,9 @@ public class SimulationSpecXMLLoader extends Loader implements IFileBackable {
 		
 		return ss;
 	}
-
-	private IFile file;
 	
 	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public SimulationSpecXMLLoader setFile(IFile file) {
-		this.file = file;
-		return this;
+	public SimulationSpecXMLLoader setFile(IFile f) {
+		return (SimulationSpecXMLLoader)super.setFile(f);
 	}
 }

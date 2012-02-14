@@ -8,7 +8,6 @@ import org.eclipse.swt.SWT;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -27,10 +26,10 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.DOM;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -40,7 +39,7 @@ import dk.itu.big_red.utilities.ui.UI;
  * @see BigraphXMLSaver
  *
  */
-public class BigraphXMLLoader extends Loader implements IFileBackable {
+public class BigraphXMLLoader extends XMLLoader {
 	private enum Tristate {
 		TRUE,
 		FALSE,
@@ -220,16 +219,8 @@ public class BigraphXMLLoader extends Loader implements IFileBackable {
 		}
 	}
 
-	private IFile file;
-	
 	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public BigraphXMLLoader setFile(IFile file) {
-		this.file = file;
-		return this;
+	public BigraphXMLLoader setFile(IFile f) {
+		return (BigraphXMLLoader)super.setFile(f);
 	}
 }

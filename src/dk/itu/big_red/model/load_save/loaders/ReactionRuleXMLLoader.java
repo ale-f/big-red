@@ -16,14 +16,13 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.DOM;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class ReactionRuleXMLLoader extends Loader implements IFileBackable {
+public class ReactionRuleXMLLoader extends XMLLoader {
 	private ReactionRule rr = null;
 	
 	@Override
@@ -173,16 +172,8 @@ public class ReactionRuleXMLLoader extends Loader implements IFileBackable {
 		}
 	}
 	
-	private IFile file;
-	
 	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public ReactionRuleXMLLoader setFile(IFile file) {
-		this.file = file;
-		return this;
+	public ReactionRuleXMLLoader setFile(IFile f) {
+		return (ReactionRuleXMLLoader)super.setFile(f);
 	}
 }

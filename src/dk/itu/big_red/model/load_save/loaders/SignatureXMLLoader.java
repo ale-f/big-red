@@ -13,15 +13,14 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.geometry.Ellipse;
 import dk.itu.big_red.utilities.geometry.Rectangle;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class SignatureXMLLoader extends Loader implements IFileBackable {
+public class SignatureXMLLoader extends XMLLoader {
 	private ChangeGroup cg = new ChangeGroup();
 	
 	@Override
@@ -116,17 +115,9 @@ public class SignatureXMLLoader extends Loader implements IFileBackable {
 		
 		return model;
 	}
-
-	private IFile file;
 	
 	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public IFileBackable setFile(IFile file) {
-		this.file = file;
-		return this;
+	public SignatureXMLLoader setFile(IFile f) {
+		return (SignatureXMLLoader)super.setFile(f);
 	}
 }
