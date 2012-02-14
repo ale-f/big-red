@@ -3,6 +3,7 @@ package dk.itu.big_red.interaction_managers;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import dk.itu.big_red.utilities.ui.UI;
@@ -21,7 +22,10 @@ public class TestInteractionManager extends InteractionManager {
 		while (!s.isDisposed())
 			UI.tick();
 		
-		UI.showMessageBox(UI.getShell(), 0, "Gotcha", getSimulationSpec().toString());
+		MessageBox mb = new MessageBox(UI.getShell(), 0);
+		mb.setMessage(getSimulationSpec().toString());
+		mb.setText("Gotcha");
+		mb.open();
 	}
 
 }

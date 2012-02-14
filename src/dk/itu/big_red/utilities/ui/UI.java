@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
@@ -118,21 +117,6 @@ public final class UI {
 		return new FileDialog(parent, style | SWT.DIALOG_TRIM);
 	}
 
-	/**
-	 * Displays a {@link MessageBox} for the specified window.
-	 * @param parent a window
-	 * @param style the style of dialog to construct
-	 * @param caption the title to give the message box window
-	 * @param message the message to display in the message box
-	 * @return the ID of the button used to dismiss the message box
-	 */
-	public static int showMessageBox(Shell parent, int style, String caption, String message) {
-		MessageBox mb = new MessageBox(parent, style);
-		mb.setMessage(message);
-		mb.setText(caption);
-		return mb.open();
-	}
-	
 	/**
 	 * Creates a new {@link MenuItem} with the given properties.
 	 * @param parent the parent {@link Menu}
