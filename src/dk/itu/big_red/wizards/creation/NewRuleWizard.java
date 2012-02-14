@@ -60,7 +60,8 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 		addPage(page);
 	}
 
-	public static void createReactionRule(IFile sigFile, IFile rrFile) throws LoadFailedException, SaveFailedException, CoreException {
+	protected static void createReactionRule(IFile sigFile, IFile rrFile)
+			throws LoadFailedException, SaveFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		
 		ReactionRule rr = new ReactionRule().setFile(rrFile);

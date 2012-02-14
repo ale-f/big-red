@@ -50,7 +50,8 @@ public class NewSignatureWizard extends Wizard implements INewWizard {
 		addPage(page);
 	}
 
-	public static void createSignature(IFile sigFile) throws SaveFailedException, CoreException {
+	protected static void createSignature(IFile sigFile)
+			throws SaveFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		
 		new SignatureXMLSaver().setModel(new Signature().setFile(sigFile)).

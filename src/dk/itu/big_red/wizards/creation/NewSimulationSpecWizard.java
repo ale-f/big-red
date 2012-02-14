@@ -50,7 +50,8 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 		addPage(page);
 	}
 	
-	public static void createSimulationSpec(IFile ssFile) throws SaveFailedException, CoreException {
+	protected static void createSimulationSpec(IFile ssFile)
+			throws SaveFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		
 		new SimulationSpecXMLSaver().

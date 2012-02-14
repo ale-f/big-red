@@ -62,7 +62,8 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 		addPage(page);
 	}
 
-	public static void createBigraph(IFile sigFile, IFile bigFile) throws LoadFailedException, SaveFailedException, CoreException {
+	protected static void createBigraph(IFile sigFile, IFile bigFile)
+			throws LoadFailedException, SaveFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		Bigraph b = new Bigraph().setFile(bigFile);
 		
