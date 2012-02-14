@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.draw2d.geometry.PointList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -48,7 +49,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		boolean generatePolygon = false;
 		Element el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "shape");
 		if (el != null) {
-			AppearanceGenerator.setShape(el, model);
+			elementToShape(el, model);
 		} else generatePolygon = true;
 		
 		el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "appearance");
@@ -122,5 +123,29 @@ public class SignatureXMLLoader extends XMLLoader {
 	@Override
 	public SignatureXMLLoader setFile(IFile f) {
 		return (SignatureXMLLoader)super.setFile(f);
+	}
+
+	private static void elementToShape(Element e, Control c) {
+		if (!(e.getNamespaceURI().equals(IRedNamespaceConstants.BIG_RED) &&
+				e.getLocalName().equals("shape")))
+			return;
+	
+		Control.Shape shape = Shape.OVAL;
+		PointList pl = null;
+		
+		String s = getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "shape");
+		if (s != null && s.equals("polygon"))
+			shape = Shape.POLYGON;
+		
+		if (shape == Shape.POLYGON) {
+			pl = new PointList();
+			for (Element pE : getChildElements(e))
+				pl.addPoint(
+					getIntAttribute(pE, IRedNamespaceConstants.BIG_RED, "x"),
+					getIntAttribute(pE, IRedNamespaceConstants.BIG_RED, "y"));
+		}
+		
+		c.setShape(shape);
+		c.setPoints(pl);
 	}
 }

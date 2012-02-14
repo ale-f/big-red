@@ -1,15 +1,11 @@
 package dk.itu.big_red.model.assistants;
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
-import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
@@ -81,54 +77,6 @@ public final class AppearanceGenerator {
 		
 		if (o instanceof ModelObject)
 			((ModelObject)o).setComment(XMLLoader.getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "comment"));
-	}
-	
-	public static Element getShape(Document doc, Control c) {
-		Element aE =
-			doc.createElementNS(IRedNamespaceConstants.BIG_RED,
-					"big-red:shape");
-
-		XMLSaver.applyAttributes(aE,
-				"shape", (c.getShape() == Shape.POLYGON ? "polygon" : "oval"));
-		
-		PointList pl = c.getPoints();
-		if (pl != null) {
-			for (int i = 0; i < pl.size(); i++) {
-				Point p = pl.getPoint(i);
-				Element pE = doc.createElement("big-red:point");
-				XMLSaver.applyAttributes(pE,
-						"x", p.x,
-						"y", p.y);
-				aE.appendChild(pE);
-			}
-		}
-		
-		return aE;
-	}
-	
-	public static void setShape(Element e, Control c) {
-		if (!(e.getNamespaceURI().equals(IRedNamespaceConstants.BIG_RED) &&
-				e.getLocalName().equals("shape")))
-			return;
-
-		Control.Shape shape = Shape.OVAL;
-		PointList pl = null;
-		
-		String s = XMLLoader.getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "shape");
-		if (s != null) {
-			if (s.equals("polygon"))
-				shape = Shape.POLYGON;
-		}
-		
-		if (shape == Shape.POLYGON) {
-			pl = new PointList();
-			for (Element pE : XMLLoader.getChildElements(e))
-				pl.addPoint(XMLLoader.getIntAttribute(pE, IRedNamespaceConstants.BIG_RED, "x"),
-						XMLLoader.getIntAttribute(pE, IRedNamespaceConstants.BIG_RED, "y"));
-		}
-		
-		c.setShape(shape);
-		c.setPoints(pl);
 	}
 	
 	public static Element rectangleToElement(Element e, ReadonlyRectangle r) {

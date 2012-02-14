@@ -1,8 +1,12 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
@@ -55,8 +59,7 @@ public class SignatureXMLSaver extends XMLSaver {
 			e.appendChild(processPort(
 				newElement(IRedNamespaceConstants.SIGNATURE, "signature:port"), p));
 		
-		appendChildIfNotNull(e,
-				AppearanceGenerator.getShape(getDocument(), c));
+		appendChildIfNotNull(e, shapeToElement(getDocument(), c));
 		appendChildIfNotNull(e,
 				AppearanceGenerator.getAppearance(getDocument(), c));
 		e.setAttributeNS(IRedNamespaceConstants.BIG_RED,
@@ -76,5 +79,28 @@ public class SignatureXMLSaver extends XMLSaver {
 				"distance", p.getDistance()));
 		
 		return e;
+	}
+
+	private static Element shapeToElement(Document doc, Control c) {
+		Element aE =
+			doc.createElementNS(IRedNamespaceConstants.BIG_RED,
+					"big-red:shape");
+	
+		XMLSaver.applyAttributes(aE,
+				"shape", (c.getShape() == Shape.POLYGON ? "polygon" : "oval"));
+		
+		PointList pl = c.getPoints();
+		if (pl != null) {
+			for (int i = 0; i < pl.size(); i++) {
+				Point p = pl.getPoint(i);
+				Element pE = doc.createElement("big-red:point");
+				XMLSaver.applyAttributes(pE,
+						"x", p.x,
+						"y", p.y);
+				aE.appendChild(pE);
+			}
+		}
+		
+		return aE;
 	}
 }
