@@ -4,23 +4,12 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
-
 import dk.itu.big_red.model.ModelObject;
 
-
 /**
- * Classes extending Saver can write objects to an {@link OutputStream}. (The
- * export process can do anything it wants - one class might export an {@link
- * IFigure} to a PNG image, and another might export a {@link Signature} to a
- * XML document.)
- * 
- * <p>The existence of an Saver class for a given format does <i>not</i> imply
- * that a {@link Loader} class should exist for that format - in most cases,
- * that'd be impossible (try importing a bigraph from a PNG!).
+ * Classes extending Saver can write objects to an {@link OutputStream}.
  * @see Loader
  * @author alec
- *
  */
 public abstract class Saver {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";

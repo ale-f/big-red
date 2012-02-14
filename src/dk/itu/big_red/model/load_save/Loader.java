@@ -15,17 +15,11 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Types;
 
-
 /**
  * Classes extending Loader can read objects from an {@link InputStream}.
- * 
- * <p>The existence of an Loader class for a given format implies that a
- * corresponding {@link Saver} class <i>should</i> exist for that format.
  * @see Saver
  * @author alec
- *
  */
-
 public abstract class Loader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 	
