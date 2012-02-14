@@ -7,8 +7,8 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.editors.assistants.ModelPropertySource;
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
-import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.utilities.Colour;
 
