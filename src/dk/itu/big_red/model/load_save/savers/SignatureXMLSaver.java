@@ -8,7 +8,6 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.model.load_save.XMLNS;
 
 public class SignatureXMLSaver extends XMLSaver {

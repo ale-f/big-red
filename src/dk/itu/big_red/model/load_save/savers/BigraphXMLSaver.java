@@ -16,7 +16,6 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.utilities.Lists;

@@ -6,7 +6,6 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.model.load_save.XMLNS;
 
 public class SimulationSpecXMLSaver extends XMLSaver {

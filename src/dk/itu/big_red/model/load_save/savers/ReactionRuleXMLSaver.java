@@ -21,7 +21,6 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.model.load_save.XMLNS;
 
 public class ReactionRuleXMLSaver extends XMLSaver {
