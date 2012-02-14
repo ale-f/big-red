@@ -63,7 +63,8 @@ public final class AppearanceGenerator {
 	}
 	
 	public static void setAppearance(Element e, Object o, ChangeGroup cg) {
-		if (!nameEqualsNS(e, IRedNamespaceConstants.BIG_RED, "appearance"))
+		if (!(e.getNamespaceURI().equals(IRedNamespaceConstants.BIG_RED) &&
+				e.getLocalName().equals("appearance")))
 			return;
 		
 		if (o instanceof Layoutable) {
@@ -106,7 +107,8 @@ public final class AppearanceGenerator {
 	}
 	
 	public static void setShape(Element e, Control c) {
-		if (!nameEqualsNS(e, IRedNamespaceConstants.BIG_RED, "shape"))
+		if (!(e.getNamespaceURI().equals(IRedNamespaceConstants.BIG_RED) &&
+				e.getLocalName().equals("shape")))
 			return;
 
 		Control.Shape shape = Shape.OVAL;
@@ -154,9 +156,5 @@ public final class AppearanceGenerator {
 				XMLLoader.getIntAttribute(e, IRedNamespaceConstants.BIG_RED, "y"),
 				XMLLoader.getIntAttribute(e, IRedNamespaceConstants.BIG_RED, "width"),
 				XMLLoader.getIntAttribute(e, IRedNamespaceConstants.BIG_RED, "height"));
-	}
-
-	private static boolean nameEqualsNS(Element e, String nsURI, String nodeName) {
-		return (e.getNamespaceURI().equals(nsURI) && e.getLocalName().equals(nodeName));
 	}
 }
