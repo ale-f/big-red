@@ -30,7 +30,7 @@ public class WizardBigraphExportSelectorPage extends WizardPage {
 	public WizardBigraphExportSelectorPage(String pageName) {
 		super(pageName);
 		setPageComplete(false);
-		setTitle("Saver bigraph to text format");
+		setTitle("Export bigraph to text format");
 		setMessage("Select an export format.");
 	}
 
