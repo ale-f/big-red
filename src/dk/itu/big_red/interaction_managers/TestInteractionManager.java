@@ -21,7 +21,7 @@ public class TestInteractionManager extends InteractionManager {
 		while (!s.isDisposed())
 			UI.tick();
 		
-		UI.showMessageBox(0, "Gotcha", getSimulationSpec().toString());
+		UI.showMessageBox(UI.getShell(), 0, "Gotcha", getSimulationSpec().toString());
 	}
 
 }

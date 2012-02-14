@@ -195,9 +195,8 @@ public class BigraphXMLLoader extends XMLLoader {
 					     appearance != null) ||
 					    (appearanceAllowed == Tristate.TRUE &&
 					     appearance == null)) {
-				UI.showMessageBox(SWT.ICON_WARNING, "All or nothing!",
-					"Some objects in this bigraph have layout data, and some don't. " +
-					"Big Red ignores layout data unless all objects have it.");
+				UI.showMessageBox(UI.getShell(), SWT.ICON_WARNING, "All or nothing!", "Some objects in this bigraph have layout data, and some don't. " +
+				"Big Red ignores layout data unless all objects have it.");
 				appearanceAllowed = Tristate.FALSE;
 				partialAppearanceWarning = true;
 			}

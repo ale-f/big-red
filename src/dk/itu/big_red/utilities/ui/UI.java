@@ -107,15 +107,6 @@ public final class UI {
 		return getWorkbenchPage().getActiveEditor().getEditorSite().
 				getActionBars().getStatusLineManager();
 	}
-	
-	/**
-	 * Gets a {@link FileDialog} for the current workbench shell.
-	 * @param style the style of dialog to construct
-	 * @return a new file dialog whose parent is the current workbench shell
-	 */
-	public static FileDialog getFileDialog(int style) {
-		return UI.getFileDialog(getShell(), style);
-	}
 
 	/**
 	 * Gets a {@link FileDialog} for the specified window.
@@ -127,17 +118,6 @@ public final class UI {
 		return new FileDialog(parent, style | SWT.DIALOG_TRIM);
 	}
 
-	/**
-	 * Displays a {@link MessageBox} for the current workbench shell.
-	 * @param style the style of dialog to construct
-	 * @param caption the title to give the message box window
-	 * @param message the message to display in the message box
-	 * @return the ID of the button used to dismiss the message box
-	 */
-	public static int showMessageBox(int style, String caption, String message) {
-		return UI.showMessageBox(getShell(), style, caption, message);
-	}
-	
 	/**
 	 * Displays a {@link MessageBox} for the specified window.
 	 * @param parent a window
