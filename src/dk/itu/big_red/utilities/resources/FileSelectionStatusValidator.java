@@ -14,7 +14,7 @@ import dk.itu.big_red.application.plugin.RedPlugin;
  *
  */
 public class FileSelectionStatusValidator implements ISelectionStatusValidator {
-	public static final IStatus
+	static final IStatus
 		OK_STATUS = new Status(Status.OK, RedPlugin.PLUGIN_ID, ""),
 		ERROR_STATUS = new Status(Status.ERROR, RedPlugin.PLUGIN_ID, "");
 	

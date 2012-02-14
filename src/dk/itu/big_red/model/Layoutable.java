@@ -108,8 +108,8 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 		}
 	}
 	
-	protected Rectangle layout = new Rectangle();
-	protected Container parent = null;
+	private Rectangle layout = new Rectangle();
+	private Container parent = null;
 	
 	/**
 	 * Gets the current layout of this object.

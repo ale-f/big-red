@@ -52,7 +52,7 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 		return c;
 	}
 	
-	byte[] output = null;
+	private byte[] output = null;
 	
 	@Override
 	public void signalInput(int length, byte[] buffer) {

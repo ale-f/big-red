@@ -82,7 +82,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		return link;
 	}
 
-	protected Link link = null;
+	private Link link = null;
 	
 	/**
 	 * Replaces the current {@link Link} of this Point.

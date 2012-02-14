@@ -7,10 +7,10 @@ import org.eclipse.swt.SWT;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphFigure extends AbstractFigure {
-	protected int upperRootBoundary = Integer.MIN_VALUE,
-	              lowerOuterNameBoundary = Integer.MAX_VALUE,
-	              upperInnerNameBoundary = Integer.MIN_VALUE,
-	              lowerRootBoundary = Integer.MAX_VALUE;
+	private int upperRootBoundary = Integer.MIN_VALUE,
+	            lowerOuterNameBoundary = Integer.MAX_VALUE,
+	            upperInnerNameBoundary = Integer.MIN_VALUE,
+	            lowerRootBoundary = Integer.MAX_VALUE;
 
 	@Override
 	protected void outlineShape(Graphics g) {

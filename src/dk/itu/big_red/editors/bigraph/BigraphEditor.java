@@ -271,7 +271,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 		return model;
 	}
 	
-	protected GraphicalViewer graphicalViewer;
+	private GraphicalViewer graphicalViewer;
 	
 	protected GraphicalViewer getGraphicalViewer() {
 		return graphicalViewer;

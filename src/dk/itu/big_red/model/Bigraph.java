@@ -39,7 +39,7 @@ import dk.itu.big_red.utilities.resources.IFileBackable;
  * @see IBigraph
  */
 public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable {
-	protected Signature signature = null;
+	private Signature signature = null;
 
 	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();
 	
@@ -118,10 +118,10 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 	public static final String
 		PROPERTY_BOUNDARY = "BigraphBoundary";
 	
-	protected int upperRootBoundary = Integer.MIN_VALUE,
-	              lowerOuterNameBoundary = Integer.MAX_VALUE,
-	              upperInnerNameBoundary = Integer.MIN_VALUE,
-	              lowerRootBoundary = Integer.MAX_VALUE;
+	private int upperRootBoundary = Integer.MIN_VALUE,
+	            lowerOuterNameBoundary = Integer.MAX_VALUE,
+	            upperInnerNameBoundary = Integer.MIN_VALUE,
+	            lowerRootBoundary = Integer.MAX_VALUE;
 	
 	private ArrayList<IChangeValidator> validators =
 			new ArrayList<IChangeValidator>();

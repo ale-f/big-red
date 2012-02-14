@@ -43,7 +43,8 @@ public class Geometry {
 		Rectangle adjustedBounds = new Rectangle(adjustedPoints.getBounds());
 		double xScale = rectangle.getWidth() - 2,
 		       yScale = rectangle.getHeight() - 2;
-		xScale /= adjustedBounds.width - 1; yScale /= adjustedBounds.height - 1;
+		xScale /= adjustedBounds.getWidth() - 1;
+		yScale /= adjustedBounds.getHeight() - 1;
 		
 		/*
 		 * Scale all of the points.
@@ -65,7 +66,7 @@ public class Geometry {
 	 * @return the point on the ellipse defined by r closest to p
 	 */
 	public static Point getNearestPointOnEllipse(Rectangle r, Point p) {
-		return new Point(r.width / 2, 0);
+		return new Point(r.getWidth() / 2, 0);
 	}
 	
 	/**

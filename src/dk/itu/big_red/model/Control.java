@@ -344,7 +344,7 @@ public class Control extends Colourable implements IControl {
 				return LongParameterSpec.this;
 			}
 			
-			protected long value;
+			private long value;
 			
 			@Override
 			public Long getValue() {

@@ -4,7 +4,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
 public class Rectangle extends ReadonlyRectangle {
-	protected int x, y, width, height;
+	private int x, y, width, height;
 	
 	public Rectangle() {
 		setX(0).setY(0).setWidth(0).setHeight(0);

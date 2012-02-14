@@ -11,7 +11,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class LayoutableCreateCommand extends ChangeCommand {
-	ChangeGroup cg = new ChangeGroup();
+	private ChangeGroup cg = new ChangeGroup();
 	
 	public LayoutableCreateCommand() {
 		setChange(cg);

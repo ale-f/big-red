@@ -51,7 +51,7 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 		return redexToReactum;
 	}
 	
-	protected IFile file = null;
+	private IFile file = null;
 	
 	@Override
 	public IFile getFile() {

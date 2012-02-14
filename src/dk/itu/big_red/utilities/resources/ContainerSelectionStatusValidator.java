@@ -18,5 +18,4 @@ public class ContainerSelectionStatusValidator implements ISelectionStatusValida
 			r = FileSelectionStatusValidator.ERROR_STATUS;
 		return r;
 	}
-
 }
