@@ -1,4 +1,4 @@
-package dk.itu.big_red.tools;
+package dk.itu.big_red.interaction_managers;
 
 /**
  * Classes implementing <strong>IInteractionManagerFactory</strong> can create

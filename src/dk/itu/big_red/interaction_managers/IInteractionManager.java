@@ -1,4 +1,4 @@
-package dk.itu.big_red.tools;
+package dk.itu.big_red.interaction_managers;
 
 import dk.itu.big_red.model.SimulationSpec;
 
