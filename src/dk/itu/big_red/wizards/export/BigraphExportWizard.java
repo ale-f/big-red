@@ -8,7 +8,7 @@ import org.eclipse.ui.IWorkbench;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.import_export.Export;
+import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.wizards.export.assistants.WizardBigraphExportPage;
 import dk.itu.big_red.wizards.export.assistants.WizardBigraphExportSelectorPage;
 
@@ -27,7 +27,7 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 	}
 	
 	private IConfigurationElement cfe = null;
-	private Export exporter = null;
+	private Saver exporter = null;
 	
 	@Override
 	public boolean canFinish() {
@@ -45,7 +45,7 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 		page1.setTitle("Select a file format.");
 		
 		page2 = new WizardBigraphExportPage("bigraphTikZExportPage", selection);
-		setWindowTitle("Export");
+		setWindowTitle("Saver");
 		
 		addPage(page1);
 		addPage(page2); 
@@ -55,21 +55,21 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 		if (o instanceof IConfigurationElement) {
 			IConfigurationElement e = (IConfigurationElement)o;
 			if (cfe != e) {
-				exporter = (Export)RedPlugin.instantiate(e);
+				exporter = (Saver)RedPlugin.instantiate(e);
 				cfe = e;
-				page2.setTitle("Export as " + e.getAttribute("name"));
-				setWindowTitle("Export as " + e.getAttribute("name"));
+				page2.setTitle("Saver as " + e.getAttribute("name"));
+				setWindowTitle("Saver as " + e.getAttribute("name"));
 				IConfigurationElement[] description =
 					e.getChildren("description");
 				if (description.length == 1)
 					page2.setDescription(description[0].getValue());
-				else page2.setDescription("Export the current bigraph in a textual form.");
+				else page2.setDescription("Saver the current bigraph in a textual form.");
 				page2.reset();
 			}
 		}
 	}
 
-	public Export getExporter() {
+	public Saver getExporter() {
 		return exporter;
 	}
 }

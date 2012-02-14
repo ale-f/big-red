@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save;
 
 /**
  * A collection of bigraph-related XML namespaces.

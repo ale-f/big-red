@@ -250,28 +250,28 @@
    <extension
          point="dk.itu.big_red.import">
       <importer
-            class="dk.itu.big_red.model.import_export.BigraphXMLImport"
+            class="dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader"
             contentType="dk.itu.big_red.bigraph"
             icon="resources/icons/icon16.png"
             id="big_red.importer1"
             name="Bigraph from XML">
       </importer>
       <importer
-            class="dk.itu.big_red.model.import_export.SignatureXMLImport"
+            class="dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader"
             contentType="dk.itu.big_red.signature"
             icon="resources/icons/icon16.png"
             id="big_red.importer2"
             name="Signature from XML">
       </importer>
       <importer
-            class="dk.itu.big_red.model.import_export.ReactionRuleXMLImport"
+            class="dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader"
             contentType="dk.itu.big_red.rule"
             icon="resources/icons/icon16.png"
             id="big_red.importer3"
             name="Reaction rule from XML">
       </importer>
       <importer
-            class="dk.itu.big_red.model.import_export.SimulationSpecXMLImport"
+            class="dk.itu.big_red.model.load_save.loaders.SimulationSpecXMLLoader"
             contentType="dk.itu.big_red.simulation_spec"
             icon="resources/icons/icon16.png"
             id="big_red.importer4"
@@ -281,7 +281,7 @@
    <extension
          point="dk.itu.big_red.export">
       <exporter
-            class="dk.itu.big_red.model.import_export.BigraphTikZExport"
+            class="dk.itu.big_red.model.load_save.savers.BigraphTikZSaver"
             exports="dk.itu.big_red.model.Bigraph"
             icon="resources/icons/wizards/vector.png"
             id="big-red.exporter1"
@@ -291,7 +291,7 @@
          </description>
       </exporter>
       <exporter
-            class="dk.itu.big_red.model.import_export.BigraphXMLExport"
+            class="dk.itu.big_red.model.load_save.savers.BigraphXMLSaver"
             exports="dk.itu.big_red.model.Bigraph"
             icon="resources/icons/icon16.png"
             id="big-red.exporter2"
@@ -301,26 +301,26 @@
          </description>
       </exporter>
       <exporter
-            class="dk.itu.big_red.model.import_export.BigraphTraverseExport"
+            class="dk.itu.big_red.model.load_save.savers.BigraphTraverseSaver"
             exports="dk.itu.big_red.model.Bigraph"
             icon="resources/icons/wizards/text.png"
             id="big-red.exporter3"
             name="Traverse">
       </exporter>
       <exporter
-            class="dk.itu.big_red.model.import_export.BigraphBPLToolExport"
+            class="dk.itu.big_red.model.load_save.savers.BigraphBPLToolSaver"
             exports="dk.itu.big_red.model.Bigraph"
             id="big-red.exporter4"
             name="BPL Tool">
       </exporter>
       <exporter
-            class="dk.itu.big_red.model.import_export.BigraphBigMCExport"
+            class="dk.itu.big_red.model.load_save.savers.BigraphBigMCSaver"
             exports="dk.itu.big_red.model.Bigraph"
             id="big-red.exporter.bigmc"
             name="BigMC">
       </exporter>
       <exporter
-            class="dk.itu.big_red.model.import_export.SimulationSpecBigMCExport"
+            class="dk.itu.big_red.model.load_save.savers.SimulationSpecBigMCSaver"
             exports="dk.itu.big_red.model.SimulationSpec"
             id="big-red.exporter.bigmc-ss"
             name="BigMC (simulation spec)">

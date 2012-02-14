@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.savers;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -20,8 +20,10 @@ import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
+import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaveFailedException;
 
-public class SimulationSpecBigMCExport extends Export {
+public class SimulationSpecBigMCSaver extends Saver {
 	private OutputStreamWriter osw = null;
 	
 	@Override
@@ -30,36 +32,36 @@ public class SimulationSpecBigMCExport extends Export {
 	}
 	
 	@Override
-	public SimulationSpecBigMCExport setModel(ModelObject model) {
+	public SimulationSpecBigMCSaver setModel(ModelObject model) {
 		if (model instanceof SimulationSpec)
 			super.setModel(model);
 		return this;
 	}
 	
-	private void newline() throws ExportFailedException {
+	private void newline() throws SaveFailedException {
 		write("\n");
 	}
 	
-	private void write(String str) throws ExportFailedException {
+	private void write(String str) throws SaveFailedException {
 		try {
 			osw.write(str);
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 	
 	@Override
-	public void exportObject() throws ExportFailedException {
+	public void exportObject() throws SaveFailedException {
 		osw = new OutputStreamWriter(getOutputStream());
 		processSimulationSpec(getModel());
 		try {
 			osw.close();
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 
-	private void processSignature(Signature s) throws ExportFailedException {
+	private void processSignature(Signature s) throws SaveFailedException {
 		write("# Controls"); newline();
 		for (Control c : s.getControls()) {
 			switch (c.getKind()) {
@@ -87,7 +89,7 @@ public class SimulationSpecBigMCExport extends Export {
 				bucket.add(e.getName());
 	}
 	
-	private void processNames(SimulationSpec s) throws ExportFailedException {
+	private void processNames(SimulationSpec s) throws SaveFailedException {
 		ArrayList<String> names = new ArrayList<String>();
 		for (ReactionRule r : s.getRules()) {
 			namesFrom(r.getRedex(), names);
@@ -109,7 +111,7 @@ public class SimulationSpecBigMCExport extends Export {
 		return (l != null ? "n_" + l.getName() : "-");
 	}
 	
-	private void processChild(IChild i) throws ExportFailedException {
+	private void processChild(IChild i) throws SaveFailedException {
 		if (i instanceof ISite) {
 			processSite((ISite)i);
 		} else if (i instanceof INode) {
@@ -117,12 +119,12 @@ public class SimulationSpecBigMCExport extends Export {
 		}
 	}
 	
-	private void processSite(ISite i) throws ExportFailedException {
+	private void processSite(ISite i) throws SaveFailedException {
 		Site s = (Site)i; /* XXX!! */
 		write("$" + (s.getAlias() == null ? s.getName() : s.getAlias()));
 	}
 	
-	private void processNode(INode i) throws ExportFailedException {
+	private void processNode(INode i) throws SaveFailedException {
 		write(i.getIControl().getName());
 		
 		Iterator<? extends IPort> it = i.getIPorts().iterator();
@@ -149,7 +151,7 @@ public class SimulationSpecBigMCExport extends Export {
 		}
 	}
 	
-	private void processRoot(IRoot i) throws ExportFailedException {
+	private void processRoot(IRoot i) throws SaveFailedException {
 		Iterator<? extends INode> in = i.getINodes().iterator();
 		if (in.hasNext()) {
 			processNode(in.next());
@@ -160,7 +162,7 @@ public class SimulationSpecBigMCExport extends Export {
 		}
 	}
 	
-	private void processBigraph(Bigraph b) throws ExportFailedException {
+	private void processBigraph(Bigraph b) throws SaveFailedException {
 		Iterator<? extends IRoot> ir = b.getIRoots().iterator();
 		if (ir.hasNext()) {
 			processRoot(ir.next());
@@ -171,19 +173,19 @@ public class SimulationSpecBigMCExport extends Export {
 		}
 	}
 	
-	private void processRule(ReactionRule r) throws ExportFailedException {
+	private void processRule(ReactionRule r) throws SaveFailedException {
 		processBigraph(r.getRedex());
 		write(" -> ");
 		processBigraph(r.getReactum());
 		write(";"); newline();
 	}
 	
-	private void processModel(Bigraph b) throws ExportFailedException {
+	private void processModel(Bigraph b) throws SaveFailedException {
 		processBigraph(b);
 		write(";"); newline();
 	}
 	
-	private void processSimulationSpec(SimulationSpec s) throws ExportFailedException {
+	private void processSimulationSpec(SimulationSpec s) throws SaveFailedException {
 		processSignature(s.getSignature());
 		processNames(s);
 		

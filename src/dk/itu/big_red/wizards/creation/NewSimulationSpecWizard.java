@@ -9,9 +9,10 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
+
 import dk.itu.big_red.model.SimulationSpec;
-import dk.itu.big_red.model.import_export.ExportFailedException;
-import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
@@ -31,7 +32,7 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 				return true;
 			} catch (CoreException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
-			} catch (ExportFailedException e) {
+			} catch (SaveFailedException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
 			}
 		}
@@ -49,10 +50,10 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 		addPage(page);
 	}
 	
-	public static void createSimulationSpec(IFile ssFile) throws ExportFailedException, CoreException {
+	public static void createSimulationSpec(IFile ssFile) throws SaveFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		
-		new SimulationSpecXMLExport().
+		new SimulationSpecXMLSaver().
 			setModel(
 				new SimulationSpec().setFile(ssFile)).
 			setOutputStream(io.getOutputStream()).exportObject();

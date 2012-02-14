@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.savers;
 
 import org.w3c.dom.Element;
 
@@ -20,9 +20,12 @@ import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.XMLSaver;
+import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.DOM;
 
-public class ReactionRuleXMLExport extends XMLExport {
+public class ReactionRuleXMLSaver extends XMLSaver {
 
 	@Override
 	public ReactionRule getModel() {
@@ -30,23 +33,23 @@ public class ReactionRuleXMLExport extends XMLExport {
 	}
 	
 	@Override
-	public ReactionRuleXMLExport setModel(ModelObject model) {
+	public ReactionRuleXMLSaver setModel(ModelObject model) {
 		if (model instanceof ReactionRule)
 			super.setModel(model);
 		return this;
 	}
 	
 	@Override
-	public void exportObject() throws ExportFailedException {
-		setDocument(XMLExport.createDocument(XMLNS.RULE, "rule:rule"));
+	public void exportObject() throws SaveFailedException {
+		setDocument(XMLSaver.createDocument(XMLNS.RULE, "rule:rule"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
 
 	@Override
-	public Element processObject(Element e, Object rr_) throws ExportFailedException {
+	public Element processObject(Element e, Object rr_) throws SaveFailedException {
 		if (!(rr_ instanceof ReactionRule))
-			throw new ExportFailedException(rr_ + " isn't a ReactionRule");
+			throw new SaveFailedException(rr_ + " isn't a ReactionRule");
 		ReactionRule rr = (ReactionRule)rr_;
 		
 		DOM.appendChildIfNotNull(e,
@@ -57,7 +60,7 @@ public class ReactionRuleXMLExport extends XMLExport {
 				getModel().getReactum().tryApplyChange(
 						getModel().getChanges().inverse());
 		} catch (ChangeRejectedException ex) {
-			throw new ExportFailedException(ex);
+			throw new SaveFailedException(ex);
 		}
 		
 		DOM.appendChildIfNotNull(e,
@@ -65,23 +68,23 @@ public class ReactionRuleXMLExport extends XMLExport {
 		return e;
 	}
 	
-	private Element processRedex(Element e, Bigraph redex) throws ExportFailedException {
+	private Element processRedex(Element e, Bigraph redex) throws SaveFailedException {
 		DOM.applyAttributes(e,
 				"xmlns:bigraph", XMLNS.BIGRAPH);
-		BigraphXMLExport ex = new BigraphXMLExport();
+		BigraphXMLSaver ex = new BigraphXMLSaver();
 		ex.setModel(redex);
 		ex.setDocument(getDocument());
 		return ex.processObject(e, ex.getModel());
 	}
 	
-	private Element processChanges(Element e, ChangeGroup changes) throws ExportFailedException {
+	private Element processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
 		DOM.applyAttributes(e,
 				"xmlns:change", XMLNS.CHANGE);
 		
 		return _processChanges(e, changes);
 	}
 	
-	private Element _processChanges(Element e, ChangeGroup changes) throws ExportFailedException {
+	private Element _processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
 		for (Change i_ : changes) {
 			Element f = null;
 			
@@ -177,7 +180,7 @@ public class ReactionRuleXMLExport extends XMLExport {
 				try {
 					getModel().getReactum().tryApplyChange(i_);
 				} catch (ChangeRejectedException ex) {
-					throw new ExportFailedException(ex);
+					throw new SaveFailedException(ex);
 				}
 			}
 		}

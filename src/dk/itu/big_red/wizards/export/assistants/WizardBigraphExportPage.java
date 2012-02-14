@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.import_export.Export;
-import dk.itu.big_red.model.import_export.Import;
-import dk.itu.big_red.model.import_export.Export.OptionDescriptor;
+import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.Saver.OptionDescriptor;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
@@ -80,7 +80,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		}
 		
 		try {
-			getWizard().setSource((Bigraph)Import.fromFile((IFile)bigraph));
+			getWizard().setSource((Bigraph)Loader.fromFile((IFile)bigraph));
 		} catch (Exception e) {
 			setErrorMessage(e.getLocalizedMessage());
 			return false;
@@ -90,7 +90,7 @@ public class WizardBigraphExportPage extends WizardPage {
 	}
 	
 	private boolean tryToExport() {
-		Export ex = getWizard().getExporter();
+		Saver ex = getWizard().getExporter();
 		IOAdapter ad = new IOAdapter();
 		try {
 			ex.setModel(getWizard().getSource());
@@ -227,7 +227,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		for (Control c : optionsGroup.getChildren())
 			c.dispose();
 		
-		final Export exporter = getWizard().getExporter();
+		final Saver exporter = getWizard().getExporter();
 		
 		List<OptionDescriptor> options = exporter.getOptions();
 		

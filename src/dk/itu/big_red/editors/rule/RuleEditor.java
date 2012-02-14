@@ -32,6 +32,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
+
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
@@ -47,10 +48,10 @@ import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
-import dk.itu.big_red.model.import_export.ExportFailedException;
-import dk.itu.big_red.model.import_export.Import;
-import dk.itu.big_red.model.import_export.ImportFailedException;
-import dk.itu.big_red.model.import_export.ReactionRuleXMLExport;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -112,8 +113,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	@Override
-	public void doActualSave(OutputStream os) throws ExportFailedException {
-    	new ReactionRuleXMLExport().setModel(getModel()).
+	public void doActualSave(OutputStream os) throws SaveFailedException {
+    	new ReactionRuleXMLSaver().setModel(getModel()).
     		setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();
 	}
@@ -219,8 +220,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		setModel((ReactionRule)Import.fromFile(fi.getFile()));
-	    	} catch (ImportFailedException e) {
+	    		setModel((ReactionRule)Loader.fromFile(fi.getFile()));
+	    	} catch (LoadFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {

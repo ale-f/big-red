@@ -9,19 +9,20 @@ import java.util.Map.Entry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 
+
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeable;
-import dk.itu.big_red.model.import_export.BigraphXMLExport;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.IInnerName;
 import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
+import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.geometry.Rectangle;
@@ -358,7 +359,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			top = PADDING;
 		
 		for (Layoutable i :
-			Lists.group(getChildren(), BigraphXMLExport.SCHEMA_ORDER)) {
+			Lists.group(getChildren(), BigraphXMLSaver.SCHEMA_ORDER)) {
 			Dimension size = i.relayout(cg);
 			sizes.put(i, size);
 			Rectangle r = new Rectangle().setSize(size);

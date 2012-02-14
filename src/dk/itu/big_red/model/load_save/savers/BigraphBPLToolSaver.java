@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.savers;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -16,11 +16,13 @@ import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
+import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaveFailedException;
 
 /**
  * An exporter to the BPL Tool term language (which actually in some cases should produce proper BPL Terms!).
  */
-public class BigraphBPLToolExport extends Export {
+public class BigraphBPLToolSaver extends Saver {
 	private OutputStreamWriter osw = null;
 	
 	@Override
@@ -29,27 +31,27 @@ public class BigraphBPLToolExport extends Export {
 	}
 	
 	@Override
-	public BigraphBPLToolExport setModel(ModelObject model) {
+	public BigraphBPLToolSaver setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;
 	}
 	
 	@Override
-	public void exportObject() throws ExportFailedException {
+	public void exportObject() throws SaveFailedException {
 		osw = new OutputStreamWriter(getOutputStream());
 		process(getModel());
 		try {
 			osw.close();
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 	
 	int scope = 0;
 	boolean indented = false;
 
-	private void print(Object line) throws ExportFailedException {
+	private void print(Object line) throws SaveFailedException {
 		try {
 			if (!indented) {
 				for (int i = 0; i < scope; i++)
@@ -58,11 +60,11 @@ public class BigraphBPLToolExport extends Export {
 			}
 			osw.write(line.toString());
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 
-	private void printLine(Object line) throws ExportFailedException {
+	private void printLine(Object line) throws SaveFailedException {
 		print(line);
 		print("\n");
 		indented = false;
@@ -73,7 +75,7 @@ public class BigraphBPLToolExport extends Export {
 		return s.replace(' ', '_');
 	}
 	
-	private void printStringDef(String s) throws ExportFailedException {
+	private void printStringDef(String s) throws SaveFailedException {
 		print("val ");
 		print(s);
 		print(" = \"");
@@ -82,9 +84,9 @@ public class BigraphBPLToolExport extends Export {
 	}
 	
 	interface Processor<T> {
-		public void proc(T t) throws ExportFailedException;
+		public void proc(T t) throws SaveFailedException;
 	}
-	private <T> void processIterable(Iterable<? extends T> i, String empty, String left, String sep, String right, Processor<T> p) throws ExportFailedException {
+	private <T> void processIterable(Iterable<? extends T> i, String empty, String left, String sep, String right, Processor<T> p) throws SaveFailedException {
 		boolean first = true;
 		for (T t : i) {
 			if (first)
@@ -100,11 +102,11 @@ public class BigraphBPLToolExport extends Export {
 			print(right);
 	}
 
-	public void process(INode node) throws ExportFailedException {
+	public void process(INode node) throws SaveFailedException {
 		print(SMLify(node.getIControl().getName()));
 		processIterable(node.getIPorts(), "[]", "[", ", ", "]", new Processor<IPort>() {
 			@Override
-			public void proc(IPort p) throws ExportFailedException {
+			public void proc(IPort p) throws SaveFailedException {
 				print(p.getName());
 				print(" == ");
 				print(SMLify(p.getILink().getName()));
@@ -118,16 +120,16 @@ public class BigraphBPLToolExport extends Export {
 		}
 	}
 
-	public void process(ISite site) throws ExportFailedException {
+	public void process(ISite site) throws SaveFailedException {
 		print("`[(* ");
 		print(site.getName());
 		print(" *)]`");
 	}
 	
-	public void process(IParent parent) throws ExportFailedException {
+	public void process(IParent parent) throws SaveFailedException {
 		processIterable(parent.getIChildren(), "<->", "(", " `|` ", ")", new Processor<IChild>() {
 			@Override
-			public void proc(IChild c) throws ExportFailedException {
+			public void proc(IChild c) throws SaveFailedException {
 				if (c instanceof INode)
 					process((INode) c);
 				else {
@@ -137,7 +139,7 @@ public class BigraphBPLToolExport extends Export {
 		});
 	}
 	
-	public void process(IBigraph bigraph) throws ExportFailedException {
+	public void process(IBigraph bigraph) throws SaveFailedException {
 		printLine("(* string definitions *)");
 		for (IControl c : bigraph.getISignature().getIControls()) {
 			printStringDef(SMLify(c.getName()));
@@ -155,7 +157,7 @@ public class BigraphBPLToolExport extends Export {
 		printLine("(* signature *)");
 		processIterable(bigraph.getISignature().getIControls(), null, "", "\n", "\n", new Processor<IControl>() {
 			@Override
-			public void proc(IControl c) throws ExportFailedException {
+			public void proc(IControl c) throws SaveFailedException {
 				String name = SMLify(c.getName());
 				print("val ");
 				print(name);
@@ -164,7 +166,7 @@ public class BigraphBPLToolExport extends Export {
 				print(" --: ");
 				processIterable(c.getIPorts(), null, "[", ", ", "]", new Processor<IPort>() {
 					@Override
-					public void proc(IPort p) throws ExportFailedException {
+					public void proc(IPort p) throws SaveFailedException {
 						print(SMLify(p.getName()));
 					}
 				});
@@ -180,13 +182,13 @@ public class BigraphBPLToolExport extends Export {
 		print("(");
 		processIterable(bigraph.getIOuterNames(), "idw[]", "idw[", ", ", "]", new Processor<IOuterName>() {
 			@Override
-			public void proc(IOuterName o) throws ExportFailedException {
+			public void proc(IOuterName o) throws SaveFailedException {
 				print(SMLify(o.getName()));
 			}
 		});
 		processIterable(bigraph.getIEdges(), "", " * -//[", ", ", "]", new Processor<IEdge>() {
 			@Override
-			public void proc(IEdge e) throws ExportFailedException {
+			public void proc(IEdge e) throws SaveFailedException {
 				print(SMLify(e.getName()));
 			}
 		});
@@ -196,14 +198,14 @@ public class BigraphBPLToolExport extends Export {
 
 		processIterable(bigraph.getIInnerNames(), "", "", " || ", " || ", new Processor<IInnerName>() {
 			@Override
-			public void proc(IInnerName i) throws ExportFailedException {
+			public void proc(IInnerName i) throws SaveFailedException {
 				print(SMLify(i.getILink().getName()) + "/" + SMLify(i.getName()));
 			}
 		});
 		
 		processIterable(bigraph.getIRoots(), "idp(0)", "", "|| ", "", new Processor<IRoot>() {
 			@Override
-			public void proc(IRoot r) throws ExportFailedException {
+			public void proc(IRoot r) throws SaveFailedException {
 				scope++;
 				process(r);
 				printLine("");

@@ -17,8 +17,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.model.import_export.Export;
-import dk.itu.big_red.model.import_export.ExportFailedException;
+import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.preferences.RedPreferences;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.ui.ProcessDialog;
@@ -34,9 +34,9 @@ public class BasicCommandLineInteractionManager extends InteractionManager {
 	public static final int COPY_ID = 1002;
 	public static final String COPY_LABEL = "Copy";
 	
-	private Export exporter;
+	private Saver exporter;
 	
-	public BasicCommandLineInteractionManager(Export exporter) {
+	public BasicCommandLineInteractionManager(Saver exporter) {
 		this.exporter = exporter;
 	}
 	
@@ -48,7 +48,7 @@ public class BasicCommandLineInteractionManager extends InteractionManager {
 				setOutputStream(io.getOutputStream()).exportObject();
 			createResultsWindow(UI.getShell(),
 					IOAdapter.readString(io.getInputStream())).open();
-		} catch (ExportFailedException ex) {
+		} catch (SaveFailedException ex) {
 			ex.printStackTrace();
 		}
 	}

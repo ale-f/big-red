@@ -31,7 +31,7 @@ import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.import_export.ExportFailedException;
+import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.IterableWrapper;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.IFileBackable;
@@ -198,7 +198,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	}
 	
 	abstract protected void doActualSave(OutputStream os)
-		throws ExportFailedException;
+		throws SaveFailedException;
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -211,7 +211,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
         	
         	Project.setContents(i.getFile(), io.getInputStream());
     		firePropertyChange(IEditorPart.PROP_DIRTY);
-		} catch (ExportFailedException cre) {
+		} catch (SaveFailedException cre) {
 			cre.printStackTrace();
 		} catch (CoreException e) {
 			e.printStackTrace();

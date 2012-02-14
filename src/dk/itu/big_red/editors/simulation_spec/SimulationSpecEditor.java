@@ -31,6 +31,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
+
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
@@ -41,11 +42,11 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.import_export.Export;
-import dk.itu.big_red.model.import_export.ExportFailedException;
-import dk.itu.big_red.model.import_export.Import;
-import dk.itu.big_red.model.import_export.ImportFailedException;
-import dk.itu.big_red.model.import_export.SimulationSpecXMLExport;
+import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.tools.BasicCommandLineInteractionManager;
 import dk.itu.big_red.tools.ConfigurationElementInteractionManagerFactory;
 import dk.itu.big_red.tools.IInteractionManager;
@@ -72,13 +73,13 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		@Override
 		public IInteractionManager createInteractionManager() {
 			return new BasicCommandLineInteractionManager(
-					(Export)RedPlugin.instantiate(getCE()));
+					(Saver)RedPlugin.instantiate(getCE()));
 		}
 	}
 	
 	@Override
-	public void doActualSave(OutputStream os) throws ExportFailedException {
-    	new SimulationSpecXMLExport().setModel(getModel()).setOutputStream(os).
+	public void doActualSave(OutputStream os) throws SaveFailedException {
+    	new SimulationSpecXMLSaver().setModel(getModel()).setOutputStream(os).
     		exportObject();
     	savePoint = undoBuffer.peek();
 		checkDirt();
@@ -172,8 +173,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
 			try {
-				model = (SimulationSpec)Import.fromFile(fi.getFile());
-			} catch (ImportFailedException e) {
+				model = (SimulationSpec)Loader.fromFile(fi.getFile());
+			} catch (LoadFailedException e) {
 	    		e.printStackTrace();
 	    		Throwable cause = e.getCause();
 	    		if (cause instanceof ValidationFailedException) {
@@ -219,7 +220,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			factories.add(new ConfigurationElementInteractionManagerFactory(ce));
 		
 		for (IConfigurationElement ce :
-		     RedPlugin.getConfigurationElementsFor(Export.EXTENSION_POINT)) {
+		     RedPlugin.getConfigurationElementsFor(Saver.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals(SimulationSpec.class.getCanonicalName()))
 				factories.add(new SimpleExportInteractionManagerFactory(ce));
@@ -263,9 +264,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 						return;
 					Signature s = null;
 					if (newValue != null)
-						s = (Signature)Import.fromFile((IFile)newValue);
+						s = (Signature)Loader.fromFile((IFile)newValue);
 					doChange(getModel().changeSignature(s));
-				} catch (ImportFailedException ife) {
+				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
 				}
 			}
@@ -306,9 +307,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 				if (rtsd.open() == Dialog.OK) {
 					IFile f = (IFile)rtsd.getFirstResult();
 					try {
-						ReactionRule r = (ReactionRule)Import.fromFile(f);
+						ReactionRule r = (ReactionRule)Loader.fromFile(f);
 						doChange(model.changeAddRule(r));
-					} catch (ImportFailedException ife) {
+					} catch (LoadFailedException ife) {
 						ife.printStackTrace();
 					}
 				}
@@ -343,9 +344,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 						return;
 					Bigraph b = null;
 					if (newValue != null)
-						b = (Bigraph)Import.fromFile((IFile)newValue);
+						b = (Bigraph)Loader.fromFile((IFile)newValue);
 					doChange(getModel().changeModel(b));
-				} catch (ImportFailedException ife) {
+				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
 				}
 			}
@@ -366,7 +367,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
-		export = UI.newButton(self, SWT.NONE, "&Export...");
+		export = UI.newButton(self, SWT.NONE, "&Saver...");
 		export.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		export.addSelectionListener(new SelectionAdapter() {
 			@Override

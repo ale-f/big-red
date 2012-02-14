@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Document;
@@ -13,26 +13,29 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.geometry.Ellipse;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class SignatureXMLImport extends Import implements IFileBackable {
+public class SignatureXMLLoader extends Loader implements IFileBackable {
 	private ChangeGroup cg = new ChangeGroup();
 	
 	@Override
-	public Signature importObject() throws ImportFailedException {
+	public Signature importObject() throws LoadFailedException {
 		try {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/signature.xsd"));
 			return makeSignature(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
-			throw new ImportFailedException(e);
+			throw new LoadFailedException(e);
 		}
 	}
 
-	private Control makeControl(Element e) throws ImportFailedException {
+	private Control makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
 		
 		model.setName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
@@ -78,7 +81,7 @@ public class SignatureXMLImport extends Import implements IFileBackable {
 		return model;
 	}
 	
-	public Signature makeSignature(Element e) throws ImportFailedException {
+	public Signature makeSignature(Element e) throws LoadFailedException {
 		Signature sig = new Signature();
 		
 		cg.clear();
@@ -94,7 +97,7 @@ public class SignatureXMLImport extends Import implements IFileBackable {
 			if (cg.size() != 0)
 				sig.tryApplyChange(cg);
 		} catch (ChangeRejectedException ex) {
-			throw new ImportFailedException(ex);
+			throw new LoadFailedException(ex);
 		}
 		
 		return sig;

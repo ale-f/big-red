@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
@@ -11,59 +11,62 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
-public class SimulationSpecXMLImport extends Import implements IFileBackable {
+public class SimulationSpecXMLLoader extends Loader implements IFileBackable {
 
 	@Override
-	public SimulationSpec importObject() throws ImportFailedException {
+	public SimulationSpec importObject() throws LoadFailedException {
 		try {
 			Document d = DOM.parse(source);
 			return makeSpec(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
-			throw new ImportFailedException(e);
+			throw new LoadFailedException(e);
 		}
 	}
 	
-	private Signature makeSignature(Element e) throws ImportFailedException {
+	private Signature makeSignature(Element e) throws LoadFailedException {
 		String signaturePath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (signaturePath != null && getFile() != null) {
-			return (Signature)Import.fromFile(
+			return (Signature)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(signaturePath)));
 		} else {
-			return new SignatureXMLImport().makeSignature(e);
+			return new SignatureXMLLoader().makeSignature(e);
 		}
 	}
 	
-	private Bigraph makeBigraph(Element e) throws ImportFailedException {
+	private Bigraph makeBigraph(Element e) throws LoadFailedException {
 		String bigraphPath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (bigraphPath != null && getFile() != null) {
-			return (Bigraph)Import.fromFile(
+			return (Bigraph)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(bigraphPath)));
 		} else {
-			return new BigraphXMLImport().setFile(getFile()).makeBigraph(e);
+			return new BigraphXMLLoader().setFile(getFile()).makeBigraph(e);
 		}
 	}
 	
-	private ReactionRule makeRule(Element e) throws ImportFailedException {
+	private ReactionRule makeRule(Element e) throws LoadFailedException {
 		String rulePath =
 				DOM.getAttributeNS(e, XMLNS.SPEC, "src");
 		if (rulePath != null && getFile() != null) {
-			return (ReactionRule)Import.fromFile(
+			return (ReactionRule)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),
 							new Path(rulePath)));
 		} else {
-			return new ReactionRuleXMLImport().setFile(getFile()).makeRule(e);
+			return new ReactionRuleXMLLoader().setFile(getFile()).makeRule(e);
 		}
 	}
 	
-	public SimulationSpec makeSpec(Element e) throws ImportFailedException {
+	public SimulationSpec makeSpec(Element e) throws LoadFailedException {
 		SimulationSpec ss = new SimulationSpec();
 		ChangeGroup cg = new ChangeGroup();
 		
@@ -85,7 +88,7 @@ public class SimulationSpecXMLImport extends Import implements IFileBackable {
 			if (cg.size() != 0)
 				ss.tryApplyChange(cg);
 		} catch (ChangeRejectedException cre) {
-			throw new ImportFailedException(cre);
+			throw new LoadFailedException(cre);
 		}
 		
 		return ss;
@@ -99,7 +102,7 @@ public class SimulationSpecXMLImport extends Import implements IFileBackable {
 	}
 
 	@Override
-	public SimulationSpecXMLImport setFile(IFile file) {
+	public SimulationSpecXMLLoader setFile(IFile file) {
 		this.file = file;
 		return this;
 	}

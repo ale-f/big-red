@@ -12,7 +12,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.import_export.XMLNS;
+import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;

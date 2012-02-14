@@ -9,9 +9,10 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
+
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.import_export.ExportFailedException;
-import dk.itu.big_red.model.import_export.SignatureXMLExport;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
@@ -31,7 +32,7 @@ public class NewSignatureWizard extends Wizard implements INewWizard {
 				return true;
 			} catch (CoreException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
-			} catch (ExportFailedException e) {
+			} catch (SaveFailedException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
 			}
 		}
@@ -49,10 +50,10 @@ public class NewSignatureWizard extends Wizard implements INewWizard {
 		addPage(page);
 	}
 
-	public static void createSignature(IFile sigFile) throws ExportFailedException, CoreException {
+	public static void createSignature(IFile sigFile) throws SaveFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		
-		new SignatureXMLExport().setModel(new Signature().setFile(sigFile)).
+		new SignatureXMLSaver().setModel(new Signature().setFile(sigFile)).
 			setOutputStream(io.getOutputStream()).exportObject();
 		sigFile.setContents(io.getInputStream(), 0, null);
 	}

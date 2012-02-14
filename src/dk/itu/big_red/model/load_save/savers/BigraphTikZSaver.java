@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.savers;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -12,6 +12,8 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
@@ -26,7 +28,7 @@ import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.ReadonlyColour;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
-public class BigraphTikZExport extends Export {
+public class BigraphTikZSaver extends Saver {
 	private BufferedWriter writer;
 	
 	@Override
@@ -35,7 +37,7 @@ public class BigraphTikZExport extends Export {
 	}
 	
 	@Override
-	public BigraphTikZExport setModel(ModelObject model) {
+	public BigraphTikZSaver setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;
@@ -66,7 +68,7 @@ public class BigraphTikZExport extends Export {
 	}
 	
 	@Override
-	public void exportObject() throws ExportFailedException {
+	public void exportObject() throws SaveFailedException {
 		writer = new BufferedWriter(new OutputStreamWriter(getOutputStream()));
 		
 		processBigraph(getModel());
@@ -74,43 +76,43 @@ public class BigraphTikZExport extends Export {
 		try {
 			writer.close();
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 
 	int scope = 0;
 	
-	private void line(String line) throws ExportFailedException {
+	private void line(String line) throws SaveFailedException {
 		try {
 			for (int i = 0; i < scope; i++)
 				writer.write("  ");
 			writer.write("\\" + line + "\n");
 		} catch (Exception e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 	
-	private void newLine() throws ExportFailedException {
+	private void newLine() throws SaveFailedException {
 		try {
 			writer.write("\n");
 		} catch (Exception e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 	
-	private void beginScope(Container context) throws ExportFailedException {
+	private void beginScope(Container context) throws SaveFailedException {
 		line("begin{scope} % " + getNiceName(context));
 		scope++;
 	}
 	
-	private void endScope() throws ExportFailedException {
+	private void endScope() throws SaveFailedException {
 		scope--;
 		line("end{scope}");
 	}
 	
 	private Point translate = null;
 	
-	private void processBigraph(Bigraph b) throws ExportFailedException {
+	private void processBigraph(Bigraph b) throws SaveFailedException {
 		if (completeDocument) {
 			line("documentclass{article}");
 			line("usepackage{tikz}");
@@ -183,7 +185,7 @@ public class BigraphTikZExport extends Export {
 		} else return objectName;
 	}
 	
-	private void processNode(Node n) throws ExportFailedException {
+	private void processNode(Node n) throws SaveFailedException {
 		Control con = n.getControl();
 		Rectangle rl = n.getRootLayout().translate(translate);
 		Point rltl = rl.getTopLeft();
@@ -217,14 +219,14 @@ public class BigraphTikZExport extends Export {
 		
 		beginScope(n);
 		for (Layoutable c : Lists.group(n.getChildren(),
-				BigraphXMLExport.SCHEMA_ORDER))
+				BigraphXMLSaver.SCHEMA_ORDER))
 			process(c);
 		for (Layoutable c : n.getPorts())
 			process(c);
 		endScope();
 	}
 	
-	private void processPort(Port p) throws ExportFailedException {
+	private void processPort(Port p) throws SaveFailedException {
 		Rectangle rl = p.getRootLayout().translate(translate);
 		Point tmp =
 			rl.getCenter();
@@ -232,7 +234,7 @@ public class BigraphTikZExport extends Export {
 		processPoint(p);
 	}
 	
-	private void processLink(Link e) throws ExportFailedException {
+	private void processLink(Link e) throws SaveFailedException {
 		Rectangle rl = e.getRootLayout().translate(translate);
 		Point
 			tl = rl.getTopLeft(),
@@ -248,7 +250,7 @@ public class BigraphTikZExport extends Export {
 		}
 	}
 	
-	private void processInnerName(InnerName i) throws ExportFailedException {
+	private void processInnerName(InnerName i) throws SaveFailedException {
 		Rectangle rl = i.getRootLayout().translate(translate);
 		Point
 			tl = rl.getTopLeft(),
@@ -263,7 +265,7 @@ public class BigraphTikZExport extends Export {
 		processPoint(i);
 	}
 	
-	private void processPoint(dk.itu.big_red.model.Point p) throws ExportFailedException {
+	private void processPoint(dk.itu.big_red.model.Point p) throws SaveFailedException {
 		Link l = p.getLink();
 		if (l != null) {
 			String in, out;
@@ -289,7 +291,7 @@ public class BigraphTikZExport extends Export {
 		}
 	}
 	
-	private void processSite(Site r) throws ExportFailedException {
+	private void processSite(Site r) throws SaveFailedException {
 		Rectangle rl = r.getRootLayout().translate(translate);
 		Point
 			ptl = rl.getTopLeft(),
@@ -299,7 +301,7 @@ public class BigraphTikZExport extends Export {
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
 	}
 	
-	private void processRoot(Root r) throws ExportFailedException {
+	private void processRoot(Root r) throws SaveFailedException {
 		Rectangle rl = r.getRootLayout().translate(translate);
 		Point
 			ptl = rl.getTopLeft(),
@@ -311,15 +313,15 @@ public class BigraphTikZExport extends Export {
 		processContainer(r);
 	}
 	
-	private void processContainer(Container t) throws ExportFailedException {
+	private void processContainer(Container t) throws SaveFailedException {
 		beginScope(t);
 		for (Layoutable c : Lists.group(t.getChildren(),
-				BigraphXMLExport.SCHEMA_ORDER))
+				BigraphXMLSaver.SCHEMA_ORDER))
 			process(c);
 		endScope();
 	}
 	
-	private void process(Layoutable obj) throws ExportFailedException {
+	private void process(Layoutable obj) throws SaveFailedException {
 		if (obj instanceof Node) {
 			processNode((Node)obj);
 		} else if (obj instanceof Port) {

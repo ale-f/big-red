@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Element;
@@ -16,26 +16,29 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class ReactionRuleXMLImport extends Import implements IFileBackable {
+public class ReactionRuleXMLLoader extends Loader implements IFileBackable {
 	private ReactionRule rr = null;
 	
 	@Override
-	public ReactionRule importObject() throws ImportFailedException {
+	public ReactionRule importObject() throws LoadFailedException {
 		try {
 			return makeRule(DOM.parse(source).getDocumentElement()).
 					setFile(getFile());
 		} catch (Exception e) {
-			if (e instanceof ImportFailedException) {
-				throw (ImportFailedException)e;
-			} else throw new ImportFailedException(e);
+			if (e instanceof LoadFailedException) {
+				throw (LoadFailedException)e;
+			} else throw new LoadFailedException(e);
 		}
 	}
 
-	public ReactionRule makeRule(Element e) throws ImportFailedException {
+	public ReactionRule makeRule(Element e) throws LoadFailedException {
 		rr = new ReactionRule();
 		
 		rr.setRedex(
@@ -45,8 +48,8 @@ public class ReactionRuleXMLImport extends Import implements IFileBackable {
 		return rr;
 	}
 	
-	private Bigraph makeRedex(Element e) throws ImportFailedException {
-		BigraphXMLImport im = new BigraphXMLImport().setFile(getFile());
+	private Bigraph makeRedex(Element e) throws LoadFailedException {
+		BigraphXMLLoader im = new BigraphXMLLoader().setFile(getFile());
 		return im.makeBigraph(e).setFile(getFile());
 	}
 	
@@ -58,7 +61,7 @@ public class ReactionRuleXMLImport extends Import implements IFileBackable {
 		return b.getNamespace(Bigraph.getNSI(type)).get(name);
 	}
 	
-	private void updateReactum(ReactionRule rr, Element e) throws ImportFailedException {
+	private void updateReactum(ReactionRule rr, Element e) throws LoadFailedException {
 		Bigraph reactum = rr.getReactum();
 		for (org.w3c.dom.Node i : DOM.iterableChildren(e)) {
 			Change c = null;
@@ -164,7 +167,7 @@ public class ReactionRuleXMLImport extends Import implements IFileBackable {
 					reactum.tryApplyChange(c);
 					rr.getChanges().add(c);
 				} catch (ChangeRejectedException cre) {
-					throw new ImportFailedException(cre);
+					throw new LoadFailedException(cre);
 				}
 			}
 		}
@@ -178,7 +181,7 @@ public class ReactionRuleXMLImport extends Import implements IFileBackable {
 	}
 
 	@Override
-	public ReactionRuleXMLImport setFile(IFile file) {
+	public ReactionRuleXMLLoader setFile(IFile file) {
 		this.file = file;
 		return this;
 	}

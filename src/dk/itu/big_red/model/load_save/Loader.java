@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save;
 
 import java.io.InputStream;
 
@@ -14,16 +14,16 @@ import dk.itu.big_red.utilities.resources.Types;
 
 
 /**
- * Classes extending Import can read objects from an {@link InputStream}.
+ * Classes extending Loader can read objects from an {@link InputStream}.
  * 
- * <p>The existence of an Import class for a given format implies that a
- * corresponding {@link Export} class <i>should</i> exist for that format.
- * @see Export
+ * <p>The existence of an Loader class for a given format implies that a
+ * corresponding {@link Saver} class <i>should</i> exist for that format.
+ * @see Saver
  * @author alec
  *
  */
 
-public abstract class Import {
+public abstract class Loader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 	
 	protected InputStream source = null;
@@ -34,7 +34,7 @@ public abstract class Import {
 	 * @param is an InputStream
 	 * @return <code>this</code>, for convenience
 	 */
-	public Import setInputStream(InputStream is) {
+	public Loader setInputStream(InputStream is) {
 		if (is != null)
 			source = is;
 		return this;
@@ -51,10 +51,10 @@ public abstract class Import {
 	
 	/**
 	 * Imports the object. This function should not be called unless {@link
-	 * Import#canImport canImport} returns <code>true</code>.
-	 * @throws ImportFailedException if the import failed
+	 * Loader#canImport canImport} returns <code>true</code>.
+	 * @throws LoadFailedException if the import failed
 	 */
-	public abstract ModelObject importObject() throws ImportFailedException;
+	public abstract ModelObject importObject() throws LoadFailedException;
 	
 	/**
 	 * Loads an object from an {@link IFile} by:
@@ -67,14 +67,14 @@ public abstract class Import {
 	 * </ul>
 	 * @param f an {@link IFile}
 	 * @return an object, or <code>null</code>
-	 * @throws ImportFailedException if {@link #importObject()} fails
+	 * @throws LoadFailedException if {@link #importObject()} fails
 	 */
-	public static ModelObject fromFile(IFile f) throws ImportFailedException {
+	public static ModelObject fromFile(IFile f) throws LoadFailedException {
 		IContentType ct = Types.findContentTypeFor(f);
 		for (IConfigurationElement ice :
 			RedPlugin.getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
-				Import i = (Import)RedPlugin.instantiate(ice);
+				Loader i = (Loader)RedPlugin.instantiate(ice);
 				try {
 					i.setInputStream(f.getContents());
 				} catch (CoreException e) {

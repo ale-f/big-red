@@ -10,8 +10,8 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
-import dk.itu.big_red.model.import_export.ExportFailedException;
-import dk.itu.big_red.model.import_export.ImportFailedException;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.utilities.resources.Project;
 
 public class NewBRSWizard extends Wizard implements INewWizard {
@@ -42,9 +42,9 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 				return true;
 			} catch (CoreException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
-			} catch (ImportFailedException e) {
+			} catch (LoadFailedException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
-			} catch (ExportFailedException e) {
+			} catch (SaveFailedException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
 			}
 			return false;

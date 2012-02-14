@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.savers;
 
 import org.w3c.dom.Element;
 
@@ -7,32 +7,35 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.XMLSaver;
+import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.DOM;
 
-public class SignatureXMLExport extends XMLExport {
+public class SignatureXMLSaver extends XMLSaver {
 	@Override
 	public Signature getModel() {
 		return (Signature)super.getModel();
 	}
 	
 	@Override
-	public SignatureXMLExport setModel(ModelObject model) {
+	public SignatureXMLSaver setModel(ModelObject model) {
 		if (model instanceof Signature)
 			super.setModel(model);
 		return this;
 	}
 	
 	@Override
-	public void exportObject() throws ExportFailedException {
-		setDocument(XMLExport.createDocument(XMLNS.SIGNATURE, "signature:signature"));
+	public void exportObject() throws SaveFailedException {
+		setDocument(XMLSaver.createDocument(XMLNS.SIGNATURE, "signature:signature"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
 
 	@Override
-	public Element processObject(Element e, Object s_) throws ExportFailedException {
+	public Element processObject(Element e, Object s_) throws SaveFailedException {
 		if (!(s_ instanceof Signature))
-			throw new ExportFailedException(s_ + " isn't a Signature");
+			throw new SaveFailedException(s_ + " isn't a Signature");
 		Signature s = (Signature)s_;
 		
 		DOM.applyAttributes(e,

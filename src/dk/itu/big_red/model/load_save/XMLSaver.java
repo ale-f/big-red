@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -19,7 +19,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
-public abstract class XMLExport extends Export {
+public abstract class XMLSaver extends Saver {
 	private Document doc = null;
 	
 	public Document getDocument() {
@@ -32,7 +32,7 @@ public abstract class XMLExport extends Export {
 		} else return null;
 	}
 	
-	public XMLExport setDocument(Document doc) {
+	public XMLSaver setDocument(Document doc) {
 		this.doc = doc;
 		return this;
 	}
@@ -49,7 +49,7 @@ public abstract class XMLExport extends Export {
 	private static TransformerFactory tf;
 	private static DOMImplementation impl = null;
 	
-	protected XMLExport finish() throws ExportFailedException {
+	protected XMLSaver finish() throws SaveFailedException {
 		try {
 			if (tf == null)
 				tf = TransformerFactory.newInstance();
@@ -66,16 +66,16 @@ public abstract class XMLExport extends Export {
 			
 			return this;
 		} catch (Exception e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 	
 	public abstract Element processObject(Element e, Object object)
-		throws ExportFailedException;
+		throws SaveFailedException;
 	
 	protected Element processOrReference(
 		Element e, IResource relativeTo, IFileBackable object,
-		Class<? extends XMLExport> klass) {
+		Class<? extends XMLSaver> klass) {
 		if (e == null || object == null) {
 			return null;
 		} else if (object.getFile() != null) {
@@ -83,7 +83,7 @@ public abstract class XMLExport extends Export {
 					Project.getRelativePath(
 						relativeTo, object.getFile()).toString());	
 		} else {
-			XMLExport ex;
+			XMLSaver ex;
 			try {
 				ex = klass.newInstance();
 				ex.setDocument(getDocument()).setModel((ModelObject)object);
@@ -113,15 +113,15 @@ public abstract class XMLExport extends Export {
 	 *         couldn't be created
 	 */
 	protected static DOMImplementation getImplementation() {
-		if (XMLExport.impl == null) {
+		if (XMLSaver.impl == null) {
 			try {
-				XMLExport.impl = DOMImplementationRegistry.newInstance().
+				XMLSaver.impl = DOMImplementationRegistry.newInstance().
 				       getDOMImplementation("XML 3.0");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
 		}
-		return XMLExport.impl;
+		return XMLSaver.impl;
 	}
 }

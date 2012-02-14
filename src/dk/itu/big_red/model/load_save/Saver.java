@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -10,19 +10,19 @@ import dk.itu.big_red.model.ModelObject;
 
 
 /**
- * Classes extending Export can write objects to an {@link OutputStream}. (The
+ * Classes extending Saver can write objects to an {@link OutputStream}. (The
  * export process can do anything it wants - one class might export an {@link
  * IFigure} to a PNG image, and another might export a {@link Signature} to a
  * XML document.)
  * 
- * <p>The existence of an Export class for a given format does <i>not</i> imply
- * that a {@link Import} class should exist for that format - in most cases,
+ * <p>The existence of an Saver class for a given format does <i>not</i> imply
+ * that a {@link Loader} class should exist for that format - in most cases,
  * that'd be impossible (try importing a bigraph from a PNG!).
- * @see Import
+ * @see Loader
  * @author alec
  *
  */
-public abstract class Export {
+public abstract class Saver {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
 	
 	public static class OptionDescriptor {
@@ -57,7 +57,7 @@ public abstract class Export {
 	 * @param model
 	 * @return <code>this</code>, for convenience
 	 */
-	public Export setModel(ModelObject model) {
+	public Saver setModel(ModelObject model) {
 		this.model = model;
 		return this;
 	}
@@ -78,7 +78,7 @@ public abstract class Export {
 	 * @param os an OutputStream
 	 * @return <code>this</code>, for convenience
 	 */
-	public Export setOutputStream(OutputStream os) {
+	public Saver setOutputStream(OutputStream os) {
 		if (os != null)
 			target = os;
 		return this;
@@ -95,16 +95,16 @@ public abstract class Export {
 	
 	/**
 	 * Exports the object. This function should not be called unless {@link
-	 * Export#canExport canExport} returns <code>true</code>.
-	 * @throws ExportFailedException if the export failed
+	 * Saver#canExport canExport} returns <code>true</code>.
+	 * @throws SaveFailedException if the export failed
 	 */
-	public abstract void exportObject() throws ExportFailedException;
+	public abstract void exportObject() throws SaveFailedException;
 	
 	private ArrayList<OptionDescriptor> options =
 			new ArrayList<OptionDescriptor>();
 	
 	/**
-	 * Adds an option to this {@link Export}.
+	 * Adds an option to this {@link Saver}.
 	 * @param d an {@link OptionDescriptor} specifying the new option
 	 */
 	protected final void addOption(OptionDescriptor d) {
@@ -119,7 +119,7 @@ public abstract class Export {
 	}
 	
 	/**
-	 * Returns all of the options supported by this {@link Export}.
+	 * Returns all of the options supported by this {@link Saver}.
 	 * @return a list of {@link OptionDescriptor}s
 	 */
 	public final List<OptionDescriptor> getOptions() {
@@ -128,7 +128,7 @@ public abstract class Export {
 	
 	/**
 	 * Changes the value of the option specified by a descriptor.
-	 * @param d one of this {@link Export}'s {@link OptionDescriptor}s
+	 * @param d one of this {@link Saver}'s {@link OptionDescriptor}s
 	 * @param value the option's new value
 	 */
 	public final void setOption(OptionDescriptor d, Object value) {
@@ -138,7 +138,7 @@ public abstract class Export {
 	/**
 	 * Retrieves the value of the named option.
 	 * <p>Subclasses should override this method.
-	 * @param id the ID of one of this {@link Export}'s options
+	 * @param id the ID of one of this {@link Saver}'s options
 	 * @return the current value of this option, or <code>null</code>
 	 */
 	public Object getOption(String id) {
@@ -148,7 +148,7 @@ public abstract class Export {
 	/**
 	 * Changes the value of the named option.
 	 * <p>Subclasses should override this method.
-	 * @param id the ID of one of this {@link Export}'s options
+	 * @param id the ID of one of this {@link Saver}'s options
 	 * @param value the option's new value
 	 */
 	public void setOption(String id, Object value) {

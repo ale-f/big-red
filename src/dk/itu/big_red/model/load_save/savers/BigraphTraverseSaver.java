@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.savers;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -16,8 +16,10 @@ import dk.itu.big_red.model.interfaces.IPoint;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
+import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaveFailedException;
 
-public class BigraphTraverseExport extends Export {
+public class BigraphTraverseSaver extends Saver {
 	private OutputStreamWriter osw = null;
 	
 	@Override
@@ -26,20 +28,20 @@ public class BigraphTraverseExport extends Export {
 	}
 	
 	@Override
-	public BigraphTraverseExport setModel(ModelObject model) {
+	public BigraphTraverseSaver setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;
 	}
 	
 	@Override
-	public void exportObject() throws ExportFailedException {
+	public void exportObject() throws SaveFailedException {
 		osw = new OutputStreamWriter(getOutputStream());
 		process(getModel());
 		try {
 			osw.close();
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 	
@@ -61,27 +63,27 @@ public class BigraphTraverseExport extends Export {
 	
 	int scope = 0;
 	
-	private void line(Object line) throws ExportFailedException {
+	private void line(Object line) throws SaveFailedException {
 		try {
 			for (int i = 0; i < scope; i++)
 				osw.write("  ");
 			osw.write(line.toString() + "\n");
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 	
-	public void process(IEdge edge) throws ExportFailedException {
+	public void process(IEdge edge) throws SaveFailedException {
 		for (IPoint p : edge.getIPoints())
 			line(niceName(p));
 	}
 	
-	public void process(IOuterName outerName) throws ExportFailedException {
+	public void process(IOuterName outerName) throws SaveFailedException {
 		for (IPoint p : outerName.getIPoints())
 			line(niceName(p));
 	}
 	
-	public void process(INode node) throws ExportFailedException {
+	public void process(INode node) throws SaveFailedException {
 		line("control " + node.getIControl().getName());
 		for (INode p : node.getINodes()) {
 			line(niceName(p));
@@ -93,7 +95,7 @@ public class BigraphTraverseExport extends Export {
 			line(niceName(s));
 	}
 	
-	public void process(IRoot root) throws ExportFailedException {
+	public void process(IRoot root) throws SaveFailedException {
 		for (INode n : root.getINodes()) {
 			line(niceName(n));
 			scope++;
@@ -104,7 +106,7 @@ public class BigraphTraverseExport extends Export {
 			line(niceName(s));
 	}
 	
-	public void process(IControl c) throws ExportFailedException {
+	public void process(IControl c) throws SaveFailedException {
 		line("control " + c.getName());
 		scope++;
 		for (IPort p : c.getIPorts())
@@ -112,7 +114,7 @@ public class BigraphTraverseExport extends Export {
 		scope--;
 	}
 	
-	public void process(IBigraph bigraph) throws ExportFailedException {
+	public void process(IBigraph bigraph) throws SaveFailedException {
 		line("signature");
 		scope++;
 		for (IControl c : bigraph.getISignature().getIControls())

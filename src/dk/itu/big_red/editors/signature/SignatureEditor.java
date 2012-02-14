@@ -35,6 +35,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPartConstants;
 import org.eclipse.ui.part.FileEditorInput;
 
+
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
 import dk.itu.big_red.model.Control;
@@ -44,9 +45,9 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.import_export.ExportFailedException;
-import dk.itu.big_red.model.import_export.Import;
-import dk.itu.big_red.model.import_export.SignatureXMLExport;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.ui.UI;
@@ -59,8 +60,8 @@ implements PropertyChangeListener {
 	}
 	
 	@Override
-	public void doActualSave(OutputStream os) throws ExportFailedException {
-    	new SignatureXMLExport().setModel(getModel()).setOutputStream(os).
+	public void doActualSave(OutputStream os) throws SaveFailedException {
+    	new SignatureXMLSaver().setModel(getModel()).setOutputStream(os).
     		exportObject();
 		setDirty(false);
 	}
@@ -471,7 +472,7 @@ implements PropertyChangeListener {
 		IEditorInput input = getEditorInput();
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
-			model = (Signature)Import.fromFile(fi.getFile());
+			model = (Signature)Loader.fromFile(fi.getFile());
 		}
 		
 		getModel().addPropertyChangeListener(this);

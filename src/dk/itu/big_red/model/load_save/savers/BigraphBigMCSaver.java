@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.savers;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -15,8 +15,10 @@ import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
+import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaveFailedException;
 
-public class BigraphBigMCExport extends Export {
+public class BigraphBigMCSaver extends Saver {
 	private OutputStreamWriter osw = null;
 	
 	@Override
@@ -25,7 +27,7 @@ public class BigraphBigMCExport extends Export {
 	}
 	
 	@Override
-	public BigraphBigMCExport setModel(ModelObject model) {
+	public BigraphBigMCSaver setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;
@@ -33,32 +35,32 @@ public class BigraphBigMCExport extends Export {
 	
 	private int indentation = -1;
 	
-	private void newline() throws ExportFailedException {
+	private void newline() throws SaveFailedException {
 		write("\n");
 		for (int i = 0; i < indentation; i++)
 			write("\t");
 	}
 	
-	private void write(String str) throws ExportFailedException {
+	private void write(String str) throws SaveFailedException {
 		try {
 			osw.write(str);
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 	
 	@Override
-	public void exportObject() throws ExportFailedException {
+	public void exportObject() throws SaveFailedException {
 		osw = new OutputStreamWriter(getOutputStream());
 		process(getModel());
 		try {
 			osw.close();
 		} catch (IOException e) {
-			throw new ExportFailedException(e);
+			throw new SaveFailedException(e);
 		}
 	}
 
-	private void processSignature(Signature s) throws ExportFailedException {
+	private void processSignature(Signature s) throws SaveFailedException {
 		write("# Controls"); newline();
 		for (Control c : s.getControls()) {
 			switch (c.getKind()) {
@@ -81,7 +83,7 @@ public class BigraphBigMCExport extends Export {
 		return (l != null ? "n_" + l.getName() : "-");
 	}
 	
-	private void processNode(INode i) throws ExportFailedException {
+	private void processNode(INode i) throws SaveFailedException {
 		indentation++;
 		newline();
 		
@@ -110,7 +112,7 @@ public class BigraphBigMCExport extends Export {
 		indentation--;
 	}
 	
-	private void processRoot(IRoot i) throws ExportFailedException {
+	private void processRoot(IRoot i) throws SaveFailedException {
 		Iterator<? extends INode> in = i.getINodes().iterator();
 		if (in.hasNext()) {
 			processNode(in.next());
@@ -121,7 +123,7 @@ public class BigraphBigMCExport extends Export {
 		}
 	}
 	
-	private void process(Bigraph b) throws ExportFailedException {
+	private void process(Bigraph b) throws SaveFailedException {
 		processSignature(b.getSignature());
 		boolean any = false;
 		

@@ -41,6 +41,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
+
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -59,9 +60,9 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.import_export.BigraphXMLExport;
-import dk.itu.big_red.model.import_export.ExportFailedException;
-import dk.itu.big_red.model.import_export.Import;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 
 public class BigraphEditor extends AbstractGEFEditor {
 	public static final String ID = "dk.itu.big_red.BigraphEditor";
@@ -290,8 +291,8 @@ public class BigraphEditor extends AbstractGEFEditor {
 	}
 
 	@Override
-	protected void doActualSave(OutputStream os) throws ExportFailedException {
-		new BigraphXMLExport().setModel(getModel()).setOutputStream(os).
+	protected void doActualSave(OutputStream os) throws SaveFailedException {
+		new BigraphXMLSaver().setModel(getModel()).setOutputStream(os).
 			exportObject();
 		
 		getCommandStack().markSaveLocation();
@@ -306,7 +307,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
 	    	try {
-	    		model = (Bigraph)Import.fromFile(fi.getFile());
+	    		model = (Bigraph)Loader.fromFile(fi.getFile());
 	    	} catch (Exception e) {
 	    		throw e;
 	    	}

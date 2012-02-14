@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.import_export;
+package dk.itu.big_red.model.load_save.savers;
 
 import org.w3c.dom.Element;
 
@@ -15,23 +15,27 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.XMLSaver;
+import dk.itu.big_red.model.load_save.XMLNS;
+import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.Lists;
 
 /**
- * XMLExport writes a {@link Bigraph} out as an XML document.
+ * XMLSaver writes a {@link Bigraph} out as an XML document.
  * @author alec
- * @see BigraphXMLImport
+ * @see BigraphXMLLoader
  *
  */
-public class BigraphXMLExport extends XMLExport {
+public class BigraphXMLSaver extends XMLSaver {
 	@Override
 	public Bigraph getModel() {
 		return (Bigraph)super.getModel();
 	}
 	
 	@Override
-	public BigraphXMLExport setModel(ModelObject model) {
+	public BigraphXMLSaver setModel(ModelObject model) {
 		if (model instanceof Bigraph)
 			super.setModel(model);
 		return this;
@@ -55,7 +59,7 @@ public class BigraphXMLExport extends XMLExport {
 		OPTION_APPEARANCE = "BigraphXMLExportAppearance";
 	
 	{
-		addOption(OPTION_APPEARANCE, "Export Big Red-specific appearance data");
+		addOption(OPTION_APPEARANCE, "Saver Big Red-specific appearance data");
 	}
 	
 	@Override
@@ -73,16 +77,16 @@ public class BigraphXMLExport extends XMLExport {
 	}
 	
 	@Override
-	public void exportObject() throws ExportFailedException {
-		setDocument(XMLExport.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
+	public void exportObject() throws SaveFailedException {
+		setDocument(XMLSaver.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
 	
 	@Override
-	public Element processObject(Element e, Object obj_) throws ExportFailedException {
+	public Element processObject(Element e, Object obj_) throws SaveFailedException {
 		if (!(obj_ instanceof Bigraph))
-			throw new ExportFailedException(obj_ + " isn't a Bigraph");
+			throw new SaveFailedException(obj_ + " isn't a Bigraph");
 		Bigraph obj = (Bigraph)obj_;
 		
 		if (exportAppearance || exportPersistentID)
@@ -91,11 +95,11 @@ public class BigraphXMLExport extends XMLExport {
 			processOrReference(
 				newElement(XMLNS.BIGRAPH, "bigraph:signature"),
 				getModel().getFile(),
-				obj.getSignature(), SignatureXMLExport.class));
+				obj.getSignature(), SignatureXMLSaver.class));
 		
 		for (Layoutable i :
 			Lists.group(obj.getChildren(),
-					BigraphXMLExport.SCHEMA_ORDER)) {
+					BigraphXMLSaver.SCHEMA_ORDER)) {
 			Element f = null;
 			if (i instanceof Edge) {
 				f = newElement(XMLNS.BIGRAPH, "bigraph:edge");
@@ -114,10 +118,10 @@ public class BigraphXMLExport extends XMLExport {
 		return e;
 	}
 	
-	private Element processRoot(Element e, Root r) throws ExportFailedException {
+	private Element processRoot(Element e, Root r) throws SaveFailedException {
 		for (Layoutable i :
 			Lists.group(r.getChildren(),
-					BigraphXMLExport.SCHEMA_ORDER)) {
+					BigraphXMLSaver.SCHEMA_ORDER)) {
 			Element f = null;
 			if (i instanceof Node) {
 				f = processNode(
@@ -131,14 +135,14 @@ public class BigraphXMLExport extends XMLExport {
 		return e;
 	}
 	
-	private Element processSite(Element e, Site s) throws ExportFailedException {
+	private Element processSite(Element e, Site s) throws SaveFailedException {
 		String alias = s.getAlias();
 		if (alias != null)
 			DOM.applyAttributes(e, "alias", alias);
 		return e;
 	}
 	
-	private Element processNode(Element e, Node n) throws ExportFailedException {
+	private Element processNode(Element e, Node n) throws SaveFailedException {
 		DOM.applyAttributes(e,
 			"control", n.getControl().getName(),
 			"name", n.getName());
@@ -149,7 +153,7 @@ public class BigraphXMLExport extends XMLExport {
 		
 		for (Layoutable l :
 			Lists.group(n.getChildren(),
-					BigraphXMLExport.SCHEMA_ORDER)) {
+					BigraphXMLSaver.SCHEMA_ORDER)) {
 			Element f = null;
 			if (l instanceof Node) {
 				f = processNode(
@@ -164,7 +168,7 @@ public class BigraphXMLExport extends XMLExport {
 		return e;
 	}
 	
-	private Element processPoint(Element e, Point p) throws ExportFailedException {
+	private Element processPoint(Element e, Point p) throws SaveFailedException {
 		Link link = p.getLink();
 		DOM.applyAttributes(e,
 			"name", p.getName());
