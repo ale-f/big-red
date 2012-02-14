@@ -1,8 +1,10 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
@@ -18,6 +20,7 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
+import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 
 /**
@@ -184,7 +187,48 @@ public class BigraphXMLSaver extends XMLSaver {
 		if (!(l instanceof Bigraph))
 			applyAttributes(e, "name", l.getName());
 		if (exportAppearance)
-			appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), l));
+			appendChildIfNotNull(e, appearanceToElement(getDocument(), l));
 		return e;
+	}
+
+	/**
+	 * Builds a <code>&lt;big-red:appearance&gt;</code> tag containing all of
+	 * the Big Red-specific metadata appropriate for the given object.
+	 * @param doc the {@link Document} that will contain the tag 
+	 * @param o a model object
+	 */
+	protected static Element appearanceToElement(Document doc, Object o) {
+		if (o instanceof Bigraph)
+			return null;
+		
+		Element aE =
+			doc.createElementNS(IRedNamespaceConstants.BIG_RED,
+					"big-red:appearance");
+		boolean alive = false;
+		
+		if (o instanceof Layoutable) {
+			alive = true;
+			AppearanceGenerator.rectangleToElement(aE,
+					((Layoutable)o).getLayout());
+		}
+		
+		if (o instanceof Colourable) {
+			alive = true;
+			Colourable c = (Colourable)o;
+			
+			applyAttributes(aE,
+				"fillColor", new Colour(c.getFillColour()).toHexString(),
+				"outlineColor",
+					new Colour(c.getOutlineColour()).toHexString());
+		}
+		
+		if (o instanceof ModelObject) {
+			alive = true;
+			String comment = ((ModelObject)o).getComment();
+			if (comment != null)
+				applyAttributes(aE, "comment", comment);
+		}
+		
+		return (alive ? aE : null);
 	}
 }

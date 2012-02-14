@@ -11,6 +11,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.InnerName;
@@ -29,6 +30,7 @@ import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
+import dk.itu.big_red.utilities.geometry.Rectangle;
 import dk.itu.big_red.utilities.resources.Project;
 
 /**
@@ -201,7 +203,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			}
 			
 			if (appearance != null && appearanceAllowed == Tristate.TRUE)
-				AppearanceGenerator.setAppearance(appearance, model, cg);
+				elementToAppearance(appearance, model, cg);
 		}
 		
 		if (model instanceof Container) {
@@ -222,5 +224,33 @@ public class BigraphXMLLoader extends XMLLoader {
 	@Override
 	public BigraphXMLLoader setFile(IFile f) {
 		return (BigraphXMLLoader)super.setFile(f);
+	}
+
+	protected static void elementToAppearance(
+			Element e, Object o, ChangeGroup cg) {
+		if (!(e.getNamespaceURI().equals(IRedNamespaceConstants.BIG_RED) &&
+				e.getLocalName().equals("appearance")))
+			return;
+		
+		if (o instanceof Layoutable) {
+			Layoutable l = (Layoutable)o;
+			Rectangle r = AppearanceGenerator.elementToRectangle(e);
+			cg.add(l.changeLayout(r));
+		}
+		
+		if (o instanceof Colourable) {
+			Colourable c = (Colourable)o;
+			cg.add(
+				c.changeFillColour(
+						getColorAttribute(e,
+							IRedNamespaceConstants.BIG_RED, "fillColor")),
+				c.changeOutlineColour(
+						getColorAttribute(e,
+							IRedNamespaceConstants.BIG_RED, "outlineColor")));
+		}
+		
+		if (o instanceof ModelObject)
+			((ModelObject)o).setComment(getAttributeNS(e,
+					IRedNamespaceConstants.BIG_RED, "comment"));
 	}
 }

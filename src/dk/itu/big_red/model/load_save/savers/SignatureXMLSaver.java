@@ -10,7 +10,6 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 
@@ -61,7 +60,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		
 		appendChildIfNotNull(e, shapeToElement(getDocument(), c));
 		appendChildIfNotNull(e,
-				AppearanceGenerator.getAppearance(getDocument(), c));
+				BigraphXMLSaver.appearanceToElement(getDocument(), c));
 		e.setAttributeNS(IRedNamespaceConstants.BIG_RED,
 				"big-red:label", c.getLabel());
 		

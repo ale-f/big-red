@@ -11,7 +11,6 @@ import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
@@ -54,7 +53,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "appearance");
 		if (el != null)
-			AppearanceGenerator.setAppearance(el, model, cg);
+			BigraphXMLLoader.elementToAppearance(el, model, cg);
 		
 		String label =
 				getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "label");
