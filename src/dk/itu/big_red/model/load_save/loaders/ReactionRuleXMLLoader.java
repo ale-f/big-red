@@ -28,7 +28,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	@Override
 	public ReactionRule importObject() throws LoadFailedException {
 		try {
-			return makeRule(DOM.parse(source).getDocumentElement()).
+			return makeObject(DOM.parse(source).getDocumentElement()).
 					setFile(getFile());
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
@@ -37,7 +37,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		}
 	}
 
-	public ReactionRule makeRule(Element e) throws LoadFailedException {
+	@Override
+	public ReactionRule makeObject(Element e) throws LoadFailedException {
 		rr = new ReactionRule();
 		
 		rr.setRedex(
@@ -49,7 +50,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	
 	private Bigraph makeRedex(Element e) throws LoadFailedException {
 		BigraphXMLLoader im = new BigraphXMLLoader().setFile(getFile());
-		return im.makeBigraph(e).setFile(getFile());
+		return im.makeObject(e).setFile(getFile());
 	}
 	
 	private static String chattr(Element e, String name) {

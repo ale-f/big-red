@@ -23,7 +23,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	public SimulationSpec importObject() throws LoadFailedException {
 		try {
 			Document d = DOM.parse(source);
-			return makeSpec(d.getDocumentElement()).setFile(getFile());
+			return makeObject(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}
@@ -37,7 +37,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 					Project.findFileByPath(getFile().getParent(),
 							new Path(signaturePath)));
 		} else {
-			return new SignatureXMLLoader().makeSignature(e);
+			return new SignatureXMLLoader().makeObject(e);
 		}
 	}
 	
@@ -49,7 +49,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 					Project.findFileByPath(getFile().getParent(),
 							new Path(bigraphPath)));
 		} else {
-			return new BigraphXMLLoader().setFile(getFile()).makeBigraph(e);
+			return new BigraphXMLLoader().setFile(getFile()).makeObject(e);
 		}
 	}
 	
@@ -61,11 +61,12 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 					Project.findFileByPath(getFile().getParent(),
 							new Path(rulePath)));
 		} else {
-			return new ReactionRuleXMLLoader().setFile(getFile()).makeRule(e);
+			return new ReactionRuleXMLLoader().setFile(getFile()).makeObject(e);
 		}
 	}
 	
-	public SimulationSpec makeSpec(Element e) throws LoadFailedException {
+	@Override
+	public SimulationSpec makeObject(Element e) throws LoadFailedException {
 		SimulationSpec ss = new SimulationSpec();
 		ChangeGroup cg = new ChangeGroup();
 		

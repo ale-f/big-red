@@ -28,7 +28,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		try {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/signature.xsd"));
-			return makeSignature(d.getDocumentElement()).setFile(getFile());
+			return makeObject(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}
@@ -80,7 +80,8 @@ public class SignatureXMLLoader extends XMLLoader {
 		return model;
 	}
 	
-	public Signature makeSignature(Element e) throws LoadFailedException {
+	@Override
+	public Signature makeObject(Element e) throws LoadFailedException {
 		Signature sig = new Signature();
 		
 		cg.clear();

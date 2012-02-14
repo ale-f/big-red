@@ -59,7 +59,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		try {
 			Document d =
 				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/bigraph.xsd"));
-			return makeBigraph(d.getDocumentElement()).setFile(getFile());
+			return makeObject(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
 				throw (LoadFailedException)e;
@@ -69,7 +69,8 @@ public class BigraphXMLLoader extends XMLLoader {
 	
 	private Bigraph bigraph = null;
 	
-	public Bigraph makeBigraph(Element e) throws LoadFailedException {
+	@Override
+	public Bigraph makeObject(Element e) throws LoadFailedException {
 		if (e == null)
 			throw new LoadFailedException("Element is null");
 		
@@ -108,7 +109,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			bigraph.setSignature(sig);
 		} else if (signatureElement != null) {
 			SignatureXMLLoader si = new SignatureXMLLoader();
-			bigraph.setSignature(si.makeSignature(signatureElement));
+			bigraph.setSignature(si.makeObject(signatureElement));
 		} else {
 			throw new LoadFailedException("The bigraph does not define or reference a signature.");
 		}
