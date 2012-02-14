@@ -51,7 +51,6 @@ import dk.itu.big_red.tools.BasicCommandLineInteractionManager;
 import dk.itu.big_red.tools.ConfigurationElementInteractionManagerFactory;
 import dk.itu.big_red.tools.IInteractionManager;
 import dk.itu.big_red.tools.IInteractionManagerFactory;
-import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
@@ -176,10 +175,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 				model = (SimulationSpec)Loader.fromFile(fi.getFile());
 			} catch (LoadFailedException e) {
 	    		e.printStackTrace();
-	    		Throwable cause = e.getCause();
-	    		if (cause instanceof ValidationFailedException) {
-	    			throw cause;
-	    		} else throw e;
+	    		throw e;
 	    	}
 		}
 		if (model == null)

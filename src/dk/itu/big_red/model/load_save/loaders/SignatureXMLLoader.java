@@ -27,7 +27,8 @@ public class SignatureXMLLoader extends XMLLoader {
 	public Signature importObject() throws LoadFailedException {
 		try {
 			Document d =
-				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/signature.xsd"));
+				validate(parse(source),
+					RedPlugin.getResource("resources/schema/signature.xsd"));
 			return makeObject(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);

@@ -2,7 +2,6 @@ package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.Path;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Bigraph;
@@ -22,8 +21,8 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	@Override
 	public SimulationSpec importObject() throws LoadFailedException {
 		try {
-			Document d = DOM.parse(source);
-			return makeObject(d.getDocumentElement()).setFile(getFile());
+			return makeObject(parse(source).getDocumentElement()).
+					setFile(getFile());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}

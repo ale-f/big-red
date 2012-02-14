@@ -52,7 +52,6 @@ import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
-import dk.itu.big_red.utilities.ValidationFailedException;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class RuleEditor extends AbstractGEFEditor implements
@@ -223,10 +222,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    		setModel((ReactionRule)Loader.fromFile(fi.getFile()));
 	    	} catch (LoadFailedException e) {
 	    		e.printStackTrace();
-	    		Throwable cause = e.getCause();
-	    		if (cause instanceof ValidationFailedException) {
-	    			throw cause;
-	    		} else throw e;
+	    		throw e;
 	    	}
 	    }
 	    

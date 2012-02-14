@@ -28,7 +28,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	@Override
 	public ReactionRule importObject() throws LoadFailedException {
 		try {
-			return makeObject(DOM.parse(source).getDocumentElement()).
+			return makeObject(parse(source).getDocumentElement()).
 					setFile(getFile());
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {

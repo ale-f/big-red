@@ -58,7 +58,8 @@ public class BigraphXMLLoader extends XMLLoader {
 	public Bigraph importObject() throws LoadFailedException {
 		try {
 			Document d =
-				DOM.validate(DOM.parse(source), RedPlugin.getResource("resources/schema/bigraph.xsd"));
+				validate(parse(source),
+					RedPlugin.getResource("resources/schema/bigraph.xsd"));
 			return makeObject(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
