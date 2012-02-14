@@ -10,7 +10,6 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.model.load_save.XMLNS;
-import dk.itu.big_red.utilities.DOM;
 
 public class SignatureXMLSaver extends XMLSaver {
 	@Override
@@ -27,7 +26,7 @@ public class SignatureXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(XMLSaver.createDocument(XMLNS.SIGNATURE, "signature:signature"));
+		setDocument(createDocument(XMLNS.SIGNATURE, "signature:signature"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -38,7 +37,7 @@ public class SignatureXMLSaver extends XMLSaver {
 			throw new SaveFailedException(s_ + " isn't a Signature");
 		Signature s = (Signature)s_;
 		
-		DOM.applyAttributes(e,
+		applyAttributes(e,
 			"xmlns:big-red", XMLNS.BIG_RED,
 			"xmlns:signature", XMLNS.SIGNATURE);
 
@@ -49,7 +48,7 @@ public class SignatureXMLSaver extends XMLSaver {
 	}
 	
 	private Element processControl(Element e, Control c) {
-		DOM.applyAttributes(e,
+		applyAttributes(e,
 				"name", c.getName(),
 				"kind", c.getKind().toString());
 		
@@ -67,11 +66,11 @@ public class SignatureXMLSaver extends XMLSaver {
 	}
 	
 	private Element processPort(Element e, Port p) {
-		DOM.applyAttributes(e,
+		applyAttributes(e,
 				"name", p.getName());
 		
 		e.appendChild(
-			DOM.applyAttributes(
+			applyAttributes(
 				newElement(XMLNS.BIG_RED, "big-red:port-appearance"),
 				"segment", p.getSegment(),
 				"distance", p.getDistance()));

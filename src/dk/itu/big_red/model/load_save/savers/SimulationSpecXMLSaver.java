@@ -24,7 +24,7 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(XMLSaver.createDocument(XMLNS.SPEC, "spec:spec"));
+		setDocument(createDocument(XMLNS.SPEC, "spec:spec"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}

@@ -23,7 +23,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.model.load_save.XMLNS;
-import dk.itu.big_red.utilities.DOM;
 
 public class ReactionRuleXMLSaver extends XMLSaver {
 
@@ -41,7 +40,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(XMLSaver.createDocument(XMLNS.RULE, "rule:rule"));
+		setDocument(createDocument(XMLNS.RULE, "rule:rule"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -69,7 +68,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	}
 	
 	private Element processRedex(Element e, Bigraph redex) throws SaveFailedException {
-		DOM.applyAttributes(e,
+		applyAttributes(e,
 				"xmlns:bigraph", XMLNS.BIGRAPH);
 		BigraphXMLSaver ex = new BigraphXMLSaver();
 		ex.setModel(redex);
@@ -78,7 +77,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	}
 	
 	private Element processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
-		DOM.applyAttributes(e,
+		applyAttributes(e,
 				"xmlns:change", XMLNS.CHANGE);
 		
 		return _processChanges(e, changes);
@@ -92,7 +91,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				ChangeFillColour i = (ChangeFillColour)i_;
 				if ((i.getCreator() instanceof Layoutable)) {
 					Layoutable l = (Layoutable)i.getCreator();
-					f = DOM.applyAttributes(
+					f = applyAttributes(
 							newElement(XMLNS.BIG_RED, "big-red:fill"),
 							"name", l.getName(),
 							"type", l.getType().toLowerCase(),
@@ -102,7 +101,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				ChangeOutlineColour i = (ChangeOutlineColour)i_;
 				if ((i.getCreator() instanceof Layoutable)) {
 					Layoutable l = (Layoutable)i.getCreator();
-					f = DOM.applyAttributes(
+					f = applyAttributes(
 							newElement(XMLNS.BIG_RED, "big-red:outline"),
 							"name", l.getName(),
 							"type", l.getType().toLowerCase(),
@@ -112,7 +111,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				_processChanges(e, (ChangeGroup)i_);
 			} else if (i_ instanceof ChangeLayout) {
 				ChangeLayout i = (ChangeLayout)i_;
-				f = DOM.applyAttributes(
+				f = applyAttributes(
 						newElement(XMLNS.BIG_RED, "big-red:layout"),
 						"name", i.getCreator().getName(),
 						"type", i.getCreator().getType().toLowerCase(),
@@ -122,50 +121,50 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 						"height", i.newLayout.getHeight());
 			} else if (i_ instanceof ChangeAddChild) {
 				ChangeAddChild i = (ChangeAddChild)i_;
-				f = DOM.applyAttributes(
+				f = applyAttributes(
 						newElement(XMLNS.CHANGE, "change:add"),
 						"name", i.name,
 						"type", i.child.getType().toLowerCase());
 				if (!(i.getCreator() instanceof Bigraph))
-					DOM.applyAttributes(f,
+					applyAttributes(f,
 							"parent", i.getCreator().getName(),
 							"parent-type", i.getCreator().getType().toLowerCase());
 				if (i.child instanceof Node)
-					DOM.applyAttributes(f,
+					applyAttributes(f,
 							"control", ((Node)i.child).getControl().getName());
 			} else if (i_ instanceof ChangeRemoveChild) {
 				ChangeRemoveChild i = (ChangeRemoveChild)i_;
-				f = DOM.applyAttributes(
+				f = applyAttributes(
 						newElement(XMLNS.CHANGE, "change:remove"),
 						"name", i.child.getName(),
 						"type", i.child.getType().toLowerCase());
 			} else if (i_ instanceof ChangeName) {
 				ChangeName i = (ChangeName)i_;
-				f = DOM.applyAttributes(
+				f = applyAttributes(
 						newElement(XMLNS.CHANGE, "change:rename"),
 						"name", i.getCreator().getName(), 
 						"type", i.getCreator().getType().toLowerCase(),
 						"new-name", i.newName);
 			} else if (i_ instanceof ChangeConnect) {
 				ChangeConnect i = (ChangeConnect)i_;
-				f = DOM.applyAttributes(
+				f = applyAttributes(
 						newElement(XMLNS.CHANGE, "change:connect"),
 						"name", i.getCreator().getName(),
 						"link", i.link.getName());
 				if (i.getCreator() instanceof Port)
-					DOM.applyAttributes(f,
+					applyAttributes(f,
 							"node", ((Port)i.getCreator()).getParent().getName());
 			} else if (i_ instanceof ChangeDisconnect) {
 				ChangeDisconnect i = (ChangeDisconnect)i_;
-				f = DOM.applyAttributes(
+				f = applyAttributes(
 						newElement(XMLNS.CHANGE, "change:disconnect"),
 						"name", i.getCreator().getName());
 				if (i.getCreator() instanceof Port)
-					DOM.applyAttributes(f,
+					applyAttributes(f,
 							"node", ((Port)i.getCreator()).getParent().getName());
 			} else if (i_ instanceof ChangeAlias) {
 				ChangeAlias i = (ChangeAlias)i_;
-				f = DOM.applyAttributes(
+				f = applyAttributes(
 						newElement(XMLNS.CHANGE, "change:site-alias"),
 						"name", i.getCreator().getName(),
 						"alias", i.alias);

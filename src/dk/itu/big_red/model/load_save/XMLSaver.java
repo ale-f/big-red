@@ -97,6 +97,22 @@ public abstract class XMLSaver extends Saver {
 	}
 
 	/**
+	 * Applies the specified name-value pairs to the specified element as
+	 * attributes. (This uses {@link Element#setAttribute}, but is slightly
+	 * less irritating, as it automatically converts names and values to
+	 * strings.)
+	 * @param d an Element
+	 * @param attrs a vararg list of name-value pairs of any type
+	 * @return d, for convenience
+	 * @see #applyAttributesNS(Element, Object...)
+	 */
+	public static Element applyAttributes(Element d, Object... attrs) {
+		for (int i = 0; i < attrs.length; i += 2)
+			d.setAttribute(attrs[i].toString(), attrs[i + 1].toString());
+		return d;
+	}
+
+	/**
 	 * Appends <code>newChild</code> to <code>e</code>, if neither of them are
 	 * <code>null</code>.
 	 * @param e the would-be parent of the new node
@@ -125,15 +141,15 @@ public abstract class XMLSaver extends Saver {
 	 *         couldn't be created
 	 */
 	protected static DOMImplementation getImplementation() {
-		if (XMLSaver.impl == null) {
+		if (impl == null) {
 			try {
-				XMLSaver.impl = DOMImplementationRegistry.newInstance().
+				impl = DOMImplementationRegistry.newInstance().
 				       getDOMImplementation("XML 3.0");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
 		}
-		return XMLSaver.impl;
+		return impl;
 	}
 }

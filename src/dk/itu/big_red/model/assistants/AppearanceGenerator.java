@@ -14,8 +14,8 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
+import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.utilities.Colour;
-import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
@@ -46,7 +46,7 @@ public final class AppearanceGenerator {
 			alive = true;
 			Colourable c = (Colourable)o;
 			
-			DOM.applyAttributes(aE,
+			XMLSaver.applyAttributes(aE,
 					"fillColor", new Colour(c.getFillColour()).toHexString(),
 					"outlineColor", new Colour(c.getOutlineColour()).toHexString());
 		}
@@ -55,7 +55,7 @@ public final class AppearanceGenerator {
 			alive = true;
 			String comment = ((ModelObject)o).getComment();
 			if (comment != null)
-				DOM.applyAttributes(aE,
+				XMLSaver.applyAttributes(aE,
 						"comment", comment);
 		}
 		
@@ -87,7 +87,7 @@ public final class AppearanceGenerator {
 			doc.createElementNS(XMLNS.BIG_RED,
 					"big-red:shape");
 
-		DOM.applyAttributes(aE,
+		XMLSaver.applyAttributes(aE,
 				"shape", (c.getShape() == Shape.POLYGON ? "polygon" : "oval"));
 		
 		PointList pl = c.getPoints();
@@ -95,7 +95,7 @@ public final class AppearanceGenerator {
 			for (int i = 0; i < pl.size(); i++) {
 				Point p = pl.getPoint(i);
 				Element pE = doc.createElement("big-red:point");
-				DOM.applyAttributes(pE,
+				XMLSaver.applyAttributes(pE,
 						"x", p.x,
 						"y", p.y);
 				aE.appendChild(pE);
@@ -141,7 +141,7 @@ public final class AppearanceGenerator {
 	}
 	
 	public static Element rectangleToElement(Element e, ReadonlyRectangle r) {
-		return DOM.applyAttributes(e,
+		return XMLSaver.applyAttributes(e,
 				"width", r.getWidth(),
 				"height", r.getHeight(),
 				"x", r.getX(),

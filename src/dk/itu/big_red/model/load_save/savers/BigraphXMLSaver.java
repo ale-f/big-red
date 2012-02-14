@@ -19,7 +19,6 @@ import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
-import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.Lists;
 
 /**
@@ -78,7 +77,7 @@ public class BigraphXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(XMLSaver.createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
+		setDocument(createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -90,7 +89,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		Bigraph obj = (Bigraph)obj_;
 		
 		if (exportAppearance || exportPersistentID)
-			DOM.applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
+			applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
 		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(XMLNS.BIGRAPH, "bigraph:signature"),
@@ -138,12 +137,12 @@ public class BigraphXMLSaver extends XMLSaver {
 	private Element processSite(Element e, Site s) throws SaveFailedException {
 		String alias = s.getAlias();
 		if (alias != null)
-			DOM.applyAttributes(e, "alias", alias);
+			applyAttributes(e, "alias", alias);
 		return e;
 	}
 	
 	private Element processNode(Element e, Node n) throws SaveFailedException {
-		DOM.applyAttributes(e,
+		applyAttributes(e,
 			"control", n.getControl().getName(),
 			"name", n.getName());
 		
@@ -170,10 +169,10 @@ public class BigraphXMLSaver extends XMLSaver {
 	
 	private Element processPoint(Element e, Point p) throws SaveFailedException {
 		Link link = p.getLink();
-		DOM.applyAttributes(e,
+		applyAttributes(e,
 			"name", p.getName());
 		if (link != null) {
-			DOM.applyAttributes(
+			applyAttributes(
 				e,
 				"link", link.getName());
 		}
@@ -184,7 +183,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		if (e == null || l == null)
 			return e;
 		if (!(l instanceof Bigraph))
-			DOM.applyAttributes(e, "name", l.getName());
+			applyAttributes(e, "name", l.getName());
 		if (exportAppearance)
 			appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), l));
 		return e;

@@ -23,7 +23,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import dk.itu.big_red.utilities.Colour;
-import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
 public abstract class XMLLoader extends Loader implements IFileBackable {
