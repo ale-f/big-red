@@ -3,8 +3,9 @@ package dk.itu.big_red.model.load_save.loaders;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.swt.SWT;
+import org.eclipse.core.runtime.Status;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -31,7 +32,6 @@ import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.resources.Project;
-import dk.itu.big_red.utilities.ui.UI;
 
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.
@@ -195,8 +195,9 @@ public class BigraphXMLLoader extends XMLLoader {
 					     appearance != null) ||
 					    (appearanceAllowed == Tristate.TRUE &&
 					     appearance == null)) {
-				UI.showMessageBox(UI.getShell(), SWT.ICON_WARNING, "All or nothing!", "Some objects in this bigraph have layout data, and some don't. " +
-				"Big Red ignores layout data unless all objects have it.");
+				addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,
+					"The layout data for this bigraph is incomplete and so " +
+					"has been ignored."));
 				appearanceAllowed = Tristate.FALSE;
 				partialAppearanceWarning = true;
 			}
