@@ -55,7 +55,10 @@ public class SignatureXMLLoader extends XMLLoader {
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model, cg);
 		
-		AppearanceGenerator.attributesToModel(e, model);
+		String label =
+				getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "label");
+		if (label != null)
+			model.setLabel(label);
 		
 		for (Element j :
 			getNamedChildElements(e, IRedNamespaceConstants.SIGNATURE, "port")) {

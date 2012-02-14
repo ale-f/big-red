@@ -59,7 +59,8 @@ public class SignatureXMLSaver extends XMLSaver {
 				AppearanceGenerator.getShape(getDocument(), c));
 		appendChildIfNotNull(e,
 				AppearanceGenerator.getAppearance(getDocument(), c));
-		AppearanceGenerator.modelToAttributes(e, c);
+		e.setAttributeNS(IRedNamespaceConstants.BIG_RED,
+				"big-red:label", c.getLabel());
 		
 		return e;
 	}

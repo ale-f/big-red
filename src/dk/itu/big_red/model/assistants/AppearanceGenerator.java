@@ -131,17 +131,6 @@ public final class AppearanceGenerator {
 		c.setPoints(pl);
 	}
 	
-	public static void modelToAttributes(Element e, Object o) {
-		if (o instanceof Control)
-			e.setAttributeNS(IRedNamespaceConstants.BIG_RED, "big-red:label",
-					((Control)o).getLabel());
-	}
-	
-	public static void attributesToModel(Element e, Object o) {
-		if (o instanceof Control && e.hasAttributeNS(IRedNamespaceConstants.BIG_RED, "label"))
-			((Control)o).setLabel(e.getAttributeNS(IRedNamespaceConstants.BIG_RED, "label"));
-	}
-	
 	public static Element rectangleToElement(Element e, ReadonlyRectangle r) {
 		return XMLSaver.applyAttributes(e,
 				"width", r.getWidth(),
