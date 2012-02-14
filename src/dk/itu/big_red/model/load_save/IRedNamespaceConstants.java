@@ -5,7 +5,7 @@ package dk.itu.big_red.model.load_save;
  * @author alec
  *
  */
-public interface XMLNS {
+public interface IRedNamespaceConstants {
 	/**
 	 * The XML namespace for {@code <bigraph>} documents.
 	 */

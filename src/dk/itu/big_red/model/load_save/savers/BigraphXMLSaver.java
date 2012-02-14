@@ -16,7 +16,7 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.XMLNS;
+import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.utilities.Lists;
 
@@ -76,7 +76,7 @@ public class BigraphXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(createDocument(XMLNS.BIGRAPH, "bigraph:bigraph"));
+		setDocument(createDocument(IRedNamespaceConstants.BIGRAPH, "bigraph:bigraph"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -88,10 +88,10 @@ public class BigraphXMLSaver extends XMLSaver {
 		Bigraph obj = (Bigraph)obj_;
 		
 		if (exportAppearance || exportPersistentID)
-			applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
+			applyAttributes(getDocumentElement(), "xmlns:big-red", IRedNamespaceConstants.BIG_RED);
 		appendChildIfNotNull(e,
 			processOrReference(
-				newElement(XMLNS.BIGRAPH, "bigraph:signature"),
+				newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:signature"),
 				getModel().getFile(),
 				obj.getSignature(), SignatureXMLSaver.class));
 		
@@ -100,15 +100,15 @@ public class BigraphXMLSaver extends XMLSaver {
 					BigraphXMLSaver.SCHEMA_ORDER)) {
 			Element f = null;
 			if (i instanceof Edge) {
-				f = newElement(XMLNS.BIGRAPH, "bigraph:edge");
+				f = newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:edge");
 			} else if (i instanceof OuterName) {
-				f = newElement(XMLNS.BIGRAPH, "bigraph:outername");
+				f = newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:outername");
 			} else if (i instanceof Root) {
 				f = processRoot(
-						newElement(XMLNS.BIGRAPH, "bigraph:root"), (Root)i);
+						newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:root"), (Root)i);
 			} else if (i instanceof InnerName) {
 				f = processPoint(
-						newElement(XMLNS.BIGRAPH, "bigraph:innername"), (Point)i);
+						newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:innername"), (Point)i);
 			}
 			appendChildIfNotNull(e, applyCommonProperties(f, i));
 		}
@@ -123,10 +123,10 @@ public class BigraphXMLSaver extends XMLSaver {
 			Element f = null;
 			if (i instanceof Node) {
 				f = processNode(
-						newElement(XMLNS.BIGRAPH, "bigraph:node"), (Node)i);
+						newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:node"), (Node)i);
 			} else if (i instanceof Site) {
 				f = processSite(
-						newElement(XMLNS.BIGRAPH, "bigraph:site"), (Site)i);
+						newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:site"), (Site)i);
 			}
 			appendChildIfNotNull(e, applyCommonProperties(f, i));
 		}
@@ -147,7 +147,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		
 		for (Port p : n.getPorts()) 
 			appendChildIfNotNull(e, processPoint(
-					newElement(XMLNS.BIGRAPH, "bigraph:port"), p));
+					newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:port"), p));
 		
 		for (Layoutable l :
 			Lists.group(n.getChildren(),
@@ -155,10 +155,10 @@ public class BigraphXMLSaver extends XMLSaver {
 			Element f = null;
 			if (l instanceof Node) {
 				f = processNode(
-					newElement(XMLNS.BIGRAPH, "bigraph:node"), (Node)l);
+					newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:node"), (Node)l);
 			} else if (l instanceof Site) {
 				f = processSite(
-					newElement(XMLNS.BIGRAPH, "bigraph:site"), (Site)l);
+					newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:site"), (Site)l);
 			}
 			appendChildIfNotNull(e, applyCommonProperties(f, l));
 		}

@@ -27,7 +27,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.XMLNS;
+import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.resources.Project;
 
@@ -80,14 +80,14 @@ public class BigraphXMLLoader extends XMLLoader {
 		cg.clear();
 		
 		Element signatureElement =
-			removeNamedChildElement(e, XMLNS.BIGRAPH, "signature");
+			removeNamedChildElement(e, IRedNamespaceConstants.BIGRAPH, "signature");
 		
 		String signaturePath;
 		if (signatureElement != null) {
 			signaturePath =
-				getAttributeNS(signatureElement, XMLNS.BIGRAPH, "src");
+				getAttributeNS(signatureElement, IRedNamespaceConstants.BIGRAPH, "src");
 		} else {
-			signaturePath = getAttributeNS(e, XMLNS.BIGRAPH, "signature");
+			signaturePath = getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "signature");
 		}
 		
 		if (signaturePath != null) {
@@ -137,21 +137,21 @@ public class BigraphXMLLoader extends XMLLoader {
 			new HashMap<String, Link>();
 	
 	private Link processLink(Element e, Link model) throws LoadFailedException {
-		String name = getAttributeNS(e, XMLNS.BIGRAPH, "name");
+		String name = getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "name");
 		links.put(name, model);
 		
 		return model;
 	}
 	
 	private Point processPoint(Element e, Point model) throws LoadFailedException {
-		String link = getAttributeNS(e, XMLNS.BIGRAPH, "link");
+		String link = getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "link");
 		if (link != null)
 			cg.add(model.changeConnect(links.get(link)));
 		return model;
 	}
 	
 	private Site processSite(Element e, Site model) throws LoadFailedException {
-		String alias = getAttributeNS(e, XMLNS.BIGRAPH, "alias");
+		String alias = getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "alias");
 		if (alias != null)
 			cg.add(model.changeAlias(alias));
 		return model;
@@ -162,7 +162,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		boolean port = false;
 		if (e.getLocalName().equals("node")) {
 			String controlName =
-					getAttributeNS(e, XMLNS.BIGRAPH, "control");
+					getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "control");
 			Control c = bigraph.getSignature().getControl(controlName);
 			if (c == null)
 				throw new LoadFailedException(
@@ -182,10 +182,10 @@ public class BigraphXMLLoader extends XMLLoader {
 		if (model instanceof Layoutable) {
 			Layoutable l = (Layoutable)model;
 			cg.add(context.changeAddChild(l,
-					getAttributeNS(e, XMLNS.BIGRAPH, "name")));
+					getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "name")));
 			
 			Element appearance =
-				removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
+				removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "appearance");
 			if (appearanceAllowed == Tristate.UNKNOWN) {
 				appearanceAllowed = Tristate.fromBoolean(appearance != null);
 			} else if (!partialAppearanceWarning &&
@@ -209,7 +209,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		} else if (port) {
 			Node n = (Node)context;
 			processPoint(e,
-				n.getPort(getAttributeNS(e, XMLNS.BIGRAPH, "name")));
+				n.getPort(getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "name")));
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {

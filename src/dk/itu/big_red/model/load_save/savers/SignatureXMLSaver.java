@@ -8,7 +8,7 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.XMLNS;
+import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 
 public class SignatureXMLSaver extends XMLSaver {
 	@Override
@@ -25,7 +25,7 @@ public class SignatureXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(createDocument(XMLNS.SIGNATURE, "signature:signature"));
+		setDocument(createDocument(IRedNamespaceConstants.SIGNATURE, "signature:signature"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -37,12 +37,12 @@ public class SignatureXMLSaver extends XMLSaver {
 		Signature s = (Signature)s_;
 		
 		applyAttributes(e,
-			"xmlns:big-red", XMLNS.BIG_RED,
-			"xmlns:signature", XMLNS.SIGNATURE);
+			"xmlns:big-red", IRedNamespaceConstants.BIG_RED,
+			"xmlns:signature", IRedNamespaceConstants.SIGNATURE);
 
 		for (Control c : s.getControls())
 			appendChildIfNotNull(e,
-				processControl(newElement(XMLNS.SIGNATURE, "signature:control"), c));
+				processControl(newElement(IRedNamespaceConstants.SIGNATURE, "signature:control"), c));
 		return e;
 	}
 	
@@ -53,7 +53,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		
 		for (Port p : c.createPorts())
 			e.appendChild(processPort(
-				newElement(XMLNS.SIGNATURE, "signature:port"), p));
+				newElement(IRedNamespaceConstants.SIGNATURE, "signature:port"), p));
 		
 		appendChildIfNotNull(e,
 				AppearanceGenerator.getShape(getDocument(), c));
@@ -70,7 +70,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		
 		e.appendChild(
 			applyAttributes(
-				newElement(XMLNS.BIG_RED, "big-red:port-appearance"),
+				newElement(IRedNamespaceConstants.BIG_RED, "big-red:port-appearance"),
 				"segment", p.getSegment(),
 				"distance", p.getDistance()));
 		

@@ -14,7 +14,7 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.XMLNS;
+import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.utilities.geometry.Ellipse;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
@@ -36,9 +36,9 @@ public class SignatureXMLLoader extends XMLLoader {
 	private Control makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
 		
-		model.setName(getAttributeNS(e, XMLNS.SIGNATURE, "name"));
+		model.setName(getAttributeNS(e, IRedNamespaceConstants.SIGNATURE, "name"));
 		
-		String kind = getAttributeNS(e, XMLNS.SIGNATURE, "kind");
+		String kind = getAttributeNS(e, IRedNamespaceConstants.SIGNATURE, "kind");
 		if (kind != null) {
 			model.setKind(
 				kind.equals("active") ? Kind.ACTIVE :
@@ -46,19 +46,19 @@ public class SignatureXMLLoader extends XMLLoader {
 		}
 		
 		boolean generatePolygon = false;
-		Element el = removeNamedChildElement(e, XMLNS.BIG_RED, "shape");
+		Element el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "shape");
 		if (el != null) {
 			AppearanceGenerator.setShape(el, model);
 		} else generatePolygon = true;
 		
-		el = removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
+		el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "appearance");
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model, cg);
 		
 		AppearanceGenerator.attributesToModel(e, model);
 		
 		for (Element j :
-			getNamedChildElements(e, XMLNS.SIGNATURE, "port")) {
+			getNamedChildElements(e, IRedNamespaceConstants.SIGNATURE, "port")) {
 			PortSpec i = makePortSpec(j, generatePolygon);
 			if (i != null)
 				model.addPort(i);
@@ -86,7 +86,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		cg.clear();
 		
 		for (Element j :
-			getNamedChildElements(e, XMLNS.SIGNATURE, "control")) {
+			getNamedChildElements(e, IRedNamespaceConstants.SIGNATURE, "control")) {
 			Control i = makeControl(j);
 			if (i != null)
 				sig.addControl(i);
@@ -105,12 +105,12 @@ public class SignatureXMLLoader extends XMLLoader {
 	private PortSpec makePortSpec(Element e, boolean ignoreAppearanceData) {
 		PortSpec model = new PortSpec();
 		
-		model.setName(getAttributeNS(e, XMLNS.SIGNATURE, "name"));
+		model.setName(getAttributeNS(e, IRedNamespaceConstants.SIGNATURE, "name"));
 		
-		Element el = removeNamedChildElement(e, XMLNS.BIG_RED, "port-appearance");
+		Element el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "port-appearance");
 		if (el != null && !ignoreAppearanceData) {
-			model.setDistance(getDoubleAttribute(el, XMLNS.BIG_RED, "distance"));
-			model.setSegment(getIntAttribute(el, XMLNS.BIG_RED, "segment"));
+			model.setDistance(getDoubleAttribute(el, IRedNamespaceConstants.BIG_RED, "distance"));
+			model.setSegment(getIntAttribute(el, IRedNamespaceConstants.BIG_RED, "segment"));
 		}
 		
 		return model;

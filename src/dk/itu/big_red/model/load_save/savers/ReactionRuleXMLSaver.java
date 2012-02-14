@@ -21,7 +21,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.XMLNS;
+import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 
 public class ReactionRuleXMLSaver extends XMLSaver {
 
@@ -39,7 +39,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(createDocument(XMLNS.RULE, "rule:rule"));
+		setDocument(createDocument(IRedNamespaceConstants.RULE, "rule:rule"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -51,7 +51,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		ReactionRule rr = (ReactionRule)rr_;
 		
 		appendChildIfNotNull(e,
-			processRedex(newElement(XMLNS.RULE, "rule:redex"), rr.getRedex()));
+			processRedex(newElement(IRedNamespaceConstants.RULE, "rule:redex"), rr.getRedex()));
 		
 		try {
 			if (getModel().getChanges().size() != 0)
@@ -62,13 +62,13 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		}
 		
 		appendChildIfNotNull(e,
-			processChanges(newElement(XMLNS.RULE, "rule:changes"), rr.getChanges()));
+			processChanges(newElement(IRedNamespaceConstants.RULE, "rule:changes"), rr.getChanges()));
 		return e;
 	}
 	
 	private Element processRedex(Element e, Bigraph redex) throws SaveFailedException {
 		applyAttributes(e,
-				"xmlns:bigraph", XMLNS.BIGRAPH);
+				"xmlns:bigraph", IRedNamespaceConstants.BIGRAPH);
 		BigraphXMLSaver ex = new BigraphXMLSaver();
 		ex.setModel(redex);
 		ex.setDocument(getDocument());
@@ -77,7 +77,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	
 	private Element processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
 		applyAttributes(e,
-				"xmlns:change", XMLNS.CHANGE);
+				"xmlns:change", IRedNamespaceConstants.CHANGE);
 		
 		return _processChanges(e, changes);
 	}
@@ -91,7 +91,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				if ((i.getCreator() instanceof Layoutable)) {
 					Layoutable l = (Layoutable)i.getCreator();
 					f = applyAttributes(
-							newElement(XMLNS.BIG_RED, "big-red:fill"),
+							newElement(IRedNamespaceConstants.BIG_RED, "big-red:fill"),
 							"name", l.getName(),
 							"type", l.getType().toLowerCase(),
 							"colour", i.newColour.toHexString());
@@ -101,7 +101,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				if ((i.getCreator() instanceof Layoutable)) {
 					Layoutable l = (Layoutable)i.getCreator();
 					f = applyAttributes(
-							newElement(XMLNS.BIG_RED, "big-red:outline"),
+							newElement(IRedNamespaceConstants.BIG_RED, "big-red:outline"),
 							"name", l.getName(),
 							"type", l.getType().toLowerCase(),
 							"colour", i.newColour.toHexString());
@@ -111,7 +111,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			} else if (i_ instanceof ChangeLayout) {
 				ChangeLayout i = (ChangeLayout)i_;
 				f = applyAttributes(
-						newElement(XMLNS.BIG_RED, "big-red:layout"),
+						newElement(IRedNamespaceConstants.BIG_RED, "big-red:layout"),
 						"name", i.getCreator().getName(),
 						"type", i.getCreator().getType().toLowerCase(),
 						"x", i.newLayout.getX(),
@@ -121,7 +121,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			} else if (i_ instanceof ChangeAddChild) {
 				ChangeAddChild i = (ChangeAddChild)i_;
 				f = applyAttributes(
-						newElement(XMLNS.CHANGE, "change:add"),
+						newElement(IRedNamespaceConstants.CHANGE, "change:add"),
 						"name", i.name,
 						"type", i.child.getType().toLowerCase());
 				if (!(i.getCreator() instanceof Bigraph))
@@ -134,20 +134,20 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			} else if (i_ instanceof ChangeRemoveChild) {
 				ChangeRemoveChild i = (ChangeRemoveChild)i_;
 				f = applyAttributes(
-						newElement(XMLNS.CHANGE, "change:remove"),
+						newElement(IRedNamespaceConstants.CHANGE, "change:remove"),
 						"name", i.child.getName(),
 						"type", i.child.getType().toLowerCase());
 			} else if (i_ instanceof ChangeName) {
 				ChangeName i = (ChangeName)i_;
 				f = applyAttributes(
-						newElement(XMLNS.CHANGE, "change:rename"),
+						newElement(IRedNamespaceConstants.CHANGE, "change:rename"),
 						"name", i.getCreator().getName(), 
 						"type", i.getCreator().getType().toLowerCase(),
 						"new-name", i.newName);
 			} else if (i_ instanceof ChangeConnect) {
 				ChangeConnect i = (ChangeConnect)i_;
 				f = applyAttributes(
-						newElement(XMLNS.CHANGE, "change:connect"),
+						newElement(IRedNamespaceConstants.CHANGE, "change:connect"),
 						"name", i.getCreator().getName(),
 						"link", i.link.getName());
 				if (i.getCreator() instanceof Port)
@@ -156,7 +156,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			} else if (i_ instanceof ChangeDisconnect) {
 				ChangeDisconnect i = (ChangeDisconnect)i_;
 				f = applyAttributes(
-						newElement(XMLNS.CHANGE, "change:disconnect"),
+						newElement(IRedNamespaceConstants.CHANGE, "change:disconnect"),
 						"name", i.getCreator().getName());
 				if (i.getCreator() instanceof Port)
 					applyAttributes(f,
@@ -164,7 +164,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			} else if (i_ instanceof ChangeAlias) {
 				ChangeAlias i = (ChangeAlias)i_;
 				f = applyAttributes(
-						newElement(XMLNS.CHANGE, "change:site-alias"),
+						newElement(IRedNamespaceConstants.CHANGE, "change:site-alias"),
 						"name", i.getCreator().getName(),
 						"alias", i.alias);
 			}

@@ -12,7 +12,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.load_save.XMLNS;
+import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.savers.XMLSaver;
 import dk.itu.big_red.utilities.Colour;
@@ -33,7 +33,7 @@ public final class AppearanceGenerator {
 			return null;
 		
 		Element aE =
-			doc.createElementNS(XMLNS.BIG_RED,
+			doc.createElementNS(IRedNamespaceConstants.BIG_RED,
 					"big-red:appearance");
 		boolean alive = false;
 		
@@ -63,7 +63,7 @@ public final class AppearanceGenerator {
 	}
 	
 	public static void setAppearance(Element e, Object o, ChangeGroup cg) {
-		if (!nameEqualsNS(e, XMLNS.BIG_RED, "appearance"))
+		if (!nameEqualsNS(e, IRedNamespaceConstants.BIG_RED, "appearance"))
 			return;
 		
 		if (o instanceof Layoutable) {
@@ -74,17 +74,17 @@ public final class AppearanceGenerator {
 		
 		if (o instanceof Colourable) {
 			Colourable c = (Colourable)o;
-			cg.add(c.changeFillColour(XMLLoader.getColorAttribute(e, XMLNS.BIG_RED, "fillColor")),
-					c.changeOutlineColour(XMLLoader.getColorAttribute(e, XMLNS.BIG_RED, "outlineColor")));
+			cg.add(c.changeFillColour(XMLLoader.getColorAttribute(e, IRedNamespaceConstants.BIG_RED, "fillColor")),
+					c.changeOutlineColour(XMLLoader.getColorAttribute(e, IRedNamespaceConstants.BIG_RED, "outlineColor")));
 		}
 		
 		if (o instanceof ModelObject)
-			((ModelObject)o).setComment(XMLLoader.getAttributeNS(e, XMLNS.BIG_RED, "comment"));
+			((ModelObject)o).setComment(XMLLoader.getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "comment"));
 	}
 	
 	public static Element getShape(Document doc, Control c) {
 		Element aE =
-			doc.createElementNS(XMLNS.BIG_RED,
+			doc.createElementNS(IRedNamespaceConstants.BIG_RED,
 					"big-red:shape");
 
 		XMLSaver.applyAttributes(aE,
@@ -106,13 +106,13 @@ public final class AppearanceGenerator {
 	}
 	
 	public static void setShape(Element e, Control c) {
-		if (!nameEqualsNS(e, XMLNS.BIG_RED, "shape"))
+		if (!nameEqualsNS(e, IRedNamespaceConstants.BIG_RED, "shape"))
 			return;
 
 		Control.Shape shape = Shape.OVAL;
 		PointList pl = null;
 		
-		String s = XMLLoader.getAttributeNS(e, XMLNS.BIG_RED, "shape");
+		String s = XMLLoader.getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "shape");
 		if (s != null) {
 			if (s.equals("polygon"))
 				shape = Shape.POLYGON;
@@ -121,8 +121,8 @@ public final class AppearanceGenerator {
 		if (shape == Shape.POLYGON) {
 			pl = new PointList();
 			for (Element pE : XMLLoader.getChildElements(e))
-				pl.addPoint(XMLLoader.getIntAttribute(pE, XMLNS.BIG_RED, "x"),
-						XMLLoader.getIntAttribute(pE, XMLNS.BIG_RED, "y"));
+				pl.addPoint(XMLLoader.getIntAttribute(pE, IRedNamespaceConstants.BIG_RED, "x"),
+						XMLLoader.getIntAttribute(pE, IRedNamespaceConstants.BIG_RED, "y"));
 		}
 		
 		c.setShape(shape);
@@ -131,13 +131,13 @@ public final class AppearanceGenerator {
 	
 	public static void modelToAttributes(Element e, Object o) {
 		if (o instanceof Control)
-			e.setAttributeNS(XMLNS.BIG_RED, "big-red:label",
+			e.setAttributeNS(IRedNamespaceConstants.BIG_RED, "big-red:label",
 					((Control)o).getLabel());
 	}
 	
 	public static void attributesToModel(Element e, Object o) {
-		if (o instanceof Control && e.hasAttributeNS(XMLNS.BIG_RED, "label"))
-			((Control)o).setLabel(e.getAttributeNS(XMLNS.BIG_RED, "label"));
+		if (o instanceof Control && e.hasAttributeNS(IRedNamespaceConstants.BIG_RED, "label"))
+			((Control)o).setLabel(e.getAttributeNS(IRedNamespaceConstants.BIG_RED, "label"));
 	}
 	
 	public static Element rectangleToElement(Element e, ReadonlyRectangle r) {
@@ -150,10 +150,10 @@ public final class AppearanceGenerator {
 	
 	public static Rectangle elementToRectangle(Element e) {
 		return new Rectangle(
-				XMLLoader.getIntAttribute(e, XMLNS.BIG_RED, "x"),
-				XMLLoader.getIntAttribute(e, XMLNS.BIG_RED, "y"),
-				XMLLoader.getIntAttribute(e, XMLNS.BIG_RED, "width"),
-				XMLLoader.getIntAttribute(e, XMLNS.BIG_RED, "height"));
+				XMLLoader.getIntAttribute(e, IRedNamespaceConstants.BIG_RED, "x"),
+				XMLLoader.getIntAttribute(e, IRedNamespaceConstants.BIG_RED, "y"),
+				XMLLoader.getIntAttribute(e, IRedNamespaceConstants.BIG_RED, "width"),
+				XMLLoader.getIntAttribute(e, IRedNamespaceConstants.BIG_RED, "height"));
 	}
 
 	private static boolean nameEqualsNS(Element e, String nsURI, String nodeName) {
