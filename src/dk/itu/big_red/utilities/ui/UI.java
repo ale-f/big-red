@@ -315,14 +315,6 @@ public final class UI {
 		getDisplay().asyncExec(r);
 	}
 	
-	public static Label newLabel(Composite parent, int style, String text) {
-		return UI.chain(new Label(parent, style)).text(text).done();
-	}
-	
-	public static Button newButton(Composite parent, int style, String text) {
-		return UI.chain(new Button(parent, style)).text(text).done();
-	}
-	
 	public static <T extends ContentViewer> T setProviders(T viewer,
 			IContentProvider cp, ILabelProvider lp) {
 		viewer.setContentProvider(cp);

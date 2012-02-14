@@ -12,6 +12,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
+
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.utilities.ui.UI;
@@ -45,7 +47,7 @@ public class WizardBigraphExportSelectorPage extends WizardPage {
 		l.numColumns = 1;
 		form.setLayout(l);
 		
-		UI.newLabel(form, SWT.NONE, "&Select an export format:");
+		UI.chain(new Label(form, SWT.NONE)).text("&Select an export format:").done();
 		
 		TableViewer tree = UI.setProviders(new TableViewer(form, SWT.BORDER),
 			new ListContentProvider(), new ConfigurationElementLabelProvider());

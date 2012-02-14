@@ -53,13 +53,13 @@ public class WizardNewRuleCreationPage extends WizardPage {
 			}
 		};
 		
-		UI.newLabel(root, 0, "&Parent folder:");
+		UI.chain(new Label(root, 0)).text("&Parent folder:").done();
 		
 		folderText = new Text(root, SWT.BORDER);
 		folderText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		folderText.addModifyListener(sharedModifyListener);
 		
-		Button folderButton = UI.newButton(root, SWT.CENTER, "&Browse...");
+		Button folderButton = UI.chain(new Button(root, SWT.CENTER)).text("&Browse...").done();
 		folderButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -101,13 +101,13 @@ public class WizardNewRuleCreationPage extends WizardPage {
 		folderButtonLayoutData.widthHint = 100;
 		folderButton.setLayoutData(folderButtonLayoutData);
 		
-		UI.newLabel(root, SWT.NONE, "&Signature:");
+		UI.chain(new Label(root, SWT.NONE)).text("&Signature:").done();
 		
 		signatureText = new Text(root, SWT.BORDER);
 		signatureText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		signatureText.addModifyListener(sharedModifyListener);
 		
-		Button signatureButton = UI.newButton(root, SWT.NONE, "B&rowse...");
+		Button signatureButton = UI.chain(new Button(root, SWT.NONE)).text("B&rowse...").done();
 		signatureButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -140,7 +140,7 @@ public class WizardNewRuleCreationPage extends WizardPage {
 		new Label(root, SWT.HORIZONTAL | SWT.SEPARATOR);
 		new Label(root, SWT.NONE);
 		
-		UI.newLabel(root, SWT.NONE, "&Name:");
+		UI.chain(new Label(root, SWT.NONE)).text("&Name:").done();
 		
 		nameText = new Text(root, SWT.BORDER);
 		nameText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));

@@ -28,7 +28,7 @@ public class ResourceSelector {
 	private IResource resource;
 	
 	public ResourceSelector(Composite c, IContainer k, Mode m, String... cT) {
-		button = UI.newButton(c, SWT.PUSH, "(none)");
+		button = UI.chain(new Button(c, SWT.PUSH)).text("(none)").done();
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

@@ -244,7 +244,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			gl.horizontalSpacing = gl.verticalSpacing = 10;
 		self.setLayout(gl);
 		
-		UI.newLabel(self, SWT.RIGHT, "Signature:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		UI.chain(new Label(self, SWT.RIGHT)).text("Signature:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		signatureSelector = new ResourceSelector(self,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
 			Mode.FILE, Types.SIGNATURE_XML);
@@ -267,7 +267,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		UI.newLabel(self, SWT.RIGHT, "Reaction rules:").setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+		UI.chain(new Label(self, SWT.RIGHT)).text("Reaction rules:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		rules = new ListViewer(self);
 		UI.setProviders(rules, new SimulationSpecRRContentProvider(rules),
 			new LabelProvider() {
@@ -288,7 +288,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		brl.pack = false;
 		br.setLayout(brl);
 		
-		Button b = UI.newButton(br, SWT.NONE, "&Add...");
+		Button b = UI.chain(new Button(br, SWT.NONE)).text("&Add...").done();
 		b.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
 		b.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -311,7 +311,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		b = UI.newButton(br, SWT.NONE, "&Remove...");
+		b = UI.chain(new Button(br, SWT.NONE)).text("&Remove...").done();
 		b.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
 		b.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -324,7 +324,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		UI.newLabel(self, SWT.RIGHT, "Model:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		UI.chain(new Label(self, SWT.RIGHT)).text("Model:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		modelSelector = new ResourceSelector(self,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
 			Mode.FILE, Types.BIGRAPH_XML);
@@ -349,7 +349,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		
 		new Label(self, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
-		UI.newLabel(self, SWT.RIGHT, "Tool:").setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		UI.chain(new Label(self, SWT.RIGHT)).text("Tool:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		final ComboViewer cv = UI.setProviders(new ComboViewer(self),
 			new ListContentProvider(), new LabelProvider() {
 				@Override
@@ -362,7 +362,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
-		export = UI.newButton(self, SWT.NONE, "&Export...");
+		export = UI.chain(new Button(self, SWT.NONE)).text("&Export...").done();
 		export.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		export.addSelectionListener(new SelectionAdapter() {
 			@Override

@@ -150,7 +150,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		Composite root = new Composite(parent, SWT.NONE);
 		root.setLayout(new GridLayout(3, false));
 		
-		UI.newLabel(root, 0, "&Bigraph:");
+		UI.chain(new Label(root, 0)).text("&Bigraph:").done();
 		
 		bigraphSelector =
 			new ResourceSelector(root, null, Mode.FILE, Types.BIGRAPH_XML);
@@ -164,7 +164,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		selectorLayoutData.horizontalSpan = 2;
 		bigraphSelector.getButton().setLayoutData(selectorLayoutData);
 		
-		Label signatureLabel = UI.newLabel(root, SWT.NONE, "&Result:");
+		Label signatureLabel = UI.chain(new Label(root, SWT.NONE)).text("&Result:").done();
 		signatureLabel.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true));
 		
 		resultText = new Text(root, SWT.BORDER | SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.READ_ONLY);
@@ -172,7 +172,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		targetTextLayoutData.horizontalSpan = 2;
 		resultText.setLayoutData(targetTextLayoutData);
 		
-		optionsLabel = UI.newLabel(root, SWT.NONE, "&Options:");
+		optionsLabel = UI.chain(new Label(root, SWT.NONE)).text("&Options:").done();
 		optionsLabel.setLayoutData(new GridData(SWT.NONE, SWT.TOP, false, true));
 		
 		optionsGroup = new Composite(root, SWT.NONE);
@@ -189,7 +189,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		groupLayoutData.horizontalSpan = 3;
 		group.setLayoutData(groupLayoutData);
 		
-		clipboardButton = UI.newButton(group, SWT.NONE, "Copy to clipboard");
+		clipboardButton = UI.chain(new Button(group, SWT.NONE)).text("Copy to clipboard").done();
 		clipboardButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -198,7 +198,7 @@ public class WizardBigraphExportPage extends WizardPage {
 			}
 		});
 		
-		saveButton = UI.newButton(group, SWT.NONE, "Save...");
+		saveButton = UI.chain(new Button(group, SWT.NONE)).text("Save...").done();
 		saveButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -235,7 +235,7 @@ public class WizardBigraphExportPage extends WizardPage {
 			for (final OptionDescriptor od : options) {
 				Object ov = exporter.getOption(od.getID());
 				if (ov instanceof Boolean) {
-					final Button b = UI.newButton(optionsGroup, SWT.CHECK, od.getDescription());
+					final Button b = UI.chain(new Button(optionsGroup, SWT.CHECK)).text(od.getDescription()).done();
 					b.setSelection((Boolean)ov);
 					b.addSelectionListener(new SelectionListener() {
 						
