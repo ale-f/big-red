@@ -60,7 +60,7 @@ public class AppearanceGenerator {
 	}
 	
 	public static void setAppearance(Element e, Object o, ChangeGroup cg) {
-		if (!DOM.nameEqualsNS(e, XMLNS.BIG_RED, "appearance"))
+		if (!nameEqualsNS(e, XMLNS.BIG_RED, "appearance"))
 			return;
 		
 		if (o instanceof Layoutable) {
@@ -103,7 +103,7 @@ public class AppearanceGenerator {
 	}
 	
 	public static void setShape(Element e, Control c) {
-		if (!DOM.nameEqualsNS(e, XMLNS.BIG_RED, "shape"))
+		if (!nameEqualsNS(e, XMLNS.BIG_RED, "shape"))
 			return;
 
 		Control.Shape shape = Shape.OVAL;
@@ -151,5 +151,9 @@ public class AppearanceGenerator {
 				DOM.getIntAttribute(e, XMLNS.BIG_RED, "y"),
 				DOM.getIntAttribute(e, XMLNS.BIG_RED, "width"),
 				DOM.getIntAttribute(e, XMLNS.BIG_RED, "height"));
+	}
+
+	private static boolean nameEqualsNS(Element e, String nsURI, String nodeName) {
+		return (e.getNamespaceURI().equals(nsURI) && e.getLocalName().equals(nodeName));
 	}
 }

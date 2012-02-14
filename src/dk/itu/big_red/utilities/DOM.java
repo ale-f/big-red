@@ -226,10 +226,6 @@ public class DOM {
 			e.appendChild(newChild);
 	}
 	
-	public static boolean nameEqualsNS(Element e, String nsURI, String nodeName) {
-		return (e.getNamespaceURI().equals(nsURI) && e.getLocalName().equals(nodeName));
-	}
-	
 	public static Iterable<Node> iterableChildren(Node n) {
 		if (n != null) {
 			return iterable(n.getChildNodes());
