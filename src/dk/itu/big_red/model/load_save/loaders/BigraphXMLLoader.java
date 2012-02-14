@@ -82,7 +82,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		cg.clear();
 		
 		Element signatureElement =
-			DOM.removeNamedChildElement(e, XMLNS.BIGRAPH, "signature");
+			removeNamedChildElement(e, XMLNS.BIGRAPH, "signature");
 		
 		String signaturePath;
 		if (signatureElement != null) {
@@ -130,7 +130,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	}
 	
 	private Container processContainer(Element e, Container model) throws LoadFailedException {
-		for (Element i : DOM.getChildElements(e))
+		for (Element i : getChildElements(e))
 			addChild(model, i);
 		return model;
 	}
@@ -187,7 +187,7 @@ public class BigraphXMLLoader extends XMLLoader {
 					DOM.getAttributeNS(e, XMLNS.BIGRAPH, "name")));
 			
 			Element appearance =
-				DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
+				removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
 			if (appearanceAllowed == Tristate.UNKNOWN) {
 				appearanceAllowed = Tristate.fromBoolean(appearance != null);
 			} else if (!partialAppearanceWarning &&

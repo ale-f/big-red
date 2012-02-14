@@ -48,19 +48,19 @@ public class SignatureXMLLoader extends XMLLoader {
 		}
 		
 		boolean generatePolygon = false;
-		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "shape");
+		Element el = removeNamedChildElement(e, XMLNS.BIG_RED, "shape");
 		if (el != null) {
 			AppearanceGenerator.setShape(el, model);
 		} else generatePolygon = true;
 		
-		el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
+		el = removeNamedChildElement(e, XMLNS.BIG_RED, "appearance");
 		if (el != null)
 			AppearanceGenerator.setAppearance(el, model, cg);
 		
 		AppearanceGenerator.attributesToModel(e, model);
 		
 		for (Element j :
-			DOM.getNamedChildElements(e, XMLNS.SIGNATURE, "port")) {
+			getNamedChildElements(e, XMLNS.SIGNATURE, "port")) {
 			PortSpec i = makePortSpec(j, generatePolygon);
 			if (i != null)
 				model.addPort(i);
@@ -88,7 +88,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		cg.clear();
 		
 		for (Element j :
-			DOM.getNamedChildElements(e, XMLNS.SIGNATURE, "control")) {
+			getNamedChildElements(e, XMLNS.SIGNATURE, "control")) {
 			Control i = makeControl(j);
 			if (i != null)
 				sig.addControl(i);
@@ -109,7 +109,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		model.setName(DOM.getAttributeNS(e, XMLNS.SIGNATURE, "name"));
 		
-		Element el = DOM.removeNamedChildElement(e, XMLNS.BIG_RED, "port-appearance");
+		Element el = removeNamedChildElement(e, XMLNS.BIG_RED, "port-appearance");
 		if (el != null && !ignoreAppearanceData) {
 			model.setDistance(DOM.getDoubleAttribute(el, XMLNS.BIG_RED, "distance"));
 			model.setSegment(DOM.getIntAttribute(el, XMLNS.BIG_RED, "segment"));

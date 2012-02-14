@@ -42,8 +42,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		rr = new ReactionRule();
 		
 		rr.setRedex(
-			makeRedex(DOM.getNamedChildElement(e, XMLNS.RULE, "redex")));
-		updateReactum(rr, DOM.getNamedChildElement(e, XMLNS.RULE, "changes"));
+			makeRedex(getNamedChildElement(e, XMLNS.RULE, "redex")));
+		updateReactum(rr, getNamedChildElement(e, XMLNS.RULE, "changes"));
 		
 		return rr;
 	}

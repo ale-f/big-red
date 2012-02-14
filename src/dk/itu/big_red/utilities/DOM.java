@@ -1,7 +1,5 @@
 package dk.itu.big_red.utilities;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -29,71 +27,6 @@ public class DOM {
 		for (int i = 0; i < attrs.length; i += 2)
 			d.setAttribute(attrs[i].toString(), attrs[i + 1].toString());
 		return d;
-	}
-	
-	/**
-	 * Gets all the children of the specified element with the given name and
-	 * namespace.
-	 * (Note that this method only searches immediate children.)
-	 * @param d an Element containing children
-	 * @param nsURI the namespace to search in
-	 * @param n the tag name to search for
-	 * @return an ArrayList of child elements
-	 */
-	public static ArrayList<Element> getNamedChildElements(Element d, String ns, String n) {
-		ArrayList<Element> r = new ArrayList<Element>();
-		for (Element t : getChildElements(d))
-			if (t.getNamespaceURI().equals(ns) && t.getLocalName().equals(n))
-				r.add(t);
-		return r;
-	}
-
-	/**
-	 * Returns the unique child of the specified Element which has the given
-	 * tag name.
-	 * @param d an Element containing children
-	 * @param n the tag name to search for
-	 * @return the unique named child, or <code>null</code> if there were zero
-	 *         or more than one matches
-	 * @see DOM#getNamedChildElements
-	 */
-	public static Element getNamedChildElement(Element d, String nsURI, String n) {
-		ArrayList<Element> r = getNamedChildElements(d, nsURI, n);
-		if (r.size() == 1)
-			return r.get(0);
-		else return null;
-	}
-
-	/**
-	 * Removes the unique child of the specified Element which has the given
-	 * tag name, and returns it.
-	 * @param d an Element containing children
-	 * @param n the tag name to search for
-	 * @return the unique named (former) child, or <code>null</code> if there
-	 *         were zero or more than one matches
-	 */
-	public static Element removeNamedChildElement(Element d, String nsURI, String n) {
-		Element r = getNamedChildElement(d, nsURI, n);
-		if (r != null)
-			r.getParentNode().removeChild(r);
-		return r;
-	}
-
-	/**
-	 * Returns all the child {@link Node}s of the specified {@link Element}
-	 * which are themselves {@link Element}s.
-	 * @param e an Element containing children
-	 * @return a list of child {@link Element}s
-	 */
-	public static List<Element> getChildElements(Element e) {
-		ArrayList<Element> children = new ArrayList<Element>();
-		int length = e.getChildNodes().getLength();
-		for (int h = 0; h < length; h++) {
-			Node i = e.getChildNodes().item(h);
-			if (i instanceof Element)
-				children.add((Element)i);
-		}
-		return children;
 	}
 	
 	/**

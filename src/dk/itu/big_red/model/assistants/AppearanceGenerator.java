@@ -12,6 +12,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.load_save.XMLLoader;
 import dk.itu.big_red.model.load_save.XMLNS;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.DOM;
@@ -117,7 +118,7 @@ public class AppearanceGenerator {
 		
 		if (shape == Shape.POLYGON) {
 			pl = new PointList();
-			for (Element pE : DOM.getChildElements(e))
+			for (Element pE : XMLLoader.getChildElements(e))
 				pl.addPoint(DOM.getIntAttribute(pE, XMLNS.BIG_RED, "x"),
 						DOM.getIntAttribute(pE, XMLNS.BIG_RED, "y"));
 		}

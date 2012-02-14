@@ -70,16 +70,14 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		ChangeGroup cg = new ChangeGroup();
 		
 		Element signatureElement =
-				DOM.getNamedChildElement(e, XMLNS.SPEC, "signature");
+				getNamedChildElement(e, XMLNS.SPEC, "signature");
 		if (signatureElement != null)
 			cg.add(ss.changeSignature(makeSignature(signatureElement)));
 		
-		for (Element i :
-		     DOM.getNamedChildElements(e, XMLNS.SPEC, "rule"))
+		for (Element i : getNamedChildElements(e, XMLNS.SPEC, "rule"))
 			cg.add(ss.changeAddRule(makeRule(i)));
 		
-		Element modelElement =
-				DOM.getNamedChildElement(e, XMLNS.SPEC, "model");
+		Element modelElement = getNamedChildElement(e, XMLNS.SPEC, "model");
 		if (modelElement != null)
 			cg.add(ss.changeModel(makeBigraph(modelElement)));
 		
