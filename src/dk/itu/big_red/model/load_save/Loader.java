@@ -1,10 +1,13 @@
 package dk.itu.big_red.model.load_save;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.content.IContentType;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -93,5 +96,17 @@ public abstract class Loader {
 			}
 		}
 		return null;
+	}
+	
+	private ArrayList<IStatus> notices;
+	
+	protected void addNotice(IStatus status) {
+		if (notices == null)
+			notices = new ArrayList<IStatus>();
+		notices.add(status);
+	}
+	
+	public List<IStatus> getNotices() {
+		return notices;
 	}
 }
