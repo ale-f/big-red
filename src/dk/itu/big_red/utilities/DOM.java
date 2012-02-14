@@ -3,8 +3,6 @@ package dk.itu.big_red.utilities;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 /**
  * Utility functions for manipulating DOM {@link Document}s and
@@ -86,27 +84,5 @@ public final class DOM {
 	 */
 	public static Colour getColorAttribute(Element d, String nsURI, String n) {
 		return new Colour(getAttributeNS(d, nsURI, n));
-	}
-	
-	public static Iterable<Node> iterableChildren(Node n) {
-		if (n != null) {
-			return iterable(n.getChildNodes());
-		} else return null;
-	}
-	
-	public static Iterable<Node> iterable(final NodeList nl_) {
-		if (nl_ != null) {
-			return new IterableWrapper<Node>() {
-				@Override
-				protected Node item(int index) {
-					return nl_.item(index);
-				}
-
-				@Override
-				protected int count() {
-					return nl_.getLength();
-				}
-			};
-		} else return null;
 	}
 }

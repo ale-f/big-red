@@ -2,6 +2,7 @@ package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -63,7 +64,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	
 	private void updateReactum(ReactionRule rr, Element e) throws LoadFailedException {
 		Bigraph reactum = rr.getReactum();
-		for (org.w3c.dom.Node i : DOM.iterableChildren(e)) {
+		NodeList nl = e.getChildNodes();
+		for (int i_ = 0; i_ < nl.getLength(); i_++) {
+			org.w3c.dom.Node i = nl.item(i_);
 			Change c = null;
 			if (i instanceof Element &&
 					i.getNamespaceURI().equals(XMLNS.CHANGE)) {
