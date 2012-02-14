@@ -215,17 +215,6 @@ public class DOM {
 		return new Colour(getAttributeNS(d, nsURI, n));
 	}
 	
-	/**
-	 * Appends <code>newChild</code> to <code>e</code>, if neither of them are
-	 * <code>null</code>.
-	 * @param e the would-be parent of the new node
-	 * @param newChild the node to add
-	 */
-	public static void appendChildIfNotNull(Element e, Node newChild) {
-		if (e != null && newChild != null)
-			e.appendChild(newChild);
-	}
-	
 	public static Iterable<Node> iterableChildren(Node n) {
 		if (n != null) {
 			return iterable(n.getChildNodes());

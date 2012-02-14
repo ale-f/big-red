@@ -8,7 +8,6 @@ import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.XMLSaver;
 import dk.itu.big_red.model.load_save.XMLNS;
-import dk.itu.big_red.utilities.DOM;
 
 public class SimulationSpecXMLSaver extends XMLSaver {
 	@Override
@@ -36,18 +35,18 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 			throw new SaveFailedException(ss_ + " isn't a SimulationSpec");
 		SimulationSpec ss = (SimulationSpec)ss_;
 		
-		DOM.appendChildIfNotNull(e,
+		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(XMLNS.SPEC, "spec:signature"),
 				ss.getFile(), ss.getSignature(), SignatureXMLSaver.class));
 		
 		for (ReactionRule rr : ss.getRules())
-			DOM.appendChildIfNotNull(e,
+			appendChildIfNotNull(e,
 				processOrReference(
 					newElement(XMLNS.SPEC, "spec:rule"),
 					ss.getFile(), rr, ReactionRuleXMLSaver.class));
 		
-		DOM.appendChildIfNotNull(e,
+		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(XMLNS.SPEC, "spec:model"),
 				ss.getFile(), ss.getModel(), BigraphXMLSaver.class));

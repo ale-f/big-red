@@ -43,7 +43,7 @@ public class SignatureXMLSaver extends XMLSaver {
 			"xmlns:signature", XMLNS.SIGNATURE);
 
 		for (Control c : s.getControls())
-			DOM.appendChildIfNotNull(e,
+			appendChildIfNotNull(e,
 				processControl(newElement(XMLNS.SIGNATURE, "signature:control"), c));
 		return e;
 	}
@@ -57,9 +57,9 @@ public class SignatureXMLSaver extends XMLSaver {
 			e.appendChild(processPort(
 				newElement(XMLNS.SIGNATURE, "signature:port"), p));
 		
-		DOM.appendChildIfNotNull(e,
+		appendChildIfNotNull(e,
 				AppearanceGenerator.getShape(getDocument(), c));
-		DOM.appendChildIfNotNull(e,
+		appendChildIfNotNull(e,
 				AppearanceGenerator.getAppearance(getDocument(), c));
 		AppearanceGenerator.modelToAttributes(e, c);
 		

@@ -52,7 +52,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			throw new SaveFailedException(rr_ + " isn't a ReactionRule");
 		ReactionRule rr = (ReactionRule)rr_;
 		
-		DOM.appendChildIfNotNull(e,
+		appendChildIfNotNull(e,
 			processRedex(newElement(XMLNS.RULE, "rule:redex"), rr.getRedex()));
 		
 		try {
@@ -63,7 +63,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			throw new SaveFailedException(ex);
 		}
 		
-		DOM.appendChildIfNotNull(e,
+		appendChildIfNotNull(e,
 			processChanges(newElement(XMLNS.RULE, "rule:changes"), rr.getChanges()));
 		return e;
 	}
@@ -176,7 +176,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			 * individually dealt with.
 			 */
 			if (!(i_ instanceof ChangeGroup)) {
-				DOM.appendChildIfNotNull(e, f);
+				appendChildIfNotNull(e, f);
 				try {
 					getModel().getReactum().tryApplyChange(i_);
 				} catch (ChangeRejectedException ex) {

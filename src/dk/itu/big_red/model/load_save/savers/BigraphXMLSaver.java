@@ -91,7 +91,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		
 		if (exportAppearance || exportPersistentID)
 			DOM.applyAttributes(getDocumentElement(), "xmlns:big-red", XMLNS.BIG_RED);
-		DOM.appendChildIfNotNull(e,
+		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(XMLNS.BIGRAPH, "bigraph:signature"),
 				getModel().getFile(),
@@ -112,7 +112,7 @@ public class BigraphXMLSaver extends XMLSaver {
 				f = processPoint(
 						newElement(XMLNS.BIGRAPH, "bigraph:innername"), (Point)i);
 			}
-			DOM.appendChildIfNotNull(e, applyCommonProperties(f, i));
+			appendChildIfNotNull(e, applyCommonProperties(f, i));
 		}
 		
 		return e;
@@ -130,7 +130,7 @@ public class BigraphXMLSaver extends XMLSaver {
 				f = processSite(
 						newElement(XMLNS.BIGRAPH, "bigraph:site"), (Site)i);
 			}
-			DOM.appendChildIfNotNull(e, applyCommonProperties(f, i));
+			appendChildIfNotNull(e, applyCommonProperties(f, i));
 		}
 		return e;
 	}
@@ -148,7 +148,7 @@ public class BigraphXMLSaver extends XMLSaver {
 			"name", n.getName());
 		
 		for (Port p : n.getPorts()) 
-			DOM.appendChildIfNotNull(e, processPoint(
+			appendChildIfNotNull(e, processPoint(
 					newElement(XMLNS.BIGRAPH, "bigraph:port"), p));
 		
 		for (Layoutable l :
@@ -162,7 +162,7 @@ public class BigraphXMLSaver extends XMLSaver {
 				f = processSite(
 					newElement(XMLNS.BIGRAPH, "bigraph:site"), (Site)l);
 			}
-			DOM.appendChildIfNotNull(e, applyCommonProperties(f, l));
+			appendChildIfNotNull(e, applyCommonProperties(f, l));
 		}
 				
 		return e;
@@ -186,7 +186,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		if (!(l instanceof Bigraph))
 			DOM.applyAttributes(e, "name", l.getName());
 		if (exportAppearance)
-			DOM.appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), l));
+			appendChildIfNotNull(e, AppearanceGenerator.getAppearance(getDocument(), l));
 		return e;
 	}
 }
