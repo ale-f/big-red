@@ -31,7 +31,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
-
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
@@ -363,7 +362,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
-		export = UI.newButton(self, SWT.NONE, "&Saver...");
+		export = UI.newButton(self, SWT.NONE, "&Export...");
 		export.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		export.addSelectionListener(new SelectionAdapter() {
 			@Override

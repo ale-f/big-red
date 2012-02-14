@@ -45,7 +45,7 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 		page1.setTitle("Select a file format.");
 		
 		page2 = new WizardBigraphExportPage("bigraphTikZExportPage", selection);
-		setWindowTitle("Saver");
+		setWindowTitle("Export");
 		
 		addPage(page1);
 		addPage(page2); 
@@ -57,13 +57,13 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 			if (cfe != e) {
 				exporter = (Saver)RedPlugin.instantiate(e);
 				cfe = e;
-				page2.setTitle("Saver as " + e.getAttribute("name"));
-				setWindowTitle("Saver as " + e.getAttribute("name"));
+				page2.setTitle("Export as " + e.getAttribute("name"));
+				setWindowTitle("Export as " + e.getAttribute("name"));
 				IConfigurationElement[] description =
 					e.getChildren("description");
 				if (description.length == 1)
 					page2.setDescription(description[0].getValue());
-				else page2.setDescription("Saver the current bigraph in a textual form.");
+				else page2.setDescription("Export the current bigraph in a textual form.");
 				page2.reset();
 			}
 		}
