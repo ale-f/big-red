@@ -170,12 +170,9 @@ public class DOM {
 	 */
 	public static String getAttributeNS(Element d, String nsURI, String n) {
 		String r = d.getAttributeNS(nsURI, n);
-		if ((r == null || r.length() == 0) && d.getNamespaceURI().equals(nsURI)) {
+		if (r.length() == 0 && d.getNamespaceURI().equals(nsURI))
 			r = d.getAttributeNS(null, n);
-		}
-		if (r.length() == 0)
-			r = null;
-		return r;
+		return (r.length() != 0 ? r : null);
 	}
 	
 	public static int getIntAttribute(Element d, String nsURI, String n) {
