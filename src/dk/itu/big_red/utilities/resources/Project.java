@@ -27,7 +27,9 @@ import dk.itu.big_red.utilities.io.IOAdapter;
  * @author alec
  *
  */
-public class Project {
+public final class Project {
+	private Project() {}
+	
 	/**
 	 * Gets the workspace.
 	 * @return the workspace

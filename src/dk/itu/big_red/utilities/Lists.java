@@ -12,6 +12,8 @@ import java.util.List;
  *
  */
 public final class Lists {
+	private Lists() {}
+	
 	/**
 	 * Returns a <i>class-grouped</i> copy of the given {@link Collection};
 	 * elements of any of the {@link Class}es passed as varargs will be grouped

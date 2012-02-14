@@ -11,7 +11,9 @@ import org.eclipse.core.runtime.content.IContentTypeManager;
  * @author alec
  *
  */
-public class Types {
+public final class Types {
+	private Types() {}
+	
 	public static final String BIGRAPH_XML = "dk.itu.big_red.bigraph";
 	public static final String SIGNATURE_XML = "dk.itu.big_red.signature";
 	public static final String RULE_XML = "dk.itu.big_red.rule";

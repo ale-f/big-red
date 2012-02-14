@@ -39,7 +39,9 @@ import org.eclipse.ui.ide.IDE;
  * @author alec
  *
  */
-public class UI {
+public final class UI {
+	private UI() {}
+	
 	/**
 	 * Gets the active workbench.
 	 * @return an {@link IWorkbench}

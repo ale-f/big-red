@@ -19,7 +19,9 @@ import dk.itu.big_red.utilities.DOM;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
-public class AppearanceGenerator {
+public final class AppearanceGenerator {
+	private AppearanceGenerator() {}
+	
 	/**
 	 * Builds a <code>&lt;big-red:appearance&gt;</code> tag containing all of
 	 * the Big Red-specific metadata appropriate for the given object.

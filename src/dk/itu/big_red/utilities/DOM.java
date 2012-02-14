@@ -12,7 +12,9 @@ import org.w3c.dom.NodeList;
  * @author alec
  *
  */
-public class DOM {
+public final class DOM {
+	private DOM() {}
+	
 	/**
 	 * Applies the specified name-value pairs to the specified element as
 	 * attributes. (This uses {@link Element#setAttribute}, but is slightly
