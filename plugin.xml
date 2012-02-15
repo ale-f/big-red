@@ -313,18 +313,6 @@
             id="big-red.exporter4"
             name="BPL Tool">
       </exporter>
-      <exporter
-            class="dk.itu.big_red.model.load_save.savers.BigraphBigMCSaver"
-            exports="dk.itu.big_red.model.Bigraph"
-            id="big-red.exporter.bigmc"
-            name="BigMC">
-      </exporter>
-      <exporter
-            class="dk.itu.big_red.model.load_save.savers.SimulationSpecBigMCSaver"
-            exports="dk.itu.big_red.model.SimulationSpec"
-            id="big-red.exporter.bigmc-ss"
-            name="BigMC (simulation spec)">
-      </exporter>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
