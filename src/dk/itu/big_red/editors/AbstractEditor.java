@@ -260,7 +260,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	private Composite parent;
 	
 	protected Composite setParent(Composite parent) {
-		if (this.parent == null && this.parent != parent)
+		if (this.parent != null && this.parent != parent)
 			throw new Error("Mysterious parent mismatch");
 		this.parent = parent;
 		return parent;
