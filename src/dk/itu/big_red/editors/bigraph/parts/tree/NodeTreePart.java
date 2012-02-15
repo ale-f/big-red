@@ -1,23 +1,15 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
-import java.util.List;
-
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
-import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 
-public class NodeTreePart extends AbstractTreePart {
+public class NodeTreePart extends ContainerTreePart {
 	@Override
 	public Node getModel() {
 		return (Node)super.getModel();
-	}
-	
-	@Override
-	protected List<Layoutable> getModelChildren() {
-		return getModel().getChildren();
 	}
 	
 	@Override
