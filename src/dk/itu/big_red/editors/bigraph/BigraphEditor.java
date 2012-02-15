@@ -306,15 +306,12 @@ public class BigraphEditor extends AbstractGEFEditor {
 	    
 	    if (input instanceof FileEditorInput) {
 	    	FileEditorInput fi = (FileEditorInput)input;
-	    	try {
-	    		model = (Bigraph)Loader.fromFile(fi.getFile());
-	    	} catch (Exception e) {
-	    		throw e;
-	    	}
+    		model = (Bigraph)Loader.fromFile(fi.getFile());
 	    }
 	    
-	    if (model == null) {
-	    	model = new Bigraph();
+	    if (getModel() == null) {
+	    	replaceWithError(new Exception("Model is null"));
+	    	return;
 	    } else updateNodePalette(nodeGroup, model.getSignature());
 	    
 	    getGraphicalViewer().setContents(model);

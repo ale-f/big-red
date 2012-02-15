@@ -170,15 +170,12 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		IEditorInput input = getEditorInput();
 		if (input instanceof FileEditorInput) {
 			FileEditorInput fi = (FileEditorInput)input;
-			try {
-				model = (SimulationSpec)Loader.fromFile(fi.getFile());
-			} catch (LoadFailedException e) {
-	    		e.printStackTrace();
-	    		throw e;
-	    	}
+			model = (SimulationSpec)Loader.fromFile(fi.getFile());
 		}
-		if (model == null)
-			model = new SimulationSpec();
+		if (getModel() == null) {
+			replaceWithError(new Exception("Model is null"));
+			return;
+		}
 		
 		rules.setInput(model);
 		model.addPropertyChangeListener(this);

@@ -226,6 +226,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    	}
 	    }
 	    
+		if (getModel() == null) {
+			replaceWithError(new Exception("Model is null"));
+			return;
+		}
+		
 	    BigraphEditor.updateNodePalette(nodeGroup,
 	    	model.getRedex().getSignature());
 	    

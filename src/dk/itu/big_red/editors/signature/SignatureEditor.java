@@ -474,6 +474,11 @@ implements PropertyChangeListener {
 			model = (Signature)Loader.fromFile(fi.getFile());
 		}
 		
+		if (getModel() == null) {
+			replaceWithError(new Exception("Model is null"));
+			return;
+		}
+		
 		getModel().addPropertyChangeListener(this);
 		controls.setInput(getModel());
 	}
