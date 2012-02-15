@@ -70,7 +70,8 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	@Override
 	public void dispose() {
 		Project.getWorkspace().removeResourceChangeListener(this);
-		getModel().dispose();
+		if (getModel() != null)
+			getModel().dispose();
 		
 		if (actionRegistry != null)
 			getActionRegistry().dispose();
