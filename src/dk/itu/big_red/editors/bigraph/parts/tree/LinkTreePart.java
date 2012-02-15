@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.bigraph.parts.place;
+package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -7,7 +7,7 @@ import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 
-public class LinkPlaceTreePart extends AbstractTreePart {
+public class LinkTreePart extends AbstractTreePart {
 	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());

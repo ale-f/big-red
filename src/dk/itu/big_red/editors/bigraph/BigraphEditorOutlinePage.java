@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.part.IPageSite;
 
-import dk.itu.big_red.editors.bigraph.parts.place.PlaceTreePartFactory;
+import dk.itu.big_red.editors.bigraph.parts.tree.TreePartFactory;
 
 public class BigraphEditorOutlinePage extends ContentOutlinePage {
 	/**
@@ -61,11 +61,11 @@ public class BigraphEditorOutlinePage extends ContentOutlinePage {
 		linkGraphTab.setControl(getViewer2().createControl(tabs));
 		
 		getViewer().setEditDomain(bigraphEditor.getEditDomain());
-		getViewer().setEditPartFactory(new PlaceTreePartFactory());
+		getViewer().setEditPartFactory(new TreePartFactory());
 		getViewer().setContents(bigraphEditor.getModel());
 		
 		getViewer2().setEditDomain(bigraphEditor.getEditDomain());
-		getViewer2().setEditPartFactory(new PlaceTreePartFactory());
+		getViewer2().setEditPartFactory(new TreePartFactory());
 		getViewer2().setContents(bigraphEditor.getModel());
 		
 		bigraphEditor.getSelectionSynchronizer().addViewer(getViewer());

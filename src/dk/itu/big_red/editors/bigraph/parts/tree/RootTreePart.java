@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.bigraph.parts.place;
+package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import java.util.List;
 
@@ -7,14 +7,14 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Root;
 
-public class NodePlaceTreePart extends AbstractTreePart {
+public class RootTreePart extends AbstractTreePart {
 	@Override
 	protected List<Layoutable> getModelChildren() {
-		return ((Node)getModel()).getChildren();
+		return ((Root)getModel()).getChildren();
 	}
-	
+
 	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
@@ -22,11 +22,12 @@ public class NodePlaceTreePart extends AbstractTreePart {
 	
 	@Override
 	public String getText() {
-		return ((Node)getModel()).getControl().getLabel();
+		return ((Root)getModel()).getName();
 	}
 	
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return RedPlugin.getImageDescriptor("resources/icons/triangle.png");
+		return RedPlugin.getImageDescriptor(
+				"resources/icons/bigraph-palette/root.png");
 	}
 }

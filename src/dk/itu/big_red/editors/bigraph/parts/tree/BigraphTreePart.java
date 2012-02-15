@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.bigraph.parts.place;
+package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class BigraphPlaceTreePart extends AbstractTreePart {
+public class BigraphTreePart extends AbstractTreePart {
 	@Override
 	protected List<Layoutable> getModelChildren() {
 		return ((Bigraph)getModel()).getChildren();

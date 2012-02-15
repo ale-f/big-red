@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.bigraph.parts.place;
+package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.InnerName;
 
-public class NamePlaceTreePart extends AbstractTreePart {
+public class NameTreePart extends AbstractTreePart {
 	@Override
 	protected List<Container> getModelChildren() {
 		return new ArrayList<Container>();

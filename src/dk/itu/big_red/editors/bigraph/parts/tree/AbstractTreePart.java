@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.bigraph.parts.place;
+package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
