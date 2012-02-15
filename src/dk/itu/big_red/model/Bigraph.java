@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 
-
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -414,9 +413,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			c.link.removePoint(c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
-			c.getCreator().addChild(c.child);
-			c.child.setName(c.name);
 			getNamespace(getNSI(c.child)).put(c.name, c.child);
+			c.child.setName(c.name);
+			c.getCreator().addChild(c.child);
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			c.getCreator().removeChild(c.child);
