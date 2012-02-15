@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors;
+package dk.itu.big_red.editors.assistants;
 
 import java.io.IOException;
 import java.io.PrintStream;

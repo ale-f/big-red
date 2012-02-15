@@ -26,6 +26,7 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.assistants.EditorError;
 import dk.itu.big_red.editors.assistants.RedoProxyAction;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction;
