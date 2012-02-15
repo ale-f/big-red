@@ -147,8 +147,8 @@ public class BigraphEditor extends AbstractGEFEditor {
 	
     @Override
 	public void createPartControl(Composite parent) {
-		SashForm splitter = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
-		setComposite(splitter);
+		SashForm splitter = setComposite(new SashForm(setParent(parent),
+					SWT.HORIZONTAL | SWT.SMOOTH));
 		
 		createPaletteViewer(splitter);
 		createGraphicalViewer(splitter);

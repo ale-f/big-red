@@ -247,12 +247,22 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	
 	private Composite self;
 	
-	protected void setComposite(Composite self) {
+	protected <T extends Composite> T setComposite(T self) {
 		this.self = self;
+		return self;
 	}
 	
 	protected Composite getComposite() {
 		return self;
+	}
+	
+	private Composite parent;
+	
+	protected Composite setParent(Composite parent) {
+		if (this.parent == null && this.parent != parent)
+			throw new Error("Mysterious parent mismatch");
+		this.parent = parent;
+		return parent;
 	}
 	
 	@Override

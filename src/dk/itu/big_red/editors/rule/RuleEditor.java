@@ -125,9 +125,9 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite c = new Composite(parent, SWT.NONE);
-		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		setComposite(c);
+		Composite c =
+			setComposite(UI.chain(new Composite(setParent(parent), SWT.NONE)).
+			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done());
 		
 		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
