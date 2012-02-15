@@ -18,11 +18,6 @@ public class RootTreePart extends ContainerTreePart {
 	}
 	
 	@Override
-	public String getText() {
-		return getModel().getName();
-	}
-	
-	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return RedPlugin.getImageDescriptor(
 				"resources/icons/bigraph-palette/root.png");

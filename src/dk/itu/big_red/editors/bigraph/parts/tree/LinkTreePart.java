@@ -19,11 +19,6 @@ public class LinkTreePart extends AbstractTreePart {
 	}
 	
 	@Override
-	public String getText() {
-		return getModel().getName();
-	}
-	
-	@Override
 	public ImageDescriptor getImageDescriptor() {
 		Object i = getModel();
 		String path = null;

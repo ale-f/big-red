@@ -18,11 +18,6 @@ public class SiteTreePart extends AbstractTreePart {
 	}
 	
 	@Override
-	public String getText() {
-		return getModel().getName();
-	}
-	
-	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return RedPlugin.getImageDescriptor(
 				"resources/icons/bigraph-palette/site.png");

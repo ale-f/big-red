@@ -55,6 +55,11 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart implements P
 		}
 	}
 	
+	@Override
+	protected String getText() {
+		return getModel().getName();
+	}
+	
 	protected abstract ImageDescriptor getImageDescriptor();
 	
 	@Override
