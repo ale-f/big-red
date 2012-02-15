@@ -7,7 +7,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
-import dk.itu.big_red.editors.bigraph.parts.AbstractTreePart;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.utilities.ui.UI;

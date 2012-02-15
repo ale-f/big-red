@@ -2,7 +2,6 @@ package dk.itu.big_red.editors.bigraph.parts.place;
 
 import java.util.List;
 
-import dk.itu.big_red.editors.bigraph.parts.AbstractTreePart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 
