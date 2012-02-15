@@ -39,7 +39,6 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -61,7 +60,6 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 
 public class BigraphEditor extends AbstractGEFEditor {
@@ -301,13 +299,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 
 	@Override
 	protected void initialiseActual() throws Throwable {
-		IEditorInput input = getEditorInput();
-	    setPartName(input.getName());
-	    
-	    if (input instanceof FileEditorInput) {
-	    	FileEditorInput fi = (FileEditorInput)input;
-    		model = (Bigraph)Loader.fromFile(fi.getFile());
-	    }
+		model = (Bigraph)loadInput();
 	    
 	    if (getModel() == null) {
 	    	replaceWithError(new Exception("Model is null"));

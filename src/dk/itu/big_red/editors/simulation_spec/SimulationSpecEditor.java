@@ -167,11 +167,8 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	
 	@Override
 	protected void initialiseActual() throws Throwable {
-		IEditorInput input = getEditorInput();
-		if (input instanceof FileEditorInput) {
-			FileEditorInput fi = (FileEditorInput)input;
-			model = (SimulationSpec)Loader.fromFile(fi.getFile());
-		}
+		model = (SimulationSpec)loadInput();
+		
 		if (getModel() == null) {
 			replaceWithError(new Exception("Model is null"));
 			return;

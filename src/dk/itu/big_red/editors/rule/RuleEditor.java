@@ -31,8 +31,6 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.part.FileEditorInput;
-
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
@@ -49,8 +47,6 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.Loader;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -215,16 +211,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	@Override
 	protected void initialiseActual() throws Throwable {
-		IEditorInput input = getEditorInput();
-		if (input instanceof FileEditorInput) {
-	    	FileEditorInput fi = (FileEditorInput)input;
-	    	try {
-	    		setModel((ReactionRule)Loader.fromFile(fi.getFile()));
-	    	} catch (LoadFailedException e) {
-	    		e.printStackTrace();
-	    		throw e;
-	    	}
-	    }
+		setModel((ReactionRule)loadInput());
 	    
 		if (getModel() == null) {
 			replaceWithError(new Exception("Model is null"));

@@ -32,6 +32,7 @@ import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.IterableWrapper;
 import dk.itu.big_red.utilities.io.IOAdapter;
@@ -219,6 +220,13 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		} finally {
 			setSaving(false);
 		}
+	}
+	
+	protected ModelObject loadInput() throws Throwable {
+		IEditorInput i_ = getEditorInput();
+		if (i_ instanceof FileEditorInput) {
+			return Loader.fromFile(((FileEditorInput)i_).getFile());
+		} else return null;
 	}
 	
 	/**

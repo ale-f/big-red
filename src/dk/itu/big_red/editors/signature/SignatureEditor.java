@@ -30,12 +30,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPartConstants;
-import org.eclipse.ui.part.FileEditorInput;
-
-
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
 import dk.itu.big_red.model.Control;
@@ -46,7 +42,6 @@ import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
@@ -468,11 +463,7 @@ implements PropertyChangeListener {
 	
 	@Override
 	protected void initialiseActual() throws Throwable {
-		IEditorInput input = getEditorInput();
-		if (input instanceof FileEditorInput) {
-			FileEditorInput fi = (FileEditorInput)input;
-			model = (Signature)Loader.fromFile(fi.getFile());
-		}
+		model = (Signature)loadInput();
 		
 		if (getModel() == null) {
 			replaceWithError(new Exception("Model is null"));
