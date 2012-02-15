@@ -2,8 +2,12 @@ package dk.itu.big_red.editors.bigraph.parts.place;
 
 import java.util.List;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.ISharedImages;
+
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphPlaceTreePart extends AbstractTreePart {
 	@Override
@@ -13,8 +17,10 @@ public class BigraphPlaceTreePart extends AbstractTreePart {
 
 	@Override
 	protected void createEditPolicies() {
-		// TODO Auto-generated method stub
-		
 	}
 
+	@Override
+	protected ImageDescriptor getImageDescriptor() {
+		return UI.getImageDescriptor(ISharedImages.IMG_OBJ_ELEMENT);
+	}
 }

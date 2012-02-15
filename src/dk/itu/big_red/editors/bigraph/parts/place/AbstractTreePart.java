@@ -8,6 +8,8 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
 import org.eclipse.gef.tools.SelectEditPartTracker;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 
@@ -51,5 +53,12 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart implements P
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	protected abstract ImageDescriptor getImageDescriptor();
+	
+	@Override
+	protected Image getImage() {
+		return (Image)getImageDescriptor().createResource(UI.getDisplay());
 	}
 }
