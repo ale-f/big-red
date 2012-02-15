@@ -25,7 +25,7 @@ public class TreePartFactory implements EditPartFactory {
         } else if (model instanceof Site) {
     		part = new SiteTreePart();
         } else if (model instanceof InnerName) {
-        	part = new NameTreePart();
+        	part = new InnerNameTreePart();
         } else if (model instanceof Link) {
         	part = new LinkTreePart();
         }

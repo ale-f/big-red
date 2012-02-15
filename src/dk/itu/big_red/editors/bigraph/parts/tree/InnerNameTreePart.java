@@ -6,7 +6,7 @@ import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.model.InnerName;
 
-public class NameTreePart extends AbstractTreePart {
+public class InnerNameTreePart extends AbstractTreePart {
 	@Override
 	public InnerName getModel() {
 		return (InnerName)super.getModel();
