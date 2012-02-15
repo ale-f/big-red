@@ -5,6 +5,7 @@ import org.eclipse.gef.EditPartFactory;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.InnerName;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
@@ -25,6 +26,8 @@ public class PlaceTreePartFactory implements EditPartFactory {
     		part = new SitePlaceTreePart();
         } else if (model instanceof InnerName) {
         	part = new NamePlaceTreePart();
+        } else if (model instanceof Link) {
+        	part = new LinkPlaceTreePart();
         }
 	    
 		if (part != null)
