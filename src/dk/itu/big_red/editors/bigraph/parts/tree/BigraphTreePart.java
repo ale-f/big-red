@@ -11,8 +11,13 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphTreePart extends AbstractTreePart {
 	@Override
+	public Bigraph getModel() {
+		return (Bigraph)super.getModel();
+	}
+	
+	@Override
 	protected List<Layoutable> getModelChildren() {
-		return ((Bigraph)getModel()).getChildren();
+		return getModel().getChildren();
 	}
 
 	@Override

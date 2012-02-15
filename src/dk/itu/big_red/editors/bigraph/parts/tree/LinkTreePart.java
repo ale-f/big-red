@@ -9,13 +9,18 @@ import dk.itu.big_red.model.Link;
 
 public class LinkTreePart extends AbstractTreePart {
 	@Override
+	public Link getModel() {
+		return (Link)super.getModel();
+	}
+	
+	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}
 	
 	@Override
 	public String getText() {
-		return ((Link)getModel()).getName();
+		return getModel().getName();
 	}
 	
 	@Override

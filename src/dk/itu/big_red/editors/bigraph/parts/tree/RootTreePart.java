@@ -11,8 +11,13 @@ import dk.itu.big_red.model.Root;
 
 public class RootTreePart extends AbstractTreePart {
 	@Override
+	public Root getModel() {
+		return (Root)super.getModel();
+	}
+	
+	@Override
 	protected List<Layoutable> getModelChildren() {
-		return ((Root)getModel()).getChildren();
+		return getModel().getChildren();
 	}
 
 	@Override
@@ -22,7 +27,7 @@ public class RootTreePart extends AbstractTreePart {
 	
 	@Override
 	public String getText() {
-		return ((Root)getModel()).getName();
+		return getModel().getName();
 	}
 	
 	@Override

@@ -1,19 +1,15 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
-import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Site;
 
 public class SiteTreePart extends AbstractTreePart {
 	@Override
-	protected List<Layoutable> getModelChildren() {
-		return new ArrayList<Layoutable>();
+	public Site getModel() {
+		return (Site)super.getModel();
 	}
 
 	@Override
@@ -23,7 +19,7 @@ public class SiteTreePart extends AbstractTreePart {
 	
 	@Override
 	public String getText() {
-		return ((Site)getModel()).getName();
+		return getModel().getName();
 	}
 	
 	@Override

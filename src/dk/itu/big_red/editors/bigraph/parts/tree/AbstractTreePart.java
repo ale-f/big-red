@@ -13,13 +13,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 
-import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.utilities.ui.UI;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart implements PropertyChangeListener {
 	@Override
-	public ModelObject getModel() {
-		return (ModelObject)super.getModel();
+	public Layoutable getModel() {
+		return (Layoutable)super.getModel();
 	}
 	
 	@Override
