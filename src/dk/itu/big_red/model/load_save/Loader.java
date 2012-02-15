@@ -68,6 +68,8 @@ public abstract class Loader {
 	 */
 	public static ModelObject fromFile(IFile f) throws LoadFailedException {
 		IContentType ct = Types.findContentTypeFor(f);
+		if (ct == null)
+			return null;
 		for (IConfigurationElement ice :
 			RedPlugin.getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
