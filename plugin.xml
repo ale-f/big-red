@@ -313,6 +313,13 @@
             id="big-red.exporter4"
             name="BPL Tool">
       </exporter>
+      <exporter
+            class="dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver"
+            exports="dk.itu.big_red.model.SimulationSpec"
+            icon="resources/icons/icon16.png"
+            id="big-red.exporter5"
+            name="Simulation spec as XML">
+      </exporter>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
