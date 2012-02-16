@@ -6,6 +6,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
@@ -20,7 +21,8 @@ import dk.itu.big_red.model.Layoutable;
 public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	
 	@Override
-	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
+	protected Command createChangeConstraintCommand(
+			ChangeBoundsRequest cbr, EditPart child, Object constraint) {
 		LayoutableRelayoutCommand command = null;
 		if (!(child instanceof BigraphPart)) {
 			command = new LayoutableRelayoutCommand();
@@ -33,7 +35,8 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	}
 	
 	@Override
-	protected Command createAddCommand(EditPart child, Object constraint) {
+	protected Command createAddCommand(
+			ChangeBoundsRequest cbr, EditPart child, Object constraint) {
 		LayoutableAddCommand command = new LayoutableAddCommand();
 		command.setParent(getHost().getModel());
 		command.setChild(child.getModel());
