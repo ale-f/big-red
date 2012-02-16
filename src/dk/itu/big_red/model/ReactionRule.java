@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IFile;
 
 import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Container.ChangeRemoveChild;
+import dk.itu.big_red.model.Edge.ChangeReposition;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Point.ChangeConnect;
@@ -158,6 +159,14 @@ public class ReactionRule extends ModelObject implements IFileBackable {
 				return null;
 			
 			return reactumSite.changeAlias(ch.alias);
+		} else if (change instanceof ChangeReposition) {
+			ChangeReposition ch = (ChangeReposition)change;
+			
+			Edge reactumEdge = (Edge)oldToNew.get(ch.getCreator());
+			if (reactumEdge == null)
+				return null;
+			
+			return reactumEdge.changeReposition();
 		} else throw new RuntimeException(change + " unrecognised");
 	}
 	
