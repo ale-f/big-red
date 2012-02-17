@@ -18,6 +18,11 @@ public class NodeTreePart extends ContainerTreePart {
 	}
 	
 	@Override
+	protected String getText() {
+		return getModel().getControl().getName() + " " + getModel().getName();
+	}
+	
+	@Override
 	public ImageDescriptor getImageDescriptor() {
 		return RedPlugin.getImageDescriptor("resources/icons/triangle.png");
 	}
