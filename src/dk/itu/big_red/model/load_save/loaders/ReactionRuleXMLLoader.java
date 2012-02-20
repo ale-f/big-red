@@ -14,7 +14,6 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.model.assistants.ModelFactory;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -96,7 +95,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					String control = chattr(el, "control");
 					child = new Node(
 							reactum.getSignature().getControl(control));
-				} else child = (Layoutable)ModelFactory.getNewObject(type);
+				} else child = (Layoutable)BigraphXMLLoader.getNewObject(type);
 				c = parent.changeAddChild(child, name);
 			} else if (el.getLocalName().equals("remove")) {
 				String
