@@ -2,7 +2,6 @@ package dk.itu.big_red.editors;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -34,7 +33,6 @@ import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.utilities.IterableWrapper;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
@@ -287,30 +285,14 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	}
 	
 	/**
-	 * Registers the given {@link IAction} as a global action handler for this
-	 * editor.
-	 * @param actionID the ID the action should handle
-	 * @param handler the {@link IAction} which should be registered
-	 * @param update whether or not to call {@link
-	 * IActionBars#updateActionBars()} after registering the action
-	 */
-	protected void setGlobalActionHandler(String actionID, IAction handler, boolean update) {
-		IActionBars bars = getEditorSite().getActionBars();
-		bars.setGlobalActionHandler(actionID, handler);
-		if (update)
-			bars.updateActionBars();
-	}
-	
-	/**
 	 * Registers the given {@link IAction}s as global action handlers for this
 	 * editor.
 	 * @param actions a number of {@link IAction}s
 	 */
 	protected void setGlobalActionHandlers(IAction... actions) {
-		Iterator<IAction> it = IterableWrapper.createArrayIterator(actions);
-		while (it.hasNext()) {
-			IAction i = it.next();
-			setGlobalActionHandler(i.getId(), i, !it.hasNext());
-		}
+		IActionBars bars = getEditorSite().getActionBars();
+		for (IAction i : actions)
+			bars.setGlobalActionHandler(i.getId(), i);
+		getEditorSite().getActionBars().updateActionBars();
 	}
 }
