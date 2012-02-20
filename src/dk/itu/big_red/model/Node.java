@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.Control.LongParameterSpec.LongParameter;
@@ -16,7 +17,7 @@ import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.Lists.Pair;
-import dk.itu.big_red.utilities.geometry.Geometry;
+import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
@@ -129,6 +130,43 @@ public class Node extends Container implements INode {
 		return null;
 	}
 	
+	private void fitPolygon() {
+		PointList points = getControl().getPoints();
+		if (points == null)
+			return;
+		ReadonlyRectangle rectangle = getLayout();
+		fittedPolygon = points.getCopy();
+
+		/*
+		 * Move the polygon so that its top-left corner is at (0,0).
+		 */
+		fittedPolygon.translate(
+				points.getBounds().getTopLeft().getNegated());
+		
+		/*
+		 * Work out the scaling factors that'll make the polygon fit inside
+		 * the layout.
+		 * 
+		 * (Note that adjustedBounds.width and adjustedBounds.height are
+		 * both off-by-one - getBounds() prefers < to <=, it seems.)
+		 */
+		Rectangle adjustedBounds = new Rectangle(fittedPolygon.getBounds());
+		double xScale = rectangle.getWidth() - 2,
+		       yScale = rectangle.getHeight() - 2;
+		xScale /= adjustedBounds.getWidth() - 1;
+		yScale /= adjustedBounds.getHeight() - 1;
+		
+		/*
+		 * Scale all of the points.
+		 */
+		Point tmp = Point.SINGLETON;
+		for (int i = 0; i < fittedPolygon.size(); i++) {
+			fittedPolygon.getPoint(tmp, i).
+				scale(xScale, yScale).translate(1, 1);
+			fittedPolygon.setPoint(tmp, i);
+		}
+	}
+	
 	private PointList fittedPolygon = null;
 	
 	/**
@@ -143,7 +181,7 @@ public class Node extends Container implements INode {
 	public PointList getFittedPolygon() {
 		if (fittedPolygon == null)
 			if (getControl().getShape() == Shape.POLYGON)
-				fittedPolygon = Geometry.fitPolygonToRectangle(getControl().getPoints(), getLayout());
+				fitPolygon();
 		return fittedPolygon;
 	}
 
