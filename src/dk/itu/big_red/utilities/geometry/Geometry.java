@@ -49,6 +49,4 @@ public class Geometry {
 		
 		return adjustedPoints;
 	}
-
-	public static final Point ORIGIN = new Point(0, 0);
 }
