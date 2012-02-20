@@ -1,4 +1,4 @@
-package dk.itu.big_red.interaction_managers;
+package dk.itu.big_red.editors.simulation_spec;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import dk.itu.big_red.interaction_managers.InteractionManager;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.preferences.RedPreferences;
@@ -24,7 +25,7 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.ui.ProcessDialog;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class BasicCommandLineInteractionManager extends InteractionManager {
+class BasicCommandLineInteractionManager extends InteractionManager {
 	public static final int TO_TOOL_ID = 1000;
 	public static final String TO_TOOL_LABEL = "To tool...";
 	

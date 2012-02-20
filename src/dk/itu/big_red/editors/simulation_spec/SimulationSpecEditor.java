@@ -35,7 +35,6 @@ import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
-import dk.itu.big_red.interaction_managers.BasicCommandLineInteractionManager;
 import dk.itu.big_red.interaction_managers.ConfigurationElementInteractionManagerFactory;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
 import dk.itu.big_red.interaction_managers.IInteractionManagerFactory;
