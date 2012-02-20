@@ -22,6 +22,11 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
+	private static final String
+		RULE = IRedNamespaceConstants.RULE,
+		CHANGE = IRedNamespaceConstants.CHANGE,
+		BIG_RED = IRedNamespaceConstants.BIG_RED;
+	
 	private ReactionRule rr = null;
 	
 	@Override
@@ -41,8 +46,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		rr = new ReactionRule();
 		
 		rr.setRedex(
-			makeRedex(getNamedChildElement(e, IRedNamespaceConstants.RULE, "redex")));
-		updateReactum(rr, getNamedChildElement(e, IRedNamespaceConstants.RULE, "changes"));
+			makeRedex(getNamedChildElement(e, RULE, "redex")));
+		updateReactum(rr, getNamedChildElement(e, RULE, "changes"));
 		
 		return rr;
 	}
@@ -50,10 +55,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	private Bigraph makeRedex(Element e) throws LoadFailedException {
 		BigraphXMLLoader im = new BigraphXMLLoader().setFile(getFile());
 		return im.makeObject(e).setFile(getFile());
-	}
-	
-	private static String chattr(Element e, String name) {
-		return getAttributeNS(e, IRedNamespaceConstants.CHANGE, name);
 	}
 	
 	private static Layoutable getNamed(Bigraph b, String type, String name) {
@@ -66,7 +67,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		if (!(n instanceof Element))
 			return null;
 		Element el = (Element)n;
-		if (el.getNamespaceURI().equals(IRedNamespaceConstants.CHANGE)) {
+		if (el.getNamespaceURI().equals(CHANGE)) {
 			if (el.getLocalName().equals("group")) {
 				ChangeGroup cg = new ChangeGroup();
 				NodeList nl = el.getChildNodes();
@@ -79,10 +80,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				c = cg;
 			} else if (el.getLocalName().equals("add")) {
 				String
-					name = chattr(el, "name"),
-					type = chattr(el, "type"),
-					parentName = chattr(el, "parent"),
-					parentType = chattr(el, "parent-type");
+					name = getAttributeNS(el, CHANGE, "name"),
+					type = getAttributeNS(el, CHANGE, "type"),
+					parentName = getAttributeNS(el, CHANGE, "parent"),
+					parentType = getAttributeNS(el, CHANGE, "parent-type");
 				Container parent = null;
 				if (parentName == null && parentType == null) {
 					parent = reactum;
@@ -92,30 +93,30 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Layoutable child = null;
 				
 				if (type.equals("node")) {
-					String control = chattr(el, "control");
+					String control = getAttributeNS(el, CHANGE, "control");
 					child = new Node(
 							reactum.getSignature().getControl(control));
 				} else child = (Layoutable)BigraphXMLLoader.getNewObject(type);
 				c = parent.changeAddChild(child, name);
 			} else if (el.getLocalName().equals("remove")) {
 				String
-					name = chattr(el, "name"),
-					type = chattr(el, "type");
+					name = getAttributeNS(el, CHANGE, "name"),
+					type = getAttributeNS(el, CHANGE, "type");
 				Layoutable child =
 					getNamed(reactum, type, name);
 				Container parent = child.getParent();
 				c = parent.changeRemoveChild(child);
 			} else if (el.getLocalName().equals("rename")) {
 				String
-					name = chattr(el, "name"),
-					type = chattr(el, "type"),
-					newName = chattr(el, "new-name");
+					name = getAttributeNS(el, CHANGE, "name"),
+					type = getAttributeNS(el, CHANGE, "type"),
+					newName = getAttributeNS(el, CHANGE, "new-name");
 				c = getNamed(reactum, type, name).changeName(newName);
 			} else if (el.getLocalName().equals("connect")) {
 				String
-					name = chattr(el, "name"),
-					link = chattr(el, "link"),
-					node = chattr(el, "node");
+					name = getAttributeNS(el, CHANGE, "name"),
+					link = getAttributeNS(el, CHANGE, "link"),
+					node = getAttributeNS(el, CHANGE, "node");
 				Point p;
 				if (node != null) {
 					p = ((Node)getNamed(reactum, "node", node)).getPort(name);
@@ -123,8 +124,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				c = p.changeConnect((Link)getNamed(reactum, "link", link));
 			} else if (el.getLocalName().equals("disconnect")) {
 				String
-					name = chattr(el, "name"),
-					node = chattr(el, "node");
+					name = getAttributeNS(el, CHANGE, "name"),
+					node = getAttributeNS(el, CHANGE, "node");
 				Point p;
 				if (node != null) {
 					p = ((Node)getNamed(reactum, "node", node)).getPort(name);
@@ -132,38 +133,38 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				c = p.changeDisconnect(p.getLink());
 			} else if (el.getLocalName().equals("site-alias")) {
 				String
-					name = chattr(el, "name"),
-					alias = chattr(el, "alias");
+					name = getAttributeNS(el, CHANGE, "name"),
+					alias = getAttributeNS(el, CHANGE, "alias");
 				c = ((Site)getNamed(reactum, "site", name)).
 						changeAlias(alias);
 			}
-		} else if (el.getNamespaceURI().equals(IRedNamespaceConstants.BIG_RED)) {
+		} else if (el.getNamespaceURI().equals(BIG_RED)) {
 			if (el.getLocalName().equals("layout")) {
 				String
 					type =
-						getAttributeNS(el, IRedNamespaceConstants.BIG_RED, "type"),
+						getAttributeNS(el, BIG_RED, "type"),
 					name =
-						getAttributeNS(el, IRedNamespaceConstants.BIG_RED, "name");
+						getAttributeNS(el, BIG_RED, "name");
 				c = getNamed(reactum, type, name).changeLayout(
 						AppearanceGenerator.elementToRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
 					colour =
-						getAttributeNS(el, IRedNamespaceConstants.BIG_RED, "colour"),
+						getAttributeNS(el, BIG_RED, "colour"),
 					type =
-						getAttributeNS(el, IRedNamespaceConstants.BIG_RED, "type"),
+						getAttributeNS(el, BIG_RED, "type"),
 					name =
-						getAttributeNS(el, IRedNamespaceConstants.BIG_RED, "name");
+						getAttributeNS(el, BIG_RED, "name");
 				c = getNamed(reactum, type, name).changeFillColour(
 						new Colour(colour));
 			} else if (el.getLocalName().equals("outline")) {
 				String
 					colour =
-						getAttributeNS(el, IRedNamespaceConstants.BIG_RED, "colour"),
+						getAttributeNS(el, BIG_RED, "colour"),
 					type =
-						getAttributeNS(el, IRedNamespaceConstants.BIG_RED, "type"),
+						getAttributeNS(el, BIG_RED, "type"),
 					name =
-						getAttributeNS(el, IRedNamespaceConstants.BIG_RED, "name");
+						getAttributeNS(el, BIG_RED, "name");
 				c = getNamed(reactum, type, name).changeOutlineColour(
 						new Colour(colour));
 			}
