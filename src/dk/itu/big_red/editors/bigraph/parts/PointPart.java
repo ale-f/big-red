@@ -24,7 +24,6 @@ public abstract class PointPart extends ConnectablePart {
 	@Override
 	public void activate() {
 		super.activate();
-		getModel().addPropertyChangeListener(this);
 		if (getModel().getLink() != null)
 			getModel().getLink().addPropertyChangeListener(this);
 	}
@@ -33,7 +32,6 @@ public abstract class PointPart extends ConnectablePart {
 	public void deactivate() {
 		if (getModel().getLink() != null)
 			getModel().getLink().removePropertyChangeListener(this);
-		getModel().removePropertyChangeListener(this);
 		super.deactivate();
 	}
 
