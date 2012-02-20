@@ -273,46 +273,46 @@ public class Colour extends ReadonlyColour {
 		if (n != null)
 			return setColour(n);
 		
-		Matcher
-			rgbm = rgb.matcher(s), rgbam = rgba.matcher(s),
-			rgbpm = rgbp.matcher(s), rgbapm = rgbap.matcher(s),
-			hslm = hsl.matcher(s), hslam = hsla.matcher(s),
-			hex3m = hex3.matcher(s), hex6m = hex6.matcher(s);
-		if (rgbm.matches()) {
-			setRed(integer(rgbm.group(1))).
-				setGreen(integer(rgbm.group(2))).
-				setBlue(integer(rgbm.group(3))).
-				setAlpha(255);
-		} else if (rgbam.matches()) {
-			setRed(integer(rgbam.group(1))).
-				setGreen(integer(rgbam.group(2))).
-				setBlue(integer(rgbam.group(3))).
-				setAlpha((int)(num(rgbam.group(4)) * 255.0));
-		} else if (rgbpm.matches()) {
-			setRed(percentage(rgbpm.group(1))).
-				setGreen(percentage(rgbpm.group(2))).
-				setBlue(percentage(rgbpm.group(3))).
-				setAlpha(255);
-		} else if (rgbapm.matches()) {
-			setRed(percentage(rgbapm.group(1))).
-				setGreen(percentage(rgbapm.group(2))).
-				setBlue(percentage(rgbapm.group(3))).
-				setAlpha((int)(num(rgbam.group(4)) * 255.0));
-		} else if (hslm.matches()) {
-			return null;
-		} else if (hslam.matches()) {
-			return null;
-		} else if (hex3m.matches()) {
-			setRed(hex(hex3m.group(1) + hex3m.group(1))).
-				setGreen(hex(hex3m.group(2) + hex3m.group(2))).
-				setBlue(hex(hex3m.group(3) + hex3m.group(3))).
-				setAlpha(255);
-		} else if (hex6m.matches()) {
-			setRed(hex(hex6m.group(1))).
-				setGreen(hex(hex6m.group(2))).
-				setBlue(hex(hex6m.group(3))).
-				setAlpha(255);
-		} else {
+		try {
+			Matcher m = null;
+			if ((m = rgb.matcher(s)).matches()) {
+				setRed(integer(m.group(1))).
+					setGreen(integer(m.group(2))).
+					setBlue(integer(m.group(3))).
+					setAlpha(255);
+			} else if ((m = rgba.matcher(s)).matches()) {
+				setRed(integer(m.group(1))).
+					setGreen(integer(m.group(2))).
+					setBlue(integer(m.group(3))).
+					setAlpha((int)(num(m.group(4)) * 255.0));
+			} else if ((m = rgbp.matcher(s)).matches()) {
+				setRed(percentage(m.group(1))).
+					setGreen(percentage(m.group(2))).
+					setBlue(percentage(m.group(3))).
+					setAlpha(255);
+			} else if ((m = rgbap.matcher(s)).matches()) {
+				setRed(percentage(m.group(1))).
+					setGreen(percentage(m.group(2))).
+					setBlue(percentage(m.group(3))).
+					setAlpha((int)(num(m.group(4)) * 255.0));
+			} else if ((m = hsl.matcher(s)).matches()) {
+				return null;
+			} else if ((m = hsla.matcher(s)).matches()) {
+				return null;
+			} else if ((m = hex3.matcher(s)).matches()) {
+				setRed(hex(m.group(1) + m.group(1))).
+					setGreen(hex(m.group(2) + m.group(2))).
+					setBlue(hex(m.group(3) + m.group(3))).
+					setAlpha(255);
+			} else if ((m = hex6.matcher(s)).matches()) {
+				setRed(hex(m.group(1))).
+					setGreen(hex(m.group(2))).
+					setBlue(hex(m.group(3))).
+					setAlpha(255);
+			} else {
+				return null;
+			}
+		} catch (NumberFormatException e) {
 			return null;
 		}
 		return this;
