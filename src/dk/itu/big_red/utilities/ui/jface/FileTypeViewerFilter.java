@@ -7,6 +7,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -44,7 +45,8 @@ public class FileTypeViewerFilter extends ContainerViewerFilter {
 	 * @see #addContentType(IContentType)
 	 */
 	public void addContentType(String contentType) {
-		addContentType(Types.getContentType(contentType));
+		addContentType(Platform.getContentTypeManager().
+				getContentType(contentType));
 	}
 	
 	/**
