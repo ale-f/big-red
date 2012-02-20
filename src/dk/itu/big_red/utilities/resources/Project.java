@@ -8,7 +8,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
-import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -31,19 +30,11 @@ public final class Project {
 	private Project() {}
 	
 	/**
-	 * Gets the workspace.
-	 * @return the workspace
-	 */
-	public static IWorkspace getWorkspace() {
-		return ResourcesPlugin.getWorkspace();
-	}
-	
-	/**
 	 * Gets the workspace root.
 	 * @return the workspace root
 	 */
 	public static IWorkspaceRoot getWorkspaceRoot() {
-		return getWorkspace().getRoot();
+		return ResourcesPlugin.getWorkspace().getRoot();
 	}
 	
 	/**

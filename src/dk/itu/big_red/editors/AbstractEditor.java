@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
@@ -40,7 +41,7 @@ import dk.itu.big_red.utilities.resources.Project;
 public abstract class AbstractEditor extends EditorPart
 implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	public AbstractEditor() {
-		Project.getWorkspace().
+		ResourcesPlugin.getWorkspace().
 			addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
 	}
 
@@ -67,7 +68,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	
 	@Override
 	public void dispose() {
-		Project.getWorkspace().removeResourceChangeListener(this);
+		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 		if (getModel() != null)
 			getModel().dispose();
 		
