@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +20,7 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 
-public abstract class LinkPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
-
+public abstract class LinkPart extends AbstractPart implements NodeEditPart {
 	public LinkPart() {
 		super();
 	}

@@ -30,7 +30,8 @@ import dk.itu.big_red.utilities.ui.UI;
  * @author alec
  *
  */
-public abstract class AbstractPart extends AbstractGraphicalEditPart implements PropertyChangeListener, IBigraphPart {
+public abstract class AbstractPart extends AbstractGraphicalEditPart
+implements PropertyChangeListener, IBigraphPart {
 	/**
 	 * Gets the model object, cast to a {@link Layoutable}.
 	 */

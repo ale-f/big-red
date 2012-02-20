@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +18,7 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Point;
 
-public abstract class PointPart extends AbstractPart implements NodeEditPart, PropertyChangeListener {
-
+public abstract class PointPart extends AbstractPart implements NodeEditPart {
 	public PointPart() {
 		super();
 	}
@@ -107,7 +105,7 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart, Pr
 
 	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		 return new FixedPointAnchor(getFigure(), getAnchorOrientation());
+		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
 	}
 
 	@Override
