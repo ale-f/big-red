@@ -14,7 +14,7 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.utilities.Colour;
+import dk.itu.big_red.model.assistants.Colour;
 
 public class ModelPropertySource implements IPropertySource {
 	private ModelObject object;

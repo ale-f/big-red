@@ -22,9 +22,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
-import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
 public abstract class XMLLoader extends Loader implements IFileBackable {

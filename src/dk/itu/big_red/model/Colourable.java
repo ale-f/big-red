@@ -2,8 +2,8 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
-import dk.itu.big_red.utilities.Colour;
-import dk.itu.big_red.utilities.ReadonlyColour;
+import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.ReadonlyColour;
 
 /**
  * {@link ModelObject}s which can have fill and outline colours are subclasses

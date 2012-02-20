@@ -40,10 +40,10 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
-import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.ui.UI;
 

@@ -14,12 +14,12 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
-import dk.itu.big_red.utilities.Colour;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
 	private ReactionRule rr = null;

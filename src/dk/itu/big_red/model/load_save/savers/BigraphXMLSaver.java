@@ -17,10 +17,10 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
-import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 
 /**

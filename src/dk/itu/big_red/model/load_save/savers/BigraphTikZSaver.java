@@ -12,6 +12,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.assistants.ReadonlyColour;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.Edge;
@@ -25,7 +26,6 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.utilities.Lists;
-import dk.itu.big_red.utilities.ReadonlyColour;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class BigraphTikZSaver extends Saver {

@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities;
+package dk.itu.big_red.model.assistants;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;

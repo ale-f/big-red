@@ -13,8 +13,8 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.utilities.Colour;
 
 public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 

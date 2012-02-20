@@ -10,6 +10,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -22,7 +23,6 @@ import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.utilities.Colour;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 import dk.itu.big_red.utilities.names.INamespace;

@@ -1,9 +1,9 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.ReadonlyColour;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
-import dk.itu.big_red.utilities.Colour;
-import dk.itu.big_red.utilities.ReadonlyColour;
 
 /**
  * Points are objects which can be connected to <em>at most one</em> {@link
