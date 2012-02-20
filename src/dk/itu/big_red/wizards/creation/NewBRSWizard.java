@@ -19,12 +19,14 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public boolean performFinish() {
-		if (Project.projectExists(page.getProjectName())) {
+		IProject p =
+			Project.getWorkspaceRoot().getProject(page.getProjectName());
+		if (p.exists()) {
 			page.setErrorMessage("A project with this name already exists.");
 			return false;
 		} else {
 			try {
-				IProject p = Project.getProject(page.getProjectName());
+				p.create(null); p.open(null);
 				IFolder signatures = Project.getFolder(p, "signatures"),
 				        agents = Project.getFolder(p, "agents");
 				Project.getFolder(p, "rules");

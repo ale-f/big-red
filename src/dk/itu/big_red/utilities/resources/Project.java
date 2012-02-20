@@ -47,31 +47,6 @@ public final class Project {
 	}
 	
 	/**
-	 * Gets, and opens, an {@link IProject}. If it doesn't exist already, then
-	 * it's created.
-	 * @param name the project's name
-	 * @return an IProject guaranteed to exist
-	 * @throws CoreException if {@link
-	 * IProject#create(org.eclipse.core.runtime.IProgressMonitor)} goes wrong
-	 */
-	public static IProject getProject(String name) throws CoreException {
-		IProject p = getWorkspaceRoot().getProject(name);
-		if (!p.exists())
-			p.create(null);
-		p.open(null);
-		return p;
-	}
-	
-	/**
-	 * Indicates whether or not the named project exists.
-	 * @param name the project's name
-	 * @return whether the project exists or not
-	 */
-	public static boolean projectExists(String name) {
-		return getWorkspaceRoot().getProject(name).exists();
-	}
-	
-	/**
 	 * Gets an {@link IFolder} contained by <code>c</code>. If it doesn't exist
 	 * already, then it's created.
 	 * @param c the parent {@link IContainer}
