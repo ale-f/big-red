@@ -19,14 +19,12 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
+
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
-	private static final String
-		RULE = IRedNamespaceConstants.RULE,
-		CHANGE = IRedNamespaceConstants.CHANGE,
-		BIG_RED = IRedNamespaceConstants.BIG_RED;
-	
 	private ReactionRule rr = null;
 	
 	@Override
