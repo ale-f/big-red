@@ -4,23 +4,16 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.NodeEditPart;
-import org.eclipse.gef.Request;
-
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
-import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor;
-import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 
-public abstract class LinkPart extends AbstractPart implements NodeEditPart {
+public abstract class LinkPart extends ConnectablePart {
 	public LinkPart() {
 		super();
 	}
@@ -78,31 +71,4 @@ public abstract class LinkPart extends AbstractPart implements NodeEditPart {
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 	}
-	
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
-    }
-    
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
-    }
-	
-	@Override
-	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
-    }
-    
-	@Override
-	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
-    }
-	
-	/**
-	 * Returns the {@link Orientation} which should be given to any of this
-	 * PointPart's target {@link FixedPointAnchor}s.
-	 * @return an Orientation
-	 */
-	abstract public Orientation getAnchorOrientation();
 }

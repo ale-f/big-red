@@ -4,21 +4,14 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.NodeEditPart;
-import org.eclipse.gef.Request;
-
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
-import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor;
-import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Point;
 
-public abstract class PointPart extends AbstractPart implements NodeEditPart {
+public abstract class PointPart extends ConnectablePart {
 	public PointPart() {
 		super();
 	}
@@ -97,31 +90,4 @@ public abstract class PointPart extends AbstractPart implements NodeEditPart {
 			l.add(link.getConnectionFor(getModel()));
         return l;
     }
-
-	@Override
-	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
-	}
-
-	@Override
-	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
-	}
-
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
-	}
-
-	@Override
-	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
-		return new FixedPointAnchor(getFigure(), getAnchorOrientation());
-	}
-	
-	/**
-	 * Returns the {@link Orientation} which should be given to any of this
-	 * PointPart's source {@link FixedPointAnchor}s.
-	 * @return an Orientation
-	 */
-	abstract public Orientation getAnchorOrientation();
 }
