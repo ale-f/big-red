@@ -13,7 +13,6 @@ import org.eclipse.core.runtime.content.IContentType;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.resources.IFileBackable;
-import dk.itu.big_red.utilities.resources.Types;
 
 /**
  * Classes extending Loader can read objects from an {@link InputStream}.
@@ -67,7 +66,12 @@ public abstract class Loader {
 	 * @throws LoadFailedException if {@link #importObject()} fails
 	 */
 	public static ModelObject fromFile(IFile f) throws LoadFailedException {
-		IContentType ct = Types.findContentTypeFor(f);
+		IContentType ct;
+		try {
+			ct = f.getContentDescription().getContentType();
+		} catch (CoreException e) {
+			ct = null;
+		}
 		if (ct == null)
 			return null;
 		for (IConfigurationElement ice :
