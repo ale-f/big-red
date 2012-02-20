@@ -1,7 +1,5 @@
 package dk.itu.big_red.utilities.names;
 
-import dk.itu.big_red.utilities.ISafeCloneable;
-
 /**
  * Classes implementing <strong>INamespace</strong> are <i>namespaces</i>,
  * maps from {@link String}s to another type.
@@ -9,7 +7,7 @@ import dk.itu.big_red.utilities.ISafeCloneable;
  * @param <T> the target of the map
  * @see INamePolicy
  */
-public interface INamespace<T> extends ISafeCloneable {
+public interface INamespace<T> {
 	public boolean has(String name);
 	public T get(String name);
 	public boolean put(String name, T value);
@@ -45,6 +43,5 @@ public interface INamespace<T> extends ISafeCloneable {
 	 */
 	public INamespace<T> setPolicy(INamePolicy policy);
 	
-	@Override
 	public INamespace<T> clone();
 }

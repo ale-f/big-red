@@ -3,9 +3,7 @@ package dk.itu.big_red.utilities.names;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import dk.itu.big_red.utilities.ISafeCloneable;
-
-public class NamespaceGroup<T> implements ISafeCloneable {
+public class NamespaceGroup<T> {
 	private HashMap<Object, HashMapNamespace<T>> namespaces =
 		new HashMap<Object, HashMapNamespace<T>>();
 	

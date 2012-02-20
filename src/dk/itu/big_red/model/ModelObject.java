@@ -7,7 +7,6 @@ import java.util.Map;
 import org.eclipse.ui.services.IDisposable;
 
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.utilities.ISafeCloneable;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
@@ -21,7 +20,7 @@ import dk.itu.big_red.utilities.ISafeCloneable;
  * @see Layoutable
  *
  */
-public class ModelObject implements ISafeCloneable, IDisposable {
+public class ModelObject implements IDisposable {
 	public abstract class ModelObjectChange extends Change {
 		protected ModelObjectChange() {
 		}
