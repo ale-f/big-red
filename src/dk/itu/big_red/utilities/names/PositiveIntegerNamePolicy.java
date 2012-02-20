@@ -3,8 +3,6 @@ package dk.itu.big_red.utilities.names;
 public class PositiveIntegerNamePolicy implements INamePolicy {
 	@Override
 	public boolean validate(String name) {
-		if (name == null)
-			System.out.println("Whahuh?");
 		boolean r;
 		try {
 			int i = Integer.parseInt(name);
