@@ -4,7 +4,8 @@ import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.utilities.geometry.Geometry;
+import dk.itu.big_red.utilities.geometry.Ellipse;
+import dk.itu.big_red.utilities.geometry.Line;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
@@ -119,9 +120,13 @@ public class Port extends Point implements IPort {
 			int segment = getSegment();
 			org.eclipse.draw2d.geometry.Point p1 = polypt.getPoint(segment),
 			      p2 = polypt.getPoint((segment + 1) % polypt.size());
-			r.setLocation(Geometry.getPointOnSegment(p1, p2, getDistance()).translate(-5, -5));
+			r.setLocation(new Line(p1, p2).
+					getPointFromOffset(getDistance()).translate(-5, -5));
 		} else {
-			r.setLocation(Geometry.getPointOnEllipse(getParent().getLayout().getCopy().setLocation(0, 0), getDistance()).translate(-5, -5));
+			r.setLocation(
+				new Ellipse(
+						getParent().getLayout().getCopy().setLocation(0, 0)).
+					getPointFromOffset(getDistance()).translate(-5, -5));
 		}
 		return r;
 	}

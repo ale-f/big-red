@@ -9,14 +9,6 @@ import org.eclipse.draw2d.geometry.PointList;
  *
  */
 public class Geometry {
-	public static Point getPointOnSegment(Point p1, Point p2, double offset) {
-		return new Line(p1, p2).getPointFromOffset(offset);
-	}
-	
-	public static Point getPointOnEllipse(Rectangle el, double offset) {
-		return new Ellipse(el).getPointFromOffset(offset);
-	}
-	
 	/**
 	 * Scales and resizes the polygon defined by <code>points</code> to fit
 	 * within <code>rectangle</code>.
