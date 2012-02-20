@@ -82,99 +82,106 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		return _processChanges(e, changes);
 	}
 	
+	private Element _serialiseChange(Change i_) {
+		Element f = null;
+		
+		if (i_ instanceof ChangeFillColour) {
+			ChangeFillColour i = (ChangeFillColour)i_;
+			if ((i.getCreator() instanceof Layoutable)) {
+				Layoutable l = (Layoutable)i.getCreator();
+				f = applyAttributes(
+						newElement(IRedNamespaceConstants.BIG_RED, "big-red:fill"),
+						"name", l.getName(),
+						"type", l.getType().toLowerCase(),
+						"colour", i.newColour.toHexString());
+			}
+		} else if (i_ instanceof ChangeOutlineColour) {
+			ChangeOutlineColour i = (ChangeOutlineColour)i_;
+			if ((i.getCreator() instanceof Layoutable)) {
+				Layoutable l = (Layoutable)i.getCreator();
+				f = applyAttributes(
+						newElement(IRedNamespaceConstants.BIG_RED, "big-red:outline"),
+						"name", l.getName(),
+						"type", l.getType().toLowerCase(),
+						"colour", i.newColour.toHexString());
+			}
+		} else if (i_ instanceof ChangeGroup) {
+			f = newElement(IRedNamespaceConstants.CHANGE, "change:group");
+			for (Change c : (ChangeGroup)i_) {
+				Element e = _serialiseChange(c);
+				if (e != null)
+					f.appendChild(e);
+			}
+		} else if (i_ instanceof ChangeLayout) {
+			ChangeLayout i = (ChangeLayout)i_;
+			f = applyAttributes(
+					newElement(IRedNamespaceConstants.BIG_RED, "big-red:layout"),
+					"name", i.getCreator().getName(),
+					"type", i.getCreator().getType().toLowerCase(),
+					"x", i.newLayout.getX(),
+					"y", i.newLayout.getY(),
+					"width", i.newLayout.getWidth(),
+					"height", i.newLayout.getHeight());
+		} else if (i_ instanceof ChangeAddChild) {
+			ChangeAddChild i = (ChangeAddChild)i_;
+			f = applyAttributes(
+					newElement(IRedNamespaceConstants.CHANGE, "change:add"),
+					"name", i.name,
+					"type", i.child.getType().toLowerCase());
+			if (!(i.getCreator() instanceof Bigraph))
+				applyAttributes(f,
+						"parent", i.getCreator().getName(),
+						"parent-type", i.getCreator().getType().toLowerCase());
+			if (i.child instanceof Node)
+				applyAttributes(f,
+						"control", ((Node)i.child).getControl().getName());
+		} else if (i_ instanceof ChangeRemoveChild) {
+			ChangeRemoveChild i = (ChangeRemoveChild)i_;
+			f = applyAttributes(
+					newElement(IRedNamespaceConstants.CHANGE, "change:remove"),
+					"name", i.child.getName(),
+					"type", i.child.getType().toLowerCase());
+		} else if (i_ instanceof ChangeName) {
+			ChangeName i = (ChangeName)i_;
+			f = applyAttributes(
+					newElement(IRedNamespaceConstants.CHANGE, "change:rename"),
+					"name", i.getCreator().getName(), 
+					"type", i.getCreator().getType().toLowerCase(),
+					"new-name", i.newName);
+		} else if (i_ instanceof ChangeConnect) {
+			ChangeConnect i = (ChangeConnect)i_;
+			f = applyAttributes(
+					newElement(IRedNamespaceConstants.CHANGE, "change:connect"),
+					"name", i.getCreator().getName(),
+					"link", i.link.getName());
+			if (i.getCreator() instanceof Port)
+				applyAttributes(f,
+						"node", ((Port)i.getCreator()).getParent().getName());
+		} else if (i_ instanceof ChangeDisconnect) {
+			ChangeDisconnect i = (ChangeDisconnect)i_;
+			f = applyAttributes(
+					newElement(IRedNamespaceConstants.CHANGE, "change:disconnect"),
+					"name", i.getCreator().getName());
+			if (i.getCreator() instanceof Port)
+				applyAttributes(f,
+						"node", ((Port)i.getCreator()).getParent().getName());
+		} else if (i_ instanceof ChangeAlias) {
+			ChangeAlias i = (ChangeAlias)i_;
+			f = applyAttributes(
+					newElement(IRedNamespaceConstants.CHANGE, "change:site-alias"),
+					"name", i.getCreator().getName(),
+					"alias", i.alias);
+		}
+		
+		return f;
+	}
+	
 	private Element _processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
 		for (Change i_ : changes) {
-			Element f = null;
+			Element f = _serialiseChange(i_);
 			
-			if (i_ instanceof ChangeFillColour) {
-				ChangeFillColour i = (ChangeFillColour)i_;
-				if ((i.getCreator() instanceof Layoutable)) {
-					Layoutable l = (Layoutable)i.getCreator();
-					f = applyAttributes(
-							newElement(IRedNamespaceConstants.BIG_RED, "big-red:fill"),
-							"name", l.getName(),
-							"type", l.getType().toLowerCase(),
-							"colour", i.newColour.toHexString());
-				}
-			} else if (i_ instanceof ChangeOutlineColour) {
-				ChangeOutlineColour i = (ChangeOutlineColour)i_;
-				if ((i.getCreator() instanceof Layoutable)) {
-					Layoutable l = (Layoutable)i.getCreator();
-					f = applyAttributes(
-							newElement(IRedNamespaceConstants.BIG_RED, "big-red:outline"),
-							"name", l.getName(),
-							"type", l.getType().toLowerCase(),
-							"colour", i.newColour.toHexString());
-				}
-			} else if (i_ instanceof ChangeGroup) {
-				_processChanges(e, (ChangeGroup)i_);
-			} else if (i_ instanceof ChangeLayout) {
-				ChangeLayout i = (ChangeLayout)i_;
-				f = applyAttributes(
-						newElement(IRedNamespaceConstants.BIG_RED, "big-red:layout"),
-						"name", i.getCreator().getName(),
-						"type", i.getCreator().getType().toLowerCase(),
-						"x", i.newLayout.getX(),
-						"y", i.newLayout.getY(),
-						"width", i.newLayout.getWidth(),
-						"height", i.newLayout.getHeight());
-			} else if (i_ instanceof ChangeAddChild) {
-				ChangeAddChild i = (ChangeAddChild)i_;
-				f = applyAttributes(
-						newElement(IRedNamespaceConstants.CHANGE, "change:add"),
-						"name", i.name,
-						"type", i.child.getType().toLowerCase());
-				if (!(i.getCreator() instanceof Bigraph))
-					applyAttributes(f,
-							"parent", i.getCreator().getName(),
-							"parent-type", i.getCreator().getType().toLowerCase());
-				if (i.child instanceof Node)
-					applyAttributes(f,
-							"control", ((Node)i.child).getControl().getName());
-			} else if (i_ instanceof ChangeRemoveChild) {
-				ChangeRemoveChild i = (ChangeRemoveChild)i_;
-				f = applyAttributes(
-						newElement(IRedNamespaceConstants.CHANGE, "change:remove"),
-						"name", i.child.getName(),
-						"type", i.child.getType().toLowerCase());
-			} else if (i_ instanceof ChangeName) {
-				ChangeName i = (ChangeName)i_;
-				f = applyAttributes(
-						newElement(IRedNamespaceConstants.CHANGE, "change:rename"),
-						"name", i.getCreator().getName(), 
-						"type", i.getCreator().getType().toLowerCase(),
-						"new-name", i.newName);
-			} else if (i_ instanceof ChangeConnect) {
-				ChangeConnect i = (ChangeConnect)i_;
-				f = applyAttributes(
-						newElement(IRedNamespaceConstants.CHANGE, "change:connect"),
-						"name", i.getCreator().getName(),
-						"link", i.link.getName());
-				if (i.getCreator() instanceof Port)
-					applyAttributes(f,
-							"node", ((Port)i.getCreator()).getParent().getName());
-			} else if (i_ instanceof ChangeDisconnect) {
-				ChangeDisconnect i = (ChangeDisconnect)i_;
-				f = applyAttributes(
-						newElement(IRedNamespaceConstants.CHANGE, "change:disconnect"),
-						"name", i.getCreator().getName());
-				if (i.getCreator() instanceof Port)
-					applyAttributes(f,
-							"node", ((Port)i.getCreator()).getParent().getName());
-			} else if (i_ instanceof ChangeAlias) {
-				ChangeAlias i = (ChangeAlias)i_;
-				f = applyAttributes(
-						newElement(IRedNamespaceConstants.CHANGE, "change:site-alias"),
-						"name", i.getCreator().getName(),
-						"alias", i.alias);
-			}
-			
-			/**
-			 * Don't try to do anything with ChangeGroups - their Changes are
-			 * individually dealt with.
-			 */
-			if (!(i_ instanceof ChangeGroup)) {
-				appendChildIfNotNull(e, f);
+			if (e != null && f != null) {
+				e.appendChild(f);
 				try {
 					getModel().getReactum().tryApplyChange(i_);
 				} catch (ChangeRejectedException ex) {
