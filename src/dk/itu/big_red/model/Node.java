@@ -7,7 +7,6 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
-import dk.itu.big_red.model.Control.LongParameterSpec.LongParameter;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Control.ParameterSpec.Parameter;
 import dk.itu.big_red.model.interfaces.IChild;
@@ -16,7 +15,6 @@ import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.utilities.Lists;
-import dk.itu.big_red.utilities.Lists.Pair;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
@@ -59,17 +57,12 @@ public class Node extends Container implements INode {
 		n.setFillColour(getFillColour().getCopy());
 		n.setOutlineColour(getOutlineColour().getCopy());
 		
-		for (Pair<Parameter, Parameter> p :
-			Lists.zip(getParameters(), n.getParameters())) {
-			if (p.getA() instanceof LongParameter)
-				((LongParameter)p.getB()).setValue((Long)p.getA().getValue());
-		}
+		/* copy parameters */
 		
 		if (m != null) {
 			/* Manually claim that the new Node's Ports are clones. */
-			for (Pair<Port, Port> p :
-				Lists.zip(getPorts(), n.getPorts()))
-				m.put(p.getA(), p.getB());
+			for (int i = 0; i < getPorts().size(); i++)
+				m.put(getPorts().get(i), n.getPorts().get(i));
 		}
 		return n;
 	}
