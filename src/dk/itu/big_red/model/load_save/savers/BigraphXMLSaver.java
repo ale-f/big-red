@@ -1,10 +1,14 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
@@ -19,9 +23,11 @@ import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.utilities.Lists;
+
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 
 /**
  * XMLSaver writes a {@link Bigraph} out as an XML document.
@@ -53,14 +59,13 @@ public class BigraphXMLSaver extends XMLSaver {
 		Port.class, Node.class, Site.class
 	};
 	
-	private boolean exportAppearance = true,
-			exportPersistentID = true;
+	private boolean exportAppearance = true;
 	
 	public static final String
-		OPTION_APPEARANCE = "BigraphXMLExportAppearance";
+		OPTION_APPEARANCE = "BigraphXMLSaverAppearance";
 	
 	{
-		addOption(OPTION_APPEARANCE, "Saver Big Red-specific appearance data");
+		addOption(OPTION_APPEARANCE, "Save Big Red-specific appearance data");
 	}
 	
 	@Override
@@ -79,7 +84,7 @@ public class BigraphXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(createDocument(IRedNamespaceConstants.BIGRAPH, "bigraph:bigraph"));
+		setDocument(createDocument(BIGRAPH, "bigraph:bigraph"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -90,49 +95,71 @@ public class BigraphXMLSaver extends XMLSaver {
 			throw new SaveFailedException(obj_ + " isn't a Bigraph");
 		Bigraph obj = (Bigraph)obj_;
 		
-		if (exportAppearance || exportPersistentID)
-			applyAttributes(getDocumentElement(), "xmlns:big-red", IRedNamespaceConstants.BIG_RED);
+		if (exportAppearance)
+			applyAttributes(getDocumentElement(), "xmlns:big-red", BIG_RED);
 		appendChildIfNotNull(e,
 			processOrReference(
-				newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:signature"),
+				newElement(BIGRAPH, "bigraph:signature"),
 				getModel().getFile(),
 				obj.getSignature(), SignatureXMLSaver.class));
 		
-		for (Layoutable i :
-			Lists.group(obj.getChildren(),
-					BigraphXMLSaver.SCHEMA_ORDER)) {
+		ArrayList<Element>
+			edges = new ArrayList<Element>(),
+			outernames = new ArrayList<Element>(),
+			roots = new ArrayList<Element>(),
+			innernames = new ArrayList<Element>();
+		
+		for (Layoutable i : obj.getChildren()) {
 			Element f = null;
 			if (i instanceof Edge) {
-				f = newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:edge");
+				edges.add(f = newElement(BIGRAPH, "bigraph:edge"));
 			} else if (i instanceof OuterName) {
-				f = newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:outername");
+				outernames.add(f = newElement(BIGRAPH, "bigraph:outername"));
 			} else if (i instanceof Root) {
-				f = processRoot(
-						newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:root"), (Root)i);
+				roots.add(f = processContents(
+						newElement(BIGRAPH, "bigraph:root"), (Root)i));
 			} else if (i instanceof InnerName) {
-				f = processPoint(
-						newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:innername"), (Point)i);
+				innernames.add(f = processPoint(
+						newElement(BIGRAPH, "bigraph:innername"), (Point)i));
 			}
-			appendChildIfNotNull(e, applyCommonProperties(f, i));
+			applyCommonProperties(f, i);
 		}
+		
+		appendChildren(e, edges);
+		appendChildren(e, outernames);
+		appendChildren(e, roots);
+		appendChildren(e, innernames);
 		
 		return e;
 	}
 	
-	private Element processRoot(Element e, Root r) throws SaveFailedException {
-		for (Layoutable i :
-			Lists.group(r.getChildren(),
-					BigraphXMLSaver.SCHEMA_ORDER)) {
+	private static final void
+	appendChildren(Element e, List<Element> children) {
+		for (Element i : children)
+			if (i != null)
+				e.appendChild(i);
+		children.clear();
+	}
+	
+	private Element processContents(Element e, Container c)
+			throws SaveFailedException {
+		ArrayList<Element>
+			nodes = new ArrayList<Element>(),
+			sites = new ArrayList<Element>();
+		
+		for (Layoutable i : c.getChildren()) {
 			Element f = null;
 			if (i instanceof Node) {
-				f = processNode(
-						newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:node"), (Node)i);
+				nodes.add(f =
+					processNode(newElement(BIGRAPH, "bigraph:node"), (Node)i));
 			} else if (i instanceof Site) {
-				f = processSite(
-						newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:site"), (Site)i);
+				sites.add(f =
+					processSite(newElement(BIGRAPH, "bigraph:site"), (Site)i));
 			}
-			appendChildIfNotNull(e, applyCommonProperties(f, i));
+			applyCommonProperties(f, i);
 		}
+		appendChildren(e, nodes);
+		appendChildren(e, sites);
 		return e;
 	}
 	
@@ -150,23 +177,9 @@ public class BigraphXMLSaver extends XMLSaver {
 		
 		for (Port p : n.getPorts()) 
 			appendChildIfNotNull(e, processPoint(
-					newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:port"), p));
+					newElement(BIGRAPH, "bigraph:port"), p));
 		
-		for (Layoutable l :
-			Lists.group(n.getChildren(),
-					BigraphXMLSaver.SCHEMA_ORDER)) {
-			Element f = null;
-			if (l instanceof Node) {
-				f = processNode(
-					newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:node"), (Node)l);
-			} else if (l instanceof Site) {
-				f = processSite(
-					newElement(IRedNamespaceConstants.BIGRAPH, "bigraph:site"), (Site)l);
-			}
-			appendChildIfNotNull(e, applyCommonProperties(f, l));
-		}
-				
-		return e;
+		return processContents(e, n);
 	}
 	
 	private Element processPoint(Element e, Point p) throws SaveFailedException {
@@ -201,9 +214,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		if (o instanceof Bigraph)
 			return null;
 		
-		Element aE =
-			doc.createElementNS(IRedNamespaceConstants.BIG_RED,
-					"big-red:appearance");
+		Element aE = doc.createElementNS(BIG_RED, "big-red:appearance");
 		boolean alive = false;
 		
 		if (o instanceof Layoutable) {
