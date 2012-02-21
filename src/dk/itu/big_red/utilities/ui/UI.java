@@ -91,14 +91,6 @@ public final class UI {
 	}
 	
 	/**
-	 * Gets the active workbench's shared image registry.
-	 * @return an {@link ISharedImages}
-	 */
-	public static ISharedImages getSharedImages() {
-		return getWorkbench().getSharedImages();
-	}
-	
-	/**
 	 * Gets the status line manager for the currently active editor.
 	 * @return an {@link IStatusLineManager}
 	 */
