@@ -7,10 +7,13 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
+
+import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableCreateCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableRelayoutCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableReparentCommand;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
+import dk.itu.big_red.editors.bigraph.parts.EdgePart;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 
@@ -21,7 +24,6 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		LayoutableRelayoutCommand command = null;
 		if (!(child instanceof BigraphPart)) {
 			command = new LayoutableRelayoutCommand();
-			
 			command.setModel(child.getModel());
 			command.setConstraint(constraint);
 			command.prepare();
@@ -37,10 +39,22 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	
 	protected Command createReparentCommand(
 			ChangeBoundsRequest cbr, EditPart child, Object constraint) {
-		LayoutableReparentCommand cmd = new LayoutableReparentCommand();
-		cmd.setChild(child.getModel());
-		cmd.setParent(getHost().getModel());
-		cmd.setConstraint(constraint);
+		ChangeCommand cmd;
+		if (!(child instanceof EdgePart)) {
+			LayoutableReparentCommand cmd2 = new LayoutableReparentCommand();
+			cmd2.setChild(child.getModel());
+			cmd2.setParent(getHost().getModel());
+			cmd2.setConstraint(constraint);
+			cmd = cmd2;
+		} else {
+			Rectangle layout = (Rectangle)constraint;
+			Layoutable self = (Layoutable)getHost().getModel();
+			LayoutableRelayoutCommand cmd2 = new LayoutableRelayoutCommand();
+			cmd2.setModel(child.getModel());
+			cmd2.setConstraint(
+					layout.translate(self.getRootLayout().getTopLeft()));
+			cmd = cmd2;
+		}
 		return cmd.prepare();
 	}
 	
@@ -50,15 +64,15 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		
 		requestObject.getClass();
 		Dimension size = new Dimension(100, 100);
-		Layoutable parent = (Layoutable)getHost().getModel();
-		if (!(parent instanceof Container)) {
+		Layoutable self = (Layoutable)getHost().getModel();
+		if (!(self instanceof Container)) {
 			return null;
 		} else {
 			size.setSize(((Layoutable)requestObject).getLayout().getSize());
 		}
 		
 		LayoutableCreateCommand cmd = new LayoutableCreateCommand();
-		cmd.setContainer(getHost().getModel());
+		cmd.setContainer(self);
 		cmd.setObject(request.getNewObject());
 		
 		Rectangle constraint = (Rectangle)getConstraintFor(request);
