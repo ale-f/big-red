@@ -37,7 +37,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		if (model == null || layout == null)
 			return this;
 		setTarget(model.getBigraph());
-		if (noOverlap() && boundariesSatisfied())
+		if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
 			cg.add(model.changeLayout(layout));
 		return this;
 	}
