@@ -59,7 +59,7 @@ public class Edge extends Link implements IEdge {
 	 * Moves this EdgeTarget to the average position of all the
 	 * {@link Point}s connected to it.
 	 */
-	public void averagePosition() {
+	protected void averagePosition() {
 		int tx = 0, ty = 0, s = getPoints().size();
 		for (Point p : getPoints()) {
 			tx += p.getRootLayout().getX();
