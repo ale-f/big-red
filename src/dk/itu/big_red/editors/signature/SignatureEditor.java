@@ -44,7 +44,6 @@ import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
-import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends AbstractEditor
@@ -385,8 +384,10 @@ implements PropertyChangeListener {
 			public void portChange() {
 				if (!shouldPropagateUI())
 					return;
-				ArrayList<PortSpec> toCopy = Lists.copy(appearance.getPorts());
-				for (PortSpec p : Lists.copy(currentControl.getPorts()))
+				ArrayList<PortSpec> toCopy =
+						new ArrayList<PortSpec>(appearance.getPorts());
+				for (PortSpec p :
+					new ArrayList<PortSpec>(currentControl.getPorts()))
 					currentControl.removePort(p.getName());
 				for (PortSpec p : toCopy)
 					currentControl.addPort(new PortSpec(p));

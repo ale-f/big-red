@@ -27,7 +27,7 @@ public final class Lists {
 	public static <T> ArrayList<T>
 	group(Collection<? extends T> list, Object... classes) {
 		ArrayList<T> r = new ArrayList<T>(),
-				working = copy(list);
+				working = new ArrayList<T>(list);
 		for (Object o : classes) {
 			Class<?> c = (Class<?>)o;
 			Iterator<T> it = working.iterator();
@@ -56,18 +56,6 @@ public final class Lists {
 		for (T i : list)
 			if (klass.isInstance(i))
 				r.add((V)i);
-		return r;
-	}
-	
-	/**
-	 * Copies an {@link Iterable} into a new {@link ArrayList}.
-	 * @param c an {@link Iterable}
-	 * @return a new {@link ArrayList}
-	 */
-	public static <T> ArrayList<T> copy(Iterable<? extends T> c) {
-		ArrayList<T> r = new ArrayList<T>();
-		for (T i : c)
-			r.add(i);
 		return r;
 	}
 }

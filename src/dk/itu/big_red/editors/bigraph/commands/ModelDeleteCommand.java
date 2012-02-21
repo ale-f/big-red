@@ -12,7 +12,6 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.assistants.BigraphScratchpad;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.utilities.Lists;
 
 public class ModelDeleteCommand extends ChangeCommand {
 	@Override
@@ -82,11 +81,12 @@ public class ModelDeleteCommand extends ChangeCommand {
 					}
 				}
 				
-				for (Layoutable i : Lists.copy(scratch.getChildrenFor(c)))
+				for (Layoutable i :
+					new ArrayList<Layoutable>(scratch.getChildrenFor(c)))
 					remove(i);
 			} else if (n instanceof Link) {
 				Link l = (Link)n;
-				for (Point p : Lists.copy(scratch.getPointsFor(l)))
+				for (Point p : new ArrayList<Point>(scratch.getPointsFor(l)))
 					removePoint(l, p);
 				if (l instanceof Edge)
 					return;
