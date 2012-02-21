@@ -2,7 +2,7 @@ package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.draw2d.PositionConstants;
@@ -102,7 +102,7 @@ implements PropertyChangeListener, IBigraphPart {
 	 */
 	@Override
 	protected List<Link.Connection> getModelSourceConnections() {
-        return new ArrayList<Link.Connection>();
+		return Collections.emptyList();
     }
 
 	/**
@@ -111,7 +111,7 @@ implements PropertyChangeListener, IBigraphPart {
 	 */
 	@Override
 	protected List<Link.Connection> getModelTargetConnections() {
-        return new ArrayList<Link.Connection>();
+		return Collections.emptyList();
     }
 
 	/**
@@ -120,7 +120,7 @@ implements PropertyChangeListener, IBigraphPart {
 	 */
 	@Override
 	public List<Layoutable> getModelChildren() {
-		return new ArrayList<Layoutable>();
+		return Collections.emptyList();
 	}
 	
 	/**
