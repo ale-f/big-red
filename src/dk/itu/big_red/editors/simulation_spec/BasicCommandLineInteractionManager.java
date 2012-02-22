@@ -54,19 +54,19 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 				setOutputStream(io.getOutputStream());
 			int r =
 				(exporter.getOptions().size() != 0 ?
-					createOptionsWindow(parent, exporter).open() :
+					createOptionsWindow(parent).open() :
 					Dialog.OK);
 			if (r == Dialog.OK) {
 				exporter.exportObject();
-				createResultsWindow(parent,
-					IOAdapter.readString(io.getInputStream())).open();
+				results = IOAdapter.readString(io.getInputStream());
+				createResultsWindow(parent).open();
 			}
 		} catch (SaveFailedException ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public static Dialog createToolWindow(Shell parent, final String results) {
+	private Dialog createToolWindow(Shell parent) {
 		return new Dialog(parent) {
 			private Combo tools;
 			
@@ -79,7 +79,7 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 				Composite c = new Composite(parent, SWT.NONE);
 				c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 				GridLayout gl = new GridLayout(1, true);
-				gl.marginLeft = gl.marginRight = IDialogConstants.LEFT_MARGIN;
+				gl.marginLeft = gl.marginRight = gl.marginTop = 10;
 				c.setLayout(gl);
 				
 				tools = new Combo(c, SWT.NONE);
@@ -110,7 +110,9 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 		};
 	}
 
-	public static TitleAreaDialog createResultsWindow(Shell parent, final String results) {
+	private String results;
+	
+	private TitleAreaDialog createResultsWindow(Shell parent) {
 		return new TitleAreaDialog(parent) {
 			private Text resultsText;
 			
@@ -144,7 +146,7 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 			@Override
 			protected void buttonPressed(int buttonId) {
 				if (buttonId == TO_TOOL_ID) {
-					createToolWindow(getShell(), resultsText.getText()).open();
+					createToolWindow(getShell()).open();
 				} else if (buttonId == SAVE_ID) {
 					FileDialog d = UI.getFileDialog(getShell(),
 							SWT.SAVE | SWT.APPLICATION_MODAL);
@@ -186,7 +188,7 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 		};
 	}
 
-	private static Dialog createOptionsWindow(Shell shell, final Saver s) {
+	private Dialog createOptionsWindow(Shell shell) {
 		return new Dialog(shell) {
 			@Override
 			protected Control createDialogArea(Composite parent) {
@@ -197,8 +199,8 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 					layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).
 					done();
 				
-				for (final OptionDescriptor d : s.getOptions()) {
-					Object ov = s.getOption(d.getID());
+				for (final OptionDescriptor d : exporter.getOptions()) {
+					Object ov = exporter.getOption(d.getID());
 					if (ov instanceof Boolean) {
 						final Button b =
 							UI.chain(new Button(optionsGroup, SWT.CHECK)).
@@ -207,7 +209,8 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 						b.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent e) {
-								s.setOption(d.getID(), b.getSelection());
+								exporter.setOption(
+										d.getID(), b.getSelection());
 							}
 						});
 					}
