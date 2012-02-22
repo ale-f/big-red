@@ -13,7 +13,7 @@ import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.utilities.resources.IFileBackable;
 
 public class SimulationSpec extends ModelObject implements IChangeable, IFileBackable {
-	private abstract class SimulationSpecChange extends ModelObjectChange {
+	abstract class SimulationSpecChange extends ModelObjectChange {
 		@Override
 		public SimulationSpec getCreator() {
 			return SimulationSpec.this;

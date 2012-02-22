@@ -30,7 +30,7 @@ import dk.itu.big_red.utilities.geometry.Rectangle;
  *
  */
 public abstract class Layoutable extends Colourable implements IAdaptable {
-	protected abstract class LayoutableChange
+	abstract class LayoutableChange
 	extends dk.itu.big_red.model.ModelObject.ModelObjectChange {
 		@Override
 		public Layoutable getCreator() {

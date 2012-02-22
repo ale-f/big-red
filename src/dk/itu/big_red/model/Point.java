@@ -12,7 +12,7 @@ import dk.itu.big_red.model.interfaces.IPoint;
  * @see IPoint
  */
 public abstract class Point extends Layoutable implements IPoint {
-	protected abstract class PointChange
+	abstract class PointChange
 	extends dk.itu.big_red.model.Layoutable.LayoutableChange {
 		@Override
 		public Point getCreator() {

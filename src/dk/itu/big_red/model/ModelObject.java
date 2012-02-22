@@ -21,7 +21,7 @@ import dk.itu.big_red.model.changes.Change;
  *
  */
 public class ModelObject implements IDisposable {
-	public abstract class ModelObjectChange extends Change {
+	abstract class ModelObjectChange extends Change {
 		protected ModelObjectChange() {
 		}
 		

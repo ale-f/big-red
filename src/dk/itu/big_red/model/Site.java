@@ -10,7 +10,7 @@ import dk.itu.big_red.model.interfaces.ISite;
  * @see ISite
  */
 public class Site extends Layoutable implements ISite {
-	protected abstract class SiteChange extends LayoutableChange {
+	abstract class SiteChange extends LayoutableChange {
 		@Override
 		public Site getCreator() {
 			return Site.this;
