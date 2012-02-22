@@ -47,18 +47,18 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 	}
 	
 	@Override
-	public void run() {
+	public void run(Shell parent) {
 		try {
 			IOAdapter io = new IOAdapter();
 			exporter.setModel(getSimulationSpec()).
 				setOutputStream(io.getOutputStream());
 			int r =
 				(exporter.getOptions().size() != 0 ?
-					createOptionsWindow(UI.getShell(), exporter).open() :
+					createOptionsWindow(parent, exporter).open() :
 					Dialog.OK);
 			if (r == Dialog.OK) {
 				exporter.exportObject();
-				createResultsWindow(UI.getShell(),
+				createResultsWindow(parent,
 					IOAdapter.readString(io.getInputStream())).open();
 			}
 		} catch (SaveFailedException ex) {

@@ -365,7 +365,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 						((IStructuredSelection)cv.getSelection()).
 							getFirstElement()).createInteractionManager();
 				im.setSimulationSpec(getModel());
-				im.run();
+				im.run(getEditorSite().getShell());
 			}
 		});
 		export.setEnabled(false);

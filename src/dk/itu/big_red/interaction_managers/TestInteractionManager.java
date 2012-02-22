@@ -11,7 +11,7 @@ import dk.itu.big_red.utilities.ui.UI;
 public class TestInteractionManager extends InteractionManager {
 
 	@Override
-	public void run() {
+	public void run(Shell parent) {
 		final Shell s = UI.chain(
 				new Shell(UI.getShell(), SWT.SHELL_TRIM | SWT.PRIMARY_MODAL)).
 			size(640, 480).text("RedBrowser").layout(new FillLayout()).done();

@@ -1,5 +1,7 @@
 package dk.itu.big_red.interaction_managers;
 
+import org.eclipse.swt.widgets.Shell;
+
 import dk.itu.big_red.model.SimulationSpec;
 
 /**
@@ -25,6 +27,7 @@ public interface IInteractionManager {
 	 * <p>(<strong>Important note:</strong> this method is allowed to do
 	 * <i>anything</i>, including &mdash; but by no means limited to &mdash;
 	 * modifying the Eclipse workspace and displaying modal dialogs.)
+	 * @param parent the caller's {@link Shell}, if one exists
 	 */
-	public void run();
+	public void run(Shell parent);
 }
