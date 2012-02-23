@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import dk.itu.big_red.utilities.io.AsynchronousInputThread;
 import dk.itu.big_red.utilities.io.AsynchronousOutputThread;
+import dk.itu.big_red.utilities.io.BlockReadStrategy;
 import dk.itu.big_red.utilities.io.IAsynchronousInputRecipient;
 import dk.itu.big_red.utilities.io.IAsynchronousOutputRecipient;
 
@@ -109,7 +110,8 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 			
 			AsynchronousInputThread it =
 				new AsynchronousInputThread(this).
-					setInputStream(process.getInputStream());
+					setInputStream(process.getInputStream()).
+						setReadStrategy(new BlockReadStrategy());
 			it.start();
 			
 			int r = super.open();

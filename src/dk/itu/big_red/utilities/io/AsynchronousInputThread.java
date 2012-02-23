@@ -17,21 +17,25 @@ public class AsynchronousInputThread extends AbstractAsynchronousIOThread {
 		return this;
 	}
 	
+	private IReadStrategy readStrategy;
+	
+	public AsynchronousInputThread setReadStrategy(IReadStrategy readStrategy) {
+		this.readStrategy = readStrategy;
+		return this;
+	}
+	
 	@Override
 	public void run() {
 		try {
-			byte[] buffer = new byte[128];
-			int length;
-			while ((length = is.read(buffer)) != -1) {
+			byte[] buffer;
+			while ((buffer = readStrategy.read(is)) != null) {
 				final byte[] tBuffer = buffer;
-				final int tLength = length;
 				if (!conditionalDispatch(new Runnable() {
 					@Override
 					public void run() {
-						air.signalInput(tLength, tBuffer);
+						air.signalInput(tBuffer.length, tBuffer);
 					}
 				})) break;
-				buffer = new byte[128];
 			}
 			conditionalDispatch(new Runnable() {
 				@Override
