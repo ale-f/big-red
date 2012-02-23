@@ -2,7 +2,6 @@ package dk.itu.big_red.utilities.io;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -106,17 +105,10 @@ public class IOAdapter {
 	 * @return a {@link String}, or <code>null</code> if something went wrong
 	 */
 	public static String readString(InputStream is) {
-		StringBuilder result = new StringBuilder();
-		InputStreamReader r = new InputStreamReader(is);
-		char[] buffer = new char[1024];
-		int count = 0;
 		try {
-			while ((count = r.read(buffer)) != -1)
-				if (count > 0)
-					result.append(buffer, 0, count);
+			return new String(new TotalReadStrategy().read(is));
 		} catch (IOException e) {
 			return null;
 		}
-		return result.toString();
 	}
 }
