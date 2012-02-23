@@ -14,9 +14,9 @@ import org.eclipse.swt.widgets.Shell;
 
 import dk.itu.big_red.utilities.io.AsynchronousInputThread;
 import dk.itu.big_red.utilities.io.AsynchronousOutputThread;
-import dk.itu.big_red.utilities.io.BlockReadStrategy;
 import dk.itu.big_red.utilities.io.IAsynchronousInputRecipient;
 import dk.itu.big_red.utilities.io.IAsynchronousOutputRecipient;
+import dk.itu.big_red.utilities.io.LineReadStrategy;
 
 public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
 	private ProcessBuilder pb;
@@ -53,22 +53,14 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 		return c;
 	}
 	
-	private byte[] output = null;
+	private String result = "";
 	
 	@Override
 	public void signalInput(int length, byte[] buffer) {
 		if (text.isDisposed())
 			return;
-		if (output == null) {
-			output = new byte[length];
-			System.arraycopy(buffer, 0, output, 0, length);
-		} else if (length != 0) {
-			byte[] newOutput = new byte[output.length + length];
-			System.arraycopy(output, 0, newOutput, 0, output.length);
-			System.arraycopy(buffer, 0, newOutput, output.length, length);
-			output = newOutput;
-		}
-		text.setText(new String(output));
+		result += new String(buffer);
+		text.setText(result);
 		text.setTopIndex(Integer.MAX_VALUE);
 	}
 	
@@ -111,7 +103,7 @@ public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient
 			AsynchronousInputThread it =
 				new AsynchronousInputThread(this).
 					setInputStream(process.getInputStream()).
-						setReadStrategy(new BlockReadStrategy());
+						setReadStrategy(new LineReadStrategy());
 			it.start();
 			
 			int r = super.open();
