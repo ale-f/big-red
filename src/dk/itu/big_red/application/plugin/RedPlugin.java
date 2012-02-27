@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -111,17 +109,5 @@ public class RedPlugin extends AbstractUIPlugin {
 	 */
 	public static Status getThrowableStatus(Throwable t) {
 		return new Status(IStatus.ERROR, PLUGIN_ID, t.getLocalizedMessage(), t);
-	}
-	
-	private static Random r = null;
-	
-	/**
-	 * Returns the plugin's random number generator, creating it if necessary.
-	 * @return the plugin's {@link Random}
-	 */
-	public static Random getRandom() {
-		if (r == null)
-			r = new Random();
-		return r;
 	}
 }

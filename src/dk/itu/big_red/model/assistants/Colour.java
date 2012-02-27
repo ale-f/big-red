@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.graphics.RGB;
-import dk.itu.big_red.application.plugin.RedPlugin;
 
 /**
  * {@link Colour} objects represent RGBA colours.
@@ -400,7 +399,7 @@ public class Colour extends ReadonlyColour {
 	 * @return <code>this</code>, for convenience
 	 */
 	public Colour randomise() {
-		Random r = RedPlugin.getRandom();
+		Random r = new Random();
 		return setRed(r.nextInt(256)).setGreen(r.nextInt(256)).
 				setBlue(r.nextInt(256)).setAlpha(255);
 	}
