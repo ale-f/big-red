@@ -25,9 +25,8 @@ import org.xml.sax.SAXException;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public abstract class XMLLoader extends Loader implements IFileBackable {
+public abstract class XMLLoader extends Loader {
 	private static SchemaFactory sf = null;
 	
 	/**
@@ -79,19 +78,6 @@ public abstract class XMLLoader extends Loader implements IFileBackable {
 		} finally {
 			is.close();
 		}
-	}
-	
-	private IFile file;
-	
-	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public XMLLoader setFile(IFile file) {
-		this.file = file;
-		return this;
 	}
 	
 	public abstract Object makeObject(Element e) throws LoadFailedException;

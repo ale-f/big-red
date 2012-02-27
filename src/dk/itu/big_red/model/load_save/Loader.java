@@ -12,7 +12,6 @@ import org.eclipse.core.runtime.content.IContentType;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 
 /**
  * Classes extending Loader can read objects from an {@link InputStream}.
@@ -34,6 +33,29 @@ public abstract class Loader {
 		if (is != null)
 			source = is;
 		return this;
+	}
+	
+	private IFile file;
+	
+	/**
+	 * Associates an {@link IFile} with this {@link Loader}. (The file will
+	 * <i>not</i> be automatically opened by this method &mdash; {@link
+	 * #setInputStream(InputStream)} must be called separately.)
+	 * @param file an {@link IFile}
+	 * @return <code>this</code>, for convenience
+	 */
+	public Loader setFile(IFile file) {
+		this.file = file;
+		return this;
+	}
+	
+	/**
+	 * Returns the {@link IFile} associated with this {@link Loader}, if there
+	 * is one.
+	 * @return an {@link IFile}, or <code>null</code>
+	 */
+	public IFile getFile() {
+		return file;
 	}
 	
 	/**
@@ -77,19 +99,12 @@ public abstract class Loader {
 		for (IConfigurationElement ice :
 			RedPlugin.getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
-				Loader i = (Loader)RedPlugin.instantiate(ice);
+				Loader i = ((Loader)RedPlugin.instantiate(ice)).setFile(f);
 				try {
 					i.setInputStream(f.getContents());
 				} catch (CoreException e) {
 					return null;
 				}
-				/*
-				 * Importers implementing IFileBackable indicate that they need
-				 * the file as part of the import process (i.e., to resolve
-				 * relative paths).
-				 */
-				if (i instanceof IFileBackable)
-					((IFileBackable)i).setFile(f);
 				if (i.canImport()) {
 					return i.importObject();
 				} else return null;
