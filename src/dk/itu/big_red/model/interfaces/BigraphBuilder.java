@@ -63,7 +63,7 @@ public class BigraphBuilder {
 		return s;
 	}
 	
-	public IBigraph finish() {
+	public Bigraph finish() {
 		try {
 			b.tryApplyChange(cg);
 			b.tryApplyChange(b.relayout());
