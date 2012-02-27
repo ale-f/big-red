@@ -4,7 +4,6 @@ import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.utilities.Lists;
 
 /**
  * 
@@ -21,16 +20,16 @@ public class Root extends Container implements IRoot {
 
 	@Override
 	public Iterable<INode> getINodes() {
-		return Lists.only(children, INode.class);
+		return only(INode.class);
 	}
 
 	@Override
 	public Iterable<ISite> getISites() {
-		return Lists.only(children, ISite.class);
+		return only(ISite.class);
 	}
 
 	@Override
 	public Iterable<IChild> getIChildren() {
-		return Lists.only(children, IChild.class);
+		return only(IChild.class);
 	}
 }

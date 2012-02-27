@@ -41,21 +41,4 @@ public final class Lists {
 		}
 		return r;
 	}
-	
-	/**
-	 * Returns a subset of the given {@link Collection} which contains only
-	 * those objects of the given {@link Class}.
-	 * @param list a {@link Collection}
-	 * @param klass the {@link Class} to filter by
-	 * @return a {@link List} of objects of the given {@link Class}
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T, V>
-	ArrayList<V> only(Collection<? extends T> list, Class<V> klass) {
-		ArrayList<V> r = new ArrayList<V>();
-		for (T i : list)
-			if (klass.isInstance(i))
-				r.add((V)i);
-		return r;
-	}
 }

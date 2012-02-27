@@ -14,7 +14,6 @@ import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
 
@@ -185,7 +184,7 @@ public class Node extends Container implements INode {
 
 	@Override
 	public Iterable<INode> getINodes() {
-		return Lists.only(children, INode.class);
+		return only(INode.class);
 	}
 
 	@Override
@@ -195,12 +194,12 @@ public class Node extends Container implements INode {
 
 	@Override
 	public Iterable<ISite> getISites() {
-		return Lists.only(children, ISite.class);
+		return only(ISite.class);
 	}
 	
 	@Override
 	public Iterable<IChild> getIChildren() {
-		return Lists.only(children, IChild.class);
+		return only(IChild.class);
 	}
 	
 	@Override

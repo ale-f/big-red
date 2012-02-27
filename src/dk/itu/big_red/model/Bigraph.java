@@ -184,7 +184,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 		for (Layoutable child : getChildren())
 			b.addChild(child.clone(m));
 		
-		for (Link i : Lists.only(getChildren(), Link.class)) {
+		for (Link i : only(Link.class)) {
 			Link iClone = (Link)m.get(i);
 			for (Point p : i.getPoints())
 				iClone.addPoint((Point)m.get(p));
@@ -317,22 +317,22 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 
 	@Override
 	public Iterable<IEdge> getIEdges() {
-		return Lists.only(children, IEdge.class);
+		return only(IEdge.class);
 	}
 
 	@Override
 	public Iterable<IRoot> getIRoots() {
-		return Lists.only(children, IRoot.class);
+		return only(IRoot.class);
 	}
 
 	@Override
 	public Iterable<IInnerName> getIInnerNames() {
-		return Lists.only(children, IInnerName.class);
+		return only(IInnerName.class);
 	}
 	
 	@Override
 	public Iterable<IOuterName> getIOuterNames() {
-		return Lists.only(children, IOuterName.class);
+		return only(IOuterName.class);
 	}
 
 	@Override
@@ -379,7 +379,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable, IFileBa
 			cg.add(i.changeLayout(r));
 		}
 		
-		for (Link i : Lists.only(getChildren(), Link.class)) {
+		for (Link i : only(Link.class)) {
 			if (i instanceof Edge)
 				cg.add(((Edge)i).changeReposition());
 			cg.add(i.changeOutlineColour(new Colour().randomise()));

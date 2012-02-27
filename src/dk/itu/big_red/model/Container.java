@@ -206,4 +206,19 @@ public abstract class Container extends Layoutable {
 		
 		super.dispose();
 	}
+
+	/**
+	 * Returns the children of this {@link Container} which are instances of
+	 * the given {@link Class}.
+	 * @param klass the {@link Class} to filter by
+	 * @return a {@link List} of children of the given {@link Class}
+	 */
+	@SuppressWarnings("unchecked")
+	protected <V> ArrayList<V> only(Class<V> klass) {
+		ArrayList<V> r = new ArrayList<V>();
+		for (Layoutable i : getChildren())
+			if (klass.isInstance(i))
+				r.add((V)i);
+		return r;
+	}
 }
