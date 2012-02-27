@@ -1,4 +1,6 @@
-package dk.itu.big_red.interaction_managers;
+package dk.itu.big_red.editors.simulation_spec;
+
+import dk.itu.big_red.interaction_managers.IInteractionManager;
 
 /**
  * Classes implementing <strong>IInteractionManagerFactory</strong> can create
@@ -6,7 +8,7 @@ package dk.itu.big_red.interaction_managers;
  * @author alec
  *
  */
-public interface IInteractionManagerFactory {
+interface IInteractionManagerFactory {
 	/**
 	 * Returns the display name for this factory.
 	 * @return this factory's name

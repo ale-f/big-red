@@ -36,7 +36,6 @@ import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
-import dk.itu.big_red.interaction_managers.IInteractionManagerFactory;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;

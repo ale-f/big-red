@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
-import dk.itu.big_red.interaction_managers.IInteractionManagerFactory;
 
 /**
  * The <strong>ConfigurationElementInteractionManagerFactory</strong> creates
