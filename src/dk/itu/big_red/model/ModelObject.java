@@ -23,9 +23,6 @@ import dk.itu.big_red.model.changes.Change;
  */
 public class ModelObject implements IDisposable {
 	abstract class ModelObjectChange extends Change {
-		protected ModelObjectChange() {
-		}
-		
 		/**
 		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
 		 * @return
