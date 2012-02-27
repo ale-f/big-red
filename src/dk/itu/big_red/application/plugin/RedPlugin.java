@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -92,12 +91,9 @@ public class RedPlugin extends AbstractUIPlugin {
 	 * @return an InputStream, or <code>null</code> if the file wasn't found
 	 */
 	public static InputStream getResource(String path) {
-		return getResource(getInstance().getBundle(), path);
-	}
-	
-	public static InputStream getResource(Bundle bundle, String path) {
 		try {
-			URL u = FileLocator.find(bundle, new Path(path), null);
+			URL u = FileLocator.find(
+					getInstance().getBundle(), new Path(path), null);
 			if (u != null)
 				return u.openStream();
 			else return null;
