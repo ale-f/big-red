@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import dk.itu.big_red.editors.assistants.ModelPropertySource;
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.interfaces.ILink;
@@ -54,7 +53,7 @@ public abstract class Link extends Layoutable implements ILink {
 		@Override
 		public Object getAdapter(Class adapter) {
 			if (adapter == IPropertySource.class) {
-				return new ModelPropertySource(getLink());
+				return getLink().getAdapter(IPropertySource.class);
 			} else return null;
 		}
 	}

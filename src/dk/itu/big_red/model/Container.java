@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Dimension;
-import org.w3c.dom.Node;
 
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.utilities.geometry.Rectangle;
