@@ -446,19 +446,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			c.getCreator().setAlias(c.alias);
 		}
 	}
-
-	private IFile file = null;
-	
-	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public Bigraph setFile(IFile file) {
-		this.file = file;
-		return this;
-	}
 	
 	/**
 	 * XXX: This is <i>probably</i> not a safe operation to perform on open
@@ -483,5 +470,10 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		signature = null;
 		
 		super.dispose();
+	}
+	
+	@Override
+	public Bigraph setFile(IFile file) {
+		return (Bigraph)super.setFile(file);
 	}
 }

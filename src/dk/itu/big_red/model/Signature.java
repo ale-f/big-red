@@ -103,26 +103,12 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		}
 	}
 	
-	private IFile file = null;
-	
-	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public Signature setFile(IFile file) {
-		this.file = file;
-		return this;
-	}
-	
 	@Override
 	public void dispose() {
 		for (Control c : getControls())
 			c.dispose();
 		getControls().clear();
 		controls = null;
-		file = null;
 		validator = null;
 		
 		super.dispose();
@@ -142,5 +128,10 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		if (name.equals(PROPERTY_CONTROL)) {
 			return getControls();
 		} else return super.getProperty(name);
+	}
+	
+	@Override
+	public Signature setFile(IFile file) {
+		return (Signature)super.setFile(file);
 	}
 }

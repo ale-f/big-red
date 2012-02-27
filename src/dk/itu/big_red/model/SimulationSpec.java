@@ -237,19 +237,6 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 			setModel(((ChangeModel) b).model);
 		}
 	}
-
-	private IFile file = null;
-	
-	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public SimulationSpec setFile(IFile file) {
-		this.file = file;
-		return this;
-	}
 	
 	@Override
 	public void dispose() {
@@ -260,7 +247,6 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 			r.dispose();
 		rules.clear();
 		
-		file = null;
 		model = null;
 		rules = null;
 		signature = null;
@@ -285,5 +271,10 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 		} else if (name.equals(PROPERTY_RULE)) {
 			return getRules();
 		} else return super.getProperty(name);
+	}
+	
+	@Override
+	public SimulationSpec setFile(IFile file) {
+		return (SimulationSpec)super.setFile(file);
 	}
 }

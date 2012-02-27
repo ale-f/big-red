@@ -51,19 +51,6 @@ public class ReactionRule extends ModelObject {
 		return redexToReactum;
 	}
 	
-	private IFile file = null;
-	
-	@Override
-	public IFile getFile() {
-		return file;
-	}
-
-	@Override
-	public ReactionRule setFile(IFile file) {
-		this.file = file;
-		return this;
-	}
-	
 	public static Change translateChange(
 			Map<ModelObject, ModelObject> oldToNew, Change change) {
 		if (change instanceof ChangeGroup) {
@@ -239,8 +226,12 @@ public class ReactionRule extends ModelObject {
 		redexToReactum.clear();
 		redexToReactum = null;
 		changes.clear();
-		file = null;
 		
 		super.dispose();
+	}
+	
+	@Override
+	public ReactionRule setFile(IFile file) {
+		return (ReactionRule)super.setFile(file);
 	}
 }

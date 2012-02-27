@@ -204,5 +204,7 @@ public class ModelObject implements IDisposable {
 		for (PropertyChangeListener i : pls)
 			listeners.removePropertyChangeListener(i);
 		listeners = null;
+		
+		file = null;
 	}
 }
