@@ -29,7 +29,6 @@ import dk.itu.big_red.model.namespaces.PositiveIntegerNamePolicy;
 import dk.itu.big_red.model.namespaces.StringNamePolicy;
 import dk.itu.big_red.utilities.Lists;
 import dk.itu.big_red.utilities.geometry.Rectangle;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link
@@ -37,7 +36,7 @@ import dk.itu.big_red.utilities.resources.IFileBackable;
  * @author alec
  * @see IBigraph
  */
-public class Bigraph extends Container implements IBigraph, IChangeable, IFileBackable {
+public class Bigraph extends Container implements IBigraph, IChangeable {
 	private Signature signature = null;
 
 	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();

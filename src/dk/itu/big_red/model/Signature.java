@@ -12,7 +12,6 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.interfaces.ISignature;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 
 /**
  * The Signature is a central storage point for {@link Control}s and their
@@ -22,7 +21,7 @@ import dk.itu.big_red.utilities.resources.IFileBackable;
  * @author alec
  * @see ISignature
  */
-public class Signature extends ModelObject implements ISignature, IChangeable, IFileBackable {
+public class Signature extends ModelObject implements ISignature, IChangeable {
 	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
 	
 	private ArrayList<Control> controls = new ArrayList<Control>();

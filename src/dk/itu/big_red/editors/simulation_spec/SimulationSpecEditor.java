@@ -39,6 +39,7 @@ import dk.itu.big_red.interaction_managers.ConfigurationElementInteractionManage
 import dk.itu.big_red.interaction_managers.IInteractionManager;
 import dk.itu.big_red.interaction_managers.IInteractionManagerFactory;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
@@ -49,7 +50,6 @@ import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.resources.Types;
@@ -266,7 +266,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((IFileBackable)element).getFile().
+					return ((ModelObject)element).getFile().
 							getProjectRelativePath().toString();
 				}
 		});

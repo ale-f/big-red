@@ -35,7 +35,6 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class AbstractEditor extends EditorPart
@@ -179,17 +178,10 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	
 	protected abstract ModelObject getModel();
 	
-	protected IFile getFile() {
-		return (getModel() instanceof IFileBackable ?
-				((IFileBackable)getModel()).getFile() :
-					(getEditorInput() instanceof FileEditorInput ?
-						((FileEditorInput)getEditorInput()).getFile() : null));
-	}
-	
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		IResourceDelta specificDelta =
-				Project.getSpecificDelta(event.getDelta(), getFile());
+			Project.getSpecificDelta(event.getDelta(), getModel().getFile());
 		if (specificDelta != null && !isSaving())
 			;
 	}
@@ -271,9 +263,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		d.setBlockOnOpen(true);
 		if (d.open() == Dialog.OK) {
 			IFile f = Project.getWorkspaceFile(d.getResult());
-			if (getModel() instanceof IFileBackable)
-				((IFileBackable)getModel()).setFile(f);
-			
+			getModel().setFile(f);
 			setInputWithNotify(new FileEditorInput(f));
 			doSave(null);
 		}

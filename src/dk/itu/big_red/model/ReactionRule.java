@@ -18,9 +18,8 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.namespaces.INamespace;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class ReactionRule extends ModelObject implements IFileBackable {
+public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;
 	private Map<ModelObject, ModelObject> redexToReactum =
 		new HashMap<ModelObject, ModelObject>();

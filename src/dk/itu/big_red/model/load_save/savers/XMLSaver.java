@@ -19,7 +19,6 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class XMLSaver extends Saver {
@@ -77,7 +76,7 @@ public abstract class XMLSaver extends Saver {
 		throws SaveFailedException;
 	
 	protected Element processOrReference(
-		Element e, IResource relativeTo, IFileBackable object,
+		Element e, IResource relativeTo, ModelObject object,
 		Class<? extends XMLSaver> klass) {
 		if (e == null || object == null) {
 			return null;
@@ -89,7 +88,7 @@ public abstract class XMLSaver extends Saver {
 			XMLSaver ex;
 			try {
 				ex = klass.newInstance();
-				ex.setDocument(getDocument()).setModel((ModelObject)object);
+				ex.setDocument(getDocument()).setModel(object);
 				ex.processObject(e, object);
 			} catch (Exception exc) {
 				return e;

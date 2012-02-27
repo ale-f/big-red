@@ -10,9 +10,8 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeable;
-import dk.itu.big_red.utilities.resources.IFileBackable;
 
-public class SimulationSpec extends ModelObject implements IChangeable, IFileBackable {
+public class SimulationSpec extends ModelObject implements IChangeable {
 	abstract class SimulationSpecChange extends ModelObjectChange {
 		@Override
 		public SimulationSpec getCreator() {
