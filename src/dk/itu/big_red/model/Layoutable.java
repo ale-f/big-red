@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import dk.itu.big_red.editors.assistants.ModelPropertySource;
+import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
 import dk.itu.big_red.utilities.geometry.Rectangle;
