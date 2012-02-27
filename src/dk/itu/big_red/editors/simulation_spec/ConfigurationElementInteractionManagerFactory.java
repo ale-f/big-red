@@ -1,8 +1,10 @@
-package dk.itu.big_red.interaction_managers;
+package dk.itu.big_red.editors.simulation_spec;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.interaction_managers.IInteractionManager;
+import dk.itu.big_red.interaction_managers.IInteractionManagerFactory;
 
 /**
  * The <strong>ConfigurationElementInteractionManagerFactory</strong> creates
@@ -10,7 +12,7 @@ import dk.itu.big_red.application.plugin.RedPlugin;
  * @author alec
  * @see RedPlugin#instantiate(IConfigurationElement)
  */
-public class ConfigurationElementInteractionManagerFactory
+class ConfigurationElementInteractionManagerFactory
 	implements IInteractionManagerFactory {
 	private IConfigurationElement ice = null;
 	
