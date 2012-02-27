@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities.geometry;
+package dk.itu.big_red.editors.bigraph.figures.assistants;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
@@ -9,7 +9,7 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
  * @author alec
  *
  */
-public class QuadraticBezierCurve {
+class QuadraticBezierCurve {
 	private PrecisionPoint p0, p1, p2;
 	
 	/**
