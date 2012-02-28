@@ -12,8 +12,7 @@ import dk.itu.big_red.model.assistants.ReadonlyColour;
  *
  */
 public abstract class Colourable extends ModelObject {
-	abstract class ColourableChange
-	extends dk.itu.big_red.model.ModelObject.ModelObjectChange {
+	abstract class ColourableChange extends ModelObjectChange {
 		public Colour newColour;
 		
 		private ColourableChange(Colour newColour) {

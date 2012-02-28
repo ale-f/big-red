@@ -19,8 +19,7 @@ import dk.itu.big_red.utilities.geometry.Rectangle;
  *
  */
 public abstract class Container extends Layoutable {
-	abstract class ContainerChange
-	extends dk.itu.big_red.model.Layoutable.LayoutableChange {
+	abstract class ContainerChange extends LayoutableChange {
 		@Override
 		public Container getCreator() {
 			return (Container)super.getCreator();
