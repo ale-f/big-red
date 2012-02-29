@@ -2,11 +2,13 @@ package dk.itu.big_red.wizards.export.assistants;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.gef.EditPart;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
@@ -23,13 +25,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.Saver.OptionDescriptor;
 import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
@@ -137,8 +138,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		setErrorMessage(null);
 		setPageComplete(false);
 		
-		IResource r =
-			Project.tryDesperatelyToGetAnIResourceOutOfAnIStructuredSelection(selection);
+		IResource r = getSelectedResource(selection);
 		if (r != null)
 			bigraphSelector.setResource(r);
 		
@@ -260,5 +260,20 @@ public class WizardBigraphExportPage extends WizardPage {
 		}
 		
 		getShell().layout(true, true);
+	}
+
+	private static IResource getSelectedResource(IStructuredSelection selection) {
+		Iterator<?> it = selection.iterator();
+		while (it.hasNext()) {
+			Object i = it.next();
+			if (i instanceof IResource) {
+				return (IResource)i;
+			} else if (i instanceof EditPart) {
+				Object j = ((EditPart)i).getModel();
+				if (j instanceof ModelObject)
+					return ((ModelObject)j).getFile();
+			}
+		}
+		return null;
 	}
 }
