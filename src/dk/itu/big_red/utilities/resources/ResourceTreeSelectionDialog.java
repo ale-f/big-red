@@ -1,14 +1,19 @@
 package dk.itu.big_red.utilities.resources;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.utilities.ui.jface.ContainerViewerFilter;
 import dk.itu.big_red.utilities.ui.jface.FileTypeViewerFilter;
 
@@ -19,6 +24,26 @@ import dk.itu.big_red.utilities.ui.jface.FileTypeViewerFilter;
  *
  */
 public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
+	private static final IStatus
+		OK_STATUS = new Status(Status.OK, RedPlugin.PLUGIN_ID, ""),
+		ERROR_STATUS = new Status(Status.ERROR, RedPlugin.PLUGIN_ID, "");
+	
+	private static final ISelectionStatusValidator
+	getSelectionValidator(final Class<? extends IResource> klass) {
+		return new ISelectionStatusValidator() {
+			@Override
+			public IStatus validate(Object[] selection) {
+				return 
+					(selection.length == 1 && klass.isInstance(selection[0]) ?
+							OK_STATUS : ERROR_STATUS);
+			}
+		};
+	}
+	
+	private static final ISelectionStatusValidator
+		fileValidator = getSelectionValidator(IFile.class),
+		containerValidator = getSelectionValidator(IContainer.class);
+	
 	public static enum Mode {
 		GENERIC,
 		CONTAINER,
@@ -32,13 +57,13 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 		setAllowMultiple(false);
 		setInput(input);
 		if (mode == Mode.FILE) {
-			setValidator(new FileSelectionStatusValidator());
+			setValidator(fileValidator);
 			FileTypeViewerFilter fv = new FileTypeViewerFilter();
 			addFilter(fv);
 			for (String i : contentTypes)
 				fv.addContentType(i);
 		} else if (mode == Mode.CONTAINER) {
-			setValidator(new ContainerSelectionStatusValidator());
+			setValidator(containerValidator);
 			addFilter(new ContainerViewerFilter());
 		}
 	}
