@@ -50,17 +50,6 @@ public final class Project {
 	}
 	
 	/**
-	 * Indicates whether or not the named folder exists as a child of
-	 * <code>c</code>.
-	 * @param c the parent {@link IContainer}
-	 * @param name the folder's name
-	 * @return whether the folder exists or not
-	 */
-	public static boolean folderExists(IContainer c, String name) {
-		return c.getFolder(new Path(name)).exists();
-	}
-	
-	/**
 	 * Gets an {@link IFile} contained by <code>c</code>. If it doesn't exist
 	 * already, then it's created (as an empty file).
 	 * @param c the parent {@link IContainer}
@@ -74,28 +63,6 @@ public final class Project {
 		if (!f.exists())
 			f.create(IOAdapter.getNullInputStream(), true, null);
 		return f;
-	}
-	
-	/**
-	 * Indicates whether or not the named file exists as a child of
-	 * <code>c</code>.
-	 * @param c the parent {@link IContainer}
-	 * @param name the file's name
-	 * @return whether the file exists or not
-	 */
-	public static boolean fileExists(IContainer c, String name) {
-		return c.getFile(new Path(name)).exists();
-	}
-	
-	/**
-	 * Indicates whether or not <code>c</code> contains a resource with the
-	 * given path.
-	 * @param c an {@link IContainer}
-	 * @param path the path of a would-be child
-	 * @return whether the path identifies an extant resource or not
-	 */
-	public static boolean pathExists(IContainer c, IPath path) {
-		return (c.findMember(path) != null);
 	}
 	
 	/**
@@ -139,18 +106,6 @@ public final class Project {
 	public static IFile findFileByPath(IContainer c, IPath path) {
 		IResource r = findResourceByPath(c, path);
 		return (r instanceof IFile ? (IFile)r : null);
-	}
-	
-	/**
-	 * Indicates whether or not the two {@link IFile}s provided belong to the
-	 * same {@link IProject}.
-	 * @param one the first {@link IFile} to compare
-	 * @param two the second {@link IFile} to compare
-	 * @return whether the two IFiles belong to the same project or not
-	 */
-	public static boolean compareProjects(IFile one, IFile two) {
-		return (one != null && two != null &&
-				one.getProject().equals(two.getProject()));
 	}
 	
 	/**
