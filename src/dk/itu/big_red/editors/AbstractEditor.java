@@ -262,7 +262,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		SaveAsDialog d = new SaveAsDialog(getSite().getShell());
 		d.setBlockOnOpen(true);
 		if (d.open() == Dialog.OK) {
-			IFile f = Project.getWorkspaceFile(d.getResult());
+			IFile f = Project.getWorkspaceRoot().getFile(d.getResult());
 			getModel().setFile(f);
 			setInputWithNotify(new FileEditorInput(f));
 			doSave(null);

@@ -153,14 +153,6 @@ public final class Project {
 				one.getProject().equals(two.getProject()));
 	}
 	
-	public static IFile getWorkspaceFile(IPath p) {
-		return getWorkspaceRoot().getFile(p);
-	}
-	
-	public static IFolder getWorkspaceFolder(IPath p) {
-		return getWorkspaceRoot().getFolder(p);
-	}
-	
 	/**
 	 * Sets the contents of the given {@link IFile} (which need not already
 	 * exist).
