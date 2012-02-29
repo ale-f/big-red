@@ -174,19 +174,6 @@ public final class Project {
 		} else file.create(contents, 0, null);
 	}
 	
-	public static IPath getRelativePath(IResource relativeTo, IResource resource) {
-		IPath relativeToContainer = null;
-		if (relativeTo instanceof IContainer) {
-			relativeToContainer = relativeTo.getFullPath();
-		} else if (relativeTo instanceof IFile) {
-			relativeToContainer = relativeTo.getParent().getFullPath();
-		}
-		
-		if (relativeToContainer != null) {
-			return resource.getFullPath().makeRelativeTo(relativeToContainer);
-		} else return resource.getFullPath();
-	}
-	
 	public static IResourceDelta getSpecificDelta(IResourceDelta rootDelta, IResource r) {
 		return getSpecificDelta(rootDelta, r.getFullPath());
 	}

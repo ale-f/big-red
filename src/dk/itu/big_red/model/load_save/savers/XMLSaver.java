@@ -8,7 +8,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IContainer;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -19,7 +19,6 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class XMLSaver extends Saver {
 	private Document doc = null;
@@ -76,14 +75,15 @@ public abstract class XMLSaver extends Saver {
 		throws SaveFailedException;
 	
 	protected Element processOrReference(
-		Element e, IResource relativeTo, ModelObject object,
+		Element e, IContainer relativeTo, ModelObject object,
 		Class<? extends XMLSaver> klass) {
 		if (e == null || object == null) {
 			return null;
 		} else if (object.getFile() != null) {
-			e.setAttributeNS(null, "src",
-					Project.getRelativePath(
-						relativeTo, object.getFile()).toString());	
+			e.setAttributeNS(null,
+				"src",
+					object.getFile().getFullPath().
+						makeRelativeTo(relativeTo.getFullPath()).toString());	
 		} else {
 			XMLSaver ex;
 			try {
