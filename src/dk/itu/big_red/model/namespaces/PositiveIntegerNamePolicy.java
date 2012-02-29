@@ -6,7 +6,7 @@ public class PositiveIntegerNamePolicy implements INamePolicy {
 		boolean r;
 		try {
 			int i = Integer.parseInt(name);
-			r = (i >= 1);
+			r = (i >= 1 && name.charAt(0) != '0');
 		} catch (NumberFormatException e) {
 			r = false;
 		}
