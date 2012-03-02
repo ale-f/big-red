@@ -63,10 +63,16 @@ public class BigraphCanvas extends Canvas {
 		 IFigure f = rep.getFigure();
 		 f.validate();
 		 preferredSize = f.getLayoutManager().getPreferredSize(f, -1, -1);
+		 if (preferredSize != null)
+			 preferredSize.expand(25, 25); /* Bigraph.PADDING */
 
 		 fit();
 	 }
 
+	 public Bigraph getContents() {
+		 return (Bigraph)gvi.getContents().getModel();
+	 }
+	 
 	 private void fit() {
 		 getParent().layout();
 
