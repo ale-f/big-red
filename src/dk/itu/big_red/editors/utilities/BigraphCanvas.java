@@ -59,6 +59,7 @@ public class BigraphCanvas extends Canvas {
 	 public void setContents(Bigraph b) {
 		 gvi.setContents(b);
 
+		 zm.setZoom(1);
 		 IFigure f = rep.getFigure();
 		 f.validate();
 		 preferredSize = f.getLayoutManager().getPreferredSize(f, -1, -1);
