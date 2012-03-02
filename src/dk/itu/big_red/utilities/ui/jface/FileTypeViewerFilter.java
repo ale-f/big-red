@@ -11,9 +11,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.Viewer;
 
-import dk.itu.big_red.utilities.resources.Types;
-
-
 /**
  * ContentTypeViewerFilters filter {@link IResource} trees based on Eclipse
  * content types.

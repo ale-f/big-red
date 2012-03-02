@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.gef.EditPart;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -32,7 +33,6 @@ import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.Saver.OptionDescriptor;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
-import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
@@ -73,7 +73,12 @@ public class WizardBigraphExportPage extends WizardPage {
 			setErrorMessage("'" + bT + "' must be a bigraph.");
 			return false;
 		} else {
-			IContentType t = Types.findContentTypeFor((IFile)bigraph);
+			IContentType t;
+			try {
+				t = ((IFile)bigraph).getContentDescription().getContentType();
+			} catch (CoreException e) {
+				t = null;
+			}
 			if (t == null || !t.getId().equals(Bigraph.CONTENT_TYPE)) {
 				setErrorMessage("'" + bT + "' must be a bigraph.");
 				return false;

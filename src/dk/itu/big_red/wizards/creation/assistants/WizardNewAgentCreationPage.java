@@ -5,6 +5,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -26,7 +27,6 @@ import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
-import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -207,7 +207,12 @@ public class WizardNewAgentCreationPage extends WizardPage {
 			setErrorMessage("'" + sT + "' must be a signature.");
 			return false;
 		} else {
-			IContentType t = Types.findContentTypeFor((IFile)signature);
+			IContentType t;
+			try {
+				t = ((IFile)signature).getContentDescription().getContentType();
+			} catch (CoreException e) {
+				t = null;
+			}
 			if (t == null || !t.getId().equals(Signature.CONTENT_TYPE)) {
 				setErrorMessage("'" + sT + "' must be a signature.");
 				return false;
