@@ -123,6 +123,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	private ArrayList<IChangeValidator> validators =
 			new ArrayList<IChangeValidator>();
+
+	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
 	
 	public Bigraph() {
 		validators.add(new BigraphIntegrityValidator(this));

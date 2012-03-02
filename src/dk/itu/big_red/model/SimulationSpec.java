@@ -172,6 +172,8 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 	}
 	
 	private Bigraph model;
+
+	public static final String CONTENT_TYPE = "dk.itu.big_red.simulation_spec";
 	
 	protected SimulationSpec setModel(Bigraph model) {
 		Bigraph oldModel = this.model;

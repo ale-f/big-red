@@ -24,6 +24,7 @@ public class ReactionRule extends ModelObject {
 	private Map<ModelObject, ModelObject> redexToReactum =
 		new HashMap<ModelObject, ModelObject>();
 	private ChangeGroup changes;
+	public static final String CONTENT_TYPE = "dk.itu.big_red.rule";
 	
 	public static final String PROPERTY_REDEX = "ReactionRuleRedex";
 	

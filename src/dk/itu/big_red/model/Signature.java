@@ -77,6 +77,8 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 
 	private SignatureChangeValidator validator =
 		new SignatureChangeValidator(this);
+
+	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
 	
 	@Override
 	public void tryValidateChange(Change b) throws ChangeRejectedException {

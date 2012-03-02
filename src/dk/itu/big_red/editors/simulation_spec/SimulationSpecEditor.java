@@ -50,7 +50,6 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
-import dk.itu.big_red.utilities.resources.Types;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
@@ -238,7 +237,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		UI.chain(new Label(self, SWT.RIGHT)).text("Signature:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		signatureSelector = new ResourceSelector(self,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
-			Mode.FILE, Types.SIGNATURE_XML);
+			Mode.FILE, Signature.CONTENT_TYPE);
 		signatureSelector.getButton().setLayoutData(
 			new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		signatureSelector.addListener(new ResourceListener() {
@@ -288,7 +287,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 					new ResourceTreeSelectionDialog(
 						getSite().getShell(),
 						((FileEditorInput)getEditorInput()).getFile().getProject(),
-						Mode.FILE, Types.RULE_XML);
+						Mode.FILE, ReactionRule.CONTENT_TYPE);
 				rtsd.setBlockOnOpen(true);
 				if (rtsd.open() == Dialog.OK) {
 					IFile f = (IFile)rtsd.getFirstResult();
@@ -318,7 +317,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		UI.chain(new Label(self, SWT.RIGHT)).text("Model:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		modelSelector = new ResourceSelector(self,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
-			Mode.FILE, Types.BIGRAPH_XML);
+			Mode.FILE, Bigraph.CONTENT_TYPE);
 		modelSelector.getButton().setLayoutData(
 			new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		modelSelector.addListener(new ResourceListener() {

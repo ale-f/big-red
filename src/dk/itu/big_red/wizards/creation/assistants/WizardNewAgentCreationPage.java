@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.Types;
@@ -115,7 +116,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 				ResourceTreeSelectionDialog d =
 					new ResourceTreeSelectionDialog(getShell(),
 						Project.getWorkspaceRoot(),
-						Mode.FILE, Types.SIGNATURE_XML);
+						Mode.FILE, Signature.CONTENT_TYPE);
 				if (signaturePath != null)
 					d.setInitialSelection(Project.findFileByPath(null, signaturePath));
 				d.setMessage("Select a signature file.");
@@ -207,7 +208,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 			return false;
 		} else {
 			IContentType t = Types.findContentTypeFor((IFile)signature);
-			if (t == null || !t.getId().equals(Types.SIGNATURE_XML)) {
+			if (t == null || !t.getId().equals(Signature.CONTENT_TYPE)) {
 				setErrorMessage("'" + sT + "' must be a signature.");
 				return false;
 			}

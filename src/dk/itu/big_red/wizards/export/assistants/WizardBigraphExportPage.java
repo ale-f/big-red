@@ -74,7 +74,7 @@ public class WizardBigraphExportPage extends WizardPage {
 			return false;
 		} else {
 			IContentType t = Types.findContentTypeFor((IFile)bigraph);
-			if (t == null || !t.getId().equals(Types.BIGRAPH_XML)) {
+			if (t == null || !t.getId().equals(Bigraph.CONTENT_TYPE)) {
 				setErrorMessage("'" + bT + "' must be a bigraph.");
 				return false;
 			}
@@ -153,7 +153,7 @@ public class WizardBigraphExportPage extends WizardPage {
 		UI.chain(new Label(root, 0)).text("&Bigraph:").done();
 		
 		bigraphSelector =
-			new ResourceSelector(root, null, Mode.FILE, Types.BIGRAPH_XML);
+			new ResourceSelector(root, null, Mode.FILE, Bigraph.CONTENT_TYPE);
 		bigraphSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
