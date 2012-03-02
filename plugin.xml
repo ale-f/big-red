@@ -292,10 +292,11 @@
       </exporter>
       <exporter
             class="dk.itu.big_red.model.load_save.savers.BigraphXMLSaver"
+            contentType="dk.itu.big_red.bigraph"
             exports="dk.itu.big_red.model.Bigraph"
             icon="resources/icons/icon16.png"
             id="big-red.exporter2"
-            name="XML">
+            name="Bigraph as XML">
          <description>
             Export a bigraph as a XML document, equivalent to that produced by File → Save.
          </description>
@@ -315,6 +316,7 @@
       </exporter>
       <exporter
             class="dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver"
+            contentType="dk.itu.big_red.simulation_spec"
             exports="dk.itu.big_red.model.SimulationSpec"
             icon="resources/icons/icon16.png"
             id="big-red.exporter5"
