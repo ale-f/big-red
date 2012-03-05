@@ -127,6 +127,12 @@
 					<p>
 						Attributes from other namespaces MAY be present on <code>redex</code>s.
 					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						This element should typically be treated as the root of a <code>&lt;bigraph&gt;</code> document defining this rule's redex.
+					</p>
 					<hr />
 				</body>
 			</html>
