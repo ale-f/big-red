@@ -13,8 +13,9 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.utilities.resources.Project;
+
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
 	@Override
@@ -29,8 +30,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	}
 	
 	private Signature makeSignature(Element e) throws LoadFailedException {
-		String signaturePath =
-				getAttributeNS(e, IRedNamespaceConstants.SPEC, "src");
+		String signaturePath = getAttributeNS(e, SPEC, "src");
 		if (signaturePath != null && getFile() != null) {
 			return (Signature)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),
@@ -41,8 +41,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	}
 	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
-		String bigraphPath =
-				getAttributeNS(e, IRedNamespaceConstants.SPEC, "src");
+		String bigraphPath = getAttributeNS(e, SPEC, "src");
 		if (bigraphPath != null && getFile() != null) {
 			return (Bigraph)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),
@@ -53,8 +52,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	}
 	
 	private ReactionRule makeRule(Element e) throws LoadFailedException {
-		String rulePath =
-				getAttributeNS(e, IRedNamespaceConstants.SPEC, "src");
+		String rulePath = getAttributeNS(e, SPEC, "src");
 		if (rulePath != null && getFile() != null) {
 			return (ReactionRule)Loader.fromFile(
 					Project.findFileByPath(getFile().getParent(),
@@ -69,15 +67,14 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		SimulationSpec ss = new SimulationSpec();
 		ChangeGroup cg = new ChangeGroup();
 		
-		Element signatureElement =
-				getNamedChildElement(e, IRedNamespaceConstants.SPEC, "signature");
+		Element signatureElement = getNamedChildElement(e, SPEC, "signature");
 		if (signatureElement != null)
 			cg.add(ss.changeSignature(makeSignature(signatureElement)));
 		
-		for (Element i : getNamedChildElements(e, IRedNamespaceConstants.SPEC, "rule"))
+		for (Element i : getNamedChildElements(e, SPEC, "rule"))
 			cg.add(ss.changeAddRule(makeRule(i)));
 		
-		Element modelElement = getNamedChildElement(e, IRedNamespaceConstants.SPEC, "model");
+		Element modelElement = getNamedChildElement(e, SPEC, "model");
 		if (modelElement != null)
 			cg.add(ss.changeModel(makeBigraph(modelElement)));
 		
