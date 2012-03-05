@@ -3,6 +3,7 @@ package dk.itu.big_red.utilities.geometry;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 public class Ellipse {
 	private Rectangle bb = new Rectangle();
@@ -41,8 +42,8 @@ public class Ellipse {
 		Point centre = bb.getCenter();
 		offset = fix(offset) - 0.25;
 		double t = offset * (2 * Math.PI),
-		       a = bb.getWidth() / 2,
-		       b = bb.getHeight() / 2;
+		       a = bb.width() / 2,
+		       b = bb.height() / 2;
 		return new PrecisionPoint(centre.x + (a * Math.cos(t)),
 				centre.y + (b * Math.sin(t)));
 	}
@@ -63,10 +64,10 @@ public class Ellipse {
 	 */
 	public double getClosestOffset(Point p) {
 		Point elc = bb.getCenter();
-		double elw = bb.getWidth(), elh = bb.getHeight();
+		double elw = bb.width(), elh = bb.height();
 		double xscale = 1, yscale = 1;
 		
-		if (bb.getWidth() > bb.getHeight())
+		if (bb.width() > bb.height())
 			xscale = elh / elh;
 		else yscale = elw / elh;
 		

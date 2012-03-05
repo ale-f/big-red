@@ -154,7 +154,7 @@ implements PropertyChangeListener, IBigraphPart {
 		Layoutable model = getModel();
 		AbstractFigure figure = getFigure();
 		
-		figure.setConstraint(model.getLayout().getDraw2DRectangle());
+		figure.setConstraint(model.getLayout());
 	}
 	
 	public abstract String getDisplayName();

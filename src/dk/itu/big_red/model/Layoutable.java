@@ -4,12 +4,11 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * All of the objects which can actually appear on a bigraph are instances of
@@ -114,7 +113,7 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	 * Gets the current layout of this object.
 	 * @return the current layout
 	 */
-	public ReadonlyRectangle getLayout() {
+	public Rectangle getLayout() {
 		return layout;
 	}
 

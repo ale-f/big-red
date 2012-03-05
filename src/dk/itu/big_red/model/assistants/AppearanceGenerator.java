@@ -1,22 +1,21 @@
 package dk.itu.big_red.model.assistants;
 
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.savers.XMLSaver;
-import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public final class AppearanceGenerator {
 	private AppearanceGenerator() {}
 	
-	public static Element rectangleToElement(Element e, ReadonlyRectangle r) {
+	public static Element rectangleToElement(Element e, Rectangle r) {
 		return XMLSaver.applyAttributes(e,
-				"width", r.getWidth(),
-				"height", r.getHeight(),
-				"x", r.getX(),
-				"y", r.getY());
+				"width", r.width(),
+				"height", r.height(),
+				"x", r.x(),
+				"y", r.y());
 	}
 	
 	public static Rectangle elementToRectangle(Element e) {

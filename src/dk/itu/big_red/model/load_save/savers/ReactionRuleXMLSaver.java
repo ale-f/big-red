@@ -118,10 +118,10 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 					newElement(IRedNamespaceConstants.BIG_RED, "big-red:layout"),
 					"name", i.getCreator().getName(),
 					"type", i.getCreator().getType().toLowerCase(),
-					"x", i.newLayout.getX(),
-					"y", i.newLayout.getY(),
-					"width", i.newLayout.getWidth(),
-					"height", i.newLayout.getHeight());
+					"x", i.newLayout.x(),
+					"y", i.newLayout.y(),
+					"width", i.newLayout.width(),
+					"height", i.newLayout.height());
 		} else if (i_ instanceof ChangeAddChild) {
 			ChangeAddChild i = (ChangeAddChild)i_;
 			f = applyAttributes(

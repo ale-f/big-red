@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -26,7 +27,6 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.utilities.Lists;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class BigraphTikZSaver extends Saver {
 	private BufferedWriter writer;
@@ -195,7 +195,7 @@ public class BigraphTikZSaver extends Saver {
 		if (con.getShape() == Shape.OVAL) {
 			tmp = rl.getCenter();
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ") ellipse (" +
-				(rl.getWidth() / 2) + " and " + (rl.getHeight() / 2) + ")";
+				(rl.width() / 2) + " and " + (rl.height() / 2) + ")";
 		} else if (con.getShape() == Shape.POLYGON) {
 			PointList fp = n.getFittedPolygon().getCopy();
 			fp.translate(rltl);

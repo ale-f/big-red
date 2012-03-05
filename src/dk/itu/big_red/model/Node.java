@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Control.ParameterSpec.Parameter;
@@ -14,8 +15,6 @@ import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * 
@@ -126,7 +125,7 @@ public class Node extends Container implements INode {
 		PointList points = getControl().getPoints();
 		if (points == null)
 			return;
-		ReadonlyRectangle rectangle = getLayout();
+		Rectangle rectangle = getLayout();
 		fittedPolygon = points.getCopy();
 
 		/*
@@ -143,10 +142,10 @@ public class Node extends Container implements INode {
 		 * both off-by-one - getBounds() prefers < to <=, it seems.)
 		 */
 		Rectangle adjustedBounds = new Rectangle(fittedPolygon.getBounds());
-		double xScale = rectangle.getWidth() - 2,
-		       yScale = rectangle.getHeight() - 2;
-		xScale /= adjustedBounds.getWidth() - 1;
-		yScale /= adjustedBounds.getHeight() - 1;
+		double xScale = rectangle.width() - 2,
+		       yScale = rectangle.height() - 2;
+		xScale /= adjustedBounds.width() - 1;
+		yScale /= adjustedBounds.height() - 1;
 		
 		/*
 		 * Scale all of the points.

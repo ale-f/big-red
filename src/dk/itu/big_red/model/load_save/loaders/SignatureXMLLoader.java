@@ -2,6 +2,7 @@ package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -15,7 +16,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.utilities.geometry.Ellipse;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class SignatureXMLLoader extends XMLLoader {
 	private ChangeGroup cg = new ChangeGroup();

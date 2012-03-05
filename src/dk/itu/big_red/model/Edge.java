@@ -2,8 +2,9 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import dk.itu.big_red.model.interfaces.IEdge;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
   * An Edge is a connection which connects any number of {@link Port}s and
@@ -62,10 +63,10 @@ public class Edge extends Link implements IEdge {
 	protected void averagePosition() {
 		int tx = 0, ty = 0, s = getPoints().size();
 		for (Point p : getPoints()) {
-			tx += p.getRootLayout().getX();
-			ty += p.getRootLayout().getY();
+			tx += p.getRootLayout().x();
+			ty += p.getRootLayout().y();
 		}
-		setLayout(new Rectangle(tx / s, ty / s, getLayout().getWidth(), getLayout().getHeight()));
+		setLayout(new Rectangle(tx / s, ty / s, getLayout().width(), getLayout().height()));
 	}
 	
 	public Edge() {

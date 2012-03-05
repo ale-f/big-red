@@ -1,6 +1,9 @@
 package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
+
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
@@ -18,8 +21,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
 import dk.itu.big_red.model.namespaces.INamePolicy;
 import dk.itu.big_red.model.namespaces.INamespace;
-import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that
@@ -48,14 +49,14 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	private void runLayoutChecks() throws ChangeRejectedException {
 		for (Layoutable i : layoutChecks) {
 			Container parent = scratch.getParentFor(i);
-			ReadonlyRectangle layout = scratch.getLayoutFor(i);
+			Rectangle layout = scratch.getLayoutFor(i);
 			checkObjectCanContain(parent, layout);
 			if (i instanceof Container)
 				checkLayoutCanContainChildren((Container)i, layout);
 		}
 	}
 	
-	private void checkObjectCanContain(Layoutable o, ReadonlyRectangle nl) throws ChangeRejectedException {
+	private void checkObjectCanContain(Layoutable o, Rectangle nl) throws ChangeRejectedException {
 		if (o != null && !(o instanceof Bigraph)) {
 			Rectangle tr =
 				scratch.getLayoutFor(o).getCopy().setLocation(0, 0);
@@ -65,10 +66,10 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		}
 	}
 	
-	private void checkLayoutCanContainChildren(Container c, ReadonlyRectangle nl) throws ChangeRejectedException {
+	private void checkLayoutCanContainChildren(Container c, Rectangle nl) throws ChangeRejectedException {
 		nl = nl.getCopy().setLocation(0, 0);
 		for (Layoutable i : c.getChildren()) {
-			ReadonlyRectangle layout = scratch.getLayoutFor(i);
+			Rectangle layout = scratch.getLayoutFor(i);
 			if (!nl.contains(layout))
 				rejectChange("The new size is too small");
 		}

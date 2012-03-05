@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain
@@ -157,12 +157,11 @@ public abstract class Container extends Layoutable {
 		int width = PADDING;
 		
 		for (Layoutable i : getChildren()) {
-			Rectangle cl =
-				new Rectangle().setSize(sizes.get(i));
+			Rectangle cl = new Rectangle().setSize(sizes.get(i));
 			cl.setLocation(width,
-					PADDING + ((maxHeight - cl.getHeight()) / 2));
+					PADDING + ((maxHeight - cl.height()) / 2));
 			cg.add(i.changeLayout(cl));
-			width += cl.getWidth() + PADDING;
+			width += cl.width() + PADDING;
 		}
 		
 		if (width < 50)

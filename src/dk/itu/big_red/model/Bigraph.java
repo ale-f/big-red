@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.assistants.Colour;
@@ -28,7 +29,6 @@ import dk.itu.big_red.model.namespaces.NamespaceGroup;
 import dk.itu.big_red.model.namespaces.PositiveIntegerNamePolicy;
 import dk.itu.big_red.model.namespaces.StringNamePolicy;
 import dk.itu.big_red.utilities.Lists;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link
@@ -277,8 +277,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		lowerRootBoundary = Integer.MAX_VALUE;
 		
 		for (Layoutable i : children) {
-			int top = i.getLayout().getTop(),
-				bottom = i.getLayout().getBottom();
+			Rectangle r = i.getLayout();
+			int top = i.getLayout().y(),
+				bottom = r.y() + r.height();
 			if (i instanceof OuterName) {
 				if (bottom > upperRootBoundary)
 					upperRootBoundary = bottom;

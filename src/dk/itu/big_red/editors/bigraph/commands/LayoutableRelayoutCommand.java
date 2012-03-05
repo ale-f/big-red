@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
@@ -7,7 +9,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -22,8 +23,6 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	public void setConstraint(Object rect) {
 		if (rect instanceof Rectangle)
 			layout = (Rectangle)rect;
-		else if (rect instanceof org.eclipse.draw2d.geometry.Rectangle)
-			layout = new Rectangle((org.eclipse.draw2d.geometry.Rectangle)rect);
 	}
 
 	public void setModel(Object model) {
@@ -56,8 +55,8 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		if (!(model.getParent() instanceof Bigraph))
 			return true;
 		Bigraph bigraph = (Bigraph)model.getParent();
-		int top = layout.getY(),
-		    bottom = layout.getY() + layout.getHeight();
+		int top = layout.y(),
+		    bottom = layout.y() + layout.height();
 		if (model instanceof OuterName) {
 			if (bottom > bigraph.getLowerOuterNameBoundary())
 				return false;

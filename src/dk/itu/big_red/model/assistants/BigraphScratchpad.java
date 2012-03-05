@@ -3,14 +3,15 @@ package dk.itu.big_red.model.assistants;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.namespaces.INamespace;
-import dk.itu.big_red.utilities.geometry.ReadonlyRectangle;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 /**
  * The BigraphScratchpad is a wrapper around various kinds of {@link
@@ -26,8 +27,8 @@ public class BigraphScratchpad {
 		this.bigraph = bigraph;
 	}
 	
-	private HashMap<Layoutable, ReadonlyRectangle> layouts =
-			new HashMap<Layoutable, ReadonlyRectangle>();
+	private HashMap<Layoutable, Rectangle> layouts =
+			new HashMap<Layoutable, Rectangle>();
 	
 	private HashMap<Layoutable, Container> parents =
 			new HashMap<Layoutable, Container>();
@@ -66,7 +67,7 @@ public class BigraphScratchpad {
 		return bigraph;
 	}
 	
-	public ReadonlyRectangle getLayoutFor(Layoutable a) {
+	public Rectangle getLayoutFor(Layoutable a) {
 		if (!layouts.containsKey(a)) {
 			return a.getLayout();
 		} else return layouts.get(a);

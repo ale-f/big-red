@@ -1,12 +1,13 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.eclipse.draw2d.geometry.Rectangle;
+
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 
 public class LayoutableReparentCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -37,8 +38,6 @@ public class LayoutableReparentCommand extends ChangeCommand {
 	public void setConstraint(Object constraint) {
 		if (constraint instanceof Rectangle)
 			this.constraint = (Rectangle)constraint;
-		else if (constraint instanceof org.eclipse.draw2d.geometry.Rectangle)
-			this.constraint = new Rectangle((org.eclipse.draw2d.geometry.Rectangle)constraint);
 	}
 	
 	private ChangeGroup post = new ChangeGroup();

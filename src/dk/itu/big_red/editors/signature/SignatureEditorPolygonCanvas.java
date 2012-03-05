@@ -8,6 +8,7 @@ import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlEvent;
@@ -31,7 +32,6 @@ import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.utilities.geometry.Ellipse;
 import dk.itu.big_red.utilities.geometry.Line;
-import dk.itu.big_red.utilities.geometry.Rectangle;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -285,7 +285,7 @@ MenuListener {
 		
 		Rectangle polyBounds = new Rectangle(points.getBounds());
 		points.translate(
-			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.getWidth() / 2, -polyBounds.getHeight() / 2)));
+			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.width() / 2, -polyBounds.height() / 2)));
 		firePointChange();
 		redraw();
 	}
