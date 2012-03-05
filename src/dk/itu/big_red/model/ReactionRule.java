@@ -154,7 +154,15 @@ public class ReactionRule extends ModelObject {
 				return null;
 			
 			return reactumEdge.changeReposition();
-		} else throw new RuntimeException(change + " unrecognised");
+		} else if (change instanceof ChangeComment) {
+			ChangeComment ch = (ChangeComment)change;
+			
+			ModelObject reactumObject = oldToNew.get(ch.getCreator());
+			if (reactumObject == null)
+				return null;
+			
+			return reactumObject.changeComment(ch.comment);
+		} else throw new Error(change + " unrecognised");
 	}
 	
 	@Override
