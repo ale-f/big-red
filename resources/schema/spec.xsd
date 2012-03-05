@@ -133,7 +133,7 @@
 						<li>
 							<code>src</code> (<code>string</code>): specifies the path to this simulation spec's <i>signature</i>.
 							<br />
-							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a signature file.
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a <code>&lt;signature&gt;</code> document.
 						</li>
 					</ul>
 					<p>
@@ -191,7 +191,7 @@
 						<li>
 							<code>src</code> (<code>string</code>): specifies the path to one of this simulation spec's <i>rules</i>.
 							<br />
-							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a rule file.
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a <code>&lt;rule&gt;</code> document.
 						</li>
 					</ul>
 					<p>
@@ -249,7 +249,7 @@
 						<li>
 							<code>src</code> (<code>string</code>): specifies the path to this simulation spec's <i>model</i>.
 							<br />
-							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a bigraph file.
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a <code>&lt;bigraph&gt;</code> document.
 						</li>
 					</ul>
 					<p>

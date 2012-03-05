@@ -185,7 +185,7 @@
 						<li>
 							<code>src</code> (<code>string</code>): specifies the path to this bigraph's <i>signature</i>.
 							<br />
-							If this attribute is present, it SHOULD be a path, relative to the directory that contains this bigraph, to a signature file.
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this bigraph, to a <code>&lt;signature&gt;</code> document.
 						</li>
 					</ul>
 					<p>
