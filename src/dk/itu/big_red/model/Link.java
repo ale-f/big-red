@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import dk.itu.big_red.editors.bigraph.parts.PortPart;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.interfaces.ILink;
 
@@ -108,9 +107,6 @@ public abstract class Link extends Layoutable implements ILink {
 	/**
 	 * Lazily creates and returns a {@link Link.Connection} connecting the
 	 * given {@link Point} to this Link.
-	 * 
-	 * <p><strong>Do not call this function</strong>; it's intended only for
-	 * the use of {@link PortPart}s and {@link LinkPart}s.
 	 * @param p a {@link Point}
 	 * @return a {@link Link.Connection}, which could go away at any point
 	 */
@@ -118,10 +114,8 @@ public abstract class Link extends Layoutable implements ILink {
 		if (!points.contains(p))
 			return null;
 		Link.Connection l = connections.get(p);
-		if (l == null) {
-			l = new Link.Connection(p);
-			connections.put(p, l);
-		}
+		if (l == null)
+			connections.put(p, l = new Link.Connection(p));
 		return l;
 	}
 	
