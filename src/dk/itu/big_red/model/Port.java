@@ -54,12 +54,12 @@ public class Port extends Point implements IPort {
 		super.setLayout(newLayout.setSize(10, 10));
 	}
 	
-	public Port(String name, int segment, double distance) {
+	public Port(PortSpec i) {
 		setLayout(new Rectangle(5, 5, 10, 10));
 		
-		setName(name);
-		setSegment(segment);
-		setDistance(distance);
+		setName(i.getName());
+		setSegment(i.getSegment());
+		setDistance(i.getDistance());
 	}
 	
 	@Override

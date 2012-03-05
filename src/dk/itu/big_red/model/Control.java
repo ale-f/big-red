@@ -281,7 +281,7 @@ public class Control extends Colourable implements IControl {
 	public ArrayList<Port> createPorts() {
 		ArrayList<Port> r = new ArrayList<Port>();
 		for (PortSpec i : ports)
-			r.add(new Port(i.getName(), i.getSegment(), i.getDistance()));
+			r.add(new Port(i));
 		return r;
 	}
 	
