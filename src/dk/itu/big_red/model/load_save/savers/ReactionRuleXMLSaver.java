@@ -170,15 +170,17 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			ChangeAlias i = (ChangeAlias)i_;
 			f = applyAttributes(
 					newElement(IRedNamespaceConstants.CHANGE, "change:site-alias"),
-					"name", i.getCreator().getName(),
-					"alias", i.alias);
+					"name", i.getCreator().getName());
+			if (i.alias != null)
+				applyAttributes(f, "alias", i.alias);
 		} else if (i_ instanceof ChangeComment) {
 			ChangeComment i = (ChangeComment)i_;
 			f = applyAttributes(
 					newElement(IRedNamespaceConstants.BIG_RED, "big-red:comment"),
 					"name", ((Layoutable)i.getCreator()).getName(),
-					"type", ((Layoutable)i.getCreator()).getType().toLowerCase(),
-					"comment", i.getCreator().getComment());
+					"type", ((Layoutable)i.getCreator()).getType().toLowerCase());
+			if (i.comment != null)
+				applyAttributes(f, "comment", i.comment);
 		}
 		
 		return f;
