@@ -143,7 +143,7 @@
 						Notes
 					</h3>
 					<p>
-						If the <code>src</code> attribute is not present, then this element should typically be treated as the root of a <code>&lt;signature&gt;</code> document defining this simulation spec's signature.
+						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;signature&gt;</code> document defining this simulation spec's signature.
 					</p>
 					<hr />
 				</body>
@@ -201,7 +201,7 @@
 						Notes
 					</h3>
 					<p>
-						If the <code>src</code> attribute is not present, then this element should typically be treated as the root of a <code>&lt;rule&gt;</code> document defining a rule for this simulation spec.
+						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;rule&gt;</code> document defining a rule for this simulation spec.
 					</p>
 					<hr />
 				</body>
@@ -259,7 +259,7 @@
 						Notes
 					</h3>
 					<p>
-						If the <code>src</code> attribute is not present, then this element should typically be treated as the root of a <code>&lt;bigraph&gt;</code> document defining the model for this simulation spec.
+						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;bigraph&gt;</code> document defining the model for this simulation spec.
 					</p>
 					<hr />
 				</body>

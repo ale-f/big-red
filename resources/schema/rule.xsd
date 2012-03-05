@@ -131,7 +131,7 @@
 						Notes
 					</h3>
 					<p>
-						This element should typically be treated as the root of a <code>&lt;bigraph&gt;</code> document defining this rule's redex.
+						This element should typically be treated as though it were the root of a <code>&lt;bigraph&gt;</code> document defining this rule's redex.
 					</p>
 					<hr />
 				</body>
