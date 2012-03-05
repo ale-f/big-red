@@ -191,6 +191,12 @@
 					<p>
 						Additionally, attributes from other namespaces MAY be present on <code>signature</code>s.
 					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						If the <code>src</code> attribute is not present, then this element should typically be treated as the root of a <code>&lt;signature&gt;</code> document defining this bigraph's signature.
+					</p>
 					<hr />
 				</body>
 			</html>
