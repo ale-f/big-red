@@ -11,6 +11,7 @@ import dk.itu.big_red.model.Container.ChangeRemoveChild;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.ModelObject.ChangeComment;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
@@ -171,6 +172,13 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 					newElement(IRedNamespaceConstants.CHANGE, "change:site-alias"),
 					"name", i.getCreator().getName(),
 					"alias", i.alias);
+		} else if (i_ instanceof ChangeComment) {
+			ChangeComment i = (ChangeComment)i_;
+			f = applyAttributes(
+					newElement(IRedNamespaceConstants.BIG_RED, "big-red:comment"),
+					"name", ((Layoutable)i.getCreator()).getName(),
+					"type", ((Layoutable)i.getCreator()).getType().toLowerCase(),
+					"comment", i.getCreator().getComment());
 		}
 		
 		return f;

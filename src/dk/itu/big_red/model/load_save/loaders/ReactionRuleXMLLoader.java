@@ -167,6 +167,15 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "name");
 				c = getNamed(reactum, type, name).changeOutlineColour(
 						new Colour(colour));
+			} else if (el.getLocalName().equals("comment")) {
+				String
+					comment =
+						getAttributeNS(el, BIG_RED, "comment"),
+					type =
+						getAttributeNS(el, BIG_RED, "type"),
+					name =
+						getAttributeNS(el, BIG_RED, "name");
+				c = getNamed(reactum, type, name).changeComment(comment);
 			}
 		}
 		return c;
