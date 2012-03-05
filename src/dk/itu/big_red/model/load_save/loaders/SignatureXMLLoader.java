@@ -5,7 +5,6 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
@@ -25,8 +24,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	public Signature importObject() throws LoadFailedException {
 		try {
 			Document d =
-				validate(parse(source),
-					RedPlugin.getResource("resources/schema/signature.xsd"));
+				validate(parse(source), "resources/schema/signature.xsd");
 			return makeObject(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);

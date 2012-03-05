@@ -22,6 +22,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
@@ -38,14 +39,15 @@ public abstract class XMLLoader extends Loader {
 	 * @throws LoadFailedException if the validation (or the validator's
 	 *         initialisation and configuration) failed
 	 */
-	protected static Document validate(Document d, InputStream schema)
+	protected static Document validate(Document d, String schema)
 			throws LoadFailedException {
 		try {
 			if (sf == null)
 				sf =
 				SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			sf.newSchema(new StreamSource(schema)).newValidator().
-				validate(new DOMSource(d));
+			sf.newSchema(
+					new StreamSource(RedPlugin.getResource(schema))).
+				newValidator().validate(new DOMSource(d));
 			return d;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);

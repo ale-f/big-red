@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -30,8 +31,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	@Override
 	public ReactionRule importObject() throws LoadFailedException {
 		try {
-			return makeObject(parse(source).getDocumentElement()).
-					setFile(getFile());
+			Document d =
+					validate(parse(source), "resources/schema/rule.xsd");
+			return makeObject(d.getDocumentElement()).setFile(getFile());
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
 				throw (LoadFailedException)e;
