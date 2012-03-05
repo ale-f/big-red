@@ -60,7 +60,7 @@
 						Children
 					</h3>
 					<p>
-						<code>bigraph</code>s MUST contain:
+						<code>signature</code>s MUST contain:
 					</p>
 					<ul>
 						<li>
@@ -148,7 +148,7 @@
 						</li>
 					</ul>
 					<p>
-						Additionally, attributes from other namespaces MAY be present on <code>root</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>control</code>s.
 					</p>
 					<hr />
 				</body>
