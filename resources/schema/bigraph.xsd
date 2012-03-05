@@ -104,6 +104,12 @@
 					<p>
 						Additionally, attributes from other namespaces MAY be present on <code>bigraph</code>s.
 					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						The <a href="#bigraph_signature"><code>signature</code> attribute</a> only appears in a handful of bigraphs created with early versions of Big Red. Newly-written code SHOULD NOT attempt to handle it and MUST NOT produce it.
+					</p>
 					<hr />
 				</body>
 			</html>
