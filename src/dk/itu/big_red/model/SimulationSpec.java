@@ -242,16 +242,22 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 	
 	@Override
 	public void dispose() {
-		model.dispose();
-		signature.dispose();
+		if (model != null) {
+			model.dispose();
+			model = null;
+		}
 		
-		for (ReactionRule r : rules)
-			r.dispose();
-		rules.clear();
+		if (signature != null) {
+			signature.dispose();
+			signature = null;
+		}
 		
-		model = null;
-		rules = null;
-		signature = null;
+		if (rules != null) {
+			for (ReactionRule r : rules)
+				r.dispose();
+			rules.clear();
+			rules = null;
+		}
 		
 		super.dispose();
 	}
