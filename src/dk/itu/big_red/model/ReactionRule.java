@@ -39,6 +39,9 @@ public class ReactionRule extends ModelObject {
 		reactum = null;
 		redexToReactum.clear();
 		
+		if (redex != null)
+			redex.setFile(getFile());
+		
 		firePropertyChange(PROPERTY_REDEX, old, redex);
 	}
 
@@ -241,6 +244,8 @@ public class ReactionRule extends ModelObject {
 	
 	@Override
 	public ReactionRule setFile(IFile file) {
+		if (redex != null)
+			redex.setFile(file);
 		return (ReactionRule)super.setFile(file);
 	}
 }
