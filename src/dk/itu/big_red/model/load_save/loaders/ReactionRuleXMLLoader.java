@@ -13,6 +13,7 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.Colour;
@@ -20,6 +21,10 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.namespaces.INamespace;
+import dk.itu.big_red.model.namespaces.NamespaceGroup;
+import dk.itu.big_red.model.namespaces.PositiveIntegerNamePolicy;
+import dk.itu.big_red.model.namespaces.StringNamePolicy;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
@@ -57,8 +62,21 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		return im.makeObject(e).setFile(getFile());
 	}
 	
-	private static Layoutable getNamed(Bigraph b, String type, String name) {
-		return b.getNamespace(Bigraph.getNSI(type)).get(name);
+	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();
+	{
+		nsg.createNamespace(Link.class).setPolicy(new StringNamePolicy());
+		nsg.createNamespace(Node.class).setPolicy(new StringNamePolicy());
+		nsg.createNamespace(InnerName.class).setPolicy(new StringNamePolicy());
+		
+		nsg.createNamespace(Root.class).setPolicy(new PositiveIntegerNamePolicy());
+		nsg.createNamespace(Site.class).setPolicy(new PositiveIntegerNamePolicy());
+	}
+	
+	private Layoutable getNamed(String type, String name) {
+		Layoutable l = nsg.getNamespace(Bigraph.getNSI(type)).get(name);
+		if (l == null)
+			l = rr.getReactum().getNamespace(Bigraph.getNSI(type)).get(name);
+		return l;
 	}
 	
 	private Change changeFromElement(org.w3c.dom.Node n) {
@@ -88,7 +106,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				if (parentName == null && parentType == null) {
 					parent = reactum;
 				} else {
-					parent = (Container)getNamed(reactum, parentType, parentName);
+					parent = (Container)getNamed(parentType, parentName);
 				}
 				Layoutable child = null;
 				
@@ -98,20 +116,27 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 							reactum.getSignature().getControl(control));
 				} else child = (Layoutable)BigraphXMLLoader.getNewObject(type);
 				c = parent.changeAddChild(child, name);
+				nsg.getNamespace(Bigraph.getNSI(type)).put(name, child);
 			} else if (el.getLocalName().equals("remove")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					type = getAttributeNS(el, CHANGE, "type");
 				Layoutable child =
-					getNamed(reactum, type, name);
+					getNamed(type, name);
 				Container parent = child.getParent();
 				c = parent.changeRemoveChild(child);
+				nsg.getNamespace(Bigraph.getNSI(type)).remove(name);
 			} else if (el.getLocalName().equals("rename")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					type = getAttributeNS(el, CHANGE, "type"),
 					newName = getAttributeNS(el, CHANGE, "new-name");
-				c = getNamed(reactum, type, name).changeName(newName);
+				Layoutable l = getNamed(type, name);
+				c = l.changeName(newName);
+				INamespace<Layoutable> ns =
+						nsg.getNamespace(Bigraph.getNSI(type));
+				ns.remove(name);
+				ns.put(newName, l);
 			} else if (el.getLocalName().equals("connect")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
@@ -119,23 +144,23 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					node = getAttributeNS(el, CHANGE, "node");
 				Point p;
 				if (node != null) {
-					p = ((Node)getNamed(reactum, "node", node)).getPort(name);
-				} else p = (InnerName)getNamed(reactum, "innername", name);
-				c = p.changeConnect((Link)getNamed(reactum, "link", link));
+					p = ((Node)getNamed("node", node)).getPort(name);
+				} else p = (InnerName)getNamed("innername", name);
+				c = p.changeConnect((Link)getNamed("link", link));
 			} else if (el.getLocalName().equals("disconnect")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					node = getAttributeNS(el, CHANGE, "node");
 				Point p;
 				if (node != null) {
-					p = ((Node)getNamed(reactum, "node", node)).getPort(name);
-				} else p = (InnerName)getNamed(reactum, "innername", name);
+					p = ((Node)getNamed("node", node)).getPort(name);
+				} else p = (InnerName)getNamed("innername", name);
 				c = p.changeDisconnect(p.getLink());
 			} else if (el.getLocalName().equals("site-alias")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					alias = getAttributeNS(el, CHANGE, "alias");
-				c = ((Site)getNamed(reactum, "site", name)).
+				c = ((Site)getNamed("site", name)).
 						changeAlias(alias);
 			}
 		} else if (el.getNamespaceURI().equals(BIG_RED)) {
@@ -145,7 +170,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(reactum, type, name).changeLayout(
+				c = getNamed(type, name).changeLayout(
 						AppearanceGenerator.elementToRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
@@ -155,7 +180,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(reactum, type, name).changeFillColour(
+				c = getNamed(type, name).changeFillColour(
 						new Colour(colour));
 			} else if (el.getLocalName().equals("outline")) {
 				String
@@ -165,7 +190,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(reactum, type, name).changeOutlineColour(
+				c = getNamed(type, name).changeOutlineColour(
 						new Colour(colour));
 			} else if (el.getLocalName().equals("comment")) {
 				String
@@ -175,7 +200,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(reactum, type, name).changeComment(comment);
+				c = getNamed(type, name).changeComment(comment);
 			}
 		}
 		return c;
