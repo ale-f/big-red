@@ -7,6 +7,7 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.services.IDisposable;
 
+import dk.itu.big_red.model.assistants.IPropertyProxies.IModelObjectPropertyProxy;
 import dk.itu.big_red.model.changes.Change;
 
 /**
@@ -21,7 +22,7 @@ import dk.itu.big_red.model.changes.Change;
  * @see Layoutable
  *
  */
-public class ModelObject implements IDisposable {
+public class ModelObject implements IDisposable, IModelObjectPropertyProxy {
 	abstract class ModelObjectChange extends Change {
 		/**
 		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
@@ -149,8 +150,13 @@ public class ModelObject implements IDisposable {
 	 * Returns the current comment for this object.
 	 * @return the current comment
 	 */
+	@Override
 	public String getComment() {
 		return comment;
+	}
+	
+	public String getComment(IModelObjectPropertyProxy context) {
+		return (context == null ? context : this).getComment();
 	}
 	
 	/**

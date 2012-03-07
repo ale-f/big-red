@@ -8,6 +8,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
+import dk.itu.big_red.model.assistants.IPropertyProxies.ILayoutablePropertyProxy;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -28,7 +29,8 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  * @see ModelObject
  *
  */
-public abstract class Layoutable extends Colourable implements IAdaptable {
+public abstract class Layoutable extends Colourable
+		implements IAdaptable, ILayoutablePropertyProxy {
 	abstract class LayoutableChange extends ModelObjectChange {
 		@Override
 		public Layoutable getCreator() {
@@ -113,6 +115,7 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	 * Gets the current layout of this object.
 	 * @return the current layout
 	 */
+	@Override
 	public Rectangle getLayout() {
 		return layout;
 	}
@@ -153,10 +156,15 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	 * Returns the parent of this object.
 	 * @return an {@link Container}
 	 */
+	@Override
 	public Container getParent() {
 		return parent;
 	}
 
+	public Container getParent(ILayoutablePropertyProxy context) {
+		return (context == null ? this : context).getParent();
+	}
+	
 	/**
 	 * Changes the parent of this object.
 	 * @param p the new parent {@link Container}
@@ -219,8 +227,13 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	 * Gets this object's name.
 	 * @return a String
 	 */
+	@Override
 	public String getName() {
 		return name;
+	}
+	
+	public String getName(ILayoutablePropertyProxy context) {
+		return (context == null ? this : context).getName();
 	}
 	
 	/**
