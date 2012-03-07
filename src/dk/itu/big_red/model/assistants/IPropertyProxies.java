@@ -40,4 +40,8 @@ public interface IPropertyProxies {
 	public interface ILinkPropertyProxy extends ILayoutablePropertyProxy {
 		public List<Point> getPoints();
 	}
+	
+	public interface ISitePropertyProxy extends ILayoutablePropertyProxy {
+		public String getAlias();
+	}
 }
