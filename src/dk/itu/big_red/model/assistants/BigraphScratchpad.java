@@ -11,6 +11,12 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.assistants.BigraphScratchpad2.ContainerProxy;
+import dk.itu.big_red.model.assistants.BigraphScratchpad2.LayoutableProxy;
+import dk.itu.big_red.model.assistants.BigraphScratchpad2.LinkProxy;
+import dk.itu.big_red.model.assistants.BigraphScratchpad2.MaybeNull;
+import dk.itu.big_red.model.assistants.BigraphScratchpad2.PointProxy;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.namespaces.INamespace;
 
 /**
@@ -21,45 +27,23 @@ import dk.itu.big_red.model.namespaces.INamespace;
  *
  */
 public class BigraphScratchpad {
-	private Bigraph bigraph = null;
+	private BigraphScratchpad2 scratch = new BigraphScratchpad2();
 	
+	private Bigraph bigraph;
 	public BigraphScratchpad(Bigraph bigraph) {
 		this.bigraph = bigraph;
 	}
 	
-	private HashMap<Layoutable, Rectangle> layouts =
-			new HashMap<Layoutable, Rectangle>();
-	
-	private HashMap<Layoutable, Container> parents =
-			new HashMap<Layoutable, Container>();
-	
-	private HashMap<Container, List<Layoutable>> children =
-			new HashMap<Container, List<Layoutable>>();
-	
-	private HashMap<Link, List<Point>> points =
-			new HashMap<Link, List<Point>>();
-	
-	private HashMap<Point, Link> links = new HashMap<Point, Link>();
-	
 	private HashMap<Object, INamespace<Layoutable>> namespaces =
 			new HashMap<Object, INamespace<Layoutable>>();
-
-	private HashMap<Layoutable, String> names =
-			new HashMap<Layoutable, String>();
 	
 	/**
 	 * Clears everything in this {@link BigraphScratchpad}.
 	 * @return <code>this</code>, for convenience
 	 */
 	public BigraphScratchpad clear() {
-		links.clear();
-		points.clear();
-		children.clear();
-		layouts.clear();
-		parents.clear();
+		scratch.clear();
 		namespaces.clear();
-		names.clear();
-		
 		return this;
 	}
 	
@@ -67,83 +51,71 @@ public class BigraphScratchpad {
 		return bigraph;
 	}
 	
-	public Rectangle getLayoutFor(Layoutable a) {
-		if (!layouts.containsKey(a)) {
-			return a.getLayout();
-		} else return layouts.get(a);
-	}
-	
 	public void setLayoutFor(Layoutable a, Rectangle b) {
-		layouts.put(a, b);
+		((LayoutableProxy)scratch.requireProvider(a)).layout =
+				new MaybeNull<Rectangle>(b);
 	}
 	
-	public Container getParentFor(Layoutable a) {
-		if (!parents.containsKey(a)) {
-			return a.getParent();
-		} else return parents.get(a);
-	}
-	
-	public Bigraph getBigraphFor(Layoutable l) {
-		if (l instanceof Bigraph)
-			return (Bigraph)l;
-		Container c = getParentFor(l);
-		while (c != null && !(c instanceof Bigraph))
-			c = getParentFor(c);
-		return (Bigraph)c;
+	public IPropertyProviderProxy getProxy() {
+		return scratch;
 	}
 	
 	protected void setParentFor(Layoutable a, Container b) {
-		parents.put(a, b);
+		((LayoutableProxy)scratch.requireProvider(a)).parent =
+				new MaybeNull<Container>(b);
 	}
 	
-	public List<Layoutable> getChildrenFor(Container a) {
-		List<Layoutable> b;
-		if (!children.containsKey(a)) {
-			b = new ArrayList<Layoutable>(a.getChildren());
-			children.put(a, b);
-		} else b = children.get(a);
-		return b;
+	private List<Layoutable> getModifiableChildren(Container a) {
+		ContainerProxy cp = (ContainerProxy)scratch.requireProvider(a);
+		if (cp.children == null)
+			cp.children = new MaybeNull<List<Layoutable>>(
+					new ArrayList<Layoutable>(a.getChildren()));
+		return cp.children.get();
 	}
 	
 	public void removeChildFor(Container a, Layoutable b) {
-		getChildrenFor(a).remove(b);
+		getModifiableChildren(a).remove(b);
 		setParentFor(b, null);
-		getNamespaceFor(b).remove(b.getName());
+		setNameFor(b, null);
 	}
 	
 	public void addChildFor(Container a, Layoutable b, String name) {
-		getChildrenFor(a).add(b);
+		getModifiableChildren(a).add(b);
 		setParentFor(b, a);
 		setNameFor(b, name);
 	}
 	
-	public Link getLinkFor(Point a) {
-		if (!links.containsKey(a)) {
-			return a.getLink();
-		} else return links.get(a);
-	}
-	
 	protected void setLinkFor(Point a, Link b) {
-		links.put(a, b);
+		((PointProxy)scratch.requireProvider(a)).link = new MaybeNull<Link>(b);
 	}
 	
-	public List<Point> getPointsFor(Link a) {
-		List<Point> b;
-		if (!points.containsKey(a)) {
-			b = new ArrayList<Point>(a.getPoints());
-			points.put(a, b);
-		} else b = points.get(a);
-		return b;
+	private List<Point> getModifiablePoints(Link a) {
+		LinkProxy cp = (LinkProxy)scratch.requireProvider(a);
+		if (cp.points == null)
+			cp.points = new MaybeNull<List<Point>>(
+					new ArrayList<Point>(a.getPoints()));
+		return cp.points.get();
 	}
 	
 	public void removePointFor(Link a, Point b) {
-		getPointsFor(a).remove(b);
+		getModifiablePoints(a).remove(b);
 		setLinkFor(b, null);
 	}
 	
 	public void addPointFor(Link a, Point b) {
-		getPointsFor(a).add(b);
+		getModifiablePoints(a).add(b);
 		setLinkFor(b, a);
+	}
+	
+	public void setNameFor(Layoutable a, String b) {
+		String currentName = a.getName(getProxy());
+		if (currentName != null)
+			getNamespaceFor(a).remove(currentName);
+		
+		((LayoutableProxy)scratch.requireProvider(a)).name =
+				new MaybeNull<String>(b);
+		
+		getNamespaceFor(a).put(b, a);
 	}
 	
 	public INamespace<Layoutable> getNamespaceFor(Layoutable a) {
@@ -154,24 +126,5 @@ public class BigraphScratchpad {
 			namespaces.put(nsi, b);
 		} else b = namespaces.get(nsi);
 		return b;
-	}
-	
-	public String getNameFor(Layoutable a) {
-		if (!names.containsKey(a)) {
-			return a.getName();
-		} else return names.get(a);
-	}
-	
-	public void setNameFor(Layoutable a, String b) {
-		String oldName = getNameFor(a);
-		
-		names.remove(a);
-		names.put(a, b);
-		
-		INamespace<Layoutable> ns = getNamespaceFor(a);
-		if (ns != null) {
-			ns.remove(oldName);
-			ns.put(b, a);
-		}
 	}
 }

@@ -48,8 +48,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	
 	private void runLayoutChecks() throws ChangeRejectedException {
 		for (Layoutable i : layoutChecks) {
-			Container parent = scratch.getParentFor(i);
-			Rectangle layout = scratch.getLayoutFor(i);
+			Container parent = i.getParent(scratch.getProxy());
+			Rectangle layout = i.getLayout(scratch.getProxy());
 			checkObjectCanContain(parent, layout);
 			if (i instanceof Container)
 				checkLayoutCanContainChildren((Container)i, layout);
@@ -59,7 +59,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	private void checkObjectCanContain(Layoutable o, Rectangle nl) throws ChangeRejectedException {
 		if (o != null && !(o instanceof Bigraph)) {
 			Rectangle tr =
-				scratch.getLayoutFor(o).getCopy().setLocation(0, 0);
+				o.getLayout(scratch.getProxy()).getCopy().setLocation(0, 0);
 			if (!tr.contains(nl))
 				rejectChange(
 					"The object can no longer fit into its container");
@@ -69,7 +69,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	private void checkLayoutCanContainChildren(Container c, Rectangle nl) throws ChangeRejectedException {
 		nl = nl.getCopy().setLocation(0, 0);
 		for (Layoutable i : c.getChildren()) {
-			Rectangle layout = scratch.getLayoutFor(i);
+			Rectangle layout = i.getLayout(scratch.getProxy());
 			if (!nl.contains(layout))
 				rejectChange("The new size is too small");
 		}
@@ -77,7 +77,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	
 	private void checkEligibility(Layoutable... l) throws ChangeRejectedException {
 		for (Layoutable i : l)
-			if (scratch.getBigraphFor(i) != getChangeable())
+			if (i.getBigraph(scratch.getProxy()) != getChangeable())
 				rejectChange(i + " is not part of this Bigraph");
 	}
 	
@@ -120,7 +120,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			checkEligibility(c.link, c.getCreator());
-			if (scratch.getLinkFor(c.getCreator()) != null)
+			if (c.getCreator().getLink(scratch.getProxy()) != null)
 				rejectChange(b,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
@@ -128,7 +128,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			checkEligibility(c.link, c.getCreator());
-			if (scratch.getLinkFor(c.getCreator()) == null)
+			if (c.getCreator().getLink(scratch.getProxy()) == null)
 				rejectChange("The Point is already disconnected");
 			scratch.removePointFor(c.link, c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
@@ -147,7 +147,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 					rejectChange("Edges must be children of the top-level Bigraph");
 			} else {
 				if (c.child instanceof Container)
-					if (scratch.getChildrenFor((Container)c.child).size() != 0)
+					if (((Container)c.child).getChildren(scratch.getProxy()).size() != 0)
 						rejectChange(b, c.child + " already has child objects");
 				if (!c.getCreator().canContain(c.child))
 					rejectChange(b,
@@ -162,9 +162,9 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			checkEligibility(c.child, c.getCreator());
 			if (c.child instanceof Container)
-				if (scratch.getChildrenFor((Container)c.child).size() != 0)
+				if (((Container)c.child).getChildren(scratch.getProxy()).size() != 0)
 					rejectChange(b, c.child + " has child objects which must be removed first");
-			if (scratch.getParentFor(c.child) != c.getCreator())
+			if (c.child.getParent(scratch.getProxy()) != c.getCreator())
 				rejectChange(c.getCreator() + " is not the parent of " + c.child);
 			scratch.removeChildFor(c.getCreator(), c.child);
 			
