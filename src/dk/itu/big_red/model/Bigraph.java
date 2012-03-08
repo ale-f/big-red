@@ -214,7 +214,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
-	public Bigraph getBigraph() {
+	public Bigraph getBigraph(IPropertyProviderProxy context) {
 		return this;
 	}
 	
