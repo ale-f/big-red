@@ -8,7 +8,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.assistants.IPropertyProxies.ILayoutablePropertyProxy;
+import dk.itu.big_red.model.assistants.IPropertyProviders.ILayoutablePropertyProvider;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -30,7 +31,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  *
  */
 public abstract class Layoutable extends Colourable
-		implements IAdaptable, ILayoutablePropertyProxy {
+		implements IAdaptable, ILayoutablePropertyProvider {
 	abstract class LayoutableChange extends ModelObjectChange {
 		@Override
 		public Layoutable getCreator() {
@@ -120,15 +121,28 @@ public abstract class Layoutable extends Colourable
 		return layout;
 	}
 
+	private ILayoutablePropertyProvider getProvider(IPropertyProviderProxy p) {
+		return (p == null ? this :
+			(ILayoutablePropertyProvider)p.getProvider(this));
+	}
+	
+	public Rectangle getLayout(IPropertyProviderProxy context) {
+		return getProvider(context).getLayout();
+	}
+	
 	/**
 	 * Gets a copy of the layout of this object relative to the top-left of the
 	 * root {@link Bigraph} rather than the immediate parent.
 	 * @return the current layout relative to the root
 	 */
 	public Rectangle getRootLayout() {
-		return getLayout().getCopy().translate(getParent().getRootLayout().getTopLeft());
+		return getRootLayout(null);
 	}
 
+	public Rectangle getRootLayout(IPropertyProviderProxy context) {
+		return getLayout(context).getCopy().translate(
+				getParent(context).getRootLayout(context).getTopLeft());
+	}
 	
 	/**
 	 * Sets the layout of this object.
@@ -147,11 +161,15 @@ public abstract class Layoutable extends Colourable
 	 * @return a Bigraph
 	 */
 	public Bigraph getBigraph() {
-		if (getParent() == null) {
-			return null;
-		} else return getParent().getBigraph();
+		return getBigraph(null);
 	}
 
+	public Bigraph getBigraph(IPropertyProviderProxy context) {
+		if (getParent(context) == null) {
+			return null;
+		} else return getParent(context).getBigraph();
+	}
+	
 	/**
 	 * Returns the parent of this object.
 	 * @return an {@link Container}
@@ -161,8 +179,8 @@ public abstract class Layoutable extends Colourable
 		return parent;
 	}
 
-	public Container getParent(ILayoutablePropertyProxy context) {
-		return (context == null ? this : context).getParent();
+	public Container getParent(IPropertyProviderProxy context) {
+		return getProvider(context).getParent();
 	}
 	
 	/**
@@ -216,7 +234,7 @@ public abstract class Layoutable extends Colourable
 	 * @param cg a {@link ChangeGroup} to which changes should be appended
 	 * @return the proposed new size of this object
 	 */
-	protected Dimension relayout(ChangeGroup cg) {
+	protected Dimension relayout(IPropertyProviderProxy context, ChangeGroup cg) {
 		cg.add(changeLayout(new Rectangle(0, 0, 50, 50)));
 		return new Dimension(50, 50);
 	}
@@ -232,8 +250,8 @@ public abstract class Layoutable extends Colourable
 		return name;
 	}
 	
-	public String getName(ILayoutablePropertyProxy context) {
-		return (context == null ? this : context).getName();
+	public String getName(IPropertyProviderProxy context) {
+		return getProvider(context).getName();
 	}
 	
 	/**

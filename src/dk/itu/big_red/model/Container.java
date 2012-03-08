@@ -8,7 +8,8 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.assistants.IPropertyProxies.IContainerPropertyProxy;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IContainerPropertyProvider;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -20,7 +21,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  *
  */
 public abstract class Container extends Layoutable
-		implements IContainerPropertyProxy {
+		implements IContainerPropertyProvider {
 	abstract class ContainerChange extends LayoutableChange {
 		@Override
 		public Container getCreator() {
@@ -121,8 +122,9 @@ public abstract class Container extends Layoutable
 		return children;
 	}
 
-	public List<Layoutable> getChildren(IContainerPropertyProxy context) {
-		return (context == null ? this : context).getChildren();
+	public List<Layoutable> getChildren(IPropertyProviderProxy context) {
+		return (context == null ? this :
+			(IContainerPropertyProvider)context.getProvider(this)).getChildren();
 	}
 	
 	public boolean hasChild(Layoutable child) {
@@ -146,14 +148,14 @@ public abstract class Container extends Layoutable
 	 * @return the proposed new size of this object
 	 */
 	@Override
-	protected Dimension relayout(ChangeGroup cg) {
+	protected Dimension relayout(IPropertyProviderProxy context, ChangeGroup cg) {
 		int maxHeight = 0;
 		
 		HashMap<Layoutable, Dimension> sizes =
 				new HashMap<Layoutable, Dimension>();
 		
-		for (Layoutable i : getChildren()) {
-			Dimension childSize = i.relayout(cg);
+		for (Layoutable i : getChildren(context)) {
+			Dimension childSize = i.relayout(context, cg);
 			sizes.put(i, childSize);
 			if (childSize.height > maxHeight)
 				maxHeight = childSize.height;
@@ -163,7 +165,7 @@ public abstract class Container extends Layoutable
 		
 		int width = PADDING;
 		
-		for (Layoutable i : getChildren()) {
+		for (Layoutable i : getChildren(context)) {
 			Rectangle cl = new Rectangle().setSize(sizes.get(i));
 			cl.setLocation(width,
 					PADDING + ((maxHeight - cl.height()) / 2));
@@ -215,13 +217,14 @@ public abstract class Container extends Layoutable
 	/**
 	 * Returns the children of this {@link Container} which are instances of
 	 * the given {@link Class}.
+	 * @param context TODO
 	 * @param klass the {@link Class} to filter by
 	 * @return a {@link List} of children of the given {@link Class}
 	 */
 	@SuppressWarnings("unchecked")
-	protected <V> ArrayList<V> only(Class<V> klass) {
+	protected <V> ArrayList<V> only(IPropertyProviderProxy context, Class<V> klass) {
 		ArrayList<V> r = new ArrayList<V>();
-		for (Layoutable i : getChildren())
+		for (Layoutable i : getChildren(context))
 			if (klass.isInstance(i))
 				r.add((V)i);
 		return r;

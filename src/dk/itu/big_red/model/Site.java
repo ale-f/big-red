@@ -2,7 +2,8 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
-import dk.itu.big_red.model.assistants.IPropertyProxies.ISitePropertyProxy;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProviders.ISitePropertyProvider;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
 
@@ -10,7 +11,7 @@ import dk.itu.big_red.model.interfaces.ISite;
  * @author alec
  * @see ISite
  */
-public class Site extends Layoutable implements ISite, ISitePropertyProxy {
+public class Site extends Layoutable implements ISite, ISitePropertyProvider {
 	abstract class SiteChange extends LayoutableChange {
 		@Override
 		public Site getCreator() {
@@ -66,8 +67,9 @@ public class Site extends Layoutable implements ISite, ISitePropertyProxy {
 		return alias;
 	}
 	
-	public String getAlias(ISitePropertyProxy context) {
-		return (context == null ? this : context).getAlias();
+	public String getAlias(IPropertyProviderProxy context) {
+		return (context == null ? this :
+			(ISitePropertyProvider)context.getProvider(this)).getAlias();
 	}
 	
 	@Override

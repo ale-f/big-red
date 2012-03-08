@@ -1,8 +1,9 @@
 package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.ReadonlyColour;
-import dk.itu.big_red.model.assistants.IPropertyProxies.IPointPropertyProxy;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPointPropertyProvider;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 
@@ -13,7 +14,7 @@ import dk.itu.big_red.model.interfaces.IPoint;
  * @see IPoint
  */
 public abstract class Point extends Layoutable
-		implements IPoint, IPointPropertyProxy{
+		implements IPoint, IPointPropertyProvider{
 	abstract class PointChange extends LayoutableChange {
 		@Override
 		public Point getCreator() {
@@ -103,8 +104,9 @@ public abstract class Point extends Layoutable
 		return link;
 	}
 	
-	public Link getLink(IPointPropertyProxy context) {
-		return (context == null ? this : context).getLink();
+	public Link getLink(IPropertyProviderProxy context) {
+		return (context == null ? this :
+			(IPointPropertyProvider)context.getProvider(this)).getLink();
 	}
 	
 	public LayoutableChange changeConnect(Link l) {

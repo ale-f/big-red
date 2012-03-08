@@ -183,7 +183,7 @@ public class Node extends Container implements INode {
 
 	@Override
 	public Iterable<INode> getINodes() {
-		return only(INode.class);
+		return only(null, INode.class);
 	}
 
 	@Override
@@ -193,12 +193,12 @@ public class Node extends Container implements INode {
 
 	@Override
 	public Iterable<ISite> getISites() {
-		return only(ISite.class);
+		return only(null, ISite.class);
 	}
 	
 	@Override
 	public Iterable<IChild> getIChildren() {
-		return only(IChild.class);
+		return only(null, IChild.class);
 	}
 	
 	@Override

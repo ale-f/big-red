@@ -12,6 +12,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -185,7 +186,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		for (Layoutable child : getChildren())
 			b.addChild(child.clone(m));
 		
-		for (Link i : only(Link.class)) {
+		for (Link i : only(null, Link.class)) {
 			Link iClone = (Link)m.get(i);
 			for (Point p : i.getPoints())
 				iClone.addPoint((Point)m.get(p));
@@ -319,22 +320,22 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 
 	@Override
 	public Iterable<IEdge> getIEdges() {
-		return only(IEdge.class);
+		return only(null, IEdge.class);
 	}
 
 	@Override
 	public Iterable<IRoot> getIRoots() {
-		return only(IRoot.class);
+		return only(null, IRoot.class);
 	}
 
 	@Override
 	public Iterable<IInnerName> getIInnerNames() {
-		return only(IInnerName.class);
+		return only(null, IInnerName.class);
 	}
 	
 	@Override
 	public Iterable<IOuterName> getIOuterNames() {
-		return only(IOuterName.class);
+		return only(null, IOuterName.class);
 	}
 
 	@Override
@@ -349,6 +350,10 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	 * @return a {@link ChangeGroup} containing relayout changes
 	 */
 	public ChangeGroup relayout() {
+		return relayout(null);
+	}
+	
+	public ChangeGroup relayout(IPropertyProviderProxy context) {
 		ChangeGroup cg = new ChangeGroup();
 		
 		HashMap<Layoutable, Dimension> sizes =
@@ -360,8 +365,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			top = PADDING;
 		
 		for (Layoutable i :
-			Lists.group(getChildren(), BigraphXMLSaver.SCHEMA_ORDER)) {
-			Dimension size = i.relayout(cg);
+			Lists.group(getChildren(context), BigraphXMLSaver.SCHEMA_ORDER)) {
+			Dimension size = i.relayout(context, cg);
 			sizes.put(i, size);
 			Rectangle r = new Rectangle().setSize(size);
 			if (i instanceof OuterName) {
@@ -381,7 +386,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			cg.add(i.changeLayout(r));
 		}
 		
-		for (Link i : only(Link.class)) {
+		for (Link i : only(context, Link.class)) {
 			if (i instanceof Edge)
 				cg.add(((Edge)i).changeReposition());
 			cg.add(i.changeOutlineColour(new Colour().randomise()));
