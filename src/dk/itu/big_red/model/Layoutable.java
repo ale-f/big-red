@@ -167,7 +167,7 @@ public abstract class Layoutable extends Colourable
 	public Bigraph getBigraph(IPropertyProviderProxy context) {
 		if (getParent(context) == null) {
 			return null;
-		} else return getParent(context).getBigraph();
+		} else return getParent(context).getBigraph(context);
 	}
 	
 	/**
