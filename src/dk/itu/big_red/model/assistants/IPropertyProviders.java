@@ -15,7 +15,7 @@ import dk.itu.big_red.model.Point;
  */
 public interface IPropertyProviders {
 	public interface IPropertyProviderProxy {
-		public IPropertyProvider getProvider(Object o);
+		public IPropertyProvider getProvider(IPropertyProvider o);
 	}
 	
 	public interface IPropertyProvider {
