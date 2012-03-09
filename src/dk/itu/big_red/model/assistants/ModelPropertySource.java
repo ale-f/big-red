@@ -35,14 +35,13 @@ public class ModelPropertySource implements IPropertySource {
 			new ArrayList<IPropertyDescriptor>();
 		properties.add(new PropertyDescriptor("Class", "Class"));
 		
-		if (object instanceof Colourable) {
-			Colourable c = (Colourable)object;
-			if (c instanceof Link) {
-				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Colour"));
-			} else if (c instanceof Node) {
-				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL, "Fill colour"));
-				properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Outline colour"));
-			}
+		if (object instanceof Link) {
+			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Colour"));
+		} else if (object instanceof Node) {
+			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL, "Fill colour"));
+			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Outline colour"));
+			if (((Node)object).getControl().getParameterPolicy() != null)
+				properties.add(new TextPropertyDescriptor(Node.PROPERTY_PARAMETER, "Parameter"));
 		}
 		
 		if (object instanceof ModelObject)
