@@ -9,12 +9,12 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.Control.ParameterSpec.Parameter;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
+import dk.itu.big_red.model.namespaces.INamePolicy;
 
 /**
  * 
@@ -22,8 +22,8 @@ import dk.itu.big_red.model.interfaces.ISite;
  * @see INode
  */
 public class Node extends Container implements INode {
+	private String parameter;
 	private ArrayList<Port> ports = new ArrayList<Port>();
-	private ArrayList<Parameter> parameters = new ArrayList<Parameter>();
 	
 	/**
 	 * Returns a new {@link Node} with the same {@link Control} as this one.
@@ -99,7 +99,9 @@ public class Node extends Container implements INode {
 		for (Port p : ports)
 			p.setParent(this);
 		
-		parameters = control.createParameters();
+		INamePolicy i = c.getParameterPolicy();
+		if (i != null)
+			parameter = i.getName(0);
 				
 		if (!control.isResizable())
 			super.setLayout(
@@ -110,8 +112,8 @@ public class Node extends Container implements INode {
 		return ports;
 	}
 	
-	public List<Parameter> getParameters() {
-		return parameters;
+	public String getParameter() {
+		return parameter;
 	}
 	
 	public Port getPort(String name) {

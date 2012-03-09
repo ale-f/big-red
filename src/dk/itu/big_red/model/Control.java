@@ -7,8 +7,8 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 
-import dk.itu.big_red.model.Control.ParameterSpec.Parameter;
 import dk.itu.big_red.model.interfaces.IControl;
+import dk.itu.big_red.model.namespaces.INamePolicy;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -292,121 +292,14 @@ public class Control extends Colourable implements IControl {
 		return null;
 	}
 	
-	private ArrayList<ParameterSpec> parameters;
+	private INamePolicy parameterPolicy;
 	
-	public abstract static class ParameterSpec {
-		public abstract class Parameter {
-			protected abstract ParameterSpec getSpec();
-			
-			public abstract Object getValue();
-		}
-		
-		protected ParameterSpec(String name) {
-			setName(name);
-		}
-		
-		private String name;
-		
-		public ParameterSpec setName(String name) {
-			this.name = name;
-			return this;
-		}
-		
-		public String getName() {
-			return name;
-		}
-		
-		/**
-		 * Indicates whether or not a {@link Parameter} instantiated from this
-		 * {@link ParameterSpec} could have the given value.
-		 * @param value an {@link Object}
-		 * @return <code>true</code> if <code>value</code> represents a
-		 * permissible value, or <code>false</code> otherwise
-		 */
-		public abstract boolean validate(Object value);
-		
-		/**
-		 * Instantiates a {@link Parameter} governed by this {@link
-		 * ParameterSpec}.
-		 * @return a new {@link Parameter}
-		 * @see #validate(Object)
-		 */
-		public abstract Parameter instantiate();
+	public INamePolicy getParameterPolicy() {
+		return parameterPolicy;
 	}
 	
-	public static class LongParameterSpec extends ParameterSpec {
-		public class LongParameter extends Parameter {
-			protected LongParameter() {
-			}
-			
-			@Override
-			protected LongParameterSpec getSpec() {
-				return LongParameterSpec.this;
-			}
-			
-			private long value;
-			
-			@Override
-			public Long getValue() {
-				return value;
-			}
-		
-			public LongParameter setValue(Long value) {
-				if (getSpec().validate(value))
-					this.value = value;
-				return this;
-			}
-		}
-		
-		protected LongParameterSpec(String name) {
-			super(name);
-		}
-		
-		private long minimum = Long.MIN_VALUE, maximum = Long.MAX_VALUE;
-		
-		public ParameterSpec setMinimum(long minimum) {
-			this.minimum = minimum;
-			return this;
-		}
-		
-		public long getMinimum() {
-			return minimum;
-		}
-		
-		public ParameterSpec setMaximum(long maximum) {
-			this.maximum = maximum;
-			return this;
-		}
-		
-		public long getMaximum() {
-			return maximum;
-		}
-		
-		@Override
-		public boolean validate(Object value) {
-			if (value instanceof Long) {
-				Long l = (Long)value;
-				return (l >= minimum && l <= maximum);
-			} else return false;
-		}
-		
-		@Override
-		public Parameter instantiate() {
-			return new LongParameter();
-		}
-	}
-	
-	public List<ParameterSpec> getParameters() {
-		if (parameters == null)
-			parameters = new ArrayList<ParameterSpec>();
-		return parameters;
-	}
-	
-	public ArrayList<Parameter> createParameters() {
-		ArrayList<Parameter> params = new ArrayList<Parameter>();
-		for (ParameterSpec spec : getParameters())
-			params.add(spec.instantiate());
-		return params;
+	public void setParameterPolicy(INamePolicy parameterPolicy) {
+		this.parameterPolicy = parameterPolicy;
 	}
 	
 	@Override
@@ -448,11 +341,6 @@ public class Control extends Colourable implements IControl {
 		defaultSize = null;
 		kind = null;
 		label = name = null;
-		
-		if (parameters != null) {
-			parameters.clear();
-			parameters = null;
-		}
 		
 		if (points != null) {
 			points.removeAllPoints();
