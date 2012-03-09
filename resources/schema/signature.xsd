@@ -146,11 +146,14 @@
 							<br />
 							This attribute, if present, MUST be one of: <code>atomic</code>, <code>active</code>, <code>passive</code>.
 						</li>
+						<a id="control_parameter"/>
+						<li>
+							<code>parameter</code> (<code>string</code>): the type of this control's parameter, if it has one.
+						</li>
 					</ul>
 					<p>
 						Additionally, attributes from other namespaces MAY be present on <code>control</code>s.
 					</p>
-					<hr />
 				</body>
 			</html>
 		</xsd:documentation>
@@ -171,6 +174,7 @@
 					</xsd:restriction>
 				</xsd:simpleType>
 			</xsd:attribute>
+			<xsd:attribute name="parameter" type="xsd:string" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>
