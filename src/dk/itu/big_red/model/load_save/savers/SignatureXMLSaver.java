@@ -12,6 +12,8 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
+import dk.itu.big_red.model.namespaces.INamePolicy;
+import dk.itu.big_red.model.namespaces.LongNamePolicy;
 
 public class SignatureXMLSaver extends XMLSaver {
 	@Override
@@ -53,6 +55,10 @@ public class SignatureXMLSaver extends XMLSaver {
 		applyAttributes(e,
 				"name", c.getName(),
 				"kind", c.getKind().toString());
+		
+		INamePolicy parameterPolicy = c.getParameterPolicy();
+		if (parameterPolicy instanceof LongNamePolicy)
+			applyAttributes(e, "parameter", "LONG");
 		
 		for (Port p : c.createPorts())
 			e.appendChild(processPort(

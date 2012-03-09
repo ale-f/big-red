@@ -15,6 +15,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
+import dk.itu.big_red.model.namespaces.LongNamePolicy;
 import dk.itu.big_red.utilities.geometry.Ellipse;
 
 public class SignatureXMLLoader extends XMLLoader {
@@ -41,6 +42,12 @@ public class SignatureXMLLoader extends XMLLoader {
 			model.setKind(
 				kind.equals("active") ? Kind.ACTIVE :
 				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC);
+		}
+		
+		String parameter = getAttributeNS(e, IRedNamespaceConstants.SIGNATURE, "parameter");
+		if (parameter != null) {
+			if (parameter.equals("LONG"))
+				model.setParameterPolicy(new LongNamePolicy());
 		}
 		
 		boolean generatePolygon = false;
