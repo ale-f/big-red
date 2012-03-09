@@ -390,8 +390,8 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			c.link.removePoint(c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
-			getNamespace(getNSI(c.child)).put(c.name, c.child);
-			c.child.setName(c.name);
+			c.child.setName(
+					getNamespace(getNSI(c.child)).put(c.name, c.child));
 			c.getCreator().addChild(c.child);
 		} else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
@@ -414,8 +414,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			getNamespace(getNSI(c.getCreator())).remove(c.getCreator().getName());
-			c.getCreator().setName(c.newName);
-			getNamespace(getNSI(c.getCreator())).put(c.newName, c.getCreator());
+			c.getCreator().setName(
+					getNamespace(getNSI(c.getCreator())).put(
+							c.newName, c.getCreator()));
 		} else if (b instanceof ModelObject.ChangeComment) {
 			ModelObject.ChangeComment c = (ModelObject.ChangeComment)b;
 			c.getCreator().setComment(c.comment);
