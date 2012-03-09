@@ -1,8 +1,6 @@
 package dk.itu.big_red.model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -122,38 +120,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	            upperInnerNameBoundary = Integer.MIN_VALUE,
 	            lowerRootBoundary = Integer.MAX_VALUE;
 	
-	private ArrayList<IChangeValidator> validators =
-			new ArrayList<IChangeValidator>();
+	private IChangeValidator validator = new BigraphIntegrityValidator(this);
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
 	
 	public Bigraph() {
-		validators.add(new BigraphIntegrityValidator(this));
-	}
-	
-	/**
-	 * Gets the list of {@link IChangeValidator}s currently validating changes
-	 * to this {@link Bigraph}.
-	 * @return a {@link List} of {@link IChangeValidator}s
-	 */
-	public List<IChangeValidator> getValidators() {
-		return validators;
-	}
-	
-	/**
-	 * Adds a new {@link IChangeValidator} to this {@link Bigraph}.
-	 * @param cv an {@link IChangeValidator}
-	 */
-	public void addValidator(IChangeValidator cv) {
-		validators.add(cv);
-	}
-	
-	/**
-	 * Removes an {@link IChangeValidator} from this {@link Bigraph}.
-	 * @param cv an {@link IChangeValidator}
-	 */
-	public void removeValidator(IChangeValidator cv) {
-		validators.remove(cv);
 	}
 	
 	/**
@@ -397,8 +368,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	@Override
 	public void tryValidateChange(Change b) throws ChangeRejectedException {
-		for (IChangeValidator i : validators)
-			i.tryValidateChange(b);
+		validator.tryValidateChange(b);
 	}
 	
 	@Override
