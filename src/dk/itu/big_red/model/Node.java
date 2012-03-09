@@ -22,6 +22,8 @@ import dk.itu.big_red.model.namespaces.INamePolicy;
  * @see INode
  */
 public class Node extends Container implements INode {
+	public static final String PROPERTY_PARAMETER = "NodeParameter";
+	
 	private String parameter;
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	
@@ -56,6 +58,7 @@ public class Node extends Container implements INode {
 		n.setOutlineColour(getOutlineColour().getCopy());
 		
 		/* copy parameters */
+		n.setParameter(getParameter());
 		
 		if (m != null) {
 			/* Manually claim that the new Node's Ports are clones. */
@@ -110,6 +113,12 @@ public class Node extends Container implements INode {
 	
 	public List<Port> getPorts() {
 		return ports;
+	}
+	
+	protected void setParameter(String parameter) {
+		String oldParameter = this.parameter;
+		this.parameter = parameter;
+		firePropertyChange(PROPERTY_PARAMETER, oldParameter, parameter);
 	}
 	
 	public String getParameter() {
@@ -206,5 +215,12 @@ public class Node extends Container implements INode {
 	@Override
 	public IControl getIControl() {
 		return control;
+	}
+	
+	@Override
+	public Object getProperty(String name) {
+		if (PROPERTY_PARAMETER.equals(name)) {
+			return getParameter();
+		} else return super.getProperty(name);
 	}
 }
