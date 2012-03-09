@@ -117,8 +117,7 @@ public class ModelPropertySource implements IPropertySource {
 	public void resetPropertyValue(Object id) {
 	}
 
-	@Override
-	public void setPropertyValue(Object id, Object value) {
+	public static Change getChange(Layoutable object, Object id, Object value) {
 		Change c = null;
 		if (id.equals(Layoutable.PROPERTY_NAME)) {
 			c = object.changeName((String)value);
@@ -135,6 +134,12 @@ public class ModelPropertySource implements IPropertySource {
 				value = null;
 			c = ((Site)object).changeAlias((String)value);
 		}
+		return c;
+	}
+	
+	@Override
+	public void setPropertyValue(Object id, Object value) {
+		Change c = getChange(object, id, value);
 		try {
 			object.getBigraph().tryApplyChange(c);
 		} catch (ChangeRejectedException cre) {
