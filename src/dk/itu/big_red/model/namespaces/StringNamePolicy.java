@@ -2,8 +2,8 @@ package dk.itu.big_red.model.namespaces;
 
 public class StringNamePolicy implements INamePolicy {
 	@Override
-	public boolean validate(String name) {
-		return (normalise(name) != null);
+	public String normalise(String name) {
+		return name;
 	}
 
 	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -26,10 +26,5 @@ public class StringNamePolicy implements INamePolicy {
 			value -= y * z;
 		}
 		return s;
-	}
-	
-	@Override
-	public String normalise(String name) {
-		return name;
 	}
 }

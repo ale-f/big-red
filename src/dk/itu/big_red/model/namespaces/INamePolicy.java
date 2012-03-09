@@ -11,10 +11,10 @@ public interface INamePolicy {
 	 * Indicates whether or not this {@link INamePolicy} accepts the given
 	 * name.
 	 * @param name a name to validate
-	 * @return <code>true</code> if the name is accepted, or <code>false</code>
-	 * otherwise
+	 * @return the normalised form of <code>name</code> if it is accepted, or
+	 * <code>null</code> otherwise
 	 */
-	public boolean validate(String name);
+	public String normalise(String name);
 	
 	/**
 	 * Returns a valid name corresponding to an integer.
@@ -25,6 +25,4 @@ public interface INamePolicy {
 	 * @return a name that would be accepted by this {@link INamePolicy}
 	 */
 	public String get(int value);
-	
-	public String normalise(String name);
 }

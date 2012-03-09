@@ -106,7 +106,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		if (ns.get(cdt) != null)
 			if (!ns.get(cdt).equals(l))
 				rejectChange("Names must be unique");
-		if (!ns.getPolicy().validate(cdt))
+		if (ns.getPolicy().normalise(cdt) == null)
 			rejectChange(b, "\"" + cdt + "\" is not a valid name for " + l);
 	}
 	
@@ -197,7 +197,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			INamePolicy siteNamePolicy =
 				scratch.getBigraph().getNamespace(Site.class).getPolicy();
 			if (siteNamePolicy != null && c.alias != null)
-				if (!siteNamePolicy.validate(c.alias))
+				if (siteNamePolicy.normalise(c.alias) == null)
 					rejectChange("\"" + c.alias + "\" is not a valid alias " +
 							"for " + c.getCreator());
 		} else {
