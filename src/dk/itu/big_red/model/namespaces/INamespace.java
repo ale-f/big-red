@@ -28,10 +28,10 @@ public interface INamespace<T> {
 	 * Adds an object to this {@link INamespace} with the given name.
 	 * @param name a name, which must be valid and not already in use
 	 * @param value an object, which must not be <code>null</code>
-	 * @return <code>true</code> if the object was added, or <code>false</code>
-	 * otherwise
+	 * @return the normalised form of <code>name</code> if the object was
+	 * added, or <code>null</code> otherwise
 	 */
-	public boolean put(String name, T value);
+	public String put(String name, T value);
 	
 	/**
 	 * Removes a mapping from this {@link INamespace}.

@@ -7,22 +7,22 @@ public class HashMapNamespace<T> extends Namespace<T> {
 	
 	@Override
 	public T get(String name) {
-		if (checkName(name)) {
+		if ((name = checkName(name)) != null) {
 			return map.get(name);
 		} else return null;
 	}
 
 	@Override
-	public boolean put(String name, T value) {
-		if (value != null && checkName(name) && !has(name)) {
+	public String put(String name, T value) {
+		if (value != null && (name = checkName(name)) != null && !has(name)) {
 			map.put(name, value);
-			return true;
-		} else return false;
+			return name;
+		} else return null;
 	}
 	
 	@Override
 	public boolean remove(String name) {
-		if (checkName(name)) {
+		if ((name = checkName(name)) != null) {
 			return (map.remove(name) != null);
 		} else return false;
 	}

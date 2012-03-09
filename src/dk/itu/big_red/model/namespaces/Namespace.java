@@ -33,9 +33,15 @@ public abstract class Namespace<T> implements INamespace<T> {
 		return this;
 	}
 
-	protected boolean checkName(String name) {
-		return (name != null &&
-					(getPolicy() == null || getPolicy().validate(name)));
+	protected String checkName(String name) {
+		if (name != null) {
+			if (getPolicy() == null) {
+				return name;
+			} else if ((name = getPolicy().normalise(name)) != null) {
+				return name;
+			}
+		}
+		return null;
 	}
 	
 	@Override
