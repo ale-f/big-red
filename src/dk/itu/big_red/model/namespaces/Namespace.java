@@ -15,7 +15,7 @@ public abstract class Namespace<T> implements INamespace<T> {
 		int i = 0;
 		String name;
 		do {
-			name = policy.getName(i++);
+			name = policy.get(i++);
 		} while (has(name));
 		return name;
 	}

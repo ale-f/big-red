@@ -24,5 +24,7 @@ public interface INamePolicy {
 	 * @param value an integer specifying a name (must be &geq; 0)
 	 * @return a name that would be accepted by this {@link INamePolicy}
 	 */
-	public String getName(int value);
+	public String get(int value);
+	
+	public String normalise(String name);
 }

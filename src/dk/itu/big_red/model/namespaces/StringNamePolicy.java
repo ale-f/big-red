@@ -3,13 +3,13 @@ package dk.itu.big_red.model.namespaces;
 public class StringNamePolicy implements INamePolicy {
 	@Override
 	public boolean validate(String name) {
-		return true;
+		return (normalise(name) != null);
 	}
 
 	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
 	
 	@Override
-	public String getName(int value) {
+	public String get(int value) {
 		value = value % /* 26^6 = */ 308915776;
 		String s = "";
 		boolean nonZeroEncountered = false;
@@ -26,5 +26,10 @@ public class StringNamePolicy implements INamePolicy {
 			value -= y * z;
 		}
 		return s;
+	}
+	
+	@Override
+	public String normalise(String name) {
+		return name;
 	}
 }

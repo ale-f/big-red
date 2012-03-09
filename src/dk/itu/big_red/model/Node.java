@@ -101,7 +101,7 @@ public class Node extends Container implements INode {
 		
 		INamePolicy i = c.getParameterPolicy();
 		if (i != null)
-			parameter = i.getName(0);
+			parameter = i.get(0);
 				
 		if (!control.isResizable())
 			super.setLayout(
