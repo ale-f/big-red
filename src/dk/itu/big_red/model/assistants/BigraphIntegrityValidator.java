@@ -7,12 +7,14 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
+import dk.itu.big_red.model.Node.ChangeParameter;
 import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
@@ -200,6 +202,17 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				if (siteNamePolicy.normalise(c.alias) == null)
 					rejectChange("\"" + c.alias + "\" is not a valid alias " +
 							"for " + c.getCreator());
+		} else if (b instanceof ChangeParameter) {
+			ChangeParameter c = (ChangeParameter)b;
+			checkEligibility(c.getCreator());
+			Control control = c.getCreator().getControl();
+			INamePolicy parameterPolicy = control.getParameterPolicy();
+			if (parameterPolicy == null) {
+				rejectChange("Control " + control.getName() +
+						" does not define a parameter");
+			} else if (parameterPolicy.normalise(c.parameter) == null)
+				rejectChange("\"" + c.parameter + "\" is not a valid value " +
+						"for the parameter of " + control.getName());
 		} else {
 			rejectChange("The change was not recognised by the validator");
 		}
