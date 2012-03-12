@@ -28,19 +28,19 @@ import dk.itu.big_red.model.assistants.IPropertyProviders.ISitePropertyProvider;
 public class BigraphScratchpad2 implements IPropertyProviderProxy {
 	private Map<String, Object> changes = new HashMap<String, Object>();
 	
-	private String getKey(ModelObject m, String property) {
+	private String getKey(IPropertyProvider m, String property) {
 		return "!" + System.identityHashCode(m) + "!" + property + "!";
 	}
 	
-	public void setValue(ModelObject m, String property, Object newValue) {
+	public void setValue(IPropertyProvider m, String property, Object newValue) {
 		changes.put(getKey(m, property), newValue);
 	}
 	
-	protected Object getValue(ModelObject m, String property) {
+	protected Object getValue(IPropertyProvider m, String property) {
 		return changes.get(getKey(m, property));
 	}
 	
-	public boolean hasValue(ModelObject m, String property) {
+	public boolean hasValue(IPropertyProvider m, String property) {
 		return changes.containsKey(getKey(m, property));
 	}
 	
@@ -49,36 +49,25 @@ public class BigraphScratchpad2 implements IPropertyProviderProxy {
 		return this;
 	}
 	
-	public class ModelObjectProxy implements IModelObjectPropertyProvider {
-		private ModelObject object;
+	public final class ModelObjectProxy implements
+	IModelObjectPropertyProvider, IColourablePropertyProvider,
+	ILayoutablePropertyProvider, IContainerPropertyProvider,
+	IPointPropertyProvider, ILinkPropertyProvider, ISitePropertyProvider,
+	INodePropertyProvider {
+		private IPropertyProvider object;
 		
-		public ModelObjectProxy(ModelObject object) {
+		public ModelObjectProxy(IPropertyProvider object) {
 			this.object = object;
 		}
 		
-		protected ModelObject getObject() {
-			return object;
-		}
-		
-		protected boolean should(String property) {
-			return hasValue(object, property);
-		}
-		
 		protected Object get(String property) {
-			return (should(property) ? getValue(object, property) :
-				getObject().getProperty(property));
+			return (hasValue(object, property) ? getValue(object, property) :
+				object.getProperty(property));
 		}
 		
 		@Override
 		public String getComment() {
 			return (String)get(ModelObject.PROPERTY_COMMENT);
-		}
-	}
-	
-	public class ColourableProxy extends ModelObjectProxy
-		implements IColourablePropertyProvider {
-		public ColourableProxy(Colourable object) {
-			super(object);
 		}
 		
 		@Override
@@ -89,13 +78,6 @@ public class BigraphScratchpad2 implements IPropertyProviderProxy {
 		@Override
 		public ReadonlyColour getOutlineColour() {
 			return (Colour)get(Colourable.PROPERTY_OUTLINE);
-		}
-	}
-	
-	public class LayoutableProxy extends ColourableProxy
-		implements ILayoutablePropertyProvider {
-		public LayoutableProxy(Layoutable object) {
-			super(object);
 		}
 
 		@Override
@@ -112,86 +94,40 @@ public class BigraphScratchpad2 implements IPropertyProviderProxy {
 		public Container getParent() {
 			return (Container)get(Layoutable.PROPERTY_PARENT);
 		}
-	}
-	
-	public class ContainerProxy extends LayoutableProxy
-		implements IContainerPropertyProvider {
-		public ContainerProxy(Container object) {
-			super(object);
-		}
 
 		@SuppressWarnings("unchecked") @Override
 		public List<Layoutable> getChildren() {
 			return (List<Layoutable>)get(Container.PROPERTY_CHILD);
-		}
-	}
-	
-	public class PointProxy extends LayoutableProxy
-		implements IPointPropertyProvider {
-		public PointProxy(Point object) {
-			super(object);
 		}
 
 		@Override
 		public Link getLink() {
 			return (Link)get(Point.PROPERTY_LINK);
 		}
-	}
-	
-	public class LinkProxy extends LayoutableProxy
-		implements ILinkPropertyProvider {
-		public LinkProxy(Link object) {
-			super(object);
-		}
 
 		@SuppressWarnings("unchecked") @Override
 		public List<Point> getPoints() {
 			return (List<Point>)get(Link.PROPERTY_POINT);
-		}
-	}
-	
-	public class SiteProxy extends LayoutableProxy
-		implements ISitePropertyProvider {
-		public SiteProxy(Site object) {
-			super(object);
 		}
 		
 		@Override
 		public String getAlias() {
 			return (String)get(Site.PROPERTY_ALIAS);
 		}
-	}
-
-	public class NodeProxy extends ContainerProxy
-		implements INodePropertyProvider {
-		public NodeProxy(Node object) {
-			super(object);
-		}
 		
 		@Override
 		public String getParameter() {
 			return (String)get(Node.PROPERTY_PARAMETER);
 		}
+
+		@Override
+		public Object getProperty(String name) {
+			return get(name);
+		}
 	}
 	
 	@Override
 	public IPropertyProvider getProvider(IPropertyProvider o) {
-		if (o instanceof Node) {
-			return new NodeProxy((Node)o);
-		} else if (o instanceof Site) {
-			return new SiteProxy((Site)o);
-		} else if (o instanceof Link) {
-			return new LinkProxy((Link)o);
-		} else if (o instanceof Point) {
-			return new PointProxy((Point)o);
-		} else if (o instanceof Container) {
-			return new ContainerProxy((Container)o);
-		} else if (o instanceof Layoutable) {
-			return new LayoutableProxy((Layoutable)o);
-		} else if (o instanceof Colourable) {
-			return new ColourableProxy((Colourable)o);
-		} else if (o instanceof ModelObject) {
-			return new ModelObjectProxy((ModelObject)o);
-		} else return o;
+		return new ModelObjectProxy(o);
 	}
 }

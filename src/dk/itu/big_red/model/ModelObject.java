@@ -177,6 +177,7 @@ public class ModelObject implements IDisposable, IModelObjectPropertyProvider {
 	 * @return the value of the named property, or <code>null</code> if this
 	 * object does not have the named property
 	 */
+	@Override
 	public Object getProperty(String name) {
 		if (name.equals(PROPERTY_COMMENT)) {
 			return getComment();

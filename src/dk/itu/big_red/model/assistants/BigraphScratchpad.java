@@ -45,7 +45,7 @@ public class BigraphScratchpad extends BigraphScratchpad2 {
 	private List<Layoutable> getModifiableChildren(Container a) {
 		List<Layoutable> c;
 		if (hasValue(a, Container.PROPERTY_CHILD)) {
-			c = new ContainerProxy(a).getChildren();
+			c = new ModelObjectProxy(a).getChildren();
 		} else {
 			setValue(a, Container.PROPERTY_CHILD,
 					c = new ArrayList<Layoutable>(a.getChildren()));
@@ -68,7 +68,7 @@ public class BigraphScratchpad extends BigraphScratchpad2 {
 	private List<Point> getModifiablePoints(Link a) {
 		List<Point> p;
 		if (hasValue(a, Link.PROPERTY_POINT)) {
-			p = new LinkProxy(a).getPoints();
+			p = new ModelObjectProxy(a).getPoints();
 		} else {
 			setValue(a, Link.PROPERTY_POINT,
 					p = new ArrayList<Point>(a.getPoints()));

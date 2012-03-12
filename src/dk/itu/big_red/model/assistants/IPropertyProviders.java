@@ -19,6 +19,7 @@ public interface IPropertyProviders {
 	}
 	
 	public interface IPropertyProvider {
+		public Object getProperty(String name);
 	}
 	
 	public interface IModelObjectPropertyProvider extends IPropertyProvider {
