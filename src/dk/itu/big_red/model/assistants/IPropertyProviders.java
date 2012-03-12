@@ -51,4 +51,8 @@ public interface IPropertyProviders {
 	public interface ISitePropertyProvider extends ILayoutablePropertyProvider {
 		public String getAlias();
 	}
+	
+	public interface INodePropertyProvider extends ILayoutablePropertyProvider {
+		public String getParameter();
+	}
 }

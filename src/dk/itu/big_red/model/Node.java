@@ -9,6 +9,8 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.assistants.IPropertyProviders.INodePropertyProvider;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
@@ -21,7 +23,7 @@ import dk.itu.big_red.model.namespaces.INamePolicy;
  * @author alec
  * @see INode
  */
-public class Node extends Container implements INode {
+public class Node extends Container implements INode, INodePropertyProvider {
 	public class ChangeParameter extends LayoutableChange {
 		@Override
 		public Node getCreator() {
@@ -155,8 +157,14 @@ public class Node extends Container implements INode {
 		firePropertyChange(PROPERTY_PARAMETER, oldParameter, parameter);
 	}
 	
+	@Override
 	public String getParameter() {
 		return parameter;
+	}
+	
+	public String getParameter(IPropertyProviderProxy context) {
+		return (context == null ? this :
+			(INodePropertyProvider)context.getProvider(this)).getParameter();
 	}
 	
 	public Port getPort(String name) {
