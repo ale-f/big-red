@@ -12,14 +12,12 @@ import dk.itu.big_red.model.interfaces.ISite;
  * @see ISite
  */
 public class Site extends Layoutable implements ISite, ISitePropertyProvider {
-	abstract class SiteChange extends LayoutableChange {
+	public class ChangeAlias extends LayoutableChange {
 		@Override
 		public Site getCreator() {
 			return Site.this;
 		}
-	}
-	
-	public class ChangeAlias extends SiteChange {
+		
 		public String alias;
 		
 		protected ChangeAlias(String alias) {
@@ -34,15 +32,9 @@ public class Site extends Layoutable implements ISite, ISitePropertyProvider {
 		}
 		
 		@Override
-		public boolean canInvert() {
-			return true;
-		}
-		
-		@Override
 		public ModelObjectChange inverse() {
 			return getCreator().changeAlias(oldAlias);
 		}
-
 	}
 	
 	@Override

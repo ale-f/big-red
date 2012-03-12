@@ -22,6 +22,40 @@ import dk.itu.big_red.model.namespaces.INamePolicy;
  * @see INode
  */
 public class Node extends Container implements INode {
+	public class ChangeParameter extends LayoutableChange {
+		@Override
+		public Node getCreator() {
+			return Node.this;
+		}
+		
+		public String parameter;
+		
+		public ChangeParameter(String parameter) {
+			this.parameter = parameter;
+		}
+		
+		private String oldParameter;
+		
+		@Override
+		public void beforeApply() {
+			oldParameter = getCreator().getParameter();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldParameter != null);
+		}
+		
+		@Override
+		public ChangeParameter inverse() {
+			return getCreator().changeParameter(oldParameter);
+		}
+	}
+	
+	/**
+	 * The property name fired when the parameter changes. The values are
+	 * {@link String}s.
+	 */
 	public static final String PROPERTY_PARAMETER = "NodeParameter";
 	
 	private String parameter;
@@ -38,7 +72,7 @@ public class Node extends Container implements INode {
 			return null;
 		}
 	}
-	
+
 	public Node(Control control) {
 		setControl(control);
 	}
@@ -222,5 +256,9 @@ public class Node extends Container implements INode {
 		if (PROPERTY_PARAMETER.equals(name)) {
 			return getParameter();
 		} else return super.getProperty(name);
+	}
+	
+	public ChangeParameter changeParameter(String parameter) {
+		return new ChangeParameter(parameter);
 	}
 }
