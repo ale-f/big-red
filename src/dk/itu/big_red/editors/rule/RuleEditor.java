@@ -274,23 +274,20 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
-	private void processCommand(int detail, Command c) {
-		System.out.println(this + ".processCommand(" + detail + ", " + c + ")");
-		if (c instanceof CompoundCommand) {
-			for (Object i : ((CompoundCommand)c).getCommands())
-				if (i instanceof Command)
-					processCommand(detail, (Command)i);
-		} else if (c instanceof ChangeCommand) {
-			processChangeCommand(detail, (ChangeCommand)c);
-		}
-	}
-	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
-		System.out.println(this + ".stackChanged(" + event + ")");
 		int detail = event.getDetail() & CommandStack.POST_MASK;
-		if (detail != 0)
-			processCommand(detail, event.getCommand());
+		if (detail != 0) {
+			Command c = event.getCommand();
+			if (c instanceof CompoundCommand) {
+				for (Object i : ((CompoundCommand)c).getCommands())
+					if (i instanceof ChangeCommand)
+						processChangeCommand(detail, (ChangeCommand)i);
+			} else if (c instanceof ChangeCommand) {
+				processChangeCommand(detail, (ChangeCommand)c);
+			}
+		}
+		
 		super.stackChanged(event);
 	}
 

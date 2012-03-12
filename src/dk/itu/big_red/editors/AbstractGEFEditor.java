@@ -9,7 +9,6 @@ import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.properties.UndoablePropertySheetEntry;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
@@ -22,6 +21,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
+import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
 import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 
 public abstract class AbstractGEFEditor extends AbstractEditor
@@ -150,10 +150,9 @@ INullSelectionListener {
 		if (adapter == CommandStack.class) {
 			return getCommandStack();
 		} else if (adapter == IPropertySheetPage.class) {
-			PropertySheetPage psp = new PropertySheetPage();
-			psp.setRootEntry(
-					new UndoablePropertySheetEntry(getCommandStack()));
-			return psp;
-		} else return super.getAdapter(adapter);
+    		PropertySheetPage psp = new PropertySheetPage();
+    		psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
+    		return psp;
+    	} else return super.getAdapter(adapter);
 	}
 }
