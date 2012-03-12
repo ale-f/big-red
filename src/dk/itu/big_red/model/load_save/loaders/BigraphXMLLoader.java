@@ -32,9 +32,12 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
+import dk.itu.big_red.model.namespaces.INamePolicy;
 import dk.itu.big_red.utilities.resources.Project;
+
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
 
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.
@@ -84,14 +87,13 @@ public class BigraphXMLLoader extends XMLLoader {
 		cg.clear();
 		
 		Element signatureElement =
-			removeNamedChildElement(e, IRedNamespaceConstants.BIGRAPH, "signature");
+			removeNamedChildElement(e, BIGRAPH, "signature");
 		
 		String signaturePath;
 		if (signatureElement != null) {
-			signaturePath =
-				getAttributeNS(signatureElement, IRedNamespaceConstants.BIGRAPH, "src");
+			signaturePath = getAttributeNS(signatureElement, BIGRAPH, "src");
 		} else {
-			signaturePath = getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "signature");
+			signaturePath = getAttributeNS(e, BIGRAPH, "signature");
 		}
 		
 		if (signaturePath != null) {
@@ -140,38 +142,51 @@ public class BigraphXMLLoader extends XMLLoader {
 	private HashMap<String, Link> links =
 			new HashMap<String, Link>();
 	
-	private Link processLink(Element e, Link model) throws LoadFailedException {
-		String name = getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "name");
-		links.put(name, model);
-		
-		return model;
+	private void processLink(Element e, Link model) throws LoadFailedException {
+		links.put(getAttributeNS(e, BIGRAPH, "name"), model);
 	}
 	
-	private Point processPoint(Element e, Point model) throws LoadFailedException {
-		String link = getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "link");
+	private void processPoint(Element e, Point model) throws LoadFailedException {
+		String link = getAttributeNS(e, BIGRAPH, "link");
 		if (link != null)
 			cg.add(model.changeConnect(links.get(link)));
-		return model;
 	}
 	
-	private Site processSite(Element e, Site model) throws LoadFailedException {
-		String alias = getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "alias");
+	private void processSite(Element e, Site model) throws LoadFailedException {
+		String alias = getAttributeNS(e, BIGRAPH, "alias");
 		if (alias != null)
 			cg.add(model.changeAlias(alias));
-		return model;
+	}
+	
+	private void processNode(Element e, Node model) throws LoadFailedException {
+		String parameter = getAttributeNS(e, BIGRAPH, "parameter");
+		INamePolicy policy = model.getControl().getParameterPolicy();
+		
+		if (parameter != null && policy == null) {
+			addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,
+				"Spurious parameter value ignored.")); /* FIXME - details */
+		} else if (parameter == null && policy != null) {
+			addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,
+				"Default parameter value assigned.")); /* FIXME - details */
+			cg.add(model.changeParameter(policy.get(0)));
+		} else if (parameter != null && policy != null) {
+			cg.add(model.changeParameter(parameter));
+		}
+		
+		processContainer(e, model);
 	}
 	
 	private void addChild(Container context, Element e) throws LoadFailedException {
 		ModelObject model = null;
 		boolean port = false;
 		if (e.getLocalName().equals("node")) {
-			String controlName =
-					getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "control");
+			String controlName = getAttributeNS(e, BIGRAPH, "control");
 			Control c = bigraph.getSignature().getControl(controlName);
 			if (c == null)
 				throw new LoadFailedException(
 					"The control \"" + controlName + "\" isn't defined by " +
 							"this bigraph's signature.");
+			
 			model = new Node(c);
 		} else if (e.getLocalName().equals("port") && context instanceof Node) {
 			/*
@@ -186,10 +201,10 @@ public class BigraphXMLLoader extends XMLLoader {
 		if (model instanceof Layoutable) {
 			Layoutable l = (Layoutable)model;
 			cg.add(context.changeAddChild(l,
-					getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "name")));
+					getAttributeNS(e, BIGRAPH, "name")));
 			
 			Element appearance =
-				removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "appearance");
+				removeNamedChildElement(e, BIG_RED, "appearance");
 			if (appearanceAllowed == Tristate.UNKNOWN) {
 				appearanceAllowed = Tristate.fromBoolean(appearance != null);
 			} else if (!partialAppearanceWarning &&
@@ -208,12 +223,14 @@ public class BigraphXMLLoader extends XMLLoader {
 				elementToAppearance(appearance, model, cg);
 		}
 		
-		if (model instanceof Container) {
+		if (model instanceof Node) {
+			processNode(e, (Node)model);
+		} else if (model instanceof Container) {
 			processContainer(e, (Container)model);
 		} else if (port) {
 			Node n = (Node)context;
 			processPoint(e,
-				n.getPort(getAttributeNS(e, IRedNamespaceConstants.BIGRAPH, "name")));
+				n.getPort(getAttributeNS(e, BIGRAPH, "name")));
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {
@@ -260,7 +277,7 @@ public class BigraphXMLLoader extends XMLLoader {
 
 	protected static void elementToAppearance(
 			Element e, Object o, ChangeGroup cg) {
-		if (!(e.getNamespaceURI().equals(IRedNamespaceConstants.BIG_RED) &&
+		if (!(e.getNamespaceURI().equals(BIG_RED) &&
 				e.getLocalName().equals("appearance")))
 			return;
 		
@@ -274,15 +291,13 @@ public class BigraphXMLLoader extends XMLLoader {
 			Colourable c = (Colourable)o;
 			cg.add(
 				c.changeFillColour(
-						getColorAttribute(e,
-							IRedNamespaceConstants.BIG_RED, "fillColor")),
+						getColorAttribute(e, BIG_RED, "fillColor")),
 				c.changeOutlineColour(
-						getColorAttribute(e,
-							IRedNamespaceConstants.BIG_RED, "outlineColor")));
+						getColorAttribute(e, BIG_RED, "outlineColor")));
 		}
 		
 		if (o instanceof ModelObject)
-			((ModelObject)o).setComment(getAttributeNS(e,
-					IRedNamespaceConstants.BIG_RED, "comment"));
+			((ModelObject)o).setComment(
+					getAttributeNS(e, BIG_RED, "comment"));
 	}
 }
