@@ -12,6 +12,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -70,6 +71,8 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 				cg.add(((Colourable)j.getModel()).changeOutlineColour((Colour)newValue));
 			} else if (propertyID.equals(Site.PROPERTY_ALIAS)) {
 				cg.add(((Site)j.getModel()).changeAlias((String)newValue));
+			} else if (propertyID.equals(Node.PROPERTY_PARAMETER)) {
+				cg.add(((Node)j.getModel()).changeParameter((String)newValue));
 			}
 		}
 		if (getParent() != null) {
