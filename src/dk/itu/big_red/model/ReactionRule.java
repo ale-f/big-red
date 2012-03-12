@@ -11,6 +11,7 @@ import dk.itu.big_red.model.Container.ChangeRemoveChild;
 import dk.itu.big_red.model.Edge.ChangeReposition;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
+import dk.itu.big_red.model.Node.ChangeParameter;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
 import dk.itu.big_red.model.Site.ChangeAlias;
@@ -165,6 +166,14 @@ public class ReactionRule extends ModelObject {
 				return null;
 			
 			return reactumObject.changeComment(ch.comment);
+		} else if (change instanceof ChangeParameter) {
+			ChangeParameter ch = (ChangeParameter)change;
+			
+			Node reactumObject = (Node)oldToNew.get(ch.getCreator());
+			if (reactumObject == null)
+				return null;
+			
+			return reactumObject.changeParameter(ch.parameter);
 		} else throw new Error(change + " unrecognised");
 	}
 	
