@@ -52,7 +52,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 	private void removePoint(Link l, Point p) {
 		cg.add(p.changeDisconnect(l));
 		scratch.removePointFor(l, p);
-		if (l.getPoints(scratch.getProxy()).size() == 0 && l instanceof Edge) {
+		if (l.getPoints(scratch).size() == 0 && l instanceof Edge) {
 			cg.add(l.getBigraph().changeRemoveChild(l));
 			scratch.removeChildFor(l.getBigraph(), l);
 		}
@@ -66,7 +66,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 			removePoint(link, point);
 		} else if (m instanceof Layoutable) {
 			Layoutable n = (Layoutable)m;
-			if (n.getParent(scratch.getProxy()) == null)
+			if (n.getParent(scratch) == null)
 				return;
 			
 			if (n instanceof Container) {
@@ -75,25 +75,25 @@ public class ModelDeleteCommand extends ChangeCommand {
 				if (n instanceof Node) {
 					Node j = (Node)n;
 					for (Point p : j.getPorts()) {
-						Link l = p.getLink(scratch.getProxy());
+						Link l = p.getLink(scratch);
 						if (l != null)
 							removePoint(l, p);
 					}
 				}
 				
 				for (Layoutable i :
-					new ArrayList<Layoutable>(c.getChildren(scratch.getProxy())))
+					new ArrayList<Layoutable>(c.getChildren(scratch)))
 					remove(i);
 			} else if (n instanceof Link) {
 				Link l = (Link)n;
-				for (Point p : new ArrayList<Point>(l.getPoints(scratch.getProxy())))
+				for (Point p : new ArrayList<Point>(l.getPoints(scratch)))
 					removePoint(l, p);
 				if (l instanceof Edge)
 					return;
 			} else if (n instanceof Point) {
 				Point p = (Point)n;
-				if (p.getLink(scratch.getProxy()) != null)
-					removePoint(p.getLink(scratch.getProxy()), p);
+				if (p.getLink(scratch) != null)
+					removePoint(p.getLink(scratch), p);
 			}
 			cg.add(n.getParent().changeRemoveChild(n));
 			scratch.removeChildFor(n.getParent(), n);

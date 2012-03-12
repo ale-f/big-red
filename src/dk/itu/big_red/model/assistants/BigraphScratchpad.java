@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.namespaces.INamespace;
 
 /**
@@ -21,9 +18,7 @@ import dk.itu.big_red.model.namespaces.INamespace;
  * @author alec
  *
  */
-public class BigraphScratchpad {
-	private BigraphScratchpad2 scratch = new BigraphScratchpad2();
-	
+public class BigraphScratchpad extends BigraphScratchpad2 {
 	private Bigraph bigraph;
 	public BigraphScratchpad(Bigraph bigraph) {
 		this.bigraph = bigraph;
@@ -36,8 +31,9 @@ public class BigraphScratchpad {
 	 * Clears everything in this {@link BigraphScratchpad}.
 	 * @return <code>this</code>, for convenience
 	 */
+	@Override
 	public BigraphScratchpad clear() {
-		scratch.clear();
+		super.clear();
 		namespaces.clear();
 		return this;
 	}
@@ -46,20 +42,12 @@ public class BigraphScratchpad {
 		return bigraph;
 	}
 	
-	public void setLayoutFor(Layoutable a, Rectangle b) {
-		scratch.setValue(a, Layoutable.PROPERTY_LAYOUT, b);
-	}
-	
-	public IPropertyProviderProxy getProxy() {
-		return scratch;
-	}
-	
 	private List<Layoutable> getModifiableChildren(Container a) {
 		List<Layoutable> c;
-		if (scratch.hasValue(a, Container.PROPERTY_CHILD)) {
-			c = scratch.new ContainerProxy(a).getChildren();
+		if (hasValue(a, Container.PROPERTY_CHILD)) {
+			c = new ContainerProxy(a).getChildren();
 		} else {
-			scratch.setValue(a, Container.PROPERTY_CHILD,
+			setValue(a, Container.PROPERTY_CHILD,
 					c = new ArrayList<Layoutable>(a.getChildren()));
 		}
 		return c;
@@ -67,22 +55,22 @@ public class BigraphScratchpad {
 	
 	public void removeChildFor(Container a, Layoutable b) {
 		getModifiableChildren(a).remove(b);
-		scratch.setValue(b, Layoutable.PROPERTY_PARENT, null);
+		setValue(b, Layoutable.PROPERTY_PARENT, null);
 		setNameFor(b, null);
 	}
 	
 	public void addChildFor(Container a, Layoutable b, String name) {
 		getModifiableChildren(a).add(b);
-		scratch.setValue(b, Layoutable.PROPERTY_PARENT, a);
+		setValue(b, Layoutable.PROPERTY_PARENT, a);
 		setNameFor(b, name);
 	}
 	
 	private List<Point> getModifiablePoints(Link a) {
 		List<Point> p;
-		if (scratch.hasValue(a, Link.PROPERTY_POINT)) {
-			p = scratch.new LinkProxy(a).getPoints();
+		if (hasValue(a, Link.PROPERTY_POINT)) {
+			p = new LinkProxy(a).getPoints();
 		} else {
-			scratch.setValue(a, Link.PROPERTY_POINT,
+			setValue(a, Link.PROPERTY_POINT,
 					p = new ArrayList<Point>(a.getPoints()));
 		}
 		return p;
@@ -90,20 +78,20 @@ public class BigraphScratchpad {
 	
 	public void removePointFor(Link a, Point b) {
 		getModifiablePoints(a).remove(b);
-		scratch.setValue(b, Point.PROPERTY_LINK, null);
+		setValue(b, Point.PROPERTY_LINK, null);
 	}
 	
 	public void addPointFor(Link a, Point b) {
 		getModifiablePoints(a).add(b);
-		scratch.setValue(b, Point.PROPERTY_LINK, a);
+		setValue(b, Point.PROPERTY_LINK, a);
 	}
 	
 	public void setNameFor(Layoutable a, String b) {
-		String currentName = a.getName(getProxy());
+		String currentName = a.getName(this);
 		if (currentName != null)
 			getNamespaceFor(a).remove(currentName);
 		
-		scratch.setValue(a, Layoutable.PROPERTY_NAME, b);
+		setValue(a, Layoutable.PROPERTY_NAME, b);
 		
 		getNamespaceFor(a).put(b, a);
 	}
