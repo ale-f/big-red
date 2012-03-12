@@ -117,33 +117,8 @@ public class ModelPropertySource implements IPropertySource {
 	public void resetPropertyValue(Object id) {
 	}
 
-	public static Change getChange(Layoutable object, Object id, Object value) {
-		Change c = null;
-		if (id.equals(Layoutable.PROPERTY_NAME)) {
-			c = object.changeName((String)value);
-		} else if (id.equals(ModelObject.PROPERTY_COMMENT)) {
-			if ("".equals(value))
-				value = null;
-			c = object.changeComment((String)value);
-		} else if (id.equals(Colourable.PROPERTY_FILL)) {
-			c = ((Colourable)object).changeFillColour((Colour)value);
-		} else if (id.equals(Colourable.PROPERTY_OUTLINE)) {
-			c = ((Colourable)object).changeOutlineColour((Colour)value);
-		} else if (id.equals(Site.PROPERTY_ALIAS)) {
-			if ("".equals(value))
-				value = null;
-			c = ((Site)object).changeAlias((String)value);
-		}
-		return c;
-	}
-	
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		Change c = getChange(object, id, value);
-		try {
-			object.getBigraph().tryApplyChange(c);
-		} catch (ChangeRejectedException cre) {
-			throw new Error(cre);
-		}
+		/* does nothing; never called (see ChangePropertySheetEntry) */
 	}
 }
