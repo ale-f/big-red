@@ -188,7 +188,9 @@ public abstract class Layoutable extends Colourable
 	 * @param p the new parent {@link Container}
 	 */
 	protected void setParent(Container parent) {
+		Container oldParent = this.parent;
 		this.parent = parent;
+		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 	}
 	
 	private ModelPropertySource propertySource;
@@ -196,13 +198,19 @@ public abstract class Layoutable extends Colourable
 	 * The property name fired when the ILayoutable's layout changes (i.e.,
 	 * it's resized or moved). The property values are {@link Rectangle}s.
 	 */
-	public static final String PROPERTY_LAYOUT = "ILayoutableLayout";
+	public static final String PROPERTY_LAYOUT = "LayoutableLayout";
 	
 	/**
 	 * The property name fired when the name changes. The property values are
 	 * {@link String}s.
 	 */
 	public static final String PROPERTY_NAME = "LayoutableName";
+	
+	/**
+	 * The property name fired when the parent changes. The property values are
+	 * {@link Container}s.
+	 */
+	public static final String PROPERTY_PARENT = "LayoutableParent";
 	
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -278,6 +286,8 @@ public abstract class Layoutable extends Colourable
 			return getName();
 		} else if (name.equals(PROPERTY_LAYOUT)) {
 			return getLayout();
+		} else if (name.equals(PROPERTY_PARENT)) {
+			return getParent();
 		} else return super.getProperty(name);
 	}
 	
