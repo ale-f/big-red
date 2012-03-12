@@ -328,6 +328,17 @@
 						</li>
 					</ul>
 					<p>
+						The following attributes MAY be present:
+					</p>
+					<ul>
+						<li>
+							<a id="node_parameter" />
+							<code>parameter</code> (<code>string</code>): this node's parameter.
+							<br />
+							This attribute SHOULD only be set if this node's <a href="#">control</a> defines a parameter.
+						</li>
+					</ul>
+					<p>
 						Additionally, attributes from other namespaces MAY be present on <code>node</code>s.
 					</p>
 					<hr />
@@ -345,6 +356,7 @@
 			</xsd:sequence>
 			<xsd:attribute name="name" type="xsd:string" use="required" />
 			<xsd:attribute name="control" type="xsd:string" use="required" />
+			<xsd:attribute name="parameter" type="xsd:string" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>
