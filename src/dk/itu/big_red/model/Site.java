@@ -3,7 +3,6 @@ package dk.itu.big_red.model;
 import java.util.Map;
 
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
-import dk.itu.big_red.model.assistants.IPropertyProviders.ISitePropertyProvider;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
 
@@ -11,7 +10,7 @@ import dk.itu.big_red.model.interfaces.ISite;
  * @author alec
  * @see ISite
  */
-public class Site extends Layoutable implements ISite, ISitePropertyProvider {
+public class Site extends Layoutable implements ISite {
 	public class ChangeAlias extends LayoutableChange {
 		@Override
 		public Site getCreator() {
@@ -54,14 +53,12 @@ public class Site extends Layoutable implements ISite, ISitePropertyProvider {
 	 * Gets this {@link Site}'s current alias.
 	 * @return the current alias (can be <code>null</code>)
 	 */
-	@Override
 	public String getAlias() {
 		return alias;
 	}
 	
 	public String getAlias(IPropertyProviderProxy context) {
-		return (context == null ? this :
-			(ISitePropertyProvider)context.getProvider(this)).getAlias();
+		return (String)getProperty(context, PROPERTY_ALIAS);
 	}
 	
 	@Override

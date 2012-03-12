@@ -7,7 +7,7 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.services.IDisposable;
 
-import dk.itu.big_red.model.assistants.IPropertyProviders.IModelObjectPropertyProvider;
+import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.Change;
 
@@ -23,7 +23,7 @@ import dk.itu.big_red.model.changes.Change;
  * @see Layoutable
  *
  */
-public class ModelObject implements IDisposable, IModelObjectPropertyProvider {
+public class ModelObject implements IDisposable, IPropertyProvider {
 	public abstract class ModelObjectChange extends Change {
 		/**
 		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
@@ -151,14 +151,12 @@ public class ModelObject implements IDisposable, IModelObjectPropertyProvider {
 	 * Returns the current comment for this object.
 	 * @return the current comment
 	 */
-	@Override
 	public String getComment() {
 		return comment;
 	}
 	
 	public String getComment(IPropertyProviderProxy context) {
-		return (context == null ? this :
-			(IModelObjectPropertyProvider)context.getProvider(this)).getComment();
+		return (String)getProperty(context, PROPERTY_COMMENT);
 	}
 	
 	/**
@@ -182,6 +180,11 @@ public class ModelObject implements IDisposable, IModelObjectPropertyProvider {
 		if (name.equals(PROPERTY_COMMENT)) {
 			return getComment();
 		} else return null;
+	}
+	
+	protected Object getProperty(IPropertyProviderProxy context, String name) {
+		return (context == null ? this : context.getProvider(this)).
+				getProperty(name);
 	}
 	
 	@Override

@@ -8,7 +8,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.ModelPropertySource;
-import dk.itu.big_red.model.assistants.IPropertyProviders.ILayoutablePropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
@@ -30,8 +29,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  * @see ModelObject
  *
  */
-public abstract class Layoutable extends Colourable
-		implements IAdaptable, ILayoutablePropertyProvider {
+public abstract class Layoutable extends Colourable implements IAdaptable {
 	abstract class LayoutableChange extends ModelObjectChange {
 		@Override
 		public Layoutable getCreator() {
@@ -116,18 +114,12 @@ public abstract class Layoutable extends Colourable
 	 * Gets the current layout of this object.
 	 * @return the current layout
 	 */
-	@Override
 	public Rectangle getLayout() {
 		return layout;
 	}
-
-	private ILayoutablePropertyProvider getProvider(IPropertyProviderProxy p) {
-		return (p == null ? this :
-			(ILayoutablePropertyProvider)p.getProvider(this));
-	}
 	
 	public Rectangle getLayout(IPropertyProviderProxy context) {
-		return getProvider(context).getLayout();
+		return (Rectangle)getProperty(context, PROPERTY_LAYOUT);
 	}
 	
 	/**
@@ -174,13 +166,12 @@ public abstract class Layoutable extends Colourable
 	 * Returns the parent of this object.
 	 * @return an {@link Container}
 	 */
-	@Override
 	public Container getParent() {
 		return parent;
 	}
 
 	public Container getParent(IPropertyProviderProxy context) {
-		return getProvider(context).getParent();
+		return (Container)getProperty(context, PROPERTY_PARENT);
 	}
 	
 	/**
@@ -253,13 +244,12 @@ public abstract class Layoutable extends Colourable
 	 * Gets this object's name.
 	 * @return a String
 	 */
-	@Override
 	public String getName() {
 		return name;
 	}
 	
 	public String getName(IPropertyProviderProxy context) {
-		return getProvider(context).getName();
+		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	
 	/**

@@ -5,7 +5,6 @@ import java.util.Map;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.ReadonlyColour;
-import dk.itu.big_red.model.assistants.IPropertyProviders.IColourablePropertyProvider;
 
 /**
  * {@link ModelObject}s which can have fill and outline colours are subclasses
@@ -13,7 +12,7 @@ import dk.itu.big_red.model.assistants.IPropertyProviders.IColourablePropertyPro
  * @author alec
  *
  */
-public abstract class Colourable extends ModelObject implements IColourablePropertyProvider {
+public abstract class Colourable extends ModelObject {
 	abstract class ColourableChange extends ModelObjectChange {
 		public Colour newColour;
 		
@@ -101,7 +100,6 @@ public abstract class Colourable extends ModelObject implements IColourablePrope
 	 * Gets the current outline colour used to render this object.
 	 * @return the current outline colour
 	 */
-	@Override
 	public final ReadonlyColour getOutlineColour() {
 		return outlineColour;
 	}
@@ -117,27 +115,21 @@ public abstract class Colourable extends ModelObject implements IColourablePrope
 		
 		old.invalidateSWTColor();
 	}
-
-	private IColourablePropertyProvider getProvider(IPropertyProviderProxy context) {
-		return (context == null ? this :
-			(IColourablePropertyProvider)context.getProvider(this));
-	}
 	
 	public ReadonlyColour getOutlineColour(IPropertyProviderProxy context) {
-		return getProvider(context).getOutlineColour();
+		return (ReadonlyColour)getProperty(context, PROPERTY_OUTLINE);
 	}
 	
 	/**
 	 * Gets the current fill colour used to render this object.
 	 * @return the current fill colour
 	 */
-	@Override
 	public final ReadonlyColour getFillColour() {
 		return fillColour;
 	}
 
 	public ReadonlyColour getFillColour(IPropertyProviderProxy context) {
-		return getProvider(context).getFillColour();
+		return (ReadonlyColour)getProperty(context, PROPERTY_FILL);
 	}
 	
 	/**

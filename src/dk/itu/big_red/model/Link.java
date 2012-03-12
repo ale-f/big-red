@@ -8,7 +8,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.IPropertyProviders.ILinkPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.interfaces.ILink;
 
@@ -18,8 +17,7 @@ import dk.itu.big_red.model.interfaces.ILink;
  * @author alec
  * @see ILink
  */
-public abstract class Link extends Layoutable
-		implements ILink, ILinkPropertyProvider {
+public abstract class Link extends Layoutable implements ILink {
 	/**
 	 * <strong>Connection</strong>s are fake, transient model objects, created
 	 * on demand by {@link Link}s. They represent a single {@link
@@ -100,14 +98,13 @@ public abstract class Link extends Layoutable
 		}
 	}
 	
-	@Override
 	public List<Point> getPoints() {
 		return points;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Point> getPoints(IPropertyProviderProxy context) {
-		return (context == null ? this :
-			(ILinkPropertyProvider)context.getProvider(this)).getPoints();
+		return (List<Point>)getProperty(context, PROPERTY_POINT);
 	}
 	
 	private HashMap<Point, Link.Connection> connections =

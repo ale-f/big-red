@@ -8,7 +8,6 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.assistants.IPropertyProviders.IContainerPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
@@ -20,8 +19,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  * @author alec
  *
  */
-public abstract class Container extends Layoutable
-		implements IContainerPropertyProvider {
+public abstract class Container extends Layoutable {
 	abstract class ContainerChange extends LayoutableChange {
 		@Override
 		public Container getCreator() {
@@ -117,14 +115,13 @@ public abstract class Container extends Layoutable
 		}
 	}
 	
-	@Override
 	public List<Layoutable> getChildren() {
 		return children;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Layoutable> getChildren(IPropertyProviderProxy context) {
-		return (context == null ? this :
-			(IContainerPropertyProvider)context.getProvider(this)).getChildren();
+		return (List<Layoutable>)getProperty(context, PROPERTY_CHILD);
 	}
 	
 	public boolean hasChild(Layoutable child) {
