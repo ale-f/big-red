@@ -11,11 +11,6 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.assistants.BigraphScratchpad2.ContainerProxy;
-import dk.itu.big_red.model.assistants.BigraphScratchpad2.LayoutableProxy;
-import dk.itu.big_red.model.assistants.BigraphScratchpad2.LinkProxy;
-import dk.itu.big_red.model.assistants.BigraphScratchpad2.MaybeNull;
-import dk.itu.big_red.model.assistants.BigraphScratchpad2.PointProxy;
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 import dk.itu.big_red.model.namespaces.INamespace;
 
@@ -52,59 +47,55 @@ public class BigraphScratchpad {
 	}
 	
 	public void setLayoutFor(Layoutable a, Rectangle b) {
-		((LayoutableProxy)scratch.requireProvider(a)).layout =
-				new MaybeNull<Rectangle>(b);
+		scratch.setValue(a, Layoutable.PROPERTY_LAYOUT, b);
 	}
 	
 	public IPropertyProviderProxy getProxy() {
 		return scratch;
 	}
 	
-	protected void setParentFor(Layoutable a, Container b) {
-		((LayoutableProxy)scratch.requireProvider(a)).parent =
-				new MaybeNull<Container>(b);
-	}
-	
 	private List<Layoutable> getModifiableChildren(Container a) {
-		ContainerProxy cp = (ContainerProxy)scratch.requireProvider(a);
-		if (cp.children == null)
-			cp.children = new MaybeNull<List<Layoutable>>(
-					new ArrayList<Layoutable>(a.getChildren()));
-		return cp.children.get();
+		List<Layoutable> c;
+		if (scratch.hasValue(a, Container.PROPERTY_CHILD)) {
+			c = scratch.new ContainerProxy(a).getChildren();
+		} else {
+			scratch.setValue(a, Container.PROPERTY_CHILD,
+					c = new ArrayList<Layoutable>(a.getChildren()));
+		}
+		return c;
 	}
 	
 	public void removeChildFor(Container a, Layoutable b) {
 		getModifiableChildren(a).remove(b);
-		setParentFor(b, null);
+		scratch.setValue(b, Layoutable.PROPERTY_PARENT, null);
 		setNameFor(b, null);
 	}
 	
 	public void addChildFor(Container a, Layoutable b, String name) {
 		getModifiableChildren(a).add(b);
-		setParentFor(b, a);
+		scratch.setValue(b, Layoutable.PROPERTY_PARENT, a);
 		setNameFor(b, name);
 	}
 	
-	protected void setLinkFor(Point a, Link b) {
-		((PointProxy)scratch.requireProvider(a)).link = new MaybeNull<Link>(b);
-	}
-	
 	private List<Point> getModifiablePoints(Link a) {
-		LinkProxy cp = (LinkProxy)scratch.requireProvider(a);
-		if (cp.points == null)
-			cp.points = new MaybeNull<List<Point>>(
-					new ArrayList<Point>(a.getPoints()));
-		return cp.points.get();
+		List<Point> p;
+		if (scratch.hasValue(a, Link.PROPERTY_POINT)) {
+			p = scratch.new LinkProxy(a).getPoints();
+		} else {
+			scratch.setValue(a, Link.PROPERTY_POINT,
+					p = new ArrayList<Point>(a.getPoints()));
+		}
+		return p;
 	}
 	
 	public void removePointFor(Link a, Point b) {
 		getModifiablePoints(a).remove(b);
-		setLinkFor(b, null);
+		scratch.setValue(b, Point.PROPERTY_LINK, null);
 	}
 	
 	public void addPointFor(Link a, Point b) {
 		getModifiablePoints(a).add(b);
-		setLinkFor(b, a);
+		scratch.setValue(b, Point.PROPERTY_LINK, a);
 	}
 	
 	public void setNameFor(Layoutable a, String b) {
@@ -112,8 +103,7 @@ public class BigraphScratchpad {
 		if (currentName != null)
 			getNamespaceFor(a).remove(currentName);
 		
-		((LayoutableProxy)scratch.requireProvider(a)).name =
-				new MaybeNull<String>(b);
+		scratch.setValue(a, Layoutable.PROPERTY_NAME, b);
 		
 		getNamespaceFor(a).put(b, a);
 	}
