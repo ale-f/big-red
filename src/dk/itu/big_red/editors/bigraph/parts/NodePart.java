@@ -59,7 +59,6 @@ public class NodePart extends ContainerPart {
 	        evt.getPropertyName().equals(ModelObject.PROPERTY_COMMENT) ||
 	        evt.getPropertyName().equals(Node.PROPERTY_PARAMETER)) {
 	    	refreshVisuals();
-	    	refreshChildren();
 	    }
 	}
 	
