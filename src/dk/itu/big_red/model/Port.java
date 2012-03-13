@@ -147,9 +147,9 @@ public class Port extends Point implements IPort {
 	
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_DISTANCE)) {
+		if (PROPERTY_DISTANCE.equals(name)) {
 			return getDistance();
-		} else if (name.equals(PROPERTY_SEGMENT)) {
+		} else if (PROPERTY_SEGMENT.equals(name)) {
 			return getSegment();
 		} else return super.getProperty(name);
 	}

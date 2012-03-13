@@ -272,11 +272,11 @@ public class SimulationSpec extends ModelObject implements IChangeable {
 	 */
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_SIGNATURE)) {
+		if (PROPERTY_SIGNATURE.equals(name)) {
 			return getSignature();
-		} else if (name.equals(PROPERTY_MODEL)) {
+		} else if (PROPERTY_MODEL.equals(name)) {
 			return getModel();
-		} else if (name.equals(PROPERTY_RULE)) {
+		} else if (PROPERTY_RULE.equals(name)) {
 			return getRules();
 		} else return super.getProperty(name);
 	}

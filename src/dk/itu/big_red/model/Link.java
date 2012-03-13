@@ -140,7 +140,7 @@ public abstract class Link extends Layoutable implements ILink {
 	 */
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_POINT)) {
+		if (PROPERTY_POINT.equals(name)) {
 			return getPoints();
 		} else return super.getProperty(name);
 	}

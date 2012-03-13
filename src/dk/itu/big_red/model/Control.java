@@ -317,21 +317,21 @@ public class Control extends Colourable implements IControl {
 	 */
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_DEFAULT_SIZE)) {
+		if (PROPERTY_DEFAULT_SIZE.equals(name)) {
 			return getDefaultSize();
-		} else if (name.equals(PROPERTY_LABEL)) {
+		} else if (PROPERTY_LABEL.equals(name)) {
 			return getLabel();
-		} else if (name.equals(PROPERTY_NAME)) {
+		} else if (PROPERTY_NAME.equals(name)) {
 			return getName();
-		} else if (name.equals(PROPERTY_POINTS)) {
+		} else if (PROPERTY_POINTS.equals(name)) {
 			return getPoints();
-		} else if (name.equals(PROPERTY_PORT)) {
+		} else if (PROPERTY_PORT.equals(name)) {
 			return getPorts();
-		} else if (name.equals(PROPERTY_RESIZABLE)) {
+		} else if (PROPERTY_RESIZABLE.equals(name)) {
 			return isResizable();
-		} else if (name.equals(PROPERTY_SHAPE)) {
+		} else if (PROPERTY_SHAPE.equals(name)) {
 			return getShape();
-		} else if (name.equals(PROPERTY_KIND)) {
+		} else if (PROPERTY_KIND.equals(name)) {
 			return getKind();
 		} else return super.getProperty(name);
 	}

@@ -197,7 +197,7 @@ public abstract class Container extends Layoutable {
 	 */
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_CHILD)) {
+		if (PROPERTY_CHILD.equals(name)) {
 			return getChildren();
 		} else return super.getProperty(name);
 	}

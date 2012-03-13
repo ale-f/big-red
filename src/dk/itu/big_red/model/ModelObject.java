@@ -171,7 +171,7 @@ public class ModelObject implements IDisposable, IPropertyProvider {
 	
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_COMMENT)) {
+		if (PROPERTY_COMMENT.equals(name)) {
 			return getComment();
 		} else return null;
 	}

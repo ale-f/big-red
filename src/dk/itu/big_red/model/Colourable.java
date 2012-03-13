@@ -154,9 +154,9 @@ public abstract class Colourable extends ModelObject {
 	
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_FILL)) {
+		if (PROPERTY_FILL.equals(name)) {
 			return getFillColour();
-		} else if (name.equals(PROPERTY_OUTLINE)) {
+		} else if (PROPERTY_OUTLINE.equals(name)) {
 			return getOutlineColour();
 		} else return super.getProperty(name);
 	}

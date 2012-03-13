@@ -272,11 +272,11 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_NAME)) {
+		if (PROPERTY_NAME.equals(name)) {
 			return getName();
-		} else if (name.equals(PROPERTY_LAYOUT)) {
+		} else if (PROPERTY_LAYOUT.equals(name)) {
 			return getLayout();
-		} else if (name.equals(PROPERTY_PARENT)) {
+		} else if (PROPERTY_PARENT.equals(name)) {
 			return getParent();
 		} else return super.getProperty(name);
 	}

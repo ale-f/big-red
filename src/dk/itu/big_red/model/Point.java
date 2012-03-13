@@ -115,7 +115,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_LINK)) {
+		if (PROPERTY_LINK.equals(name)) {
 			return getLink();
 		} else return super.getProperty(name);
 	}

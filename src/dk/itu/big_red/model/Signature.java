@@ -127,7 +127,7 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 	 */
 	@Override
 	public Object getProperty(String name) {
-		if (name.equals(PROPERTY_CONTROL)) {
+		if (PROPERTY_CONTROL.equals(name)) {
 			return getControls();
 		} else return super.getProperty(name);
 	}
