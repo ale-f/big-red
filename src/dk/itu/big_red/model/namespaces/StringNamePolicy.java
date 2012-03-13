@@ -3,7 +3,12 @@ package dk.itu.big_red.model.namespaces;
 public class StringNamePolicy implements INamePolicy {
 	@Override
 	public String normalise(String name) {
-		return name;
+		if (name != null) {
+			name = name.trim();
+			if (name.length() > 0)
+				return name;
+		}
+		return null;
 	}
 
 	private String alphabet = "abcdefghijklmnopqrstuvwxyz";
