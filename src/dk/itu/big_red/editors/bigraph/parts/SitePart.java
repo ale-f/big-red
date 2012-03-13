@@ -48,11 +48,10 @@ public class SitePart extends AbstractPart {
 		if (model.getAlias() == null) {
 			figure.setName(model.getName(), false);
 		} else figure.setName(model.getAlias(), true);
-		setToolTip(getDisplayName());
 	}
 	
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		return "Site " + getModel().getName();
 	}
 }

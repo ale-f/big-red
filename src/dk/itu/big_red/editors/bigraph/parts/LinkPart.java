@@ -8,7 +8,6 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
-import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
@@ -41,12 +40,8 @@ public abstract class LinkPart extends ConnectablePart {
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();
-		
-		AbstractFigure figure = getFigure();
-		Link model = getModel();
-		
-		setToolTip(getDisplayName());
-		figure.setBackgroundColor(model.getOutlineColour().getSWTColor());
+		getFigure().setBackgroundColor(
+				getModel().getOutlineColour().getSWTColor());
 	}
 	
 	/**

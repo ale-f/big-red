@@ -77,7 +77,7 @@ public class NodePart extends ContainerPart {
 		if (parameter == null) {
 			figure.setLabel(control.getLabel());
 		} else figure.setLabel(parameter + " : " + control.getLabel());
-		figure.setToolTip(getDisplayName());
+		figure.setToolTip(getToolTip());
 		
 		PointList points = model.getFittedPolygon();
 		if (points != null)
@@ -98,7 +98,7 @@ public class NodePart extends ContainerPart {
 	}
 	
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		return getModel().getControl().getName() + " " + getModel().getName();
 	}
 }

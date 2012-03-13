@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
@@ -63,21 +62,23 @@ public abstract class PointPart extends ConnectablePart {
 		}
 	}
 	
+	abstract String getTypeName();
+	
+	@Override
+	public String getToolTip() {
+		Link l = getModel().getLink();
+		return getTypeName() + " " + getModel().getName() +
+			(l != null ? "\n(connected to link " + l.getName() + ")" : "");
+	}
+	
 	@Override
 	protected void refreshVisuals() {
 		super.refreshVisuals();
 		
-		Point model = getModel();
-		AbstractFigure figure = getFigure();
-		
-		String toolTip = getDisplayName();
-		Link l = model.getLink();
-		if (l != null)
-			toolTip += "\n(connected to " + l.getName() + ")";
-		setToolTip(toolTip);
-		
-		figure.setBackgroundColor(l != null ?
-				l.getOutlineColour().getSWTColor() : Point.DEFAULT_COLOUR.getSWTColor());
+		Link l = getModel().getLink();
+		getFigure().setBackgroundColor(l != null ?
+				l.getOutlineColour().getSWTColor() :
+					Point.DEFAULT_COLOUR.getSWTColor());
 	}
 	
 	@Override

@@ -18,7 +18,6 @@ import dk.itu.big_red.model.InnerName;
  *
  */
 public class InnerNamePart extends PointPart {
-	
 	@Override
 	protected IFigure createFigure() {
 		return new NameFigure();
@@ -43,7 +42,7 @@ public class InnerNamePart extends PointPart {
 	}
 	
 	@Override
-	public String getDisplayName() {
-		return "Inner name " + getModel().getName();
+	String getTypeName() {
+		return "Inner name";
 	}
 }

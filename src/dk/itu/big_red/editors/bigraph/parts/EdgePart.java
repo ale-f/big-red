@@ -41,7 +41,7 @@ public class EdgePart extends LinkPart {
 	}
 	
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		return "Edge " + getModel().getName();
 	}
 }

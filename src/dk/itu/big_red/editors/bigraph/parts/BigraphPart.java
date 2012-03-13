@@ -72,7 +72,7 @@ public class BigraphPart extends ContainerPart {
 	}
 	
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		return "Bigraph " + getModel().getName();
 	}
 }

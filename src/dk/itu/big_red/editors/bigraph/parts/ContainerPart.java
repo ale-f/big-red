@@ -24,11 +24,4 @@ public abstract class ContainerPart extends AbstractPart {
 				refreshChildren();
 		}
 	}
-	
-	@Override
-	protected void refreshVisuals() {
-		super.refreshVisuals();
-		
-		setToolTip(getDisplayName());
-	}
 }

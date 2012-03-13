@@ -35,7 +35,7 @@ public class OuterNamePart extends LinkPart {
 	}
 	
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		return "Outer name " + getModel().getName();
 	}
 }

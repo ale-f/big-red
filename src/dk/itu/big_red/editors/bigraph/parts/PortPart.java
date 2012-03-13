@@ -74,7 +74,7 @@ public class PortPart extends PointPart {
 	}
 	
 	@Override
-	public String getDisplayName() {
-		return "Port " + getModel().getName();
+	public String getTypeName() {
+		return "Port";
 	}
 }

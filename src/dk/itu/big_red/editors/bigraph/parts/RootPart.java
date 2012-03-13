@@ -52,7 +52,7 @@ public class RootPart extends ContainerPart {
 	}
 	
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		return "Root " + getModel().getName();
 	}
 }

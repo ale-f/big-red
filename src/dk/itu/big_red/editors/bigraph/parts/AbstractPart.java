@@ -138,24 +138,15 @@ implements PropertyChangeListener, IBigraphPart {
 		}
 	}
 	
-	/**
-	 * Sets the tooltip of this {@link AbstractPart}'s associated {@link
-	 * AbstractFigure}, appending the model object's comment (if there is one).
-	 * @param tooltip
-	 */
-	protected void setToolTip(String tooltip) {
-		if (getModel().getComment() != null)
-			tooltip += "\n\n" + getModel().getComment();
-		getFigure().setToolTip(tooltip);
-	}
-	
 	@Override
 	protected void refreshVisuals() {
 		Layoutable model = getModel();
 		AbstractFigure figure = getFigure();
-		
 		figure.setConstraint(model.getLayout());
+		String comment = model.getComment(), tooltip = getToolTip();
+		figure.setToolTip(comment == null ?
+				tooltip : tooltip + "\n\n" + comment);
 	}
 	
-	public abstract String getDisplayName();
+	public abstract String getToolTip();
 }
