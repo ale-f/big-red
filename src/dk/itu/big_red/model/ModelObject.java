@@ -183,8 +183,8 @@ public class ModelObject implements IDisposable, IPropertyProvider {
 	}
 	
 	protected Object getProperty(IPropertyProviderProxy context, String name) {
-		return (context == null ? this : context.getProvider(this)).
-				getProperty(name);
+		return (context == null ?
+				getProperty(name) : context.getProperty(this, name));
 	}
 	
 	@Override

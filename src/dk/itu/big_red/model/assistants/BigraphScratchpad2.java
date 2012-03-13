@@ -30,22 +30,9 @@ public class BigraphScratchpad2 implements IPropertyProviderProxy {
 		return this;
 	}
 	
-	public final class ModelObjectProxy implements IPropertyProvider {
-		private IPropertyProvider object;
-		
-		public ModelObjectProxy(IPropertyProvider object) {
-			this.object = object;
-		}
-
-		@Override
-		public Object getProperty(String property) {
-			return (hasValue(object, property) ? getValue(object, property) :
-				object.getProperty(property));
-		}
-	}
-	
 	@Override
-	public IPropertyProvider getProvider(IPropertyProvider o) {
-		return new ModelObjectProxy(o);
+	public Object getProperty(IPropertyProvider object, String property) {
+		return (hasValue(object, property) ? getValue(object, property) :
+			object.getProperty(property));
 	}
 }

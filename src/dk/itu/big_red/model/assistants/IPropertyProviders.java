@@ -6,7 +6,7 @@ package dk.itu.big_red.model.assistants;
  */
 public interface IPropertyProviders {
 	public interface IPropertyProviderProxy {
-		public IPropertyProvider getProvider(IPropertyProvider o);
+		public Object getProperty(IPropertyProvider target, String name);
 	}
 	
 	public interface IPropertyProvider {
