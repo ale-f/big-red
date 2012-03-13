@@ -73,7 +73,10 @@ public class NodePart extends ContainerPart {
 		setResizable(control.isResizable());
 		
 		figure.setShape(control.getShape());
-		figure.setLabel(control.getLabel());
+		String parameter = model.getParameter();
+		if (parameter == null) {
+			figure.setLabel(control.getLabel());
+		} else figure.setLabel(parameter + " : " + control.getLabel());
 		figure.setToolTip(getDisplayName());
 		
 		PointList points = model.getFittedPolygon();
