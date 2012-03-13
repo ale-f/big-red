@@ -7,8 +7,8 @@ import java.util.Map;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.services.IDisposable;
 
-import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProvider;
-import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
+import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.Change;
 
 /**

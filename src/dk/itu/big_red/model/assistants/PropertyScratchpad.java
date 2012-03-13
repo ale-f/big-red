@@ -3,8 +3,6 @@ package dk.itu.big_red.model.assistants;
 import java.util.HashMap;
 import java.util.Map;
 
-import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProvider;
-import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 
 public class PropertyScratchpad implements IPropertyProviderProxy {
 	private Map<String, Object> changes = new HashMap<String, Object>();

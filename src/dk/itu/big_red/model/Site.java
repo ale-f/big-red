@@ -2,7 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
-import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
 
