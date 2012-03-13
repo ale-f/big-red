@@ -9,7 +9,6 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class RedApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
-
 	private static final String PERSPECTIVE_ID = "dk.itu.big_red.perspective";
 
     @Override

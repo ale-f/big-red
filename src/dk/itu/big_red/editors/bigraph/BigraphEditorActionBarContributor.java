@@ -16,7 +16,6 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
 public class BigraphEditorActionBarContributor extends ActionBarContributor {
-
 	@Override
 	protected void buildActions() {
 		IWorkbenchWindow iww = getPage().getWorkbenchWindow();
@@ -71,7 +70,5 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 	@Override
 	protected void declareGlobalActionKeys() {
 		// TODO Auto-generated method stub
-		
 	}
-
 }

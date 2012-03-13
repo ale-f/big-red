@@ -15,7 +15,6 @@ import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
 public class RedApplicationActionBarAdvisor extends ActionBarAdvisor {
-
 	private Object[] actionFile = null;
 	private Object[] actionFileNew = null;
 	private Object[] actionEdit = null;

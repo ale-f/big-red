@@ -64,5 +64,4 @@ public class BigraphFigure extends AbstractFigure {
 	public void setLowerRootBoundary(int lowerRootBoundary) {
 		this.lowerRootBoundary = lowerRootBoundary;
 	}
-
 }

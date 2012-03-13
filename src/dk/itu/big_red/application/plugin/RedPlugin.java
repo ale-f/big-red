@@ -21,9 +21,7 @@ import org.osgi.framework.BundleContext;
  * plugin &mdash; and for keeping track of plugin-wide shared objects.
  */
 public class RedPlugin extends AbstractUIPlugin {
-
 	public static final String PLUGIN_ID = "dk.itu.big_red";
-
 	private static RedPlugin plugin;
 
 	@Override

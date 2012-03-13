@@ -11,7 +11,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  */
 public class SlightlyOvergenerousClippingStrategy implements IClippingStrategy {
-
 	/**
 	 * Gets a clipping region for the given figure which is five pixels larger
 	 * than its bounds in all directions.
@@ -22,5 +21,4 @@ public class SlightlyOvergenerousClippingStrategy implements IClippingStrategy {
 			childFigure.getBounds().getCopy().expand(10, 10)
 		};
 	}
-
 }

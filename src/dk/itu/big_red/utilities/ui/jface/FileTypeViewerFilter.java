@@ -70,5 +70,4 @@ public class FileTypeViewerFilter extends ContainerViewerFilter {
 			return false;
 		} else return super.select(viewer, parentElement, element);
 	}
-
 }

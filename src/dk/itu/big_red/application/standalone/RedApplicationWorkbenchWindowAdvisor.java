@@ -7,7 +7,6 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class RedApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
-
     public RedApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
         super(configurer);
     }

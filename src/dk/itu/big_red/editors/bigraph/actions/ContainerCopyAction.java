@@ -13,7 +13,6 @@ import dk.itu.big_red.editors.bigraph.commands.LayoutableCopyCommand;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class ContainerCopyAction extends SelectionAction {
-
 	public ContainerCopyAction(IWorkbenchPart part) {
 		super(part);
 		setLazyEnablementCalculation(true);

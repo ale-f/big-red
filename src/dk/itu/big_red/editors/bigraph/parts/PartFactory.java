@@ -20,7 +20,6 @@ import dk.itu.big_red.model.Site;
  *
  */
 public class PartFactory implements EditPartFactory {
-
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
 		AbstractGraphicalEditPart part = null;

@@ -29,7 +29,6 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 
 public class ReactionRuleXMLSaver extends XMLSaver {
-
 	@Override
 	public ReactionRule getModel() {
 		return (ReactionRule)super.getModel();

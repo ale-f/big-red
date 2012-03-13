@@ -11,7 +11,6 @@ public class Ellipse {
 	public Ellipse() {
 	}
 	
-	
 	public Ellipse(Rectangle bb) {
 		setBounds(bb);
 	}

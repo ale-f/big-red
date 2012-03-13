@@ -15,7 +15,6 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
 public class RuleEditorActionBarContributor extends ActionBarContributor {
-
 	@Override
 	protected void buildActions() {
 		IWorkbenchWindow iww = getPage().getWorkbenchWindow();
@@ -66,7 +65,5 @@ public class RuleEditorActionBarContributor extends ActionBarContributor {
 	@Override
 	protected void declareGlobalActionKeys() {
 		// TODO Auto-generated method stub
-		
 	}
-
 }

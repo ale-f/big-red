@@ -72,5 +72,4 @@ public class FixedPointAnchor extends AbstractConnectionAnchor {
 		getOwner().translateToAbsolute(p);
 		return p;
 	}
-
 }

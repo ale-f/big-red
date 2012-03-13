@@ -14,7 +14,6 @@ import dk.itu.big_red.editors.bigraph.commands.LayoutableCutCommand;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class ContainerCutAction extends SelectionAction {
-
 	public ContainerCutAction(IWorkbenchPart part) {
 		super(part);
 		setLazyEnablementCalculation(true);

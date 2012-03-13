@@ -5,7 +5,6 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
-
 public class CurvyConnectionRouter extends AbstractRouter {
 	@Override
 	public void route(Connection connection) {
@@ -30,5 +29,4 @@ public class CurvyConnectionRouter extends AbstractRouter {
 		
 		connection.setPoints(pl);
 	}
-
 }

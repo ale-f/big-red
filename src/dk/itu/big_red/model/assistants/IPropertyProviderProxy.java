@@ -1,6 +1,5 @@
 package dk.itu.big_red.model.assistants;
 
-
 /**
  * Classes implementing <strong>IPropertyProviderProxy</strong> can act as
  * {@link IPropertyProvider}s for more than one object.

@@ -15,12 +15,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
  *
  */
 public class ConnectionDragCreationToolEntry extends CreationToolEntry {
-
 	public ConnectionDragCreationToolEntry(String label, String shortDesc,
 			CreationFactory factory, ImageDescriptor iconSmall,
 			ImageDescriptor iconLarge) {
 		super(label, shortDesc, factory, iconSmall, iconLarge);
 		setToolClass(ConnectionDragCreationTool.class);
 	}
-
 }

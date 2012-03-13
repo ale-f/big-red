@@ -14,7 +14,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class ContainerPasteAction extends SelectionAction {
-
 	public ContainerPasteAction(IWorkbenchPart part) {
 		super(part);
 		setLazyEnablementCalculation(true);

@@ -18,7 +18,6 @@ import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
-
 	public ChangePropertySheetEntry(CommandStack commandStack) {
 		super(commandStack);
 	}

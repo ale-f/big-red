@@ -18,5 +18,4 @@ public class BigraphRelayoutCommand extends ChangeCommand {
 		}
 		return this;
 	}
-
 }

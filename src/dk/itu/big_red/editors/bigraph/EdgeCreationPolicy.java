@@ -7,9 +7,7 @@ import org.eclipse.gef.requests.ReconnectRequest;
 
 import dk.itu.big_red.editors.bigraph.commands.LinkConnectionCreateCommand;
 
-
 public class EdgeCreationPolicy extends GraphicalNodeEditPolicy {
-	
 	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
 		LinkConnectionCreateCommand cmd = new LinkConnectionCreateCommand();
@@ -36,5 +34,4 @@ public class EdgeCreationPolicy extends GraphicalNodeEditPolicy {
 	protected Command getReconnectSourceCommand(ReconnectRequest request) {
 		return null;
 	}
-
 }

@@ -11,7 +11,6 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 
 public class TreePartFactory implements EditPartFactory {
-
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart part = null; 
@@ -35,5 +34,4 @@ public class TreePartFactory implements EditPartFactory {
 		
 		return part;
 	}
-
 }

@@ -14,5 +14,4 @@ public class LongNamePolicy implements INamePolicy {
 	public String get(int value) {
 		return Long.toString(Math.abs(value));
 	}
-
 }

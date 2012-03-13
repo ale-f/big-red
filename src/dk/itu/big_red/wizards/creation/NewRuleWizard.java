@@ -20,7 +20,6 @@ import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 import dk.itu.big_red.wizards.creation.assistants.WizardNewRuleCreationPage;
 
-
 public class NewRuleWizard extends Wizard implements INewWizard {
 	private WizardNewRuleCreationPage page = null;
 	

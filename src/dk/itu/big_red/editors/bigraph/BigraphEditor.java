@@ -201,7 +201,6 @@ public class BigraphEditor extends AbstractGEFEditor {
 		} else return super.getAdapter(type);
     }
     
-	
 	@Override
 	/* Provisionally */ public DefaultEditDomain getEditDomain() {
 		return super.getEditDomain();
