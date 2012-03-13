@@ -18,7 +18,7 @@ import dk.itu.big_red.model.namespaces.INamespace;
  * @author alec
  *
  */
-public class BigraphScratchpad extends BigraphScratchpad2 {
+public class BigraphScratchpad extends PropertyScratchpad {
 	private Bigraph bigraph;
 	public BigraphScratchpad(Bigraph bigraph) {
 		this.bigraph = bigraph;

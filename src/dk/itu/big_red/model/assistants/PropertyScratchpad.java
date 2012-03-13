@@ -6,11 +6,11 @@ import java.util.Map;
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviders.IPropertyProviderProxy;
 
-public class BigraphScratchpad2 implements IPropertyProviderProxy {
+public class PropertyScratchpad implements IPropertyProviderProxy {
 	private Map<String, Object> changes = new HashMap<String, Object>();
 	
 	private String getKey(IPropertyProvider m, String property) {
-		return "!" + System.identityHashCode(m) + "!" + property + "!";
+		return System.identityHashCode(m) + "!" + property;
 	}
 	
 	public void setValue(IPropertyProvider m, String property, Object newValue) {
@@ -25,7 +25,7 @@ public class BigraphScratchpad2 implements IPropertyProviderProxy {
 		return changes.containsKey(getKey(m, property));
 	}
 	
-	public BigraphScratchpad2 clear() {
+	public PropertyScratchpad clear() {
 		changes.clear();
 		return this;
 	}
