@@ -275,6 +275,12 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		new EditorError(parent, RedPlugin.getThrowableStatus(t));
 	}
 	
+	private ArrayList<String> globalActionIDs = new ArrayList<String>();
+	
+	public List<String> getGlobalActionIDs() {
+		return globalActionIDs;
+	}
+	
 	/**
 	 * Registers the given {@link IAction}s as global action handlers for this
 	 * editor.
@@ -282,8 +288,11 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	 */
 	protected void setGlobalActionHandlers(IAction... actions) {
 		IActionBars bars = getEditorSite().getActionBars();
-		for (IAction i : actions)
-			bars.setGlobalActionHandler(i.getId(), i);
+		for (IAction i : actions) {
+			String id = i.getId();
+			globalActionIDs.add(id);
+			bars.setGlobalActionHandler(id, i);
+		}
 		getEditorSite().getActionBars().updateActionBars();
 	}
 }
