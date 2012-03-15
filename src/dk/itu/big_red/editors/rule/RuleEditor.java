@@ -2,9 +2,6 @@ package dk.itu.big_red.editors.rule;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
@@ -233,25 +230,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 		return (Bigraph)reactumViewer.getContents().getModel();
 	}
 	
-	private Map<Change, Change> redexChangesToReactumChanges =
-			new HashMap<Change, Change>();
-	
-	private Change getReactumChange(Change redexChange) {
-		Change reactumChange = redexChangesToReactumChanges.get(redexChange);
-		if (reactumChange == null) {
-			reactumChange =
-				ReactionRule.translateChange(getModel().getRedexToReactumMap(), redexChange);
-			redexChangesToReactumChanges.put(redexChange, reactumChange);
-		}
-		return reactumChange;
-	}
-	
 	private void processChangeCommand(int detail, ChangeCommand c) {
 		IChangeable target = c.getTarget();
 		
 		if (target == getRedex()) {
-			Change redexChange = c.getChange(),
-			       reactumChange = getReactumChange(c.getChange());
+			Change reactumChange = getModel().getReactumChange(c.getChange());
 			
 			if (reactumChange == Change.INVALID) {
 				/* This is a redex change that doesn't make sense in the
@@ -264,7 +247,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 			try {
 				getReactum().tryApplyChange(reactumChange);
 			} catch (ChangeRejectedException cre) {
-				redexChangesToReactumChanges.put(redexChange, Change.INVALID);
+				throw new Error("BUG: apparently-valid reactum change " + 
+						reactumChange + " was rejected");
 			}
 		} else if (target == getReactum()) {
 			Change ch = c.getChange();
