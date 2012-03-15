@@ -11,12 +11,12 @@ import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.namespaces.LongNamePolicy;
-import dk.itu.big_red.utilities.geometry.Ellipse;
 
 public class SignatureXMLLoader extends XMLLoader {
 	private ChangeGroup cg = new ChangeGroup();

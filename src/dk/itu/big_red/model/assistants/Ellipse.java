@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities.geometry;
+package dk.itu.big_red.model.assistants;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;

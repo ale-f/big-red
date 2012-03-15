@@ -29,9 +29,9 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.assistants.Ellipse;
+import dk.itu.big_red.model.assistants.Line;
 import dk.itu.big_red.model.PortSpec;
-import dk.itu.big_red.utilities.geometry.Ellipse;
-import dk.itu.big_red.utilities.geometry.Line;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
