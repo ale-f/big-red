@@ -18,7 +18,6 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.dialogs.SaveAsDialog;
@@ -204,7 +203,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
         	doActualSave(io.getOutputStream());
         	
         	Project.setContents(i.getFile(), io.getInputStream());
-    		firePropertyChange(IEditorPart.PROP_DIRTY);
+    		firePropertyChange(PROP_DIRTY);
 		} catch (SaveFailedException cre) {
 			cre.printStackTrace();
 		} catch (CoreException e) {

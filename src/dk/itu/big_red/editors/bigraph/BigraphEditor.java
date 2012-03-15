@@ -34,7 +34,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
@@ -291,9 +290,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	protected void doActualSave(OutputStream os) throws SaveFailedException {
 		new BigraphXMLSaver().setModel(getModel()).setOutputStream(os).
 			exportObject();
-		
 		getCommandStack().markSaveLocation();
-		firePropertyChange(IEditorPart.PROP_DIRTY);
 	}
 
 	@Override
