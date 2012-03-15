@@ -37,7 +37,7 @@ public class ModelPropertySource implements IPropertySource {
 		@Override
 		public String isValid(Object value) {
 			try {
-				object.getBigraph().tryApplyChange(getChange(value));
+				object.getBigraph().tryValidateChange(getChange(value));
 				return null;
 			} catch (ChangeRejectedException cre) {
 				return cre.getRationale();
