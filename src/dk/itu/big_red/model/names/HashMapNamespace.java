@@ -5,17 +5,21 @@ import java.util.HashMap;
 public class HashMapNamespace<T> extends Namespace<T> {
 	private HashMap<String, T> map = new HashMap<String, T>();
 	
+	protected HashMap<String, T> getMap() {
+		return map;
+	}
+	
 	@Override
 	public T get(String name) {
 		if ((name = checkName(name)) != null) {
-			return map.get(name);
+			return getMap().get(name);
 		} else return null;
 	}
 
 	@Override
 	public String put(String name, T value) {
 		if (value != null && (name = checkName(name)) != null && !has(name)) {
-			map.put(name, value);
+			getMap().put(name, value);
 			return name;
 		} else return null;
 	}
@@ -23,14 +27,14 @@ public class HashMapNamespace<T> extends Namespace<T> {
 	@Override
 	public boolean remove(String name) {
 		if ((name = checkName(name)) != null) {
-			return (map.remove(name) != null);
+			return (getMap().remove(name) != null);
 		} else return false;
 	}
 	
 	@Override
 	public HashMapNamespace<T> clone() {
 		HashMapNamespace<T> copy = new HashMapNamespace<T>();
-		copy.map.putAll(map);
+		copy.getMap().putAll(getMap());
 		copy.setPolicy(getPolicy());
 		return copy;
 	}
