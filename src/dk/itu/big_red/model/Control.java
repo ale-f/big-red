@@ -8,7 +8,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.interfaces.IControl;
-import dk.itu.big_red.model.namespaces.INamePolicy;
+import dk.itu.big_red.model.names.INamePolicy;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from

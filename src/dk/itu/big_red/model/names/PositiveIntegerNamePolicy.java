@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.namespaces;
+package dk.itu.big_red.model.names;
 
 public class PositiveIntegerNamePolicy implements INamePolicy {
 	@Override

@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.namespaces;
+package dk.itu.big_red.model.names;
 
 import java.util.HashMap;
 

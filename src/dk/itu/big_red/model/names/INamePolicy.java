@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.namespaces;
+package dk.itu.big_red.model.names;
 
 /**
  * Classes implementing <strong>INamePolicy</strong> are name validators and

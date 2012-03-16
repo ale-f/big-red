@@ -16,7 +16,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
-import dk.itu.big_red.model.namespaces.LongNamePolicy;
+import dk.itu.big_red.model.names.LongNamePolicy;
 
 public class SignatureXMLLoader extends XMLLoader {
 	private ChangeGroup cg = new ChangeGroup();

@@ -9,7 +9,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.namespaces.INamespace;
+import dk.itu.big_red.model.names.INamespace;
 
 /**
  * The BigraphScratchpad is a wrapper around various kinds of {@link

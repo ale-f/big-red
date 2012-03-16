@@ -23,10 +23,10 @@ import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.model.namespaces.INamespace;
-import dk.itu.big_red.model.namespaces.NamespaceGroup;
-import dk.itu.big_red.model.namespaces.PositiveIntegerNamePolicy;
-import dk.itu.big_red.model.namespaces.StringNamePolicy;
+import dk.itu.big_red.model.names.INamespace;
+import dk.itu.big_red.model.names.NamespaceGroup;
+import dk.itu.big_red.model.names.PositiveIntegerNamePolicy;
+import dk.itu.big_red.model.names.StringNamePolicy;
 import dk.itu.big_red.utilities.Lists;
 
 /**

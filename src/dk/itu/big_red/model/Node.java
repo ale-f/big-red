@@ -15,7 +15,7 @@ import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.model.namespaces.INamePolicy;
+import dk.itu.big_red.model.names.INamePolicy;
 
 /**
  * 

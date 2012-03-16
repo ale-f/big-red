@@ -23,5 +23,5 @@ Export-Package: dk.itu.big_red.editors.utilities,
  dk.itu.big_red.model.changes,
  dk.itu.big_red.model.interfaces,
  dk.itu.big_red.model.load_save,
- dk.itu.big_red.model.namespaces,
+ dk.itu.big_red.model.names,
  dk.itu.big_red.utilities.io

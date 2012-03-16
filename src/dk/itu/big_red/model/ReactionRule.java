@@ -18,7 +18,7 @@ import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.namespaces.INamespace;
+import dk.itu.big_red.model.names.INamespace;
 
 public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;

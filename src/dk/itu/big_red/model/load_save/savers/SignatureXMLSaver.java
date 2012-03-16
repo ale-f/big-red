@@ -12,8 +12,8 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
-import dk.itu.big_red.model.namespaces.INamePolicy;
-import dk.itu.big_red.model.namespaces.LongNamePolicy;
+import dk.itu.big_red.model.names.INamePolicy;
+import dk.itu.big_red.model.names.LongNamePolicy;
 
 public class SignatureXMLSaver extends XMLSaver {
 	@Override
