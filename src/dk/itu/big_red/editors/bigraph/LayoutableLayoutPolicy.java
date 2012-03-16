@@ -3,6 +3,7 @@ package dk.itu.big_red.editors.bigraph;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
@@ -56,6 +57,11 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			cmd = cmd2;
 		}
 		return cmd.prepare();
+	}
+	
+	@Override
+	protected EditPolicy createChildEditPolicy(EditPart child) {
+		return new RedResizableEditPolicy();
 	}
 	
 	@Override
