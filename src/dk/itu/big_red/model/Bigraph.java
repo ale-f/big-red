@@ -223,6 +223,11 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 	
 	@Override
+	public Rectangle getRootLayout(IPropertyProviderProxy context) {
+		return getRootLayout();
+	}
+	
+	@Override
 	protected void addChild(Layoutable child) {
 		super.addChild(child);
 		updateBoundaries();
