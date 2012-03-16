@@ -15,6 +15,7 @@ import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
+import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
@@ -22,6 +23,7 @@ import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
+import org.eclipse.gef.tools.ConnectionDragCreationTool;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.SelectAllAction;
@@ -235,8 +237,11 @@ public class BigraphEditor extends AbstractGEFEditor {
 				Site.class, new ModelFactory(Site.class), site, site));
 		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
 				Root.class, new ModelFactory(Root.class), root, root));
-		creationGroup.add(new ConnectionDragCreationToolEntry("Edge", "Connect two nodes with a new edge",
-				new ModelFactory(Edge.class), edge, edge));
+		CreationToolEntry drag =
+			new CreationToolEntry("Link", "Connect two points with a link",
+					new ModelFactory(Edge.class), edge, edge);
+		drag.setToolClass(ConnectionDragCreationTool.class);
+		creationGroup.add(drag);
 		
 		ImageDescriptor
 			inner = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/inner.png"),
