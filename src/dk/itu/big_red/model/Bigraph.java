@@ -430,7 +430,9 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 			c.getCreator().setAlias(c.alias);
 		} else if (b instanceof Node.ChangeParameter) {
 			Node.ChangeParameter c = (Node.ChangeParameter)b;
-			c.getCreator().setParameter(c.parameter);
+			c.getCreator().setParameter(
+				c.getCreator().getControl().getParameterPolicy().
+					normalise(c.parameter));
 		}
 	}
 	
