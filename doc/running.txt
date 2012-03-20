@@ -1,0 +1,13 @@
+Running the development version of Big Red
+==========================================
+
+Big Red requires version 3.7 or later of the Eclipse Modeling Tools package,
+which is available from <http://www.eclipse.org/downloads>.
+
+Once you have a copy of Eclipse Modeling Tools:
+
+  * import the "plugins/dk.itu.big_red" folder into the Eclipse workspace
+    (File -> Import... -> Existing Projects into Workspace);
+  * open Big Red's "plugin.xml" file; and
+  * click the "Launch an Eclipse application" link (under the "Testing"
+    heading).
