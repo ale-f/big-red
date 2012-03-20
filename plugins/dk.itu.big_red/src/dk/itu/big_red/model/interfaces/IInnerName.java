@@ -9,5 +9,4 @@ import dk.itu.big_red.model.InnerName;
  * @see InnerName
  */
 public interface IInnerName extends IPoint {
-	public String getName();
 }

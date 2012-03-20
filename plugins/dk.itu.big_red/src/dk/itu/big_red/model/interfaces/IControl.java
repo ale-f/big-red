@@ -8,7 +8,7 @@ import dk.itu.big_red.model.Control;
  * @see Control
  */
 public interface IControl {
-	public Iterable<? extends IPort> getIPorts();
+	public Iterable<? extends IPort> getPorts();
 	
 	public String getName();
 }

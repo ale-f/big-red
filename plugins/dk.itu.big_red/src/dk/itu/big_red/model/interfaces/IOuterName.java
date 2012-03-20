@@ -8,6 +8,4 @@ import dk.itu.big_red.model.OuterName;
  * @see OuterName
  */
 public interface IOuterName extends ILink {
-	@Override
-	public String getName();
 }

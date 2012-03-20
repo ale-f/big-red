@@ -8,9 +8,7 @@ import dk.itu.big_red.model.Node;
  * @see Node
  */
 public interface INode extends IParent, IChild {
-	public IControl getIControl();
+	public IControl getControl();
 	
-	public Iterable<? extends IPort> getIPorts();
-	
-	public String getName();
+	public Iterable<? extends IPort> getPorts();
 }

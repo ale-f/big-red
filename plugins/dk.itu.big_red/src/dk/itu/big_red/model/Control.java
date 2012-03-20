@@ -269,6 +269,7 @@ public class Control extends Colourable implements IControl {
 	 * bats</s> undocumented behaviour will steal your blood while you sleep
 	 * @see #createPorts()
 	 */
+	@Override
 	public List<PortSpec> getPorts() {
 		return ports;
 	}
@@ -300,11 +301,6 @@ public class Control extends Colourable implements IControl {
 	
 	public void setParameterPolicy(INamePolicy parameterPolicy) {
 		this.parameterPolicy = parameterPolicy;
-	}
-	
-	@Override
-	public Iterable<PortSpec> getIPorts() {
-		return getPorts();
 	}
 	
 	/**

@@ -8,5 +8,4 @@ import dk.itu.big_red.model.Root;
  * @see Root
  */
 public interface IRoot extends IParent {
-	public String getName();
 }

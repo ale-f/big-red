@@ -98,6 +98,7 @@ public abstract class Link extends Layoutable implements ILink {
 		}
 	}
 	
+	@Override
 	public List<Point> getPoints() {
 		return points;
 	}
@@ -123,11 +124,6 @@ public abstract class Link extends Layoutable implements ILink {
 		if (l == null)
 			connections.put(p, l = new Link.Connection(p));
 		return l;
-	}
-	
-	@Override
-	public Iterable<Point> getIPoints() {
-		return points;
 	}
 	
 	/**

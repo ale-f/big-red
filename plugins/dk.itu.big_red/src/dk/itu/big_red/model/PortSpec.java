@@ -60,7 +60,7 @@ public class PortSpec implements IPort {
 	}
 
 	@Override
-	public ILink getILink() {
+	public ILink getLink() {
 		return null;
 	}
 

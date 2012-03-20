@@ -9,6 +9,4 @@ import dk.itu.big_red.model.Edge;
  * @see ILink
  */
 public interface IEdge extends ILink {
-	@Override
-	public String getName();
 }

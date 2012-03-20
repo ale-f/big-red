@@ -3,7 +3,6 @@ package dk.itu.big_red.model;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.ReadonlyColour;
-import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.IPoint;
 
 /**
@@ -76,11 +75,6 @@ public abstract class Point extends Layoutable implements IPoint {
 	 * The colour to be given to Points not connected to a {@link Link}.
 	 */
 	public static final ReadonlyColour DEFAULT_COLOUR = new Colour("red");
-	
-	@Override
-	public ILink getILink() {
-		return link;
-	}
 
 	private Link link = null;
 	
@@ -97,6 +91,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		return oldLink;
 	}
 	
+	@Override
 	public Link getLink() {
 		return link;
 	}

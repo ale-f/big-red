@@ -8,5 +8,4 @@ import dk.itu.big_red.model.Site;
  * @see Site
  */
 public interface ISite extends IChild {
-	public String getName();
 }

@@ -11,7 +11,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.interfaces.IChild;
-import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
@@ -123,6 +122,7 @@ public class Node extends Container implements INode {
 	 * Returns the {@link Control} of this Node.
 	 * @return a Control
 	 */
+	@Override
 	public Control getControl() {
 		return control;
 	}
@@ -146,6 +146,7 @@ public class Node extends Container implements INode {
 				getLayout().getCopy().setSize(control.getDefaultSize()));
 	}
 	
+	@Override
 	public List<Port> getPorts() {
 		return ports;
 	}
@@ -237,11 +238,6 @@ public class Node extends Container implements INode {
 	}
 
 	@Override
-	public Iterable<Port> getIPorts() {
-		return ports;
-	}
-
-	@Override
 	public Iterable<ISite> getISites() {
 		return only(null, ISite.class);
 	}
@@ -249,11 +245,6 @@ public class Node extends Container implements INode {
 	@Override
 	public Iterable<IChild> getIChildren() {
 		return only(null, IChild.class);
-	}
-	
-	@Override
-	public IControl getIControl() {
-		return control;
 	}
 	
 	@Override

@@ -103,13 +103,13 @@ public class BigraphBPLToolSaver extends Saver {
 	}
 
 	public void process(INode node) throws SaveFailedException {
-		print(SMLify(node.getIControl().getName()));
-		processIterable(node.getIPorts(), "[]", "[", ", ", "]", new Processor<IPort>() {
+		print(SMLify(node.getControl().getName()));
+		processIterable(node.getPorts(), "[]", "[", ", ", "]", new Processor<IPort>() {
 			@Override
 			public void proc(IPort p) throws SaveFailedException {
 				print(p.getName());
 				print(" == ");
-				print(SMLify(p.getILink().getName()));
+				print(SMLify(p.getLink().getName()));
 			}
 		});
 		if (node.getINodes().iterator().hasNext() || node.getISites().iterator().hasNext()) {
@@ -141,9 +141,9 @@ public class BigraphBPLToolSaver extends Saver {
 	
 	public void process(IBigraph bigraph) throws SaveFailedException {
 		printLine("(* string definitions *)");
-		for (IControl c : bigraph.getISignature().getIControls()) {
+		for (IControl c : bigraph.getSignature().getControls()) {
 			printStringDef(SMLify(c.getName()));
-			for (IPort p : c.getIPorts())
+			for (IPort p : c.getPorts())
 				printStringDef(SMLify(p.getName()));
 		}
 		for (IEdge e : bigraph.getIEdges())
@@ -155,7 +155,7 @@ public class BigraphBPLToolSaver extends Saver {
 
 		printLine("");
 		printLine("(* signature *)");
-		processIterable(bigraph.getISignature().getIControls(), null, "", "\n", "\n", new Processor<IControl>() {
+		processIterable(bigraph.getSignature().getControls(), null, "", "\n", "\n", new Processor<IControl>() {
 			@Override
 			public void proc(IControl c) throws SaveFailedException {
 				String name = SMLify(c.getName());
@@ -164,7 +164,7 @@ public class BigraphBPLToolSaver extends Saver {
 				print(" = active(");
 				print(name);
 				print(" --: ");
-				processIterable(c.getIPorts(), null, "[", ", ", "]", new Processor<IPort>() {
+				processIterable(c.getPorts(), null, "[", ", ", "]", new Processor<IPort>() {
 					@Override
 					public void proc(IPort p) throws SaveFailedException {
 						print(SMLify(p.getName()));
@@ -199,7 +199,7 @@ public class BigraphBPLToolSaver extends Saver {
 		processIterable(bigraph.getIInnerNames(), "", "", " || ", " || ", new Processor<IInnerName>() {
 			@Override
 			public void proc(IInnerName i) throws SaveFailedException {
-				print(SMLify(i.getILink().getName()) + "/" + SMLify(i.getName()));
+				print(SMLify(i.getLink().getName()) + "/" + SMLify(i.getName()));
 			}
 		});
 		

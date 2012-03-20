@@ -8,5 +8,5 @@ import dk.itu.big_red.model.Signature;
  * @see Signature
  */
 public interface ISignature {
-	public Iterable<? extends IControl> getIControls();
+	public Iterable<? extends IControl> getControls();
 }

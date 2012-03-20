@@ -136,13 +136,13 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processNode(INode i) throws SaveFailedException {
-		write(normaliseName(i.getIControl().getName()));
+		write(normaliseName(i.getControl().getName()));
 		
-		Iterator<? extends IPort> it = i.getIPorts().iterator();
+		Iterator<? extends IPort> it = i.getPorts().iterator();
 		if (it.hasNext()) {
-			write("[" + getPortString(it.next().getILink()));
+			write("[" + getPortString(it.next().getLink()));
 			while (it.hasNext())
-				write("," + getPortString(it.next().getILink()));
+				write("," + getPortString(it.next().getLink()));
 			write("]");
 		}
 		

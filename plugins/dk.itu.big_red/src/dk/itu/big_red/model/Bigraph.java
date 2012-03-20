@@ -21,7 +21,6 @@ import dk.itu.big_red.model.interfaces.IEdge;
 import dk.itu.big_red.model.interfaces.IInnerName;
 import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IRoot;
-import dk.itu.big_red.model.interfaces.ISignature;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.names.INamespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
@@ -193,6 +192,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		this.signature = signature;
 	}
 	
+	@Override
 	public Signature getSignature() {
 		return signature;
 	}
@@ -312,11 +312,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	@Override
 	public Iterable<IOuterName> getIOuterNames() {
 		return only(null, IOuterName.class);
-	}
-
-	@Override
-	public ISignature getISignature() {
-		return signature;
 	}
 	
 	/**

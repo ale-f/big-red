@@ -9,7 +9,7 @@ import dk.itu.big_red.model.Bigraph;
  * @see Bigraph
  */
 public interface IBigraph {
-	public ISignature getISignature();
+	public ISignature getSignature();
 	
 	public Iterable<? extends IEdge> getIEdges();
 	public Iterable<? extends IRoot> getIRoots();

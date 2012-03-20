@@ -74,17 +74,17 @@ public class BigraphTraverseSaver extends Saver {
 	}
 	
 	public void process(IEdge edge) throws SaveFailedException {
-		for (IPoint p : edge.getIPoints())
+		for (IPoint p : edge.getPoints())
 			line(niceName(p));
 	}
 	
 	public void process(IOuterName outerName) throws SaveFailedException {
-		for (IPoint p : outerName.getIPoints())
+		for (IPoint p : outerName.getPoints())
 			line(niceName(p));
 	}
 	
 	public void process(INode node) throws SaveFailedException {
-		line("control " + node.getIControl().getName());
+		line("control " + node.getControl().getName());
 		for (INode p : node.getINodes()) {
 			line(niceName(p));
 			scope++;
@@ -109,7 +109,7 @@ public class BigraphTraverseSaver extends Saver {
 	public void process(IControl c) throws SaveFailedException {
 		line("control " + c.getName());
 		scope++;
-		for (IPort p : c.getIPorts())
+		for (IPort p : c.getPorts())
 			line("port " + p.getName());
 		scope--;
 	}
@@ -117,7 +117,7 @@ public class BigraphTraverseSaver extends Saver {
 	public void process(IBigraph bigraph) throws SaveFailedException {
 		line("signature");
 		scope++;
-		for (IControl c : bigraph.getISignature().getIControls())
+		for (IControl c : bigraph.getSignature().getControls())
 			process(c);
 		scope--;
 		for (IEdge e : bigraph.getIEdges()) {

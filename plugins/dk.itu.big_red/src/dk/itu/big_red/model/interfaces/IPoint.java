@@ -8,5 +8,5 @@ import dk.itu.big_red.model.Point;
  * @see Point
  */
 public interface IPoint extends IEntity {
-	public ILink getILink();
+	public ILink getLink();
 }

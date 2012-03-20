@@ -66,12 +66,8 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		return null;
 	}
 	
-	public List<Control> getControls() {
-		return controls;
-	}
-
 	@Override
-	public Iterable<Control> getIControls() {
+	public List<Control> getControls() {
 		return controls;
 	}
 

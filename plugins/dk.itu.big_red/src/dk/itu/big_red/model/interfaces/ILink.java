@@ -8,7 +8,5 @@ import dk.itu.big_red.model.Link;
  * @see Link
  */
 public interface ILink extends IEntity {
-	public Iterable<? extends IPoint> getIPoints();
-	
-	public String getName();
+	public Iterable<? extends IPoint> getPoints();
 }
