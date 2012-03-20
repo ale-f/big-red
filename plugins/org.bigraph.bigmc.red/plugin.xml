@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="dk.itu.big_red.interactionManagers">
+      <interactionManager
+            class="org.bigraph.bigmc.red.BigMCInteractionManager"
+            id="BigMC for Big Red.interactionManager1"
+            name="BigMC user interface 2.0">
+      </interactionManager>
+   </extension>
+   <extension
+         point="dk.itu.big_red.export">
+      <exporter
+            class="org.bigraph.bigmc.red.SimulationSpecBigMCSaver"
+            exports="dk.itu.big_red.model.SimulationSpec"
+            id="BigMC for Big Red.exporter1"
+            name="BigMC term language">
+      </exporter>
+   </extension>
+
+</plugin>
