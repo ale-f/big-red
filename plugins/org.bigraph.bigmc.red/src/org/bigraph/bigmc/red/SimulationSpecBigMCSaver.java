@@ -14,7 +14,6 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
-import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
@@ -131,8 +130,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processSite(ISite i) throws SaveFailedException {
-		Site s = (Site)i; /* XXX!! */
-		write("$" + (s.getAlias() == null ? s.getName() : s.getAlias()));
+		write("$" + (i.getAlias() == null ? i.getName() : i.getAlias()));
 	}
 	
 	private void processNode(INode i) throws SaveFailedException {

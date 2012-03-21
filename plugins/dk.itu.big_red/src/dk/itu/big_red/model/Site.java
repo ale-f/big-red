@@ -53,6 +53,7 @@ public class Site extends Layoutable implements ISite {
 	 * Gets this {@link Site}'s current alias.
 	 * @return the current alias (can be <code>null</code>)
 	 */
+	@Override
 	public String getAlias() {
 		return alias;
 	}
