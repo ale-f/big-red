@@ -118,9 +118,6 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
 	
-	public Bigraph() {
-	}
-	
 	/**
 	 * Creates and returns a complete copy of this {@link Bigraph}, complete
 	 * with {@link Point}s and {@link Link} connections.

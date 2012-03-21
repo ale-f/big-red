@@ -26,9 +26,6 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 	
 	private ArrayList<Control> controls = new ArrayList<Control>();
 	
-	public Signature() {
-	}
-	
 	@Override
 	public Signature clone(Map<ModelObject, ModelObject> m) {
 		Signature s = (Signature)super.clone(m);
