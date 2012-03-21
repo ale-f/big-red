@@ -65,7 +65,7 @@ public class PortSpec implements IPort {
 	}
 
 	@Override
-	public INode getINode() {
+	public INode getNode() {
 		return null;
 	}
 	

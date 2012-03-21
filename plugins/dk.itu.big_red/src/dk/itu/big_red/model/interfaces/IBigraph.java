@@ -11,8 +11,8 @@ import dk.itu.big_red.model.Bigraph;
 public interface IBigraph {
 	public ISignature getSignature();
 	
-	public Iterable<? extends IEdge> getIEdges();
-	public Iterable<? extends IRoot> getIRoots();
-	public Iterable<? extends IInnerName> getIInnerNames();
-	public Iterable<? extends IOuterName> getIOuterNames();
+	public Iterable<? extends IEdge> getEdges();
+	public Iterable<? extends IRoot> getRoots();
+	public Iterable<? extends IInnerName> getInnerNames();
+	public Iterable<? extends IOuterName> getOuterNames();
 }

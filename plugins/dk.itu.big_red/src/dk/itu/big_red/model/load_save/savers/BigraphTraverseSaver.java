@@ -57,7 +57,7 @@ public class BigraphTraverseSaver extends Saver {
 		else if (e instanceof IInnerName)
 			return "inner name " + ((IInnerName)e).getName();
 		else if (e instanceof IPort)
-			return "port " + ((IPort)e).getName() + " on " + niceName(((IPort)e).getINode());
+			return "port " + ((IPort)e).getName() + " on " + niceName(((IPort)e).getNode());
 		else return e.toString();
 	}
 	
@@ -85,24 +85,24 @@ public class BigraphTraverseSaver extends Saver {
 	
 	public void process(INode node) throws SaveFailedException {
 		line("control " + node.getControl().getName());
-		for (INode p : node.getINodes()) {
+		for (INode p : node.getNodes()) {
 			line(niceName(p));
 			scope++;
 			process(p);
 			scope--;
 		}
-		for (ISite s : node.getISites())
+		for (ISite s : node.getSites())
 			line(niceName(s));
 	}
 	
 	public void process(IRoot root) throws SaveFailedException {
-		for (INode n : root.getINodes()) {
+		for (INode n : root.getNodes()) {
 			line(niceName(n));
 			scope++;
 			process(n);
 			scope--;
 		}
-		for (ISite s : root.getISites())
+		for (ISite s : root.getSites())
 			line(niceName(s));
 	}
 	
@@ -120,25 +120,25 @@ public class BigraphTraverseSaver extends Saver {
 		for (IControl c : bigraph.getSignature().getControls())
 			process(c);
 		scope--;
-		for (IEdge e : bigraph.getIEdges()) {
+		for (IEdge e : bigraph.getEdges()) {
 			line(niceName(e));
 			scope++;
 			process(e);
 			scope--;
 		}
-		for (IOuterName o : bigraph.getIOuterNames()) {
+		for (IOuterName o : bigraph.getOuterNames()) {
 			line(niceName(o));
 			scope++;
 			process(o);
 			scope--;
 		}
-		for (IRoot r : bigraph.getIRoots()) {
+		for (IRoot r : bigraph.getRoots()) {
 			line(niceName(r));
 			scope++;
 			process(r);
 			scope--;
 		}
-		for (IInnerName i : bigraph.getIInnerNames())
+		for (IInnerName i : bigraph.getInnerNames())
 			line(niceName(i));
 	}
 }

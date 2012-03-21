@@ -1,9 +1,9 @@
 package dk.itu.big_red.model;
 
+import java.util.List;
+
 import dk.itu.big_red.model.interfaces.IChild;
-import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IRoot;
-import dk.itu.big_red.model.interfaces.ISite;
 
 /**
  * 
@@ -19,17 +19,17 @@ public class Root extends Container implements IRoot {
 	}
 
 	@Override
-	public Iterable<INode> getINodes() {
-		return only(null, INode.class);
+	public List<Node> getNodes() {
+		return only(null, Node.class);
 	}
 
 	@Override
-	public Iterable<ISite> getISites() {
-		return only(null, ISite.class);
+	public List<Site> getSites() {
+		return only(null, Site.class);
 	}
 
 	@Override
-	public Iterable<IChild> getIChildren() {
+	public List<IChild> getIChildren() {
 		return only(null, IChild.class);
 	}
 }

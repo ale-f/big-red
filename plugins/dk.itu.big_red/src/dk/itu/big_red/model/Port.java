@@ -132,7 +132,7 @@ public class Port extends Point implements IPort {
 	}
 
 	@Override
-	public INode getINode() {
+	public INode getNode() {
 		return getParent();
 	}
 	

@@ -9,5 +9,5 @@ import dk.itu.big_red.model.Port;
  * @see IPoint
  */
 public interface IPort extends IPoint {
-	public INode getINode();
+	public INode getNode();
 }

@@ -1,6 +1,7 @@
 package dk.itu.big_red.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,10 +18,6 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.interfaces.IBigraph;
-import dk.itu.big_red.model.interfaces.IEdge;
-import dk.itu.big_red.model.interfaces.IInnerName;
-import dk.itu.big_red.model.interfaces.IOuterName;
-import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.names.INamespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
@@ -295,23 +292,23 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	}
 
 	@Override
-	public Iterable<IEdge> getIEdges() {
-		return only(null, IEdge.class);
+	public List<Edge> getEdges() {
+		return only(null, Edge.class);
 	}
 
 	@Override
-	public Iterable<IRoot> getIRoots() {
-		return only(null, IRoot.class);
+	public List<Root> getRoots() {
+		return only(null, Root.class);
 	}
 
 	@Override
-	public Iterable<IInnerName> getIInnerNames() {
-		return only(null, IInnerName.class);
+	public List<InnerName> getInnerNames() {
+		return only(null, InnerName.class);
 	}
 	
 	@Override
-	public Iterable<IOuterName> getIOuterNames() {
-		return only(null, IOuterName.class);
+	public List<OuterName> getOuterNames() {
+		return only(null, OuterName.class);
 	}
 	
 	/**

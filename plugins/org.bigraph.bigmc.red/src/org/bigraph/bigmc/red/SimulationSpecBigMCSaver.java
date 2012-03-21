@@ -105,7 +105,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	
 	private void processNames(SimulationSpec s) throws SaveFailedException {
 		ArrayList<String> names = new ArrayList<String>();
-		for (IOuterName o : s.getModel().getIOuterNames())
+		for (IOuterName o : s.getModel().getOuterNames())
 			names.add(normaliseName(o.getName()));
 		Collections.sort(names);
 		
@@ -161,7 +161,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processRoot(IRoot i) throws SaveFailedException {
-		Iterator<? extends INode> in = i.getINodes().iterator();
+		Iterator<? extends INode> in = i.getNodes().iterator();
 		boolean anyNodes = in.hasNext();
 		if (anyNodes) {
 			processNode(in.next());
@@ -171,7 +171,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 			}
 		}
 		
-		Iterator<? extends ISite> is = i.getISites().iterator();
+		Iterator<? extends ISite> is = i.getSites().iterator();
 		if (is.hasNext()) {
 			if (anyNodes)
 				write(" | ");
@@ -184,7 +184,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processBigraph(Bigraph b) throws SaveFailedException {
-		Iterator<? extends IRoot> ir = b.getIRoots().iterator();
+		Iterator<? extends IRoot> ir = b.getRoots().iterator();
 		if (ir.hasNext()) {
 			processRoot(ir.next());
 			while (ir.hasNext()) {
@@ -204,8 +204,8 @@ public class SimulationSpecBigMCSaver extends Saver {
 	
 	private void processRule(ReactionRule r) throws SaveFailedException {
 		if (!iteratorsMatched(
-				r.getRedex().getIRoots().iterator(),
-				r.getReactum().getIRoots().iterator()))
+				r.getRedex().getRoots().iterator(),
+				r.getReactum().getRoots().iterator()))
 			throw new SaveFailedException("Bananas");
 		if (namedRules)
 			write("%rule " +

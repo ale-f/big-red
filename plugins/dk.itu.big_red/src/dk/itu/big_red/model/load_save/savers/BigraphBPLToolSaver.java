@@ -112,7 +112,7 @@ public class BigraphBPLToolSaver extends Saver {
 				print(SMLify(p.getLink().getName()));
 			}
 		});
-		if (node.getINodes().iterator().hasNext() || node.getISites().iterator().hasNext()) {
+		if (node.getNodes().iterator().hasNext() || node.getSites().iterator().hasNext()) {
 			printLine(" o");
 			scope++;
 			process((IParent) node);
@@ -146,11 +146,11 @@ public class BigraphBPLToolSaver extends Saver {
 			for (IPort p : c.getPorts())
 				printStringDef(SMLify(p.getName()));
 		}
-		for (IEdge e : bigraph.getIEdges())
+		for (IEdge e : bigraph.getEdges())
 			printStringDef(SMLify(e.getName()));
-		for (IOuterName o : bigraph.getIOuterNames())
+		for (IOuterName o : bigraph.getOuterNames())
 			printStringDef(SMLify(o.getName()));
-		for (IInnerName i : bigraph.getIInnerNames())
+		for (IInnerName i : bigraph.getInnerNames())
 			printStringDef(SMLify(i.getName()));
 
 		printLine("");
@@ -180,13 +180,13 @@ public class BigraphBPLToolSaver extends Saver {
 		scope++;
 		
 		print("(");
-		processIterable(bigraph.getIOuterNames(), "idw[]", "idw[", ", ", "]", new Processor<IOuterName>() {
+		processIterable(bigraph.getOuterNames(), "idw[]", "idw[", ", ", "]", new Processor<IOuterName>() {
 			@Override
 			public void proc(IOuterName o) throws SaveFailedException {
 				print(SMLify(o.getName()));
 			}
 		});
-		processIterable(bigraph.getIEdges(), "", " * -//[", ", ", "]", new Processor<IEdge>() {
+		processIterable(bigraph.getEdges(), "", " * -//[", ", ", "]", new Processor<IEdge>() {
 			@Override
 			public void proc(IEdge e) throws SaveFailedException {
 				print(SMLify(e.getName()));
@@ -196,14 +196,14 @@ public class BigraphBPLToolSaver extends Saver {
 		print("o (");
 		scope++;
 
-		processIterable(bigraph.getIInnerNames(), "", "", " || ", " || ", new Processor<IInnerName>() {
+		processIterable(bigraph.getInnerNames(), "", "", " || ", " || ", new Processor<IInnerName>() {
 			@Override
 			public void proc(IInnerName i) throws SaveFailedException {
 				print(SMLify(i.getLink().getName()) + "/" + SMLify(i.getName()));
 			}
 		});
 		
-		processIterable(bigraph.getIRoots(), "idp(0)", "", "|| ", "", new Processor<IRoot>() {
+		processIterable(bigraph.getRoots(), "idp(0)", "", "|| ", "", new Processor<IRoot>() {
 			@Override
 			public void proc(IRoot r) throws SaveFailedException {
 				scope++;
