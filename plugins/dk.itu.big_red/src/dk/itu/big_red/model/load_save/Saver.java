@@ -4,10 +4,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.ModelObject;
 
 /**
@@ -152,8 +152,13 @@ public abstract class Saver {
 		for (IConfigurationElement ice :
 			RegistryFactory.getRegistry().
 				getConfigurationElementsFor(EXTENSION_POINT)) {
-			if (contentType.equals(ice.getAttribute("contentType")))
-				return (Saver)RedPlugin.instantiate(ice);
+			if (contentType.equals(ice.getAttribute("contentType"))) {
+				try {
+					return (Saver)ice.createExecutableExtension("class");
+				} catch (CoreException e) {
+					return null;
+				}
+			}
 		}
 		return null;
 	}

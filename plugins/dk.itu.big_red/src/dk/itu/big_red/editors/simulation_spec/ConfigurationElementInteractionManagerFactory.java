@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.simulation_spec;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -30,6 +31,11 @@ class ConfigurationElementInteractionManagerFactory
 	
 	@Override
 	public IInteractionManager createInteractionManager() {
-		return (IInteractionManager)RedPlugin.instantiate(getCE());
+		try {
+			return (IInteractionManager)
+					getCE().createExecutableExtension("class");
+		} catch (CoreException e) {
+			return null;
+		}
 	}
 }

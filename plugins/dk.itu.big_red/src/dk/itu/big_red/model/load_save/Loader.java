@@ -11,7 +11,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.ModelObject;
 
 /**
@@ -101,9 +100,10 @@ public abstract class Loader {
 			RegistryFactory.getRegistry().
 				getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
-				Loader i = ((Loader)RedPlugin.instantiate(ice)).setFile(f);
+				Loader i;
 				try {
-					i.setInputStream(f.getContents());
+					i = (Loader)ice.createExecutableExtension("class");
+					i.setFile(f).setInputStream(f.getContents());
 				} catch (CoreException e) {
 					return null;
 				}

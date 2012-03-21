@@ -1,12 +1,12 @@
 package dk.itu.big_red.wizards.export;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.wizards.export.assistants.WizardBigraphExportPage;
@@ -55,7 +55,11 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 		if (o instanceof IConfigurationElement) {
 			IConfigurationElement e = (IConfigurationElement)o;
 			if (cfe != e) {
-				exporter = (Saver)RedPlugin.instantiate(e);
+				try {
+					exporter = (Saver)e.createExecutableExtension("class");
+				} catch (CoreException ce) {
+					return; /* XXX */
+				}
 				cfe = e;
 				page2.setTitle("Export as " + e.getAttribute("name"));
 				setWindowTitle("Export as " + e.getAttribute("name"));

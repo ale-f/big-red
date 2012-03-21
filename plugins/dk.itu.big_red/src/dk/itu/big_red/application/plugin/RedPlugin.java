@@ -3,9 +3,7 @@ package dk.itu.big_red.application.plugin;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -31,20 +29,6 @@ public class RedPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-	}
-
-	/**
-	 * Creates and returns an instance of the class identified by the given
-	 * {@link IConfigurationElement}'s <code>"class"</code> property.
-	 * @param ice an {@link IConfigurationElement}
-	 * @return a new {@link Object}, or <code>null</code>
-	 */
-	public static Object instantiate(IConfigurationElement ice) {
-		try {
-			return ice.createExecutableExtension("class");
-		} catch (CoreException e) {
-			return null;
-		}
 	}
 	
 	/**

@@ -9,6 +9,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
@@ -33,7 +34,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractEditor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
@@ -68,8 +68,13 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		
 		@Override
 		public IInteractionManager createInteractionManager() {
-			return new BasicCommandLineInteractionManager(
-					(Saver)RedPlugin.instantiate(getCE()));
+			Saver s;
+			try {
+				s = (Saver)getCE().createExecutableExtension("class");
+			} catch (CoreException e) {
+				return null;
+			}
+			return new BasicCommandLineInteractionManager(s);
 		}
 	}
 	
