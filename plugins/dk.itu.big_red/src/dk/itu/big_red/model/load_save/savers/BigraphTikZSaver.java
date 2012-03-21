@@ -26,7 +26,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.utilities.Lists;
 
 public class BigraphTikZSaver extends Saver {
 	private BufferedWriter writer;
@@ -154,7 +153,11 @@ public class BigraphTikZSaver extends Saver {
 		
 		line("begin{tikzpicture}[x=0.02cm,y=-0.02cm]");
 		
-		processContainer(b);
+		beginScope(b);
+		process(b.getEdges());
+		process(b.getOuterNames());
+		process(b.getInnerNames());
+		endScope();
 		
 		line("end{tikzpicture}");
 		
@@ -218,11 +221,9 @@ public class BigraphTikZSaver extends Saver {
 		line("node at (" + rltl.x + "," + rltl.y + ") {" + con.getLabel() + "};");
 		
 		beginScope(n);
-		for (Layoutable c : Lists.group(n.getChildren(),
-				BigraphXMLSaver.SCHEMA_ORDER))
-			process(c);
-		for (Layoutable c : n.getPorts())
-			process(c);
+		process(n.getNodes());
+		process(n.getSites());
+		process(n.getPorts());
 		endScope();
 	}
 	
@@ -310,15 +311,16 @@ public class BigraphTikZSaver extends Saver {
 		line("draw [internal root] (" + ptl.x + "," +
 				ptl.y + ") rectangle(" + ptr.x + "," + ptr.y + ");");
 		
-		processContainer(r);
+		beginScope(r);
+		process(r.getNodes());
+		process(r.getSites());
+		endScope();
 	}
 	
-	private void processContainer(Container t) throws SaveFailedException {
-		beginScope(t);
-		for (Layoutable c : Lists.group(t.getChildren(),
-				BigraphXMLSaver.SCHEMA_ORDER))
-			process(c);
-		endScope();
+	private void process(Iterable<? extends Layoutable> l)
+			throws SaveFailedException {
+		for (Layoutable i : l)
+			process(i);
 	}
 	
 	private void process(Layoutable obj) throws SaveFailedException {
@@ -334,8 +336,8 @@ public class BigraphTikZSaver extends Saver {
 			processSite((Site)obj);
 		} else if (obj instanceof Root) {
 			processRoot((Root)obj);
-		} else if (obj instanceof Container) {
-			processContainer((Container)obj);
+		} else if (obj instanceof Bigraph) {
+			processBigraph((Bigraph)obj);
 		} else {
 			/* do nothing */
 		}

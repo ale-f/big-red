@@ -18,12 +18,10 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeable;
 import dk.itu.big_red.model.interfaces.IBigraph;
-import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.names.INamespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
 import dk.itu.big_red.model.names.PositiveIntegerNamePolicy;
 import dk.itu.big_red.model.names.StringNamePolicy;
-import dk.itu.big_red.utilities.Lists;
 
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link
@@ -323,35 +321,44 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	public ChangeGroup relayout(IPropertyProviderProxy context) {
 		ChangeGroup cg = new ChangeGroup();
-		
 		HashMap<Layoutable, Dimension> sizes =
 				new HashMap<Layoutable, Dimension>();
+		int progress = PADDING, top = PADDING;
+		Rectangle r = new Rectangle();
+		Dimension size;
 		
-		boolean outerNameEncountered = false;
-		int outerNameProgress = PADDING,
-			innerNameProgress = PADDING,
-			top = PADDING;
+		for (Layoutable i : getChildren())
+			sizes.put(i, i.relayout(context, cg));
 		
-		for (Layoutable i :
-			Lists.group(getChildren(context), BigraphXMLSaver.SCHEMA_ORDER)) {
-			Dimension size = i.relayout(context, cg);
-			sizes.put(i, size);
-			Rectangle r = new Rectangle().setSize(size);
-			if (i instanceof OuterName) {
-				r.setLocation(outerNameProgress, PADDING);
-				outerNameProgress += size.width + PADDING;
-				if (!outerNameEncountered) {
-					top += size.height + PADDING;
-					outerNameEncountered = true;
-				}
-			} else if (i instanceof Root) {
-				r.setLocation(PADDING, top);
+		for (Layoutable i : getOuterNames()) {
+			r.setSize(size = sizes.get(i));
+		
+			r.setLocation(progress, PADDING);
+			progress += size.width + PADDING;
+			if (top == PADDING)
 				top += size.height + PADDING;
-			} else if (i instanceof InnerName) {
-				r.setLocation(innerNameProgress, top);
-				innerNameProgress += size.width + PADDING;
-			}
-			cg.add(i.changeLayout(r));
+			
+			cg.add(i.changeLayout(r.getCopy()));
+		}
+		
+		for (Layoutable i : getRoots()) {
+			r.setSize(size = sizes.get(i));
+
+			r.setLocation(PADDING, top);
+			top += size.height + PADDING;
+			
+			cg.add(i.changeLayout(r.getCopy()));
+		}
+		
+		progress = PADDING;
+		
+		for (Layoutable i : getInnerNames()) {
+			r.setSize(size = sizes.get(i));
+
+			r.setLocation(progress, top);
+			progress += size.width + PADDING;
+			
+			cg.add(i.changeLayout(r.getCopy()));
 		}
 		
 		for (Link i : only(context, Link.class)) {

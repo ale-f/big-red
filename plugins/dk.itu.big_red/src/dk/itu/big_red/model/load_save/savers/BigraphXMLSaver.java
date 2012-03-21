@@ -25,7 +25,6 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
-import dk.itu.big_red.utilities.Lists;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
@@ -48,17 +47,6 @@ public class BigraphXMLSaver extends XMLSaver {
 			super.setModel(model);
 		return this;
 	}
-	
-	/**
-	 * An array of model {@link Class}es in the appropriate order for the
-	 * <code>&lt;bigraph&gt;</code> XML schema, suitable for giving as the
-	 * last argument to {@link Lists#group(java.util.List,
-	 * Object...)}.
-	 */
-	public static final Object SCHEMA_ORDER[] = {
-		Edge.class, OuterName.class, Root.class, InnerName.class,
-		Port.class, Node.class, Site.class
-	};
 	
 	private boolean exportAppearance = true;
 	

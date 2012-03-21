@@ -1,7 +1,7 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
@@ -13,7 +13,6 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.utilities.Lists;
 
 /**
  * BigraphParts represent {@link Bigraph}s, the top-level container of the
@@ -53,10 +52,13 @@ public class BigraphPart extends ContainerPart {
 	
 	@Override
 	public List<Layoutable> getModelChildren() {
-		List<Layoutable> r =
-				Lists.group(getModel().getChildren(), Edge.class, Object.class);
-		Collections.reverse(r);
-		return r;
+		List<Layoutable> nc = new ArrayList<Layoutable>();
+		for (Layoutable i : getModel().getChildren()) {
+			if (i instanceof Edge) {
+				nc.add(i);
+			} else nc.add(0, i);
+		}
+		return nc;
 	}
 	
 	@Override
