@@ -321,17 +321,12 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	
 	public ChangeGroup relayout(IPropertyProviderProxy context) {
 		ChangeGroup cg = new ChangeGroup();
-		HashMap<Layoutable, Dimension> sizes =
-				new HashMap<Layoutable, Dimension>();
 		int progress = PADDING, top = PADDING;
 		Rectangle r = new Rectangle();
 		Dimension size;
 		
-		for (Layoutable i : getChildren())
-			sizes.put(i, i.relayout(context, cg));
-		
 		for (Layoutable i : getOuterNames()) {
-			r.setSize(size = sizes.get(i));
+			r.setSize(size = i.relayout(context, cg));
 		
 			r.setLocation(progress, PADDING);
 			progress += size.width + PADDING;
@@ -342,7 +337,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		}
 		
 		for (Layoutable i : getRoots()) {
-			r.setSize(size = sizes.get(i));
+			r.setSize(size = i.relayout(context, cg));
 
 			r.setLocation(PADDING, top);
 			top += size.height + PADDING;
@@ -353,7 +348,7 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 		progress = PADDING;
 		
 		for (Layoutable i : getInnerNames()) {
-			r.setSize(size = sizes.get(i));
+			r.setSize(size = i.relayout(context, cg));
 
 			r.setLocation(progress, top);
 			progress += size.width + PADDING;
