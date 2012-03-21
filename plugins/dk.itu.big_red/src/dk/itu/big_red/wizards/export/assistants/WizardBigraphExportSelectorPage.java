@@ -1,6 +1,9 @@
 package dk.itu.big_red.wizards.export.assistants;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -14,7 +17,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.utilities.ui.UI;
 import dk.itu.big_red.utilities.ui.jface.ConfigurationElementLabelProvider;
@@ -51,7 +53,9 @@ public class WizardBigraphExportSelectorPage extends WizardPage {
 		
 		TableViewer tree = UI.setProviders(new TableViewer(form, SWT.BORDER),
 			new ListContentProvider(), new ConfigurationElementLabelProvider());
-		tree.setInput(RedPlugin.getConfigurationElementsFor(Saver.EXTENSION_POINT));
+		tree.setInput(Arrays.asList(
+			RegistryFactory.getRegistry().
+				getConfigurationElementsFor(Saver.EXTENSION_POINT)));
 		tree.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		tree.addSelectionChangedListener(new ISelectionChangedListener() {

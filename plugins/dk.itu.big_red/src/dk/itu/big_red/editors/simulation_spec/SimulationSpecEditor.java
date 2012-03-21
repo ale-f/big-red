@@ -10,6 +10,8 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -200,12 +202,14 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		ArrayList<IInteractionManagerFactory> factories =
 				new ArrayList<IInteractionManagerFactory>();
 		
+		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ce :
-			 RedPlugin.getConfigurationElementsFor(IInteractionManager.EXTENSION_POINT))
+			 r.getConfigurationElementsFor(
+					 IInteractionManager.EXTENSION_POINT))
 			factories.add(new ConfigurationElementInteractionManagerFactory(ce));
 		
 		for (IConfigurationElement ce :
-		     RedPlugin.getConfigurationElementsFor(Saver.EXTENSION_POINT)) {
+		     r.getConfigurationElementsFor(Saver.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals(SimulationSpec.class.getCanonicalName()))
 				factories.add(new SimpleExportInteractionManagerFactory(ce));

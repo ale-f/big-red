@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.RegistryFactory;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.ModelObject;
@@ -149,7 +150,8 @@ public abstract class Saver {
 	
 	public static final Saver forContentType(String contentType) {
 		for (IConfigurationElement ice :
-			RedPlugin.getConfigurationElementsFor(EXTENSION_POINT)) {
+			RegistryFactory.getRegistry().
+				getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (contentType.equals(ice.getAttribute("contentType")))
 				return (Saver)RedPlugin.instantiate(ice);
 		}

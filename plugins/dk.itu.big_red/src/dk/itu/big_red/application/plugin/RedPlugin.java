@@ -3,14 +3,11 @@ package dk.itu.big_red.application.plugin;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -34,16 +31,6 @@ public class RedPlugin extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-	}
-
-	public static List<IConfigurationElement> getConfigurationElementsFor(String extensionPointID) {
-		ArrayList<IConfigurationElement> r =
-			new ArrayList<IConfigurationElement>();
-		for (IConfigurationElement ice :
-			RegistryFactory.getRegistry().
-				getConfigurationElementsFor(extensionPointID))
-			r.add(ice);
-		return r;
 	}
 
 	/**

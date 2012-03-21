@@ -8,6 +8,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
@@ -97,7 +98,8 @@ public abstract class Loader {
 		if (ct == null)
 			return null;
 		for (IConfigurationElement ice :
-			RedPlugin.getConfigurationElementsFor(EXTENSION_POINT)) {
+			RegistryFactory.getRegistry().
+				getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
 				Loader i = ((Loader)RedPlugin.instantiate(ice)).setFile(f);
 				try {
