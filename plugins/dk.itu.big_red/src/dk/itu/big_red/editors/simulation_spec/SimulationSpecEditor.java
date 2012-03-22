@@ -3,7 +3,6 @@ package dk.itu.big_red.editors.simulation_spec;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.OutputStream;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -34,7 +33,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
-import dk.itu.big_red.editors.AbstractEditor;
+import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
@@ -57,7 +56,7 @@ import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class SimulationSpecEditor extends AbstractEditor
+public class SimulationSpecEditor extends AbstractNonGEFEditor
 implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	private static class SimpleExportInteractionManagerFactory
 		extends ConfigurationElementInteractionManagerFactory {
@@ -79,11 +78,15 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	}
 	
 	@Override
+	protected void tryApplyChange(Change c) throws ChangeRejectedException {
+		getModel().tryApplyChange(c);
+	}
+	
+	@Override
 	public void doActualSave(OutputStream os) throws SaveFailedException {
     	new SimulationSpecXMLSaver().setModel(getModel()).setOutputStream(os).
     		exportObject();
-    	savePoint = undoBuffer.peek();
-		checkDirt();
+    	setSavePoint();
 	}
 
 	@Override
@@ -91,72 +94,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			throws PartInitException {
 		super.init(site, input);
 		firePropertyChange(PROP_INPUT);
-	}
-
-	private Change savePoint = null;
-	private ArrayDeque<Change>
-			undoBuffer = new ArrayDeque<Change>(),
-			redoBuffer = new ArrayDeque<Change>();
-	
-	@Override
-	public boolean canUndo() {
-		return (undoBuffer.size() != 0);
-	}
-	
-	@Override
-	public boolean canRedo() {
-		return (redoBuffer.size() != 0);
-	}
-	
-	private void doChange(Change c) {
-		try {
-			model.tryApplyChange(c);
-			redoBuffer.clear();
-			undoBuffer.push(c);
-		} catch (ChangeRejectedException cre) {
-			cre.printStackTrace();
-			throw new Error("Unhandled Change application failure", cre);
-		}
-		checkDirt();
-		updateActions(getStateActions());
-	}
-	
-	@Override
-	public void undo() {
-		try {
-			if (!canUndo())
-				return;
-			Change c;
-			redoBuffer.push(c = undoBuffer.pop());
-			model.tryApplyChange(c.inverse());
-		} catch (ChangeRejectedException cre) {
-			throw new Error("Unhandled Change undo failure", cre);
-		}
-		checkDirt();
-		updateActions(getStateActions());
-	}
-	
-	@Override
-	public void redo() {
-		try {
-			if (!canRedo())
-				return;
-			Change c;
-			model.tryApplyChange(c = redoBuffer.pop());
-			undoBuffer.push(c);
-		} catch (ChangeRejectedException cre) {
-			throw new Error("Unhandled Change redo failure", cre);
-		}
-		checkDirt();
-		updateActions(getStateActions());
-	}
-	
-	private void checkDirt() {
-		boolean newDirty = (undoBuffer.peek() != savePoint);
-		if (newDirty != dirty) {
-			dirty = newDirty;
-			firePropertyChange(PROP_DIRTY);
-		}
 	}
 	
 	private SimulationSpec model = null;
@@ -194,13 +131,6 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			modelSelector.setResource(b.getFile());
 		
 		uiUpdateInProgress = false;
-	}
-	
-	private boolean dirty = false;
-	
-	@Override
-	public boolean isDirty() {
-		return dirty;
 	}
 	
 	private static ArrayList<IInteractionManagerFactory> getIMFactories() {
