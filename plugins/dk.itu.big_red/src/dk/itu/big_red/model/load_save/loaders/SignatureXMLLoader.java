@@ -15,12 +15,15 @@ import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.names.BooleanNamePolicy;
 import dk.itu.big_red.model.names.LongNamePolicy;
 
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
+
 public class SignatureXMLLoader extends XMLLoader {
 	private ChangeGroup cg = new ChangeGroup();
+	private Signature sig;
 	
 	@Override
 	public Signature importObject() throws LoadFailedException {
@@ -33,19 +36,20 @@ public class SignatureXMLLoader extends XMLLoader {
 		}
 	}
 
-	private Control makeControl(Element e) throws LoadFailedException {
+	private void makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
+		cg.add(sig.changeAddControl(model));
 		
-		model.setName(getAttributeNS(e, IRedNamespaceConstants.SIGNATURE, "name"));
+		model.setName(getAttributeNS(e, SIGNATURE, "name"));
 		
-		String kind = getAttributeNS(e, IRedNamespaceConstants.SIGNATURE, "kind");
+		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null) {
 			model.setKind(
 				kind.equals("active") ? Kind.ACTIVE :
 				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC);
 		}
 		
-		String parameter = getAttributeNS(e, IRedNamespaceConstants.SIGNATURE, "parameter");
+		String parameter = getAttributeNS(e, SIGNATURE, "parameter");
 		if (parameter != null) {
 			if (parameter.equals("LONG")) {
 				model.setParameterPolicy(new LongNamePolicy());
@@ -55,22 +59,22 @@ public class SignatureXMLLoader extends XMLLoader {
 		}
 		
 		boolean generatePolygon = false;
-		Element el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "shape");
+		Element el = removeNamedChildElement(e, BIG_RED, "shape");
 		if (el != null) {
 			elementToShape(el, model);
 		} else generatePolygon = true;
 		
-		el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "appearance");
+		el = removeNamedChildElement(e, BIG_RED, "appearance");
 		if (el != null)
 			BigraphXMLLoader.elementToAppearance(el, model, cg);
 		
 		String label =
-				getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "label");
+				getAttributeNS(e, BIG_RED, "label");
 		if (label != null)
 			model.setLabel(label);
 		
 		for (Element j :
-			getNamedChildElements(e, IRedNamespaceConstants.SIGNATURE, "port")) {
+			getNamedChildElements(e, SIGNATURE, "port")) {
 			PortSpec i = makePortSpec(j, generatePolygon);
 			if (i != null)
 				model.addPort(i);
@@ -87,22 +91,16 @@ public class SignatureXMLLoader extends XMLLoader {
 				p.setDistance(0.5);
 			}
 		}
-		
-		return model;
 	}
 	
 	@Override
 	public Signature makeObject(Element e) throws LoadFailedException {
-		Signature sig = new Signature();
+		sig = new Signature();
 		
 		cg.clear();
 		
-		for (Element j :
-			getNamedChildElements(e, IRedNamespaceConstants.SIGNATURE, "control")) {
-			Control i = makeControl(j);
-			if (i != null)
-				sig.addControl(i);
-		}
+		for (Element j : getNamedChildElements(e, SIGNATURE, "control"))
+			makeControl(j);
 		
 		try {
 			if (cg.size() != 0)
@@ -117,12 +115,12 @@ public class SignatureXMLLoader extends XMLLoader {
 	private PortSpec makePortSpec(Element e, boolean ignoreAppearanceData) {
 		PortSpec model = new PortSpec();
 		
-		model.setName(getAttributeNS(e, IRedNamespaceConstants.SIGNATURE, "name"));
+		model.setName(getAttributeNS(e, SIGNATURE, "name"));
 		
-		Element el = removeNamedChildElement(e, IRedNamespaceConstants.BIG_RED, "port-appearance");
+		Element el = removeNamedChildElement(e, BIG_RED, "port-appearance");
 		if (el != null && !ignoreAppearanceData) {
-			model.setDistance(getDoubleAttribute(el, IRedNamespaceConstants.BIG_RED, "distance"));
-			model.setSegment(getIntAttribute(el, IRedNamespaceConstants.BIG_RED, "segment"));
+			model.setDistance(getDoubleAttribute(el, BIG_RED, "distance"));
+			model.setSegment(getIntAttribute(el, BIG_RED, "segment"));
 		}
 		
 		return model;
@@ -134,14 +132,14 @@ public class SignatureXMLLoader extends XMLLoader {
 	}
 
 	private static void elementToShape(Element e, Control c) {
-		if (!(e.getNamespaceURI().equals(IRedNamespaceConstants.BIG_RED) &&
+		if (!(e.getNamespaceURI().equals(BIG_RED) &&
 				e.getLocalName().equals("shape")))
 			return;
 	
 		Control.Shape shape = Shape.OVAL;
 		PointList pl = null;
 		
-		String s = getAttributeNS(e, IRedNamespaceConstants.BIG_RED, "shape");
+		String s = getAttributeNS(e, BIG_RED, "shape");
 		if (s != null && s.equals("polygon"))
 			shape = Shape.POLYGON;
 		
@@ -149,8 +147,8 @@ public class SignatureXMLLoader extends XMLLoader {
 			pl = new PointList();
 			for (Element pE : getChildElements(e))
 				pl.addPoint(
-					getIntAttribute(pE, IRedNamespaceConstants.BIG_RED, "x"),
-					getIntAttribute(pE, IRedNamespaceConstants.BIG_RED, "y"));
+					getIntAttribute(pE, BIG_RED, "x"),
+					getIntAttribute(pE, BIG_RED, "y"));
 		}
 		
 		c.setShape(shape);

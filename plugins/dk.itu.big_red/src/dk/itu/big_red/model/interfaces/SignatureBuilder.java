@@ -3,13 +3,12 @@ package dk.itu.big_red.model.interfaces;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
 
 public class SignatureBuilder {
 	private Signature s = new Signature();
-	
-	public SignatureBuilder() {
-		
-	}
+	private ChangeGroup cg;
 	
 	public IControl newControl(String name) {
 		Control c = new Control();
@@ -17,7 +16,7 @@ public class SignatureBuilder {
 		c.setLabel(name.substring(0, 1));
 		c.setName(name);
 		
-		s.addControl(c);
+		cg.add(s.changeAddControl(c));
 		return c;
 	}
 	
@@ -28,6 +27,11 @@ public class SignatureBuilder {
 	}
 	
 	public Signature finish() {
+		try {
+			s.tryApplyChange(cg);
+		} catch (ChangeRejectedException cre) {
+			return null;
+		}
 		for (Control c : s.getControls()) {
 			double l = c.getPorts().size();
 			for (int i = 0; i < l; i++) {

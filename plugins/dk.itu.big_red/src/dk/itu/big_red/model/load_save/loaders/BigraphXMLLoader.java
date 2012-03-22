@@ -133,10 +133,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		return bigraph;
 	}
 	
-	private Container processContainer(Element e, Container model) throws LoadFailedException {
+	private void processContainer(Element e, Container model) throws LoadFailedException {
 		for (Element i : getChildElements(e))
 			addChild(model, i);
-		return model;
 	}
 	
 	private HashMap<String, Link> links =
