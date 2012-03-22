@@ -95,9 +95,7 @@ public abstract class Container extends Layoutable {
 	 */
 	public static final String PROPERTY_CHILD = "ContainerChild";
 	
-	public boolean canContain(Layoutable child) {
-		return false;
-	}
+	public abstract boolean canContain(Layoutable child);
 	
 	protected void addChild(Layoutable child) {
 		if (children.contains(child))
@@ -122,10 +120,6 @@ public abstract class Container extends Layoutable {
 	@SuppressWarnings("unchecked")
 	public List<Layoutable> getChildren(IPropertyProviderProxy context) {
 		return (List<Layoutable>)getProperty(context, PROPERTY_CHILD);
-	}
-	
-	public boolean hasChild(Layoutable child) {
-		return children.contains(child);
 	}
 	
 	@Override
