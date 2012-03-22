@@ -6,7 +6,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
@@ -181,7 +180,6 @@ public abstract class Layoutable extends Colourable {
 		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 	}
 	
-	private ModelPropertySource propertySource;
 	/**
 	 * The property name fired when the ILayoutable's layout changes (i.e.,
 	 * it's resized or moved). The property values are {@link Rectangle}s.
