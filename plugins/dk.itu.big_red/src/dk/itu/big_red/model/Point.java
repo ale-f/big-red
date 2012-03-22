@@ -17,23 +17,27 @@ public abstract class Point extends Layoutable implements IPoint {
 		public Point getCreator() {
 			return Point.this;
 		}
-	}
-	
-	public class ChangeConnect extends PointChange {
+		
 		public Link link;
 		
-		public ChangeConnect(Link link) {
+		public PointChange(Link link) {
 			this.link = link;
-		}
-
-		@Override
-		public LayoutableChange inverse() {
-			return getCreator().changeDisconnect(link);
 		}
 		
 		@Override
 		public boolean isReady() {
 			return (link != null);
+		}
+	}
+	
+	public class ChangeConnect extends PointChange {
+		public ChangeConnect(Link link) {
+			super(link);
+		}
+
+		@Override
+		public LayoutableChange inverse() {
+			return getCreator().changeDisconnect(link);
 		}
 		
 		@Override
@@ -43,20 +47,13 @@ public abstract class Point extends Layoutable implements IPoint {
 	}
 	
 	public class ChangeDisconnect extends PointChange {
-		public Link link;
-		
 		public ChangeDisconnect(Link link) {
-			this.link = link;
+			super(link);
 		}
 
 		@Override
 		public LayoutableChange inverse() {
-			return new ChangeConnect(link);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (link != null);
+			return getCreator().changeConnect(link);
 		}
 		
 		@Override
