@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 
+import dk.itu.big_red.model.Colourable.ChangeFillColour;
+import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -89,12 +91,15 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 			ChangeGroup c = (ChangeGroup)b;
 			for (Change i : c)
 				doChange(i);
-		} else if (b instanceof Colourable.ChangeFillColour) {
-			Colourable.ChangeFillColour c = (Colourable.ChangeFillColour)b;
+		} else if (b instanceof ChangeFillColour) {
+			ChangeFillColour c = (ChangeFillColour)b;
 			c.getCreator().setFillColour(c.newColour);
-		} else if (b instanceof Colourable.ChangeOutlineColour) {
-			Colourable.ChangeOutlineColour c = (Colourable.ChangeOutlineColour)b;
+		} else if (b instanceof ChangeOutlineColour) {
+			ChangeOutlineColour c = (ChangeOutlineColour)b;
 			c.getCreator().setOutlineColour(c.newColour);
+		} else if (b instanceof ChangeComment) {
+			ChangeComment c = (ChangeComment)b;
+			c.getCreator().setComment(c.comment);
 		}
 	}
 	

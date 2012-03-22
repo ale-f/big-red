@@ -1,6 +1,8 @@
 package dk.itu.big_red.model.assistants;
 
-import dk.itu.big_red.model.Colourable;
+import dk.itu.big_red.model.Colourable.ChangeFillColour;
+import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.ModelObject.ChangeComment;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -34,12 +36,11 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 		} else if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				tryValidateChange(c);
-		} else if (b instanceof Colourable.ChangeFillColour ||
-				b instanceof Colourable.ChangeOutlineColour) {
+		} else if (b instanceof ChangeFillColour ||
+				b instanceof ChangeOutlineColour ||
+				b instanceof ChangeComment) {
 			/* do nothing */
-		} else {
-			rejectChange("The change was not recognised by the validator");
-		}
+		} else rejectChange("The change was not recognised by the validator");
 	}
 	
 }
