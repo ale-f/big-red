@@ -8,6 +8,9 @@ import org.eclipse.core.resources.IFile;
 
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.Control.ChangeLabel;
+import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -156,6 +159,15 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
 			c.getCreator().removeControl(c.control);
+		} else if (b instanceof ChangeName) {
+			ChangeName c = (ChangeName)b;
+			c.getCreator().setName(c.name);
+		} else if (b instanceof ChangeShape) {
+			ChangeShape c = (ChangeShape)b;
+			c.getCreator().setShape(c.shape);
+		} else if (b instanceof ChangeLabel) {
+			ChangeLabel c = (ChangeLabel)b;
+			c.getCreator().setLabel(c.label);
 		}
 	}
 	

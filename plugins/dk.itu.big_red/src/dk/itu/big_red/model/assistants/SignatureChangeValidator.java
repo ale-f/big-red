@@ -2,6 +2,9 @@ package dk.itu.big_red.model.assistants;
 
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.Control.ChangeLabel;
+import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.ModelObject.ChangeComment;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Signature.ChangeAddControl;
@@ -43,7 +46,10 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				b instanceof ChangeComment) {
 			/* do nothing */
 		} else if (b instanceof ChangeAddControl ||
-				b instanceof ChangeRemoveControl) {
+				b instanceof ChangeRemoveControl ||
+				b instanceof ChangeName ||
+				b instanceof ChangeShape ||
+				b instanceof ChangeLabel) {
 			/* do nothing, yet */
 		} else rejectChange("The change was not recognised by the validator");
 	}

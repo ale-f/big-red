@@ -7,6 +7,7 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.names.INamePolicy;
 
@@ -22,6 +23,90 @@ import dk.itu.big_red.model.names.INamePolicy;
  * @see IControl
  */
 public class Control extends Colourable implements IControl {
+	abstract class ControlChange extends ModelObjectChange {
+		@Override
+		public Control getCreator() {
+			return Control.this;
+		}
+	}
+	
+	public class ChangeName extends ControlChange {
+		public String name;
+		
+		public ChangeName(String name) {
+			this.name = name;
+		}
+		
+		private String oldName;
+		@Override
+		public void beforeApply() {
+			oldName = getCreator().getName();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return getCreator().changeName(oldName);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (name != null);
+		}
+	}
+	
+	public class ChangeShape extends ControlChange {
+		public Shape shape;
+		
+		public ChangeShape(Shape shape) {
+			this.shape = shape;
+		}
+		
+		private Shape oldShape;
+		@Override
+		public void beforeApply() {
+			oldShape = getCreator().getShape();
+		}
+		
+		@Override
+		public Change inverse() {
+			return getCreator().changeShape(oldShape);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (shape != null);
+		}
+	}
+	
+	public class ChangeLabel extends ControlChange {
+		public String label;
+		
+		public ChangeLabel(String label) {
+			this.label = label;
+		}
+		
+		private String oldLabel;
+		@Override
+		public void beforeApply() {
+			oldLabel = getCreator().getLabel();
+		}
+		
+		@Override
+		public Change inverse() {
+			return getCreator().changeLabel(oldLabel);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (oldLabel != null);
+		}
+	}
+	
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -344,5 +429,17 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		super.dispose();
+	}
+	
+	public ChangeName changeName(String name) {
+		return new ChangeName(name);
+	}
+	
+	public ChangeShape changeShape(Shape shape) {
+		return new ChangeShape(shape);
+	}
+	
+	public ChangeLabel changeLabel(String label) {
+		return new ChangeLabel(label);
 	}
 }
