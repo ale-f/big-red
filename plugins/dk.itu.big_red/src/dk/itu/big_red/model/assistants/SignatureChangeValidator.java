@@ -4,6 +4,8 @@ import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.ModelObject.ChangeComment;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.Signature.ChangeAddControl;
+import dk.itu.big_red.model.Signature.ChangeRemoveControl;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -40,6 +42,9 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				b instanceof ChangeOutlineColour ||
 				b instanceof ChangeComment) {
 			/* do nothing */
+		} else if (b instanceof ChangeAddControl ||
+				b instanceof ChangeRemoveControl) {
+			/* do nothing, yet */
 		} else rejectChange("The change was not recognised by the validator");
 	}
 	

@@ -24,7 +24,57 @@ import dk.itu.big_red.model.interfaces.ISignature;
  * @see ISignature
  */
 public class Signature extends ModelObject implements ISignature, IChangeable {
-	public static final String[] EMPTY_STRING_ARRAY = new String[]{};
+	abstract class SignatureChange extends ModelObjectChange {
+		@Override
+		public Signature getCreator() {
+			return Signature.this;
+		}
+		
+		public Control control;
+		
+		public SignatureChange(Control control) {
+			this.control = control;
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (control != null);
+		}
+	}
+	
+	public class ChangeAddControl extends SignatureChange {
+		public ChangeAddControl(Control control) {
+			super(control);
+		}
+
+		@Override
+		public Change inverse() {
+			return getCreator().changeRemoveControl(control);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(add control " + control + " to signature " +
+					getCreator();
+		}
+	}
+	
+	public class ChangeRemoveControl extends SignatureChange {
+		public ChangeRemoveControl(Control control) {
+			super(control);
+		}
+
+		@Override
+		public Change inverse() {
+			return getCreator().changeAddControl(control);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove control " + control + " from signature " +
+					getCreator();
+		}
+	}
 	
 	private ArrayList<Control> controls = new ArrayList<Control>();
 	
@@ -100,6 +150,12 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		} else if (b instanceof ChangeComment) {
 			ChangeComment c = (ChangeComment)b;
 			c.getCreator().setComment(c.comment);
+		} else if (b instanceof ChangeAddControl) {
+			ChangeAddControl c = (ChangeAddControl)b;
+			c.getCreator().addControl(c.control);
+		} else if (b instanceof ChangeRemoveControl) {
+			ChangeRemoveControl c = (ChangeRemoveControl)b;
+			c.getCreator().removeControl(c.control);
 		}
 	}
 	
@@ -133,5 +189,13 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 	@Override
 	public Signature setFile(IFile file) {
 		return (Signature)super.setFile(file);
+	}
+	
+	public ChangeAddControl changeAddControl(Control control) {
+		return new ChangeAddControl(control);
+	}
+	
+	public ChangeRemoveControl changeRemoveControl(Control control) {
+		return new ChangeRemoveControl(control);
 	}
 }
