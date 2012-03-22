@@ -78,12 +78,10 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 			this.newName = newName;
 		}
 
-		private boolean oldNameRecorded = false;
 		private String oldName;
 		@Override
 		public void beforeApply() {
 			oldName = getCreator().getName();
-			oldNameRecorded = true;
 		}
 		
 		@Override
@@ -93,7 +91,7 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 		
 		@Override
 		public boolean canInvert() {
-			return oldNameRecorded;
+			return (oldName != null);
 		}
 		
 		@Override
