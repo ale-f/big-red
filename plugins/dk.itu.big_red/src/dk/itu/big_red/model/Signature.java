@@ -95,13 +95,13 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 	 */
 	public static final String PROPERTY_CONTROL = "SignatureControl";
 	
-	public Control addControl(Control c) {
+	protected Control addControl(Control c) {
 		controls.add(c);
 		firePropertyChange(PROPERTY_CONTROL, null, c);
 		return c;
 	}
 	
-	public void removeControl(Control m) {
+	protected void removeControl(Control m) {
 		if (controls.contains(m)) {
 			controls.remove(m);
 			firePropertyChange(PROPERTY_CONTROL, m, null);
