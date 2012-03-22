@@ -276,7 +276,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	}
 
 	protected static void elementToAppearance(
-			Element e, Object o, ChangeGroup cg) {
+			Element e, ModelObject o, ChangeGroup cg) {
 		if (!(e.getNamespaceURI().equals(BIG_RED) &&
 				e.getLocalName().equals("appearance")))
 			return;
@@ -296,8 +296,8 @@ public class BigraphXMLLoader extends XMLLoader {
 						getColorAttribute(e, BIG_RED, "outlineColor")));
 		}
 		
-		if (o instanceof ModelObject)
-			((ModelObject)o).setComment(
-					getAttributeNS(e, BIG_RED, "comment"));
+		String comment = getAttributeNS(e, BIG_RED, "comment");
+		if (comment != null)
+			cg.add(o.changeComment(comment));
 	}
 }

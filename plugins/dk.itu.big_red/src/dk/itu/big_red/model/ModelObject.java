@@ -163,7 +163,7 @@ public class ModelObject implements IDisposable, IPropertyProvider {
      * Changes this object's comment.
      * @param comment the new comment
      */
-	public void setComment(String comment) {
+	protected void setComment(String comment) {
 		String oldComment = this.comment;
 		this.comment = comment;
 		firePropertyChange(ModelObject.PROPERTY_COMMENT, oldComment, comment);
