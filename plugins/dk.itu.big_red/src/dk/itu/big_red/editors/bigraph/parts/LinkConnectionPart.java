@@ -15,10 +15,12 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
+import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
@@ -47,6 +49,13 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	public Link.Connection getModel() {
 		return (Link.Connection)super.getModel();
+	}
+	
+	@Override
+	public Object getAdapter(@SuppressWarnings("rawtypes") Class key) {
+		if (key == IPropertySource.class) {
+			return new ModelPropertySource(getModel().getLink());
+		} else return super.getAdapter(key);
 	}
 	
 	@Override

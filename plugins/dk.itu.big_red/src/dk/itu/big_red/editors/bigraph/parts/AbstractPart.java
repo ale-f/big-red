@@ -14,8 +14,9 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
-
+import org.eclipse.ui.views.properties.IPropertySource;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
+import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
@@ -38,6 +39,13 @@ implements PropertyChangeListener, IBigraphPart {
 	@Override
 	public Layoutable getModel() {
 		return (Layoutable)super.getModel();
+	}
+	
+	@Override
+	public Object getAdapter(@SuppressWarnings("rawtypes") Class key) {
+		if (key == IPropertySource.class) {
+			return new ModelPropertySource(getModel());
+		} else return super.getAdapter(key);
 	}
 	
 	@Override

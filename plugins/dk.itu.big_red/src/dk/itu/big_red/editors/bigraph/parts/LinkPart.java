@@ -13,15 +13,11 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 
 public abstract class LinkPart extends ConnectablePart {
-	public LinkPart() {
-		super();
-	}
-
 	@Override
 	public Link getModel() {
 		return (Link)super.getModel();
 	}
-
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);

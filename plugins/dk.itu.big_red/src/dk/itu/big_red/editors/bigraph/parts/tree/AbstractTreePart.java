@@ -12,7 +12,9 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -20,6 +22,13 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart implements P
 	@Override
 	public Layoutable getModel() {
 		return (Layoutable)super.getModel();
+	}
+	
+	@Override
+	public Object getAdapter(@SuppressWarnings("rawtypes") Class key) {
+		if (key == IPropertySource.class) {
+			return new ModelPropertySource(getModel());
+		} else return super.getAdapter(key);
 	}
 	
 	@Override

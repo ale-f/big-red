@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.assistants;
+package dk.itu.big_red.editors.utilities;
 
 import java.util.ArrayList;
 

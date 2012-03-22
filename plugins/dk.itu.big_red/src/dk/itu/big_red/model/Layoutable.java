@@ -5,10 +5,9 @@ import java.util.Map;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
-import dk.itu.big_red.model.assistants.ModelPropertySource;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -29,7 +28,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  * @see ModelObject
  *
  */
-public abstract class Layoutable extends Colourable implements IAdaptable {
+public abstract class Layoutable extends Colourable {
 	abstract class LayoutableChange extends ModelObjectChange {
 		@Override
 		public Layoutable getCreator() {
@@ -200,17 +199,6 @@ public abstract class Layoutable extends Colourable implements IAdaptable {
 	 * {@link Container}s.
 	 */
 	public static final String PROPERTY_PARENT = "LayoutableParent";
-	
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		if (adapter == IPropertySource.class) {
-			if (propertySource == null)
-				propertySource = new ModelPropertySource(this);
-			return propertySource;
-		}
-		return null;
-	}
 	
 	@Override
 	public Layoutable clone(Map<ModelObject, ModelObject> m) {

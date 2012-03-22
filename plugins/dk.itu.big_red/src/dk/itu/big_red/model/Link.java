@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.ui.views.properties.IPropertySource;
-
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.interfaces.ILink;
@@ -26,7 +23,7 @@ public abstract class Link extends Layoutable implements ILink {
 	 * @author alec
 	 *
 	 */
-	public class Connection extends ModelObject implements IAdaptable {
+	public class Connection extends ModelObject {
 		private Point point;
 		
 		private Connection(Point point) {
@@ -47,14 +44,6 @@ public abstract class Link extends Layoutable implements ILink {
 		 */
 		public Link getLink() {
 			return Link.this;
-		}
-		
-		@SuppressWarnings("rawtypes")
-		@Override
-		public Object getAdapter(Class adapter) {
-			if (adapter == IPropertySource.class) {
-				return getLink().getAdapter(IPropertySource.class);
-			} else return null;
 		}
 	}
 	
