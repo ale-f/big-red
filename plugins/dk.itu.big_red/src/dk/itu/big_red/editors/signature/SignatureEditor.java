@@ -41,6 +41,7 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
@@ -206,7 +207,12 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Control c = new Control();
-				getModel().addControl(c);
+				try {
+					getModel().tryApplyChange(getModel().changeAddControl(c));
+				} catch (ChangeRejectedException cre) {
+					throw new Error("Couldn't add new Control -- " +
+							"shouldn't happen");
+				}
 				controls.setSelection(new StructuredSelection(c), true);
 			}
 			
@@ -219,14 +225,20 @@ implements PropertyChangeListener {
 		removeControl = new Button(controlButtons, SWT.NONE);
 		removeControl.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
 		removeControl.addSelectionListener(new SelectionListener() {
-			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Iterator<?> it =
 					((IStructuredSelection)controls.getSelection()).iterator();
+				ChangeGroup cg = new ChangeGroup();
 				while (it.hasNext())
-					getModel().removeControl((Control)it.next());
-				controls.setSelection(StructuredSelection.EMPTY);
+					cg.add(getModel().changeRemoveControl((Control)it.next()));
+				try {
+					getModel().tryApplyChange(cg);
+					controls.setSelection(StructuredSelection.EMPTY);
+				} catch (ChangeRejectedException cre) {
+					throw new Error("Couldn't remove Controls -- " +
+							"shouldn't happen");
+				}
 			}
 			
 			@Override
