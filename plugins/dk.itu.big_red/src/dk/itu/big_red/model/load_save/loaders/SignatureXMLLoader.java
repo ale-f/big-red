@@ -43,9 +43,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null) {
-			model.setKind(
+			cg.add(model.changeKind(
 				kind.equals("active") ? Kind.ACTIVE :
-				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC);
+				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC));
 		}
 		
 		String parameter = getAttributeNS(e, SIGNATURE, "parameter");

@@ -304,8 +304,9 @@ implements PropertyChangeListener {
 		atomicKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (shouldPropagateUI())
-					currentControl.setKind(Kind.ATOMIC);
+				if (shouldPropagateUI() &&
+						!currentControl.getKind().equals(Kind.ATOMIC))
+					doChange(currentControl.changeKind(Kind.ATOMIC));
 			}
 		});
 		
@@ -313,8 +314,9 @@ implements PropertyChangeListener {
 		activeKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (shouldPropagateUI())
-					currentControl.setKind(Kind.ACTIVE);
+				if (shouldPropagateUI() &&
+						!currentControl.getKind().equals(Kind.ACTIVE))
+					doChange(currentControl.changeKind(Kind.ACTIVE));
 			}
 		});
 		
@@ -322,8 +324,9 @@ implements PropertyChangeListener {
 		passiveKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (shouldPropagateUI())
-					currentControl.setKind(Kind.PASSIVE);
+				if (shouldPropagateUI() &&
+						!currentControl.getKind().equals(Kind.PASSIVE))
+					doChange(currentControl.changeKind(Kind.PASSIVE));
 			}
 		});
 		
@@ -367,7 +370,8 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					currentControl.setResizable(resizable.getSelection());
+					doChange(currentControl.changeResizable(
+							resizable.getSelection()));
 			}
 		});
 		
