@@ -39,8 +39,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	private void makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
 		cg.add(sig.changeAddControl(model));
-		
-		model.setName(getAttributeNS(e, SIGNATURE, "name"));
+		cg.add(model.changeName(getAttributeNS(e, SIGNATURE, "name")));
 		
 		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null) {
@@ -71,7 +70,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		String label =
 				getAttributeNS(e, BIG_RED, "label");
 		if (label != null)
-			model.setLabel(label);
+			cg.add(model.changeLabel(label));
 		
 		for (Element j :
 			getNamedChildElements(e, SIGNATURE, "port")) {
@@ -81,7 +80,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		}
 		
 		if (generatePolygon) {
-			model.setShape(Shape.POLYGON);
+			cg.add(model.changeShape(Shape.POLYGON));
 			model.setPoints(
 				new Ellipse(new Rectangle(0, 0, 30, 30)).
 					getPolygon(Math.max(3, model.getPorts().size())));
@@ -131,7 +130,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		return (SignatureXMLLoader)super.setFile(f);
 	}
 
-	private static void elementToShape(Element e, Control c) {
+	private void elementToShape(Element e, Control c) {
 		if (!(e.getNamespaceURI().equals(BIG_RED) &&
 				e.getLocalName().equals("shape")))
 			return;
@@ -151,7 +150,7 @@ public class SignatureXMLLoader extends XMLLoader {
 					getIntAttribute(pE, BIG_RED, "y"));
 		}
 		
-		c.setShape(shape);
+		cg.add(c.changeShape(shape));
 		c.setPoints(pl);
 	}
 }
