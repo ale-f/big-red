@@ -8,6 +8,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.interfaces.IControl;
 import dk.itu.big_red.model.names.INamePolicy;
 
@@ -265,7 +266,7 @@ public class Control extends Colourable implements IControl {
 		return label;
 	}
 	
-	public void setLabel(String label) {
+	protected void setLabel(String label) {
 		String oldLabel = this.label;
 		this.label = label;
 		firePropertyChange(PROPERTY_LABEL, oldLabel, label);
@@ -275,7 +276,7 @@ public class Control extends Colourable implements IControl {
 		return shape;
 	}
 	
-	public void setShape(Control.Shape shape) {
+	protected void setShape(Control.Shape shape) {
 		Control.Shape oldShape = this.shape;
 		this.shape = shape;
 		firePropertyChange(PROPERTY_SHAPE, oldShape, shape);
@@ -302,13 +303,11 @@ public class Control extends Colourable implements IControl {
 			firePropertyChange(PROPERTY_POINTS, oldPoints, points);
 	}
 
-	public void setName(String name) {
+	protected void setName(String name) {
 		if (name != null) {
 			String oldName = this.name;
 			this.name = name;
 			firePropertyChange(PROPERTY_NAME, oldName, name);
-			if (name.length() > 1)
-				setLabel(name.substring(0, 1).toUpperCase());
 		}
 	}
 
@@ -452,8 +451,11 @@ public class Control extends Colourable implements IControl {
 		super.dispose();
 	}
 	
-	public ChangeName changeName(String name) {
-		return new ChangeName(name);
+	public Change changeName(String name) {
+		ChangeGroup cg = new ChangeGroup();
+		cg.add(new ChangeName(name));
+		cg.add(new ChangeLabel(name.length() > 0 ? name.substring(0, 1) : name));
+		return cg;
 	}
 	
 	public ChangeShape changeShape(Shape shape) {
