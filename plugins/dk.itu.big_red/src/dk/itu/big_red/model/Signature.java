@@ -140,6 +140,7 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 	}
 
 	private void doChange(Change b) {
+		b.beforeApply();
 		if (b instanceof ChangeGroup) {
 			ChangeGroup c = (ChangeGroup)b;
 			for (Change i : c)
