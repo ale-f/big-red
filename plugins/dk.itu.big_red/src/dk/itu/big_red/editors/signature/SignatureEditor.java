@@ -131,6 +131,16 @@ implements PropertyChangeListener {
 		uiUpdateInProgress = false;
 	}
 	
+	private void lockedTextUpdate(Text t, String newValue) {
+		boolean oldUI = uiUpdateInProgress;
+		uiUpdateInProgress = true;
+		try {
+			t.setText(newValue);
+		} finally {
+			uiUpdateInProgress = oldUI;
+		}
+	}
+	
 	/**
 	 * Indicates whether or not changes made to the UI should be propagated
 	 * to the current {@link Control}.
@@ -259,7 +269,8 @@ implements PropertyChangeListener {
 			@Override
 			void go() {
 				if (!currentControl.getName().equals(name.getText()))
-					doChange(currentControl.changeName(name.getText()));
+					if (!doChange(currentControl.changeName(name.getText())))
+						lockedTextUpdate(name, currentControl.getName());
 			}
 		};
 		
