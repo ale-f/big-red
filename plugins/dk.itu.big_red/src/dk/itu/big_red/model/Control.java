@@ -216,7 +216,7 @@ public class Control extends Colourable implements IControl {
 		
 		@Override
 		public Change inverse() {
-			return getCreator().changeKind(kind);
+			return getCreator().changeKind(oldKind);
 		}
 		
 		@Override
@@ -416,7 +416,7 @@ public class Control extends Colourable implements IControl {
 		return defaultSize;
 	}
 	
-	public void setDefaultSize(Dimension defaultSize) {
+	protected void setDefaultSize(Dimension defaultSize) {
 		if (defaultSize != null) {
 			Dimension oldSize = this.defaultSize;
 			this.defaultSize = defaultSize;
@@ -428,7 +428,7 @@ public class Control extends Colourable implements IControl {
 		return kind;
 	}
 	
-	public void setKind(Kind kind) {
+	protected void setKind(Kind kind) {
 		Kind oldKind = this.kind;
 		this.kind = kind;
 		firePropertyChange(PROPERTY_KIND, oldKind, kind);
@@ -438,7 +438,7 @@ public class Control extends Colourable implements IControl {
 		return resizable;
 	}
 	
-	public void setResizable(Boolean resizable) {
+	protected void setResizable(Boolean resizable) {
 		Boolean oldResizable = this.resizable;
 		this.resizable = resizable;
 		firePropertyChange(PROPERTY_RESIZABLE, oldResizable, resizable);
