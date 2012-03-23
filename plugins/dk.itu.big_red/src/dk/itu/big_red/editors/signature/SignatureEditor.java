@@ -31,8 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchPartConstants;
-import dk.itu.big_red.editors.AbstractEditor;
+import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
@@ -41,13 +40,14 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.utilities.ui.UI;
 
-public class SignatureEditor extends AbstractEditor
+public class SignatureEditor extends AbstractNonGEFEditor
 implements PropertyChangeListener {
 	public static final String ID = "dk.itu.big_red.SignatureEditor";
 	
@@ -58,21 +58,7 @@ implements PropertyChangeListener {
 	public void doActualSave(OutputStream os) throws SaveFailedException {
     	new SignatureXMLSaver().setModel(getModel()).setOutputStream(os).
     		exportObject();
-		setDirty(false);
-	}
-
-	protected boolean dirty = false;
-	
-	protected void setDirty(boolean dirty) {
-		if (this.dirty != dirty) {
-			this.dirty = dirty;
-			firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
-		}
-	}
-	
-	@Override
-	public boolean isDirty() {
-		return dirty;
+		setSavePoint();
 	}
 
 	private Signature model = null;
@@ -207,12 +193,7 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Control c = new Control();
-				try {
-					getModel().tryApplyChange(getModel().changeAddControl(c));
-				} catch (ChangeRejectedException cre) {
-					throw new Error("Couldn't add new Control -- " +
-							"shouldn't happen");
-				}
+				doChange(getModel().changeAddControl(c));
 				controls.setSelection(new StructuredSelection(c), true);
 			}
 			
@@ -232,13 +213,8 @@ implements PropertyChangeListener {
 				ChangeGroup cg = new ChangeGroup();
 				while (it.hasNext())
 					cg.add(getModel().changeRemoveControl((Control)it.next()));
-				try {
-					getModel().tryApplyChange(cg);
-					controls.setSelection(StructuredSelection.EMPTY);
-				} catch (ChangeRejectedException cre) {
-					throw new Error("Couldn't remove Controls -- " +
-							"shouldn't happen");
-				}
+				doChange(cg);
+				controls.setSelection(StructuredSelection.EMPTY);
 			}
 			
 			@Override
@@ -283,7 +259,7 @@ implements PropertyChangeListener {
 			@Override
 			void go() {
 				if (!currentControl.getName().equals(name.getText()))
-					currentControl.setName(name.getText());
+					doChange(currentControl.changeName(name.getText()));
 			}
 		};
 		
@@ -297,7 +273,7 @@ implements PropertyChangeListener {
 			@Override
 			void go() {
 				if (!currentControl.getLabel().equals(label.getText()))
-					currentControl.setLabel(label.getText());
+					doChange(currentControl.changeLabel(label.getText()));
 			}
 		};
 		
@@ -361,7 +337,7 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					currentControl.setShape(Shape.OVAL);
+					doChange(currentControl.changeShape(Shape.OVAL));
 			}
 		});
 		
@@ -371,7 +347,7 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					currentControl.setShape(Shape.POLYGON);
+					doChange(currentControl.changeShape(Shape.POLYGON));
 			}
 		});
 		
@@ -496,10 +472,7 @@ implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(java.beans.PropertyChangeEvent evt) {
-		if (evt.getSource().equals(getModel())) {
-			if (evt.getPropertyName().equals(Signature.PROPERTY_CONTROL))
-				setDirty(true);
-		} else if (evt.getSource().equals(currentControl)) {
+		if (evt.getSource().equals(currentControl)) {
 			if (uiUpdateInProgress)
 				return;
 			uiUpdateInProgress = true;
@@ -535,7 +508,6 @@ implements PropertyChangeListener {
 				uiUpdateInProgress = false;
 			}
 		}
-		setDirty(true);
 	}
 	
 	@Override
@@ -550,20 +522,7 @@ implements PropertyChangeListener {
 	}
 
 	@Override
-	public boolean canUndo() {
-		return false;
-	}
-
-	@Override
-	public void undo() {
-	}
-
-	@Override
-	public boolean canRedo() {
-		return false;
-	}
-
-	@Override
-	public void redo() {
+	protected void tryApplyChange(Change c) throws ChangeRejectedException {
+		getModel().tryApplyChange(c);
 	}
 }
