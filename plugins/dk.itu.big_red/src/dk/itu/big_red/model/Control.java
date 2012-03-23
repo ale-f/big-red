@@ -51,7 +51,7 @@ public class Control extends Colourable implements IControl {
 		
 		@Override
 		public Change inverse() {
-			return getCreator().changeName(oldName);
+			return new ChangeName(oldName);
 		}
 		
 		@Override
