@@ -8,8 +8,11 @@ import org.eclipse.core.resources.IFile;
 
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.Control.ChangeDefaultSize;
+import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
@@ -169,6 +172,15 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		} else if (b instanceof ChangeLabel) {
 			ChangeLabel c = (ChangeLabel)b;
 			c.getCreator().setLabel(c.label);
+		} else if (b instanceof ChangeResizable) {
+			ChangeResizable c = (ChangeResizable)b;
+			c.getCreator().setResizable(c.resizable);
+		} else if (b instanceof ChangeDefaultSize) {
+			ChangeDefaultSize c = (ChangeDefaultSize)b;
+			c.getCreator().setDefaultSize(c.defaultSize);
+		} else if (b instanceof ChangeKind) {
+			ChangeKind c = (ChangeKind)b;
+			c.getCreator().setKind(c.kind);
 		}
 	}
 	

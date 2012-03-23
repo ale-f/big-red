@@ -2,8 +2,11 @@ package dk.itu.big_red.model.assistants;
 
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.Control.ChangeDefaultSize;
+import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.ModelObject.ChangeComment;
 import dk.itu.big_red.model.Signature;
@@ -48,7 +51,10 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 		} else if (b instanceof ChangeAddControl ||
 				b instanceof ChangeRemoveControl ||
 				b instanceof ChangeShape ||
-				b instanceof ChangeLabel) {
+				b instanceof ChangeLabel ||
+				b instanceof ChangeResizable ||
+				b instanceof ChangeDefaultSize ||
+				b instanceof ChangeKind) {
 			/* do nothing, yet */
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
@@ -56,5 +62,4 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				rejectChange(b, "Control names must not be empty");
 		} else rejectChange("The change was not recognised by the validator");
 	}
-	
 }

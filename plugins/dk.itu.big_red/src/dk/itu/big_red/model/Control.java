@@ -129,6 +129,102 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
+	public class ChangeDefaultSize extends ControlChange {
+		public Dimension defaultSize;
+		public ChangeDefaultSize(Dimension defaultSize) {
+			this.defaultSize = defaultSize;
+		}
+		
+		private Dimension oldDefaultSize;
+		@Override
+		public void beforeApply() {
+			oldDefaultSize = getCreator().getDefaultSize();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldDefaultSize != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return getCreator().changeDefaultSize(oldDefaultSize);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (defaultSize != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set default size of " + getCreator() + " to " +
+					defaultSize + ")";
+		}
+	}
+	
+	public class ChangeResizable extends ControlChange {
+		public boolean resizable;
+		public ChangeResizable(boolean resizable) {
+			this.resizable = resizable;
+		}
+		
+		private Boolean oldResizable;
+		@Override
+		public void beforeApply() {
+			oldResizable = getCreator().isResizable();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldResizable != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return getCreator().changeResizable(oldResizable);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set resizability of " + getCreator() + " to " +
+					resizable + ")";
+		}
+	}
+	
+	public class ChangeKind extends ControlChange {
+		public Kind kind;
+		public ChangeKind(Kind kind) {
+			this.kind = kind;
+		}
+		
+		private Kind oldKind;
+		@Override
+		public void beforeApply() {
+			oldKind = getCreator().getKind();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldKind != null);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (kind != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return getCreator().changeKind(kind);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set kind of " + getCreator() + " to " + kind + ")";
+		}
+	}
+	
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -242,7 +338,7 @@ public class Control extends Colourable implements IControl {
 		setKind(Kind.ACTIVE);
 		setResizable(true);
 	}
-	
+
 	@Override
 	public Control clone(Map<ModelObject,ModelObject> m) {
 		Control c = (Control)super.clone(m);
@@ -464,5 +560,17 @@ public class Control extends Colourable implements IControl {
 	
 	public ChangeLabel changeLabel(String label) {
 		return new ChangeLabel(label);
+	}
+	
+	public ChangeResizable changeResizable(boolean resizable) {
+		return new ChangeResizable(resizable);
+	}
+	
+	public ChangeDefaultSize changeDefaultSize(Dimension defaultSize) {
+		return new ChangeDefaultSize(defaultSize);
+	}
+	
+	public ChangeKind changeKind(Kind kind) {
+		return new ChangeKind(kind);
 	}
 }
