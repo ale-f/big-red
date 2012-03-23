@@ -47,10 +47,13 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 			/* do nothing */
 		} else if (b instanceof ChangeAddControl ||
 				b instanceof ChangeRemoveControl ||
-				b instanceof ChangeName ||
 				b instanceof ChangeShape ||
 				b instanceof ChangeLabel) {
 			/* do nothing, yet */
+		} else if (b instanceof ChangeName) {
+			ChangeName c = (ChangeName)b;
+			if (c.name.trim().length() == 0)
+				rejectChange(b, "Control names must not be empty");
 		} else rejectChange("The change was not recognised by the validator");
 	}
 	
