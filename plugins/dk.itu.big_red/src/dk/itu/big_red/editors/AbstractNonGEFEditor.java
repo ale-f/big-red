@@ -1,6 +1,9 @@
 package dk.itu.big_red.editors;
 
 import java.util.ArrayDeque;
+
+import org.eclipse.jface.action.IStatusLineManager;
+
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 
@@ -33,17 +36,23 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 	protected abstract void tryApplyChange(Change c)
 			throws ChangeRejectedException;
 	
-	protected void doChange(Change c) {
+	protected boolean doChange(Change c) {
+		IStatusLineManager slm =
+				getEditorSite().getActionBars().getStatusLineManager();
 		try {
 			tryApplyChange(c);
+			
 			redoBuffer.clear();
 			undoBuffer.push(c);
+			checkDirt();
+			updateActions(getStateActions());
+			
+			slm.setErrorMessage(null);
+			return true;
 		} catch (ChangeRejectedException cre) {
-			cre.printStackTrace();
-			throw new Error("Unhandled Change application failure", cre);
+			slm.setErrorMessage(cre.getRationale());
+			return false;
 		}
-		checkDirt();
-		updateActions(getStateActions());
 	}
 	
 	@Override
