@@ -57,6 +57,11 @@ public class Control extends Colourable implements IControl {
 		public boolean isReady() {
 			return (name != null);
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(set name of " + getCreator() + " to " + name + ")";
+		}
 	}
 	
 	public class ChangeShape extends ControlChange {
@@ -81,6 +86,12 @@ public class Control extends Colourable implements IControl {
 		public boolean isReady() {
 			return (shape != null);
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(set shape of " + getCreator() + " to " +
+					shape.toString() + ")";
+		}
 	}
 	
 	public class ChangeLabel extends ControlChange {
@@ -102,8 +113,18 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public boolean isReady() {
+		public boolean canInvert() {
 			return (oldLabel != null);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (label != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set label of " + getCreator() + " to " + label + ")";
 		}
 	}
 	
