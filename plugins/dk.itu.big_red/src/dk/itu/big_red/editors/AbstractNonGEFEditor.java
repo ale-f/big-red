@@ -8,7 +8,6 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 
 public abstract class AbstractNonGEFEditor extends AbstractEditor {
-	private boolean dirty = false;
 	private Change savePoint = null;
 	private ArrayDeque<Change>
 			undoBuffer = new ArrayDeque<Change>(),
@@ -20,7 +19,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 	
 	protected void setSavePoint() {
 		savePoint = undoBuffer.peek();
-		checkDirt();
+		firePropertyChange(PROP_DIRTY);
 	}
 	
 	@Override
@@ -44,8 +43,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 			
 			redoBuffer.clear();
 			undoBuffer.push(c);
-			checkDirt();
-			updateActions(getStateActions());
+			stateChanged();
 			
 			slm.setErrorMessage(null);
 			return true;
@@ -63,11 +61,10 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 			Change c;
 			redoBuffer.push(c = undoBuffer.pop());
 			tryApplyChange(c.inverse());
+			stateChanged();
 		} catch (ChangeRejectedException cre) {
 			throw new Error("Unhandled Change undo failure", cre);
 		}
-		checkDirt();
-		updateActions(getStateActions());
 	}
 	
 	@Override
@@ -78,23 +75,14 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 			Change c;
 			tryApplyChange(c = redoBuffer.pop());
 			undoBuffer.push(c);
+			stateChanged();
 		} catch (ChangeRejectedException cre) {
 			throw new Error("Unhandled Change redo failure", cre);
 		}
-		checkDirt();
-		updateActions(getStateActions());
 	}
 	
 	@Override
 	public boolean isDirty() {
-		return dirty;
-	}
-	
-	private void checkDirt() {
-		boolean newDirty = (undoBuffer.peek() != getSavePoint());
-		if (newDirty != dirty) {
-			dirty = newDirty;
-			firePropertyChange(PROP_DIRTY);
-		}
+		return (undoBuffer.peek() != getSavePoint());
 	}
 }

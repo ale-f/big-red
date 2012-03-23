@@ -12,7 +12,6 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.INullSelectionListener;
 import org.eclipse.ui.ISelectionListener;
@@ -80,8 +79,7 @@ INullSelectionListener {
 	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
-		firePropertyChange(IEditorPart.PROP_DIRTY);
-        updateActions(getStateActions());
+		stateChanged();
 	}
 	
 	@Override
@@ -139,9 +137,7 @@ INullSelectionListener {
 		while (cs.canUndo())
 			cs.undo();
 		cs.flush();
-		
-		firePropertyChange(PROP_DIRTY);
-		updateActions(getStateActions());
+		stateChanged();
 	}
 	
 	@Override

@@ -294,4 +294,9 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		}
 		getEditorSite().getActionBars().updateActionBars();
 	}
+	
+	protected void stateChanged() {
+		firePropertyChange(PROP_DIRTY);
+        updateActions(getStateActions());
+	}
 }
