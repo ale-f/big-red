@@ -1,5 +1,7 @@
 package dk.itu.big_red.model;
 
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -299,6 +301,25 @@ public class Bigraph extends Container implements IBigraph, IChangeable {
 	@Override
 	public List<InnerName> getInnerNames() {
 		return only(null, InnerName.class);
+	}
+	
+	@Override
+	public List<Site> getSites() {
+		ArrayList<Site> sites = new ArrayList<Site>();
+		ArrayDeque<Container> queue = new ArrayDeque<Container>();
+		queue.add(this);
+		
+		while (!queue.isEmpty()) {
+			for (Layoutable l : queue.remove().getChildren()) {
+				if (l instanceof Site) {
+					sites.add((Site)l);
+				} else if (l instanceof Container) {
+					queue.add((Container)l);
+				}
+			}
+		}
+		
+		return sites;
 	}
 	
 	@Override
