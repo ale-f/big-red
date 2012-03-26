@@ -4,10 +4,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PropertyScratchpad implements IPropertyProviderProxy {
-	private Map<String, Object> changes = new HashMap<String, Object>();
+	private static final class NNPair {
+		private IPropertyProvider object;
+		private String property;
+		
+		private NNPair(IPropertyProvider object, String property) {
+			this.object = object;
+			this.property = property;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if (obj instanceof NNPair) {
+				NNPair p = (NNPair)obj;
+				return
+					(object.equals(p.object) && property.equals(p.property));
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return object.hashCode() ^ property.hashCode();
+		}
+	}
 	
-	private String getKey(IPropertyProvider m, String property) {
-		return System.identityHashCode(m) + "!" + property;
+	private Map<NNPair, Object> changes = new HashMap<NNPair, Object>();
+	
+	private NNPair getKey(IPropertyProvider m, String property) {
+		return new NNPair(m, property);
 	}
 	
 	public void setValue(IPropertyProvider m, String property, Object newValue) {
