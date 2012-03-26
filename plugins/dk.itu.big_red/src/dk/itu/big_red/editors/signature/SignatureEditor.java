@@ -387,13 +387,15 @@ implements PropertyChangeListener {
 			public void portChange() {
 				if (!shouldPropagateUI())
 					return;
+				ChangeGroup cg = new ChangeGroup();
 				ArrayList<PortSpec> toCopy =
 						new ArrayList<PortSpec>(appearance.getPorts());
 				for (PortSpec p :
 					new ArrayList<PortSpec>(currentControl.getPorts()))
-					currentControl.removePort(p.getName());
+					cg.add(currentControl.changeRemovePort(p));
 				for (PortSpec p : toCopy)
-					currentControl.addPort(new PortSpec(p));
+					cg.add(currentControl.changeAddPort(new PortSpec(p)));
+				doChange(cg);
 			}
 			
 			@Override

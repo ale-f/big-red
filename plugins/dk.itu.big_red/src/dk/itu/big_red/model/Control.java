@@ -485,7 +485,7 @@ public class Control extends Colourable implements IControl {
 		firePropertyChange(PROPERTY_RESIZABLE, oldResizable, resizable);
 	}
 	
-	public void addPort(PortSpec p) {
+	protected void addPort(PortSpec p) {
 		if (p != null) {
 			PortSpec q = new PortSpec(p);
 			ports.add(q);
@@ -493,7 +493,7 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
-	public void removePort(String port) {
+	protected void removePort(String port) {
 		PortSpec p = getPort(port);
 		if (p != null) {
 			ports.remove(p);
