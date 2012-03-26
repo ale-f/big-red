@@ -225,6 +225,47 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
+	private abstract class PortChange extends ControlChange {
+		public PortSpec port;
+		
+		@Override
+		public boolean isReady() {
+			return (port != null);
+		}
+	}
+	
+	public class ChangeAddPort extends PortChange {
+		public ChangeAddPort(PortSpec port) {
+			this.port = port;
+		}
+		
+		@Override
+		public Change inverse() {
+			return getCreator().changeRemovePort(port);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(add port " + port + " to " + getCreator() + ")";
+		}
+	}
+	
+	public class ChangeRemovePort extends PortChange {
+		public ChangeRemovePort(PortSpec port) {
+			this.port = port;
+		}
+		
+		@Override
+		public Change inverse() {
+			return getCreator().changeAddPort(port);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove port " + port + " from " + getCreator() + ")";
+		}
+	}
+	
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -572,5 +613,13 @@ public class Control extends Colourable implements IControl {
 	
 	public ChangeKind changeKind(Kind kind) {
 		return new ChangeKind(kind);
+	}
+	
+	public ChangeAddPort changeAddPort(PortSpec port) {
+		return new ChangeAddPort(port);
+	}
+	
+	public ChangeRemovePort changeRemovePort(PortSpec port) {
+		return new ChangeRemovePort(port);
 	}
 }

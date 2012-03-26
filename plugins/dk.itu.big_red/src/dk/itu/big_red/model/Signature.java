@@ -8,10 +8,12 @@ import org.eclipse.core.resources.IFile;
 
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
@@ -181,6 +183,12 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		} else if (b instanceof ChangeKind) {
 			ChangeKind c = (ChangeKind)b;
 			c.getCreator().setKind(c.kind);
+		} else if (b instanceof ChangeAddPort) {
+			ChangeAddPort c = (ChangeAddPort)b;
+			c.getCreator().addPort(c.port);
+		} else if (b instanceof ChangeRemovePort) {
+			ChangeRemovePort c = (ChangeRemovePort)b;
+			c.getCreator().removePort(c.port.getName());
 		}
 	}
 	

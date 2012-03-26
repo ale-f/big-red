@@ -2,10 +2,12 @@ package dk.itu.big_red.model.assistants;
 
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.ModelObject.ChangeComment;
@@ -54,7 +56,9 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				b instanceof ChangeLabel ||
 				b instanceof ChangeResizable ||
 				b instanceof ChangeDefaultSize ||
-				b instanceof ChangeKind) {
+				b instanceof ChangeKind ||
+				b instanceof ChangeAddPort ||
+				b instanceof ChangeRemovePort) {
 			/* do nothing, yet */
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
