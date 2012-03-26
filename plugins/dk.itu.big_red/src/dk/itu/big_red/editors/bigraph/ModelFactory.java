@@ -9,7 +9,7 @@ import dk.itu.big_red.model.ModelObject;
  * @author alec
  *
  */
-class ModelFactory implements CreationFactory {
+public class ModelFactory implements CreationFactory {
 	private Class<? extends ModelObject> type;
 	
 	/**

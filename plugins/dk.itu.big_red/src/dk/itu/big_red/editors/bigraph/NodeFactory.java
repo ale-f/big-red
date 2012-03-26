@@ -5,7 +5,7 @@ import org.eclipse.gef.requests.CreationFactory;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Node;
 
-class NodeFactory implements CreationFactory {
+public class NodeFactory implements CreationFactory {
 	private Control template;
 	
 	public NodeFactory(Control template) {
