@@ -21,7 +21,7 @@ public interface INamePolicy {
 	 * <p>There is no requirement that <i>all</i> names that would be accepted
 	 * by this {@link INamePolicy} be returnable by this method, nor is there
 	 * a requirement that <i>all</i> integers produce a unique name.
-	 * @param value an integer specifying a name (must be &geq; 0)
+	 * @param value an integer specifying a name
 	 * @return a name that would be accepted by this {@link INamePolicy}
 	 */
 	public String get(int value);
