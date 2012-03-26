@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 
 import org.eclipse.core.resources.IFile;
 
+import dk.itu.big_red.model.Colourable.ChangeFillColour;
+import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Container.ChangeRemoveChild;
 import dk.itu.big_red.model.Edge.ChangeReposition;
@@ -199,6 +201,24 @@ public class ReactionRule extends ModelObject {
 				return null;
 			
 			return reactumObject.changeParameter(ch.parameter);
+		} else if (change instanceof ChangeOutlineColour) {
+			ChangeOutlineColour ch = (ChangeOutlineColour)change;
+			
+			Colourable reactumObject =
+					(Colourable)oldToNew.get(ch.getCreator());
+			if (reactumObject == null)
+				return null;
+			
+			return reactumObject.changeOutlineColour(ch.newColour.getCopy());
+		} else if (change instanceof ChangeFillColour) {
+			ChangeFillColour ch = (ChangeFillColour)change;
+			
+			Colourable reactumObject =
+					(Colourable)oldToNew.get(ch.getCreator());
+			if (reactumObject == null)
+				return null;
+			
+			return reactumObject.changeFillColour(ch.newColour.getCopy());
 		} else throw new Error(change + " unrecognised");
 	}
 	
