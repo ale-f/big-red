@@ -105,7 +105,7 @@ public class CompositionWizard extends Wizard {
 			layout.spacing = 8;
 			placeGroup.setLayout( layout );
 			
-			if ( outer.getSiteList().size() > 0 ) {
+			if ( outer.getSites().size() > 0 ) {
 				ScrolledComposite scroll = new ScrolledComposite( placeGroup, SWT.V_SCROLL | SWT.BORDER );
 				Composite comp = new Composite( scroll, 0 );
 				scroll.setContent( comp );
@@ -122,7 +122,7 @@ public class CompositionWizard extends Wizard {
 				placeLabel.setAlignment( SWT.CENTER );
 				rootList = new List( comp, SWT.BORDER | SWT.SINGLE );
 				
-				ArrayList< Site > sites = (ArrayList<Site>) outer.getSiteList();
+				ArrayList< Site > sites = (ArrayList<Site>) outer.getSites();
 				for ( int i = 0; i < sites.size(); i++ )
 					siteList.add( sites.get( i ).getName() );
 				rootPermutation = new ArrayList< Integer >();
@@ -203,7 +203,7 @@ public class CompositionWizard extends Wizard {
 			layout.spacing = 8;
 			linkGroup.setLayout( layout );
 			
-			if ( outer.getInnerNameList().size() > 0 ) {
+			if ( outer.getInnerNames().size() > 0 ) {
 				ScrolledComposite scroll = new ScrolledComposite( linkGroup, SWT.V_SCROLL | SWT.BORDER );
 				Composite comp = new Composite( scroll, 0 );
 				scroll.setContent( comp );
@@ -220,11 +220,11 @@ public class CompositionWizard extends Wizard {
 				linkLabel.setAlignment( SWT.CENTER );
 				outerNameList = new List( comp, SWT.BORDER | SWT.SINGLE );
 				
-				ArrayList< InnerName > innerNames = (ArrayList<InnerName>) outer.getInnerNameList();
+				ArrayList< InnerName > innerNames = (ArrayList<InnerName>) outer.getInnerNames();
 				for ( int i = 0; i < innerNames.size(); i++ )
 					innerNameList.add( innerNames.get( i ).getName() );
 				namePermutation = new ArrayList< Integer >();
-				for ( int i = 0; i < inner.getOuterNameList().size(); i++ )
+				for ( int i = 0; i < inner.getOuterNames().size(); i++ )
 					namePermutation.add( new Integer( i ) );
 				
 				updateLists();
@@ -313,7 +313,7 @@ public class CompositionWizard extends Wizard {
 			
 			if ( outerNameList != null ) {
 				outerNameList.setItems( new String[ 0 ] );
-				ArrayList< OuterName > outerNames = (ArrayList<OuterName>) inner.getOuterNameList();
+				ArrayList< OuterName > outerNames = (ArrayList<OuterName>) inner.getOuterNames();
 				for ( int i = 0; i < outerNames.size(); i++ )
 					outerNameList.add( outerNames.get( namePermutation.indexOf( new Integer( i ) ) ).getName() );
 				if ( nameSelect < 0 || outerNames.size() <= 1 )
@@ -330,8 +330,8 @@ public class CompositionWizard extends Wizard {
 	
 	public CompositionWizard( Bigraph inner, Bigraph outer )
 	{
-		isValid = inner.getOuterNameList().size() == outer.getInnerNameList().size() &&
-		          inner.getRoots().size()      == outer.getSiteList().size();
+		isValid = inner.getOuterNames().size() == outer.getInnerNames().size() &&
+		          inner.getRoots().size()      == outer.getSites().size();
 		if ( isValid )
 			addPage( new ReorderPage( inner, outer ) );
 		else
@@ -349,10 +349,10 @@ public class CompositionWizard extends Wizard {
 	{
 		System.out.println("perform Finish");
 		ReorderPage reorder = ( ReorderPage )getPage( "Reorder" );
-		ArrayList< Site > sites = (ArrayList<Site>) reorder.outer.getSiteList();
+		ArrayList< Site > sites = (ArrayList<Site>) reorder.outer.getSites();
 		ArrayList< Root > roots = (ArrayList<Root>) reorder.inner.getRoots();
-		ArrayList< InnerName > innerNames = (ArrayList<InnerName>) reorder.outer.getInnerNameList();
-		ArrayList< OuterName > outerNames = (ArrayList<OuterName>) reorder.inner.getOuterNameList();
+		ArrayList< InnerName > innerNames = (ArrayList<InnerName>) reorder.outer.getInnerNames();
+		ArrayList< OuterName > outerNames = (ArrayList<OuterName>) reorder.inner.getOuterNames();
 		
 		for ( int i = 0; i < sites.size(); i++ )
 			placeMap.put( sites.get( i ), roots.get( reorder.rootPermutation.indexOf( new Integer( i ) ) ) );

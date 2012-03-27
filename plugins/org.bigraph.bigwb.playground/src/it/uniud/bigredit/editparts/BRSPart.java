@@ -18,7 +18,6 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.utilities.Lists;
 
 
 
@@ -74,9 +73,11 @@ public class BRSPart extends ContainerPart {
 	}
 
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		// TODO Auto-generated method stub
-		return "BRS";
+		return null;
 	}
+
+
 
 }

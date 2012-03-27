@@ -7,6 +7,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 
 
@@ -28,6 +29,12 @@ public class Reaction  extends Container{
 	public Bigraph getReactum()
 	{
 		return reactum;
+	}
+
+	@Override
+	public boolean canContain(Layoutable child) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	/*@Override

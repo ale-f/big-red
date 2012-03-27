@@ -61,9 +61,9 @@ public class NestedBigraphPart extends ContainerPart{
 	}
 
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		// TODO Auto-generated method stub
-		return "Bigraph";
+		return null;
 	}
 
 }

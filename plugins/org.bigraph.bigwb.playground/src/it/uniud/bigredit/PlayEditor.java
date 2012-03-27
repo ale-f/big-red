@@ -41,11 +41,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractGEFEditor;
+import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.BigraphEditorOutlinePage;
-import dk.itu.big_red.editors.bigraph.ConnectionDragCreationToolEntry;
 import dk.itu.big_red.editors.bigraph.ModelFactory;
 import dk.itu.big_red.editors.bigraph.NodeFactory;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -72,7 +71,7 @@ import it.uniud.bigredit.editparts.BigreditRootEditPart;
 import it.uniud.bigredit.editparts.PartFactory;
 import it.uniud.bigredit.model.BRS;
 
-public class PlayEditor extends AbstractGEFEditor {
+public class PlayEditor extends BigraphEditor {
 	public static final String ID = "it.uniud.bigredit.BigreditEditor";
 	
 	

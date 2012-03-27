@@ -36,9 +36,10 @@ public class ReactionPart extends ContainerPart {
 	}
 
 	@Override
-	public String getDisplayName() {
+	public String getToolTip() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }
