@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	brs.xsd, the University of Udine's proposed XML Schema for
+	<brs> documents
+	Copyright © Carlo Maiero 2012
+	
+	Copying and distribution of this file, with or without modification,
+	are permitted in any medium without royalty provided that the copyright
+	notice and this notice are preserved. This file is offered as-is,
+	without any warranty.
+-->
+<xsd:schema xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.itu.dk/research/pls/xmlns/2010/bigraph">
+
+<xsd:group name="anyForeignElements">
+		<xsd:sequence>
+			<xsd:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
+		</xsd:sequence>
+	</xsd:group>            
+
+<xsd:element name="bigraph">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="bigraph:anyForeignElements"/>
+			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string"/>
+			<xsd:anyAttribute namespace="##other" processContents="lax"/>
+		</xsd:complexType>
+	</xsd:element>
+
+<xsd:element name="signature">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="bigraph:anyForeignElements"/>
+			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string"/>
+			<xsd:anyAttribute namespace="##other" processContents="lax"/>
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+</xsd:schema>

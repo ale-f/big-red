@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="it.uniud.bigredit.PlayEditor"
+            contributorClass="dk.itu.big_red.editors.bigraph.BigraphEditorActionBarContributor"
+            default="true"
+            extensions="bigraph-agent, bigraph"
+            icon="resources/icons/playground2.png"
+            id="it.uniud.bigredit.BigreditEditor"
+            name="Playground Editor">
+      </editor>
+   </extension>
+
+</plugin>
