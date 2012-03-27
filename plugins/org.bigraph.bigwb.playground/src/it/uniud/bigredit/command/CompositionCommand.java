@@ -110,9 +110,6 @@ public class CompositionCommand extends Command {
 		if ( !executed )
 			return;
 		
-
-		
-		
 		/**start placing roots in sites */
 		for(Site site : placeMap.keySet()){
 			

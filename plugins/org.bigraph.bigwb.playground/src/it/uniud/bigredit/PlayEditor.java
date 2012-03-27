@@ -188,7 +188,7 @@ public class PlayEditor extends BigraphEditor {
     	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
 
     	ImageDescriptor id =
-    		RedPlugin.getImageDescriptor("resources/icons/triangle.png");
+    		Activator.getImageDescriptor("resources/icons/triangle.png");
     	
 		for (Control c : signature.getControls())
 			palette.add(new CombinedTemplateCreationEntry(c.getName(), "Node",
@@ -242,9 +242,9 @@ public class PlayEditor extends BigraphEditor {
 		creationGroup.add(nodeGroup);
 
 		ImageDescriptor
-			site = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/site.png"),
-			root = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/root.png"),
-			edge = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/edge.png");
+			site = Activator.getImageDescriptor("resources/icons/bigraph-palette/site.png"),
+			root = Activator.getImageDescriptor("resources/icons/bigraph-palette/root.png"),
+			edge = Activator.getImageDescriptor("resources/icons/bigraph-palette/edge.png");
 		
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Bigraph", "Add a new bigraph",
@@ -260,8 +260,8 @@ public class PlayEditor extends BigraphEditor {
 			creationGroup.add(drag);
 		
 		ImageDescriptor
-			inner = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/inner.png"),
-			outer = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/outer.png");
+			inner = Activator.getImageDescriptor("resources/icons/bigraph-palette/inner.png"),
+			outer = Activator.getImageDescriptor("resources/icons/bigraph-palette/outer.png");
 		
 		creationGroup.add(new CombinedTemplateCreationEntry("Inner name", "Add a new inner name to the bigraph",
 				InnerName.class, new ModelFactory(InnerName.class), inner, inner));
