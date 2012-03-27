@@ -24,6 +24,7 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.changes.ChangeGroup;
 
 
 
@@ -109,6 +110,7 @@ public class CompositionCommand extends Command {
 	public void redo(){
 		if ( !executed )
 			return;
+		ChangeGroup cg = new ChangeGroup();
 		
 		/**start placing roots in sites */
 		for(Site site : placeMap.keySet()){
@@ -119,16 +121,17 @@ public class CompositionCommand extends Command {
 
 			for (Layoutable children: root.getChildren()){
 				//
-				parent.addChild(children);
-				//children.getParent().removeChild(children);
-				children.setParent(parent);
+				
+				//OLDTODO parent.addChild(children);
+				////children.getParent().removeChild(children);
+				//OLDTODO children.setParent(parent);
 			}
-			parent.removeChild(site);
+			//OLDTODO parent.removeChild(site);
 		}
 		
 		for (InnerName iNames:inner.getInnerNames()){
-			outer.addChild(iNames);
-			iNames.setParent(outer);
+			//OLDTODO outer.addChild(iNames);
+			//OLDTODo iNames.setParent(outer);
 		}
 		
 		/** connect link and ports */
@@ -145,7 +148,7 @@ public class CompositionCommand extends Command {
 			List<Point> points=new ArrayList<Point>();
 			points= outerName.getPoints();
 			connection.put(link, points);
-			outer.removeChild(innerName);
+			//OLDTODO outer.removeChild(innerName);
 		}
 		/** from hashMap connection create update links*/
 		for(Link link : connection.keySet()){
