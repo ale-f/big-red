@@ -16,6 +16,8 @@ import dk.itu.big_red.model.Control.ChangeName;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
+import dk.itu.big_red.model.PortSpec.ChangeDistance;
+import dk.itu.big_red.model.PortSpec.ChangeSegment;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -189,6 +191,12 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			c.getCreator().removePort(c.port.getName());
+		} else if (b instanceof ChangeSegment) {
+			ChangeSegment c = (ChangeSegment)b;
+			c.getCreator().setSegment(c.segment);
+		} else if (b instanceof ChangeDistance) {
+			ChangeDistance c = (ChangeDistance)b;
+			c.getCreator().setDistance(c.distance);
 		}
 	}
 	

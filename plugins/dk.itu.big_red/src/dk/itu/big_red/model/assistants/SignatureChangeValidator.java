@@ -11,6 +11,8 @@ import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.ModelObject.ChangeComment;
+import dk.itu.big_red.model.PortSpec.ChangeDistance;
+import dk.itu.big_red.model.PortSpec.ChangeSegment;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Signature.ChangeAddControl;
 import dk.itu.big_red.model.Signature.ChangeRemoveControl;
@@ -58,8 +60,13 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				b instanceof ChangeDefaultSize ||
 				b instanceof ChangeKind ||
 				b instanceof ChangeAddPort ||
-				b instanceof ChangeRemovePort) {
+				b instanceof ChangeRemovePort ||
+				b instanceof ChangeSegment) {
 			/* do nothing, yet */
+		} else if (b instanceof ChangeDistance) {
+			ChangeDistance c = (ChangeDistance)b;
+			if (c.distance < 0 || c.distance >= 1.0)
+				rejectChange(b, "The distance value is invalid");
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			if (c.name.trim().length() == 0)
