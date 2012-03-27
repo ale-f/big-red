@@ -28,22 +28,15 @@ public class Port extends Point implements IPort {
 	 */
 	public static final String PROPERTY_DISTANCE = "PortDistance";
 	
-	/**
-	 * An integer index specifying the line segment on the parent {@link
-	 * Node}'s polygon that this Port falls on. Together with {@link
-	 * #distance}, it defines this Port's position.
-	 * 
-	 * <p>(If the {@link Control} defines an {@link Control.Shape#OVAL
-	 * oval} appearance, this value will be <code>0</code>.)
-	 */
-	private int segment = 0;
+	private PortSpec spec;
 	
-	/**
-	 * A value (<code>0 <= distance < 1</code>) specifying this Port's offset
-	 * on its {@link #segment}. Together with <code>segment</code>, it defines
-	 * this Port's position.
-	 */
-	private double distance = 0.0;
+	private void setSpec(PortSpec spec) {
+		this.spec = spec;
+	}
+	
+	public PortSpec getSpec() {
+		return spec;
+	}
 	
 	public Port() {
 		setLayout(new Rectangle(5, 5, 10, 10));
@@ -56,10 +49,7 @@ public class Port extends Point implements IPort {
 	
 	public Port(PortSpec i) {
 		setLayout(new Rectangle(5, 5, 10, 10));
-		
-		setName(i.getName());
-		setSegment(i.getSegment());
-		setDistance(i.getDistance());
+		setSpec(i);
 	}
 	
 	@Override
@@ -67,25 +57,17 @@ public class Port extends Point implements IPort {
 		return (Node)super.getParent();
 	}
 	
+	@Override
+	public String getName() {
+		return getSpec().getName();
+	}
+	
 	/**
 	 * Gets this Port's {@link #distance distance}.
 	 * @see #distance
 	 */
 	public double getDistance() {
-		return distance;
-	}
-	
-	/**
-	 * Sets this Port's {@link #distance distance}.
-	 * @param distance the new distance value
-	 * @see #distance
-	 */
-	public void setDistance(double distance) {
-		if (distance >= 0 && distance < 1) {
-			double oldDistance = this.distance;
-			this.distance = distance;
-			firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
-		}
+		return getSpec().getDistance();
 	}
 
 	/**
@@ -94,22 +76,7 @@ public class Port extends Point implements IPort {
 	 * @return
 	 */
 	public int getSegment() {
-		return segment;
-	}
-	
-	/**
-	 * Sets this Port's {@link #segment segment}.
-	 * 
-	 * <p>Note that the segment value is <i>not</i> checked against the parent
-	 * {@link Node}'s {@link Control} - users of this method must make sure
-	 * they pass something sensible.
-	 * @param segment the new segment value
-	 * @see #segment
-	 */
-	public void setSegment(int segment) {
-		int oldSegment = this.segment;
-		this.segment = segment;
-		firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
+		return getSpec().getSegment();
 	}
 	
 	@Override

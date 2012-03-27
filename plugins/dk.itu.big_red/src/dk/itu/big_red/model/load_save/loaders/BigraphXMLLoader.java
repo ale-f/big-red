@@ -23,7 +23,6 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
@@ -66,10 +65,10 @@ public class BigraphXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(source), "resources/schema/bigraph.xsd");
 			return makeObject(d.getDocumentElement()).setFile(getFile());
+		} catch (LoadFailedException e) {
+			throw e;
 		} catch (Exception e) {
-			if (e instanceof LoadFailedException) {
-				throw (LoadFailedException)e;
-			} else throw new LoadFailedException(e);
+			throw new LoadFailedException(e);
 		}
 	}
 	
@@ -265,8 +264,6 @@ public class BigraphXMLLoader extends XMLLoader {
 			return new OuterName();
 		else if (typeName.equals("signature"))
 			return new Signature();
-		else if (typeName.equals("port"))
-			return new Port();
 		else if (typeName.equals("control"))
 			return new Control();
 		else if (typeName.equals("edge"))
