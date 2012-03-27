@@ -47,8 +47,8 @@ public class BRSPart extends ContainerPart {
 	
 	@Override
 	public List<Layoutable> getModelChildren() {
-		List<Layoutable> r =
-				Lists.group(getModel().getChildren(), Bigraph.class);
+		List<Layoutable> r = getModel().getChildren();
+				//Lists.group(getModel().getChildren(), Bigraph.class);
 		Collections.reverse(r);
 		return r;
 	}

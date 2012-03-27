@@ -59,7 +59,7 @@ public class BRS extends Container implements IChangeable{
 		setLayout( new Rectangle( 0, 0,  1000000, 100000 ) );
 		//diagrams.add( this );
 		Bigraph big= new Bigraph();
-		big.setLayout(new Rectangle (100,100,50,50));
+		//big.setLayout(new Rectangle (100,100,50,50));
 		this.addBigraph(big);
 	}
 	
@@ -109,7 +109,7 @@ public class BRS extends Container implements IChangeable{
 		if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				doChange(c);
-		} else if (b instanceof Point.ChangeConnect) {
+		} /*else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			c.link.addPoint(c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
@@ -149,7 +149,7 @@ public class BRS extends Container implements IChangeable{
 		} else if (b instanceof Site.ChangeAlias) {
 			Site.ChangeAlias c = (Site.ChangeAlias)b;
 			//c.getCreator().setAlias(c.alias);
-		}
+		}*/
 		System.out.println("executed");
 		
 	}

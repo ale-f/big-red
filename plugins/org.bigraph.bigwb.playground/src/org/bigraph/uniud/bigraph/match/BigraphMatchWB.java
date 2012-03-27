@@ -11,8 +11,8 @@ public class BigraphMatchWB {
 	
 	
 	public static void match(){//Bigraph agent, Bigraph redex){
-		fillBigraphExampleAgent4();
-		fillBigraphExampleRedex4();
+		//fillBigraphExampleAgent4();
+		//fillBigraphExampleRedex4();
 //		fillBigraphAgent2();
 //		fillBigraphRedex2();
 		PlaceMatch.match(agent, redex);
@@ -23,6 +23,7 @@ public class BigraphMatchWB {
 		match();
 	}
 	
+	/*
 	public static void fillster(){
 		Signature s = new Signature();
 		Control c1 = new Control();
@@ -469,7 +470,7 @@ public class BigraphMatchWB {
 		n1.addChild(n4);
 		agent.addChild(r1);
 	}
-	
+	*/
 	
 
 }
