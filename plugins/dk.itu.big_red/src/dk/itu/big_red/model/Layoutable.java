@@ -8,6 +8,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.IChangeable;
 
 /**
  * All of the objects which can actually appear on a bigraph are instances of
@@ -27,7 +28,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  * @see ModelObject
  *
  */
-public abstract class Layoutable extends Colourable {
+public abstract class Layoutable extends Colourable implements IChangeable {
 	abstract class LayoutableChange extends ModelObjectChange {
 		@Override
 		public Layoutable getCreator() {
@@ -156,6 +157,16 @@ public abstract class Layoutable extends Colourable {
 		if (getParent(context) == null) {
 			return null;
 		} else return getParent(context).getBigraph(context);
+	}
+	
+	@Override
+	public Bigraph getChangeExecutor() {
+		return getBigraph();
+	}
+	
+	@Override
+	public Bigraph getChangeExecutor(IPropertyProviderProxy context) {
+		return getBigraph(context);
 	}
 	
 	/**
