@@ -433,21 +433,6 @@ MenuListener {
 		e.gc.setAntialias(SWT.ON);
 		setCursor(Cursors.ARROW);
 		
-		/* Draw the grid and crosshairs */
-		e.gc.setForeground(ColorConstants.lightGray);
-		for (int x = 0; x <= controlSize.width; x += 10) {
-			if (x != roundedMousePosition.x) {
-				e.gc.setAlpha(63); /* grid */
-			} else e.gc.setAlpha(255); /* crosshairs */
-			e.gc.drawLine(x, 0, x, controlSize.height);
-		}
-		for (int y = 0; y <= controlSize.height; y += 10) {
-			if (y != roundedMousePosition.y) {
-				e.gc.setAlpha(63); /* grid */
-			} else e.gc.setAlpha(255); /* crosshairs */
-			e.gc.drawLine(0, y, controlSize.width, y);
-		}
-		
 		if (getEnabled() == false) {
 			e.gc.setBackground(ColorConstants.lightGray);
 			e.gc.setAlpha(128);
@@ -455,7 +440,6 @@ MenuListener {
 			return;
 		}
 		
-		e.gc.setAlpha(255);
 		e.gc.setForeground(ColorConstants.black);
 		
 		Line l = new Line();
