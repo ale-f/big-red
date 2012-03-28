@@ -23,7 +23,7 @@ import dk.itu.big_red.model.changes.Change;
  * @see Layoutable
  *
  */
-public class ModelObject implements IDisposable, IPropertyProvider {
+public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	public abstract class ModelObjectChange extends Change {
 		/**
 		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.

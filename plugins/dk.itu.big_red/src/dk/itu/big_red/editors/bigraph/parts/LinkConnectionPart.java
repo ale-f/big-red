@@ -109,12 +109,9 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
 		Link.Connection model = getModel();
 		
-		String s = getDisplayName();
-		if (model.getComment() != null)
-			s += "\n\n" + model.getComment();
-		figure.setToolTip(s);
-		
-		figure.setForegroundColor(model.getLink().getOutlineColour().getSWTColor());
+		figure.setToolTip(getDisplayName());
+		figure.setForegroundColor(
+				model.getLink().getOutlineColour().getSWTColor());
 	}
 
 	/**

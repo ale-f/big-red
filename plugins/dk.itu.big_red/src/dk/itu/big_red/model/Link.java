@@ -23,7 +23,7 @@ public abstract class Link extends Layoutable implements ILink {
 	 * @author alec
 	 *
 	 */
-	public class Connection extends ModelObject {
+	public class Connection {
 		private Point point;
 		
 		private Connection(Point point) {

@@ -143,7 +143,7 @@ public abstract class Layoutable extends Colourable {
 		layout = newLayout;
 		firePropertyChange(Layoutable.PROPERTY_LAYOUT, oldLayout, layout);
 	}
-
+	
 	/**
 	 * Returns the {@link Bigraph} that ultimately contains this object.
 	 * @return a Bigraph

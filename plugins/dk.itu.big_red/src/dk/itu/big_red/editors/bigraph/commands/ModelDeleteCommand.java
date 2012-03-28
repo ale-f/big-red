@@ -6,7 +6,6 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
@@ -25,12 +24,12 @@ public class ModelDeleteCommand extends ChangeCommand {
 		setChange(cg);
 	}
 	
-	private ArrayList<ModelObject> objects = new ArrayList<ModelObject>();
+	private ArrayList<Object> objects = new ArrayList<Object>();
 	
 	public static final String GROUP_MAP_ID =
 		"dk.itu.big_red.editors.bigraph.commands.ModelDeleteCommand";
 	
-	public void addObject(ModelObject m) {
+	public void addObject(Object m) {
 		if (m != null && !(m instanceof Bigraph) && !(m instanceof Port)) {
 			objects.add(m);
 			if (m instanceof Link.Connection) {
@@ -58,7 +57,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		}
 	}
 	
-	private void remove(ModelObject m) {
+	private void remove(Object m) {
 		if (m instanceof Link.Connection) {
 			Link.Connection l = (Link.Connection)m;
 			Link link = l.getLink(); Point point = l.getPoint();
@@ -105,7 +104,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		cg.clear();
 		if (scratch != null)
 			scratch.clear();
-		for (ModelObject m : objects)
+		for (Object m : objects)
 			remove(m);
 		return this;
 	}
