@@ -22,6 +22,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -98,6 +99,20 @@ MenuListener {
 				}
 			}
 		};
+	}
+	
+	private Color fill = ColorConstants.white, outline = ColorConstants.black;
+	
+	public void setFillColor(Color fill) {
+		if (fill != null)
+			this.fill = fill;
+		redraw();
+	}
+	
+	public void setOutlineColor(Color outline) {
+		if (outline != null)
+			this.outline = outline;
+		redraw();
 	}
 	
 	private Shape mode = Shape.POLYGON;
@@ -445,8 +460,14 @@ MenuListener {
 		
 		Line l = new Line();
 		
+		e.gc.setForeground(outline);
+		e.gc.setBackground(fill);
+		
 		if (mode == Shape.POLYGON) {
-			e.gc.drawPolyline(points.toIntArray());
+			int[] pointArray = points.toIntArray();
+			e.gc.fillPolygon(pointArray);
+			e.gc.drawPolyline(pointArray);
+			
 			Point first = getPoint(0), last = getPoint(points.size() - 1);
 			e.gc.drawLine(first.x, first.y, last.x, last.y);
 			
@@ -466,6 +487,7 @@ MenuListener {
 		} else {
 			int w = ((controlSize.width - 60) / 10) * 10,
 			    h = ((controlSize.height - 60) / 10) * 10;
+			e.gc.fillOval(30, 30, w, h);
 			e.gc.drawOval(30, 30, w, h);
 			
 			e.gc.setBackground(ColorConstants.red);
