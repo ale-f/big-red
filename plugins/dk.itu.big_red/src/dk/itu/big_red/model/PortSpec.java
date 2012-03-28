@@ -6,6 +6,9 @@ import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
 
 public class PortSpec extends ModelObject implements IPort {
+	public static final String PROPERTY_SEGMENT = "PortSpecSegment";
+	public static final String PROPERTY_DISTANCE = "PortSpecDistance";
+	
 	private abstract class PortSpecChange extends ModelObjectChange {
 		@Override
 		public PortSpec getCreator() {
@@ -66,8 +69,9 @@ public class PortSpec extends ModelObject implements IPort {
 	}
 
 	public PortSpec(PortSpec p) {
-		setName(p.getName()).setSegment(p.getSegment()).
-			setDistance(p.getDistance());
+		setName(p.getName());
+		setSegment(p.getSegment());
+		setDistance(p.getDistance());
 	}
 	
 	@Override
@@ -84,18 +88,20 @@ public class PortSpec extends ModelObject implements IPort {
 		return segment;
 	}
 	
-	public PortSpec setSegment(int segment) {
+	public void setSegment(int segment) {
+		int oldSegment = this.segment;
 		this.segment = segment;
-		return this;
+		firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
 	}
 	
 	public double getDistance() {
 		return distance;
 	}
 	
-	public PortSpec setDistance(double distance) {
+	public void setDistance(double distance) {
+		double oldDistance = this.distance;
 		this.distance = distance;
-		return this;
+		firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
 	}
 
 	@Override
@@ -120,5 +126,14 @@ public class PortSpec extends ModelObject implements IPort {
 	
 	public ChangeDistance changeDistance(double distance) {
 		return new ChangeDistance(distance);
+	}
+	
+	@Override
+	public Object getProperty(String name) {
+		if (PROPERTY_DISTANCE.equals(name)) {
+			return getDistance();
+		} else if (PROPERTY_SEGMENT.equals(name)) {
+			return getSegment();
+		} else return super.getProperty(name);
 	}
 }
