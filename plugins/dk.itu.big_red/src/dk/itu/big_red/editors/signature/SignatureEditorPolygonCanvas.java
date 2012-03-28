@@ -431,6 +431,7 @@ MenuListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		e.gc.setAntialias(SWT.ON);
+		e.gc.setLineWidth(2);
 		setCursor(Cursors.ARROW);
 		
 		if (getEnabled() == false) {
@@ -617,11 +618,10 @@ MenuListener {
 		}
 	}
 	
-	/**
-	 * Does nothing.
-	 */
 	@Override
 	public void menuHidden(MenuEvent e) {
+		for (MenuItem i : getMenu().getItems())
+			i.dispose();
 	}
 
 	/**
@@ -630,8 +630,6 @@ MenuListener {
 	@Override
 	public void menuShown(MenuEvent e) {
 		Menu m = getMenu();
-		for (MenuItem i : m.getItems())
-			i.dispose();
 		
 		final int foundPoint = findPointAt(roundedMousePosition),
 		          foundPort = findPortAt(mousePosition),
@@ -797,6 +795,7 @@ MenuListener {
 			for (PortSpec i : ports)
 				this.ports.add(new PortSpec(i));
 			firePortChange();
+			redraw();
 		}
 	}
 }
