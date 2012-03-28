@@ -117,6 +117,9 @@ implements PropertyChangeListener {
 		resizable.setSelection(currentControl.isResizable());
 		if (getSelectedControl() != currentControl)
 			controls.setSelection(new StructuredSelection(currentControl), true);
+		appearance.setFillColor(currentControl.getFillColour().getSWTColor());
+		appearance.setOutlineColor(
+				currentControl.getOutlineColour().getSWTColor());
 		
 		ovalMode.setSelection(!polygon);
 		polygonMode.setSelection(polygon);
@@ -505,9 +508,13 @@ implements PropertyChangeListener {
 				} else if (propertyName.equals(Control.PROPERTY_RESIZABLE)) {
 					resizable.setSelection((Boolean)newValue);
 				} else if (propertyName.equals(Colourable.PROPERTY_FILL)) {
-					fill.setColorValue(((Colour)newValue).getRGB());
+					Colour newColour = (Colour)newValue;
+					fill.setColorValue(newColour.getRGB());
+					appearance.setFillColor(newColour.getSWTColor());
 				} else if (propertyName.equals(Colourable.PROPERTY_OUTLINE)) {
-					outline.setColorValue(((Colour)newValue).getRGB());
+					Colour newColour = (Colour)newValue;
+					outline.setColorValue(newColour.getRGB());
+					appearance.setOutlineColor(newColour.getSWTColor());
 				} else if (propertyName.equals(Control.PROPERTY_KIND)) {
 					activeKind.setSelection(Kind.ACTIVE.equals(newValue));
 					atomicKind.setSelection(Kind.ATOMIC.equals(newValue));
