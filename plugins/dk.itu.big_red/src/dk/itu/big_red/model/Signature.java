@@ -22,7 +22,7 @@ import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeable;
+import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.interfaces.ISignature;
 
 /**
@@ -33,7 +33,7 @@ import dk.itu.big_red.model.interfaces.ISignature;
  * @author alec
  * @see ISignature
  */
-public class Signature extends ModelObject implements ISignature, IChangeable {
+public class Signature extends ModelObject implements ISignature, IChangeExecutor {
 	abstract class SignatureChange extends ModelObjectChange {
 		@Override
 		public Signature getCreator() {

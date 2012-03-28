@@ -1,15 +1,15 @@
 package dk.itu.big_red.model.changes;
 
 /**
- * Objects implementing {@link IChangeable} can have {@link Change}s applied
+ * Objects implementing {@link IChangeExecutor} can have {@link Change}s applied
  * to them to modify their state.
  * @author alec
  *
  */
-public interface IChangeable extends IChangeValidator {
+public interface IChangeExecutor extends IChangeValidator {
 	/**
 	 * Validates and applies the given {@link Change} to this {@link
-	 * IChangeable}.
+	 * IChangeExecutor}.
 	 * @param b a {@link Change}
 	 * @throws ChangeRejectedException if {@link #tryValidateChange(Change)}
 	 * fails

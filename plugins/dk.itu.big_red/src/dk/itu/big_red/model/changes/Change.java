@@ -29,7 +29,7 @@ public abstract class Change {
 	}
 	
 	/**
-	 * Called by {@link IChangeable}s just before they apply this {@link
+	 * Called by {@link IChangeExecutor}s just before they apply this {@link
 	 * Change}.
 	 * <p>(Subclasses should override this method if they need to save some
 	 * properties of an object before a change in order to be able to {@link

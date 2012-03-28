@@ -9,9 +9,9 @@ import org.eclipse.core.resources.IFile;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeable;
+import dk.itu.big_red.model.changes.IChangeExecutor;
 
-public class SimulationSpec extends ModelObject implements IChangeable {
+public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	abstract class SimulationSpecChange extends ModelObjectChange {
 		@Override
 		public SimulationSpec getCreator() {

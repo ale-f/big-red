@@ -42,7 +42,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeable;
+import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.utilities.ui.UI;
@@ -231,7 +231,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	private void processChangeCommand(int detail, ChangeCommand c) {
-		IChangeable target = c.getTarget();
+		IChangeExecutor target = c.getTarget();
 		
 		if (target == getRedex()) {
 			Change reactumChange = getModel().getReactumChange(c.getChange());
