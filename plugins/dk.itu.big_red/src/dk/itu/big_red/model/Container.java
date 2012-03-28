@@ -37,8 +37,8 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public ContainerChange inverse() {
-			return getCreator().changeRemoveChild(child);
+		public ChangeRemoveChild inverse() {
+			return new ChangeRemoveChild(child);
 		}
 		
 		@Override
@@ -72,8 +72,8 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public ContainerChange inverse() {
-			return getCreator().changeAddChild(child, oldName);
+		public ChangeAddChild inverse() {
+			return new ChangeAddChild(child, oldName);
 		}
 		
 		@Override

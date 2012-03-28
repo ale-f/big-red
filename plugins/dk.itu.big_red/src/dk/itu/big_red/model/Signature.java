@@ -58,8 +58,8 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		}
 
 		@Override
-		public Change inverse() {
-			return getCreator().changeRemoveControl(control);
+		public ChangeRemoveControl inverse() {
+			return new ChangeRemoveControl(control);
 		}
 		
 		@Override
@@ -75,8 +75,8 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		}
 
 		@Override
-		public Change inverse() {
-			return getCreator().changeAddControl(control);
+		public ChangeAddControl inverse() {
+			return new ChangeAddControl(control);
 		}
 		
 		@Override

@@ -31,8 +31,8 @@ public class Site extends Layoutable implements ISite {
 		}
 		
 		@Override
-		public ModelObjectChange inverse() {
-			return getCreator().changeAlias(oldAlias);
+		public ChangeAlias inverse() {
+			return new ChangeAlias(oldAlias);
 		}
 	}
 	

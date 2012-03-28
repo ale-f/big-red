@@ -34,8 +34,8 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeSignature(oldSignature);
+		public ChangeSignature inverse() {
+			return new ChangeSignature(oldSignature);
 		}
 		
 		@Override
@@ -53,8 +53,8 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeRemoveRule(rule);
+		public ChangeRemoveRule inverse() {
+			return new ChangeRemoveRule(rule);
 		}
 		
 		@Override
@@ -72,8 +72,8 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeAddRule(rule);
+		public ChangeAddRule inverse() {
+			return new ChangeAddRule(rule);
 		}
 		
 		@Override
@@ -98,8 +98,8 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeModel(oldModel);
+		public ChangeModel inverse() {
+			return new ChangeModel(oldModel);
 		}
 		
 		@Override

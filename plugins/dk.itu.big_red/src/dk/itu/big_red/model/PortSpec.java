@@ -1,6 +1,5 @@
 package dk.itu.big_red.model;
 
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
@@ -30,8 +29,8 @@ public class PortSpec extends ModelObject implements IPort {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeSegment(oldSegment);
+		public ChangeSegment inverse() {
+			return new ChangeSegment(oldSegment);
 		}
 	}
 	
@@ -49,8 +48,8 @@ public class PortSpec extends ModelObject implements IPort {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeDistance(oldDistance);
+		public ChangeDistance inverse() {
+			return new ChangeDistance(oldDistance);
 		}
 	}
 	

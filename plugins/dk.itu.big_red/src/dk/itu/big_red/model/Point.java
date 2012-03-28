@@ -36,8 +36,8 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 
 		@Override
-		public LayoutableChange inverse() {
-			return getCreator().changeDisconnect(link);
+		public ChangeDisconnect inverse() {
+			return new ChangeDisconnect(link);
 		}
 		
 		@Override
@@ -52,8 +52,8 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 
 		@Override
-		public LayoutableChange inverse() {
-			return getCreator().changeConnect(link);
+		public ChangeConnect inverse() {
+			return new ChangeConnect(link);
 		}
 		
 		@Override

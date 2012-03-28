@@ -50,8 +50,8 @@ public abstract class Layoutable extends Colourable implements IChangeable {
 		}
 		
 		@Override
-		public LayoutableChange inverse() {
-			return getCreator().changeLayout(oldLayout);
+		public ChangeLayout inverse() {
+			return new ChangeLayout(oldLayout);
 		}
 		
 		@Override
@@ -84,8 +84,8 @@ public abstract class Layoutable extends Colourable implements IChangeable {
 		}
 		
 		@Override
-		public LayoutableChange inverse() {
-			return getCreator().changeName(oldName);
+		public ChangeName inverse() {
+			return new ChangeName(oldName);
 		}
 		
 		@Override

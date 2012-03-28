@@ -56,8 +56,8 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		};
 		
 		@Override
-		public ModelObjectChange inverse() {
-			return getCreator().changeComment(oldComment);
+		public ChangeComment inverse() {
+			return new ChangeComment(oldComment);
 		}
 	}
 	

@@ -50,7 +50,7 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
+		public ChangeName inverse() {
 			return new ChangeName(oldName);
 		}
 		
@@ -79,8 +79,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeShape(oldShape);
+		public ChangeShape inverse() {
+			return new ChangeShape(oldShape);
 		}
 		
 		@Override
@@ -109,8 +109,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeLabel(oldLabel);
+		public ChangeLabel inverse() {
+			return new ChangeLabel(oldLabel);
 		}
 		
 		@Override
@@ -147,8 +147,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeDefaultSize(oldDefaultSize);
+		public ChangeDefaultSize inverse() {
+			return new ChangeDefaultSize(oldDefaultSize);
 		}
 		
 		@Override
@@ -181,8 +181,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeResizable(oldResizable);
+		public ChangeResizable inverse() {
+			return new ChangeResizable(oldResizable);
 		}
 		
 		@Override
@@ -215,8 +215,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeKind(oldKind);
+		public ChangeKind inverse() {
+			return new ChangeKind(oldKind);
 		}
 		
 		@Override
@@ -240,8 +240,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeRemovePort(port);
+		public ChangeRemovePort inverse() {
+			return new ChangeRemovePort(port);
 		}
 		
 		@Override
@@ -256,8 +256,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeAddPort(port);
+		public ChangeAddPort inverse() {
+			return new ChangeAddPort(port);
 		}
 		
 		@Override
