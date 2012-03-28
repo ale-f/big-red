@@ -61,6 +61,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 		if (m instanceof Link.Connection) {
 			Link.Connection l = (Link.Connection)m;
 			Link link = l.getLink(); Point point = l.getPoint();
+			if (point.getLink(scratch) != link)
+				return; /* connection already destroyed */
 			setTarget(link.getBigraph());
 			removePoint(link, point);
 		} else if (m instanceof Layoutable) {
