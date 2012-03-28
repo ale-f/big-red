@@ -427,13 +427,9 @@ implements PropertyChangeListener {
 			public void propertyChange(PropertyChangeEvent event) {
 				if (!shouldPropagateUI())
 					return;
-				try {
-					getModel().tryApplyChange(
-							currentControl.changeOutlineColour(
-									new Colour(outline.getColorValue())));
-				} catch (ChangeRejectedException cre) {
-					cre.printStackTrace();
-				}
+				Colour newColour = new Colour(outline.getColorValue());
+				if (!currentControl.getOutlineColour().equals(newColour))
+					doChange(currentControl.changeOutlineColour(newColour));
 			}
 		});
 		
@@ -445,13 +441,9 @@ implements PropertyChangeListener {
 			public void propertyChange(PropertyChangeEvent event) {
 				if (!shouldPropagateUI())
 					return;
-				try {
-					getModel().tryApplyChange(
-							currentControl.changeFillColour(
-									new Colour(fill.getColorValue())));
-				} catch (ChangeRejectedException cre) {
-					cre.printStackTrace();
-				}
+				Colour newColour = new Colour(fill.getColorValue());
+				if (!currentControl.getFillColour().equals(newColour))
+					doChange(currentControl.changeFillColour(newColour));
 			}
 		});
 		
