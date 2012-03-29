@@ -266,6 +266,34 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
+	public class ChangePoints extends ControlChange {
+		public PointList points;
+		public ChangePoints(PointList points) {
+			this.points = points;
+		}
+		
+		private PointList oldPoints;
+		@Override
+		public void beforeApply() {
+			oldPoints = getCreator().getPoints();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldPoints != null);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (points != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangePoints(oldPoints);
+		}
+	}
+	
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -420,24 +448,21 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	/**
-	 * If this object's shape is {@link Shape#POLYGON}, then gets a copy
-	 * of the list of points defining its polygon.
-	 * @return a list of points defining a polygon, or <code>null</code> if
-	 *         this object's shape is not {@link Shape#POLYGON}
+	 * Returns a copy of the list of points defining this Control's polygon.
+	 * @return a list of points defining a polygon
 	 * @see Control#getShape
 	 * @see Control#setShape
 	 */
 	public PointList getPoints() {
-		if (shape == Shape.POLYGON)
-			return points.getCopy();
-		else return null;
+		return points.getCopy();
 	}
 	
 	public void setPoints(PointList points) {
-		PointList oldPoints = this.points;
-		this.points = points;
-		if (shape == Shape.POLYGON)
+		if (points != null) {
+			PointList oldPoints = this.points;
+			this.points = points;
 			firePropertyChange(PROPERTY_POINTS, oldPoints, points);
+		}
 	}
 
 	protected void setName(String name) {

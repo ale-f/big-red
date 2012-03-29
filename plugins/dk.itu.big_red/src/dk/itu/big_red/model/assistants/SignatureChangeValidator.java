@@ -7,6 +7,7 @@ import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangePoints;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
@@ -61,7 +62,8 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				b instanceof ChangeKind ||
 				b instanceof ChangeAddPort ||
 				b instanceof ChangeRemovePort ||
-				b instanceof ChangeSegment) {
+				b instanceof ChangeSegment ||
+				b instanceof ChangePoints) {
 			/* do nothing, yet */
 		} else if (b instanceof ChangeDistance) {
 			ChangeDistance c = (ChangeDistance)b;
