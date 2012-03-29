@@ -457,7 +457,7 @@ public class Control extends Colourable implements IControl {
 		return points.getCopy();
 	}
 	
-	public void setPoints(PointList points) {
+	protected void setPoints(PointList points) {
 		if (points != null) {
 			PointList oldPoints = this.points;
 			this.points = points;

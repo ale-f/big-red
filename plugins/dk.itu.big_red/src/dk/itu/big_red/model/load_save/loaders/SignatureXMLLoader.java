@@ -81,9 +81,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		if (generatePolygon) {
 			cg.add(model.changeShape(Shape.POLYGON));
-			model.setPoints(
+			cg.add(model.changePoints(
 				new Ellipse(new Rectangle(0, 0, 30, 30)).
-					getPolygon(Math.max(3, model.getPorts().size())));
+					getPolygon(Math.max(3, model.getPorts().size()))));
 			int i = 0;
 			for (PortSpec p : model.getPorts()) {
 				p.setSegment(i++);
@@ -142,15 +142,15 @@ public class SignatureXMLLoader extends XMLLoader {
 		if (s != null && s.equals("polygon"))
 			shape = Shape.POLYGON;
 		
+		cg.add(c.changeShape(shape));
+		
 		if (shape == Shape.POLYGON) {
 			pl = new PointList();
 			for (Element pE : getChildElements(e))
 				pl.addPoint(
 					getIntAttribute(pE, BIG_RED, "x"),
 					getIntAttribute(pE, BIG_RED, "y"));
+			cg.add(c.changePoints(pl));
 		}
-		
-		cg.add(c.changeShape(shape));
-		c.setPoints(pl);
 	}
 }
