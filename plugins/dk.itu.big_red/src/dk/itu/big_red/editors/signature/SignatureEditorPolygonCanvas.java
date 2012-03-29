@@ -416,13 +416,13 @@ MenuListener, PropertyChangeListener {
 						double distance = port.getDistance();
 						if (segment == (dragPointIndex - 1)) {
 							if (distance < pivot) {
-								port.setDistance((pivot - distance) / pivot);
+								// port.setDistance((pivot - distance) / pivot);
 							} else {
-								port.setSegment(segment + 1);
-								port.setDistance((distance - pivot) / (1 - pivot));
+								/* port.setSegment(segment + 1);
+								port.setDistance((distance - pivot) / (1 - pivot)); */
 							}
 						} else if (segment >= dragPointIndex) {
-							port.setSegment(segment + 1);
+							// port.setSegment(segment + 1);
 						}
 					}
 					getPoints().insertPoint(p, dragPointIndex);
@@ -637,7 +637,7 @@ MenuListener, PropertyChangeListener {
 								distance = 0;
 							}
 							
-							PortSpec p = new PortSpec();
+							/* PortSpec p = new PortSpec();
 							p.setSegment(lsegment);
 							p.setDistance(distance);
 							
@@ -647,18 +647,18 @@ MenuListener, PropertyChangeListener {
 							if (newName != null) {
 								ChangeGroup cg = new ChangeGroup();
 								cg.add(getModel().changeAddPort(p));
-								/* XXX
-								p.setName(newName); */
-							}
+								XXX
+								p.setName(newName);
+							} */
 						}
 					});
 				else UI.createMenuItem(m, 0, "Add &port", new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						PortSpec p = new PortSpec();
+						/* PortSpec p = new PortSpec();
 						p.setSegment(0);
 						p.setDistance(new Ellipse(getEllipse()).
-								getClosestOffset(mousePosition));
+								getClosestOffset(mousePosition)); 
 
 						String newName = UI.promptFor("New port name",
 								"Choose a name for the new port:", "",
@@ -667,8 +667,8 @@ MenuListener, PropertyChangeListener {
 							ChangeGroup cg = new ChangeGroup();
 							cg.add(getModel().changeAddPort(p));
 							/* XXX
-							p.setName(newName); */
-						}
+							p.setName(newName);
+						} */
 					}
 				});
 			}

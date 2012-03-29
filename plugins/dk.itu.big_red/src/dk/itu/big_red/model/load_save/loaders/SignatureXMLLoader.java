@@ -86,8 +86,8 @@ public class SignatureXMLLoader extends XMLLoader {
 					getPolygon(Math.max(3, model.getPorts().size()))));
 			int i = 0;
 			for (PortSpec p : model.getPorts()) {
-				p.setSegment(i++);
-				p.setDistance(0.5);
+				cg.add(p.changeSegment(i++));
+				cg.add(p.changeDistance(0.5));
 			}
 		}
 	}
@@ -114,12 +114,14 @@ public class SignatureXMLLoader extends XMLLoader {
 	private PortSpec makePortSpec(Element e, boolean ignoreAppearanceData) {
 		PortSpec model = new PortSpec();
 		
-		model.setName(getAttributeNS(e, SIGNATURE, "name"));
+		cg.add(model.changeName(getAttributeNS(e, SIGNATURE, "name")));
 		
 		Element el = removeNamedChildElement(e, BIG_RED, "port-appearance");
 		if (el != null && !ignoreAppearanceData) {
-			model.setDistance(getDoubleAttribute(el, BIG_RED, "distance"));
-			model.setSegment(getIntAttribute(el, BIG_RED, "segment"));
+			int segment = getIntAttribute(el, BIG_RED, "segment");
+			double distance = getDoubleAttribute(el, BIG_RED, "distance");
+			cg.add(model.changeSegment(segment),
+					model.changeDistance(distance));
 		}
 		
 		return model;

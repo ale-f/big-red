@@ -108,7 +108,7 @@ public class PortSpec extends ModelObject implements IPort {
 		return name;
 	}
 	
-	public void setName(String name) {
+	protected void setName(String name) {
 		String oldName = this.name;
 		this.name = name;
 		firePropertyChange(PROPERTY_NAME, oldName, name);
@@ -118,7 +118,7 @@ public class PortSpec extends ModelObject implements IPort {
 		return segment;
 	}
 	
-	public void setSegment(int segment) {
+	protected void setSegment(int segment) {
 		int oldSegment = this.segment;
 		this.segment = segment;
 		firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
@@ -128,7 +128,7 @@ public class PortSpec extends ModelObject implements IPort {
 		return distance;
 	}
 	
-	public void setDistance(double distance) {
+	protected void setDistance(double distance) {
 		double oldDistance = this.distance;
 		this.distance = distance;
 		firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
@@ -150,6 +150,10 @@ public class PortSpec extends ModelObject implements IPort {
 				getDistance() + ")";
 	}
 	
+	public ChangeName changeName(String name) {
+		return new ChangeName(name);
+	}
+	
 	public ChangeSegment changeSegment(int segment) {
 		return new ChangeSegment(segment);
 	}
@@ -160,7 +164,9 @@ public class PortSpec extends ModelObject implements IPort {
 	
 	@Override
 	public Object getProperty(String name) {
-		if (PROPERTY_DISTANCE.equals(name)) {
+		if (PROPERTY_NAME.equals(name)) {
+			return getName();
+		} else if (PROPERTY_DISTANCE.equals(name)) {
 			return getDistance();
 		} else if (PROPERTY_SEGMENT.equals(name)) {
 			return getSegment();
