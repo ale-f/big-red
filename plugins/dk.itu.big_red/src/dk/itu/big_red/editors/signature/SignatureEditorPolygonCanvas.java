@@ -411,22 +411,18 @@ MenuListener, PropertyChangeListener {
 					Line l1 = new Line(getPoint(dragPointIndex - 1), p),
 							l2 = new Line(p, getPoint(dragPointIndex));
 					double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
-					boolean portChange = false;
 					for (PortSpec port : getPorts()) {
 						int segment = port.getSegment();
 						double distance = port.getDistance();
 						if (segment == (dragPointIndex - 1)) {
 							if (distance < pivot) {
 								port.setDistance((pivot - distance) / pivot);
-								portChange = true;
 							} else {
 								port.setSegment(segment + 1);
 								port.setDistance((distance - pivot) / (1 - pivot));
-								portChange = true;
 							}
 						} else if (segment >= dragPointIndex) {
 							port.setSegment(segment + 1);
-							portChange = true;
 						}
 					}
 					getPoints().insertPoint(p, dragPointIndex);
