@@ -201,6 +201,9 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		} else if (b instanceof ChangePoints) {
 			ChangePoints c = (ChangePoints)b;
 			c.getCreator().setPoints(c.points);
+		} else if (b instanceof PortSpec.ChangeName) {
+			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
+			c.getCreator().setName(c.name);
 		}
 	}
 	

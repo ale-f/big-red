@@ -1,10 +1,12 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
 
 public class PortSpec extends ModelObject implements IPort {
+	public static final String PROPERTY_NAME = "PortSpecName";
 	public static final String PROPERTY_SEGMENT = "PortSpecSegment";
 	public static final String PROPERTY_DISTANCE = "PortSpecDistance";
 	
@@ -12,6 +14,34 @@ public class PortSpec extends ModelObject implements IPort {
 		@Override
 		public PortSpec getCreator() {
 			return PortSpec.this;
+		}
+	}
+	
+	public class ChangeName extends PortSpecChange {
+		public String name;
+		public ChangeName(String name) {
+			this.name = name;
+		}
+		
+		private String oldName;
+		@Override
+		public void beforeApply() {
+			oldName = getCreator().getName();
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (name != null);
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeName(oldName);
 		}
 	}
 	
@@ -53,7 +83,7 @@ public class PortSpec extends ModelObject implements IPort {
 		}
 	}
 	
-	private String name = "";
+	private String name = null;
 	private int segment;
 	private double distance;
 	
@@ -78,9 +108,10 @@ public class PortSpec extends ModelObject implements IPort {
 		return name;
 	}
 	
-	public PortSpec setName(String name) {
+	public void setName(String name) {
+		String oldName = this.name;
 		this.name = name;
-		return this;
+		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
 	public int getSegment() {
