@@ -647,4 +647,8 @@ public class Control extends Colourable implements IControl {
 	public ChangeRemovePort changeRemovePort(PortSpec port) {
 		return new ChangeRemovePort(port);
 	}
+	
+	public ChangePoints changePoints(PointList pl) {
+		return new ChangePoints(pl);
+	}
 }
