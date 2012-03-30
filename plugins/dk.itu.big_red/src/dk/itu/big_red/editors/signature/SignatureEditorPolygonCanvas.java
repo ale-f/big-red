@@ -112,8 +112,10 @@ MenuListener, PropertyChangeListener {
 					stopListeningTo((PortSpec)oldValue);
 				}
 				redraw();
-			} else if (Control.PROPERTY_POINTS.equals(name) ||
-					Control.PROPERTY_FILL.equals(name) ||
+			} else if (Control.PROPERTY_POINTS.equals(name)) {
+				pointsBounds = null;
+				redraw();
+			} else if (Control.PROPERTY_FILL.equals(name) ||
 					Control.PROPERTY_OUTLINE.equals(name)) {
 				redraw();
 			}
@@ -189,15 +191,20 @@ MenuListener, PropertyChangeListener {
 		this.editor = editor;
 	}
 	
+	private int translationX() {
+		return roundToGrid((controlWidth - requireBounds().width) / 2);
+	}
+	
+	private int translationY() {
+		return roundToGrid((controlHeight - requireBounds().height) / 2);
+	}
+	
 	private void doChange(Change c) {
 		editor.doChange(c);
 	}
 	
 	private void opMovePoint(int moveIndex, int mx, int my) {
-		Rectangle bounds = requireBounds();
-		int
-			x = mx - ((controlWidth - bounds.width) / 2),
-			y = my - (controlHeight - bounds.height) / 2;
+		int x = mx - translationX(), y = my - translationY();
 		PointList pl = getModel().getPoints().getCopy();
 		pl.setPoint(new Point(x, y), moveIndex);
 		doChange(getModel().changePoints(pl));
@@ -232,10 +239,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private void opInsertPoint(int insertIndex, int mx, int my) {
-		Rectangle bounds = requireBounds();
-		int
-			x = mx - ((controlWidth - bounds.width) / 2),
-			y = my - (controlHeight - bounds.height) / 2;
+		int x = mx - translationX(), y = my - translationY();
 		ChangeGroup cg = new ChangeGroup();
 		Point p = roundToGrid(x, y);
 		Line l1 = new Line(getPoint(insertIndex - 1), p),
@@ -297,18 +301,18 @@ MenuListener, PropertyChangeListener {
 		return getModel().getPorts();
 	}
 	
+	protected int roundToGrid(int x) {
+		return (int)(Math.round(x / 10.0) * 10);
+	}
+	
 	protected Point roundToGrid(int x, int y) {
-		return new Point(
-			(int)(Math.round(x / 10.0) * 10),
-			(int)(Math.round(y / 10.0) * 10));
+		return new Point(roundToGrid(x), roundToGrid(y));
 	}
 	
 	protected Point getPoint(int i) {
 		PointList points = getModel().getPoints();
-		Rectangle bounds = requireBounds();
 		return points.getPoint((i + points.size()) % points.size()).
-				translate((controlWidth - bounds.width) / 2,
-						(controlHeight - bounds.height) / 2);
+				translate(translationX(), translationY());
 	}
 	
 	protected int findPortAt(int x, int y) {
@@ -456,7 +460,7 @@ MenuListener, PropertyChangeListener {
 			redraw();
 		} else if (dragPointIndex != -1) { /* a point is being manipulated */
 			Point p = roundToGrid(e.x, e.y);
-			int pointAtCursor = findPointAt(roundedMousePosition.x, roundedMousePosition.y);
+			int pointAtCursor = findPointAt(p.x, p.y);
 			if (pointAtCursor == -1) {
 				if (!newPoint) {
 					opMovePoint(dragPointIndex, p.x, p.y);
@@ -501,11 +505,9 @@ MenuListener, PropertyChangeListener {
 			/* toIntArray returns a reference to the internal array, so make a
 			 * copy to avoid translating the original points */
 			PointList points = getModel().getPoints().getCopy();
-			Rectangle bounds = requireBounds();
 			int[] pointArray = points.toIntArray();
 			
-			int dx = (controlWidth - bounds.width) / 2,
-				dy = (controlHeight - bounds.height) / 2;
+			int dx = translationX(), dy = translationY();
 			for (int i = 0; i < pointArray.length; i += 2) {
 				pointArray[i] += dx;
 				pointArray[i + 1] += dy;
