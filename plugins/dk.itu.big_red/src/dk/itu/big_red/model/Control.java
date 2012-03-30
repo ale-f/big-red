@@ -448,13 +448,13 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	/**
-	 * Returns a copy of the list of points defining this Control's polygon.
+	 * Returns the list of points defining this Control's polygon.
 	 * @return a list of points defining a polygon
 	 * @see Control#getShape
 	 * @see Control#setShape
 	 */
 	public PointList getPoints() {
-		return points.getCopy();
+		return points;
 	}
 	
 	protected void setPoints(PointList points) {
