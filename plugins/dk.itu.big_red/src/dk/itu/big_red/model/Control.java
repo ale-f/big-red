@@ -461,6 +461,7 @@ public class Control extends Colourable implements IControl {
 		if (points != null) {
 			PointList oldPoints = this.points;
 			this.points = points;
+			points.translate(points.getBounds().getTopLeft().getNegated());
 			firePropertyChange(PROPERTY_POINTS, oldPoints, points);
 		}
 	}
