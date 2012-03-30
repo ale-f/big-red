@@ -235,8 +235,10 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	public class ChangeAddPort extends PortChange {
-		public ChangeAddPort(PortSpec port) {
+		public String name;
+		public ChangeAddPort(PortSpec port, String name) {
 			this.port = port;
+			this.name = name;
 		}
 		
 		@Override
@@ -255,9 +257,20 @@ public class Control extends Colourable implements IControl {
 			this.port = port;
 		}
 		
+		private String oldName;
+		@Override
+		public void beforeApply() {
+			oldName = getCreator().getName();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null);
+		}
+		
 		@Override
 		public ChangeAddPort inverse() {
-			return new ChangeAddPort(port);
+			return new ChangeAddPort(port, oldName);
 		}
 		
 		@Override
@@ -641,8 +654,8 @@ public class Control extends Colourable implements IControl {
 		return new ChangeKind(kind);
 	}
 	
-	public ChangeAddPort changeAddPort(PortSpec port) {
-		return new ChangeAddPort(port);
+	public ChangeAddPort changeAddPort(PortSpec port, String name) {
+		return new ChangeAddPort(port, name);
 	}
 	
 	public ChangeRemovePort changeRemovePort(PortSpec port) {

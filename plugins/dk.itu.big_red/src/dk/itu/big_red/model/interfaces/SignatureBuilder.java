@@ -18,8 +18,8 @@ public class SignatureBuilder {
 	}
 	
 	public IPort newPort(IControl control, String name) {
-		PortSpec p = new PortSpec(name, 0, 0);
-		cg.add(((Control)control).changeAddPort(p));
+		PortSpec p = new PortSpec();
+		cg.add(((Control)control).changeAddPort(p, name));
 		return p;
 	}
 	
