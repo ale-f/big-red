@@ -370,7 +370,8 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		appearance = new SignatureEditorPolygonCanvas(appearanceGroup, SWT.BORDER);
+		appearance = new SignatureEditorPolygonCanvas(this,
+				appearanceGroup, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		appearanceLayoutData.widthHint = 100;
 		appearanceLayoutData.heightHint = 100;

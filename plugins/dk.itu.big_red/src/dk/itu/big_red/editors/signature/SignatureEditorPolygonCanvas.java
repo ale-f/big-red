@@ -173,7 +173,9 @@ MenuListener, PropertyChangeListener {
 	
 	private int dragPortIndex = -1;
 	
-	public SignatureEditorPolygonCanvas(Composite parent, int style) {
+	private SignatureEditor editor;
+	
+	public SignatureEditorPolygonCanvas(SignatureEditor editor, Composite parent, int style) {
 		super(parent, style);
 		addMouseListener(this);
 		addPaintListener(this);
@@ -183,9 +185,13 @@ MenuListener, PropertyChangeListener {
 		Menu menu = new Menu(this);
 		menu.addMenuListener(this);
 		setMenu(menu);
+		
+		this.editor = editor;
 	}
 	
-	private void doChange(Change c) {}
+	private void doChange(Change c) {
+		editor.doChange(c);
+	}
 	
 	private void opMovePoint(int moveIndex, int x, int y) {
 		PointList pl = getModel().getPoints().getCopy();
