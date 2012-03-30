@@ -58,15 +58,13 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private int controlWidth, controlHeight;
-	private Point tl = null;
+	private Rectangle pointsBounds = null;
 	
-	private Point normalisePoint(Point source) {
-		if (tl == null) {
-			if (getModel() != null) {
-				tl = getModel().getPoints().getBounds().getTopLeft();
-			} else return null;
-		}
-		return source.getTranslated(tl.getNegated());
+	public Rectangle requireBounds() {
+		if (pointsBounds == null)
+			if (getModel() != null)
+				pointsBounds = getModel().getPoints().getBounds();
+		return pointsBounds;
 	}
 	
 	private List<ModelObject> listeningTo = new ArrayList<ModelObject>();
@@ -92,7 +90,7 @@ MenuListener, PropertyChangeListener {
 		listenTo(model);
 		for (PortSpec i : model.getPorts())
 			listenTo(i);
-		tl = null;
+		pointsBounds = null;
 		redraw();
 	}
 	
@@ -190,7 +188,7 @@ MenuListener, PropertyChangeListener {
 	private void doChange(Change c) {}
 	
 	private void opMovePoint(int moveIndex, int x, int y) {
-		PointList pl = getPoints().getCopy();
+		PointList pl = getModel().getPoints().getCopy();
 		pl.setPoint(new Point(x, y), moveIndex);
 		doChange(getModel().changePoints(pl));
 	}
@@ -217,11 +215,12 @@ MenuListener, PropertyChangeListener {
 			if (segment >= deleteIndex)
 				cg.add(port.changeSegment(segment - 1));
 		}
-		PointList pl = getPoints().getCopy();
+		PointList pl = getModel().getPoints().getCopy();
 		pl.removePoint(deleteIndex);
 		cg.add(getModel().changePoints(pl));
 		doChange(cg);
 	}
+	
 	private void opInsertPoint(int insertIndex, int x, int y) {
 		ChangeGroup cg = new ChangeGroup();
 		Point p = roundToGrid(x, y);
@@ -243,7 +242,7 @@ MenuListener, PropertyChangeListener {
 				cg.add(port.changeSegment(segment + 1));
 			}
 		}
-		PointList pl = getPoints().getCopy();
+		PointList pl = getModel().getPoints().getCopy();
 		pl.insertPoint(p, insertIndex);
 		cg.add(getModel().changePoints(pl));
 		doChange(cg);
@@ -273,8 +272,8 @@ MenuListener, PropertyChangeListener {
 		doChange(getModel().changeRemovePort(port));
 	}
 	
-	private PointList getPoints() {
-		return getModel().getPoints();
+	private int getPointCount() {
+		return getModel().getPoints().size();
 	}
 	
 	private Shape getShape() {
@@ -292,8 +291,11 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	protected Point getPoint(int i) {
-		PointList points = getPoints();
-		return points.getPoint((i + points.size()) % points.size());
+		PointList points = getModel().getPoints();
+		Rectangle bounds = requireBounds();
+		return points.getPoint((i + points.size()) % points.size()).
+				translate((controlWidth - bounds.width) / 2,
+						(controlHeight - bounds.height) / 2);
 	}
 	
 	protected int findPortAt(int x, int y) {
@@ -326,8 +328,8 @@ MenuListener, PropertyChangeListener {
 	protected int findPointAt(int x, int y) {
 		if (getShape() != Shape.POLYGON)
 			return -1;
-		for (int i = 0; i < getPoints().size(); i++) {
-			getPoints().getPoint(tmp, i);
+		for (int i = 0; i < getPointCount(); i++) {
+			tmp = getPoint(i);
 			if (x >= tmp.x - 3 && x <= tmp.x + 3 &&
 				y >= tmp.y - 3 && y <= tmp.y + 3)
 				return i;
@@ -341,7 +343,7 @@ MenuListener, PropertyChangeListener {
 		int index = -1;
 		Line l = new Line();
 		double distance = Double.MAX_VALUE;
-		for (int i = 0; i < getPoints().size(); i++) {
+		for (int i = 0; i < getPointCount(); i++) {
 			l.setFirstPoint(getPoint(i));
 			l.setSecondPoint(getPoint(i + 1));
 			double tDistance;
@@ -375,7 +377,7 @@ MenuListener, PropertyChangeListener {
 			return;
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p.x, p.y);
-		if (deleteIndex != -1 && (deleteIndex != 0 || getPoints().size() > 1))
+		if (deleteIndex != -1 && (deleteIndex != 0 || getPointCount() > 1))
 			opDeletePoint(deleteIndex);
 	}
 	
@@ -393,7 +395,7 @@ MenuListener, PropertyChangeListener {
 		if (dragPortIndex == -1) {
 			dragPointIndex = findPointAt(p.x, p.y);
 			if (dragPointIndex == -1 && getShape() == Shape.POLYGON) {
-				if (getPoints().size() == 1) {
+				if (getPointCount() == 1) {
 					dragPointIndex = 0;
 					newPoint = true;
 				} else {
@@ -483,13 +485,17 @@ MenuListener, PropertyChangeListener {
 		
 		List<PortSpec> ports = getPorts();
 		if (getShape() == Shape.POLYGON) {
-			PointList points = getPoints();
+			/* toIntArray returns a reference to the internal array, so make a
+			 * copy to avoid translating the original points */
+			PointList points = getModel().getPoints().getCopy();
+			Rectangle bounds = requireBounds();
 			int[] pointArray = points.toIntArray();
 			
-			Point tl = points.getBounds().getTopLeft();
+			int dx = (controlWidth - bounds.width) / 2,
+				dy = (controlHeight - bounds.height) / 2;
 			for (int i = 0; i < pointArray.length; i += 2) {
-				pointArray[i] -= tl.x;
-				pointArray[i + 1] -= tl.y;
+				pointArray[i] += dx;
+				pointArray[i + 1] += dy;
 			}
 			
 			e.gc.fillPolygon(pointArray);
@@ -500,7 +506,7 @@ MenuListener, PropertyChangeListener {
 			
 			e.gc.setBackground(ColorConstants.black);
 			for (int i = 0; i < points.size(); i++)
-				fillCircleCentredAt(e.gc, points.getPoint(tmp, i), 3);
+				fillCircleCentredAt(e.gc, getPoint(i), 3);
 			
 			e.gc.setBackground(ColorConstants.red);
 			for (PortSpec p : ports) {
@@ -701,7 +707,7 @@ MenuListener, PropertyChangeListener {
 		}
 		
 		if (foundPoint != -1) {
-			if (foundPoint != 0 || getPoints().size() > 1) {
+			if (foundPoint != 0 || getPointCount() > 1) {
 				UI.createMenuItem(m, 0, "&Remove point", new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
@@ -712,7 +718,7 @@ MenuListener, PropertyChangeListener {
 				UI.createMenuItem(m, 0, "Cannot remove last point", null).setEnabled(false);
 			}
 		}
-		if (getPoints().size() > 1) {
+		if (getPointCount() > 1) {
 			UI.createMenuItem(m, 0, "Remove &all points and ports", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
