@@ -193,7 +193,11 @@ MenuListener, PropertyChangeListener {
 		editor.doChange(c);
 	}
 	
-	private void opMovePoint(int moveIndex, int x, int y) {
+	private void opMovePoint(int moveIndex, int mx, int my) {
+		Rectangle bounds = requireBounds();
+		int
+			x = mx - ((controlWidth - bounds.width) / 2),
+			y = my - (controlHeight - bounds.height) / 2;
 		PointList pl = getModel().getPoints().getCopy();
 		pl.setPoint(new Point(x, y), moveIndex);
 		doChange(getModel().changePoints(pl));
@@ -227,7 +231,11 @@ MenuListener, PropertyChangeListener {
 		doChange(cg);
 	}
 	
-	private void opInsertPoint(int insertIndex, int x, int y) {
+	private void opInsertPoint(int insertIndex, int mx, int my) {
+		Rectangle bounds = requireBounds();
+		int
+			x = mx - ((controlWidth - bounds.width) / 2),
+			y = my - (controlHeight - bounds.height) / 2;
 		ChangeGroup cg = new ChangeGroup();
 		Point p = roundToGrid(x, y);
 		Line l1 = new Line(getPoint(insertIndex - 1), p),
