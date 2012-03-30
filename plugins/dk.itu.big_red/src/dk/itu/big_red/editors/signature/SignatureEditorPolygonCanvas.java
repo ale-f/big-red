@@ -634,8 +634,6 @@ MenuListener, PropertyChangeListener {
 
 	@Override
 	public void menuHidden(MenuEvent e) {
-		for (MenuItem i : getMenu().getItems())
-			i.dispose();
 	}
 
 	/**
@@ -644,6 +642,8 @@ MenuListener, PropertyChangeListener {
 	@Override
 	public void menuShown(MenuEvent e) {
 		Menu m = getMenu();
+		for (MenuItem i : m.getItems())
+			i.dispose();
 		
 		final int foundPoint = findPointAt(roundedMousePosition.x, roundedMousePosition.y),
 		          foundPort = findPortAt(mousePosition.x, mousePosition.y),
