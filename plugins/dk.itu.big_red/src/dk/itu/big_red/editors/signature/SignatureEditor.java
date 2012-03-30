@@ -499,4 +499,9 @@ implements PropertyChangeListener {
 	protected void tryApplyChange(Change c) throws ChangeRejectedException {
 		getModel().tryApplyChange(c);
 	}
+	
+	@Override
+	public boolean doChange(Change c) {
+		return super.doChange(c);
+	}
 }
