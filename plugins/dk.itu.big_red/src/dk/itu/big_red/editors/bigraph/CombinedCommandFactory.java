@@ -9,10 +9,10 @@ import dk.itu.big_red.editors.bigraph.commands.ModelDeleteCommand;
 import dk.itu.big_red.editors.bigraph.parts.AbstractPart;
 import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.changes.IChangeable;
+import dk.itu.big_red.model.changes.IChangeExecutor;
 
 /**
- * {@link Bigraph}s are instances of {@link IChangeable}: they can validate
+ * {@link Bigraph}s are instances of {@link IChangeExecutor}: they can validate
  * changes being applied to them to make sure that the model remains
  * consistent. This doesn't work well with the GEF's normal way of handling
  * commands, though! A {@link GroupRequest} is normally satisfied by

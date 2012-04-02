@@ -18,17 +18,12 @@ public class SignatureBuilder {
 	}
 	
 	public IPort newPort(IControl control, String name) {
-		PortSpec p = new PortSpec(name, 0, 0);
-		cg.add(((Control)control).changeAddPort(p));
+		PortSpec p = new PortSpec();
+		cg.add(((Control)control).changeAddPort(p, name));
 		return p;
 	}
 	
 	public Signature finish() {
-		try {
-			s.tryApplyChange(cg);
-		} catch (ChangeRejectedException cre) {
-			return null;
-		}
 		for (Control c : s.getControls()) {
 			double l = c.getPorts().size();
 			for (int i = 0; i < l; i++) {
@@ -36,19 +31,24 @@ public class SignatureBuilder {
 				
 				double d = (i / l) * 4.0;
 				if (d >= 0.0 && d < 1.0) {
-					p.setSegment(0);
-					p.setDistance(d);
+					cg.add(p.changeSegment(0));
+					cg.add(p.changeDistance(d));
 				} else if (d >= 1.0 && d < 2.0) {
-					p.setSegment(1);
-					p.setDistance(d - 1.0);
+					cg.add(p.changeSegment(1));
+					cg.add(p.changeDistance(d - 1.0));
 				} else if (d >= 2.0 && d < 3.0) {
-					p.setSegment(2);
-					p.setDistance(d - 2.0);
+					cg.add(p.changeSegment(2));
+					cg.add(p.changeDistance(d - 2.0));
 				} else if (d >= 3.0 && d < 4.0) {
-					p.setSegment(3);
-					p.setDistance(d - 3.0);
+					cg.add(p.changeSegment(2));
+					cg.add(p.changeDistance(d - 3.0));
 				}
 			}
+		}
+		try {
+			s.tryApplyChange(cg);
+		} catch (ChangeRejectedException cre) {
+			return null;
 		}
 		return s;
 	}

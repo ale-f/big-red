@@ -49,8 +49,8 @@ public abstract class Colourable extends ModelObject {
 		}
 		
 		@Override
-		public ColourableChange inverse() {
-			return getCreator().changeOutlineColour(oldColour);
+		public ChangeOutlineColour inverse() {
+			return new ChangeOutlineColour(oldColour);
 		}
 		
 		@Override
@@ -70,8 +70,8 @@ public abstract class Colourable extends ModelObject {
 		}
 		
 		@Override
-		public ColourableChange inverse() {
-			return getCreator().changeFillColour(oldColour);
+		public ChangeFillColour inverse() {
+			return new ChangeFillColour(oldColour);
 		}
 		
 		@Override

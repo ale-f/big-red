@@ -9,7 +9,7 @@ package dk.itu.big_red.model.changes;
 public interface IChangeValidator {
 	/**
 	 * Checks if the given {@link Change} can be applied to this {@link
-	 * IChangeable}.
+	 * IChangeExecutor}.
 	 * @param b a {@link Change}
 	 * @throws ChangeRejectedException if {@link #applyChange(Change)} will not
 	 * be allowed

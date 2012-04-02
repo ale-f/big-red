@@ -81,7 +81,7 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	}
 	
 	@Override
-	public Change inverse() {
+	public ChangeGroup inverse() {
 		ChangeGroup changes = new ChangeGroup();
 		for (Change c : this)
 			changes.prepend(c.inverse());

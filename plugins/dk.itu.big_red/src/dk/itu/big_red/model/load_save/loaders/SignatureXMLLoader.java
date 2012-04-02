@@ -74,20 +74,21 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		for (Element j :
 			getNamedChildElements(e, SIGNATURE, "port")) {
+			String name = getAttributeNS(j, SIGNATURE, "name");
 			PortSpec i = makePortSpec(j, generatePolygon);
 			if (i != null)
-				cg.add(model.changeAddPort(i));
+				cg.add(model.changeAddPort(i, name));
 		}
 		
 		if (generatePolygon) {
 			cg.add(model.changeShape(Shape.POLYGON));
-			model.setPoints(
+			cg.add(model.changePoints(
 				new Ellipse(new Rectangle(0, 0, 30, 30)).
-					getPolygon(Math.max(3, model.getPorts().size())));
+					getPolygon(Math.max(3, model.getPorts().size()))));
 			int i = 0;
 			for (PortSpec p : model.getPorts()) {
-				p.setSegment(i++);
-				p.setDistance(0.5);
+				cg.add(p.changeSegment(i++));
+				cg.add(p.changeDistance(0.5));
 			}
 		}
 	}
@@ -114,12 +115,12 @@ public class SignatureXMLLoader extends XMLLoader {
 	private PortSpec makePortSpec(Element e, boolean ignoreAppearanceData) {
 		PortSpec model = new PortSpec();
 		
-		model.setName(getAttributeNS(e, SIGNATURE, "name"));
-		
 		Element el = removeNamedChildElement(e, BIG_RED, "port-appearance");
 		if (el != null && !ignoreAppearanceData) {
-			model.setDistance(getDoubleAttribute(el, BIG_RED, "distance"));
-			model.setSegment(getIntAttribute(el, BIG_RED, "segment"));
+			int segment = getIntAttribute(el, BIG_RED, "segment");
+			double distance = getDoubleAttribute(el, BIG_RED, "distance");
+			cg.add(model.changeSegment(segment),
+					model.changeDistance(distance));
 		}
 		
 		return model;
@@ -142,15 +143,15 @@ public class SignatureXMLLoader extends XMLLoader {
 		if (s != null && s.equals("polygon"))
 			shape = Shape.POLYGON;
 		
+		cg.add(c.changeShape(shape));
+		
 		if (shape == Shape.POLYGON) {
 			pl = new PointList();
 			for (Element pE : getChildElements(e))
 				pl.addPoint(
 					getIntAttribute(pE, BIG_RED, "x"),
 					getIntAttribute(pE, BIG_RED, "y"));
+			cg.add(c.changePoints(pl));
 		}
-		
-		cg.add(c.changeShape(shape));
-		c.setPoints(pl);
 	}
 }

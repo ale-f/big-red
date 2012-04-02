@@ -7,7 +7,7 @@ package dk.itu.big_red.model.changes;
  * @author alec
  *
  */
-public abstract class ChangeValidator<T extends IChangeable> implements IChangeValidator {
+public abstract class ChangeValidator<T extends IChangeExecutor> implements IChangeValidator {
 	private T changeable;
 	
 	public ChangeValidator(T changeable) {
@@ -15,18 +15,18 @@ public abstract class ChangeValidator<T extends IChangeable> implements IChangeV
 	}
 	
 	/**
-	 * Sets the {@link IChangeable} that this {@link ChangeValidator} is acting
+	 * Sets the {@link IChangeExecutor} that this {@link ChangeValidator} is acting
 	 * for.
-	 * @param changeable an {@link IChangeable}
+	 * @param changeable an {@link IChangeExecutor}
 	 */
 	public void setChangeable(T changeable) {
 		this.changeable = changeable;
 	}
 	
 	/**
-	 * Gets the {@link IChangeable} that this {@link ChangeValidator} is acting
+	 * Gets the {@link IChangeExecutor} that this {@link ChangeValidator} is acting
 	 * for.
-	 * @return an {@link IChangeable}
+	 * @return an {@link IChangeExecutor}
 	 */
 	public T getChangeable() {
 		return changeable;

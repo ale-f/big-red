@@ -1,11 +1,12 @@
 package dk.itu.big_red.editors.signature;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -20,17 +21,21 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-
+import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.assistants.Line;
+import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -43,30 +48,82 @@ import dk.itu.big_red.utilities.ui.UI;
  */
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
-MenuListener {
-	public static interface SEPCListener {
-		public void portChange();
-		public void pointChange();
+MenuListener, PropertyChangeListener {
+	private static final Rectangle ELLIPSE = new Rectangle();
+	
+	private Rectangle getEllipse() {
+		return ELLIPSE.setLocation(30, 30).
+			setSize(((controlWidth - 60) / 10) * 10,
+					((controlHeight - 60) / 10) * 10);
 	}
 	
-	private ArrayList<SEPCListener> listeners = new ArrayList<SEPCListener>();
+	private int controlWidth, controlHeight;
+	private Rectangle pointsBounds = null;
 	
-	public void addListener(SEPCListener l) {
-		listeners.add(l);
+	public Rectangle requireBounds() {
+		if (pointsBounds == null)
+			if (getModel() != null)
+				pointsBounds = getModel().getPoints().getBounds();
+		return pointsBounds;
 	}
 	
-	public void removeListener(SEPCListener l) {
-		listeners.remove(l);
+	private List<ModelObject> listeningTo = new ArrayList<ModelObject>();
+	
+	private void listenTo(ModelObject m) {
+		if (m != null && listeningTo.add(m))
+			m.addPropertyChangeListener(this);
 	}
 	
-	private abstract static class ADSelectionListener implements SelectionListener {
-		@Override
-		public final void widgetDefaultSelected(SelectionEvent e) {
-			widgetSelected(e);
-		}
+	private void stopListeningTo(ModelObject m) {
+		if (m != null && listeningTo.remove(m))
+			m.removePropertyChangeListener(this);
+	}
+	
+	private Control model;
+	
+	public void setModel(Control model) {
+		for (ModelObject i : listeningTo)
+			i.removePropertyChangeListener(this);
+		listeningTo.clear();
 		
-		@Override
-		public abstract void widgetSelected(SelectionEvent e);
+		this.model = model;
+		listenTo(model);
+		for (PortSpec i : model.getPorts())
+			listenTo(i);
+		pointsBounds = null;
+		redraw();
+	}
+	
+	public Control getModel() {
+		return model;
+	}
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String name = evt.getPropertyName();
+		Object source = evt.getSource(),
+				oldValue = evt.getOldValue(),
+				newValue = evt.getNewValue();
+		if (source instanceof Control) {
+			if (Control.PROPERTY_PORT.equals(name)) {
+				if (oldValue == null) {
+					listenTo((PortSpec)newValue);
+				} else if (newValue == null) {
+					stopListeningTo((PortSpec)oldValue);
+				}
+				redraw();
+			} else if (Control.PROPERTY_POINTS.equals(name)) {
+				pointsBounds = null;
+				redraw();
+			} else if (Control.PROPERTY_FILL.equals(name) ||
+					Control.PROPERTY_OUTLINE.equals(name)) {
+				redraw();
+			}
+		} else if (source instanceof PortSpec) {
+			if (PortSpec.PROPERTY_SEGMENT.equals(name) ||
+				PortSpec.PROPERTY_DISTANCE.equals(name))
+				redraw();
+		}
 	}
 	
 	private IInputValidator getPortNameValidator(final PortSpec current) {
@@ -75,7 +132,7 @@ MenuListener {
 			public String isValid(String newText) {
 				if (newText.length() == 0)
 					return "Port names must not be empty.";
-				for (PortSpec i : ports)
+				for (PortSpec i : getPorts())
 					if (i != current && i.getName().equals(newText))
 						return "This port name is already in use.";
 				return null;
@@ -100,10 +157,7 @@ MenuListener {
 		};
 	}
 	
-	private Shape mode = Shape.POLYGON;
-	private PointList points = new PointList();
 	private Point tmp = new Point();
-	private Dimension controlSize = new Dimension();
 	
 	private Point roundedMousePosition = new Point(-10, -10),
 	              mousePosition = new Point(-10, -10);
@@ -121,9 +175,9 @@ MenuListener {
 	
 	private int dragPortIndex = -1;
 	
-	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
+	private SignatureEditor editor;
 	
-	public SignatureEditorPolygonCanvas(Composite parent, int style) {
+	public SignatureEditorPolygonCanvas(SignatureEditor editor, Composite parent, int style) {
 		super(parent, style);
 		addMouseListener(this);
 		addPaintListener(this);
@@ -133,40 +187,31 @@ MenuListener {
 		Menu menu = new Menu(this);
 		menu.addMenuListener(this);
 		setMenu(menu);
-	}
-
-	/**
-	 * Changes the mode of the editor, allowing either ovals or polygons to be
-	 * edited. (Both modes allow for ports to be added, moved, and removed, but
-	 * only the polygon editor allows for the shape to be changed.)
-	 * 
-	 * <p>Even if the mode wasn't actually changed, a call to this method
-	 * resets the editor, removing all points and ports.
-	 * @param mode a {@link Shape}
-	 */
-	public void setMode(Shape mode) {
-		points.removeAllPoints();
-		points.addPoint(0, 0);
-		ports.clear();
 		
-		if (mode == Shape.POLYGON) {
-			centrePolygon();
-		} else if (mode == Shape.OVAL) {
-			/* no special handling */
-		}
-
-		this.mode = mode;
-		
-		firePortChange();
-		firePointChange();
-		redraw();
+		this.editor = editor;
 	}
 	
-	public Shape getMode() {
-		return mode;
+	private int translationX() {
+		return roundToGrid((controlWidth - requireBounds().width) / 2);
 	}
 	
-	private void deletePoint(int deleteIndex) {
+	private int translationY() {
+		return roundToGrid((controlHeight - requireBounds().height) / 2);
+	}
+	
+	private void doChange(Change c) {
+		editor.doChange(c);
+	}
+	
+	private void opMovePoint(int moveIndex, int mx, int my) {
+		int x = mx - translationX(), y = my - translationY();
+		PointList pl = getModel().getPoints().getCopy();
+		pl.setPoint(new Point(x, y), moveIndex);
+		doChange(getModel().changePoints(pl));
+	}
+	
+	private void opDeletePoint(int deleteIndex) {
+		ChangeGroup cg = new ChangeGroup();
 		Point p = getPoint(deleteIndex);
 		Line l1 = new Line(getPoint(deleteIndex - 1), p),
 				l2 = new Line(p, getPoint(deleteIndex + 1));
@@ -176,70 +221,105 @@ MenuListener {
 				l1l = len1 / len;
 		if (dragPointIndex == deleteIndex)
 			dragPointIndex = -1;
-		boolean portChange = false;
-		for (PortSpec port : ports) {
+		for (PortSpec port : getPorts()) {
 			int segment = port.getSegment();
 			double distance = port.getDistance();
 			if (segment == deleteIndex - 1) {
-				port.setDistance(distance * l1l);
-				portChange = true;
+				cg.add(port.changeDistance(distance * l1l));
 			} else if (segment == deleteIndex) {
-				port.setDistance(l1l + (distance * (len2 / len)));
-				portChange = true;
+				cg.add(port.changeDistance(l1l + (distance * (len2 / len))));
 			}
-			if (segment >= deleteIndex) {
-				port.setSegment(segment - 1);
-				portChange = true;
-			}
+			if (segment >= deleteIndex)
+				cg.add(port.changeSegment(segment - 1));
 		}
-		points.removePoint(deleteIndex);
-		if (portChange)
-			firePortChange();
-		firePointChange();
-		redraw();
+		PointList pl = getModel().getPoints().getCopy();
+		pl.removePoint(deleteIndex);
+		cg.add(getModel().changePoints(pl));
+		doChange(cg);
 	}
 	
-	/**
-	 * Deletes the point under the crosshairs, if there is one (and if it isn't
-	 * the last point remaining).
-	 */
-	@Override
-	public void mouseDoubleClick(MouseEvent e) {
-		if (mode == Shape.OVAL)
-			return;
-		Point p = roundToGrid(e.x, e.y);
-		int deleteIndex = findPointAt(p);
-		if (deleteIndex != -1 && (deleteIndex != 0 || points.size() > 1))
-			deletePoint(deleteIndex);
+	private void opInsertPoint(int insertIndex, int mx, int my) {
+		int x = mx - translationX(), y = my - translationY();
+		ChangeGroup cg = new ChangeGroup();
+		Point p = roundToGrid(x, y);
+		Line l1 = new Line(getPoint(insertIndex - 1), p),
+				l2 = new Line(p, getPoint(insertIndex));
+		double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
+		for (PortSpec port : getPorts()) {
+			int segment = port.getSegment();
+			double distance = port.getDistance();
+			if (segment == (insertIndex - 1)) {
+				if (distance < pivot) {
+					cg.add(port.changeDistance((pivot - distance) / pivot));
+				} else {
+					cg.add(port.changeSegment(segment + 1));
+					cg.add(
+						port.changeDistance((distance - pivot) / (1 - pivot)));
+				}
+			} else if (segment >= insertIndex) {
+				cg.add(port.changeSegment(segment + 1));
+			}
+		}
+		PointList pl = getModel().getPoints().getCopy();
+		pl.insertPoint(p, insertIndex);
+		cg.add(getModel().changePoints(pl));
+		doChange(cg);
 	}
-
-	protected Point roundToGrid(Point p) {
-		p.x = (int)(Math.round(p.x / 10.0) * 10);
-		p.y = (int)(Math.round(p.y / 10.0) * 10);
-		return p;
+	
+	private void opAddPort(PortSpec port, String name, int segment, double distance) {
+		ChangeGroup cg = new ChangeGroup();
+		cg.add(getModel().changeAddPort(port, name));
+		cg.add(port.changeSegment(segment));
+		cg.add(port.changeDistance(distance));
+		doChange(cg);
+	}
+	
+	private void opRenamePort(PortSpec port, String name) {
+		doChange(port.changeName(name));
+	}
+	
+	private void opMovePort(PortSpec port, int segment, double distance) {
+		ChangeGroup cg = new ChangeGroup();
+		cg.add(port.changeSegment(segment));
+		cg.add(port.changeDistance(distance));
+		doChange(cg);
+	}
+	
+	private void opDeletePort(PortSpec port) {
+		doChange(getModel().changeRemovePort(port));
+	}
+	
+	private int getPointCount() {
+		return getModel().getPoints().size();
+	}
+	
+	private Shape getShape() {
+		return getModel().getShape();
+	}
+	
+	private List<PortSpec> getPorts() {
+		return getModel().getPorts();
+	}
+	
+	protected int roundToGrid(int x) {
+		return (int)(Math.round(x / 10.0) * 10);
 	}
 	
 	protected Point roundToGrid(int x, int y) {
-		return roundToGrid(new Point(x, y));
-	}
-	
-	protected Point getPoint(Point t, int i) {
-		return points.getPoint(t, (i + points.size()) % points.size());
+		return new Point(roundToGrid(x), roundToGrid(y));
 	}
 	
 	protected Point getPoint(int i) {
-		return points.getPoint((i + points.size()) % points.size());
-	}
-	
-	protected int findPortAt(Point p) {
-		return findPortAt(p.x, p.y);
+		PointList points = getModel().getPoints();
+		return points.getPoint((i + points.size()) % points.size()).
+				translate(translationX(), translationY());
 	}
 	
 	protected int findPortAt(int x, int y) {
-		if (mode == Shape.POLYGON) {
+		if (getShape() == Shape.POLYGON) {
 			Line l = new Line();
-			for (int i = 0; i < ports.size(); i++) {
-				PortSpec p = ports.get(i);
+			for (int i = 0; i < getPorts().size(); i++) {
+				PortSpec p = getPorts().get(i);
 				int segment = p.getSegment();
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -248,13 +328,11 @@ MenuListener {
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
 			}
-		} else if (mode == Shape.OVAL) {
+		} else if (getShape() == Shape.OVAL) {
 			Ellipse e =
-				new Ellipse().setBounds(new Rectangle(30, 30,
-					((controlSize.width - 60) / 10) * 10,
-					((controlSize.height - 60) / 10) * 10));
-			for (int i = 0; i < ports.size(); i++) {
-				PortSpec p = ports.get(i);
+				new Ellipse().setBounds(getEllipse());
+			for (int i = 0; i < getPorts().size(); i++) {
+				PortSpec p = getPorts().get(i);
 				tmp.setLocation(e.getPointFromOffset(p.getDistance()));
 				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
 					y >= tmp.y - 4 && y <= tmp.y + 4)
@@ -264,15 +342,11 @@ MenuListener {
 		return -1;
 	}
 	
-	protected int findPointAt(Point p) {
-		return findPointAt(p.x, p.y);
-	}
-	
 	protected int findPointAt(int x, int y) {
-		if (mode != Shape.POLYGON)
+		if (getShape() != Shape.POLYGON)
 			return -1;
-		for (int i = 0; i < points.size(); i++) {
-			points.getPoint(tmp, i);
+		for (int i = 0; i < getPointCount(); i++) {
+			tmp = getPoint(i);
 			if (x >= tmp.x - 3 && x <= tmp.x + 3 &&
 				y >= tmp.y - 3 && y <= tmp.y + 3)
 				return i;
@@ -280,25 +354,15 @@ MenuListener {
 		return -1;
 	}
 	
-	private void centrePolygon() {
-		org.eclipse.swt.graphics.Point s = getSize();
-		
-		Rectangle polyBounds = new Rectangle(points.getBounds());
-		points.translate(
-			roundToGrid(polyBounds.getTopLeft().getNegated().translate(s.x / 2, s.y / 2).translate(-polyBounds.width() / 2, -polyBounds.height() / 2)));
-		firePointChange();
-		redraw();
-	}
-	
 	private int getNearestSegment(Point up, double threshold) {
-		if (mode == Shape.OVAL)
+		if (getShape() == Shape.OVAL)
 			return 0;
 		int index = -1;
 		Line l = new Line();
 		double distance = Double.MAX_VALUE;
-		for (int i = 0; i < points.size(); i++) {
-			l.setFirstPoint(getPoint(tmp, i));
-			l.setSecondPoint(getPoint(tmp, i + 1));
+		for (int i = 0; i < getPointCount(); i++) {
+			l.setFirstPoint(getPoint(i));
+			l.setSecondPoint(getPoint(i + 1));
 			double tDistance;
 			if (l.getIntersection(tmp, up) != null) {
 				tDistance = up.getDistance(tmp);
@@ -321,6 +385,20 @@ MenuListener {
 	}
 	
 	/**
+	 * Deletes the point under the crosshairs, if there is one (and if it isn't
+	 * the last point remaining).
+	 */
+	@Override
+	public void mouseDoubleClick(MouseEvent e) {
+		if (getShape() == Shape.OVAL)
+			return;
+		Point p = roundToGrid(e.x, e.y);
+		int deleteIndex = findPointAt(p.x, p.y);
+		if (deleteIndex != -1 && (deleteIndex != 0 || getPointCount() > 1))
+			opDeletePoint(deleteIndex);
+	}
+	
+	/**
 	 * Creates a new point if the crosshairs aren't currently over one;
 	 * otherwise, starts a drag operation.
 	 */
@@ -330,11 +408,11 @@ MenuListener {
 			return;
 		Point p = roundToGrid(e.x, e.y),
 		      up = new Point(e.x, e.y);
-		dragPortIndex = findPortAt(up);
+		dragPortIndex = findPortAt(up.x, up.y);
 		if (dragPortIndex == -1) {
-			dragPointIndex = findPointAt(p);
-			if (dragPointIndex == -1 && mode == Shape.POLYGON) {
-				if (points.size() == 1) {
+			dragPointIndex = findPointAt(p.x, p.y);
+			if (dragPointIndex == -1 && getShape() == Shape.POLYGON) {
+				if (getPointCount() == 1) {
 					dragPointIndex = 0;
 					newPoint = true;
 				} else {
@@ -357,12 +435,12 @@ MenuListener {
 	@Override
 	public void mouseUp(MouseEvent e) {
 		if (dragPortIndex != -1) { /* a port is being moved */
-			PortSpec p = ports.get(dragPortIndex);
+			PortSpec p = getPorts().get(dragPortIndex);
 			Line l = new Line();
 			int segment;
 			double offset;
 			
-			if (mode == Shape.POLYGON) {
+			if (getShape() == Shape.POLYGON) {
 				segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -372,51 +450,21 @@ MenuListener {
 				else offset = 0;
 			} else {
 				segment = 0;
-				offset = new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10))
-					.getClosestOffset(mousePosition);
+				offset =
+					new Ellipse(getEllipse()).getClosestOffset(mousePosition);
 			}
 			
-			p.setSegment(segment);
-			p.setDistance(offset);
-			firePortChange();
+			opMovePort(p, segment, offset);
 			
 			dragPortIndex = -1;
 			redraw();
 		} else if (dragPointIndex != -1) { /* a point is being manipulated */
 			Point p = roundToGrid(e.x, e.y);
-			int pointAtCursor = findPointAt(roundedMousePosition);
+			int pointAtCursor = findPointAt(p.x, p.y);
 			if (pointAtCursor == -1) {
-				if (!newPoint) { /* an existing point is being moved */
-					tmp = points.getPoint(dragPointIndex);
-					tmp.x = p.x; tmp.y = p.y;
-					points.setPoint(tmp, dragPointIndex);
-				} else { /* a new point is being created */
-					Line l1 = new Line(getPoint(dragPointIndex - 1), p),
-							l2 = new Line(p, getPoint(dragPointIndex));
-					double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
-					boolean portChange = false;
-					for (PortSpec port : ports) {
-						int segment = port.getSegment();
-						double distance = port.getDistance();
-						if (segment == (dragPointIndex - 1)) {
-							if (distance < pivot) {
-								port.setDistance((pivot - distance) / pivot);
-								portChange = true;
-							} else {
-								port.setSegment(segment + 1);
-								port.setDistance((distance - pivot) / (1 - pivot));
-								portChange = true;
-							}
-						} else if (segment >= dragPointIndex) {
-							port.setSegment(segment + 1);
-							portChange = true;
-						}
-					}
-					points.insertPoint(p, dragPointIndex);
-					if (portChange)
-						firePortChange();
-				}
-				firePointChange();
+				if (!newPoint) {
+					opMovePoint(dragPointIndex, p.x, p.y);
+				} else opInsertPoint(dragPointIndex, p.x, p.y);
 			}
 			dragPointIndex = -1;
 			newPoint = false;
@@ -431,43 +479,49 @@ MenuListener {
 	@Override
 	public void paintControl(PaintEvent e) {
 		e.gc.setAntialias(SWT.ON);
+		e.gc.setLineWidth(2);
 		setCursor(Cursors.ARROW);
-		
-		/* Draw the grid and crosshairs */
-		e.gc.setForeground(ColorConstants.lightGray);
-		for (int x = 0; x <= controlSize.width; x += 10) {
-			if (x != roundedMousePosition.x) {
-				e.gc.setAlpha(63); /* grid */
-			} else e.gc.setAlpha(255); /* crosshairs */
-			e.gc.drawLine(x, 0, x, controlSize.height);
-		}
-		for (int y = 0; y <= controlSize.height; y += 10) {
-			if (y != roundedMousePosition.y) {
-				e.gc.setAlpha(63); /* grid */
-			} else e.gc.setAlpha(255); /* crosshairs */
-			e.gc.drawLine(0, y, controlSize.width, y);
-		}
 		
 		if (getEnabled() == false) {
 			e.gc.setBackground(ColorConstants.lightGray);
 			e.gc.setAlpha(128);
-			e.gc.fillRectangle(0, 0, controlSize.width, controlSize.height);
+			e.gc.fillRectangle(0, 0, controlWidth, controlHeight);
 			return;
 		}
 		
-		e.gc.setAlpha(255);
 		e.gc.setForeground(ColorConstants.black);
 		
 		Line l = new Line();
 		
-		if (mode == Shape.POLYGON) {
-			e.gc.drawPolyline(points.toIntArray());
+		Color
+			outline = getModel().getOutlineColour().getSWTColor(),
+			fill = getModel().getFillColour().getSWTColor();
+		
+		e.gc.setForeground(outline);
+		e.gc.setBackground(fill);
+		
+		List<PortSpec> ports = getPorts();
+		if (getShape() == Shape.POLYGON) {
+			/* toIntArray returns a reference to the internal array, so make a
+			 * copy to avoid translating the original points */
+			PointList points = getModel().getPoints().getCopy();
+			int[] pointArray = points.toIntArray();
+			
+			int dx = translationX(), dy = translationY();
+			for (int i = 0; i < pointArray.length; i += 2) {
+				pointArray[i] += dx;
+				pointArray[i + 1] += dy;
+			}
+			
+			e.gc.fillPolygon(pointArray);
+			e.gc.drawPolyline(pointArray);
+			
 			Point first = getPoint(0), last = getPoint(points.size() - 1);
 			e.gc.drawLine(first.x, first.y, last.x, last.y);
 			
 			e.gc.setBackground(ColorConstants.black);
 			for (int i = 0; i < points.size(); i++)
-				fillCircleCentredAt(e.gc, points.getPoint(tmp, i), 3);
+				fillCircleCentredAt(e.gc, getPoint(i), 3);
 			
 			e.gc.setBackground(ColorConstants.red);
 			for (PortSpec p : ports) {
@@ -479,22 +533,23 @@ MenuListener {
 						l.getPointFromOffset(p.getDistance()), 4);
 			}
 		} else {
-			int w = ((controlSize.width - 60) / 10) * 10,
-			    h = ((controlSize.height - 60) / 10) * 10;
+			Ellipse el = new Ellipse(getEllipse());
+			int w = ((controlWidth - 60) / 10) * 10,
+			    h = ((controlHeight - 60) / 10) * 10;
+			e.gc.fillOval(30, 30, w, h);
 			e.gc.drawOval(30, 30, w, h);
 			
 			e.gc.setBackground(ColorConstants.red);
 			for (PortSpec p : ports) {
 				fillCircleCentredAt(e.gc,
-					new Ellipse(new Rectangle(30, 30, w, h)).
-						getPointFromOffset(p.getDistance()), 4);
+					el.getPointFromOffset(p.getDistance()), 4);
 			}
 		}
 		
 		if (dragPortIndex != -1) {
 			e.gc.setAlpha(127);
 			
-			if (mode == Shape.POLYGON) {
+			if (getShape() == Shape.POLYGON) {
 				int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -502,9 +557,9 @@ MenuListener {
 				if (intersection == null)
 					intersection = getPoint(segment);
 				tmp.setLocation(intersection);
-			} else if (mode == Shape.OVAL) {
-				tmp.setLocation(new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10))
-					.getClosestPoint(mousePosition));
+			} else if (getShape() == Shape.OVAL) {
+				tmp.setLocation(
+					new Ellipse(getEllipse()).getClosestPoint(mousePosition));
 			}
 			
 			fillCircleCentredAt(e.gc, tmp, 4);
@@ -526,7 +581,7 @@ MenuListener {
 			e.gc.drawLine(next.x, next.y, roundedMousePosition.x, roundedMousePosition.y);
 			fillCircleCentredAt(e.gc, roundedMousePosition, 3);
 			
-			int pointAtCursor = findPointAt(roundedMousePosition);
+			int pointAtCursor = findPointAt(roundedMousePosition.x, roundedMousePosition.y);
 			if (pointAtCursor != -1 && pointAtCursor != dragPointIndex)
 				setCursor(Cursors.NO);
 			
@@ -537,12 +592,12 @@ MenuListener {
 	private int tippedPoint, tippedPort;
 	
 	private void updateToolTip() {
-		int point = findPointAt(mousePosition),
-		    port = findPortAt(mousePosition);
+		int point = findPointAt(mousePosition.x, mousePosition.y),
+		    port = findPortAt(mousePosition.x, mousePosition.y);
 		if (point == -1)
-			point = findPointAt(roundedMousePosition);
+			point = findPointAt(roundedMousePosition.x, roundedMousePosition.y);
 		if (port == -1)
-			port = findPortAt(roundedMousePosition);
+			port = findPortAt(roundedMousePosition.x, roundedMousePosition.y);
 		
 		if (tippedPoint == point && tippedPort == port)
 			return;
@@ -571,18 +626,12 @@ MenuListener {
 		mousePosition.setLocation(e.x, e.y);
 		Point currentMousePosition = roundToGrid(e.x, e.y);
 		if (!roundedMousePosition.equals(currentMousePosition)) {
-			roundedMousePosition.x = currentMousePosition.x;
-			roundedMousePosition.y = currentMousePosition.y;
-			redraw();
+			roundedMousePosition.setLocation(currentMousePosition);
 		} else if (dragPointIndex != -1 || dragPortIndex != -1)
 			redraw();
 		updateToolTip();
 	}
 
-	/**
-	 * See {@link #controlResized}.
-	 * @see #controlResized
-	 */
 	@Override
 	public void controlMoved(ControlEvent e) {
 		controlResized(e);
@@ -593,49 +642,11 @@ MenuListener {
 	 */
 	@Override
 	public void controlResized(ControlEvent e) {
-		org.eclipse.swt.graphics.Point p = getSize();
-		controlSize.width = p.x; controlSize.height = p.y;
-		
-		/*
-		 * The first point can only safely be added at this point (the control
-		 * doesn't have a size when the constructor is running).
-		 */
-		if (points.size() == 0) {
-			points.addPoint(0, 0);
-			centrePolygon();
-		}
-		
+		org.eclipse.swt.graphics.Point size = getSize();
+		controlWidth = size.x; controlHeight = size.y;
 		redraw();
 	}
 
-	/**
-	 * Returns the {@link PointList} specifying the polygon drawn in this
-	 * Canvas.
-	 * @return a PointList specifying a polygon
-	 */
-	public PointList getPoints() {
-		return points;
-	}
-
-	/**
-	 * Overwrites the current polygon with copies of the contents of the given
-	 * {@link PointList}.
-	 * <p>The points on the given PointList will not be snapped to the grid,
-	 * nor will they be checked for scale.
-	 * @param points a PointList
-	 */
-	public void setPoints(PointList points) {
-		if (points != null && points.size() >= 1) {
-			this.points.removeAllPoints();
-			this.points.addAll(points);
-			centrePolygon();
-			firePointChange();
-		}
-	}
-	
-	/**
-	 * Does nothing.
-	 */
 	@Override
 	public void menuHidden(MenuEvent e) {
 	}
@@ -649,8 +660,8 @@ MenuListener {
 		for (MenuItem i : m.getItems())
 			i.dispose();
 		
-		final int foundPoint = findPointAt(roundedMousePosition),
-		          foundPort = findPortAt(mousePosition),
+		final int foundPoint = findPointAt(roundedMousePosition.x, roundedMousePosition.y),
+		          foundPort = findPortAt(mousePosition.x, mousePosition.y),
 		          segment = getNearestSegment(roundedMousePosition, 15);
 		
 		UI.createMenuItem(m, SWT.NONE, "Polygon canvas", null).setEnabled(false);
@@ -658,107 +669,83 @@ MenuListener {
 				
 		if (foundPort == -1) {
 			if (segment != -1) {
-				if (mode == Shape.POLYGON)
-					UI.createMenuItem(m, 0, "Add &port", new ADSelectionListener() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
+				UI.createMenuItem(m, 0, "Add &port", new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						int newSegment;
+						double newDistance;
+						
+						if (getShape() == Shape.POLYGON) {
 							Line l = new Line();
 							l.setFirstPoint(getPoint(segment));
 							l.setSecondPoint(getPoint(segment + 1));
 							
-							Point portPoint = l.getIntersection(roundedMousePosition);
-							double distance = l.getOffsetFromPoint(portPoint);
-							
-							int lsegment = segment;
-							if (distance >= 1) {
-								lsegment++;
-								distance = 0;
-							}
-							
-							PortSpec p = new PortSpec();
-							p.setSegment(lsegment);
-							p.setDistance(distance);
-							
-							String newName = UI.promptFor("New port name",
-									"Choose a name for the new port:", "",
-									getPortNameValidator(p));
-							if (newName != null) {
-								ports.add(p);
-								p.setName(newName);
-								firePortChange();
-								redraw();
-							}
+							Point portPoint =
+									l.getIntersection(roundedMousePosition);
+							newSegment = segment;
+							newDistance = l.getOffsetFromPoint(portPoint);
+						} else {
+							newSegment = 0;
+							newDistance = new Ellipse(getEllipse()).
+									getClosestOffset(mousePosition);
 						}
-					});
-				else UI.createMenuItem(m, 0, "Add &port", new ADSelectionListener() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-						PortSpec p = new PortSpec();
-						p.setSegment(0);
-						p.setDistance(new Ellipse(new Rectangle(30, 30, ((controlSize.width - 60) / 10) * 10, ((controlSize.height - 60) / 10) * 10)).getClosestOffset(mousePosition));
-
+						
 						String newName = UI.promptFor("New port name",
 								"Choose a name for the new port:", "",
-								getPortNameValidator(p));
-						if (newName != null) {
-							ports.add(p);
-							p.setName(newName);
-							firePortChange();
-							redraw();
-						}
+								getPortNameValidator(null));
+						if (newName != null)
+							opAddPort(new PortSpec(),
+									newName, newSegment, newDistance);
 					}
 				});
 			}
 		} else {
-			UI.createMenuItem(m, 0, "Re&name port", new ADSelectionListener() {
+			UI.createMenuItem(m, 0, "Re&name port", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					PortSpec p = ports.get(foundPort);
+					PortSpec p = getPorts().get(foundPort);
 					String newName = UI.promptFor("Port name",
 							"Choose a name for this port:",
 							(p.getName() == null ? "" : p.getName()),
 							getPortNameValidator(p));
-					if (newName != null) {
-						p.setName(newName);
-						firePortChange();
-					}
+					if (newName != null)
+						opRenamePort(p, newName);
 				}
 			});
 			
-			UI.createMenuItem(m, 0, "&Remove port", new ADSelectionListener() {
+			UI.createMenuItem(m, 0, "&Remove port", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					ports.remove(foundPort);
-					firePortChange();
-					redraw();
+					opDeletePort(getPorts().get(foundPort));
 				}
 			});
 		}
 		
 		if (foundPoint != -1) {
-			if (foundPoint != 0 || points.size() > 1) {
-				UI.createMenuItem(m, 0, "&Remove point", new ADSelectionListener() {
+			if (foundPoint != 0 || getPointCount() > 1) {
+				UI.createMenuItem(m, 0, "&Remove point", new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						deletePoint(foundPoint);
+						opDeletePoint(foundPoint);
 					}
 				});
 			} else {
 				UI.createMenuItem(m, 0, "Cannot remove last point", null).setEnabled(false);
 			}
 		}
-		if (points.size() > 1) {
-			UI.createMenuItem(m, 0, "Remove &all points and ports", new ADSelectionListener() {
+		if (getPointCount() > 1) {
+			UI.createMenuItem(m, 0, "Remove &all points and ports", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					setMode(mode);
+					/* XXX
+					setMode(mode); */
 				}
 			});
 		}
 		if (m.getItemCount() > 0)
 			new MenuItem(m, SWT.SEPARATOR);
-		if (mode == Shape.POLYGON) {
-			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new ADSelectionListener() {
+		if (getShape() == Shape.POLYGON) {
+			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					String polySides =
@@ -766,53 +753,15 @@ MenuListener {
 							"How many sides should your regular polygon have?\n(All ports will be deleted.)",
 							"3", getIntegerValidator(3, Integer.MAX_VALUE));
 					if (polySides != null) {
+						/* XXX
 						setMode(mode);
 						
 						setPoints(new Ellipse().
 								setBounds(new Rectangle(0, 0, 60, 60)).
-								getPolygon(Integer.parseInt(polySides)));
+								getPolygon(Integer.parseInt(polySides))); */
 					}
 				}
 			});
-		}
-		UI.createMenuItem(m, 0, "Centre &polygon on canvas", new ADSelectionListener() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				centrePolygon();
-			}
-		});
-	}
-	
-	private void firePointChange() {
-		for (SEPCListener i : listeners)
-			i.pointChange();
-	}
-	
-	private void firePortChange() {
-		for (SEPCListener i : listeners)
-			i.portChange();
-	}
-	
-	/**
-	 * Returns a list of {@link Port}s specifying the polygon drawn in this
-	 * Canvas.
-	 * @return a PointList specifying a polygon
-	 */
-	public List<PortSpec> getPorts() {
-		return ports;
-	}
-
-	/**
-	 * Overwrites the current list of Ports with copies of the contents of the
-	 * given {@link List}.
-	 * @param ports a list of Ports
-	 */
-	public void setPorts(List<PortSpec> ports) {
-		if (ports != null) {
-			this.ports.clear();
-			for (PortSpec i : ports)
-				this.ports.add(new PortSpec(i));
-			firePortChange();
 		}
 	}
 }

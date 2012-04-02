@@ -1,18 +1,89 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
 
-/**
- * A {@link PortSpec} is an abstract {@link Port}: changes to it don't need to
- * undergo validation. {@link Control}s contain these rather than actual {@link
- * Port}s.
- * @author alec
- *
- */
-public class PortSpec implements IPort {
-	private String name;
+public class PortSpec extends ModelObject implements IPort {
+	public static final String PROPERTY_NAME = "PortSpecName";
+	public static final String PROPERTY_SEGMENT = "PortSpecSegment";
+	public static final String PROPERTY_DISTANCE = "PortSpecDistance";
+	
+	private abstract class PortSpecChange extends ModelObjectChange {
+		@Override
+		public PortSpec getCreator() {
+			return PortSpec.this;
+		}
+	}
+	
+	public class ChangeName extends PortSpecChange {
+		public String name;
+		public ChangeName(String name) {
+			this.name = name;
+		}
+		
+		private String oldName;
+		@Override
+		public void beforeApply() {
+			oldName = getCreator().getName();
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (name != null);
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeName(oldName);
+		}
+	}
+	
+	public class ChangeSegment extends PortSpecChange {
+		public int segment;
+		
+		public ChangeSegment(int segment) {
+			this.segment = segment;
+		}
+		
+		private int oldSegment;
+		@Override
+		public void beforeApply() {
+			oldSegment = getCreator().getSegment();
+		}
+		
+		@Override
+		public ChangeSegment inverse() {
+			return new ChangeSegment(oldSegment);
+		}
+	}
+	
+	public class ChangeDistance extends PortSpecChange {
+		public double distance;
+		
+		public ChangeDistance(double distance) {
+			this.distance = distance;
+		}
+		
+		private double oldDistance;
+		@Override
+		public void beforeApply() {
+			oldDistance = getCreator().getDistance();
+		}
+		
+		@Override
+		public ChangeDistance inverse() {
+			return new ChangeDistance(oldDistance);
+		}
+	}
+	
+	private String name = null;
 	private int segment;
 	private double distance;
 	
@@ -27,8 +98,9 @@ public class PortSpec implements IPort {
 	}
 
 	public PortSpec(PortSpec p) {
-		setName(p.getName()).setSegment(p.getSegment()).
-			setDistance(p.getDistance());
+		setName(p.getName());
+		setSegment(p.getSegment());
+		setDistance(p.getDistance());
 	}
 	
 	@Override
@@ -36,27 +108,30 @@ public class PortSpec implements IPort {
 		return name;
 	}
 	
-	public PortSpec setName(String name) {
+	protected void setName(String name) {
+		String oldName = this.name;
 		this.name = name;
-		return this;
+		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
 	public int getSegment() {
 		return segment;
 	}
 	
-	public PortSpec setSegment(int segment) {
+	protected void setSegment(int segment) {
+		int oldSegment = this.segment;
 		this.segment = segment;
-		return this;
+		firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
 	}
 	
 	public double getDistance() {
 		return distance;
 	}
 	
-	public PortSpec setDistance(double distance) {
+	protected void setDistance(double distance) {
+		double oldDistance = this.distance;
 		this.distance = distance;
-		return this;
+		firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
 	}
 
 	@Override
@@ -73,5 +148,28 @@ public class PortSpec implements IPort {
 	public String toString() {
 		return "PortSpec(" + getName() + ", " + getSegment() + ", " +
 				getDistance() + ")";
+	}
+	
+	public ChangeName changeName(String name) {
+		return new ChangeName(name);
+	}
+	
+	public ChangeSegment changeSegment(int segment) {
+		return new ChangeSegment(segment);
+	}
+	
+	public ChangeDistance changeDistance(double distance) {
+		return new ChangeDistance(distance);
+	}
+	
+	@Override
+	public Object getProperty(String name) {
+		if (PROPERTY_NAME.equals(name)) {
+			return getName();
+		} else if (PROPERTY_DISTANCE.equals(name)) {
+			return getDistance();
+		} else if (PROPERTY_SEGMENT.equals(name)) {
+			return getSegment();
+		} else return super.getProperty(name);
 	}
 }

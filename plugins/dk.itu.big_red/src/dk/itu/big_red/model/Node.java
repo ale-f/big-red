@@ -47,7 +47,7 @@ public class Node extends Container implements INode {
 		
 		@Override
 		public ChangeParameter inverse() {
-			return getCreator().changeParameter(oldParameter);
+			return new ChangeParameter(oldParameter);
 		}
 	}
 	

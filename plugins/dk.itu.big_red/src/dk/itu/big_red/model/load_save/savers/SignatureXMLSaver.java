@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Port;
+import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
@@ -64,7 +64,7 @@ public class SignatureXMLSaver extends XMLSaver {
 			applyAttributes(e, "parameter", "BOOLEAN");
 		}
 		
-		for (Port p : c.createPorts())
+		for (PortSpec p : c.getPorts())
 			e.appendChild(processPort(
 				newElement(IRedNamespaceConstants.SIGNATURE, "signature:port"), p));
 		
@@ -77,7 +77,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		return e;
 	}
 	
-	private Element processPort(Element e, Port p) {
+	private Element processPort(Element e, PortSpec p) {
 		applyAttributes(e,
 				"name", p.getName());
 		

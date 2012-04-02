@@ -5,17 +5,17 @@ import org.eclipse.gef.commands.Command;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeable;
+import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
- * {@link ChangeCommand}s apply a {@link Change} to an {@link IChangeable}.
+ * {@link ChangeCommand}s apply a {@link Change} to an {@link IChangeExecutor}.
  * @author alec
  *
  */
 public abstract class ChangeCommand extends Command {
 	private Change change;
-	private IChangeable target;
+	private IChangeExecutor target;
 	
 	/**
 	 * Gets the {@link Change} that will be applied by this command.
@@ -36,19 +36,19 @@ public abstract class ChangeCommand extends Command {
 	}
 
 	/**
-	 * Gets the {@link IChangeable} that will be modified by this command.
-	 * @return an {@link IChangeable}
+	 * Gets the {@link IChangeExecutor} that will be modified by this command.
+	 * @return an {@link IChangeExecutor}
 	 */
-	public IChangeable getTarget() {
+	public IChangeExecutor getTarget() {
 		return target;
 	}
 
 	/**
-	 * Sets the {@link IChangeable} that will be modified by this command.
-	 * @param target an {@link IChangeable}
+	 * Sets the {@link IChangeExecutor} that will be modified by this command.
+	 * @param target an {@link IChangeExecutor}
 	 * @return <code>this</code>, for convenience
 	 */
-	public ChangeCommand setTarget(IChangeable target) {
+	public ChangeCommand setTarget(IChangeExecutor target) {
 		this.target = target;
 		return this;
 	}
@@ -61,7 +61,7 @@ public abstract class ChangeCommand extends Command {
 	public abstract ChangeCommand prepare();
 	
 	/**
-	 * If this command's {@link Change change} and {@link IChangeable target}
+	 * If this command's {@link Change change} and {@link IChangeExecutor target}
 	 * have been set, and the {@link Change} is suitably configured and ready
 	 * to go, returns <code>true</code>.
 	 * @return <code>true</code> if this {@link ChangeCommand} is ready to be
@@ -85,7 +85,7 @@ public abstract class ChangeCommand extends Command {
 	}
 	
 	/**
-	 * Applies this command's {@link Change} to its {@link IChangeable target}.
+	 * Applies this command's {@link Change} to its {@link IChangeExecutor target}.
 	 */
 	@Override
 	public final void execute() {
@@ -114,7 +114,7 @@ public abstract class ChangeCommand extends Command {
 	}
 	
 	/**
-	 * Re-applies this command's {@link Change} to its {@link IChangeable
+	 * Re-applies this command's {@link Change} to its {@link IChangeExecutor
 	 * target}.
 	 */
 	@Override

@@ -36,8 +36,8 @@ public class Edge extends Link implements IEdge {
 		}
 		
 		@Override
-		public LayoutableChange inverse() {
-			return getCreator().changeLayout(oldLayout);
+		public ChangeLayout inverse() {
+			return new ChangeLayout(oldLayout);
 		}
 		
 		@Override

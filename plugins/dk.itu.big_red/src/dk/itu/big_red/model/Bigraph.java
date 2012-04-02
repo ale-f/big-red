@@ -18,7 +18,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
-import dk.itu.big_red.model.changes.IChangeable;
+import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.names.INamespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
@@ -31,7 +31,7 @@ import dk.itu.big_red.model.names.StringNamePolicy;
  * @author alec
  * @see IBigraph
  */
-public class Bigraph extends Container implements IBigraph, IChangeable {
+public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	private Signature signature = null;
 
 	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();

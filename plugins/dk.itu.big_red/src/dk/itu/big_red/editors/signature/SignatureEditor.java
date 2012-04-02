@@ -2,11 +2,9 @@ package dk.itu.big_red.editors.signature;
 
 import java.beans.PropertyChangeListener;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -32,12 +30,10 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
-import dk.itu.big_red.editors.signature.SignatureEditorPolygonCanvas.SEPCListener;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Colourable;
-import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
@@ -110,10 +106,9 @@ implements PropertyChangeListener {
 		
 		label.setText(currentControl.getLabel());
 		name.setText(currentControl.getName());
-		appearance.setMode(polygon ? Shape.POLYGON : Shape.OVAL);
-		if (polygon)
-			appearance.setPoints(currentControl.getPoints());
-		appearance.setPorts(currentControl.getPorts());
+		
+		appearance.setModel(currentControl);
+		
 		resizable.setSelection(currentControl.isResizable());
 		if (getSelectedControl() != currentControl)
 			controls.setSelection(new StructuredSelection(currentControl), true);
@@ -375,36 +370,13 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		appearance = new SignatureEditorPolygonCanvas(appearanceGroup, SWT.BORDER);
+		appearance = new SignatureEditorPolygonCanvas(this,
+				appearanceGroup, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
 		appearanceLayoutData.widthHint = 100;
 		appearanceLayoutData.heightHint = 100;
 		appearance.setLayoutData(appearanceLayoutData);
 		appearance.setBackground(ColorConstants.listBackground);
-		appearance.addListener(new SEPCListener() {
-			
-			@Override
-			public void portChange() {
-				if (!shouldPropagateUI())
-					return;
-				ChangeGroup cg = new ChangeGroup();
-				ArrayList<PortSpec> toCopy =
-						new ArrayList<PortSpec>(appearance.getPorts());
-				for (PortSpec p :
-					new ArrayList<PortSpec>(currentControl.getPorts()))
-					cg.add(currentControl.changeRemovePort(p));
-				for (PortSpec p : toCopy)
-					cg.add(currentControl.changeAddPort(new PortSpec(p)));
-				doChange(cg);
-			}
-			
-			@Override
-			public void pointChange() {
-				if (!shouldPropagateUI())
-					return;
-				currentControl.setPoints(appearance.getPoints().getCopy());
-			}
-		});
 		
 		if (smiff == null)
 			smiff = UI.tweakFont(appearanceLabel.getFont(), 8, SWT.ITALIC);
@@ -427,13 +399,9 @@ implements PropertyChangeListener {
 			public void propertyChange(PropertyChangeEvent event) {
 				if (!shouldPropagateUI())
 					return;
-				try {
-					getModel().tryApplyChange(
-							currentControl.changeOutlineColour(
-									new Colour(outline.getColorValue())));
-				} catch (ChangeRejectedException cre) {
-					cre.printStackTrace();
-				}
+				Colour newColour = new Colour(outline.getColorValue());
+				if (!currentControl.getOutlineColour().equals(newColour))
+					doChange(currentControl.changeOutlineColour(newColour));
 			}
 		});
 		
@@ -445,13 +413,9 @@ implements PropertyChangeListener {
 			public void propertyChange(PropertyChangeEvent event) {
 				if (!shouldPropagateUI())
 					return;
-				try {
-					getModel().tryApplyChange(
-							currentControl.changeFillColour(
-									new Colour(fill.getColorValue())));
-				} catch (ChangeRejectedException cre) {
-					cre.printStackTrace();
-				}
+				Colour newColour = new Colour(fill.getColorValue());
+				if (!currentControl.getFillColour().equals(newColour))
+					doChange(currentControl.changeFillColour(newColour));
 			}
 		});
 		
@@ -502,14 +466,8 @@ implements PropertyChangeListener {
 					name.setText((String)newValue);
 					controls.refresh(currentControl);
 				} else if (propertyName.equals(Control.PROPERTY_SHAPE)) {
-					appearance.setMode((Shape)newValue);
 					ovalMode.setSelection(Shape.OVAL.equals(newValue));
 					polygonMode.setSelection(Shape.POLYGON.equals(newValue));
-				} else if (propertyName.equals(Control.PROPERTY_POINTS)) {
-					if (appearance.getMode() == Shape.POLYGON)
-						appearance.setPoints((PointList)newValue);
-				} else if (propertyName.equals(Control.PROPERTY_PORT)) {
-					appearance.setPorts(currentControl.getPorts());
 				} else if (propertyName.equals(Control.PROPERTY_RESIZABLE)) {
 					resizable.setSelection((Boolean)newValue);
 				} else if (propertyName.equals(Colourable.PROPERTY_FILL)) {
@@ -541,5 +499,10 @@ implements PropertyChangeListener {
 	@Override
 	protected void tryApplyChange(Change c) throws ChangeRejectedException {
 		getModel().tryApplyChange(c);
+	}
+	
+	@Override
+	public boolean doChange(Change c) {
+		return super.doChange(c);
 	}
 }

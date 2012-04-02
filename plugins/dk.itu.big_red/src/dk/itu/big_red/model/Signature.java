@@ -13,14 +13,17 @@ import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangePoints;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
+import dk.itu.big_red.model.PortSpec.ChangeDistance;
+import dk.itu.big_red.model.PortSpec.ChangeSegment;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeable;
+import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.interfaces.ISignature;
 
 /**
@@ -31,7 +34,7 @@ import dk.itu.big_red.model.interfaces.ISignature;
  * @author alec
  * @see ISignature
  */
-public class Signature extends ModelObject implements ISignature, IChangeable {
+public class Signature extends ModelObject implements ISignature, IChangeExecutor {
 	abstract class SignatureChange extends ModelObjectChange {
 		@Override
 		public Signature getCreator() {
@@ -56,8 +59,8 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		}
 
 		@Override
-		public Change inverse() {
-			return getCreator().changeRemoveControl(control);
+		public ChangeRemoveControl inverse() {
+			return new ChangeRemoveControl(control);
 		}
 		
 		@Override
@@ -73,8 +76,8 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		}
 
 		@Override
-		public Change inverse() {
-			return getCreator().changeAddControl(control);
+		public ChangeAddControl inverse() {
+			return new ChangeAddControl(control);
 		}
 		
 		@Override
@@ -186,9 +189,22 @@ public class Signature extends ModelObject implements ISignature, IChangeable {
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			c.getCreator().addPort(c.port);
+			c.port.setName(c.name);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			c.getCreator().removePort(c.port.getName());
+		} else if (b instanceof ChangeSegment) {
+			ChangeSegment c = (ChangeSegment)b;
+			c.getCreator().setSegment(c.segment);
+		} else if (b instanceof ChangeDistance) {
+			ChangeDistance c = (ChangeDistance)b;
+			c.getCreator().setDistance(c.distance);
+		} else if (b instanceof ChangePoints) {
+			ChangePoints c = (ChangePoints)b;
+			c.getCreator().setPoints(c.points);
+		} else if (b instanceof PortSpec.ChangeName) {
+			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
+			c.getCreator().setName(c.name);
 		}
 	}
 	

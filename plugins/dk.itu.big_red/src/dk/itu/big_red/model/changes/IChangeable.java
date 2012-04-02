@@ -1,18 +1,27 @@
 package dk.itu.big_red.model.changes;
 
+import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+
 /**
- * Objects implementing {@link IChangeable} can have {@link Change}s applied
- * to them to modify their state.
+ * Classes implementing <strong>IChangeable</strong> define {@link Change}s
+ * which can be used to modify them, and can indicate the {@link
+ * IChangeExecutor} that should be used to apply those changes.
  * @author alec
  *
  */
-public interface IChangeable extends IChangeValidator {
+public interface IChangeable {
 	/**
-	 * Validates and applies the given {@link Change} to this {@link
-	 * IChangeable}.
-	 * @param b a {@link Change}
-	 * @throws ChangeRejectedException if {@link #tryValidateChange(Change)}
-	 * fails
+	 * Returns the {@link IChangeExecutor} that can apply changes to this
+	 * object.
+	 * @return an {@link IChangeExecutor} (can be <code>null</code>)
 	 */
-	public void tryApplyChange(Change b) throws ChangeRejectedException;
+	IChangeExecutor getChangeExecutor();
+	
+	/**
+	 * Returns the {@link IChangeExecutor} that could, in the given context,
+	 * apply changes to this object.
+	 * @param context a context
+	 * @return an {@link IChangeExecutor} (can be <code>null</code>)
+	 */
+	IChangeExecutor getChangeExecutor(IPropertyProviderProxy context);
 }

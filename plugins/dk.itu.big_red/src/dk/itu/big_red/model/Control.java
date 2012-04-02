@@ -50,7 +50,7 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
+		public ChangeName inverse() {
 			return new ChangeName(oldName);
 		}
 		
@@ -79,8 +79,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeShape(oldShape);
+		public ChangeShape inverse() {
+			return new ChangeShape(oldShape);
 		}
 		
 		@Override
@@ -109,8 +109,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeLabel(oldLabel);
+		public ChangeLabel inverse() {
+			return new ChangeLabel(oldLabel);
 		}
 		
 		@Override
@@ -147,8 +147,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeDefaultSize(oldDefaultSize);
+		public ChangeDefaultSize inverse() {
+			return new ChangeDefaultSize(oldDefaultSize);
 		}
 		
 		@Override
@@ -181,8 +181,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeResizable(oldResizable);
+		public ChangeResizable inverse() {
+			return new ChangeResizable(oldResizable);
 		}
 		
 		@Override
@@ -215,8 +215,8 @@ public class Control extends Colourable implements IControl {
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeKind(oldKind);
+		public ChangeKind inverse() {
+			return new ChangeKind(oldKind);
 		}
 		
 		@Override
@@ -235,13 +235,15 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	public class ChangeAddPort extends PortChange {
-		public ChangeAddPort(PortSpec port) {
+		public String name;
+		public ChangeAddPort(PortSpec port, String name) {
 			this.port = port;
+			this.name = name;
 		}
 		
 		@Override
-		public Change inverse() {
-			return getCreator().changeRemovePort(port);
+		public ChangeRemovePort inverse() {
+			return new ChangeRemovePort(port);
 		}
 		
 		@Override
@@ -255,14 +257,53 @@ public class Control extends Colourable implements IControl {
 			this.port = port;
 		}
 		
+		private String oldName;
 		@Override
-		public Change inverse() {
-			return getCreator().changeAddPort(port);
+		public void beforeApply() {
+			oldName = getCreator().getName();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null);
+		}
+		
+		@Override
+		public ChangeAddPort inverse() {
+			return new ChangeAddPort(port, oldName);
 		}
 		
 		@Override
 		public String toString() {
 			return "Change(remove port " + port + " from " + getCreator() + ")";
+		}
+	}
+	
+	public class ChangePoints extends ControlChange {
+		public PointList points;
+		public ChangePoints(PointList points) {
+			this.points = points;
+		}
+		
+		private PointList oldPoints;
+		@Override
+		public void beforeApply() {
+			oldPoints = getCreator().getPoints();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldPoints != null);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (points != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangePoints(oldPoints);
 		}
 	}
 	
@@ -420,24 +461,22 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	/**
-	 * If this object's shape is {@link Shape#POLYGON}, then gets a copy
-	 * of the list of points defining its polygon.
-	 * @return a list of points defining a polygon, or <code>null</code> if
-	 *         this object's shape is not {@link Shape#POLYGON}
+	 * Returns the list of points defining this Control's polygon.
+	 * @return a list of points defining a polygon
 	 * @see Control#getShape
 	 * @see Control#setShape
 	 */
 	public PointList getPoints() {
-		if (shape == Shape.POLYGON)
-			return points.getCopy();
-		else return null;
+		return points;
 	}
 	
-	public void setPoints(PointList points) {
-		PointList oldPoints = this.points;
-		this.points = points;
-		if (shape == Shape.POLYGON)
+	protected void setPoints(PointList points) {
+		if (points != null) {
+			PointList oldPoints = this.points;
+			this.points = points;
+			points.translate(points.getBounds().getTopLeft().getNegated());
 			firePropertyChange(PROPERTY_POINTS, oldPoints, points);
+		}
 	}
 
 	protected void setName(String name) {
@@ -486,11 +525,8 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	protected void addPort(PortSpec p) {
-		if (p != null) {
-			PortSpec q = new PortSpec(p);
-			ports.add(q);
-			firePropertyChange(PROPERTY_PORT, null, q);
-		}
+		ports.add(p);
+		firePropertyChange(PROPERTY_PORT, null, p);
 	}
 	
 	protected void removePort(String port) {
@@ -615,11 +651,15 @@ public class Control extends Colourable implements IControl {
 		return new ChangeKind(kind);
 	}
 	
-	public ChangeAddPort changeAddPort(PortSpec port) {
-		return new ChangeAddPort(port);
+	public ChangeAddPort changeAddPort(PortSpec port, String name) {
+		return new ChangeAddPort(port, name);
 	}
 	
 	public ChangeRemovePort changeRemovePort(PortSpec port) {
 		return new ChangeRemovePort(port);
+	}
+	
+	public ChangePoints changePoints(PointList pl) {
+		return new ChangePoints(pl);
 	}
 }
