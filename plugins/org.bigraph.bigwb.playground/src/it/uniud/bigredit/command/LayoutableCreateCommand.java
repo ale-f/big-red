@@ -52,10 +52,11 @@ public class LayoutableCreateCommand extends ChangeCommand {
 					return this;
 			}
 		}
-		
+		if (container instanceof Bigraph) {
 		String name = container.getBigraph().getFirstUnusedName(node);
 		cg.add(container.changeAddChild(node, name),
 			node.changeLayout(layout));
+		}
 		return this;
 	}
 	

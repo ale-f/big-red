@@ -97,11 +97,6 @@ public class BRS extends Container implements IChangeable{
 		this.signature = signature;
 	}
 	
-	@Override
-	public void tryApplyChange(Change b) throws ChangeRejectedException {
-		tryValidateChange(b);
-		doChange(b);
-	}
 	
 	private void doChange(Change b) {
 		
@@ -154,11 +149,7 @@ public class BRS extends Container implements IChangeable{
 		
 	}
 	
-	@Override
-	public void tryValidateChange(Change b) throws ChangeRejectedException {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	
 	@Override

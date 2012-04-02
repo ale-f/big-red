@@ -5,22 +5,15 @@ import it.uniud.bigredit.editparts.NestedBigraphPart;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.Request;
-import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.GroupRequest;
-import org.eclipse.ui.internal.Workbench;
 
 import it.uniud.bigredit.command.CompositionCommand;
 import it.uniud.bigredit.command.LayoutableAddCommand;
+import it.uniud.bigredit.command.LayoutableCreateCommand;
 import it.uniud.bigredit.editparts.BigreditRootEditPart;
 
-
-
-
-import dk.itu.big_red.editors.bigraph.commands.LayoutableCreateCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableRelayoutCommand;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Bigraph;
