@@ -448,7 +448,7 @@ public class Control extends Colourable implements IControl {
 		c.setResizable(isResizable());
 		
 		for (PortSpec p : getPorts())
-			c.addPort(new PortSpec(p));
+			c.addPort(p.clone(m));
 		
 		return c;
 	}

@@ -1,5 +1,7 @@
 package dk.itu.big_red.model;
 
+import java.util.Map;
+
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
@@ -98,20 +100,13 @@ public class PortSpec extends ModelObject implements IPort {
 	private double distance;
 	private Control control;
 	
-	public PortSpec() {
-		
-	}
-	
-	public PortSpec(String name, int segment, double distance) {
-		setName(name);
-		setSegment(segment);
-		setDistance(distance);
-	}
-
-	public PortSpec(PortSpec p) {
-		setName(p.getName());
-		setSegment(p.getSegment());
-		setDistance(p.getDistance());
+	@Override
+	public PortSpec clone(Map<ModelObject, ModelObject> m) {
+		PortSpec p = (PortSpec)super.clone(m);
+		p.setName(getName());
+		p.setSegment(getSegment());
+		p.setDistance(getDistance());
+		return p;
 	}
 	
 	@Override
