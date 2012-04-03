@@ -32,7 +32,7 @@ import dk.itu.big_red.model.names.INamespace;
  *
  */
 public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
-	private BigraphScratchpad scratch = null;
+	private final BigraphScratchpad scratch;
 	private Change activeChange = null;
 	
 	public BigraphIntegrityValidator(Bigraph changeable) {

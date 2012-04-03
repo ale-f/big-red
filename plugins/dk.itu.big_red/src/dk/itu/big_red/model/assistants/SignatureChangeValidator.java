@@ -24,16 +24,19 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
 
 public class SignatureChangeValidator extends ChangeValidator<Signature> {
+	private final SignatureScratchpad scratch;
 	private Change activeChange = null;
 	
 	public SignatureChangeValidator(Signature changeable) {
 		super(changeable);
+		scratch = new SignatureScratchpad(changeable);
 	}
 
 	@Override
 	public void tryValidateChange(Change b) throws ChangeRejectedException {
 		activeChange = b;
 		
+		scratch.clear();
 		_tryValidateChange(b);
 		
 		activeChange = null;
@@ -54,15 +57,23 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				b instanceof ChangeOutlineColour ||
 				b instanceof ChangeComment) {
 			/* do nothing */
-		} else if (b instanceof ChangeAddControl ||
-				b instanceof ChangeRemoveControl ||
-				b instanceof ChangeShape ||
+		} else if (b instanceof ChangeAddControl) {
+			ChangeAddControl c = (ChangeAddControl)b;
+			scratch.addControl(c.control);
+		} else if (b instanceof ChangeRemoveControl) {
+			ChangeRemoveControl c = (ChangeRemoveControl)b;
+			scratch.removeControl(c.control);
+		} else if (b instanceof ChangeAddPort) {
+			ChangeAddPort c = (ChangeAddPort)b;
+			scratch.addPortFor(c.getCreator(), c.port);
+		} else if (b instanceof ChangeRemovePort) {
+			ChangeRemovePort c = (ChangeRemovePort)b;
+			scratch.removePortFor(c.getCreator(), c.port);
+		} else if (b instanceof ChangeShape ||
 				b instanceof ChangeLabel ||
 				b instanceof ChangeResizable ||
 				b instanceof ChangeDefaultSize ||
 				b instanceof ChangeKind ||
-				b instanceof ChangeAddPort ||
-				b instanceof ChangeRemovePort ||
 				b instanceof ChangeSegment ||
 				b instanceof ChangePoints ||
 				b instanceof PortSpec.ChangeName) {
