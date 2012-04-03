@@ -1,53 +1,53 @@
 package it.uniud.bigredit.model;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 
-import it.uniud.bigredit.PlayEditor;
+//import it.uniud.bigredit.PlayEditor;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Colourable;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.Site;
+
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeValidator;
-import dk.itu.big_red.model.changes.IChangeable;
 
 
-public class BRS extends Container implements IChangeable{
+public class BRS extends ModelObject{
 	
 	private static ArrayList< Bigraph > diagrams = new ArrayList< Bigraph >();
+	private HashMap<ModelObject,Rectangle> children = new HashMap<ModelObject,Rectangle>();
+	
 	private Signature signature = new Signature();
+	private String name;
 	
-	private PlayEditor editor = null;
-	
-	public BRS( PlayEditor editor )
-	{
-		this.editor = editor;
-		this.setLayout( new Rectangle( 0, 0, 1000000, 100000 ) );
-		//diagrams.add( this );
-		
+	public String getName(){
+		return name;
 	}
 	
-	public void setEditor (PlayEditor editor){
-		this.editor = editor;
-	}
+	
+	//private AbstractGefEditor editor = null;
+	
+//	public BRS( PlayEditor editor )
+//	{
+//		this.editor = editor;
+//		this.setLayout( new Rectangle( 0, 0, 1000000, 100000 ) );
+//		//diagrams.add( this );
+//		
+//	}
+
+	
+	
+	
+//	public void setEditor (PlayEditor editor){
+//		this.editor = editor;
+//	}
 	
 	/*@Override
 	public BRS getBRS() {
@@ -56,17 +56,17 @@ public class BRS extends Container implements IChangeable{
 	
 	public BRS()
 	{
-		setLayout( new Rectangle( 0, 0,  1000000, 100000 ) );
+		//setLayout( new Rectangle( 0, 0,  1000000, 100000 ) );
 		//diagrams.add( this );
-		Bigraph big= new Bigraph();
+		//Bigraph big= new Bigraph();
 		//big.setLayout(new Rectangle (100,100,50,50));
-		this.addBigraph(big);
+		//this.addBigraph(big);
 	}
 	
-	public PlayEditor getEditor()
-	{
-		return editor;
-	}
+//	public PlayEditor getEditor()
+//	{
+//		return editor;
+//	}
 	
 	@Override
 	public void finalize()
@@ -79,14 +79,20 @@ public class BRS extends Container implements IChangeable{
 		return diagrams;
 	}
 	
-	@Override
+
+	public List<ModelObject> getChildren(){
+		
+		return (List)children.keySet();
+	}
+	
 	public void addChild(Layoutable child) {
-		super.addChild(child);
+		//addChild(child);
 	}
 
 	public void addBigraph( Bigraph bigraph )
 	{
 		diagrams.add(bigraph);
+		//bigraph.setBRS(this);
 	}
 	
 	public Signature getSignature() {
@@ -149,22 +155,28 @@ public class BRS extends Container implements IChangeable{
 		
 	}
 	
-	
-
-	
-	@Override
-	public boolean canContain(Layoutable child) {
-		Class<? extends Layoutable> c = child.getClass();
-		return (c == Bigraph.class );
-	}
-
-
 
 	@Override
 	public IFile getFile() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	public Change changeLayoutChild(ModelObject node, String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	public Change changeAddChild(ModelObject node, String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
 
 
 

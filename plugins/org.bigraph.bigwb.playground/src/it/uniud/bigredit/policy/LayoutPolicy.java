@@ -115,7 +115,7 @@ public class LayoutPolicy extends XYLayoutEditPolicy {
 			create = true;
 		}
 		if ( object instanceof Root && ( getHost() instanceof NestedBigraphPart  ) ) {
-			Container t = command.getParent();
+			Container t = (Container) command.getParent();
 			if ( constraint.width() <= 0 || constraint.height()  <= 0 ) {
 				/*constraint.getWidth() = Math.min( t.getLayout().getWidth() / 2, RootFigure.DEF_WIDTH );
 				constraint.height = Math.min( t.getLayout().getHeight()  / 2 - NameBarFigure.DEF_HEIGHT - BaseNode.MARGIN, RootFigure.DEF_HEIGHT );

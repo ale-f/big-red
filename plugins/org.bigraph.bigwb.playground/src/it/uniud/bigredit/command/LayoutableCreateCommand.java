@@ -1,5 +1,7 @@
 package it.uniud.bigredit.command;
 
+import it.uniud.bigredit.model.BRS;
+
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
@@ -8,6 +10,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -21,20 +24,23 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	}
 	
 	private Rectangle layout = null;
-	private Container container = null;
-	private Layoutable node = null;
+	private ModelObject container = null;
+	private ModelObject node = null;
 	
 	@Override
 	public LayoutableCreateCommand prepare() {
 		cg.clear();
 		if (layout == null || container == null || node == null)
 			return this;
-		setTarget(container.getBigraph());
-		for (Layoutable i : container.getChildren()) {
-			if (i instanceof Edge)
-				continue;
-			else if (i.getLayout().intersects(layout))
-				return this;
+		
+		//setTarget(container.getBigraph());
+		if (container instanceof Container) {
+		for (Layoutable i : ((Container)container).getChildren()) {
+				if (i instanceof Edge)
+					continue;
+				else if (i.getLayout().intersects(layout))
+					return this;
+			}
 		}
 		if (container instanceof Bigraph) {
 			Bigraph bigraph = (Bigraph)container;
@@ -52,11 +58,21 @@ public class LayoutableCreateCommand extends ChangeCommand {
 					return this;
 			}
 		}
+		
+		
 		if (container instanceof Bigraph) {
-		String name = container.getBigraph().getFirstUnusedName(node);
-		cg.add(container.changeAddChild(node, name),
-			node.changeLayout(layout));
+			String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
+			cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name),
+					((Layoutable)node).changeLayout(layout));
 		}
+		if (container instanceof BRS){
+			cg.add(((BRS)container).changeAddChild((ModelObject)node, "B0"),
+					((BRS)container).changeLayoutChild((ModelObject)node, "B0"));
+			
+		}
+		
+		
+		
 		return this;
 	}
 	

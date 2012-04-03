@@ -1,5 +1,6 @@
 package it.uniud.bigredit.editparts;
 
+
 import it.uniud.bigredit.model.BRS;
 
 import org.eclipse.gef.EditPart;

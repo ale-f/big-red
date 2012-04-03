@@ -85,12 +85,22 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		
 		requestObject.getClass();
 		Dimension size = new Dimension(100, 100);
-		Layoutable parent = (Layoutable)getHost().getModel();
+		Layoutable parent;
+		
+		if(getHost() instanceof NestedBigraphPart){
+			parent= (Layoutable)((Bigraph)getHost().getParent().getModel());
+		}else{
+			parent = (Layoutable)getHost().getModel();
+		}
+		
 		if (!(parent instanceof Container)) {
 			return null;
 		} else {
-			size.setSize(((Layoutable)requestObject).getLayout().getSize());
+			//if(((Layoutable) requestObject).getLayout() != null){
+				size.setSize(((Layoutable) requestObject).getLayout().getSize());
+			//}	
 		}
+		
 		
 		/*Layoutable self = (Layoutable)getHost().getModel();
 		if (!(self instanceof Container)) {
@@ -100,7 +110,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		}*/
 		
 		LayoutableCreateCommand cmd = new LayoutableCreateCommand();
-		cmd.setContainer(getHost().getModel());
+		cmd.setContainer(parent);
 		cmd.setObject(request.getNewObject());
 		
 		Rectangle constraint = (Rectangle)getConstraintFor(request);

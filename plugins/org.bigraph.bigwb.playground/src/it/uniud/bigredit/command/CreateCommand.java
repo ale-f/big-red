@@ -1,5 +1,6 @@
 package it.uniud.bigredit.command;
 
+
 import it.uniud.bigredit.model.BRS;
 
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Root;
 
 
@@ -17,8 +19,8 @@ import dk.itu.big_red.model.Root;
 
 public class CreateCommand extends Command {
 	
-	private Container parent;
-	private Layoutable child;
+	private ModelObject parent;
+	private ModelObject child;
 	private Rectangle layout;
 	private HashMap< Layoutable, Rectangle > oldLayouts;
 	
@@ -35,7 +37,7 @@ public class CreateCommand extends Command {
 		if ( o instanceof Container )
 			parent = ( Container )o;
 	}
-	public Container getParent()
+	public ModelObject getParent()
 	{
 		return parent;
 	}
@@ -60,12 +62,12 @@ public class CreateCommand extends Command {
 	public void execute()
 	{
 
-		child.changeLayout(layout);
+		//child.changeLayout(layout);
 		
 		//child.setLayout( layout, false, true );
-		if(parent instanceof BRS){
-			((BRS)parent).addChild(child);
-		}
+		//if(parent instanceof BRS){
+		//	((BRS)parent).addChild(child);
+		//}
 		//parent.addChild( child );
 		/*oldLayouts = parent.organiseGraph();
 		if ( child instanceof Node )
