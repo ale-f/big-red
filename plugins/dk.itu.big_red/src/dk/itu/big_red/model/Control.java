@@ -566,14 +566,17 @@ public class Control extends Colourable implements IControl {
 	}
 	
 	protected void addPort(PortSpec p) {
-		ports.add(p);
-		firePropertyChange(PROPERTY_PORT, null, p);
+		if (ports.add(p)) {
+			p.setControl(this);
+			firePropertyChange(PROPERTY_PORT, null, p);
+		}
 	}
 	
 	protected void removePort(String port) {
 		PortSpec p = getPort(port);
 		if (p != null) {
 			ports.remove(p);
+			p.setControl(null);
 			firePropertyChange(PROPERTY_PORT, p, null);
 		}
 	}

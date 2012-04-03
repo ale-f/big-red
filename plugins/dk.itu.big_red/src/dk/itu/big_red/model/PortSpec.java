@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
@@ -9,6 +10,9 @@ import dk.itu.big_red.model.interfaces.IPort;
 public class PortSpec extends ModelObject implements IPort {
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String PROPERTY_NAME = "PortSpecName";
+	
+	@RedProperty(fired = Control.class, retrieved = Control.class)
+	public static final String PROPERTY_CONTROL = "PortSpecControl";
 	
 	@RedProperty(fired = Integer.class, retrieved = Integer.class)
 	public static final String PROPERTY_SEGMENT = "PortSpecSegment";
@@ -89,9 +93,10 @@ public class PortSpec extends ModelObject implements IPort {
 		}
 	}
 	
-	private String name = null;
+	private String name;
 	private int segment;
 	private double distance;
+	private Control control;
 	
 	public PortSpec() {
 		
@@ -140,6 +145,20 @@ public class PortSpec extends ModelObject implements IPort {
 		firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
 	}
 
+	public Control getControl() {
+		return control;
+	}
+	
+	public Control getControl(IPropertyProviderProxy context) {
+		return (Control)getProperty(context, PROPERTY_CONTROL);
+	}
+	
+	protected void setControl(Control control) {
+		Control oldControl = this.control;
+		this.control = control;
+		firePropertyChange(PROPERTY_CONTROL, oldControl, control);
+	}
+	
 	@Override
 	public ILink getLink() {
 		return null;
@@ -176,6 +195,8 @@ public class PortSpec extends ModelObject implements IPort {
 			return getDistance();
 		} else if (PROPERTY_SEGMENT.equals(name)) {
 			return getSegment();
+		} else if (PROPERTY_CONTROL.equals(name)) {
+			return getControl();
 		} else return super.getProperty(name);
 	}
 }

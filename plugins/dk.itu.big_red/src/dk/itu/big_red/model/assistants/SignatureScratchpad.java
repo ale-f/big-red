@@ -55,9 +55,11 @@ public class SignatureScratchpad extends PropertyScratchpad {
 	
 	public void addPortFor(Control c, PortSpec p) {
 		getModifiablePorts(c).add(p);
+		setValue(p, PortSpec.PROPERTY_CONTROL, c);
 	}
 	
 	public void removePortFor(Control c, PortSpec p) {
 		getModifiablePorts(c).remove(p);
+		setValue(p, PortSpec.PROPERTY_CONTROL, null);
 	}
 }
