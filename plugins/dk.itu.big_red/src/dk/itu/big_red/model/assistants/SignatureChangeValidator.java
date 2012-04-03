@@ -75,9 +75,12 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				b instanceof ChangeDefaultSize ||
 				b instanceof ChangeKind ||
 				b instanceof ChangeSegment ||
-				b instanceof ChangePoints ||
-				b instanceof PortSpec.ChangeName) {
+				b instanceof ChangePoints) {
 			/* do nothing, yet */
+		} else if (b instanceof PortSpec.ChangeName) {
+			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
+			if (c.name.trim().length() == 0)
+				rejectChange(b, "Port names must not be empty");
 		} else if (b instanceof ChangeDistance) {
 			ChangeDistance c = (ChangeDistance)b;
 			if (c.distance < 0 || c.distance >= 1.0)
@@ -86,6 +89,7 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 			ChangeName c = (ChangeName)b;
 			if (c.name.trim().length() == 0)
 				rejectChange(b, "Control names must not be empty");
+			scratch.setNameFor(c.getCreator(), c.name);
 		} else rejectChange("The change was not recognised by the validator");
 	}
 }
