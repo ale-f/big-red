@@ -7,6 +7,7 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 
+import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.interfaces.IControl;
@@ -444,18 +445,26 @@ public class Control extends Colourable implements IControl {
 		return label;
 	}
 	
+	public String getLabel(IPropertyProviderProxy context) {
+		return (String)getProperty(context, PROPERTY_LABEL);
+	}
+	
 	protected void setLabel(String label) {
 		String oldLabel = this.label;
 		this.label = label;
 		firePropertyChange(PROPERTY_LABEL, oldLabel, label);
 	}
 	
-	public Control.Shape getShape() {
+	public Shape getShape() {
 		return shape;
 	}
 	
-	protected void setShape(Control.Shape shape) {
-		Control.Shape oldShape = this.shape;
+	public Shape getShape(IPropertyProviderProxy context) {
+		return (Shape)getProperty(context, PROPERTY_SHAPE);
+	}
+	
+	protected void setShape(Shape shape) {
+		Shape oldShape = this.shape;
 		this.shape = shape;
 		firePropertyChange(PROPERTY_SHAPE, oldShape, shape);
 	}
@@ -468,6 +477,10 @@ public class Control extends Colourable implements IControl {
 	 */
 	public PointList getPoints() {
 		return points;
+	}
+	
+	public PointList getPoints(IPropertyProviderProxy context) {
+		return (PointList)getProperty(context, PROPERTY_POINTS);
 	}
 	
 	protected void setPoints(PointList points) {
@@ -492,8 +505,16 @@ public class Control extends Colourable implements IControl {
 		return name;
 	}
 	
+	public String getName(IPropertyProviderProxy context) {
+		return (String)getProperty(context, PROPERTY_NAME);
+	}
+	
 	public Dimension getDefaultSize() {
 		return defaultSize;
+	}
+	
+	public Dimension getDefaultSize(IPropertyProviderProxy context) {
+		return (Dimension)getProperty(context, PROPERTY_DEFAULT_SIZE);
 	}
 	
 	protected void setDefaultSize(Dimension defaultSize) {
@@ -508,6 +529,10 @@ public class Control extends Colourable implements IControl {
 		return kind;
 	}
 	
+	public Kind getKind(IPropertyProviderProxy context) {
+		return (Kind)getProperty(context, PROPERTY_KIND);
+	}
+	
 	protected void setKind(Kind kind) {
 		Kind oldKind = this.kind;
 		this.kind = kind;
@@ -516,6 +541,10 @@ public class Control extends Colourable implements IControl {
 	
 	public boolean isResizable() {
 		return resizable;
+	}
+	
+	public Boolean isResizable(IPropertyProviderProxy context) {
+		return (Boolean)getProperty(context, PROPERTY_RESIZABLE);
 	}
 	
 	protected void setResizable(Boolean resizable) {
@@ -550,6 +579,11 @@ public class Control extends Colourable implements IControl {
 	@Override
 	public List<PortSpec> getPorts() {
 		return ports;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<PortSpec> getPorts(IPropertyProviderProxy context) {
+		return (List<PortSpec>)getProperty(context, PROPERTY_PORT);
 	}
 	
 	/**

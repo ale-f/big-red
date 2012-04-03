@@ -19,6 +19,7 @@ import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.PortSpec.ChangeDistance;
 import dk.itu.big_red.model.PortSpec.ChangeSegment;
+import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -131,6 +132,11 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		return controls;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Control> getControls(IPropertyProviderProxy context) {
+		return (List<Control>)getProperty(context, PROPERTY_CONTROL);
+	}
+	
 	private SignatureChangeValidator validator =
 		new SignatureChangeValidator(this);
 
