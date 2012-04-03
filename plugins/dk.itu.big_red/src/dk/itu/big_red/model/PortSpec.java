@@ -119,6 +119,10 @@ public class PortSpec extends ModelObject implements IPort {
 		return name;
 	}
 	
+	public String getName(IPropertyProviderProxy context) {
+		return (String)getProperty(context, PROPERTY_NAME);
+	}
+	
 	protected void setName(String name) {
 		String oldName = this.name;
 		this.name = name;
@@ -129,6 +133,10 @@ public class PortSpec extends ModelObject implements IPort {
 		return segment;
 	}
 	
+	public int getSegment(IPropertyProviderProxy context) {
+		return (Integer)getProperty(context, PROPERTY_SEGMENT);
+	}
+	
 	protected void setSegment(int segment) {
 		int oldSegment = this.segment;
 		this.segment = segment;
@@ -137,6 +145,10 @@ public class PortSpec extends ModelObject implements IPort {
 	
 	public double getDistance() {
 		return distance;
+	}
+	
+	public double getDistance(IPropertyProviderProxy context) {
+		return (Double)getProperty(context, PROPERTY_DISTANCE);
 	}
 	
 	protected void setDistance(double distance) {
