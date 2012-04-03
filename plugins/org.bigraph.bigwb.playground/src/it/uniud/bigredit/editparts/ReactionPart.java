@@ -1,17 +1,21 @@
 package it.uniud.bigredit.editparts;
 
-import it.uniud.bigredit.figure.Reaction;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import it.uniud.bigredit.figure.ReactionFigure;
+import it.uniud.bigredit.model.Reaction;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 //import uniud.bigredit.policy.LayoutPolicy;
 
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 
 
-public class ReactionPart extends ContainerPart {
+public class ReactionPart extends AbstractGraphicalEditPart implements PropertyChangeListener{
 	
 	@Override
 	protected IFigure createFigure()
@@ -35,10 +39,15 @@ public class ReactionPart extends ContainerPart {
 		( ( ReactionFigure )getFigure() ).setChildren( model.getRedex(), model.getReactum() );
 	}
 
-	@Override
 	public String getToolTip() {
 		// TODO Auto-generated method stub
-		return null;
+		return "ReactionRule";
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

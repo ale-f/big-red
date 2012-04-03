@@ -1,6 +1,8 @@
 package it.uniud.bigredit.command;
 
 import it.uniud.bigredit.model.BRS;
+import it.uniud.bigredit.model.Reaction;
+
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -14,6 +16,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
+
 
 
 public class LayoutableCreateCommand extends ChangeCommand {
@@ -33,7 +36,15 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (layout == null || container == null || node == null)
 			return this;
 		
-		//setTarget(container.getBigraph());
+		if (container instanceof Bigraph){
+			setTarget((BRS)container);
+			
+		}else if(container instanceof Layoutable){
+			setTarget(((Layoutable)container).getBigraph());
+		}else if (container instanceof Reaction){
+			
+		}
+		
 		if (container instanceof Container) {
 		for (Layoutable i : ((Container)container).getChildren()) {
 				if (i instanceof Edge)
@@ -66,8 +77,9 @@ public class LayoutableCreateCommand extends ChangeCommand {
 					((Layoutable)node).changeLayout(layout));
 		}
 		if (container instanceof BRS){
+			/** TODO get a name for Bigraph */
 			cg.add(((BRS)container).changeAddChild((ModelObject)node, "B0"),
-					((BRS)container).changeLayoutChild((ModelObject)node, "B0"));
+					((BRS)container).changeLayoutChild((ModelObject)node, layout));
 			
 		}
 		

@@ -17,9 +17,11 @@ import dk.itu.big_red.model.Signature;
 
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.changes.IChangeExecutor;
 
 
-public class BRS extends ModelObject{
+public class BRS extends ModelObject implements IChangeExecutor{
 	
 	private static ArrayList< Bigraph > diagrams = new ArrayList< Bigraph >();
 	private HashMap<ModelObject,Rectangle> children = new HashMap<ModelObject,Rectangle>();
@@ -163,7 +165,7 @@ public class BRS extends ModelObject{
 	}
 
 
-	public Change changeLayoutChild(ModelObject node, String string) {
+	public Change changeLayoutChild(ModelObject node, Rectangle rectangle) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -172,6 +174,20 @@ public class BRS extends ModelObject{
 	public Change changeAddChild(ModelObject node, String string) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public void tryValidateChange(Change b) throws ChangeRejectedException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void tryApplyChange(Change b) throws ChangeRejectedException {
+		// TODO Auto-generated method stub
+		
 	}
 
 

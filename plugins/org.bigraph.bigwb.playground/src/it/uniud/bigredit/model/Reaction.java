@@ -1,4 +1,4 @@
-package it.uniud.bigredit.figure;
+package it.uniud.bigredit.model;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -8,13 +8,14 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 
 
 
 
 
-public class Reaction  extends Container{
+public class Reaction  extends ModelObject{
 	
 	public static final int GAP_WIDTH = 96;
 	
@@ -31,11 +32,7 @@ public class Reaction  extends Container{
 		return reactum;
 	}
 
-	@Override
-	public boolean canContain(Layoutable child) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 	
 	/*@Override
 	public boolean addChild( BaseNode child )

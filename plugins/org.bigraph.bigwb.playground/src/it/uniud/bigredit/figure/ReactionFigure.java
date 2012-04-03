@@ -1,5 +1,7 @@
 package it.uniud.bigredit.figure;
 
+import it.uniud.bigredit.model.Reaction;
+
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.ColorConstants;

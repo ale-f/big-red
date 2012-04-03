@@ -5,8 +5,8 @@ import it.uniud.bigredit.editparts.BRSPart;
 import it.uniud.bigredit.editparts.NestedBigraphPart;
 import it.uniud.bigredit.editparts.ReactionPart;
 import it.uniud.bigredit.figure.NestedBigraphFigure;
-import it.uniud.bigredit.figure.Reaction;
 import it.uniud.bigredit.figure.ReactionFigure;
+import it.uniud.bigredit.model.Reaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
