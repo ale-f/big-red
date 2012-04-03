@@ -108,15 +108,15 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		return s;
 	}
 	
-	protected Control addControl(Control c) {
+	protected void addControl(Control c) {
 		controls.add(c);
+		c.setSignature(this);
 		firePropertyChange(PROPERTY_CONTROL, null, c);
-		return c;
 	}
 	
 	protected void removeControl(Control m) {
-		if (controls.contains(m)) {
-			controls.remove(m);
+		if (controls.remove(m)) {
+			m.setSignature(null);
 			firePropertyChange(PROPERTY_CONTROL, m, null);
 		}
 	}

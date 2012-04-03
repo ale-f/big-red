@@ -78,6 +78,13 @@ public class Control extends Colourable implements IControl {
 	public static final String PROPERTY_RESIZABLE = "ControlResizable";
 	
 	/**
+	 * The property name when this Control's containing {@link Signature}
+	 * changes.
+	 */
+	@RedProperty(fired = Signature.class, retrieved = Signature.class)
+	public static final String PROPERTY_SIGNATURE = "ControlSignature";
+	
+	/**
 	 * The property name fired when the default size changes. (This only
 	 * really matters for existing {@link Node}s if they aren't resizable.)
 	 */
@@ -415,6 +422,7 @@ public class Control extends Colourable implements IControl {
 	private Dimension defaultSize;
 	private boolean resizable;
 	private Control.Kind kind;
+	private Signature signature = null;
 	
 	public Control() {
 		setName("Unknown");
@@ -570,6 +578,20 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
+	public Signature getSignature() {
+		return signature;
+	}
+	
+	public Signature getSignature(IPropertyProviderProxy context) {
+		return (Signature)getProperty(context, PROPERTY_SIGNATURE);
+	}
+	
+	protected void setSignature(Signature signature) {
+		Signature oldSignature = this.signature;
+		this.signature = signature;
+		firePropertyChange(PROPERTY_SIGNATURE, oldSignature, signature);
+	}
+	
 	public boolean hasPort(String port) {
 		return (getPort(port) != null);
 	}
@@ -645,6 +667,8 @@ public class Control extends Colourable implements IControl {
 			return getShape();
 		} else if (PROPERTY_KIND.equals(name)) {
 			return getKind();
+		} else if (PROPERTY_SIGNATURE.equals(name)) {
+			return getSignature();
 		} else return super.getProperty(name);
 	}
 	

@@ -41,10 +41,12 @@ public class SignatureScratchpad extends PropertyScratchpad {
 	
 	public void addControl(Control c) {
 		getModifiableControls().add(c);
+		setValue(c, Control.PROPERTY_SIGNATURE, getSignature());
 	}
 	
 	public void removeControl(Control c) {
 		getModifiableControls().remove(c);
+		setValue(c, Control.PROPERTY_SIGNATURE, null);
 	}
 	
 	public void setNameFor(Control c, String name) {
