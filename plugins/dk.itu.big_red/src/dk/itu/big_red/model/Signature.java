@@ -199,7 +199,7 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 			c.port.setName(c.name);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
-			c.getCreator().removePort(c.port.getName());
+			c.getCreator().removePort(c.port);
 		} else if (b instanceof ChangeSegment) {
 			ChangeSegment c = (ChangeSegment)b;
 			c.getCreator().setSegment(c.segment);

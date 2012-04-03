@@ -572,10 +572,8 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
-	protected void removePort(String port) {
-		PortSpec p = getPort(port);
-		if (p != null) {
-			ports.remove(p);
+	protected void removePort(PortSpec p) {
+		if (ports.remove(p)) {
 			p.setControl(null);
 			firePropertyChange(PROPERTY_PORT, p, null);
 		}
@@ -593,10 +591,6 @@ public class Control extends Colourable implements IControl {
 		Signature oldSignature = this.signature;
 		this.signature = signature;
 		firePropertyChange(PROPERTY_SIGNATURE, oldSignature, signature);
-	}
-	
-	public boolean hasPort(String port) {
-		return (getPort(port) != null);
 	}
 	
 	/**
@@ -625,13 +619,6 @@ public class Control extends Colourable implements IControl {
 		for (PortSpec i : ports)
 			r.add(new Port(i));
 		return r;
-	}
-	
-	public PortSpec getPort(String name) {
-		for (PortSpec i : ports)
-			if (i.getName().equals(name))
-				return i;
-		return null;
 	}
 	
 	private INamePolicy parameterPolicy;
