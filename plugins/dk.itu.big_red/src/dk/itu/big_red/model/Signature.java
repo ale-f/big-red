@@ -20,6 +20,7 @@ import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.PortSpec.ChangeDistance;
 import dk.itu.big_red.model.PortSpec.ChangeSegment;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -36,6 +37,12 @@ import dk.itu.big_red.model.interfaces.ISignature;
  * @see ISignature
  */
 public class Signature extends ModelObject implements ISignature, IChangeExecutor {
+	/**
+	 * The property name fired when a control is added or removed.
+	 */
+	@RedProperty(fired = Control.class, retrieved = List.class)
+	public static final String PROPERTY_CONTROL = "SignatureControl";
+	
 	abstract class SignatureChange extends ModelObjectChange {
 		@Override
 		public Signature getCreator() {
@@ -100,12 +107,6 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		
 		return s;
 	}
-	
-	/**
-	 * The property name fired when a control is added or removed. The property
-	 * values are {@link Control}s.
-	 */
-	public static final String PROPERTY_CONTROL = "SignatureControl";
 	
 	protected Control addControl(Control c) {
 		controls.add(c);

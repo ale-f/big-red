@@ -1,13 +1,19 @@
 package dk.itu.big_red.model;
 
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;
 
 public class PortSpec extends ModelObject implements IPort {
+	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String PROPERTY_NAME = "PortSpecName";
+	
+	@RedProperty(fired = Integer.class, retrieved = Integer.class)
 	public static final String PROPERTY_SEGMENT = "PortSpecSegment";
+	
+	@RedProperty(fired = Double.class, retrieved = Double.class)
 	public static final String PROPERTY_DISTANCE = "PortSpecDistance";
 	
 	private abstract class PortSpecChange extends ModelObjectChange {

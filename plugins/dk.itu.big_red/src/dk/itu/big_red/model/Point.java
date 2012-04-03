@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.ReadonlyColour;
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.IPoint;
 
 /**
@@ -12,6 +13,12 @@ import dk.itu.big_red.model.interfaces.IPoint;
  * @see IPoint
  */
 public abstract class Point extends Layoutable implements IPoint {
+	/**
+	 * The property name fired when the source edge changes.
+	 */
+	@RedProperty(fired = Link.class, retrieved = Link.class)
+	public static final String PROPERTY_LINK = "PointLink";
+	
 	abstract class PointChange extends LayoutableChange {
 		@Override
 		public Point getCreator() {
@@ -61,12 +68,6 @@ public abstract class Point extends Layoutable implements IPoint {
 			return "Change(disconnect " + getCreator() + " from " + link + ")";
 		}
 	}
-	
-	/**
-	 * The property name fired when the source edge changes. The property
-	 * values are {@link Link}s.
-	 */
-	public static final String PROPERTY_LINK = "PointLink";
 	
 	/**
 	 * The colour to be given to Points not connected to a {@link Link}.

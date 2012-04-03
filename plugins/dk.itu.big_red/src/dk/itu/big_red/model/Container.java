@@ -9,6 +9,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -20,6 +21,12 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  *
  */
 public abstract class Container extends Layoutable {
+	/**
+	 * The property name fired when a child is added or removed.
+	 */
+	@RedProperty(fired = Layoutable.class, retrieved = List.class)
+	public static final String PROPERTY_CHILD = "ContainerChild";
+	
 	abstract class ContainerChange extends LayoutableChange {
 		@Override
 		public Container getCreator() {
@@ -88,12 +95,6 @@ public abstract class Container extends Layoutable {
 	}
 	
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
-
-	/**
-	 * The property name fired when a child is added or removed. The property
-	 * values are {@link Layoutable}s.
-	 */
-	public static final String PROPERTY_CHILD = "ContainerChild";
 	
 	public abstract boolean canContain(Layoutable child);
 	

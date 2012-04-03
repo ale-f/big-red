@@ -9,6 +9,7 @@ import org.eclipse.ui.services.IDisposable;
 
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 
 /**
@@ -24,6 +25,12 @@ import dk.itu.big_red.model.changes.Change;
  *
  */
 public abstract class ModelObject implements IDisposable, IPropertyProvider {
+	/**
+	 * The property name fired when the comment changes.
+	 */
+	@RedProperty(fired = String.class, retrieved = String.class)
+	public static final String PROPERTY_COMMENT = "ModelObjectComment";
+	
 	public abstract class ModelObjectChange extends Change {
 		/**
 		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
@@ -140,12 +147,6 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	}
 	
 	private String comment = null;
-	
-	/**
-	 * The property name fired when the comment changes. The property values
-	 * are {@link String}s.
-	 */
-	public static final String PROPERTY_COMMENT = "ModelObjectComment";
 	
 	/**
 	 * Returns the current comment for this object.

@@ -5,6 +5,7 @@ import java.util.Map;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.ReadonlyColour;
+import dk.itu.big_red.model.assistants.RedProperty;
 
 /**
  * {@link ModelObject}s which can have fill and outline colours are subclasses
@@ -13,6 +14,18 @@ import dk.itu.big_red.model.assistants.ReadonlyColour;
  *
  */
 public abstract class Colourable extends ModelObject {
+	/**
+	 * The property name fired when the fill colour changes.
+	 */
+	@RedProperty(fired = Colour.class, retrieved = Colour.class)
+	public static final String PROPERTY_FILL = "ColourableFill";
+	
+	/**
+	 * The property name fired when the outline colour changes.
+	 */
+	@RedProperty(fired = Colour.class, retrieved = Colour.class)
+	public static final String PROPERTY_OUTLINE = "ColourableOutline";
+	
 	abstract class ColourableChange extends ModelObjectChange {
 		public Colour newColour;
 		
@@ -83,18 +96,6 @@ public abstract class Colourable extends ModelObject {
 	private Colour
 		outlineColour = new Colour("black"),
 		fillColour = new Colour("white");
-
-	/**
-	 * The property name fired when the outline colour changes. The property
-	 * values are {@link Colour}s.
-	 */
-	public static final String PROPERTY_OUTLINE = "ColourableOutline";
-	
-	/**
-	 * The property name fired when the fill colour changes. The property
-	 * values are {@link Colour}s.
-	 */
-	public static final String PROPERTY_FILL = "ColourableFill";
 	
 	/**
 	 * Gets the current outline colour used to render this object.

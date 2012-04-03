@@ -29,14 +29,11 @@ public class ReactionRule extends ModelObject {
 	private ChangeGroup changes;
 	public static final String CONTENT_TYPE = "dk.itu.big_red.rule";
 	
-	public static final String PROPERTY_REDEX = "ReactionRuleRedex";
-	
 	public Bigraph getRedex() {
 		return redex;
 	}
 	
 	public void setRedex(Bigraph redex) {
-		Bigraph old = this.redex;
 		this.redex = redex;
 		
 		reactum = null;
@@ -44,8 +41,6 @@ public class ReactionRule extends ModelObject {
 		
 		if (redex != null)
 			redex.setFile(getFile());
-		
-		firePropertyChange(PROPERTY_REDEX, old, redex);
 	}
 
 	public Bigraph getReactum() {

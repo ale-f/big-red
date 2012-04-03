@@ -10,6 +10,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
@@ -21,6 +22,12 @@ import dk.itu.big_red.model.names.INamePolicy;
  * @see INode
  */
 public class Node extends Container implements INode {
+	/**
+	 * The property name fired when the parameter changes.
+	 */
+	@RedProperty(fired = String.class, retrieved = String.class)
+	public static final String PROPERTY_PARAMETER = "NodeParameter";
+	
 	public class ChangeParameter extends LayoutableChange {
 		@Override
 		public Node getCreator() {
@@ -50,12 +57,6 @@ public class Node extends Container implements INode {
 			return new ChangeParameter(oldParameter);
 		}
 	}
-	
-	/**
-	 * The property name fired when the parameter changes. The values are
-	 * {@link String}s.
-	 */
-	public static final String PROPERTY_PARAMETER = "NodeParameter";
 	
 	private String parameter;
 	private ArrayList<Port> ports = new ArrayList<Port>();

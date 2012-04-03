@@ -7,6 +7,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -28,6 +29,24 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  *
  */
 public abstract class Layoutable extends Colourable {
+	/**
+	 * The property name fired when the name changes.
+	 */
+	@RedProperty(fired = String.class, retrieved = String.class)
+	public static final String PROPERTY_NAME = "LayoutableName";
+	
+	/**
+	 * The property name fired when the layout changes.
+	 */
+	@RedProperty(fired = Rectangle.class, retrieved = Rectangle.class)
+	public static final String PROPERTY_LAYOUT = "LayoutableLayout";
+	
+	/**
+	 * The property name fired when the parent changes.
+	 */
+	@RedProperty(fired = Container.class, retrieved = Container.class)
+	public static final String PROPERTY_PARENT = "LayoutableParent";
+	
 	abstract class LayoutableChange extends ModelObjectChange {
 		@Override
 		public Layoutable getCreator() {
@@ -179,24 +198,6 @@ public abstract class Layoutable extends Colourable {
 		this.parent = parent;
 		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 	}
-	
-	/**
-	 * The property name fired when the ILayoutable's layout changes (i.e.,
-	 * it's resized or moved). The property values are {@link Rectangle}s.
-	 */
-	public static final String PROPERTY_LAYOUT = "LayoutableLayout";
-	
-	/**
-	 * The property name fired when the name changes. The property values are
-	 * {@link String}s.
-	 */
-	public static final String PROPERTY_NAME = "LayoutableName";
-	
-	/**
-	 * The property name fired when the parent changes. The property values are
-	 * {@link Container}s.
-	 */
-	public static final String PROPERTY_PARENT = "LayoutableParent";
 	
 	@Override
 	public Layoutable clone(Map<ModelObject, ModelObject> m) {

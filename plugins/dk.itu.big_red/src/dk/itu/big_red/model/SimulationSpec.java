@@ -6,12 +6,31 @@ import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
 
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
 
 public class SimulationSpec extends ModelObject implements IChangeExecutor {
+	/**
+	 * The property name fired when a rule is added or removed.
+	 */
+	@RedProperty(fired = ReactionRule.class, retrieved = List.class)
+	public static final String PROPERTY_RULE = "SimulationSpecRule";
+	
+	/**
+	 * The property name fired when the model changes.
+	 */
+	@RedProperty(fired = Bigraph.class, retrieved = Bigraph.class)
+	public static final String PROPERTY_MODEL = "SimulationSpecModel";
+	
+	/**
+	 * The property name fired when the signature changes.
+	 */
+	@RedProperty(fired = Signature.class, retrieved = Signature.class)
+	public static final String PROPERTY_SIGNATURE = "SimulationSpecSignature";
+	
 	abstract class SimulationSpecChange extends ModelObjectChange {
 		@Override
 		public SimulationSpec getCreator() {
@@ -108,24 +127,6 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 					" to " + model + ")";
 		}
 	}
-	
-	/**
-	 * The property name fired when the signature changes. The property values
-	 * are {@link Signature}s.
-	 */
-	public static final String PROPERTY_SIGNATURE = "SimulationSpecSignature";
-	
-	/**
-	 * The property name fired when a rule is added or removed. The property
-	 * values are {@link ReactionRule}s.
-	 */
-	public static final String PROPERTY_RULE = "SimulationSpecRule";
-	
-	/**
-	 * The property name fired when the model changes. The property values
-	 * are {@link Bigraph}s.
-	 */
-	public static final String PROPERTY_MODEL = "SimulationSpecModel";
 	
 	private Signature signature;
 	

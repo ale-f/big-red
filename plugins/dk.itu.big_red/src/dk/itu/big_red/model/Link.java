@@ -6,6 +6,7 @@ import java.util.List;
 
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.ILink;
 
 /**
@@ -15,6 +16,12 @@ import dk.itu.big_red.model.interfaces.ILink;
  * @see ILink
  */
 public abstract class Link extends Layoutable implements ILink {
+	/**
+	 * The property name fired when a point is added or removed.
+	 */
+	@RedProperty(fired = Point.class, retrieved = List.class)
+	public static final String PROPERTY_POINT = "LinkPoint";
+	
 	/**
 	 * <strong>Connection</strong>s are fake, transient model objects, created
 	 * on demand by {@link Link}s. They represent a single {@link
@@ -46,12 +53,6 @@ public abstract class Link extends Layoutable implements ILink {
 			return Link.this;
 		}
 	}
-	
-	/**
-	 * The property name fired when a point is added to, or removed from, this
-	 * Link. The property values are {@link Point}s.
-	 */
-	public static final String PROPERTY_POINT = "LinkPoint";
 	
 	/**
 	 * The {@link Point}s connected to this Link on the bigraph.
