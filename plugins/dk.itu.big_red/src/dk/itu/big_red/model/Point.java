@@ -82,11 +82,10 @@ public abstract class Point extends Layoutable implements IPoint {
 	 * @return the previous {@link Link}, or <code>null</code> if
 	 * there wasn't one
 	 */
-	protected Link setLink(Link l) {
+	protected void setLink(Link l) {
 		Link oldLink = link;
 		link = l;
 		firePropertyChange(Point.PROPERTY_LINK, oldLink, l);
-		return oldLink;
 	}
 	
 	@Override

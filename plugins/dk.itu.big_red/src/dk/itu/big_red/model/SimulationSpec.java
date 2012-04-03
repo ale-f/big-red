@@ -130,11 +130,10 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	
 	private Signature signature;
 	
-	protected SimulationSpec setSignature(Signature signature) {
+	protected void setSignature(Signature signature) {
 		Signature oldSignature = this.signature;
 		this.signature = signature;
 		firePropertyChange(PROPERTY_SIGNATURE, oldSignature, signature);
-		return this;
 	}
 	
 	public Signature getSignature() {
@@ -156,16 +155,14 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	
 	private ArrayList<ReactionRule> rules = new ArrayList<ReactionRule>();
 	
-	protected SimulationSpec addRule(ReactionRule r) {
-		getRules().add(r);
-		firePropertyChange(PROPERTY_RULE, null, r);
-		return this;
+	protected void addRule(ReactionRule r) {
+		if (getRules().add(r))
+			firePropertyChange(PROPERTY_RULE, null, r);
 	}
 	
-	protected SimulationSpec removeRule(ReactionRule r) {
-		getRules().remove(r);
-		firePropertyChange(PROPERTY_RULE, r, null);
-		return this;
+	protected void removeRule(ReactionRule r) {
+		if (getRules().remove(r))
+			firePropertyChange(PROPERTY_RULE, r, null);
 	}
 	
 	public List<ReactionRule> getRules() {
@@ -176,11 +173,10 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.simulation_spec";
 	
-	protected SimulationSpec setModel(Bigraph model) {
+	protected void setModel(Bigraph model) {
 		Bigraph oldModel = this.model;
 		this.model = model;
 		firePropertyChange(PROPERTY_MODEL, oldModel, model);
-		return this;
 	}
 	
 	public Bigraph getModel() {
