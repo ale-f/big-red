@@ -1,6 +1,8 @@
 package dk.itu.big_red.model.assistants;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class PropertyScratchpad implements IPropertyProviderProxy {
@@ -57,5 +59,14 @@ public class PropertyScratchpad implements IPropertyProviderProxy {
 				return changes.get(getKey(object, property));
 			} else return object.getProperty(property);
 		} else return null;
+	}
+	
+	protected <T> List<T> getModifiableList(
+			IPropertyProvider object, String property) {
+		@SuppressWarnings("unchecked")
+		List<T> l = (List<T>)getProperty(object, property);
+		if (!hasProperty(object, property))
+			setProperty(object, property, l = new ArrayList<T>(l));
+		return l;
 	}
 }
