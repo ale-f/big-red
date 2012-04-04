@@ -179,7 +179,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				rejectChange("Bigraphs cannot be moved or resized");
 			if (!layoutChecks.contains(c.getCreator()))
 				layoutChecks.add(c.getCreator());
-			scratch.setValue(c.getCreator(), Layoutable.PROPERTY_LAYOUT, c.newLayout);
+			scratch.setProperty(c.getCreator(), Layoutable.PROPERTY_LAYOUT, c.newLayout);
 		} else if (b instanceof Edge.ChangeReposition) {
 			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
 			checkEligibility(c.getCreator());

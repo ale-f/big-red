@@ -44,10 +44,10 @@ public class BigraphScratchpad extends PropertyScratchpad {
 	
 	private List<Layoutable> getModifiableChildren(Container a) {
 		List<Layoutable> c;
-		if (hasValue(a, Container.PROPERTY_CHILD)) {
+		if (hasProperty(a, Container.PROPERTY_CHILD)) {
 			c = a.getChildren(this);
 		} else {
-			setValue(a, Container.PROPERTY_CHILD,
+			setProperty(a, Container.PROPERTY_CHILD,
 					c = new ArrayList<Layoutable>(a.getChildren()));
 		}
 		return c;
@@ -55,22 +55,22 @@ public class BigraphScratchpad extends PropertyScratchpad {
 	
 	public void removeChildFor(Container a, Layoutable b) {
 		getModifiableChildren(a).remove(b);
-		setValue(b, Layoutable.PROPERTY_PARENT, null);
+		setProperty(b, Layoutable.PROPERTY_PARENT, null);
 		setNameFor(b, null);
 	}
 	
 	public void addChildFor(Container a, Layoutable b, String name) {
 		getModifiableChildren(a).add(b);
-		setValue(b, Layoutable.PROPERTY_PARENT, a);
+		setProperty(b, Layoutable.PROPERTY_PARENT, a);
 		setNameFor(b, name);
 	}
 	
 	private List<Point> getModifiablePoints(Link a) {
 		List<Point> p;
-		if (hasValue(a, Link.PROPERTY_POINT)) {
+		if (hasProperty(a, Link.PROPERTY_POINT)) {
 			p = a.getPoints(this);
 		} else {
-			setValue(a, Link.PROPERTY_POINT,
+			setProperty(a, Link.PROPERTY_POINT,
 					p = new ArrayList<Point>(a.getPoints()));
 		}
 		return p;
@@ -78,12 +78,12 @@ public class BigraphScratchpad extends PropertyScratchpad {
 	
 	public void removePointFor(Link a, Point b) {
 		getModifiablePoints(a).remove(b);
-		setValue(b, Point.PROPERTY_LINK, null);
+		setProperty(b, Point.PROPERTY_LINK, null);
 	}
 	
 	public void addPointFor(Link a, Point b) {
 		getModifiablePoints(a).add(b);
-		setValue(b, Point.PROPERTY_LINK, a);
+		setProperty(b, Point.PROPERTY_LINK, a);
 	}
 	
 	public void setNameFor(Layoutable a, String b) {
@@ -91,7 +91,7 @@ public class BigraphScratchpad extends PropertyScratchpad {
 		if (currentName != null)
 			getNamespaceFor(a).remove(currentName);
 		
-		setValue(a, Layoutable.PROPERTY_NAME, b);
+		setProperty(a, Layoutable.PROPERTY_NAME, b);
 		
 		getNamespaceFor(a).put(b, a);
 	}

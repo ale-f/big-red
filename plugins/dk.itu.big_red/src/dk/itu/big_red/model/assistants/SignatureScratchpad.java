@@ -19,10 +19,10 @@ public class SignatureScratchpad extends PropertyScratchpad {
 	
 	private List<Control> getModifiableControls() {
 		List<Control> c;
-		if (hasValue(getSignature(), Signature.PROPERTY_CONTROL)) {
+		if (hasProperty(getSignature(), Signature.PROPERTY_CONTROL)) {
 			c = getSignature().getControls(this);
 		} else {
-			setValue(getSignature(), Signature.PROPERTY_CONTROL,
+			setProperty(getSignature(), Signature.PROPERTY_CONTROL,
 					c = new ArrayList<Control>(getSignature().getControls()));
 		}
 		return c;
@@ -30,10 +30,10 @@ public class SignatureScratchpad extends PropertyScratchpad {
 	
 	private List<PortSpec> getModifiablePorts(Control b) {
 		List<PortSpec> c;
-		if (hasValue(getSignature(), Control.PROPERTY_PORT)) {
+		if (hasProperty(getSignature(), Control.PROPERTY_PORT)) {
 			c = b.getPorts(this);
 		} else {
-			setValue(getSignature(), Control.PROPERTY_PORT,
+			setProperty(getSignature(), Control.PROPERTY_PORT,
 					c = new ArrayList<PortSpec>(b.getPorts()));
 		}
 		return c;
@@ -41,25 +41,25 @@ public class SignatureScratchpad extends PropertyScratchpad {
 	
 	public void addControl(Control c) {
 		getModifiableControls().add(c);
-		setValue(c, Control.PROPERTY_SIGNATURE, getSignature());
+		setProperty(c, Control.PROPERTY_SIGNATURE, getSignature());
 	}
 	
 	public void removeControl(Control c) {
 		getModifiableControls().remove(c);
-		setValue(c, Control.PROPERTY_SIGNATURE, null);
+		setProperty(c, Control.PROPERTY_SIGNATURE, null);
 	}
 	
 	public void setNameFor(Control c, String name) {
-		setValue(c, Control.PROPERTY_NAME, name);
+		setProperty(c, Control.PROPERTY_NAME, name);
 	}
 	
 	public void addPortFor(Control c, PortSpec p) {
 		getModifiablePorts(c).add(p);
-		setValue(p, PortSpec.PROPERTY_CONTROL, c);
+		setProperty(p, PortSpec.PROPERTY_CONTROL, c);
 	}
 	
 	public void removePortFor(Control c, PortSpec p) {
 		getModifiablePorts(c).remove(p);
-		setValue(p, PortSpec.PROPERTY_CONTROL, null);
+		setProperty(p, PortSpec.PROPERTY_CONTROL, null);
 	}
 }
