@@ -35,15 +35,20 @@ public class PropertyScratchpad implements IPropertyProviderProxy {
 	}
 	
 	public void setValue(IPropertyProvider m, String property, Object newValue) {
-		changes.put(getKey(m, property), newValue);
+		if (m != null && property != null)
+			changes.put(getKey(m, property), newValue);
 	}
 	
 	protected Object getValue(IPropertyProvider m, String property) {
-		return changes.get(getKey(m, property));
+		if (m != null && property != null) {
+			return changes.get(getKey(m, property));
+		} else return null;
 	}
 	
 	public boolean hasValue(IPropertyProvider m, String property) {
-		return changes.containsKey(getKey(m, property));
+		if (m != null && property != null) {
+			return changes.containsKey(getKey(m, property));
+		} else return false;
 	}
 	
 	public PropertyScratchpad clear() {
@@ -53,7 +58,9 @@ public class PropertyScratchpad implements IPropertyProviderProxy {
 	
 	@Override
 	public Object getProperty(IPropertyProvider object, String property) {
-		return (hasValue(object, property) ? getValue(object, property) :
-			object.getProperty(property));
+		if (object != null && property != null) {
+			return (hasValue(object, property) ? getValue(object, property) :
+				object.getProperty(property));
+		} else return null;
 	}
 }
