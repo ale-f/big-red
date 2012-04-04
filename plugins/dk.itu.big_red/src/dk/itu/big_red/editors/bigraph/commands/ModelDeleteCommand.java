@@ -26,9 +26,6 @@ public class ModelDeleteCommand extends ChangeCommand {
 	
 	private ArrayList<Object> objects = new ArrayList<Object>();
 	
-	public static final String GROUP_MAP_ID =
-		"dk.itu.big_red.editors.bigraph.commands.ModelDeleteCommand";
-	
 	public void addObject(Object m) {
 		if (m != null && !(m instanceof Bigraph) && !(m instanceof Port)) {
 			objects.add(m);

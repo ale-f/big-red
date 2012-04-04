@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.bigraph;
 
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.GroupRequest;
 
@@ -29,15 +30,24 @@ import dk.itu.big_red.model.changes.IChangeExecutor;
  *
  */
 public class CombinedCommandFactory {
+	private static final Object TAG = new Object();
+	
+	@SuppressWarnings("unchecked")
+	private static final boolean tryTag(Request r) {
+		if (r.getExtendedData().get(TAG) != TAG) {
+			r.getExtendedData().put(TAG, TAG);
+			return true;
+		} else return false;
+	}
+	
 	/**
 	 * Creates the single {@link Command} for this {@link GroupRequest}.
 	 * @param r a {@link GroupRequest}
 	 * @return the {@link Command}, or <code>null</code> if it's already been
 	 * created by another {@link EditPolicy}
 	 */
-	@SuppressWarnings("unchecked")
 	public static Command createDeleteCommand(GroupRequest r) {
-		if (r.getExtendedData().containsKey(ModelDeleteCommand.GROUP_MAP_ID))
+		if (!tryTag(r))
 			return null;
 		ModelDeleteCommand mdc = new ModelDeleteCommand();
 		for (Object i_ : r.getEditParts()) {
@@ -49,8 +59,6 @@ public class CombinedCommandFactory {
 				mdc.addObject(i.getModel());
 			}
 		}
-		mdc.prepare();
-		r.getExtendedData().put(ModelDeleteCommand.GROUP_MAP_ID, "");
-		return mdc;
+		return mdc.prepare();
 	}
 }
