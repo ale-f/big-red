@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bigraph xmlns="http://www.itu.dk/research/pls/xmlns/2010/bigraph" xmlns:br="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+  <signature src="../signatures/airport2.bigraph-signature"/>
+  <outername name="CheckIn">
+    <br:appearance fillColor="#ffffff" height="34" outlineColor="#a020f0" width="73" x="395" y="117"/>
+  </outername>
+  <outername name="Security">
+    <br:appearance fillColor="#ffffff" height="35" outlineColor="#a020f0" width="74" x="531" y="109"/>
+  </outername>
+  <outername name="DutyFree">
+    <br:appearance fillColor="#ffffff" height="40" outlineColor="#a020f0" width="86" x="646" y="110"/>
+  </outername>
+  <outername name="GateLounge">
+    <br:appearance fillColor="#ffffff" height="39" outlineColor="#a020f0" width="93" x="750" y="130"/>
+  </outername>
+  <outername name="Boarding">
+    <br:appearance fillColor="#ffffff" height="45" outlineColor="#a020f0" width="100" x="883" y="119"/>
+  </outername>
+  <outername name="SK100">
+    <br:appearance fillColor="#ffffff" height="27" outlineColor="#00007f" width="74" x="991" y="59"/>
+  </outername>
+  <outername name="SK101">
+    <br:appearance fillColor="#ffffff" height="21" outlineColor="#007bff" width="75" x="1044" y="89"/>
+  </outername>
+  <outername name="SK102">
+    <br:appearance fillColor="#ffffff" height="30" outlineColor="#54abff" width="61" x="1105" y="115"/>
+  </outername>
+  <outername name="Bob">
+    <br:appearance fillColor="#ffffff" height="21" outlineColor="#ff0000" width="46" x="77" y="145"/>
+  </outername>
+  <outername name="Joe">
+    <br:appearance fillColor="#ffffff" height="27" outlineColor="#787878" width="53" x="268" y="150"/>
+  </outername>
+  <outername name="Jane">
+    <br:appearance fillColor="#ffffff" height="24" outlineColor="#00ff00" width="44" x="146" y="149"/>
+  </outername>
+  <outername name="Mary">
+    <br:appearance fillColor="#ffffff" height="25" outlineColor="#0000ff" width="50" x="201" y="147"/>
+  </outername>
+  <root name="1">
+    <node control="Landside" name="a">
+      <node control="Zone" name="k">
+        <port name="identifier"/>
+        <port link="CheckIn" name="exit"/>
+        <node control="Pax" name="m">
+          <port link="Bob" name="flight"/>
+          <br:appearance fillColor="#ffffff" height="48" outlineColor="#000000" width="27" x="54" y="60"/>
+        </node>
+        <node control="Pax" name="n">
+          <port link="Joe" name="flight"/>
+          <br:appearance fillColor="#ffffff" height="56" outlineColor="#000000" width="29" x="114" y="52"/>
+        </node>
+        <node control="Pax" name="o">
+          <port link="Jane" name="flight"/>
+          <br:appearance fillColor="#ffffff" height="50" outlineColor="#000000" width="33" x="168" y="49"/>
+        </node>
+        <node control="Pax" name="p">
+          <port link="Mary" name="flight"/>
+          <br:appearance fillColor="#ffffff" height="63" outlineColor="#000000" width="31" x="243" y="44"/>
+        </node>
+        <br:appearance fillColor="#ffffff" height="128" outlineColor="#000000" width="336" x="14" y="24"/>
+      </node>
+      <node control="Zone" name="l">
+        <port link="CheckIn" name="identifier"/>
+        <port link="Security" name="exit"/>
+        <br:appearance fillColor="#ffffff" height="126" outlineColor="#000000" width="119" x="373" y="27"/>
+      </node>
+      <br:appearance fillColor="#ffffff" height="178" outlineColor="#00ff00" width="517" x="26" y="27"/>
+    </node>
+    <node control="Airside" name="b">
+      <node control="Zone" name="q">
+        <port link="Security" name="identifier"/>
+        <port link="DutyFree" name="exit"/>
+        <br:appearance fillColor="#ffffff" height="88" outlineColor="#000000" width="204" x="14" y="13"/>
+      </node>
+      <node control="Zone" name="s">
+        <port link="GateLounge" name="identifier"/>
+        <port link="Boarding" name="exit"/>
+        <br:appearance fillColor="#ffffff" height="93" outlineColor="#000000" width="207" x="12" y="210"/>
+      </node>
+      <node control="Zone" name="r">
+        <port link="DutyFree" name="identifier"/>
+        <port link="GateLounge" name="exit"/>
+        <br:appearance fillColor="#ffffff" height="78" outlineColor="#000000" width="207" x="12" y="116"/>
+      </node>
+      <br:appearance fillColor="#ffffff" height="322" outlineColor="#ff0000" width="231" x="573" y="28"/>
+    </node>
+    <node control="Gates" name="c">
+      <node control="Gate" name="h">
+        <port link="SK100" name="flight"/>
+        <br:appearance fillColor="#ffffff" height="76" outlineColor="#000000" width="242" x="22" y="24"/>
+      </node>
+      <node control="Gate" name="i">
+        <port link="SK102" name="flight"/>
+        <br:appearance fillColor="#ffffff" height="78" outlineColor="#000000" width="243" x="22" y="111"/>
+      </node>
+      <node control="Gate" name="j">
+        <port link="SK101" name="flight"/>
+        <br:appearance fillColor="#ffffff" height="75" outlineColor="#000000" width="242" x="23" y="209"/>
+      </node>
+      <br:appearance fillColor="#ffffff" height="324" outlineColor="#0000ff" width="288" x="833" y="30"/>
+    </node>
+    <node control="DB" name="d">
+      <node control="PaxRecord" name="e">
+        <port link="Joe" name="passenger"/>
+        <port link="SK100" name="gate"/>
+        <br:appearance fillColor="#ffffff" height="32" outlineColor="#000000" width="76" x="211" y="26"/>
+      </node>
+      <node control="PaxRecord" name="f">
+        <port link="Bob" name="passenger"/>
+        <port link="SK101" name="gate"/>
+        <br:appearance fillColor="#ffffff" height="40" outlineColor="#000000" width="90" x="79" y="15"/>
+      </node>
+      <node control="PaxRecord" name="g">
+        <port link="Jane" name="passenger"/>
+        <port link="SK100" name="gate"/>
+        <br:appearance fillColor="#ffffff" height="36" outlineColor="#000000" width="97" x="372" y="18"/>
+      </node>
+      <br:appearance fillColor="#ffffff" height="70" outlineColor="#000000" width="553" x="11" y="221"/>
+    </node>
+    <br:appearance fillColor="#ffffff" height="366" outlineColor="#000000" width="1159" x="55" y="204"/>
+  </root>
+</bigraph>

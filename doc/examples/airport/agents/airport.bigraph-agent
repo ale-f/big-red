@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bigraph xmlns="http://www.itu.dk/research/pls/xmlns/2010/bigraph" xmlns:br="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+  <signature src="../signatures/airport2.bigraph-signature"/>
+  <outername name="CheckIn">
+    <br:appearance fillColor="#ffffff" height="52" outlineColor="#008000" width="71" x="177" y="31"/>
+  </outername>
+  <outername name="Security">
+    <br:appearance fillColor="#ffffff" height="53" outlineColor="#008000" width="88" x="306" y="23"/>
+  </outername>
+  <outername name="GateLounge">
+    <br:appearance fillColor="#ffffff" height="53" outlineColor="#008000" width="83" x="439" y="36"/>
+  </outername>
+  <outername name="Boarding">
+    <br:appearance fillColor="#ffffff" height="59" outlineColor="#008000" width="93" x="579" y="15"/>
+  </outername>
+  <outername name="Gian">
+    <br:appearance fillColor="#ffffff" height="49" outlineColor="#008000" width="82" x="51" y="29"/>
+  </outername>
+  <outername name="SK100">
+    <br:appearance fillColor="#ffffff" height="44" outlineColor="#008000" width="107" x="748" y="34"/>
+  </outername>
+  <root name="1">
+    <node control="Landside" name="a">
+      <node control="Zone" name="d">
+        <port name="identifier"/>
+        <port link="CheckIn" name="exit"/>
+        <node control="Pax" name="m">
+          <port link="Gian" name="flight"/>
+          <br:appearance fillColor="#ffffff" height="70" outlineColor="#000000" width="41" x="28" y="53"/>
+        </node>
+        <br:appearance fillColor="#ffffff" height="155" outlineColor="#000000" width="98" x="25" y="24"/>
+      </node>
+      <node control="Zone" name="e">
+        <port link="CheckIn" name="identifier"/>
+        <port link="Security" name="exit"/>
+        <br:appearance fillColor="#ffffff" height="172" outlineColor="#000000" width="99" x="25" y="200"/>
+      </node>
+      <br:appearance fillColor="#ffffff" height="391" outlineColor="#00ff00" width="152" x="27" y="35"/>
+    </node>
+    <node control="Airside" name="b">
+      <node control="Zone" name="f">
+        <port link="Security" name="identifier"/>
+        <port link="GateLounge" name="exit"/>
+        <br:appearance fillColor="#ffffff" height="160" outlineColor="#000000" width="162" x="26" y="23"/>
+      </node>
+      <node control="Zone" name="g">
+        <port link="GateLounge" name="identifier"/>
+        <port link="Boarding" name="exit"/>
+        <br:appearance fillColor="#ffffff" height="182" outlineColor="#000000" width="168" x="25" y="198"/>
+      </node>
+      <br:appearance fillColor="#ffffff" height="399" outlineColor="#ff0000" width="210" x="212" y="31"/>
+    </node>
+    <node control="Gates" name="c">
+      <node control="Gate" name="h">
+        <port link="SK100" name="flight"/>
+        <br:appearance fillColor="#ffffff" height="95" outlineColor="#000000" width="208" x="27" y="13"/>
+      </node>
+      <node control="Gate" name="i">
+        <port name="flight"/>
+        <br:appearance fillColor="#ffffff" height="68" outlineColor="#000000" width="205" x="26" y="132"/>
+      </node>
+      <node control="Gate" name="j">
+        <port name="flight"/>
+        <br:appearance fillColor="#ffffff" height="67" outlineColor="#000000" width="206" x="27" y="223"/>
+      </node>
+      <br:appearance fillColor="#ffffff" height="304" outlineColor="#0000ff" width="262" x="447" y="32"/>
+    </node>
+    <node control="DB" name="k">
+      <node control="PaxRecord" name="l">
+        <port link="Gian" name="passenger"/>
+        <port link="SK100" name="gate"/>
+        <br:appearance fillColor="#ffffff" height="40" outlineColor="#000000" width="80" x="95" y="34"/>
+      </node>
+      <br:appearance fillColor="#ffffff" height="88" outlineColor="#000000" width="265" x="449" y="346"/>
+    </node>
+    <br:appearance fillColor="#ffffff" height="450" outlineColor="#000000" width="731" x="59" y="102"/>
+  </root>
+</bigraph>

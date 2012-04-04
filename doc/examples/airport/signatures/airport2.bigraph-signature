@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<signature xmlns="http://www.itu.dk/research/pls/xmlns/2010/signature" xmlns:br="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+  <control br:label="L" kind="active" name="Landside">
+    <br:shape shape="polygon">
+      <br:point x="40" y="0"/>
+      <br:point x="40" y="40"/>
+      <br:point x="0" y="40"/>
+      <br:point x="0" y="0"/>
+    </br:shape>
+    <br:appearance fillColor="#ffffff" outlineColor="#00ff00"/>
+  </control>
+  <control br:label="A" kind="active" name="Airside">
+    <br:shape shape="polygon">
+      <br:point x="40" y="0"/>
+      <br:point x="40" y="40"/>
+      <br:point x="0" y="40"/>
+      <br:point x="0" y="0"/>
+    </br:shape>
+    <br:appearance fillColor="#ffffff" outlineColor="#ff0000"/>
+  </control>
+  <control br:label="G" kind="active" name="Gates">
+    <br:shape shape="polygon">
+      <br:point x="40" y="0"/>
+      <br:point x="40" y="40"/>
+      <br:point x="0" y="40"/>
+      <br:point x="0" y="0"/>
+    </br:shape>
+    <br:appearance fillColor="#ffffff" outlineColor="#0000ff"/>
+  </control>
+  <control br:label="Z" kind="active" name="Zone">
+    <port name="exit">
+      <br:port-appearance distance="0.5" segment="2"/>
+    </port>
+    <port name="identifier">
+      <br:port-appearance distance="0.0" segment="6"/>
+    </port>
+    <br:shape shape="polygon">
+      <br:point x="50" y="10"/>
+      <br:point x="60" y="30"/>
+      <br:point x="50" y="50"/>
+      <br:point x="10" y="50"/>
+      <br:point x="0" y="30"/>
+      <br:point x="10" y="10"/>
+      <br:point x="30" y="0"/>
+    </br:shape>
+    <br:appearance fillColor="#ffffff" outlineColor="#000000"/>
+  </control>
+  <control br:label="G" kind="active" name="Gate">
+    <port name="flight">
+      <br:port-appearance distance="0.5" segment="0"/>
+    </port>
+    <br:shape shape="polygon">
+      <br:point x="40" y="0"/>
+      <br:point x="40" y="40"/>
+      <br:point x="30" y="30"/>
+      <br:point x="0" y="40"/>
+      <br:point x="0" y="0"/>
+      <br:point x="10" y="10"/>
+    </br:shape>
+    <br:appearance fillColor="#ffffff" outlineColor="#000000"/>
+  </control>
+  <control br:label="P" kind="passive" name="Pax">
+    <port name="flight">
+      <br:port-appearance distance="0.0" segment="3"/>
+    </port>
+    <br:shape shape="polygon">
+      <br:point x="40" y="40"/>
+      <br:point x="0" y="40"/>
+      <br:point x="10" y="10"/>
+      <br:point x="20" y="0"/>
+      <br:point x="30" y="10"/>
+    </br:shape>
+    <br:appearance fillColor="#1e90ff" outlineColor="#000000"/>
+  </control>
+  <control br:label="D" kind="active" name="DB">
+    <br:shape shape="oval"/>
+    <br:appearance fillColor="#ffff00" outlineColor="#000000"/>
+  </control>
+  <control br:label="P" kind="active" name="PaxRecord">
+    <port name="passenger">
+      <br:port-appearance distance="0.5" segment="5"/>
+    </port>
+    <port name="gate">
+      <br:port-appearance distance="0.5" segment="4"/>
+    </port>
+    <br:shape shape="polygon">
+      <br:point x="60" y="0"/>
+      <br:point x="50" y="10"/>
+      <br:point x="60" y="20"/>
+      <br:point x="50" y="30"/>
+      <br:point x="60" y="40"/>
+      <br:point x="0" y="40"/>
+      <br:point x="0" y="0"/>
+    </br:shape>
+    <br:appearance fillColor="#ffffff" outlineColor="#000000"/>
+  </control>
+</signature>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rule xmlns="http://www.itu.dk/research/pls/xmlns/2011/rule" xmlns:br="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+  <redex xmlns:b="http://www.itu.dk/research/pls/xmlns/2010/bigraph">
+    <b:signature src="../signatures/airport2.bigraph-signature"/>
+    <b:outername name="m">
+      <br:appearance fillColor="#ffffff" height="31" outlineColor="#008000" width="37" x="12" y="18"/>
+    </b:outername>
+    <b:outername name="Boarding">
+      <br:appearance fillColor="#ffffff" height="44" outlineColor="#008000" width="138" x="169" y="11"/>
+    </b:outername>
+    <b:outername name="y">
+      <br:appearance fillColor="#ffffff" height="24" outlineColor="#008000" width="29" x="96" y="41"/>
+    </b:outername>
+    <b:outername name="x">
+      <br:appearance fillColor="#ffffff" height="30" outlineColor="#008000" width="35" x="502" y="25"/>
+    </b:outername>
+    <b:root name="1">
+      <b:node control="Zone" name="a">
+        <b:port link="m" name="identifier"/>
+        <b:port link="Boarding" name="exit"/>
+        <b:node control="Pax" name="b">
+          <b:port link="y" name="flight"/>
+          <br:appearance fillColor="#ffffff" height="52" outlineColor="#000000" width="34" x="69" y="32"/>
+        </b:node>
+        <b:site name="1">
+          <br:appearance fillColor="#ffffff" height="37" outlineColor="#000000" width="100" x="36" y="95"/>
+        </b:site>
+        <br:appearance fillColor="#ffffff" height="145" outlineColor="#000000" width="172" x="21" y="25"/>
+      </b:node>
+      <br:appearance fillColor="#ffffff" height="190" outlineColor="#000000" width="209" x="18" y="85"/>
+    </b:root>
+    <b:root name="2">
+      <b:node control="Gate" name="c">
+        <b:port link="x" name="flight"/>
+        <b:site name="2">
+          <br:appearance fillColor="#ffffff" height="52" outlineColor="#000000" width="48" x="95" y="42"/>
+        </b:site>
+        <br:appearance fillColor="#ffffff" height="154" outlineColor="#000000" width="163" x="22" y="29"/>
+      </b:node>
+      <br:appearance fillColor="#ffffff" height="203" outlineColor="#000000" width="207" x="264" y="81"/>
+    </b:root>
+    <b:root name="3">
+      <b:node control="PaxRecord" name="d">
+        <b:port link="y" name="passenger"/>
+        <b:port link="x" name="gate"/>
+        <br:appearance fillColor="#ffffff" height="49" outlineColor="#000000" width="124" x="92" y="29"/>
+      </b:node>
+      <b:site name="3">
+        <br:appearance fillColor="#ffffff" height="74" outlineColor="#000000" width="108" x="237" y="14"/>
+      </b:site>
+      <br:appearance fillColor="#ffffff" height="99" outlineColor="#000000" width="366" x="236" y="305"/>
+    </b:root>
+  </redex>
+  <changes xmlns:change="http://www.itu.dk/research/pls/xmlns/2010/change">
+    <change:disconnect name="flight" node="b"/>
+    <change:remove name="b" type="node"/>
+    <change:add control="Pax" name="b" parent="c" parent-type="node" type="node"/>
+    <change:connect link="y" name="flight" node="b"/>
+    <br:layout height="52" name="b" type="node" width="34" x="29" y="60"/>
+  </changes>
+</rule>
