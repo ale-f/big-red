@@ -210,6 +210,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	public void addChild(ModelObject child) {
 		//addChild(child);
 		children.put(child, new Rectangle());
+		firePropertyChange(BRS.PROPERTY_PARENT, null, child);
 		
 	}
 	
@@ -237,7 +238,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	
 	
 	private void doChange(Change b) {
-		System.out.println("in do change");
+		
 		b.beforeApply();
 		if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
@@ -247,11 +248,13 @@ public class BRS extends ModelObject implements IChangeExecutor{
 			
 			BRS.ChangeAddChild c = (BRS.ChangeAddChild)b;
 			((BRS)c.getCreator()).addChild(c.child);
+			System.out.println("Add child");
 			//c.child.setName(c.name);
 			//getNamespace(getNSI(c.child)).put(c.name, c.child);
 		} else if(b instanceof BRS.ChangeLayoutChild){
 			BRS.ChangeLayoutChild c = (BRS.ChangeLayoutChild)b;
 			((BRS)c.getCreator())._changeLayoutChild(c.child, c.layout);
+			System.out.println("change layout child");
 			
 		}
 				
@@ -292,7 +295,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 			Site.ChangeAlias c = (Site.ChangeAlias)b;
 			//c.getCreator().setAlias(c.alias);
 		}*/
-		System.out.println("executed");
+		
 		
 	}
 	

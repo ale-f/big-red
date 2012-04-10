@@ -107,7 +107,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	public void setLayout(Object r) {
 		if (r instanceof Rectangle)
 			layout = (Rectangle)r;
-		else if (r instanceof org.eclipse.draw2d.geometry.Rectangle)
-			layout = new Rectangle((org.eclipse.draw2d.geometry.Rectangle)r);
+
 	}
 }

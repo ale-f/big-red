@@ -34,7 +34,7 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 	@Override
 	public void activate() {
 		super.activate();
-		getModel().addPropertyChangeListener(this);
+		((BRS)getModel()).addPropertyChangeListener(this);
 	}
 	/**
 	 * Extends {@link AbstractGraphicalEditPart#activate()} to also unregister
@@ -42,22 +42,23 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 	 */
 	@Override
 	public void deactivate() {
-		getModel().removePropertyChangeListener(this);
+		((BRS)getModel()).removePropertyChangeListener(this);
 		super.deactivate();
 	}
 	
 	
 	
-	@Override
-	public BRS getModel() {
-		return (BRS)super.getModel();
-	}
+//	@Override
+//	public BRS getModel() {
+//		return (BRS)super.getModel();
+//	}
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		System.out.println("propertychanged!");
 		String prop = evt.getPropertyName();
 		if (evt.getSource() == getModel()) {
+			System.out.println("evt.getSource() == getModel() " + prop);
 			if (prop.equals(Container.PROPERTY_CHILD)) {
 				System.out.println("refresh children");
 				refreshChildren();
@@ -67,13 +68,17 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 				System.out.println("BRS.propertychanged");
 				refreshChildren();
 				refreshVisuals();
+			}else if(prop.equals(BRS.PROPERTY_PARENT)){
+				System.out.println("BRS.propertychanged");
+				refreshChildren();
+				refreshVisuals();
 			}
 		}
 	}
 	
 	@Override
 	public List<ModelObject> getModelChildren() {
-		List<ModelObject> r = getModel().getChildren();
+		List<ModelObject> r = ((BRS)getModel()).getChildren();
 				//Lists.group(getModel().getChildren(), Bigraph.class);
 		Collections.reverse(r);
 		return r;
@@ -81,7 +86,6 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 	
 	@Override
 	protected void refreshVisuals() {
-		
 		figure.repaint();
 	}
 	
@@ -101,7 +105,7 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 
 	
 	public String getToolTip() {
-		return "BRS " + getModel().getName();
+		return "BRS " + ((BRS)getModel()).getName();
 	}
 	
 	
