@@ -8,6 +8,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -119,6 +120,36 @@ public abstract class Layoutable extends Colourable {
 		@Override
 		public String toString() {
 			return "Change(set name of " + getCreator() + " to " + newName + ")";
+		}
+	}
+	
+	public class ChangeRemove extends LayoutableChange {
+		@Override
+		public boolean isReady() {
+			return (getCreator().getParent() != null);
+		}
+		
+		private String oldName;
+		private Container oldParent;
+		@Override
+		public void beforeApply() {
+			oldName = getCreator().getName();
+			oldParent = getCreator().getParent();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null && oldParent != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return oldParent.new ChangeAddChild(getCreator(), oldName);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove child " + getCreator() + ")";
 		}
 	}
 	
@@ -253,6 +284,10 @@ public abstract class Layoutable extends Colourable {
 	
 	public LayoutableChange changeName(String newName) {
 		return new ChangeName(newName);
+	}
+	
+	public LayoutableChange changeRemove() {
+		return new ChangeRemove();
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -44,8 +45,8 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public ChangeRemoveChild inverse() {
-			return new ChangeRemoveChild(child);
+		public Change inverse() {
+			return child.new ChangeRemove();
 		}
 		
 		@Override
@@ -56,41 +57,6 @@ public abstract class Container extends Layoutable {
 		@Override
 		public String toString() {
 			return "Change(add child " + child + " to parent " + getCreator() + " with name \"" + name + "\")";
-		}
-	}
-	
-	public class ChangeRemoveChild extends ContainerChange {
-		public Layoutable child;
-		
-		public ChangeRemoveChild(Layoutable child) {
-			this.child = child;
-		}
-		
-		private String oldName = null;
-		
-		@Override
-		public void beforeApply() {
-			oldName = child.getName();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldName != null);
-		}
-		
-		@Override
-		public ChangeAddChild inverse() {
-			return new ChangeAddChild(child, oldName);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (child != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(remove child " + child + " from " + getCreator() + ")";
 		}
 	}
 	
@@ -174,10 +140,6 @@ public abstract class Container extends Layoutable {
 	
 	public ContainerChange changeAddChild(Layoutable child, String name) {
 		return new ChangeAddChild(child, name);
-	}
-	
-	public ContainerChange changeRemoveChild(Layoutable child) {
-		return new ChangeRemoveChild(child);
 	}
 	
 	/**

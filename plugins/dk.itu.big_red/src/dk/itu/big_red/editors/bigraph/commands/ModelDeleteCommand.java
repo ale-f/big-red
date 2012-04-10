@@ -49,7 +49,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 		cg.add(p.changeDisconnect());
 		scratch.removePointFor(l, p);
 		if (l.getPoints(scratch).size() == 0 && l instanceof Edge) {
-			cg.add(l.getBigraph().changeRemoveChild(l));
+			Bigraph r = l.getBigraph();
+			cg.add(l.changeRemove());
 			scratch.removeChildFor(l.getBigraph(), l);
 		}
 	}
@@ -93,7 +94,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 				if (p.getLink(scratch) != null)
 					removePoint(p.getLink(scratch), p);
 			}
-			cg.add(n.getParent().changeRemoveChild(n));
+			Container r = n.getParent();
+			cg.add(n.changeRemove());
 			scratch.removeChildFor(n.getParent(), n);
 		}
 	}

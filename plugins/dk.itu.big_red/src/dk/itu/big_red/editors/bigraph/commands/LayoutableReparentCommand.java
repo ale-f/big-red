@@ -56,8 +56,9 @@ public class LayoutableReparentCommand extends ChangeCommand {
 				}
 			}
 		}
+		Container r = l.getParent();
 		
-		cg.add(l.getParent().changeRemoveChild(l));
+		cg.add(l.changeRemove());
 		if (!root)
 			post.prepend(l.getParent().changeAddChild(l, l.getName()));
 	}

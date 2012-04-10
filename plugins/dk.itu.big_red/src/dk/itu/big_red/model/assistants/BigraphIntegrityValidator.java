@@ -162,18 +162,18 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			}
 			
 			scratch.addChildFor(c.getCreator(), c.child, c.name);
-		} else if (b instanceof Container.ChangeRemoveChild) {
-			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
-			checkEligibility(c.child, c.getCreator());
-			if (c.child instanceof Container)
-				if (((Container)c.child).getChildren(scratch).size() != 0)
-					rejectChange(b, c.child + " has child objects which must be removed first");
-			if (c.child.getParent(scratch) != c.getCreator())
-				rejectChange(c.getCreator() + " is not the parent of " + c.child);
-			scratch.removeChildFor(c.getCreator(), c.child);
-			
-			INamespace<Layoutable> ns = scratch.getNamespaceFor(c.child);
-			ns.remove(c.child.getName());
+		} else if (b instanceof Layoutable.ChangeRemove) {
+			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
+			Layoutable ch = c.getCreator();
+			checkEligibility(ch);
+			if (ch instanceof Container)
+				if (((Container)ch).getChildren(scratch).size() != 0)
+					rejectChange(b, ch + " has child objects which must be removed first");
+			Container cp = ch.getParent(scratch);
+			if (cp == null)
+				rejectChange(b, cp + " is not the parent of " + ch);
+			scratch.removeChildFor(cp, ch);
+			scratch.getNamespaceFor(ch).remove(ch.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			checkEligibility(c.getCreator());

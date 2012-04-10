@@ -121,10 +121,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					type = getAttributeNS(el, CHANGE, "type");
-				Layoutable child =
-					getNamed(type, name);
-				Container parent = child.getParent();
-				c = parent.changeRemoveChild(child);
+				c = getNamed(type, name).changeRemove();
 				nsg.getNamespace(Bigraph.getNSI(type)).remove(name);
 			} else if (el.getLocalName().equals("rename")) {
 				String
