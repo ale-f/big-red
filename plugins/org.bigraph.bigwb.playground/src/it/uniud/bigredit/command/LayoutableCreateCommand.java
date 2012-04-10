@@ -78,24 +78,30 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		}
 		if (container instanceof BRS){
 			/** TODO get a name for Bigraph */
+			System.out.println("Instance of BRS");
+			setTarget((BRS)container);
 			cg.add(((BRS)container).changeAddChild((ModelObject)node, "B0"),
-					((BRS)container).changeLayoutChild((ModelObject)node, layout));
+			((BRS)container).changeLayoutChild((ModelObject)node, layout));
 			
 		}
-		
-		
-		
 		return this;
 	}
 	
 	public void setObject(Object s) {
-		if (s instanceof Layoutable)
+		if (s instanceof Layoutable){
 			node = (Layoutable)s;
+		}
+		
+		if (s instanceof ModelObject){
+			node = (Layoutable)s;
+		}
 	}
 	
 	public void setContainer(Object e) {
-		if (e instanceof Container)
-			container = (Container)e;
+		if (e instanceof ModelObject){
+			System.out.println("instanceof ModelObject");
+			container = (ModelObject)e;
+		}
 	}
 	
 	public void setLayout(Object r) {
