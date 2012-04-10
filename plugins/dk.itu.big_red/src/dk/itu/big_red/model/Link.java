@@ -73,7 +73,7 @@ public abstract class Link extends Layoutable implements ILink {
 			return;
 		points.add(point);
 		point.setLink(this);
-		firePropertyChange(Link.PROPERTY_POINT, null, point);
+		firePropertyChange(PROPERTY_POINT, null, point);
 	}
 	
 	/**
@@ -84,7 +84,7 @@ public abstract class Link extends Layoutable implements ILink {
 		if (points.remove(point)) {
 			connections.remove(point);
 			point.setLink(null);
-			firePropertyChange(Link.PROPERTY_POINT, point, null);
+			firePropertyChange(PROPERTY_POINT, point, null);
 		}
 	}
 	

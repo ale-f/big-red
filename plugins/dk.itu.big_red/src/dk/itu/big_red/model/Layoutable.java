@@ -160,7 +160,7 @@ public abstract class Layoutable extends Colourable {
 			return;
 		Rectangle oldLayout = layout;
 		layout = newLayout;
-		firePropertyChange(Layoutable.PROPERTY_LAYOUT, oldLayout, layout);
+		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	/**

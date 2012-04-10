@@ -167,7 +167,7 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	protected void setComment(String comment) {
 		String oldComment = this.comment;
 		this.comment = comment;
-		firePropertyChange(ModelObject.PROPERTY_COMMENT, oldComment, comment);
+		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
 	}
 	
 	@Override
