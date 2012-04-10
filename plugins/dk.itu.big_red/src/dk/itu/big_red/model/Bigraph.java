@@ -404,7 +404,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			c.link.addPoint(c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			c.link.removePoint(c.getCreator());
+			c.getCreator().getLink().removePoint(c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			c.child.setName(

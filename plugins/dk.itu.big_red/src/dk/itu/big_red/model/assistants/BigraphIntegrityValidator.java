@@ -10,6 +10,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
@@ -129,10 +130,11 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			scratch.addPointFor(c.link, c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			checkEligibility(c.link, c.getCreator());
-			if (c.getCreator().getLink(scratch) == null)
+			checkEligibility(c.getCreator());
+			Link l = c.getCreator().getLink(scratch);
+			if (l == null)
 				rejectChange("The Point is already disconnected");
-			scratch.removePointFor(c.link, c.getCreator());
+			scratch.removePointFor(l, c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			

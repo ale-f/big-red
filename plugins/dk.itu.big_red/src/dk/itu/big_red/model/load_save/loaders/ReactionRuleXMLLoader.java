@@ -155,7 +155,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				if (node != null) {
 					p = ((Node)getNamed("node", node)).getPort(name);
 				} else p = (InnerName)getNamed("innername", name);
-				c = p.changeDisconnect(p.getLink());
+				c = p.changeDisconnect();
 			} else if (el.getLocalName().equals("site-alias")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),

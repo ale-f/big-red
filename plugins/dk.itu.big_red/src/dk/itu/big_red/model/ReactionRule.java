@@ -159,11 +159,10 @@ public class ReactionRule extends ModelObject {
 			ChangeDisconnect ch = (ChangeDisconnect)change;
 			
 			Point reactumPoint = (Point)oldToNew.get(ch.getCreator());
-			Link reactumLink = (Link)oldToNew.get(ch.link);
-			if (reactumPoint == null || reactumLink == null)
+			if (reactumPoint == null)
 				return null;
 			
-			return reactumPoint.changeDisconnect(reactumLink);
+			return reactumPoint.changeDisconnect();
 		} else if (change instanceof ChangeAlias) {
 			ChangeAlias ch = (ChangeAlias)change;
 			
