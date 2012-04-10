@@ -192,7 +192,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	}
 	
 	@Override
-	protected void setParent(Container parent) {
+	void setParent(Container parent) {
 		/* do nothing */
 	}
 	

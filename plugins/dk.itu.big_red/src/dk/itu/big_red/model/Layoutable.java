@@ -224,7 +224,7 @@ public abstract class Layoutable extends Colourable {
 	 * Changes the parent of this object.
 	 * @param p the new parent {@link Container}
 	 */
-	protected void setParent(Container parent) {
+	void setParent(Container parent) {
 		Container oldParent = this.parent;
 		this.parent = parent;
 		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
