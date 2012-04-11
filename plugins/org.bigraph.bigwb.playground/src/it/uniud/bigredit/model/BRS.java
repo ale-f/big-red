@@ -1,5 +1,7 @@
 package it.uniud.bigredit.model;
 
+import it.uniud.bigredit.policy.BRSChangeValidator;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +13,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 //import it.uniud.bigredit.PlayEditor;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Signature;
 
@@ -19,6 +20,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
+import dk.itu.big_red.model.changes.IChangeValidator;
 
 
 public class BRS extends ModelObject implements IChangeExecutor{
@@ -26,12 +28,128 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	private static ArrayList< Bigraph > diagrams = new ArrayList< Bigraph >();
 	private HashMap<ModelObject,Rectangle> children = new HashMap<ModelObject,Rectangle>();
 	
+	
+	
+
+	public static final String PROPERTY_NAME = "BRS_Name";
+	
+	/**
+	 * The property name fired when the layout changes.
+	 */
+
+	public static final String PROPERTY_LAYOUT = "BRS_Layout";
+	
+	/**
+	 * The property name fired when the parent changes.
+	 */
+	public static final String PROPERTY_PARENT = "BRS_Parent";
+	
 	private Signature signature = new Signature();
 	private String name;
 	
 	public String getName(){
 		return name;
 	}
+	
+	public class ChangeAddChild extends ModelObjectChange {
+		public ModelObject child;
+		public String name;
+		
+		public ChangeAddChild(ModelObject child, String name) {
+			System.out.println("new ChangeAddChild");
+			this.child = child;
+			this.name = name;
+		}
+		
+		@Override
+		public ChangeRemoveChild inverse() {
+			return new ChangeRemoveChild(child);
+		}
+		
+		@Override
+		public boolean isReady() {
+			System.out.println("is READy called in changeAddChild Called in BRS");
+			return (child != null);// && name != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(add child " + child + " to parent " + getCreator() + " with name \"" + name + "\")";
+		}
+	}
+	
+	public class ChangeRemoveChild extends ModelObjectChange {
+		public ModelObject child;
+		
+		public ChangeRemoveChild(ModelObject child) {
+			this.child = child;
+		}
+		
+		private String oldName = null;
+		
+		@Override
+		public void beforeApply() {
+			//oldName = child.getName();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null);
+		}
+		
+		@Override
+		public ChangeAddChild inverse() {
+			return new ChangeAddChild(child, oldName);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (child != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove child " + child + " from " + getCreator() + ")";
+		}
+	}
+	
+	public class ChangeLayoutChild extends ModelObjectChange {
+		public ModelObject child;
+		public Rectangle layout;
+		
+		public ChangeLayoutChild(ModelObject child, Rectangle layout) {
+			this.child = child;
+			this.layout=layout;
+		}
+		
+		private Rectangle oldLayout = null;
+		
+		@Override
+		public void beforeApply() {
+			//oldName = child.getName();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldLayout != null);
+		}
+		
+		@Override
+		public ChangeLayoutChild inverse() {
+			return new ChangeLayoutChild(child, oldLayout);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (child != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove child " + child + " from " + getCreator() + ")";
+		}
+	}
+	
 	
 	
 	//private AbstractGefEditor editor = null;
@@ -84,11 +202,24 @@ public class BRS extends ModelObject implements IChangeExecutor{
 
 	public List<ModelObject> getChildren(){
 		
-		return (List)children.keySet();
+		List <ModelObject> meta=  new ArrayList<ModelObject>();
+		meta.addAll(children.keySet());
+		return meta;
 	}
 	
-	public void addChild(Layoutable child) {
+	public void addChild(ModelObject child) {
 		//addChild(child);
+		children.put(child, new Rectangle());
+		firePropertyChange(BRS.PROPERTY_PARENT, null, child);
+		
+	}
+	
+	public void _changeLayoutChild(ModelObject child, Rectangle rectangle) {
+		//addChild(child);
+		System.out.println("changedLayout");
+		children.put(child, rectangle);
+		firePropertyChange(BRS.PROPERTY_LAYOUT, children.get(child), rectangle);
+		
 	}
 
 	public void addBigraph( Bigraph bigraph )
@@ -112,18 +243,29 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				doChange(c);
-		} /*else if (b instanceof Point.ChangeConnect) {
+				System.out.println("here");
+		} else if (b instanceof BRS.ChangeAddChild) {
+			
+			BRS.ChangeAddChild c = (BRS.ChangeAddChild)b;
+			((BRS)c.getCreator()).addChild(c.child);
+			System.out.println("Add child");
+			//c.child.setName(c.name);
+			//getNamespace(getNSI(c.child)).put(c.name, c.child);
+		} else if(b instanceof BRS.ChangeLayoutChild){
+			BRS.ChangeLayoutChild c = (BRS.ChangeLayoutChild)b;
+			((BRS)c.getCreator())._changeLayoutChild(c.child, c.layout);
+			System.out.println("change layout child");
+			
+		}
+				
+				
+		 /*else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			c.link.addPoint(c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			c.link.removePoint(c.getCreator());
-		} else if (b instanceof Container.ChangeAddChild) {
-			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
-			c.getCreator().addChild(c.child);
-			c.child.setName(c.name);
-			//getNamespace(getNSI(c.child)).put(c.name, c.child);
-		} else if (b instanceof Container.ChangeRemoveChild) {
+		 else if (b instanceof Container.ChangeRemoveChild) {
 			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
 			c.getCreator().removeChild(c.child);
 			//getNamespace(getNSI(c.child)).remove(c.child.getName());
@@ -153,7 +295,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 			Site.ChangeAlias c = (Site.ChangeAlias)b;
 			//c.getCreator().setAlias(c.alias);
 		}*/
-		System.out.println("executed");
+		
 		
 	}
 	
@@ -167,28 +309,32 @@ public class BRS extends ModelObject implements IChangeExecutor{
 
 	public Change changeLayoutChild(ModelObject node, Rectangle rectangle) {
 		// TODO Auto-generated method stub
-		return null;
+		return new ChangeLayoutChild(node,rectangle);
 	}
 
 
 	public Change changeAddChild(ModelObject node, String string) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("changeAddChild Called in BRS");
+		return new ChangeAddChild(node, string);
 	}
 
-
+	private IChangeValidator validator = new BRSChangeValidator(this);
+	
 	@Override
 	public void tryValidateChange(Change b) throws ChangeRejectedException {
-		// TODO Auto-generated method stub
-		
+		System.out.println("tryValidateChange in BrS");
+		validator.tryValidateChange(b);
 	}
 
 
 	@Override
 	public void tryApplyChange(Change b) throws ChangeRejectedException {
-		// TODO Auto-generated method stub
+		System.out.println("try apply change in BRS");
+		tryValidateChange(b);
+		doChange(b);
 		
 	}
+	
 
 
 

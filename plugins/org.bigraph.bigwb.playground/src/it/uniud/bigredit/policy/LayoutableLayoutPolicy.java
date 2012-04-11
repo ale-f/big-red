@@ -1,5 +1,6 @@
 package it.uniud.bigredit.policy;
 
+import it.uniud.bigredit.editparts.BRSPart;
 import it.uniud.bigredit.editparts.NestedBigraphPart;
 
 import org.eclipse.draw2d.geometry.Dimension;
@@ -19,6 +20,7 @@ import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.ModelObject;
 
 public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	
@@ -85,21 +87,30 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		
 		requestObject.getClass();
 		Dimension size = new Dimension(100, 100);
-		Layoutable parent;
+		ModelObject parent;
 		
 		if(getHost() instanceof NestedBigraphPart){
-			parent= (Layoutable)((Bigraph)getHost().getParent().getModel());
+			System.out.println("instanceofNestedBigraphPart");
+			parent= (ModelObject)((Bigraph)getHost().getParent().getModel());
+		}else if (getHost() instanceof BigraphPart){
+			System.out.println("instanceof BigraphPart");
+			parent = (ModelObject)getHost().getModel();
+		}else if (getHost() instanceof BRSPart){
+			System.out.println("instanceof BRSPart");
+			parent = (ModelObject)getHost().getModel();
 		}else{
-			parent = (Layoutable)getHost().getModel();
+			System.out.println("instanceof something");
+			parent = (ModelObject)getHost().getModel();
+			
 		}
 		
-		if (!(parent instanceof Container)) {
-			return null;
-		} else {
-			//if(((Layoutable) requestObject).getLayout() != null){
-				size.setSize(((Layoutable) requestObject).getLayout().getSize());
-			//}	
-		}
+//		if (!(parent instanceof Container)) {
+//			//return null;
+//		} else {
+//			//if(((Layoutable) requestObject).getLayout() != null){
+//				size.setSize(((Layoutable) requestObject).getLayout().getSize());
+//			//}	
+//		}
 		
 		
 		/*Layoutable self = (Layoutable)getHost().getModel();

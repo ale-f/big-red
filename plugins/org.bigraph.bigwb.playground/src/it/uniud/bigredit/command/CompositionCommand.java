@@ -140,7 +140,7 @@ public class CompositionCommand extends Command {
 		for(InnerName innerName : linkMap.keySet()){
 			
 			Link link=innerName.getLink();
-			link.removePoint(innerName);
+			//TODO link.removePoint(innerName);
 			
 			OuterName outerName=linkMap.get(innerName);
 			System.out.println("compute innerName"+ innerName.getName());
@@ -157,12 +157,12 @@ public class CompositionCommand extends Command {
 			for(int i=0;i<points.size();i++){
 				System.out.println(points.size());
 				Point p=points.get(i);
-				points.get(i).getLink().removePoint(points.get(i));
+				//TODO points.get(i).getLink().removePoint(points.get(i));
 				System.out.println(points.size());
 				if(link instanceof OuterName){
-					((OuterName)link).addPoint(p);
+					//TODO ((OuterName)link).addPoint(p);
 				}else if (link instanceof Edge){
-					((Edge)link).addPoint(p);
+					//TODO ((Edge)link).addPoint(p);
 				}
 			}
 		}

@@ -1,15 +1,9 @@
 package it.uniud.bigredit.model;
 
-import java.io.IOException;
-import java.util.HashMap;
-
-import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Node;
+
 
 
 
