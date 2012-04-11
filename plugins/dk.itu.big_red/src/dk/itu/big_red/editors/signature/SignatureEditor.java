@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
+import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
@@ -140,13 +141,6 @@ implements PropertyChangeListener {
 		}
 	}
 	
-	private static interface IFactory<T> {
-		String getName();
-		Class<? extends T> getType();
-		
-		T newInstance();
-	}
-	
 	private static class CNPF implements IFactory<INamePolicy> {
 		public Class<? extends INamePolicy> klass;
 		public CNPF(Class<? extends INamePolicy> klass) {
@@ -156,11 +150,6 @@ implements PropertyChangeListener {
 		@Override
 		public String getName() {
 			return klass.getSimpleName();
-		}
-		
-		@Override
-		public Class<? extends INamePolicy> getType() {
-			return klass;
 		}
 		
 		@Override

@@ -34,6 +34,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
+import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
@@ -58,15 +59,14 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractNonGEFEditor
 implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
-	private static class SimpleExportInteractionManagerFactory
-		extends ConfigurationElementInteractionManagerFactory {
-		
-		public SimpleExportInteractionManagerFactory(IConfigurationElement ice) {
+	private static class ExportInteractionManagerFactory
+			extends ConfigurationElementInteractionManagerFactory {
+		public ExportInteractionManagerFactory(IConfigurationElement ice) {
 			super(ice);
 		}
 		
 		@Override
-		public IInteractionManager createInteractionManager() {
+		public IInteractionManager newInstance() {
 			Saver s;
 			try {
 				s = (Saver)getCE().createExecutableExtension("class");
@@ -133,9 +133,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		uiUpdateInProgress = false;
 	}
 	
-	private static ArrayList<IInteractionManagerFactory> getIMFactories() {
-		ArrayList<IInteractionManagerFactory> factories =
-				new ArrayList<IInteractionManagerFactory>();
+	private static ArrayList<IFactory<IInteractionManager>> getIMFactories() {
+		ArrayList<IFactory<IInteractionManager>> factories =
+				new ArrayList<IFactory<IInteractionManager>>();
 		
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ce :
@@ -147,7 +147,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		     r.getConfigurationElementsFor(Saver.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals(SimulationSpec.class.getCanonicalName()))
-				factories.add(new SimpleExportInteractionManagerFactory(ce));
+				factories.add(new ExportInteractionManagerFactory(ce));
 		}
 		return factories;
 	}
@@ -283,11 +283,11 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			new ListContentProvider(), new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((IInteractionManagerFactory)element).getName();
+					return ((IFactory<?>)element).getName();
 				}
 			});
 		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		ArrayList<IInteractionManagerFactory> exporters = getIMFactories();
+		ArrayList<IFactory<IInteractionManager>> exporters = getIMFactories();
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
@@ -297,9 +297,9 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				IInteractionManager im =
-					((IInteractionManagerFactory)
+					(IInteractionManager)((IFactory<?>)
 						((IStructuredSelection)cv.getSelection()).
-							getFirstElement()).createInteractionManager();
+							getFirstElement()).newInstance();
 				im.setSimulationSpec(getModel());
 				im.run(getEditorSite().getShell());
 			}
