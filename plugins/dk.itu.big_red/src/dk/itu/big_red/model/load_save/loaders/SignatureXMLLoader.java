@@ -16,6 +16,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.names.BooleanNamePolicy;
+import dk.itu.big_red.model.names.INamePolicy;
 import dk.itu.big_red.model.names.LongNamePolicy;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
@@ -50,11 +51,14 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		String parameter = getAttributeNS(e, SIGNATURE, "parameter");
 		if (parameter != null) {
+			INamePolicy n = null;
 			if (parameter.equals("LONG")) {
-				model.setParameterPolicy(new LongNamePolicy());
+				n = new LongNamePolicy();
 			} else if (parameter.equals("BOOLEAN")) {
-				model.setParameterPolicy(new BooleanNamePolicy());
+				n = new BooleanNamePolicy();
 			}
+			if (n != null)
+				cg.add(model.changeParameterPolicy(n));
 		}
 		
 		boolean generatePolygon = false;

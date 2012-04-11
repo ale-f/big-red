@@ -91,6 +91,13 @@ public class Control extends Colourable implements IControl {
 	@RedProperty(fired = Dimension.class, retrieved = Dimension.class)
 	public static final String PROPERTY_DEFAULT_SIZE = "ControlDefaultSize";
 	
+	/**
+	 * The property name fired when the parameter policy changes.
+	 */
+	@RedProperty(fired = INamePolicy.class, retrieved = INamePolicy.class)
+	public static final String PROPERTY_PARAMETER_POLICY =
+		"ControlParameterPolicy";
+	
 	abstract class ControlChange extends ModelObjectChange {
 		@Override
 		public Control getCreator() {
@@ -644,14 +651,20 @@ public class Control extends Colourable implements IControl {
 		return r;
 	}
 	
-	private INamePolicy parameterPolicy;
+	private INamePolicy policy;
 	
 	public INamePolicy getParameterPolicy() {
-		return parameterPolicy;
+		return policy;
 	}
 	
-	public void setParameterPolicy(INamePolicy parameterPolicy) {
-		this.parameterPolicy = parameterPolicy;
+	public INamePolicy getParameterPolicy(IPropertyProviderProxy context) {
+		return (INamePolicy)getProperty(context, PROPERTY_PARAMETER_POLICY);
+	}
+	
+	protected void setParameterPolicy(INamePolicy policy) {
+		INamePolicy oldPolicy = this.policy;
+		this.policy = policy;
+		firePropertyChange(PROPERTY_PARAMETER_POLICY, oldPolicy, policy);
 	}
 	
 	/**
@@ -682,6 +695,8 @@ public class Control extends Colourable implements IControl {
 			return getKind();
 		} else if (PROPERTY_SIGNATURE.equals(name)) {
 			return getSignature();
+		} else if (PROPERTY_PARAMETER_POLICY.equals(name)) {
+			return getParameterPolicy();
 		} else return super.getProperty(name);
 	}
 	
