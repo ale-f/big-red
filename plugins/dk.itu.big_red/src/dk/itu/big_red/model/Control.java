@@ -374,6 +374,29 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
+	public class ChangeParameterPolicy extends ControlChange {
+		public INamePolicy policy;
+		public ChangeParameterPolicy(INamePolicy policy) {
+			this.policy = policy;
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (policy != null);
+		}
+		
+		private INamePolicy oldPolicy;
+		@Override
+		public void beforeApply() {
+			oldPolicy = getCreator().getParameterPolicy();
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeParameterPolicy(oldPolicy);
+		}
+	}
+	
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -713,5 +736,9 @@ public class Control extends Colourable implements IControl {
 	
 	public ChangePoints changePoints(PointList pl) {
 		return new ChangePoints(pl);
+	}
+	
+	public ChangeParameterPolicy changeParameterPolicy(INamePolicy policy) {
+		return new ChangeParameterPolicy(policy);
 	}
 }

@@ -13,6 +13,7 @@ import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
+import dk.itu.big_red.model.Control.ChangeParameterPolicy;
 import dk.itu.big_red.model.Control.ChangePoints;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
@@ -213,6 +214,9 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
 			c.getCreator().setName(c.name);
+		} else if (b instanceof ChangeParameterPolicy) {
+			ChangeParameterPolicy c = (ChangeParameterPolicy)b;
+			c.getCreator().setParameterPolicy(c.policy);
 		}
 	}
 	
