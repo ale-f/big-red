@@ -68,23 +68,23 @@ public abstract class Link extends Layoutable implements ILink {
 	 * Adds the given {@link Point} to this Link's set of points.
 	 * @param point a Point
 	 */
-	public void addPoint(Point point) {
+	protected void addPoint(Point point) {
 		if (point == null)
 			return;
 		points.add(point);
 		point.setLink(this);
-		firePropertyChange(Link.PROPERTY_POINT, null, point);
+		firePropertyChange(PROPERTY_POINT, null, point);
 	}
 	
 	/**
 	 * Removes the given {@link Point} from this Link's set of points.
 	 * @param point a Point
 	 */
-	public void removePoint(Point point) {
+	protected void removePoint(Point point) {
 		if (points.remove(point)) {
 			connections.remove(point);
 			point.setLink(null);
-			firePropertyChange(Link.PROPERTY_POINT, point, null);
+			firePropertyChange(PROPERTY_POINT, point, null);
 		}
 	}
 	

@@ -10,6 +10,7 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
@@ -129,10 +130,11 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			scratch.addPointFor(c.link, c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			checkEligibility(c.link, c.getCreator());
-			if (c.getCreator().getLink(scratch) == null)
+			checkEligibility(c.getCreator());
+			Link l = c.getCreator().getLink(scratch);
+			if (l == null)
 				rejectChange("The Point is already disconnected");
-			scratch.removePointFor(c.link, c.getCreator());
+			scratch.removePointFor(l, c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			
@@ -160,18 +162,18 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			}
 			
 			scratch.addChildFor(c.getCreator(), c.child, c.name);
-		} else if (b instanceof Container.ChangeRemoveChild) {
-			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
-			checkEligibility(c.child, c.getCreator());
-			if (c.child instanceof Container)
-				if (((Container)c.child).getChildren(scratch).size() != 0)
-					rejectChange(b, c.child + " has child objects which must be removed first");
-			if (c.child.getParent(scratch) != c.getCreator())
-				rejectChange(c.getCreator() + " is not the parent of " + c.child);
-			scratch.removeChildFor(c.getCreator(), c.child);
-			
-			INamespace<Layoutable> ns = scratch.getNamespaceFor(c.child);
-			ns.remove(c.child.getName());
+		} else if (b instanceof Layoutable.ChangeRemove) {
+			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
+			Layoutable ch = c.getCreator();
+			checkEligibility(ch);
+			if (ch instanceof Container)
+				if (((Container)ch).getChildren(scratch).size() != 0)
+					rejectChange(b, ch + " has child objects which must be removed first");
+			Container cp = ch.getParent(scratch);
+			if (cp == null)
+				rejectChange(b, cp + " is not the parent of " + ch);
+			scratch.removeChildFor(cp, ch);
+			scratch.getNamespaceFor(ch).remove(ch.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			checkEligibility(c.getCreator());

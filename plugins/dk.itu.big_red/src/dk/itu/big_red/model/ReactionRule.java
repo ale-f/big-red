@@ -9,10 +9,10 @@ import org.eclipse.core.resources.IFile;
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Container.ChangeAddChild;
-import dk.itu.big_red.model.Container.ChangeRemoveChild;
 import dk.itu.big_red.model.Edge.ChangeReposition;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
+import dk.itu.big_red.model.Layoutable.ChangeRemove;
 import dk.itu.big_red.model.Node.ChangeParameter;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
@@ -127,17 +127,17 @@ public class ReactionRule extends ModelObject {
 				return null;
 			
 			return reactumModel.changeLayout(ch.newLayout.getCopy());
-		} else if (change instanceof ChangeRemoveChild) {
-			ChangeRemoveChild ch = (ChangeRemoveChild)change;
+		} else if (change instanceof ChangeRemove) {
+			ChangeRemove ch = (ChangeRemove)change;
 			
-			Container reactumParent = (Container)oldToNew.get(ch.getCreator());
-			Layoutable reactumChild = (Layoutable)oldToNew.get(ch.child);
+			Layoutable reactumChild =
+					(Layoutable)oldToNew.get(ch.getCreator());
 			
-			if (reactumParent == null || reactumChild == null)
+			if (reactumChild == null)
 				return null;
 			
-			oldToNew.remove(ch.child);
-			return reactumParent.changeRemoveChild(reactumChild);
+			oldToNew.remove(ch.getCreator());
+			return reactumChild.changeRemove();
 		} else if (change instanceof ChangeName) {
 			ChangeName ch = (ChangeName)change;
 			
@@ -159,11 +159,10 @@ public class ReactionRule extends ModelObject {
 			ChangeDisconnect ch = (ChangeDisconnect)change;
 			
 			Point reactumPoint = (Point)oldToNew.get(ch.getCreator());
-			Link reactumLink = (Link)oldToNew.get(ch.link);
-			if (reactumPoint == null || reactumLink == null)
+			if (reactumPoint == null)
 				return null;
 			
-			return reactumPoint.changeDisconnect(reactumLink);
+			return reactumPoint.changeDisconnect();
 		} else if (change instanceof ChangeAlias) {
 			ChangeAlias ch = (ChangeAlias)change;
 			

@@ -24,27 +24,22 @@ public abstract class Point extends Layoutable implements IPoint {
 		public Point getCreator() {
 			return Point.this;
 		}
-		
+	}
+	
+	public class ChangeConnect extends PointChange {
 		public Link link;
-		
-		public PointChange(Link link) {
+		public ChangeConnect(Link link) {
 			this.link = link;
 		}
-		
+
 		@Override
 		public boolean isReady() {
 			return (link != null);
 		}
-	}
-	
-	public class ChangeConnect extends PointChange {
-		public ChangeConnect(Link link) {
-			super(link);
-		}
-
+		
 		@Override
 		public ChangeDisconnect inverse() {
-			return new ChangeDisconnect(link);
+			return new ChangeDisconnect();
 		}
 		
 		@Override
@@ -54,13 +49,25 @@ public abstract class Point extends Layoutable implements IPoint {
 	}
 	
 	public class ChangeDisconnect extends PointChange {
-		public ChangeDisconnect(Link link) {
-			super(link);
+		@Override
+		public boolean isReady() {
+			return (getCreator().getLink() != null);
 		}
-
+		
+		private Link oldLink;
+		@Override
+		public void beforeApply() {
+			oldLink = getCreator().getLink();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldLink != null);
+		}
+		
 		@Override
 		public ChangeConnect inverse() {
-			return new ChangeConnect(link);
+			return new ChangeConnect(oldLink);
 		}
 		
 		@Override
@@ -82,10 +89,10 @@ public abstract class Point extends Layoutable implements IPoint {
 	 * @return the previous {@link Link}, or <code>null</code> if
 	 * there wasn't one
 	 */
-	protected void setLink(Link l) {
+	void setLink(Link l) {
 		Link oldLink = link;
 		link = l;
-		firePropertyChange(Point.PROPERTY_LINK, oldLink, l);
+		firePropertyChange(PROPERTY_LINK, oldLink, l);
 	}
 	
 	@Override
@@ -101,8 +108,8 @@ public abstract class Point extends Layoutable implements IPoint {
 		return new ChangeConnect(l);
 	}
 	
-	public LayoutableChange changeDisconnect(Link l) {
-		return new ChangeDisconnect(l);
+	public LayoutableChange changeDisconnect() {
+		return new ChangeDisconnect();
 	}
 	
 	@Override

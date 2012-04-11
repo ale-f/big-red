@@ -37,11 +37,8 @@ public abstract class Namespace<T> implements INamespace<T> {
 		if (name != null) {
 			if (getPolicy() == null) {
 				return name;
-			} else if ((name = getPolicy().normalise(name)) != null) {
-				return name;
-			}
-		}
-		return null;
+			} else return getPolicy().normalise(name);
+		} else return null;
 	}
 	
 	@Override

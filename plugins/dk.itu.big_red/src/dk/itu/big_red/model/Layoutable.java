@@ -8,6 +8,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
@@ -122,6 +123,36 @@ public abstract class Layoutable extends Colourable {
 		}
 	}
 	
+	public class ChangeRemove extends LayoutableChange {
+		@Override
+		public boolean isReady() {
+			return (getCreator().getParent() != null);
+		}
+		
+		private String oldName;
+		private Container oldParent;
+		@Override
+		public void beforeApply() {
+			oldName = getCreator().getName();
+			oldParent = getCreator().getParent();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null && oldParent != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return oldParent.new ChangeAddChild(getCreator(), oldName);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove child " + getCreator() + ")";
+		}
+	}
+	
 	private Rectangle layout = new Rectangle();
 	private Container parent = null;
 	
@@ -160,7 +191,7 @@ public abstract class Layoutable extends Colourable {
 			return;
 		Rectangle oldLayout = layout;
 		layout = newLayout;
-		firePropertyChange(Layoutable.PROPERTY_LAYOUT, oldLayout, layout);
+		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	/**
@@ -193,7 +224,7 @@ public abstract class Layoutable extends Colourable {
 	 * Changes the parent of this object.
 	 * @param p the new parent {@link Container}
 	 */
-	protected void setParent(Container parent) {
+	void setParent(Container parent) {
 		Container oldParent = this.parent;
 		this.parent = parent;
 		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
@@ -253,6 +284,10 @@ public abstract class Layoutable extends Colourable {
 	
 	public LayoutableChange changeName(String newName) {
 		return new ChangeName(newName);
+	}
+	
+	public LayoutableChange changeRemove() {
+		return new ChangeRemove();
 	}
 	
 	@Override

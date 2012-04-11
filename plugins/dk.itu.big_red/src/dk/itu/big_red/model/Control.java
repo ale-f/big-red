@@ -587,7 +587,7 @@ public class Control extends Colourable implements IControl {
 		return (Signature)getProperty(context, PROPERTY_SIGNATURE);
 	}
 	
-	protected void setSignature(Signature signature) {
+	void setSignature(Signature signature) {
 		Signature oldSignature = this.signature;
 		this.signature = signature;
 		firePropertyChange(PROPERTY_SIGNATURE, oldSignature, signature);

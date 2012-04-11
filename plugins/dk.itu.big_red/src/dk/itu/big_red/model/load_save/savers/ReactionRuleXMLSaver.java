@@ -7,9 +7,9 @@ import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Container.ChangeRemoveChild;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
+import dk.itu.big_red.model.Layoutable.ChangeRemove;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ModelObject.ChangeComment;
 import dk.itu.big_red.model.Node;
@@ -132,11 +132,11 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			if (i.child instanceof Node)
 				applyAttributes(f,
 						"control", ((Node)i.child).getControl().getName());
-		} else if (i_ instanceof ChangeRemoveChild) {
-			ChangeRemoveChild i = (ChangeRemoveChild)i_;
+		} else if (i_ instanceof ChangeRemove) {
+			ChangeRemove i = (ChangeRemove)i_;
 			f = applyAttributes(newElement(CHANGE, "change:remove"),
-					"name", i.child.getName(),
-					"type", i.child.getType().toLowerCase());
+					"name", i.getCreator().getName(),
+					"type", i.getCreator().getType().toLowerCase());
 		} else if (i_ instanceof ChangeName) {
 			ChangeName i = (ChangeName)i_;
 			f = applyAttributes(newElement(CHANGE, "change:rename"),

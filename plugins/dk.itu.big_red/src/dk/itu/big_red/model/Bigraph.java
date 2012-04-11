@@ -192,7 +192,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	}
 	
 	@Override
-	protected void setParent(Container parent) {
+	void setParent(Container parent) {
 		/* do nothing */
 	}
 	
@@ -404,16 +404,17 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			c.link.addPoint(c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			c.link.removePoint(c.getCreator());
+			c.getCreator().getLink().removePoint(c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			c.child.setName(
 					getNamespace(getNSI(c.child)).put(c.name, c.child));
 			c.getCreator().addChild(c.child);
-		} else if (b instanceof Container.ChangeRemoveChild) {
-			Container.ChangeRemoveChild c = (Container.ChangeRemoveChild)b;
-			c.getCreator().removeChild(c.child);
-			getNamespace(getNSI(c.child)).remove(c.child.getName());
+		} else if (b instanceof Layoutable.ChangeRemove) {
+			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
+			Layoutable ch = c.getCreator();
+			ch.getParent().removeChild(ch);
+			getNamespace(getNSI(ch)).remove(ch.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			c.getCreator().setLayout(c.newLayout);

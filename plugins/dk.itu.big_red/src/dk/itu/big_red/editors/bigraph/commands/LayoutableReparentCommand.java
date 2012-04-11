@@ -51,13 +51,13 @@ public class LayoutableReparentCommand extends ChangeCommand {
 			for (Port p : ((Node)l).getPorts()) {
 				Link li = p.getLink();
 				if (li != null) {
-					cg.add(p.changeDisconnect(li));
+					cg.add(p.changeDisconnect());
 					post.prepend(p.changeConnect(li));
 				}
 			}
 		}
 		
-		cg.add(l.getParent().changeRemoveChild(l));
+		cg.add(l.changeRemove());
 		if (!root)
 			post.prepend(l.getParent().changeAddChild(l, l.getName()));
 	}
