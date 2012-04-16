@@ -1,24 +1,22 @@
 package it.uniud.bigredit.editparts;
 
+import it.uniud.bigredit.figure.GraphFigure;
 import it.uniud.bigredit.figure.NestedBigraphFigure;
 import it.uniud.bigredit.model.BRS;
-import it.uniud.bigredit.policy.LayoutPolicy;
 import it.uniud.bigredit.policy.LayoutableLayoutPolicy;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
-import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
-import dk.itu.big_red.editors.bigraph.figures.RootFigure;
+import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Root;
 
 //import uniud.bigredit.policy.LayoutPolicy;
 
@@ -26,6 +24,7 @@ import dk.itu.big_red.model.Root;
 
 public class NestedBigraphPart extends ContainerPart{
 	
+	GraphFigure figureModel;
 	
 	@Override
 	public Bigraph getModel() {
@@ -35,7 +34,8 @@ public class NestedBigraphPart extends ContainerPart{
 	@Override
 	protected IFigure createFigure()
 	{
-		return new NestedBigraphFigure();
+		figureModel=new GraphFigure();
+		return figureModel;//new NestedBigraphFigure();
 	}
 	
 	@Override
@@ -45,17 +45,23 @@ public class NestedBigraphPart extends ContainerPart{
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}
 	
+	@Override 
+	public AbstractFigure getFigure(){
+		return null;
+	}
 	
 	@Override
 	protected void refreshVisuals(){
 		super.refreshVisuals();
 		
 		
-		NestedBigraphFigure figure = (NestedBigraphFigure)getFigure();
+		//NestedBigraphFigure figure = (NestedBigraphFigure)getFigure();
+		
+		GraphFigure figure = (GraphFigure)getFigure();
 		Bigraph model = getModel();
 		
 		figure.setName(model.getName());
-		
+		figure.setConstraint(new Rectangle (100,100,50,50));
 	}
 	
 	@Override
@@ -73,8 +79,10 @@ public class NestedBigraphPart extends ContainerPart{
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
 		if (evt.getSource() == getModel()) {
-			if (evt.getPropertyName().equals(BRS.PROPERTY_LAYOUT))
+			if (evt.getPropertyName().equals(BRS.PROPERTY_LAYOUT)){
 				refreshChildren();
+				refreshVisuals();
+			}
 		}
 	}
 

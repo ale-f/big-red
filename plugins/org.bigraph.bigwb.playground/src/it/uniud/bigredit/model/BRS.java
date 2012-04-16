@@ -1,5 +1,6 @@
 package it.uniud.bigredit.model;
 
+import it.uniud.bigredit.PlayEditor;
 import it.uniud.bigredit.policy.BRSChangeValidator;
 
 import java.util.ArrayList;
@@ -152,15 +153,15 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	
 	
 	
-	//private AbstractGefEditor editor = null;
+	private PlayEditor editor = null;
 	
-//	public BRS( PlayEditor editor )
-//	{
-//		this.editor = editor;
-//		this.setLayout( new Rectangle( 0, 0, 1000000, 100000 ) );
+	public BRS( PlayEditor editor )
+	{
+		this.editor = editor;
+		//this.setLayout( new Rectangle( 0, 0, 1000000, 100000 ) );
 //		//diagrams.add( this );
 //		
-//	}
+	}
 
 	
 	
@@ -204,6 +205,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		
 		List <ModelObject> meta=  new ArrayList<ModelObject>();
 		meta.addAll(children.keySet());
+		System.out.println("size of BRS vector:" + meta.size());
 		return meta;
 	}
 	

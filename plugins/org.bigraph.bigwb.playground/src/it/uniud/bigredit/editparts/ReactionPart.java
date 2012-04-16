@@ -3,7 +3,7 @@ package it.uniud.bigredit.editparts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import it.uniud.bigredit.figure.ReactionFigure;
+import it.uniud.bigredit.figure.ReactionFiguren;
 import it.uniud.bigredit.model.Reaction;
 
 import org.eclipse.draw2d.IFigure;
@@ -20,7 +20,7 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	@Override
 	protected IFigure createFigure()
 	{
-		IFigure figure = new ReactionFigure();
+		IFigure figure = new ReactionFiguren();
 		return figure;
 	}
 	
@@ -36,7 +36,7 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	{
 		super.refreshChildren();
 		Reaction model = ( Reaction ) getModel();
-		( ( ReactionFigure )getFigure() ).setChildren( model.getRedex(), model.getReactum() );
+		( ( ReactionFiguren )getFigure() ).setChildren( model.getRedex(), model.getReactum() );
 	}
 
 	public String getToolTip() {
