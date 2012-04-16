@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.signature;
 
 import java.beans.PropertyChangeListener;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -30,6 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
+import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
@@ -41,6 +43,9 @@ import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
+import dk.itu.big_red.model.names.BooleanNamePolicy;
+import dk.itu.big_red.model.names.INamePolicy;
+import dk.itu.big_red.model.names.LongNamePolicy;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends AbstractNonGEFEditor
@@ -134,6 +139,35 @@ implements PropertyChangeListener {
 		} finally {
 			uiUpdateInProgress = oldUI;
 		}
+	}
+	
+	private static class CNPF implements IFactory<INamePolicy> {
+		public Class<? extends INamePolicy> klass;
+		public CNPF(Class<? extends INamePolicy> klass) {
+			this.klass = klass;
+		}
+		
+		@Override
+		public String getName() {
+			return klass.getSimpleName();
+		}
+		
+		@Override
+		public INamePolicy newInstance() {
+			try {
+				return klass.newInstance();
+			} catch (Exception e) {
+				return null;
+			}
+		}
+	}
+	
+	private static ArrayList<IFactory<INamePolicy>> getNamePolicies() {
+		ArrayList<IFactory<INamePolicy>> r =
+				new ArrayList<IFactory<INamePolicy>>();
+		r.add(new CNPF(LongNamePolicy.class));
+		r.add(new CNPF(BooleanNamePolicy.class));
+		return r;
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
 
 /**
@@ -13,7 +14,7 @@ import dk.itu.big_red.interaction_managers.IInteractionManager;
  * @see RedPlugin#instantiate(IConfigurationElement)
  */
 class ConfigurationElementInteractionManagerFactory
-	implements IInteractionManagerFactory {
+	implements IFactory<IInteractionManager> {
 	private IConfigurationElement ice = null;
 	
 	public IConfigurationElement getCE() {
@@ -30,7 +31,7 @@ class ConfigurationElementInteractionManagerFactory
 	}
 	
 	@Override
-	public IInteractionManager createInteractionManager() {
+	public IInteractionManager newInstance() {
 		try {
 			return (IInteractionManager)
 					getCE().createExecutableExtension("class");
