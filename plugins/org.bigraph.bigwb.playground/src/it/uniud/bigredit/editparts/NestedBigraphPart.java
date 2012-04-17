@@ -36,9 +36,10 @@ public class NestedBigraphPart extends ContainerPart{
 	{
 		//figureModel=
 		//return figureModel;//new NestedBigraphFigure();
-		return new NestedBigraphFigure();
+		return new NestedBigraphFigure();// NestedBigraphFigure();
 	}
 	
+
 	@Override
 	protected void createEditPolicies()
 	{
@@ -62,7 +63,7 @@ public class NestedBigraphPart extends ContainerPart{
 		Bigraph model = getModel();
 		
 		figure.setName(model.getName());
-		figure.setConstraint(new Rectangle (100,100,50,50));
+		figure.setConstraint(new Rectangle (100,100,400,300));
 	}
 	
 	@Override

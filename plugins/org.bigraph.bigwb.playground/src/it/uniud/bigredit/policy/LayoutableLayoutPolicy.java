@@ -40,7 +40,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	
 	@Override
 	protected Command createAddCommand(EditPart child, Object constraint) {
-		
+		System.out.println("create add command");
 		LayoutableAddCommand command= null;
 		if ( child instanceof NestedBigraphPart ) {
 			Bigraph target = ( Bigraph )getHost().getModel();
@@ -90,8 +90,8 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		ModelObject parent;
 		
 		if(getHost() instanceof NestedBigraphPart){
-			System.out.println("instanceofNestedBigraphPart");
-			parent= (ModelObject)((Bigraph)getHost().getParent().getModel());
+			System.out.println("instanceof NestedBigraphPart");
+			parent= (ModelObject)((Bigraph)getHost().getModel());
 		}else if (getHost() instanceof BigraphPart){
 			System.out.println("instanceof BigraphPart");
 			parent = (ModelObject)getHost().getModel();
@@ -104,21 +104,10 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			
 		}
 		
-//		if (!(parent instanceof Container)) {
-//			//return null;
-//		} else {
-//			//if(((Layoutable) requestObject).getLayout() != null){
-//				size.setSize(((Layoutable) requestObject).getLayout().getSize());
-//			//}	
-//		}
+		if (parent instanceof Container) {
+		 size.setSize(((Layoutable) requestObject).getLayout().getSize());
+		}
 		
-		
-		/*Layoutable self = (Layoutable)getHost().getModel();
-		if (!(self instanceof Container)) {
-			return null;
-		} else {
-			size.setSize(((Layoutable)requestObject).getLayout().getSize());
-		}*/
 		
 		LayoutableCreateCommand cmd = new LayoutableCreateCommand();
 		cmd.setContainer(parent);
