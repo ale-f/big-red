@@ -444,26 +444,16 @@ public class Control extends Colourable implements IControl {
 	});
 	
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
-	private PointList points = new PointList();
+	private PointList points = POINTS_QUAD.getCopy();
 	
-	private Control.Shape shape;
-	private String name;
-	private String label;
-	private Dimension defaultSize;
-	private boolean resizable;
-	private Control.Kind kind;
+	private Control.Shape shape = Shape.POLYGON;
+	private String name = "Unknown";
+	private String label = "?";
+	private Dimension defaultSize = new Dimension(50, 50);
+	private boolean resizable = true;
+	private Control.Kind kind = Kind.ACTIVE;
 	private Signature signature = null;
 	
-	public Control() {
-		setName("Unknown");
-		setLabel("?");
-		setShape(Control.Shape.POLYGON);
-		setPoints(POINTS_QUAD);
-		setDefaultSize(new Dimension(50, 50));
-		setKind(Kind.ACTIVE);
-		setResizable(true);
-	}
-
 	@Override
 	public Control clone(Map<ModelObject,ModelObject> m) {
 		Control c = (Control)super.clone(m);
