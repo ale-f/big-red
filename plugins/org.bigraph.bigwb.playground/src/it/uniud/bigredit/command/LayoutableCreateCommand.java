@@ -88,7 +88,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
 				cg.add(((Bigraph) container).changeAddChild(((Root)node), name), ((Layoutable)node).changeLayout(layout));
 			}else{
-				System.out.println("not instance of Root");
+				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
+				cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name), ((Layoutable)node).changeLayout(layout));
 			}
 			/** TODO add name */
 			//String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
