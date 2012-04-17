@@ -85,13 +85,8 @@ implements PropertyChangeListener {
 	private ColorSelector outline, fill;
 	
 	protected void setControl(Control c) {
-		if (currentControl != null)
-			currentControl.removePropertyChangeListener(this);
 		currentControl = c;
-		c.addPropertyChangeListener(this);
-		
 		controlToFields();
-
 		name.setFocus();
 	}
 	
@@ -205,13 +200,17 @@ implements PropertyChangeListener {
 				public String getText(Object element) {
 					return ((Control)element).getName();
 				}
+				
+				@Override
+				public boolean isLabelProperty(Object element, String property) {
+					return (Control.PROPERTY_NAME.equals(property));
+				}
 		});
 		GridData controlsLayoutData =
 			new GridData(SWT.FILL, SWT.FILL, true, true);
 		controlsLayoutData.widthHint = 100;
 		controls.getList().setLayoutData(controlsLayoutData);
 		controls.addSelectionChangedListener(new ISelectionChangedListener() {
-			
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				Control c = getSelectedControl();
@@ -475,9 +474,21 @@ implements PropertyChangeListener {
 		}
 		
 		getModel().addPropertyChangeListener(this);
+		for (Control c : getModel().getControls())
+			c.addPropertyChangeListener(this);
 		controls.setInput(getModel());
 	}
 
+	@Override
+	public void dispose() {
+		for (Control c : getModel().getControls())
+			c.removePropertyChangeListener(this);
+		getModel().removePropertyChangeListener(this);
+		model = null;
+		
+		super.dispose();
+	}
+	
 	@Override
 	public void setFocus() {
 		if (getComposite() == null)
@@ -487,18 +498,20 @@ implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(java.beans.PropertyChangeEvent evt) {
+		if (evt.getSource() instanceof Control)
+			controls.update(evt.getSource(),
+					new String[] { evt.getPropertyName() });
+		String propertyName = evt.getPropertyName();
+		Object newValue = evt.getNewValue();
 		if (evt.getSource().equals(currentControl)) {
 			if (uiUpdateInProgress)
 				return;
 			uiUpdateInProgress = true;
 			try {
-				String propertyName = evt.getPropertyName();
-				Object newValue = evt.getNewValue();
 				if (propertyName.equals(Control.PROPERTY_LABEL)) {
 					label.setText((String)newValue);
 				} else if (propertyName.equals(Control.PROPERTY_NAME)) {
 					name.setText((String)newValue);
-					controls.refresh(currentControl);
 				} else if (propertyName.equals(Control.PROPERTY_SHAPE)) {
 					ovalMode.setSelection(Shape.OVAL.equals(newValue));
 					polygonMode.setSelection(Shape.POLYGON.equals(newValue));
@@ -515,6 +528,15 @@ implements PropertyChangeListener {
 				}
 			} finally {
 				uiUpdateInProgress = false;
+			}
+		} else if (evt.getSource().equals(getModel())) {
+			Object oldValue = evt.getOldValue();
+			if (Signature.PROPERTY_CONTROL.equals(propertyName)) {
+				if (oldValue == null && newValue != null) {
+					((Control)newValue).addPropertyChangeListener(this);
+				} else if (oldValue != null && newValue == null) {
+					((Control)oldValue).removePropertyChangeListener(this);
+				}
 			}
 		}
 	}

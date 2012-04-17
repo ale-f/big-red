@@ -2,6 +2,7 @@ package dk.itu.big_red.model.assistants;
 
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
+import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
@@ -48,12 +49,17 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 		super.rejectChange(activeChange, rationale);
 	}
 	
+	private void checkEligibility(Control c) throws ChangeRejectedException {
+		if (c.getSignature(scratch) != scratch.getSignature())
+			rejectChange("The control " + c + " is not part of this Signature");
+	}
+	
 	private void _tryValidateChange(Change b) throws ChangeRejectedException {
 		if (!b.isReady()) {
 			rejectChange("The Change is not ready");
 		} else if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
-				tryValidateChange(c);
+				_tryValidateChange(c);
 		} else if (b instanceof ChangeFillColour ||
 				b instanceof ChangeOutlineColour ||
 				b instanceof ChangeComment) {
@@ -66,13 +72,17 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 			scratch.removeControl(c.control);
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
+			checkEligibility(c.getCreator());
 			scratch.addPortFor(c.getCreator(), c.port);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
+			checkEligibility(c.getCreator());
 			scratch.removePortFor(c.getCreator(), c.port);
-		} else if (b instanceof ChangeShape ||
-				b instanceof ChangeLabel ||
-				b instanceof ChangeResizable ||
+		} else if (b instanceof ChangeShape) {
+			checkEligibility(((ChangeShape)b).getCreator());
+		} else if (b instanceof ChangeLabel) {
+			checkEligibility(((ChangeLabel)b).getCreator());
+		} else if (b instanceof ChangeResizable ||
 				b instanceof ChangeDefaultSize ||
 				b instanceof ChangeKind ||
 				b instanceof ChangeSegment ||
@@ -89,6 +99,7 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				rejectChange(b, "The distance value is invalid");
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
+			checkEligibility(c.getCreator());
 			if (c.name.trim().length() == 0)
 				rejectChange(b, "Control names must not be empty");
 			scratch.setNameFor(c.getCreator(), c.name);
