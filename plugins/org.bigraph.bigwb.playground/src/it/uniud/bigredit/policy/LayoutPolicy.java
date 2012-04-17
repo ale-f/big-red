@@ -5,7 +5,7 @@ import it.uniud.bigredit.editparts.BRSPart;
 import it.uniud.bigredit.editparts.NestedBigraphPart;
 import it.uniud.bigredit.editparts.ReactionPart;
 import it.uniud.bigredit.figure.NestedBigraphFigure;
-import it.uniud.bigredit.figure.ReactionFigure;
+import it.uniud.bigredit.figure.ReactionFiguren;
 import it.uniud.bigredit.model.Reaction;
 
 import java.util.ArrayList;
@@ -110,8 +110,8 @@ public class LayoutPolicy extends XYLayoutEditPolicy {
 			create = true;
 		}
 		if ( object instanceof Reaction && getHost() instanceof BRSPart ) {
-			constraint.setWidth(ReactionFigure.DEF_WIDTH);
-			constraint.setHeight(ReactionFigure.DEF_HEIGHT);
+			constraint.setWidth(ReactionFiguren.DEF_WIDTH);
+			constraint.setHeight(ReactionFiguren.DEF_HEIGHT);
 			create = true;
 		}
 		if ( object instanceof Root && ( getHost() instanceof NestedBigraphPart  ) ) {

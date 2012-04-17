@@ -322,7 +322,7 @@ public class PlayEditor extends BigraphEditor {
 
 	@Override
 	protected void initialiseActual() throws Throwable {
-		model = new BRS();// (BRS)loadInput();
+		model = new BRS(this);// (BRS)loadInput();
 	    
 	    if (getBRSModel() == null) {
 	    	replaceWithError(new Exception("Model is null"));

@@ -21,6 +21,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
@@ -45,6 +46,7 @@ public class PartFactory implements EditPartFactory {
 		
 		
 		if (target == Bigraph.class) {
+			System.out.println("created new Bigraph");
 			part = new NestedBigraphPart();
 		} else if (target == Node.class) {
 			part = new NodePart();
@@ -64,6 +66,10 @@ public class PartFactory implements EditPartFactory {
         	part = new PortPart();
         } else if (target == BRS.class) {
         	part = new BRSPart();
+        }else if (target == ModelObject.class) {
+        	System.out.println("created new MODELObject");
+			
+        	part = new NestedBigraphPart();
         }
 	       
 		if (part != null)

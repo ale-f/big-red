@@ -29,6 +29,14 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	private Rectangle layout = null;
 	private ModelObject container = null;
 	private ModelObject node = null;
+//	
+//	@Override
+//	public boolean canExecute(){
+//		System.out.println(super.canExecute());
+//		return true;
+//	}
+//	
+	
 	
 	@Override
 	public LayoutableCreateCommand prepare() {
@@ -37,6 +45,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			return this;
 		
 		if (container instanceof Bigraph){
+			setTarget(((Bigraph) container).getBigraph());
+		}else if(container instanceof BRS){
 			setTarget((BRS)container);
 			
 		}else if(container instanceof Layoutable){
@@ -46,7 +56,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		}
 		
 		if (container instanceof Container) {
-		for (Layoutable i : ((Container)container).getChildren()) {
+			
+			for (Layoutable i : ((Container) container).getChildren()) {
 				if (i instanceof Edge)
 					continue;
 				else if (i.getLayout().intersects(layout))
@@ -72,9 +83,18 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		
 		
 		if (container instanceof Bigraph) {
-			String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
-			cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name),
-					((Layoutable)node).changeLayout(layout));
+			if (node instanceof Root){
+				System.out.println("instance of root");
+				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
+				cg.add(((Bigraph) container).changeAddChild(((Root)node), name), ((Layoutable)node).changeLayout(layout));
+			}else{
+				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
+				cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name), ((Layoutable)node).changeLayout(layout));
+			}
+			/** TODO add name */
+			//String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
+			//cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name), ((Layoutable)node).changeLayout(layout));
+			//cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), "R0"), ((Layoutable)node).changeLayout(layout));
 		}
 		if (container instanceof BRS){
 			/** TODO get a name for Bigraph */
@@ -93,12 +113,15 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		}
 		
 		if (s instanceof ModelObject){
-			node = (Layoutable)s;
+			node = (ModelObject)s;
 		}
 	}
 	
 	public void setContainer(Object e) {
-		if (e instanceof ModelObject){
+
+		if (e instanceof Container){
+			container = (Container)e;
+		}else if(e instanceof ModelObject){
 			System.out.println("instanceof ModelObject");
 			container = (ModelObject)e;
 		}
@@ -109,4 +132,5 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			layout = (Rectangle)r;
 
 	}
+
 }

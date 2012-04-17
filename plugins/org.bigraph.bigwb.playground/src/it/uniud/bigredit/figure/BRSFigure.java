@@ -1,6 +1,5 @@
 package it.uniud.bigredit.figure;
 
-import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -13,11 +12,11 @@ public class BRSFigure extends AbstractFigure  {
 
 	private XYLayout layout;
 
-	/*public BRSFigure()
+	public BRSFigure()
 	{
 		layout = new XYLayout();
 		setLayoutManager( layout );
-	}*/
+	}
 	
 	@Override
 	protected void outlineShape(Graphics g) {

@@ -16,14 +16,17 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
+
+
+
+
+
+import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.model.Bigraph;
 
-
-
-public class ReactionFigure extends RoundedRectangle  {
+public class ReactionFiguren extends AbstractFigure {//extends RoundedRectangle  {
 	
-	public static final int MARGIN= 10;
-	
+	public static final int MARGIN = 200;
 	public static final int DEF_WIDTH  = Reaction.GAP_WIDTH * 3 + MARGIN * 4;
 	public static final int DEF_HEIGHT = Reaction.GAP_WIDTH + MARGIN * 4;
 	
@@ -56,7 +59,7 @@ public class ReactionFigure extends RoundedRectangle  {
 	};
 	private XYLayout layout;
 
-	public ReactionFigure()
+	public ReactionFiguren()
 	{
 		layout = new XYLayout();
 		setLayoutManager( layout );
@@ -81,7 +84,7 @@ public class ReactionFigure extends RoundedRectangle  {
 		setLineWidth( 1 );
 		setForegroundColor( new Color( null, 224, 32, 32 ) );
 		setLineStyle( SWT.LINE_SOLID );
-		setCornerDimensions( new Dimension( 8, 8 ) );
+		//setCornerDimensions( new Dimension( 8, 8 ) );
 		setAntialias( SWT.ON );
 	}
 	
@@ -99,7 +102,7 @@ public class ReactionFigure extends RoundedRectangle  {
 			updateLabels();
 	}
 	
-	public void setChildren( Bigraph redex,Bigraph reactum )
+	public void setChildren( Bigraph redex, Bigraph reactum )
 	{
 		this.redex   = redex;
 		this.reactum = reactum;
@@ -112,7 +115,7 @@ public class ReactionFigure extends RoundedRectangle  {
 		int h = 0;
 		
 		if ( redex != null ) {
-			Rectangle r = new Rectangle( redex.getLayout() );
+			Rectangle r = new Rectangle(new Rectangle (100,100,100,100));// redex.getLayout() );
 			h = r.height;
 			r.y += r.height;
 			r.height = 16;
@@ -125,7 +128,7 @@ public class ReactionFigure extends RoundedRectangle  {
 		}
 		
 		if ( reactum != null ) {
-			Rectangle r = new Rectangle( reactum.getLayout() );
+			Rectangle r = new Rectangle(new Rectangle (100,100,100,100));//reactum.getLayout() );
 			h = Math.max( h, r.height );
 			r.y += r.height;
 			r.height = 16;
@@ -142,8 +145,9 @@ public class ReactionFigure extends RoundedRectangle  {
 		if ( getParent() == null )
 			return;
 		Rectangle rect = ( Rectangle )getParent().getLayoutManager().getConstraint( this );
+		
 		arrow.setEndpoints( new Point( rect.x + l, rect.y + MARGIN * 2 + h / 2 ),
-	                        new Point( rect.x + r, rect.y + MARGIN * 2 + h / 2 ) );
+				new Point( rect.x + r, rect.y + MARGIN * 2 + h / 2 ) );
 		PolygonDecoration d = new PolygonDecoration();
 		d.setAntialias( SWT.ON );
 		arrow.setTargetDecoration( d );
