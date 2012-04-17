@@ -48,10 +48,10 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 	
 	
 	
-//	@Override
-//	public BRS getModel() {
-//		return (BRS)super.getModel();
-//	}
+	@Override
+	public BRS getModel() {
+		return (BRS)super.getModel();
+	}
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
@@ -80,7 +80,7 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 	public List<ModelObject> getModelChildren() {
 		List<ModelObject> r = ((BRS)getModel()).getChildren();
 				//Lists.group(getModel().getChildren(), Bigraph.class);
-		Collections.reverse(r);
+		//Collections.reverse(r);
 		return r;
 	}
 	

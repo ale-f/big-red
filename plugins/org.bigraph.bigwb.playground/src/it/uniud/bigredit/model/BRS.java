@@ -211,7 +211,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	
 	public void addChild(ModelObject child) {
 		//addChild(child);
-		children.put(child, new Rectangle());
+		children.put(child, new Rectangle(100,100,100,100));
 		firePropertyChange(BRS.PROPERTY_PARENT, null, child);
 		
 	}

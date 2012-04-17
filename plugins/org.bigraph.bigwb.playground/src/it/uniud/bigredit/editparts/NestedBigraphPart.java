@@ -24,7 +24,7 @@ import dk.itu.big_red.model.Layoutable;
 
 public class NestedBigraphPart extends ContainerPart{
 	
-	GraphFigure figureModel;
+	//NestedBigraphFigure figureModel;
 	
 	@Override
 	public Bigraph getModel() {
@@ -34,8 +34,9 @@ public class NestedBigraphPart extends ContainerPart{
 	@Override
 	protected IFigure createFigure()
 	{
-		figureModel=new GraphFigure();
-		return figureModel;//new NestedBigraphFigure();
+		//figureModel=
+		//return figureModel;//new NestedBigraphFigure();
+		return new NestedBigraphFigure();
 	}
 	
 	@Override
@@ -45,10 +46,10 @@ public class NestedBigraphPart extends ContainerPart{
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}
 	
-	@Override 
-	public AbstractFigure getFigure(){
-		return null;
-	}
+	/*@Override
+	public NestedBigraphFigure getFigure(){
+		return figureModel;
+	}*/
 	
 	@Override
 	protected void refreshVisuals(){
@@ -57,7 +58,7 @@ public class NestedBigraphPart extends ContainerPart{
 		
 		//NestedBigraphFigure figure = (NestedBigraphFigure)getFigure();
 		
-		GraphFigure figure = (GraphFigure)getFigure();
+		NestedBigraphFigure figure = (NestedBigraphFigure)getFigure();
 		Bigraph model = getModel();
 		
 		figure.setName(model.getName());

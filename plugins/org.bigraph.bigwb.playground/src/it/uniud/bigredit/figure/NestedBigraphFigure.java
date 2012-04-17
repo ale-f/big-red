@@ -82,7 +82,7 @@ public class NestedBigraphFigure extends AbstractFigure {
 			graphics.setLineStyle(SWT.LINE_DOT);
 			a.width--; a.height--;
 			graphics.drawRoundRectangle(a, 20, 20);
-			//graphics.drawLine(0, 100, 200, 100);
+			graphics.drawLine(0, 100, 200, 100);
 		} finally {
 			stop(graphics);
 		}
