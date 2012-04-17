@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
@@ -50,15 +51,9 @@ public class CombinedCommandFactory {
 		if (!tryTag(r))
 			return null;
 		ModelDeleteCommand mdc = new ModelDeleteCommand();
-		for (Object i_ : r.getEditParts()) {
-			if (i_ instanceof AbstractPart) {
-				AbstractPart i = (AbstractPart)i_;
-				mdc.addObject(i.getModel());
-			} else if (i_ instanceof LinkConnectionPart) {
-				LinkConnectionPart i = (LinkConnectionPart)i_;
-				mdc.addObject(i.getModel());
-			}
-		}
+		for (Object i : r.getEditParts())
+			if (i instanceof AbstractPart || i instanceof LinkConnectionPart)
+				mdc.addObject(((EditPart)i).getModel());
 		return mdc.prepare();
 	}
 }
