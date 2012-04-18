@@ -14,6 +14,7 @@ import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.graph.Path;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
@@ -24,6 +25,7 @@ import org.eclipse.swt.graphics.Color;
 
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class ReactionFiguren extends AbstractFigure {//extends RoundedRectangle  {
 	
@@ -74,7 +76,7 @@ public class ReactionFiguren extends AbstractFigure {//extends RoundedRectangle 
 			
 			//setConstraint(name, new Rectangle(100, 100, 100, 100));
 		 
-			setForegroundColor(ColorConstants.red);
+			setForegroundColor(ColorConstants.orange);
 			setBackgroundColor(ColorConstants.white);
 		}
 		
@@ -117,20 +119,36 @@ public class ReactionFiguren extends AbstractFigure {//extends RoundedRectangle 
 
 			Rectangle a = start(graphics);
 			try {
+				graphics.setForegroundColor(ColorConstants.black);
+				graphics.setFont(UI.tweakFont(graphics.getFont(), 8, SWT.ITALIC));
+				graphics.setAlpha(255);
+				graphics.drawText("redex",a.width/4,10);				
+				graphics.drawText("reactum",(a.width/4)*3,10);
+				graphics.setForegroundColor(ColorConstants.orange);
 				
-				graphics.setAlpha(63);
 				
 				//graphics.setLineStyle(SWT.LINE_DASH);
 				
+				//draw arrow
+				int arrowLength = 15;
+				int arrowLine = 20;
+				int arrowHigh =10;
+				Point a1= new Point(a.width/2-arrowLine, a.height/2);
+				Point a2= new Point(a.width/2, a.height/2);
+				Point a3= new Point(a.width/2, a.height/2+arrowHigh);
+				Point a4= new Point(a.width/2+arrowLength, a.height/2);
+				Point a5= new Point(a.width/2, a.height/2-arrowHigh);
+				Point a6= new Point(a.width/2, a.height/2);
+				graphics.drawLine(a1, a2);
+				graphics.drawLine(a2, a3);
+				graphics.drawLine(a3, a4);
+				graphics.drawLine(a4, a5);
+				graphics.drawLine(a5, a6);
+				
+				graphics.setAlpha(150);
 				graphics.setLineStyle(SWT.LINE_DOT);
 				a.width--; a.height--;
 				graphics.drawRoundRectangle(a, 20, 20);
-				if(innerLine != 0){
-					graphics.drawLine(0, innerLine, a.width, innerLine);
-				}
-				if(outerLine != 0){
-					graphics.drawLine(0, outerLine, a.width, outerLine);
-				}
 				
 			} finally {
 				stop(graphics);
