@@ -5,6 +5,7 @@ import it.uniud.bigredit.model.Reaction;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PolygonDecoration;
@@ -57,126 +58,114 @@ public class ReactionFiguren extends AbstractFigure {//extends RoundedRectangle 
 			return false;
 		}
 	};
-	private XYLayout layout;
 
-	public ReactionFiguren()
-	{
-		layout = new XYLayout();
-		setLayoutManager( layout );
-		name.setForegroundColor( ColorConstants.black );
-		name.setTextAlignment( PositionConstants.CENTER );
-		redexLabel.setForegroundColor( new Color( null, 224, 32, 32 ) );
-		redexLabel.setTextAlignment( PositionConstants.CENTER );
-		redexLabel.setText( "Redex" );
-		reactumLabel.setForegroundColor( new Color( null, 224, 32, 32 ) );
-		reactumLabel.setTextAlignment( PositionConstants.CENTER );
-		reactumLabel.setText( "Reactum" );
-		add( redexLabel, new Rectangle( 0, 0, -1, -1 ) );
-		add( reactumLabel, new Rectangle( 0, 0, -1, -1 ) );
+
+		private int innerLine = 0;
+		private int outerLine = 0;
 		
-		arrow = new PolylineConnection();
-		arrow.setForegroundColor( new Color( null, 224, 32, 32 ) );
-		arrow.setLineWidth( 2 );
-		arrow.setAntialias( SWT.ON );
-		add( arrow );
-		//setShowLabel( ToggleLabelsAction.isToggled() );
-		
-		setLineWidth( 1 );
-		setForegroundColor( new Color( null, 224, 32, 32 ) );
-		setLineStyle( SWT.LINE_SOLID );
-		//setCornerDimensions( new Dimension( 8, 8 ) );
-		setAntialias( SWT.ON );
-	}
-	
-	
-	public void setLayout( Rectangle rect )
-	{
-		setLayout( rect, true );
-	}
-	
-	public void setLayout( Rectangle rect, boolean updateLabels )
-	{
-		getParent().setConstraint( this, rect );
-		getParent().setConstraint( name, new Rectangle( rect.x, rect.y - 16, rect.width, 16 ) );
-		if ( updateLabels )
-			updateLabels();
-	}
-	
-	public void setChildren( Bigraph redex, Bigraph reactum )
-	{
-		this.redex   = redex;
-		this.reactum = reactum;
-		updateLabels();
-	}
-	
-	public void updateLabels()
-	{
-		int l = 0;
-		int h = 0;
-		
-		if ( redex != null ) {
-			Rectangle r = new Rectangle(new Rectangle (100,100,100,100));// redex.getLayout() );
-			h = r.height;
-			r.y += r.height;
-			r.height = 16;
-			l = 4 * MARGIN + r.width;
-			setConstraint( redexLabel, r );
-		}
-		else {
-			h = Reaction.GAP_WIDTH;
-			l = 4 * MARGIN + Reaction.GAP_WIDTH;
+
+		private XYLayout layout;
+
+		public ReactionFiguren() {
+			super();
+			
+			name.setForegroundColor(ColorConstants.black);
+			add(name, 0);
+			
+			//setConstraint(name, new Rectangle(100, 100, 100, 100));
+		 
+			setForegroundColor(ColorConstants.red);
+			setBackgroundColor(ColorConstants.white);
 		}
 		
-		if ( reactum != null ) {
-			Rectangle r = new Rectangle(new Rectangle (100,100,100,100));//reactum.getLayout() );
-			h = Math.max( h, r.height );
-			r.y += r.height;
-			r.height = 16;
-			setConstraint( reactumLabel, r );
+		
+		
+
+		
+		@Override
+		public void setParent( IFigure p )
+		{
+			if ( getParent() != null )
+				getParent().remove( name );
+			super.setParent( p );
+			if ( getParent() != null )
+				getParent().add( name );
 		}
-		else {
-			h = Math.max( h, Reaction.GAP_WIDTH );
+		
+		public void setName( String text )
+		{
+			name.setText( text );
 		}
 		
-		int r = l - 4 * MARGIN + Reaction.GAP_WIDTH;
-		redexLabel.setVisible( redex != null && showLabels );
-		reactumLabel.setVisible( reactum != null && showLabels );
+		public void setShowLabel( boolean show )
+		{
+			name.setVisible( show );
+		}
 		
-		if ( getParent() == null )
-			return;
-		Rectangle rect = ( Rectangle )getParent().getLayoutManager().getConstraint( this );
+		@Override
+		protected void fillShape(Graphics graphics) {
+			Rectangle a = start(graphics);
+			try {
+				graphics.fillRoundRectangle(a, 20, 20);
+			} finally {
+				stop(graphics);
+			}
+		}
 		
-		arrow.setEndpoints( new Point( rect.x + l, rect.y + MARGIN * 2 + h / 2 ),
-				new Point( rect.x + r, rect.y + MARGIN * 2 + h / 2 ) );
-		PolygonDecoration d = new PolygonDecoration();
-		d.setAntialias( SWT.ON );
-		arrow.setTargetDecoration( d );
-		if ( rect != null )
-			setLayout( rect, false );
-	}
-	
-	@Override
-	public void setParent( IFigure p )
-	{
-		if ( getParent() != null )
-			getParent().remove( name );
-		super.setParent( p );
-		if ( getParent() != null )
-			getParent().add( name );
-	}
-	
-	
-	public void setName( String text )
-	{
-		name.setText( text );
-	}
-	
-	
-	public void setShowLabel( boolean show )
-	{
-		showLabels = show;
-		name.setVisible( show );
-		updateLabels();
-	}
-	
+		@Override
+		protected void outlineShape(Graphics graphics) {
+
+			Rectangle a = start(graphics);
+			try {
+				
+				graphics.setAlpha(63);
+				
+				//graphics.setLineStyle(SWT.LINE_DASH);
+				
+				graphics.setLineStyle(SWT.LINE_DOT);
+				a.width--; a.height--;
+				graphics.drawRoundRectangle(a, 20, 20);
+				if(innerLine != 0){
+					graphics.drawLine(0, innerLine, a.width, innerLine);
+				}
+				if(outerLine != 0){
+					graphics.drawLine(0, outerLine, a.width, outerLine);
+				}
+				
+			} finally {
+				stop(graphics);
+			}
+		}
+
+
+
+
+
+		public int getInnerLine() {
+			return innerLine;
+		}
+
+
+
+
+
+		public void setInnerLine(int innerLine) {
+			this.innerLine = innerLine;
+		}
+
+
+
+
+
+		public int getOuterLine() {
+			return outerLine;
+		}
+
+
+
+
+
+		public void setOuterLine(int outerLine) {
+			this.outerLine = outerLine;
+		}
 }

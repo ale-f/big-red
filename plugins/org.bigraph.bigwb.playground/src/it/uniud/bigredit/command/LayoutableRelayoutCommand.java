@@ -13,6 +13,8 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.InnerName;
+import it.uniud.bigredit.model.Reaction;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -21,7 +23,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		setChange(cg);
 	}
 	
-	private Layoutable model;
+	private ModelObject model;
 	private ModelObject parent;
 	private Rectangle layout;
 	
@@ -42,20 +44,20 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 			return this;
 		
 		
-		if (!(model instanceof Bigraph)) {
-			setTarget(model.getBigraph());
-			if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
-				cg.add(model.changeLayout(layout));
-		}else{
+		if((model instanceof Bigraph) || (model instanceof Reaction)){
 			System.out.println("instance of bigraph in prepare command");
 			setTarget((BRS)parent);
 			cg.add(((BRS)parent).changeLayoutChild(model,layout));
+		}else{
+			setTarget(((Layoutable)model).getBigraph());
+			if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
+				cg.add(((Layoutable)model).changeLayout(layout));
 		}
 		return this;
 	}
 	
 	public boolean noOverlap() {
-		for (Layoutable i : model.getParent().getChildren()) {
+		for (Layoutable i : ((Layoutable)model).getParent().getChildren()) {
 			if (i instanceof Edge || i == model)
 				continue;
 			else if (i.getLayout().intersects(layout))
@@ -65,9 +67,9 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	}
 	
 	private boolean boundariesSatisfied() {
-		if (!(model.getParent() instanceof Bigraph))
+		if (!(((Layoutable)model).getParent() instanceof Bigraph))
 			return true;
-		Bigraph bigraph = (Bigraph)model.getParent();
+		Bigraph bigraph = (Bigraph)((Layoutable)model).getParent();
 		int top = layout.y(),
 		    bottom = layout.y() + layout.height();
 		if (model instanceof OuterName) {

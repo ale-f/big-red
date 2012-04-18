@@ -72,6 +72,7 @@ import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import it.uniud.bigredit.editparts.BigreditRootEditPart;
 import it.uniud.bigredit.editparts.PartFactory;
 import it.uniud.bigredit.model.BRS;
+import it.uniud.bigredit.model.Reaction;
 
 public class PlayEditor extends BigraphEditor {
 	public static final String ID = "it.uniud.bigredit.BigreditEditor";
@@ -267,6 +268,8 @@ public class PlayEditor extends BigraphEditor {
 				InnerName.class, new ModelFactory(InnerName.class), inner, inner));
 		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
 				OuterName.class, new ModelFactory(OuterName.class), outer, outer));
+		creationGroup.add(new CombinedTemplateCreationEntry("ReactionRule", "Add a new ReactionRule",
+				Bigraph.class, new ModelFactory(Reaction.class), site, site));
 		
     	return container;
     }

@@ -4,15 +4,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import it.uniud.bigredit.figure.ReactionFiguren;
+import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
+import it.uniud.bigredit.policy.LayoutableLayoutPolicy;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-//import uniud.bigredit.policy.LayoutPolicy;
-
-import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 
 
 public class ReactionPart extends AbstractGraphicalEditPart implements PropertyChangeListener{
@@ -20,14 +20,19 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	@Override
 	protected IFigure createFigure()
 	{
-		IFigure figure = new ReactionFiguren();
-		return figure;
+		
+		return new ReactionFiguren();
+	}
+	
+	@Override
+	public Reaction getModel() {
+		return (Reaction) super.getModel();
 	}
 	
 	@Override
 	protected void createEditPolicies()
 	{
-	//	installEditPolicy( EditPolicy.LAYOUT_ROLE, new LayoutPolicy() );
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 		//installEditPolicy( EditPolicy.COMPONENT_ROLE, new DeletePolicy() );
 	}
 	
@@ -36,7 +41,12 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	{
 		super.refreshChildren();
 		Reaction model = ( Reaction ) getModel();
-		( ( ReactionFiguren )getFigure() ).setChildren( model.getRedex(), model.getReactum() );
+		
+		Rectangle constraint = ((BRS) getParent().getModel())
+				.getChildrenConstraint(model);
+		System.out.println("constraint in refreshVisual"
+				+ constraint.toString());
+		((ReactionFiguren)getFigure()).setConstraint(constraint);// new Rectangle (100,100,400,300));
 	}
 
 	public String getToolTip() {

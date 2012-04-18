@@ -2,6 +2,7 @@ package it.uniud.bigredit.policy;
 
 import it.uniud.bigredit.editparts.BRSPart;
 import it.uniud.bigredit.editparts.NestedBigraphPart;
+import it.uniud.bigredit.editparts.ReactionPart;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -15,6 +16,7 @@ import it.uniud.bigredit.command.LayoutableAddCommand;
 import it.uniud.bigredit.command.LayoutableCreateCommand;
 import it.uniud.bigredit.command.LayoutableRelayoutCommand;
 import it.uniud.bigredit.editparts.BigreditRootEditPart;
+import it.uniud.bigredit.model.Reaction;
 
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Bigraph;
@@ -42,7 +44,13 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 				command.setParent((ModelObject)child.getParent().getModel());
 				command.setConstraint(constraint);
 				command.prepare();
-			} else {
+			} else if (child instanceof ReactionPart) {
+				command = new LayoutableRelayoutCommand();
+				command.setModel(child.getModel());
+				command.setParent((ModelObject)child.getParent().getModel());
+				command.setConstraint(constraint);
+				command.prepare();
+			}else{
 				command = new LayoutableRelayoutCommand();
 				command.setModel(child.getModel());
 				command.setConstraint(constraint);
@@ -104,6 +112,8 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		
 		if(getHost() instanceof NestedBigraphPart){
 			parent= (ModelObject)((Bigraph)getHost().getModel());
+		}else if(getHost() instanceof NestedBigraphPart){
+			parent= (ModelObject)((Reaction)getHost().getModel());
 		}else if (getHost() instanceof BigraphPart){
 			parent = (ModelObject)getHost().getModel();
 		}else if (getHost() instanceof BRSPart){
