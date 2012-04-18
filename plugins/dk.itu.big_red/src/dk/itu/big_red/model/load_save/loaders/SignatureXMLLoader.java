@@ -76,13 +76,8 @@ public class SignatureXMLLoader extends XMLLoader {
 		if (label != null)
 			cg.add(model.changeLabel(label));
 		
-		for (Element j :
-			getNamedChildElements(e, SIGNATURE, "port")) {
-			String name = getAttributeNS(j, SIGNATURE, "name");
-			PortSpec i = makePortSpec(j, generatePolygon);
-			if (i != null)
-				cg.add(model.changeAddPort(i, name));
-		}
+		for (Element j : getNamedChildElements(e, SIGNATURE, "port"))
+			makePortSpec(j, model, generatePolygon);
 		
 		if (generatePolygon) {
 			cg.add(model.changeShape(Shape.POLYGON));
@@ -116,8 +111,10 @@ public class SignatureXMLLoader extends XMLLoader {
 		return sig;
 	}
 	
-	private PortSpec makePortSpec(Element e, boolean ignoreAppearanceData) {
+	private PortSpec makePortSpec(
+			Element e, Control c, boolean ignoreAppearanceData) {
 		PortSpec model = new PortSpec();
+		cg.add(c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
 		
 		Element el = removeNamedChildElement(e, BIG_RED, "port-appearance");
 		if (el != null && !ignoreAppearanceData) {
