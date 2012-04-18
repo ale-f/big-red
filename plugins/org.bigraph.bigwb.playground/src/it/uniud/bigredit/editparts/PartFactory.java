@@ -2,6 +2,7 @@ package it.uniud.bigredit.editparts;
 
 
 import it.uniud.bigredit.model.BRS;
+import it.uniud.bigredit.model.Reaction;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
@@ -50,7 +51,9 @@ public class PartFactory implements EditPartFactory {
 			part = new NestedBigraphPart();
 		} else if (target == Node.class) {
 			part = new NodePart();
-        } else if (target == Root.class) {
+        } else if (target == Reaction.class) {
+			part = new ReactionPart();
+        }else if (target == Root.class) {
         	part = new RootPart();
         } else if (target == Site.class) {
     		part = new SitePart();

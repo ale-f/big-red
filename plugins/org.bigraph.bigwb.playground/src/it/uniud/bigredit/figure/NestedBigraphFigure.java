@@ -22,6 +22,9 @@ public class NestedBigraphFigure extends AbstractFigure {
 	public static final int DEF_WIDTH  = 256;
 	public static final int DEF_HEIGHT = 256;
 
+	private int innerLine = 0;
+	private int outerLine = 0;
+	
 	private Label name = new Label() {
 		@Override
 		public boolean containsPoint( int x, int y )
@@ -37,11 +40,13 @@ public class NestedBigraphFigure extends AbstractFigure {
 		name.setForegroundColor(ColorConstants.black);
 		add(name, 0);
 		
-		setConstraint(name, new Rectangle(100, 100, 100, 100));
+		//setConstraint(name, new Rectangle(100, 100, 100, 100));
 	 
 		setForegroundColor(ColorConstants.black);
 		setBackgroundColor(ColorConstants.white);
 	}
+	
+	
 	
 
 	
@@ -77,15 +82,59 @@ public class NestedBigraphFigure extends AbstractFigure {
 	
 	@Override
 	protected void outlineShape(Graphics graphics) {
+
 		Rectangle a = start(graphics);
 		try {
+			
+			graphics.setAlpha(63);
+			
+			//graphics.setLineStyle(SWT.LINE_DASH);
+			
 			graphics.setLineStyle(SWT.LINE_DOT);
 			a.width--; a.height--;
 			graphics.drawRoundRectangle(a, 20, 20);
-			graphics.drawLine(0, 100, 200, 100);
+			if(innerLine != 0){
+				graphics.drawLine(0, innerLine, a.width, innerLine);
+			}
+			if(outerLine != 0){
+				graphics.drawLine(0, outerLine, a.width, outerLine);
+			}
+			
 		} finally {
 			stop(graphics);
 		}
+	}
+
+
+
+
+
+	public int getInnerLine() {
+		return innerLine;
+	}
+
+
+
+
+
+	public void setInnerLine(int innerLine) {
+		this.innerLine = innerLine;
+	}
+
+
+
+
+
+	public int getOuterLine() {
+		return outerLine;
+	}
+
+
+
+
+
+	public void setOuterLine(int outerLine) {
+		this.outerLine = outerLine;
 	}
 
 

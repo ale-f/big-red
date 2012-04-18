@@ -57,7 +57,6 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		public String name;
 		
 		public ChangeAddChild(ModelObject child, String name) {
-			System.out.println("new ChangeAddChild");
 			this.child = child;
 			this.name = name;
 		}
@@ -69,7 +68,6 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		
 		@Override
 		public boolean isReady() {
-			System.out.println("is READy called in changeAddChild Called in BRS");
 			return (child != null);// && name != null);
 		}
 		
@@ -119,6 +117,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		public Rectangle layout;
 		
 		public ChangeLayoutChild(ModelObject child, Rectangle layout) {
+			System.out.println(layout);
 			this.child = child;
 			this.layout=layout;
 		}
@@ -147,7 +146,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		
 		@Override
 		public String toString() {
-			return "Change(remove child " + child + " from " + getCreator() + ")";
+			return "Change(change layout of: " + child + " in " + getCreator() + ")";
 		}
 	}
 	
@@ -205,22 +204,21 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		
 		List <ModelObject> meta=  new ArrayList<ModelObject>();
 		meta.addAll(children.keySet());
-		System.out.println("size of BRS vector:" + meta.size());
 		return meta;
 	}
 	
 	public void addChild(ModelObject child) {
 		//addChild(child);
-		children.put(child, new Rectangle(100,100,100,100));
-		firePropertyChange(BRS.PROPERTY_PARENT, null, child);
+		children.put(child, new Rectangle(100,100,200,300));
+		firePropertyChange(BRS.PROPERTY_PARENT,null , child);
 		
 	}
 	
 	public void _changeLayoutChild(ModelObject child, Rectangle rectangle) {
 		//addChild(child);
-		System.out.println("changedLayout");
+		Rectangle oldRect = children.get(child);
 		children.put(child, rectangle);
-		firePropertyChange(BRS.PROPERTY_LAYOUT, children.get(child), rectangle);
+		firePropertyChange(BRS.PROPERTY_LAYOUT,oldRect, rectangle);//children.get(child), rectangle);
 		
 	}
 
@@ -245,19 +243,14 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				doChange(c);
-				System.out.println("here");
 		} else if (b instanceof BRS.ChangeAddChild) {
-			
 			BRS.ChangeAddChild c = (BRS.ChangeAddChild)b;
 			((BRS)c.getCreator()).addChild(c.child);
-			System.out.println("Add child");
 			//c.child.setName(c.name);
 			//getNamespace(getNSI(c.child)).put(c.name, c.child);
 		} else if(b instanceof BRS.ChangeLayoutChild){
 			BRS.ChangeLayoutChild c = (BRS.ChangeLayoutChild)b;
 			((BRS)c.getCreator())._changeLayoutChild(c.child, c.layout);
-			System.out.println("change layout child");
-			
 		}
 				
 				
@@ -316,7 +309,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 
 
 	public Change changeAddChild(ModelObject node, String string) {
-		System.out.println("changeAddChild Called in BRS");
+		
 		return new ChangeAddChild(node, string);
 	}
 
@@ -324,17 +317,20 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	
 	@Override
 	public void tryValidateChange(Change b) throws ChangeRejectedException {
-		System.out.println("tryValidateChange in BrS");
 		validator.tryValidateChange(b);
 	}
 
 
 	@Override
 	public void tryApplyChange(Change b) throws ChangeRejectedException {
-		System.out.println("try apply change in BRS");
 		tryValidateChange(b);
 		doChange(b);
 		
+	}
+	
+	public Rectangle getChildrenConstraint(ModelObject child){
+		
+		return children.get(child);
 	}
 	
 

@@ -1,6 +1,7 @@
 package it.uniud.bigredit.policy;
 
 import it.uniud.bigredit.model.BRS;
+import it.uniud.bigredit.model.Reaction;
 
 import java.util.ArrayList;
 
@@ -22,11 +23,11 @@ import dk.itu.big_red.model.changes.ChangeValidator;
  * @author carlo
  *
  */
-public class BRSChangeValidator extends ChangeValidator<BRS> {
+public class ReactionChangeValidator extends ChangeValidator<Reaction> {
 	//private BigraphScratchpad scratch = null;
 	private Change activeChange = null;
 	
-	public BRSChangeValidator(BRS changeable) {
+	public ReactionChangeValidator(Reaction changeable) {
 		super(changeable);
 		//scratch = new BigraphScratchpad(changeable);
 	}
