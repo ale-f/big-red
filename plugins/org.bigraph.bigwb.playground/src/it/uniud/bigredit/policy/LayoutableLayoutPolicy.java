@@ -13,34 +13,47 @@ import org.eclipse.gef.requests.CreateRequest;
 import it.uniud.bigredit.command.CompositionCommand;
 import it.uniud.bigredit.command.LayoutableAddCommand;
 import it.uniud.bigredit.command.LayoutableCreateCommand;
+import it.uniud.bigredit.command.LayoutableRelayoutCommand;
 import it.uniud.bigredit.editparts.BigreditRootEditPart;
 
-import dk.itu.big_red.editors.bigraph.commands.LayoutableRelayoutCommand;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 
+/**
+ * This class is an elaboration of the original LayoutableLayoutPolicy in BigRed
+ * this class manages also BRSPart and NestedBigraphPart
+ *
+ * @author Carlo
+ *
+ */
 public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	
 	@Override
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 		
 		LayoutableRelayoutCommand command = null;
-		if (!(child instanceof BigraphPart)) {
-			command = new LayoutableRelayoutCommand();
-			
-			command.setModel(child.getModel());
-			command.setConstraint(constraint);
-			command.prepare();
+		if (!(child instanceof BRSPart)) {
+			if (child instanceof NestedBigraphPart) {
+				command = new LayoutableRelayoutCommand();
+				command.setModel(child.getModel());
+				command.setParent((ModelObject)child.getParent().getModel());
+				command.setConstraint(constraint);
+				command.prepare();
+			} else {
+				command = new LayoutableRelayoutCommand();
+				command.setModel(child.getModel());
+				command.setConstraint(constraint);
+				command.prepare();
+			}
 		}
 		return command;
 	}
 	
 	@Override
 	protected Command createAddCommand(EditPart child, Object constraint) {
-		System.out.println("create add command");
 		LayoutableAddCommand command= null;
 		if ( child instanceof NestedBigraphPart ) {
 			Bigraph target = ( Bigraph )getHost().getModel();
@@ -90,16 +103,12 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		ModelObject parent;
 		
 		if(getHost() instanceof NestedBigraphPart){
-			System.out.println("instanceof NestedBigraphPart");
 			parent= (ModelObject)((Bigraph)getHost().getModel());
 		}else if (getHost() instanceof BigraphPart){
-			System.out.println("instanceof BigraphPart");
 			parent = (ModelObject)getHost().getModel();
 		}else if (getHost() instanceof BRSPart){
-			System.out.println("instanceof BRSPart");
 			parent = (ModelObject)getHost().getModel();
 		}else{
-			System.out.println("instanceof something");
 			parent = (ModelObject)getHost().getModel();
 			
 		}

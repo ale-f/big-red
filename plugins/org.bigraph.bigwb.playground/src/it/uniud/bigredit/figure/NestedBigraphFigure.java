@@ -37,11 +37,13 @@ public class NestedBigraphFigure extends AbstractFigure {
 		name.setForegroundColor(ColorConstants.black);
 		add(name, 0);
 		
-		setConstraint(name, new Rectangle(100, 100, 100, 100));
+		//setConstraint(name, new Rectangle(100, 100, 100, 100));
 	 
 		setForegroundColor(ColorConstants.black);
 		setBackgroundColor(ColorConstants.white);
 	}
+	
+	
 	
 
 	
@@ -77,12 +79,13 @@ public class NestedBigraphFigure extends AbstractFigure {
 	
 	@Override
 	protected void outlineShape(Graphics graphics) {
+
 		Rectangle a = start(graphics);
 		try {
 			graphics.setLineStyle(SWT.LINE_DOT);
 			a.width--; a.height--;
 			graphics.drawRoundRectangle(a, 20, 20);
-			graphics.drawLine(0, 100, 200, 100);
+			//graphics.drawLine(0, 100, 200, 100);
 		} finally {
 			stop(graphics);
 		}

@@ -119,6 +119,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		public Rectangle layout;
 		
 		public ChangeLayoutChild(ModelObject child, Rectangle layout) {
+			System.out.println(layout);
 			this.child = child;
 			this.layout=layout;
 		}
@@ -147,7 +148,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		
 		@Override
 		public String toString() {
-			return "Change(remove child " + child + " from " + getCreator() + ")";
+			return "Change(change layout of: " + child + " in " + getCreator() + ")";
 		}
 	}
 	
@@ -211,16 +212,17 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	
 	public void addChild(ModelObject child) {
 		//addChild(child);
-		children.put(child, new Rectangle(100,100,100,100));
-		firePropertyChange(BRS.PROPERTY_PARENT, null, child);
+		children.put(child, new Rectangle(100,100,200,300));
+		firePropertyChange(BRS.PROPERTY_PARENT,null , child);
 		
 	}
 	
 	public void _changeLayoutChild(ModelObject child, Rectangle rectangle) {
 		//addChild(child);
 		System.out.println("changedLayout");
+		Rectangle oldRect = children.get(child);
 		children.put(child, rectangle);
-		firePropertyChange(BRS.PROPERTY_LAYOUT, children.get(child), rectangle);
+		firePropertyChange(BRS.PROPERTY_LAYOUT,oldRect, rectangle);//children.get(child), rectangle);
 		
 	}
 
@@ -335,6 +337,11 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		tryValidateChange(b);
 		doChange(b);
 		
+	}
+	
+	public Rectangle getChildrenConstraint(ModelObject child){
+		
+		return children.get(child);
 	}
 	
 

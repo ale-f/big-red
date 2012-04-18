@@ -58,7 +58,7 @@ public class BRSChangeValidator extends ChangeValidator<BRS> {
 	
 	protected void _tryValidateChange(Change b)
 			throws ChangeRejectedException {
-		System.out.println("called _tryValidateChange BRSChangeValidator");
+		//System.out.println("called _tryValidateChange BRSChangeValidator");
 		if (!b.isReady()) {
 			rejectChange("The Change is not ready");
 		} else if (b instanceof ChangeGroup) {

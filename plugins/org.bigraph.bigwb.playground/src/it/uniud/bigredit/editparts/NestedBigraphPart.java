@@ -11,12 +11,14 @@ import java.util.List;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
+import dk.itu.big_red.model.ModelObject;
 
 //import uniud.bigredit.policy.LayoutPolicy;
 
@@ -36,6 +38,7 @@ public class NestedBigraphPart extends ContainerPart{
 	{
 		//figureModel=
 		//return figureModel;//new NestedBigraphFigure();
+		
 		return new NestedBigraphFigure();// NestedBigraphFigure();
 	}
 	
@@ -63,7 +66,9 @@ public class NestedBigraphPart extends ContainerPart{
 		Bigraph model = getModel();
 		
 		figure.setName(model.getName());
-		figure.setConstraint(new Rectangle (100,100,400,300));
+		Rectangle constraint=((BRS)getParent().getModel()).getChildrenConstraint(model);
+		System.out.println("constraint in refreshVisual" + constraint.toString());
+		figure.setConstraint(constraint);//new Rectangle (100,100,400,300));
 	}
 	
 	@Override
@@ -73,19 +78,42 @@ public class NestedBigraphPart extends ContainerPart{
 
 	@Override
 	public String getToolTip() {
-		// TODO Auto-generated method stub
-		return null;
+		
+			return "Bigraph " + getModel().getName();
+		
 	}
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
-		if (evt.getSource() == getModel()) {
-			if (evt.getPropertyName().equals(BRS.PROPERTY_LAYOUT)){
+		System.out.println("get notification in NEstedBigraphs");
+		if (evt.getPropertyName().equals(BRS.PROPERTY_LAYOUT)){
+				System.out.println("refresh child");
 				refreshChildren();
 				refreshVisuals();
 			}
-		}
+		
 	}
+	
+	/**
+	 * Extends {@link AbstractGraphicalEditPart#activate()} to also register to
+	 * receive property change notifications from the model object.
+	 */
+	@Override
+	public void activate() {
+		super.activate();
+		((BRS)getParent().getModel()).addPropertyChangeListener(this);
+	}
+
+	/**
+	 * Extends {@link AbstractGraphicalEditPart#activate()} to also unregister
+	 * from the model object's property change notifications.
+	 */
+	@Override
+	public void deactivate() {
+		((BRS)getParent().getModel()).removePropertyChangeListener(this);
+		super.deactivate();
+	}
+	
 
 }
