@@ -13,6 +13,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
+import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
+
 
 
 public class ReactionPart extends AbstractGraphicalEditPart implements PropertyChangeListener{
@@ -55,10 +58,51 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent arg0) {
-		// TODO Auto-generated method stub
+	public void propertyChange(PropertyChangeEvent evt) {
+		//super.propertyChange(evt);
+		String prop = evt.getPropertyName();
+		if (prop.equals(BRS.PROPERTY_LAYOUT)) {
+			refreshChildren();
+			refreshVisuals();
+		}
+		if (evt.getPropertyName().equals(Container.PROPERTY_CHILD)) {
+			refreshChildren();
+		}
+		if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
+			refreshChildren();
+			refreshVisuals();
+			getParent().refresh();
+		}
+
+		if (evt.getSource() == getModel()) {
+			if (prop.equals(Container.PROPERTY_CHILD)) {
+				refreshChildren();
+				refreshVisuals();
+			} else if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
+				refreshVisuals();
+			}
+		}
 		
 	}
+	
+	@Override
+	public void activate() {
+		super.activate();
+		getModel().addPropertyChangeListener(this);
+		((BRS) getParent().getModel()).addPropertyChangeListener(this);
+	}
+
+	/**
+	 * Extends {@link AbstractGraphicalEditPart#activate()} to also unregister
+	 * from the model object's property change notifications.
+	 */
+	@Override
+	public void deactivate() {
+		getModel().removePropertyChangeListener(this);
+		((BRS) getParent().getModel()).removePropertyChangeListener(this);
+		super.deactivate();
+	}
+
 
 
 }

@@ -35,6 +35,8 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	public void setModel(Object model) {
 		if (model instanceof Layoutable)
 			this.model = (Layoutable)model;
+		if (model instanceof ModelObject)
+			this.model = (ModelObject)model;
 	}
 	
 	@Override
