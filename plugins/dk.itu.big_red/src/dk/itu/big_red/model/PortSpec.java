@@ -55,6 +55,12 @@ public class PortSpec extends ModelObject implements IPort {
 		public Change inverse() {
 			return new ChangeName(oldName);
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(set name of port " + getCreator() +
+					" to " + name + ")";
+		}
 	}
 	
 	public class ChangeSegment extends PortSpecChange {
@@ -74,6 +80,12 @@ public class PortSpec extends ModelObject implements IPort {
 		public ChangeSegment inverse() {
 			return new ChangeSegment(oldSegment);
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(set segment of port " + getCreator() +
+					" to " + segment + ")";
+		}
 	}
 	
 	public class ChangeDistance extends PortSpecChange {
@@ -92,6 +104,12 @@ public class PortSpec extends ModelObject implements IPort {
 		@Override
 		public ChangeDistance inverse() {
 			return new ChangeDistance(oldDistance);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set distance of port " + getCreator() +
+					" to " + distance + ")";
 		}
 	}
 	
@@ -174,12 +192,6 @@ public class PortSpec extends ModelObject implements IPort {
 	@Override
 	public INode getNode() {
 		return null;
-	}
-	
-	@Override
-	public String toString() {
-		return "PortSpec(" + getName() + ", " + getSegment() + ", " +
-				getDistance() + ")";
 	}
 	
 	public ChangeName changeName(String name) {
