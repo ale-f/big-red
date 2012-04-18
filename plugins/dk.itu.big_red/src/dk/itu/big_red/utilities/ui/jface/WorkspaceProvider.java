@@ -1,23 +1,16 @@
 package dk.itu.big_red.utilities.ui.jface;
 
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE.SharedImages;
 
-public class WorkspaceProvider extends LabelProvider
-	implements ITreeContentProvider, IResourceChangeListener {
-
+public class WorkspaceProvider
+		implements ITreeContentProvider, IResourceChangeListener {
 	private Viewer viewer;
 	private IResource input;
 	
@@ -85,27 +78,5 @@ public class WorkspaceProvider extends LabelProvider
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		getViewer().refresh();
-	}
-
-	@Override
-	public Image getImage(Object element) {
-		ISharedImages im = PlatformUI.getWorkbench().getSharedImages();
-		if (element instanceof IProject) {
-			return im.getImage(
-				((IProject)element).isOpen() ?
-					SharedImages.IMG_OBJ_PROJECT :
-					SharedImages.IMG_OBJ_PROJECT_CLOSED);
-		} else if (element instanceof IContainer) {
-			return im.getImage(ISharedImages.IMG_OBJ_FOLDER);
-		} else if (element instanceof IFile) {
-			return im.getImage(ISharedImages.IMG_OBJ_FILE);
-		} else return null;
-	}
-
-	@Override
-	public String getText(Object element) {
-		if (element instanceof IResource) {
-			return ((IResource)element).getName();
-		} else return null;
 	}
 }

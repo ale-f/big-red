@@ -19,6 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
 import dk.itu.big_red.model.Bigraph;
@@ -82,7 +83,9 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 					}
 				});
 				t.setComparator(new ViewerComparator());
-				t.setLabelProvider(p);
+				t.setLabelProvider(
+						WorkbenchLabelProvider.
+							getDecoratingWorkbenchLabelProvider());
 				t.setContentProvider(p);
 				t.setInput(ResourcesPlugin.getWorkspace().getRoot());
 				
