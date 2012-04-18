@@ -744,9 +744,9 @@ MenuListener, PropertyChangeListener {
 				}
 			});
 		}
-		if (m.getItemCount() > 0)
-			new MenuItem(m, SWT.SEPARATOR);
 		if (getShape() == Shape.POLYGON) {
+			if (m.getItemCount() > 0)
+				new MenuItem(m, SWT.SEPARATOR);
 			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
