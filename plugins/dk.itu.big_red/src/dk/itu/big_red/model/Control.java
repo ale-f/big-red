@@ -380,6 +380,12 @@ public class Control extends Colourable implements IControl {
 		public Change inverse() {
 			return new ChangePoints(oldPoints);
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(set points of " + getCreator() + " to " +
+					points + ")";
+		}
 	}
 	
 	public class ChangeParameterPolicy extends ControlChange {
@@ -402,6 +408,14 @@ public class Control extends Colourable implements IControl {
 		@Override
 		public Change inverse() {
 			return new ChangeParameterPolicy(oldPolicy);
+		}
+		
+		@Override
+		public String toString() {
+			return
+				"Change(set parameter policy of " + getCreator() + " to " +
+				(policy != null ? policy.getClass().getSimpleName() : "null") +
+				")";
 		}
 	}
 	
