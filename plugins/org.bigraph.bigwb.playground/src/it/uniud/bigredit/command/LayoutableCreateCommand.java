@@ -104,6 +104,14 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			((BRS)container).changeLayoutChild((ModelObject)node, layout));
 			
 		}
+		
+		if (container instanceof Reaction){
+			/** TODO get a name for Bigraph */
+			System.out.println("Instance of Reaction");
+			setTarget((Reaction)container);
+			cg.add(((Reaction)container).changeAddReactum((Bigraph)node),
+					((Reaction)container).changeLayoutChild((Bigraph)node,layout));
+		}
 		return this;
 	}
 	

@@ -2,6 +2,8 @@ package it.uniud.bigredit.editparts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import it.uniud.bigredit.figure.ReactionFiguren;
 import it.uniud.bigredit.model.BRS;
@@ -15,6 +17,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
+import dk.itu.big_red.model.ModelObject;
 
 
 
@@ -40,9 +43,8 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	}
 	
 	@Override
-	public void refreshChildren()
+	public void refreshVisuals()
 	{
-		super.refreshChildren();
 		Reaction model = ( Reaction ) getModel();
 		
 		Rectangle constraint = ((BRS) getParent().getModel())
@@ -51,6 +53,22 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 				+ constraint.toString());
 		((ReactionFiguren)getFigure()).setConstraint(constraint);// new Rectangle (100,100,400,300));
 	}
+	
+	@Override
+	public List<Bigraph> getModelChildren() {
+		List<Bigraph> r = new ArrayList<Bigraph>();
+		if(getModel().getReactum() !=null){
+			r.add(getModel().getReactum());
+		}
+		if(getModel().getRedex() !=null){
+			r.add(getModel().getRedex());
+		}
+				//Lists.group(getModel().getChildren(), Bigraph.class);
+		//Collections.reverse(r);
+		return r;
+	}
+	
+	
 
 	public String getToolTip() {
 		// TODO Auto-generated method stub
@@ -61,6 +79,18 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	public void propertyChange(PropertyChangeEvent evt) {
 		//super.propertyChange(evt);
 		String prop = evt.getPropertyName();
+		if (prop.equals(Reaction.PROPERTY_RULE)) {
+			
+			refreshVisuals();
+			refreshChildren();
+		}
+		
+		if (prop.equals(Reaction.PROPERTY_RULE_LAYOUT)){
+			refreshChildren();
+			refreshVisuals();
+		}
+		
+		
 		if (prop.equals(BRS.PROPERTY_LAYOUT)) {
 			refreshChildren();
 			refreshVisuals();

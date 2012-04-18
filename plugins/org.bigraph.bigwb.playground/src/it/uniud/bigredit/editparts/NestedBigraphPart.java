@@ -3,6 +3,7 @@ package it.uniud.bigredit.editparts;
 import it.uniud.bigredit.figure.GraphFigure;
 import it.uniud.bigredit.figure.NestedBigraphFigure;
 import it.uniud.bigredit.model.BRS;
+import it.uniud.bigredit.model.Reaction;
 import it.uniud.bigredit.policy.LayoutableLayoutPolicy;
 
 import java.beans.PropertyChangeEvent;
@@ -61,13 +62,28 @@ public class NestedBigraphPart extends ContainerPart {
 		Bigraph model = getModel();
 
 		figure.setName(model.getName());
-		Rectangle constraint = ((BRS) getParent().getModel())
-				.getChildrenConstraint(model);
-		System.out.println("constraint in refreshVisual"
-				+ constraint.toString());
-		figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
-		figure.setInnerLine(model.getUpperInnerNameBoundary());
-		figure.setOuterLine(model.getLowerOuterNameBoundary());
+		Rectangle constraint= new Rectangle (0,0,100,100);
+		if (getParent() instanceof BRSPart) {
+			
+			constraint = ((BRS) getParent().getModel())
+					.getChildrenConstraint(model);
+			System.out.println("constraint in refreshVisual"
+					+ constraint.toString());
+			figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
+			figure.setInnerLine(model.getUpperInnerNameBoundary());
+			figure.setOuterLine(model.getLowerOuterNameBoundary());
+			
+		} else if (getParent() instanceof ReactionPart) {
+			constraint = ((Reaction) getParent().getModel())
+					.getChildConstraint(model);
+			System.out.println("constraint in refreshVisual"
+					+ constraint.toString());
+			figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
+			figure.setInnerLine(model.getUpperInnerNameBoundary());
+			figure.setOuterLine(model.getLowerOuterNameBoundary());
+		}
+
+
 	}
 
 	@Override
@@ -90,6 +106,17 @@ public class NestedBigraphPart extends ContainerPart {
 			refreshChildren();
 			refreshVisuals();
 		}
+		if (prop.equals(Reaction.PROPERTY_RULE)) {
+			
+			refreshVisuals();
+			getParent().refresh();
+		}
+		
+		if (prop.equals(Reaction.PROPERTY_RULE_LAYOUT)){
+			refreshVisuals();
+			getParent().refresh();
+		}
+		
 		if (evt.getPropertyName().equals(Container.PROPERTY_CHILD)) {
 			refreshChildren();
 		}
@@ -118,7 +145,13 @@ public class NestedBigraphPart extends ContainerPart {
 	public void activate() {
 		super.activate();
 		getModel().addPropertyChangeListener(this);
-		((BRS) getParent().getModel()).addPropertyChangeListener(this);
+		
+		if (getParent() instanceof BRSPart) {
+			((BRS) getParent().getModel()).addPropertyChangeListener(this);
+		} else if (getParent() instanceof ReactionPart) {
+			((Reaction) getParent().getModel()).addPropertyChangeListener(this);
+		}
+		
 	}
 
 	/**
@@ -128,7 +161,12 @@ public class NestedBigraphPart extends ContainerPart {
 	@Override
 	public void deactivate() {
 		getModel().removePropertyChangeListener(this);
-		((BRS) getParent().getModel()).removePropertyChangeListener(this);
+		
+		if (getParent() instanceof BRSPart) {
+			((BRS) getParent().getModel()).removePropertyChangeListener(this);
+		} else if (getParent() instanceof ReactionPart) {
+			((Reaction) getParent().getModel()).removePropertyChangeListener(this);
+		}
 		super.deactivate();
 	}
 

@@ -70,6 +70,8 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 				return new CompositionCommand( ( Bigraph )child.getModel(), target.getBigraph(),
 						                  ( ( BigreditRootEditPart )child.getRoot() ).getWorkbenchPart() );
 			}
+		}else if(child instanceof ReactionPart){
+			/** TODO FILL with matching / composition */
 		}else{
 			command = new LayoutableAddCommand();
 			command.setParent(getHost().getModel());
