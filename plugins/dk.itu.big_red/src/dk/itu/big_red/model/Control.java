@@ -322,7 +322,8 @@ public class Control extends Colourable implements IControl {
 		
 		@Override
 		public String toString() {
-			return "Change(add port " + port + " to " + getCreator() + ")";
+			return "Change(add port " + port + " to " + getCreator() +
+					" with name \"" + name + "\")";
 		}
 	}
 	
@@ -334,7 +335,7 @@ public class Control extends Colourable implements IControl {
 		private String oldName;
 		@Override
 		public void beforeApply() {
-			oldName = getCreator().getName();
+			oldName = port.getName();
 		}
 		
 		@Override
