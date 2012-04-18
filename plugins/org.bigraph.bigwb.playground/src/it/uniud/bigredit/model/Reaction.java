@@ -26,6 +26,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	public static final int GAP_WIDTH = 96;
 	public static final int MIN_WIDTH_BIG= 100;
 	public static final int MIN_HIGHT_BIG = 100;
+	public static int SEPARATOR_WIDTH = 300;
 	
 	public static final String PROPERTY_RULE = "Reaction_Rule_Change";
 	public static final String PROPERTY_RULE_LAYOUT = "Reaction_Rule_Change_Layout";

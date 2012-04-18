@@ -109,8 +109,15 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			/** TODO get a name for Bigraph */
 			System.out.println("Instance of Reaction");
 			setTarget((Reaction)container);
-			cg.add(((Reaction)container).changeAddReactum((Bigraph)node),
-					((Reaction)container).changeLayoutChild((Bigraph)node,layout));
+			if(layout.x > ((Reaction)container).SEPARATOR_WIDTH){
+				cg.add(((Reaction) container).changeAddReactum((Bigraph) node),
+						((Reaction) container).changeLayoutChild(
+								(Bigraph) node, layout));
+			}else{
+				cg.add(((Reaction) container).changeAddRedex((Bigraph) node),
+						((Reaction) container).changeLayoutChild(
+								(Bigraph) node, layout));
+			}
 		}
 		return this;
 	}
