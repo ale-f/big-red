@@ -1,7 +1,10 @@
 package dk.itu.big_red.editors.simulation_spec;
 
 
+import java.util.ArrayList;
+
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -11,7 +14,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
-
 import dk.itu.big_red.interaction_managers.InteractionManager;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
@@ -56,21 +58,28 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 	}
 
 	private Dialog createOptionsWindow(Shell shell) {
-		return new Dialog(shell) {
+		return new TitleAreaDialog(shell) {
 			@Override
 			protected Control createDialogArea(Composite parent) {
+				Composite c = (Composite)super.createDialogArea(parent);
 				RowLayout rl = new RowLayout(SWT.VERTICAL);
 				rl.marginLeft = rl.marginRight = rl.marginTop = 10;
+				rl.spacing = 5;
 				Composite optionsGroup =
-					UI.chain(new Composite(parent, SWT.NONE)).layout(rl).
+					UI.chain(new Composite(c, SWT.NONE)).layout(rl).
 					layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).
 					done();
 				
+				ArrayList<Control> optionControls = new ArrayList<Control>();
 				for (final OptionDescriptor d : exporter.getOptions()) {
+					Composite opt = new Composite(optionsGroup, SWT.NONE);
+					opt.setLayout(new RowLayout(SWT.VERTICAL));
+					optionControls.add(opt);
+					
 					Object ov = exporter.getOption(d.getID());
 					if (ov instanceof Boolean) {
 						final Button b =
-							UI.chain(new Button(optionsGroup, SWT.CHECK)).
+							UI.chain(new Button(opt, SWT.CHECK)).
 							text(d.getDescription()).done();
 						b.setSelection((Boolean)ov);
 						b.addSelectionListener(new SelectionAdapter() {
@@ -83,7 +92,10 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 					}
 				}
 				
-				return optionsGroup;
+				setTitle("Set options");
+				setMessage("Configure the exporter.");
+				
+				return c;
 			}
 		};
 	}
