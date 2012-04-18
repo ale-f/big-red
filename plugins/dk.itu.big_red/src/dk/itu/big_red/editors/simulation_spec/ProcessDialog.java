@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities.ui;
+package dk.itu.big_red.editors.simulation_spec;
 
 import java.io.IOException;
 import org.eclipse.jface.dialogs.Dialog;
@@ -18,7 +18,8 @@ import dk.itu.big_red.utilities.io.IAsynchronousInputRecipient;
 import dk.itu.big_red.utilities.io.IAsynchronousOutputRecipient;
 import dk.itu.big_red.utilities.io.LineReadStrategy;
 
-public class ProcessDialog extends Dialog implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
+class ProcessDialog extends Dialog
+implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
 	private ProcessBuilder pb;
 	
 	public ProcessDialog(Shell parentShell, ProcessBuilder pb) {

@@ -737,8 +737,12 @@ MenuListener, PropertyChangeListener {
 			UI.createMenuItem(m, 0, "Remove &all points and ports", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					/* XXX
-					setMode(mode); */
+					ChangeGroup cg = new ChangeGroup();
+					for (PortSpec i : getModel().getPorts())
+						cg.add(getModel().changeRemovePort(i));
+					cg.add(getModel().changePoints(
+							new PointList(new int[] { 0, 0 })));
+					doChange(cg);
 				}
 			});
 		}
@@ -753,12 +757,14 @@ MenuListener, PropertyChangeListener {
 							"How many sides should your regular polygon have?\n(All ports will be deleted.)",
 							"3", getIntegerValidator(3, Integer.MAX_VALUE));
 					if (polySides != null) {
-						/* XXX
-						setMode(mode);
-						
-						setPoints(new Ellipse().
+						ChangeGroup cg = new ChangeGroup();
+						for (PortSpec i : getModel().getPorts())
+							cg.add(getModel().changeRemovePort(i));
+						cg.add(getModel().changePoints(
+								new Ellipse().
 								setBounds(new Rectangle(0, 0, 60, 60)).
-								getPolygon(Integer.parseInt(polySides))); */
+								getPolygon(Integer.parseInt(polySides))));
+						doChange(cg);
 					}
 				}
 			});

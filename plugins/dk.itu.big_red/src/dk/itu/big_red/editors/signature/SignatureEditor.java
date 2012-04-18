@@ -86,8 +86,10 @@ implements PropertyChangeListener {
 	
 	protected void setControl(Control c) {
 		currentControl = c;
-		controlToFields();
-		name.setFocus();
+		if (setEnablement(c != null)) {
+			name.setFocus();
+			controlToFields();
+		}
 	}
 	
 	private boolean uiUpdateInProgress = false;
@@ -213,11 +215,7 @@ implements PropertyChangeListener {
 		controls.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
-				Control c = getSelectedControl();
-				if (c != null) {
-					setControl(c);
-					setEnablement(true);
-				} else setEnablement(false);
+				setControl(getSelectedControl());
 			}
 		});
 		Composite controlButtons = new Composite(left, SWT.NONE);
@@ -252,7 +250,9 @@ implements PropertyChangeListener {
 				while (it.hasNext())
 					cg.add(getModel().changeRemoveControl((Control)it.next()));
 				doChange(cg);
+				
 				controls.setSelection(StructuredSelection.EMPTY);
+				setControl(null);
 			}
 			
 			@Override
@@ -456,8 +456,8 @@ implements PropertyChangeListener {
 		initialise();
 	}
 
-	private void setEnablement(boolean enabled) {
-		UI.setEnabled(enabled,
+	private boolean setEnablement(boolean enabled) {
+		return UI.setEnabled(enabled,
 			name, label, appearance, appearanceDescription, resizable,
 			atomicKind, activeKind, passiveKind, outline.getButton(),
 			outlineLabel, fill.getButton(), ovalMode, fillLabel, polygonMode,
