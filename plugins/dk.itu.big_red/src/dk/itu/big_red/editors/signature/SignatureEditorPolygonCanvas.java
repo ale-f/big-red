@@ -49,12 +49,13 @@ import dk.itu.big_red.utilities.ui.UI;
 public class SignatureEditorPolygonCanvas extends Canvas
 implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
 MenuListener, PropertyChangeListener {
-	private static final Rectangle ELLIPSE = new Rectangle();
+	private static final Ellipse ELLIPSE = new Ellipse();
 	
-	private Rectangle getEllipse() {
-		return ELLIPSE.setLocation(30, 30).
-			setSize(((controlWidth - 60) / 10) * 10,
-					((controlHeight - 60) / 10) * 10);
+	private Ellipse getEllipse() {
+		return ELLIPSE.setBounds(
+			new Rectangle(30, 30,
+					((controlWidth - 60) / 10) * 10,
+					((controlHeight - 60) / 10) * 10));
 	}
 	
 	private int controlWidth, controlHeight;
@@ -329,8 +330,7 @@ MenuListener, PropertyChangeListener {
 					return i;
 			}
 		} else if (getShape() == Shape.OVAL) {
-			Ellipse e =
-				new Ellipse().setBounds(getEllipse());
+			Ellipse e = getEllipse();
 			for (int i = 0; i < getPorts().size(); i++) {
 				PortSpec p = getPorts().get(i);
 				tmp.setLocation(e.getPointFromOffset(p.getDistance()));
@@ -450,8 +450,7 @@ MenuListener, PropertyChangeListener {
 				else offset = 0;
 			} else {
 				segment = 0;
-				offset =
-					new Ellipse(getEllipse()).getClosestOffset(mousePosition);
+				offset = getEllipse().getClosestOffset(mousePosition);
 			}
 			
 			opMovePort(p, segment, offset);
@@ -533,7 +532,7 @@ MenuListener, PropertyChangeListener {
 						l.getPointFromOffset(p.getDistance()), 4);
 			}
 		} else {
-			Ellipse el = new Ellipse(getEllipse());
+			Ellipse el = getEllipse();
 			int w = ((controlWidth - 60) / 10) * 10,
 			    h = ((controlHeight - 60) / 10) * 10;
 			e.gc.fillOval(30, 30, w, h);
@@ -558,8 +557,7 @@ MenuListener, PropertyChangeListener {
 					intersection = getPoint(segment);
 				tmp.setLocation(intersection);
 			} else if (getShape() == Shape.OVAL) {
-				tmp.setLocation(
-					new Ellipse(getEllipse()).getClosestPoint(mousePosition));
+				tmp.setLocation(getEllipse().getClosestPoint(mousePosition));
 			}
 			
 			fillCircleCentredAt(e.gc, tmp, 4);
@@ -686,8 +684,8 @@ MenuListener, PropertyChangeListener {
 							newDistance = l.getOffsetFromPoint(portPoint);
 						} else {
 							newSegment = 0;
-							newDistance = new Ellipse(getEllipse()).
-									getClosestOffset(mousePosition);
+							newDistance =
+								getEllipse().getClosestOffset(mousePosition);
 						}
 						
 						String newName = UI.promptFor("New port name",
