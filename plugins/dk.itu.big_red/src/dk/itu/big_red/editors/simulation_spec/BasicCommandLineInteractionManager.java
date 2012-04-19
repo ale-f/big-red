@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -62,13 +63,21 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 			@Override
 			protected Control createDialogArea(Composite parent) {
 				Composite c = (Composite)super.createDialogArea(parent);
+				
+				GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+				gd.heightHint = 0;
+				ScrolledComposite sc =
+					UI.chain(new ScrolledComposite(c, SWT.V_SCROLL)).
+					layoutData(gd).done();
+				
 				RowLayout rl = new RowLayout(SWT.VERTICAL);
 				rl.marginLeft = rl.marginRight = rl.marginTop = 10;
 				rl.spacing = 5;
 				Composite optionsGroup =
-					UI.chain(new Composite(c, SWT.NONE)).layout(rl).
-					layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).
+					UI.chain(new Composite(sc, SWT.NONE)).layout(rl).
 					done();
+				
+				sc.setContent(optionsGroup);
 				
 				ArrayList<Control> optionControls = new ArrayList<Control>();
 				for (final OptionDescriptor d : exporter.getOptions()) {
@@ -91,6 +100,9 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 						});
 					}
 				}
+				
+				optionsGroup.setSize(
+					optionsGroup.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 				
 				setTitle("Set options");
 				setMessage("Configure the exporter.");
