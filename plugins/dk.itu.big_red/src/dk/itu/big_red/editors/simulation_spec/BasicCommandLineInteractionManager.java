@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import dk.itu.big_red.interaction_managers.InteractionManager;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.Saver.OptionDescriptor;
+import dk.itu.big_red.model.load_save.Saver.Option;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -80,12 +80,12 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 				sc.setContent(optionsGroup);
 				
 				ArrayList<Control> optionControls = new ArrayList<Control>();
-				for (final OptionDescriptor d : exporter.getOptions()) {
+				for (final Option d : exporter.getOptions()) {
 					Composite opt = new Composite(optionsGroup, SWT.NONE);
 					opt.setLayout(new RowLayout(SWT.VERTICAL));
 					optionControls.add(opt);
 					
-					Object ov = exporter.getOption(d.getID());
+					Object ov = d.get();
 					if (ov instanceof Boolean) {
 						final Button b =
 							UI.chain(new Button(opt, SWT.CHECK)).
@@ -94,8 +94,7 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 						b.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent e) {
-								exporter.setOption(
-										d.getID(), b.getSelection());
+								d.set(b.getSelection());
 							}
 						});
 					}

@@ -18,10 +18,10 @@ import dk.itu.big_red.model.ModelObject;
 public abstract class Saver {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
 	
-	public static class OptionDescriptor {
+	public class Option {
 		private String id, description;
 		
-		public OptionDescriptor(String id, String description) {
+		public Option(String id, String description) {
 			this.id = id;
 			this.description = description;
 		}
@@ -32,6 +32,14 @@ public abstract class Saver {
 		
 		public String getDescription() {
 			return description;
+		}
+		
+		public Object get() {
+			return getOption(id);
+		}
+		
+		public void set(Object o) {
+			setOption(id, o);
 		}
 	};
 	
@@ -93,39 +101,29 @@ public abstract class Saver {
 	 */
 	public abstract void exportObject() throws SaveFailedException;
 	
-	private ArrayList<OptionDescriptor> options =
-			new ArrayList<OptionDescriptor>();
+	private ArrayList<Option> options = new ArrayList<Option>();
 	
 	/**
 	 * Adds an option to this {@link Saver}.
-	 * @param d an {@link OptionDescriptor} specifying the new option
+	 * @param d an {@link Option} specifying the new option
 	 */
-	protected final void addOption(OptionDescriptor d) {
+	protected final void addOption(Option d) {
 		options.add(d);
 	}
 	
 	/**
-	 * @see #addOption(OptionDescriptor)
+	 * @see #addOption(Option)
 	 */
 	protected final void addOption(String id, String description) {
-		addOption(new OptionDescriptor(id, description));
+		addOption(new Option(id, description));
 	}
 	
 	/**
 	 * Returns all of the options supported by this {@link Saver}.
-	 * @return a list of {@link OptionDescriptor}s
+	 * @return a list of {@link Option}s
 	 */
-	public final List<OptionDescriptor> getOptions() {
+	public final List<Option> getOptions() {
 		return options;
-	}
-	
-	/**
-	 * Changes the value of the option specified by a descriptor.
-	 * @param d one of this {@link Saver}'s {@link OptionDescriptor}s
-	 * @param value the option's new value
-	 */
-	public final void setOption(OptionDescriptor d, Object value) {
-		setOption(d.getID(), value);
 	}
 	
 	/**
@@ -134,7 +132,7 @@ public abstract class Saver {
 	 * @param id the ID of one of this {@link Saver}'s options
 	 * @return the current value of this option, or <code>null</code>
 	 */
-	public Object getOption(String id) {
+	protected Object getOption(String id) {
 		return null;
 	}
 	
@@ -144,7 +142,7 @@ public abstract class Saver {
 	 * @param id the ID of one of this {@link Saver}'s options
 	 * @param value the option's new value
 	 */
-	public void setOption(String id, Object value) {
+	protected void setOption(String id, Object value) {
 		return;
 	}
 	
