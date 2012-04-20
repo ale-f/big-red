@@ -18,7 +18,7 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 	
 	@Override
 	public SimulationSpecXMLSaver setModel(ModelObject model) {
-		if (model instanceof SimulationSpec)
+		if (model == null || model instanceof SimulationSpec)
 			super.setModel(model);
 		return this;
 	}

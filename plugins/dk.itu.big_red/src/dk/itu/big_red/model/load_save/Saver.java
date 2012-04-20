@@ -80,8 +80,7 @@ public abstract class Saver {
 	 * @return <code>this</code>, for convenience
 	 */
 	public Saver setOutputStream(OutputStream os) {
-		if (os != null)
-			target = os;
+		target = os;
 		return this;
 	}
 	

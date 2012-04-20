@@ -24,7 +24,7 @@ public class SignatureXMLSaver extends XMLSaver {
 	
 	@Override
 	public SignatureXMLSaver setModel(ModelObject model) {
-		if (model instanceof Signature)
+		if (model == null || model instanceof Signature)
 			super.setModel(model);
 		return this;
 	}

@@ -32,7 +32,7 @@ public class BigraphBPLToolSaver extends Saver {
 	
 	@Override
 	public BigraphBPLToolSaver setModel(ModelObject model) {
-		if (model instanceof Bigraph)
+		if (model == null || model instanceof Bigraph)
 			super.setModel(model);
 		return this;
 	}

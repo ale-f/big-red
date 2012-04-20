@@ -36,7 +36,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	
 	@Override
 	public ReactionRuleXMLSaver setModel(ModelObject model) {
-		if (model instanceof ReactionRule)
+		if (model == null || model instanceof ReactionRule)
 			super.setModel(model);
 		return this;
 	}

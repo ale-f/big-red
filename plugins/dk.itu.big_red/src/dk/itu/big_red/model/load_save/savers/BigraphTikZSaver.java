@@ -37,7 +37,7 @@ public class BigraphTikZSaver extends Saver {
 	
 	@Override
 	public BigraphTikZSaver setModel(ModelObject model) {
-		if (model instanceof Bigraph)
+		if (model == null || model instanceof Bigraph)
 			super.setModel(model);
 		return this;
 	}

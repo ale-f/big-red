@@ -29,7 +29,7 @@ public class BigraphTraverseSaver extends Saver {
 	
 	@Override
 	public BigraphTraverseSaver setModel(ModelObject model) {
-		if (model instanceof Bigraph)
+		if (model == null || model instanceof Bigraph)
 			super.setModel(model);
 		return this;
 	}
