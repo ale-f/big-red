@@ -5,9 +5,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -16,11 +19,15 @@ import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ReactionRule;
@@ -32,7 +39,8 @@ import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.ui.jface.ConfigurationElementLabelProvider;
+import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
+import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.jface.WorkspaceProvider;
 
 public class BigraphExportWizard extends Wizard implements IExportWizard {
@@ -64,8 +72,41 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 	private IFile selectedFile;
 	private Saver selectedExporter = new BigraphXMLSaver();
 	
+	private static final class ExporterWizardPage extends WizardPage {
+		protected ExporterWizardPage() {
+			super("Select an exporter");
+			
+			setTitle("Select an exporter");
+			setDescription("Select and configure the exporter.");
+			setPageComplete(true);
+		}
+		
+		@Override
+		public void createControl(Composite parent) {
+			Composite self = new Composite(parent, SWT.NONE);
+			self.setLayout(new GridLayout(1, true));
+			ComboViewer cv = new ComboViewer(self);
+			cv.setContentProvider(new ListContentProvider());
+			cv.setLabelProvider(new LabelProvider() {
+				@Override
+				public String getText(Object element) {
+					return ((IFactory<?>)element).getName();
+				}
+			});
+			cv.getCombo().setLayoutData(
+					new GridData(SWT.FILL, SWT.FILL, true, false));
+			new Label(self, SWT.SEPARATOR | SWT.HORIZONTAL).setLayoutData(
+					new GridData(SWT.FILL, SWT.FILL, true, false));
+			new SaverOptionsGroup(self);
+			
+			setControl(self);
+		}
+	}
+	
 	@Override
 	public void init(IWorkbench workbench, final IStructuredSelection selection) {
+		final ExporterWizardPage exporterPage = new ExporterWizardPage();
+		
 		addPage(new WizardPage("Select a file") {
 			@Override
 			public void createControl(Composite parent) {
@@ -88,6 +129,14 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 							getDecoratingWorkbenchLabelProvider());
 				t.setContentProvider(p);
 				t.setInput(ResourcesPlugin.getWorkspace().getRoot());
+				
+				t.addDoubleClickListener(new IDoubleClickListener() {
+					@Override
+					public void doubleClick(DoubleClickEvent event) {
+						if (canFlipToNextPage())
+							getContainer().showPage(getNextPage());
+					}
+				});
 				
 				t.addSelectionChangedListener(new ISelectionChangedListener() {
 					@Override
@@ -130,19 +179,6 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 			}
 		});
 		
-		addPage(new WizardPage("Select an exporter") {
-			@Override
-			public void createControl(Composite parent) {
-				ComboViewer cv = new ComboViewer(parent);
-				cv.setLabelProvider(new ConfigurationElementLabelProvider());
-				setControl(cv.getControl());
-			}
-			
-			{
-				setTitle("Select an exporter");
-				setDescription("Select and configure the exporter.");
-				setPageComplete(true);
-			}
-		});
+		addPage(exporterPage);
 	}
 }
