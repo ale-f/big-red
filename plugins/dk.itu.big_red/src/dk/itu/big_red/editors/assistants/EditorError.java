@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.io.TotalReadStrategy;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class EditorError {
@@ -61,7 +62,7 @@ public class EditorError {
 			ex.printStackTrace(new PrintStream(io.getOutputStream()));
 			try {
 				io.getOutputStream().close();
-				errorText += "\n\n" + IOAdapter.readString(io.getInputStream());
+				errorText += "\n\n" + TotalReadStrategy.readString(io.getInputStream());
 			} catch (IOException e) {
 			}
 		}

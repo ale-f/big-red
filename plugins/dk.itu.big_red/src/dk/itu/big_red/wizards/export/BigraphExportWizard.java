@@ -39,6 +39,7 @@ import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.io.TotalReadStrategy;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.jface.WorkspaceProvider;
@@ -57,7 +58,7 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 			selectedExporter.setModel(Loader.fromFile(selectedFile));
 			selectedExporter.setOutputStream(io.getOutputStream());
 			selectedExporter.exportObject();
-			new ExportResults(IOAdapter.readString(io.getInputStream())).
+			new ExportResults(TotalReadStrategy.readString(io.getInputStream())).
 				new ExportResultsDialog(getShell()).open();
 			return true;
 		} catch (LoadFailedException e) {

@@ -83,7 +83,6 @@ public class IOAdapter {
 	private static final InputStream nullInputStream = new InputStream() {
 		@Override
 		public int read() throws IOException {
-			// TODO Auto-generated method stub
 			return -1;
 		}
 	};
@@ -95,20 +94,5 @@ public class IOAdapter {
 	 */
 	public static InputStream getNullInputStream() {
 		return nullInputStream;
-	}
-	
-	/**
-	 * Returns the contents of an {@link InputStream}, which should contain
-	 * characters encoded in the system's default character set, as a {@link
-	 * String}.
-	 * @param is an {@link InputStream}
-	 * @return a {@link String}, or <code>null</code> if something went wrong
-	 */
-	public static String readString(InputStream is) {
-		try {
-			return new String(new TotalReadStrategy().read(is));
-		} catch (IOException e) {
-			return null;
-		}
 	}
 }

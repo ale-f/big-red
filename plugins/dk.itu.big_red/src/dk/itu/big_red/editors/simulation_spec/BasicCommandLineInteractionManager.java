@@ -10,6 +10,7 @@ import dk.itu.big_red.interaction_managers.InteractionManager;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.io.TotalReadStrategy;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
 
 class BasicCommandLineInteractionManager extends InteractionManager {
@@ -40,7 +41,7 @@ class BasicCommandLineInteractionManager extends InteractionManager {
 					Dialog.OK);
 			if (r == Dialog.OK) {
 				exporter.exportObject();
-				new ExportResults(IOAdapter.readString(io.getInputStream())).
+				new ExportResults(TotalReadStrategy.readString(io.getInputStream())).
 					new ExportResultsDialog(parent).open();
 			}
 		} catch (SaveFailedException ex) {

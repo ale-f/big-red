@@ -32,4 +32,19 @@ public class TotalReadStrategy implements IReadStrategy {
 			return Arrays.copyOf(buffer, length);
 		} else return null;
 	}
+
+	/**
+	 * Returns the contents of an {@link InputStream}, which should contain
+	 * characters encoded in the system's default character set, as a {@link
+	 * String}.
+	 * @param is an {@link InputStream}
+	 * @return a {@link String}, or <code>null</code> if something went wrong
+	 */
+	public static String readString(InputStream is) {
+		try {
+			return new String(new TotalReadStrategy().read(is));
+		} catch (IOException e) {
+			return null;
+		}
+	}
 }
