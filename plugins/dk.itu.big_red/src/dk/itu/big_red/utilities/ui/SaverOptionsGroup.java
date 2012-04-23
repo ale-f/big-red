@@ -44,6 +44,7 @@ public class SaverOptionsGroup {
 	public void setSaver(Saver s) {
 		for (Control c : getGroup().getChildren())
 			c.dispose();
+		getGroup().pack();
 		if (s != null && s.getOptions().size() > 0) {
 			ArrayList<Control> optionControls = new ArrayList<Control>();
 			for (final Option d : s.getOptions()) {
@@ -69,11 +70,11 @@ public class SaverOptionsGroup {
 			Label l = new Label(getGroup(), SWT.CENTER);
 			l.setText("no options");
 		}
-		
-		recompute();
+		recompute(true);
 	}
 	
-	private void recompute() {
-		getGroup().setSize(getGroup().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	private void recompute(boolean changed) {
+		getGroup().setSize(
+				getGroup().computeSize(SWT.DEFAULT, SWT.DEFAULT, false));
 	}
 }
