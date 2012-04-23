@@ -1,9 +1,15 @@
 package dk.itu.big_red.wizards.export;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -12,6 +18,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -37,7 +44,6 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.TotalReadStrategy;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
@@ -58,7 +64,8 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 			selectedExporter.setModel(Loader.fromFile(selectedFile));
 			selectedExporter.setOutputStream(io.getOutputStream());
 			selectedExporter.exportObject();
-			new ExportResults(TotalReadStrategy.readString(io.getInputStream())).
+			new ExportResults(
+					TotalReadStrategy.readString(io.getInputStream())).
 				new ExportResultsDialog(getShell()).open();
 			return true;
 		} catch (LoadFailedException e) {
@@ -71,9 +78,9 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 	}
 	
 	private IFile selectedFile;
-	private Saver selectedExporter = new BigraphXMLSaver();
+	private Saver selectedExporter;
 	
-	private static final class ExporterWizardPage extends WizardPage {
+	private final class ExporterWizardPage extends WizardPage {
 		protected ExporterWizardPage() {
 			super("Select an exporter");
 			
@@ -82,11 +89,23 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 			setPageComplete(true);
 		}
 		
+		private ComboViewer cv;
+		private SaverOptionsGroup sog;
+		
+		private final void cvSelection() {
+			selectedExporter = (Saver)
+					((IFactory<?>)
+						((IStructuredSelection)cv.getSelection()).
+							getFirstElement()).newInstance();
+			sog.setSaver(selectedExporter);
+			getContainer().updateButtons();
+		}
+		
 		@Override
 		public void createControl(Composite parent) {
 			Composite self = new Composite(parent, SWT.NONE);
 			self.setLayout(new GridLayout(1, true));
-			ComboViewer cv = new ComboViewer(self);
+			cv = new ComboViewer(self);
 			cv.setContentProvider(new ListContentProvider());
 			cv.setLabelProvider(new LabelProvider() {
 				@Override
@@ -94,14 +113,81 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 					return ((IFactory<?>)element).getName();
 				}
 			});
+			cv.addSelectionChangedListener(new ISelectionChangedListener() {
+				@Override
+				public void selectionChanged(SelectionChangedEvent event) {
+					cvSelection();
+				}
+			});
 			cv.getCombo().setLayoutData(
 					new GridData(SWT.FILL, SWT.FILL, true, false));
 			new Label(self, SWT.SEPARATOR | SWT.HORIZONTAL).setLayoutData(
 					new GridData(SWT.FILL, SWT.FILL, true, false));
-			new SaverOptionsGroup(self);
+			sog = new SaverOptionsGroup(self);
 			
 			setControl(self);
+			prepare();
 		}
+		
+		void prepare() {
+			cv.setInput(null);
+			sog.setSaver(null);
+			if (selectedFile == null)
+				return;
+			
+			String id;
+			try {
+				id = getClassForType(
+					selectedFile.getContentDescription().
+						getContentType().getId());
+			} catch (CoreException e) {
+				return;
+			}
+			
+			ArrayList<IFactory<Saver>> f = new ArrayList<IFactory<Saver>>();
+			for (final IConfigurationElement ice :
+				RegistryFactory.getRegistry().
+					getConfigurationElementsFor(Saver.EXTENSION_POINT)) {
+				if (id.equals(ice.getAttribute("exports"))) {
+					f.add(new IFactory<Saver>() {
+						@Override
+						public String getName() {
+							return ice.getAttribute("name");
+						}
+
+						@Override
+						public Saver newInstance() {
+							try {
+								return (Saver)
+									ice.createExecutableExtension("class");
+							} catch (CoreException e) {
+								return null;
+							}
+						}
+					});
+				}
+			}
+			cv.setInput(f);
+			cv.setSelection(new StructuredSelection(f.get(0)), true);
+			cvSelection();
+		}
+	}
+	
+	private static Map<String, String> typesMap =
+			new HashMap<String, String>();
+	static {
+		typesMap.put(Bigraph.CONTENT_TYPE,
+				Bigraph.class.getCanonicalName());
+		typesMap.put(Signature.CONTENT_TYPE,
+				Signature.class.getCanonicalName());
+		typesMap.put(ReactionRule.CONTENT_TYPE,
+				ReactionRule.class.getCanonicalName());
+		typesMap.put(SimulationSpec.CONTENT_TYPE,
+				SimulationSpec.class.getCanonicalName());
+	}
+	
+	private String getClassForType(String contentType) {
+		return typesMap.get(contentType);
 	}
 	
 	@Override
@@ -144,6 +230,7 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 					public void selectionChanged(SelectionChangedEvent event) {
 						boolean complete = isPageComplete();
 						selectedFile = null;
+						selectedExporter = null;
 						try {
 							ITreeSelection s = (ITreeSelection)t.getSelection();
 							complete = (s.getFirstElement() instanceof IFile);
@@ -166,6 +253,7 @@ public class BigraphExportWizard extends Wizard implements IExportWizard {
 						} finally {
 							if (complete != isPageComplete())
 								setPageComplete(complete);
+							exporterPage.prepare();
 						}
 					}
 				});
