@@ -50,7 +50,7 @@ import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.jface.WorkspaceProvider;
 
-public class BigraphExportWizard extends Wizard implements IExportWizard {
+public class TextExportWizard extends Wizard implements IExportWizard {
 	@Override
 	public boolean canFinish() {
 		return (super.canFinish() &&

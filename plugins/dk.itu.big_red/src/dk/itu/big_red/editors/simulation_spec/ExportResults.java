@@ -144,8 +144,8 @@ public class ExportResults {
 		public void create() {
 			super.create();
 			
-			setTitle("Simulation spec exported");
-			setMessage("The simulation spec has been exported.");
+			setTitle("Export complete");
+			setMessage("The document has been exported.");
 		}
 	}
 }

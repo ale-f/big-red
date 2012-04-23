@@ -141,12 +141,12 @@
       </category>
       <wizard
             category="dk.itu.big_red.export"
-            class="dk.itu.big_red.wizards.export.BigraphExportWizard"
+            class="dk.itu.big_red.wizards.export.TextExportWizard"
             icon="resources/icons/wizards/text.png"
             id="Big Red.TikZExportWizard"
-            name="Export bigraph">
+            name="Export as text">
          <description>
-            Export a bigraph in a textual form.
+            Export a Big Red document to a text format.
          </description>
       </wizard>
    </extension>
