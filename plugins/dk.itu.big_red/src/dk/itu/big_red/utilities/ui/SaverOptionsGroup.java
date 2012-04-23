@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Widget;
 
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.Saver.Option;
@@ -52,11 +53,12 @@ public class SaverOptionsGroup {
 				opt.setLayout(new RowLayout(SWT.VERTICAL));
 				optionControls.add(opt);
 				
+				Widget w = null;
 				Object ov = d.get();
 				if (ov instanceof Boolean) {
 					final Button b =
 						UI.chain(new Button(opt, SWT.CHECK)).
-						text(d.getDescription()).done();
+						text(d.getName()).done();
 					b.setSelection((Boolean)ov);
 					b.addSelectionListener(new SelectionAdapter() {
 						@Override
@@ -64,7 +66,10 @@ public class SaverOptionsGroup {
 							d.set(b.getSelection());
 						}
 					});
+					w = b;
 				}
+				if (w != null && d.getDescription() != null)
+					new Label(opt, SWT.NONE).setText(d.getDescription());
 			}
 		} else {
 			Label l = new Label(getGroup(), SWT.CENTER);

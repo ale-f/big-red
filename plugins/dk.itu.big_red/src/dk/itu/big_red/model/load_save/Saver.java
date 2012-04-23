@@ -19,10 +19,16 @@ public abstract class Saver {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
 	
 	public class Option {
-		private String id, description;
+		private String id, name, description;
 		
-		public Option(String id, String description) {
+		public Option(String id, String name) {
 			this.id = id;
+			this.name = name;
+		}
+		
+		public Option(String id, String name, String description) {
+			this.id = id;
+			this.name = name;
 			this.description = description;
 		}
 		
@@ -30,6 +36,10 @@ public abstract class Saver {
 			return id;
 		}
 		
+		public String getName() {
+			return name;
+		}
+
 		public String getDescription() {
 			return description;
 		}
@@ -113,8 +123,15 @@ public abstract class Saver {
 	/**
 	 * @see #addOption(Option)
 	 */
-	protected final void addOption(String id, String description) {
-		addOption(new Option(id, description));
+	protected final void addOption(String id, String name) {
+		addOption(new Option(id, name));
+	}
+	
+	/**
+	 * @see #addOption(Option)
+	 */
+	protected final void addOption(String id, String name, String description) {
+		addOption(new Option(id, name, description));
 	}
 	
 	/**

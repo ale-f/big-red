@@ -54,7 +54,8 @@ public class BigraphXMLSaver extends XMLSaver {
 		OPTION_APPEARANCE = "BigraphXMLSaverAppearance";
 	
 	{
-		addOption(OPTION_APPEARANCE, "Save Big Red-specific appearance data");
+		addOption(OPTION_APPEARANCE, "Export appearance data",
+			"Include Big Red-specific appearance information in the output.");
 	}
 	
 	@Override
