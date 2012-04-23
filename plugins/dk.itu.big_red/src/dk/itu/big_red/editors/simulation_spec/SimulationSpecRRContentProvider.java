@@ -5,8 +5,7 @@ import org.eclipse.jface.viewers.AbstractListViewer;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.utilities.ui.jface.ModelObjectContentProvider;
 
-public class SimulationSpecRRContentProvider
-	extends ModelObjectContentProvider {
+class SimulationSpecRRContentProvider extends ModelObjectContentProvider {
 	public SimulationSpecRRContentProvider(AbstractListViewer alv) {
 		super(alv);
 	}

@@ -5,8 +5,7 @@ import org.eclipse.jface.viewers.AbstractListViewer;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.utilities.ui.jface.ModelObjectContentProvider;
 
-public class SignatureControlsContentProvider
-	extends ModelObjectContentProvider {
+class SignatureControlsContentProvider extends ModelObjectContentProvider {
 	public SignatureControlsContentProvider(AbstractListViewer alv) {
 		super(alv);
 	}
