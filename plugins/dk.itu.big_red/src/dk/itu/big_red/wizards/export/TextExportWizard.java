@@ -2,6 +2,7 @@ package dk.itu.big_red.wizards.export;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -190,8 +191,19 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 		return typesMap.get(contentType);
 	}
 	
+	private IResource initialResource = null;
+	
 	@Override
 	public void init(IWorkbench workbench, final IStructuredSelection selection) {
+		Iterator<?> it = selection.iterator();
+		while (it.hasNext()) {
+			Object i = it.next();
+			if (i instanceof IResource) {
+				initialResource = (IResource)i;
+				break;
+			}
+		}
+		
 		final ExporterWizardPage exporterPage = new ExporterWizardPage();
 		
 		addPage(new WizardPage("Select a file") {
@@ -253,10 +265,15 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 						} finally {
 							if (complete != isPageComplete())
 								setPageComplete(complete);
-							exporterPage.prepare();
+							if (exporterPage.getControl() != null)
+								exporterPage.prepare();
 						}
 					}
 				});
+				
+				if (initialResource != null)
+					t.setSelection(
+							new StructuredSelection(initialResource), true);
 				
 				setControl(t.getControl());
 			}
