@@ -13,14 +13,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import dk.itu.big_red.utilities.io.AsynchronousAdapter;
 import dk.itu.big_red.utilities.io.AsynchronousInputThread;
 import dk.itu.big_red.utilities.io.AsynchronousOutputThread;
-import dk.itu.big_red.utilities.io.IAsynchronousInputRecipient;
-import dk.itu.big_red.utilities.io.IAsynchronousOutputRecipient;
 import dk.itu.big_red.utilities.io.LineReadStrategy;
 
-class ProcessDialog extends Dialog
-implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
+class ProcessDialog extends Dialog {
 	private ProcessBuilder pb;
 	
 	public ProcessDialog(Shell parentShell, ProcessBuilder pb) {
@@ -58,29 +56,6 @@ implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
 	
 	private String result = "";
 	
-	@Override
-	public void signalInput(int length, byte[] buffer) {
-		if (text != null && text.isDisposed())
-			return;
-		result += new String(buffer);
-		if (text != null) {
-			text.setText(result);
-			text.setTopIndex(Integer.MAX_VALUE);
-		}
-	}
-	
-	@Override
-	public void signalInputComplete() {
-	}
-	
-	@Override
-	public void signalInputError(IOException e) {
-	}
-	
-	@Override
-	public void signalOutputError(IOException e) {
-	}
-	
 	private String input;
 	
 	public String getInput() {
@@ -98,7 +73,7 @@ implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
 			Process process = pb.start();
 			
 			AsynchronousOutputThread ot =
-				new AsynchronousOutputThread(this).
+				new AsynchronousOutputThread(new AsynchronousAdapter()).
 					setOutputStream(process.getOutputStream());
 			ot.start();
 			
@@ -106,9 +81,19 @@ implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
 			ot.done();
 			
 			AsynchronousInputThread it =
-				new AsynchronousInputThread(this).
-					setInputStream(process.getInputStream()).
-						setReadStrategy(new LineReadStrategy());
+				new AsynchronousInputThread(new AsynchronousAdapter() {
+					@Override
+					public void signalInput(int length, byte[] buffer) {
+						if (text != null && text.isDisposed())
+							return;
+						result += new String(buffer);
+						if (text != null) {
+							text.setText(result);
+							text.setTopIndex(Integer.MAX_VALUE);
+						}
+					}
+				}).setInputStream(process.getInputStream()).
+					setReadStrategy(new LineReadStrategy());
 			it.start();
 			
 			int r = super.open();
