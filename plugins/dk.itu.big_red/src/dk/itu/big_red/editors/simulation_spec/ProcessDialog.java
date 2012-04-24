@@ -69,6 +69,8 @@ class ProcessDialog extends Dialog {
 	
 	@Override
 	public int open() {
+		boolean oldRedirect = pb.redirectErrorStream();
+		pb.redirectErrorStream(true);
 		try {
 			Process process = pb.start();
 			
@@ -105,6 +107,8 @@ class ProcessDialog extends Dialog {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return -1;
+		} finally {
+			pb.redirectErrorStream(oldRedirect);
 		}
 	}
 }
