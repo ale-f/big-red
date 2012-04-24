@@ -3,6 +3,7 @@ package dk.itu.big_red.editors.simulation_spec;
 import java.io.IOException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.window.IShellProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
@@ -50,6 +51,7 @@ implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
 		Composite c = (Composite)super.createDialogArea(parent);
 		text = new StyledText(c, SWT.MULTI | SWT.BORDER | SWT.READ_ONLY |
 				SWT.V_SCROLL | SWT.WRAP);
+		text.setFont(JFaceResources.getTextFont());
 		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		return c;
 	}
@@ -58,11 +60,13 @@ implements IAsynchronousInputRecipient, IAsynchronousOutputRecipient {
 	
 	@Override
 	public void signalInput(int length, byte[] buffer) {
-		if (text.isDisposed())
+		if (text != null && text.isDisposed())
 			return;
 		result += new String(buffer);
-		text.setText(result);
-		text.setTopIndex(Integer.MAX_VALUE);
+		if (text != null) {
+			text.setText(result);
+			text.setTopIndex(Integer.MAX_VALUE);
+		}
 	}
 	
 	@Override
