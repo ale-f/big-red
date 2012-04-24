@@ -30,8 +30,11 @@ public class ExportResults {
 	public class ToolSelectorDialog extends Dialog {
 		private Combo tools;
 		
-		public ToolSelectorDialog(Shell parentShell) {
+		private String results;
+		
+		public ToolSelectorDialog(Shell parentShell, String results) {
 			super(parentShell);
+			this.results = results;
 		}
 
 		private void setProgress(boolean progress) {
@@ -108,7 +111,8 @@ public class ExportResults {
 		@Override
 		protected void buttonPressed(int buttonId) {
 			if (buttonId == BasicCommandLineInteractionManager.TO_TOOL_ID) {
-				new ToolSelectorDialog(getShell()).open();
+				new ToolSelectorDialog(getShell(), resultsText.getText()).
+					open();
 			} else if (buttonId == BasicCommandLineInteractionManager.SAVE_ID) {
 				FileDialog d = new FileDialog(getShell(),
 					SWT.SAVE | SWT.APPLICATION_MODAL | SWT.DIALOG_TRIM);
