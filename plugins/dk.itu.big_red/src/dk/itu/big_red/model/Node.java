@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.IChild;
@@ -114,7 +111,6 @@ public class Node extends Container implements INode {
 	protected void setLayout(Rectangle layout) {
 		if (!control.isResizable())
 			layout.setSize(getLayout().getSize());
-		fittedPolygon = null;
 		super.setLayout(layout);
 	}
 	
@@ -170,61 +166,6 @@ public class Node extends Container implements INode {
 			if (p.getName().equals(name))
 				return p;
 		return null;
-	}
-	
-	private void fitPolygon() {
-		PointList points = getControl().getPoints();
-		if (points == null)
-			return;
-		Rectangle rectangle = getLayout();
-		fittedPolygon = points.getCopy();
-
-		/*
-		 * Move the polygon so that its top-left corner is at (0,0).
-		 */
-		fittedPolygon.translate(
-				points.getBounds().getTopLeft().getNegated());
-		
-		/*
-		 * Work out the scaling factors that'll make the polygon fit inside
-		 * the layout.
-		 * 
-		 * (Note that adjustedBounds.width and adjustedBounds.height are
-		 * both off-by-one - getBounds() prefers < to <=, it seems.)
-		 */
-		Rectangle adjustedBounds = new Rectangle(fittedPolygon.getBounds());
-		double xScale = rectangle.width() - 2,
-		       yScale = rectangle.height() - 2;
-		xScale /= adjustedBounds.width() - 1;
-		yScale /= adjustedBounds.height() - 1;
-		
-		/*
-		 * Scale all of the points.
-		 */
-		Point tmp = Point.SINGLETON;
-		for (int i = 0; i < fittedPolygon.size(); i++) {
-			fittedPolygon.getPoint(tmp, i).
-				scale(xScale, yScale).translate(1, 1);
-			fittedPolygon.setPoint(tmp, i);
-		}
-	}
-	
-	private PointList fittedPolygon = null;
-	
-	/**
-	 * Lazily creates and returns the <i>fitted polygon</i> for this Node (a
-	 * copy of its {@link Control}'s polygon, scaled to fit inside this Node's
-	 * layout).
-	 * 
-	 * <p>A call to {@link #setControl} or {@link #setLayout} will invalidate
-	 * the fitted polygon.
-	 * @return the fitted polygon
-	 */
-	public PointList getFittedPolygon() {
-		if (fittedPolygon == null)
-			if (getControl().getShape() == Shape.POLYGON)
-				fitPolygon();
-		return fittedPolygon;
 	}
 
 	@Override
