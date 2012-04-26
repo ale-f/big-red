@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
@@ -210,5 +211,51 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		listeners = null;
 		
 		file = null;
+	}
+	
+	private Map<String, Object> extendedData;
+	
+	/**
+	 * Retrieves a piece of extended data from this object.
+	 * @param key a key
+	 * @return an {@link Object}, or <code>null</code> if the key has no
+	 * associated data
+	 */
+	public Object getExtendedData(String key) {
+		return (extendedData != null ? extendedData.get(key) : null);
+	}
+	
+	/**
+	 * Adds a piece of extended data to this object.
+	 * @param key a key
+	 * @param value an {@link Object} to associate with the key, or
+	 * <code>null</code> to remove an existing association
+	 */
+	public void setExtendedData(String key, Object value) {
+		if (key == null)
+			return;
+		if (value == null) {
+			if (extendedData == null)
+				return;
+			if (extendedData.remove(key) != null) {
+				if (extendedData.isEmpty())
+					extendedData = null;
+			}
+		} else {
+			if (extendedData == null)
+				extendedData = new HashMap<String, Object>();
+			extendedData.put(key, value);
+		}
+	}
+	
+	/**
+	 * Overwrites this object's extended data with the data from another
+	 * object.
+	 * @param m a {@link ModelObject} (can be <code>null</code>)
+	 */
+	public void setExtendedDataFrom(ModelObject m) {
+		if (m != null && m.extendedData != null) {
+			extendedData = new HashMap<String, Object>(m.extendedData);
+		} else extendedData = null;
 	}
 }
