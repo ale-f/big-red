@@ -75,11 +75,18 @@ public abstract class XMLSaver extends Saver {
 		return defaultNamespace;
 	}
 	
+	private boolean defNSMatch(String nsURI) {
+		return useDefaultNamespace && defaultNamespace != null &&
+				nsURI != null && defaultNamespace.equals(nsURI);
+	}
+	
+	private String unqualifyName(String name) {
+		return name.substring(name.indexOf(':') + 1);
+	}
+	
 	protected Element newElement(String nsURI, String qualifiedName) {
-		if (useDefaultNamespace && defaultNamespace != null && nsURI != null &&
-				defaultNamespace.equals(nsURI)) {
-			return doc.createElementNS(null,
-					qualifiedName.substring(qualifiedName.indexOf(':') + 1));
+		if (defNSMatch(nsURI)) {
+			return doc.createElementNS(nsURI, unqualifyName(qualifiedName));
 		} else return doc.createElementNS(nsURI, qualifiedName);
 	}
 	
@@ -164,11 +171,14 @@ public abstract class XMLSaver extends Saver {
 	 * Creates a {@link Document} (with no {@link DocumentType}) using the
 	 * shared DOM implementation.
 	 * @param ns the namespace URI of the document to create
-	 * @param qualifiedName the qualified name of the root element
+	 * @param qName the qualified name of the root element
 	 * @return a new {@link Document}
 	 */
-	protected static Document createDocument(String ns, String qualifiedName) {
-		return getImplementation().createDocument(ns, qualifiedName, null);
+	protected Document createDocument(String ns, String qName) {
+		DOMImplementation impl = getImplementation();
+		if (defNSMatch(ns)) {
+			return impl.createDocument(ns, unqualifyName(qName), null);
+		} else return impl.createDocument(ns, qName, null);
 	}
 
 	/**
