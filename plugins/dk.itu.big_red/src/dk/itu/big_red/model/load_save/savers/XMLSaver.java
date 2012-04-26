@@ -43,8 +43,44 @@ public abstract class XMLSaver extends Saver {
 		return (super.canExport() && doc != null);
 	}
 	
+	public static final String OPTION_DEFAULT_NS = "XMLSaverDefaultNS";
+	private boolean useDefaultNamespace = false;
+	
+	{
+		addOption(OPTION_DEFAULT_NS, "Use a default namespace",
+			"Don't use a namespace for the basic document elements.");
+	}
+	
+	@Override
+	protected Object getOption(String id) {
+		if (OPTION_DEFAULT_NS.equals(id)) {
+			return useDefaultNamespace;
+		} else return super.getOption(id);
+	}
+	
+	@Override
+	protected void setOption(String id, Object value) {
+		if (OPTION_DEFAULT_NS.equals(id)) {
+			useDefaultNamespace = (Boolean)value;
+		} else super.setOption(id, value);
+	}
+	
+	private String defaultNamespace = null;
+	
+	protected void setDefaultNamespace(String defaultNamespace) {
+		this.defaultNamespace = defaultNamespace;
+	}
+	
+	protected String getDefaultNamespace() {
+		return defaultNamespace;
+	}
+	
 	protected Element newElement(String nsURI, String qualifiedName) {
-		return doc.createElementNS(nsURI, qualifiedName);
+		if (useDefaultNamespace && defaultNamespace != null && nsURI != null &&
+				defaultNamespace.equals(nsURI)) {
+			return doc.createElementNS(null,
+					qualifiedName.substring(qualifiedName.indexOf(':') + 1));
+		} else return doc.createElementNS(nsURI, qualifiedName);
 	}
 	
 	private static TransformerFactory tf;
