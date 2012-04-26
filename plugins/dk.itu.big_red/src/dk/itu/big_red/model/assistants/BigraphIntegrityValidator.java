@@ -22,8 +22,8 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.model.names.INamePolicy;
 import dk.itu.big_red.model.names.INamespace;
+import dk.itu.big_red.model.names.policies.INamePolicy;
 
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that

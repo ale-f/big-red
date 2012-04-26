@@ -22,8 +22,8 @@ import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.names.INamespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
-import dk.itu.big_red.model.names.PositiveIntegerNamePolicy;
-import dk.itu.big_red.model.names.StringNamePolicy;
+import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
+import dk.itu.big_red.model.names.policies.StringNamePolicy;
 
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link

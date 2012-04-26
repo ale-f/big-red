@@ -32,7 +32,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.model.names.INamePolicy;
+import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.utilities.resources.Project;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;

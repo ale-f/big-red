@@ -15,9 +15,9 @@ import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.names.BooleanNamePolicy;
-import dk.itu.big_red.model.names.INamePolicy;
-import dk.itu.big_red.model.names.LongNamePolicy;
+import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
+import dk.itu.big_red.model.names.policies.INamePolicy;
+import dk.itu.big_red.model.names.policies.LongNamePolicy;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;

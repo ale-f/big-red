@@ -12,7 +12,7 @@ import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.interfaces.IControl;
-import dk.itu.big_red.model.names.INamePolicy;
+import dk.itu.big_red.model.names.policies.INamePolicy;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from

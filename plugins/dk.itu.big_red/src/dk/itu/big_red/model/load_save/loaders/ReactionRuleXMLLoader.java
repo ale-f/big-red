@@ -23,8 +23,8 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.names.INamespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
-import dk.itu.big_red.model.names.PositiveIntegerNamePolicy;
-import dk.itu.big_red.model.names.StringNamePolicy;
+import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
+import dk.itu.big_red.model.names.policies.StringNamePolicy;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;

@@ -14,7 +14,7 @@ import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
-import dk.itu.big_red.model.names.INamePolicy;
+import dk.itu.big_red.model.names.policies.INamePolicy;
 
 /**
  * 

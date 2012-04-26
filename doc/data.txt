@@ -5,8 +5,8 @@ Big Red's bigraph model has some early and limited support for data in the
 form of "parameters", validated strings associated with Nodes.
 
 Every Control can optionally have a single "parameter policy", which is a
-class implementing the dk.itu.big_red.model.names.INamePolicy interface.
-Parameter policies do three things:
+class implementing the dk.itu.big_red.model.names.policies.INamePolicy
+interface. Parameter policies do three things:
 
 	* they check that parameter values are valid;
 	* they normalise parameter values into a canonical form; and

@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.names;
 
+import dk.itu.big_red.model.names.policies.INamePolicy;
+
 /**
  * Classes implementing <strong>INamespace</strong> are <i>namespaces</i>,
  * maps from {@link String}s to another type.

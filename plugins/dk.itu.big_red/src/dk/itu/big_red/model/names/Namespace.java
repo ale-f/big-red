@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.names;
 
+import dk.itu.big_red.model.names.policies.INamePolicy;
+
 public abstract class Namespace<T> implements INamespace<T> {
 	@Override
 	public boolean has(String key) {
