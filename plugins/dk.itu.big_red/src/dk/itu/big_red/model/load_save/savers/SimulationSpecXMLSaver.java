@@ -8,9 +8,14 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
+
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 
 public class SimulationSpecXMLSaver extends XMLSaver {
+	public SimulationSpecXMLSaver() {
+		setDefaultNamespace(SPEC);
+	}
+	
 	@Override
 	public SimulationSpec getModel() {
 		return (SimulationSpec)super.getModel();
@@ -25,7 +30,7 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(createDocument(IRedNamespaceConstants.SPEC, "spec:spec"));
+		setDocument(createDocument(SPEC, "spec:spec"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -39,19 +44,16 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 		IContainer ssContainer = (ssFile != null ? ssFile.getParent() : null);
 		
 		appendChildIfNotNull(e,
-			processOrReference(
-				newElement(IRedNamespaceConstants.SPEC, "spec:signature"),
+			processOrReference(newElement(SPEC, "spec:signature"),
 				ssContainer, ss.getSignature(), SignatureXMLSaver.class));
 		
 		for (ReactionRule rr : ss.getRules())
 			appendChildIfNotNull(e,
-				processOrReference(
-					newElement(IRedNamespaceConstants.SPEC, "spec:rule"),
+				processOrReference(newElement(SPEC, "spec:rule"),
 					ssContainer, rr, ReactionRuleXMLSaver.class));
 		
 		appendChildIfNotNull(e,
-			processOrReference(
-				newElement(IRedNamespaceConstants.SPEC, "spec:model"),
+			processOrReference(newElement(SPEC, "spec:model"),
 				ssContainer, ss.getModel(), BigraphXMLSaver.class));
 		
 		return e;

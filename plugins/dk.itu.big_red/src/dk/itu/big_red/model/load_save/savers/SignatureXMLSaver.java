@@ -11,12 +11,18 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.model.names.policies.LongNamePolicy;
 
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
+
 public class SignatureXMLSaver extends XMLSaver {
+	public SignatureXMLSaver() {
+		setDefaultNamespace(SIGNATURE);
+	}
+	
 	@Override
 	public Signature getModel() {
 		return (Signature)super.getModel();
@@ -31,7 +37,7 @@ public class SignatureXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		setDocument(createDocument(IRedNamespaceConstants.SIGNATURE, "signature:signature"));
+		setDocument(createDocument(SIGNATURE, "signature:signature"));
 		processObject(getDocumentElement(), getModel());
 		finish();
 	}
@@ -42,13 +48,11 @@ public class SignatureXMLSaver extends XMLSaver {
 			throw new SaveFailedException(s_ + " isn't a Signature");
 		Signature s = (Signature)s_;
 		
-		applyAttributes(e,
-			"xmlns:big-red", IRedNamespaceConstants.BIG_RED,
-			"xmlns:signature", IRedNamespaceConstants.SIGNATURE);
-
+		applyAttributes(e, "xmlns:big-red", BIG_RED);
+		
 		for (Control c : s.getControls())
 			appendChildIfNotNull(e,
-				processControl(newElement(IRedNamespaceConstants.SIGNATURE, "signature:control"), c));
+				processControl(newElement(SIGNATURE, "signature:control"), c));
 		return e;
 	}
 	
@@ -66,13 +70,12 @@ public class SignatureXMLSaver extends XMLSaver {
 		
 		for (PortSpec p : c.getPorts())
 			e.appendChild(processPort(
-				newElement(IRedNamespaceConstants.SIGNATURE, "signature:port"), p));
+				newElement(SIGNATURE, "signature:port"), p));
 		
 		appendChildIfNotNull(e, shapeToElement(getDocument(), c));
 		appendChildIfNotNull(e,
 				BigraphXMLSaver.appearanceToElement(getDocument(), c));
-		e.setAttributeNS(IRedNamespaceConstants.BIG_RED,
-				"big-red:label", c.getLabel());
+		e.setAttributeNS(BIG_RED, "big-red:label", c.getLabel());
 		
 		return e;
 	}
@@ -83,7 +86,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		
 		e.appendChild(
 			applyAttributes(
-				newElement(IRedNamespaceConstants.BIG_RED, "big-red:port-appearance"),
+				newElement(BIG_RED, "big-red:port-appearance"),
 				"segment", p.getSegment(),
 				"distance", p.getDistance()));
 		
@@ -91,9 +94,7 @@ public class SignatureXMLSaver extends XMLSaver {
 	}
 
 	private static Element shapeToElement(Document doc, Control c) {
-		Element aE =
-			doc.createElementNS(IRedNamespaceConstants.BIG_RED,
-					"big-red:shape");
+		Element aE = doc.createElementNS(BIG_RED, "big-red:shape");
 	
 		XMLSaver.applyAttributes(aE,
 				"shape", (c.getShape() == Shape.POLYGON ? "polygon" : "oval"));
@@ -102,7 +103,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		if (pl != null) {
 			for (int i = 0; i < pl.size(); i++) {
 				Point p = pl.getPoint(i);
-				Element pE = doc.createElement("big-red:point");
+				Element pE = doc.createElementNS(BIG_RED, "big-red:point");
 				XMLSaver.applyAttributes(pE,
 						"x", p.x,
 						"y", p.y);

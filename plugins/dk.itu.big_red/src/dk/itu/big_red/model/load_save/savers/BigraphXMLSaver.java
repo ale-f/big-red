@@ -36,6 +36,10 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
  *
  */
 public class BigraphXMLSaver extends XMLSaver {
+	public BigraphXMLSaver() {
+		setDefaultNamespace(BIGRAPH);
+	}
+	
 	@Override
 	public Bigraph getModel() {
 		return (Bigraph)super.getModel();
