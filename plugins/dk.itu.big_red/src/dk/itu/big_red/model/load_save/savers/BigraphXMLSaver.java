@@ -3,7 +3,6 @@ package dk.itu.big_red.model.load_save.savers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -91,11 +90,9 @@ public class BigraphXMLSaver extends XMLSaver {
 		
 		if (exportAppearance)
 			applyAttributes(getDocumentElement(), "xmlns:big-red", BIG_RED);
-		IFile modelFile = getModel().getFile();
 		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(BIGRAPH, "bigraph:signature"),
-				(modelFile != null ? modelFile.getParent() : null),
 				obj.getSignature(), SignatureXMLSaver.class));
 		
 		ArrayList<Element>

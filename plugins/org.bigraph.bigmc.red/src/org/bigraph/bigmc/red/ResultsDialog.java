@@ -191,12 +191,12 @@ public class ResultsDialog extends TitleAreaDialog {
 			if (d.open() == Dialog.OK) {
 				IFile f = ResourcesPlugin.getWorkspace().getRoot().
 						getFile(d.getResult());
-				canvas.getContents().setFile(f);
 				IOAdapter io = new IOAdapter();
 				setErrorMessage(null);
 				try {
-					Saver.forContentType(Bigraph.CONTENT_TYPE).setModel(b).
-						setOutputStream(io.getOutputStream()).exportObject();
+					Saver.forContentType(Bigraph.CONTENT_TYPE).setFile(f).
+						setModel(b).setOutputStream(io.getOutputStream()).
+						exportObject();
 				} catch (SaveFailedException e) {
 					setErrorMessage(e.getMessage());
 					return;

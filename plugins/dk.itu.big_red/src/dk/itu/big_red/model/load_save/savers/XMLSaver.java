@@ -118,11 +118,11 @@ public abstract class XMLSaver extends Saver {
 		throws SaveFailedException;
 	
 	protected Element processOrReference(
-		Element e, IContainer relativeTo, ModelObject object,
-		Class<? extends XMLSaver> klass) {
+		Element e, ModelObject object, Class<? extends XMLSaver> klass) {
 		if (e == null || object == null) {
 			return null;
-		} else if (object.getFile() != null) {
+		} else if (getFile() != null && object.getFile() != null) {
+			IContainer relativeTo = getFile().getParent();
 			e.setAttributeNS(null,
 				"src",
 					object.getFile().getFullPath().

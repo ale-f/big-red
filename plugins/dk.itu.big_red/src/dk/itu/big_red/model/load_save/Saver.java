@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
@@ -92,6 +93,17 @@ public abstract class Saver {
 	public Saver setOutputStream(OutputStream os) {
 		target = os;
 		return this;
+	}
+	
+	private IFile file;
+	
+	public Saver setFile(IFile file) {
+		this.file = file;
+		return this;
+	}
+	
+	public IFile getFile() {
+		return file;
 	}
 	
 	/**

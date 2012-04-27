@@ -64,10 +64,11 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 	protected static void createBigraph(IFile sigFile, IFile bigFile)
 			throws LoadFailedException, SaveFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
-		Bigraph b = new Bigraph().setFile(bigFile);
+		Bigraph b = new Bigraph();
 		
 		b.setSignature((Signature)Loader.fromFile(sigFile));
-		new BigraphXMLSaver().setModel(b).setOutputStream(io.getOutputStream()).exportObject();
+		new BigraphXMLSaver().setFile(bigFile).setModel(b).
+			setOutputStream(io.getOutputStream()).exportObject();
 		bigFile.setContents(io.getInputStream(), 0, null);
 	}
 }

@@ -83,9 +83,10 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	}
 	
 	@Override
-	public void doActualSave(OutputStream os) throws SaveFailedException {
-    	new SimulationSpecXMLSaver().setModel(getModel()).setOutputStream(os).
-    		exportObject();
+	public void doActualSave(IFile f, OutputStream os)
+			throws SaveFailedException {
+    	new SimulationSpecXMLSaver().setModel(getModel()).setFile(f).
+    		setOutputStream(os).exportObject();
     	setSavePoint();
 	}
 
