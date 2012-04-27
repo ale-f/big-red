@@ -215,7 +215,7 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 							getExtendedData(BigraphXMLLoader.FILE);
 					if (o instanceof IFile) {
 						return ((IFile)o).getProjectRelativePath().toString();
-					} else return null;
+					} else return "(embedded rule)";
 				}
 		});
 		rules.getList().setLayoutData(
