@@ -22,7 +22,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -34,6 +33,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.views.navigator.ResourceComparator;
 
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
@@ -222,7 +222,8 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 						} else return false;
 					}
 				});
-				t.setComparator(new ViewerComparator());
+				t.setComparator(
+						new ResourceComparator(ResourceComparator.NAME));
 				t.setLabelProvider(
 						WorkbenchLabelProvider.
 							getDecoratingWorkbenchLabelProvider());
