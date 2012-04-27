@@ -31,7 +31,10 @@ public class SignatureXMLLoader extends XMLLoader {
 		try {
 			Document d =
 				validate(parse(source), "resources/schema/signature.xsd");
-			return makeObject(d.getDocumentElement()).setFile(getFile());
+			Signature s = makeObject(d.getDocumentElement());
+			s.setFile(getFile());
+			s.setExtendedData(BigraphXMLLoader.FILE, getFile());
+			return s;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}

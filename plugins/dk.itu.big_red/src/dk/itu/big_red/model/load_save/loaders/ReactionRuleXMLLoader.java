@@ -38,7 +38,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		try {
 			Document d =
 					validate(parse(source), "resources/schema/rule.xsd");
-			return makeObject(d.getDocumentElement()).setFile(getFile());
+			ReactionRule rr = makeObject(d.getDocumentElement());
+			rr.setFile(getFile());
+			rr.setExtendedData(BigraphXMLLoader.FILE, getFile());
+			return rr;
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
 				throw (LoadFailedException)e;
