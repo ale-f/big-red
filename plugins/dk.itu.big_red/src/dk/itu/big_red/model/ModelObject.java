@@ -211,6 +211,11 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		listeners = null;
 		
 		file = null;
+		
+		if (extendedData != null) {
+			extendedData.clear();
+			extendedData = null;
+		}
 	}
 	
 	private Map<String, Object> extendedData;
@@ -253,7 +258,7 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	 * object.
 	 * @param m a {@link ModelObject} (can be <code>null</code>)
 	 */
-	public void setExtendedDataFrom(ModelObject m) {
+	protected void setExtendedDataFrom(ModelObject m) {
 		if (m != null && m.extendedData != null) {
 			extendedData = new HashMap<String, Object>(m.extendedData);
 		} else extendedData = null;
