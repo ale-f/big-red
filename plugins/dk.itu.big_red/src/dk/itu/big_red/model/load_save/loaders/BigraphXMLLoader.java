@@ -65,7 +65,6 @@ public class BigraphXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(source), "resources/schema/bigraph.xsd");
 			Bigraph b = makeObject(d.getDocumentElement());
-			b.setFile(getFile());
 			b.setExtendedData(FILE, getFile());
 			return b;
 		} catch (LoadFailedException e) {
@@ -135,7 +134,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		return bigraph;
 	}
 	
-	static final String FILE = "ExtendedData.ModelObject.File";
+	public static final String FILE = "ExtendedData.ModelObject.File";
 	
 	private void processContainer(Element e, Container model) throws LoadFailedException {
 		for (Element i : getChildElements(e))

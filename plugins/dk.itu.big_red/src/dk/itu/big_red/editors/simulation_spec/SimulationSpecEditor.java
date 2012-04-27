@@ -49,6 +49,7 @@ import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
@@ -124,12 +125,18 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		uiUpdateInProgress = true;
 		
 		Signature s = model.getSignature();
-		if (s != null)
-			signatureSelector.setResource(s.getFile());
+		if (s != null) {
+			Object o = s.getExtendedData(BigraphXMLLoader.FILE);
+			if (o instanceof IFile)
+				signatureSelector.setResource((IFile)o);
+		}
 		
 		Bigraph b = model.getModel();
-		if (b != null)
-			modelSelector.setResource(b.getFile());
+		if (b != null) {
+			Object o = b.getExtendedData(BigraphXMLLoader.FILE);
+			if (o instanceof IFile)
+				modelSelector.setResource((IFile)o);
+		}
 		
 		uiUpdateInProgress = false;
 	}
@@ -197,14 +204,18 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		UI.chain(new Label(self, SWT.RIGHT)).text("Reaction rules:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+		UI.chain(new Label(self, SWT.RIGHT)).text("Reaction rules:").done().
+			setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		rules = new ListViewer(self);
 		UI.setProviders(rules, new SimulationSpecRRContentProvider(rules),
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((ModelObject)element).getFile().
-							getProjectRelativePath().toString();
+					Object o = ((ModelObject)element).
+							getExtendedData(BigraphXMLLoader.FILE);
+					if (o instanceof IFile) {
+						return ((IFile)o).getProjectRelativePath().toString();
+					} else return null;
 				}
 		});
 		rules.getList().setLayoutData(
@@ -338,10 +349,14 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			uiUpdateInProgress = true;
 			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
 				Signature s = (Signature)newValue;
-				signatureSelector.setResource((s != null ? s.getFile() : null));
+				Object o = s.getExtendedData(BigraphXMLLoader.FILE);
+				signatureSelector.setResource(
+						o instanceof IFile ? (IFile)o : null);
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
 				Bigraph b = (Bigraph)newValue;
-				modelSelector.setResource((b != null ? b.getFile() : null));
+				Object o = b.getExtendedData(BigraphXMLLoader.FILE);
+				modelSelector.setResource(
+						o instanceof IFile ? (IFile)o : null);
 			}
 		} finally {
 			uiUpdateInProgress = false;

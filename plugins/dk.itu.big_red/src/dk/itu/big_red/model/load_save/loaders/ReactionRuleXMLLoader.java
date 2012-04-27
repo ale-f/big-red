@@ -39,7 +39,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(source), "resources/schema/rule.xsd");
 			ReactionRule rr = makeObject(d.getDocumentElement());
-			rr.setFile(getFile());
 			rr.setExtendedData(BigraphXMLLoader.FILE, getFile());
 			return rr;
 		} catch (Exception e) {
@@ -62,7 +61,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	
 	private Bigraph makeRedex(Element e) throws LoadFailedException {
 		BigraphXMLLoader im = new BigraphXMLLoader().setFile(getFile());
-		return im.makeObject(e).setFile(getFile());
+		return im.makeObject(e);
 	}
 	
 	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();

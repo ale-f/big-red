@@ -202,16 +202,15 @@ public class SimulationSpecBigMCSaver extends Saver {
 		return (i.hasNext() == j.hasNext());
 	}
 	
+	public static int i = 0;
+	
 	private void processRule(ReactionRule r) throws SaveFailedException {
 		if (!iteratorsMatched(
 				r.getRedex().getRoots().iterator(),
 				r.getReactum().getRoots().iterator()))
 			throw new SaveFailedException("Bananas");
 		if (namedRules)
-			write("%rule " +
-			      normaliseName(
-			    		  r.getFile().getProjectRelativePath().toString()) +
-			      " ");
+			write("%rule r" + (i++) + " "); /* XXX FIXME */
 		processBigraph(r.getRedex());
 		write(" -> ");
 		processBigraph(r.getReactum());

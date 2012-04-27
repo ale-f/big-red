@@ -180,7 +180,8 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		IResourceDelta specificDelta =
-			Project.getSpecificDelta(event.getDelta(), getModel().getFile());
+			Project.getSpecificDelta(event.getDelta(),
+					((FileEditorInput)getEditorInput()).getFile());
 		if (specificDelta != null && !isSaving())
 			;
 	}

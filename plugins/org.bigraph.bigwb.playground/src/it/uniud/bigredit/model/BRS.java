@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 
@@ -292,13 +291,6 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		}*/
 		
 		
-	}
-	
-
-	@Override
-	public IFile getFile() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 

@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.services.IDisposable;
 
 import dk.itu.big_red.model.assistants.IPropertyProvider;
@@ -136,17 +135,6 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		return clone(null);
 	}
 	
-	private IFile file = null;
-	
-	public IFile getFile() {
-		return file;
-	}
-	
-	public ModelObject setFile(IFile file) {
-		this.file = file;
-		return this;
-	}
-	
 	private String comment = null;
 	
 	/**
@@ -209,8 +197,6 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		for (PropertyChangeListener i : pls)
 			listeners.removePropertyChangeListener(i);
 		listeners = null;
-		
-		file = null;
 		
 		if (extendedData != null) {
 			extendedData.clear();

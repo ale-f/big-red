@@ -24,7 +24,6 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(source), "resources/schema/spec.xsd");
 			SimulationSpec ss = makeObject(d.getDocumentElement());
-			ss.setFile(getFile());
 			ss.setExtendedData(BigraphXMLLoader.FILE, getFile());
 			return ss;
 		} catch (Exception e) {

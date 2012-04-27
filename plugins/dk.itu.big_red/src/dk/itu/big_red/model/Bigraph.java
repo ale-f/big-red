@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -132,7 +131,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			m = new HashMap<ModelObject, ModelObject>();
 		Bigraph b = (Bigraph)newInstance();
 		
-		b.setFile(getFile());
 		b.setSignature(getSignature().clone(m));
 		
 		/* ModelObject.clone */
@@ -472,10 +470,5 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		signature = null;
 		
 		super.dispose();
-	}
-	
-	@Override
-	public Bigraph setFile(IFile file) {
-		return (Bigraph)super.setFile(file);
 	}
 }

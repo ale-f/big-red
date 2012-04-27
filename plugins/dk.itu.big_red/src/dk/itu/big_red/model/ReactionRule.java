@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IFile;
-
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Container.ChangeAddChild;
@@ -38,9 +36,6 @@ public class ReactionRule extends ModelObject {
 		
 		reactum = null;
 		redexToReactum.clear();
-		
-		if (redex != null)
-			redex.setFile(getFile());
 	}
 
 	public Bigraph getReactum() {
@@ -232,7 +227,6 @@ public class ReactionRule extends ModelObject {
 			/* cloned redex to cloned reactum */
 			CrCR = rr.getRedexToReactumMap();
 		
-		rr.setFile(getFile());
 		rr.setRedex(getRedex().clone(rCr));
 		
 		try {
@@ -288,12 +282,5 @@ public class ReactionRule extends ModelObject {
 		changes.clear();
 		
 		super.dispose();
-	}
-	
-	@Override
-	public ReactionRule setFile(IFile file) {
-		if (redex != null)
-			redex.setFile(file);
-		return (ReactionRule)super.setFile(file);
 	}
 }

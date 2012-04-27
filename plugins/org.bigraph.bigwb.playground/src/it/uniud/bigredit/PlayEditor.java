@@ -2,6 +2,8 @@ package it.uniud.bigredit;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
@@ -41,12 +43,8 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-
-import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
-import dk.itu.big_red.editors.bigraph.BigraphEditorOutlinePage;
 import dk.itu.big_red.editors.bigraph.ModelFactory;
 import dk.itu.big_red.editors.bigraph.NodeFactory;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -69,7 +67,6 @@ import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 
 
-import it.uniud.bigredit.editparts.BigreditRootEditPart;
 import it.uniud.bigredit.editparts.PartFactory;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
@@ -88,6 +85,7 @@ public class PlayEditor extends BigraphEditor {
 		super.dispose();
 	}
 	
+	@Override
 	protected void configureGraphicalViewer() {
     	getGraphicalViewer().getControl().setBackground(
 				ColorConstants.listBackground);
@@ -175,7 +173,8 @@ public class PlayEditor extends BigraphEditor {
 		}
 	}
     
-    protected void createGraphicalViewer(Composite parent) {
+    @Override
+	protected void createGraphicalViewer(Composite parent) {
 		GraphicalViewer viewer = new ScrollingGraphicalViewer();
 		viewer.createControl(parent);
 		setGraphicalViewer(viewer);
@@ -297,10 +296,12 @@ public class PlayEditor extends BigraphEditor {
 	
 	private GraphicalViewer graphicalViewer;
 	
+	@Override
 	protected GraphicalViewer getGraphicalViewer() {
 		return graphicalViewer;
 	}
 	
+	@Override
 	protected void setGraphicalViewer(GraphicalViewer viewer) {
 		getEditDomain().addViewer(viewer);
 		graphicalViewer = viewer;
@@ -308,6 +309,7 @@ public class PlayEditor extends BigraphEditor {
 	
 	private SelectionSynchronizer selectionSynchronizer;
 	
+	@Override
 	protected SelectionSynchronizer getSelectionSynchronizer() {
 		if (selectionSynchronizer == null)
 			selectionSynchronizer = new SelectionSynchronizer();
@@ -315,9 +317,10 @@ public class PlayEditor extends BigraphEditor {
 	}
 
 	@Override
-	protected void doActualSave(OutputStream os) throws SaveFailedException {
-		new BigraphXMLSaver().setModel(getBRSModel()).setOutputStream(os).
-			exportObject();
+	protected void doActualSave(IFile f, OutputStream os)
+			throws SaveFailedException {
+		new BigraphXMLSaver().setModel(getBRSModel()).setFile(f).
+			setOutputStream(os).exportObject();
 		
 		getCommandStack().markSaveLocation();
 		firePropertyChange(IEditorPart.PROP_DIRTY);

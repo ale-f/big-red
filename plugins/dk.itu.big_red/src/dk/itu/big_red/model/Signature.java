@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
-
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Control.ChangeAddPort;
@@ -101,7 +99,6 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	@Override
 	public Signature clone(Map<ModelObject, ModelObject> m) {
 		Signature s = (Signature)super.clone(m);
-		s.setFile(getFile());
 		
 		for (Control c : getControls())
 			s.addControl(c.clone(m));
@@ -245,11 +242,6 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		if (PROPERTY_CONTROL.equals(name)) {
 			return getControls();
 		} else return super.getProperty(name);
-	}
-	
-	@Override
-	public Signature setFile(IFile file) {
-		return (Signature)super.setFile(file);
 	}
 	
 	public ChangeAddControl changeAddControl(Control control) {
