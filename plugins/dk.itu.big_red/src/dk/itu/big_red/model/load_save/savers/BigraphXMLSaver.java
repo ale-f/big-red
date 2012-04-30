@@ -180,13 +180,9 @@ public class BigraphXMLSaver extends XMLSaver {
 	
 	private Element processPoint(Element e, Point p) throws SaveFailedException {
 		Link link = p.getLink();
-		applyAttributes(e,
-			"name", p.getName());
-		if (link != null) {
-			applyAttributes(
-				e,
-				"link", link.getName());
-		}
+		applyAttributes(e, "name", p.getName());
+		if (link != null)
+			applyAttributes(e, "link", link.getName());
 		return e;
 	}
 		
@@ -206,7 +202,7 @@ public class BigraphXMLSaver extends XMLSaver {
 	 * @param doc the {@link Document} that will contain the tag 
 	 * @param o a model object
 	 */
-	protected static Element appearanceToElement(Document doc, Object o) {
+	protected static Element appearanceToElement(Document doc, ModelObject o) {
 		if (o instanceof Bigraph)
 			return null;
 		
@@ -229,11 +225,10 @@ public class BigraphXMLSaver extends XMLSaver {
 					new Colour(c.getOutlineColour()).toHexString());
 		}
 		
-		if (o instanceof ModelObject) {
+		String comment = ExtendedDataUtilities.getComment(o);
+		if (comment != null) {
 			alive = true;
-			String comment = ExtendedDataUtilities.getComment((ModelObject)o);
-			if (comment != null)
-				applyAttributes(aE, "comment", comment);
+			applyAttributes(aE, "comment", comment);
 		}
 		
 		return (alive ? aE : null);
