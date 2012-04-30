@@ -19,6 +19,7 @@ import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.PortSpec.ChangeDistance;
 import dk.itu.big_red.model.PortSpec.ChangeSegment;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
@@ -112,11 +113,21 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		}
 	}
 	
+	public void addControl(PropertyScratchpad context, Control c) {
+		context.<Control>getModifiableList(this, PROPERTY_CONTROL).add(c);
+		context.setProperty(c, Control.PROPERTY_SIGNATURE, this);
+	}
+	
 	protected void removeControl(Control m) {
 		if (controls.remove(m)) {
 			m.setSignature(null);
 			firePropertyChange(PROPERTY_CONTROL, m, null);
 		}
+	}
+	
+	public void removeControl(PropertyScratchpad context, Control c) {
+		context.<Control>getModifiableList(this, PROPERTY_CONTROL).remove(c);
+		context.setProperty(c, Control.PROPERTY_SIGNATURE, null);
 	}
 	
 	public Control getControl(String name) {
