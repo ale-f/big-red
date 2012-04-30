@@ -187,7 +187,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			checkEligibility(c.getCreator());
 		} else if (b instanceof Colourable.ChangeOutlineColour ||
 				b instanceof Colourable.ChangeFillColour ||
-				b instanceof ModelObject.ChangeComment) {
+				b instanceof ModelObject.ChangeComment ||
+				b instanceof ModelObject.ChangeExtendedData) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;

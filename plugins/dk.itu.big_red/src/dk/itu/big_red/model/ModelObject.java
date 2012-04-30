@@ -69,6 +69,28 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		}
 	}
 	
+	public class ChangeExtendedData extends ModelObjectChange {
+		public String key;
+		public Object newValue;
+		
+		protected ChangeExtendedData(String key, Object newValue) {
+			this.key = key;
+			this.newValue = newValue;
+		}
+		
+		private Object oldValue;
+		
+		@Override
+		public void beforeApply() {
+			oldValue = getCreator().getExtendedData(key);
+		}
+		
+		@Override
+		public Change inverse() {
+			return new ChangeExtendedData(key, oldValue);
+		}
+	}
+	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	/**
@@ -189,6 +211,10 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		return new ChangeComment(comment);
 	}
 	
+	public Change changeExtendedData(String key, Object newValue) {
+		return new ChangeExtendedData(key, newValue);
+	}
+	
 	@Override
 	public void dispose() {
 		comment = null;
@@ -226,18 +252,20 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	public void setExtendedData(String key, Object value) {
 		if (key == null)
 			return;
+		Object oldValue;
 		if (value == null) {
 			if (extendedData == null)
 				return;
-			if (extendedData.remove(key) != null) {
+			if ((oldValue = extendedData.remove(key)) != null) {
 				if (extendedData.isEmpty())
 					extendedData = null;
 			}
 		} else {
 			if (extendedData == null)
 				extendedData = new HashMap<String, Object>();
-			extendedData.put(key, value);
+			oldValue = extendedData.put(key, value);
 		}
+		firePropertyChange(key, oldValue, value);
 	}
 	
 	/**
@@ -259,6 +287,9 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		} else if (c_ instanceof ChangeComment) {
 			ChangeComment c = (ChangeComment)c_;
 			c.getCreator().setComment(c.comment);
+		} else if (c_ instanceof ChangeExtendedData) {
+			ChangeExtendedData c = (ChangeExtendedData)c_;
+			c.getCreator().setExtendedData(c.key, c.newValue);
 		}
 	}
 }
