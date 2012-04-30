@@ -17,7 +17,6 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Signature;
 
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.changes.IChangeValidator;
@@ -236,13 +235,10 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	}
 	
 	
-	private void doChange(Change b) {
-		
-		b.beforeApply();
-		if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b)
-				doChange(c);
-		} else if (b instanceof BRS.ChangeAddChild) {
+	@Override
+	protected void doChange(Change b) {
+		super.doChange(b);
+		if (b instanceof BRS.ChangeAddChild) {
 			BRS.ChangeAddChild c = (BRS.ChangeAddChild)b;
 			((BRS)c.getCreator()).addChild(c.child);
 			//c.child.setName(c.name);

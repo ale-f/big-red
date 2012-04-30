@@ -218,12 +218,10 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		doChange(b);
 	}
 	
-	private void doChange(Change b) {
-		b.beforeApply();
-		if (b instanceof ChangeGroup) {
-			for (Change i : (ChangeGroup)b)
-				doChange(i);
-		} else if (b instanceof ChangeSignature) {
+	@Override
+	protected void doChange(Change b) {
+		super.doChange(b);
+		if (b instanceof ChangeSignature) {
 			setSignature(((ChangeSignature) b).signature);
 		} else if (b instanceof ChangeAddRule) {
 			addRule(((ChangeAddRule) b).rule);

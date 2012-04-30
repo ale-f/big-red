@@ -11,6 +11,7 @@ import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
@@ -187,7 +188,7 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	public ChangeComment changeComment(String comment) {
 		return new ChangeComment(comment);
 	}
-
+	
 	@Override
 	public void dispose() {
 		comment = null;
@@ -248,5 +249,16 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		if (m != null && m.extendedData != null) {
 			extendedData = new HashMap<String, Object>(m.extendedData);
 		} else extendedData = null;
+	}
+	
+	protected void doChange(Change c_) {
+		c_.beforeApply();
+		if (c_ instanceof ChangeGroup) {
+			for (Change c : (ChangeGroup)c_)
+				doChange(c);
+		} else if (c_ instanceof ChangeComment) {
+			ChangeComment c = (ChangeComment)c_;
+			c.getCreator().setComment(c.comment);
+		}
 	}
 }

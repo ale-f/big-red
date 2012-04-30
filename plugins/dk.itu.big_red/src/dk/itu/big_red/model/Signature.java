@@ -22,7 +22,6 @@ import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.interfaces.ISignature;
@@ -153,21 +152,15 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		doChange(b);
 	}
 
-	private void doChange(Change b) {
-		b.beforeApply();
-		if (b instanceof ChangeGroup) {
-			ChangeGroup c = (ChangeGroup)b;
-			for (Change i : c)
-				doChange(i);
-		} else if (b instanceof ChangeFillColour) {
+	@Override
+	protected void doChange(Change b) {
+		super.doChange(b);
+		if (b instanceof ChangeFillColour) {
 			ChangeFillColour c = (ChangeFillColour)b;
 			c.getCreator().setFillColour(c.newColour);
 		} else if (b instanceof ChangeOutlineColour) {
 			ChangeOutlineColour c = (ChangeOutlineColour)b;
 			c.getCreator().setOutlineColour(c.newColour);
-		} else if (b instanceof ChangeComment) {
-			ChangeComment c = (ChangeComment)b;
-			c.getCreator().setComment(c.comment);
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
 			c.getCreator().addControl(c.control);

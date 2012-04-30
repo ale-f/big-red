@@ -392,12 +392,10 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		doChange(b);
 	}
 	
-	private void doChange(Change b) {
-		b.beforeApply();
-		if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b)
-				doChange(c);
-		} else if (b instanceof Point.ChangeConnect) {
+	@Override
+	protected void doChange(Change b) {
+		super.doChange(b);
+		if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			c.link.addPoint(c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
@@ -433,9 +431,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			c.getCreator().setName(
 					getNamespace(getNSI(c.getCreator())).put(
 							c.newName, c.getCreator()));
-		} else if (b instanceof ModelObject.ChangeComment) {
-			ModelObject.ChangeComment c = (ModelObject.ChangeComment)b;
-			c.getCreator().setComment(c.comment);
 		} else if (b instanceof Site.ChangeAlias) {
 			Site.ChangeAlias c = (Site.ChangeAlias)b;
 			c.getCreator().setAlias(c.alias);
