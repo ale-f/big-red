@@ -135,7 +135,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		
 		/* ModelObject.clone */
 		m.put(this, b);
-		b.setComment(getComment());
 		
 		/* Colourable.clone */
 		b.setFillColour(getFillColour().getCopy());

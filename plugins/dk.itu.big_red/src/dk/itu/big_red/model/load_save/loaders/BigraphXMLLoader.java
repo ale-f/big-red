@@ -297,6 +297,6 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		String comment = getAttributeNS(e, BIG_RED, "comment");
 		if (comment != null)
-			cg.add(o.changeComment(comment));
+			cg.add(ExtendedDataUtilities.changeComment(o, comment));
 	}
 }

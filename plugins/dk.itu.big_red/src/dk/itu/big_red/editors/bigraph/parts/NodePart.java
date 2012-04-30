@@ -16,7 +16,6 @@ import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Control.Shape;
 
@@ -62,7 +61,6 @@ public class NodePart extends ContainerPart {
 		super.propertyChange(evt);
 		if (Colourable.PROPERTY_FILL.equals(name) ||
 	        Colourable.PROPERTY_OUTLINE.equals(name) ||
-	        ModelObject.PROPERTY_COMMENT.equals(name) ||
 	        Node.PROPERTY_PARAMETER.equals(name)) {
 	    	refreshVisuals();
 	    }

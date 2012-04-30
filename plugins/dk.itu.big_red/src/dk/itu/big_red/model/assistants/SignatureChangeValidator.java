@@ -13,7 +13,6 @@ import dk.itu.big_red.model.Control.ChangePoints;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
-import dk.itu.big_red.model.ModelObject.ChangeComment;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.PortSpec.ChangeDistance;
 import dk.itu.big_red.model.PortSpec.ChangeSegment;
@@ -63,7 +62,6 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				_tryValidateChange(c);
 		} else if (b instanceof ChangeFillColour ||
 				b instanceof ChangeOutlineColour ||
-				b instanceof ChangeComment ||
 				b instanceof ChangeExtendedData) {
 			/* do nothing */
 		} else if (b instanceof ChangeAddControl) {

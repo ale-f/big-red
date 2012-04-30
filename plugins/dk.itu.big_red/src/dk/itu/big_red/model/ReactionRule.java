@@ -174,14 +174,14 @@ public class ReactionRule extends ModelObject {
 				return null;
 			
 			return reactumEdge.changeReposition();
-		} else if (change instanceof ChangeComment) {
-			ChangeComment ch = (ChangeComment)change;
+		} else if (change instanceof ChangeExtendedData) {
+			ChangeExtendedData ch = (ChangeExtendedData)change;
 			
 			ModelObject reactumObject = oldToNew.get(ch.getCreator());
 			if (reactumObject == null)
 				return null;
 			
-			return reactumObject.changeComment(ch.comment);
+			return reactumObject.changeExtendedData(ch.key, ch.newValue);
 		} else if (change instanceof ChangeParameter) {
 			ChangeParameter ch = (ChangeParameter)change;
 			

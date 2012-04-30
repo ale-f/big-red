@@ -6,6 +6,7 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
@@ -230,7 +231,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		
 		if (o instanceof ModelObject) {
 			alive = true;
-			String comment = ((ModelObject)o).getComment();
+			String comment = ExtendedDataUtilities.getComment((ModelObject)o);
 			if (comment != null)
 				applyAttributes(aE, "comment", comment);
 		}

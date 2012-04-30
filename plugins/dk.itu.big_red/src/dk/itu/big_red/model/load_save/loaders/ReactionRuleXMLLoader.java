@@ -200,7 +200,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(type, name).changeComment(comment);
+				c = ExtendedDataUtilities.changeComment(
+						getNamed(type, name), comment);
 			}
 		}
 		return c;

@@ -6,6 +6,7 @@ import org.eclipse.gef.ui.properties.UndoablePropertySheetEntry;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.PropertySheetEntry;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
 import dk.itu.big_red.model.Bigraph;
@@ -16,6 +17,8 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeGroup;
+
+import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.COMMENT;;
 
 public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 	public ChangePropertySheetEntry(CommandStack commandStack) {
@@ -53,7 +56,7 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			
 			if (newValue instanceof String &&
 			    ((String)newValue).length() == 0 &&
-				(propertyID.equals(ModelObject.PROPERTY_COMMENT) ||
+				(COMMENT.equals(propertyID) ||
 				 propertyID.equals(Site.PROPERTY_ALIAS)))
 				newValue = null;
 			
@@ -62,8 +65,9 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			
 			if (propertyID.equals(Layoutable.PROPERTY_NAME)) {
 				cg.add(((Layoutable)j.getModel()).changeName((String)newValue));
-			} else if (propertyID.equals(ModelObject.PROPERTY_COMMENT)) {
-				cg.add(((Layoutable)j.getModel()).changeComment((String)newValue));
+			} else if (COMMENT.equals(propertyID)) {
+				cg.add(ExtendedDataUtilities.changeComment(
+						(ModelObject)j.getModel(), (String)newValue));
 			} else if (propertyID.equals(Colourable.PROPERTY_FILL)) {
 				cg.add(((Colourable)j.getModel()).changeFillColour((Colour)newValue));
 			} else if (propertyID.equals(Colourable.PROPERTY_OUTLINE)) {
