@@ -3,9 +3,35 @@ package dk.itu.big_red.model.names;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 
 public abstract class Namespace<T> implements INamespace<T> {
+	protected abstract T getRaw(String name);
+	protected abstract void putRaw(String name, T value);
+	protected abstract boolean removeRaw(String name);
+	
 	@Override
 	public boolean has(String key) {
 		return (get(key) != null);
+	}
+	
+	@Override
+	public T get(String name) {
+		if ((name = checkName(name)) != null) {
+			return getRaw(name);
+		} else return null;
+	}
+
+	@Override
+	public String put(String name, T value) {
+		if (value != null && (name = checkName(name)) != null && !has(name)) {
+			putRaw(name, value);
+			return name;
+		} else return null;
+	}
+	
+	@Override
+	public boolean remove(String name) {
+		if ((name = checkName(name)) != null) {
+			return removeRaw(name);
+		} else return false;
 	}
 
 	@Override
