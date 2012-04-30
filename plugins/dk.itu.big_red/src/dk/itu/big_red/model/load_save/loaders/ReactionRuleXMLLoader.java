@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.InnerName;
@@ -39,7 +40,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(source), "resources/schema/rule.xsd");
 			ReactionRule rr = makeObject(d.getDocumentElement());
-			rr.setExtendedData(BigraphXMLLoader.FILE, getFile());
+			ExtendedDataUtilities.setFile(rr, getFile());
 			return rr;
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {

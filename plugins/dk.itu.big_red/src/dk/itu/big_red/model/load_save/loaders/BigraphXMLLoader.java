@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
@@ -65,7 +66,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(source), "resources/schema/bigraph.xsd");
 			Bigraph b = makeObject(d.getDocumentElement());
-			b.setExtendedData(FILE, getFile());
+			ExtendedDataUtilities.setFile(b, getFile());
 			return b;
 		} catch (LoadFailedException e) {
 			throw e;
@@ -133,8 +134,6 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		return bigraph;
 	}
-	
-	public static final String FILE = "ExtendedData.ModelObject.File";
 	
 	private void processContainer(Element e, Container model) throws LoadFailedException {
 		for (Element i : getChildElements(e))

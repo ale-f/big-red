@@ -17,10 +17,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 
 public abstract class XMLSaver extends Saver {
 	private Document doc = null;
@@ -121,15 +121,14 @@ public abstract class XMLSaver extends Saver {
 	
 	protected Element processOrReference(
 		Element e, ModelObject object, Class<? extends XMLSaver> klass) {
-		Object o;
+		IFile f;
 		if (e == null || object == null) {
 			return null;
 		} else if (getFile() != null &&
-				(o = object.getExtendedData(BigraphXMLLoader.FILE))
-					instanceof IFile) {
+				(f = ExtendedDataUtilities.getFile(object)) != null) {
 			IContainer relativeTo = getFile().getParent();
 			e.setAttributeNS(null,
-				"src", ((IFile)o).getFullPath().
+				"src", f.getFullPath().
 					makeRelativeTo(relativeTo.getFullPath()).toString());	
 		} else {
 			XMLSaver ex;

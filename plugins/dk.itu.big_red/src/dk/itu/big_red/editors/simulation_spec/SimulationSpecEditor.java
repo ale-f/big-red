@@ -34,6 +34,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
@@ -49,7 +50,6 @@ import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
@@ -126,16 +126,16 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		
 		Signature s = model.getSignature();
 		if (s != null) {
-			Object o = s.getExtendedData(BigraphXMLLoader.FILE);
-			if (o instanceof IFile)
-				signatureSelector.setResource((IFile)o);
+			IFile f = ExtendedDataUtilities.getFile(s);
+			if (f != null)
+				signatureSelector.setResource(f);
 		}
 		
 		Bigraph b = model.getModel();
 		if (b != null) {
-			Object o = b.getExtendedData(BigraphXMLLoader.FILE);
-			if (o instanceof IFile)
-				modelSelector.setResource((IFile)o);
+			IFile f = ExtendedDataUtilities.getFile(b);
+			if (f != null)
+				modelSelector.setResource(f);
 		}
 		
 		uiUpdateInProgress = false;
@@ -211,10 +211,10 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					Object o = ((ModelObject)element).
-							getExtendedData(BigraphXMLLoader.FILE);
-					if (o instanceof IFile) {
-						return ((IFile)o).getProjectRelativePath().toString();
+					IFile f =
+						ExtendedDataUtilities.getFile((ModelObject)element);
+					if (f != null) {
+						return f.getProjectRelativePath().toString();
 					} else return "(embedded rule)";
 				}
 		});
@@ -349,14 +349,12 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			uiUpdateInProgress = true;
 			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
 				Signature s = (Signature)newValue;
-				Object o = s.getExtendedData(BigraphXMLLoader.FILE);
 				signatureSelector.setResource(
-						o instanceof IFile ? (IFile)o : null);
+						ExtendedDataUtilities.getFile(s));
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
 				Bigraph b = (Bigraph)newValue;
-				Object o = b.getExtendedData(BigraphXMLLoader.FILE);
 				modelSelector.setResource(
-						o instanceof IFile ? (IFile)o : null);
+						ExtendedDataUtilities.getFile(b));
 			}
 		} finally {
 			uiUpdateInProgress = false;
