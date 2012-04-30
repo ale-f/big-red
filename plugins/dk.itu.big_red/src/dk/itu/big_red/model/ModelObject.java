@@ -184,8 +184,11 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	
 	@Override
 	public Object getProperty(String name) {
+		Object o;
 		if (PROPERTY_COMMENT.equals(name)) {
 			return getComment();
+		} else if ((o = getExtendedData(name)) != null) {
+			return o;
 		} else return null;
 	}
 	
