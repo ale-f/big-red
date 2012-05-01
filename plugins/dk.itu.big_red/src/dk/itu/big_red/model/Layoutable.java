@@ -7,9 +7,11 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.names.Namespace;
 
 /**
  * All of the objects which can actually appear on a bigraph are instances of
@@ -276,6 +278,15 @@ public abstract class Layoutable extends Colourable {
 		String oldName = this.name;
 		this.name = name;
 		firePropertyChange(PROPERTY_NAME, oldName, name);
+	}
+	
+	public void setName(PropertyScratchpad context, String name) {
+		Namespace<Layoutable> ns =
+				getBigraph(context).getNamespace(Bigraph.getNSI(this));
+		
+		ns.remove(context, getName(context));
+		context.setProperty(this, Layoutable.PROPERTY_NAME, name);
+		ns.put(context, name, this);
 	}
 	
 	public LayoutableChange changeLayout(Rectangle newLayout) {

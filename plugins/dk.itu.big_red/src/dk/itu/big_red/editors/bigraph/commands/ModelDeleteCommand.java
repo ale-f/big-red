@@ -9,7 +9,7 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.assistants.BigraphScratchpad;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class ModelDeleteCommand extends ChangeCommand {
@@ -37,12 +37,12 @@ public class ModelDeleteCommand extends ChangeCommand {
 		}
 	}
 	
-	private BigraphScratchpad scratch = null;
+	private PropertyScratchpad scratch = null;
 
 	public void setTarget(Bigraph target) {
 		super.setTarget(target);
 		if (scratch == null)
-			scratch = new BigraphScratchpad(target);
+			scratch = new PropertyScratchpad();
 	}
 	
 	private void removePoint(Link l, Point p) {
@@ -50,7 +50,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 		l.removePoint(scratch, p);
 		if (l.getPoints(scratch).size() == 0 && l instanceof Edge) {
 			cg.add(l.changeRemove());
-			scratch.removeChildFor(l.getBigraph(), l);
+			l.getBigraph().removeChild(scratch, l);
 		}
 	}
 	
@@ -94,7 +94,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 					removePoint(p.getLink(scratch), p);
 			}
 			cg.add(n.changeRemove());
-			scratch.removeChildFor(n.getParent(), n);
+			n.getParent().removeChild(scratch, n);
 		}
 	}
 	

@@ -9,6 +9,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -71,11 +72,32 @@ public abstract class Container extends Layoutable {
 		}
 	}
 	
+	public void addChild(
+			PropertyScratchpad context, Layoutable child, String name) {
+		context.<Layoutable>getModifiableList(this, Container.PROPERTY_CHILD).
+			add(child);
+		context.setProperty(child, Layoutable.PROPERTY_PARENT, this);
+		
+		getBigraph(context).getNamespace(Bigraph.getNSI(child)).
+			put(context, name, child);
+		context.setProperty(child, Layoutable.PROPERTY_NAME, name);
+	}
+	
 	protected void removeChild(Layoutable child) {
 		if (children.remove(child)) {
 			child.setParent(null);
 			firePropertyChange(PROPERTY_CHILD, child, null);
 		}
+	}
+	
+	public void removeChild(PropertyScratchpad context, Layoutable child) {
+		context.<Layoutable>getModifiableList(this, Container.PROPERTY_CHILD).
+			remove(child);
+		context.setProperty(child, Layoutable.PROPERTY_PARENT, null);
+		
+		getBigraph(context).getNamespace(Bigraph.getNSI(child)).
+			remove(context, child.getName(context));
+		context.setProperty(child, Layoutable.PROPERTY_NAME, null);
 	}
 	
 	public List<Layoutable> getChildren() {
