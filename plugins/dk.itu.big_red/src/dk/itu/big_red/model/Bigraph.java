@@ -19,7 +19,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.interfaces.IBigraph;
-import dk.itu.big_red.model.names.INamespace;
+import dk.itu.big_red.model.names.Namespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
 import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
 import dk.itu.big_red.model.names.policies.StringNamePolicy;
@@ -90,7 +90,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	 * unless you're <i>very</i> sure you know what you're doing
 	 * @return the specified namespace
 	 */
-	public INamespace<Layoutable> getNamespace(Object nsi) {
+	public Namespace<Layoutable> getNamespace(Object nsi) {
 		return nsg.getNamespace(nsi);
 	}
 	
@@ -159,7 +159,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 				Layoutable l = (Layoutable)o,
 						lClone = (Layoutable)e.getValue();
 				lClone.setName(l.getName());
-				INamespace<Layoutable> ns = b.getNamespace(getNSI(lClone));
+				Namespace<Layoutable> ns = b.getNamespace(getNSI(lClone));
 				if (ns != null)
 					ns.put(lClone.getName(), lClone);
 			}
