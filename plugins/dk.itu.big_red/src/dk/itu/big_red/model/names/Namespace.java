@@ -1,39 +1,87 @@
 package dk.itu.big_red.model.names;
 
+import dk.itu.big_red.model.assistants.IPropertyProvider;
+import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 
-public abstract class Namespace<T> implements INamespace<T> {
+public abstract class Namespace<T> implements INamespace<T>, IPropertyProvider {
+	@Override
+	public T getProperty(String name) {
+		return get(name);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected T getProperty(IPropertyProviderProxy context, String name) {
+		return (context == null ?
+				getRaw(name) : (T)context.getProperty(this, name));
+	}
+	
+	protected void putProperty(
+			PropertyScratchpad context, String name, T value) {
+		if (context == null) {
+			putRaw(name, value);
+		} else context.setProperty(this, name, value);
+	}
+	
+	protected boolean removeProperty(PropertyScratchpad context, String name) {
+		if (context == null) {
+			return removeRaw(name);
+		} else {
+			boolean success = has(context, name);
+			if (success)
+				context.setProperty(this, name, null);
+			return success;
+		}
+	}
+	
 	protected abstract T getRaw(String name);
 	protected abstract void putRaw(String name, T value);
 	protected abstract boolean removeRaw(String name);
 	
 	@Override
 	public boolean has(String key) {
-		return (get(key) != null);
+		return has(null, key);
+	}
+	
+	public boolean has(IPropertyProviderProxy context, String key) {
+		return (get(context, key) != null);
 	}
 	
 	@Override
 	public T get(String name) {
-		if ((name = checkName(name)) != null) {
-			return getRaw(name);
-		} else return null;
+		return get(null, name);
 	}
 
+	public T get(IPropertyProviderProxy context, String name) {
+		if ((name = checkName(name)) != null) {
+			return getProperty(context, name);
+		} else return null;
+	}
+	
 	@Override
 	public String put(String name, T value) {
+		return put(null, name, value);
+	}
+	
+	public String put(PropertyScratchpad context, String name, T value) {
 		if (value != null && (name = checkName(name)) != null && !has(name)) {
-			putRaw(name, value);
+			putProperty(context, name, value);
 			return name;
 		} else return null;
 	}
 	
 	@Override
 	public boolean remove(String name) {
+		return remove(null, name);
+	}
+
+	public boolean remove(PropertyScratchpad context, String name) {
 		if ((name = checkName(name)) != null) {
 			return removeRaw(name);
 		} else return false;
 	}
-
+	
 	@Override
 	public String getNextName() {
 		INamePolicy policy = getPolicy();
