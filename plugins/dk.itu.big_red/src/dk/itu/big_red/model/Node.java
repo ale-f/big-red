@@ -82,8 +82,10 @@ public class Node extends Container implements INode {
 		 * If this Node's Control has a counterpart in the map, then use that
 		 * (the Bigraph is probably being cloned).
 		 */
-		Control cloneControl = (Control)m.get(control);
-		n.setControl(cloneControl == null ? control : cloneControl);
+		Control cloneControl = null;
+		if (m != null)
+			cloneControl = (Control)m.get(getControl());
+		n.setControl(cloneControl == null ? getControl() : cloneControl);
 		
 		n.setFillColour(getFillColour().getCopy());
 		n.setOutlineColour(getOutlineColour().getCopy());
