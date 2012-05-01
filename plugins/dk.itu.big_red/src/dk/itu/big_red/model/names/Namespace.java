@@ -78,7 +78,7 @@ public abstract class Namespace<T> implements INamespace<T>, IPropertyProvider {
 
 	public boolean remove(PropertyScratchpad context, String name) {
 		if ((name = checkName(name)) != null) {
-			return removeRaw(name);
+			return removeProperty(context, name);
 		} else return false;
 	}
 	
