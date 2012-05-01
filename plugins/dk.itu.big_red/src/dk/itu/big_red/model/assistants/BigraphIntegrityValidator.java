@@ -22,7 +22,7 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.model.names.INamespace;
+import dk.itu.big_red.model.names.Namespace;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 
 /**
@@ -103,11 +103,12 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	private void checkName(Change b, Layoutable l, String cdt) throws ChangeRejectedException {
 		if (cdt == null)
 			rejectChange(b, "Setting an object's name to null is no longer supported");
-		INamespace<Layoutable> ns = scratch.getNamespaceFor(l);
+		Namespace<Layoutable> ns =
+				getChangeable().getNamespace(Bigraph.getNSI(l));
 		if (ns == null)
 			return; /* not subject to any checks */
-		if (ns.get(cdt) != null)
-			if (!ns.get(cdt).equals(l))
+		if (ns.get(scratch, cdt) != null)
+			if (!ns.get(scratch, cdt).equals(l))
 				rejectChange("Names must be unique");
 		if (ns.getPolicy().normalise(cdt) == null)
 			rejectChange(b, "\"" + cdt + "\" is not a valid name for " + l);
@@ -173,7 +174,8 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			if (cp == null)
 				rejectChange(b, cp + " is not the parent of " + ch);
 			scratch.removeChildFor(cp, ch);
-			scratch.getNamespaceFor(ch).remove(ch.getName());
+			getChangeable().getNamespace(Bigraph.getNSI(ch)).
+				remove(scratch, ch.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			checkEligibility(c.getCreator());
