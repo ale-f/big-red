@@ -128,14 +128,14 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				rejectChange(b,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
-			scratch.addPointFor(c.link, c.getCreator());
+			c.link.addPoint(scratch, c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			checkEligibility(c.getCreator());
 			Link l = c.getCreator().getLink(scratch);
 			if (l == null)
 				rejectChange("The Point is already disconnected");
-			scratch.removePointFor(l, c.getCreator());
+			l.removePoint(scratch, c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			

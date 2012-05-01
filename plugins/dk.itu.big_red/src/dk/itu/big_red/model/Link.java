@@ -6,6 +6,7 @@ import java.util.List;
 
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.ILink;
 
@@ -76,6 +77,11 @@ public abstract class Link extends Layoutable implements ILink {
 		firePropertyChange(PROPERTY_POINT, null, point);
 	}
 	
+	public void addPoint(PropertyScratchpad context, Point point) {
+		context.<Point>getModifiableList(this, Link.PROPERTY_POINT).add(point);
+		context.setProperty(point, Point.PROPERTY_LINK, this);
+	}
+	
 	/**
 	 * Removes the given {@link Point} from this Link's set of points.
 	 * @param point a Point
@@ -86,6 +92,12 @@ public abstract class Link extends Layoutable implements ILink {
 			point.setLink(null);
 			firePropertyChange(PROPERTY_POINT, point, null);
 		}
+	}
+	
+	public void removePoint(PropertyScratchpad context, Point point) {
+		context.<Point>getModifiableList(this, Link.PROPERTY_POINT).
+			remove(point);
+		context.setProperty(point, Point.PROPERTY_LINK, null);
 	}
 	
 	@Override

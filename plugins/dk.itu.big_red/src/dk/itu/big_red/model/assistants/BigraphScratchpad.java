@@ -3,8 +3,6 @@ package dk.itu.big_red.model.assistants;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.names.Namespace;
 
 /**
@@ -44,16 +42,6 @@ public class BigraphScratchpad extends PropertyScratchpad {
 		this.<Layoutable>getModifiableList(a, Container.PROPERTY_CHILD).add(b);
 		setProperty(b, Layoutable.PROPERTY_PARENT, a);
 		setNameFor(b, name);
-	}
-	
-	public void removePointFor(Link a, Point b) {
-		this.<Point>getModifiableList(a, Link.PROPERTY_POINT).remove(b);
-		setProperty(b, Point.PROPERTY_LINK, null);
-	}
-	
-	public void addPointFor(Link a, Point b) {
-		this.<Point>getModifiableList(a, Link.PROPERTY_POINT).add(b);
-		setProperty(b, Point.PROPERTY_LINK, a);
 	}
 	
 	public void setNameFor(Layoutable a, String b) {
