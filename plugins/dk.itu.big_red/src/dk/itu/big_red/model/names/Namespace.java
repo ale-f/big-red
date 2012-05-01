@@ -84,6 +84,10 @@ public abstract class Namespace<T> implements INamespace<T>, IPropertyProvider {
 	
 	@Override
 	public String getNextName() {
+		return getNextName(null);
+	}
+	
+	public String getNextName(IPropertyProviderProxy context) {
 		INamePolicy policy = getPolicy();
 		if (policy == null)
 			return null;
@@ -92,7 +96,7 @@ public abstract class Namespace<T> implements INamespace<T>, IPropertyProvider {
 		String name;
 		do {
 			name = policy.get(i++);
-		} while (has(name));
+		} while (has(context, name));
 		return name;
 	}
 	
