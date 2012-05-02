@@ -21,6 +21,7 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 public class SignatureXMLSaver extends XMLSaver {
 	public SignatureXMLSaver() {
 		setDefaultNamespace(SIGNATURE);
+		addDecorator(new RedXMLDecorator());
 	}
 	
 	@Override
@@ -73,8 +74,6 @@ public class SignatureXMLSaver extends XMLSaver {
 				newElement(SIGNATURE, "signature:port"), p));
 		
 		appendChildIfNotNull(e, shapeToElement(getDocument(), c));
-		appendChildIfNotNull(e,
-				BigraphXMLSaver.appearanceToElement(getDocument(), c));
 		e.setAttributeNS(BIG_RED, "big-red:label", c.getLabel());
 		
 		return executeDecorators(c, e);

@@ -3,12 +3,9 @@ package dk.itu.big_red.model.load_save.savers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
@@ -21,8 +18,6 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 
@@ -78,6 +73,8 @@ public class BigraphXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
+		if (exportAppearance)
+			addDecorator(new RedXMLDecorator());
 		setDocument(createDocument(BIGRAPH, "bigraph:bigraph"));
 		processObject(getDocumentElement(), getModel());
 		finish();
@@ -191,46 +188,6 @@ public class BigraphXMLSaver extends XMLSaver {
 			return e;
 		if (!(l instanceof Bigraph))
 			applyAttributes(e, "name", l.getName());
-		if (exportAppearance)
-			appendChildIfNotNull(e, appearanceToElement(getDocument(), l));
 		return executeDecorators(l, e);
-	}
-
-	/**
-	 * Builds a <code>&lt;big-red:appearance&gt;</code> tag containing all of
-	 * the Big Red-specific metadata appropriate for the given object.
-	 * @param doc the {@link Document} that will contain the tag 
-	 * @param o a model object
-	 */
-	protected static Element appearanceToElement(Document doc, ModelObject o) {
-		if (o instanceof Bigraph)
-			return null;
-		
-		Element aE = doc.createElementNS(BIG_RED, "big-red:appearance");
-		boolean alive = false;
-		
-		if (o instanceof Layoutable) {
-			alive = true;
-			AppearanceGenerator.rectangleToElement(aE,
-					((Layoutable)o).getLayout());
-		}
-		
-		if (o instanceof Colourable) {
-			alive = true;
-			Colourable c = (Colourable)o;
-			
-			applyAttributes(aE,
-				"fillColor", new Colour(c.getFillColour()).toHexString(),
-				"outlineColor",
-					new Colour(c.getOutlineColour()).toHexString());
-		}
-		
-		String comment = ExtendedDataUtilities.getComment(o);
-		if (comment != null) {
-			alive = true;
-			applyAttributes(aE, "comment", comment);
-		}
-		
-		return (alive ? aE : null);
 	}
 }
