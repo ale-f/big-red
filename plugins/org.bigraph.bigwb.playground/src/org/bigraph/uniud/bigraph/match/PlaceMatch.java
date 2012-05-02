@@ -311,7 +311,7 @@ public class PlaceMatch {
 		
 		// Solve the model
 		
-		ChocoLogging.toVerbose();
+		//ChocoLogging.toVerbose();
 		
 		s.solve();
 		//s.solveAll();
@@ -399,7 +399,8 @@ public class PlaceMatch {
 			BidiMap<Integer, Layoutable> mapGraph) {
 		explorei = 0;
 		exploremax = 0;
-		for (Layoutable r : bigraph.getChildren()) {
+		if (bigraph == null){System.out.println("Bigraph == null");}
+		for (Layoutable r : bigraph.getRoots()) {
 
 			if (r instanceof Container) {
 				explore((Container) r, succList, mapGraph);
@@ -439,7 +440,7 @@ public class PlaceMatch {
 			BidiMap<Integer, Layoutable> mapGraph) {
 		explorei = 0;
 		exploremax = 0;
-		for (Layoutable r : bigraph.getChildren()) {
+		for (Layoutable r : bigraph.getRoots()) {
 
 			for (Layoutable l : ((Container) r).getChildren()) {
 

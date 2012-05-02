@@ -25,6 +25,8 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.utilities.ui.UI;
 
 
 
@@ -32,7 +34,7 @@ public class CompositionCommand extends Command {
 	
 	private Bigraph inner;
 	private Bigraph outer;
-	private IWorkbenchPart part;
+	//private IWorkbenchPart part;
 	
 	private HashMap< Site, Root > placeMap = null;
 	private HashMap< InnerName, OuterName > linkMap = null;
@@ -48,12 +50,12 @@ public class CompositionCommand extends Command {
 	private HashMap< Edge, String > oldNames = null;
 	private boolean reactumSpecialCase = false;
 	
-	public CompositionCommand( Bigraph inner, Bigraph outer, IWorkbenchPart part )
+	public CompositionCommand( Bigraph inner, Bigraph outer)//, IWorkbenchPart part )
 	{
 		
 		this.inner = inner;
 		this.outer = outer;
-		this.part  = part;
+		//this.part  = part;
 	}
 	
 	public void disable()
@@ -68,7 +70,7 @@ public class CompositionCommand extends Command {
 	@Override
 	public boolean canExecute()
 	{
-		return inner != null && outer != null && part != null; //&& !disabled;
+		return inner != null && outer != null ;//&& part != null; //&& !disabled;
 	}
 	
 	@Override
@@ -77,12 +79,11 @@ public class CompositionCommand extends Command {
 		System.out.println("start Compose");
 		setLabel( "Compose" );
 		CompositionWizard wizard = new CompositionWizard( inner, outer );
-		WizardDialog dialog = new WizardDialog( part.getSite().getShell(), wizard );
+		WizardDialog dialog = new WizardDialog(UI.getWorkbench().getActiveWorkbenchWindow().getShell(), wizard);// part.getSite().getShell(), wizard );
 		dialog.create();
 		dialog.setTitle( "Bigraph composition" );
 		dialog.setMessage( "Composing " + outer.getName() + " with " + inner.getName() );
 		if ( dialog.open() != WizardDialog.CANCEL ) {
-			System.out.println("REDO");
 			placeMap = wizard.getPlaceMap();
 			linkMap = wizard.getLinkMap();
 			executed = true;
@@ -110,29 +111,27 @@ public class CompositionCommand extends Command {
 	public void redo(){
 		if ( !executed )
 			return;
-		ChangeGroup cg = new ChangeGroup();
+		
+		System.out.println("REDO");
+		ChangeGroup cgA = new ChangeGroup(); //change in A
+		ChangeGroup cgB = new ChangeGroup(); //change in B
 		
 		/**start placing roots in sites */
-		for(Site site : placeMap.keySet()){
-			
-			Container parent=site.getParent();
-			
-			Root root= placeMap.get(site);
+		for (Site site : placeMap.keySet()) {
+			Container parent = site.getParent();
+			Root root = placeMap.get(site);
+			cgA.prepend(site.changeRemove());
+			for (Layoutable children : root.getChildren()) {
+				System.out.println(children.getType());
 
-			for (Layoutable children: root.getChildren()){
-				//
-				
-				//OLDTODO parent.addChild(children);
-				////children.getParent().removeChild(children);
-				//OLDTODO children.setParent(parent);
+				String name = children.getName();
+				cgB.add(children.changeRemove());
+				cgA.add(parent.changeAddChild(children, name));
 			}
-			//OLDTODO parent.removeChild(site);
+			cgB.add(root.changeRemove());
 		}
 		
-		for (InnerName iNames:inner.getInnerNames()){
-			//OLDTODO outer.addChild(iNames);
-			//OLDTODo iNames.setParent(outer);
-		}
+
 		
 		/** connect link and ports */
 		HashMap<Link, List<Point>> connection= new HashMap<Link, List<Point>> ();
@@ -140,16 +139,26 @@ public class CompositionCommand extends Command {
 		for(InnerName innerName : linkMap.keySet()){
 			
 			Link link=innerName.getLink();
-			//TODO link.removePoint(innerName);
-			
+
 			OuterName outerName=linkMap.get(innerName);
 			System.out.println("compute innerName"+ innerName.getName());
 			
 			List<Point> points=new ArrayList<Point>();
 			points= outerName.getPoints();
 			connection.put(link, points);
-			//OLDTODO outer.removeChild(innerName);
+
+			if(innerName.getLink()!=null){
+				cgA.add(innerName.changeDisconnect());
+			}
+			cgA.add(innerName.changeRemove());
+			cgB.add(outerName.changeRemove());
 		}
+		
+		for (InnerName iNames:inner.getInnerNames()){
+			cgB.add(iNames.changeRemove());
+			cgA.add(outer.changeAddChild(iNames, iNames.getName()));
+		}
+		
 		/** from hashMap connection create update links*/
 		for(Link link : connection.keySet()){
 			List<Point> points=connection.get(link);
@@ -157,19 +166,30 @@ public class CompositionCommand extends Command {
 			for(int i=0;i<points.size();i++){
 				System.out.println(points.size());
 				Point p=points.get(i);
-				//TODO points.get(i).getLink().removePoint(points.get(i));
-				System.out.println(points.size());
-				if(link instanceof OuterName){
-					//TODO ((OuterName)link).addPoint(p);
-				}else if (link instanceof Edge){
-					//TODO ((Edge)link).addPoint(p);
+
+				if(p.getLink() != null){
+					cgA.add(p.changeDisconnect());
 				}
+				cgA.add(p.changeConnect(link));
+
 			}
 		}
 		
-		//inner.dispose();
-		//inner.getParent().removeChild(inner);
+		try {
+			inner.tryApplyChange(cgB);
+			outer.tryApplyChange(cgA);
+			
+		} catch (ChangeRejectedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		cgA.clear();
+		cgB.clear();
+		
 		outer.relayout();
+		
+		
 	}
 	
 	private void changeConnection(){
