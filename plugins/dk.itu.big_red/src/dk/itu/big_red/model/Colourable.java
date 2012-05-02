@@ -4,7 +4,6 @@ import java.util.Map;
 
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
-import dk.itu.big_red.model.assistants.ReadonlyColour;
 import dk.itu.big_red.model.assistants.RedProperty;
 
 /**
@@ -58,7 +57,7 @@ public abstract class Colourable extends ModelObject {
 
 		@Override
 		public void beforeApply() {
-			oldColour = getCreator().getOutlineColour().getCopy();
+			oldColour = getCreator().getOutlineColour();
 		}
 		
 		@Override
@@ -79,7 +78,7 @@ public abstract class Colourable extends ModelObject {
 
 		@Override
 		public void beforeApply() {
-			oldColour = getCreator().getFillColour().getCopy();
+			oldColour = getCreator().getFillColour();
 		}
 		
 		@Override
@@ -101,7 +100,7 @@ public abstract class Colourable extends ModelObject {
 	 * Gets the current outline colour used to render this object.
 	 * @return the current outline colour
 	 */
-	public final ReadonlyColour getOutlineColour() {
+	public final Colour getOutlineColour() {
 		return outlineColour;
 	}
 
@@ -113,24 +112,22 @@ public abstract class Colourable extends ModelObject {
 		Colour old = outlineColour;
 		outlineColour = c;
 		firePropertyChange(PROPERTY_OUTLINE, old, c);
-		
-		old.invalidateSWTColor();
 	}
 	
-	public ReadonlyColour getOutlineColour(IPropertyProviderProxy context) {
-		return (ReadonlyColour)getProperty(context, PROPERTY_OUTLINE);
+	public Colour getOutlineColour(IPropertyProviderProxy context) {
+		return (Colour)getProperty(context, PROPERTY_OUTLINE);
 	}
 	
 	/**
 	 * Gets the current fill colour used to render this object.
 	 * @return the current fill colour
 	 */
-	public final ReadonlyColour getFillColour() {
+	public final Colour getFillColour() {
 		return fillColour;
 	}
 
-	public ReadonlyColour getFillColour(IPropertyProviderProxy context) {
-		return (ReadonlyColour)getProperty(context, PROPERTY_FILL);
+	public Colour getFillColour(IPropertyProviderProxy context) {
+		return (Colour)getProperty(context, PROPERTY_FILL);
 	}
 	
 	/**
@@ -141,8 +138,6 @@ public abstract class Colourable extends ModelObject {
 		Colour old = fillColour;
 		fillColour = c;
 		firePropertyChange(PROPERTY_FILL, old, c);
-		
-		old.invalidateSWTColor();
 	}
 
 	public ColourableChange changeOutlineColour(Colour c) {
@@ -165,8 +160,8 @@ public abstract class Colourable extends ModelObject {
 	@Override
 	public Colourable clone(Map<ModelObject, ModelObject> m) {
 		Colourable c = (Colourable)super.clone(m);
-		c.setFillColour(getFillColour().getCopy());
-		c.setOutlineColour(getOutlineColour().getCopy());
+		c.setFillColour(getFillColour());
+		c.setOutlineColour(getOutlineColour());
 		return c;
 	}
 }

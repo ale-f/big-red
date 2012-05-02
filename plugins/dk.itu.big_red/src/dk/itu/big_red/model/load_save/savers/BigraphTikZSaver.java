@@ -14,9 +14,6 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.assistants.ReadonlyColour;
-import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
@@ -27,6 +24,9 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.load_save.SaveFailedException;
+import dk.itu.big_red.model.load_save.Saver;
 
 public class BigraphTikZSaver extends Saver {
 	private BufferedWriter writer;
@@ -212,7 +212,7 @@ public class BigraphTikZSaver extends Saver {
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ")";
 		}
 		
-		ReadonlyColour
+		Colour
 			fillColour = n.getFillColour(),
 		    outlineColour = n.getOutlineColour();
 		
@@ -242,7 +242,7 @@ public class BigraphTikZSaver extends Saver {
 			tl = rl.getTopLeft(),
 			br = rl.getBottomRight(),
 			c = rl.getCenter();
-		ReadonlyColour outlineColour = e.getOutlineColour();
+		Colour outlineColour = e.getOutlineColour();
 		line("definecolor{" + getNiceName(e) + " color}{RGB}{" + outlineColour.getRed() + "," + outlineColour.getGreen() + "," + outlineColour.getBlue() + "}"); 
 		if (e instanceof OuterName) {
 			line("draw [internal outer name,fill=" + getNiceName(e) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
@@ -259,7 +259,7 @@ public class BigraphTikZSaver extends Saver {
 			br = rl.getBottomRight(),
 			c = rl.getCenter();
 		System.out.println(rl);
-		ReadonlyColour fillColour =
+		Colour fillColour =
 			(i.getLink() == null ? dk.itu.big_red.model.Point.DEFAULT_COLOUR : i.getLink().getOutlineColour());
 		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
 		line("draw [internal inner name,fill=" + getNiceName(i) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");

@@ -7,16 +7,13 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
+import dk.itu.big_red.utilities.ui.UI;
 
-/**
- * {@link Colour} objects represent RGBA colours.
- * @author alec
- *
- */
-public class Colour extends ReadonlyColour {
-	private static final Map<String, ReadonlyColour> NAMED_COLOURS =
-		new HashMap<String, ReadonlyColour>();
+public class Colour {
+	private static final Map<String, Colour> NAMED_COLOURS =
+			new HashMap<String, Colour>();
 	static {
 		NAMED_COLOURS.put("aliceblue", new Colour(240, 248, 255));
 		NAMED_COLOURS.put("antiquewhite", new Colour(250, 235, 215));
@@ -167,7 +164,115 @@ public class Colour extends ReadonlyColour {
 		NAMED_COLOURS.put("yellowgreen", new Colour(154, 205, 50));
 	}
 	
-	private int red = 0, green = 0, blue = 0, alpha = 255;
+	/**
+	 * Returns the red component of this colour.
+	 * @return a red component (between <code>0</code> and <code>255</code>
+	 * inclusive)
+	 */
+	public int getRed() {
+		return red;
+	}
+	
+	/**
+	 * Returns the green component of this colour.
+	 * @return a green component (between <code>0</code> and <code>255</code>
+	 * inclusive)
+	 */
+	public int getGreen() {
+		return green;
+	}
+	
+	/**
+	 * Returns the blue component of this colour.
+	 * @return a blue component (between <code>0</code> and <code>255</code>
+	 * inclusive)
+	 */
+	public int getBlue() {
+		return blue;
+	}
+	
+	/**
+	 * Returns the alpha value of this colour.
+	 * @return an alpha value (between <code>0</code> and <code>255</code>
+	 * inclusive)
+	 */
+	public int getAlpha() {
+		return alpha;
+	}
+	
+	private int red, green, blue, alpha;
+	
+	private String leftPad(String s, char pad, int length) {
+		while (s.length() < length)
+			s = pad + s;
+		return s;
+	}
+	
+	public String toHexString() {
+		return "#" +
+				leftPad(Integer.toHexString(getRed()), '0', 2) +
+				leftPad(Integer.toHexString(getGreen()), '0', 2) +
+				leftPad(Integer.toHexString(getBlue()), '0', 2);
+	}
+	
+	public String toFunctionString() {
+		StringBuilder s = new StringBuilder();
+		s.append(getAlpha() == 1 ? "rgb(" : "rgba(");
+		s.append(Integer.toString(getRed()));
+		s.append(", ");
+		s.append(Integer.toString(getBlue()));
+		s.append(", ");
+		s.append(Integer.toString(getGreen()));
+		if (getAlpha() != 1) {
+			s.append(", ");
+			s.append(getAlpha());
+		}
+		s.append(")");
+		return s.toString();
+	}
+
+	/**
+	 * Returns a new {@link RGB} object corresponding to this colour.
+	 * @return a new {@link RGB} object
+	 */
+	public RGB getRGB() {
+		return new RGB(getRed(), getGreen(), getBlue());
+	}
+	
+	/**
+	 * Returns a new SWT {@link Color} corresponding to this colour.
+	 * @return a new {@link Color}
+	 */
+	public Color getSWTColor() {
+		return new Color(UI.getDisplay(), getRed(), getGreen(), getBlue());
+	}
+	
+	@Override
+	public Colour clone() {
+		return this;
+	}
+	
+	@Override
+	public int hashCode() {
+		return (getRed() << 24) | (getGreen() << 16) | (getBlue() << 8) + getAlpha();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Colour) {
+			Colour c = (Colour)obj;
+			return (c.getRed() == getRed() &&
+					c.getGreen() == getGreen() &&
+					c.getBlue() == getBlue() &&
+					c.getAlpha() == getAlpha());
+		} else return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "Colour(" + getRed() + ", " + getGreen() +
+				", " + getBlue() + ", " + getAlpha() + ")";
+	}
 	
 	public Colour() {
 		
@@ -192,15 +297,6 @@ public class Colour extends ReadonlyColour {
 	 */
 	public Colour(int r, int g, int b, int a) {
 		setRed(r).setGreen(g).setBlue(b).setAlpha(a);
-	}
-	
-	/**
-	 * Initialises this {@link Colour} from another colour.
-	 * @see #setColour(ReadonlyColour)
-	 * @param s a {@link ReadonlyColour}
-	 */
-	public Colour(ReadonlyColour c) {
-		setColour(c);
 	}
 	
 	/**
@@ -268,7 +364,7 @@ public class Colour extends ReadonlyColour {
 		if (s == null)
 			return this;
 		
-		ReadonlyColour n = NAMED_COLOURS.get(s.toLowerCase(Locale.ENGLISH));
+		Colour n = NAMED_COLOURS.get(s.toLowerCase(Locale.ENGLISH));
 		if (n != null)
 			return setColour(n);
 		
@@ -321,15 +417,14 @@ public class Colour extends ReadonlyColour {
 		return setRed(r.red).setGreen(r.green).setBlue(r.blue).setAlpha(255);
 	}
 	
-	private Colour setColour(ReadonlyColour c) {
+	private Colour setColour(Colour c) {
 		return setRed(c.getRed()).setGreen(c.getGreen()).
 				setBlue(c.getBlue()).setAlpha(c.getAlpha());
 	}
 	
 	private Colour setRed(int red) {
-		if (red == this.red) {
+		if (red == this.red)
 			return this;
-		} else invalidateSWTColor();
 		if (red < 0)
 			red = 0;
 		else if (red > 255)
@@ -339,9 +434,8 @@ public class Colour extends ReadonlyColour {
 	}
 
 	private Colour setGreen(int green) {
-		if (green == this.green) {
+		if (green == this.green)
 			return this;
-		} else invalidateSWTColor();
 		if (green < 0)
 			green = 0;
 		else if (green > 255)
@@ -351,9 +445,8 @@ public class Colour extends ReadonlyColour {
 	}
 	
 	private Colour setBlue(int blue) {
-		if (blue == this.blue) {
+		if (blue == this.blue)
 			return this;
-		} else invalidateSWTColor();
 		if (blue < 0)
 			blue = 0;
 		else if (blue > 255)
@@ -371,26 +464,6 @@ public class Colour extends ReadonlyColour {
 			alpha = 255;
 		this.alpha = alpha;
 		return this;
-	}
-	
-	@Override
-	public int getRed() {
-		return red;
-	}
-	
-	@Override
-	public int getGreen() {
-		return green;
-	}
-	
-	@Override
-	public int getBlue() {
-		return blue;
-	}
-	
-	@Override
-	public int getAlpha() {
-		return alpha;
 	}
 	
 	/**

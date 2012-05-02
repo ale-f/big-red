@@ -2,7 +2,6 @@ package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
-import dk.itu.big_red.model.assistants.ReadonlyColour;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.IPoint;
 
@@ -79,7 +78,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	/**
 	 * The colour to be given to Points not connected to a {@link Link}.
 	 */
-	public static final ReadonlyColour DEFAULT_COLOUR = new Colour("red");
+	public static final Colour DEFAULT_COLOUR = new Colour("red");
 
 	private Link link = null;
 	

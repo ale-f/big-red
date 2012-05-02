@@ -198,7 +198,7 @@ public class ReactionRule extends ModelObject {
 			if (reactumObject == null)
 				return null;
 			
-			return reactumObject.changeOutlineColour(ch.newColour.getCopy());
+			return reactumObject.changeOutlineColour(ch.newColour);
 		} else if (change instanceof ChangeFillColour) {
 			ChangeFillColour ch = (ChangeFillColour)change;
 			
@@ -207,7 +207,7 @@ public class ReactionRule extends ModelObject {
 			if (reactumObject == null)
 				return null;
 			
-			return reactumObject.changeFillColour(ch.newColour.getCopy());
+			return reactumObject.changeFillColour(ch.newColour);
 		} else throw new Error(change + " unrecognised");
 	}
 	

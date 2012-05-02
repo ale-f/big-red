@@ -16,8 +16,8 @@ import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeExecutor;
+import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.names.Namespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
@@ -137,8 +137,8 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		m.put(this, b);
 		
 		/* Colourable.clone */
-		b.setFillColour(getFillColour().getCopy());
-		b.setOutlineColour(getOutlineColour().getCopy());
+		b.setFillColour(getFillColour());
+		b.setOutlineColour(getOutlineColour());
 		
 		/* Layoutable.clone */
 		b.setLayout(null);
