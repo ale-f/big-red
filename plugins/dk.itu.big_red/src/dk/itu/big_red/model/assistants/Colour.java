@@ -264,7 +264,7 @@ public class Colour extends ReadonlyColour {
 	 * @return <code>this</code>, for convenience, or <code>null</code> if the
 	 * colour string couldn't be parsed
 	 */
-	public Colour setColour(String s) {
+	private Colour setColour(String s) {
 		if (s == null)
 			return this;
 		
@@ -317,16 +317,16 @@ public class Colour extends ReadonlyColour {
 		return this;
 	}
 	
-	public Colour setColour(RGB r) {
+	private Colour setColour(RGB r) {
 		return setRed(r.red).setGreen(r.green).setBlue(r.blue).setAlpha(255);
 	}
 	
-	public Colour setColour(ReadonlyColour c) {
+	private Colour setColour(ReadonlyColour c) {
 		return setRed(c.getRed()).setGreen(c.getGreen()).
 				setBlue(c.getBlue()).setAlpha(c.getAlpha());
 	}
 	
-	public Colour setRed(int red) {
+	private Colour setRed(int red) {
 		if (red == this.red) {
 			return this;
 		} else invalidateSWTColor();
@@ -338,7 +338,7 @@ public class Colour extends ReadonlyColour {
 		return this;
 	}
 
-	public Colour setGreen(int green) {
+	private Colour setGreen(int green) {
 		if (green == this.green) {
 			return this;
 		} else invalidateSWTColor();
@@ -350,7 +350,7 @@ public class Colour extends ReadonlyColour {
 		return this;
 	}
 	
-	public Colour setBlue(int blue) {
+	private Colour setBlue(int blue) {
 		if (blue == this.blue) {
 			return this;
 		} else invalidateSWTColor();
@@ -362,7 +362,7 @@ public class Colour extends ReadonlyColour {
 		return this;
 	}
 	
-	public Colour setAlpha(int alpha) {
+	private Colour setAlpha(int alpha) {
 		if (alpha == this.alpha)
 			return this;
 		if (alpha < 0)
@@ -398,9 +398,8 @@ public class Colour extends ReadonlyColour {
 	 * sets its alpha value to <code>255</code>.
 	 * @return <code>this</code>, for convenience
 	 */
-	public Colour randomise() {
+	public static Colour random() {
 		Random r = new Random();
-		return setRed(r.nextInt(256)).setGreen(r.nextInt(256)).
-				setBlue(r.nextInt(256)).setAlpha(255);
+		return new Colour(r.nextInt(256), r.nextInt(256), r.nextInt(256), 255);
 	}
 }

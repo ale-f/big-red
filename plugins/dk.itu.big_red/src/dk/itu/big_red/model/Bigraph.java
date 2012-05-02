@@ -374,7 +374,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		for (Link i : only(context, Link.class)) {
 			if (i instanceof Edge)
 				cg.add(((Edge)i).changeReposition());
-			cg.add(i.changeOutlineColour(new Colour().randomise()));
+			cg.add(i.changeOutlineColour(Colour.random()));
 		}
 		
 		return cg;
