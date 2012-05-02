@@ -2,6 +2,13 @@ package org.bigraph.uniud.bigraph.match;
 import dk.itu.big_red.model.*;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.interfaces.BigraphBuilder;
+import dk.itu.big_red.model.interfaces.IControl;
+import dk.itu.big_red.model.interfaces.INode;
+import dk.itu.big_red.model.interfaces.IOuterName;
+import dk.itu.big_red.model.interfaces.IPort;
+import dk.itu.big_red.model.interfaces.IRoot;
+import dk.itu.big_red.model.interfaces.SignatureBuilder;
 
 
 public class BigraphMatchWB {
@@ -15,6 +22,8 @@ public class BigraphMatchWB {
 		//fillBigraphExampleRedex4();
 //		fillBigraphAgent2();
 //		fillBigraphRedex2();
+		fillAgent2();
+		fillRedex2();
 		PlaceMatch.match(agent, redex);
 		
 	}
@@ -22,6 +31,100 @@ public class BigraphMatchWB {
 	public static void main(String[] args){
 		match();
 	}
+	
+	
+	public static void fillAgent2(){
+		
+		SignatureBuilder sb = new SignatureBuilder();
+		IControl c1 = sb.newControl("C1");
+		sb.newPort(c1, "0");
+		BigraphBuilder bb = new BigraphBuilder(sb.finish());
+		IRoot R1 = bb.newRoot("1");
+		IOuterName O1 = bb.newOuterName("O1");
+		INode n1 = bb.newNode(R1, c1, "a");
+		//Port p=((Node)n1).getPort("0");
+		//bb.newConnection(p, O1);
+		agent = (Bigraph)bb.finish();
+		System.out.println(((Layoutable)n1).getParent().getName());
+		
+	}
+	
+	public static void fillRedex2(){
+		
+		SignatureBuilder sb = new SignatureBuilder();
+		IControl c1 = sb.newControl("C1");
+		sb.newPort(c1, "0");
+		BigraphBuilder bb = new BigraphBuilder(sb.finish());
+		IRoot R1 = bb.newRoot("1");
+		IOuterName O1 = bb.newOuterName("O2");
+		INode n1 = bb.newNode(R1, c1, "a");
+		//Port p=((Node)n1).getPort("0");
+		//bb.newConnection(p, O1);
+		redex = (Bigraph)bb.finish();
+	}
+	
+	
+	
+	public static void fillAgent(){
+		Signature s = new Signature();
+		Control c1 = new Control();
+		
+
+		agent = new Bigraph();
+		agent.setSignature(s);
+		ChangeGroup cg = new ChangeGroup();
+
+		Root r1 = new Root();
+		Node n1 = new Node(c1);
+		OuterName O1 = new OuterName();
+
+		cg.add(agent.changeAddChild(O1, "O1"));
+		cg.add(r1.changeAddChild(n1, "n1"));
+		cg.add(c1.changeAddPort(new PortSpec(),"0"));
+		
+		try {
+			 agent.tryApplyChange(cg);
+			 cg.clear();
+			} catch (ChangeRejectedException cre) {
+			 System.out.println(cre.getRationale());
+			}
+			
+		
+		cg.add(n1.getPort("0").changeConnect(O1));
+
+		try {
+		 agent.tryApplyChange(cg);
+		} catch (ChangeRejectedException cre) {
+		 System.out.println(cre.getRationale());
+		}
+		
+	}
+	
+	public static void fillRedex(){
+		Signature s = new Signature();
+		Control c1 = new Control();
+		c1.changeAddPort(new PortSpec(),"0");
+
+		redex = new Bigraph();
+		redex.setSignature(s);
+		ChangeGroup cg = new ChangeGroup();
+
+		Root r1 = new Root();
+		Node n1 = new Node(c1);
+		OuterName O1 = new OuterName();
+
+		cg.add(redex.changeAddChild(O1, "O1"));
+		cg.add(r1.changeAddChild(n1, "n1"));
+		cg.add(n1.getPort("0").changeConnect(O1));
+
+		try {
+		 redex.tryApplyChange(cg);
+		} catch (ChangeRejectedException cre) {
+		 System.out.println(cre.getRationale());
+		}
+		
+	}
+	
 	
 	/*
 	public static void fillster(){

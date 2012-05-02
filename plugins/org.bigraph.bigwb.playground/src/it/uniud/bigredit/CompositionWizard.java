@@ -3,6 +3,7 @@ package it.uniud.bigredit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bigraph.uniud.bigraph.match.PlaceMatch;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -346,9 +347,13 @@ public class CompositionWizard extends Wizard {
 	
 	@Override
 	public boolean performFinish()
-	{
+	{		
+		
 		System.out.println("perform Finish");
 		ReorderPage reorder = ( ReorderPage )getPage( "Reorder" );
+		//testing matching
+		//PlaceMatch.match(reorder.outer, reorder.inner);
+		
 		ArrayList< Site > sites = (ArrayList<Site>) reorder.outer.getSites();
 		ArrayList< Root > roots = (ArrayList<Root>) reorder.inner.getRoots();
 		ArrayList< InnerName > innerNames = (ArrayList<InnerName>) reorder.outer.getInnerNames();
