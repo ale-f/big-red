@@ -72,7 +72,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		
 		appendChildIfNotNull(e,
 			processChanges(newElement(RULE, "rule:changes"), rr.getChanges()));
-		return e;
+		return executeDecorators(rr, e);
 	}
 	
 	private Element processRedex(Element e, Bigraph redex) throws SaveFailedException {
@@ -80,8 +80,12 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		BigraphXMLSaver ex = new BigraphXMLSaver();
 		ex.setModel(redex);
 		ex.setDocument(getDocument());
+		for (Decorator d : getDecorators())
+			ex.addDecorator(d);
 		return ex.processObject(e, ex.getModel());
 	}
+	
+	/* XXX: change decoration (?) */
 	
 	private Element processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
 		applyAttributes(e, "xmlns:change", CHANGE);

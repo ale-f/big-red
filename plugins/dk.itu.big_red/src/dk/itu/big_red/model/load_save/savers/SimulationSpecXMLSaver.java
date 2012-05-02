@@ -52,6 +52,6 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 			processOrReference(newElement(SPEC, "spec:model"),
 				ss.getModel(), BigraphXMLSaver.class));
 		
-		return e;
+		return executeDecorators(ss, e);
 	}
 }

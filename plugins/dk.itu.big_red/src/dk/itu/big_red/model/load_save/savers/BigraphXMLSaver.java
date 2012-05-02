@@ -123,7 +123,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		appendChildren(e, roots);
 		appendChildren(e, innernames);
 		
-		return e;
+		return executeDecorators(obj, e);
 	}
 	
 	private static final void
@@ -160,7 +160,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		String alias = s.getAlias();
 		if (alias != null)
 			applyAttributes(e, "alias", alias);
-		return e;
+		return executeDecorators(s, e);
 	}
 	
 	private Element processNode(Element e, Node n) throws SaveFailedException {
@@ -171,7 +171,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		if (parameter != null)
 			applyAttributes(e, "parameter", parameter);
 		
-		for (Port p : n.getPorts()) 
+		for (Port p : n.getPorts())
 			appendChildIfNotNull(e, processPoint(
 					newElement(BIGRAPH, "bigraph:port"), p));
 		
@@ -183,7 +183,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		applyAttributes(e, "name", p.getName());
 		if (link != null)
 			applyAttributes(e, "link", link.getName());
-		return e;
+		return executeDecorators(p, e);
 	}
 		
 	private Element applyCommonProperties(Element e, Layoutable l) {
@@ -193,7 +193,7 @@ public class BigraphXMLSaver extends XMLSaver {
 			applyAttributes(e, "name", l.getName());
 		if (exportAppearance)
 			appendChildIfNotNull(e, appearanceToElement(getDocument(), l));
-		return e;
+		return executeDecorators(l, e);
 	}
 
 	/**

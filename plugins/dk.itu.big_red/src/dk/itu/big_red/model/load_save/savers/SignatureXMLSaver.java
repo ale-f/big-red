@@ -53,7 +53,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		for (Control c : s.getControls())
 			appendChildIfNotNull(e,
 				processControl(newElement(SIGNATURE, "signature:control"), c));
-		return e;
+		return executeDecorators(s, e);
 	}
 	
 	private Element processControl(Element e, Control c) {
@@ -77,7 +77,7 @@ public class SignatureXMLSaver extends XMLSaver {
 				BigraphXMLSaver.appearanceToElement(getDocument(), c));
 		e.setAttributeNS(BIG_RED, "big-red:label", c.getLabel());
 		
-		return e;
+		return executeDecorators(c, e);
 	}
 	
 	private Element processPort(Element e, PortSpec p) {
@@ -90,7 +90,7 @@ public class SignatureXMLSaver extends XMLSaver {
 				"segment", p.getSegment(),
 				"distance", p.getDistance()));
 		
-		return e;
+		return executeDecorators(p, e);
 	}
 
 	private static Element shapeToElement(Document doc, Control c) {
