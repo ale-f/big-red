@@ -61,7 +61,7 @@ public class PropertyScratchpad implements IPropertyProviderProxy {
 		} else return null;
 	}
 	
-	protected <T> List<T> getModifiableList(
+	public <T> List<T> getModifiableList(
 			IPropertyProvider object, String property) {
 		@SuppressWarnings("unchecked")
 		List<T> l = (List<T>)getProperty(object, property);

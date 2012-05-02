@@ -7,14 +7,14 @@ public class NamespaceGroup<T> {
 	private HashMap<Object, HashMapNamespace<T>> namespaces =
 		new HashMap<Object, HashMapNamespace<T>>();
 	
-	public INamespace<T> createNamespace(Object i) {
+	public Namespace<T> createNamespace(Object i) {
 		HashMapNamespace<T> namespace = null;
 		if (i != null)
 			namespaces.put(i, (namespace = new HashMapNamespace<T>()));
 		return namespace;
 	}
 	
-	public INamespace<T> getNamespace(Object i) {
+	public Namespace<T> getNamespace(Object i) {
 		return namespaces.get(i);
 	}
 	

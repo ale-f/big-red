@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.InnerName;
@@ -38,7 +39,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		try {
 			Document d =
 					validate(parse(source), "resources/schema/rule.xsd");
-			return makeObject(d.getDocumentElement()).setFile(getFile());
+			ReactionRule rr = makeObject(d.getDocumentElement());
+			ExtendedDataUtilities.setFile(rr, getFile());
+			return rr;
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
 				throw (LoadFailedException)e;
@@ -59,7 +62,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	
 	private Bigraph makeRedex(Element e) throws LoadFailedException {
 		BigraphXMLLoader im = new BigraphXMLLoader().setFile(getFile());
-		return im.makeObject(e).setFile(getFile());
+		return im.makeObject(e);
 	}
 	
 	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();
@@ -197,7 +200,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(type, name).changeComment(comment);
+				c = ExtendedDataUtilities.changeComment(
+						getNamed(type, name), comment);
 			}
 		}
 		return c;

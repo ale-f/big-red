@@ -9,6 +9,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -16,6 +17,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
@@ -118,15 +120,16 @@ public abstract class XMLSaver extends Saver {
 		throws SaveFailedException;
 	
 	protected Element processOrReference(
-		Element e, IContainer relativeTo, ModelObject object,
-		Class<? extends XMLSaver> klass) {
+		Element e, ModelObject object, Class<? extends XMLSaver> klass) {
+		IFile f;
 		if (e == null || object == null) {
 			return null;
-		} else if (object.getFile() != null) {
+		} else if (getFile() != null &&
+				(f = ExtendedDataUtilities.getFile(object)) != null) {
+			IContainer relativeTo = getFile().getParent();
 			e.setAttributeNS(null,
-				"src",
-					object.getFile().getFullPath().
-						makeRelativeTo(relativeTo.getFullPath()).toString());	
+				"src", f.getFullPath().
+					makeRelativeTo(relativeTo.getFullPath()).toString());	
 		} else {
 			XMLSaver ex;
 			try {

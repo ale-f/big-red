@@ -13,7 +13,7 @@ import dk.itu.big_red.model.Control.ChangePoints;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
-import dk.itu.big_red.model.ModelObject.ChangeComment;
+import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.PortSpec.ChangeDistance;
 import dk.itu.big_red.model.PortSpec.ChangeSegment;
 import dk.itu.big_red.model.PortSpec;
@@ -26,12 +26,12 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
 
 public class SignatureChangeValidator extends ChangeValidator<Signature> {
-	private final SignatureScratchpad scratch;
+	private final PropertyScratchpad scratch;
 	private Change activeChange = null;
 	
 	public SignatureChangeValidator(Signature changeable) {
 		super(changeable);
-		scratch = new SignatureScratchpad(changeable);
+		scratch = new PropertyScratchpad();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 	}
 	
 	private void checkEligibility(Control c) throws ChangeRejectedException {
-		if (c.getSignature(scratch) != scratch.getSignature())
+		if (c.getSignature(scratch) != getChangeable())
 			rejectChange("The control " + c + " is not part of this Signature");
 	}
 	
@@ -62,22 +62,22 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				_tryValidateChange(c);
 		} else if (b instanceof ChangeFillColour ||
 				b instanceof ChangeOutlineColour ||
-				b instanceof ChangeComment) {
+				b instanceof ChangeExtendedData) {
 			/* do nothing */
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
-			scratch.addControl(c.control);
+			getChangeable().addControl(scratch, c.control);
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
-			scratch.removeControl(c.control);
+			getChangeable().removeControl(scratch, c.control);
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			checkEligibility(c.getCreator());
-			scratch.addPortFor(c.getCreator(), c.port);
+			c.getCreator().addPort(scratch, c.port);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			checkEligibility(c.getCreator());
-			scratch.removePortFor(c.getCreator(), c.port);
+			c.getCreator().removePort(scratch, c.port);
 		} else if (b instanceof ChangeShape) {
 			checkEligibility(((ChangeShape)b).getCreator());
 		} else if (b instanceof ChangeLabel) {
@@ -102,7 +102,7 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 			checkEligibility(c.getCreator());
 			if (c.name.trim().length() == 0)
 				rejectChange(b, "Control names must not be empty");
-			scratch.setNameFor(c.getCreator(), c.name);
+			c.getCreator().setName(scratch, c.name);
 		} else rejectChange("The change was not recognised by the validator");
 	}
 }

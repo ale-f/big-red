@@ -2,6 +2,8 @@ package dk.itu.big_red.editors.rule;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
@@ -105,8 +107,9 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	@Override
-	public void doActualSave(OutputStream os) throws SaveFailedException {
-    	new ReactionRuleXMLSaver().setModel(getModel()).
+	public void doActualSave(IFile f, OutputStream os)
+			throws SaveFailedException {
+    	new ReactionRuleXMLSaver().setModel(getModel()).setFile(f).
     		setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();
 	}

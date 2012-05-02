@@ -10,25 +10,18 @@ public class HashMapNamespace<T> extends Namespace<T> {
 	}
 	
 	@Override
-	public T get(String name) {
-		if ((name = checkName(name)) != null) {
-			return getMap().get(name);
-		} else return null;
+	protected T getRaw(String name) {
+		return getMap().get(name);
 	}
 
 	@Override
-	public String put(String name, T value) {
-		if (value != null && (name = checkName(name)) != null && !has(name)) {
-			getMap().put(name, value);
-			return name;
-		} else return null;
+	protected void putRaw(String name, T value) {
+		getMap().put(name, value);
 	}
-	
+
 	@Override
-	public boolean remove(String name) {
-		if ((name = checkName(name)) != null) {
-			return (getMap().remove(name) != null);
-		} else return false;
+	protected boolean removeRaw(String name) {
+		return (getMap().remove(name) != null);
 	}
 	
 	@Override

@@ -180,7 +180,8 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
 		IResourceDelta specificDelta =
-			Project.getSpecificDelta(event.getDelta(), getModel().getFile());
+			Project.getSpecificDelta(event.getDelta(),
+					((FileEditorInput)getEditorInput()).getFile());
 		if (specificDelta != null && !isSaving())
 			;
 	}
@@ -190,7 +191,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		return true;
 	}
 	
-	abstract protected void doActualSave(OutputStream os)
+	abstract protected void doActualSave(IFile f, OutputStream os)
 		throws SaveFailedException;
 	
 	@Override
@@ -200,7 +201,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 			IOAdapter io = new IOAdapter();
         	FileEditorInput i = (FileEditorInput)getEditorInput();
         	
-        	doActualSave(io.getOutputStream());
+        	doActualSave(i.getFile(), io.getOutputStream());
         	
         	Project.setContents(i.getFile(), io.getInputStream());
     		firePropertyChange(PROP_DIRTY);
@@ -262,7 +263,6 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		d.setBlockOnOpen(true);
 		if (d.open() == Dialog.OK) {
 			IFile f = Project.getWorkspaceRoot().getFile(d.getResult());
-			getModel().setFile(f);
 			setInputWithNotify(new FileEditorInput(f));
 			doSave(null);
 		}

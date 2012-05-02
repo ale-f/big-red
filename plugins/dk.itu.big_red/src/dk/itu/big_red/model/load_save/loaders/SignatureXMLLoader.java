@@ -6,6 +6,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
@@ -31,7 +32,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		try {
 			Document d =
 				validate(parse(source), "resources/schema/signature.xsd");
-			return makeObject(d.getDocumentElement()).setFile(getFile());
+			Signature s = makeObject(d.getDocumentElement());
+			ExtendedDataUtilities.setFile(s, getFile());
+			return s;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}

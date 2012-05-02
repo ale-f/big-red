@@ -5,13 +5,12 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.ui.services.IDisposable;
 
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
-import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
@@ -26,12 +25,6 @@ import dk.itu.big_red.model.changes.Change;
  *
  */
 public abstract class ModelObject implements IDisposable, IPropertyProvider {
-	/**
-	 * The property name fired when the comment changes.
-	 */
-	@RedProperty(fired = String.class, retrieved = String.class)
-	public static final String PROPERTY_COMMENT = "ModelObjectComment";
-	
 	public abstract class ModelObjectChange extends Change {
 		/**
 		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
@@ -42,30 +35,25 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		}
 	}
 	
-	public class ChangeComment extends ModelObjectChange {
-		public String comment;
+	public class ChangeExtendedData extends ModelObjectChange {
+		public String key;
+		public Object newValue;
 		
-		protected ChangeComment(String comment) {
-			this.comment = comment;
+		protected ChangeExtendedData(String key, Object newValue) {
+			this.key = key;
+			this.newValue = newValue;
 		}
-
-		private boolean oldCommentSet = false;
-		private String oldComment;
+		
+		private Object oldValue;
 		
 		@Override
 		public void beforeApply() {
-			oldComment = getCreator().getComment();
-			oldCommentSet = true;
+			oldValue = getCreator().getExtendedData(key);
 		}
 		
 		@Override
-		public boolean canInvert() {
-			return oldCommentSet;
-		};
-		
-		@Override
-		public ChangeComment inverse() {
-			return new ChangeComment(oldComment);
+		public Change inverse() {
+			return new ChangeExtendedData(key, oldValue);
 		}
 	}
 	
@@ -127,7 +115,6 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		ModelObject i = newInstance();
 		if (m != null)
 			m.put(this, i);
-		i.setComment(getComment());
 		return i;
 	}
 	
@@ -136,45 +123,11 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		return clone(null);
 	}
 	
-	private IFile file = null;
-	
-	public IFile getFile() {
-		return file;
-	}
-	
-	public ModelObject setFile(IFile file) {
-		this.file = file;
-		return this;
-	}
-	
-	private String comment = null;
-	
-	/**
-	 * Returns the current comment for this object.
-	 * @return the current comment
-	 */
-	public String getComment() {
-		return comment;
-	}
-	
-	public String getComment(IPropertyProviderProxy context) {
-		return (String)getProperty(context, PROPERTY_COMMENT);
-	}
-	
-	/**
-     * Changes this object's comment.
-     * @param comment the new comment
-     */
-	protected void setComment(String comment) {
-		String oldComment = this.comment;
-		this.comment = comment;
-		firePropertyChange(PROPERTY_COMMENT, oldComment, comment);
-	}
-	
 	@Override
 	public Object getProperty(String name) {
-		if (PROPERTY_COMMENT.equals(name)) {
-			return getComment();
+		Object o;
+		if ((o = getExtendedData(name)) != null) {
+			return o;
 		} else return null;
 	}
 	
@@ -196,21 +149,22 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		return getClass().getSimpleName();
 	}
 	
-	public ChangeComment changeComment(String comment) {
-		return new ChangeComment(comment);
+	public Change changeExtendedData(String key, Object newValue) {
+		return new ChangeExtendedData(key, newValue);
 	}
-
+	
 	@Override
 	public void dispose() {
-		comment = null;
-		
 		PropertyChangeListener[] pls =
 			listeners.getPropertyChangeListeners().clone();
 		for (PropertyChangeListener i : pls)
 			listeners.removePropertyChangeListener(i);
 		listeners = null;
 		
-		file = null;
+		if (extendedData != null) {
+			extendedData.clear();
+			extendedData = null;
+		}
 	}
 	
 	private Map<String, Object> extendedData;
@@ -234,18 +188,20 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	public void setExtendedData(String key, Object value) {
 		if (key == null)
 			return;
+		Object oldValue;
 		if (value == null) {
 			if (extendedData == null)
 				return;
-			if (extendedData.remove(key) != null) {
+			if ((oldValue = extendedData.remove(key)) != null) {
 				if (extendedData.isEmpty())
 					extendedData = null;
 			}
 		} else {
 			if (extendedData == null)
 				extendedData = new HashMap<String, Object>();
-			extendedData.put(key, value);
+			oldValue = extendedData.put(key, value);
 		}
+		firePropertyChange(key, oldValue, value);
 	}
 	
 	/**
@@ -253,9 +209,20 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	 * object.
 	 * @param m a {@link ModelObject} (can be <code>null</code>)
 	 */
-	public void setExtendedDataFrom(ModelObject m) {
+	protected void setExtendedDataFrom(ModelObject m) {
 		if (m != null && m.extendedData != null) {
 			extendedData = new HashMap<String, Object>(m.extendedData);
 		} else extendedData = null;
+	}
+	
+	protected void doChange(Change c_) {
+		c_.beforeApply();
+		if (c_ instanceof ChangeGroup) {
+			for (Change c : (ChangeGroup)c_)
+				doChange(c);
+		} else if (c_ instanceof ChangeExtendedData) {
+			ChangeExtendedData c = (ChangeExtendedData)c_;
+			c.getCreator().setExtendedData(c.key, c.newValue);
+		}
 	}
 }

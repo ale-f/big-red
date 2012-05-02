@@ -15,12 +15,13 @@ import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
+
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -97,7 +98,7 @@ implements PropertyChangeListener, IBigraphPart {
 		if (evt.getSource() == getModel()) {
 			String property = evt.getPropertyName();
 			if (property.equals(Layoutable.PROPERTY_NAME) ||
-				property.equals(ModelObject.PROPERTY_COMMENT) ||
+				ExtendedDataUtilities.COMMENT.equals(property) ||
 				property.equals(Layoutable.PROPERTY_LAYOUT)) {
 				refreshVisuals();
 			}
@@ -151,7 +152,9 @@ implements PropertyChangeListener, IBigraphPart {
 		Layoutable model = getModel();
 		AbstractFigure figure = getFigure();
 		figure.setConstraint(model.getLayout());
-		String comment = model.getComment(), tooltip = getToolTip();
+		String
+			comment = ExtendedDataUtilities.getComment(model),
+			tooltip = getToolTip();
 		figure.setToolTip(comment == null ?
 				tooltip : tooltip + "\n\n" + comment);
 	}

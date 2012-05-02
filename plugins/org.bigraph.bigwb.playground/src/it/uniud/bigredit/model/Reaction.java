@@ -3,15 +3,10 @@ package it.uniud.bigredit.model;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import it.uniud.bigredit.model.BRS.ChangeLayoutChild;
-import it.uniud.bigredit.model.BRS.ChangeRemoveChild;
-import it.uniud.bigredit.policy.BRSChangeValidator;
 import it.uniud.bigredit.policy.ReactionChangeValidator;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.ModelObject.ModelObjectChange;
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.changes.IChangeValidator;
@@ -170,14 +165,10 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		validator.tryValidateChange(b);
 	}
 	
-	private void doChange(Change b) {
-
-		b.beforeApply();
-		if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup) b)
-				doChange(c);
-			System.out.println("here");
-		} else if (b instanceof Reaction.ChangeAddReactum) {
+	@Override
+	protected void doChange(Change b) {
+		super.doChange(b);
+		if (b instanceof Reaction.ChangeAddReactum) {
 
 			Reaction.ChangeAddReactum c = (Reaction.ChangeAddReactum) b;
 			((Reaction) c.getCreator()).changeReactum(c.child);

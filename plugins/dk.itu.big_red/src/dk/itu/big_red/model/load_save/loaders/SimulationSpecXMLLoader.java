@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
@@ -23,7 +24,9 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		try {
 			Document d =
 					validate(parse(source), "resources/schema/spec.xsd");
-			return makeObject(d.getDocumentElement()).setFile(getFile());
+			SimulationSpec ss = makeObject(d.getDocumentElement());
+			ExtendedDataUtilities.setFile(ss, getFile());
+			return ss;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}

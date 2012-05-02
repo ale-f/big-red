@@ -34,6 +34,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
@@ -83,9 +84,10 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 	}
 	
 	@Override
-	public void doActualSave(OutputStream os) throws SaveFailedException {
-    	new SimulationSpecXMLSaver().setModel(getModel()).setOutputStream(os).
-    		exportObject();
+	public void doActualSave(IFile f, OutputStream os)
+			throws SaveFailedException {
+    	new SimulationSpecXMLSaver().setModel(getModel()).setFile(f).
+    		setOutputStream(os).exportObject();
     	setSavePoint();
 	}
 
@@ -123,12 +125,18 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 		uiUpdateInProgress = true;
 		
 		Signature s = model.getSignature();
-		if (s != null)
-			signatureSelector.setResource(s.getFile());
+		if (s != null) {
+			IFile f = ExtendedDataUtilities.getFile(s);
+			if (f != null)
+				signatureSelector.setResource(f);
+		}
 		
 		Bigraph b = model.getModel();
-		if (b != null)
-			modelSelector.setResource(b.getFile());
+		if (b != null) {
+			IFile f = ExtendedDataUtilities.getFile(b);
+			if (f != null)
+				modelSelector.setResource(f);
+		}
 		
 		uiUpdateInProgress = false;
 	}
@@ -196,14 +204,18 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			}
 		});
 		
-		UI.chain(new Label(self, SWT.RIGHT)).text("Reaction rules:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+		UI.chain(new Label(self, SWT.RIGHT)).text("Reaction rules:").done().
+			setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		rules = new ListViewer(self);
 		UI.setProviders(rules, new SimulationSpecRRContentProvider(rules),
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((ModelObject)element).getFile().
-							getProjectRelativePath().toString();
+					IFile f =
+						ExtendedDataUtilities.getFile((ModelObject)element);
+					if (f != null) {
+						return f.getProjectRelativePath().toString();
+					} else return "(embedded rule)";
 				}
 		});
 		rules.getList().setLayoutData(
@@ -337,10 +349,12 @@ implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
 			uiUpdateInProgress = true;
 			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
 				Signature s = (Signature)newValue;
-				signatureSelector.setResource((s != null ? s.getFile() : null));
+				signatureSelector.setResource(
+						ExtendedDataUtilities.getFile(s));
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
 				Bigraph b = (Bigraph)newValue;
-				modelSelector.setResource((b != null ? b.getFile() : null));
+				modelSelector.setResource(
+						ExtendedDataUtilities.getFile(b));
 			}
 		} finally {
 			uiUpdateInProgress = false;

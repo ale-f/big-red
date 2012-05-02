@@ -2,6 +2,8 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+
+import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
@@ -292,9 +294,10 @@ public class BigraphEditor extends AbstractGEFEditor {
 	}
 
 	@Override
-	protected void doActualSave(OutputStream os) throws SaveFailedException {
-		new BigraphXMLSaver().setModel(getModel()).setOutputStream(os).
-			exportObject();
+	protected void doActualSave(IFile f, OutputStream os)
+			throws SaveFailedException {
+		new BigraphXMLSaver().setModel(getModel()).setFile(f).
+			setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();
 	}
 

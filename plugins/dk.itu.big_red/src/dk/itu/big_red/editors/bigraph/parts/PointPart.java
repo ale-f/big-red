@@ -4,10 +4,10 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Point;
 
 public abstract class PointPart extends ConnectablePart {
@@ -51,7 +51,7 @@ public abstract class PointPart extends ConnectablePart {
 					newLink.addPropertyChangeListener(this);
 				refreshSourceConnections();
 				refreshVisuals();
-		    } else if (prop.equals(ModelObject.PROPERTY_COMMENT)) {
+		    } else if (ExtendedDataUtilities.COMMENT.equals(prop)) {
 		    	refreshVisuals();
 		    }
 		} else if (source == getModel().getLink()) {

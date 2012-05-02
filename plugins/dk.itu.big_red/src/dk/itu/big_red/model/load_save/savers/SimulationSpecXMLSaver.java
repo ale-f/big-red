@@ -1,7 +1,5 @@
 package dk.itu.big_red.model.load_save.savers;
 
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ModelObject;
@@ -40,21 +38,19 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 		if (!(ss_ instanceof SimulationSpec))
 			throw new SaveFailedException(ss_ + " isn't a SimulationSpec");
 		SimulationSpec ss = (SimulationSpec)ss_;
-		IFile ssFile = ss.getFile();
-		IContainer ssContainer = (ssFile != null ? ssFile.getParent() : null);
 		
 		appendChildIfNotNull(e,
 			processOrReference(newElement(SPEC, "spec:signature"),
-				ssContainer, ss.getSignature(), SignatureXMLSaver.class));
+				ss.getSignature(), SignatureXMLSaver.class));
 		
 		for (ReactionRule rr : ss.getRules())
 			appendChildIfNotNull(e,
 				processOrReference(newElement(SPEC, "spec:rule"),
-					ssContainer, rr, ReactionRuleXMLSaver.class));
+					rr, ReactionRuleXMLSaver.class));
 		
 		appendChildIfNotNull(e,
 			processOrReference(newElement(SPEC, "spec:model"),
-				ssContainer, ss.getModel(), BigraphXMLSaver.class));
+				ss.getModel(), BigraphXMLSaver.class));
 		
 		return e;
 	}

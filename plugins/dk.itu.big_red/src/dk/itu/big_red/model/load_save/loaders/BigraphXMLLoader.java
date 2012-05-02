@@ -11,6 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
@@ -64,7 +65,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		try {
 			Document d =
 					validate(parse(source), "resources/schema/bigraph.xsd");
-			return makeObject(d.getDocumentElement()).setFile(getFile());
+			Bigraph b = makeObject(d.getDocumentElement());
+			ExtendedDataUtilities.setFile(b, getFile());
+			return b;
 		} catch (LoadFailedException e) {
 			throw e;
 		} catch (Exception e) {
@@ -294,6 +297,6 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		String comment = getAttributeNS(e, BIG_RED, "comment");
 		if (comment != null)
-			cg.add(o.changeComment(comment));
+			cg.add(ExtendedDataUtilities.changeComment(o, comment));
 	}
 }

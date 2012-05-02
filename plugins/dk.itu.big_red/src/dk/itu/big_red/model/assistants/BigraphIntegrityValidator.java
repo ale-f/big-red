@@ -17,13 +17,13 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Node.ChangeParameter;
 import dk.itu.big_red.model.Site.ChangeAlias;
-import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.ChangeValidator;
-import dk.itu.big_red.model.names.INamespace;
+import dk.itu.big_red.model.names.Namespace;
 import dk.itu.big_red.model.names.policies.INamePolicy;
+import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
 
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that
@@ -33,12 +33,12 @@ import dk.itu.big_red.model.names.policies.INamePolicy;
  *
  */
 public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
-	private final BigraphScratchpad scratch;
+	private final PropertyScratchpad scratch;
 	private Change activeChange = null;
 	
 	public BigraphIntegrityValidator(Bigraph changeable) {
 		super(changeable);
-		scratch = new BigraphScratchpad(changeable);
+		scratch = new PropertyScratchpad();
 	}
 	
 	private ArrayList<Layoutable> layoutChecks =
@@ -103,11 +103,12 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 	private void checkName(Change b, Layoutable l, String cdt) throws ChangeRejectedException {
 		if (cdt == null)
 			rejectChange(b, "Setting an object's name to null is no longer supported");
-		INamespace<Layoutable> ns = scratch.getNamespaceFor(l);
+		Namespace<Layoutable> ns =
+				getChangeable().getNamespace(Bigraph.getNSI(l));
 		if (ns == null)
 			return; /* not subject to any checks */
-		if (ns.get(cdt) != null)
-			if (!ns.get(cdt).equals(l))
+		if (ns.get(scratch, cdt) != null)
+			if (!ns.get(scratch, cdt).equals(l))
 				rejectChange("Names must be unique");
 		if (ns.getPolicy().normalise(cdt) == null)
 			rejectChange(b, "\"" + cdt + "\" is not a valid name for " + l);
@@ -127,14 +128,14 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				rejectChange(b,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
-			scratch.addPointFor(c.link, c.getCreator());
+			c.link.addPoint(scratch, c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			checkEligibility(c.getCreator());
 			Link l = c.getCreator().getLink(scratch);
 			if (l == null)
 				rejectChange("The Point is already disconnected");
-			scratch.removePointFor(l, c.getCreator());
+			l.removePoint(scratch, c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			
@@ -161,7 +162,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 					layoutChecks.add(c.child);
 			}
 			
-			scratch.addChildFor(c.getCreator(), c.child, c.name);
+			c.getCreator().addChild(scratch, c.child, c.name);
 		} else if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
@@ -172,8 +173,9 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			Container cp = ch.getParent(scratch);
 			if (cp == null)
 				rejectChange(b, cp + " is not the parent of " + ch);
-			scratch.removeChildFor(cp, ch);
-			scratch.getNamespaceFor(ch).remove(ch.getName());
+			cp.removeChild(scratch, ch);
+			getChangeable().getNamespace(Bigraph.getNSI(ch)).
+				remove(scratch, ch.getName());
 		} else if (b instanceof Layoutable.ChangeLayout) {
 			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
 			checkEligibility(c.getCreator());
@@ -187,19 +189,18 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			checkEligibility(c.getCreator());
 		} else if (b instanceof Colourable.ChangeOutlineColour ||
 				b instanceof Colourable.ChangeFillColour ||
-				b instanceof ModelObject.ChangeComment) {
+				b instanceof ModelObject.ChangeExtendedData) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(c.getCreator());
 			checkName(b, c.getCreator(), c.newName);
-			scratch.setNameFor(c.getCreator(), c.newName);
+			c.getCreator().setName(scratch, c.newName);
 		} else if (b instanceof ChangeAlias) {
 			ChangeAlias c = (ChangeAlias)b;
 			/* Although Site aliases don't have to be unique, they should still
 			 * be valid (or null) */
-			INamePolicy siteNamePolicy =
-				scratch.getBigraph().getNamespace(Site.class).getPolicy();
+			INamePolicy siteNamePolicy = new PositiveIntegerNamePolicy();
 			if (siteNamePolicy != null && c.alias != null)
 				if (siteNamePolicy.normalise(c.alias) == null)
 					rejectChange("\"" + c.alias + "\" is not a valid alias " +

@@ -54,8 +54,7 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 		IOAdapter io = new IOAdapter();
 		
 		new SimulationSpecXMLSaver().
-			setModel(
-				new SimulationSpec().setFile(ssFile)).
+			setModel(new SimulationSpec()).setFile(ssFile).
 			setOutputStream(io.getOutputStream()).exportObject();
 		ssFile.setContents(io.getInputStream(), 0, null);
 	}

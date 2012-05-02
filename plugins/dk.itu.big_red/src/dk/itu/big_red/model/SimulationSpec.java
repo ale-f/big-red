@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.core.resources.IFile;
-
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -143,7 +141,6 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	@Override
 	public SimulationSpec clone(Map<ModelObject, ModelObject> m) {
 		SimulationSpec ss = (SimulationSpec)super.clone(m);
-		ss.setFile(getFile());
 		
 		ss.setSignature(getSignature().clone(m));
 		for (ReactionRule r : getRules())
@@ -221,12 +218,10 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		doChange(b);
 	}
 	
-	private void doChange(Change b) {
-		b.beforeApply();
-		if (b instanceof ChangeGroup) {
-			for (Change i : (ChangeGroup)b)
-				doChange(i);
-		} else if (b instanceof ChangeSignature) {
+	@Override
+	protected void doChange(Change b) {
+		super.doChange(b);
+		if (b instanceof ChangeSignature) {
 			setSignature(((ChangeSignature) b).signature);
 		} else if (b instanceof ChangeAddRule) {
 			addRule(((ChangeAddRule) b).rule);
@@ -276,10 +271,5 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		} else if (PROPERTY_RULE.equals(name)) {
 			return getRules();
 		} else return super.getProperty(name);
-	}
-	
-	@Override
-	public SimulationSpec setFile(IFile file) {
-		return (SimulationSpec)super.setFile(file);
 	}
 }

@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -56,9 +57,10 @@ implements PropertyChangeListener {
 	}
 	
 	@Override
-	public void doActualSave(OutputStream os) throws SaveFailedException {
-    	new SignatureXMLSaver().setModel(getModel()).setOutputStream(os).
-    		exportObject();
+	public void doActualSave(IFile f, OutputStream os)
+			throws SaveFailedException {
+    	new SignatureXMLSaver().setModel(getModel()).setFile(f).
+    		setOutputStream(os).exportObject();
 		setSavePoint();
 	}
 

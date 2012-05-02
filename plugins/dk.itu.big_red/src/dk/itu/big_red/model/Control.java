@@ -8,6 +8,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -547,6 +548,10 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 
+	public void setName(PropertyScratchpad context, String name) {
+		context.setProperty(this, PROPERTY_NAME, name);
+	}
+	
 	@Override
 	public String getName() {
 		return name;
@@ -607,11 +612,21 @@ public class Control extends Colourable implements IControl {
 		}
 	}
 	
+	public void addPort(PropertyScratchpad context, PortSpec p) {
+		context.<PortSpec>getModifiableList(this, PROPERTY_PORT).add(p);
+		context.setProperty(p, PortSpec.PROPERTY_CONTROL, this);
+	}
+	
 	protected void removePort(PortSpec p) {
 		if (ports.remove(p)) {
 			p.setControl(null);
 			firePropertyChange(PROPERTY_PORT, p, null);
 		}
+	}
+	
+	public void removePort(PropertyScratchpad context, PortSpec p) {
+		context.<PortSpec>getModifiableList(this, PROPERTY_PORT).remove(p);
+		context.setProperty(p, PortSpec.PROPERTY_CONTROL, null);
 	}
 	
 	public Signature getSignature() {

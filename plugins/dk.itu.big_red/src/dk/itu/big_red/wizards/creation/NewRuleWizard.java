@@ -63,11 +63,12 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 			throws LoadFailedException, SaveFailedException, CoreException {
 		IOAdapter io = new IOAdapter();
 		
-		ReactionRule rr = new ReactionRule().setFile(rrFile);
+		ReactionRule rr = new ReactionRule();
 		rr.setRedex(new Bigraph());
 		rr.getRedex().setSignature((Signature)Loader.fromFile(sigFile));
 		
-		new ReactionRuleXMLSaver().setModel(rr).setOutputStream(io.getOutputStream()).exportObject();
+		new ReactionRuleXMLSaver().setModel(rr).setFile(rrFile).
+			setOutputStream(io.getOutputStream()).exportObject();
 		rrFile.setContents(io.getInputStream(), 0, null);
 	}
 }

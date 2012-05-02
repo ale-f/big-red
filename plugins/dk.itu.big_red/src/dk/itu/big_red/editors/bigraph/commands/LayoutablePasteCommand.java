@@ -3,12 +3,13 @@ package dk.itu.big_red.editors.bigraph.commands;
 import java.util.ArrayList;
 import org.eclipse.gef.ui.actions.Clipboard;
 
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.BigraphScratchpad;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class LayoutablePasteCommand extends ChangeCommand {
@@ -29,7 +30,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 			this.newParent = (Container)newParent;
 	}
 	
-	private BigraphScratchpad scratch = null;
+	private PropertyScratchpad scratch = null;
 	
 	@Override
 	public LayoutablePasteCommand prepare() {
@@ -48,7 +49,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 		setTarget(newParent.getBigraph());
 		if (scratch != null) {
 			scratch.clear();
-		} else scratch = new BigraphScratchpad(newParent.getBigraph());
+		} else scratch = new PropertyScratchpad();
 		
 		ArrayList<?> bList;
 		try {
@@ -71,12 +72,12 @@ public class LayoutablePasteCommand extends ChangeCommand {
 					i instanceof Site) {
 				Layoutable j = i.clone(null);
 				
-				String name = scratch.getNamespaceFor(j).getNextName();
+				String name = newParent.getBigraph().
+						getNamespace(Bigraph.getNSI(j)).getNextName(scratch);
 				cg.add(newParent.changeAddChild(j, name),
 						j.changeLayout(j.getLayout().getCopy().translate(20, 20)));
 				
-				scratch.addChildFor(newParent, j, name);
-				scratch.setNameFor(j, name);
+				newParent.addChild(scratch, j, name);
 			}
 		}
 		return this;

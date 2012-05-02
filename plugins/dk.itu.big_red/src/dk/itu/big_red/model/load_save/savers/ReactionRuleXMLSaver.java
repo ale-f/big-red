@@ -2,6 +2,7 @@ package dk.itu.big_red.model.load_save.savers;
 
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Colourable.ChangeFillColour;
 import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
@@ -10,8 +11,8 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Layoutable.ChangeRemove;
+import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.ModelObject.ChangeComment;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
@@ -168,13 +169,15 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 					"name", i.getCreator().getName());
 			if (i.alias != null)
 				applyAttributes(f, "alias", i.alias);
-		} else if (i_ instanceof ChangeComment) {
-			ChangeComment i = (ChangeComment)i_;
+		} else if (i_ instanceof ChangeExtendedData) {
+			ChangeExtendedData i = (ChangeExtendedData)i_;
+			if (!ExtendedDataUtilities.COMMENT.equals(i.key))
+				return null;
 			f = applyAttributes(newElement(BIG_RED, "big-red:comment"),
 					"name", ((Layoutable)i.getCreator()).getName(),
 					"type", ((Layoutable)i.getCreator()).getType().toLowerCase());
-			if (i.comment != null)
-				applyAttributes(f, "comment", i.comment);
+			if (i.newValue != null)
+				applyAttributes(f, "comment", i.newValue);
 		}
 		
 		return f;

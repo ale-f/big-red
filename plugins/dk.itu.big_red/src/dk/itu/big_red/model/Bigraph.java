@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -20,7 +19,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.interfaces.IBigraph;
-import dk.itu.big_red.model.names.INamespace;
+import dk.itu.big_red.model.names.Namespace;
 import dk.itu.big_red.model.names.NamespaceGroup;
 import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
 import dk.itu.big_red.model.names.policies.StringNamePolicy;
@@ -91,7 +90,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	 * unless you're <i>very</i> sure you know what you're doing
 	 * @return the specified namespace
 	 */
-	public INamespace<Layoutable> getNamespace(Object nsi) {
+	public Namespace<Layoutable> getNamespace(Object nsi) {
 		return nsg.getNamespace(nsi);
 	}
 	
@@ -132,12 +131,10 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			m = new HashMap<ModelObject, ModelObject>();
 		Bigraph b = (Bigraph)newInstance();
 		
-		b.setFile(getFile());
 		b.setSignature(getSignature().clone(m));
 		
 		/* ModelObject.clone */
 		m.put(this, b);
-		b.setComment(getComment());
 		
 		/* Colourable.clone */
 		b.setFillColour(getFillColour().getCopy());
@@ -162,7 +159,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 				Layoutable l = (Layoutable)o,
 						lClone = (Layoutable)e.getValue();
 				lClone.setName(l.getName());
-				INamespace<Layoutable> ns = b.getNamespace(getNSI(lClone));
+				Namespace<Layoutable> ns = b.getNamespace(getNSI(lClone));
 				if (ns != null)
 					ns.put(lClone.getName(), lClone);
 			}
@@ -394,12 +391,10 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		doChange(b);
 	}
 	
-	private void doChange(Change b) {
-		b.beforeApply();
-		if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b)
-				doChange(c);
-		} else if (b instanceof Point.ChangeConnect) {
+	@Override
+	protected void doChange(Change b) {
+		super.doChange(b);
+		if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			c.link.addPoint(c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
@@ -435,9 +430,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			c.getCreator().setName(
 					getNamespace(getNSI(c.getCreator())).put(
 							c.newName, c.getCreator()));
-		} else if (b instanceof ModelObject.ChangeComment) {
-			ModelObject.ChangeComment c = (ModelObject.ChangeComment)b;
-			c.getCreator().setComment(c.comment);
 		} else if (b instanceof Site.ChangeAlias) {
 			Site.ChangeAlias c = (Site.ChangeAlias)b;
 			c.getCreator().setAlias(c.alias);
@@ -472,10 +464,5 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		signature = null;
 		
 		super.dispose();
-	}
-	
-	@Override
-	public Bigraph setFile(IFile file) {
-		return (Bigraph)super.setFile(file);
 	}
 }

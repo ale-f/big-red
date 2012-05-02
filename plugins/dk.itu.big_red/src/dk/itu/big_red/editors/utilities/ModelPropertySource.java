@@ -9,6 +9,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
@@ -75,7 +76,7 @@ public class ModelPropertySource implements IPropertySource {
 		}
 		
 		if (object instanceof ModelObject)
-			properties.add(new TextPropertyDescriptor(ModelObject.PROPERTY_COMMENT, "Comment"));
+			properties.add(new TextPropertyDescriptor(ExtendedDataUtilities.COMMENT, "Comment"));
 		if (object instanceof Layoutable) {
 			TextPropertyDescriptor d =
 					new TextPropertyDescriptor(Layoutable.PROPERTY_NAME, "Name");
@@ -101,7 +102,7 @@ public class ModelPropertySource implements IPropertySource {
 			if (value instanceof Colour)
 				value = ((Colour)value).getRGB();
 			if (value == null &&
-			    (id.equals(ModelObject.PROPERTY_COMMENT) ||
+			    (ExtendedDataUtilities.COMMENT.equals(id) ||
 			     id.equals(Site.PROPERTY_ALIAS)))
 				value = "";
 			return value;
