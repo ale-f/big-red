@@ -1,5 +1,9 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -129,11 +133,14 @@ public abstract class XMLSaver extends Saver {
 			IContainer relativeTo = getFile().getParent();
 			e.setAttributeNS(null,
 				"src", f.getFullPath().
-					makeRelativeTo(relativeTo.getFullPath()).toString());	
+					makeRelativeTo(relativeTo.getFullPath()).toString());
+			/* No decoration takes place! */
 		} else {
 			XMLSaver ex;
 			try {
 				ex = klass.newInstance();
+				for (Decorator d : getDecorators())
+					ex.addDecorator(d);
 				ex.setDocument(getDocument()).setModel(object);
 				ex.processObject(e, object);
 			} catch (Exception exc) {
@@ -201,5 +208,37 @@ public abstract class XMLSaver extends Saver {
 			
 		}
 		return impl;
+	}
+	
+	public static interface Decorator {
+		void decorate(ModelObject object, Element el);
+	}
+	
+	private List<Decorator> decorators = null;
+	
+	protected List<Decorator> getDecorators() {
+		return (decorators != null ? decorators :
+				Collections.<Decorator>emptyList());
+	}
+	
+	public void addDecorator(Decorator d) {
+		if (d == null)
+			return;
+		if (decorators == null)
+			decorators = new ArrayList<Decorator>();
+		decorators.add(d);
+	}
+	
+	public void removeDecorator(Decorator d) {
+		if (decorators.remove(d))
+			if (decorators.size() == 0)
+				decorators = null;
+	}
+	
+	protected Element executeDecorators(ModelObject mo, Element el) {
+		if (mo != null && el != null)
+			for (Decorator d : getDecorators())
+				d.decorate(mo, el);
+		return el;
 	}
 }
