@@ -488,6 +488,9 @@ implements PropertyChangeListener {
 		getModel().removePropertyChangeListener(this);
 		model = null;
 		
+		appearance.dispose();
+		appearance = null;
+		
 		super.dispose();
 	}
 	

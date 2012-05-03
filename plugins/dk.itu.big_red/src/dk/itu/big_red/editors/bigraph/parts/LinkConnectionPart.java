@@ -27,6 +27,7 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -66,24 +67,10 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		return new LinkConnectionFigure();
 	}
 
-	private Colour outline;
-	private Color swtOutline;
+	private ColorWrapper colour = new ColorWrapper();
 	
-	protected Color getOutline(Colour outline) {
-		if (outline != null) {
-			if (!outline.equals(this.outline)) {
-				if (swtOutline != null)
-					swtOutline.dispose();
-				swtOutline = outline.getSWTColor();
-			}
-		} else {
-			if (swtOutline != null) {
-				swtOutline.dispose();
-				swtOutline = null;
-			}
-		}
-		this.outline = outline;
-		return swtOutline;
+	protected Color getColour(Colour colour) {
+		return this.colour.update(colour);
 	}
 	
 	/**
@@ -105,7 +92,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	public void deactivate() {
 		getModel().getLink().removePropertyChangeListener(this);
-		getOutline(null);
+		getColour(null);
 		super.deactivate();
 	}
 	
@@ -132,7 +119,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		
 		figure.setToolTip(getDisplayName());
 		figure.setForegroundColor(
-				getOutline(ExtendedDataUtilities.getOutline(model.getLink())));
+				getColour(ExtendedDataUtilities.getOutline(model.getLink())));
 	}
 
 	/**

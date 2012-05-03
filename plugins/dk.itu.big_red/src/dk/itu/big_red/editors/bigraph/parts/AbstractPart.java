@@ -24,6 +24,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -61,41 +62,15 @@ implements PropertyChangeListener, IBigraphPart {
 		return getModel().getBigraph();
 	}
 	
-	private Colour fill, outline;
-	private Color swtFill, swtOutline;
+	private ColorWrapper
+		fill = new ColorWrapper(), outline = new ColorWrapper();
 	
-	protected Color getFill(Colour fill) {
-		if (fill != null) {
-			if (!fill.equals(this.fill)) {
-				if (swtFill != null)
-					swtFill.dispose();
-				swtFill = fill.getSWTColor();
-			}
-		} else {
-			if (swtFill != null) {
-				swtFill.dispose();
-				swtFill = null;
-			}
-		}
-		this.fill = fill;
-		return swtFill;
+	protected Color getFill(Colour c) {
+		return fill.update(c);
 	}
 	
-	protected Color getOutline(Colour outline) {
-		if (outline != null) {
-			if (!outline.equals(this.outline)) {
-				if (swtOutline != null)
-					swtOutline.dispose();
-				swtOutline = outline.getSWTColor();
-			}
-		} else {
-			if (swtOutline != null) {
-				swtOutline.dispose();
-				swtOutline = null;
-			}
-		}
-		this.outline = outline;
-		return swtOutline;
+	protected Color getOutline(Colour c) {
+		return outline.update(c);
 	}
 	
 	/**

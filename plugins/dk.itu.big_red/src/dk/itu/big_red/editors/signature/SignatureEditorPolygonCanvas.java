@@ -23,7 +23,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -39,6 +38,7 @@ import dk.itu.big_red.model.assistants.Line;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.PortSpec;
+import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -83,6 +83,8 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private Control model;
+	private ColorWrapper
+		fill = new ColorWrapper(), outline = new ColorWrapper();
 	
 	public void setModel(Control model) {
 		for (ModelObject i : listeningTo)
@@ -94,6 +96,7 @@ MenuListener, PropertyChangeListener {
 		for (PortSpec i : model.getPorts())
 			listenTo(i);
 		pointsBounds = null;
+		
 		redraw();
 	}
 	
@@ -490,16 +493,12 @@ MenuListener, PropertyChangeListener {
 			return;
 		}
 		
-		e.gc.setForeground(ColorConstants.black);
-		
 		Line l = new Line();
 		
-		Color
-			outline = ExtendedDataUtilities.getOutline(getModel()).getSWTColor(),
-			fill = ExtendedDataUtilities.getFill(getModel()).getSWTColor();
-		
-		e.gc.setForeground(outline);
-		e.gc.setBackground(fill);
+		e.gc.setForeground(
+			outline.update(ExtendedDataUtilities.getOutline(model)));
+		e.gc.setBackground(
+			fill.update(ExtendedDataUtilities.getFill(model)));
 		
 		List<PortSpec> ports = getPorts();
 		if (getShape() == Shape.POLYGON) {
@@ -769,5 +768,16 @@ MenuListener, PropertyChangeListener {
 				}
 			});
 		}
+	}
+	
+	@Override
+	public void dispose() {
+		if (isDisposed())
+			return;
+		fill.update(null);
+		outline.update(null);
+		fill = outline = null;
+		model = null;
+		super.dispose();
 	}
 }
