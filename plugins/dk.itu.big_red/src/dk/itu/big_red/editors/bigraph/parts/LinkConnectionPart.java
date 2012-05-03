@@ -13,6 +13,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -25,6 +26,7 @@ import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.OuterName;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -38,12 +40,13 @@ import dk.itu.big_red.utilities.ui.UI;
  */
 public class LinkConnectionPart extends AbstractConnectionEditPart implements NodeEditPart, PropertyChangeListener {
 	/**
-	 * Returns the {@link NodeEditPart} corresponding to this connection's
+	 * Returns the {@link LinkPart} corresponding to this connection's
 	 * {@link Link}.
-	 * @return a NodeEditPart
+	 * @return a LinkPart
 	 */
-	public NodeEditPart getLinkPart() {
-		return ((NodeEditPart)getViewer().getEditPartRegistry().get(getModel().getLink()));
+	public LinkPart getLinkPart() {
+		return (LinkPart)
+				getViewer().getEditPartRegistry().get(getModel().getLink());
 	}
 	
 	@Override
@@ -63,6 +66,26 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		return new LinkConnectionFigure();
 	}
 
+	private Colour outline;
+	private Color swtOutline;
+	
+	protected Color getOutline(Colour outline) {
+		if (outline != null) {
+			if (!outline.equals(this.outline)) {
+				if (swtOutline != null)
+					swtOutline.dispose();
+				swtOutline = outline.getSWTColor();
+			}
+		} else {
+			if (swtOutline != null) {
+				swtOutline.dispose();
+				swtOutline = null;
+			}
+		}
+		this.outline = outline;
+		return swtOutline;
+	}
+	
 	/**
 	 * Extends {@link AbstractGraphicalEditPart#activate()} to also register to
 	 * receive property change notifications from both the model object <i>and</i>
@@ -72,7 +95,6 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	public void activate() {
 		super.activate();
 		getModel().getLink().addPropertyChangeListener(this);
-		refreshVisuals();
 	}
 	
 	/**
@@ -83,6 +105,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	public void deactivate() {
 		getModel().getLink().removePropertyChangeListener(this);
+		getOutline(null);
 		super.deactivate();
 	}
 	
@@ -97,21 +120,19 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (evt.getSource() == getModel().getLink()) {
-			if (prop.equals(Colourable.PROPERTY_OUTLINE)) {
-				refreshVisuals();
-			}
-		}
+		if (evt.getSource() == getModel().getLink() &&
+			prop.equals(Colourable.PROPERTY_OUTLINE))
+			refreshVisuals();
 	}
 
 	@Override
-	public void refreshVisuals() {
+	protected void refreshVisuals() {
 		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
 		Link.Connection model = getModel();
 		
 		figure.setToolTip(getDisplayName());
 		figure.setForegroundColor(
-				model.getLink().getOutlineColour().getSWTColor());
+				getOutline(model.getLink().getOutlineColour()));
 	}
 
 	/**

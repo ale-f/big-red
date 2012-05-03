@@ -12,6 +12,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -22,6 +23,7 @@ import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -59,6 +61,43 @@ implements PropertyChangeListener, IBigraphPart {
 		return getModel().getBigraph();
 	}
 	
+	private Colour fill, outline;
+	private Color swtFill, swtOutline;
+	
+	protected Color getFill(Colour fill) {
+		if (fill != null) {
+			if (!fill.equals(this.fill)) {
+				if (swtFill != null)
+					swtFill.dispose();
+				swtFill = fill.getSWTColor();
+			}
+		} else {
+			if (swtFill != null) {
+				swtFill.dispose();
+				swtFill = null;
+			}
+		}
+		this.fill = fill;
+		return swtFill;
+	}
+	
+	protected Color getOutline(Colour outline) {
+		if (outline != null) {
+			if (!outline.equals(this.outline)) {
+				if (swtOutline != null)
+					swtOutline.dispose();
+				swtOutline = outline.getSWTColor();
+			}
+		} else {
+			if (swtOutline != null) {
+				swtOutline.dispose();
+				swtOutline = null;
+			}
+		}
+		this.outline = outline;
+		return swtOutline;
+	}
+	
 	/**
 	 * Extends {@link AbstractGraphicalEditPart#activate()} to also register to
 	 * receive property change notifications from the model object.
@@ -76,6 +115,8 @@ implements PropertyChangeListener, IBigraphPart {
 	@Override
 	public void deactivate() {
 		getModel().removePropertyChangeListener(this);
+		getFill(null);
+		getOutline(null);
 		super.deactivate();
 	}
 	

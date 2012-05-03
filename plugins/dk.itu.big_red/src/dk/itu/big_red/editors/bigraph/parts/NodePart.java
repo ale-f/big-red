@@ -146,8 +146,8 @@ public class NodePart extends ContainerPart {
 		if (points != null)
 			figure.setPoints(points);
 		
-		figure.setBackgroundColor(model.getFillColour().getSWTColor());
-		figure.setForegroundColor(model.getOutlineColour().getSWTColor());
+		figure.setBackgroundColor(getFill(model.getFillColour()));
+		figure.setForegroundColor(getOutline(model.getOutlineColour()));
 		
 		figure.repaint();
 	}
