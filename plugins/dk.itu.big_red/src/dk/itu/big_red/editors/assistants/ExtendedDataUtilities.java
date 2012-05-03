@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.assistants;
 
 import org.eclipse.core.resources.IFile;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
 
 public final class ExtendedDataUtilities {
@@ -35,5 +36,37 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeComment(ModelObject m, String s) {
 		return m.changeExtendedData(COMMENT, s);
+	}
+	
+	public static final String FILL =
+			"dk.itu.big_red.model.Colourable.fill";
+	
+	public static Colour getFill(ModelObject m) {
+		Colour c = (Colour)require(m.getExtendedData(FILL), Colour.class);
+		return (c != null ? c : new Colour("white"));
+	}
+	
+	public static void setFill(ModelObject m, Colour c) {
+		m.setExtendedData(FILL, c);
+	}
+	
+	public static Change changeFill(ModelObject m, Colour c) {
+		return m.changeExtendedData(FILL, c);
+	}
+	
+	public static final String OUTLINE =
+			"dk.itu.big_red.model.Colourable.outline";
+	
+	public static Colour getOutline(ModelObject m) {
+		Colour c = (Colour)require(m.getExtendedData(OUTLINE), Colour.class);
+		return (c != null ? c : new Colour("black"));
+	}
+	
+	public static void setOutline(ModelObject m, Colour c) {
+		m.setExtendedData(OUTLINE, c);
+	}
+	
+	public static Change changeOutline(ModelObject m, Colour c) {
+		return m.changeExtendedData(OUTLINE, c);
 	}
 }
