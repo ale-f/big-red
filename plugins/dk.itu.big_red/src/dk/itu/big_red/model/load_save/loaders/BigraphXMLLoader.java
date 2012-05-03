@@ -13,7 +13,6 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
@@ -28,6 +27,7 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.Loader;
@@ -286,14 +286,13 @@ public class BigraphXMLLoader extends XMLLoader {
 			cg.add(l.changeLayout(r));
 		}
 		
-		if (o instanceof Colourable) {
-			Colourable c = (Colourable)o;
-			cg.add(
-				c.changeFillColour(
-						getColorAttribute(e, BIG_RED, "fillColor")),
-				c.changeOutlineColour(
-						getColorAttribute(e, BIG_RED, "outlineColor")));
-		}
+		Colour
+			fill = getColorAttribute(e, BIG_RED, "fillColor"),
+			outline = getColorAttribute(e, BIG_RED, "outlineColor");
+		if (fill != null)
+			cg.add(ExtendedDataUtilities.changeFill(o, fill));
+		if (outline != null)
+			cg.add(ExtendedDataUtilities.changeOutline(o, outline));
 		
 		String comment = getAttributeNS(e, BIG_RED, "comment");
 		if (comment != null)

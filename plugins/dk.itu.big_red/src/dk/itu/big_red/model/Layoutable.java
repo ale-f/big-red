@@ -31,7 +31,7 @@ import dk.itu.big_red.model.names.Namespace;
  * @see ModelObject
  *
  */
-public abstract class Layoutable extends Colourable {
+public abstract class Layoutable extends ModelObject {
 	/**
 	 * The property name fired when the name changes.
 	 */

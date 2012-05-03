@@ -9,6 +9,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
@@ -212,8 +213,8 @@ public class BigraphTikZSaver extends Saver {
 		}
 		
 		Colour
-			fillColour = n.getFillColour(),
-		    outlineColour = n.getOutlineColour();
+			fillColour = ExtendedDataUtilities.getFill(n),
+		    outlineColour = ExtendedDataUtilities.getOutline(n);
 		
 		line("definecolor{" + n.getName() + " fill}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
 		line("definecolor{" + n.getName() + " outline}{RGB}{" + outlineColour.getRed() + "," + outlineColour.getGreen() + "," + outlineColour.getBlue() + "}");
@@ -241,7 +242,7 @@ public class BigraphTikZSaver extends Saver {
 			tl = rl.getTopLeft(),
 			br = rl.getBottomRight(),
 			c = rl.getCenter();
-		Colour outlineColour = e.getOutlineColour();
+		Colour outlineColour = ExtendedDataUtilities.getOutline(e);
 		line("definecolor{" + getNiceName(e) + " color}{RGB}{" + outlineColour.getRed() + "," + outlineColour.getGreen() + "," + outlineColour.getBlue() + "}"); 
 		if (e instanceof OuterName) {
 			line("draw [internal outer name,fill=" + getNiceName(e) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
@@ -259,7 +260,7 @@ public class BigraphTikZSaver extends Saver {
 			c = rl.getCenter();
 		System.out.println(rl);
 		Colour fillColour =
-			(i.getLink() == null ? dk.itu.big_red.model.Point.DEFAULT_COLOUR : i.getLink().getOutlineColour());
+			(i.getLink() == null ? dk.itu.big_red.model.Point.DEFAULT_COLOUR : ExtendedDataUtilities.getOutline(i.getLink()));
 		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
 		line("draw [internal inner name,fill=" + getNiceName(i) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");

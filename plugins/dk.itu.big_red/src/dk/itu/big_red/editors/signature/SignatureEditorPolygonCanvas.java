@@ -495,8 +495,8 @@ MenuListener, PropertyChangeListener {
 		Line l = new Line();
 		
 		Color
-			outline = getModel().getOutlineColour().getSWTColor(),
-			fill = getModel().getFillColour().getSWTColor();
+			outline = ExtendedDataUtilities.getOutline(getModel()).getSWTColor(),
+			fill = ExtendedDataUtilities.getFill(getModel()).getSWTColor();
 		
 		e.gc.setForeground(outline);
 		e.gc.setBackground(fill);

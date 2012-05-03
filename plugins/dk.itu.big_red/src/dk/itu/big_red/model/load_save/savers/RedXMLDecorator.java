@@ -8,11 +8,11 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.PortSpec;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
 public class RedXMLDecorator implements Decorator {
@@ -38,14 +38,18 @@ public class RedXMLDecorator implements Decorator {
 			rectangleToElement(aE, ((Layoutable)object).getLayout());
 		}
 		
-		if (object instanceof Colourable) {
+		Colour
+			fill = ExtendedDataUtilities.getFill(object),
+			outline = ExtendedDataUtilities.getOutline(object);
+		if (fill != null) {
 			alive = true;
-			Colourable c = (Colourable)object;
-			
 			aE.setAttributeNS(BIG_RED, "big-red:fillColor",
-					c.getFillColour().toHexString());
+					fill.toHexString());
+		}
+		if (outline != null) {
+			alive = true;
 			aE.setAttributeNS(BIG_RED, "big-red:outlineColor",
-					c.getOutlineColour().toHexString());
+					outline.toHexString());
 		}
 		
 		String comment = ExtendedDataUtilities.getComment(object);

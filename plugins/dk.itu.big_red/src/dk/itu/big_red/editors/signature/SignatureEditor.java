@@ -120,8 +120,8 @@ implements PropertyChangeListener {
 		ovalMode.setSelection(!polygon);
 		polygonMode.setSelection(polygon);
 		
-		outline.setColorValue(currentControl.getOutlineColour().getRGB());
-		fill.setColorValue(currentControl.getFillColour().getRGB());
+		outline.setColorValue(ExtendedDataUtilities.getOutline(currentControl).getRGB());
+		fill.setColorValue(ExtendedDataUtilities.getFill(currentControl).getRGB());
 		
 		activeKind.setSelection(currentControl.getKind() == Kind.ACTIVE);
 		atomicKind.setSelection(currentControl.getKind() == Kind.ATOMIC);
@@ -435,8 +435,8 @@ implements PropertyChangeListener {
 				if (!shouldPropagateUI())
 					return;
 				Colour newColour = new Colour(outline.getColorValue());
-				if (!currentControl.getOutlineColour().equals(newColour))
-					doChange(currentControl.changeOutlineColour(newColour));
+				if (!ExtendedDataUtilities.getOutline(currentControl).equals(newColour))
+					doChange(ExtendedDataUtilities.changeOutline(currentControl, newColour));
 			}
 		});
 		
@@ -449,8 +449,8 @@ implements PropertyChangeListener {
 				if (!shouldPropagateUI())
 					return;
 				Colour newColour = new Colour(fill.getColorValue());
-				if (!currentControl.getFillColour().equals(newColour))
-					doChange(currentControl.changeFillColour(newColour));
+				if (!ExtendedDataUtilities.getFill(currentControl).equals(newColour))
+					doChange(ExtendedDataUtilities.changeFill(currentControl, newColour));
 			}
 		});
 		

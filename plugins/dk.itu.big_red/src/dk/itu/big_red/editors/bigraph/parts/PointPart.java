@@ -76,7 +76,7 @@ public abstract class PointPart extends ConnectablePart {
 		
 		Link l = getModel().getLink();
 		getFigure().setBackgroundColor(getOutline(
-				l != null ? l.getOutlineColour() : Point.DEFAULT_COLOUR));
+				l != null ? ExtendedDataUtilities.getOutline(l) : Point.DEFAULT_COLOUR));
 	}
 	
 	@Override

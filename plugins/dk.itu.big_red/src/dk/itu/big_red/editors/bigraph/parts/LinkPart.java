@@ -38,7 +38,7 @@ public abstract class LinkPart extends ConnectablePart {
 	protected void refreshVisuals(){
 		super.refreshVisuals();
 		getFigure().setBackgroundColor(
-				getOutline(getModel().getOutlineColour()));
+				getOutline(ExtendedDataUtilities.getOutline(getModel())));
 	}
 	
 	/**

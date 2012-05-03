@@ -10,7 +10,6 @@ import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
@@ -69,9 +68,11 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 				cg.add(ExtendedDataUtilities.changeComment(
 						(ModelObject)j.getModel(), (String)newValue));
 			} else if (propertyID.equals(ExtendedDataUtilities.FILL)) {
-				cg.add(((Colourable)j.getModel()).changeFillColour((Colour)newValue));
+				cg.add(ExtendedDataUtilities.changeFill(
+						(ModelObject)j.getModel(), (Colour)newValue));
 			} else if (propertyID.equals(ExtendedDataUtilities.OUTLINE)) {
-				cg.add(((Colourable)j.getModel()).changeOutlineColour((Colour)newValue));
+				cg.add(ExtendedDataUtilities.changeOutline(
+						(ModelObject)j.getModel(), (Colour)newValue));
 			} else if (propertyID.equals(Site.PROPERTY_ALIAS)) {
 				cg.add(((Site)j.getModel()).changeAlias((String)newValue));
 			} else if (propertyID.equals(Node.PROPERTY_PARAMETER)) {

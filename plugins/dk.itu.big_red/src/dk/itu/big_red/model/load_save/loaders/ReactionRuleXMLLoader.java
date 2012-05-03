@@ -180,8 +180,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(type, name).changeFillColour(
-						new Colour(colour));
+				c = ExtendedDataUtilities.changeFill(getNamed(type, name), new Colour(colour));
 			} else if (el.getLocalName().equals("outline")) {
 				String
 					colour =
@@ -190,8 +189,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(type, name).changeOutlineColour(
-						new Colour(colour));
+				c = ExtendedDataUtilities.changeOutline(getNamed(type, name), new Colour(colour));
 			} else if (el.getLocalName().equals("comment")) {
 				String
 					comment =

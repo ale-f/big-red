@@ -26,7 +26,7 @@ import dk.itu.big_red.model.names.policies.INamePolicy;
  * @author alec
  * @see IControl
  */
-public class Control extends Colourable implements IControl {
+public class Control extends ModelObject implements IControl {
 	/**
 	 * The property name fired when the kind changes.
 	 */

@@ -132,7 +132,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		
 		figure.setToolTip(getDisplayName());
 		figure.setForegroundColor(
-				getOutline(model.getLink().getOutlineColour()));
+				getOutline(ExtendedDataUtilities.getOutline(model.getLink())));
 	}
 
 	/**
