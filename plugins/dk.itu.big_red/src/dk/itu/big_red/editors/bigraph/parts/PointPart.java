@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
@@ -56,7 +55,7 @@ public abstract class PointPart extends ConnectablePart {
 		    }
 		} else if (source == getModel().getLink()) {
 			if (prop.equals(Link.PROPERTY_NAME) ||
-				prop.equals(Colourable.PROPERTY_OUTLINE)) {
+				prop.equals(ExtendedDataUtilities.OUTLINE)) {
 				refreshVisuals();
 			}
 		}

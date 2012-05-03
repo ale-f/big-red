@@ -1,7 +1,5 @@
 package dk.itu.big_red.model.assistants;
 
-import dk.itu.big_red.model.Colourable.ChangeFillColour;
-import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeDefaultSize;
@@ -60,9 +58,7 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 		} else if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				_tryValidateChange(c);
-		} else if (b instanceof ChangeFillColour ||
-				b instanceof ChangeOutlineColour ||
-				b instanceof ChangeExtendedData) {
+		} else if (b instanceof ChangeExtendedData) {
 			/* do nothing */
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;

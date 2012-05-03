@@ -90,9 +90,6 @@ public class Node extends Container implements INode {
 			cloneControl = (Control)m.get(getControl());
 		n.setControl(cloneControl == null ? getControl() : cloneControl);
 		
-		n.setFillColour(getFillColour());
-		n.setOutlineColour(getOutlineColour());
-		
 		/* copy parameters */
 		n.setParameter(getParameter());
 		
@@ -190,9 +187,6 @@ public class Node extends Container implements INode {
 
 	protected void setControl(Control c) {
 		control = c;
-		
-		setFillColour(control.getFillColour());
-		setOutlineColour(control.getOutlineColour());
 		
 		ports = control.createPorts();
 		for (Port p : ports)

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import dk.itu.big_red.model.Colourable.ChangeFillColour;
-import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
@@ -166,13 +164,7 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	@Override
 	protected void doChange(Change b) {
 		super.doChange(b);
-		if (b instanceof ChangeFillColour) {
-			ChangeFillColour c = (ChangeFillColour)b;
-			c.getCreator().setFillColour(c.newColour);
-		} else if (b instanceof ChangeOutlineColour) {
-			ChangeOutlineColour c = (ChangeOutlineColour)b;
-			c.getCreator().setOutlineColour(c.newColour);
-		} else if (b instanceof ChangeAddControl) {
+		if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
 			c.getCreator().addControl(c.control);
 		} else if (b instanceof ChangeRemoveControl) {

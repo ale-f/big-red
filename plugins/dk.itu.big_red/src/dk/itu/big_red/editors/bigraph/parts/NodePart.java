@@ -8,10 +8,10 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.gef.EditPolicy;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
@@ -54,8 +54,8 @@ public class NodePart extends ContainerPart {
 	public void propertyChange(PropertyChangeEvent evt) {
 		String name = evt.getPropertyName();
 		super.propertyChange(evt);
-		if (Colourable.PROPERTY_FILL.equals(name) ||
-	        Colourable.PROPERTY_OUTLINE.equals(name) ||
+		if (ExtendedDataUtilities.FILL.equals(name) ||
+	        ExtendedDataUtilities.OUTLINE.equals(name) ||
 	        Node.PROPERTY_PARAMETER.equals(name)) {
 	    	refreshVisuals();
 	    }

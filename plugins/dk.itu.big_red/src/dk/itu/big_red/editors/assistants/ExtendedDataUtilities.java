@@ -1,6 +1,8 @@
 package dk.itu.big_red.editors.assistants;
 
 import org.eclipse.core.resources.IFile;
+
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
@@ -59,7 +61,8 @@ public final class ExtendedDataUtilities {
 	
 	public static Colour getOutline(ModelObject m) {
 		Colour c = (Colour)require(m.getExtendedData(OUTLINE), Colour.class);
-		return (c != null ? c : new Colour("black"));
+		return (c != null ? c :
+			new Colour(m instanceof Link ? "green" : "black"));
 	}
 	
 	public static void setOutline(ModelObject m, Colour c) {

@@ -4,8 +4,6 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Colourable.ChangeFillColour;
-import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
@@ -19,6 +17,7 @@ import dk.itu.big_red.model.Point.ChangeDisconnect;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Site.ChangeAlias;
+import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -95,24 +94,26 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	private Element _serialiseChange(Change i_) {
 		Element f = null;
 		
-		if (i_ instanceof ChangeFillColour) {
-			ChangeFillColour i = (ChangeFillColour)i_;
-			if ((i.getCreator() instanceof Layoutable)) {
-				Layoutable l = (Layoutable)i.getCreator();
+		if (i_ instanceof ChangeExtendedData) {
+			ChangeExtendedData i = (ChangeExtendedData)i_;
+			if (!(i.getCreator() instanceof Layoutable))
+				return null;
+			Layoutable l = (Layoutable)i.getCreator();
+			if (ExtendedDataUtilities.COMMENT.equals(i.key)) {
+				f = newElement(BIG_RED, "big-red:comment");
+				if (i.newValue != null)
+					applyAttributes(f, "comment", i.newValue);
+			} else if (ExtendedDataUtilities.FILL.equals(i.key)) {
 				f = applyAttributes(newElement(BIG_RED, "big-red:fill"),
-						"name", l.getName(),
-						"type", l.getType().toLowerCase(),
-						"colour", i.newColour.toHexString());
-			}
-		} else if (i_ instanceof ChangeOutlineColour) {
-			ChangeOutlineColour i = (ChangeOutlineColour)i_;
-			if ((i.getCreator() instanceof Layoutable)) {
-				Layoutable l = (Layoutable)i.getCreator();
+						"colour", ((Colour)i.newValue).toHexString());
+			} else if (ExtendedDataUtilities.OUTLINE.equals(i.key)) {
 				f = applyAttributes(newElement(BIG_RED, "big-red:outline"),
-						"name", l.getName(),
-						"type", l.getType().toLowerCase(),
-						"colour", i.newColour.toHexString());
+						"colour", ((Colour)i.newValue).toHexString());
 			}
+			if (f != null)
+				applyAttributes(f,
+						"name", l.getName(),
+						"type", l.getType().toLowerCase());
 		} else if (i_ instanceof ChangeGroup) {
 			f = newElement(CHANGE, "change:group");
 			for (Change c : (ChangeGroup)i_) {
@@ -173,15 +174,6 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 					"name", i.getCreator().getName());
 			if (i.alias != null)
 				applyAttributes(f, "alias", i.alias);
-		} else if (i_ instanceof ChangeExtendedData) {
-			ChangeExtendedData i = (ChangeExtendedData)i_;
-			if (!ExtendedDataUtilities.COMMENT.equals(i.key))
-				return null;
-			f = applyAttributes(newElement(BIG_RED, "big-red:comment"),
-					"name", ((Layoutable)i.getCreator()).getName(),
-					"type", ((Layoutable)i.getCreator()).getType().toLowerCase());
-			if (i.newValue != null)
-				applyAttributes(f, "comment", i.newValue);
 		}
 		
 		return f;

@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.EditPolicy;
+
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 
@@ -27,7 +28,7 @@ public abstract class LinkPart extends ConnectablePart {
 		    	refreshTargetConnections();
 		    	refreshVisuals();
 		    } else if (property.equals(Link.PROPERTY_NAME) ||
-		    		property.equals(Colourable.PROPERTY_OUTLINE)) {
+		    		property.equals(ExtendedDataUtilities.OUTLINE)) {
 		    	refreshVisuals();
 		    }
 		}

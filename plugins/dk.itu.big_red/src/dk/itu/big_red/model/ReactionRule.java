@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import dk.itu.big_red.model.Colourable.ChangeFillColour;
-import dk.itu.big_red.model.Colourable.ChangeOutlineColour;
 import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Edge.ChangeReposition;
 import dk.itu.big_red.model.Layoutable.ChangeLayout;
@@ -190,24 +188,6 @@ public class ReactionRule extends ModelObject {
 				return null;
 			
 			return reactumObject.changeParameter(ch.parameter);
-		} else if (change instanceof ChangeOutlineColour) {
-			ChangeOutlineColour ch = (ChangeOutlineColour)change;
-			
-			Colourable reactumObject =
-					(Colourable)oldToNew.get(ch.getCreator());
-			if (reactumObject == null)
-				return null;
-			
-			return reactumObject.changeOutlineColour(ch.newColour);
-		} else if (change instanceof ChangeFillColour) {
-			ChangeFillColour ch = (ChangeFillColour)change;
-			
-			Colourable reactumObject =
-					(Colourable)oldToNew.get(ch.getCreator());
-			if (reactumObject == null)
-				return null;
-			
-			return reactumObject.changeFillColour(ch.newColour);
 		} else throw new Error(change + " unrecognised");
 	}
 	

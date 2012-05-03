@@ -18,11 +18,11 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.OuterName;
@@ -121,7 +121,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (evt.getSource() == getModel().getLink() &&
-			prop.equals(Colourable.PROPERTY_OUTLINE))
+			prop.equals(ExtendedDataUtilities.OUTLINE))
 			refreshVisuals();
 	}
 

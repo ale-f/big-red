@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
@@ -62,7 +61,6 @@ public abstract class Link extends Layoutable implements ILink {
 		new ArrayList<Point>();
 	
 	public Link() {
-		setOutlineColour(new Colour("green"));
 	}
 	
 	/**

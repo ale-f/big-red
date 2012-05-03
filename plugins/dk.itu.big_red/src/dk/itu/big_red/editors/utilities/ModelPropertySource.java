@@ -10,7 +10,6 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
@@ -67,10 +66,10 @@ public class ModelPropertySource implements IPropertySource {
 		properties.add(new PropertyDescriptor("Class", "Class"));
 		
 		if (object instanceof Link) {
-			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Colour"));
+			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.OUTLINE, "Colour"));
 		} else if (object instanceof Node) {
-			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_FILL, "Fill colour"));
-			properties.add(new ColorPropertyDescriptor(Colourable.PROPERTY_OUTLINE, "Outline colour"));
+			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.FILL, "Fill colour"));
+			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.OUTLINE, "Outline colour"));
 			if (((Node)object).getControl().getParameterPolicy() != null)
 				properties.add(new TextPropertyDescriptor(Node.PROPERTY_PARAMETER, "Parameter"));
 		}

@@ -136,10 +136,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		/* ModelObject.clone */
 		m.put(this, b);
 		
-		/* Colourable.clone */
-		b.setFillColour(getFillColour());
-		b.setOutlineColour(getOutlineColour());
-		
 		/* Layoutable.clone */
 		b.setLayout(null);
 		
@@ -418,12 +414,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		} else if (b instanceof Edge.ChangeReposition) {
 			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
 			c.getCreator().averagePosition();
-		} else if (b instanceof Colourable.ChangeOutlineColour) {
-			Colourable.ChangeOutlineColour c = (Colourable.ChangeOutlineColour)b;
-			c.getCreator().setOutlineColour(c.newColour);
-		} else if (b instanceof Colourable.ChangeFillColour) {
-			Colourable.ChangeFillColour c = (Colourable.ChangeFillColour)b;
-			c.getCreator().setFillColour(c.newColour);
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			getNamespace(getNSI(c.getCreator())).remove(c.getCreator().getName());

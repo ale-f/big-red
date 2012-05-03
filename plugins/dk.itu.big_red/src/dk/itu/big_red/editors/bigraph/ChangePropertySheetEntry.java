@@ -18,7 +18,7 @@ import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
-import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.COMMENT;;
+import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.COMMENT;
 
 public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 	public ChangePropertySheetEntry(CommandStack commandStack) {
@@ -68,9 +68,9 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			} else if (COMMENT.equals(propertyID)) {
 				cg.add(ExtendedDataUtilities.changeComment(
 						(ModelObject)j.getModel(), (String)newValue));
-			} else if (propertyID.equals(Colourable.PROPERTY_FILL)) {
+			} else if (propertyID.equals(ExtendedDataUtilities.FILL)) {
 				cg.add(((Colourable)j.getModel()).changeFillColour((Colour)newValue));
-			} else if (propertyID.equals(Colourable.PROPERTY_OUTLINE)) {
+			} else if (propertyID.equals(ExtendedDataUtilities.OUTLINE)) {
 				cg.add(((Colourable)j.getModel()).changeOutlineColour((Colour)newValue));
 			} else if (propertyID.equals(Site.PROPERTY_ALIAS)) {
 				cg.add(((Site)j.getModel()).changeAlias((String)newValue));

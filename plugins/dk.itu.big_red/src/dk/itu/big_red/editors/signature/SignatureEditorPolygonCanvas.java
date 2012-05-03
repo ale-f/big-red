@@ -29,6 +29,8 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Control.Shape;
@@ -116,8 +118,8 @@ MenuListener, PropertyChangeListener {
 			} else if (Control.PROPERTY_POINTS.equals(name)) {
 				pointsBounds = null;
 				redraw();
-			} else if (Control.PROPERTY_FILL.equals(name) ||
-					Control.PROPERTY_OUTLINE.equals(name)) {
+			} else if (ExtendedDataUtilities.FILL.equals(name) ||
+					ExtendedDataUtilities.OUTLINE.equals(name)) {
 				redraw();
 			}
 		} else if (source instanceof PortSpec) {

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
@@ -187,9 +186,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		} else if (b instanceof Edge.ChangeReposition) {
 			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
 			checkEligibility(c.getCreator());
-		} else if (b instanceof Colourable.ChangeOutlineColour ||
-				b instanceof Colourable.ChangeFillColour ||
-				b instanceof ModelObject.ChangeExtendedData) {
+		} else if (b instanceof ModelObject.ChangeExtendedData) {
 			/* totally nothing to do */
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;

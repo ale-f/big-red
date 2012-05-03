@@ -32,11 +32,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.Colourable;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
@@ -519,9 +519,9 @@ implements PropertyChangeListener {
 					polygonMode.setSelection(Shape.POLYGON.equals(newValue));
 				} else if (propertyName.equals(Control.PROPERTY_RESIZABLE)) {
 					resizable.setSelection((Boolean)newValue);
-				} else if (propertyName.equals(Colourable.PROPERTY_FILL)) {
+				} else if (propertyName.equals(ExtendedDataUtilities.FILL)) {
 					fill.setColorValue(((Colour)newValue).getRGB());
-				} else if (propertyName.equals(Colourable.PROPERTY_OUTLINE)) {
+				} else if (propertyName.equals(ExtendedDataUtilities.OUTLINE)) {
 					outline.setColorValue(((Colour)newValue).getRGB());
 				} else if (propertyName.equals(Control.PROPERTY_KIND)) {
 					activeKind.setSelection(Kind.ACTIVE.equals(newValue));
