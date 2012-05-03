@@ -9,7 +9,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
@@ -201,7 +200,7 @@ public class BigraphTikZSaver extends Saver {
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ") ellipse (" +
 				(rl.width() / 2) + " and " + (rl.height() / 2) + ")";
 		} else if (con.getShape() == Shape.POLYGON) {
-			PointList fp = NodePart.fitPolygon(n);
+			PointList fp = n.getFittedPolygon();
 			fp.translate(rltl);
 			tmp = new Point();
 			for (int i = 0; i < fp.size(); i++) {

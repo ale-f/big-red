@@ -109,7 +109,9 @@ public abstract class Loader {
 				}
 				if (i.canImport()) {
 					return i.importObject();
-				} else return null;
+				} else {
+					throw new LoadFailedException("What?");
+				}
 			}
 		}
 		return null;
