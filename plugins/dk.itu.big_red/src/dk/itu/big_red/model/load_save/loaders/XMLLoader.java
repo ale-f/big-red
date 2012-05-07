@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.XMLConstants;
@@ -23,9 +24,11 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
+import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
 public abstract class XMLLoader extends Loader {
 	private static SchemaFactory sf = null;
@@ -204,5 +207,37 @@ public abstract class XMLLoader extends Loader {
 		if (r != null)
 			r.getParentNode().removeChild(r);
 		return r;
+	}
+	
+	public static interface Undecorator {
+		void undecorate(ModelObject object, Element el);
+	}
+	
+	private List<Undecorator> undecorators = null;
+	
+	protected List<Undecorator> getUndecorators() {
+		return (undecorators != null ? undecorators :
+				Collections.<Undecorator>emptyList());
+	}
+	
+	public void addUndecorator(Undecorator d) {
+		if (d == null)
+			return;
+		if (undecorators == null)
+			undecorators = new ArrayList<Undecorator>();
+		undecorators.add(d);
+	}
+	
+	public void removeUndecorator(Undecorator d) {
+		if (undecorators.remove(d))
+			if (undecorators.size() == 0)
+				undecorators = null;
+	}
+	
+	protected Element executeUndecorators(ModelObject mo, Element el) {
+		if (mo != null && el != null)
+			for (Undecorator d : getUndecorators())
+				d.undecorate(mo, el);
+		return el;
 	}
 }
