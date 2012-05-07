@@ -37,11 +37,13 @@ public class EdgeFigure extends AbstractFigure {
 			graphics.setAlpha(32);
 			graphics.fillRectangle(a);
 			
+			graphics.setAlpha(64);
+			graphics.setLineWidth(2);
+			graphics.setLineStyle(SWT.LINE_SOLID);
+			graphics.drawRectangle(a);
+			
 			if (single) {
 				graphics.setAlpha(255);
-				
-				graphics.setLineWidth(2);
-				graphics.setLineStyle(SWT.LINE_SOLID);
 				graphics.drawLine(
 						a.getLeft().translate(0, 3),
 						a.getRight().translate(0, -3));
