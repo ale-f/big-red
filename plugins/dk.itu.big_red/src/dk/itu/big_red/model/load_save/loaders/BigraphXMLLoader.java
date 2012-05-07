@@ -3,6 +3,7 @@ package dk.itu.big_red.model.load_save.loaders;
 import java.util.HashMap;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
@@ -30,7 +31,6 @@ import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.names.policies.INamePolicy;
@@ -98,6 +98,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			signaturePath = getAttributeNS(e, BIGRAPH, "signature");
 		}
 		
+		SignatureXMLLoader si = newLoader(SignatureXMLLoader.class);
 		if (signaturePath != null) {
 			IFile sigFile = null;
 			if (getFile() != null)
@@ -111,12 +112,16 @@ public class BigraphXMLLoader extends XMLLoader {
 				if (sigFile == null)
 					throw new LoadFailedException("The signature \"" + signaturePath + "\" does not exist.");
 			}
-				
-			Signature sig = (Signature)Loader.fromFile(sigFile);
-			bigraph.setSignature(sig);
+			
+			try {
+				si.setFile(sigFile).setInputStream(sigFile.getContents());
+			} catch (CoreException ex) {
+				throw new LoadFailedException(ex);
+			}
+			bigraph.setSignature(si.importObject());
 		} else if (signatureElement != null) {
-			SignatureXMLLoader si = new SignatureXMLLoader();
-			bigraph.setSignature(si.makeObject(signatureElement));
+			bigraph.setSignature(
+					si.setFile(getFile()).makeObject(signatureElement));
 		} else {
 			throw new LoadFailedException("The bigraph does not define or reference a signature.");
 		}

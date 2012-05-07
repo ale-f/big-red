@@ -28,7 +28,6 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
-import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
 public abstract class XMLLoader extends Loader {
 	private static SchemaFactory sf = null;
@@ -239,5 +238,17 @@ public abstract class XMLLoader extends Loader {
 			for (Undecorator d : getUndecorators())
 				d.undecorate(mo, el);
 		return el;
+	}
+	
+	protected <T extends XMLLoader> T newLoader(Class<T> klass) {
+		T loader;
+		try {
+			loader = klass.newInstance();
+		} catch (Exception e) {
+			return null;
+		}
+		for (Undecorator d : getUndecorators())
+			loader.addUndecorator(d);
+		return loader;
 	}
 }
