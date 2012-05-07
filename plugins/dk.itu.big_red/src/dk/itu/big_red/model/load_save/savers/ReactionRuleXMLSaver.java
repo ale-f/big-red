@@ -24,6 +24,8 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 
+import static java.util.Locale.ENGLISH;
+
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
@@ -113,7 +115,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			if (f != null)
 				applyAttributes(f,
 						"name", l.getName(),
-						"type", l.getType().toLowerCase());
+						"type", l.getType().toLowerCase(ENGLISH));
 		} else if (i_ instanceof ChangeGroup) {
 			f = newElement(CHANGE, "change:group");
 			for (Change c : (ChangeGroup)i_) {
@@ -125,7 +127,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			ChangeLayout i = (ChangeLayout)i_;
 			f = applyAttributes(newElement(BIG_RED, "big-red:layout"),
 					"name", i.getCreator().getName(),
-					"type", i.getCreator().getType().toLowerCase(),
+					"type", i.getCreator().getType().toLowerCase(ENGLISH),
 					"x", i.newLayout.x(),
 					"y", i.newLayout.y(),
 					"width", i.newLayout.width(),
@@ -134,11 +136,12 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			ChangeAddChild i = (ChangeAddChild)i_;
 			f = applyAttributes(newElement(CHANGE, "change:add"),
 					"name", i.name,
-					"type", i.child.getType().toLowerCase());
+					"type", i.child.getType().toLowerCase(ENGLISH));
 			if (!(i.getCreator() instanceof Bigraph))
 				applyAttributes(f,
 						"parent", i.getCreator().getName(),
-						"parent-type", i.getCreator().getType().toLowerCase());
+						"parent-type",
+							i.getCreator().getType().toLowerCase(ENGLISH));
 			if (i.child instanceof Node)
 				applyAttributes(f,
 						"control", ((Node)i.child).getControl().getName());
@@ -146,12 +149,12 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			ChangeRemove i = (ChangeRemove)i_;
 			f = applyAttributes(newElement(CHANGE, "change:remove"),
 					"name", i.getCreator().getName(),
-					"type", i.getCreator().getType().toLowerCase());
+					"type", i.getCreator().getType().toLowerCase(ENGLISH));
 		} else if (i_ instanceof ChangeName) {
 			ChangeName i = (ChangeName)i_;
 			f = applyAttributes(newElement(CHANGE, "change:rename"),
 					"name", i.getCreator().getName(), 
-					"type", i.getCreator().getType().toLowerCase(),
+					"type", i.getCreator().getType().toLowerCase(ENGLISH),
 					"new-name", i.newName);
 		} else if (i_ instanceof ChangeConnect) {
 			ChangeConnect i = (ChangeConnect)i_;

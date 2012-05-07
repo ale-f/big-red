@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.load_save.loaders;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -259,7 +260,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	 * @see ModelObject#getType()
 	 */
 	static ModelObject getNewObject(String typeName) {
-		typeName = typeName.toLowerCase();
+		typeName = typeName.toLowerCase(Locale.ENGLISH);
 		if (typeName.equals("bigraph"))
 			return new Bigraph();
 		else if (typeName.equals("root"))

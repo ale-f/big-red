@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -57,21 +58,14 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	 * unique, or <code>object</code> if there are no restrictions on its name
 	 */
 	public static Object getNSI(Layoutable object) {
-		if (object instanceof Link) {
-			return Link.class;
-		} else if (object instanceof InnerName ||
-				object instanceof Root ||
-				object instanceof Site ||
-				object instanceof Node) {
-			return object.getClass();
-		}
-		return null;
+		return getNSI(object.getType());
 	}
 	
 	/**
 	 * @see #getNSI(Layoutable)
 	 */
 	public static Object getNSI(String objectType) {
+		objectType = objectType.toLowerCase(Locale.ENGLISH);
 		if (objectType.equals("edge") || objectType.equals("outername") || objectType.equals("link")) {
 			return Link.class;
 		} else if (objectType.equals("innername")) {
