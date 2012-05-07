@@ -26,7 +26,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		if (!(child instanceof BigraphPart)) {
 			command = new LayoutableRelayoutCommand();
 			command.setModel(child.getModel());
-			command.setConstraint(constraint);
+			command.setLayout(constraint);
 			command.prepare();
 		}
 		return command;
@@ -52,7 +52,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			Layoutable self = (Layoutable)getHost().getModel();
 			LayoutableRelayoutCommand cmd2 = new LayoutableRelayoutCommand();
 			cmd2.setModel(child.getModel());
-			cmd2.setConstraint(
+			cmd2.setLayout(
 					layout.translate(self.getRootLayout().getTopLeft()));
 			cmd = cmd2;
 		}

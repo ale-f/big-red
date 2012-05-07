@@ -73,7 +73,7 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		for (Layoutable i : c.getChildren()) {
 			Rectangle layout = i.getLayout(scratch);
 			if (!nl.contains(layout))
-				rejectChange("The new size is too small");
+				rejectChange("The object is no longer big enough to accommodate its children");
 		}
 	}
 	

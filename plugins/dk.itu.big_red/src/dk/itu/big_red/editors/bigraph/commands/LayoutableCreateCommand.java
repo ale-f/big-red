@@ -78,7 +78,12 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	}
 	
 	public void setLayout(Object r) {
-		if (r instanceof Rectangle)
+		if (r instanceof Rectangle) {
 			layout = (Rectangle)r;
+			if (layout.width < 10)
+				layout.width = 10;
+			if (layout.height < 10)
+				layout.height = 10;
+		}
 	}
 }

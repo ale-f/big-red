@@ -20,9 +20,14 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	private Layoutable model;
 	private Rectangle layout;
 	
-	public void setConstraint(Object rect) {
-		if (rect instanceof Rectangle)
+	public void setLayout(Object rect) {
+		if (rect instanceof Rectangle) {
 			layout = (Rectangle)rect;
+			if (layout.width < 10)
+				layout.width = 10;
+			if (layout.height < 10)
+				layout.height = 10;
+		}
 	}
 
 	public void setModel(Object model) {
