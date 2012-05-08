@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -20,7 +22,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -62,18 +63,6 @@ public class BigMCInteractionManager extends InteractionManager {
 			stepText.setText(Integer.toString(stepCount));
 		}
 	}
-
-	private class PropertiesDialog extends Dialog {
-		protected PropertiesDialog(Shell parentShell) {
-			super(parentShell);
-		}
-		
-		@Override
-		protected Control createDialogArea(Composite parent) {
-			// TODO Auto-generated method stub
-			return super.createDialogArea(parent);
-		}
-	}
 	
 	private class OptionsDialog extends Dialog {
 		protected OptionsDialog(Shell parentShell) {
@@ -92,17 +81,6 @@ public class BigMCInteractionManager extends InteractionManager {
 			stepText = new Text(c, SWT.BORDER);
 			stepText.addFocusListener(scl);
 			stepText.addSelectionListener(scl);
-			
-			Button b = new Button(c, SWT.NONE);
-			b.setText("Define or load properties");
-			b.setLayoutData(
-				new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-			b.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					new PropertiesDialog(getShell()).open();
-				}
-			});
 			
 			return c;
 		}
@@ -271,44 +249,50 @@ public class BigMCInteractionManager extends InteractionManager {
 	@Override
 	public void run(Shell parent) {
 		if (new OptionsDialog(parent).open() == Dialog.OK) {
-			try {
-				ProcessBuilder pb = new ProcessBuilder(
-						Preferences.getBigMCPath(),
-						"-m", Integer.toString(stepCount),
-						"-p",
-						"-");
-				Process process = pb.start();
+			byte[] b = getInput(parent);
 			
-				AsynchronousOutputThread ot =
-					new AsynchronousOutputThread(null).
-						setOutputStream(process.getOutputStream());
-				ot.start();
-				
-				ot.add(getInput(parent));
-				ot.done();
-				
-				ProgressMonitorDialog d =
-						new ProgressMonitorDialog(parent);
-				
-				InputCollector ic =
-						new InputCollector(process.getInputStream());
-				try {
-					d.run(true, true, ic);
-				} catch (InterruptedException ie) {
-					ie.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				}
-				
-				process.destroy();
-				ResultsDialog rd = new ResultsDialog(parent);
-				rd.setSimulationSpec(getSimulationSpec()).setState(ic.st).
-					setStates(states).setRules(rules).setSteps(steps).
-					setViolationDetails(violatedProperty,
-							violatedPropertyValue).open();
+			ProcessBuilder pb = new ProcessBuilder(
+					Preferences.getBigMCPath(),
+					"-m", Integer.toString(stepCount),
+					"-p",
+					"-");
+			Process process;
+			try {
+				process = pb.start();
 			} catch (IOException e) {
+				ErrorDialog.openError(parent, "Error", e.getLocalizedMessage(),
+					new Status(
+						Status.ERROR, Activator.PLUGIN_ID,
+						e.getLocalizedMessage(), e));
+				return;
+			}
+		
+			AsynchronousOutputThread ot =
+				new AsynchronousOutputThread(null).
+					setOutputStream(process.getOutputStream());
+			ot.start();
+			ot.add(b);
+			ot.done();
+			
+			ProgressMonitorDialog d =
+					new ProgressMonitorDialog(parent);
+			
+			InputCollector ic =
+					new InputCollector(process.getInputStream());
+			try {
+				d.run(true, true, ic);
+			} catch (InterruptedException ie) {
+				ie.printStackTrace();
+			} catch (InvocationTargetException e) {
 				e.printStackTrace();
 			}
+			
+			process.destroy();
+			ResultsDialog rd = new ResultsDialog(parent);
+			rd.setSimulationSpec(getSimulationSpec()).setState(ic.st).
+				setStates(states).setRules(rules).setSteps(steps).
+				setViolationDetails(violatedProperty,
+						violatedPropertyValue).open();
 		}
 	}
 
