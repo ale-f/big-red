@@ -6,8 +6,12 @@ which is available from <http://www.eclipse.org/downloads>.
 
 Once you have a copy of Eclipse Modeling Tools:
 
-  * import the "plugins/dk.itu.big_red" folder into the Eclipse workspace
-    (File -> Import... -> Existing Projects into Workspace);
-  * open Big Red's "plugin.xml" file; and
+  * import the "plugins/" folder into the Eclipse workspace (File menu ->
+    Import... -> Existing Projects into Workspace);
+  * open the "plugin.xml" file in the "BigMC for Big Red" project; and
   * click the "Launch an Eclipse application" link (under the "Testing"
     heading).
+
+This will open a new copy of Eclipse, configured to include Big Red with BigMC
+support. (The "doc/examples/" folder includes a sample bigraphical reactive
+system which you may want to import into the new workspace.)

@@ -1,0 +1,11 @@
+Using Big Red together with BigMC
+=================================
+
+When the "BigMC for Big Red" plugin is active, Big Red has some integration
+with BigMC, the bigraph model checker (http://bigraph.org/bigmc); Big Red
+simulation specs can be converted into a corresponding BigMC term language
+representation, and Big Red can visualise the results produced by BigMC.
+
+(There are some caveats, though; this only works when the "bigmc" executable
+can be found in your system's path, and it requires that you use the
+development version of BigMC.)
