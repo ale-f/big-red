@@ -8,7 +8,7 @@ import dk.itu.big_red.model.changes.ChangeRejectedException;
 
 public class SignatureBuilder {
 	private Signature s = new Signature();
-	private ChangeGroup cg;
+	private ChangeGroup cg = new ChangeGroup();
 	
 	public IControl newControl(String name) {
 		Control c = new Control();
