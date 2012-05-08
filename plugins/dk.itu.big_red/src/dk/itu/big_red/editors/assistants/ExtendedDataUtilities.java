@@ -5,6 +5,7 @@ import org.eclipse.core.resources.IFile;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 
 public final class ExtendedDataUtilities {
@@ -14,6 +15,7 @@ public final class ExtendedDataUtilities {
 		return (klass.isInstance(o) ? o : null);
 	}
 	
+	@RedProperty(fired = IFile.class, retrieved = IFile.class)
 	public static final String FILE =
 			"dk.itu.big_red.model.ModelObject.file";
 	
@@ -25,6 +27,7 @@ public final class ExtendedDataUtilities {
 		m.setExtendedData(FILE, f);
 	}
 	
+	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String COMMENT =
 			"dk.itu.big_red.model.ModelObject.comment";
 	
@@ -40,6 +43,7 @@ public final class ExtendedDataUtilities {
 		return m.changeExtendedData(COMMENT, s);
 	}
 	
+	@RedProperty(fired = Colour.class, retrieved = Colour.class)
 	public static final String FILL =
 			"dk.itu.big_red.model.Colourable.fill";
 	
@@ -56,6 +60,7 @@ public final class ExtendedDataUtilities {
 		return m.changeExtendedData(FILL, c);
 	}
 	
+	@RedProperty(fired = Colour.class, retrieved = Colour.class)
 	public static final String OUTLINE =
 			"dk.itu.big_red.model.Colourable.outline";
 	
