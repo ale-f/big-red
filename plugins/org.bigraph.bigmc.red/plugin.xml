@@ -18,5 +18,20 @@
             name="BigMC term language">
       </exporter>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.bigraph.bigmc.red.Preferences">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="dk.itu.big_red.preferences.RedPreferencePage"
+            class="org.bigraph.bigmc.red.PreferencePage"
+            id="org.bigraph.bigmc.red.PreferencePage"
+            name="BigMC for Big Red">
+      </page>
+   </extension>
 
 </plugin>

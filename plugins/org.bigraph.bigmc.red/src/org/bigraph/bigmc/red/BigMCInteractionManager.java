@@ -273,7 +273,10 @@ public class BigMCInteractionManager extends InteractionManager {
 		if (new OptionsDialog(parent).open() == Dialog.OK) {
 			try {
 				ProcessBuilder pb = new ProcessBuilder(
-						"bigmc", "-m", Integer.toString(stepCount), "-p", "-");
+						Preferences.getBigMCPath(),
+						"-m", Integer.toString(stepCount),
+						"-p",
+						"-");
 				Process process = pb.start();
 			
 				AsynchronousOutputThread ot =

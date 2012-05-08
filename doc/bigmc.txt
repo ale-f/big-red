@@ -6,6 +6,8 @@ with BigMC, the bigraph model checker (http://bigraph.org/bigmc); Big Red
 simulation specs can be converted into a corresponding BigMC term language
 representation, and Big Red can visualise the results produced by BigMC.
 
-(There are some caveats, though; this only works when the "bigmc" executable
-can be found in your system's path, and it requires that you use the
-development version of BigMC.)
+If the "bigmc" executable isn't in your system's path, then you'll need to
+tell the plugin where it can be found; this can be done from the "Big Red ->
+BigMC for Big Red" preferences page inside Eclipse.
+
+(This requires the development version of BigMC to work properly.)
