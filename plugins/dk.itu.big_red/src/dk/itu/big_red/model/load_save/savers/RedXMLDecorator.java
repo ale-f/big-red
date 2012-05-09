@@ -12,6 +12,9 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.PortSpec;
+import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
@@ -24,9 +27,9 @@ public class RedXMLDecorator implements Decorator {
 	@Override
 	public void decorate(ModelObject object, Element el) {
 		System.out.println(this + ".decorate(" + object + ", " + el + ")");
-		if (object instanceof Bigraph ||
-				object instanceof Port ||
-				object instanceof PortSpec)
+		if (object instanceof Bigraph || object instanceof ReactionRule ||
+			object instanceof SimulationSpec || object instanceof Signature ||
+			object instanceof Port || object instanceof PortSpec)
 			return;
 		Document doc = el.getOwnerDocument();
 		
