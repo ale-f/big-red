@@ -689,8 +689,13 @@ MenuListener, PropertyChangeListener {
 							
 							Point portPoint =
 									l.getIntersection(roundedMousePosition);
-							newSegment = segment;
-							newDistance = l.getOffsetFromPoint(portPoint);
+							if (portPoint != null) {
+								newSegment = segment;
+								newDistance = l.getOffsetFromPoint(portPoint);
+							} else {
+								newSegment = segment;
+								newDistance = 0.0;
+							}
 						} else {
 							newSegment = 0;
 							newDistance =
