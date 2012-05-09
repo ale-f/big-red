@@ -274,6 +274,10 @@ MenuListener, PropertyChangeListener {
 	
 	private void opAddPort(PortSpec port, String name, int segment, double distance) {
 		ChangeGroup cg = new ChangeGroup();
+		if (distance >= 1.0) {
+			distance = 0.0;
+			segment = (segment + 1) % getPointCount();
+		}
 		cg.add(getModel().changeAddPort(port, name));
 		cg.add(port.changeSegment(segment));
 		cg.add(port.changeDistance(distance));
@@ -286,6 +290,10 @@ MenuListener, PropertyChangeListener {
 	
 	private void opMovePort(PortSpec port, int segment, double distance) {
 		ChangeGroup cg = new ChangeGroup();
+		if (distance >= 1.0) {
+			distance = 0.0;
+			segment = (segment + 1) % getPointCount();
+		}
 		cg.add(port.changeSegment(segment));
 		cg.add(port.changeDistance(distance));
 		doChange(cg);
