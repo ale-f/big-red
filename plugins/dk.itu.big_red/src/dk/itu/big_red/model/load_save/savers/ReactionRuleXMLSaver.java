@@ -79,6 +79,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	private Element processRedex(Element e, Bigraph redex) throws SaveFailedException {
 		applyAttributes(e, "xmlns:bigraph", IRedNamespaceConstants.BIGRAPH);
 		BigraphXMLSaver ex = new BigraphXMLSaver();
+		ex.setFile(getFile());
 		ex.setModel(redex);
 		ex.setDocument(getDocument());
 		for (Decorator d : getDecorators())
