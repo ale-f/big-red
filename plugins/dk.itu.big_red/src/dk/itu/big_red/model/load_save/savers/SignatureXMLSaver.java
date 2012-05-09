@@ -21,7 +21,6 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 public class SignatureXMLSaver extends XMLSaver {
 	public SignatureXMLSaver() {
 		setDefaultNamespace(SIGNATURE);
-		addDecorator(new RedXMLDecorator());
 	}
 	
 	@Override

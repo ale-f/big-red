@@ -82,8 +82,6 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		ex.setFile(getFile());
 		ex.setModel(redex);
 		ex.setDocument(getDocument());
-		for (Decorator d : getDecorators())
-			ex.addDecorator(d);
 		return ex.processObject(e, ex.getModel());
 	}
 	

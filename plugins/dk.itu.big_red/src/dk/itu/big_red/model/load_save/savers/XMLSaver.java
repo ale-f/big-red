@@ -1,9 +1,5 @@
 package dk.itu.big_red.model.load_save.savers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -139,8 +135,6 @@ public abstract class XMLSaver extends Saver {
 			XMLSaver ex;
 			try {
 				ex = klass.newInstance();
-				for (Decorator d : getDecorators())
-					ex.addDecorator(d);
 				ex.setDocument(getDocument()).setModel(object);
 				ex.processObject(e, object);
 			} catch (Exception exc) {
@@ -214,6 +208,7 @@ public abstract class XMLSaver extends Saver {
 		void decorate(ModelObject object, Element el);
 	}
 	
+	/*
 	private List<Decorator> decorators = null;
 	
 	protected List<Decorator> getDecorators() {
@@ -233,12 +228,13 @@ public abstract class XMLSaver extends Saver {
 		if (decorators.remove(d))
 			if (decorators.size() == 0)
 				decorators = null;
-	}
+	} */
+	
+	private static final RedXMLDecorator RXMLD = new RedXMLDecorator();
 	
 	protected Element executeDecorators(ModelObject mo, Element el) {
 		if (mo != null && el != null)
-			for (Decorator d : getDecorators())
-				d.decorate(mo, el);
+			RXMLD.decorate(mo, el);
 		return el;
 	}
 }

@@ -73,8 +73,6 @@ public class BigraphXMLSaver extends XMLSaver {
 	
 	@Override
 	public void exportObject() throws SaveFailedException {
-		if (exportAppearance)
-			addDecorator(new RedXMLDecorator());
 		setDocument(createDocument(BIGRAPH, "bigraph:bigraph"));
 		processObject(getDocumentElement(), getModel());
 		finish();
@@ -157,7 +155,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		String alias = s.getAlias();
 		if (alias != null)
 			applyAttributes(e, "alias", alias);
-		return executeDecorators(s, e);
+		return e;
 	}
 	
 	private Element processNode(Element e, Node n) throws SaveFailedException {
@@ -180,7 +178,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		applyAttributes(e, "name", p.getName());
 		if (link != null)
 			applyAttributes(e, "link", link.getName());
-		return executeDecorators(p, e);
+		return e;
 	}
 		
 	private Element applyCommonProperties(Element e, Layoutable l) {
