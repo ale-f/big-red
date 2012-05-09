@@ -212,14 +212,14 @@ public abstract class XMLLoader extends Loader {
 		void undecorate(ModelObject object, Element el);
 	}
 	
-	private List<Undecorator> undecorators = null;
+	private static List<Undecorator> undecorators = null;
 	
-	protected List<Undecorator> getUndecorators() {
+	protected static List<Undecorator> getUndecorators() {
 		return (undecorators != null ? undecorators :
 				Collections.<Undecorator>emptyList());
 	}
 	
-	public void addUndecorator(Undecorator d) {
+	public static void addUndecorator(Undecorator d) {
 		if (d == null)
 			return;
 		if (undecorators == null)
@@ -227,13 +227,13 @@ public abstract class XMLLoader extends Loader {
 		undecorators.add(d);
 	}
 	
-	public void removeUndecorator(Undecorator d) {
+	public static void removeUndecorator(Undecorator d) {
 		if (undecorators.remove(d))
 			if (undecorators.size() == 0)
 				undecorators = null;
 	}
 	
-	protected Element executeUndecorators(ModelObject mo, Element el) {
+	protected static Element executeUndecorators(ModelObject mo, Element el) {
 		if (mo != null && el != null)
 			for (Undecorator d : getUndecorators())
 				d.undecorate(mo, el);
@@ -247,8 +247,6 @@ public abstract class XMLLoader extends Loader {
 		} catch (Exception e) {
 			return null;
 		}
-		for (Undecorator d : getUndecorators())
-			loader.addUndecorator(d);
 		return loader;
 	}
 }
