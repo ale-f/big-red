@@ -55,6 +55,8 @@ public class Ellipse {
 		return Math.pow(x, 2);
 	}
 	
+	private static final double M_2PI = Math.PI * 2.0;
+	
 	/**
 	 * Returns the offset value specifying the point on this ellipse closest to
 	 * the given point.
@@ -67,7 +69,7 @@ public class Ellipse {
 		double xscale = 1, yscale = 1;
 		
 		if (bb.width() > bb.height())
-			xscale = elh / elh;
+			xscale = elh / elw;
 		else yscale = elw / elh;
 		
 		elc.scale(xscale, yscale);
@@ -94,9 +96,9 @@ public class Ellipse {
 		       t = (d0 < d1 ? Math.atan2(y0, x0) : Math.atan2(y1, x1));
 		
 		if (t < 0)
-			t += Math.PI * 2;
-		t = (t / (Math.PI * 2)) + 0.25;
-		return (t > 1 ? t - 1 : t);
+			t += M_2PI;
+		t = (t / M_2PI) + 0.25;
+		return (t >= 1 ? t - 1 : t);
 	}
 	
 	public Point getClosestPoint(Point p) {
