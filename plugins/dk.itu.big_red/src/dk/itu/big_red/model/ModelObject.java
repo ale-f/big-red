@@ -35,13 +35,20 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		}
 	}
 	
+	public static interface ExtendedDataValidator {
+		String validate(ChangeExtendedData c, IPropertyProviderProxy context);
+	}
+	
 	public class ChangeExtendedData extends ModelObjectChange {
 		public String key;
 		public Object newValue;
+		public ExtendedDataValidator validator;
 		
-		protected ChangeExtendedData(String key, Object newValue) {
+		protected ChangeExtendedData(
+				String key, Object newValue, ExtendedDataValidator validator) {
 			this.key = key;
 			this.newValue = newValue;
+			this.validator = validator;
 		}
 		
 		private Object oldValue;
@@ -53,7 +60,7 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		
 		@Override
 		public Change inverse() {
-			return new ChangeExtendedData(key, oldValue);
+			return new ChangeExtendedData(key, oldValue, validator);
 		}
 	}
 	
@@ -150,7 +157,12 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	}
 	
 	public Change changeExtendedData(String key, Object newValue) {
-		return new ChangeExtendedData(key, newValue);
+		return changeExtendedData(key, newValue, null);
+	}
+	
+	public Change changeExtendedData(
+			String key, Object newValue, ExtendedDataValidator validator) {
+		return new ChangeExtendedData(key, newValue, validator);
 	}
 	
 	@Override
