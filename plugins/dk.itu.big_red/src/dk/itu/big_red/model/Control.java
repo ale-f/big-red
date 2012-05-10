@@ -574,7 +574,8 @@ public class Control extends ModelObject implements IControl {
 	}
 	
 	public void addPort(PropertyScratchpad context, PortSpec p) {
-		context.<PortSpec>getModifiableList(this, PROPERTY_PORT).add(p);
+		context.<PortSpec>getModifiableList(
+				this, PROPERTY_PORT, getPorts()).add(p);
 		context.setProperty(p, PortSpec.PROPERTY_CONTROL, this);
 	}
 	
@@ -586,7 +587,8 @@ public class Control extends ModelObject implements IControl {
 	}
 	
 	public void removePort(PropertyScratchpad context, PortSpec p) {
-		context.<PortSpec>getModifiableList(this, PROPERTY_PORT).remove(p);
+		context.<PortSpec>getModifiableList(
+				this, PROPERTY_PORT, getPorts()).remove(p);
 		context.setProperty(p, PortSpec.PROPERTY_CONTROL, null);
 	}
 	

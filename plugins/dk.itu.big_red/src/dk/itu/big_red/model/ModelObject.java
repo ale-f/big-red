@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.eclipse.ui.services.IDisposable;
 
-import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -24,7 +23,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  * @see Layoutable
  *
  */
-public abstract class ModelObject implements IDisposable, IPropertyProvider {
+public abstract class ModelObject implements IDisposable {
 	public abstract class ModelObjectChange extends Change {
 		/**
 		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
@@ -130,7 +129,6 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 		return clone(null);
 	}
 	
-	@Override
 	public Object getProperty(String name) {
 		Object o;
 		if ((o = getExtendedData(name)) != null) {
@@ -139,8 +137,9 @@ public abstract class ModelObject implements IDisposable, IPropertyProvider {
 	}
 	
 	protected Object getProperty(IPropertyProviderProxy context, String name) {
-		return (context == null ?
-				getProperty(name) : context.getProperty(this, name));
+		if (context == null || !context.hasProperty(this, name)) {
+			return getProperty(name);
+		} else return context.getProperty(this, name);
 	}
 	
 	@Override

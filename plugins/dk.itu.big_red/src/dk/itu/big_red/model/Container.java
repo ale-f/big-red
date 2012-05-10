@@ -74,7 +74,8 @@ public abstract class Container extends Layoutable {
 	
 	public void addChild(
 			PropertyScratchpad context, Layoutable child, String name) {
-		context.<Layoutable>getModifiableList(this, Container.PROPERTY_CHILD).
+		context.<Layoutable>getModifiableList(
+				this, Container.PROPERTY_CHILD, getChildren()).
 			add(child);
 		context.setProperty(child, Layoutable.PROPERTY_PARENT, this);
 		
@@ -91,7 +92,8 @@ public abstract class Container extends Layoutable {
 	}
 	
 	public void removeChild(PropertyScratchpad context, Layoutable child) {
-		context.<Layoutable>getModifiableList(this, Container.PROPERTY_CHILD).
+		context.<Layoutable>getModifiableList(
+				this, Container.PROPERTY_CHILD, getChildren()).
 			remove(child);
 		context.setProperty(child, Layoutable.PROPERTY_PARENT, null);
 		

@@ -6,5 +6,6 @@ package dk.itu.big_red.model.assistants;
  * @author alec
  */
 public interface IPropertyProviderProxy {
-	public Object getProperty(IPropertyProvider target, String name);
+	public boolean hasProperty(Object target, String name);
+	public Object getProperty(Object target, String name);
 }

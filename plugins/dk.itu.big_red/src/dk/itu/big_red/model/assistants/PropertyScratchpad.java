@@ -7,12 +7,12 @@ import java.util.Map;
 
 public class PropertyScratchpad implements IPropertyProviderProxy {
 	private static final class NNPair {
-		private IPropertyProvider object;
-		private String property;
+		private Object target;
+		private String name;
 		
-		private NNPair(IPropertyProvider object, String property) {
-			this.object = object;
-			this.property = property;
+		private NNPair(Object target, String name) {
+			this.target = target;
+			this.name = name;
 		}
 		
 		@Override
@@ -20,30 +20,31 @@ public class PropertyScratchpad implements IPropertyProviderProxy {
 			if (obj instanceof NNPair) {
 				NNPair p = (NNPair)obj;
 				return
-					(object.equals(p.object) && property.equals(p.property));
+					(target.equals(p.target) && name.equals(p.name));
 			} else return false;
 		}
 		
 		@Override
 		public int hashCode() {
-			return object.hashCode() ^ property.hashCode();
+			return target.hashCode() ^ name.hashCode();
 		}
 	}
 	
 	private Map<NNPair, Object> changes = new HashMap<NNPair, Object>();
 	
-	private NNPair getKey(IPropertyProvider m, String property) {
-		return new NNPair(m, property);
+	private NNPair getKey(Object target, String name) {
+		return new NNPair(target, name);
 	}
 	
-	public void setProperty(IPropertyProvider m, String property, Object newValue) {
-		if (m != null && property != null)
-			changes.put(getKey(m, property), newValue);
+	public void setProperty(Object target, String name, Object newValue) {
+		if (target != null && name != null)
+			changes.put(getKey(target, name), newValue);
 	}
 	
-	public boolean hasProperty(IPropertyProvider m, String property) {
-		if (m != null && property != null) {
-			return changes.containsKey(getKey(m, property));
+	@Override
+	public boolean hasProperty(Object target, String name) {
+		if (target != null && name != null) {
+			return changes.containsKey(getKey(target, name));
 		} else return false;
 	}
 	
@@ -53,20 +54,18 @@ public class PropertyScratchpad implements IPropertyProviderProxy {
 	}
 	
 	@Override
-	public Object getProperty(IPropertyProvider object, String property) {
-		if (object != null && property != null) {
-			if (hasProperty(object, property)) {
-				return changes.get(getKey(object, property));
-			} else return object.getProperty(property);
+	public Object getProperty(Object target, String name) {
+		if (target != null && name != null) {
+			return changes.get(getKey(target, name));
 		} else return null;
 	}
 	
 	public <T> List<T> getModifiableList(
-			IPropertyProvider object, String property) {
+			Object target, String name, List<T> original) {
 		@SuppressWarnings("unchecked")
-		List<T> l = (List<T>)getProperty(object, property);
-		if (!hasProperty(object, property))
-			setProperty(object, property, l = new ArrayList<T>(l));
+		List<T> l = (List<T>)getProperty(target, name);
+		if (l == null)
+			setProperty(target, name, l = new ArrayList<T>(original));
 		return l;
 	}
 }

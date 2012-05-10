@@ -1,16 +1,10 @@
 package dk.itu.big_red.model.names;
 
-import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 
-public abstract class Namespace<T> implements INamespace<T>, IPropertyProvider {
-	@Override
-	public T getProperty(String name) {
-		return get(name);
-	}
-	
+public abstract class Namespace<T> implements INamespace<T> {
 	@SuppressWarnings("unchecked")
 	protected T getProperty(IPropertyProviderProxy context, String name) {
 		return (context == null ?

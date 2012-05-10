@@ -111,7 +111,8 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	}
 	
 	public void addControl(PropertyScratchpad context, Control c) {
-		context.<Control>getModifiableList(this, PROPERTY_CONTROL).add(c);
+		context.<Control>getModifiableList(
+				this, PROPERTY_CONTROL, getControls()).add(c);
 		context.setProperty(c, Control.PROPERTY_SIGNATURE, this);
 	}
 	
@@ -123,7 +124,8 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	}
 	
 	public void removeControl(PropertyScratchpad context, Control c) {
-		context.<Control>getModifiableList(this, PROPERTY_CONTROL).remove(c);
+		context.<Control>getModifiableList(
+				this, PROPERTY_CONTROL, getControls()).remove(c);
 		context.setProperty(c, Control.PROPERTY_SIGNATURE, null);
 	}
 	
