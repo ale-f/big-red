@@ -417,7 +417,7 @@ MenuListener, PropertyChangeListener {
 	 */
 	@Override
 	public void mouseDown(MouseEvent e) {
-		if (e.button != 1)
+		if (e.button != 1 || (e.stateMask & SWT.MODIFIER_MASK) != 0)
 			return;
 		Point p = roundToGrid(e.x, e.y),
 		      up = new Point(e.x, e.y);
