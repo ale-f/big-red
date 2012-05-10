@@ -13,7 +13,6 @@ import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.interfaces.IControl;
-import dk.itu.big_red.model.names.policies.INamePolicy;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -91,13 +90,6 @@ public class Control extends ModelObject implements IControl {
 	 */
 	@RedProperty(fired = Dimension.class, retrieved = Dimension.class)
 	public static final String PROPERTY_DEFAULT_SIZE = "ControlDefaultSize";
-	
-	/**
-	 * The property name fired when the parameter policy changes.
-	 */
-	@RedProperty(fired = INamePolicy.class, retrieved = INamePolicy.class)
-	public static final String PROPERTY_PARAMETER_POLICY =
-		"ControlParameterPolicy";
 	
 	abstract class ControlChange extends ModelObjectChange {
 		@Override
@@ -389,37 +381,6 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	public class ChangeParameterPolicy extends ControlChange {
-		public INamePolicy policy;
-		public ChangeParameterPolicy(INamePolicy policy) {
-			this.policy = policy;
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (policy != null);
-		}
-		
-		private INamePolicy oldPolicy;
-		@Override
-		public void beforeApply() {
-			oldPolicy = getCreator().getParameterPolicy();
-		}
-		
-		@Override
-		public Change inverse() {
-			return new ChangeParameterPolicy(oldPolicy);
-		}
-		
-		@Override
-		public String toString() {
-			return
-				"Change(set parameter policy of " + getCreator() + " to " +
-				(policy != null ? policy.getClass().getSimpleName() : "null") +
-				")";
-		}
-	}
-	
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -671,22 +632,6 @@ public class Control extends ModelObject implements IControl {
 		return r;
 	}
 	
-	private INamePolicy policy;
-	
-	public INamePolicy getParameterPolicy() {
-		return policy;
-	}
-	
-	public INamePolicy getParameterPolicy(IPropertyProviderProxy context) {
-		return (INamePolicy)getProperty(context, PROPERTY_PARAMETER_POLICY);
-	}
-	
-	protected void setParameterPolicy(INamePolicy policy) {
-		INamePolicy oldPolicy = this.policy;
-		this.policy = policy;
-		firePropertyChange(PROPERTY_PARAMETER_POLICY, oldPolicy, policy);
-	}
-	
 	/**
 	 * {@inheritDoc}
 	 * <p><strong>Special notes for {@link Control}:</strong>
@@ -715,8 +660,6 @@ public class Control extends ModelObject implements IControl {
 			return getKind();
 		} else if (PROPERTY_SIGNATURE.equals(name)) {
 			return getSignature();
-		} else if (PROPERTY_PARAMETER_POLICY.equals(name)) {
-			return getParameterPolicy();
 		} else return super.getProperty(name);
 	}
 	
@@ -771,9 +714,5 @@ public class Control extends ModelObject implements IControl {
 	
 	public ChangePoints changePoints(PointList pl) {
 		return new ChangePoints(pl);
-	}
-	
-	public ChangeParameterPolicy changeParameterPolicy(INamePolicy policy) {
-		return new ChangeParameterPolicy(policy);
 	}
 }

@@ -14,7 +14,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.Node.ChangeParameter;
+import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -187,7 +187,13 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
 			checkEligibility(c.getCreator());
 		} else if (b instanceof ModelObject.ChangeExtendedData) {
-			/* totally nothing to do */
+			ChangeExtendedData c = (ChangeExtendedData)b;
+			if (c.validator != null) {
+				String rationale = c.validator.validate(c, scratch);
+				if (rationale != null)
+					rejectChange(rationale);
+			}
+			scratch.setProperty(c.getCreator(), c.key, c.newValue);
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(c.getCreator());
@@ -202,17 +208,6 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				if (siteNamePolicy.normalise(c.alias) == null)
 					rejectChange("\"" + c.alias + "\" is not a valid alias " +
 							"for " + c.getCreator());
-		} else if (b instanceof ChangeParameter) {
-			ChangeParameter c = (ChangeParameter)b;
-			checkEligibility(c.getCreator());
-			Control control = c.getCreator().getControl();
-			INamePolicy parameterPolicy = control.getParameterPolicy();
-			if (parameterPolicy == null) {
-				rejectChange("Control " + control.getName() +
-						" does not define a parameter");
-			} else if (parameterPolicy.normalise(c.parameter) == null)
-				rejectChange("\"" + c.parameter + "\" is not a valid value " +
-						"for the parameter of " + control.getName());
 		} else {
 			rejectChange("The change was not recognised by the validator");
 		}

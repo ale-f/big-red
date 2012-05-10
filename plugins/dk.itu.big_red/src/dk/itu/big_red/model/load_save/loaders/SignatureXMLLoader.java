@@ -61,7 +61,7 @@ public class SignatureXMLLoader extends XMLLoader {
 				n = new BooleanNamePolicy();
 			}
 			if (n != null)
-				cg.add(model.changeParameterPolicy(n));
+				cg.add(ExtendedDataUtilities.changeParameterPolicy(model, n));
 		}
 		
 		boolean generatePolygon = false;

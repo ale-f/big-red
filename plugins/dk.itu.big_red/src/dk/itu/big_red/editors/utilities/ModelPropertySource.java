@@ -15,7 +15,6 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 
@@ -70,8 +69,8 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (object instanceof Node) {
 			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.FILL, "Fill colour"));
 			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.OUTLINE, "Outline colour"));
-			if (((Node)object).getControl().getParameterPolicy() != null)
-				properties.add(new TextPropertyDescriptor(Node.PROPERTY_PARAMETER, "Parameter"));
+			if (ExtendedDataUtilities.getParameterPolicy(((Node)object).getControl()) != null)
+				properties.add(new TextPropertyDescriptor(ExtendedDataUtilities.PARAMETER, "Parameter"));
 		}
 		
 		if (object instanceof ModelObject)
@@ -97,14 +96,21 @@ public class ModelPropertySource implements IPropertySource {
 		if (id.equals("Class")) {
 			return object.getType();
 		} else {
-			Object value = object.getProperty((String)id);
-			if (value instanceof Colour)
-				value = ((Colour)value).getRGB();
-			if (value == null &&
-			    (ExtendedDataUtilities.COMMENT.equals(id) ||
-			     id.equals(Site.PROPERTY_ALIAS)))
-				value = "";
-			return value;
+			if (ExtendedDataUtilities.PARAMETER.equals(id)) {
+				return ExtendedDataUtilities.getParameter((Node)object);
+			} else if (ExtendedDataUtilities.COMMENT.equals(id)) {
+				return ExtendedDataUtilities.getComment(object);
+			} else if (ExtendedDataUtilities.FILL.equals(id)) {
+				return ExtendedDataUtilities.getFill(object).getRGB();
+			} else if (ExtendedDataUtilities.OUTLINE.equals(id)) {
+				return ExtendedDataUtilities.getOutline(object).getRGB();
+			} else {
+				Object value = object.getProperty((String)id);
+				if (value == null &&
+				     Site.PROPERTY_ALIAS.equals(id))
+					value = "";
+				return value;
+			}
 		}
 	}
 

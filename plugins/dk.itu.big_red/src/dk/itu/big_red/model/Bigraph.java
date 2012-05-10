@@ -418,11 +418,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		} else if (b instanceof Site.ChangeAlias) {
 			Site.ChangeAlias c = (Site.ChangeAlias)b;
 			c.getCreator().setAlias(c.alias);
-		} else if (b instanceof Node.ChangeParameter) {
-			Node.ChangeParameter c = (Node.ChangeParameter)b;
-			c.getCreator().setParameter(
-				c.getCreator().getControl().getParameterPolicy().
-					normalise(c.parameter));
 		}
 	}
 	

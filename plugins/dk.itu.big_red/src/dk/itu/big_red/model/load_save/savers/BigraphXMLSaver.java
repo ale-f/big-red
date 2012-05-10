@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -162,7 +163,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		applyAttributes(e,
 			"control", n.getControl().getName(),
 			"name", n.getName());
-		String parameter = n.getParameter();
+		String parameter = ExtendedDataUtilities.getParameter(n);
 		if (parameter != null)
 			applyAttributes(e, "parameter", parameter);
 		

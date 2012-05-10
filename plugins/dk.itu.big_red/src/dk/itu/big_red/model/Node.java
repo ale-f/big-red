@@ -8,13 +8,12 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control.Shape;
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
-import dk.itu.big_red.model.assistants.RedProperty;
+import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
-import dk.itu.big_red.model.names.policies.INamePolicy;
 
 /**
  * 
@@ -22,43 +21,6 @@ import dk.itu.big_red.model.names.policies.INamePolicy;
  * @see INode
  */
 public class Node extends Container implements INode {
-	/**
-	 * The property name fired when the parameter changes.
-	 */
-	@RedProperty(fired = String.class, retrieved = String.class)
-	public static final String PROPERTY_PARAMETER = "NodeParameter";
-	
-	public class ChangeParameter extends LayoutableChange {
-		@Override
-		public Node getCreator() {
-			return Node.this;
-		}
-		
-		public String parameter;
-		
-		public ChangeParameter(String parameter) {
-			this.parameter = parameter;
-		}
-		
-		private String oldParameter;
-		
-		@Override
-		public void beforeApply() {
-			oldParameter = getCreator().getParameter();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldParameter != null);
-		}
-		
-		@Override
-		public ChangeParameter inverse() {
-			return new ChangeParameter(oldParameter);
-		}
-	}
-	
-	private String parameter;
 	private ArrayList<Port> ports = new ArrayList<Port>();
 	
 	/**
@@ -89,9 +51,6 @@ public class Node extends Container implements INode {
 		if (m != null)
 			cloneControl = (Control)m.get(getControl());
 		n.setControl(cloneControl == null ? getControl() : cloneControl);
-		
-		/* copy parameters */
-		n.setParameter(getParameter());
 		
 		if (m != null) {
 			/* Manually claim that the new Node's Ports are clones. */
@@ -192,10 +151,6 @@ public class Node extends Container implements INode {
 		for (Port p : ports)
 			p.setParent(this);
 		
-		INamePolicy i = c.getParameterPolicy();
-		if (i != null)
-			parameter = i.get(0);
-		
 		fittedPolygon = null;
 		if (!control.isResizable())
 			super.setLayout(
@@ -205,20 +160,6 @@ public class Node extends Container implements INode {
 	@Override
 	public List<Port> getPorts() {
 		return ports;
-	}
-	
-	protected void setParameter(String parameter) {
-		String oldParameter = this.parameter;
-		this.parameter = parameter;
-		firePropertyChange(PROPERTY_PARAMETER, oldParameter, parameter);
-	}
-	
-	public String getParameter() {
-		return parameter;
-	}
-	
-	public String getParameter(IPropertyProviderProxy context) {
-		return (String)getProperty(context, PROPERTY_PARAMETER);
 	}
 	
 	public Port getPort(String name) {
@@ -248,14 +189,7 @@ public class Node extends Container implements INode {
 		return only(null, IChild.class);
 	}
 	
-	@Override
-	public Object getProperty(String name) {
-		if (PROPERTY_PARAMETER.equals(name)) {
-			return getParameter();
-		} else return super.getProperty(name);
-	}
-	
-	public ChangeParameter changeParameter(String parameter) {
-		return new ChangeParameter(parameter);
+	public Change changeParameter(String parameter) {
+		return ExtendedDataUtilities.changeParameter(this, parameter);
 	}
 }

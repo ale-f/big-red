@@ -56,7 +56,7 @@ public class NodePart extends ContainerPart {
 		super.propertyChange(evt);
 		if (ExtendedDataUtilities.FILL.equals(name) ||
 	        ExtendedDataUtilities.OUTLINE.equals(name) ||
-	        Node.PROPERTY_PARAMETER.equals(name)) {
+	        ExtendedDataUtilities.PARAMETER.equals(name)) {
 	    	refreshVisuals();
 	    }
 	}
@@ -72,7 +72,7 @@ public class NodePart extends ContainerPart {
 		setResizable(control.isResizable());
 		
 		figure.setShape(control.getShape());
-		String parameter = model.getParameter();
+		String parameter = ExtendedDataUtilities.getParameter(model);
 		if (parameter == null) {
 			figure.setLabel(control.getLabel());
 		} else figure.setLabel(parameter + " : " + control.getLabel());

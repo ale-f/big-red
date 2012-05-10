@@ -56,7 +56,7 @@ public class RedXMLDecorator implements Decorator {
 		}
 		
 		String comment = ExtendedDataUtilities.getComment(object);
-		if (comment != null) {
+		if (comment.length() > 0) {
 			alive = true;
 			aE.setAttributeNS(BIG_RED, "big-red:comment", comment);
 		}

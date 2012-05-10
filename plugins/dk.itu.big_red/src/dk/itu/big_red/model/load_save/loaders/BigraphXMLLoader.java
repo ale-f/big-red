@@ -167,7 +167,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	
 	private void processNode(Element e, Node model) throws LoadFailedException {
 		String parameter = getAttributeNS(e, BIGRAPH, "parameter");
-		INamePolicy policy = model.getControl().getParameterPolicy();
+		INamePolicy policy = ExtendedDataUtilities.getParameterPolicy(model.getControl());
 		
 		if (parameter != null && policy == null) {
 			addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,

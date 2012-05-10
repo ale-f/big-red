@@ -5,6 +5,7 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.ModelObject;
@@ -61,7 +62,7 @@ public class SignatureXMLSaver extends XMLSaver {
 				"name", c.getName(),
 				"kind", c.getKind().toString());
 		
-		INamePolicy parameterPolicy = c.getParameterPolicy();
+		INamePolicy parameterPolicy = ExtendedDataUtilities.getParameterPolicy(c);
 		if (parameterPolicy instanceof LongNamePolicy) {
 			applyAttributes(e, "parameter", "LONG");
 		} else if (parameterPolicy instanceof BooleanNamePolicy) {

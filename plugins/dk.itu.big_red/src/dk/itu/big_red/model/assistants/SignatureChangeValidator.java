@@ -6,7 +6,6 @@ import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
-import dk.itu.big_red.model.Control.ChangeParameterPolicy;
 import dk.itu.big_red.model.Control.ChangePoints;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
@@ -59,7 +58,13 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 			for (Change c : (ChangeGroup)b)
 				_tryValidateChange(c);
 		} else if (b instanceof ChangeExtendedData) {
-			/* do nothing */
+			ChangeExtendedData c = (ChangeExtendedData)b;
+			if (c.validator != null) {
+				String rationale = c.validator.validate(c, scratch);
+				if (rationale != null)
+					rejectChange(rationale);
+			}
+			scratch.setProperty(c.getCreator(), c.key, c.newValue);
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
 			getChangeable().addControl(scratch, c.control);
@@ -82,8 +87,7 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				b instanceof ChangeDefaultSize ||
 				b instanceof ChangeKind ||
 				b instanceof ChangeSegment ||
-				b instanceof ChangePoints ||
-				b instanceof ChangeParameterPolicy) {
+				b instanceof ChangePoints) {
 			/* do nothing, yet */
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
