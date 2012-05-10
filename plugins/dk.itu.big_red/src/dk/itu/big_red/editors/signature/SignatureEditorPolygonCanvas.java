@@ -138,7 +138,7 @@ MenuListener, PropertyChangeListener {
 			public String isValid(String newText) {
 				if (newText.length() == 0)
 					return "Port names must not be empty.";
-				for (PortSpec i : getPorts())
+				for (PortSpec i : getModel().getPorts())
 					if (i != current && i.getName().equals(newText))
 						return "This port name is already in use.";
 				return null;
@@ -227,7 +227,7 @@ MenuListener, PropertyChangeListener {
 				l1l = len1 / len;
 		if (dragPointIndex == deleteIndex)
 			dragPointIndex = -1;
-		for (PortSpec port : getPorts()) {
+		for (PortSpec port : getModel().getPorts()) {
 			int segment = port.getSegment();
 			double distance = port.getDistance();
 			if (segment == deleteIndex - 1) {
@@ -251,7 +251,7 @@ MenuListener, PropertyChangeListener {
 		Line l1 = new Line(getPoint(insertIndex - 1), p),
 				l2 = new Line(p, getPoint(insertIndex));
 		double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
-		for (PortSpec port : getPorts()) {
+		for (PortSpec port : getModel().getPorts()) {
 			int segment = port.getSegment();
 			double distance = port.getDistance();
 			if (segment == (insertIndex - 1)) {
@@ -284,10 +284,6 @@ MenuListener, PropertyChangeListener {
 		doChange(cg);
 	}
 	
-	private void opRenamePort(PortSpec port, String name) {
-		doChange(port.changeName(name));
-	}
-	
 	private void opMovePort(PortSpec port, int segment, double distance) {
 		ChangeGroup cg = new ChangeGroup();
 		if (distance >= 1.0) {
@@ -299,20 +295,8 @@ MenuListener, PropertyChangeListener {
 		doChange(cg);
 	}
 	
-	private void opDeletePort(PortSpec port) {
-		doChange(getModel().changeRemovePort(port));
-	}
-	
 	private int getPointCount() {
 		return getModel().getPoints().size();
-	}
-	
-	private Shape getShape() {
-		return getModel().getShape();
-	}
-	
-	private List<PortSpec> getPorts() {
-		return getModel().getPorts();
 	}
 	
 	protected int roundToGrid(int x) {
@@ -330,10 +314,10 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	protected int findPortAt(int x, int y) {
-		if (getShape() == Shape.POLYGON) {
+		if (getModel().getShape() == Shape.POLYGON) {
 			Line l = new Line();
-			for (int i = 0; i < getPorts().size(); i++) {
-				PortSpec p = getPorts().get(i);
+			for (int i = 0; i < getModel().getPorts().size(); i++) {
+				PortSpec p = getModel().getPorts().get(i);
 				int segment = p.getSegment();
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -342,10 +326,10 @@ MenuListener, PropertyChangeListener {
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
 			}
-		} else if (getShape() == Shape.OVAL) {
+		} else if (getModel().getShape() == Shape.OVAL) {
 			Ellipse e = getEllipse();
-			for (int i = 0; i < getPorts().size(); i++) {
-				PortSpec p = getPorts().get(i);
+			for (int i = 0; i < getModel().getPorts().size(); i++) {
+				PortSpec p = getModel().getPorts().get(i);
 				tmp.setLocation(e.getPointFromOffset(p.getDistance()));
 				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
 					y >= tmp.y - 4 && y <= tmp.y + 4)
@@ -356,7 +340,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	protected int findPointAt(int x, int y) {
-		if (getShape() != Shape.POLYGON)
+		if (getModel().getShape() != Shape.POLYGON)
 			return -1;
 		for (int i = 0; i < getPointCount(); i++) {
 			tmp = getPoint(i);
@@ -368,7 +352,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private int getNearestSegment(Point up, double threshold) {
-		if (getShape() == Shape.OVAL)
+		if (getModel().getShape() == Shape.OVAL)
 			return 0;
 		int index = -1;
 		Line l = new Line();
@@ -403,7 +387,7 @@ MenuListener, PropertyChangeListener {
 	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
-		if (getShape() == Shape.OVAL)
+		if (getModel().getShape() == Shape.OVAL)
 			return;
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p.x, p.y);
@@ -424,7 +408,7 @@ MenuListener, PropertyChangeListener {
 		dragPortIndex = findPortAt(up.x, up.y);
 		if (dragPortIndex == -1) {
 			dragPointIndex = findPointAt(p.x, p.y);
-			if (dragPointIndex == -1 && getShape() == Shape.POLYGON) {
+			if (dragPointIndex == -1 && getModel().getShape() == Shape.POLYGON) {
 				if (getPointCount() == 1) {
 					dragPointIndex = 0;
 					newPoint = true;
@@ -448,12 +432,12 @@ MenuListener, PropertyChangeListener {
 	@Override
 	public void mouseUp(MouseEvent e) {
 		if (dragPortIndex != -1) { /* a port is being moved */
-			PortSpec p = getPorts().get(dragPortIndex);
+			PortSpec p = getModel().getPorts().get(dragPortIndex);
 			Line l = new Line();
 			int segment;
 			double offset;
 			
-			if (getShape() == Shape.POLYGON) {
+			if (getModel().getShape() == Shape.POLYGON) {
 				segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -488,28 +472,45 @@ MenuListener, PropertyChangeListener {
 		gc.fillOval(p.x - radius, p.y - radius, radius * 2, radius * 2);
 	}
 	
+	private void drawPortName(GC gc, String name, Point portCenter) {
+		org.eclipse.swt.graphics.Point extent = gc.textExtent(name);
+		
+		int
+			nameX = portCenter.x - (extent.x / 2),
+			nameY = portCenter.y - (extent.y / 2) - 18;
+		
+		int oldAlpha = gc.getAlpha();
+		gc.setAlpha(127);
+		try {
+			gc.drawText(name, nameX, nameY, SWT.DRAW_TRANSPARENT);
+		} finally {
+			gc.setAlpha(oldAlpha);
+		}
+	}
+	
 	@Override
 	public void paintControl(PaintEvent e) {
-		e.gc.setAntialias(SWT.ON);
-		e.gc.setLineWidth(2);
+		GC gc = e.gc;
+		
+		gc.setAntialias(SWT.ON);
+		gc.setLineWidth(2);
 		setCursor(Cursors.ARROW);
 		
 		if (getEnabled() == false) {
-			e.gc.setBackground(ColorConstants.lightGray);
-			e.gc.setAlpha(128);
-			e.gc.fillRectangle(0, 0, controlWidth, controlHeight);
+			gc.setBackground(ColorConstants.lightGray);
+			gc.setAlpha(128);
+			gc.fillRectangle(0, 0, controlWidth, controlHeight);
 			return;
 		}
 		
 		Line l = new Line();
 		
-		e.gc.setForeground(
+		gc.setForeground(
 			outline.update(ExtendedDataUtilities.getOutline(model)));
-		e.gc.setBackground(
+		gc.setBackground(
 			fill.update(ExtendedDataUtilities.getFill(model)));
 		
-		List<PortSpec> ports = getPorts();
-		if (getShape() == Shape.POLYGON) {
+		if (getModel().getShape() == Shape.POLYGON) {
 			/* toIntArray returns a reference to the internal array, so make a
 			 * copy to avoid translating the original points */
 			PointList points = getModel().getPoints().getCopy();
@@ -521,43 +522,48 @@ MenuListener, PropertyChangeListener {
 				pointArray[i + 1] += dy;
 			}
 			
-			e.gc.fillPolygon(pointArray);
-			e.gc.drawPolyline(pointArray);
+			gc.fillPolygon(pointArray);
+			gc.drawPolyline(pointArray);
 			
 			Point first = getPoint(0), last = getPoint(points.size() - 1);
-			e.gc.drawLine(first.x, first.y, last.x, last.y);
+			gc.drawLine(first.x, first.y, last.x, last.y);
 			
-			e.gc.setBackground(ColorConstants.black);
+			gc.setBackground(ColorConstants.black);
 			for (int i = 0; i < points.size(); i++)
-				fillCircleCentredAt(e.gc, getPoint(i), 3);
+				fillCircleCentredAt(gc, getPoint(i), 3);
 			
-			e.gc.setBackground(ColorConstants.red);
-			for (PortSpec p : ports) {
+			gc.setForeground(ColorConstants.black);
+			
+			for (PortSpec p : getModel().getPorts()) {
+				gc.setBackground(ColorConstants.red);
+				
 				int segment = p.getSegment();
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
 				
-				fillCircleCentredAt(e.gc,
-						l.getPointFromOffset(p.getDistance()), 4);
+				Point portCenter = l.getPointFromOffset(p.getDistance());
+				fillCircleCentredAt(gc, portCenter, 4);
+				drawPortName(gc, p.getName(), portCenter);
 			}
 		} else {
 			Ellipse el = getEllipse();
 			int w = ((controlWidth - 60) / 10) * 10,
 			    h = ((controlHeight - 60) / 10) * 10;
-			e.gc.fillOval(30, 30, w, h);
-			e.gc.drawOval(30, 30, w, h);
+			gc.fillOval(30, 30, w, h);
+			gc.drawOval(30, 30, w, h);
 			
-			e.gc.setBackground(ColorConstants.red);
-			for (PortSpec p : ports) {
-				fillCircleCentredAt(e.gc,
-					el.getPointFromOffset(p.getDistance()), 4);
+			gc.setBackground(ColorConstants.red);
+			for (PortSpec p : getModel().getPorts()) {
+				Point portCenter = el.getPointFromOffset(p.getDistance());
+				fillCircleCentredAt(gc, portCenter, 4);
+				drawPortName(gc, p.getName(), portCenter);
 			}
 		}
 		
 		if (dragPortIndex != -1) {
-			e.gc.setAlpha(127);
+			gc.setAlpha(127);
 			
-			if (getShape() == Shape.POLYGON) {
+			if (getModel().getShape() == Shape.POLYGON) {
 				int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -565,11 +571,11 @@ MenuListener, PropertyChangeListener {
 				if (intersection == null)
 					intersection = getPoint(segment);
 				tmp.setLocation(intersection);
-			} else if (getShape() == Shape.OVAL) {
+			} else if (getModel().getShape() == Shape.OVAL) {
 				tmp.setLocation(getEllipse().getClosestPoint(mousePosition));
 			}
 			
-			fillCircleCentredAt(e.gc, tmp, 4);
+			fillCircleCentredAt(gc, tmp, 4);
 		} else if (dragPointIndex != -1) {
 			e.gc.setAlpha(127);
 			Point previous, next;
@@ -581,18 +587,18 @@ MenuListener, PropertyChangeListener {
 				next = getPoint(dragPointIndex);
 			}
 			
-			e.gc.setForeground(ColorConstants.red);
-			e.gc.setBackground(ColorConstants.red);
+			gc.setForeground(ColorConstants.red);
+			gc.setBackground(ColorConstants.red);
 			
-			e.gc.drawLine(previous.x, previous.y, roundedMousePosition.x, roundedMousePosition.y);
-			e.gc.drawLine(next.x, next.y, roundedMousePosition.x, roundedMousePosition.y);
-			fillCircleCentredAt(e.gc, roundedMousePosition, 3);
+			gc.drawLine(previous.x, previous.y, roundedMousePosition.x, roundedMousePosition.y);
+			gc.drawLine(next.x, next.y, roundedMousePosition.x, roundedMousePosition.y);
+			fillCircleCentredAt(gc, roundedMousePosition, 3);
 			
 			int pointAtCursor = findPointAt(roundedMousePosition.x, roundedMousePosition.y);
 			if (pointAtCursor != -1 && pointAtCursor != dragPointIndex)
 				setCursor(Cursors.NO);
 			
-			e.gc.setAlpha(255);
+			gc.setAlpha(255);
 		}
 	}
 
@@ -614,9 +620,9 @@ MenuListener, PropertyChangeListener {
 		
 		String toolTipText = null;
 		if (port != -1 && point != -1) {
-			toolTipText = "Port " + getPorts().get(port).getName() + " and point " + point;
+			toolTipText = "Port " + getModel().getPorts().get(port).getName() + " and point " + point;
 		} else if (port != -1) {
-			toolTipText = "Port " + getPorts().get(port).getName();
+			toolTipText = "Port " + getModel().getPorts().get(port).getName();
 		} else if (point != -1) {
 			toolTipText = "Point " + point;
 		}
@@ -682,7 +688,7 @@ MenuListener, PropertyChangeListener {
 						int newSegment;
 						double newDistance;
 						
-						if (getShape() == Shape.POLYGON) {
+						if (getModel().getShape() == Shape.POLYGON) {
 							Line l = new Line();
 							l.setFirstPoint(getPoint(segment));
 							l.setSecondPoint(getPoint(segment + 1));
@@ -715,20 +721,20 @@ MenuListener, PropertyChangeListener {
 			UI.createMenuItem(m, 0, "Re&name port", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					PortSpec p = getPorts().get(foundPort);
+					PortSpec p = getModel().getPorts().get(foundPort);
 					String newName = UI.promptFor("Port name",
 							"Choose a name for this port:",
 							(p.getName() == null ? "" : p.getName()),
 							getPortNameValidator(p));
 					if (newName != null)
-						opRenamePort(p, newName);
+						doChange(p.changeName(newName));
 				}
 			});
 			
 			UI.createMenuItem(m, 0, "&Remove port", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					opDeletePort(getPorts().get(foundPort));
+					doChange(getModel().changeRemovePort(getModel().getPorts().get(foundPort)));
 				}
 			});
 		}
@@ -758,7 +764,7 @@ MenuListener, PropertyChangeListener {
 				}
 			});
 		}
-		if (getShape() == Shape.POLYGON) {
+		if (getModel().getShape() == Shape.POLYGON) {
 			if (m.getItemCount() > 0)
 				new MenuItem(m, SWT.SEPARATOR);
 			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new SelectionAdapter() {
