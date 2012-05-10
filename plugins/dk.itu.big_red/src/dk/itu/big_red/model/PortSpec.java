@@ -207,7 +207,7 @@ public class PortSpec extends ModelObject implements IPort {
 	}
 	
 	@Override
-	public Object getProperty(String name) {
+	protected Object getProperty(String name) {
 		if (PROPERTY_NAME.equals(name)) {
 			return getName();
 		} else if (PROPERTY_DISTANCE.equals(name)) {

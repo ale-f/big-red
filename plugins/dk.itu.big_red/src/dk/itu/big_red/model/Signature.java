@@ -232,7 +232,7 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	 * </ul>
 	 */
 	@Override
-	public Object getProperty(String name) {
+	protected Object getProperty(String name) {
 		if (PROPERTY_CONTROL.equals(name)) {
 			return getControls();
 		} else return super.getProperty(name);

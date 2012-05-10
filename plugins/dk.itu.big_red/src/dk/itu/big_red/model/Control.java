@@ -643,7 +643,7 @@ public class Control extends ModelObject implements IControl {
 	 * </ul>
 	 */
 	@Override
-	public Object getProperty(String name) {
+	protected Object getProperty(String name) {
 		if (PROPERTY_DEFAULT_SIZE.equals(name)) {
 			return getDefaultSize();
 		} else if (PROPERTY_LABEL.equals(name)) {

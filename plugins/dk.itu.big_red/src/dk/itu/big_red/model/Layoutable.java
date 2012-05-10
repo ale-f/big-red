@@ -302,7 +302,7 @@ public abstract class Layoutable extends ModelObject {
 	}
 	
 	@Override
-	public Object getProperty(String name) {
+	protected Object getProperty(String name) {
 		if (PROPERTY_NAME.equals(name)) {
 			return getName();
 		} else if (PROPERTY_LAYOUT.equals(name)) {

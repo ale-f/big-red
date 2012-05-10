@@ -104,13 +104,12 @@ public class ModelPropertySource implements IPropertySource {
 				return ExtendedDataUtilities.getFill(object).getRGB();
 			} else if (ExtendedDataUtilities.OUTLINE.equals(id)) {
 				return ExtendedDataUtilities.getOutline(object).getRGB();
-			} else {
-				Object value = object.getProperty((String)id);
-				if (value == null &&
-				     Site.PROPERTY_ALIAS.equals(id))
-					value = "";
-				return value;
-			}
+			} else if (Site.PROPERTY_ALIAS.equals(id)) {
+				String s = ((Site)object).getAlias();
+				return (s != null ? s : "");
+			} else if (Layoutable.PROPERTY_NAME.equals(id)) {
+				return object.getName();
+			} else return null;
 		}
 	}
 

@@ -64,7 +64,7 @@ public class Site extends Layoutable implements ISite {
 	}
 	
 	@Override
-	public Object getProperty(String name) {
+	protected Object getProperty(String name) {
 		if (PROPERTY_ALIAS.equals(name)) {
 			return getAlias();
 		} else return super.getProperty(name);

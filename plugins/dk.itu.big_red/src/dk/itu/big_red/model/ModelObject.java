@@ -129,11 +129,8 @@ public abstract class ModelObject implements IDisposable {
 		return clone(null);
 	}
 	
-	public Object getProperty(String name) {
-		Object o;
-		if ((o = getExtendedData(name)) != null) {
-			return o;
-		} else return null;
+	protected Object getProperty(String name) {
+		return null;
 	}
 	
 	protected Object getProperty(IPropertyProviderProxy context, String name) {

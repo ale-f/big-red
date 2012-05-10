@@ -263,7 +263,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	 * </ul>
 	 */
 	@Override
-	public Object getProperty(String name) {
+	protected Object getProperty(String name) {
 		if (PROPERTY_SIGNATURE.equals(name)) {
 			return getSignature();
 		} else if (PROPERTY_MODEL.equals(name)) {
