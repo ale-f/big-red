@@ -69,34 +69,25 @@ public class RedXMLDecorator implements Decorator {
 			return;
 		
 		Element aE = doc.createElementNS(BIG_RED, "big-red:appearance");
-		boolean alive = false;
 		
-		if (object instanceof Layoutable) {
-			alive = true;
+		if (object instanceof Layoutable)
 			rectangleToElement(aE, ((Layoutable)object).getLayout());
-		}
 		
 		Colour
 			fill = ExtendedDataUtilities.getFill(object),
 			outline = ExtendedDataUtilities.getOutline(object);
-		if (fill != null) {
-			alive = true;
+		if (fill != null)
 			aE.setAttributeNS(BIG_RED, "big-red:fillColor",
 					fill.toHexString());
-		}
-		if (outline != null) {
-			alive = true;
+		if (outline != null)
 			aE.setAttributeNS(BIG_RED, "big-red:outlineColor",
 					outline.toHexString());
-		}
 		
 		String comment = ExtendedDataUtilities.getComment(object);
-		if (comment.length() > 0) {
-			alive = true;
+		if (comment.length() > 0)
 			aE.setAttributeNS(BIG_RED, "big-red:comment", comment);
-		}
 		
-		if (alive)
+		if (aE.hasChildNodes() || aE.hasAttributes())
 			el.appendChild(aE);
 	}
 }
