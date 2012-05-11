@@ -21,12 +21,25 @@ public final class ExtendedDataUtilities {
 		return (klass.isInstance(o) ? o : null);
 	}
 	
+	private static Object require(
+			IPropertyProviderProxy context, Object o, String name,
+			Class<?> klass) {
+		return require(context.getProperty(o, name), klass);
+	}
+	
 	@RedProperty(fired = IFile.class, retrieved = IFile.class)
 	public static final String FILE =
 			"eD!+dk.itu.big_red.model.ModelObject.file";
 	
 	public static IFile getFile(ModelObject m) {
 		return (IFile)require(m.getExtendedData(FILE), IFile.class);
+	}
+	
+	public static IFile getFile(
+			IPropertyProviderProxy context, ModelObject m) {
+		if (context != null && context.hasProperty(m, FILE)) {
+			return (IFile)require(context, m, FILE, IFile.class);
+		} else return getFile(m);
 	}
 	
 	public static void setFile(ModelObject m, IFile f) {
@@ -40,6 +53,13 @@ public final class ExtendedDataUtilities {
 	public static String getComment(ModelObject m) {
 		String c = (String)require(m.getExtendedData(COMMENT), String.class);
 		return (c != null ? c : "");
+	}
+	
+	public static String getComment(
+			IPropertyProviderProxy context, ModelObject m) {
+		if (context != null && context.hasProperty(m, COMMENT)) {
+			return (String)require(context, m, COMMENT, String.class);
+		} else return getComment(m);
 	}
 	
 	public static void setComment(ModelObject m, String s) {
@@ -57,6 +77,13 @@ public final class ExtendedDataUtilities {
 	public static Colour getFill(ModelObject m) {
 		Colour c = (Colour)require(m.getExtendedData(FILL), Colour.class);
 		return (c != null ? c : new Colour("white"));
+	}
+	
+	public static Colour getFill(
+			IPropertyProviderProxy context, ModelObject m) {
+		if (context != null && context.hasProperty(m, FILL)) {
+			return (Colour)require(context, m, FILL, Colour.class);
+		} else return getFill(m);
 	}
 	
 	public static void setFill(ModelObject m, Colour c) {
@@ -77,6 +104,13 @@ public final class ExtendedDataUtilities {
 			new Colour(m instanceof Link ? "green" : "black"));
 	}
 	
+	public static Colour getOutline(
+			IPropertyProviderProxy context, ModelObject m) {
+		if (context != null && context.hasProperty(m, OUTLINE)) {
+			return (Colour)require(context, m, OUTLINE, Colour.class);
+		} else return getOutline(m);
+	}
+	
 	public static void setOutline(ModelObject m, Colour c) {
 		m.setExtendedData(OUTLINE, c);
 	}
@@ -92,6 +126,14 @@ public final class ExtendedDataUtilities {
 	public static INamePolicy getParameterPolicy(Control c) {
 		return (INamePolicy)require(
 				c.getExtendedData(PARAMETER_POLICY), INamePolicy.class);
+	}
+	
+	public static INamePolicy getParameterPolicy(
+			IPropertyProviderProxy context, Control c) {
+		if (context != null && context.hasProperty(c, PARAMETER_POLICY)) {
+			return (INamePolicy)require(
+					context, c, PARAMETER_POLICY, INamePolicy.class);
+		} else return getParameterPolicy(c);
 	}
 	
 	public static void setParameterPolicy(Control c, INamePolicy n) {
@@ -137,6 +179,13 @@ public final class ExtendedDataUtilities {
 				s = p.get(0);
 		}
 		return s;
+	}
+	
+	public static String getParameter(
+			IPropertyProviderProxy context, Node n) {
+		if (context != null && context.hasProperty(n, PARAMETER)) {
+			return (String)require(context, n, PARAMETER, String.class);
+		} else return getParameter(n);
 	}
 	
 	public static void setParameter(Node n, String s) {
