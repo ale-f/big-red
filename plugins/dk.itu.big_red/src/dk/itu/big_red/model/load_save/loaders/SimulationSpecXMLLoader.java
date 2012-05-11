@@ -106,7 +106,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			throw new LoadFailedException(cre);
 		}
 		
-		return ss;
+		return executeUndecorators(ss, e);
 	}
 	
 	@Override

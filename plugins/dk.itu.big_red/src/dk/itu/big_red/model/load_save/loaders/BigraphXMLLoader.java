@@ -138,7 +138,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			throw new LoadFailedException(f);
 		}
 		
-		return bigraph;
+		return executeUndecorators(bigraph, e);
 	}
 	
 	private void processContainer(Element e, Container model) throws LoadFailedException {
@@ -245,6 +245,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		} else if (model instanceof Site) {
 			processSite(e, (Site)model);
 		}
+		
+		if (model != null)
+			executeUndecorators(model, e);
 	}
 
 	@Override

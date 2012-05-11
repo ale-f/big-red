@@ -233,11 +233,12 @@ public abstract class XMLLoader extends Loader {
 				undecorators = null;
 	}
 	
-	protected static Element executeUndecorators(ModelObject mo, Element el) {
+	protected static <T extends ModelObject>
+			T executeUndecorators(T mo, Element el) {
 		if (mo != null && el != null)
 			for (Undecorator d : getUndecorators())
 				d.undecorate(mo, el);
-		return el;
+		return mo;
 	}
 	
 	protected <T extends XMLLoader> T newLoader(Class<T> klass) {

@@ -53,7 +53,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			makeRedex(getNamedChildElement(e, RULE, "redex")));
 		updateReactum(rr, getNamedChildElement(e, RULE, "changes"));
 		
-		return rr;
+		return executeUndecorators(rr, e);
 	}
 	
 	private Bigraph makeRedex(Element e) throws LoadFailedException {

@@ -93,6 +93,8 @@ public class SignatureXMLLoader extends XMLLoader {
 				cg.add(p.changeDistance(0.5));
 			}
 		}
+		
+		executeUndecorators(model, e);
 	}
 	
 	@Override
@@ -111,7 +113,7 @@ public class SignatureXMLLoader extends XMLLoader {
 			throw new LoadFailedException(ex);
 		}
 		
-		return sig;
+		return executeUndecorators(sig, e);
 	}
 	
 	private PortSpec makePortSpec(
@@ -127,7 +129,7 @@ public class SignatureXMLLoader extends XMLLoader {
 					model.changeDistance(distance));
 		}
 		
-		return model;
+		return executeUndecorators(model, e);
 	}
 	
 	@Override
