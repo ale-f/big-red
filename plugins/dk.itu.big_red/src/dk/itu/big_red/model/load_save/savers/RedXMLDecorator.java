@@ -20,9 +20,10 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
-public class RedXMLDecorator implements Decorator {
+public class RedXMLDecorator implements Decorator, Undecorator {
 	public static Element rectangleToElement(Element e, Rectangle r) {
 		return XMLSaver.applyAttributes(e,
 			"width", r.width(), "height", r.height(), "x", r.x(), "y", r.y());
@@ -89,5 +90,10 @@ public class RedXMLDecorator implements Decorator {
 		
 		if (aE.hasChildNodes() || aE.hasAttributes())
 			el.appendChild(aE);
+	}
+
+	@Override
+	public void undecorate(ModelObject object, Element el) {
+		System.out.println(this + ".undecorate(" + object + ", " + el + ")");
 	}
 }
