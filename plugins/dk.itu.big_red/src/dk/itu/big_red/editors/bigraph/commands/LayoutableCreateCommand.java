@@ -2,14 +2,11 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -57,13 +54,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		String name = container.getBigraph().getFirstUnusedName(child);
 		cg.add(container.changeAddChild(child, name),
 			child.changeLayout(layout));
-		if (child instanceof Node) {
-			Control c = ((Node)child).getControl();
-			cg.add(ExtendedDataUtilities.changeFill(child,
-					ExtendedDataUtilities.getFill(c)),
-					ExtendedDataUtilities.changeOutline(child,
-					ExtendedDataUtilities.getOutline(c)));
-		}
 		return this;
 	}
 	
