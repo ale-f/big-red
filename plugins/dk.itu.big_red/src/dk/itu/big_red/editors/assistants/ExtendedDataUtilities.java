@@ -17,14 +17,12 @@ import dk.itu.big_red.model.names.policies.INamePolicy;
 public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
-	private static Object require(Object o, Class<?> klass) {
-		return (klass.isInstance(o) ? o : null);
-	}
-	
 	private static Object require(
-			IPropertyProviderProxy context, Object o, String name,
+			IPropertyProviderProxy context, ModelObject o, String name,
 			Class<?> klass) {
-		return require(context.getProperty(o, name), klass);
+		Object r = (context != null && context.hasProperty(o, name) ?
+				context.getProperty(o, name) : o.getExtendedData(name));
+		return (klass.isInstance(r) ? r : null);
 	}
 	
 	@RedProperty(fired = IFile.class, retrieved = IFile.class)
@@ -32,14 +30,12 @@ public final class ExtendedDataUtilities {
 			"eD!+dk.itu.big_red.model.ModelObject.file";
 	
 	public static IFile getFile(ModelObject m) {
-		return (IFile)require(m.getExtendedData(FILE), IFile.class);
+		return getFile(null, m);
 	}
 	
 	public static IFile getFile(
 			IPropertyProviderProxy context, ModelObject m) {
-		if (context != null && context.hasProperty(m, FILE)) {
-			return (IFile)require(context, m, FILE, IFile.class);
-		} else return getFile(m);
+		return (IFile)require(context, m, FILE, IFile.class);
 	}
 	
 	public static void setFile(ModelObject m, IFile f) {
@@ -51,15 +47,13 @@ public final class ExtendedDataUtilities {
 			"eD!+dk.itu.big_red.model.ModelObject.comment";
 	
 	public static String getComment(ModelObject m) {
-		String c = (String)require(m.getExtendedData(COMMENT), String.class);
-		return (c != null ? c : "");
+		return getComment(null, m);
 	}
 	
 	public static String getComment(
 			IPropertyProviderProxy context, ModelObject m) {
-		if (context != null && context.hasProperty(m, COMMENT)) {
-			return (String)require(context, m, COMMENT, String.class);
-		} else return getComment(m);
+		String s = (String)require(context, m, COMMENT, String.class);
+		return (s != null ? s : "");
 	}
 	
 	public static void setComment(ModelObject m, String s) {
@@ -75,15 +69,20 @@ public final class ExtendedDataUtilities {
 			"eD!+dk.itu.big_red.model.Colourable.fill";
 	
 	public static Colour getFill(ModelObject m) {
-		Colour c = (Colour)require(m.getExtendedData(FILL), Colour.class);
-		return (c != null ? c : new Colour("white"));
+		return getFill(null, m);
 	}
 	
 	public static Colour getFill(
 			IPropertyProviderProxy context, ModelObject m) {
-		if (context != null && context.hasProperty(m, FILL)) {
-			return (Colour)require(context, m, FILL, Colour.class);
-		} else return getFill(m);
+		Colour c = (Colour)require(context, m, FILL, Colour.class);
+		if (c == null) {
+			if (m instanceof Node) {
+				c = getFill(context, ((Node)m).getControl());
+			} else if (m instanceof Control) {
+				c = new Colour("white");
+			}
+		}
+		return c;
 	}
 	
 	public static void setFill(ModelObject m, Colour c) {
@@ -99,16 +98,22 @@ public final class ExtendedDataUtilities {
 			"eD!+dk.itu.big_red.model.Colourable.outline";
 	
 	public static Colour getOutline(ModelObject m) {
-		Colour c = (Colour)require(m.getExtendedData(OUTLINE), Colour.class);
-		return (c != null ? c :
-			new Colour(m instanceof Link ? "green" : "black"));
+		return getOutline(null, m);
 	}
 	
 	public static Colour getOutline(
 			IPropertyProviderProxy context, ModelObject m) {
-		if (context != null && context.hasProperty(m, OUTLINE)) {
-			return (Colour)require(context, m, OUTLINE, Colour.class);
-		} else return getOutline(m);
+		Colour c = (Colour)require(context, m, OUTLINE, Colour.class);
+		if (c == null) {
+			if (m instanceof Node) {
+				c = getOutline(context, ((Node)m).getControl());
+			} else if (m instanceof Control) {
+				c = new Colour("black");
+			} else if (m instanceof Link) {
+				c = new Colour("green");
+			}
+		}
+		return c;
 	}
 	
 	public static void setOutline(ModelObject m, Colour c) {
@@ -124,16 +129,13 @@ public final class ExtendedDataUtilities {
 			"eD!+dk.itu.big_red.model.Control.parameter-policy";
 	
 	public static INamePolicy getParameterPolicy(Control c) {
-		return (INamePolicy)require(
-				c.getExtendedData(PARAMETER_POLICY), INamePolicy.class);
+		return getParameterPolicy(null, c);
 	}
 	
 	public static INamePolicy getParameterPolicy(
 			IPropertyProviderProxy context, Control c) {
-		if (context != null && context.hasProperty(c, PARAMETER_POLICY)) {
-			return (INamePolicy)require(
-					context, c, PARAMETER_POLICY, INamePolicy.class);
-		} else return getParameterPolicy(c);
+		return (INamePolicy)require(
+				context, c, PARAMETER_POLICY, INamePolicy.class);
 	}
 	
 	public static void setParameterPolicy(Control c, INamePolicy n) {
@@ -149,17 +151,20 @@ public final class ExtendedDataUtilities {
 		@Override
 		public String validate(ChangeExtendedData c,
 				IPropertyProviderProxy context) {
-			Node n = (Node)require(c.getCreator(), Node.class);
-			if (n == null)
+			if (!(c.getCreator() instanceof Node))
 				return c.getCreator() + " is not a Node";
-			
+			Node n = (Node)c.getCreator();
+				
 			Control control = n.getControl();
 			INamePolicy policy = getParameterPolicy(control);
 			if (policy == null)
 				return "The control " + control.getName() +
 						" does not define a parameter";
 			
-			String value = (String)require(c.newValue, String.class);
+			if (!(c.newValue instanceof String))
+				return "Parameter values must be strings";
+			
+			String value = (String)c.newValue;
 			if ((c.newValue = policy.normalise(value)) == null)
 				return "\"" + value + "\" is not a valid value for the " +
 						"parameter of " + control.getName();
@@ -172,20 +177,18 @@ public final class ExtendedDataUtilities {
 			"eD!+dk.itu.big_red.model.Node.parameter";
 	
 	public static String getParameter(Node n) {
-		String s = (String)require(n.getExtendedData(PARAMETER), String.class);
-		if (s == null) {
-			INamePolicy p = getParameterPolicy(n.getControl());
-			if (p != null)
-				s = p.get(0);
-		}
-		return s;
+		return getParameter(null, n);
 	}
 	
 	public static String getParameter(
 			IPropertyProviderProxy context, Node n) {
-		if (context != null && context.hasProperty(n, PARAMETER)) {
-			return (String)require(context, n, PARAMETER, String.class);
-		} else return getParameter(n);
+		String s = (String)require(context, n, PARAMETER, String.class);
+		if (s == null) {
+			INamePolicy p = getParameterPolicy(context, n.getControl());
+			if (p != null)
+				s = p.get(0);
+		}
+		return s;
 	}
 	
 	public static void setParameter(Node n, String s) {
