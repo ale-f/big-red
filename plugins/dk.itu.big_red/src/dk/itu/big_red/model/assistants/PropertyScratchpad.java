@@ -41,6 +41,11 @@ public class PropertyScratchpad implements IPropertyProviderProxy {
 			changes.put(getKey(target, name), newValue);
 	}
 	
+	public void removeProperty(Object target, String name) {
+		if (target != null && name != null)
+			changes.remove(getKey(target, name));
+	}
+	
 	@Override
 	public boolean hasProperty(Object target, String name) {
 		if (target != null && name != null) {
