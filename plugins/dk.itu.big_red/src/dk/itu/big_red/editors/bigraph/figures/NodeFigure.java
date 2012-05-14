@@ -6,11 +6,10 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
-import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.assistants.Ellipse;
 
 public class NodeFigure extends AbstractFigure {
-	private Control.Shape shape = Control.Shape.POLYGON;
-	private PointList points = Control.POINTS_QUAD;
+	private Object shape;
 	private Label labelControl = new Label();    
     
 	public NodeFigure() {
@@ -25,19 +24,11 @@ public class NodeFigure extends AbstractFigure {
 		labelControl.setText(text);
 	}
 	
-	public void setPoints(PointList points) {
-		this.points = points;
-	}
-	
-	public PointList getPoints() {
-		return points;
-	}
-	
-	public void setShape(Control.Shape shape) {
+	public void setShape(Object shape) {
 		this.shape = shape;
 	}
 	
-	public Control.Shape getShape() {
+	public Object getShape() {
 		return shape;
 	}
 	
@@ -45,13 +36,10 @@ public class NodeFigure extends AbstractFigure {
 	protected void fillShape(Graphics graphics) {
 		Rectangle a = start(graphics);
 		try {
-			switch (shape) {
-			case OVAL:
+			if (shape instanceof Ellipse) {
 				graphics.fillOval(1, 1, a.width - 1, a.height - 1);
-				break;
-			case POLYGON:
-				graphics.fillPolygon(points);
-				break;
+			} else if (shape instanceof PointList) {
+				graphics.fillPolygon((PointList)shape);
 			}
 		} finally {
 			stop(graphics);
@@ -65,13 +53,10 @@ public class NodeFigure extends AbstractFigure {
 			graphics.setLineWidth(2);
 			graphics.setLineStyle(SWT.LINE_SOLID);
 			
-			switch (shape) {
-			case OVAL:
+			if (shape instanceof Ellipse) {
 				graphics.drawOval(1, 1, a.width - 2, a.height - 2);
-				break;
-			case POLYGON:
-				graphics.drawPolygon(points);
-				break;
+			} else if (shape instanceof PointList) {
+				graphics.drawPolygon((PointList)shape);
 			}
 		} finally {
 			stop(graphics);

@@ -11,7 +11,6 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -129,14 +128,10 @@ public class SignatureXMLLoader extends XMLLoader {
 				e.getLocalName().equals("shape")))
 			return;
 	
-		Control.Shape shape = Shape.OVAL;
 		PointList pl = null;
 		
 		String s = getAttributeNS(e, BIG_RED, "shape");
-		if (s != null && s.equals("polygon"))
-			shape = Shape.POLYGON;
-		
-		if (shape == Shape.POLYGON) {
+		if (s != null && s.equals("polygon")) {
 			pl = new PointList();
 			for (Element pE : getChildElements(e))
 				pl.addPoint(

@@ -15,7 +15,7 @@ import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Control.Shape;
+import dk.itu.big_red.model.assistants.Ellipse;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.
@@ -74,16 +74,14 @@ public class NodePart extends ContainerPart {
 		
 		Object shape = ExtendedDataUtilities.getShape(control);
 		figure.setShape(
-				shape instanceof PointList ? Shape.POLYGON : Shape.OVAL);
+			shape instanceof PointList ?
+					model.getFittedPolygon() : new Ellipse());
+		
 		String parameter = ExtendedDataUtilities.getParameter(model);
 		if (parameter == null) {
 			figure.setLabel(control.getLabel());
 		} else figure.setLabel(parameter + " : " + control.getLabel());
 		figure.setToolTip(getToolTip());
-		
-		PointList points = model.getFittedPolygon();
-		if (points != null)
-			figure.setPoints(points);
 		
 		figure.setBackgroundColor(getFill(ExtendedDataUtilities.getFill(model)));
 		figure.setForegroundColor(getOutline(ExtendedDataUtilities.getOutline(model)));

@@ -303,17 +303,6 @@ public class Control extends ModelObject implements IControl {
 			return "Change(remove port " + port + " from " + getCreator() + ")";
 		}
 	}
-	
-	public static enum Shape {
-		/**
-		 * An oval.
-		 */
-		OVAL,
-		/**
-		 * A polygon.
-		 */
-		POLYGON
-	}
 
 	public static enum Kind {
 		ATOMIC {
@@ -346,7 +335,6 @@ public class Control extends ModelObject implements IControl {
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
 	private PointList points = POINTS_QUAD.getCopy();
 	
-	private Control.Shape shape = Shape.POLYGON;
 	private String name = "Unknown";
 	private String label = "?";
 	private Dimension defaultSize = new Dimension(50, 50);
