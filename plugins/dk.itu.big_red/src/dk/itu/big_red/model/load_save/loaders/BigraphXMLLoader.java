@@ -29,7 +29,6 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.AppearanceGenerator;
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
@@ -90,7 +89,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		cg.clear();
 		
 		Element signatureElement =
-			removeNamedChildElement(e, BIGRAPH, "signature");
+			getNamedChildElement(e, BIGRAPH, "signature");
 		
 		String signaturePath;
 		if (signatureElement != null) {
@@ -210,8 +209,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			cg.add(context.changeAddChild(l,
 					getAttributeNS(e, BIGRAPH, "name")));
 			
-			Element appearance =
-				removeNamedChildElement(e, BIG_RED, "appearance");
+			Element appearance = getNamedChildElement(e, BIG_RED, "appearance");
 			if (appearanceAllowed == Tristate.UNKNOWN) {
 				appearanceAllowed = Tristate.fromBoolean(appearance != null);
 			} else if (!partialAppearanceWarning &&
@@ -294,17 +292,5 @@ public class BigraphXMLLoader extends XMLLoader {
 			Rectangle r = AppearanceGenerator.elementToRectangle(e);
 			cg.add(l.changeLayout(r));
 		}
-		
-		Colour
-			fill = getColorAttribute(e, BIG_RED, "fillColor"),
-			outline = getColorAttribute(e, BIG_RED, "outlineColor");
-		if (fill != null)
-			cg.add(ExtendedDataUtilities.changeFill(o, fill));
-		if (outline != null)
-			cg.add(ExtendedDataUtilities.changeOutline(o, outline));
-		
-		String comment = getAttributeNS(e, BIG_RED, "comment");
-		if (comment != null)
-			cg.add(ExtendedDataUtilities.changeComment(o, comment));
 	}
 }

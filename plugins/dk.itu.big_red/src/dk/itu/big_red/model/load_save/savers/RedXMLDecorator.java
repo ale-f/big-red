@@ -1,12 +1,16 @@
 package dk.itu.big_red.model.load_save.savers;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static
+	dk.itu.big_red.model.load_save.loaders.XMLLoader.getColorAttribute;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
@@ -20,6 +24,7 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
@@ -92,8 +97,32 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			el.appendChild(aE);
 	}
 
+	private Element getNamedChildElement(Element el, String ns, String ln) {
+		NodeList children = el.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			Node j = children.item(i);
+			if (j instanceof Element && j.getNamespaceURI().equals(ns) &&
+				j.getLocalName().equals(ln))
+				return (Element)j;
+		}
+		return null;
+	}
+	
 	@Override
 	public void undecorate(ModelObject object, Element el) {
-		System.out.println(this + ".undecorate(" + object + ", " + el + ")");
+		Element eA = getNamedChildElement(el, BIG_RED, "appearance");
+		if (eA != null) {
+			Colour
+				fill = getColorAttribute(eA, BIG_RED, "fillColor"),
+				outline = getColorAttribute(eA, BIG_RED, "outlineColor");
+			if (fill != null)
+				ExtendedDataUtilities.setFill(object, fill);
+			if (outline != null)
+				ExtendedDataUtilities.setOutline(object, outline);
+	
+			String comment = XMLLoader.getAttributeNS(eA, BIG_RED, "comment");
+			if (comment != null)
+				ExtendedDataUtilities.setComment(object, comment);
+		}
 	}
 }

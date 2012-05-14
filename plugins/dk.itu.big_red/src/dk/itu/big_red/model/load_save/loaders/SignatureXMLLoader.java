@@ -65,14 +65,10 @@ public class SignatureXMLLoader extends XMLLoader {
 		}
 		
 		boolean generatePolygon = false;
-		Element el = removeNamedChildElement(e, BIG_RED, "shape");
+		Element el = getNamedChildElement(e, BIG_RED, "shape");
 		if (el != null) {
 			elementToShape(el, model);
 		} else generatePolygon = true;
-		
-		el = removeNamedChildElement(e, BIG_RED, "appearance");
-		if (el != null)
-			BigraphXMLLoader.elementToAppearance(el, model, cg);
 		
 		String label =
 				getAttributeNS(e, BIG_RED, "label");
@@ -121,7 +117,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		PortSpec model = new PortSpec();
 		cg.add(c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
 		
-		Element el = removeNamedChildElement(e, BIG_RED, "port-appearance");
+		Element el = getNamedChildElement(e, BIG_RED, "port-appearance");
 		if (el != null && !ignoreAppearanceData) {
 			int segment = getIntAttribute(el, BIG_RED, "segment");
 			double distance = getDoubleAttribute(el, BIG_RED, "distance");

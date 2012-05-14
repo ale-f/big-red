@@ -192,21 +192,6 @@ public abstract class XMLLoader extends Loader {
 			return r.get(0);
 		else return null;
 	}
-
-	/**
-	 * Removes the unique child of the specified Element which has the given
-	 * tag name, and returns it.
-	 * @param d an Element containing children
-	 * @param n the tag name to search for
-	 * @return the unique named (former) child, or <code>null</code> if there
-	 *         were zero or more than one matches
-	 */
-	protected static Element removeNamedChildElement(Element d, String nsURI, String n) {
-		Element r = getNamedChildElement(d, nsURI, n);
-		if (r != null)
-			r.getParentNode().removeChild(r);
-		return r;
-	}
 	
 	public static interface Undecorator {
 		void undecorate(ModelObject object, Element el);
