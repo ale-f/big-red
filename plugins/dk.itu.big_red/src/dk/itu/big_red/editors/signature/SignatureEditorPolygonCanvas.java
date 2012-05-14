@@ -310,7 +310,8 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private int getPointCount() {
-		return getPoints().size();
+		PointList pl = getPoints();
+		return (pl != null ? pl.size() : 0);
 	}
 	
 	protected int roundToGrid(int x) {
@@ -704,8 +705,7 @@ MenuListener, PropertyChangeListener {
 						int newSegment;
 						double newDistance;
 						
-						if (getShape()
-								instanceof PointList) {
+						if (getShape() instanceof PointList) {
 							Line l = new Line();
 							l.setFirstPoint(getPoint(segment));
 							l.setSecondPoint(getPoint(segment + 1));
