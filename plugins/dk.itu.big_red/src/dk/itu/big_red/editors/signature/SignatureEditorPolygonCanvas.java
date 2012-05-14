@@ -62,8 +62,16 @@ MenuListener, PropertyChangeListener {
 	private int controlWidth, controlHeight;
 	private Rectangle pointsBounds = null;
 	
+	private Object shape;
+	
+	private Object getShape() {
+		if (shape == null)
+			shape = ExtendedDataUtilities.getShape(getModel());
+		return shape;
+	}
+	
 	private PointList getPoints() {
-		Object shape = ExtendedDataUtilities.getShape(getModel());
+		Object shape = getShape();
 		return (shape instanceof PointList ? (PointList)shape : null);
 	}
 	
@@ -99,6 +107,7 @@ MenuListener, PropertyChangeListener {
 		listenTo(model);
 		for (PortSpec i : model.getPorts())
 			listenTo(i);
+		shape = null;
 		pointsBounds = null;
 		
 		redraw();
@@ -123,6 +132,7 @@ MenuListener, PropertyChangeListener {
 				}
 				redraw();
 			} else if (ExtendedDataUtilities.SHAPE.equals(name)) {
+				shape = null;
 				pointsBounds = null;
 				redraw();
 			} else if (ExtendedDataUtilities.FILL.equals(name) ||
@@ -318,7 +328,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	protected int findPortAt(int x, int y) {
-		Object shape = ExtendedDataUtilities.getShape(getModel());
+		Object shape = getShape();
 		if (shape instanceof PointList) {
 			Line l = new Line();
 			for (int i = 0; i < getModel().getPorts().size(); i++) {
@@ -345,7 +355,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	protected int findPointAt(int x, int y) {
-		if (!(ExtendedDataUtilities.getShape(getModel()) instanceof PointList))
+		if (!(getShape() instanceof PointList))
 			return -1;
 		for (int i = 0; i < getPointCount(); i++) {
 			tmp = getPoint(i);
@@ -357,7 +367,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private int getNearestSegment(Point up, double threshold) {
-		if (!(ExtendedDataUtilities.getShape(getModel()) instanceof PointList))
+		if (!(getShape() instanceof PointList))
 			return 0;
 		int index = -1;
 		Line l = new Line();
@@ -392,7 +402,7 @@ MenuListener, PropertyChangeListener {
 	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
-		if (!(ExtendedDataUtilities.getShape(getModel()) instanceof PointList))
+		if (!(getShape() instanceof PointList))
 			return;
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p.x, p.y);
@@ -413,7 +423,7 @@ MenuListener, PropertyChangeListener {
 		dragPortIndex = findPortAt(up.x, up.y);
 		if (dragPortIndex == -1) {
 			dragPointIndex = findPointAt(p.x, p.y);
-			if (dragPointIndex == -1 && ExtendedDataUtilities.getShape(getModel()) instanceof PointList) {
+			if (dragPointIndex == -1 && getShape() instanceof PointList) {
 				if (getPointCount() == 1) {
 					dragPointIndex = 0;
 					newPoint = true;
@@ -442,7 +452,7 @@ MenuListener, PropertyChangeListener {
 			int segment;
 			double offset;
 			
-			if (ExtendedDataUtilities.getShape(getModel()) instanceof PointList) {
+			if (getShape() instanceof PointList) {
 				segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -515,7 +525,7 @@ MenuListener, PropertyChangeListener {
 		gc.setBackground(
 			fill.update(ExtendedDataUtilities.getFill(model)));
 		
-		Object shape = ExtendedDataUtilities.getShape(getModel());
+		Object shape = getShape();
 		if (shape instanceof PointList) {
 			/* toIntArray returns a reference to the internal array, so make a
 			 * copy to avoid translating the original points */
@@ -694,7 +704,7 @@ MenuListener, PropertyChangeListener {
 						int newSegment;
 						double newDistance;
 						
-						if (ExtendedDataUtilities.getShape(getModel())
+						if (getShape()
 								instanceof PointList) {
 							Line l = new Line();
 							l.setFirstPoint(getPoint(segment));
@@ -772,7 +782,7 @@ MenuListener, PropertyChangeListener {
 			});
 		}
 		
-		if (ExtendedDataUtilities.getShape(getModel()) instanceof PointList) {
+		if (getShape() instanceof PointList) {
 			if (m.getItemCount() > 0)
 				new MenuItem(m, SWT.SEPARATOR);
 			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new SelectionAdapter() {
