@@ -2,7 +2,11 @@ package dk.itu.big_red.model.load_save.savers;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static
+	dk.itu.big_red.model.load_save.loaders.XMLLoader.getIntAttribute;
+import static
 	dk.itu.big_red.model.load_save.loaders.XMLLoader.getColorAttribute;
+import static
+	dk.itu.big_red.model.load_save.loaders.XMLLoader.getDoubleAttribute;
 
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -123,6 +127,17 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			String comment = XMLLoader.getAttributeNS(eA, BIG_RED, "comment");
 			if (comment != null)
 				ExtendedDataUtilities.setComment(object, comment);
+		}
+		
+		if (object instanceof PortSpec) {
+			PortSpec p = (PortSpec)object;
+			Element eS = getNamedChildElement(el, BIG_RED, "port-appearance");
+			if (eS != null) {
+				ExtendedDataUtilities.setSegment(p,
+						getIntAttribute(eS, BIG_RED, "segment"));
+				ExtendedDataUtilities.setDistance(p,
+						getDoubleAttribute(eS, BIG_RED, "distance"));
+			}
 		}
 	}
 }

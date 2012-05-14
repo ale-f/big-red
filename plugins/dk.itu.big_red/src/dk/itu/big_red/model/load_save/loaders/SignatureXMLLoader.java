@@ -117,14 +117,6 @@ public class SignatureXMLLoader extends XMLLoader {
 		PortSpec model = new PortSpec();
 		cg.add(c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
 		
-		Element el = getNamedChildElement(e, BIG_RED, "port-appearance");
-		if (el != null && !ignoreAppearanceData) {
-			int segment = getIntAttribute(el, BIG_RED, "segment");
-			double distance = getDoubleAttribute(el, BIG_RED, "distance");
-			cg.add(ExtendedDataUtilities.changeSegment(model, segment),
-					ExtendedDataUtilities.changeDistance(model, distance));
-		}
-		
 		return executeUndecorators(model, e);
 	}
 	
