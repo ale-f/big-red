@@ -26,7 +26,6 @@ import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
@@ -46,11 +45,12 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			Control c = (Control)object;
 			Element aE = doc.createElementNS(BIG_RED, "big-red:shape");
 			
+			Object shape = ExtendedDataUtilities.getShape(c);
 			aE.setAttributeNS(BIG_RED, "big-red:shape",
-					(c.getShape() == Shape.POLYGON ? "polygon" : "oval"));
+					(shape instanceof PointList ? "polygon" : "oval"));
 			
-			PointList pl = c.getPoints();
-			if (pl != null) {
+			if (shape instanceof PointList) {
+				PointList pl = (PointList)shape;
 				for (int i = 0; i < pl.size(); i++) {
 					Point p = pl.getPoint(i);
 					Element pE = doc.createElementNS(BIG_RED, "big-red:point");

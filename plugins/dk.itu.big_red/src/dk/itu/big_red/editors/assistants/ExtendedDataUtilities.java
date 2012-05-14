@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors.assistants;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Link;
@@ -10,6 +11,7 @@ import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
@@ -241,5 +243,28 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeDistance(PortSpec p, double d) {
 		return p.changeExtendedData(DISTANCE, d);
+	}
+	
+	public static final String SHAPE =
+			"eD!+dk.itu.big_red.model.Control.shape";
+	
+	public static Object getShape(Control c) {
+		return getShape(null, c);
+	}
+	
+	public static Object getShape(IPropertyProviderProxy context, Control c) {
+		Object o = require(context, c, SHAPE, Object.class);
+		if (o instanceof PointList || o instanceof Ellipse) {
+			return o;
+		} else return Control.POINTS_QUAD;
+	}
+	
+	public static void setShape(Control c, Object s) {
+		if (s instanceof PointList || s instanceof Ellipse)
+			c.setExtendedData(SHAPE, s);
+	}
+	
+	public static Change changeShape(Control c, Object s) {
+		return c.changeExtendedData(SHAPE, s);
 	}
 }

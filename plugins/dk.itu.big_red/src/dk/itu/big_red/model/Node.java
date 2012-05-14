@@ -9,7 +9,6 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
@@ -79,16 +78,16 @@ public class Node extends Container implements INode {
 	private static final PointList fitPolygon(Node n) {
 		Control c = n.getControl();
 		Rectangle rectangle = n.getLayout();
-		PointList points = c.getPoints();
-		if (points == null)
+		Object shape = ExtendedDataUtilities.getShape(c);
+		if (!(shape instanceof PointList))
 			return null;
-		PointList fittedPolygon = points.getCopy();
+		PointList fittedPolygon = ((PointList)shape).getCopy();
 
 		/*
 		 * Move the polygon so that its top-left corner is at (0,0).
 		 */
 		fittedPolygon.translate(
-				points.getBounds().getTopLeft().getNegated());
+				fittedPolygon.getBounds().getTopLeft().getNegated());
 		
 		/*
 		 * Work out the scaling factors that'll make the polygon fit inside
@@ -128,10 +127,8 @@ public class Node extends Container implements INode {
 	 * @return the fitted polygon
 	 */
 	public PointList getFittedPolygon() {
-		if (fittedPolygon == null) {
-			if (getControl().getShape() == Shape.POLYGON)
-				fittedPolygon = fitPolygon(this);
-		}
+		if (fittedPolygon == null)
+			fittedPolygon = fitPolygon(this);
 		return fittedPolygon;
 	}
 	

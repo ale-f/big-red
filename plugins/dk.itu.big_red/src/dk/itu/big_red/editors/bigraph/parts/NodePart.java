@@ -15,6 +15,7 @@ import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Control.Shape;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.
@@ -71,7 +72,9 @@ public class NodePart extends ContainerPart {
 		
 		setResizable(control.isResizable());
 		
-		figure.setShape(control.getShape());
+		Object shape = ExtendedDataUtilities.getShape(control);
+		figure.setShape(
+				shape instanceof PointList ? Shape.POLYGON : Shape.OVAL);
 		String parameter = ExtendedDataUtilities.getParameter(model);
 		if (parameter == null) {
 			figure.setLabel(control.getLabel());

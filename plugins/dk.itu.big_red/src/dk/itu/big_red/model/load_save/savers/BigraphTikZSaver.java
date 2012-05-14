@@ -13,7 +13,6 @@ import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
@@ -25,6 +24,7 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 
@@ -196,11 +196,12 @@ public class BigraphTikZSaver extends Saver {
 		
 		Point tmp;
 		String shapeDescriptor = "";
-		if (con.getShape() == Shape.OVAL) {
+		Object shape = ExtendedDataUtilities.getShape(con);
+		if (shape instanceof Ellipse) {
 			tmp = rl.getCenter();
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ") ellipse (" +
 				(rl.width() / 2) + " and " + (rl.height() / 2) + ")";
-		} else if (con.getShape() == Shape.POLYGON) {
+		} else if (shape instanceof PointList) {
 			PointList fp = n.getFittedPolygon();
 			fp.translate(rltl);
 			tmp = new Point();

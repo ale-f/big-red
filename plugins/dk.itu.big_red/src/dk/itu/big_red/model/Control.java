@@ -55,19 +55,6 @@ public class Control extends ModelObject implements IControl {
 	public static final String PROPERTY_LABEL = "ControlLabel";
 	
 	/**
-	 * The property name fired when the shape changes.
-	 */
-	@RedProperty(fired = Shape.class, retrieved = Shape.class)
-	public static final String PROPERTY_SHAPE = "ControlShape";
-	
-	/**
-	 * The property name fired when the set of points defining this control's
-	 * polygon changes.
-	 */
-	@RedProperty(fired = PointList.class, retrieved = PointList.class)
-	public static final String PROPERTY_POINTS = "ControlPoints";
-	
-	/**
 	 * The property name fired when the resizability changes. If this changes
 	 * from <code>true</code> to <code>false</code>, listeners should make sure
 	 * that any {@link Node}s with this Control are resized to the default
@@ -129,36 +116,6 @@ public class Control extends ModelObject implements IControl {
 		@Override
 		public String toString() {
 			return "Change(set name of " + getCreator() + " to " + name + ")";
-		}
-	}
-	
-	public class ChangeShape extends ControlChange {
-		public Shape shape;
-		
-		public ChangeShape(Shape shape) {
-			this.shape = shape;
-		}
-		
-		private Shape oldShape;
-		@Override
-		public void beforeApply() {
-			oldShape = getCreator().getShape();
-		}
-		
-		@Override
-		public ChangeShape inverse() {
-			return new ChangeShape(oldShape);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (shape != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set shape of " + getCreator() + " to " +
-					shape.toString() + ")";
 		}
 	}
 	
@@ -347,40 +304,6 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	public class ChangePoints extends ControlChange {
-		public PointList points;
-		public ChangePoints(PointList points) {
-			this.points = points;
-		}
-		
-		private PointList oldPoints;
-		@Override
-		public void beforeApply() {
-			oldPoints = getCreator().getPoints();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldPoints != null);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (points != null);
-		}
-		
-		@Override
-		public Change inverse() {
-			return new ChangePoints(oldPoints);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set points of " + getCreator() + " to " +
-					points + ")";
-		}
-	}
-	
 	public static enum Shape {
 		/**
 		 * An oval.
@@ -437,9 +360,6 @@ public class Control extends ModelObject implements IControl {
 		
 		c.setName(getName());
 		c.setLabel(getLabel());
-		c.setShape(getShape());
-		if (getShape() == Shape.POLYGON)
-			c.setPoints(getPoints().getCopy());
 		c.setDefaultSize(getDefaultSize().getCopy());
 		c.setKind(getKind());
 		c.setResizable(isResizable());
@@ -462,43 +382,6 @@ public class Control extends ModelObject implements IControl {
 		String oldLabel = this.label;
 		this.label = label;
 		firePropertyChange(PROPERTY_LABEL, oldLabel, label);
-	}
-	
-	public Shape getShape() {
-		return shape;
-	}
-	
-	public Shape getShape(IPropertyProviderProxy context) {
-		return (Shape)getProperty(context, PROPERTY_SHAPE);
-	}
-	
-	protected void setShape(Shape shape) {
-		Shape oldShape = this.shape;
-		this.shape = shape;
-		firePropertyChange(PROPERTY_SHAPE, oldShape, shape);
-	}
-	
-	/**
-	 * Returns the list of points defining this Control's polygon.
-	 * @return a list of points defining a polygon
-	 * @see Control#getShape
-	 * @see Control#setShape
-	 */
-	public PointList getPoints() {
-		return points;
-	}
-	
-	public PointList getPoints(IPropertyProviderProxy context) {
-		return (PointList)getProperty(context, PROPERTY_POINTS);
-	}
-	
-	protected void setPoints(PointList points) {
-		if (points != null) {
-			PointList oldPoints = this.points;
-			this.points = points;
-			points.translate(points.getBounds().getTopLeft().getNegated());
-			firePropertyChange(PROPERTY_POINTS, oldPoints, points);
-		}
 	}
 
 	protected void setName(String name) {
@@ -650,14 +533,10 @@ public class Control extends ModelObject implements IControl {
 			return getLabel();
 		} else if (PROPERTY_NAME.equals(name)) {
 			return getName();
-		} else if (PROPERTY_POINTS.equals(name)) {
-			return getPoints();
 		} else if (PROPERTY_PORT.equals(name)) {
 			return getPorts();
 		} else if (PROPERTY_RESIZABLE.equals(name)) {
 			return isResizable();
-		} else if (PROPERTY_SHAPE.equals(name)) {
-			return getShape();
 		} else if (PROPERTY_KIND.equals(name)) {
 			return getKind();
 		} else if (PROPERTY_SIGNATURE.equals(name)) {
@@ -686,10 +565,6 @@ public class Control extends ModelObject implements IControl {
 		return cg;
 	}
 	
-	public ChangeShape changeShape(Shape shape) {
-		return new ChangeShape(shape);
-	}
-	
 	public ChangeLabel changeLabel(String label) {
 		return new ChangeLabel(label);
 	}
@@ -712,9 +587,5 @@ public class Control extends ModelObject implements IControl {
 	
 	public ChangeRemovePort changeRemovePort(PortSpec port) {
 		return new ChangeRemovePort(port);
-	}
-	
-	public ChangePoints changePoints(PointList pl) {
-		return new ChangePoints(pl);
 	}
 }

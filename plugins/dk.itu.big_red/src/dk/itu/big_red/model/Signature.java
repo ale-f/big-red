@@ -9,10 +9,8 @@ import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
-import dk.itu.big_red.model.Control.ChangePoints;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
-import dk.itu.big_red.model.Control.ChangeShape;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
@@ -172,9 +170,6 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			c.getCreator().setName(c.name);
-		} else if (b instanceof ChangeShape) {
-			ChangeShape c = (ChangeShape)b;
-			c.getCreator().setShape(c.shape);
 		} else if (b instanceof ChangeLabel) {
 			ChangeLabel c = (ChangeLabel)b;
 			c.getCreator().setLabel(c.label);
@@ -194,9 +189,6 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			c.getCreator().removePort(c.port);
-		} else if (b instanceof ChangePoints) {
-			ChangePoints c = (ChangePoints)b;
-			c.getCreator().setPoints(c.points);
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
 			c.getCreator().setName(c.name);

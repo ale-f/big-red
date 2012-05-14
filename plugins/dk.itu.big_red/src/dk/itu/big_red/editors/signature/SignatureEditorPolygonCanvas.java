@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.assistants.Line;
 import dk.itu.big_red.model.changes.Change;
@@ -63,10 +62,15 @@ MenuListener, PropertyChangeListener {
 	private int controlWidth, controlHeight;
 	private Rectangle pointsBounds = null;
 	
+	private PointList getPoints() {
+		Object shape = ExtendedDataUtilities.getShape(getModel());
+		return (shape instanceof PointList ? (PointList)shape : null);
+	}
+	
 	public Rectangle requireBounds() {
 		if (pointsBounds == null)
 			if (getModel() != null)
-				pointsBounds = getModel().getPoints().getBounds();
+				pointsBounds = getPoints().getBounds();
 		return pointsBounds;
 	}
 	
@@ -118,7 +122,7 @@ MenuListener, PropertyChangeListener {
 					stopListeningTo((PortSpec)oldValue);
 				}
 				redraw();
-			} else if (Control.PROPERTY_POINTS.equals(name)) {
+			} else if (ExtendedDataUtilities.SHAPE.equals(name)) {
 				pointsBounds = null;
 				redraw();
 			} else if (ExtendedDataUtilities.FILL.equals(name) ||
@@ -211,9 +215,9 @@ MenuListener, PropertyChangeListener {
 	
 	private void opMovePoint(int moveIndex, int mx, int my) {
 		int x = mx - translationX(), y = my - translationY();
-		PointList pl = getModel().getPoints().getCopy();
+		PointList pl = getPoints().getCopy();
 		pl.setPoint(new Point(x, y), moveIndex);
-		doChange(getModel().changePoints(pl));
+		doChange(ExtendedDataUtilities.changeShape(getModel(), pl));
 	}
 	
 	private void opDeletePoint(int deleteIndex) {
@@ -238,9 +242,9 @@ MenuListener, PropertyChangeListener {
 			if (segment >= deleteIndex)
 				cg.add(ExtendedDataUtilities.changeSegment(port, segment - 1));
 		}
-		PointList pl = getModel().getPoints().getCopy();
+		PointList pl = getPoints().getCopy();
 		pl.removePoint(deleteIndex);
-		cg.add(getModel().changePoints(pl));
+		cg.add(ExtendedDataUtilities.changeShape(getModel(), pl));
 		doChange(cg);
 	}
 	
@@ -266,9 +270,9 @@ MenuListener, PropertyChangeListener {
 				cg.add(ExtendedDataUtilities.changeSegment(port, segment + 1));
 			}
 		}
-		PointList pl = getModel().getPoints().getCopy();
+		PointList pl = getPoints().getCopy();
 		pl.insertPoint(p, insertIndex);
-		cg.add(getModel().changePoints(pl));
+		cg.add(ExtendedDataUtilities.changeShape(getModel(), pl));
 		doChange(cg);
 	}
 	
@@ -296,7 +300,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private int getPointCount() {
-		return getModel().getPoints().size();
+		return getPoints().size();
 	}
 	
 	protected int roundToGrid(int x) {
@@ -308,13 +312,14 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	protected Point getPoint(int i) {
-		PointList points = getModel().getPoints();
+		PointList points = getPoints();
 		return points.getPoint((i + points.size()) % points.size()).
 				translate(translationX(), translationY());
 	}
 	
 	protected int findPortAt(int x, int y) {
-		if (getModel().getShape() == Shape.POLYGON) {
+		Object shape = ExtendedDataUtilities.getShape(getModel());
+		if (shape instanceof PointList) {
 			Line l = new Line();
 			for (int i = 0; i < getModel().getPorts().size(); i++) {
 				PortSpec p = getModel().getPorts().get(i);
@@ -326,7 +331,7 @@ MenuListener, PropertyChangeListener {
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
 			}
-		} else if (getModel().getShape() == Shape.OVAL) {
+		} else if (shape instanceof Ellipse) {
 			Ellipse e = getEllipse();
 			for (int i = 0; i < getModel().getPorts().size(); i++) {
 				PortSpec p = getModel().getPorts().get(i);
@@ -340,7 +345,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	protected int findPointAt(int x, int y) {
-		if (getModel().getShape() != Shape.POLYGON)
+		if (!(ExtendedDataUtilities.getShape(getModel()) instanceof PointList))
 			return -1;
 		for (int i = 0; i < getPointCount(); i++) {
 			tmp = getPoint(i);
@@ -352,7 +357,7 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private int getNearestSegment(Point up, double threshold) {
-		if (getModel().getShape() == Shape.OVAL)
+		if (!(ExtendedDataUtilities.getShape(getModel()) instanceof PointList))
 			return 0;
 		int index = -1;
 		Line l = new Line();
@@ -387,7 +392,7 @@ MenuListener, PropertyChangeListener {
 	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
-		if (getModel().getShape() == Shape.OVAL)
+		if (!(ExtendedDataUtilities.getShape(getModel()) instanceof PointList))
 			return;
 		Point p = roundToGrid(e.x, e.y);
 		int deleteIndex = findPointAt(p.x, p.y);
@@ -408,7 +413,7 @@ MenuListener, PropertyChangeListener {
 		dragPortIndex = findPortAt(up.x, up.y);
 		if (dragPortIndex == -1) {
 			dragPointIndex = findPointAt(p.x, p.y);
-			if (dragPointIndex == -1 && getModel().getShape() == Shape.POLYGON) {
+			if (dragPointIndex == -1 && ExtendedDataUtilities.getShape(getModel()) instanceof PointList) {
 				if (getPointCount() == 1) {
 					dragPointIndex = 0;
 					newPoint = true;
@@ -437,7 +442,7 @@ MenuListener, PropertyChangeListener {
 			int segment;
 			double offset;
 			
-			if (getModel().getShape() == Shape.POLYGON) {
+			if (ExtendedDataUtilities.getShape(getModel()) instanceof PointList) {
 				segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -510,10 +515,11 @@ MenuListener, PropertyChangeListener {
 		gc.setBackground(
 			fill.update(ExtendedDataUtilities.getFill(model)));
 		
-		if (getModel().getShape() == Shape.POLYGON) {
+		Object shape = ExtendedDataUtilities.getShape(getModel());
+		if (shape instanceof PointList) {
 			/* toIntArray returns a reference to the internal array, so make a
 			 * copy to avoid translating the original points */
-			PointList points = getModel().getPoints().getCopy();
+			PointList points = ((PointList)shape).getCopy();
 			int[] pointArray = points.toIntArray();
 			
 			int dx = translationX(), dy = translationY();
@@ -563,7 +569,7 @@ MenuListener, PropertyChangeListener {
 		if (dragPortIndex != -1) {
 			gc.setAlpha(127);
 			
-			if (getModel().getShape() == Shape.POLYGON) {
+			if (shape instanceof PointList) {
 				int segment = getNearestSegment(mousePosition, Double.MAX_VALUE);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -571,7 +577,7 @@ MenuListener, PropertyChangeListener {
 				if (intersection == null)
 					intersection = getPoint(segment);
 				tmp.setLocation(intersection);
-			} else if (getModel().getShape() == Shape.OVAL) {
+			} else if (shape instanceof Ellipse) {
 				tmp.setLocation(getEllipse().getClosestPoint(mousePosition));
 			}
 			
@@ -688,7 +694,8 @@ MenuListener, PropertyChangeListener {
 						int newSegment;
 						double newDistance;
 						
-						if (getModel().getShape() == Shape.POLYGON) {
+						if (ExtendedDataUtilities.getShape(getModel())
+								instanceof PointList) {
 							Line l = new Line();
 							l.setFirstPoint(getPoint(segment));
 							l.setSecondPoint(getPoint(segment + 1));
@@ -758,13 +765,14 @@ MenuListener, PropertyChangeListener {
 					ChangeGroup cg = new ChangeGroup();
 					for (PortSpec i : getModel().getPorts())
 						cg.add(getModel().changeRemovePort(i));
-					cg.add(getModel().changePoints(
+					cg.add(ExtendedDataUtilities.changeShape(getModel(),
 							new PointList(new int[] { 0, 0 })));
 					doChange(cg);
 				}
 			});
 		}
-		if (getModel().getShape() == Shape.POLYGON) {
+		
+		if (ExtendedDataUtilities.getShape(getModel()) instanceof PointList) {
 			if (m.getItemCount() > 0)
 				new MenuItem(m, SWT.SEPARATOR);
 			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new SelectionAdapter() {
@@ -778,7 +786,7 @@ MenuListener, PropertyChangeListener {
 						ChangeGroup cg = new ChangeGroup();
 						for (PortSpec i : getModel().getPorts())
 							cg.add(getModel().changeRemovePort(i));
-						cg.add(getModel().changePoints(
+						cg.add(ExtendedDataUtilities.changeShape(getModel(),
 								new Ellipse().
 								setBounds(new Rectangle(0, 0, 60, 60)).
 								getPolygon(Integer.parseInt(polySides))));

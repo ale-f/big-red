@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -36,9 +37,9 @@ import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.Control.Shape;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -106,7 +107,8 @@ implements PropertyChangeListener {
 	protected void controlToFields() {
 		uiUpdateInProgress = true;
 		
-		boolean polygon = (currentControl.getShape() == Shape.POLYGON);
+		Object shape = ExtendedDataUtilities.getShape(currentControl);
+		boolean polygon = (shape instanceof PointList);
 		
 		label.setText(currentControl.getLabel());
 		name.setText(currentControl.getName());
@@ -381,7 +383,8 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					doChange(currentControl.changeShape(Shape.OVAL));
+					doChange(ExtendedDataUtilities.changeShape(
+							currentControl, new Ellipse()));
 			}
 		});
 		
@@ -391,7 +394,8 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					doChange(currentControl.changeShape(Shape.POLYGON));
+					doChange(ExtendedDataUtilities.changeShape(
+							currentControl, Control.POINTS_QUAD));
 			}
 		});
 		
@@ -517,9 +521,9 @@ implements PropertyChangeListener {
 					label.setText((String)newValue);
 				} else if (propertyName.equals(Control.PROPERTY_NAME)) {
 					name.setText((String)newValue);
-				} else if (propertyName.equals(Control.PROPERTY_SHAPE)) {
-					ovalMode.setSelection(Shape.OVAL.equals(newValue));
-					polygonMode.setSelection(Shape.POLYGON.equals(newValue));
+				} else if (propertyName.equals(ExtendedDataUtilities.SHAPE)) {
+					ovalMode.setSelection(newValue instanceof Ellipse);
+					polygonMode.setSelection(newValue instanceof PointList);
 				} else if (propertyName.equals(Control.PROPERTY_RESIZABLE)) {
 					resizable.setSelection((Boolean)newValue);
 				} else if (propertyName.equals(ExtendedDataUtilities.FILL)) {
