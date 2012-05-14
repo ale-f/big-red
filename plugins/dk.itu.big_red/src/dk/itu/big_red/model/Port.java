@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.assistants.Line;
 import dk.itu.big_red.model.interfaces.INode;
@@ -49,9 +50,9 @@ public class Port extends Point implements IPort {
 	public Rectangle getLayout() {
 		Rectangle r = new Rectangle(0, 0, 10, 10);
 		PointList polypt = getParent().getFittedPolygon();
-		double distance = getSpec().getDistance();
+		double distance = ExtendedDataUtilities.getDistance(getSpec());
 		if (polypt != null) {
-			int segment = getSpec().getSegment();
+			int segment = ExtendedDataUtilities.getSegment(getSpec());
 			org.eclipse.draw2d.geometry.Point p1 = polypt.getPoint(segment),
 			      p2 = polypt.getPoint((segment + 1) % polypt.size());
 			r.setLocation(new Line(p1, p2).

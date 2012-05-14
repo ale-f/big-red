@@ -64,8 +64,8 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			
 			Element pA =
 				doc.createElementNS(BIG_RED, "big-red:port-appearance");
-			pA.setAttributeNS(BIG_RED, "big-red:segment", "" + p.getSegment());
-			pA.setAttributeNS(BIG_RED, "big-red:distance", "" + p.getDistance());
+			pA.setAttributeNS(BIG_RED, "big-red:segment", "" + ExtendedDataUtilities.getSegment(p));
+			pA.setAttributeNS(BIG_RED, "big-red:distance", "" + ExtendedDataUtilities.getDistance(p));
 			
 			el.appendChild(pA);
 			return;

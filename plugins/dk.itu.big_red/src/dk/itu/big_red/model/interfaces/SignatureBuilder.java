@@ -1,5 +1,6 @@
 package dk.itu.big_red.model.interfaces;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
@@ -31,17 +32,17 @@ public class SignatureBuilder {
 				
 				double d = (i / l) * 4.0;
 				if (d >= 0.0 && d < 1.0) {
-					cg.add(p.changeSegment(0));
-					cg.add(p.changeDistance(d));
+					cg.add(ExtendedDataUtilities.changeSegment(p, 0));
+					cg.add(ExtendedDataUtilities.changeDistance(p, d));
 				} else if (d >= 1.0 && d < 2.0) {
-					cg.add(p.changeSegment(1));
-					cg.add(p.changeDistance(d - 1.0));
+					cg.add(ExtendedDataUtilities.changeSegment(p, 1));
+					cg.add(ExtendedDataUtilities.changeDistance(p, d - 1.0));
 				} else if (d >= 2.0 && d < 3.0) {
-					cg.add(p.changeSegment(2));
-					cg.add(p.changeDistance(d - 2.0));
+					cg.add(ExtendedDataUtilities.changeSegment(p, 2));
+					cg.add(ExtendedDataUtilities.changeDistance(p, d - 2.0));
 				} else if (d >= 3.0 && d < 4.0) {
-					cg.add(p.changeSegment(2));
-					cg.add(p.changeDistance(d - 3.0));
+					cg.add(ExtendedDataUtilities.changeSegment(p, 2));
+					cg.add(ExtendedDataUtilities.changeDistance(p, d - 3.0));
 				}
 			}
 		}

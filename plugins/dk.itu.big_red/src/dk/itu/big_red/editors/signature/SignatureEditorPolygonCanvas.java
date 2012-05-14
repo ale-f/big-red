@@ -126,8 +126,8 @@ MenuListener, PropertyChangeListener {
 				redraw();
 			}
 		} else if (source instanceof PortSpec) {
-			if (PortSpec.PROPERTY_SEGMENT.equals(name) ||
-				PortSpec.PROPERTY_DISTANCE.equals(name))
+			if (ExtendedDataUtilities.SEGMENT.equals(name) ||
+				ExtendedDataUtilities.DISTANCE.equals(name))
 				redraw();
 		}
 	}
@@ -228,15 +228,15 @@ MenuListener, PropertyChangeListener {
 		if (dragPointIndex == deleteIndex)
 			dragPointIndex = -1;
 		for (PortSpec port : getModel().getPorts()) {
-			int segment = port.getSegment();
-			double distance = port.getDistance();
+			int segment = ExtendedDataUtilities.getSegment(port);
+			double distance = ExtendedDataUtilities.getDistance(port);
 			if (segment == deleteIndex - 1) {
-				cg.add(port.changeDistance(distance * l1l));
+				cg.add(ExtendedDataUtilities.changeDistance(port, distance * l1l));
 			} else if (segment == deleteIndex) {
-				cg.add(port.changeDistance(l1l + (distance * (len2 / len))));
+				cg.add(ExtendedDataUtilities.changeDistance(port, l1l + (distance * (len2 / len))));
 			}
 			if (segment >= deleteIndex)
-				cg.add(port.changeSegment(segment - 1));
+				cg.add(ExtendedDataUtilities.changeSegment(port, segment - 1));
 		}
 		PointList pl = getModel().getPoints().getCopy();
 		pl.removePoint(deleteIndex);
@@ -252,18 +252,18 @@ MenuListener, PropertyChangeListener {
 				l2 = new Line(p, getPoint(insertIndex));
 		double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
 		for (PortSpec port : getModel().getPorts()) {
-			int segment = port.getSegment();
-			double distance = port.getDistance();
+			int segment = ExtendedDataUtilities.getSegment(port);
+			double distance = ExtendedDataUtilities.getDistance(port);
 			if (segment == (insertIndex - 1)) {
 				if (distance < pivot) {
-					cg.add(port.changeDistance((pivot - distance) / pivot));
+					cg.add(ExtendedDataUtilities.changeDistance(port, (pivot - distance) / pivot));
 				} else {
-					cg.add(port.changeSegment(segment + 1));
+					cg.add(ExtendedDataUtilities.changeSegment(port, segment + 1));
 					cg.add(
-						port.changeDistance((distance - pivot) / (1 - pivot)));
+						ExtendedDataUtilities.changeDistance(port, (distance - pivot) / (1 - pivot)));
 				}
 			} else if (segment >= insertIndex) {
-				cg.add(port.changeSegment(segment + 1));
+				cg.add(ExtendedDataUtilities.changeSegment(port, segment + 1));
 			}
 		}
 		PointList pl = getModel().getPoints().getCopy();
@@ -279,8 +279,8 @@ MenuListener, PropertyChangeListener {
 			segment = (segment + 1) % getPointCount();
 		}
 		cg.add(getModel().changeAddPort(port, name));
-		cg.add(port.changeSegment(segment));
-		cg.add(port.changeDistance(distance));
+		cg.add(ExtendedDataUtilities.changeSegment(port, segment));
+		cg.add(ExtendedDataUtilities.changeDistance(port, distance));
 		doChange(cg);
 	}
 	
@@ -290,8 +290,8 @@ MenuListener, PropertyChangeListener {
 			distance = 0.0;
 			segment = (segment + 1) % getPointCount();
 		}
-		cg.add(port.changeSegment(segment));
-		cg.add(port.changeDistance(distance));
+		cg.add(ExtendedDataUtilities.changeSegment(port, segment));
+		cg.add(ExtendedDataUtilities.changeDistance(port, distance));
 		doChange(cg);
 	}
 	
@@ -318,10 +318,10 @@ MenuListener, PropertyChangeListener {
 			Line l = new Line();
 			for (int i = 0; i < getModel().getPorts().size(); i++) {
 				PortSpec p = getModel().getPorts().get(i);
-				int segment = p.getSegment();
+				int segment = ExtendedDataUtilities.getSegment(p);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
-				tmp.setLocation(l.getPointFromOffset(p.getDistance()));
+				tmp.setLocation(l.getPointFromOffset(ExtendedDataUtilities.getDistance(p)));
 				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
@@ -330,7 +330,7 @@ MenuListener, PropertyChangeListener {
 			Ellipse e = getEllipse();
 			for (int i = 0; i < getModel().getPorts().size(); i++) {
 				PortSpec p = getModel().getPorts().get(i);
-				tmp.setLocation(e.getPointFromOffset(p.getDistance()));
+				tmp.setLocation(e.getPointFromOffset(ExtendedDataUtilities.getDistance(p)));
 				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
@@ -537,11 +537,11 @@ MenuListener, PropertyChangeListener {
 			for (PortSpec p : getModel().getPorts()) {
 				gc.setBackground(ColorConstants.red);
 				
-				int segment = p.getSegment();
+				int segment = ExtendedDataUtilities.getSegment(p);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
 				
-				Point portCenter = l.getPointFromOffset(p.getDistance());
+				Point portCenter = l.getPointFromOffset(ExtendedDataUtilities.getDistance(p));
 				fillCircleCentredAt(gc, portCenter, 4);
 				drawPortName(gc, p.getName(), portCenter);
 			}
@@ -554,7 +554,7 @@ MenuListener, PropertyChangeListener {
 			
 			gc.setBackground(ColorConstants.red);
 			for (PortSpec p : getModel().getPorts()) {
-				Point portCenter = el.getPointFromOffset(p.getDistance());
+				Point portCenter = el.getPointFromOffset(ExtendedDataUtilities.getDistance(p));
 				fillCircleCentredAt(gc, portCenter, 4);
 				drawPortName(gc, p.getName(), portCenter);
 			}

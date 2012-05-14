@@ -13,8 +13,6 @@ import dk.itu.big_red.model.Control.ChangePoints;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.Control.ChangeShape;
-import dk.itu.big_red.model.PortSpec.ChangeDistance;
-import dk.itu.big_red.model.PortSpec.ChangeSegment;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
@@ -196,12 +194,6 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			c.getCreator().removePort(c.port);
-		} else if (b instanceof ChangeSegment) {
-			ChangeSegment c = (ChangeSegment)b;
-			c.getCreator().setSegment(c.segment);
-		} else if (b instanceof ChangeDistance) {
-			ChangeDistance c = (ChangeDistance)b;
-			c.getCreator().setDistance(c.distance);
 		} else if (b instanceof ChangePoints) {
 			ChangePoints c = (ChangePoints)b;
 			c.getCreator().setPoints(c.points);

@@ -85,8 +85,8 @@ public class SignatureXMLLoader extends XMLLoader {
 					getPolygon(Math.max(3, model.getPorts().size()))));
 			int i = 0;
 			for (PortSpec p : model.getPorts()) {
-				cg.add(p.changeSegment(i++));
-				cg.add(p.changeDistance(0.5));
+				cg.add(ExtendedDataUtilities.changeSegment(p, i++));
+				cg.add(ExtendedDataUtilities.changeDistance(p, 0.5));
 			}
 		}
 		
@@ -121,8 +121,8 @@ public class SignatureXMLLoader extends XMLLoader {
 		if (el != null && !ignoreAppearanceData) {
 			int segment = getIntAttribute(el, BIG_RED, "segment");
 			double distance = getDoubleAttribute(el, BIG_RED, "distance");
-			cg.add(model.changeSegment(segment),
-					model.changeDistance(distance));
+			cg.add(ExtendedDataUtilities.changeSegment(model, segment),
+					ExtendedDataUtilities.changeDistance(model, distance));
 		}
 		
 		return executeUndecorators(model, e);

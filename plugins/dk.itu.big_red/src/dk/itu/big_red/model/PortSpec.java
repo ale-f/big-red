@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
@@ -15,12 +16,6 @@ public class PortSpec extends ModelObject implements IPort {
 	
 	@RedProperty(fired = Control.class, retrieved = Control.class)
 	public static final String PROPERTY_CONTROL = "PortSpecControl";
-	
-	@RedProperty(fired = Integer.class, retrieved = Integer.class)
-	public static final String PROPERTY_SEGMENT = "PortSpecSegment";
-	
-	@RedProperty(fired = Double.class, retrieved = Double.class)
-	public static final String PROPERTY_DISTANCE = "PortSpecDistance";
 	
 	private abstract class PortSpecChange extends ModelObjectChange {
 		@Override
@@ -63,67 +58,13 @@ public class PortSpec extends ModelObject implements IPort {
 		}
 	}
 	
-	public class ChangeSegment extends PortSpecChange {
-		public int segment;
-		
-		public ChangeSegment(int segment) {
-			this.segment = segment;
-		}
-		
-		private int oldSegment;
-		@Override
-		public void beforeApply() {
-			oldSegment = getCreator().getSegment();
-		}
-		
-		@Override
-		public ChangeSegment inverse() {
-			return new ChangeSegment(oldSegment);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set segment of port " + getCreator() +
-					" to " + segment + ")";
-		}
-	}
-	
-	public class ChangeDistance extends PortSpecChange {
-		public double distance;
-		
-		public ChangeDistance(double distance) {
-			this.distance = distance;
-		}
-		
-		private double oldDistance;
-		@Override
-		public void beforeApply() {
-			oldDistance = getCreator().getDistance();
-		}
-		
-		@Override
-		public ChangeDistance inverse() {
-			return new ChangeDistance(oldDistance);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set distance of port " + getCreator() +
-					" to " + distance + ")";
-		}
-	}
-	
 	private String name;
-	private int segment;
-	private double distance;
 	private Control control;
 	
 	@Override
 	public PortSpec clone(Map<ModelObject, ModelObject> m) {
 		PortSpec p = (PortSpec)super.clone(m);
 		p.setName(getName());
-		p.setSegment(getSegment());
-		p.setDistance(getDistance());
 		return p;
 	}
 	
@@ -142,34 +83,6 @@ public class PortSpec extends ModelObject implements IPort {
 		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
-	public int getSegment() {
-		return segment;
-	}
-	
-	public int getSegment(IPropertyProviderProxy context) {
-		return (Integer)getProperty(context, PROPERTY_SEGMENT);
-	}
-	
-	protected void setSegment(int segment) {
-		int oldSegment = this.segment;
-		this.segment = segment;
-		firePropertyChange(PROPERTY_SEGMENT, oldSegment, segment);
-	}
-	
-	public double getDistance() {
-		return distance;
-	}
-	
-	public double getDistance(IPropertyProviderProxy context) {
-		return (Double)getProperty(context, PROPERTY_DISTANCE);
-	}
-	
-	protected void setDistance(double distance) {
-		double oldDistance = this.distance;
-		this.distance = distance;
-		firePropertyChange(PROPERTY_DISTANCE, oldDistance, distance);
-	}
-
 	public Control getControl() {
 		return control;
 	}
@@ -198,22 +111,10 @@ public class PortSpec extends ModelObject implements IPort {
 		return new ChangeName(name);
 	}
 	
-	public ChangeSegment changeSegment(int segment) {
-		return new ChangeSegment(segment);
-	}
-	
-	public ChangeDistance changeDistance(double distance) {
-		return new ChangeDistance(distance);
-	}
-	
 	@Override
 	protected Object getProperty(String name) {
 		if (PROPERTY_NAME.equals(name)) {
 			return getName();
-		} else if (PROPERTY_DISTANCE.equals(name)) {
-			return getDistance();
-		} else if (PROPERTY_SEGMENT.equals(name)) {
-			return getSegment();
 		} else if (PROPERTY_CONTROL.equals(name)) {
 			return getControl();
 		} else return super.getProperty(name);

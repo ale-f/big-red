@@ -8,6 +8,7 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
@@ -197,5 +198,48 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeParameter(Node n, String s) {
 		return n.changeExtendedData(PARAMETER, s, parameterValidator);
+	}
+	
+	@RedProperty(fired = Integer.class, retrieved = Integer.class)
+	public static final String SEGMENT =
+			"eD!+dk.itu.big_red.model.PortSpec.segment";
+	
+	public static int getSegment(PortSpec p) {
+		return getSegment(null, p);
+	}
+	
+	public static int getSegment(IPropertyProviderProxy context, PortSpec p) {
+		Integer i = (Integer)require(context, p, SEGMENT, Integer.class);
+		return (i != null ? i : -1);
+	}
+	
+	public static void setSegment(PortSpec p, int i) {
+		p.setExtendedData(SEGMENT, i);
+	}
+	
+	public static Change changeSegment(PortSpec p, int i) {
+		return p.changeExtendedData(SEGMENT, i);
+	}
+	
+	@RedProperty(fired = Double.class, retrieved = Double.class)
+	public static final String DISTANCE =
+			"eD!+dk.itu.big_red.model.PortSpec.distance";
+	
+	public static double getDistance(PortSpec p) {
+		return getDistance(null, p);
+	}
+	
+	public static double getDistance(
+			IPropertyProviderProxy context, PortSpec p) {
+		Double d = (Double)require(context, p, DISTANCE, Double.class);
+		return (d != null ? d : Double.NaN);
+	}
+	
+	public static void setDistance(PortSpec p, double d) {
+		p.setExtendedData(DISTANCE, d);
+	}
+	
+	public static Change changeDistance(PortSpec p, double d) {
+		return p.changeExtendedData(DISTANCE, d);
 	}
 }
