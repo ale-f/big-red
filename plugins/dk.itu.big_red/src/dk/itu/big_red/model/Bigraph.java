@@ -130,6 +130,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		
 		/* ModelObject.clone */
 		m.put(this, b);
+		b.setExtendedDataFrom(this);
 		
 		/* Layoutable.clone */
 		b.setLayout(null);

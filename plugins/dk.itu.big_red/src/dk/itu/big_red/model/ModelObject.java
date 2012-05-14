@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.eclipse.ui.services.IDisposable;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
@@ -121,6 +120,7 @@ public abstract class ModelObject implements IDisposable {
 		ModelObject i = newInstance();
 		if (m != null)
 			m.put(this, i);
+		i.setExtendedDataFrom(this);
 		return i;
 	}
 	
