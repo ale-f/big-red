@@ -97,12 +97,19 @@ public final class ExtendedDataUtilities {
 			} else if (m instanceof Control) {
 				c = new Colour("white");
 			}
+			if (c != null)
+				setFill(context, m, c);
 		}
 		return c;
 	}
 	
 	public static void setFill(ModelObject m, Colour c) {
-		m.setExtendedData(FILL, c);
+		setFill(null, m, c);
+	}
+	
+	public static void setFill(
+			IPropertyProvider context, ModelObject m, Colour c) {
+		set(context, m, FILL, c);
 	}
 	
 	public static Change changeFill(ModelObject m, Colour c) {
@@ -128,12 +135,19 @@ public final class ExtendedDataUtilities {
 			} else if (m instanceof Link) {
 				c = new Colour("green");
 			}
+			if (c != null)
+				setOutline(context, m, c);
 		}
 		return c;
 	}
 	
 	public static void setOutline(ModelObject m, Colour c) {
-		m.setExtendedData(OUTLINE, c);
+		setOutline(null, m, c);
+	}
+	
+	public static void setOutline(
+			IPropertyProvider context, ModelObject m, Colour c) {
+		set(context, m, OUTLINE, c);
 	}
 	
 	public static Change changeOutline(ModelObject m, Colour c) {
