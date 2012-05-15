@@ -36,6 +36,7 @@ public class PropertyScratchpad implements IPropertyProvider {
 		return new NNPair(target, name);
 	}
 	
+	@Override
 	public void setProperty(Object target, String name, Object newValue) {
 		if (target != null && name != null)
 			changes.put(getKey(target, name), newValue);

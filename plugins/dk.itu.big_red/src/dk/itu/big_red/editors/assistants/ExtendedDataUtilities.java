@@ -1,7 +1,10 @@
 package dk.itu.big_red.editors.assistants;
 
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Link;
@@ -27,6 +30,15 @@ public final class ExtendedDataUtilities {
 		Object r = (context != null && context.hasProperty(o, name) ?
 				context.getProperty(o, name) : o.getExtendedData(name));
 		return (klass.isInstance(r) ? r : null);
+	}
+	
+	private static void set(IPropertyProvider context,
+			ModelObject o, String name, Object value) {
+		if (o == null || name == null)
+			return;
+		if (context != null) {
+			context.setProperty(o, name, value);
+		} else o.setExtendedData(name, value);
 	}
 	
 	@RedProperty(fired = IFile.class, retrieved = IFile.class)
@@ -207,17 +219,34 @@ public final class ExtendedDataUtilities {
 	public static final String SEGMENT =
 			"eD!+dk.itu.big_red.model.PortSpec.segment";
 	
+	private static int recalculateSegment(
+			IPropertyProvider context, PortSpec p) {
+		int i = 0;
+		Object shape = getShape(context, p.getControl(context));
+		if (shape instanceof PointList)
+			i = p.getControl(context).getPorts(context).indexOf(p);
+		setSegment(context, p, i);
+		return i;
+	}
+	
 	public static int getSegment(PortSpec p) {
 		return getSegment(null, p);
 	}
 	
 	public static int getSegment(IPropertyProvider context, PortSpec p) {
 		Integer i = (Integer)require(context, p, SEGMENT, Integer.class);
-		return (i != null ? i : -1);
+		if (i == null)
+			i = recalculateSegment(context, p);
+		return i;
 	}
 	
 	public static void setSegment(PortSpec p, int i) {
-		p.setExtendedData(SEGMENT, i);
+		setSegment(null, p, i);
+	}
+	
+	public static void setSegment(
+			IPropertyProvider context, PortSpec p, int i) {
+		set(context, p, SEGMENT, i);
 	}
 	
 	public static Change changeSegment(PortSpec p, int i) {
@@ -228,6 +257,20 @@ public final class ExtendedDataUtilities {
 	public static final String DISTANCE =
 			"eD!+dk.itu.big_red.model.PortSpec.distance";
 	
+	private static double recalculateDistance(
+			IPropertyProvider context, PortSpec p) {
+		double d = 0;
+		Object shape = getShape(context, p.getControl(context));
+		if (shape instanceof PointList) {
+			d = 0.5;
+		} else if (shape instanceof Ellipse) {
+			List<PortSpec> l = p.getControl(context).getPorts(context);
+			d = ((double)l.indexOf(p)) / l.size();
+		}
+		setDistance(context, p, d);
+		return d;
+	}
+	
 	public static double getDistance(PortSpec p) {
 		return getDistance(null, p);
 	}
@@ -235,11 +278,18 @@ public final class ExtendedDataUtilities {
 	public static double getDistance(
 			IPropertyProvider context, PortSpec p) {
 		Double d = (Double)require(context, p, DISTANCE, Double.class);
-		return (d != null ? d : Double.NaN);
+		if (d == null)
+			d = recalculateDistance(context, p);
+		return d;
 	}
 	
 	public static void setDistance(PortSpec p, double d) {
-		p.setExtendedData(DISTANCE, d);
+		setDistance(null, p, d);
+	}
+	
+	public static void setDistance(
+			IPropertyProvider context, PortSpec p, double d) {
+		set(context, p, DISTANCE, d);
 	}
 	
 	public static Change changeDistance(PortSpec p, double d) {
@@ -255,14 +305,27 @@ public final class ExtendedDataUtilities {
 	
 	public static Object getShape(IPropertyProvider context, Control c) {
 		Object o = require(context, c, SHAPE, Object.class);
-		if (o instanceof PointList || o instanceof Ellipse) {
-			return o;
-		} else return Control.POINTS_QUAD;
+		if (!(o instanceof PointList || o instanceof Ellipse)) {
+			o = new Ellipse(new Rectangle(0, 0, 300, 300)).
+				getPolygon(Math.max(3, c.getPorts(context).size()));
+			setShape(context, c, o);
+			
+			for (PortSpec p : c.getPorts(context)) {
+				recalculateSegment(context, p);
+				recalculateDistance(context, p);
+			}
+		}
+		return o;
 	}
 	
 	public static void setShape(Control c, Object s) {
+		setShape(null, c, s);
+	}
+	
+	public static void setShape(
+			IPropertyProvider context, Control c, Object s) {
 		if (s instanceof PointList || s instanceof Ellipse)
-			c.setExtendedData(SHAPE, s);
+			set(context, c, SHAPE, s);
 	}
 	
 	public static Change changeShape(Control c, Object s) {

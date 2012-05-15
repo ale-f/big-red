@@ -1,7 +1,6 @@
 package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -10,7 +9,6 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
@@ -18,7 +16,6 @@ import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.model.names.policies.LongNamePolicy;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
 public class SignatureXMLLoader extends XMLLoader {
@@ -62,22 +59,8 @@ public class SignatureXMLLoader extends XMLLoader {
 				cg.add(ExtendedDataUtilities.changeParameterPolicy(model, n));
 		}
 		
-		Element el = getNamedChildElement(e, BIG_RED, "shape");
-		boolean generatePolygon = (el == null);
-		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "port"))
-			makePortSpec(j, model, generatePolygon);
-		
-		if (generatePolygon) {
-			cg.add(ExtendedDataUtilities.changeShape(model,
-				new Ellipse(new Rectangle(0, 0, 30, 30)).
-					getPolygon(Math.max(3, model.getPorts().size()))));
-			int i = 0;
-			for (PortSpec p : model.getPorts()) {
-				cg.add(ExtendedDataUtilities.changeSegment(p, i++));
-				cg.add(ExtendedDataUtilities.changeDistance(p, 0.5));
-			}
-		}
+			makePortSpec(j, model);
 		
 		executeUndecorators(model, e);
 	}
@@ -101,11 +84,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		return executeUndecorators(sig, e);
 	}
 	
-	private PortSpec makePortSpec(
-			Element e, Control c, boolean ignoreAppearanceData) {
+	private PortSpec makePortSpec(Element e, Control c) {
 		PortSpec model = new PortSpec();
 		cg.add(c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
-		
 		return executeUndecorators(model, e);
 	}
 	
