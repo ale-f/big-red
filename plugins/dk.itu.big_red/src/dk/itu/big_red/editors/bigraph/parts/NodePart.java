@@ -35,17 +35,6 @@ public class NodePart extends ContainerPart {
 	}
 	
 	@Override
-	public void installEditPolicy(Object key, EditPolicy editPolicy) {
-		super.installEditPolicy(key, editPolicy);
-		/*
-		 * Trap attempts to install a PRIMARY_DRAG_ROLE EditPolicy so that they
-		 * can be tweaked to better fit the model.
-		 */
-		if (key == EditPolicy.PRIMARY_DRAG_ROLE)
-			setResizable(getModel().getControl().isResizable());
-	}
-	
-	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
@@ -69,8 +58,6 @@ public class NodePart extends ContainerPart {
 		NodeFigure figure = (NodeFigure)getFigure();
 		Node model = getModel();
 		Control control = model.getControl();
-		
-		setResizable(control.isResizable());
 		
 		Object shape = ExtendedDataUtilities.getShape(control);
 		figure.setShape(

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
@@ -55,28 +54,11 @@ public class Control extends ModelObject implements IControl {
 	public static final String PROPERTY_LABEL = "ControlLabel";
 	
 	/**
-	 * The property name fired when the resizability changes. If this changes
-	 * from <code>true</code> to <code>false</code>, listeners should make sure
-	 * that any {@link Node}s with this Control are resized to the default
-	 * size.
-	 * @see Control#getDefaultSize
-	 */
-	@RedProperty(fired = Boolean.class, retrieved = Boolean.class)
-	public static final String PROPERTY_RESIZABLE = "ControlResizable";
-	
-	/**
 	 * The property name when this Control's containing {@link Signature}
 	 * changes.
 	 */
 	@RedProperty(fired = Signature.class, retrieved = Signature.class)
 	public static final String PROPERTY_SIGNATURE = "ControlSignature";
-	
-	/**
-	 * The property name fired when the default size changes. (This only
-	 * really matters for existing {@link Node}s if they aren't resizable.)
-	 */
-	@RedProperty(fired = Dimension.class, retrieved = Dimension.class)
-	public static final String PROPERTY_DEFAULT_SIZE = "ControlDefaultSize";
 	
 	abstract class ControlChange extends ModelObjectChange {
 		@Override
@@ -150,69 +132,6 @@ public class Control extends ModelObject implements IControl {
 		@Override
 		public String toString() {
 			return "Change(set label of " + getCreator() + " to " + label + ")";
-		}
-	}
-	
-	public class ChangeDefaultSize extends ControlChange {
-		public Dimension defaultSize;
-		public ChangeDefaultSize(Dimension defaultSize) {
-			this.defaultSize = defaultSize;
-		}
-		
-		private Dimension oldDefaultSize;
-		@Override
-		public void beforeApply() {
-			oldDefaultSize = getCreator().getDefaultSize();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldDefaultSize != null);
-		}
-		
-		@Override
-		public ChangeDefaultSize inverse() {
-			return new ChangeDefaultSize(oldDefaultSize);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (defaultSize != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set default size of " + getCreator() + " to " +
-					defaultSize + ")";
-		}
-	}
-	
-	public class ChangeResizable extends ControlChange {
-		public boolean resizable;
-		public ChangeResizable(boolean resizable) {
-			this.resizable = resizable;
-		}
-		
-		private Boolean oldResizable;
-		@Override
-		public void beforeApply() {
-			oldResizable = getCreator().isResizable();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldResizable != null);
-		}
-		
-		@Override
-		public ChangeResizable inverse() {
-			return new ChangeResizable(oldResizable);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set resizability of " + getCreator() + " to " +
-					resizable + ")";
 		}
 	}
 	
@@ -337,8 +256,6 @@ public class Control extends ModelObject implements IControl {
 	
 	private String name = "Unknown";
 	private String label = "?";
-	private Dimension defaultSize = new Dimension(50, 50);
-	private boolean resizable = true;
 	private Control.Kind kind = Kind.ACTIVE;
 	private Signature signature = null;
 	
@@ -348,9 +265,7 @@ public class Control extends ModelObject implements IControl {
 		
 		c.setName(getName());
 		c.setLabel(getLabel());
-		c.setDefaultSize(getDefaultSize().getCopy());
 		c.setKind(getKind());
-		c.setResizable(isResizable());
 		
 		for (PortSpec p : getPorts())
 			c.addPort(p.clone(m));
@@ -393,22 +308,6 @@ public class Control extends ModelObject implements IControl {
 		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	
-	public Dimension getDefaultSize() {
-		return defaultSize;
-	}
-	
-	public Dimension getDefaultSize(IPropertyProviderProxy context) {
-		return (Dimension)getProperty(context, PROPERTY_DEFAULT_SIZE);
-	}
-	
-	protected void setDefaultSize(Dimension defaultSize) {
-		if (defaultSize != null) {
-			Dimension oldSize = this.defaultSize;
-			this.defaultSize = defaultSize;
-			firePropertyChange(PROPERTY_DEFAULT_SIZE, oldSize, defaultSize);
-		}
-	}
-	
 	public Kind getKind() {
 		return kind;
 	}
@@ -421,20 +320,6 @@ public class Control extends ModelObject implements IControl {
 		Kind oldKind = this.kind;
 		this.kind = kind;
 		firePropertyChange(PROPERTY_KIND, oldKind, kind);
-	}
-	
-	public boolean isResizable() {
-		return resizable;
-	}
-	
-	public Boolean isResizable(IPropertyProviderProxy context) {
-		return (Boolean)getProperty(context, PROPERTY_RESIZABLE);
-	}
-	
-	protected void setResizable(Boolean resizable) {
-		Boolean oldResizable = this.resizable;
-		this.resizable = resizable;
-		firePropertyChange(PROPERTY_RESIZABLE, oldResizable, resizable);
 	}
 	
 	protected void addPort(PortSpec p) {
@@ -515,16 +400,12 @@ public class Control extends ModelObject implements IControl {
 	 */
 	@Override
 	protected Object getProperty(String name) {
-		if (PROPERTY_DEFAULT_SIZE.equals(name)) {
-			return getDefaultSize();
-		} else if (PROPERTY_LABEL.equals(name)) {
+		if (PROPERTY_LABEL.equals(name)) {
 			return getLabel();
 		} else if (PROPERTY_NAME.equals(name)) {
 			return getName();
 		} else if (PROPERTY_PORT.equals(name)) {
 			return getPorts();
-		} else if (PROPERTY_RESIZABLE.equals(name)) {
-			return isResizable();
 		} else if (PROPERTY_KIND.equals(name)) {
 			return getKind();
 		} else if (PROPERTY_SIGNATURE.equals(name)) {
@@ -534,7 +415,6 @@ public class Control extends ModelObject implements IControl {
 	
 	@Override
 	public void dispose() {
-		defaultSize = null;
 		kind = null;
 		label = name = null;
 		
@@ -555,14 +435,6 @@ public class Control extends ModelObject implements IControl {
 	
 	public ChangeLabel changeLabel(String label) {
 		return new ChangeLabel(label);
-	}
-	
-	public ChangeResizable changeResizable(boolean resizable) {
-		return new ChangeResizable(resizable);
-	}
-	
-	public ChangeDefaultSize changeDefaultSize(Dimension defaultSize) {
-		return new ChangeDefaultSize(defaultSize);
 	}
 	
 	public ChangeKind changeKind(Kind kind) {

@@ -79,7 +79,7 @@ implements PropertyChangeListener {
 	
 	private Text name, label;
 	private SignatureEditorPolygonCanvas appearance;
-	private Button ovalMode, polygonMode, resizable;
+	private Button ovalMode, polygonMode;
 	private Button activeKind, atomicKind, passiveKind;
 	
 	private Label
@@ -115,7 +115,6 @@ implements PropertyChangeListener {
 		
 		appearance.setModel(currentControl);
 		
-		resizable.setSelection(currentControl.isResizable());
 		if (getSelectedControl() != currentControl)
 			controls.setSelection(new StructuredSelection(currentControl), true);
 		
@@ -399,16 +398,6 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		resizable = UI.chain(new Button(firstLine, SWT.CHECK)).text("Resizable?").done();
-		resizable.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (shouldPropagateUI())
-					doChange(currentControl.changeResizable(
-							resizable.getSelection()));
-			}
-		});
-		
 		appearance = new SignatureEditorPolygonCanvas(this,
 				appearanceGroup, SWT.BORDER);
 		GridData appearanceLayoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -464,7 +453,7 @@ implements PropertyChangeListener {
 
 	private boolean setEnablement(boolean enabled) {
 		return UI.setEnabled(enabled,
-			name, label, appearance, appearanceDescription, resizable,
+			name, label, appearance, appearanceDescription,
 			atomicKind, activeKind, passiveKind, outline.getButton(),
 			outlineLabel, fill.getButton(), ovalMode, fillLabel, polygonMode,
 			kindLabel, nameLabel, appearanceLabel, labelLabel);
@@ -524,8 +513,6 @@ implements PropertyChangeListener {
 				} else if (propertyName.equals(ExtendedDataUtilities.SHAPE)) {
 					ovalMode.setSelection(newValue instanceof Ellipse);
 					polygonMode.setSelection(newValue instanceof PointList);
-				} else if (propertyName.equals(Control.PROPERTY_RESIZABLE)) {
-					resizable.setSelection((Boolean)newValue);
 				} else if (propertyName.equals(ExtendedDataUtilities.FILL)) {
 					fill.setColorValue(((Colour)newValue).getRGB());
 				} else if (propertyName.equals(ExtendedDataUtilities.OUTLINE)) {

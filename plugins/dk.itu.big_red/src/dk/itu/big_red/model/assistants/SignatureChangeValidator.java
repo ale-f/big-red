@@ -2,12 +2,10 @@ package dk.itu.big_red.model.assistants;
 
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.ChangeAddPort;
-import dk.itu.big_red.model.Control.ChangeDefaultSize;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
-import dk.itu.big_red.model.Control.ChangeResizable;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
@@ -77,9 +75,7 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 			c.getCreator().removePort(scratch, c.port);
 		} else if (b instanceof ChangeLabel) {
 			checkEligibility(((ChangeLabel)b).getCreator());
-		} else if (b instanceof ChangeResizable ||
-				b instanceof ChangeDefaultSize ||
-				b instanceof ChangeKind) {
+		} else if (b instanceof ChangeKind) {
 			/* do nothing, yet */
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;

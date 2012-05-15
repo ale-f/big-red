@@ -69,8 +69,6 @@ public class Node extends Container implements INode {
 	
 	@Override
 	protected void setLayout(Rectangle layout) {
-		if (!control.isResizable())
-			layout.setSize(getLayout().getSize());
 		fittedPolygon = null;
 		super.setLayout(layout);
 	}
@@ -149,9 +147,6 @@ public class Node extends Container implements INode {
 			p.setParent(this);
 		
 		fittedPolygon = null;
-		if (!control.isResizable())
-			super.setLayout(
-				getLayout().getCopy().setSize(control.getDefaultSize()));
 	}
 	
 	@Override
