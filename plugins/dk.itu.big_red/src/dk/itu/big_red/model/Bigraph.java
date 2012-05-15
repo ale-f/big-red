@@ -14,7 +14,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -167,7 +167,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	}
 	
 	@Override
-	public Bigraph getBigraph(IPropertyProviderProxy context) {
+	public Bigraph getBigraph(IPropertyProvider context) {
 		return this;
 	}
 	
@@ -206,7 +206,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	}
 	
 	@Override
-	public Rectangle getRootLayout(IPropertyProviderProxy context) {
+	public Rectangle getRootLayout(IPropertyProvider context) {
 		return getRootLayout();
 	}
 	
@@ -326,7 +326,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		return relayout(null);
 	}
 	
-	public ChangeGroup relayout(IPropertyProviderProxy context) {
+	public ChangeGroup relayout(IPropertyProvider context) {
 		ChangeGroup cg = new ChangeGroup();
 		int progress = PADDING, top = PADDING;
 		Rectangle r = new Rectangle();

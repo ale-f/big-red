@@ -1,12 +1,12 @@
 package dk.itu.big_red.model.names;
 
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 
 public abstract class Namespace<T> implements INamespace<T> {
 	@SuppressWarnings("unchecked")
-	protected T getProperty(IPropertyProviderProxy context, String name) {
+	protected T getProperty(IPropertyProvider context, String name) {
 		return (context == null ?
 				getRaw(name) : (T)context.getProperty(this, name));
 	}
@@ -38,7 +38,7 @@ public abstract class Namespace<T> implements INamespace<T> {
 		return has(null, key);
 	}
 	
-	public boolean has(IPropertyProviderProxy context, String key) {
+	public boolean has(IPropertyProvider context, String key) {
 		return (get(context, key) != null);
 	}
 	
@@ -47,7 +47,7 @@ public abstract class Namespace<T> implements INamespace<T> {
 		return get(null, name);
 	}
 
-	public T get(IPropertyProviderProxy context, String name) {
+	public T get(IPropertyProvider context, String name) {
 		if ((name = checkName(name)) != null) {
 			return getProperty(context, name);
 		} else return null;
@@ -81,7 +81,7 @@ public abstract class Namespace<T> implements INamespace<T> {
 		return getNextName(null);
 	}
 	
-	public String getNextName(IPropertyProviderProxy context) {
+	public String getNextName(IPropertyProvider context) {
 		INamePolicy policy = getPolicy();
 		if (policy == null)
 			return null;

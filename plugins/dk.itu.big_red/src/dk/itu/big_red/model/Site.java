@@ -2,7 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.IParent;
 import dk.itu.big_red.model.interfaces.ISite;
@@ -59,7 +59,7 @@ public class Site extends Layoutable implements ISite {
 		return alias;
 	}
 	
-	public String getAlias(IPropertyProviderProxy context) {
+	public String getAlias(IPropertyProvider context) {
 		return (String)getProperty(context, PROPERTY_ALIAS);
 	}
 	

@@ -12,7 +12,7 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.Ellipse;
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -22,7 +22,7 @@ public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
 	private static Object require(
-			IPropertyProviderProxy context, ModelObject o, String name,
+			IPropertyProvider context, ModelObject o, String name,
 			Class<?> klass) {
 		Object r = (context != null && context.hasProperty(o, name) ?
 				context.getProperty(o, name) : o.getExtendedData(name));
@@ -38,7 +38,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static IFile getFile(
-			IPropertyProviderProxy context, ModelObject m) {
+			IPropertyProvider context, ModelObject m) {
 		return (IFile)require(context, m, FILE, IFile.class);
 	}
 	
@@ -55,7 +55,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static String getComment(
-			IPropertyProviderProxy context, ModelObject m) {
+			IPropertyProvider context, ModelObject m) {
 		String s = (String)require(context, m, COMMENT, String.class);
 		return (s != null ? s : "");
 	}
@@ -77,7 +77,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static Colour getFill(
-			IPropertyProviderProxy context, ModelObject m) {
+			IPropertyProvider context, ModelObject m) {
 		Colour c = (Colour)require(context, m, FILL, Colour.class);
 		if (c == null) {
 			if (m instanceof Node) {
@@ -106,7 +106,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static Colour getOutline(
-			IPropertyProviderProxy context, ModelObject m) {
+			IPropertyProvider context, ModelObject m) {
 		Colour c = (Colour)require(context, m, OUTLINE, Colour.class);
 		if (c == null) {
 			if (m instanceof Node) {
@@ -137,7 +137,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static INamePolicy getParameterPolicy(
-			IPropertyProviderProxy context, Control c) {
+			IPropertyProvider context, Control c) {
 		return (INamePolicy)require(
 				context, c, PARAMETER_POLICY, INamePolicy.class);
 	}
@@ -154,7 +154,7 @@ public final class ExtendedDataUtilities {
 			new ExtendedDataValidator() {
 		@Override
 		public String validate(ChangeExtendedData c,
-				IPropertyProviderProxy context) {
+				IPropertyProvider context) {
 			if (!(c.getCreator() instanceof Node))
 				return c.getCreator() + " is not a Node";
 			Node n = (Node)c.getCreator();
@@ -185,7 +185,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static String getParameter(
-			IPropertyProviderProxy context, Node n) {
+			IPropertyProvider context, Node n) {
 		String s = (String)require(context, n, PARAMETER, String.class);
 		if (s == null) {
 			INamePolicy p = getParameterPolicy(context, n.getControl());
@@ -211,7 +211,7 @@ public final class ExtendedDataUtilities {
 		return getSegment(null, p);
 	}
 	
-	public static int getSegment(IPropertyProviderProxy context, PortSpec p) {
+	public static int getSegment(IPropertyProvider context, PortSpec p) {
 		Integer i = (Integer)require(context, p, SEGMENT, Integer.class);
 		return (i != null ? i : -1);
 	}
@@ -233,7 +233,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static double getDistance(
-			IPropertyProviderProxy context, PortSpec p) {
+			IPropertyProvider context, PortSpec p) {
 		Double d = (Double)require(context, p, DISTANCE, Double.class);
 		return (d != null ? d : Double.NaN);
 	}
@@ -253,7 +253,7 @@ public final class ExtendedDataUtilities {
 		return getShape(null, c);
 	}
 	
-	public static Object getShape(IPropertyProviderProxy context, Control c) {
+	public static Object getShape(IPropertyProvider context, Control c) {
 		Object o = require(context, c, SHAPE, Object.class);
 		if (o instanceof PointList || o instanceof Ellipse) {
 			return o;
@@ -273,7 +273,7 @@ public final class ExtendedDataUtilities {
 			new ExtendedDataValidator() {
 		@Override
 		public String validate(
-				ChangeExtendedData c, IPropertyProviderProxy context) {
+				ChangeExtendedData c, IPropertyProvider context) {
 			if (!(c.newValue instanceof String)) {
 				return "Labels must be strings";
 			} else if (((String)c.newValue).length() == 0) {
@@ -293,7 +293,7 @@ public final class ExtendedDataUtilities {
 		return (s.length() > 0 ? s.substring(0, 1) : s);
 	}
 	
-	public static String getLabel(IPropertyProviderProxy context, Control c) {
+	public static String getLabel(IPropertyProvider context, Control c) {
 		String s = (String)require(context, c, LABEL, String.class);
 		if (s == null)
 			s = labelFor(c.getName(context));

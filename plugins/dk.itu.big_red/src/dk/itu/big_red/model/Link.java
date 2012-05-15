@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.ILink;
@@ -105,7 +105,7 @@ public abstract class Link extends Layoutable implements ILink {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Point> getPoints(IPropertyProviderProxy context) {
+	public List<Point> getPoints(IPropertyProvider context) {
 		return (List<Point>)getProperty(context, PROPERTY_POINT);
 	}
 	

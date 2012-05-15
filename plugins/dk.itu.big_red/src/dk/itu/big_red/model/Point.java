@@ -1,7 +1,7 @@
 package dk.itu.big_red.model;
 
 import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.IPoint;
 
@@ -99,7 +99,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		return link;
 	}
 	
-	public Link getLink(IPropertyProviderProxy context) {
+	public Link getLink(IPropertyProvider context) {
 		return (Link)getProperty(context, PROPERTY_LINK);
 	}
 	

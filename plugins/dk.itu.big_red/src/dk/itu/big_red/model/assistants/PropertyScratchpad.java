@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PropertyScratchpad implements IPropertyProviderProxy {
+public class PropertyScratchpad implements IPropertyProvider {
 	private static final class NNPair {
 		private Object target;
 		private String name;

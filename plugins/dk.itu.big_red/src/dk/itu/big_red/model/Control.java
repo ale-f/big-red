@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.eclipse.draw2d.geometry.PointList;
 
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
@@ -247,7 +247,7 @@ public class Control extends ModelObject implements IControl {
 		return name;
 	}
 	
-	public String getName(IPropertyProviderProxy context) {
+	public String getName(IPropertyProvider context) {
 		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	
@@ -255,7 +255,7 @@ public class Control extends ModelObject implements IControl {
 		return kind;
 	}
 	
-	public Kind getKind(IPropertyProviderProxy context) {
+	public Kind getKind(IPropertyProvider context) {
 		return (Kind)getProperty(context, PROPERTY_KIND);
 	}
 	
@@ -295,7 +295,7 @@ public class Control extends ModelObject implements IControl {
 		return signature;
 	}
 	
-	public Signature getSignature(IPropertyProviderProxy context) {
+	public Signature getSignature(IPropertyProvider context) {
 		return (Signature)getProperty(context, PROPERTY_SIGNATURE);
 	}
 	
@@ -317,7 +317,7 @@ public class Control extends ModelObject implements IControl {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<PortSpec> getPorts(IPropertyProviderProxy context) {
+	public List<PortSpec> getPorts(IPropertyProvider context) {
 		return (List<PortSpec>)getProperty(context, PROPERTY_PORT);
 	}
 	

@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
@@ -166,7 +166,7 @@ public abstract class Layoutable extends ModelObject {
 		return layout;
 	}
 	
-	public Rectangle getLayout(IPropertyProviderProxy context) {
+	public Rectangle getLayout(IPropertyProvider context) {
 		return (Rectangle)getProperty(context, PROPERTY_LAYOUT);
 	}
 	
@@ -179,7 +179,7 @@ public abstract class Layoutable extends ModelObject {
 		return getRootLayout(null);
 	}
 
-	public Rectangle getRootLayout(IPropertyProviderProxy context) {
+	public Rectangle getRootLayout(IPropertyProvider context) {
 		return getLayout(context).getCopy().translate(
 				getParent(context).getRootLayout(context).getTopLeft());
 	}
@@ -204,7 +204,7 @@ public abstract class Layoutable extends ModelObject {
 		return getBigraph(null);
 	}
 
-	public Bigraph getBigraph(IPropertyProviderProxy context) {
+	public Bigraph getBigraph(IPropertyProvider context) {
 		if (getParent(context) == null) {
 			return null;
 		} else return getParent(context).getBigraph(context);
@@ -218,7 +218,7 @@ public abstract class Layoutable extends ModelObject {
 		return parent;
 	}
 
-	public Container getParent(IPropertyProviderProxy context) {
+	public Container getParent(IPropertyProvider context) {
 		return (Container)getProperty(context, PROPERTY_PARENT);
 	}
 	
@@ -251,7 +251,7 @@ public abstract class Layoutable extends ModelObject {
 	 * @param cg a {@link ChangeGroup} to which changes should be appended
 	 * @return the proposed new size of this object
 	 */
-	protected Dimension relayout(IPropertyProviderProxy context, ChangeGroup cg) {
+	protected Dimension relayout(IPropertyProvider context, ChangeGroup cg) {
 		cg.add(changeLayout(new Rectangle(0, 0, 50, 50)));
 		return new Dimension(50, 50);
 	}
@@ -266,7 +266,7 @@ public abstract class Layoutable extends ModelObject {
 		return name;
 	}
 	
-	public String getName(IPropertyProviderProxy context) {
+	public String getName(IPropertyProvider context) {
 		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	

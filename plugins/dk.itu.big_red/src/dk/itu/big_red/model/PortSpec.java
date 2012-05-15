@@ -2,7 +2,7 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
@@ -72,7 +72,7 @@ public class PortSpec extends ModelObject implements IPort {
 		return name;
 	}
 	
-	public String getName(IPropertyProviderProxy context) {
+	public String getName(IPropertyProvider context) {
 		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	
@@ -86,7 +86,7 @@ public class PortSpec extends ModelObject implements IPort {
 		return control;
 	}
 	
-	public Control getControl(IPropertyProviderProxy context) {
+	public Control getControl(IPropertyProvider context) {
 		return (Control)getProperty(context, PROPERTY_CONTROL);
 	}
 	

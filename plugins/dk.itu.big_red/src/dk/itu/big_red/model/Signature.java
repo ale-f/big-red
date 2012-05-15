@@ -8,7 +8,7 @@ import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeName;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
@@ -135,7 +135,7 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Control> getControls(IPropertyProviderProxy context) {
+	public List<Control> getControls(IPropertyProvider context) {
 		return (List<Control>)getProperty(context, PROPERTY_CONTROL);
 	}
 	

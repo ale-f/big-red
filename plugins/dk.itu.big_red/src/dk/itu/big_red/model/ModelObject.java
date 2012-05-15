@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.ui.services.IDisposable;
 
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
@@ -34,7 +34,7 @@ public abstract class ModelObject implements IDisposable {
 	}
 	
 	public static interface ExtendedDataValidator {
-		String validate(ChangeExtendedData c, IPropertyProviderProxy context);
+		String validate(ChangeExtendedData c, IPropertyProvider context);
 	}
 	
 	public class ChangeExtendedData extends ModelObjectChange {
@@ -133,7 +133,7 @@ public abstract class ModelObject implements IDisposable {
 		return null;
 	}
 	
-	protected Object getProperty(IPropertyProviderProxy context, String name) {
+	protected Object getProperty(IPropertyProvider context, String name) {
 		if (context == null || !context.hasProperty(this, name)) {
 			return getProperty(name);
 		} else return context.getProperty(this, name);

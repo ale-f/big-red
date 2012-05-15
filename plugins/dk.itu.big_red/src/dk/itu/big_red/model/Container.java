@@ -8,7 +8,7 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
+import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
@@ -107,7 +107,7 @@ public abstract class Container extends Layoutable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Layoutable> getChildren(IPropertyProviderProxy context) {
+	public List<Layoutable> getChildren(IPropertyProvider context) {
 		return (List<Layoutable>)getProperty(context, PROPERTY_CHILD);
 	}
 	
@@ -128,7 +128,7 @@ public abstract class Container extends Layoutable {
 	 * @return the proposed new size of this object
 	 */
 	@Override
-	protected Dimension relayout(IPropertyProviderProxy context, ChangeGroup cg) {
+	protected Dimension relayout(IPropertyProvider context, ChangeGroup cg) {
 		int maxHeight = 0;
 		
 		HashMap<Layoutable, Dimension> sizes =
@@ -198,7 +198,7 @@ public abstract class Container extends Layoutable {
 	 * @return a {@link List} of children of the given {@link Class}
 	 */
 	@SuppressWarnings("unchecked")
-	protected <V> ArrayList<V> only(IPropertyProviderProxy context, Class<V> klass) {
+	protected <V> ArrayList<V> only(IPropertyProvider context, Class<V> klass) {
 		ArrayList<V> r = new ArrayList<V>();
 		for (Layoutable i : getChildren(context))
 			if (klass.isInstance(i))
