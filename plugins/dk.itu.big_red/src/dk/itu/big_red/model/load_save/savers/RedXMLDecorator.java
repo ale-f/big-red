@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.load_save.savers;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static dk.itu.big_red.model.load_save.loaders.XMLLoader.getAttributeNS;
 import static
 	dk.itu.big_red.model.load_save.loaders.XMLLoader.getIntAttribute;
 import static
@@ -27,6 +28,7 @@ import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
@@ -102,12 +104,15 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			el.appendChild(aE);
 	}
 
+	private static boolean cmpns(Node n, String ns, String ln) {
+		return (ns.equals(n.getNamespaceURI()) && ln.equals(n.getLocalName()));
+	}
+	
 	private Element getNamedChildElement(Element el, String ns, String ln) {
 		NodeList children = el.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
 			Node j = children.item(i);
-			if (j instanceof Element && j.getNamespaceURI().equals(ns) &&
-				j.getLocalName().equals(ln))
+			if (j instanceof Element && cmpns(j, ns, ln))
 				return (Element)j;
 		}
 		return null;
@@ -138,6 +143,33 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 						getIntAttribute(eS, BIG_RED, "segment"));
 				ExtendedDataUtilities.setDistance(p,
 						getDoubleAttribute(eS, BIG_RED, "distance"));
+			}
+		}
+		
+		if (object instanceof Control) {
+			Control c = (Control)object;
+			
+			String l = getAttributeNS(el, BIG_RED, "label");
+			if (l != null)
+				ExtendedDataUtilities.setLabel(c, l);
+			
+			Element eS = getNamedChildElement(el, BIG_RED, "shape");
+			if (eS != null) {
+				PointList pl = null;
+				
+				String s = getAttributeNS(eS, BIG_RED, "shape");
+				if (s != null && s.equals("polygon")) {
+					pl = new PointList();
+					NodeList nl = eS.getChildNodes();
+					for (int i_ = 0; i_ < nl.getLength(); i_++) {
+						Node i = nl.item(i_);
+						if (i instanceof Element && cmpns(i, BIG_RED, "point"))
+							pl.addPoint(
+								getIntAttribute((Element)i, BIG_RED, "x"),
+								getIntAttribute((Element)i, BIG_RED, "y"));
+					}
+					ExtendedDataUtilities.setShape(c, pl);
+				} else ExtendedDataUtilities.setShape(c, new Ellipse());
 			}
 		}
 	}

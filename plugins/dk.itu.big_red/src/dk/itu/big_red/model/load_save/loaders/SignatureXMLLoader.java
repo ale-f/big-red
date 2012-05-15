@@ -1,7 +1,6 @@
 package dk.itu.big_red.model.load_save.loaders;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,16 +62,8 @@ public class SignatureXMLLoader extends XMLLoader {
 				cg.add(ExtendedDataUtilities.changeParameterPolicy(model, n));
 		}
 		
-		boolean generatePolygon = false;
 		Element el = getNamedChildElement(e, BIG_RED, "shape");
-		if (el != null) {
-			elementToShape(el, model);
-		} else generatePolygon = true;
-		
-		String label =
-				getAttributeNS(e, BIG_RED, "label");
-		if (label != null)
-			cg.add(ExtendedDataUtilities.changeLabel(model, label));
+		boolean generatePolygon = (el == null);
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "port"))
 			makePortSpec(j, model, generatePolygon);
@@ -121,23 +112,5 @@ public class SignatureXMLLoader extends XMLLoader {
 	@Override
 	public SignatureXMLLoader setFile(IFile f) {
 		return (SignatureXMLLoader)super.setFile(f);
-	}
-
-	private void elementToShape(Element e, Control c) {
-		if (!(e.getNamespaceURI().equals(BIG_RED) &&
-				e.getLocalName().equals("shape")))
-			return;
-	
-		PointList pl = null;
-		
-		String s = getAttributeNS(e, BIG_RED, "shape");
-		if (s != null && s.equals("polygon")) {
-			pl = new PointList();
-			for (Element pE : getChildElements(e))
-				pl.addPoint(
-					getIntAttribute(pE, BIG_RED, "x"),
-					getIntAttribute(pE, BIG_RED, "y"));
-			cg.add(ExtendedDataUtilities.changeShape(c, pl));
-		} else cg.add(ExtendedDataUtilities.changeShape(c, new Ellipse()));
 	}
 }
