@@ -15,6 +15,7 @@ import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
+import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 
 public final class ExtendedDataUtilities {
@@ -266,5 +267,38 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeShape(Control c, Object s) {
 		return c.changeExtendedData(SHAPE, s);
+	}
+	
+	public static final String LABEL =
+			"eD!+dk.itu.big_red.model.Control.label";
+	
+	public static String getLabel(Control c) {
+		return getLabel(null, c);
+	}
+	
+	private static String labelFor(String s) {
+		return (s.length() > 0 ? s.substring(0, 1) : s);
+	}
+	
+	public static String getLabel(IPropertyProviderProxy context, Control c) {
+		String s = (String)require(context, c, LABEL, String.class);
+		if (s == null)
+			s = labelFor(c.getName(context));
+		return s;
+	}
+	
+	public static void setLabel(Control c, String s) {
+		c.setExtendedData(LABEL, s);
+	}
+	
+	public static Change changeLabel(Control c, String s) {
+		return c.changeExtendedData(LABEL, s);
+	}
+	
+	public static Change changeControlName(Control c, String s) {
+		ChangeGroup cg = new ChangeGroup();
+		cg.add(c.changeName(s));
+		cg.add(changeLabel(c, labelFor(s)));
+		return cg;
 	}
 }

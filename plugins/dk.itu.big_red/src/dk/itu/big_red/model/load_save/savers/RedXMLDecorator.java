@@ -60,7 +60,8 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 				}
 			}
 
-			el.setAttributeNS(BIG_RED, "big-red:label", c.getLabel());
+			el.setAttributeNS(BIG_RED, "big-red:label",
+					ExtendedDataUtilities.getLabel(c));
 			el.appendChild(aE);
 			/* continue */
 		} else if (object instanceof PortSpec) {

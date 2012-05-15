@@ -6,7 +6,6 @@ import java.util.Map;
 
 import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeKind;
-import dk.itu.big_red.model.Control.ChangeLabel;
 import dk.itu.big_red.model.Control.ChangeName;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
@@ -168,9 +167,6 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			c.getCreator().setName(c.name);
-		} else if (b instanceof ChangeLabel) {
-			ChangeLabel c = (ChangeLabel)b;
-			c.getCreator().setLabel(c.label);
 		} else if (b instanceof ChangeKind) {
 			ChangeKind c = (ChangeKind)b;
 			c.getCreator().setKind(c.kind);

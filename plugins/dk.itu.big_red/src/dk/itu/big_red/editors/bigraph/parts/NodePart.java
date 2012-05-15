@@ -64,10 +64,12 @@ public class NodePart extends ContainerPart {
 			shape instanceof PointList ?
 					model.getFittedPolygon() : new Ellipse());
 		
-		String parameter = ExtendedDataUtilities.getParameter(model);
-		if (parameter == null) {
-			figure.setLabel(control.getLabel());
-		} else figure.setLabel(parameter + " : " + control.getLabel());
+		String
+			label = ExtendedDataUtilities.getLabel(control),
+			parameter = ExtendedDataUtilities.getParameter(model);
+		if (parameter != null)
+			label = parameter + " : " + label;
+		figure.setLabel(label);
 		figure.setToolTip(getToolTip());
 		
 		figure.setBackgroundColor(getFill(ExtendedDataUtilities.getFill(model)));

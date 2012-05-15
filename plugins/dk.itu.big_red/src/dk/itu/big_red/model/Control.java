@@ -10,7 +10,6 @@ import dk.itu.big_red.model.assistants.IPropertyProviderProxy;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.interfaces.IControl;
 
 /**
@@ -45,13 +44,6 @@ public class Control extends ModelObject implements IControl {
 	 */
 	@RedProperty(fired = PortSpec.class, retrieved = List.class)
 	public static final String PROPERTY_PORT = "ControlPort";
-	
-	/**
-	 * The property name fired when the label (the one- or two-character
-	 * caption that appears next to {@link Node}s on the bigraph) changes.
-	 */
-	@RedProperty(fired = String.class, retrieved = String.class)
-	public static final String PROPERTY_LABEL = "ControlLabel";
 	
 	/**
 	 * The property name when this Control's containing {@link Signature}
@@ -101,39 +93,6 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	public class ChangeLabel extends ControlChange {
-		public String label;
-		
-		public ChangeLabel(String label) {
-			this.label = label;
-		}
-		
-		private String oldLabel;
-		@Override
-		public void beforeApply() {
-			oldLabel = getCreator().getLabel();
-		}
-		
-		@Override
-		public ChangeLabel inverse() {
-			return new ChangeLabel(oldLabel);
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldLabel != null);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (label != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set label of " + getCreator() + " to " + label + ")";
-		}
-	}
 	
 	public class ChangeKind extends ControlChange {
 		public Kind kind;
@@ -255,7 +214,6 @@ public class Control extends ModelObject implements IControl {
 	private PointList points = POINTS_QUAD.getCopy();
 	
 	private String name = "Unknown";
-	private String label = "?";
 	private Control.Kind kind = Kind.ACTIVE;
 	private Signature signature = null;
 	
@@ -264,27 +222,12 @@ public class Control extends ModelObject implements IControl {
 		Control c = (Control)super.clone(m);
 		
 		c.setName(getName());
-		c.setLabel(getLabel());
 		c.setKind(getKind());
 		
 		for (PortSpec p : getPorts())
 			c.addPort(p.clone(m));
 		
 		return c;
-	}
-	
-	public String getLabel() {
-		return label;
-	}
-	
-	public String getLabel(IPropertyProviderProxy context) {
-		return (String)getProperty(context, PROPERTY_LABEL);
-	}
-	
-	protected void setLabel(String label) {
-		String oldLabel = this.label;
-		this.label = label;
-		firePropertyChange(PROPERTY_LABEL, oldLabel, label);
 	}
 
 	protected void setName(String name) {
@@ -400,9 +343,7 @@ public class Control extends ModelObject implements IControl {
 	 */
 	@Override
 	protected Object getProperty(String name) {
-		if (PROPERTY_LABEL.equals(name)) {
-			return getLabel();
-		} else if (PROPERTY_NAME.equals(name)) {
+		if (PROPERTY_NAME.equals(name)) {
 			return getName();
 		} else if (PROPERTY_PORT.equals(name)) {
 			return getPorts();
@@ -416,7 +357,7 @@ public class Control extends ModelObject implements IControl {
 	@Override
 	public void dispose() {
 		kind = null;
-		label = name = null;
+		name = null;
 		
 		if (points != null) {
 			points.removeAllPoints();
@@ -427,14 +368,7 @@ public class Control extends ModelObject implements IControl {
 	}
 	
 	public Change changeName(String name) {
-		ChangeGroup cg = new ChangeGroup();
-		cg.add(new ChangeName(name));
-		cg.add(new ChangeLabel(name.length() > 0 ? name.substring(0, 1) : name));
-		return cg;
-	}
-	
-	public ChangeLabel changeLabel(String label) {
-		return new ChangeLabel(label);
+		return new ChangeName(name);
 	}
 	
 	public ChangeKind changeKind(Kind kind) {

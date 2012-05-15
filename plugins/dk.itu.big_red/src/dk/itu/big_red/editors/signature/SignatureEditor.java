@@ -110,7 +110,7 @@ implements PropertyChangeListener {
 		Object shape = ExtendedDataUtilities.getShape(currentControl);
 		boolean polygon = (shape instanceof PointList);
 		
-		label.setText(currentControl.getLabel());
+		label.setText(ExtendedDataUtilities.getLabel(currentControl));
 		name.setText(currentControl.getName());
 		
 		appearance.setModel(currentControl);
@@ -300,7 +300,7 @@ implements PropertyChangeListener {
 			@Override
 			void go() {
 				if (!currentControl.getName().equals(name.getText()))
-					if (!doChange(currentControl.changeName(name.getText())))
+					if (!doChange(ExtendedDataUtilities.changeControlName(currentControl, name.getText())))
 						lockedTextUpdate(name, currentControl.getName());
 			}
 		};
@@ -314,8 +314,9 @@ implements PropertyChangeListener {
 		TextListener labelListener = new TextListener() {
 			@Override
 			void go() {
-				if (!currentControl.getLabel().equals(label.getText()))
-					doChange(currentControl.changeLabel(label.getText()));
+				if (!ExtendedDataUtilities.getLabel(currentControl).
+						equals(label.getText()))
+					doChange(ExtendedDataUtilities.changeLabel(currentControl, label.getText()));
 			}
 		};
 		
@@ -506,7 +507,7 @@ implements PropertyChangeListener {
 				return;
 			uiUpdateInProgress = true;
 			try {
-				if (propertyName.equals(Control.PROPERTY_LABEL)) {
+				if (propertyName.equals(ExtendedDataUtilities.LABEL)) {
 					label.setText((String)newValue);
 				} else if (propertyName.equals(Control.PROPERTY_NAME)) {
 					name.setText((String)newValue);

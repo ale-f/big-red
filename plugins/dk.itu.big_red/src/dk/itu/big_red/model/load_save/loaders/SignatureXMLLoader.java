@@ -72,7 +72,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		String label =
 				getAttributeNS(e, BIG_RED, "label");
 		if (label != null)
-			cg.add(model.changeLabel(label));
+			cg.add(ExtendedDataUtilities.changeLabel(model, label));
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "port"))
 			makePortSpec(j, model, generatePolygon);
