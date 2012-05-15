@@ -269,6 +269,19 @@ public final class ExtendedDataUtilities {
 		return c.changeExtendedData(SHAPE, s);
 	}
 	
+	private static final ExtendedDataValidator labelValidator =
+			new ExtendedDataValidator() {
+		@Override
+		public String validate(
+				ChangeExtendedData c, IPropertyProviderProxy context) {
+			if (!(c.newValue instanceof String)) {
+				return "Labels must be strings";
+			} else if (((String)c.newValue).length() == 0) {
+				return "Labels must not be empty";
+			} else return null;
+		}
+	};
+	
 	public static final String LABEL =
 			"eD!+dk.itu.big_red.model.Control.label";
 	
@@ -292,7 +305,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static Change changeLabel(Control c, String s) {
-		return c.changeExtendedData(LABEL, s);
+		return c.changeExtendedData(LABEL, s, labelValidator);
 	}
 	
 	public static Change changeControlName(Control c, String s) {

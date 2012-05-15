@@ -299,9 +299,10 @@ implements PropertyChangeListener {
 		TextListener nameListener = new TextListener() {
 			@Override
 			void go() {
-				if (!currentControl.getName().equals(name.getText()))
+				String n = currentControl.getName();
+				if (!n.equals(name.getText()))
 					if (!doChange(ExtendedDataUtilities.changeControlName(currentControl, name.getText())))
-						lockedTextUpdate(name, currentControl.getName());
+						lockedTextUpdate(name, n);
 			}
 		};
 		
@@ -314,9 +315,10 @@ implements PropertyChangeListener {
 		TextListener labelListener = new TextListener() {
 			@Override
 			void go() {
-				if (!ExtendedDataUtilities.getLabel(currentControl).
-						equals(label.getText()))
-					doChange(ExtendedDataUtilities.changeLabel(currentControl, label.getText()));
+				String l = ExtendedDataUtilities.getLabel(currentControl);
+				if (!l.equals(label.getText()))
+					if (!doChange(ExtendedDataUtilities.changeLabel(currentControl, label.getText())))
+						lockedTextUpdate(label, l);
 			}
 		};
 		
