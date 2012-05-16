@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
@@ -72,7 +73,7 @@ public class LayoutableReparentCommand extends ChangeCommand {
 		remove(child, true);
 		
 		cg.add(parent.changeAddChild(child, child.getName()));
-		cg.add(child.changeLayout(constraint));
+		cg.add(ExtendedDataUtilities.changeLayout(child, constraint));
 		cg.add(post);
 		
 		return this;

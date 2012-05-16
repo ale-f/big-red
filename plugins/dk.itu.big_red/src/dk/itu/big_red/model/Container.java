@@ -8,6 +8,7 @@ import java.util.Map;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
@@ -149,7 +150,7 @@ public abstract class Container extends Layoutable {
 			Rectangle cl = new Rectangle().setSize(sizes.get(i));
 			cl.setLocation(width,
 					PADDING + ((maxHeight - cl.height()) / 2));
-			cg.add(i.changeLayout(cl));
+			cg.add(ExtendedDataUtilities.changeLayout(i, cl));
 			width += cl.width() + PADDING;
 		}
 		
@@ -158,7 +159,7 @@ public abstract class Container extends Layoutable {
 		
 		Dimension r =
 			new Dimension(width, maxHeight + (PADDING * 2));
-		cg.add(changeLayout(nl.setSize(r)));
+		cg.add(ExtendedDataUtilities.changeLayout(this, nl.setSize(r)));
 		return r;
 	}
 	

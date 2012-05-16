@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import dk.itu.big_red.model.Container.ChangeAddChild;
-import dk.itu.big_red.model.Edge.ChangeReposition;
-import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Layoutable.ChangeRemove;
 import dk.itu.big_red.model.Point.ChangeConnect;
@@ -110,15 +108,6 @@ public class ReactionRule extends ModelObject {
 			} else reactumName = reactumNamespace.getNextName();
 			
 			return reactumParent.changeAddChild(reactumChild, reactumName);
-		} else if (change instanceof ChangeLayout) {
-			ChangeLayout ch = (ChangeLayout)change;
-			
-			Layoutable reactumModel = (Layoutable)oldToNew.get(ch.getCreator());
-			
-			if (reactumModel == null)
-				return null;
-			
-			return reactumModel.changeLayout(ch.newLayout.getCopy());
 		} else if (change instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)change;
 			
@@ -163,14 +152,6 @@ public class ReactionRule extends ModelObject {
 				return null;
 			
 			return reactumSite.changeAlias(ch.alias);
-		} else if (change instanceof ChangeReposition) {
-			ChangeReposition ch = (ChangeReposition)change;
-			
-			Edge reactumEdge = (Edge)oldToNew.get(ch.getCreator());
-			if (reactumEdge == null)
-				return null;
-			
-			return reactumEdge.changeReposition();
 		} else if (change instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)change;
 			

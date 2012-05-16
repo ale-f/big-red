@@ -1,5 +1,7 @@
 package dk.itu.big_red.model;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,9 +134,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		m.put(this, b);
 		b.setExtendedDataFrom(this);
 		
-		/* Layoutable.clone */
-		b.setLayout(null);
-		
 		/* Container.clone */
 		for (Layoutable child : getChildren())
 			b.addChild(child.clone(m));
@@ -186,16 +185,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	}
 	
 	@Override
-	public Rectangle getLayout() {
-		return null;
-	}
-	
-	@Override
-	protected void setLayout(Rectangle newLayout) {
-		/* do nothing */
-	}
-	
-	@Override
 	public Container getParent() {
 		return null;
 	}
@@ -210,14 +199,25 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		return getRootLayout();
 	}
 	
+	private final PropertyChangeListener childListener =
+			new PropertyChangeListener() {
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (ExtendedDataUtilities.LAYOUT.equals(evt.getPropertyName()))
+				updateBoundaries();
+		}
+	};
+	
 	@Override
 	protected void addChild(Layoutable child) {
 		super.addChild(child);
+		child.addPropertyChangeListener(childListener);
 		updateBoundaries();
 	}
 	
 	@Override
 	protected void removeChild(Layoutable child) {
+		child.removePropertyChangeListener(childListener);
 		super.removeChild(child);
 		updateBoundaries();
 	}
@@ -237,8 +237,10 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		lowerRootBoundary = Integer.MAX_VALUE;
 		
 		for (Layoutable i : children) {
-			Rectangle r = i.getLayout();
-			int top = i.getLayout().y(),
+			if (i instanceof Edge)
+				continue;
+			Rectangle r = ExtendedDataUtilities.getLayout(i);
+			int top = ExtendedDataUtilities.getLayout(i).y(),
 				bottom = r.y() + r.height();
 			if (i instanceof OuterName) {
 				if (bottom > upperRootBoundary)
@@ -340,7 +342,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			if (top == PADDING)
 				top += size.height + PADDING;
 			
-			cg.add(i.changeLayout(r.getCopy()));
+			cg.add(ExtendedDataUtilities.changeLayout(i, r.getCopy()));
 		}
 		
 		for (Layoutable i : getRoots()) {
@@ -349,7 +351,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			r.setLocation(PADDING, top);
 			top += size.height + PADDING;
 			
-			cg.add(i.changeLayout(r.getCopy()));
+			cg.add(ExtendedDataUtilities.changeLayout(i, r.getCopy()));
 		}
 		
 		progress = PADDING;
@@ -360,12 +362,12 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			r.setLocation(progress, top);
 			progress += size.width + PADDING;
 			
-			cg.add(i.changeLayout(r.getCopy()));
+			cg.add(ExtendedDataUtilities.changeLayout(i, r.getCopy()));
 		}
 		
 		for (Link i : only(context, Link.class)) {
 			if (i instanceof Edge)
-				cg.add(((Edge)i).changeReposition());
+				// cg.add(((Edge)i).changeReposition());
 			cg.add(ExtendedDataUtilities.changeOutline(i, Colour.random()));
 		}
 		
@@ -402,14 +404,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			Layoutable ch = c.getCreator();
 			ch.getParent().removeChild(ch);
 			getNamespace(getNSI(ch)).remove(ch.getName());
-		} else if (b instanceof Layoutable.ChangeLayout) {
-			Layoutable.ChangeLayout c = (Layoutable.ChangeLayout)b;
-			c.getCreator().setLayout(c.newLayout);
-			if (c.getCreator().getParent() instanceof Bigraph)
-				((Bigraph)c.getCreator().getParent()).updateBoundaries();
-		} else if (b instanceof Edge.ChangeReposition) {
-			Edge.ChangeReposition c = (Edge.ChangeReposition)b;
-			c.getCreator().averagePosition();
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			getNamespace(getNSI(c.getCreator())).remove(c.getCreator().getName());

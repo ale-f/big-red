@@ -115,7 +115,7 @@ implements PropertyChangeListener, IBigraphPart {
 			String property = evt.getPropertyName();
 			if (property.equals(Layoutable.PROPERTY_NAME) ||
 				ExtendedDataUtilities.COMMENT.equals(property) ||
-				property.equals(Layoutable.PROPERTY_LAYOUT)) {
+				property.equals(ExtendedDataUtilities.LAYOUT)) {
 				refreshVisuals();
 			}
 		}
@@ -167,7 +167,7 @@ implements PropertyChangeListener, IBigraphPart {
 	protected void refreshVisuals() {
 		Layoutable model = getModel();
 		AbstractFigure figure = getFigure();
-		figure.setConstraint(model.getLayout());
+		figure.setConstraint(ExtendedDataUtilities.getLayout(model));
 		String
 			comment = ExtendedDataUtilities.getComment(model),
 			tooltip = getToolTip();

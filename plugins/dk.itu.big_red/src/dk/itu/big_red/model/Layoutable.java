@@ -6,6 +6,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
@@ -39,12 +40,6 @@ public abstract class Layoutable extends ModelObject {
 	public static final String PROPERTY_NAME = "LayoutableName";
 	
 	/**
-	 * The property name fired when the layout changes.
-	 */
-	@RedProperty(fired = Rectangle.class, retrieved = Rectangle.class)
-	public static final String PROPERTY_LAYOUT = "LayoutableLayout";
-	
-	/**
 	 * The property name fired when the parent changes.
 	 */
 	@RedProperty(fired = Container.class, retrieved = Container.class)
@@ -54,40 +49,6 @@ public abstract class Layoutable extends ModelObject {
 		@Override
 		public Layoutable getCreator() {
 			return Layoutable.this;
-		}
-	}
-	
-	public class ChangeLayout extends LayoutableChange {
-		public Rectangle newLayout;
-		
-		protected ChangeLayout(Rectangle newLayout) {
-			this.newLayout = newLayout;
-		}
-
-		private Rectangle oldLayout;
-		@Override
-		public void beforeApply() {
-			oldLayout = getCreator().getLayout().getCopy();
-		}
-		
-		@Override
-		public ChangeLayout inverse() {
-			return new ChangeLayout(oldLayout);
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldLayout != null);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (newLayout != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set layout of " + getCreator() + " to " + newLayout + ")";
 		}
 	}
 
@@ -155,20 +116,7 @@ public abstract class Layoutable extends ModelObject {
 		}
 	}
 	
-	private Rectangle layout = new Rectangle();
 	private Container parent = null;
-	
-	/**
-	 * Gets the current layout of this object.
-	 * @return the current layout
-	 */
-	public Rectangle getLayout() {
-		return layout;
-	}
-	
-	public Rectangle getLayout(IPropertyProvider context) {
-		return (Rectangle)getProperty(context, PROPERTY_LAYOUT);
-	}
 	
 	/**
 	 * Gets a copy of the layout of this object relative to the top-left of the
@@ -180,20 +128,8 @@ public abstract class Layoutable extends ModelObject {
 	}
 
 	public Rectangle getRootLayout(IPropertyProvider context) {
-		return getLayout(context).getCopy().translate(
+		return ExtendedDataUtilities.getLayout(context, this).getCopy().translate(
 				getParent(context).getRootLayout(context).getTopLeft());
-	}
-	
-	/**
-	 * Sets the layout of this object.
-	 * @param layout the new layout (which will belong to this object)
-	 */
-	protected void setLayout(Rectangle newLayout) {
-		if (newLayout == null)
-			return;
-		Rectangle oldLayout = layout;
-		layout = newLayout;
-		firePropertyChange(PROPERTY_LAYOUT, oldLayout, layout);
 	}
 	
 	/**
@@ -235,7 +171,6 @@ public abstract class Layoutable extends ModelObject {
 	@Override
 	public Layoutable clone(Map<ModelObject, ModelObject> m) {
 		Layoutable l = (Layoutable)super.clone(m);
-		l.setLayout(getLayout().getCopy());
 		return l;
 	}
 	
@@ -252,7 +187,7 @@ public abstract class Layoutable extends ModelObject {
 	 * @return the proposed new size of this object
 	 */
 	protected Dimension relayout(IPropertyProvider context, ChangeGroup cg) {
-		cg.add(changeLayout(new Rectangle(0, 0, 50, 50)));
+		cg.add(ExtendedDataUtilities.changeLayout(this, new Rectangle(0, 0, 50, 50)));
 		return new Dimension(50, 50);
 	}
 	
@@ -289,10 +224,6 @@ public abstract class Layoutable extends ModelObject {
 		ns.put(context, name, this);
 	}
 	
-	public LayoutableChange changeLayout(Rectangle newLayout) {
-		return new ChangeLayout(newLayout);
-	}
-	
 	public LayoutableChange changeName(String newName) {
 		return new ChangeName(newName);
 	}
@@ -305,8 +236,6 @@ public abstract class Layoutable extends ModelObject {
 	protected Object getProperty(String name) {
 		if (PROPERTY_NAME.equals(name)) {
 			return getName();
-		} else if (PROPERTY_LAYOUT.equals(name)) {
-			return getLayout();
 		} else if (PROPERTY_PARENT.equals(name)) {
 			return getParent();
 		} else return super.getProperty(name);

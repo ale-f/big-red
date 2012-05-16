@@ -156,8 +156,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = getNamed(reactum, type, name).changeLayout(
-						AppearanceGenerator.elementToRectangle(el));
+				c = ExtendedDataUtilities.changeLayout(getNamed(reactum, type, name), AppearanceGenerator.elementToRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
 					colour =

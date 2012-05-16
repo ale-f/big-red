@@ -3,6 +3,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 import java.util.ArrayList;
 import org.eclipse.gef.ui.actions.Clipboard;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
@@ -75,7 +76,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 				String name = newParent.getBigraph().
 						getNamespace(Bigraph.getNSI(j)).getNextName(scratch);
 				cg.add(newParent.changeAddChild(j, name),
-						j.changeLayout(j.getLayout().getCopy().translate(20, 20)));
+						ExtendedDataUtilities.changeLayout(j, ExtendedDataUtilities.getLayout(j).getCopy().translate(20, 20)));
 				
 				newParent.addChild(scratch, j, name);
 			}

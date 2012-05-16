@@ -67,15 +67,9 @@ public class Node extends Container implements INode {
 		return (c == Node.class || c == Site.class);
 	}
 	
-	@Override
-	protected void setLayout(Rectangle layout) {
-		fittedPolygon = null;
-		super.setLayout(layout);
-	}
-	
-	private static final PointList fitPolygon(Node n) {
-		Control c = n.getControl();
-		Rectangle rectangle = n.getLayout();
+	private final PointList fitPolygon() {
+		Control c = getControl();
+		fpLayout = ExtendedDataUtilities.getLayout(this);
 		Object shape = ExtendedDataUtilities.getShape(c);
 		if (!(shape instanceof PointList))
 			return null;
@@ -95,8 +89,8 @@ public class Node extends Container implements INode {
 		 * both off-by-one - getBounds() prefers < to <=, it seems.)
 		 */
 		Rectangle adjustedBounds = new Rectangle(fittedPolygon.getBounds());
-		double xScale = rectangle.width() - 2,
-		       yScale = rectangle.height() - 2;
+		double xScale = fpLayout.width() - 2,
+		       yScale = fpLayout.height() - 2;
 		xScale /= adjustedBounds.width() - 1;
 		yScale /= adjustedBounds.height() - 1;
 		
@@ -113,6 +107,7 @@ public class Node extends Container implements INode {
 		return fittedPolygon;
 	}
 	
+	private Rectangle fpLayout = null;
 	private PointList fittedPolygon = null;
 	
 	/**
@@ -125,8 +120,9 @@ public class Node extends Container implements INode {
 	 * @return the fitted polygon
 	 */
 	public PointList getFittedPolygon() {
-		if (fittedPolygon == null)
-			fittedPolygon = fitPolygon(this);
+		if (fpLayout == null || fittedPolygon == null ||
+				!fpLayout.equals(ExtendedDataUtilities.getLayout(this)))
+			fittedPolygon = fitPolygon();
 		return fittedPolygon;
 	}
 	

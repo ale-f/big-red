@@ -290,7 +290,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		if (o instanceof Layoutable) {
 			Layoutable l = (Layoutable)o;
 			Rectangle r = AppearanceGenerator.elementToRectangle(e);
-			cg.add(l.changeLayout(r));
+			cg.add(ExtendedDataUtilities.changeLayout(l, r));
 		}
 	}
 }

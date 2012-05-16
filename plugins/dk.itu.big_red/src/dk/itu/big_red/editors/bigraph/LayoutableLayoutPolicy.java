@@ -9,6 +9,7 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableCreateCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableRelayoutCommand;
@@ -74,7 +75,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		if (!(self instanceof Container)) {
 			return null;
 		} else {
-			size.setSize(((Layoutable)requestObject).getLayout().getSize());
+			size.setSize(ExtendedDataUtilities.getLayout(((Layoutable)requestObject)).getSize());
 		}
 		
 		LayoutableCreateCommand cmd = new LayoutableCreateCommand();

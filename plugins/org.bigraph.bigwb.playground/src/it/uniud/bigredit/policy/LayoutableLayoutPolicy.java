@@ -18,6 +18,7 @@ import it.uniud.bigredit.command.LayoutableRelayoutCommand;
 import it.uniud.bigredit.editparts.BigreditRootEditPart;
 import it.uniud.bigredit.model.Reaction;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -126,7 +127,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		}
 		
 		if (parent instanceof Container) {
-		 size.setSize(((Layoutable) requestObject).getLayout().getSize());
+		 size.setSize(ExtendedDataUtilities.getLayout(((Layoutable) requestObject)).getSize());
 		}
 		
 		

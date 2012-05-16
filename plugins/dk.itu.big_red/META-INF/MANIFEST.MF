@@ -18,6 +18,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: dk.itu.big_red.editors,
+ dk.itu.big_red.editors.assistants,
  dk.itu.big_red.editors.bigraph,
  dk.itu.big_red.editors.bigraph.actions,
  dk.itu.big_red.editors.bigraph.commands,

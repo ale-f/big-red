@@ -6,16 +6,22 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
+import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.Point;
+import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
+import dk.itu.big_red.model.assistants.Line;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -394,5 +400,62 @@ public final class ExtendedDataUtilities {
 		cg.add(c.changeName(s));
 		cg.add(changeLabel(c, labelFor(s)));
 		return cg;
+	}
+	
+	public static final String LAYOUT =
+			"eD!+dk.itu.big_red.Layoutable.layout";
+	
+	public static Rectangle getLayout(Layoutable l) {
+		return getLayout(null, l);
+	}
+	
+	public static Rectangle getLayout(
+			IPropertyProvider context, Layoutable l) {
+		Rectangle r = (Rectangle)require(context, l, LAYOUT, Rectangle.class);
+		if (r == null) {
+			if (l instanceof Port) {
+				Port p = (Port)l;
+				r = new Rectangle(0, 0, 10, 10);
+				PointList polypt = p.getParent().getFittedPolygon();
+				double distance =
+					ExtendedDataUtilities.getDistance(context, p.getSpec());
+				if (polypt != null) {
+					int segment =
+						ExtendedDataUtilities.getSegment(context, p.getSpec());
+					org.eclipse.draw2d.geometry.Point
+						p1 = polypt.getPoint(segment),
+						p2 = polypt.getPoint((segment + 1) % polypt.size());
+					r.setLocation(new Line(p1, p2).
+							getPointFromOffset(distance).translate(-5, -5));
+				} else {
+					r.setLocation(
+						new Ellipse(
+							ExtendedDataUtilities.getLayout(p.getParent()).getCopy().setLocation(0, 0)).
+							getPointFromOffset(distance).translate(-5, -5));
+				}
+			} else if (l instanceof Edge) {
+				List<Point> points = ((Edge)l).getPoints(context);
+				int s = points.size();
+				r = new Rectangle(50, 50, 10, 10);
+				if (s != 0) {
+					int tx = 0, ty = 0;
+					for (Point p : points) {
+						Rectangle rect = p.getRootLayout(context);
+						tx += rect.x; ty += rect.y;
+					}
+					r.setLocation(tx / s, ty / s);
+				}
+			} else if (!(l instanceof Bigraph))
+				set(context, l, LAYOUT, r = new Rectangle());
+		}
+		return r;
+	}
+	
+	public static void setLabel(Layoutable l, Rectangle r) {
+		l.setExtendedData(LAYOUT, r);
+	}
+	
+	public static Change changeLayout(Layoutable l, Rectangle r) {
+		return l.changeExtendedData(LAYOUT, r);
 	}
 }

@@ -143,9 +143,9 @@ public class BigraphTikZSaver extends Saver {
 		
 		List<Layoutable> ch = b.getChildren();
 		if (ch.size() > 0) {
-			Rectangle bounding = ch.get(0).getLayout().getCopy();
+			Rectangle bounding = ExtendedDataUtilities.getLayout(ch.get(0)).getCopy();
 			for (Layoutable i : ch)
-				bounding.union(i.getLayout());
+				bounding.union(ExtendedDataUtilities.getLayout(i));
 			translate = bounding.getTopLeft().getNegated();
 			System.out.println("(translating everything by " + translate + ")");
 		}

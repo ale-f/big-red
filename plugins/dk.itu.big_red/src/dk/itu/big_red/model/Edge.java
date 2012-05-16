@@ -1,9 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.util.Map;
-
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import dk.itu.big_red.model.interfaces.IEdge;
 
 /**
@@ -20,72 +16,4 @@ import dk.itu.big_red.model.interfaces.IEdge;
   *
   */
 public class Edge extends Link implements IEdge {
-	public class ChangeReposition extends LayoutableChange {
-		@Override
-		public Edge getCreator() {
-			return Edge.this;
-		}
-		
-		protected ChangeReposition() {
-		}
-
-		private Rectangle oldLayout;
-		@Override
-		public void beforeApply() {
-			oldLayout = getCreator().getLayout().getCopy();
-		}
-		
-		@Override
-		public ChangeLayout inverse() {
-			return new ChangeLayout(oldLayout);
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldLayout != null);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return true;
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(recalculate position of " + getCreator() + ")";
-		}
-	}
-	
-	/**
-	 * Moves this EdgeTarget to the average position of all the
-	 * {@link Point}s connected to it.
-	 */
-	protected void averagePosition() {
-		int tx = 0, ty = 0, s = getPoints().size();
-		for (Point p : getPoints()) {
-			tx += p.getRootLayout().x();
-			ty += p.getRootLayout().y();
-		}
-		setLayout(new Rectangle(tx / s, ty / s, getLayout().width(), getLayout().height()));
-	}
-	
-	public Edge() {
-		super.setLayout(new Rectangle(5, 5, 14, 14));
-	}
-	
-	@Override
-	protected void setLayout(Rectangle newLayout) {
-		if (newLayout != null)
-			newLayout.setSize(14, 14);
-		super.setLayout(newLayout);
-	}
-	
-	@Override
-	public Edge clone(Map<ModelObject, ModelObject> m) {
-		return (Edge)super.clone(m);
-	}
-
-	public LayoutableChange changeReposition() {
-		return new ChangeReposition();
-	}
 }

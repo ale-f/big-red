@@ -44,8 +44,8 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			Edge ed = new Edge();
 			cg.add(b.changeAddChild(ed, b.getFirstUnusedName(ed)),
 					((Point)first).changeConnect(ed),
-					((Point)second).changeConnect(ed),
-					ed.changeReposition());
+					((Point)second).changeConnect(ed)/*,
+					ed.changeReposition() */);
 		} else if (first instanceof Point && second instanceof Link) {
 			setTarget(((Point)first).getBigraph());
 			cg.add(((Point)first).changeConnect((Link)second));

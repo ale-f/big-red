@@ -16,6 +16,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 
 
@@ -112,7 +113,7 @@ public class ReactionFigure extends RoundedRectangle  {
 		int h = 0;
 		
 		if ( redex != null ) {
-			Rectangle r = new Rectangle( redex.getLayout() );
+			Rectangle r = new Rectangle( ExtendedDataUtilities.getLayout(redex) );
 			h = r.height;
 			r.y += r.height;
 			r.height = 16;
@@ -125,7 +126,7 @@ public class ReactionFigure extends RoundedRectangle  {
 		}
 		
 		if ( reactum != null ) {
-			Rectangle r = new Rectangle( reactum.getLayout() );
+			Rectangle r = new Rectangle( ExtendedDataUtilities.getLayout(reactum) );
 			h = Math.max( h, r.height );
 			r.y += r.height;
 			r.height = 16;

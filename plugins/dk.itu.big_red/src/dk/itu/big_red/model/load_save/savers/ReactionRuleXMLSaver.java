@@ -1,12 +1,12 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Layoutable.ChangeLayout;
 import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Layoutable.ChangeRemove;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
@@ -110,6 +110,11 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			} else if (ExtendedDataUtilities.OUTLINE.equals(i.key)) {
 				f = applyAttributes(newElement(BIG_RED, "big-red:outline"),
 						"colour", ((Colour)i.newValue).toHexString());
+			} else if (ExtendedDataUtilities.LAYOUT.equals(i.key)) {
+				Rectangle r = (Rectangle)i.newValue;
+				f = applyAttributes(newElement(BIG_RED, "big-red:layout"),
+						"x", r.x(), "y", r.y(),
+						"width", r.width(), "height", r.height());
 			}
 			if (f != null)
 				applyAttributes(f,
@@ -122,15 +127,6 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				if (e != null)
 					f.appendChild(e);
 			}
-		} else if (i_ instanceof ChangeLayout) {
-			ChangeLayout i = (ChangeLayout)i_;
-			f = applyAttributes(newElement(BIG_RED, "big-red:layout"),
-					"name", i.getCreator().getName(),
-					"type", i.getCreator().getType().toLowerCase(ENGLISH),
-					"x", i.newLayout.x(),
-					"y", i.newLayout.y(),
-					"width", i.newLayout.width(),
-					"height", i.newLayout.height());
 		} else if (i_ instanceof ChangeAddChild) {
 			ChangeAddChild i = (ChangeAddChild)i_;
 			f = applyAttributes(newElement(CHANGE, "change:add"),

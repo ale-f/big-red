@@ -69,7 +69,8 @@ public abstract class ModelObject implements IDisposable {
 	 * notifications from this object.
 	 * @param listener the PropertyChangeListener
 	 */
-	public final void addPropertyChangeListener(PropertyChangeListener listener) {
+	public final void addPropertyChangeListener(
+			PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
 	}
 
@@ -78,7 +79,8 @@ public abstract class ModelObject implements IDisposable {
 	 * change notifications from this object.
 	 * @param listener the PropertyChangeListener
 	 */
-	public final void removePropertyChangeListener(PropertyChangeListener listener) {
+	public final void removePropertyChangeListener(
+			PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
 	}
 
