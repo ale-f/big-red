@@ -233,24 +233,16 @@ public final class ExtendedDataUtilities {
 	public static final String SEGMENT =
 			"eD!+dk.itu.big_red.model.PortSpec.segment";
 	
-	private static int recalculateSegment(
-			IPropertyProvider context, PortSpec p) {
-		int i = 0;
-		Object shape = getShape(context, p.getControl(context));
-		if (shape instanceof PointList)
-			i = p.getControl(context).getPorts(context).indexOf(p);
-		setSegment(context, p, i);
-		return i;
-	}
-	
 	public static int getSegment(PortSpec p) {
 		return getSegment(null, p);
 	}
 	
 	public static int getSegment(IPropertyProvider context, PortSpec p) {
 		Integer i = (Integer)require(context, p, SEGMENT, Integer.class);
-		if (i == null)
-			i = recalculateSegment(context, p);
+		if (i == null) {
+			recalculatePosition(context, p);
+			i = (Integer)require(context, p, SEGMENT, Integer.class);
+		}
 		return i;
 	}
 	
@@ -271,18 +263,30 @@ public final class ExtendedDataUtilities {
 	public static final String DISTANCE =
 			"eD!+dk.itu.big_red.model.PortSpec.distance";
 	
-	private static double recalculateDistance(
+	private static void recalculatePosition(
 			IPropertyProvider context, PortSpec p) {
-		double d = 0;
+		int segment = 0;
+		double distance = 0;
+		
 		Object shape = getShape(context, p.getControl(context));
+		List<PortSpec> l = p.getControl(context).getPorts(context);
+		int index = l.indexOf(p) + 1;
+		
 		if (shape instanceof PointList) {
-			d = 0.5;
+			PointList pl = (PointList)shape;
+			int pls = pl.size();
+			distance = (((double)pls) / l.size()) * index;
+			
+			segment = (int)Math.floor(distance);
+			distance -= segment;
+			segment %= pls;
 		} else if (shape instanceof Ellipse) {
-			List<PortSpec> l = p.getControl(context).getPorts(context);
-			d = ((double)l.indexOf(p)) / l.size();
+			segment = 0;
+			distance = (1.0 / l.size()) * index;
 		}
-		setDistance(context, p, d);
-		return d;
+		
+		setSegment(context, p, segment);
+		setDistance(context, p, distance);
 	}
 	
 	public static double getDistance(PortSpec p) {
@@ -292,8 +296,10 @@ public final class ExtendedDataUtilities {
 	public static double getDistance(
 			IPropertyProvider context, PortSpec p) {
 		Double d = (Double)require(context, p, DISTANCE, Double.class);
-		if (d == null)
-			d = recalculateDistance(context, p);
+		if (d == null) {
+			recalculatePosition(context, p);
+			d = (Double)require(context, p, DISTANCE, Double.class);
+		}
 		return d;
 	}
 	
@@ -324,10 +330,8 @@ public final class ExtendedDataUtilities {
 				getPolygon(Math.max(3, c.getPorts(context).size()));
 			setShape(context, c, o);
 			
-			for (PortSpec p : c.getPorts(context)) {
-				recalculateSegment(context, p);
-				recalculateDistance(context, p);
-			}
+			for (PortSpec p : c.getPorts(context))
+				recalculatePosition(context, p);
 		}
 		return o;
 	}
