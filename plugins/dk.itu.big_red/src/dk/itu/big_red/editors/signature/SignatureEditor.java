@@ -386,7 +386,7 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
 					doChange(ExtendedDataUtilities.changeShape(
-							currentControl, new Ellipse()));
+							currentControl, Ellipse.SINGLETON));
 			}
 		});
 		

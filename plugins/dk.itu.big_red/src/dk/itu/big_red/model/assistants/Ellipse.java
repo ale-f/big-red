@@ -6,6 +6,8 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 public class Ellipse {
+	public static final Ellipse SINGLETON = new Ellipse();
+	
 	private Rectangle bb = new Rectangle();
 	
 	public Ellipse() {

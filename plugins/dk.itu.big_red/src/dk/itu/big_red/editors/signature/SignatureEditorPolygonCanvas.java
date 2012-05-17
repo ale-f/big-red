@@ -797,7 +797,7 @@ MenuListener, PropertyChangeListener {
 						for (PortSpec i : getModel().getPorts())
 							cg.add(getModel().changeRemovePort(i));
 						cg.add(ExtendedDataUtilities.changeShape(getModel(),
-								new Ellipse().
+								Ellipse.SINGLETON.
 								setBounds(new Rectangle(0, 0, 60, 60)).
 								getPolygon(Integer.parseInt(polySides))));
 						doChange(cg);

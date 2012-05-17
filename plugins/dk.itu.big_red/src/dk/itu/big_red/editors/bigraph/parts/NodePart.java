@@ -62,7 +62,7 @@ public class NodePart extends ContainerPart {
 		Object shape = ExtendedDataUtilities.getShape(control);
 		figure.setShape(
 			shape instanceof PointList ?
-					model.getFittedPolygon() : new Ellipse());
+					model.getFittedPolygon() : Ellipse.SINGLETON);
 		
 		String
 			label = ExtendedDataUtilities.getLabel(control),

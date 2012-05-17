@@ -169,7 +169,7 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 								getIntAttribute((Element)i, BIG_RED, "y"));
 					}
 					ExtendedDataUtilities.setShape(c, pl);
-				} else ExtendedDataUtilities.setShape(c, new Ellipse());
+				} else ExtendedDataUtilities.setShape(c, Ellipse.SINGLETON);
 			}
 		}
 	}
