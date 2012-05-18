@@ -685,9 +685,9 @@ MenuListener, PropertyChangeListener {
 		for (MenuItem i : m.getItems())
 			i.dispose();
 		
-		final int foundPoint = findPointAt(roundedMousePosition.x, roundedMousePosition.y),
+		final int foundPoint = findPointAt(mousePosition.x, mousePosition.y),
 		          foundPort = findPortAt(mousePosition.x, mousePosition.y),
-		          segment = getNearestSegment(roundedMousePosition, 15);
+		          segment = getNearestSegment(mousePosition, 15);
 		
 		UI.createMenuItem(m, SWT.NONE, "Polygon canvas", null).setEnabled(false);
 		new MenuItem(m, SWT.SEPARATOR);
@@ -706,7 +706,7 @@ MenuListener, PropertyChangeListener {
 							l.setSecondPoint(getPoint(segment + 1));
 							
 							Point portPoint =
-									l.getIntersection(roundedMousePosition);
+									l.getIntersection(mousePosition);
 							if (portPoint != null) {
 								newSegment = segment;
 								newDistance = l.getOffsetFromPoint(portPoint);
@@ -746,7 +746,8 @@ MenuListener, PropertyChangeListener {
 			UI.createMenuItem(m, 0, "&Remove port", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					doChange(getModel().changeRemovePort(getModel().getPorts().get(foundPort)));
+					doChange(getModel().changeRemovePort(
+							getModel().getPorts().get(foundPort)));
 				}
 			});
 		}
@@ -760,11 +761,13 @@ MenuListener, PropertyChangeListener {
 					}
 				});
 			} else {
-				UI.createMenuItem(m, 0, "Cannot remove last point", null).setEnabled(false);
+				UI.createMenuItem(m, 0, "Cannot remove last point", null).
+					setEnabled(false);
 			}
 		}
 		if (getPointCount() > 1) {
-			UI.createMenuItem(m, 0, "Remove &all points and ports", new SelectionAdapter() {
+			UI.createMenuItem(m, 0, "Remove &all points and ports",
+					new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					ChangeGroup cg = new ChangeGroup();
@@ -780,12 +783,14 @@ MenuListener, PropertyChangeListener {
 		if (getShape() instanceof PointList) {
 			if (m.getItemCount() > 0)
 				new MenuItem(m, SWT.SEPARATOR);
-			UI.createMenuItem(m, 0, "&Replace with a regular polygon", new SelectionAdapter() {
+			UI.createMenuItem(m, 0, "&Replace with a regular polygon",
+					new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					String polySides =
 						UI.promptFor("Specify the number of sides",
-							"How many sides should your regular polygon have?\n(All ports will be deleted.)",
+							"How many sides should your regular polygon have?" +
+							"\n(All ports will be deleted.)",
 							"3", getIntegerValidator(3, Integer.MAX_VALUE));
 					if (polySides != null) {
 						ChangeGroup cg = new ChangeGroup();
