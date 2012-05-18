@@ -382,13 +382,13 @@ public final class ExtendedDataUtilities {
 	}
 	
 	private static String labelFor(String s) {
-		return (s.length() > 0 ? s.substring(0, 1) : s);
+		return (s != null ? (s.length() > 0 ? s.substring(0, 1) : s) : "?");
 	}
 	
 	public static String getLabel(IPropertyProvider context, Control c) {
 		String s = (String)require(context, c, LABEL, String.class);
 		if (s == null)
-			s = labelFor(c.getName(context));
+			set(context, c, LABEL, s = labelFor(c.getName(context)));
 		return s;
 	}
 	
