@@ -218,13 +218,14 @@ public final class ExtendedDataUtilities {
 	
 	public static String getParameter(
 			IPropertyProvider context, Node n) {
-		String s = (String)require(context, n, PARAMETER, String.class);
-		if (s == null) {
-			INamePolicy p = getParameterPolicy(context, n.getControl());
-			if (p != null)
-				set(context, n, PARAMETER, s = p.get(0));
-		}
-		return s;
+		INamePolicy p = getParameterPolicy(context, n.getControl());
+		String s = (String)require(context, n, PARAMETER, String.class),
+				t = null;
+		if (p != null)
+			t = p.normalise(s);
+		if (s != null ? !s.equals(t) : s != t)
+			set(context, n, PARAMETER, t);
+		return t;
 	}
 	
 	public static void setParameter(Node n, String s) {
