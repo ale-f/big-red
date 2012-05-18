@@ -357,8 +357,6 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	protected int findPointAt(int x, int y) {
-		if (!(getShape() instanceof PointList))
-			return -1;
 		for (int i = 0; i < getPointCount(); i++) {
 			tmp = getPoint(i);
 			if (x >= tmp.x - 3 && x <= tmp.x + 3 &&
@@ -369,8 +367,6 @@ MenuListener, PropertyChangeListener {
 	}
 	
 	private int getNearestSegment(Point up, double threshold) {
-		if (!(getShape() instanceof PointList))
-			return 0;
 		int index = -1;
 		Line l = new Line();
 		double distance = Double.MAX_VALUE;
@@ -404,10 +400,7 @@ MenuListener, PropertyChangeListener {
 	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent e) {
-		if (!(getShape() instanceof PointList))
-			return;
-		Point p = roundToGrid(e.x, e.y);
-		int deleteIndex = findPointAt(p.x, p.y);
+		int deleteIndex = findPointAt(e.x, e.y);
 		if (deleteIndex != -1 && (deleteIndex != 0 || getPointCount() > 1))
 			opDeletePoint(deleteIndex);
 	}
@@ -420,16 +413,15 @@ MenuListener, PropertyChangeListener {
 	public void mouseDown(MouseEvent e) {
 		if (e.button != 1 || (e.stateMask & SWT.MODIFIER_MASK) != 0)
 			return;
-		Point up = new Point(e.x, e.y);
-		dragPortIndex = findPortAt(up.x, up.y);
+		dragPortIndex = findPortAt(e.x, e.y);
 		if (dragPortIndex == -1) {
-			dragPointIndex = findPointAt(up.x, up.y);
+			dragPointIndex = findPointAt(e.x, e.y);
 			if (dragPointIndex == -1 && getShape() instanceof PointList) {
 				if (getPointCount() == 1) {
 					dragPointIndex = 0;
 					newPoint = true;
 				} else {
-					int index = getNearestSegment(up, 15);
+					int index = getNearestSegment(new Point(e.x, e.y), 15);
 					
 					if (index != -1) {
 						dragPointIndex = index + 1;
