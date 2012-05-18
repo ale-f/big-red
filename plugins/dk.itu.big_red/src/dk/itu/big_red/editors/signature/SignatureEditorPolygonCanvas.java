@@ -23,6 +23,7 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
@@ -419,11 +420,10 @@ MenuListener, PropertyChangeListener {
 	public void mouseDown(MouseEvent e) {
 		if (e.button != 1 || (e.stateMask & SWT.MODIFIER_MASK) != 0)
 			return;
-		Point p = roundToGrid(e.x, e.y),
-		      up = new Point(e.x, e.y);
+		Point up = new Point(e.x, e.y);
 		dragPortIndex = findPortAt(up.x, up.y);
 		if (dragPortIndex == -1) {
-			dragPointIndex = findPointAt(p.x, p.y);
+			dragPointIndex = findPointAt(up.x, up.y);
 			if (dragPointIndex == -1 && getShape() instanceof PointList) {
 				if (getPointCount() == 1) {
 					dragPointIndex = 0;
@@ -506,11 +506,12 @@ MenuListener, PropertyChangeListener {
 	
 	@Override
 	public void paintControl(PaintEvent e) {
+		Cursor cursor = Cursors.ARROW;
+		
 		GC gc = e.gc;
 		
 		gc.setAntialias(SWT.ON);
 		gc.setLineWidth(2);
-		setCursor(Cursors.ARROW);
 		
 		if (getEnabled() == false) {
 			gc.setBackground(ColorConstants.lightGray);
@@ -613,10 +614,12 @@ MenuListener, PropertyChangeListener {
 			
 			int pointAtCursor = findPointAt(roundedMousePosition.x, roundedMousePosition.y);
 			if (pointAtCursor != -1 && pointAtCursor != dragPointIndex)
-				setCursor(Cursors.NO);
+				cursor = Cursors.NO;
 			
 			gc.setAlpha(255);
 		}
+		
+		setCursor(cursor);
 	}
 
 	private int tippedPoint, tippedPort;
