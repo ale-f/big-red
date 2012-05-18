@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.ui.services.IDisposable;
 
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.changes.Change;
@@ -22,7 +21,7 @@ import dk.itu.big_red.model.changes.ChangeGroup;
  * @see Layoutable
  *
  */
-public abstract class ModelObject implements IDisposable {
+public abstract class ModelObject {
 	public abstract class ModelObjectChange extends Change {
 		/**
 		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
@@ -163,7 +162,6 @@ public abstract class ModelObject implements IDisposable {
 		return new ChangeExtendedData(key, newValue, validator);
 	}
 	
-	@Override
 	public void dispose() {
 		PropertyChangeListener[] pls =
 			listeners.getPropertyChangeListeners().clone();
