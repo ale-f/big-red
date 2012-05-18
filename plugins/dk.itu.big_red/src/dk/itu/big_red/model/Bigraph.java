@@ -189,16 +189,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		return null;
 	}
 	
-	@Override
-	public Rectangle getRootLayout() {
-		return new Rectangle();
-	}
-	
-	@Override
-	public Rectangle getRootLayout(IPropertyProvider context) {
-		return getRootLayout();
-	}
-	
 	private final PropertyChangeListener childListener =
 			new PropertyChangeListener() {
 		@Override

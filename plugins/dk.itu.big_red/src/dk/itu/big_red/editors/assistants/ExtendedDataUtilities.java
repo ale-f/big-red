@@ -427,11 +427,9 @@ public final class ExtendedDataUtilities {
 				Port p = (Port)l;
 				r = new Rectangle(0, 0, 10, 10);
 				PointList polypt = p.getParent().getFittedPolygon();
-				double distance =
-					ExtendedDataUtilities.getDistance(context, p.getSpec());
+				double distance = getDistance(context, p.getSpec());
 				if (polypt != null) {
-					int segment =
-						ExtendedDataUtilities.getSegment(context, p.getSpec());
+					int segment = getSegment(context, p.getSpec());
 					org.eclipse.draw2d.geometry.Point
 						p1 = polypt.getPoint(segment),
 						p2 = polypt.getPoint((segment + 1) % polypt.size());
@@ -440,7 +438,7 @@ public final class ExtendedDataUtilities {
 				} else {
 					r.setLocation(
 						new Ellipse(
-							ExtendedDataUtilities.getLayout(p.getParent()).getCopy().setLocation(0, 0)).
+							getLayout(p.getParent()).getCopy().setLocation(0, 0)).
 							getPointFromOffset(distance).translate(-5, -5));
 				}
 			} else if (l instanceof Edge) {
@@ -450,7 +448,7 @@ public final class ExtendedDataUtilities {
 				if (s != 0) {
 					int tx = 0, ty = 0;
 					for (Point p : points) {
-						Rectangle rect = p.getRootLayout(context);
+						Rectangle rect = getRootLayout(context, p);
 						tx += rect.x; ty += rect.y;
 					}
 					r.setLocation(tx / s, ty / s);
@@ -472,5 +470,21 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeLayout(Layoutable l, Rectangle r) {
 		return l.changeExtendedData(LAYOUT, r);
+	}
+	
+	public static Rectangle getRootLayout(Layoutable l) {
+		return getRootLayout(null, l);
+	}
+	
+	public static Rectangle getRootLayout(
+			IPropertyProvider context, Layoutable l) {
+		Rectangle r = getLayout(context, l), r2;
+		if (r != null) {
+			r = r.getCopy();
+			while ((l = l.getParent(context)) != null &&
+					(r2 = getLayout(context, l)) != null)
+				r.translate(r2.x, r2.y);
+		}
+		return r;
 	}
 }

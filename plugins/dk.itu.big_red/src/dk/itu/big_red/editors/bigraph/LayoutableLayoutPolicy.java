@@ -54,7 +54,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			LayoutableRelayoutCommand cmd2 = new LayoutableRelayoutCommand();
 			cmd2.setModel(child.getModel());
 			cmd2.setLayout(
-					layout.translate(self.getRootLayout().getTopLeft()));
+					layout.translate(ExtendedDataUtilities.getRootLayout(self).getTopLeft()));
 			cmd = cmd2;
 		}
 		return cmd.prepare();

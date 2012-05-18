@@ -119,20 +119,6 @@ public abstract class Layoutable extends ModelObject {
 	private Container parent = null;
 	
 	/**
-	 * Gets a copy of the layout of this object relative to the top-left of the
-	 * root {@link Bigraph} rather than the immediate parent.
-	 * @return the current layout relative to the root
-	 */
-	public Rectangle getRootLayout() {
-		return getRootLayout(null);
-	}
-
-	public Rectangle getRootLayout(IPropertyProvider context) {
-		return ExtendedDataUtilities.getLayout(context, this).getCopy().translate(
-				getParent(context).getRootLayout(context).getTopLeft());
-	}
-	
-	/**
 	 * Returns the {@link Bigraph} that ultimately contains this object.
 	 * @return a Bigraph
 	 */
