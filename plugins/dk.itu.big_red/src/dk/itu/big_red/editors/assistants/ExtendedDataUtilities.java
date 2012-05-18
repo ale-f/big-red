@@ -222,13 +222,18 @@ public final class ExtendedDataUtilities {
 		if (s == null) {
 			INamePolicy p = getParameterPolicy(context, n.getControl());
 			if (p != null)
-				s = p.get(0);
+				set(context, n, PARAMETER, s = p.get(0));
 		}
 		return s;
 	}
 	
 	public static void setParameter(Node n, String s) {
-		n.setExtendedData(PARAMETER, s);
+		setParameter(null, n, s);
+	}
+	
+	public static void setParameter(
+			IPropertyProvider context, Node n, String s) {
+		set(context, n, PARAMETER, s);
 	}
 	
 	public static Change changeParameter(Node n, String s) {
@@ -388,7 +393,12 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setLabel(Control c, String s) {
-		c.setExtendedData(LABEL, s);
+		setLabel(null, c, s);
+	}
+	
+	public static void setLabel(
+			IPropertyProvider context, Control c, String s) {
+		set(context, c, LABEL, s);
 	}
 	
 	public static Change changeLabel(Control c, String s) {
@@ -451,8 +461,13 @@ public final class ExtendedDataUtilities {
 		return r;
 	}
 	
-	public static void setLabel(Layoutable l, Rectangle r) {
-		l.setExtendedData(LAYOUT, r);
+	public static void setLayout(Layoutable l, Rectangle r) {
+		setLayout(null, l, r);
+	}
+	
+	public static void setLayout(
+			IPropertyProvider context, Layoutable l, Rectangle r) {
+		set(context, l, LAYOUT, r);
 	}
 	
 	public static Change changeLayout(Layoutable l, Rectangle r) {
