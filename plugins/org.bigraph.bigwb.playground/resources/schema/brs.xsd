@@ -11,32 +11,241 @@
 -->
 <xsd:schema xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.itu.dk/research/pls/xmlns/2010/bigraph">
 
-<xsd:group name="anyForeignElements">
+	<xsd:group name="anyForeignElements">
 		<xsd:sequence>
-			<xsd:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
+			<xsd:any namespace="##other"
+				processContents="lax"
+				minOccurs="0"
+				maxOccurs="unbounded" />
 		</xsd:sequence>
-	</xsd:group>            
+	</xsd:group>
 
-<xsd:element name="bigraph">
+	<xsd:annotation>
+		<xsd:documentation>
+			<html xmlns="http://www.w3.org/1999/xhtml">
+				<body>
+					<a id="spec" />
+					<h2>
+						<code>spec</code>
+					</h2>
+					<h3>
+						Children
+					</h3>
+					<p>
+						<code>spec</code>s MUST contain:
+					</p>
+					<ul>
+						<li>
+							at most one <a href="#signature">signature</a>, followed by
+						</li>
+						<li>
+							zero or more <a href="#rule">rule</a>s, followed by
+						</li>
+						<li>
+							at most one <a href="#model">model</a>s, followed by
+						</li>
+						<li>
+							zero or more elements from other namespaces.
+						</li>
+					</ul>
+					<h3>
+						Attributes
+					</h3>
+					<p>
+						No attributes are defined for <code>spec</code>s.
+					</p>
+					<p>
+						Attributes from other namespaces MAY be present on <code>spec</code>s.
+					</p>
+					<hr />
+				</body>
+			</html>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="brs">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:group ref="bigraph:anyForeignElements"/>
+				<xsd:element ref="brs:signature" minOccurs="0" />
+				<xsd:element ref="brs:rule" minOccurs="0" maxOccurs="unbounded" />
+				<xsd:element ref="brs:model" minOccurs="0" maxOccurs="unbounded" />
+				<xsd:group ref="brs:anyForeignElements" />
 			</xsd:sequence>
-			<xsd:attribute name="src" type="xsd:string"/>
-			<xsd:anyAttribute namespace="##other" processContents="lax"/>
+			<xsd:anyAttribute namespace="##other"
+				processContents="lax" />
 		</xsd:complexType>
 	</xsd:element>
 
-<xsd:element name="signature">
+	<xsd:annotation>
+		<xsd:documentation>
+			<html xmlns="http://www.w3.org/1999/xhtml">
+				<body>
+					<a id="signature" />
+					<h2>
+						<code>signature</code>
+					</h2>
+					<h3>
+						Children
+					</h3>
+					<p>
+						<code>signature</code>s MAY contain:
+					</p>
+					<ul>
+						<li>
+							zero or more elements from other namespaces.
+						</li>
+					</ul>
+					<h3>
+						Attributes
+					</h3>
+					<p>
+						The following attributes MAY be present:
+					</p>
+					<ul>
+						<a id="signature_src" />
+						<li>
+							<code>src</code> (<code>string</code>): specifies the path to this simulation spec's <i>signature</i>.
+							<br />
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a <code>&lt;signature&gt;</code> document.
+						</li>
+					</ul>
+					<p>
+						Additionally, attributes from other namespaces MAY be present on <code>signature</code>s.
+					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;signature&gt;</code> document defining this simulation spec's signature.
+					</p>
+					<hr />
+				</body>
+			</html>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="signature">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:group ref="bigraph:anyForeignElements"/>
+				<xsd:group ref="brs:anyForeignElements" />
 			</xsd:sequence>
-			<xsd:attribute name="src" type="xsd:string"/>
-			<xsd:anyAttribute namespace="##other" processContents="lax"/>
+			<xsd:attribute name="src" type="xsd:string" />
+			<xsd:anyAttribute namespace="##other"
+				processContents="lax" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:annotation>
+		<xsd:documentation>
+			<html xmlns="http://www.w3.org/1999/xhtml">
+				<body>
+					<a id="rule" />
+					<h2>
+						<code>rule</code>
+					</h2>
+					<h3>
+						Children
+					</h3>
+					<p>
+						<code>rule</code>s MAY contain:
+					</p>
+					<ul>
+						<li>
+							zero or more elements from other namespaces.
+						</li>
+					</ul>
+					<h3>
+						Attributes
+					</h3>
+					<p>
+						The following attributes MAY be present:
+					</p>
+					<ul>
+						<a id="rule_src" />
+						<li>
+							<code>src</code> (<code>string</code>): specifies the path to one of this simulation spec's <i>rules</i>.
+							<br />
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a <code>&lt;rule&gt;</code> document.
+						</li>
+					</ul>
+					<p>
+						Additionally, attributes from other namespaces MAY be present on <code>rule</code>s.
+					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;rule&gt;</code> document defining a rule for this simulation spec.
+					</p>
+					<hr />
+				</body>
+			</html>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="rule">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="spec:anyForeignElements" />
+			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string" />
+			<xsd:anyAttribute namespace="##other"
+				processContents="lax" />
 		</xsd:complexType>
 	</xsd:element>
 
-
-
+	<xsd:annotation>
+		<xsd:documentation>
+			<html xmlns="http://www.w3.org/1999/xhtml">
+				<body>
+					<a id="model" />
+					<h2>
+						<code>model</code>
+					</h2>
+					<h3>
+						Children
+					</h3>
+					<p>
+						<code>model</code>s MAY contain:
+					</p>
+					<ul>
+						<li>
+							zero or more elements from other namespaces.
+						</li>
+					</ul>
+					<h3>
+						Attributes
+					</h3>
+					<p>
+						The following attributes MAY be present:
+					</p>
+					<ul>
+						<a id="model_src" />
+						<li>
+							<code>src</code> (<code>string</code>): specifies the path to this simulation spec's <i>model</i>.
+							<br />
+							If this attribute is present, it SHOULD be a path, relative to the directory that contains this simulation spec, to a <code>&lt;bigraph&gt;</code> document.
+						</li>
+					</ul>
+					<p>
+						Additionally, attributes from other namespaces MAY be present on <code>model</code>s.
+					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;bigraph&gt;</code> document defining the model for this simulation spec.
+					</p>
+					<hr />
+				</body>
+			</html>
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:element name="model">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="spec:anyForeignElements" />
+			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string" />
+			<xsd:anyAttribute namespace="##other"
+				processContents="lax" />
+		</xsd:complexType>
+	</xsd:element>
 </xsd:schema>

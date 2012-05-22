@@ -65,11 +65,13 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
+import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 
 
 import it.uniud.bigredit.editparts.PartFactory;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
+import it.uniud.bigredit.model.load_save.savers.BRSXMLSaver;
 
 public class PlayEditor extends BigraphEditor {
 	public static final String ID = "it.uniud.bigredit.BigreditEditor";
@@ -319,11 +321,12 @@ public class PlayEditor extends BigraphEditor {
 	@Override
 	protected void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
-		new BigraphXMLSaver().setModel(getBRSModel()).setFile(f).
+		new BRSXMLSaver().setModel(getBRSModel()).setFile(f).
 			setOutputStream(os).exportObject();
 		
 		getCommandStack().markSaveLocation();
-		firePropertyChange(IEditorPart.PROP_DIRTY);
+		firePropertyChange(IEditorPart.PROP_DIRTY);		
+		
 	}
 
 	@Override

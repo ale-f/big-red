@@ -16,6 +16,7 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Signature;
 
+import dk.itu.big_red.model.SimulationSpec.ChangeModel;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
@@ -322,9 +323,27 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	}
 	
 
-
-
-
+    public List<Reaction> getRules(){
+    	List<Reaction> list=new ArrayList<Reaction>();
+    	for(ModelObject mo: this.getChildren()){
+    		if(mo instanceof Reaction){
+    			list.add((Reaction)mo);
+ 
+    		}
+    	}
+    	return list;
+    }
+    
+    public List<Bigraph> getModels(){
+    	List<Bigraph> list=new ArrayList<Bigraph>();
+    	for(ModelObject mo: this.getChildren()){
+    		if(mo instanceof Bigraph){
+    			list.add((Bigraph)mo);
+    		}
+    	}
+    	return list;
+    }
+    
 
 
 

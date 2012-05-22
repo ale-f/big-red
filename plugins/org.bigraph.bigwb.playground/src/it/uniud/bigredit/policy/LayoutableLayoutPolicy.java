@@ -15,10 +15,10 @@ import it.uniud.bigredit.command.CompositionCommand;
 import it.uniud.bigredit.command.LayoutableAddCommand;
 import it.uniud.bigredit.command.LayoutableCreateCommand;
 import it.uniud.bigredit.command.LayoutableRelayoutCommand;
+import it.uniud.bigredit.command.ReactionCommand;
 import it.uniud.bigredit.editparts.BigreditRootEditPart;
 import it.uniud.bigredit.model.Reaction;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -73,6 +73,13 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			}
 		}else if(child instanceof ReactionPart){
 			/** TODO FILL with matching / composition */
+			ModelObject target = ( ModelObject )getHost().getModel();
+			if ( target != null ) {
+				return new ReactionCommand( ( Reaction )child.getModel(), (Bigraph)target
+						            );
+			}
+			
+			
 		}else{
 			command = new LayoutableAddCommand();
 			command.setParent(getHost().getModel());
@@ -127,7 +134,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		}
 		
 		if (parent instanceof Container) {
-		 size.setSize(ExtendedDataUtilities.getLayout(((Layoutable) requestObject)).getSize());
+		 size.setSize(((Layoutable) requestObject).getLayout().getSize());
 		}
 		
 		

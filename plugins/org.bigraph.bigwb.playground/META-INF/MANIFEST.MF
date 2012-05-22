@@ -16,3 +16,6 @@ Import-Package: org.eclipse.core.resources,
  org.eclipse.ui.part,
  org.eclipse.ui.views.contentoutline,
  org.eclipse.ui.views.properties
+Bundle-ClassPath: lib/samples-2.1.2.jar,
+ .,
+ lib/choco-solver-2.1.2-with-sources.jar

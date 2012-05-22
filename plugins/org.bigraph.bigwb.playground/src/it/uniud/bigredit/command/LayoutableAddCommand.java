@@ -2,7 +2,6 @@ package it.uniud.bigredit.command;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -29,22 +28,22 @@ public class LayoutableAddCommand extends ChangeCommand {
 			
 			if (!(child instanceof Edge)) {
 				for (Layoutable i : parent.getChildren()) {
-					if (ExtendedDataUtilities.getLayout(i).intersects(constraint))
+					if (i.getLayout().intersects(constraint))
 						return this;
 				}
-				if (!ExtendedDataUtilities.getLayout(parent).getCopy().setLocation(0, 0).contains(constraint))
+				if (!parent.getLayout().getCopy().setLocation(0, 0).contains(constraint))
 					return this;
 			}
 			
 			Rectangle nr = constraint;
 			
 			if (child instanceof Edge) {
-				nr.translate(ExtendedDataUtilities.getRootLayout(parent).getTopLeft());
+				nr.translate(parent.getRootLayout().getTopLeft());
 				parent = parent.getBigraph();
 			}
 			
 			cg.add(parent.changeAddChild(child, child.getName()),
-					ExtendedDataUtilities.changeLayout(child, nr));
+					child.changeLayout(nr));
 		}
 		return this;
 	}

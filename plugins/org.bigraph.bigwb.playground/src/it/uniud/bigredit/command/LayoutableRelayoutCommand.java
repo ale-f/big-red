@@ -4,7 +4,6 @@ import it.uniud.bigredit.model.BRS;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
@@ -60,7 +59,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		}else{
 			setTarget(((Layoutable)model).getBigraph());
 			if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
-				cg.add(ExtendedDataUtilities.changeLayout(((Layoutable)model), layout));
+				cg.add(((Layoutable)model).changeLayout(layout));
 		}
 		return this;
 	}
@@ -69,7 +68,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		for (Layoutable i : ((Layoutable)model).getParent().getChildren()) {
 			if (i instanceof Edge || i == model)
 				continue;
-			else if (ExtendedDataUtilities.getLayout(i).intersects(layout))
+			else if (i.getLayout().intersects(layout))
 				return false;
 		}
 		return true;

@@ -25,8 +25,6 @@ package org.bigraph.uniud.bigraph.match;
 
 import org.eclipse.core.runtime.IAdaptable;
 
-import it.uniud.bigredit.model.MatchData;
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -54,13 +52,12 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.IRoot;
 
-public class PlaceMatch {
+public class CopyOfPlaceMatch {
 
 	
 	public static BidiMap<Integer, Layoutable> listAgent=new BidiMap<Integer, Layoutable>();
@@ -69,17 +66,8 @@ public class PlaceMatch {
 	public static HashMap<Integer,Integer[]> succListRedex=new HashMap<Integer,Integer[]>(); 
 	public static List<Integer> listRootRedex = new ArrayList<Integer>();
 	public static int numRootRedex;
-	private static BidiMap<Link,Link> maplinkAgent_Redex;
 	
-	public static ArrayList<MatchData> match(Bigraph agent, Bigraph redex) {
-		
-		listAgent=new BidiMap<Integer, Layoutable>();
-		listRedex=new BidiMap<Integer, Layoutable>();
-		succListAgent=new HashMap<Integer,Integer[]>(); 
-		succListRedex=new HashMap<Integer,Integer[]>(); 
-		listRootRedex = new ArrayList<Integer>();
-		numRootRedex=0;
-		maplinkAgent_Redex=new BidiMap<Link,Link>();
+	public static void match(Bigraph agent, Bigraph redex) {
 		
         /** Place graph Matching */		
 		
@@ -106,6 +94,8 @@ public class PlaceMatch {
 		int numberCSinR=succListRedex.size();   //3; //number of Control/Site in Redex
 		numRootRedex=listRootRedex.size();
 		//2-create the variables
+		//initialize the matrix with 0, length, with matrixValue Poxibility
+		//IntegerVariable[] matrix= Choco.makeIntVarArray("m", numberCSinA*numberCSinR, 0, matrixValue);
 		IntegerVariable[][] matrix = new IntegerVariable[numberCSinA][numberCSinR];
 		
 		for(int i=0; i<numberCSinA;i++){
@@ -119,24 +109,17 @@ public class PlaceMatch {
 		//row constraints: (row without roots) <=1
 		
 		IntegerVariable[][] varRow = new IntegerVariable[numberCSinA][numberCSinR-listRootRedex.size()];
-		IntegerVariable[][] varRoot = new IntegerVariable[numberCSinA][listRootRedex.size()];
 		for(int i=0; i<numberCSinA;i++){
 			int k = 0;
-			int r= 0;
 			
 			for (int j = 0; j < numberCSinR; j++) {
 				//if j not Root
 				if(!(listRootRedex.contains(j))){
 					varRow[i][k]=matrix[i][j];
 					k++;
-				}else{
-					varRoot[i][r]=matrix[i][j];
-					r++;
 				}
 			}
-			for (int t =0; t < varRoot[i].length;t++){
-				m.addConstraint(Choco.leq(Choco.sum(varRow[i]),Choco.minus(1, varRoot[i][t])));
-			}
+			m.addConstraint(Choco.leq(Choco.sum(varRow[i]),1));
 			System.out.println(Choco.sum(varRow[i]) +" <= 1");
 		}
 		
@@ -165,14 +148,90 @@ public class PlaceMatch {
 		 * }
 		 */
 
+		/*for (int i = 0; i < numberCSinA; i++) {
+			for (int j = 0; j < numberCSinR; j++) {
+				
+				if (succListAgent.get(i) != null) {
+					
+					
+						
+					
+					for (int k = 0; k < succListAgent.get(i).length; k++) {
+						
+						
+						int successor = succListAgent.get(i)[k];
+						if(succListAgent.get(i).length>0){
+							m.addConstraint(Choco.leq(Choco.sum(matrix[i]),Choco.sum(matrix[successor]) ));
+							System.out.println(Choco.sum(matrix[i])+" <= " + Choco.sum(matrix[successor]) );
+						}
+						
+						//System.out.println("successor" + successor);
+
+						if (succListRedex.get(j) != null) {
+		
+							int nsuccRedex = succListRedex.get(j).length;
+							IntegerVariable[] test = new IntegerVariable[nsuccRedex];
+							
+							for (int q = 0; q < nsuccRedex; q++) {
+								test[q] = matrix[successor][succListRedex
+										.get(j)[q]];
+							}
+							System.out.print(matrix[i][j].getName() +" = ");
+							for (int q = 0; q < nsuccRedex; q++) {
+								System.out.print(matrix[successor][succListRedex
+										.get(j)[q]].getName() + "  ");
+							}
+							if(nsuccRedex>0){
+								m.addConstraint(Choco.leq(matrix[i][j],Choco.sum(test) ));
+								System.out.print(matrix[i][j] +" = " + Choco.sum(test).toString());
+							}
+							
+							System.out.println("");
+						}
+					}
+				}
+				
+			}
+		}*/
+		
+		/*for (int i = 0; i < numberCSinA; i++) {
+			for (int j = 0; j < numberCSinR; j++) {
+				for (int k = 0; k < succListRedex.get(j).length; k++) {
+				
+
+					int nsuccRedex = succListRedex.get(j).length;
+					int nsuccAgent = succListAgent.get(i).length;
+					IntegerVariable[] test = new IntegerVariable[nsuccAgent];
+					
+					
+					
+					for (int q = 0; q 
+							< nsuccAgent; q++) {
+						test[q] = matrix[succListAgent.get(i)[q]][
+								succListRedex.get(j)[k]];
+						m.addConstraint(Choco.leq(Choco.sum(matrix[i]),Choco.sum(matrix[succListAgent.get(i)[q]]) ));
+						System.out.println(Choco.sum(matrix[i]) + "<= " +Choco.sum(matrix[succListAgent.get(i)[q]]) );
+					}
+					//if(nsuccAgent >0){
+					m.addConstraint(Choco.eq(matrix[i][j],Choco.sum(test) ));
+					System.out.println(matrix[i][j] +"==" + Choco.sum(test) );
+					//}
+				
+				}
+			}
+		
+		}*/
 		
 		
 		for (int i = 0; i < numberCSinA; i++) {
-			
-			
 			for (int j = 0; j < numberCSinR; j++) {
 				// rule has parent !(listRedex.get(j) instanceof Site))
 				if(!(listRedex.get(j) instanceof Root)) {
+					//System.out.println("parent redex " + j +" "+ getParentRedex(j));
+					//System.out.println("parent agent " + i +" "+  getParentAgent(i));
+					/*if(listRedex.get(j).getType() != listRedex.get(i).getType()){
+						matrix[i][j].setUppB(0);
+					}*/
 					
 					/** Selected node in Redex is not an instance of Root */
 					
@@ -190,21 +249,7 @@ public class PlaceMatch {
 						 */
 						
 						m.addConstraint(Choco.geq(matrix[getParentAgent(i)][getParentRedex(j)],matrix[i][j]));
-						System.out.println(matrix[getParentAgent(i)][getParentRedex(j)] +" >= "+matrix[i][j]);
-						
-						/** new contraint to verify 
-						 * 
-						 * for each node if != from site  father <= son
-						 * 
-						 * */
-						
-						if (!(listRedex.get(j) instanceof Site)){
-							for(int son=0; son<succListAgent.get(i).length;son++){
-								m.addConstraint(Choco.leq(matrix[i][j], Choco.sum(matrix[succListAgent.get(i)[son]])));
-							}
-						}
-						
-
+						System.out.println(matrix[getParentAgent(i)][getParentRedex(j)] +" == "+matrix[i][j]);
 					}
 					
 					
@@ -219,8 +264,6 @@ public class PlaceMatch {
 						matrix[i][j].setUppB(0);
 					}
 				}
-				
-
 					
 					
 				}else{
@@ -233,26 +276,31 @@ public class PlaceMatch {
 					
 					int anchestor=getParentAgent(i);
 					while (anchestor != -1) {
-						if (!(listAgent.get(anchestor) instanceof Root)) {
-
-							m.addConstraint(Choco.leq(Choco.sum(
-									Choco.sum(matrix[anchestor]),
-									Choco.mult(numRootRedex, matrix[i][j])),
-									numRootRedex));
-						}
+						m.addConstraint(Choco.leq(
+								Choco.sum(Choco.sum(matrix[anchestor]),
+										Choco.mult(numRootRedex, matrix[i][j])),
+								numRootRedex));
 						anchestor = getParentAgent(anchestor);
-
 					}
 
 				}
 	
-
-				
-				
 			}		
 		}
 		
-
+		/*is a node in Agent is selected, is selected at least one of his sons */
+		/*for (int i = 0; i < numberCSinA; i++) {
+			int length=succListAgent.get(i).length;
+			if (length>0){
+			IntegerExpressionVariable[] test = new IntegerExpressionVariable[length];
+			for (int q = 0; q 
+					< length; q++) {
+				test[q] = Choco.sum(matrix[succListAgent.get(i)[q]]);
+			}
+			//m.addConstraint(Choco.leq(Choco.sum(matrix[i]), Choco.sum(test)));
+			System.out.println(Choco.sum(matrix[i]) +"  <= "+ Choco.sum(test));
+			}
+		}*/
 		
 		
 		
@@ -269,8 +317,6 @@ public class PlaceMatch {
 		//s.solveAll();
 		System.out.println("solution count: "+s.getSolutionCount());
 		//s.solveAll();
-		
-		ArrayList<MatchData> matchList= new ArrayList<MatchData>();
 		
 		int[][] input= new int[numberCSinA][numberCSinR];
 		/* READ SOLUTIONS*/
@@ -292,9 +338,9 @@ public class PlaceMatch {
 				System.out.println("-------------------- solution number: "
 						+ s.getSolutionCount());
 				
+				
 				if(linkMatch(input)){
 					System.out.println("link matches!");
-					matchList.add(getSolution(input));
 				}else{
 					System.out.println("link DON'T match!");
 				}
@@ -303,9 +349,6 @@ public class PlaceMatch {
 		//}
 			
 		}while(s.nextSolution());
-		
-		
-		return matchList;
 				
 	/** TODO check signature of agent and redex */
 				
@@ -356,22 +399,16 @@ public class PlaceMatch {
 			BidiMap<Integer, Layoutable> mapGraph) {
 		explorei = 0;
 		exploremax = 0;
-		if (bigraph == null) {
-			System.out.println("Bigraph == null");
-		}
-		for (Layoutable r : bigraph.getChildren()) {   // ).getRoots()) {
+		if (bigraph == null){System.out.println("Bigraph == null");}
+		for (Layoutable r : bigraph.getRoots()) {
 
 			if (r instanceof Container) {
 				explore((Container) r, succList, mapGraph);
 			} else {
-				if (!(r instanceof Edge || r instanceof OuterName)) {
-					succList.put(explorei, new Integer[] {});
-					mapGraph.put(explorei, (Layoutable) r);
-					explorei++;
-					exploremax++;
-				} else {
-					System.out.println("edge || outer");
-				}
+				succList.put(explorei, new Integer[] {});
+				mapGraph.put(explorei, (Layoutable) r);
+				explorei++;
+				exploremax++;
 
 			}
 		}
@@ -403,7 +440,7 @@ public class PlaceMatch {
 			BidiMap<Integer, Layoutable> mapGraph) {
 		explorei = 0;
 		exploremax = 0;
-		for (Layoutable r : bigraph.getChildren()){//getRoots()) {
+		for (Layoutable r : bigraph.getRoots()) {
 
 			for (Layoutable l : ((Container) r).getChildren()) {
 
@@ -423,14 +460,7 @@ public class PlaceMatch {
 	private static void explore(Container container,
 			HashMap<Integer, Integer[]> list,
 			BidiMap<Integer, Layoutable> mapGraph) {
-		int max=0;
-		//if(container instanceof Bigraph){
-		//    max=((Bigraph)container).getRoots().size();
-		    
-		//}else{
-			max=container.getChildren().size();
-		//}
-		System.out.println("max: " + max);
+		int max = container.getChildren().size();
 		Integer[] array = new Integer[max];
 		list.put(explorei, array);
 		mapGraph.put(explorei, container);
@@ -438,16 +468,9 @@ public class PlaceMatch {
 		exploremax++;
 		int j = 0;
 		for (Layoutable l : container.getChildren()) {
-			if(l instanceof Edge || l instanceof OuterName){
-				System.out.println("super fist");
-			}
-			
+			exploremax = exploremax++;
 			array[j] = exploremax;
 			j++;
-			if (l instanceof Site){
-				System.out.println("site expl-i: " + explorei +" exp-max: "+ exploremax+ " j: "+ j);
-				exploremax++;
-			}
 			if (l instanceof Container) {
 				explore((Container) l, list, mapGraph);
 			} else {
@@ -480,7 +503,7 @@ public class PlaceMatch {
 	}
 
 	
-	
+	private static BidiMap<Link,Link> maplinkAgent_Redex;
 	
 	
 	private static int getMatchingAgent(int[][] input, int column){
@@ -494,7 +517,26 @@ public class PlaceMatch {
 	}
 	
 	
+	
+	
+	/*private static void addBigraph(HashMap<Integer,Integer[]> succListAgent, HashMap<Integer,Integer[]> succListRedex){
+		//Bigraph  B.( B | B) | B.(B | B) -
+		
+		succListAgent.put(0, (new Integer[]{1,2}));
+		succListAgent.put(1, (new Integer[]{}));
+		succListAgent.put(2, (new Integer[]{}));
+		
+		succListAgent.put(3, (new Integer[]{4,5}));
+		succListAgent.put(4, (new Integer[]{}));
+		succListAgent.put(5, (new Integer[]{}));
+		
+		succListRedex.put(0, (new Integer[]{}));
+				
+				/*(new Integer[]{1,2}));
+		succListRedex.put(1, (new Integer[]{}));
+		succListRedex.put(2, (new Integer[]{}));*/
 
+	//}
 	
 	private static void fillRootRedex(){
 		for(int i=0;i< succListRedex.size();i++){
@@ -503,20 +545,6 @@ public class PlaceMatch {
 				listRootRedex.add(i);
 			}
 		}
-	}
-	
-	private static MatchData getSolution(int[][] input){
-		MatchData data= new MatchData();
-		for (int redexColumn = 0; redexColumn < succListRedex.size(); redexColumn++) {
-			int agentRow = getMatchingAgent(input, redexColumn);
-			Layoutable agentMatch = listAgent.get(agentRow);
-			Layoutable redexMatch = listRedex.get(redexColumn);
-			data.addRootMatch(redexMatch, agentMatch);
-		}
-		return data;
-		
-		
-		
 	}
 	
 	
@@ -530,12 +558,16 @@ public class PlaceMatch {
 			Layoutable agentMatch = listAgent.get(agentRow);
 			Layoutable redexMatch = listRedex.get(redexColumn);
 			System.out.println("match A: " + agentRow + " "+agentMatch.getType()+" " +agentMatch.getName() + ", R:" + redexColumn +" "+ redexMatch.getType()+" "+  redexMatch.getName()  );
-
+			/*if (!(agentMatch.getType().equals(redexMatch.getType()))) {
+				System.out.println("Type of node is different"
+						+ agentMatch.getType() + "  " + redexMatch.getType());
+				return false;
+			}*/
 
 			if (agentMatch instanceof Node && redexMatch instanceof Node) {
 				if (!(((Node) agentMatch).getControl().getName()
 						.equals(((Node) redexMatch).getControl().getName()))) {
-
+					// TODO verify this part of code
 					System.out.println("Type of Control is different"
 							+ ((Node) agentMatch).getControl() + " "
 							+ ((Node) redexMatch).getControl());
@@ -570,6 +602,11 @@ public class PlaceMatch {
 
 			}
 		}
+		
+		/*for(Link link: maplinkAgent_Redex){
+			
+			
+		}*/
 
 		return true;
 	}

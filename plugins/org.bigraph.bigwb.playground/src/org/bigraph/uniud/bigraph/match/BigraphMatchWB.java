@@ -8,6 +8,7 @@ import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IOuterName;
 import dk.itu.big_red.model.interfaces.IPort;
 import dk.itu.big_red.model.interfaces.IRoot;
+import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.interfaces.SignatureBuilder;
 
 
@@ -37,14 +38,17 @@ public class BigraphMatchWB {
 		
 		SignatureBuilder sb = new SignatureBuilder();
 		IControl c1 = sb.newControl("C1");
-		sb.newPort(c1, "0");
+		//sb.newPort(c1, "0");
 		BigraphBuilder bb = new BigraphBuilder(sb.finish());
 		IRoot R1 = bb.newRoot("1");
-		IOuterName O1 = bb.newOuterName("O1");
+		//IOuterName O1 = bb.newOuterName("O1");
 		INode n1 = bb.newNode(R1, c1, "a");
 		//Port p=((Node)n1).getPort("0");
 		//bb.newConnection(p, O1);
-		agent = (Bigraph)bb.finish();
+		INode n2 = bb.newNode(n1, c1, "b");
+		INode n3 = bb.newNode(R1, c1, "c");
+		
+		agent = bb.finish();
 		System.out.println(((Layoutable)n1).getParent().getName());
 		
 	}
@@ -53,14 +57,15 @@ public class BigraphMatchWB {
 		
 		SignatureBuilder sb = new SignatureBuilder();
 		IControl c1 = sb.newControl("C1");
-		sb.newPort(c1, "0");
+	
 		BigraphBuilder bb = new BigraphBuilder(sb.finish());
-		IRoot R1 = bb.newRoot("1");
-		IOuterName O1 = bb.newOuterName("O2");
+		IRoot R1 = bb.newRoot("0");
+		IRoot R2 = bb.newRoot("1");
+		
 		INode n1 = bb.newNode(R1, c1, "a");
-		//Port p=((Node)n1).getPort("0");
-		//bb.newConnection(p, O1);
-		redex = (Bigraph)bb.finish();
+		
+		ISite s1 = bb.newSite(R2, "0");
+		redex = bb.finish();
 	}
 	
 	
