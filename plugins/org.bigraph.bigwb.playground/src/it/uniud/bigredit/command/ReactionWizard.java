@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
@@ -443,7 +444,7 @@ public class ReactionWizard extends Wizard {
 			textAssignment.setText(matchNames.get(selection));
 			
 			ModelObject rr = matches.get( selection).getRoot();
-			Rectangle r = ((Layoutable)matches.get( selection ).getMappingData().get(rr)).getLayout();//     .match.get( rr ).reference.getEditPart().getFigure().getBounds() );
+			Rectangle r =  ExtendedDataUtilities.getLayout(((Layoutable)matches.get( selection ).getMappingData().get(rr)));//     .match.get( rr ).reference.getEditPart().getFigure().getBounds() );
 //			r.x -= BaseNode.MARGIN;
 //			r.y -= BaseNode.MARGIN;
 //			r.width  += 2 * BaseNode.MARGIN;
