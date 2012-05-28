@@ -6,6 +6,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import it.uniud.bigredit.policy.ReactionChangeValidator;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
@@ -29,9 +30,19 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	private Bigraph redex = null;
 	private Bigraph reactum = null;
 	private Rectangle redexLayout = new Rectangle(0,0,100,300);
-	private Rectangle reactumLayout = new Rectangle(100,0,100,300);;
+	private Rectangle reactumLayout = new Rectangle(100,0,100,300);
+	
+	private Signature sign;
 	
 	
+	public Signature getSign() {
+		return sign;
+	}
+
+	public void setSign(Signature sign) {
+		this.sign = sign;
+	}
+
 	public Bigraph getRedex()
 	{
 		return redex;
@@ -99,7 +110,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		public Rectangle layout;
 		
 		public ChangeLayoutChild(Bigraph child, Rectangle layout) {
-			System.out.println(layout);
 			this.child = child;
 			this.layout=layout;
 		}
@@ -144,7 +154,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	private void changeReactum(Bigraph reactum){
 		Bigraph oldReactum= this.reactum;
-		
 		this.reactum=reactum;
 		firePropertyChange(Reaction.PROPERTY_RULE,oldReactum, reactum);
 	}
@@ -206,6 +215,8 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}else if (child.equals(reactum)){
 			oldRect=reactumLayout;
 			reactumLayout=rectangle;
+		}else{
+			System.out.println("not a child");
 		}
 		firePropertyChange(Reaction.PROPERTY_RULE_LAYOUT,oldRect, rectangle);//children.get(child), rectangle);
 	}

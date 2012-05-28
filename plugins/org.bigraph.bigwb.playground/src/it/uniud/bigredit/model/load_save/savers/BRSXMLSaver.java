@@ -58,25 +58,19 @@ public class BRSXMLSaver extends XMLSaver {
 				ss.getSignature(), SignatureXMLSaver.class));
 		
 		for (Reaction rr : ss.getRules()){
+			Element t1=newElement(BRS, "brs:rule");
+			rr.setSign(ss.getSignature());
 			appendChildIfNotNull(e,
-				processOrReference(newElement(BRS, "brs:rule"),
-					rr, ReactionRuleXMLSaver.class));
-			
-//			Element pE = newElement(BIGREDIT_EDIT, "bigredit:rectangle");
-//			pE.setAttributeNS(BIGREDIT_EDIT, "big-red:x", "" + rr.);
-//			pE.setAttributeNS(BIGREDIT_EDIT, "big-red:y", "" + p.y);
-//			pE.setAttributeNS(BIGREDIT_EDIT, "big-red:width", "" + p.y);
-//			pE.setAttributeNS(BIGREDIT_EDIT, "big-red:hight", "" + p.y);
-//			
-//			appendChildIfNotNull(e, pE);
+				processOrReference(t1,
+					rr, ReactionXMLSaver.class));
+			Element pE = newElement(BIG_RED, "big-red:appearance");
+			Rectangle rect= ss.getChildrenConstraint(rr);
+			rectangleToElement(pE, rect);
+			t1.appendChild(pE);
+
 		}
 		
-		
 
-		
-		
-		
-		
 		for (Bigraph bb : ss.getModels()){
 			bb.setSignature(ss.getSignature());
 			Element t1=newElement(BRS, "brs:model");
