@@ -1,16 +1,20 @@
 package it.uniud.bigredit.model.load_save.loaders;
 
 
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
@@ -21,7 +25,6 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader;
-import dk.itu.big_red.model.load_save.loaders.SimulationSpecXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 import it.uniud.bigredit.model.BRS;
@@ -40,15 +43,17 @@ import it.uniud.bigredit.model.BRS;
 
 		
 		public static final String BRS =
-				"http://www.itu.dk/research/pls/xmlns/2012/testing";
+				"http://www.itu.dk/research/pls/xmlns/2012/brs";
 		
 		@Override
 		public BRS importObject() throws LoadFailedException {
 			try {
 				Document d =
 						validate(parse(source), "resources/schema/brs.xsd");
+				System.out.println("asdasdsadasd");
+				
 				BRS ss = makeObject(d.getDocumentElement());
-				//ExtendedDataUtilities.setFile(ss, getFile());
+				ExtendedDataUtilities.setFile(ss, getFile());
 				return ss;
 			} catch (Exception e) {
 				throw new LoadFailedException(e);
@@ -112,16 +117,30 @@ import it.uniud.bigredit.model.BRS;
 			BRS ss = new BRS();
 			ChangeGroup cg = new ChangeGroup();
 			
-//			Element signatureElement = getNamedChildElement(e, BRS, "signature");
-//			if (signatureElement != null)
+			Element signatureElement = getNamedChildElement(e, BRS, "signature");
+			if (signatureElement != null){
+				ss.setSignature(makeSignature(signatureElement));
+			}
 //				cg.add(ss.setSignature(makeSignature(signatureElement)));
-			
+//			
 //TODO:RULE			for (Element i : getNamedChildElements(e, BRS, "rule"))
 //				cg.add(ss.changeAddRule(makeRule(i)));
 //			
-			Element modelElement = getNamedChildElement(e, BRS, "model");
-			if (modelElement != null)
-				cg.add(ss.changeAddChild((ModelObject)makeBigraph(modelElement),""));
+			//Element modelElement = getNamedChildElement(e, BRS, "model");
+			
+			for (Element modelElement : getNamedChildElements(e, BRS, "model")){
+			if (modelElement != null){
+				ModelObject created=(ModelObject)makeBigraph(modelElement);
+				Element eA = getNamedChildElement(modelElement, BIG_RED, "appearance");
+				String width=eA.getAttribute("width");
+				String height=eA.getAttribute("height");
+				String x=eA.getAttribute("x");
+				String y=eA.getAttribute("y");
+				Rectangle rect=new Rectangle(Integer.parseInt(x),Integer.parseInt(y), Integer.parseInt(width),Integer.parseInt(height));
+				cg.add(ss.changeAddChild(created,""), ss.changeLayoutChild(created, rect));
+				
+				}
+			}
 			
 			try {
 				if (cg.size() != 0)

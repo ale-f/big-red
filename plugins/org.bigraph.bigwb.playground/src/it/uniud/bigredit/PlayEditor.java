@@ -331,19 +331,21 @@ public class PlayEditor extends BigraphEditor {
 
 	@Override
 	protected void initialiseActual() throws Throwable {
-		model = new BRS(this);// (BRS)loadInput();
+		model = (BRS)loadInput(); //;// (
 		
-		Bigraph input = (Bigraph)loadInput();
+		//Bigraph input = (Bigraph)loadInput();
+		
+		if(model == null ){System.out.println("BRS Model is null"); model= new BRS(this);}
 	    
 	    if (getBRSModel() == null) {
-	    	replaceWithError(new Exception("Model is null"));
+	    	replaceWithError(new Exception("BRS Model is null"));
 	    	return;
 	    } else updateNodePalette(nodeGroup, model.getSignature());
 	    
-	    if (input == null) {
+	    /*if (input == null) {
 	    	replaceWithError(new Exception("Model is null"));
 	    	return;
-	    } else updateNodePalette(nodeGroup, input.getSignature());
+	    } else updateNodePalette(nodeGroup, input.getSignature());*/
 	    
 	    getGraphicalViewer().setContents(model);
 	}

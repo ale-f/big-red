@@ -7,11 +7,43 @@
             class="it.uniud.bigredit.PlayEditor"
             contributorClass="dk.itu.big_red.editors.bigraph.BigraphEditorActionBarContributor"
             default="true"
-            extensions="bigraph-agent, bigraph"
+            extensions="bigraph-agent, bigraph,brs"
             icon="resources/icons/playground2.png"
             id="it.uniud.bigredit.BigreditEditor"
             name="Playground Editor">
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            file-extensions="brs"
+            id="org.bigraph.bigwb.playground.brs"
+            name="BRS"
+            priority="normal">
+      </content-type>
+   </extension>
+   <extension
+         point="dk.itu.big_red.import">
+      <importer
+            class="it.uniud.bigredit.model.load_save.loaders.BRSXMLLoader"
+            contentType="org.bigraph.bigwb.playground.brs"
+            icon="resources/icons/playground2.png"
+            id="org.bigraph.bigwb.playground.importer1"
+            name="BRS editor">
+      </importer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            class="it.uniud.bigredit.NewBrsWizard"
+            icon="resources/icons/playground2.png"
+            id="org.uniud.bigredit.NewBRSWizard"
+            name="Playground">
+         <description>
+            Create a new playground based on existing signature and agents
+         </description>
+      </wizard>
    </extension>
 
 </plugin>

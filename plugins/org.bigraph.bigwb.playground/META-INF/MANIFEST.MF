@@ -13,6 +13,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.eclipse.core.resources,
  org.eclipse.gef.commands,
  org.eclipse.gef.editpolicies,
+ org.eclipse.ui.dialogs,
  org.eclipse.ui.part,
  org.eclipse.ui.views.contentoutline,
  org.eclipse.ui.views.properties
