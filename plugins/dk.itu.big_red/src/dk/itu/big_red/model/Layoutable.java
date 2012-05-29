@@ -3,15 +3,12 @@ package dk.itu.big_red.model;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.names.Namespace;
 
 /**
@@ -158,23 +155,6 @@ public abstract class Layoutable extends ModelObject {
 	public Layoutable clone(Map<ModelObject, ModelObject> m) {
 		Layoutable l = (Layoutable)super.clone(m);
 		return l;
-	}
-	
-	/**
-	 * The space that should be present between any two {@link Layoutable}s
-	 * after a <i>relayout</i> has been applied.
-	 */
-	protected static final int PADDING = 25;
-	
-	/**
-	 * Creates {@link LayoutableChange}s which will resize this object to a sensible
-	 * default size.
-	 * @param cg a {@link ChangeGroup} to which changes should be appended
-	 * @return the proposed new size of this object
-	 */
-	protected Dimension relayout(IPropertyProvider context, ChangeGroup cg) {
-		cg.add(ExtendedDataUtilities.changeLayout(this, new Rectangle(0, 0, 50, 50)));
-		return new Dimension(50, 50);
 	}
 	
 	private String name = null;

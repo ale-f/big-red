@@ -132,7 +132,8 @@ public class BigraphXMLLoader extends XMLLoader {
 			if (cg.size() != 0)
 				bigraph.tryApplyChange(cg);
 			if (appearanceAllowed == Tristate.FALSE)
-				bigraph.tryApplyChange(bigraph.relayout());
+				bigraph.tryApplyChange(
+						ExtendedDataUtilities.relayout(bigraph));
 		} catch (ChangeRejectedException f) {
 			throw new LoadFailedException(f);
 		}

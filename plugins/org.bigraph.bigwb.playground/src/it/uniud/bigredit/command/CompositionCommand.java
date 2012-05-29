@@ -11,8 +11,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.ui.IWorkbenchPart;
-
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -21,7 +19,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -187,7 +184,7 @@ public class CompositionCommand extends Command {
 		cgA.clear();
 		cgB.clear();
 		
-		outer.relayout();
+		// outer.relayout();
 		
 		
 	}

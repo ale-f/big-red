@@ -10,15 +10,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.changes.IChangeValidator;
@@ -306,62 +303,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	@Override
 	public List<OuterName> getOuterNames() {
 		return only(null, OuterName.class);
-	}
-	
-	/**
-	 * Creates {@link ContainerChange}s which will (<i>almost</i> sensibly) resize and
-	 * reposition all of this {@link Bigraph}'s children.
-	 * @param cg a {@link ChangeGroup} to which changes should be appended
-	 * @return a {@link ChangeGroup} containing relayout changes
-	 */
-	public ChangeGroup relayout() {
-		return relayout(null);
-	}
-	
-	public ChangeGroup relayout(IPropertyProvider context) {
-		ChangeGroup cg = new ChangeGroup();
-		int progress = PADDING, top = PADDING;
-		Rectangle r = new Rectangle();
-		Dimension size;
-		
-		for (Layoutable i : getOuterNames()) {
-			r.setSize(size = i.relayout(context, cg));
-		
-			r.setLocation(progress, PADDING);
-			progress += size.width + PADDING;
-			if (top == PADDING)
-				top += size.height + PADDING;
-			
-			cg.add(ExtendedDataUtilities.changeLayout(i, r.getCopy()));
-		}
-		
-		for (Layoutable i : getRoots()) {
-			r.setSize(size = i.relayout(context, cg));
-
-			r.setLocation(PADDING, top);
-			top += size.height + PADDING;
-			
-			cg.add(ExtendedDataUtilities.changeLayout(i, r.getCopy()));
-		}
-		
-		progress = PADDING;
-		
-		for (Layoutable i : getInnerNames()) {
-			r.setSize(size = i.relayout(context, cg));
-
-			r.setLocation(progress, top);
-			progress += size.width + PADDING;
-			
-			cg.add(ExtendedDataUtilities.changeLayout(i, r.getCopy()));
-		}
-		
-		for (Link i : only(context, Link.class)) {
-			if (i instanceof Edge)
-				// cg.add(((Edge)i).changeReposition());
-			cg.add(ExtendedDataUtilities.changeOutline(i, Colour.random()));
-		}
-		
-		return cg;
 	}
 	
 	@Override

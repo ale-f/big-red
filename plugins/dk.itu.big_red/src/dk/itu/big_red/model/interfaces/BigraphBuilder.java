@@ -1,5 +1,6 @@
 package dk.itu.big_red.model.interfaces;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
@@ -66,7 +67,7 @@ public class BigraphBuilder {
 	public Bigraph finish() {
 		try {
 			b.tryApplyChange(cg);
-			b.tryApplyChange(b.relayout());
+			b.tryApplyChange(ExtendedDataUtilities.relayout(b));
 			return b;
 		} catch (ChangeRejectedException e) {
 			return null;
