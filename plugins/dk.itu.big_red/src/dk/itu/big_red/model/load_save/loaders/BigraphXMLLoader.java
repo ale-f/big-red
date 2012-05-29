@@ -175,9 +175,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		} else if (parameter == null && policy != null) {
 			addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,
 				"Default parameter value assigned.")); /* FIXME - details */
-			cg.add(model.changeParameter(policy.get(0)));
+			cg.add(ExtendedDataUtilities.changeParameter(model, policy.get(0)));
 		} else if (parameter != null && policy != null) {
-			cg.add(model.changeParameter(parameter));
+			cg.add(ExtendedDataUtilities.changeParameter(model, parameter));
 		}
 		
 		processContainer(e, model);
