@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.geometry.PointList;
-
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
@@ -203,15 +201,7 @@ public class Control extends ModelObject implements IControl {
 		};
 	}
 	
-	public static final PointList POINTS_QUAD = new PointList(new int[] {
-			0, 0,
-			0, 40,
-			-40, 40,
-			-40, 0
-	});
-	
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
-	private PointList points = POINTS_QUAD.getCopy();
 	
 	private String name = "Unknown";
 	private Control.Kind kind = Kind.ACTIVE;
@@ -358,11 +348,6 @@ public class Control extends ModelObject implements IControl {
 	public void dispose() {
 		kind = null;
 		name = null;
-		
-		if (points != null) {
-			points.removeAllPoints();
-			points = null;
-		}
 		
 		super.dispose();
 	}

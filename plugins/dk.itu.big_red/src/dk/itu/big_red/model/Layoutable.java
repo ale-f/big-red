@@ -2,9 +2,6 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
@@ -12,19 +9,8 @@ import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.names.Namespace;
 
 /**
- * All of the objects which can actually appear on a bigraph are instances of
- * {@link Layoutable}:
- * 
- * <ul>
- * <li>they have a <i>layout</i> (a {@link Rectangle}) which defines their
- * bounding box and which can change under some circumstances; and
- * <li>they have a <i>parent</i> (a {@link Container}), which contains them.
- * </ul>
- * 
- * <p>{@link Layoutable}s are subclasses of {@link Colourable}, and
- * additionally provide implementations of {@link ICommentable} and {@link
- * IAdaptable}.
- * 
+ * All of the objects which can actually appear as part of a bigraph are
+ * instances of <strong>Layoutable</strong>.
  * @author alec
  * @see ModelObject
  *

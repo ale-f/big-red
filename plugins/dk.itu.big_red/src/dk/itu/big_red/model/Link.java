@@ -22,14 +22,6 @@ public abstract class Link extends Layoutable implements ILink {
 	@RedProperty(fired = Point.class, retrieved = List.class)
 	public static final String PROPERTY_POINT = "LinkPoint";
 	
-	/**
-	 * <strong>Connection</strong>s are fake, transient model objects, created
-	 * on demand by {@link Link}s. They represent a single {@link
-	 * org.eclipse.draw2d.Connection} on the bigraph, joining a {@link Link} to
-	 * a {@link Point}.
-	 * @author alec
-	 *
-	 */
 	public class Connection {
 		private Point point;
 		

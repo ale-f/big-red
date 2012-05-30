@@ -182,6 +182,13 @@ implements PropertyChangeListener {
 	
 	private static Font smiff;
 	
+	private static final PointList POINTS_QUAD = new PointList(new int[] {
+		0, 0,
+		0, 40,
+		-40, 40,
+		-40, 0
+	});
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite self =
@@ -397,7 +404,7 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
 					doChange(ExtendedDataUtilities.changeShape(
-							currentControl, Control.POINTS_QUAD));
+							currentControl, POINTS_QUAD));
 			}
 		});
 		
