@@ -1,5 +1,12 @@
 package it.uniud.bigredit;
 
+import it.uniud.bigredit.utils.RcpUtils;
+
+
+import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -25,9 +32,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.utilities.resources.Project;
-import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
-import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class NewBrsWizardPage extends WizardPage{
@@ -79,13 +83,13 @@ public class NewBrsWizardPage extends WizardPage{
 				}
 
 				if (f == null)
-					f = Project.getWorkspaceRoot();
+					f = RcpUtils.getWorkspaceRoot();
 				
 				ResourceTreeSelectionDialog d =
 					new ResourceTreeSelectionDialog(getShell(),
 						Project.getWorkspaceRoot(), Mode.CONTAINER);
 				if (folderPath != null)
-					d.setInitialSelection(Project.findContainerByPath(null, folderPath));
+					d.setInitialSelection(RcpUtils.findContainerByPath(null, folderPath));
 				d.open();
 				IResource result = d.getFirstResult();
 				if (result instanceof IContainer)
@@ -185,7 +189,7 @@ public class NewBrsWizardPage extends WizardPage{
 			return false;
 		}
 		
-		IContainer folder = Project.findContainerByPath(null, folderPath);
+		IContainer folder = RcpUtils.findContainerByPath(null, folderPath);
 		if (folder == null) {
 			setErrorMessage("Folder '" + fT + "' does not exist.");
 			return false;
@@ -199,7 +203,7 @@ public class NewBrsWizardPage extends WizardPage{
 			return false;
 		}
 
-		IResource signature = Project.findResourceByPath(null, signaturePath);
+		IResource signature = RcpUtils.findResourceByPath(null, signaturePath);
 		if (signature == null) {
 			setErrorMessage("Signature '" + sT + "' does not exist.");
 			return false;
@@ -232,7 +236,7 @@ public class NewBrsWizardPage extends WizardPage{
 			return false;
 		} else {
 			p.append(proposedFileName);
-			if (Project.findFileByPath(null, p) != null) {
+			if (RcpUtils.findFileByPath(null, p) != null) {
 				setErrorMessage("'" + p.toString() + "' already exists.");
 				return false;
 			}

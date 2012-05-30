@@ -3,16 +3,26 @@ package it.uniud.bigredit.model.load_save.loaders;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import javax.xml.XMLConstants;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.SchemaFactory;
+
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
@@ -27,6 +37,7 @@ import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
+import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
@@ -51,6 +62,7 @@ import it.uniud.bigredit.model.Reaction;
 			try {
 				Document d =
 						validate(parse(source), "resources/schema/brs.xsd");
+				System.out.println("not there");
 				BRS ss = makeObject(d.getDocumentElement());
 				ExtendedDataUtilities.setFile(ss, getFile());
 				return ss;
@@ -172,6 +184,28 @@ import it.uniud.bigredit.model.Reaction;
 		}
 		
 		
+		private static SchemaFactory sf = null;
+		
+		
+		public static Document validate(Document d, String schema)
+				throws LoadFailedException {
+			try {
+				InputStream input=Activator.getResource(schema);
+				if (sf == null){
+					sf =
+					SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);}
+				sf.newSchema(
+						new StreamSource(Activator.getResource(schema))).
+					newValidator().validate(new DOMSource(d));
+				return d;
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new LoadFailedException(e);
+			}
+		}
+		
+
+
 		
 		
 		

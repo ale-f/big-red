@@ -1,10 +1,22 @@
 package it.uniud.bigredit.model.load_save.loaders;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import javax.xml.XMLConstants;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.SchemaFactory;
+
+import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.Reaction;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
@@ -110,6 +122,36 @@ public class ReactionXMLLoader extends XMLLoader{
 		return (ReactionXMLLoader)super.setFile(f);
 	}
 	
+	
+	private static SchemaFactory sf = null;
+	
+	
+	public static Document validate(Document d, String schema)
+			throws LoadFailedException {
+		try {
+			if (sf == null)
+				sf =
+				SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			sf.newSchema(
+					new StreamSource(getResource(schema))).
+				newValidator().validate(new DOMSource(d));
+			return d;
+		} catch (Exception e) {
+			throw new LoadFailedException(e);
+		}
+	}
+	
+	public static InputStream getResource(String path) {
+		try {
+			URL u = FileLocator.find(
+					Activator.getDefault().getBundle(), new Path(path), null);
+			if (u != null)
+				return u.openStream();
+			else return null;
+		} catch (IOException e) {
+			return null;
+		}
+	}
 	
 
 }

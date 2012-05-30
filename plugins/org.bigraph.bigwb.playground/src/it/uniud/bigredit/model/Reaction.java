@@ -1,12 +1,17 @@
 package it.uniud.bigredit.model;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import it.uniud.bigredit.policy.ReactionChangeValidator;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ModelObject;
+import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
@@ -32,12 +37,18 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	private Rectangle redexLayout = new Rectangle(0,0,100,300);
 	private Rectangle reactumLayout = new Rectangle(100,0,100,300);
 	
+	private HashMap <Site,Site> mapRedexSiteToReactum;
+	private HashMap <Root, Root> mapRedexRootToReactum;
+	
+	
 	private Signature sign;
 	
 	
 	public Signature getSign() {
 		return sign;
 	}
+
+
 
 	public void setSign(Signature sign) {
 		this.sign = sign;
@@ -232,5 +243,24 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		return new Rectangle(100,100,100,100);
 		
 	}
+	
+	
+	public void analyzeReaction(){
+		for (Root root : redex.getRoots()){
+			String name=root.getName();
+			for(Root root2: reactum.getRoots()){
+				if(name.equals(root2.getName())){
+					mapRedexRootToReactum.put(root, root2);
+				}
+			}
+		}
+	}
+	
+	public HashMap<Root, Root> getMapRedexRootToReactum() {
+		mapRedexRootToReactum= new HashMap<Root, Root> ();
+		analyzeReaction();
+		return mapRedexRootToReactum;
+	}
+	
 
 }

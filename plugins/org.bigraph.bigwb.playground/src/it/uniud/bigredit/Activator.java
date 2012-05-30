@@ -1,5 +1,12 @@
 package it.uniud.bigredit;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -10,7 +17,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "BigWbOnBigRed"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "it.uniud.bigredit"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -39,6 +46,19 @@ public class Activator extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
+	public static InputStream getResource(String path) {
+		try {
+			URL u = FileLocator.find(
+					plugin.getBundle(), new Path(path), null);
+			if (u != null)
+				return u.openStream();
+			else return null;
+		} catch (IOException e) {
+			e.getStackTrace();
+			return null;
+		}
+	}
+	
 	/**
 	 * Returns the shared instance
 	 *

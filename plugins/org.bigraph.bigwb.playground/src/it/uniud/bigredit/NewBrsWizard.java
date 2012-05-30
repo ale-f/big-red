@@ -2,6 +2,7 @@ package it.uniud.bigredit;
 
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.load_save.savers.BRSXMLSaver;
+import it.uniud.bigredit.utils.RcpUtils;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -21,7 +22,6 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.ui.UI;
 
 
@@ -32,12 +32,12 @@ public class NewBrsWizard  extends Wizard implements INewWizard {
 	@Override
 	public boolean performFinish() {
 		IContainer c =
-				Project.findContainerByPath(null, page.getFolderPath());
+				RcpUtils.findContainerByPath(null, page.getFolderPath());
 			if (c != null) {
 				try {
 					IFile sigFile =
-						Project.findFileByPath(null, page.getSignaturePath());
-					IFile bigFile = Project.getFile(c, page.getFileName());
+						RcpUtils.findFileByPath(null, page.getSignaturePath());
+					IFile bigFile = RcpUtils.getFile(c, page.getFileName());
 					NewBrsWizard.createBigraph(sigFile, bigFile);
 					UI.openInEditor(bigFile);
 					return true;
@@ -75,27 +75,7 @@ public class NewBrsWizard  extends Wizard implements INewWizard {
 	}
 	
 	
-	public static IFile getFile(IContainer c, String name) throws CoreException {
-		IFile f = c.getFile(new Path(name));
-		if (!f.exists())
-			f.create(IOAdapter.getNullInputStream(), true, null);
-		return f;
-	}
-	
-	public static IResource findResourceByPath(IContainer c, IPath path) {
-		if (c == null)
-			c = getWorkspaceRoot();
-		return c.findMember(path);
-	}
-	
-	public static IContainer findContainerByPath(IContainer c, IPath path) {
-		IResource r = findResourceByPath(c, path);
-		return (r instanceof IContainer ? (IContainer)r : null);
-	}
-	
-	public static IWorkspaceRoot getWorkspaceRoot() {
-		return ResourcesPlugin.getWorkspace().getRoot();
-	}
+
 	
 	
 	

@@ -33,14 +33,21 @@ import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.OuterName;
+import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
+import dk.itu.big_red.model.changes.ChangeGroup;
+import dk.itu.big_red.model.changes.ChangeRejectedException;
+import dk.itu.big_red.model.load_save.LoadFailedException;
 
 
 
 public class ReactionWizard extends Wizard {
+	
+	private int selection = -1;
 	
 	class InvalidPage extends WizardPage {
 		
@@ -102,7 +109,7 @@ public class ReactionWizard extends Wizard {
 		private List matchList;
 		private Canvas canvas;
 		private Label label;
-		private int selection = -1;
+		
 		private ArrayList< String > matchNames;
 		
 		private List redexList = null;
@@ -542,6 +549,7 @@ public class ReactionWizard extends Wizard {
 	private Bigraph target = null;
 	private Bigraph redex = null;
 	private Bigraph reactum = null;
+	private Reaction rule=null;
 	private boolean isValid;
 	
 	private HashMap< OuterName, OuterName > nameMap = new HashMap< OuterName, OuterName >();
@@ -551,6 +559,7 @@ public class ReactionWizard extends Wizard {
 	
 	public ReactionWizard( Reaction rule, Bigraph target )
 	{
+		this.rule=rule;
 		this.target = target;
 		redex = rule.getRedex();
 		reactum = rule.getReactum();
@@ -588,24 +597,57 @@ public class ReactionWizard extends Wizard {
 	@Override
 	public boolean performFinish()
 	{
-		MatchesPage matchesPage = ( MatchesPage )getPage( "Matches" );
-		ArrayList< OuterName > redexNames = (ArrayList<OuterName>) redex.getOuterNames();
-		ArrayList< OuterName > reactumNames = (ArrayList<OuterName>) reactum.getOuterNames();
+		ChangeGroup cgA = new ChangeGroup();
+		HashMap<Root,Root> mapReactionRoots= rule.getMapRedexRootToReactum();
+		chosenMatch= matches.get(selection);
 		
-		for ( int i = 0; i < redexNames.size(); i++ )
-			nameMap.put( redexNames.get( i ), reactumNames.get( matchesPage.permutation.indexOf( new Integer( i ) ) ) );
-		
-		ArrayList< Site > redexSites = (ArrayList<Site>) redex.getSites();
-		ArrayList< Site > reactumSites = (ArrayList<Site>) reactum.getSites();
-		
-		for ( int i = 0; i < redexSites.size(); i++ ) {
-			int index = matchesPage.sitePermutation.indexOf( new Integer( i ) );
-			if ( index < reactumSites.size() )
-				siteMap.put( redexSites.get( i ), reactumSites.get( index ) );
-			else
-				siteMap.put( redexSites.get( i ), null );
+		//MatchesPage matchesPage = ( MatchesPage )getPage( "Matches" );
+		for (Root root : redex.getRoots()){
+			for(ModelObject obj: root.getChildren()){
+				cgA.add(((Layoutable)chosenMatch.getMappingData().get(obj)).changeRemove());
+			}
+			
+			Root reactumRoot=mapReactionRoots.get(root);
+			Container dest=(Container)chosenMatch.getMappingData().get(root);
+			int rand=(int)(Math.random()*100)%10;
+			
+			for(Layoutable child: reactumRoot.getChildren()){
+				cgA.add(dest.changeAddChild(child.clone(null), child.getName()+ rand));
+			}
+			
 		}
-		chosenMatch = matches.get( matchesPage.selection );
+		if (cgA.size() != 0){
+			try {
+				target.tryApplyChange(cgA);
+			} catch (ChangeRejectedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		
+		//OLD
+//		ArrayList< OuterName > redexNames = (ArrayList<OuterName>) redex.getOuterNames();
+//		ArrayList< OuterName > reactumNames = (ArrayList<OuterName>) reactum.getOuterNames();
+//		
+//		for ( int i = 0; i < redexNames.size(); i++ )
+//			nameMap.put( redexNames.get( i ), reactumNames.get( matchesPage.permutation.indexOf( new Integer( i ) ) ) );
+//		
+//		ArrayList< Site > redexSites = (ArrayList<Site>) redex.getSites();
+//		ArrayList< Site > reactumSites = (ArrayList<Site>) reactum.getSites();
+//		
+//		for ( int i = 0; i < redexSites.size(); i++ ) {
+//			int index = matchesPage.sitePermutation.indexOf( new Integer( i ) );
+//			if ( index < reactumSites.size() )
+//				siteMap.put( redexSites.get( i ), reactumSites.get( index ) );
+//			else
+//				siteMap.put( redexSites.get( i ), null );
+//		}
+//		chosenMatch = matches.get( matchesPage.selection );
+		
+		
+		
+		
 		return true;
 	}
 	
