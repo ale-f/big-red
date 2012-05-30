@@ -154,9 +154,15 @@ public class BigraphXMLLoader extends XMLLoader {
 	}
 	
 	private void processPoint(Element e, Point model) throws LoadFailedException {
-		String link = getAttributeNS(e, BIGRAPH, "link");
-		if (link != null)
-			cg.add(model.changeConnect(links.get(link)));
+		if (model != null) {
+			String link = getAttributeNS(e, BIGRAPH, "link");
+			if (link != null) {
+				cg.add(model.changeConnect(links.get(link)));
+			}
+		} else {
+			addNotice(new Status(Status.WARNING, RedPlugin.PLUGIN_ID,
+				"Invalid point referenced; skipping."));
+		}
 	}
 	
 	private void processSite(Element e, Site model) throws LoadFailedException {
