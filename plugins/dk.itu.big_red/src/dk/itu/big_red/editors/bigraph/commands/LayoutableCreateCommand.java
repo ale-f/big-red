@@ -3,7 +3,8 @@ package dk.itu.big_red.editors.bigraph.commands;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
+import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
@@ -17,14 +18,16 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	}
 	
 	private Rectangle layout = null;
-	private Container container = null;
+	private ContainerPart containerPart = null;
 	private Layoutable child = null;
 	
 	@Override
 	public LayoutableCreateCommand prepare() {
 		cg.clear();
-		if (layout == null || container == null || child == null)
+		if (layout == null || containerPart == null || child == null)
 			return this;
+		
+		Container container = containerPart.getModel();
 		setTarget(container.getBigraph());
 		for (Layoutable i : container.getChildren()) {
 			if (i instanceof Edge)
@@ -32,8 +35,11 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			else if (ExtendedDataUtilities.getLayout(i).intersects(layout))
 				return this;
 		}
-		if (container instanceof Bigraph)
-			/* enforce boundaries */;
+		
+		if (containerPart instanceof BigraphPart)
+			if (!((BigraphPart)containerPart).
+					boundariesSatisfied(layout, child))
+				return this;
 		
 		String name = container.getBigraph().getFirstUnusedName(child);
 		cg.add(container.changeAddChild(child, name),
@@ -41,14 +47,14 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		return this;
 	}
 	
-	public void setObject(Object s) {
+	public void setChild(Object s) {
 		if (s instanceof Layoutable)
 			child = (Layoutable)s;
 	}
 	
-	public void setContainer(Object e) {
-		if (e instanceof Container)
-			container = (Container)e;
+	public void setContainerPart(Object e) {
+		if (e instanceof ContainerPart)
+			containerPart = (ContainerPart)e;
 	}
 	
 	public void setLayout(Object r) {

@@ -3,6 +3,8 @@ package dk.itu.big_red.editors.bigraph.commands;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
+import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
@@ -17,6 +19,7 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	
 	private Layoutable model;
 	private Rectangle layout;
+	private ContainerPart containerPart;
 	
 	public void setLayout(Object rect) {
 		if (rect instanceof Rectangle) {
@@ -33,10 +36,15 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 			this.model = (Layoutable)model;
 	}
 	
+	public void setContainerPart(Object object) {
+		if (object instanceof ContainerPart)
+			containerPart = (ContainerPart)object;
+	}
+	
 	@Override
 	public LayoutableRelayoutCommand prepare() {
 		cg.clear();
-		if (model == null || layout == null)
+		if (model == null || layout == null || containerPart == null)
 			return this;
 		setTarget(model.getBigraph());
 		if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
@@ -55,8 +63,8 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	}
 	
 	private boolean boundariesSatisfied() {
-		if (!(model.getParent() instanceof Bigraph))
-			return true;
-		return true; /* XXX */
+		return (containerPart instanceof BigraphPart ?
+			((BigraphPart)containerPart).boundariesSatisfied(layout, model) :
+				true);
 	}
 }

@@ -95,6 +95,31 @@ public class BigraphPart extends ContainerPart {
 		return nc;
 	}
 	
+	public static final int
+		B_NONE = 0,
+		B_LON = 1,
+		B_UR = 1 << 1,
+		B_LR = 1 << 2,
+		B_R = B_UR | B_LR,
+		B_UIN = 1 << 3;
+	
+	public boolean boundariesSatisfied(Rectangle r, Object l) {
+		int bs = getBoundaryState(r);
+		return !(
+			(l instanceof Root && (bs & BigraphPart.B_R) != 0) ||
+			(l instanceof OuterName && (bs & BigraphPart.B_LON) != 0) ||
+			(l instanceof InnerName && (bs & BigraphPart.B_UIN) != 0));
+	}
+	
+	public int getBoundaryState(Rectangle r) {
+		int top = r.y(), bottom = r.bottom();
+		return
+			(top < upperRootBoundary ? B_UR : 0) |
+			(bottom > lowerRootBoundary ? B_LR : 0) |
+			(bottom > lowerOuterNameBoundary ? B_LON : 0) |
+			(top < upperInnerNameBoundary ? B_UIN : 0);
+	}
+	
 	private int upperRootBoundary = Integer.MIN_VALUE,
             lowerOuterNameBoundary = Integer.MAX_VALUE,
             upperInnerNameBoundary = Integer.MIN_VALUE,

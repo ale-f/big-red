@@ -1,6 +1,5 @@
 package dk.itu.big_red.editors.bigraph;
 
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
@@ -28,6 +27,7 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			command = new LayoutableRelayoutCommand();
 			command.setModel(child.getModel());
 			command.setLayout(constraint);
+			command.setContainerPart(getHost());
 			command.prepare();
 		}
 		return command;
@@ -54,7 +54,9 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			LayoutableRelayoutCommand cmd2 = new LayoutableRelayoutCommand();
 			cmd2.setModel(child.getModel());
 			cmd2.setLayout(
-					layout.translate(ExtendedDataUtilities.getRootLayout(self).getTopLeft()));
+				layout.translate(
+					ExtendedDataUtilities.getRootLayout(self).getTopLeft()));
+			cmd2.setContainerPart(getHost().getParent());
 			cmd = cmd2;
 		}
 		return cmd.prepare();
@@ -70,23 +72,19 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 		Object requestObject = request.getNewObject();
 		
 		requestObject.getClass();
-		Dimension size = new Dimension(100, 100);
 		Layoutable self = (Layoutable)getHost().getModel();
-		if (!(self instanceof Container)) {
+		if (!(self instanceof Container))
 			return null;
-		} else {
-			size.setSize(ExtendedDataUtilities.getLayout(((Layoutable)requestObject)).getSize());
-		}
 		
 		LayoutableCreateCommand cmd = new LayoutableCreateCommand();
-		cmd.setContainer(self);
-		cmd.setObject(request.getNewObject());
+		cmd.setContainerPart(getHost());
+		cmd.setChild(request.getNewObject());
 		
 		Rectangle constraint = (Rectangle)getConstraintFor(request);
 		constraint.x = (constraint.x < 0 ? 0 : constraint.x);
 		constraint.y = (constraint.y < 0 ? 0 : constraint.y);
-		constraint.width = (constraint.width <= 0 ? size.width : constraint.width);
-		constraint.height = (constraint.height <= 0 ? size.height : constraint.height);
+		constraint.width = (constraint.width < 10 ? 10 : constraint.width);
+		constraint.height = (constraint.height < 10 ? 10 : constraint.height);
 		cmd.setLayout(constraint);
 		cmd.prepare();
 		
