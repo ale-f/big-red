@@ -7,7 +7,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
 
@@ -117,15 +116,42 @@ public abstract class Loader {
 		return null;
 	}
 	
-	private ArrayList<IStatus> notices;
+	public static final class Notice {
+		public static final int OK = 0;
+		public static final int INFO = 10;
+		public static final int WARNING = 20;
+		public static final int ERROR = 30;
+		
+		private int type;
+		private String message;
+		
+		protected Notice(int type, String message) {
+			this.type = type;
+			this.message = message;
+		}
+		
+		public int getType() {
+			return type;
+		}
+		
+		public String getMessage() {
+			return message;
+		}
+	}
 	
-	protected void addNotice(IStatus status) {
+	private ArrayList<Notice> notices;
+	
+	protected void addNotice(Notice status) {
 		if (notices == null)
-			notices = new ArrayList<IStatus>();
+			notices = new ArrayList<Notice>();
 		notices.add(status);
 	}
 	
-	public List<IStatus> getNotices() {
+	protected void addNotice(int type, String message) {
+		addNotice(new Notice(type, message));
+	}
+	
+	public List<Notice> getNotices() {
 		return notices;
 	}
 }

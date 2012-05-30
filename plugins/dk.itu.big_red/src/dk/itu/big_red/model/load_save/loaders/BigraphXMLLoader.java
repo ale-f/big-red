@@ -5,13 +5,10 @@ import java.util.Locale;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -158,8 +155,7 @@ public class BigraphXMLLoader extends XMLLoader {
 				cg.add(model.changeConnect(links.get(link)));
 			}
 		} else {
-			addNotice(new Status(Status.WARNING, RedPlugin.PLUGIN_ID,
-				"Invalid point referenced; skipping."));
+			addNotice(Notice.WARNING, "Invalid point referenced; skipping.");
 		}
 	}
 	
@@ -173,12 +169,11 @@ public class BigraphXMLLoader extends XMLLoader {
 		String parameter = getAttributeNS(e, BIGRAPH, "parameter");
 		INamePolicy policy = ExtendedDataUtilities.getParameterPolicy(model.getControl());
 		
+		 /* FIXME - details */
 		if (parameter != null && policy == null) {
-			addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,
-				"Spurious parameter value ignored.")); /* FIXME - details */
+			addNotice(Notice.WARNING, "Spurious parameter value ignored.");
 		} else if (parameter == null && policy != null) {
-			addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,
-				"Default parameter value assigned.")); /* FIXME - details */
+			addNotice(Notice.WARNING, "Default parameter value assigned.");
 			cg.add(ExtendedDataUtilities.changeParameter(model, policy.get(0)));
 		} else if (parameter != null && policy != null) {
 			cg.add(ExtendedDataUtilities.changeParameter(model, parameter));
@@ -222,9 +217,9 @@ public class BigraphXMLLoader extends XMLLoader {
 					     appearance != null) ||
 					    (appearanceAllowed == Tristate.TRUE &&
 					     appearance == null)) {
-				addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,
+				addNotice(Notice.WARNING,
 					"The layout data for this bigraph is incomplete and so " +
-					"has been ignored."));
+					"has been ignored.");
 				appearanceAllowed = Tristate.FALSE;
 				partialAppearanceWarning = true;
 			}
