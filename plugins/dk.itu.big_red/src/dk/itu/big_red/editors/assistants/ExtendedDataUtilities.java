@@ -40,9 +40,11 @@ public final class ExtendedDataUtilities {
 	private static Object require(
 			IPropertyProvider context, ModelObject o, String name,
 			Class<?> klass) {
-		Object r = (context != null && context.hasProperty(o, name) ?
-				context.getProperty(o, name) : o.getExtendedData(name));
-		return (klass.isInstance(r) ? r : null);
+		if (o != null) {
+			Object r = (context != null && context.hasProperty(o, name) ?
+					context.getProperty(o, name) : o.getExtendedData(name));
+			return (klass.isInstance(r) ? r : null);
+		} else return null;
 	}
 	
 	private static void set(IPropertyProvider context,
