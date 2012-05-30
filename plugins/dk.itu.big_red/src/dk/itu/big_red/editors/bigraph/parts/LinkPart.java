@@ -14,6 +14,41 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Point;
 
 public abstract class LinkPart extends ConnectablePart {
+	private static final boolean cmp(Object o1, Object o2) {
+		return (o1 != null ? o1.equals(o2) : o1 == o2);
+	}
+	
+	public static final class Connection {
+		private Link link;
+		private Point point;
+		
+		Connection(Link link, Point point) {
+			this.link = link;
+			this.point = point;
+		}
+		
+		public Point getPoint() {
+			return point;
+		}
+		
+		public Link getLink() {
+			return link;
+		}
+		
+		@Override
+		public boolean equals(Object obj_) {
+			if (obj_ instanceof Connection) {
+				Connection obj = (Connection)obj_;
+				return (cmp(obj.link, link) && cmp(obj.point, point));
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return link.hashCode() ^ point.hashCode();
+		}
+	}
+	
 	@Override
 	public Link getModel() {
 		return (Link)super.getModel();
@@ -50,10 +85,10 @@ public abstract class LinkPart extends ConnectablePart {
 	 * AbstractPart#getModelSourceConnections()} implementation.
 	 */
 	@Override
-	protected List<Link.Connection> getModelTargetConnections() {
-        ArrayList<Link.Connection> l = new ArrayList<Link.Connection>();
+	protected List<Connection> getModelTargetConnections() {
+        ArrayList<Connection> l = new ArrayList<Connection>();
         for (Point p : getModel().getPoints())
-        	l.add(getModel().getConnectionFor(p));
+        	l.add(new Connection(getModel(), p));
         return l;
     }
 	

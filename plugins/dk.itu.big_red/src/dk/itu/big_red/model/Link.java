@@ -1,7 +1,6 @@
 package dk.itu.big_red.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import dk.itu.big_red.model.assistants.IPropertyProvider;
@@ -22,35 +21,10 @@ public abstract class Link extends Layoutable implements ILink {
 	@RedProperty(fired = Point.class, retrieved = List.class)
 	public static final String PROPERTY_POINT = "LinkPoint";
 	
-	public class Connection {
-		private Point point;
-		
-		private Connection(Point point) {
-			this.point = point;
-		}
-		
-		/**
-		 * Gets the {@link Point} at one end of this connection.
-		 * @return the current Point
-		 */
-		public Point getPoint() {
-			return point;
-		}
-		
-		/**
-		 * Gets the {@link Link} which manages and contains this connection.
-		 * @return the current Link
-		 */
-		public Link getLink() {
-			return Link.this;
-		}
-	}
-	
 	/**
 	 * The {@link Point}s connected to this Link on the bigraph.
 	 */
-	private ArrayList<Point> points =
-		new ArrayList<Point>();
+	private ArrayList<Point> points = new ArrayList<Point>();
 	
 	public Link() {
 	}
@@ -79,7 +53,6 @@ public abstract class Link extends Layoutable implements ILink {
 	 */
 	protected void removePoint(Point point) {
 		if (points.remove(point)) {
-			connections.remove(point);
 			point.setLink(null);
 			firePropertyChange(PROPERTY_POINT, point, null);
 		}
@@ -99,24 +72,6 @@ public abstract class Link extends Layoutable implements ILink {
 	@SuppressWarnings("unchecked")
 	public List<Point> getPoints(IPropertyProvider context) {
 		return (List<Point>)getProperty(context, PROPERTY_POINT);
-	}
-	
-	private HashMap<Point, Link.Connection> connections =
-		new HashMap<Point, Link.Connection>();
-	
-	/**
-	 * Lazily creates and returns a {@link Link.Connection} connecting the
-	 * given {@link Point} to this Link.
-	 * @param p a {@link Point}
-	 * @return a {@link Link.Connection}, which could go away at any point
-	 */
-	public Link.Connection getConnectionFor(Point p) {
-		if (!points.contains(p))
-			return null;
-		Link.Connection l = connections.get(p);
-		if (l == null)
-			connections.put(p, l = new Link.Connection(p));
-		return l;
 	}
 	
 	/**

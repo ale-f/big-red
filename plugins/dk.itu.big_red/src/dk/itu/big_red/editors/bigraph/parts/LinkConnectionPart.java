@@ -51,8 +51,8 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	}
 	
 	@Override
-	public Link.Connection getModel() {
-		return (Link.Connection)super.getModel();
+	public LinkPart.Connection getModel() {
+		return (LinkPart.Connection)super.getModel();
 	}
 	
 	@Override
@@ -115,7 +115,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	@Override
 	protected void refreshVisuals() {
 		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
-		Link.Connection model = getModel();
+		LinkPart.Connection model = getModel();
 		
 		figure.setToolTip(getDisplayName());
 		figure.setForegroundColor(

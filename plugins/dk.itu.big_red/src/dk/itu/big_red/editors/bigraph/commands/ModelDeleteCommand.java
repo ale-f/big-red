@@ -1,6 +1,8 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
+
+import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -29,8 +31,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 	public void addObject(Object m) {
 		if (m != null && !(m instanceof Bigraph) && !(m instanceof Port)) {
 			objects.add(m);
-			if (m instanceof Link.Connection) {
-				setTarget(((Link.Connection)m).getLink().getBigraph());
+			if (m instanceof LinkPart.Connection) {
+				setTarget(((LinkPart.Connection)m).getLink().getBigraph());
 			} else if (m instanceof Layoutable) {
 				setTarget(((Layoutable)m).getBigraph());
 			}
@@ -55,8 +57,8 @@ public class ModelDeleteCommand extends ChangeCommand {
 	}
 	
 	private void remove(Object m) {
-		if (m instanceof Link.Connection) {
-			Link.Connection l = (Link.Connection)m;
+		if (m instanceof LinkPart.Connection) {
+			LinkPart.Connection l = (LinkPart.Connection)m;
 			Link link = l.getLink(); Point point = l.getPoint();
 			if (point.getLink(scratch) != link)
 				return; /* connection already destroyed */

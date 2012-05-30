@@ -126,7 +126,7 @@ implements PropertyChangeListener, IBigraphPart {
 	 * should probably override this method!
 	 */
 	@Override
-	protected List<Link.Connection> getModelSourceConnections() {
+	protected List<LinkPart.Connection> getModelSourceConnections() {
 		return Collections.emptyList();
     }
 
@@ -135,7 +135,7 @@ implements PropertyChangeListener, IBigraphPart {
 	 * should probably override this method!
 	 */
 	@Override
-	protected List<Link.Connection> getModelTargetConnections() {
+	protected List<LinkPart.Connection> getModelTargetConnections() {
 		return Collections.emptyList();
     }
 

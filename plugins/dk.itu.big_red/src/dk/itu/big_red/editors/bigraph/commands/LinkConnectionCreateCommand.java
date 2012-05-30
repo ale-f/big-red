@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
@@ -24,15 +25,15 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 	}
 
 	public void setFirst(Object e) {
-		if (!(e instanceof Link.Connection)) {
+		if (!(e instanceof LinkPart.Connection)) {
 			first = e;
-		} else first = ((Link.Connection)e).getLink();
+		} else first = ((LinkPart.Connection)e).getLink();
 	}
 	
 	public void setSecond(Object e) {
-		if (!(e instanceof Link.Connection)) {
+		if (!(e instanceof LinkPart.Connection)) {
 			second = e;
-		} else second = ((Link.Connection)e).getLink();
+		} else second = ((LinkPart.Connection)e).getLink();
 	}
 
 	@Override
@@ -44,8 +45,7 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 			Edge ed = new Edge();
 			cg.add(b.changeAddChild(ed, b.getFirstUnusedName(ed)),
 					((Point)first).changeConnect(ed),
-					((Point)second).changeConnect(ed)/*,
-					ed.changeReposition() */);
+					((Point)second).changeConnect(ed));
 		} else if (first instanceof Point && second instanceof Link) {
 			setTarget(((Point)first).getBigraph());
 			cg.add(((Point)first).changeConnect((Link)second));

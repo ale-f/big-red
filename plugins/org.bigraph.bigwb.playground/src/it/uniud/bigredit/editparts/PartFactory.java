@@ -13,6 +13,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import dk.itu.big_red.editors.bigraph.parts.EdgePart;
 import dk.itu.big_red.editors.bigraph.parts.InnerNamePart;
 import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
+import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.editors.bigraph.parts.OuterNamePart;
 import dk.itu.big_red.editors.bigraph.parts.PortPart;
@@ -21,7 +22,6 @@ import dk.itu.big_red.editors.bigraph.parts.SitePart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
@@ -57,7 +57,7 @@ public class PartFactory implements EditPartFactory {
         	part = new RootPart();
         } else if (target == Site.class) {
     		part = new SitePart();
-        } else if (target == Link.Connection.class) {
+        } else if (target == LinkPart.Connection.class) {
         	part = new LinkConnectionPart();
         } else if (target == Edge.class) {
         	part = new EdgePart();

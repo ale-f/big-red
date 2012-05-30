@@ -80,11 +80,11 @@ public abstract class PointPart extends ConnectablePart {
 	}
 	
 	@Override
-	protected List<Link.Connection> getModelSourceConnections() {
-		ArrayList<Link.Connection> l = new ArrayList<Link.Connection>();
+	protected List<LinkPart.Connection> getModelSourceConnections() {
+		ArrayList<LinkPart.Connection> l = new ArrayList<LinkPart.Connection>();
 		Link link = getModel().getLink();
 		if (link != null)
-			l.add(link.getConnectionFor(getModel()));
+			l.add(new LinkPart.Connection(link, getModel()));
         return l;
     }
 }

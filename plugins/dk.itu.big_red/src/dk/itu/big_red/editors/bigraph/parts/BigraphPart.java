@@ -142,7 +142,6 @@ public class BigraphPart extends ContainerPart {
 	}
 
 	protected void refreshBoundaries() {
-		System.out.println(this + ".refreshBoundaries()");
 		int oldUR = upperRootBoundary,
 			    oldLON = lowerOuterNameBoundary,
 			    oldUIN = upperInnerNameBoundary,
