@@ -15,12 +15,10 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
-import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
 
 //import uniud.bigredit.policy.LayoutPolicy;
 
@@ -70,8 +68,8 @@ public class NestedBigraphPart extends ContainerPart {
 			System.out.println("constraint in refreshVisual"
 					+ constraint.toString());
 			figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
-			figure.setInnerLine(model.getUpperInnerNameBoundary());
-			figure.setOuterLine(model.getLowerOuterNameBoundary());
+			// figure.setInnerLine(model.getUpperInnerNameBoundary());
+			// figure.setOuterLine(model.getLowerOuterNameBoundary());
 			
 		} else if (getParent() instanceof ReactionPart) {
 			constraint = ((Reaction) getParent().getModel())
@@ -79,8 +77,8 @@ public class NestedBigraphPart extends ContainerPart {
 			System.out.println("constraint in refreshVisual"
 					+ constraint.toString());
 			figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
-			figure.setInnerLine(model.getUpperInnerNameBoundary());
-			figure.setOuterLine(model.getLowerOuterNameBoundary());
+			// figure.setInnerLine(model.getUpperInnerNameBoundary());
+			// figure.setOuterLine(model.getLowerOuterNameBoundary());
 		}
 
 
@@ -120,17 +118,15 @@ public class NestedBigraphPart extends ContainerPart {
 		if (evt.getPropertyName().equals(Container.PROPERTY_CHILD)) {
 			refreshChildren();
 		}
-		if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
+		/*if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
 			refreshChildren();
 			refreshVisuals();
 			getParent().refresh();
-		}
+		}*/
 
 		if (evt.getSource() == getModel()) {
 			if (prop.equals(Container.PROPERTY_CHILD)) {
 				refreshChildren();
-				refreshVisuals();
-			} else if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
 				refreshVisuals();
 			}
 		}

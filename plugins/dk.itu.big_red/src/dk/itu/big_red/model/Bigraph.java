@@ -1,7 +1,5 @@
 package dk.itu.big_red.model;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,9 +8,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.changes.Change;
@@ -97,18 +92,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		return getNamespace(getNSI(l)).getNextName();
 	}
 	
-	/**
-	 * The property name fired when a boundary has changed.
-	 * (<code>oldValue</code> and <code>newValue</code> are both meaningless.)
-	 */
-	public static final String
-		PROPERTY_BOUNDARY = "BigraphBoundary";
-	
-	private int upperRootBoundary = Integer.MIN_VALUE,
-	            lowerOuterNameBoundary = Integer.MAX_VALUE,
-	            upperInnerNameBoundary = Integer.MIN_VALUE,
-	            lowerRootBoundary = Integer.MAX_VALUE;
-	
 	private IChangeValidator validator = new BigraphIntegrityValidator(this);
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
@@ -184,86 +167,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	@Override
 	public Container getParent() {
 		return null;
-	}
-	
-	private final PropertyChangeListener childListener =
-			new PropertyChangeListener() {
-		@Override
-		public void propertyChange(PropertyChangeEvent evt) {
-			if (ExtendedDataUtilities.LAYOUT.equals(evt.getPropertyName()))
-				updateBoundaries();
-		}
-	};
-	
-	@Override
-	protected void addChild(Layoutable child) {
-		super.addChild(child);
-		child.addPropertyChangeListener(childListener);
-		updateBoundaries();
-	}
-	
-	@Override
-	protected void removeChild(Layoutable child) {
-		child.removePropertyChangeListener(childListener);
-		super.removeChild(child);
-		updateBoundaries();
-	}
-	
-	/**
-	 * Recalculates the boundaries that govern the placement of {@link
-	 * OuterName}s, {@link Root}s, and {@link InnerName}s.
-	 */
-	public void updateBoundaries() {
-		int oldUR = upperRootBoundary,
-		    oldLON = lowerOuterNameBoundary,
-		    oldUIN = upperInnerNameBoundary,
-		    oldLR = lowerRootBoundary;
-		upperRootBoundary = Integer.MIN_VALUE;
-		lowerOuterNameBoundary = Integer.MAX_VALUE;
-		upperInnerNameBoundary = Integer.MIN_VALUE;
-		lowerRootBoundary = Integer.MAX_VALUE;
-		
-		for (Layoutable i : children) {
-			if (i instanceof Edge)
-				continue;
-			Rectangle r = ExtendedDataUtilities.getLayout(i);
-			int top = ExtendedDataUtilities.getLayout(i).y(),
-				bottom = r.y() + r.height();
-			if (i instanceof OuterName) {
-				if (bottom > upperRootBoundary)
-					upperRootBoundary = bottom;
-			} else if (i instanceof Root) {
-				if (top < lowerOuterNameBoundary)
-					lowerOuterNameBoundary = top;
-				if (bottom > upperInnerNameBoundary)
-					upperInnerNameBoundary = bottom;
-			} else if (i instanceof InnerName) {
-				if (top < lowerRootBoundary)
-					lowerRootBoundary = top;
-			}
-		}
-		
-		if (oldUR != upperRootBoundary ||
-			oldLON != lowerOuterNameBoundary ||
-			oldUIN != upperInnerNameBoundary ||
-			oldLR != lowerRootBoundary)
-			firePropertyChange(PROPERTY_BOUNDARY, null, null);
-	}
-	
-	public int getLowerOuterNameBoundary() {
-		return lowerOuterNameBoundary;
-	}
-	
-	public int getUpperRootBoundary() {
-		return upperRootBoundary;
-	}
-	
-	public int getLowerRootBoundary() {
-		return lowerRootBoundary;
-	}
-	
-	public int getUpperInnerNameBoundary() {
-		return upperInnerNameBoundary;
 	}
 
 	@Override

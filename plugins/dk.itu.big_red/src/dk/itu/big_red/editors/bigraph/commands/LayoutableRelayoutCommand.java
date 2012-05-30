@@ -5,10 +5,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {
@@ -60,20 +57,6 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	private boolean boundariesSatisfied() {
 		if (!(model.getParent() instanceof Bigraph))
 			return true;
-		Bigraph bigraph = (Bigraph)model.getParent();
-		int top = layout.y(),
-		    bottom = layout.y() + layout.height();
-		if (model instanceof OuterName) {
-			if (bottom > bigraph.getLowerOuterNameBoundary())
-				return false;
-		} else if (model instanceof Root) {
-			if (top < bigraph.getUpperRootBoundary() ||
-					bottom > bigraph.getLowerRootBoundary())
-				return false;
-		} else if (model instanceof InnerName) {
-			if (top < bigraph.getUpperInnerNameBoundary())
-				return false;
-		}
-		return true;
+		return true; /* XXX */
 	}
 }

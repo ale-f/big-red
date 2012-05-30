@@ -78,20 +78,6 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	private boolean boundariesSatisfied() {
 		if (!(((Layoutable)model).getParent() instanceof Bigraph))
 			return true;
-		Bigraph bigraph = (Bigraph)((Layoutable)model).getParent();
-		int top = layout.y(),
-		    bottom = layout.y() + layout.height();
-		if (model instanceof OuterName) {
-			if (bottom > bigraph.getLowerOuterNameBoundary())
-				return false;
-		} else if (model instanceof Root) {
-			if (top < bigraph.getUpperRootBoundary() ||
-					bottom > bigraph.getLowerRootBoundary())
-				return false;
-		} else if (model instanceof InnerName) {
-			if (top < bigraph.getUpperInnerNameBoundary())
-				return false;
-		}
 		return true;
 	}
 

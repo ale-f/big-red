@@ -17,7 +17,6 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.ModelObject;
 
 
 
@@ -45,7 +44,7 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	@Override
 	public void refreshVisuals()
 	{
-		Reaction model = ( Reaction ) getModel();
+		Reaction model = getModel();
 		
 		Rectangle constraint = ((BRS) getParent().getModel())
 				.getChildrenConstraint(model);
@@ -98,17 +97,15 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 		if (evt.getPropertyName().equals(Container.PROPERTY_CHILD)) {
 			refreshChildren();
 		}
-		if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
+		/*if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
 			refreshChildren();
 			refreshVisuals();
 			getParent().refresh();
-		}
+		}*/
 
 		if (evt.getSource() == getModel()) {
 			if (prop.equals(Container.PROPERTY_CHILD)) {
 				refreshChildren();
-				refreshVisuals();
-			} else if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
 				refreshVisuals();
 			}
 		}

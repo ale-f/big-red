@@ -11,10 +11,8 @@ import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
@@ -65,23 +63,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 					return this;
 			}
 		}
-		if (container instanceof Bigraph) {
-			Bigraph bigraph = (Bigraph)container;
-			int top = layout.y(),
-			    bottom = layout.y() + layout.height();
-			if (node instanceof OuterName) {
-				if (bottom > bigraph.getLowerOuterNameBoundary())
-					return this;
-			} else if (node instanceof Root) {
-				if (top < bigraph.getUpperRootBoundary() ||
-						bottom > bigraph.getLowerRootBoundary())
-					return this;
-			} else if (node instanceof InnerName) {
-				if (top < bigraph.getUpperInnerNameBoundary())
-					return this;
-			}
-		}
-		
+		if (container instanceof Bigraph)
+			/* enforce boundaries */;
 		
 		if (container instanceof Bigraph) {
 			if (node instanceof Root){
@@ -101,8 +84,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			/** TODO get a name for Bigraph */
 			System.out.println("Instance of BRS");
 			setTarget((BRS)container);
-			cg.add(((BRS)container).changeAddChild((ModelObject)node, "B0"),
-			((BRS)container).changeLayoutChild((ModelObject)node, layout));
+			cg.add(((BRS)container).changeAddChild(node, "B0"),
+			((BRS)container).changeLayoutChild(node, layout));
 			
 		}
 		

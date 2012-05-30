@@ -6,10 +6,7 @@ import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class LayoutableCreateCommand extends ChangeCommand {
@@ -35,22 +32,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			else if (ExtendedDataUtilities.getLayout(i).intersects(layout))
 				return this;
 		}
-		if (container instanceof Bigraph) {
-			Bigraph bigraph = (Bigraph)container;
-			int top = layout.y(),
-			    bottom = layout.y() + layout.height();
-			if (child instanceof OuterName) {
-				if (bottom > bigraph.getLowerOuterNameBoundary())
-					return this;
-			} else if (child instanceof Root) {
-				if (top < bigraph.getUpperRootBoundary() ||
-						bottom > bigraph.getLowerRootBoundary())
-					return this;
-			} else if (child instanceof InnerName) {
-				if (top < bigraph.getUpperInnerNameBoundary())
-					return this;
-			}
-		}
+		if (container instanceof Bigraph)
+			/* enforce boundaries */;
 		
 		String name = container.getBigraph().getFirstUnusedName(child);
 		cg.add(container.changeAddChild(child, name),

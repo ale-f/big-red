@@ -62,9 +62,7 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 			if (prop.equals(Container.PROPERTY_CHILD)) {
 				System.out.println("refresh children");
 				refreshChildren();
-			} else if (prop.equals(Bigraph.PROPERTY_BOUNDARY)) {
-				refreshVisuals();
-			}else if(prop.equals(BRS.PROPERTY_LAYOUT)){
+			} else if(prop.equals(BRS.PROPERTY_LAYOUT)){
 				System.out.println("BRS.propertychanged");
 				refreshChildren();
 				refreshVisuals();
