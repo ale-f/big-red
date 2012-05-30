@@ -35,4 +35,5 @@ Export-Package: dk.itu.big_red.editors,
  dk.itu.big_red.model.names,
  dk.itu.big_red.model.names.policies,
  dk.itu.big_red.utilities.io,
+ dk.itu.big_red.utilities.resources,
  dk.itu.big_red.utilities.ui
