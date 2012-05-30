@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+	reaction.xsd, the University of Udine's proposed XML Schema for
+	<reaction> documents
+	Copyright Â© Carlo Maiero 2012
+	
+	Copying and distribution of this file, with or without modification,
+	are permitted in any medium without royalty provided that the copyright
+	notice and this notice are preserved. This file is offered as-is,
+	without any warranty.
+-->
+<xsd:schema xmlns:reaction="http://www.itu.dk/research/pls/xmlns/2012/reaction" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.itu.dk/research/pls/xmlns/2012/reaction">
+
+
+	<xsd:group name="anyForeignElements">
+		<xsd:sequence>
+			<xsd:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="lax"/>
+		</xsd:sequence>
+	</xsd:group>
+
+
+	<xsd:element name="reaction">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element minOccurs="0" ref="reaction:redex"/>
+				<xsd:element minOccurs="0" ref="reaction:reactum"/>
+				<xsd:group ref="reaction:anyForeignElements"/>
+			</xsd:sequence>
+			<xsd:anyAttribute namespace="##other" processContents="lax"/>
+		</xsd:complexType>
+	</xsd:element>
+
+
+	
+	
+	<xsd:element name="redex">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="reaction:anyForeignElements"/>
+			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string"/>
+			<xsd:anyAttribute namespace="##other" processContents="lax"/>
+		</xsd:complexType>
+	</xsd:element>
+		<xsd:element name="reactum">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="reaction:anyForeignElements"/>
+			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string"/>
+			<xsd:anyAttribute namespace="##other" processContents="lax"/>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
