@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
@@ -43,6 +45,8 @@ public class NodePart extends ContainerPart {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String name = evt.getPropertyName();
+		if (ExtendedDataUtilities.LAYOUT.equals(name))
+			fittedPolygon = null;
 		super.propertyChange(evt);
 		if (ExtendedDataUtilities.FILL.equals(name) ||
 	        ExtendedDataUtilities.OUTLINE.equals(name) ||
@@ -50,6 +54,27 @@ public class NodePart extends ContainerPart {
 	    	refreshVisuals();
 	    }
 	}
+	
+	public static final PointList fitPolygon(PointList p, Rectangle l) {
+		p = p.getCopy();
+		p.translate(p.getBounds().getTopLeft().getNegated());
+		
+		Rectangle adjustedBounds = new Rectangle(p.getBounds());
+		double xScale = l.width() - 2,
+		       yScale = l.height() - 2;
+		xScale /= adjustedBounds.width() - 1;
+		yScale /= adjustedBounds.height() - 1;
+		
+		Point tmp = Point.SINGLETON;
+		for (int i = 0; i < p.size(); i++) {
+			p.getPoint(tmp, i).scale(xScale, yScale).translate(1, 1);
+			p.setPoint(tmp, i);
+		}
+		
+		return p;
+	}
+	
+	private PointList fittedPolygon;
 	
 	@Override
 	protected void refreshVisuals(){
@@ -60,9 +85,11 @@ public class NodePart extends ContainerPart {
 		Control control = model.getControl();
 		
 		Object shape = ExtendedDataUtilities.getShape(control);
+		if (shape instanceof PointList && fittedPolygon == null)
+			fittedPolygon = fitPolygon((PointList)shape,
+					ExtendedDataUtilities.getLayout(model));
 		figure.setShape(
-			shape instanceof PointList ?
-					model.getFittedPolygon() : Ellipse.SINGLETON);
+			shape instanceof PointList ? fittedPolygon : Ellipse.SINGLETON);
 		
 		String
 			label = ExtendedDataUtilities.getLabel(control),

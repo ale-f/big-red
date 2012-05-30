@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
-
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IParent;
@@ -67,65 +61,6 @@ public class Node extends Container implements INode {
 		return (c == Node.class || c == Site.class);
 	}
 	
-	private final PointList fitPolygon() {
-		Control c = getControl();
-		fpLayout = ExtendedDataUtilities.getLayout(this);
-		Object shape = ExtendedDataUtilities.getShape(c);
-		if (!(shape instanceof PointList))
-			return null;
-		PointList fittedPolygon = ((PointList)shape).getCopy();
-
-		/*
-		 * Move the polygon so that its top-left corner is at (0,0).
-		 */
-		fittedPolygon.translate(
-				fittedPolygon.getBounds().getTopLeft().getNegated());
-		
-		/*
-		 * Work out the scaling factors that'll make the polygon fit inside
-		 * the layout.
-		 * 
-		 * (Note that adjustedBounds.width and adjustedBounds.height are
-		 * both off-by-one - getBounds() prefers < to <=, it seems.)
-		 */
-		Rectangle adjustedBounds = new Rectangle(fittedPolygon.getBounds());
-		double xScale = fpLayout.width() - 2,
-		       yScale = fpLayout.height() - 2;
-		xScale /= adjustedBounds.width() - 1;
-		yScale /= adjustedBounds.height() - 1;
-		
-		/*
-		 * Scale all of the points.
-		 */
-		Point tmp = Point.SINGLETON;
-		for (int i = 0; i < fittedPolygon.size(); i++) {
-			fittedPolygon.getPoint(tmp, i).
-				scale(xScale, yScale).translate(1, 1);
-			fittedPolygon.setPoint(tmp, i);
-		}
-		
-		return fittedPolygon;
-	}
-	
-	private Rectangle fpLayout = null;
-	private PointList fittedPolygon = null;
-	
-	/**
-	 * Lazily creates and returns the <i>fitted polygon</i> for this Node (a
-	 * copy of its {@link Control}'s polygon, scaled to fit inside this Node's
-	 * layout).
-	 * 
-	 * <p>A call to {@link #setControl} or {@link #setLayout} will invalidate
-	 * the fitted polygon.
-	 * @return the fitted polygon
-	 */
-	public PointList getFittedPolygon() {
-		if (fpLayout == null || fittedPolygon == null ||
-				!fpLayout.equals(ExtendedDataUtilities.getLayout(this)))
-			fittedPolygon = fitPolygon();
-		return fittedPolygon;
-	}
-	
 	/**
 	 * Returns the {@link Control} of this Node.
 	 * @return a Control
@@ -141,8 +76,6 @@ public class Node extends Container implements INode {
 		ports = control.createPorts();
 		for (Port p : ports)
 			p.setParent(this);
-		
-		fittedPolygon = null;
 	}
 	
 	@Override

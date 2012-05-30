@@ -6,6 +6,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
@@ -433,9 +434,11 @@ public final class ExtendedDataUtilities {
 			if (l instanceof Port) {
 				Port p = (Port)l;
 				r = new Rectangle(0, 0, 10, 10);
-				PointList polypt = p.getParent().getFittedPolygon();
+				Object shape = getShape(p.getParent().getControl());
 				double distance = getDistance(context, p.getSpec());
-				if (polypt != null) {
+				if (shape instanceof PointList) {
+					PointList polypt = NodePart.fitPolygon(
+							(PointList)shape, getLayout(p.getParent(context)));
 					int segment = getSegment(context, p.getSpec());
 					org.eclipse.draw2d.geometry.Point
 						p1 = polypt.getPoint(segment),
