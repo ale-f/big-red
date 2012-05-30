@@ -27,6 +27,7 @@ import org.eclipse.ui.part.FileEditorInput;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.EditorError;
 import dk.itu.big_red.editors.assistants.RedoProxyAction;
+import dk.itu.big_red.editors.assistants.RevertAction;
 import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction;
 import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
@@ -143,7 +144,8 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 	 */
 	protected void initializeActionRegistry() {
 		setGlobalActionHandlers(registerActions(getStateActions(),
-				new UndoProxyAction(this), new RedoProxyAction(this)));
+				new UndoProxyAction(this), new RedoProxyAction(this),
+				new RevertAction(this)));
 		createActions();
 	}
 	
@@ -299,4 +301,7 @@ implements IResourceChangeListener, IUndoImplementor, IRedoImplementor {
 		firePropertyChange(PROP_DIRTY);
         updateActions(getStateActions());
 	}
+	
+	public abstract void revert();
+	public abstract boolean canRevert();
 }

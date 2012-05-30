@@ -21,7 +21,6 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
-import dk.itu.big_red.editors.bigraph.actions.FileRevertAction;
 
 public abstract class AbstractGEFEditor extends AbstractEditor
 implements CommandStackEventListener, ISelectionListener,
@@ -126,12 +125,11 @@ INullSelectionListener {
 	}
 	
 	@Override
-	protected void initializeActionRegistry() {
-		super.initializeActionRegistry();
-		setGlobalActionHandlers(registerActions(getStateActions(),
-				new FileRevertAction(this)));
+	public boolean canRevert() {
+		return getCommandStack().isDirty();
 	}
 	
+	@Override
 	public void revert() {
 		CommandStack cs = getCommandStack();
 		while (cs.canUndo())

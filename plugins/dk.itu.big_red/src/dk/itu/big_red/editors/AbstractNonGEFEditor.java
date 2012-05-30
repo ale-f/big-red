@@ -82,6 +82,20 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 	}
 	
 	@Override
+	public boolean canRevert() {
+		return isDirty();
+	}
+	
+	@Override
+	public void revert() {
+		while (canUndo())
+			undo();
+		undoBuffer.clear();
+		redoBuffer.clear();
+		stateChanged();
+	}
+	
+	@Override
 	public boolean isDirty() {
 		return (undoBuffer.peek() != getSavePoint());
 	}
