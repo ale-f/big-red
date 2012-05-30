@@ -15,13 +15,13 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
 import dk.itu.big_red.model.names.Namespace;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
@@ -156,7 +156,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				c = ExtendedDataUtilities.changeLayout(getNamed(reactum, type, name), AppearanceGenerator.elementToRectangle(el));
+				c = ExtendedDataUtilities.changeLayout(
+						getNamed(reactum, type, name),
+						RedXMLDecorator.getRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
 					colour =

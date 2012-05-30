@@ -8,7 +8,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -28,7 +27,6 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.AppearanceGenerator;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
@@ -230,9 +228,6 @@ public class BigraphXMLLoader extends XMLLoader {
 				appearanceAllowed = Tristate.FALSE;
 				partialAppearanceWarning = true;
 			}
-			
-			if (appearance != null && appearanceAllowed == Tristate.TRUE)
-				elementToAppearance(appearance, model, cg);
 		}
 		
 		if (model instanceof Node) {
@@ -286,18 +281,5 @@ public class BigraphXMLLoader extends XMLLoader {
 		else if (typeName.equals("edge"))
 			return new Edge();
 		else return null;
-	}
-
-	protected static void elementToAppearance(
-			Element e, ModelObject o, ChangeGroup cg) {
-		if (!(e.getNamespaceURI().equals(BIG_RED) &&
-				e.getLocalName().equals("appearance")))
-			return;
-		
-		if (o instanceof Layoutable) {
-			Layoutable l = (Layoutable)o;
-			Rectangle r = AppearanceGenerator.elementToRectangle(e);
-			cg.add(ExtendedDataUtilities.changeLayout(l, r));
-		}
 	}
 }

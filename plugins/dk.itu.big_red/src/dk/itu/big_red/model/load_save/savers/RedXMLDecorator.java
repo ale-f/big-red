@@ -118,6 +118,24 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 		return null;
 	}
 	
+	public static Rectangle getRectangle(Element e) {
+		String
+			rectX = XMLLoader.getAttributeNS(e, BIG_RED, "x"),
+			rectY = XMLLoader.getAttributeNS(e, BIG_RED, "y"),
+			rectW = XMLLoader.getAttributeNS(e, BIG_RED, "width"),
+			rectH = XMLLoader.getAttributeNS(e, BIG_RED, "height");
+		if (rectX != null && rectY != null && rectW != null && rectH != null) {
+			try {
+				return new Rectangle(
+						Integer.parseInt(rectX), Integer.parseInt(rectY),
+						Integer.parseInt(rectW), Integer.parseInt(rectH));
+			} catch (NumberFormatException ex) {
+				/* do nothing */
+			}
+		}
+		return null;
+	}
+	
 	@Override
 	public void undecorate(ModelObject object, Element el) {
 		Element eA = getNamedChildElement(el, BIG_RED, "appearance");
@@ -130,6 +148,12 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			if (outline != null)
 				ExtendedDataUtilities.setOutline(object, outline);
 	
+			if (object instanceof Layoutable) {
+				Rectangle r = getRectangle(eA);
+				if (r != null)
+					ExtendedDataUtilities.setLayout((Layoutable)object, r);
+			}
+			
 			String comment = XMLLoader.getAttributeNS(eA, BIG_RED, "comment");
 			if (comment != null)
 				ExtendedDataUtilities.setComment(object, comment);
