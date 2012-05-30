@@ -176,8 +176,4 @@ public class Node extends Container implements INode {
 	public List<IChild> getIChildren() {
 		return only(null, IChild.class);
 	}
-	
-	public Change changeParameter(String parameter) {
-		return ExtendedDataUtilities.changeParameter(this, parameter);
-	}
 }

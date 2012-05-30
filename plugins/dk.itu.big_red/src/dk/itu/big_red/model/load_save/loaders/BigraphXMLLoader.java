@@ -132,7 +132,8 @@ public class BigraphXMLLoader extends XMLLoader {
 			if (cg.size() != 0)
 				bigraph.tryApplyChange(cg);
 			if (appearanceAllowed == Tristate.FALSE)
-				bigraph.tryApplyChange(bigraph.relayout());
+				bigraph.tryApplyChange(
+						ExtendedDataUtilities.relayout(bigraph));
 		} catch (ChangeRejectedException f) {
 			throw new LoadFailedException(f);
 		}
@@ -174,9 +175,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		} else if (parameter == null && policy != null) {
 			addNotice(new Status(IStatus.WARNING, RedPlugin.PLUGIN_ID,
 				"Default parameter value assigned.")); /* FIXME - details */
-			cg.add(model.changeParameter(policy.get(0)));
+			cg.add(ExtendedDataUtilities.changeParameter(model, policy.get(0)));
 		} else if (parameter != null && policy != null) {
-			cg.add(model.changeParameter(parameter));
+			cg.add(ExtendedDataUtilities.changeParameter(model, parameter));
 		}
 		
 		processContainer(e, model);

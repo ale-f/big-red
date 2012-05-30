@@ -7,21 +7,27 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.Bigraph;
+import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Edge;
+import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
 import dk.itu.big_red.model.Node;
+import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.PortSpec;
+import dk.itu.big_red.model.Root;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.Line;
+import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -485,6 +491,88 @@ public final class ExtendedDataUtilities {
 			while ((l = l.getParent(context)) != null &&
 					(r2 = getLayout(context, l)) != null)
 				r.translate(r2.x, r2.y);
+		}
+		return r;
+	}
+
+	/**
+	 * The space that should be present between any two {@link Layoutable}s
+	 * after a <i>relayout</i> has been applied.
+	 */
+	protected static final int PADDING = 25;
+	
+	public static Change relayout(Bigraph b) {
+		return relayout(new PropertyScratchpad(), b);
+	}
+	
+	public static Change relayout(IPropertyProvider context, Bigraph b) {
+		ChangeGroup cg = new ChangeGroup();
+		relayout(context, b, cg);
+		return cg;
+	}
+	
+	private static Rectangle relayout(
+			IPropertyProvider context, Layoutable l, ChangeGroup cg) {
+		assert
+			context != null;
+		
+		Rectangle r = null;
+		if (l instanceof Site || l instanceof InnerName ||
+				l instanceof OuterName) {
+			setLayout(context, l, r = new Rectangle(0, 0, 50, 50));
+		} else if (l instanceof Edge) {
+			setLayout(context, l, r = new Rectangle(0, 0, 14, 14));
+		} else if (l instanceof Node || l instanceof Root) {
+			int left = PADDING, height = 0;
+			for (Layoutable i : ((Container)l).getChildren(context)) {
+				r = relayout(context, i, cg).setLocation(left, 0);
+				left = left + r.width + PADDING;
+				if (height < r.height)
+					height = r.height;
+				cg.add(changeLayout(i, r));
+			}
+			for (Layoutable i : ((Container)l).getChildren(context))
+				(r = getLayout(context, i)).y =
+					PADDING + ((height - r.height) / 2);
+			if (left == PADDING)
+				left += PADDING;
+			setLayout(context, l,
+					r = new Rectangle(0, 0, left, (PADDING * 2) + height));
+		} else if (l instanceof Bigraph) {
+			Bigraph b = (Bigraph)l;
+			int left = PADDING, top = PADDING, height = 0;
+			
+			for (OuterName i : b.getOuterNames()) { /* XXX CONTEXT */
+				r = relayout(context, i, cg).setLocation(left, top);
+				left = left + r.width + PADDING;
+				if (height < r.height)
+					height = r.height;
+				cg.add(changeLayout(i, r));
+			}
+			
+			left = PADDING;
+			top = top + height + PADDING;
+			height = 0;
+			
+			for (Root i : b.getRoots()) {
+				r = relayout(context, i, cg).setLocation(left, top);
+				left = left + r.width + PADDING;
+				if (height < r.height)
+					height = r.height;
+				cg.add(changeLayout(i, r));
+			}
+			
+			left = PADDING;
+			top = top + height + PADDING;
+			
+			for (InnerName i : b.getInnerNames()) {
+				r = relayout(context, i, cg).setLocation(left, top);
+				left = left + r.width + PADDING;
+				cg.add(changeLayout(i, r));
+			}
+			
+			for (Edge e : b.getEdges())
+				cg.add(changeLayout(e, null));
 		}
 		return r;
 	}

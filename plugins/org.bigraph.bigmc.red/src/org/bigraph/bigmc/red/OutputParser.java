@@ -3,6 +3,7 @@ package org.bigraph.bigmc.red;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Link;
@@ -148,7 +149,8 @@ public class OutputParser {
 			parseChildren(r, cg);
 			
 			workingBigraph.tryApplyChange(cg);
-			workingBigraph.tryApplyChange(workingBigraph.relayout());
+			workingBigraph.tryApplyChange(
+					ExtendedDataUtilities.relayout(workingBigraph));
 			
 			return workingBigraph;
 		} catch (ChangeRejectedException cre) {

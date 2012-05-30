@@ -1,19 +1,13 @@
 package dk.itu.big_red.model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
-
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain
@@ -120,47 +114,6 @@ public abstract class Container extends Layoutable {
 			c.addChild(child.clone(m));
 		
 		return c;
-	}
-	
-	/**
-	 * Creates {@link ContainerChange}s which will resize this object to a sensible
-	 * default size and resize and reposition all of its children.
-	 * @param cg a {@link ChangeGroup} to which changes should be appended
-	 * @return the proposed new size of this object
-	 */
-	@Override
-	protected Dimension relayout(IPropertyProvider context, ChangeGroup cg) {
-		int maxHeight = 0;
-		
-		HashMap<Layoutable, Dimension> sizes =
-				new HashMap<Layoutable, Dimension>();
-		
-		for (Layoutable i : getChildren(context)) {
-			Dimension childSize = i.relayout(context, cg);
-			sizes.put(i, childSize);
-			if (childSize.height > maxHeight)
-				maxHeight = childSize.height;
-		}
-		
-		Rectangle nl = new Rectangle();
-		
-		int width = PADDING;
-		
-		for (Layoutable i : getChildren(context)) {
-			Rectangle cl = new Rectangle().setSize(sizes.get(i));
-			cl.setLocation(width,
-					PADDING + ((maxHeight - cl.height()) / 2));
-			cg.add(ExtendedDataUtilities.changeLayout(i, cl));
-			width += cl.width() + PADDING;
-		}
-		
-		if (width < 50)
-			width = 50;
-		
-		Dimension r =
-			new Dimension(width, maxHeight + (PADDING * 2));
-		cg.add(ExtendedDataUtilities.changeLayout(this, nl.setSize(r)));
-		return r;
 	}
 	
 	public ContainerChange changeAddChild(Layoutable child, String name) {
