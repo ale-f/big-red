@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities.io;
+package dk.itu.big_red.utilities.io.strategies;
 
 public class LineReadStrategy extends DelimitedReadStrategy {
 	@Override

@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Shell;
 import dk.itu.big_red.utilities.io.AsynchronousAdapter;
 import dk.itu.big_red.utilities.io.AsynchronousInputThread;
 import dk.itu.big_red.utilities.io.AsynchronousOutputThread;
-import dk.itu.big_red.utilities.io.LineReadStrategy;
+import dk.itu.big_red.utilities.io.strategies.LineReadStrategy;
 
 class ProcessDialog extends Dialog {
 	private ProcessBuilder pb;

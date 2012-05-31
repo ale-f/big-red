@@ -46,7 +46,7 @@ import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.io.TotalReadStrategy;
+import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.jface.WorkspaceProvider;

@@ -1,4 +1,4 @@
-package dk.itu.big_red.utilities.io;
+package dk.itu.big_red.utilities.io.strategies;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.io.TotalReadStrategy;
+import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class EditorError {

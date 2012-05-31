@@ -30,8 +30,8 @@ import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.interaction_managers.InteractionManager;
 import dk.itu.big_red.utilities.io.AsynchronousOutputThread;
 import dk.itu.big_red.utilities.io.IOAdapter;
-import dk.itu.big_red.utilities.io.LineReadStrategy;
-import dk.itu.big_red.utilities.io.TotalReadStrategy;
+import dk.itu.big_red.utilities.io.strategies.LineReadStrategy;
+import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 
 public class BigMCInteractionManager extends InteractionManager {
 	private Text stepText;
