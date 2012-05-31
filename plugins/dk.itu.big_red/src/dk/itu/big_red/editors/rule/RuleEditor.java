@@ -143,7 +143,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		redexViewer.createControl(c);
 		redexViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		Label l = UI.chain(new Label(c, SWT.NONE)).text("→").done();
+		Label l = UI.chain(new Label(c, SWT.NONE)).text(
+				String.valueOf((char)0x2192)).done();
 		l.setFont(UI.tweakFont(l.getFont(), 40, SWT.BOLD));
 		l.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
 		
