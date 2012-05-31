@@ -41,6 +41,15 @@ import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
+import static
+	dk.itu.big_red.editors.assistants.ExtendedDataUtilities.getDistance;
+import static
+	dk.itu.big_red.editors.assistants.ExtendedDataUtilities.getSegment;
+import static
+	dk.itu.big_red.editors.assistants.ExtendedDataUtilities.changeDistance;
+import static
+	dk.itu.big_red.editors.assistants.ExtendedDataUtilities.changeSegment;
+
 /**
  * SignatureEditorPolygonCanvases are widgets based on {@link Canvas} that let
  * the user design a polygon. They keep track of a {@link PointList}, and the
@@ -222,8 +231,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 	
 	private void doChange(Change c) {
 		editor.doChange(c);
-	}
-	
+	}	
 	private void opMovePoint(int moveIndex, int mx, int my) {
 		int x = mx - translationX(), y = my - translationY();
 		PointList pl = getPoints().getCopy();
@@ -243,15 +251,15 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		if (dragPointIndex == deleteIndex)
 			dragPointIndex = -1;
 		for (PortSpec port : getModel().getPorts()) {
-			int segment = ExtendedDataUtilities.getSegment(port);
-			double distance = ExtendedDataUtilities.getDistance(port);
+			int segment = getSegment(port);
+			double distance = getDistance(port);
 			if (segment == deleteIndex - 1) {
-				cg.add(ExtendedDataUtilities.changeDistance(port, distance * l1l));
+				cg.add(changeDistance(port, distance * l1l));
 			} else if (segment == deleteIndex) {
-				cg.add(ExtendedDataUtilities.changeDistance(port, l1l + (distance * (len2 / len))));
+				cg.add(changeDistance(port, l1l + (distance * (len2 / len))));
 			}
 			if (segment >= deleteIndex)
-				cg.add(ExtendedDataUtilities.changeSegment(port, segment - 1));
+				cg.add(changeSegment(port, segment - 1));
 		}
 		PointList pl = getPoints().getCopy();
 		pl.removePoint(deleteIndex);
@@ -267,18 +275,18 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 				l2 = new Line(p, getPoint(insertIndex));
 		double pivot = l1.getLength() / (l1.getLength() + l2.getLength());
 		for (PortSpec port : getModel().getPorts()) {
-			int segment = ExtendedDataUtilities.getSegment(port);
-			double distance = ExtendedDataUtilities.getDistance(port);
+			int segment = getSegment(port);
+			double distance = getDistance(port);
 			if (segment == (insertIndex - 1)) {
 				if (distance < pivot) {
-					cg.add(ExtendedDataUtilities.changeDistance(port, (pivot - distance) / pivot));
+					cg.add(changeDistance(port, (pivot - distance) / pivot));
 				} else {
-					cg.add(ExtendedDataUtilities.changeSegment(port, segment + 1));
-					cg.add(
-						ExtendedDataUtilities.changeDistance(port, (distance - pivot) / (1 - pivot)));
+					cg.add(changeSegment(port, segment + 1));
+					cg.add(changeDistance(
+							port, (distance - pivot) / (1 - pivot)));
 				}
 			} else if (segment >= insertIndex) {
-				cg.add(ExtendedDataUtilities.changeSegment(port, segment + 1));
+				cg.add(changeSegment(port, segment + 1));
 			}
 		}
 		PointList pl = getPoints().getCopy();
@@ -294,8 +302,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			segment = (segment + 1) % getPointCount();
 		}
 		cg.add(getModel().changeAddPort(port, name));
-		cg.add(ExtendedDataUtilities.changeSegment(port, segment));
-		cg.add(ExtendedDataUtilities.changeDistance(port, distance));
+		cg.add(changeSegment(port, segment));
+		cg.add(changeDistance(port, distance));
 		doChange(cg);
 	}
 	
@@ -305,8 +313,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			distance = 0.0;
 			segment = (segment + 1) % getPointCount();
 		}
-		cg.add(ExtendedDataUtilities.changeSegment(port, segment));
-		cg.add(ExtendedDataUtilities.changeDistance(port, distance));
+		cg.add(changeSegment(port, segment));
+		cg.add(changeDistance(port, distance));
 		doChange(cg);
 	}
 	
@@ -335,10 +343,10 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			Line l = new Line();
 			for (int i = 0; i < getModel().getPorts().size(); i++) {
 				PortSpec p = getModel().getPorts().get(i);
-				int segment = ExtendedDataUtilities.getSegment(p);
+				int segment = getSegment(p);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
-				tmp.setLocation(l.getPointFromOffset(ExtendedDataUtilities.getDistance(p)));
+				tmp.setLocation(l.getPointFromOffset(getDistance(p)));
 				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
@@ -347,7 +355,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			Ellipse e = getEllipse();
 			for (int i = 0; i < getModel().getPorts().size(); i++) {
 				PortSpec p = getModel().getPorts().get(i);
-				tmp.setLocation(e.getPointFromOffset(ExtendedDataUtilities.getDistance(p)));
+				tmp.setLocation(e.getPointFromOffset(getDistance(p)));
 				if (x >= tmp.x - 4 && x <= tmp.x + 4 &&
 					y >= tmp.y - 4 && y <= tmp.y + 4)
 					return i;
@@ -552,11 +560,11 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			for (PortSpec p : getModel().getPorts()) {
 				gc.setBackground(ColorConstants.red);
 				
-				int segment = ExtendedDataUtilities.getSegment(p);
+				int segment = getSegment(p);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
 				
-				Point portCenter = l.getPointFromOffset(ExtendedDataUtilities.getDistance(p));
+				Point portCenter = l.getPointFromOffset(getDistance(p));
 				fillCircleCentredAt(gc, portCenter, 4);
 				drawPortName(gc, p.getName(), portCenter);
 			}
@@ -569,7 +577,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			
 			gc.setBackground(ColorConstants.red);
 			for (PortSpec p : getModel().getPorts()) {
-				Point portCenter = el.getPointFromOffset(ExtendedDataUtilities.getDistance(p));
+				Point portCenter = el.getPointFromOffset(getDistance(p));
 				fillCircleCentredAt(gc, portCenter, 4);
 				drawPortName(gc, p.getName(), portCenter);
 			}
