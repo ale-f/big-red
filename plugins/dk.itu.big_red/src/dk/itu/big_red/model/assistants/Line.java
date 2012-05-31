@@ -43,10 +43,8 @@ public class Line {
 	 * @param p a Point
 	 */
 	public void setFirstPoint(Point p) {
-		if (p != null) {
+		if (p != null)
 			p1.setLocation(p);
-			updateBounds();
-		}
 	}
 
 	/**
@@ -62,19 +60,8 @@ public class Line {
 	 * @param p a Point
 	 */
 	public void setSecondPoint(Point p) {
-		if (p != null) {
+		if (p != null)
 			p2.setLocation(p);
-			updateBounds();
-		}
-	}
-	
-	/**
-	 * Updates the bounding rectangle for this line.
-	 */
-	private void updateBounds() {
-		bounds.scale(0);
-		bounds.setLocation(p1);
-		bounds.union(p2);
 	}
 	
 	/**
@@ -127,6 +114,7 @@ public class Line {
 			       y = m_ * (x - p1.x) + p1.y;
 			target.setLocation((int)Math.round(x), (int)Math.round(y));
 		}
+		bounds.setBounds(p1.x, p2.y, 0, 0).union(p2);
 		return (bounds.contains(target) ? target : null);
 	}
 	
