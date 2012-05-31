@@ -250,23 +250,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		}
 	}
 	
-	/**
-	 * XXX: This is <i>probably</i> not a safe operation to perform on open
-	 * Bigraphs...
-	 */
-	private void recursiveNodeUpdate(Signature newSignature, Container c) {
-		for (Layoutable l : c.getChildren()) {
-			if (l instanceof Node) {
-				Node n = (Node)l;
-				Control oldControl = n.getControl(),
-					newControl = newSignature.getControl(oldControl.getName());
-				n.setControl(newControl);
-			}
-			if (l instanceof Container)
-				recursiveNodeUpdate(newSignature, (Container)l);
-		}
-	}
-	
 	@Override
 	public void dispose() {
 		signature.dispose();
