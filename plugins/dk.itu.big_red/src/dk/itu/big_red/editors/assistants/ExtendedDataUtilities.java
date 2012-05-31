@@ -337,6 +337,7 @@ public final class ExtendedDataUtilities {
 		return p.changeExtendedData(DISTANCE, d);
 	}
 	
+	@RedProperty(fired = Object.class, retrieved = Object.class)
 	public static final String SHAPE =
 			"eD!+dk.itu.big_red.model.Control.shape";
 	
@@ -384,6 +385,7 @@ public final class ExtendedDataUtilities {
 		}
 	};
 	
+	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String LABEL =
 			"eD!+dk.itu.big_red.model.Control.label";
 	
@@ -422,6 +424,7 @@ public final class ExtendedDataUtilities {
 		return cg;
 	}
 	
+	@RedProperty(fired = Rectangle.class, retrieved = Rectangle.class)
 	public static final String LAYOUT =
 			"eD!+dk.itu.big_red.Layoutable.layout";
 	
