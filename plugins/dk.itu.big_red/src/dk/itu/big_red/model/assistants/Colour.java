@@ -7,9 +7,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
-import dk.itu.big_red.utilities.ui.UI;
 
 public class Colour {
 	private static final Map<String, Colour> NAMED_COLOURS =
@@ -217,13 +215,13 @@ public class Colour {
 	
 	public String toFunctionString() {
 		StringBuilder s = new StringBuilder();
-		s.append(getAlpha() == 1 ? "rgb(" : "rgba(");
+		s.append(getAlpha() == 255 ? "rgb(" : "rgba(");
 		s.append(Integer.toString(getRed()));
 		s.append(", ");
 		s.append(Integer.toString(getBlue()));
 		s.append(", ");
 		s.append(Integer.toString(getGreen()));
-		if (getAlpha() != 1) {
+		if (getAlpha() != 255) {
 			s.append(", ");
 			s.append(getAlpha());
 		}
@@ -237,14 +235,6 @@ public class Colour {
 	 */
 	public RGB getRGB() {
 		return new RGB(getRed(), getGreen(), getBlue());
-	}
-	
-	/**
-	 * Returns a new SWT {@link Color} corresponding to this colour.
-	 * @return a new {@link Color}
-	 */
-	public Color getSWTColor() {
-		return new Color(UI.getDisplay(), getRed(), getGreen(), getBlue());
 	}
 	
 	@Override

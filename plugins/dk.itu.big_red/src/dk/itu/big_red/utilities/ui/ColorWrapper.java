@@ -13,7 +13,8 @@ public class ColorWrapper {
 			if (!c.equals(colour)) {
 				if (swtColor != null)
 					swtColor.dispose();
-				swtColor = c.getSWTColor();
+				swtColor = new Color(UI.getDisplay(),
+						c.getRed(), c.getGreen(), c.getBlue());
 			}
 		} else {
 			if (swtColor != null) {
