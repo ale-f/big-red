@@ -48,9 +48,9 @@ import dk.itu.big_red.utilities.ui.UI;
  * @author alec
  *
  */
-public class SignatureEditorPolygonCanvas extends Canvas
-implements ControlListener, MouseListener, MouseMoveListener, PaintListener,
-MenuListener, PropertyChangeListener {
+public class SignatureEditorPolygonCanvas extends Canvas implements
+		ControlListener, MouseListener, MouseMoveListener, PaintListener,
+		MenuListener, PropertyChangeListener {
 	private static final Ellipse ELLIPSE = new Ellipse();
 	
 	private Ellipse getEllipse() {
@@ -370,23 +370,28 @@ MenuListener, PropertyChangeListener {
 		int index = -1;
 		Line l = new Line();
 		double distance = Double.MAX_VALUE;
-		for (int i = 0; i < getPointCount(); i++) {
-			l.setFirstPoint(getPoint(i));
-			l.setSecondPoint(getPoint(i + 1));
-			double tDistance;
-			if (l.getIntersection(tmp, up) != null) {
-				tDistance = up.getDistance(tmp);
-				if (tDistance < distance) {
-					distance = tDistance;
-					index = i;
-				}
-			} else {
-				tDistance = l.getFirstPoint().getDistance(up);
-				if (tDistance < distance) {
-					distance = tDistance;
-					index = i;
+		if (getShape() instanceof PointList) {
+			for (int i = 0; i < getPointCount(); i++) {
+				l.setFirstPoint(getPoint(i));
+				l.setSecondPoint(getPoint(i + 1));
+				double tDistance;
+				if (l.getIntersection(tmp, up) != null) {
+					tDistance = up.getDistance(tmp);
+					if (tDistance < distance) {
+						distance = tDistance;
+						index = i;
+					}
+				} else {
+					tDistance = l.getFirstPoint().getDistance(up);
+					if (tDistance < distance) {
+						distance = tDistance;
+						index = i;
+					}
 				}
 			}
+		} else if (getShape() instanceof Ellipse) {
+			index = 0;
+			distance = getEllipse().getClosestPoint(up).getDistance(up);
 		}
 		
 		if (distance < threshold)
