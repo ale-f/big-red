@@ -7,7 +7,7 @@
             class="it.uniud.bigredit.PlayEditor"
             contributorClass="dk.itu.big_red.editors.bigraph.BigraphEditorActionBarContributor"
             default="true"
-            extensions="bigraph-agent, bigraph,brs"
+            extensions="brs"
             icon="resources/icons/playground2.png"
             id="it.uniud.bigredit.BigreditEditor"
             name="Playground Editor">
