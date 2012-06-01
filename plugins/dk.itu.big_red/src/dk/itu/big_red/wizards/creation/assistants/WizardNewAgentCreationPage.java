@@ -31,9 +31,10 @@ public class WizardNewAgentCreationPage extends WizardPage {
 	private IFile signature;
 	private IContainer folder;
 	
-	private Text nameText = null;
+	protected Text nameText = null;
 	
-	public WizardNewAgentCreationPage(String pageName, IStructuredSelection selection) {
+	public WizardNewAgentCreationPage(
+			String pageName, IStructuredSelection selection) {
 		super(pageName);
 		this.selection = selection;
 		setPageComplete(false);
@@ -113,7 +114,8 @@ public class WizardNewAgentCreationPage extends WizardPage {
 	}
 	
 	public String getFileName() {
-		return nameText.getText().concat(".bigraph-agent");
+		String s = nameText.getText().trim();
+		return (!s.endsWith(".bigraph-agent") ? s + ".bigraph-agent" : s);
 	}
 	
 	private boolean validate() {
@@ -150,7 +152,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 			return false;
 		}
 		
-		String proposedFileName = nT + ".bigraph-agent";
+		String proposedFileName = getFileName();
 		
 		IPath p = folder.getFullPath().makeRelative();
 		if (!p.isValidSegment(proposedFileName)) {

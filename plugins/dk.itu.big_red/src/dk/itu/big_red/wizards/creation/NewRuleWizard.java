@@ -25,12 +25,10 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public boolean performFinish() {
-		IContainer c =
-			Project.findContainerByPath(null, page.getFolderPath());
+		IContainer c = page.getFolder();
 		if (c != null) {			
 			try {
-				IFile sigFile =
-						Project.findFileByPath(null, page.getSignaturePath());
+				IFile sigFile = page.getSignature();
 				IFile rrFile = Project.getFile(c, page.getFileName());
 				NewRuleWizard.createReactionRule(sigFile, rrFile);
 				UI.openInEditor(Project.getFile(c, page.getFileName()));
