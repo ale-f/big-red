@@ -30,12 +30,10 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 	
 	@Override
 	public boolean performFinish() {
-		IContainer c =
-			Project.findContainerByPath(null, page.getFolderPath());
+		IContainer c = page.getFolder();
 		if (c != null) {
 			try {
-				IFile sigFile =
-					Project.findFileByPath(null, page.getSignaturePath());
+				IFile sigFile = page.getSignature();
 				IFile bigFile = Project.getFile(c, page.getFileName());
 				NewAgentWizard.createBigraph(sigFile, bigFile);
 				UI.openInEditor(bigFile);

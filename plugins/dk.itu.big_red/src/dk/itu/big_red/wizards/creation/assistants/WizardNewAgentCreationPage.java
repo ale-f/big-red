@@ -2,39 +2,36 @@ package dk.itu.big_red.wizards.creation.assistants;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.utilities.resources.Project;
-import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
+import dk.itu.big_red.utilities.ui.ResourceSelector;
+import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class WizardNewAgentCreationPage extends WizardPage {
 	private IStructuredSelection selection = null;
-	private IPath folderPath = null, signaturePath = null;
 	
-	private Text folderText = null, signatureText = null, nameText = null;
+	private IFile signature;
+	private IContainer folder;
+	
+	private Text nameText = null;
 	
 	public WizardNewAgentCreationPage(String pageName, IStructuredSelection selection) {
 		super(pageName);
@@ -45,7 +42,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 	@Override
 	public void createControl(Composite parent) {
 		Composite root = new Composite(parent, SWT.NONE);
-		root.setLayout(new GridLayout(3, false));
+		root.setLayout(new GridLayout(2, false));
 		
 		ModifyListener sharedModifyListener = new ModifyListener() {
 			@Override
@@ -56,90 +53,37 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		
 		UI.chain(new Label(root, 0)).text("&Parent folder:").done();
 		
-		folderText = new Text(root, SWT.BORDER);
-		folderText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		folderText.addModifyListener(sharedModifyListener);
-		
-		Button folderButton = UI.chain(new Button(root, SWT.CENTER)).text("&Browse...").done();
-		folderButton.addSelectionListener(new SelectionListener() {
-			
+		ResourceSelector folderSelector =
+				new ResourceSelector(root, null, Mode.CONTAINER);
+		folderSelector.addListener(new ResourceListener() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				IContainer f = null;
-				for (Object i : selection.toArray()) {
-					if (i instanceof IFolder)
-						f = (IFolder)i;
-					else if (i instanceof IResource)
-						f = ((IResource)i).getParent();
-					else if (i instanceof IAdaptable)
-						f = (IFolder)((IAdaptable)i).getAdapter(IFolder.class);
-					
-					if (f != null)
-						break;
-				}
-
-				if (f == null)
-					f = Project.getWorkspaceRoot();
-				
-				ResourceTreeSelectionDialog d =
-					new ResourceTreeSelectionDialog(getShell(),
-						Project.getWorkspaceRoot(), Mode.CONTAINER);
-				if (folderPath != null)
-					d.setInitialSelection(Project.findContainerByPath(null, folderPath));
-				d.open();
-				IResource result = d.getFirstResult();
-				if (result instanceof IContainer)
-					setFolderPath(result.getFullPath().makeRelative());
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
+			public void resourceChanged(IResource oldValue, IResource newValue) {
+				if (newValue instanceof IContainer) {
+					setFolder((IContainer)newValue);
+				} else setFolder(null);
 			}
 		});
-		
-		GridData folderButtonLayoutData = new GridData();
-		folderButtonLayoutData.widthHint = 100;
-		folderButton.setLayoutData(folderButtonLayoutData);
+		folderSelector.getButton().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, false));
 		
 		UI.chain(new Label(root, SWT.NONE)).text("&Signature:").done();
 		
-		signatureText = new Text(root, SWT.BORDER);
-		signatureText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
-		signatureText.addModifyListener(sharedModifyListener);
-		
-		Button signatureButton = UI.chain(new Button(root, SWT.NONE)).text("B&rowse...").done();
-		signatureButton.addSelectionListener(new SelectionListener() {
-			
+		ResourceSelector signatureSelector =
+				new ResourceSelector(root, null, Mode.FILE,
+						Signature.CONTENT_TYPE);
+		signatureSelector.addListener(new ResourceListener() {
 			@Override
-			public void widgetSelected(SelectionEvent e) {
-				ResourceTreeSelectionDialog d =
-					new ResourceTreeSelectionDialog(getShell(),
-						Project.getWorkspaceRoot(),
-						Mode.FILE, Signature.CONTENT_TYPE);
-				if (signaturePath != null)
-					d.setInitialSelection(Project.findFileByPath(null, signaturePath));
-				d.setMessage("Select a signature file.");
-				d.open();
-				
-				IResource result = d.getFirstResult();
-				if (result instanceof IFile)
-					setSignaturePath(result.getFullPath().makeRelative());
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
+			public void resourceChanged(IResource oldValue, IResource newValue) {
+				if (newValue instanceof IFile) {
+					setSignature((IFile)newValue);
+				} else setSignature(null);
 			}
 		});
+		signatureSelector.getButton().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, false));
 		
-		GridData signatureButtonLayoutData = new GridData();
-		signatureButtonLayoutData.widthHint = 100;
-		signatureButton.setLayoutData(signatureButtonLayoutData);
-		
-		new Label(root, SWT.NONE);
-		new Label(root, SWT.HORIZONTAL | SWT.SEPARATOR);
-		new Label(root, SWT.NONE);
+		new Label(root, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(
+				new GridData(SWT.FILL, SWT.NONE, true, false, 2, 1));
 		
 		UI.chain(new Label(root, SWT.NONE)).text("&Name:").done();
 		
@@ -150,22 +94,22 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		setControl(root);
 	}
 	
-	public void setFolderPath(IPath p) {
-		folderText.setText(p.toString());
+	private void setFolder(IContainer c) {
+		folder = c;
 		validate();
 	}
 	
-	public IPath getFolderPath() {
-		return folderPath;
+	public IContainer getFolder() {
+		return folder;
 	}
 	
-	public void setSignaturePath(IPath p) {
-		signatureText.setText(p.toString());
+	private void setSignature(IFile f) {
+		signature = f;
 		validate();
 	}
 	
-	public IPath getSignaturePath() {
-		return signaturePath;
+	public IFile getSignature() {
+		return signature;
 	}
 	
 	public String getFileName() {
@@ -175,49 +119,31 @@ public class WizardNewAgentCreationPage extends WizardPage {
 	private boolean validate() {
 		setPageComplete(false);
 		
-		String fT = folderText.getText(), sT = signatureText.getText(),
-		nT = nameText.getText();
-		folderPath = new Path(fT);
-		signaturePath = new Path(sT);
-		
-		if (fT.length() == 0 || folderPath.segmentCount() == 0) {
-			setErrorMessage("Folder name is empty.");
-			return false;
-		}
-		
-		IContainer folder = Project.findContainerByPath(null, folderPath);
-		if (folder == null) {
-			setErrorMessage("Folder '" + fT + "' does not exist.");
+		if (getFolder() == null) {
+			setErrorMessage("Parent folder is empty.");
 			return false;
 		} else if (folder instanceof IWorkspaceRoot) {
-			setErrorMessage("'" + fT + "' must be a project or folder.");
-			return false;
-		}
-		
-		if (sT.length() == 0 || signaturePath.segmentCount() == 0) {
-			setErrorMessage("Signature name is empty.");
+			setErrorMessage("Parent is not a folder.");
 			return false;
 		}
 
-		IResource signature = Project.findResourceByPath(null, signaturePath);
-		if (signature == null) {
-			setErrorMessage("Signature '" + sT + "' does not exist.");
-			return false;
-		} else if (!(signature instanceof IFile)) {
-			setErrorMessage("'" + sT + "' must be a signature.");
+		if (getSignature() == null) {
+			setErrorMessage("Signature is empty.");
 			return false;
 		} else {
 			IContentType t;
 			try {
-				t = ((IFile)signature).getContentDescription().getContentType();
+				t = getSignature().getContentDescription().getContentType();
 			} catch (CoreException e) {
 				t = null;
 			}
 			if (t == null || !t.getId().equals(Signature.CONTENT_TYPE)) {
-				setErrorMessage("'" + sT + "' must be a signature.");
+				setErrorMessage("Signature has the wrong content type.");
 				return false;
 			}
 		}
+		
+		String nT = nameText.getText().trim();
 		
 		if (nT.length() == 0) {
 			setErrorMessage("Name is empty.");
@@ -228,12 +154,12 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		
 		IPath p = folder.getFullPath().makeRelative();
 		if (!p.isValidSegment(proposedFileName)) {
-			setErrorMessage("'" + nT + "' contains invalid characters.");
+			setErrorMessage("Name contains invalid characters.");
 			return false;
 		} else {
 			p.append(proposedFileName);
 			if (Project.findFileByPath(null, p) != null) {
-				setErrorMessage("'" + p.toString() + "' already exists.");
+				setErrorMessage("Name already exists.");
 				return false;
 			}
 		}
