@@ -53,11 +53,6 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			// Object oldValue = propertySource.getPropertyValue(propertyID);
 			Object newValue = child.getValues()[i];
 			
-			if (newValue instanceof String &&
-			    ((String)newValue).length() == 0 &&
-				 ExtendedDataUtilities.ALIAS.equals(propertyID))
-				newValue = null;
-			
 			if (newValue instanceof RGB)
 				newValue = new Colour((RGB)newValue);
 			

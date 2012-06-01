@@ -97,7 +97,7 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 					outline.toHexString());
 		
 		String comment = ExtendedDataUtilities.getComment(object);
-		if (comment.length() > 0)
+		if (comment != null)
 			aE.setAttributeNS(BIG_RED, "big-red:comment", comment);
 		
 		if (aE.hasChildNodes() || aE.hasAttributes())

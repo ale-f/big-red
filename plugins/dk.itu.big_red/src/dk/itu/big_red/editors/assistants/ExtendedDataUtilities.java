@@ -84,16 +84,15 @@ public final class ExtendedDataUtilities {
 	
 	public static String getComment(
 			IPropertyProvider context, ModelObject m) {
-		String s = (String)require(context, m, COMMENT, String.class);
-		return (s != null ? s : "");
+		return (String)require(context, m, COMMENT, String.class);
 	}
 	
 	public static void setComment(ModelObject m, String s) {
-		m.setExtendedData(COMMENT, (s.length() != 0 ? s : null));
+		m.setExtendedData(COMMENT, s);
 	}
 	
 	public static Change changeComment(ModelObject m, String s) {
-		return m.changeExtendedData(COMMENT, (s.length() != 0 ? s : null));
+		return m.changeExtendedData(COMMENT, s);
 	}
 	
 	@RedProperty(fired = Colour.class, retrieved = Colour.class)

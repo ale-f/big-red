@@ -7,8 +7,6 @@ import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
-import org.eclipse.ui.views.properties.TextPropertyDescriptor;
-
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
@@ -70,20 +68,20 @@ public class ModelPropertySource implements IPropertySource {
 			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.FILL, "Fill colour"));
 			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.OUTLINE, "Outline colour"));
 			if (ExtendedDataUtilities.getParameterPolicy(((Node)object).getControl()) != null)
-				properties.add(new TextPropertyDescriptor(ExtendedDataUtilities.PARAMETER, "Parameter"));
+				properties.add(new NullTextPropertyDescriptor(ExtendedDataUtilities.PARAMETER, "Parameter"));
 		}
 		
 		if (object instanceof ModelObject)
-			properties.add(new TextPropertyDescriptor(ExtendedDataUtilities.COMMENT, "Comment"));
+			properties.add(new NullTextPropertyDescriptor(ExtendedDataUtilities.COMMENT, "Comment"));
 		if (object instanceof Layoutable) {
-			TextPropertyDescriptor d =
-					new TextPropertyDescriptor(Layoutable.PROPERTY_NAME, "Name");
+			NullTextPropertyDescriptor d =
+					new NullTextPropertyDescriptor(Layoutable.PROPERTY_NAME, "Name");
 			d.setValidator(new NameValidator());
 			properties.add(d);
 		}
 		if (object instanceof Site) {
-			TextPropertyDescriptor d =
-					new TextPropertyDescriptor(ExtendedDataUtilities.ALIAS, "Alias");
+			NullTextPropertyDescriptor d =
+					new NullTextPropertyDescriptor(ExtendedDataUtilities.ALIAS, "Alias");
 			d.setValidator(new AliasValidator());
 			properties.add(d);
 		}
@@ -105,8 +103,7 @@ public class ModelPropertySource implements IPropertySource {
 			} else if (ExtendedDataUtilities.OUTLINE.equals(id)) {
 				return ExtendedDataUtilities.getOutline(object).getRGB();
 			} else if (ExtendedDataUtilities.ALIAS.equals(id)) {
-				String s = ExtendedDataUtilities.getAlias(((Site)object));
-				return (s != null ? s : "");
+				return ExtendedDataUtilities.getAlias(((Site)object));
 			} else if (Layoutable.PROPERTY_NAME.equals(id)) {
 				return object.getName();
 			} else return null;
