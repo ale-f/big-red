@@ -33,6 +33,7 @@ import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.names.policies.INamePolicy;
+import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
 
 public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
@@ -583,5 +584,46 @@ public final class ExtendedDataUtilities {
 				cg.add(changeLayout(e, null));
 		}
 		return r;
+	}
+	
+	private static final ExtendedDataValidator aliasValidator =
+		new ExtendedDataValidator() {
+			@Override
+			public String validate(
+					ChangeExtendedData c, IPropertyProvider context) {
+				if (c.newValue != null) {
+					if (!(c.newValue instanceof String))
+						return "Aliases must be strings";
+					PositiveIntegerNamePolicy np =
+							new PositiveIntegerNamePolicy();
+					if (np.normalise((String)c.newValue) == null)
+						return "\"" + c.newValue + "\" is not a valid alias" +
+								" for " + c.getCreator();
+				}
+				return null;
+			}
+		};
+	
+	public static final String ALIAS =
+			"eD!+dk.itu.big_red.model.Site.alias";
+	
+	public static String getAlias(Site s) {
+		return getAlias(null, s);
+	}
+	
+	public static String getAlias(IPropertyProvider context, Site s) {
+		return (String)require(context, s, ALIAS, String.class);
+	}
+	
+	public static void setAlias(Site s, String a) {
+		setAlias(null, s, a);
+	}
+	
+	public static void setAlias(IPropertyProvider context, Site s, String a) {
+		set(context, s, ALIAS, a);
+	}
+	
+	public static Change changeAlias(Site s, String a) {
+		return s.changeExtendedData(ALIAS, a, aliasValidator);
 	}
 }

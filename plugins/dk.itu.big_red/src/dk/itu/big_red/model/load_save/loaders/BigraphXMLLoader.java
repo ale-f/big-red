@@ -162,7 +162,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	private void processSite(Element e, Site model) throws LoadFailedException {
 		String alias = getAttributeNS(e, BIGRAPH, "alias");
 		if (alias != null)
-			cg.add(model.changeAlias(alias));
+			cg.add(ExtendedDataUtilities.changeAlias(model, alias));
 	}
 	
 	private void processNode(Element e, Node model) throws LoadFailedException {

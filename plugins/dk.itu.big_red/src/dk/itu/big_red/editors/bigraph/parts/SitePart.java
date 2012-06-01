@@ -5,6 +5,7 @@ import java.beans.PropertyChangeEvent;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.SiteFigure;
 import dk.itu.big_red.model.Site;
@@ -34,7 +35,7 @@ public class SitePart extends AbstractPart {
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
 		if (evt.getSource() == getModel())
-			if (evt.getPropertyName().equals(Site.PROPERTY_ALIAS))
+			if (evt.getPropertyName().equals(ExtendedDataUtilities.ALIAS))
 		    	refreshVisuals();
 	}
 	
@@ -45,9 +46,9 @@ public class SitePart extends AbstractPart {
 		SiteFigure figure = (SiteFigure)getFigure();
 		Site model = getModel();
 
-		if (model.getAlias() == null) {
+		if (ExtendedDataUtilities.getAlias(model) == null) {
 			figure.setName(model.getName(), false);
-		} else figure.setName(model.getAlias(), true);
+		} else figure.setName(ExtendedDataUtilities.getAlias(model), true);
 	}
 	
 	@Override

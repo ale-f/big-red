@@ -54,7 +54,7 @@ public class ModelPropertySource implements IPropertySource {
 	private class AliasValidator extends ChangeValidator {
 		@Override
 		public Change getChange(Object value) {
-			return ((Site)object).changeAlias((String)value);
+			return ExtendedDataUtilities.changeAlias(((Site)object), (String)value);
 		}
 	}
 	
@@ -83,7 +83,7 @@ public class ModelPropertySource implements IPropertySource {
 		}
 		if (object instanceof Site) {
 			TextPropertyDescriptor d =
-					new TextPropertyDescriptor(Site.PROPERTY_ALIAS, "Alias");
+					new TextPropertyDescriptor(ExtendedDataUtilities.ALIAS, "Alias");
 			d.setValidator(new AliasValidator());
 			properties.add(d);
 		}
@@ -104,8 +104,8 @@ public class ModelPropertySource implements IPropertySource {
 				return ExtendedDataUtilities.getFill(object).getRGB();
 			} else if (ExtendedDataUtilities.OUTLINE.equals(id)) {
 				return ExtendedDataUtilities.getOutline(object).getRGB();
-			} else if (Site.PROPERTY_ALIAS.equals(id)) {
-				String s = ((Site)object).getAlias();
+			} else if (ExtendedDataUtilities.ALIAS.equals(id)) {
+				String s = ExtendedDataUtilities.getAlias(((Site)object));
 				return (s != null ? s : "");
 			} else if (Layoutable.PROPERTY_NAME.equals(id)) {
 				return object.getName();

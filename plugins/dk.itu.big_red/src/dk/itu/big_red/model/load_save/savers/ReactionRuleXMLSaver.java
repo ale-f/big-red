@@ -16,7 +16,6 @@ import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
@@ -115,6 +114,10 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				f = applyAttributes(newElement(BIG_RED, "big-red:layout"),
 						"x", r.x(), "y", r.y(),
 						"width", r.width(), "height", r.height());
+			} else if (ExtendedDataUtilities.ALIAS.equals(i.key)) {
+				f = applyAttributes(newElement(CHANGE, "change:site-alias"));
+				if (i.newValue != null)
+					applyAttributes(f, "alias", i.newValue);
 			}
 			if (f != null)
 				applyAttributes(f,
@@ -166,12 +169,6 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			if (i.getCreator() instanceof Port)
 				applyAttributes(f,
 						"node", ((Port)i.getCreator()).getParent().getName());
-		} else if (i_ instanceof ChangeAlias) {
-			ChangeAlias i = (ChangeAlias)i_;
-			f = applyAttributes(newElement(CHANGE, "change:site-alias"),
-					"name", i.getCreator().getName());
-			if (i.alias != null)
-				applyAttributes(f, "alias", i.alias);
 		}
 		
 		return f;

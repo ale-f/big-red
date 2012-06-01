@@ -153,7 +153,7 @@ public class BigraphXMLSaver extends XMLSaver {
 	}
 	
 	private Element processSite(Element e, Site s) throws SaveFailedException {
-		String alias = s.getAlias();
+		String alias = ExtendedDataUtilities.getAlias(s);
 		if (alias != null)
 			applyAttributes(e, "alias", alias);
 		return e;

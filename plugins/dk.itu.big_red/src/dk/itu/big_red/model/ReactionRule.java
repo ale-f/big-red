@@ -9,7 +9,6 @@ import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Layoutable.ChangeRemove;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
-import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -144,14 +143,6 @@ public class ReactionRule extends ModelObject {
 				return null;
 			
 			return reactumPoint.changeDisconnect();
-		} else if (change instanceof ChangeAlias) {
-			ChangeAlias ch = (ChangeAlias)change;
-			
-			Site reactumSite = (Site)oldToNew.get(ch.getCreator());
-			if (reactumSite == null)
-				return null;
-			
-			return reactumSite.changeAlias(ch.alias);
 		} else if (change instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)change;
 			

@@ -15,7 +15,6 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
-import dk.itu.big_red.model.Site.ChangeAlias;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -188,15 +187,6 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 			checkEligibility(c.getCreator());
 			checkName(b, c.getCreator(), c.newName);
 			c.getCreator().setName(scratch, c.newName);
-		} else if (b instanceof ChangeAlias) {
-			ChangeAlias c = (ChangeAlias)b;
-			/* Although Site aliases don't have to be unique, they should still
-			 * be valid (or null) */
-			INamePolicy siteNamePolicy = new PositiveIntegerNamePolicy();
-			if (siteNamePolicy != null && c.alias != null)
-				if (siteNamePolicy.normalise(c.alias) == null)
-					rejectChange("\"" + c.alias + "\" is not a valid alias " +
-							"for " + c.getCreator());
 		} else {
 			rejectChange("The change was not recognised by the validator");
 		}

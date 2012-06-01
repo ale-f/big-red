@@ -8,12 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;
+import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
@@ -130,7 +132,8 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processSite(ISite i) throws SaveFailedException {
-		write("$" + (i.getAlias() == null ? i.getName() : i.getAlias()));
+		String alias = ExtendedDataUtilities.getAlias((Site)i); /* XXX!! */
+		write("$" + (alias == null ? i.getName() : alias));
 	}
 	
 	private void processNode(INode i) throws SaveFailedException {

@@ -244,9 +244,6 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			c.getCreator().setName(
 					getNamespace(getNSI(c.getCreator())).put(
 							c.newName, c.getCreator()));
-		} else if (b instanceof Site.ChangeAlias) {
-			Site.ChangeAlias c = (Site.ChangeAlias)b;
-			c.getCreator().setAlias(c.alias);
 		}
 	}
 	

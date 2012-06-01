@@ -55,7 +55,7 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			
 			if (newValue instanceof String &&
 			    ((String)newValue).length() == 0 &&
-				 Site.PROPERTY_ALIAS.equals(propertyID))
+				 ExtendedDataUtilities.ALIAS.equals(propertyID))
 				newValue = null;
 			
 			if (newValue instanceof RGB)
@@ -72,8 +72,8 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			} else if (propertyID.equals(ExtendedDataUtilities.OUTLINE)) {
 				cg.add(ExtendedDataUtilities.changeOutline(
 						(ModelObject)j.getModel(), (Colour)newValue));
-			} else if (propertyID.equals(Site.PROPERTY_ALIAS)) {
-				cg.add(((Site)j.getModel()).changeAlias((String)newValue));
+			} else if (propertyID.equals(ExtendedDataUtilities.ALIAS)) {
+				cg.add(ExtendedDataUtilities.changeAlias(((Site)j.getModel()), (String)newValue));
 			} else if (propertyID.equals(ExtendedDataUtilities.PARAMETER)) {
 				cg.add(ExtendedDataUtilities.changeParameter(
 						(Node)j.getModel(), (String)newValue));
