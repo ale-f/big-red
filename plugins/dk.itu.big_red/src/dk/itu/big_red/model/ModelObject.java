@@ -59,6 +59,12 @@ public abstract class ModelObject {
 		public Change inverse() {
 			return new ChangeExtendedData(key, oldValue, validator);
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(set extended data field " + key + " of " +
+					getCreator() + " to " + newValue + ")";
+		}
 	}
 	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
