@@ -31,6 +31,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import dk.itu.big_red.editors.AbstractGEFEditor;
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -42,6 +43,7 @@ import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ReactionRule;
+import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.changes.IChangeExecutor;
@@ -219,9 +221,9 @@ public class RuleEditor extends AbstractGEFEditor implements
 			return;
 		}
 		
-	    BigraphEditor.updateNodePalette(nodeGroup,
-	    	model.getRedex().getSignature());
-	    
+		Signature s = getModel().getRedex().getSignature();
+	    BigraphEditor.updateNodePalette(nodeGroup, s);
+	    addInterestingResource(ExtendedDataUtilities.getFile(s));
 	    redexViewer.setContents(model.getRedex());
 	    reactumViewer.setContents(model.getReactum());
     }

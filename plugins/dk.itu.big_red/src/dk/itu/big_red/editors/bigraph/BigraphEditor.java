@@ -45,6 +45,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractGEFEditor;
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
@@ -304,8 +305,11 @@ public class BigraphEditor extends AbstractGEFEditor {
 	    if (getModel() == null) {
 	    	replaceWithError(new Exception("Model is null"));
 	    	return;
-	    } else updateNodePalette(nodeGroup, model.getSignature());
+	    }
 	    
+	    addInterestingResource(
+	    		ExtendedDataUtilities.getFile(getModel().getSignature()));
+	    updateNodePalette(nodeGroup, model.getSignature());
 	    getGraphicalViewer().setContents(model);
 	}
 
