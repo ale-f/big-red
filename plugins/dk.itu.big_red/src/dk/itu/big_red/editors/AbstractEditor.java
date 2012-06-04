@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
@@ -70,11 +71,24 @@ public abstract class AbstractEditor extends EditorPart
 	@Override
 	public void dispose() {
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
+		
 		if (getModel() != null)
 			getModel().dispose();
 		
-		if (actionRegistry != null)
-			getActionRegistry().dispose();
+		if (actionRegistry != null) {
+			actionRegistry.dispose();
+			actionRegistry = null;
+		}
+		
+		if (stateActions != null) {
+			stateActions.clear();
+			stateActions = null;
+		}
+		
+		if (interestingResources != null) {
+			interestingResources.clear();
+			interestingResources = null;
+		}
 		
 		super.dispose();
 	}
@@ -169,8 +183,13 @@ public abstract class AbstractEditor extends EditorPart
 	
 	@Override
 	protected void setInput(IEditorInput input) {
+		IEditorInput current = getEditorInput();
+		if (current instanceof FileEditorInput)
+			removeInterestingResource(((FileEditorInput)current).getFile());
 		super.setInput(input);
 		setPartName(input.getName());
+		if (input instanceof FileEditorInput)
+			addInterestingResource(((FileEditorInput)input).getFile());
 	}
 	
 	@Override
@@ -181,13 +200,20 @@ public abstract class AbstractEditor extends EditorPart
 	
 	protected abstract ModelObject getModel();
 	
+	protected void resourceChanged(IResourceDelta delta) {
+		System.out.println(delta);
+	}
+	
 	@Override
 	public void resourceChanged(IResourceChangeEvent event) {
-		IResourceDelta specificDelta =
-			Project.getSpecificDelta(event.getDelta(),
-					((FileEditorInput)getEditorInput()).getFile());
-		if (specificDelta != null && !isSaving())
-			;
+		if (isSaving())
+			return;
+		for (IResource r : interestingResources) {
+			IResourceDelta specificDelta =
+				Project.getSpecificDelta(event.getDelta(), r);
+			if (specificDelta != null)
+				resourceChanged(specificDelta);
+		}
 	}
 	
 	@Override
@@ -304,8 +330,15 @@ public abstract class AbstractEditor extends EditorPart
         updateActions(getStateActions());
 	}
 	
-	@Override
-	public abstract void revert();
-	@Override
-	public abstract boolean canRevert();
+	private List<IResource> interestingResources = new ArrayList<IResource>();
+	
+	protected void addInterestingResource(IResource r) {
+		if (r != null)
+			interestingResources.add(r);
+	}
+	
+	protected void removeInterestingResource(IResource r) {
+		if (r != null)
+			interestingResources.remove(r);
+	}
 }
