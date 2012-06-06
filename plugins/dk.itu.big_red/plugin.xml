@@ -98,8 +98,8 @@
       </editor>
       <editor
             class="dk.itu.big_red.editors.signature.SignatureEditor"
-            contributorClass="dk.itu.big_red.editors.assistants.ActionBarContributor"
-            default="false"
+            contributorClass="dk.itu.big_red.editors.signature.ActionBarContributor"
+            default="true"
             extensions="bigraph-signature"
             icon="resources/icons/icon16.png"
             id="dk.itu.big_red.SignatureEditor"
@@ -110,8 +110,8 @@
       </editor>
       <editor
             class="dk.itu.big_red.editors.rule.RuleEditor"
-            contributorClass="dk.itu.big_red.editors.assistants.ActionBarContributor"
-            default="false"
+            contributorClass="dk.itu.big_red.editors.rule.ActionBarContributor"
+            default="true"
             extensions="bigraph-rule"
             icon="resources/icons/icon16.png"
             id="dk.itu.big_red.RuleEditor"
@@ -122,8 +122,8 @@
       </editor>
       <editor
             class="dk.itu.big_red.editors.simulation_spec.SimulationSpecEditor"
-            contributorClass="dk.itu.big_red.editors.assistants.ActionBarContributor"
-            default="false"
+            contributorClass="dk.itu.big_red.editors.simulation_spec.ActionBarContributor"
+            default="true"
             extensions="bigraph-simulation-spec"
             icon="resources/icons/icon16.png"
             id="dk.itu.big_red.SimulationSpecEditor"
