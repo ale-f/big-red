@@ -21,18 +21,17 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.EditorError;
+import dk.itu.big_red.editors.assistants.ProxyAction.IActionImplementor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction;
 import dk.itu.big_red.editors.assistants.RevertProxyAction;
-import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
-import dk.itu.big_red.editors.assistants.RevertProxyAction.IRevertImplementor;
 import dk.itu.big_red.editors.assistants.UndoProxyAction;
-import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
@@ -40,8 +39,7 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class AbstractEditor extends EditorPart
-		implements IResourceChangeListener,
-		IUndoImplementor, IRedoImplementor, IRevertImplementor {
+		implements IResourceChangeListener, IActionImplementor {
 	public AbstractEditor() {
 		ResourcesPlugin.getWorkspace().
 			addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
@@ -340,5 +338,35 @@ public abstract class AbstractEditor extends EditorPart
 	protected void removeInterestingResource(IResource r) {
 		if (r != null)
 			interestingResources.remove(r);
+	}
+	
+	protected abstract boolean canUndo();
+	protected abstract boolean canRedo();
+	protected abstract boolean canRevert();
+	
+	protected abstract void undo();
+	protected abstract void redo();
+	protected abstract void revert();
+	
+	@Override
+	public boolean canPerformAction(String actionID) {
+		if (ActionFactory.UNDO.getId().equals(actionID)) {
+			return canUndo();
+		} else if (ActionFactory.REDO.getId().equals(actionID)) {
+			return canRedo();
+		} else if (ActionFactory.REVERT.getId().equals(actionID)) {
+			return canRevert();
+		} else return false;
+	}
+	
+	@Override
+	public void performAction(String actionID) {
+		if (ActionFactory.UNDO.getId().equals(actionID)) {
+			undo();
+		} else if (ActionFactory.REDO.getId().equals(actionID)) {
+			redo();
+		} else if (ActionFactory.REVERT.getId().equals(actionID)) {
+			revert();
+		}
 	}
 }

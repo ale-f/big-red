@@ -36,8 +36,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
-import dk.itu.big_red.editors.assistants.RedoProxyAction.IRedoImplementor;
-import dk.itu.big_red.editors.assistants.UndoProxyAction.IUndoImplementor;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ModelObject;
@@ -59,7 +57,7 @@ import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractNonGEFEditor
-implements IUndoImplementor, IRedoImplementor, PropertyChangeListener {
+		implements PropertyChangeListener {
 	private static class ExportInteractionManagerFactory
 			extends ConfigurationElementInteractionManagerFactory {
 		public ExportInteractionManagerFactory(IConfigurationElement ice) {
