@@ -266,6 +266,11 @@ implements PropertyChangeListener {
 				currentControl = (Control)
 					((IStructuredSelection)controls.getSelection()).
 						getFirstElement();
+				if (currentControl == null) {
+					menu.setVisible(false);
+					return;
+				}
+				
 				currentPolicy =
 					ExtendedDataUtilities.getParameterPolicy(currentControl);
 				
