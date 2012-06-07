@@ -114,7 +114,7 @@ public class Line {
 			       y = m_ * (x - p1.x) + p1.y;
 			target.setLocation((int)Math.round(x), (int)Math.round(y));
 		}
-		bounds.setBounds(p1.x, p2.y, 0, 0).union(p2);
+		bounds.setBounds(p1.x, p1.y, 0, 0).union(p2);
 		return (bounds.contains(target) ? target : null);
 	}
 	
