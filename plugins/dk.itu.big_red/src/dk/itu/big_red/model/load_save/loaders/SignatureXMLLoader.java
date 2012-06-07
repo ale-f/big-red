@@ -15,6 +15,7 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.model.names.policies.LongNamePolicy;
+import dk.itu.big_red.model.names.policies.StringNamePolicy;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
@@ -52,6 +53,8 @@ public class SignatureXMLLoader extends XMLLoader {
 			INamePolicy n = null;
 			if (parameter.equals("LONG")) {
 				n = new LongNamePolicy();
+			} else if (parameter.equals("STRING")) {
+				n = new StringNamePolicy();
 			} else if (parameter.equals("BOOLEAN")) {
 				n = new BooleanNamePolicy();
 			}

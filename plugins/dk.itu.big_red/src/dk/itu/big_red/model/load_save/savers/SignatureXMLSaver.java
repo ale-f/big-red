@@ -11,6 +11,7 @@ import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.model.names.policies.LongNamePolicy;
+import dk.itu.big_red.model.names.policies.StringNamePolicy;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
@@ -61,6 +62,8 @@ public class SignatureXMLSaver extends XMLSaver {
 		INamePolicy parameterPolicy = ExtendedDataUtilities.getParameterPolicy(c);
 		if (parameterPolicy instanceof LongNamePolicy) {
 			applyAttributes(e, "parameter", "LONG");
+		} else if (parameterPolicy instanceof StringNamePolicy) {
+			applyAttributes(e, "parameter", "STRING");
 		} else if (parameterPolicy instanceof BooleanNamePolicy) {
 			applyAttributes(e, "parameter", "BOOLEAN");
 		}
