@@ -230,8 +230,11 @@ public final class ExtendedDataUtilities {
 		INamePolicy p = getParameterPolicy(context, n.getControl());
 		String s = (String)require(context, n, PARAMETER, String.class),
 				t = null;
-		if (p != null)
+		if (p != null) {
 			t = p.normalise(s);
+			if (t == null)
+				t = p.get(0);
+		}
 		if (s != null ? !s.equals(t) : s != t)
 			set(context, n, PARAMETER, t);
 		return t;
