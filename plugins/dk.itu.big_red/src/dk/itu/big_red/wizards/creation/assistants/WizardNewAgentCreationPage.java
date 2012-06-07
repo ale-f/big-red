@@ -26,8 +26,6 @@ import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class WizardNewAgentCreationPage extends WizardPage {
-	private IStructuredSelection selection = null;
-	
 	private IFile signature;
 	private IContainer folder;
 	
@@ -36,7 +34,6 @@ public class WizardNewAgentCreationPage extends WizardPage {
 	public WizardNewAgentCreationPage(
 			String pageName, IStructuredSelection selection) {
 		super(pageName);
-		this.selection = selection;
 		setPageComplete(false);
 	}
 
