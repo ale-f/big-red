@@ -214,12 +214,18 @@ implements PropertyChangeListener {
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((Control)element).getName();
+					Control c = (Control)element;
+					String name = c.getName();
+					INamePolicy n = ExtendedDataUtilities.getParameterPolicy(c);
+					if (n != null)
+						name += " (" + n.getClass().getSimpleName() + ")";
+					return name;
 				}
 				
 				@Override
 				public boolean isLabelProperty(Object element, String property) {
-					return (Control.PROPERTY_NAME.equals(property));
+					return (Control.PROPERTY_NAME.equals(property) ||
+							ExtendedDataUtilities.PARAMETER_POLICY.equals(property));
 				}
 		});
 		GridData controlsLayoutData =
