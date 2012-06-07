@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.ISharedImages;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
@@ -48,6 +47,7 @@ import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.model.names.policies.LongNamePolicy;
+import dk.itu.big_red.utilities.ui.StockButton;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends AbstractNonGEFEditor
@@ -233,8 +233,7 @@ implements PropertyChangeListener {
 		controlButtons.setLayout(controlButtonsLayout);
 		controlButtons.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
 		
-		addControl = new Button(controlButtons, SWT.NONE);
-		addControl.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
+		addControl = StockButton.ADD.create(controlButtons);
 		addControl.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -249,8 +248,7 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		removeControl = new Button(controlButtons, SWT.NONE);
-		removeControl.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
+		removeControl = StockButton.REMOVE.create(controlButtons);
 		removeControl.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

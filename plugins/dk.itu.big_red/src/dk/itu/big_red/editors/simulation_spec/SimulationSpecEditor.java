@@ -29,7 +29,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -53,6 +52,7 @@ import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
+import dk.itu.big_red.utilities.ui.StockButton;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -227,9 +227,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		brl.pack = false;
 		br.setLayout(brl);
 		
-		Button b = UI.chain(new Button(br, SWT.NONE)).text("&Add...").done();
-		b.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
-		b.addSelectionListener(new SelectionAdapter() {
+		StockButton.ADD.create(br, SWT.NONE, true).addSelectionListener(
+				new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				ResourceTreeSelectionDialog rtsd =
@@ -250,9 +249,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			}
 		});
 		
-		b = UI.chain(new Button(br, SWT.NONE)).text("&Remove...").done();
-		b.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
-		b.addSelectionListener(new SelectionAdapter() {
+		StockButton.REMOVE.create(br).addSelectionListener(
+				new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Iterator<?> it =
