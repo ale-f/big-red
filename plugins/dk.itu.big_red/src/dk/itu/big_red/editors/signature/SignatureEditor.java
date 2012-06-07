@@ -4,7 +4,6 @@ import java.beans.PropertyChangeListener;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
@@ -20,6 +19,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -30,6 +31,8 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
@@ -47,6 +50,7 @@ import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.model.names.policies.LongNamePolicy;
+import dk.itu.big_red.model.names.policies.StringNamePolicy;
 import dk.itu.big_red.utilities.ui.StockButton;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -162,10 +166,10 @@ implements PropertyChangeListener {
 		}
 	}
 	
-	private static ArrayList<IFactory<INamePolicy>> getNamePolicies() {
-		ArrayList<IFactory<INamePolicy>> r =
-				new ArrayList<IFactory<INamePolicy>>();
+	private static ArrayList<CNPF> getNamePolicies() {
+		ArrayList<CNPF> r = new ArrayList<CNPF>();
 		r.add(new CNPF(LongNamePolicy.class));
+		r.add(new CNPF(StringNamePolicy.class));
 		r.add(new CNPF(BooleanNamePolicy.class));
 		return r;
 	}
@@ -228,6 +232,64 @@ implements PropertyChangeListener {
 				setControl(getSelectedControl());
 			}
 		});
+		final Menu menu = new Menu(controls.getList());
+		menu.addMenuListener(new MenuListener() {
+			private Control currentControl;
+			private INamePolicy currentPolicy;
+			
+			private void doMenuItem(Menu parent, final CNPF p) {
+				final MenuItem i = new MenuItem(parent, SWT.RADIO);
+				i.setText(p.getName());
+				i.setSelection(p.klass.isInstance(currentPolicy));
+				i.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						if (i.getSelection())
+							doChange(
+								ExtendedDataUtilities.changeParameterPolicy(
+										currentControl, p.newInstance()));
+					}
+				});
+			}
+			
+			@Override
+			public void menuShown(MenuEvent e) {
+				for (MenuItem i : menu.getItems())
+					i.dispose();
+				
+				currentControl = (Control)
+					((IStructuredSelection)controls.getSelection()).
+						getFirstElement();
+				currentPolicy =
+					ExtendedDataUtilities.getParameterPolicy(currentControl);
+				
+				MenuItem paramItem = new MenuItem(menu, SWT.CASCADE);
+				paramItem.setText("&Parameter");
+				
+				Menu paramMenu = new Menu(paramItem);
+				final MenuItem n = new MenuItem(paramMenu, SWT.RADIO);
+				n.setText("(none)");
+				n.setSelection(currentPolicy == null);
+				n.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						if (n.getSelection())
+							doChange(
+								ExtendedDataUtilities.changeParameterPolicy(
+										currentControl, null));
+					}
+				});
+				for (CNPF i : getNamePolicies())
+					doMenuItem(paramMenu, i);
+				paramItem.setMenu(paramMenu);
+			}
+			
+			@Override
+			public void menuHidden(MenuEvent e) {
+			}
+		});
+		controls.getList().setMenu(menu);
+		
 		Composite controlButtons = new Composite(left, SWT.NONE);
 		RowLayout controlButtonsLayout = new RowLayout();
 		controlButtons.setLayout(controlButtonsLayout);
