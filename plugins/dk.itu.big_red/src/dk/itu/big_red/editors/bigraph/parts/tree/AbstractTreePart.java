@@ -14,11 +14,14 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
+import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.utilities.ui.UI;
 
-public abstract class AbstractTreePart extends AbstractTreeEditPart implements PropertyChangeListener {
+public abstract class AbstractTreePart extends AbstractTreeEditPart
+		implements IBigraphPart, PropertyChangeListener {
 	@Override
 	public Layoutable getModel() {
 		return (Layoutable)super.getModel();
@@ -74,5 +77,10 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart implements P
 	@Override
 	protected Image getImage() {
 		return (Image)getImageDescriptor().createResource(UI.getDisplay());
+	}
+	
+	@Override
+	public Bigraph getBigraph() {
+		return getModel().getBigraph();
 	}
 }
