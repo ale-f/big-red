@@ -95,7 +95,15 @@ public class OutputParser {
 			return;
 		String name = accept(P_NAM);
 		if (name != null) { /* name is a control */
-			Node n = new Node(s.getControl(name));
+			Node n = null;
+			String[] parts = name.split("_P__", 2);
+			if (parts.length == 1) {
+				n = new Node(s.getControl(name));
+			} else if (parts.length == 2) {
+				n = new Node(s.getControl(parts[0]));
+				ExtendedDataUtilities.setParameter(n, parts[1]);
+			} else throw new Error("Control name couldn't be matched");
+			
 			cg.add(parent.changeAddChild(n, Integer.toString(x++)));
 			if (accept(P_LSQ) != null) { /* ports */
 				int i = 0;
