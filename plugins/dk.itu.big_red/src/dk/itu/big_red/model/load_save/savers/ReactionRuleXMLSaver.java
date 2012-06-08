@@ -118,6 +118,9 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				f = applyAttributes(newElement(CHANGE, "change:site-alias"));
 				if (i.newValue != null)
 					applyAttributes(f, "alias", i.newValue);
+			} else if (ExtendedDataUtilities.PARAMETER.equals(i.key)){
+				f = applyAttributes(newElement(CHANGE, "change:node-parameter"),
+						"parameter", i.newValue);
 			}
 			if (f != null)
 				applyAttributes(f,

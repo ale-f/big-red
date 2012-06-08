@@ -146,7 +146,14 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					alias = getAttributeNS(el, CHANGE, "alias");
-				c = ExtendedDataUtilities.changeAlias(((Site)getNamed(reactum, "site", name)), alias);
+				c = ExtendedDataUtilities.changeAlias(
+						(Site)getNamed(reactum, "site", name), alias);
+			} else if (el.getLocalName().equals("node-parameter")) {
+				String
+					name = getAttributeNS(el, CHANGE, "name"),
+					parameter = getAttributeNS(el, CHANGE, "parameter");
+				c = ExtendedDataUtilities.changeParameter(
+						(Node)getNamed(reactum, "node", name), parameter);
 			}
 		} else if (el.getNamespaceURI().equals(BIG_RED)) {
 			if (el.getLocalName().equals("layout")) {
