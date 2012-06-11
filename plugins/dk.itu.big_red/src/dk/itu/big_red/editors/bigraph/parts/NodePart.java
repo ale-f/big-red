@@ -10,6 +10,7 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 
+import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
@@ -17,7 +18,6 @@ import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.assistants.Ellipse;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.

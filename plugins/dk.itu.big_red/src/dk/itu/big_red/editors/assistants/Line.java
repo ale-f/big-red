@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.assistants;
+package dk.itu.big_red.editors.assistants;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;

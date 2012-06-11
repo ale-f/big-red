@@ -31,9 +31,6 @@ import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.Ellipse;
-import dk.itu.big_red.model.assistants.Line;
 
 public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}

@@ -10,6 +10,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.model.Bigraph;
@@ -24,8 +26,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 

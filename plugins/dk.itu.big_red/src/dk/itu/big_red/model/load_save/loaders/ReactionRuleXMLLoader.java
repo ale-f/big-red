@@ -10,6 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -20,7 +21,6 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;

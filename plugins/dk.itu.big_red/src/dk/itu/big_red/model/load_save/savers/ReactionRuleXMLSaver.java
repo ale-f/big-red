@@ -8,6 +8,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container.ChangeAddChild;
@@ -19,7 +20,6 @@ import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 

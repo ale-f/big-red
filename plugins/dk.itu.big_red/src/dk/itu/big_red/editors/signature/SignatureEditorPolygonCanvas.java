@@ -33,10 +33,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.Line;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.assistants.Ellipse;
-import dk.itu.big_red.model.assistants.Line;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;

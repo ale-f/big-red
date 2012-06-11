@@ -2,7 +2,7 @@ package dk.itu.big_red.utilities.ui;
 
 import org.eclipse.swt.graphics.Color;
 
-import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.editors.assistants.Colour;
 
 public class ColorWrapper {
 	private Colour colour;

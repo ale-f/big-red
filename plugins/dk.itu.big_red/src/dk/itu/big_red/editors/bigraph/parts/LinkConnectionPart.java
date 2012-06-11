@@ -18,6 +18,7 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
@@ -26,7 +27,6 @@ import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 

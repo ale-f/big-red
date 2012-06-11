@@ -25,7 +25,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 
