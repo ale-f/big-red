@@ -486,8 +486,37 @@ public final class ExtendedDataUtilities {
 		set(context, l, LAYOUT, r);
 	}
 	
+	private static final ExtendedDataValidator layoutValidator =
+			new ExtendedDataValidator() {
+		@Override
+		public String validate(ChangeExtendedData c,
+				IPropertyProvider context) {
+			Layoutable l = (Layoutable)c.getCreator();
+			Container parent = l.getParent(context);
+			if (parent instanceof Bigraph)
+				return null;
+			
+			Rectangle newLayout = getLayout(context, l);
+			Rectangle parentLayout =
+					getLayout(context, parent).getCopy().setLocation(0, 0);
+			if (!parentLayout.contains(newLayout))
+				return "The object can no longer fit into its container";
+			
+			if (l instanceof Container) {
+				newLayout = newLayout.getCopy().setLocation(0, 0);
+				for (Layoutable i : ((Container)l).getChildren(context)) {
+					if (!newLayout.contains(getLayout(context, i)))
+						return "The object is no longer big enough to " +
+								"accommodate its children";
+				}
+			}
+			
+			return null;
+		}
+	};
+	
 	public static Change changeLayout(Layoutable l, Rectangle r) {
-		return l.changeExtendedData(LAYOUT, r);
+		return l.changeExtendedData(LAYOUT, r, null, layoutValidator);
 	}
 	
 	public static Rectangle getRootLayout(Layoutable l) {
