@@ -38,13 +38,17 @@ import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
 public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
-	private static Object require(
+	private static <T> T require(
 			IPropertyProvider context, ModelObject o, String name,
-			Class<?> klass) {
+			Class<T> klass) {
 		if (o != null) {
 			Object r = (context != null && context.hasProperty(o, name) ?
 					context.getProperty(o, name) : o.getExtendedData(name));
-			return (klass.isInstance(r) ? r : null);
+			try {
+				return klass.cast(r);
+			} catch (ClassCastException ex) {
+				return null;
+			}
 		} else return null;
 	}
 	
@@ -67,7 +71,7 @@ public final class ExtendedDataUtilities {
 	
 	public static IFile getFile(
 			IPropertyProvider context, ModelObject m) {
-		return (IFile)require(context, m, FILE, IFile.class);
+		return require(context, m, FILE, IFile.class);
 	}
 	
 	public static void setFile(ModelObject m, IFile f) {
@@ -84,7 +88,7 @@ public final class ExtendedDataUtilities {
 	
 	public static String getComment(
 			IPropertyProvider context, ModelObject m) {
-		return (String)require(context, m, COMMENT, String.class);
+		return require(context, m, COMMENT, String.class);
 	}
 	
 	public static void setComment(ModelObject m, String s) {
@@ -105,7 +109,7 @@ public final class ExtendedDataUtilities {
 	
 	public static Colour getFill(
 			IPropertyProvider context, ModelObject m) {
-		Colour c = (Colour)require(context, m, FILL, Colour.class);
+		Colour c = require(context, m, FILL, Colour.class);
 		if (c == null) {
 			if (m instanceof Node) {
 				c = getFill(context, ((Node)m).getControl());
@@ -141,7 +145,7 @@ public final class ExtendedDataUtilities {
 	
 	public static Colour getOutline(
 			IPropertyProvider context, ModelObject m) {
-		Colour c = (Colour)require(context, m, OUTLINE, Colour.class);
+		Colour c = require(context, m, OUTLINE, Colour.class);
 		if (c == null) {
 			if (m instanceof Node) {
 				c = getOutline(context, ((Node)m).getControl());
@@ -179,8 +183,7 @@ public final class ExtendedDataUtilities {
 	
 	public static INamePolicy getParameterPolicy(
 			IPropertyProvider context, Control c) {
-		return (INamePolicy)require(
-				context, c, PARAMETER_POLICY, INamePolicy.class);
+		return require(context, c, PARAMETER_POLICY, INamePolicy.class);
 	}
 	
 	public static void setParameterPolicy(Control c, INamePolicy n) {
@@ -228,7 +231,7 @@ public final class ExtendedDataUtilities {
 	public static String getParameter(
 			IPropertyProvider context, Node n) {
 		INamePolicy p = getParameterPolicy(context, n.getControl());
-		String s = (String)require(context, n, PARAMETER, String.class),
+		String s = require(context, n, PARAMETER, String.class),
 				t = null;
 		if (p != null) {
 			t = p.normalise(s);
@@ -262,10 +265,10 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static int getSegment(IPropertyProvider context, PortSpec p) {
-		Integer i = (Integer)require(context, p, SEGMENT, Integer.class);
+		Integer i = require(context, p, SEGMENT, Integer.class);
 		if (i == null) {
 			recalculatePosition(context, p);
-			i = (Integer)require(context, p, SEGMENT, Integer.class);
+			i = require(context, p, SEGMENT, Integer.class);
 		}
 		return i;
 	}
@@ -319,10 +322,10 @@ public final class ExtendedDataUtilities {
 	
 	public static double getDistance(
 			IPropertyProvider context, PortSpec p) {
-		Double d = (Double)require(context, p, DISTANCE, Double.class);
+		Double d = require(context, p, DISTANCE, Double.class);
 		if (d == null) {
 			recalculatePosition(context, p);
-			d = (Double)require(context, p, DISTANCE, Double.class);
+			d = require(context, p, DISTANCE, Double.class);
 		}
 		return d;
 	}
@@ -401,7 +404,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static String getLabel(IPropertyProvider context, Control c) {
-		String s = (String)require(context, c, LABEL, String.class);
+		String s = require(context, c, LABEL, String.class);
 		if (s == null)
 			setLabel(context, c, s = labelFor(c.getName(context)));
 		return s;
@@ -437,7 +440,7 @@ public final class ExtendedDataUtilities {
 	
 	public static Rectangle getLayout(
 			IPropertyProvider context, Layoutable l) {
-		Rectangle r = (Rectangle)require(context, l, LAYOUT, Rectangle.class);
+		Rectangle r = require(context, l, LAYOUT, Rectangle.class);
 		if (r == null) {
 			if (l instanceof Port) {
 				Port p = (Port)l;
@@ -643,7 +646,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static String getAlias(IPropertyProvider context, Site s) {
-		return (String)require(context, s, ALIAS, String.class);
+		return require(context, s, ALIAS, String.class);
 	}
 	
 	public static void setAlias(Site s, String a) {
