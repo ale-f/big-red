@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -21,8 +23,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.utilities.ui.UI;
 
 

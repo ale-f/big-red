@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.changes;
+package org.bigraph.model.changes;
 
 /**
  * Objects implementing {@link IChangeExecutor} can have {@link Change}s applied

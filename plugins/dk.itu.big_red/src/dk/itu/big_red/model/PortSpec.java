@@ -2,9 +2,10 @@ package dk.itu.big_red.model;
 
 import java.util.Map;
 
+import org.bigraph.model.changes.Change;
+
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.RedProperty;
-import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.interfaces.ILink;
 import dk.itu.big_red.model.interfaces.INode;
 import dk.itu.big_red.model.interfaces.IPort;

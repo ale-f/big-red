@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph;
 
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.ui.properties.UndoablePropertySheetEntry;
@@ -15,7 +16,6 @@ import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.changes.ChangeGroup;
 
 import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.COMMENT;
 

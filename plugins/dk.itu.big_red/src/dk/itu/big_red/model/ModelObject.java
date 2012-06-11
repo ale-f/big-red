@@ -5,9 +5,10 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+
 import dk.itu.big_red.model.assistants.IPropertyProvider;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical

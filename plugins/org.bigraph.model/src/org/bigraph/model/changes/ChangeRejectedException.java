@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.changes;
+package org.bigraph.model.changes;
 
 /**
  * {@link IChangeValidator}s throw {@link ChangeRejectedException}s when a

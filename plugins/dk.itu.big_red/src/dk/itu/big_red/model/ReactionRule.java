@@ -4,14 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+
 import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Layoutable.ChangeRemove;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.names.INamespace;
 
 public class ReactionRule extends ModelObject {

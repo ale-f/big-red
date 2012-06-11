@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
@@ -8,7 +9,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class LayoutableReparentCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

@@ -8,12 +8,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.IChangeValidator;
+
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.assistants.IPropertyProvider;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeExecutor;
-import dk.itu.big_red.model.changes.IChangeValidator;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.names.Namespace;
 import dk.itu.big_red.model.names.NamespaceGroup;

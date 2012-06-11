@@ -2,6 +2,8 @@ package dk.itu.big_red.editors.utilities;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -13,8 +15,6 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 
 public class ModelPropertySource implements IPropertySource {
 	private Layoutable object;

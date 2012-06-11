@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.changes;
+package org.bigraph.model.changes;
 
 /**
  * <strong>ChangeValidator</strong> is a sensible concrete implementation of

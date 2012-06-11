@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.changes;
+package org.bigraph.model.changes;
 
 /**
  * A Change is a reversible modification.

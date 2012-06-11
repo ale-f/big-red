@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.bigraph.model.changes.Change;
+
 import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
-import dk.itu.big_red.model.changes.Change;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain

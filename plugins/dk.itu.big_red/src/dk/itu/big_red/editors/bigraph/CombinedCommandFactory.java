@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph;
 
+import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -11,7 +12,6 @@ import dk.itu.big_red.editors.bigraph.commands.ModelDeleteCommand;
 import dk.itu.big_red.editors.bigraph.parts.AbstractPart;
 import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.changes.IChangeExecutor;
 
 /**
  * {@link Bigraph}s are instances of {@link IChangeExecutor}: they can validate

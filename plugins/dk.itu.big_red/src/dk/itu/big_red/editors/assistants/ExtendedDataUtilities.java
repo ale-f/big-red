@@ -2,6 +2,8 @@ package dk.itu.big_red.editors.assistants;
 
 import java.util.List;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -30,8 +32,6 @@ import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.Line;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
 

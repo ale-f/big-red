@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.load_save.loaders;
 
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -9,8 +11,6 @@ import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
 import dk.itu.big_red.model.names.policies.INamePolicy;

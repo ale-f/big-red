@@ -14,6 +14,8 @@ import javax.xml.validation.SchemaFactory;
 import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.Reaction;
 
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -25,8 +27,6 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;

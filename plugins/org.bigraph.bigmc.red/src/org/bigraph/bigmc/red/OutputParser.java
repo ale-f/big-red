@@ -3,6 +3,9 @@ package org.bigraph.bigmc.red;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -12,8 +15,6 @@ import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.names.HashMapNamespace;
 import dk.itu.big_red.model.names.INamespace;
 

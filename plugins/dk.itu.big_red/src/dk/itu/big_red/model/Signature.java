@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChangeExecutor;
+
 import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeName;
@@ -12,9 +16,6 @@ import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.assistants.SignatureChangeValidator;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.interfaces.ISignature;
 
 /**

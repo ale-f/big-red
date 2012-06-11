@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.changes;
+package org.bigraph.model.changes;
 
 /**
  * Objects implementing {@link IChangeValidator} can inspect, and possibly

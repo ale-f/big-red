@@ -3,6 +3,8 @@ package dk.itu.big_red.model.load_save.loaders;
 import java.util.HashMap;
 import java.util.Locale;
 
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -24,8 +26,6 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.names.policies.INamePolicy;

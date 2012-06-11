@@ -2,6 +2,11 @@ package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.ChangeValidator;
+
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -13,10 +18,6 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
 import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.ChangeValidator;
 import dk.itu.big_red.model.names.Namespace;
 
 /**

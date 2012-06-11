@@ -2,6 +2,11 @@ package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.ChangeValidator;
+
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeKind;
@@ -13,10 +18,6 @@ import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Signature.ChangeAddControl;
 import dk.itu.big_red.model.Signature.ChangeRemoveControl;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.ChangeValidator;
 
 public class SignatureChangeValidator extends ChangeValidator<Signature> {
 	private final PropertyScratchpad scratch;

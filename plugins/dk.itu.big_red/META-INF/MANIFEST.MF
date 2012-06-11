@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.ui.navigator,
  org.eclipse.ui.navigator.resources,
- org.eclipse.ui.views.log
+ org.eclipse.ui.views.log,
+ org.bigraph.model;bundle-version="1.0.0";visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: dk.itu.big_red.editors,
@@ -27,7 +28,6 @@ Export-Package: dk.itu.big_red.editors,
  dk.itu.big_red.editors.utilities,
  dk.itu.big_red.interaction_managers,
  dk.itu.big_red.model,
- dk.itu.big_red.model.changes,
  dk.itu.big_red.model.interfaces,
  dk.itu.big_red.model.load_save,
  dk.itu.big_red.model.load_save.loaders,

@@ -1,5 +1,8 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
@@ -17,9 +20,6 @@ import dk.itu.big_red.model.Point.ChangeDisconnect;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 

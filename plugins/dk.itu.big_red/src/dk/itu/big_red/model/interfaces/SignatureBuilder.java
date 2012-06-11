@@ -1,11 +1,12 @@
 package dk.itu.big_red.model.interfaces;
 
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 
 public class SignatureBuilder {
 	private Signature s = new Signature();

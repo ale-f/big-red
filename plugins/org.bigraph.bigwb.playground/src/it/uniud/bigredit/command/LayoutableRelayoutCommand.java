@@ -2,6 +2,7 @@ package it.uniud.bigredit.command;
 
 import it.uniud.bigredit.model.BRS;
 
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
@@ -13,7 +14,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.InnerName;
 import it.uniud.bigredit.model.Reaction;
 
