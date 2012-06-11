@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.gef.KeyHandler;
+import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.Command;
@@ -12,6 +14,8 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.editparts.ZoomListener;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteToolbar;
@@ -19,6 +23,7 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -32,6 +37,8 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
+
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
@@ -170,8 +177,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 		redexViewer.setEditPartFactory(new PartFactory());
 		reactumViewer.setEditPartFactory(new PartFactory());
 		
-		redexViewer.setRootEditPart(new ScalableRootEditPart());
-		reactumViewer.setRootEditPart(new ScalableRootEditPart());
+		ScalableRootEditPart
+			redexRoot = new ScalableRootEditPart(),
+			reactumRoot = new ScalableRootEditPart();
+		redexViewer.setRootEditPart(redexRoot);
+		reactumViewer.setRootEditPart(reactumRoot);
 		
 		redexViewer.setContextMenu(
 			new BigraphEditorContextMenuProvider(redexViewer, getActionRegistry()));
@@ -181,6 +191,50 @@ public class RuleEditor extends AbstractGEFEditor implements
 		redexViewer.addSelectionChangedListener(this);
 		reactumViewer.addSelectionChangedListener(this);
 		getSite().setSelectionProvider(this);
+		
+		final ZoomManager
+			redexZoom = redexRoot.getZoomManager(),
+			reactumZoom = reactumRoot.getZoomManager();
+		
+		final ZoomListener zoomSynchroniser = new ZoomListener() {
+			private boolean lock = false;
+			@Override
+			public void zoomChanged(double zoom) {
+				if (lock)
+					return;
+				lock = true;
+				try {
+					redexZoom.setZoom(zoom);
+					reactumZoom.setZoom(zoom);
+				} finally {
+					lock = false;
+				}
+			}
+		};
+		
+		redexZoom.addZoomListener(zoomSynchroniser);
+		reactumZoom.addZoomListener(zoomSynchroniser);
+		
+		KeyHandler keyHandler = new KeyHandler();
+	    keyHandler.put(KeyStroke.getPressed(SWT.DEL, SWT.DEL, 0),
+		    	getActionRegistry().getAction(ActionFactory.DELETE.getId()));
+		keyHandler.put(KeyStroke.getPressed('+', SWT.KEYPAD_ADD, SWT.NONE),
+				new Action() {
+			@Override
+			public void run() {
+				redexZoom.zoomIn();
+			}
+		});
+		keyHandler.put(KeyStroke.getPressed('-', SWT.KEYPAD_SUBTRACT, SWT.NONE),
+				new Action() {
+			@Override
+			public void run() {
+				redexZoom.zoomOut();
+			}
+		});
+		
+		redexViewer.setKeyHandler(keyHandler);
+		reactumViewer.setKeyHandler(keyHandler);
 		
 		String stateMask = MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL);
 	    redexViewer.setProperty(stateMask, MouseWheelZoomHandler.SINGLETON);
