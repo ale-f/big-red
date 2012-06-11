@@ -1,6 +1,6 @@
-package dk.itu.big_red.model.names;
+package org.bigraph.model.names;
 
-import dk.itu.big_red.model.names.policies.INamePolicy;
+import org.bigraph.model.names.policies.INamePolicy;
 
 /**
  * Classes implementing <strong>INamespace</strong> are <i>namespaces</i>,

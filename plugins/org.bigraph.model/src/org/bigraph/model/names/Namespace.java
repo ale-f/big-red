@@ -1,9 +1,9 @@
-package dk.itu.big_red.model.names;
+package org.bigraph.model.names;
 
 import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.names.policies.INamePolicy;
 
-import dk.itu.big_red.model.names.policies.INamePolicy;
 
 public abstract class Namespace<T> implements INamespace<T> {
 	@SuppressWarnings("unchecked")

@@ -6,6 +6,7 @@ import java.util.Locale;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -28,7 +29,6 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.utilities.resources.Project;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;

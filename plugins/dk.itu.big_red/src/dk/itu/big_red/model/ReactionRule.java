@@ -8,13 +8,13 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.names.INamespace;
 
 import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Layoutable.ChangeRemove;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;
-import dk.itu.big_red.model.names.INamespace;
 
 public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;

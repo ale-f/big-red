@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.names;
+package org.bigraph.model.names;
 
 import java.util.HashMap;
 

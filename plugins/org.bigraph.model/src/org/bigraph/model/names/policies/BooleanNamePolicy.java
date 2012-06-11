@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.names.policies;
+package org.bigraph.model.names.policies;
 
 public class BooleanNamePolicy implements INamePolicy {
 	@Override

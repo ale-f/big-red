@@ -14,13 +14,13 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
+import org.bigraph.model.names.Namespace;
+import org.bigraph.model.names.NamespaceGroup;
+import org.bigraph.model.names.policies.PositiveIntegerNamePolicy;
+import org.bigraph.model.names.policies.StringNamePolicy;
 
 import dk.itu.big_red.model.assistants.BigraphIntegrityValidator;
 import dk.itu.big_red.model.interfaces.IBigraph;
-import dk.itu.big_red.model.names.Namespace;
-import dk.itu.big_red.model.names.NamespaceGroup;
-import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
-import dk.itu.big_red.model.names.policies.StringNamePolicy;
 
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link

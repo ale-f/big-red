@@ -7,8 +7,8 @@ import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.names.Namespace;
 
-import dk.itu.big_red.model.names.Namespace;
 
 /**
  * All of the objects which can actually appear as part of a bigraph are

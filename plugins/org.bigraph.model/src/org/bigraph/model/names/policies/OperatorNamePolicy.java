@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.names.policies;
+package org.bigraph.model.names.policies;
 
 import java.util.ArrayList;
 import java.util.List;

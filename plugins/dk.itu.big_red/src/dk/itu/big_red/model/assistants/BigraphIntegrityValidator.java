@@ -10,6 +10,7 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.ChangeValidator;
+import org.bigraph.model.names.Namespace;
 
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
@@ -19,7 +20,6 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.names.Namespace;
 
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that

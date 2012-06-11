@@ -1,6 +1,6 @@
-package dk.itu.big_red.model.names.policies;
+package org.bigraph.model.names.policies;
 
-import dk.itu.big_red.model.names.INamespace;
+import org.bigraph.model.names.INamespace;
 
 /**
  * Classes implementing <strong>INamePolicy</strong> are name validators and

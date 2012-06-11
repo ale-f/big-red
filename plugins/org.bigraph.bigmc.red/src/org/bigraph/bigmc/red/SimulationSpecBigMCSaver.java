@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.names.policies.INamePolicy;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
@@ -29,7 +30,6 @@ import dk.itu.big_red.model.interfaces.IRoot;
 import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.model.names.policies.INamePolicy;
 
 public class SimulationSpecBigMCSaver extends Saver {
 	private OutputStreamWriter osw = null;
