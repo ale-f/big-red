@@ -4,6 +4,7 @@ package it.uniud.bigredit.editparts;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
@@ -22,7 +23,6 @@ import dk.itu.big_red.editors.bigraph.parts.SitePart;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Port;

@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
@@ -13,7 +14,6 @@ import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
 
 public class ModelDeleteCommand extends ChangeCommand {
 	@Override

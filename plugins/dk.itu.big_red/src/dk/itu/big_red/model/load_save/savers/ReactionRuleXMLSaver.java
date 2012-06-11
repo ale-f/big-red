@@ -1,5 +1,7 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -12,8 +14,6 @@ import dk.itu.big_red.model.Container.ChangeAddChild;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Layoutable.ChangeName;
 import dk.itu.big_red.model.Layoutable.ChangeRemove;
-import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point.ChangeConnect;
 import dk.itu.big_red.model.Point.ChangeDisconnect;

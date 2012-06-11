@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.utilities;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.jface.viewers.ICellEditorValidator;
@@ -12,7 +13,6 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Site;
 

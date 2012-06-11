@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.core.resources.IFile;
@@ -39,7 +40,6 @@ import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.SimulationSpec;

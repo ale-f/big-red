@@ -3,8 +3,9 @@ package dk.itu.big_red.model.load_save.savers;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import org.bigraph.model.ModelObject;
+
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.interfaces.IBigraph;
 import dk.itu.big_red.model.interfaces.IChild;
 import dk.itu.big_red.model.interfaces.IControl;

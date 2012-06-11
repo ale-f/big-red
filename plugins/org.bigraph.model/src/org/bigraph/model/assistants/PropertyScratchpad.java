@@ -1,9 +1,10 @@
-package dk.itu.big_red.model.assistants;
+package org.bigraph.model.assistants;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class PropertyScratchpad implements IPropertyProvider {
 	private static final class NNPair {

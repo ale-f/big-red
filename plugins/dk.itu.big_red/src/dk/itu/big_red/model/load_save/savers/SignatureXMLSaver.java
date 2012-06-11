@@ -1,10 +1,10 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.bigraph.model.ModelObject;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.SaveFailedException;

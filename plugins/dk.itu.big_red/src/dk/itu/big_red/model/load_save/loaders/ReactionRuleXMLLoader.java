@@ -1,5 +1,6 @@
 package dk.itu.big_red.model.load_save.loaders;
 
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -19,7 +20,6 @@ import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
 import dk.itu.big_red.model.names.Namespace;

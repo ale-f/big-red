@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -17,7 +18,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 //import it.uniud.bigredit.PlayEditor;
 
 import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Signature;
 
 import dk.itu.big_red.model.SimulationSpec.ChangeModel;

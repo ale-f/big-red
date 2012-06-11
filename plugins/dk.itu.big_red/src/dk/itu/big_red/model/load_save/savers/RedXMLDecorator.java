@@ -9,6 +9,7 @@ import static
 import static
 	dk.itu.big_red.model.load_save.loaders.XMLLoader.getDoubleAttribute;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -21,7 +22,6 @@ import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Port;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.ReactionRule;

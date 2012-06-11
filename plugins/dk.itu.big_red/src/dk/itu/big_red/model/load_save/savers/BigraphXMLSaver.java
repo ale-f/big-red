@@ -3,6 +3,7 @@ package dk.itu.big_red.model.load_save.savers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.ModelObject;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
@@ -12,7 +13,6 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;

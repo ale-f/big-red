@@ -2,6 +2,12 @@ package dk.itu.big_red.editors.assistants;
 
 import java.util.List;
 
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
+import org.bigraph.model.ModelObject.ExtendedDataValidator;
+import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.core.resources.IFile;
@@ -16,9 +22,6 @@ import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
-import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Point;
@@ -28,10 +31,7 @@ import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.assistants.Ellipse;
-import dk.itu.big_red.model.assistants.IPropertyProvider;
 import dk.itu.big_red.model.assistants.Line;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
-import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.names.policies.INamePolicy;
 import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
 

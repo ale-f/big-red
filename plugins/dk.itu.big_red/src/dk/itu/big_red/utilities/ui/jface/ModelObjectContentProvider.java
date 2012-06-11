@@ -2,11 +2,11 @@ package dk.itu.big_red.utilities.ui.jface;
 
 import java.beans.PropertyChangeListener;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.jface.viewers.AbstractListViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-import dk.itu.big_red.model.ModelObject;
 
 public abstract class ModelObjectContentProvider
 	implements IStructuredContentProvider, PropertyChangeListener {

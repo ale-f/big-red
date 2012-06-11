@@ -1,8 +1,9 @@
 package dk.itu.big_red.model;
 
+import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.RedProperty;
+
 import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.IPropertyProvider;
-import dk.itu.big_red.model.assistants.RedProperty;
 import dk.itu.big_red.model.interfaces.IPoint;
 
 /**

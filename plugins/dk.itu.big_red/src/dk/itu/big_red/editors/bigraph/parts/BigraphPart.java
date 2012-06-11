@@ -4,6 +4,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
@@ -16,7 +17,6 @@ import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.InnerName;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.model.Root;
 

@@ -1,7 +1,8 @@
 package dk.itu.big_red.model.names;
 
-import dk.itu.big_red.model.assistants.IPropertyProvider;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.PropertyScratchpad;
+
 import dk.itu.big_red.model.names.policies.INamePolicy;
 
 public abstract class Namespace<T> implements INamespace<T> {

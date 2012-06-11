@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.assistants;
+package org.bigraph.model.assistants;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

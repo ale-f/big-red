@@ -12,6 +12,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.DOMImplementation;
@@ -22,7 +23,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 

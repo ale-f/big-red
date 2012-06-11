@@ -1,8 +1,8 @@
 package dk.itu.big_red.editors.bigraph;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.gef.requests.CreationFactory;
 
-import dk.itu.big_red.model.ModelObject;
 
 /**
  * The ModelFactory class creates {@link ModelObject}s on demand.

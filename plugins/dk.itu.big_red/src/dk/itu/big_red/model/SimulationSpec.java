@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
 
-import dk.itu.big_red.model.assistants.RedProperty;
 
 public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	/**

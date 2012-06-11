@@ -1,8 +1,8 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.bigraph.model.ModelObject;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.ReactionRule;
 import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.load_save.SaveFailedException;

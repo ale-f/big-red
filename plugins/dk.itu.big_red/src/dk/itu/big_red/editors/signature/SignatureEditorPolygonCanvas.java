@@ -5,6 +5,7 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.ColorConstants;
@@ -34,7 +35,6 @@ import org.eclipse.swt.widgets.MenuItem;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.assistants.Ellipse;
 import dk.itu.big_red.model.assistants.Line;
 import dk.itu.big_red.model.PortSpec;

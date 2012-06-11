@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.assistants;
+package org.bigraph.model.assistants;
 
 public interface IPropertyProvider {
 	public boolean hasProperty(Object target, String name);

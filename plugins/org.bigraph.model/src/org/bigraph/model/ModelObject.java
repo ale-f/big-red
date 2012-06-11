@@ -1,23 +1,19 @@
-package dk.itu.big_red.model;
+package org.bigraph.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
-
-import dk.itu.big_red.model.assistants.IPropertyProvider;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
  * model. It allows {@link PropertyChangeListener}s to register for, and
  * unregister from, change notifications, and has a {@link String} comment
  * which can be set and retrieved.
- * 
- * <p>Objects which can appear on a bigraph are instances of the subclass
- * {@link Layoutable}.
  * @author alec
  * @see Layoutable
  *

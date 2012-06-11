@@ -3,9 +3,10 @@ package dk.itu.big_red.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import dk.itu.big_red.model.assistants.IPropertyProvider;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
-import dk.itu.big_red.model.assistants.RedProperty;
+import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.RedProperty;
+
 import dk.itu.big_red.model.interfaces.ILink;
 
 /**

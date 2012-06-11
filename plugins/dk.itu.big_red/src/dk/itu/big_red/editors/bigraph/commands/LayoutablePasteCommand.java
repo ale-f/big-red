@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.gef.ui.actions.Clipboard;
 
@@ -12,7 +13,6 @@ import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Root;
 import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
 
 public class LayoutablePasteCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

@@ -4,6 +4,7 @@ import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
 
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -13,7 +14,6 @@ import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
 import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.Root;
 
 

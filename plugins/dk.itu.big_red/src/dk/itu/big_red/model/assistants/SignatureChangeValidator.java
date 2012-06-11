@@ -2,6 +2,9 @@ package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.ModelObject.ChangeExtendedData;
+import org.bigraph.model.ModelObject.ExtendedDataValidator;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -12,8 +15,6 @@ import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeName;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
-import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
-import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Signature.ChangeAddControl;

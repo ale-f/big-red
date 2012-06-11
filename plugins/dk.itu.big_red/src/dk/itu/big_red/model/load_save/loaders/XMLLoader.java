@@ -16,6 +16,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
@@ -24,7 +25,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
