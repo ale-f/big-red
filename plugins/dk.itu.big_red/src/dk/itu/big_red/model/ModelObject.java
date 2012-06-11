@@ -39,13 +39,15 @@ public abstract class ModelObject {
 	public class ChangeExtendedData extends ModelObjectChange {
 		public String key;
 		public Object newValue;
-		public ExtendedDataValidator validator;
+		public ExtendedDataValidator immediateValidator, finalValidator;
 		
-		protected ChangeExtendedData(
-				String key, Object newValue, ExtendedDataValidator validator) {
+		protected ChangeExtendedData(String key, Object newValue,
+				ExtendedDataValidator immediateValidator,
+				ExtendedDataValidator finalValidator) {
 			this.key = key;
 			this.newValue = newValue;
-			this.validator = validator;
+			this.immediateValidator = immediateValidator;
+			this.finalValidator = finalValidator;
 		}
 		
 		private Object oldValue;
@@ -57,7 +59,8 @@ public abstract class ModelObject {
 		
 		@Override
 		public Change inverse() {
-			return new ChangeExtendedData(key, oldValue, validator);
+			return new ChangeExtendedData(
+					key, oldValue, immediateValidator, finalValidator);
 		}
 		
 		@Override
@@ -165,7 +168,14 @@ public abstract class ModelObject {
 	
 	public Change changeExtendedData(
 			String key, Object newValue, ExtendedDataValidator validator) {
-		return new ChangeExtendedData(key, newValue, validator);
+		return changeExtendedData(key, newValue, validator, null);
+	}
+	
+	public Change changeExtendedData(String key, Object newValue,
+			ExtendedDataValidator immediateValidator,
+			ExtendedDataValidator finalValidator) {
+		return new ChangeExtendedData(
+				key, newValue, immediateValidator, finalValidator);
 	}
 	
 	public void dispose() {

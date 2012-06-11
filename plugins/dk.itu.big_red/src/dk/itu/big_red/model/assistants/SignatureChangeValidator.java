@@ -1,11 +1,14 @@
 package dk.itu.big_red.model.assistants;
 
+import java.util.ArrayList;
+
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.ChangeAddPort;
 import dk.itu.big_red.model.Control.ChangeKind;
 import dk.itu.big_red.model.Control.ChangeName;
 import dk.itu.big_red.model.Control.ChangeRemovePort;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
+import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
 import dk.itu.big_red.model.PortSpec;
 import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Signature.ChangeAddControl;
@@ -29,11 +32,24 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 		activeChange = b;
 		
 		scratch.clear();
+		
+		finalChecks.clear();
+		
 		_tryValidateChange(b);
+		
+		for (ChangeExtendedData i : finalChecks) {
+			String rationale = i.finalValidator.validate(i, scratch);
+			if (rationale != null)
+				throw new ChangeRejectedException(getChangeable(), i,
+					SignatureChangeValidator.this, rationale);
+		}
 		
 		activeChange = null;
 	}
-
+	
+	private ArrayList<ChangeExtendedData> finalChecks =
+			new ArrayList<ChangeExtendedData>();
+	
 	protected void rejectChange(String rationale)
 			throws ChangeRejectedException {
 		super.rejectChange(activeChange, rationale);
@@ -52,11 +68,14 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				_tryValidateChange(c);
 		} else if (b instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)b;
-			if (c.validator != null) {
-				String rationale = c.validator.validate(c, scratch);
+			ExtendedDataValidator v = c.immediateValidator;
+			if (v != null) {
+				String rationale = v.validate(c, scratch);
 				if (rationale != null)
 					rejectChange(rationale);
 			}
+			if (c.finalValidator != null)
+				finalChecks.add(c);
 			scratch.setProperty(c.getCreator(), c.key, c.newValue);
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;

@@ -2,9 +2,6 @@ package dk.itu.big_red.model.assistants;
 
 import java.util.ArrayList;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.Container;
 import dk.itu.big_red.model.Edge;
@@ -15,6 +12,7 @@ import dk.itu.big_red.model.Node;
 import dk.itu.big_red.model.Point;
 import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
+import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
 import dk.itu.big_red.model.changes.Change;
 import dk.itu.big_red.model.changes.ChangeGroup;
 import dk.itu.big_red.model.changes.ChangeRejectedException;
@@ -37,41 +35,12 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		scratch = new PropertyScratchpad();
 	}
 	
-	private ArrayList<Layoutable> layoutChecks =
-		new ArrayList<Layoutable>();
+	private ArrayList<ChangeExtendedData> finalChecks =
+			new ArrayList<ChangeExtendedData>();
 	
 	protected void rejectChange(String rationale)
 			throws ChangeRejectedException {
 		super.rejectChange(activeChange, rationale);
-	}
-	
-	private void runLayoutChecks() throws ChangeRejectedException {
-		for (Layoutable i : layoutChecks) {
-			Container parent = i.getParent(scratch);
-			Rectangle layout = ExtendedDataUtilities.getLayout(scratch, i);
-			checkObjectCanContain(parent, layout);
-			if (i instanceof Container)
-				checkLayoutCanContainChildren((Container)i, layout);
-		}
-	}
-	
-	private void checkObjectCanContain(Layoutable o, Rectangle nl) throws ChangeRejectedException {
-		if (o != null && !(o instanceof Bigraph)) {
-			Rectangle tr =
-				ExtendedDataUtilities.getLayout(scratch, o).getCopy().setLocation(0, 0);
-			if (!tr.contains(nl))
-				rejectChange(
-					"The object can no longer fit into its container");
-		}
-	}
-	
-	private void checkLayoutCanContainChildren(Container c, Rectangle nl) throws ChangeRejectedException {
-		nl = nl.getCopy().setLocation(0, 0);
-		for (Layoutable i : c.getChildren()) {
-			Rectangle layout = ExtendedDataUtilities.getLayout(scratch, i);
-			if (!nl.contains(layout))
-				rejectChange("The object is no longer big enough to accommodate its children");
-		}
 	}
 	
 	private void checkEligibility(Layoutable... l) throws ChangeRejectedException {
@@ -87,11 +56,16 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 		
 		scratch.clear();
 		
-		layoutChecks.clear();
+		finalChecks.clear();
 		
 		_tryValidateChange(b);
 		
-		runLayoutChecks();
+		for (ChangeExtendedData i : finalChecks) {
+			String rationale = i.finalValidator.validate(i, scratch);
+			if (rationale != null)
+				throw new ChangeRejectedException(getChangeable(), i,
+					BigraphIntegrityValidator.this, rationale);
+		}
 		
 		activeChange = null;
 	}
@@ -154,8 +128,6 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 					rejectChange(b,
 						c.getCreator().getType() + "s can't contain " +
 						c.child.getType() + "s");
-				if (!layoutChecks.contains(c.child))
-					layoutChecks.add(c.child);
 			}
 			
 			c.getCreator().addChild(scratch, c.child, c.name);
@@ -174,11 +146,14 @@ public class BigraphIntegrityValidator extends ChangeValidator<Bigraph> {
 				remove(scratch, ch.getName());
 		} else if (b instanceof ModelObject.ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)b;
-			if (c.validator != null) {
-				String rationale = c.validator.validate(c, scratch);
+			ExtendedDataValidator v = c.immediateValidator;
+			if (v != null) {
+				String rationale = v.validate(c, scratch);
 				if (rationale != null)
 					rejectChange(rationale);
 			}
+			if (c.finalValidator != null)
+				finalChecks.add(c);
 			scratch.setProperty(c.getCreator(), c.key, c.newValue);
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;

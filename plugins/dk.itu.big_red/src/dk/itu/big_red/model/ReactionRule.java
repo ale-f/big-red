@@ -150,7 +150,9 @@ public class ReactionRule extends ModelObject {
 			if (reactumObject == null)
 				return null;
 			
-			return reactumObject.changeExtendedData(ch.key, ch.newValue);
+			return reactumObject.changeExtendedData(
+					ch.key, ch.newValue, ch.immediateValidator,
+					ch.finalValidator);
 		} else throw new Error(change + " unrecognised");
 	}
 	
