@@ -1,14 +1,7 @@
 package dk.itu.big_red.model.assistants;
 
-import java.util.ArrayList;
-
-import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.ModelObject.ExtendedDataValidator;
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.ChangeValidator;
 
 import dk.itu.big_red.model.Control;
 import dk.itu.big_red.model.Control.ChangeAddPort;
@@ -20,79 +13,34 @@ import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.Signature.ChangeAddControl;
 import dk.itu.big_red.model.Signature.ChangeRemoveControl;
 
-public class SignatureChangeValidator extends ChangeValidator<Signature> {
-	private final PropertyScratchpad scratch;
-	private Change activeChange = null;
-	
+public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 	public SignatureChangeValidator(Signature changeable) {
 		super(changeable);
-		scratch = new PropertyScratchpad();
 	}
-
+	
+	private void checkEligibility(Change b, Control c) throws ChangeRejectedException {
+		if (c.getSignature(getScratch()) != getChangeable())
+			rejectChange(b, "The control " + c + " is not part of this Signature");
+	}
+	
 	@Override
-	public void tryValidateChange(Change b) throws ChangeRejectedException {
-		activeChange = b;
-		
-		scratch.clear();
-		
-		finalChecks.clear();
-		
-		_tryValidateChange(b);
-		
-		for (ChangeExtendedData i : finalChecks) {
-			String rationale = i.finalValidator.validate(i, scratch);
-			if (rationale != null)
-				throw new ChangeRejectedException(getChangeable(), i,
-					SignatureChangeValidator.this, rationale);
-		}
-		
-		activeChange = null;
-	}
-	
-	private ArrayList<ChangeExtendedData> finalChecks =
-			new ArrayList<ChangeExtendedData>();
-	
-	protected void rejectChange(String rationale)
-			throws ChangeRejectedException {
-		super.rejectChange(activeChange, rationale);
-	}
-	
-	private void checkEligibility(Control c) throws ChangeRejectedException {
-		if (c.getSignature(scratch) != getChangeable())
-			rejectChange("The control " + c + " is not part of this Signature");
-	}
-	
-	private void _tryValidateChange(Change b) throws ChangeRejectedException {
-		if (!b.isReady()) {
-			rejectChange("The Change is not ready");
-		} else if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b)
-				_tryValidateChange(c);
-		} else if (b instanceof ChangeExtendedData) {
-			ChangeExtendedData c = (ChangeExtendedData)b;
-			ExtendedDataValidator v = c.immediateValidator;
-			if (v != null) {
-				String rationale = v.validate(c, scratch);
-				if (rationale != null)
-					rejectChange(rationale);
-			}
-			if (c.finalValidator != null)
-				finalChecks.add(c);
-			scratch.setProperty(c.getCreator(), c.key, c.newValue);
+	public Change doValidateChange(Change b) throws ChangeRejectedException {
+		if (super.doValidateChange(b) == null) {
+			/* do nothing */
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
-			getChangeable().addControl(scratch, c.control);
+			getChangeable().addControl(getScratch(), c.control);
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
-			getChangeable().removeControl(scratch, c.control);
+			getChangeable().removeControl(getScratch(), c.control);
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
-			checkEligibility(c.getCreator());
-			c.getCreator().addPort(scratch, c.port);
+			checkEligibility(b, c.getCreator());
+			c.getCreator().addPort(getScratch(), c.port);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
-			checkEligibility(c.getCreator());
-			c.getCreator().removePort(scratch, c.port);
+			checkEligibility(b, c.getCreator());
+			c.getCreator().removePort(getScratch(), c.port);
 		} else if (b instanceof ChangeKind) {
 			/* do nothing, yet */
 		} else if (b instanceof PortSpec.ChangeName) {
@@ -101,10 +49,11 @@ public class SignatureChangeValidator extends ChangeValidator<Signature> {
 				rejectChange(b, "Port names must not be empty");
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
-			checkEligibility(c.getCreator());
+			checkEligibility(b, c.getCreator());
 			if (c.name.trim().length() == 0)
 				rejectChange(b, "Control names must not be empty");
-			c.getCreator().setName(scratch, c.name);
-		} else rejectChange("The change was not recognised by the validator");
+			c.getCreator().setName(getScratch(), c.name);
+		} else return b;
+		return null;
 	}
 }
