@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.gef.MouseWheelHandler;
+import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
@@ -179,6 +181,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 		redexViewer.addSelectionChangedListener(this);
 		reactumViewer.addSelectionChangedListener(this);
 		getSite().setSelectionProvider(this);
+		
+		String stateMask = MouseWheelHandler.KeyGenerator.getKey(SWT.CTRL);
+	    redexViewer.setProperty(stateMask, MouseWheelZoomHandler.SINGLETON);
+	    reactumViewer.setProperty(stateMask, MouseWheelZoomHandler.SINGLETON);
 		
 		initialise();
 	}
