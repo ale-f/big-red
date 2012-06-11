@@ -236,7 +236,7 @@ public final class ExtendedDataUtilities {
 				t = p.get(0);
 		}
 		if (s != null ? !s.equals(t) : s != t)
-			set(context, n, PARAMETER, t);
+			setParameter(context, n, t);
 		return t;
 	}
 	
@@ -403,7 +403,7 @@ public final class ExtendedDataUtilities {
 	public static String getLabel(IPropertyProvider context, Control c) {
 		String s = (String)require(context, c, LABEL, String.class);
 		if (s == null)
-			set(context, c, LABEL, s = labelFor(c.getName(context)));
+			setLabel(context, c, s = labelFor(c.getName(context)));
 		return s;
 	}
 	
@@ -472,7 +472,7 @@ public final class ExtendedDataUtilities {
 					r.setLocation(tx / s, ty / s);
 				}
 			} else if (!(l instanceof Bigraph))
-				set(context, l, LAYOUT, r = new Rectangle());
+				setLayout(context, l, r = new Rectangle());
 		}
 		return r;
 	}
