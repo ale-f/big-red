@@ -4,7 +4,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ContentViewer;
 import org.eclipse.jface.viewers.IContentProvider;
@@ -19,7 +18,6 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -97,16 +95,6 @@ public final class UI {
 	public static IStatusLineManager getActiveStatusLine() {
 		return getWorkbenchPage().getActiveEditor().getEditorSite().
 				getActionBars().getStatusLineManager();
-	}
-
-	/**
-	 * Gets a {@link FileDialog} for the specified window.
-	 * @param parent a window
-	 * @param style the style of dialog to construct
-	 * @return a new file dialog whose parent is the specified window
-	 */
-	public static FileDialog getFileDialog(Shell parent, int style) {
-		return new FileDialog(parent, style | SWT.DIALOG_TRIM);
 	}
 
 	/**
@@ -224,20 +212,11 @@ public final class UI {
 		InputDialog id =
 			new InputDialog(getShell(), title,
 				caption, initialValue, validator);
-		id.setBlockOnOpen(true);
 		if (id.open() == InputDialog.OK) {
 			return id.getValue();
 		} else {
 			return null;
 		}
-	}
-	
-	public final static String[] YES_NO = new String[] { "Yes", "No" };
-	
-	public static String askFor(Shell s, String title, String caption,
-			String[] buttons) {
-		return buttons[new MessageDialog(
-		s, title, null, caption, MessageDialog.QUESTION, buttons, 0).open()];
 	}
 	
 	/**
