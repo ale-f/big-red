@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -127,58 +128,29 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	private abstract class PortChange extends ControlChange {
+	public class ChangeAddPort extends ControlChange {
 		public PortSpec port;
-		
-		@Override
-		public boolean isReady() {
-			return (port != null);
-		}
-	}
-	
-	public class ChangeAddPort extends PortChange {
 		public String name;
+		
 		public ChangeAddPort(PortSpec port, String name) {
 			this.port = port;
 			this.name = name;
 		}
 		
 		@Override
+		public boolean isReady() {
+			return (port != null && name != null);
+		}
+		
+		@Override
 		public ChangeRemovePort inverse() {
-			return new ChangeRemovePort(port);
+			return port.changeRemove();
 		}
 		
 		@Override
 		public String toString() {
 			return "Change(add port " + port + " to " + getCreator() +
 					" with name \"" + name + "\")";
-		}
-	}
-	
-	public class ChangeRemovePort extends PortChange {
-		public ChangeRemovePort(PortSpec port) {
-			this.port = port;
-		}
-		
-		private String oldName;
-		@Override
-		public void beforeApply() {
-			oldName = port.getName();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldName != null);
-		}
-		
-		@Override
-		public ChangeAddPort inverse() {
-			return new ChangeAddPort(port, oldName);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(remove port " + port + " from " + getCreator() + ")";
 		}
 	}
 
@@ -364,9 +336,5 @@ public class Control extends ModelObject implements IControl {
 	
 	public ChangeAddPort changeAddPort(PortSpec port, String name) {
 		return new ChangeAddPort(port, name);
-	}
-	
-	public ChangeRemovePort changeRemovePort(PortSpec port) {
-		return new ChangeRemovePort(port);
 	}
 }

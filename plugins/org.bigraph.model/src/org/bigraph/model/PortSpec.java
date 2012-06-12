@@ -59,6 +59,36 @@ public class PortSpec extends ModelObject implements IPort {
 		}
 	}
 	
+	public class ChangeRemovePort extends PortSpecChange {
+		@Override
+		public boolean isReady() {
+			return (getCreator().getControl() != null);
+		}
+		
+		private String oldName;
+		private Control oldControl;
+		@Override
+		public void beforeApply() {
+			oldName = getCreator().getName();
+			oldControl = getCreator().getControl();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null && oldControl != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return oldControl.new ChangeAddPort(getCreator(), oldName);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove port " + getCreator() + ")";
+		}
+	}
+	
 	private String name;
 	private Control control;
 	
@@ -110,6 +140,10 @@ public class PortSpec extends ModelObject implements IPort {
 	
 	public ChangeName changeName(String name) {
 		return new ChangeName(name);
+	}
+	
+	public ChangeRemovePort changeRemove() {
+		return new ChangeRemovePort();
 	}
 	
 	@Override

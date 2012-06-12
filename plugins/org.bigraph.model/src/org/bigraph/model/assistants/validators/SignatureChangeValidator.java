@@ -2,11 +2,11 @@ package org.bigraph.model.assistants.validators;
 
 import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
+import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
 import org.bigraph.model.Control.ChangeName;
-import org.bigraph.model.Control.ChangeRemovePort;
 import org.bigraph.model.Signature.ChangeAddControl;
 import org.bigraph.model.Signature.ChangeRemoveControl;
 import org.bigraph.model.changes.Change;
@@ -39,8 +39,9 @@ public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 			c.getCreator().addPort(getScratch(), c.port);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
-			checkEligibility(b, c.getCreator());
-			c.getCreator().removePort(getScratch(), c.port);
+			Control co = c.getCreator().getControl();
+			checkEligibility(b, co);
+			co.removePort(getScratch(), c.getCreator());
 		} else if (b instanceof ChangeKind) {
 			/* do nothing, yet */
 		} else if (b instanceof PortSpec.ChangeName) {

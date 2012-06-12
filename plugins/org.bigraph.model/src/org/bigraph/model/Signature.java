@@ -8,7 +8,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
 import org.bigraph.model.Control.ChangeName;
-import org.bigraph.model.Control.ChangeRemovePort;
+import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -178,7 +178,7 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 			c.port.setName(c.name);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
-			c.getCreator().removePort(c.port);
+			c.getCreator().getControl().removePort(c.getCreator());
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
 			c.getCreator().setName(c.name);
