@@ -221,9 +221,10 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	@Override
-	protected void doChange(Change b) {
-		super.doChange(b);
-		if (b instanceof ChangeSignature) {
+	protected boolean doChange(Change b) {
+		if (super.doChange(b)) {
+			/* do nothing */
+		} else if (b instanceof ChangeSignature) {
 			setSignature(((ChangeSignature) b).signature);
 		} else if (b instanceof ChangeAddRule) {
 			addRule(((ChangeAddRule) b).rule);
@@ -231,7 +232,8 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 			removeRule(((ChangeRemoveRule) b).rule);
 		} else if (b instanceof ChangeModel) {
 			setModel(((ChangeModel) b).model);
-		}
+		} else return false;
+		return true;
 	}
 	
 	@Override

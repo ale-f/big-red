@@ -236,7 +236,7 @@ public abstract class ModelObject {
 		} else extendedData = null;
 	}
 	
-	protected void doChange(Change c_) {
+	protected boolean doChange(Change c_) {
 		c_.beforeApply();
 		if (c_ instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)c_)
@@ -244,6 +244,7 @@ public abstract class ModelObject {
 		} else if (c_ instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)c_;
 			c.getCreator().setExtendedData(c.key, c.newValue);
-		}
+		} else return false;
+		return true;
 	}
 }

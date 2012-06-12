@@ -158,9 +158,10 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	}
 
 	@Override
-	protected void doChange(Change b) {
-		super.doChange(b);
-		if (b instanceof ChangeAddControl) {
+	protected boolean doChange(Change b) {
+		if (super.doChange(b)) {
+			/* do nothing */
+		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
 			c.getCreator().addControl(c.control);
 		} else if (b instanceof ChangeRemoveControl) {
@@ -182,7 +183,8 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
 			c.getCreator().setName(c.name);
-		}
+		} else return false;
+		return true;
 	}
 	
 	@Override

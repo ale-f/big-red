@@ -222,9 +222,10 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	}
 	
 	@Override
-	protected void doChange(Change b) {
-		super.doChange(b);
-		if (b instanceof Point.ChangeConnect) {
+	protected boolean doChange(Change b) {
+		if (super.doChange(b)) {
+			/* do nothing */
+		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			c.link.addPoint(c.getCreator());
 		} else if (b instanceof Point.ChangeDisconnect) {
@@ -246,7 +247,8 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 			c.getCreator().setName(
 					getNamespace(getNSI(c.getCreator())).put(
 							c.newName, c.getCreator()));
-		}
+		} else return false;
+		return true;
 	}
 	
 	@Override

@@ -1,7 +1,6 @@
 package it.uniud.bigredit.model;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bigraph.model.Bigraph;
@@ -186,9 +185,10 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	}
 	
 	@Override
-	protected void doChange(Change b) {
-		super.doChange(b);
-		if (b instanceof Reaction.ChangeAddReactum) {
+	protected boolean doChange(Change b) {
+		if (super.doChange(b)) {
+			/* do nothing */
+		} else if (b instanceof Reaction.ChangeAddReactum) {
 
 			Reaction.ChangeAddReactum c = (Reaction.ChangeAddReactum) b;
 			((Reaction) c.getCreator()).changeReactum(c.child);
@@ -199,7 +199,8 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}else if(b instanceof Reaction.ChangeLayoutChild){
 			Reaction.ChangeLayoutChild c = (Reaction.ChangeLayoutChild)b;
 			((Reaction)c.getCreator())._changeLayoutChild(c.child, c.layout);
-		}
+		} else return false;
+		return true;
 	}
 	
 	
