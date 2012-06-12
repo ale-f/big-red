@@ -10,6 +10,10 @@ import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
@@ -19,10 +23,6 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Layoutable;
 
 
 

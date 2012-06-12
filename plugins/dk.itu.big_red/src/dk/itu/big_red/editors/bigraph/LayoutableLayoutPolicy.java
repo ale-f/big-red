@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors.bigraph;
 
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
@@ -15,8 +17,6 @@ import dk.itu.big_red.editors.bigraph.commands.LayoutableRelayoutCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableReparentCommand;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.editors.bigraph.parts.EdgePart;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
 
 public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	@Override

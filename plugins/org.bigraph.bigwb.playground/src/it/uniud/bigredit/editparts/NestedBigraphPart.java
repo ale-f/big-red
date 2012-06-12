@@ -9,6 +9,9 @@ import it.uniud.bigredit.policy.LayoutableLayoutPolicy;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
@@ -16,9 +19,6 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
 
 //import uniud.bigredit.policy.LayoutPolicy;
 

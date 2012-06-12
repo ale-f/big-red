@@ -2,7 +2,21 @@ package dk.itu.big_red.editors.assistants;
 
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Control;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
+import org.bigraph.model.Port;
+import org.bigraph.model.PortSpec;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
 import org.bigraph.model.assistants.IPropertyProvider;
@@ -17,20 +31,6 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.PortSpec;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
 
 public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}

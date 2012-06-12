@@ -1,13 +1,13 @@
 package it.uniud.bigredit.command;
 
+import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Layoutable;
 
 
 public class LayoutableAddCommand extends ChangeCommand {

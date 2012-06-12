@@ -3,6 +3,8 @@ package dk.itu.big_red.editors.bigraph.parts.tree;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -16,8 +18,6 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.utilities.ui.UI;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart

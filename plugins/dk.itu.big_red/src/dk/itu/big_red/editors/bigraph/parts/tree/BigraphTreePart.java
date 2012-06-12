@@ -1,9 +1,9 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
+import org.bigraph.model.Bigraph;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.ISharedImages;
 
-import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphTreePart extends ContainerTreePart {

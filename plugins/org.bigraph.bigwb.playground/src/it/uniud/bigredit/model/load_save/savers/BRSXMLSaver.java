@@ -5,11 +5,11 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
+import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.Bigraph;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;

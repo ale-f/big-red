@@ -4,6 +4,9 @@ import it.uniud.bigredit.editparts.BRSPart;
 import it.uniud.bigredit.editparts.NestedBigraphPart;
 import it.uniud.bigredit.editparts.ReactionPart;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -22,9 +25,6 @@ import it.uniud.bigredit.model.Reaction;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
 
 /**
  * This class is an elaboration of the original LayoutableLayoutPolicy in BigRed

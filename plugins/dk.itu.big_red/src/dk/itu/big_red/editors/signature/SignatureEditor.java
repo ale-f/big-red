@@ -5,6 +5,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.bigraph.model.Control;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -47,9 +50,6 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.utilities.ui.StockButton;
@@ -77,7 +77,7 @@ implements PropertyChangeListener {
 		return model;
 	}
 	
-	private dk.itu.big_red.model.Control currentControl;
+	private org.bigraph.model.Control currentControl;
 	
 	private ListViewer controls;
 	private Button addControl, removeControl;

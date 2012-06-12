@@ -2,13 +2,13 @@ package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
 
+import org.bigraph.model.Site;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.SiteFigure;
-import dk.itu.big_red.model.Site;
 
 public class SitePart extends AbstractPart {
 	@Override

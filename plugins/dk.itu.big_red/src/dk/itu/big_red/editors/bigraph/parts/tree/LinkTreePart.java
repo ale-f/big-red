@@ -1,11 +1,11 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
+import org.bigraph.model.Edge;
+import org.bigraph.model.Link;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Link;
 
 public class LinkTreePart extends AbstractTreePart {
 	@Override

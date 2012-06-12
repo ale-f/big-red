@@ -1,11 +1,11 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
+import org.bigraph.model.Node;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
-import dk.itu.big_red.model.Node;
 
 public class NodeTreePart extends ContainerTreePart {
 	@Override

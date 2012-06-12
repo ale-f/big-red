@@ -5,15 +5,15 @@ import it.uniud.bigredit.model.Reaction;
 
 import java.util.HashMap;
 
+import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchPart;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
 import dk.itu.big_red.utilities.ui.UI;
 
 

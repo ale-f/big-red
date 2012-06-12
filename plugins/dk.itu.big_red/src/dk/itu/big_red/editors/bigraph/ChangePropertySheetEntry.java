@@ -1,6 +1,10 @@
 package dk.itu.big_red.editors.bigraph;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.Site;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.CommandStack;
@@ -12,10 +16,6 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Site;
 
 import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.COMMENT;
 

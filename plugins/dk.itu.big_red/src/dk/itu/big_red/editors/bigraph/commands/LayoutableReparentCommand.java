@@ -1,14 +1,14 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.Node;
+import org.bigraph.model.Port;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Port;
 
 public class LayoutableReparentCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

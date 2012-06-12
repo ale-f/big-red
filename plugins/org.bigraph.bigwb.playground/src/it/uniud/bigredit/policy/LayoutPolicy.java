@@ -14,6 +14,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Node;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
@@ -31,11 +36,6 @@ import org.eclipse.gef.requests.GroupRequest;
 import dk.itu.big_red.editors.bigraph.figures.RootFigure;
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.editors.bigraph.parts.RootPart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
 
 
 

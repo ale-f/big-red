@@ -9,7 +9,15 @@ import static
 import static
 	dk.itu.big_red.model.load_save.loaders.XMLLoader.getDoubleAttribute;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Control;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Port;
+import org.bigraph.model.PortSpec;
+import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Signature;
+import org.bigraph.model.SimulationSpec;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -21,14 +29,6 @@ import org.w3c.dom.NodeList;
 import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.PortSpec;
-import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;

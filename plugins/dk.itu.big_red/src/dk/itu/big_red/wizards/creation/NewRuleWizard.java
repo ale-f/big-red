@@ -1,5 +1,8 @@
 package dk.itu.big_red.wizards.creation;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Signature;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -8,9 +11,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.LoadFailedException;

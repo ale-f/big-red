@@ -4,16 +4,16 @@ import it.uniud.bigredit.model.BRS;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Node;
+import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.ChangeValidator;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Control.Kind;
 
 
 /**

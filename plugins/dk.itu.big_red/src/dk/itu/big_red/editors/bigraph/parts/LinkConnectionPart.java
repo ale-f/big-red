@@ -3,6 +3,9 @@ package dk.itu.big_red.editors.bigraph.parts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import org.bigraph.model.Edge;
+import org.bigraph.model.Link;
+import org.bigraph.model.OuterName;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
@@ -24,9 +27,6 @@ import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.OuterName;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 

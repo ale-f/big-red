@@ -1,5 +1,9 @@
 package dk.itu.big_red.model.load_save.loaders;
 
+import org.bigraph.model.Control;
+import org.bigraph.model.PortSpec;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
@@ -11,10 +15,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.PortSpec;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.Control.Kind;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;

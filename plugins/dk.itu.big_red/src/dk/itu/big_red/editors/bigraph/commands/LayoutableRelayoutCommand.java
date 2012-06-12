@@ -1,14 +1,14 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Edge;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Layoutable;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

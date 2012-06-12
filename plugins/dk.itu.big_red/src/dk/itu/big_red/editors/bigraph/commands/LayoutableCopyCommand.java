@@ -1,13 +1,14 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
+
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Node;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
 
 public class LayoutableCopyCommand extends Command {
 	private ArrayList<Layoutable> list =

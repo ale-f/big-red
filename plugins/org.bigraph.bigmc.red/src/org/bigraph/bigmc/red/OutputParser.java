@@ -3,20 +3,20 @@ package org.bigraph.bigmc.red;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Link;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Root;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Site;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.INamespace;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.Site;
 
 
 public class OutputParser {

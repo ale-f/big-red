@@ -5,6 +5,9 @@ import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
@@ -21,9 +24,6 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 

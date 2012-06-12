@@ -4,6 +4,9 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.Control;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Node;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -15,9 +18,6 @@ import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Node;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.

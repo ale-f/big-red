@@ -1,5 +1,14 @@
 package dk.itu.big_red.model.load_save.loaders;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.Node;
+import org.bigraph.model.Point;
+import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
@@ -12,15 +21,6 @@ import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;

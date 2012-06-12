@@ -6,13 +6,13 @@ import it.uniud.bigredit.model.BRS;
 import java.util.HashMap;
 
 
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Root;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Root;
 
 
 

@@ -1,6 +1,9 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.PortSpec;
+import org.bigraph.model.Signature;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
@@ -8,9 +11,6 @@ import org.bigraph.model.names.policies.StringNamePolicy;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.PortSpec;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;

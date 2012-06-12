@@ -5,6 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Signature;
+import org.bigraph.model.SimulationSpec;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -37,10 +41,6 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;

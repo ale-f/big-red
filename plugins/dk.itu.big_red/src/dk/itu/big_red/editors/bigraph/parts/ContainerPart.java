@@ -2,7 +2,8 @@ package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
 
-import dk.itu.big_red.model.Container;
+import org.bigraph.model.Container;
+
 
 /**
  * The ContainerPart is the base class for edit parts whose model objects are
