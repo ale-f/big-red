@@ -153,8 +153,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 		getPaletteViewer().getControl().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 
-		getEditDomain().setPaletteViewer(getPaletteViewer());
-		
 		redexViewer.createControl(c);
 		redexViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
@@ -166,6 +164,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		reactumViewer.createControl(c);
 		reactumViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
+		configureGraphicalViewer();
+		
 		org.eclipse.swt.widgets.List list =
 			new org.eclipse.swt.widgets.List(c, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
@@ -174,7 +174,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 		
 		redexViewer.getControl().setBackground(ColorConstants.listBackground);
 		reactumViewer.getControl().setBackground(ColorConstants.listBackground);
-		
+	    
+		initialise();
+	}
+	
+	protected void configureGraphicalViewer() {
 		redexViewer.setEditDomain(getEditDomain());
 		reactumViewer.setEditDomain(getEditDomain());
 		
@@ -188,9 +192,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 		reactumViewer.setRootEditPart(reactumRoot);
 		
 		redexViewer.setContextMenu(
-			new BigraphEditorContextMenuProvider(redexViewer, getActionRegistry()));
+			new BigraphEditorContextMenuProvider(
+					redexViewer, getActionRegistry()));
 		reactumViewer.setContextMenu(
-			new BigraphEditorContextMenuProvider(reactumViewer, getActionRegistry()));
+			new BigraphEditorContextMenuProvider(
+					reactumViewer, getActionRegistry()));
 		
 		redexViewer.addSelectionChangedListener(this);
 		reactumViewer.addSelectionChangedListener(this);
@@ -265,10 +271,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    						SnapToGeometry.PROPERTY_SNAP_ENABLED, val);
 	    			}
 	    		});
-	    
-		initialise();
 	}
-	
+
 	private PaletteGroup nodeGroup;
 	
 	@Override
