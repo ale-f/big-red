@@ -37,6 +37,8 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.SelectAllAction;
+import org.eclipse.gef.ui.actions.ToggleGridAction;
+import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
@@ -116,6 +118,10 @@ public class BigraphEditor extends AbstractGEFEditor {
 	     
 	    viewer.setContextMenu(
 	    	new BigraphEditorContextMenuProvider(viewer, getActionRegistry()));
+	    
+	    registerActions(null,
+	    		new ToggleGridAction(getGraphicalViewer()),
+	    		new ToggleSnapToGeometryAction(getGraphicalViewer()));
 	}
 	
 	@Override

@@ -25,6 +25,8 @@ public class InnerNamePart extends PointPart {
 
 	@Override
 	protected void createEditPolicies() {
+		super.createEditPolicies();
+		
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());

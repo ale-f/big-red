@@ -8,6 +8,7 @@ import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -36,16 +37,17 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 		
 		addRetargetAction(new ZoomInRetargetAction());
 		addRetargetAction(new ZoomOutRetargetAction());
+		
+		addRetargetAction(new RetargetAction(
+				GEFActionConstants.TOGGLE_GRID_VISIBILITY,
+				"Toggle grid", IAction.AS_CHECK_BOX));
+		addRetargetAction(new RetargetAction(
+				GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
+				"Toggle snap-to-geometry", IAction.AS_CHECK_BOX));
 	}
 
 	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
-		toolBarManager.add(getAction(ActionFactory.NEW.getId()));
-		toolBarManager.add(getAction(ActionFactory.SAVE.getId()));
-		toolBarManager.add(getAction(ActionFactory.PRINT.getId()));
-		
-		toolBarManager.add(new Separator());
-		
 		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
 		toolBarManager.add(getAction(ActionFactory.REDO.getId()));
 		toolBarManager.add(getAction(ActionFactory.DELETE.getId()));
@@ -61,6 +63,13 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 		toolBarManager.add(getAction(GEFActionConstants.ZOOM_IN));
 		toolBarManager.add(getAction(GEFActionConstants.ZOOM_OUT));
 		toolBarManager.add(new ZoomComboContributionItem(getPage()));
+		
+		toolBarManager.add(new Separator());
+		
+		toolBarManager.add(
+				getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
+		toolBarManager.add(
+				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
 	}
 
 	@Override

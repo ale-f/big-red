@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -9,12 +10,18 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.SnapToGeometry;
+import org.eclipse.gef.SnapToGrid;
+import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
+import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
@@ -26,6 +33,8 @@ import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
+
+import static java.lang.Boolean.TRUE;
 
 /**
  * The AbstractPart is the base class for most of the objects in the bigraph
@@ -49,6 +58,18 @@ implements PropertyChangeListener, IBigraphPart {
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class key) {
 		if (key == IPropertySource.class) {
 			return new ModelPropertySource(getModel());
+		} else if (key == SnapToHelper.class) {
+			ArrayList<SnapToHelper> helpers = new ArrayList<SnapToHelper>();
+			EditPartViewer v = getViewer();
+			if (TRUE.equals(
+					v.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)))
+				helpers.add(new SnapToGeometry(this));
+			if (TRUE.equals(v.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)))
+				helpers.add(new SnapToGrid(this));
+			if (helpers.size() > 0) {
+				return new CompoundSnapToHelper(
+						helpers.toArray(new SnapToHelper[0]));
+			} else return null;
 		} else return super.getAdapter(key);
 	}
 	
@@ -71,6 +92,11 @@ implements PropertyChangeListener, IBigraphPart {
 	
 	protected Color getOutline(Colour c) {
 		return outline.update(c);
+	}
+	
+	@Override
+	protected void createEditPolicies() {
+		installEditPolicy("Snap!", new SnapFeedbackPolicy());
 	}
 	
 	/**
@@ -120,7 +146,7 @@ implements PropertyChangeListener, IBigraphPart {
 			}
 		}
 	}
-
+	
 	/**
 	 * Returns an empty list of {@link Link.Connection}s. {@link PointPart}s
 	 * should probably override this method!

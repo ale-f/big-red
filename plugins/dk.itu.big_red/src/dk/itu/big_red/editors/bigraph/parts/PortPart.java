@@ -50,6 +50,8 @@ public class PortPart extends PointPart {
 	
 	@Override
 	protected void createEditPolicies() {
+		super.createEditPolicies();
+		
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
 		super.installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new NonResizableEditPolicy() {{
 			setDragAllowed(false);

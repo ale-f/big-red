@@ -23,11 +23,8 @@ public class SitePart extends AbstractPart {
 
 	@Override
 	protected void createEditPolicies() {
-		/*
-		 * Sites aren't allowed to contain anything; they're empty holes that
-		 * can only be populated by importing another bigraph. As such, the
-		 * AppEditLayoutPolicy isn't installed here.
-		 * */
+		super.createEditPolicies();
+		
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}
 

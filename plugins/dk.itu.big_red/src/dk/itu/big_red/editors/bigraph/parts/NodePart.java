@@ -38,6 +38,8 @@ public class NodePart extends ContainerPart {
 	
 	@Override
 	protected void createEditPolicies() {
+		super.createEditPolicies();
+		
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}
