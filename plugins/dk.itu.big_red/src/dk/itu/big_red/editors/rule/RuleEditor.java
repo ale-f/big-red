@@ -15,6 +15,8 @@ import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
+import org.eclipse.gef.SnapToGeometry;
+import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
@@ -28,6 +30,8 @@ import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
+import org.eclipse.gef.ui.actions.ToggleGridAction;
+import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
@@ -240,6 +244,28 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    redexViewer.setProperty(stateMask, MouseWheelZoomHandler.SINGLETON);
 	    reactumViewer.setProperty(stateMask, MouseWheelZoomHandler.SINGLETON);
 		
+	    registerActions(null,
+	    		new ToggleGridAction(redexViewer) {
+	    			@Override
+	    			public void run() {
+	    				super.run();
+	    				boolean val = isChecked();
+	    				reactumViewer.setProperty(
+	    						SnapToGrid.PROPERTY_GRID_VISIBLE, val);
+	    				reactumViewer.setProperty(
+	    						SnapToGrid.PROPERTY_GRID_ENABLED, val);
+	    			}
+	    		},
+	    		new ToggleSnapToGeometryAction(redexViewer) {
+	    			@Override
+	    			public void run() {
+	    				super.run();
+	    				boolean val = isChecked();
+	    				reactumViewer.setProperty(
+	    						SnapToGeometry.PROPERTY_SNAP_ENABLED, val);
+	    			}
+	    		});
+	    
 		initialise();
 	}
 	
