@@ -1,6 +1,5 @@
 package dk.itu.big_red.editors.bigraph;
 
-import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
@@ -9,12 +8,13 @@ import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
+
+import dk.itu.big_red.editors.assistants.ActionBarContributor;
 
 public class BigraphEditorActionBarContributor extends ActionBarContributor {
 	@Override
@@ -70,14 +70,5 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 				getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 		toolBarManager.add(
 				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
-	}
-
-	@Override
-	public void contributeToMenu(IMenuManager menuManager) {
-	}
-	
-	@Override
-	protected void declareGlobalActionKeys() {
-		// TODO Auto-generated method stub
 	}
 }
