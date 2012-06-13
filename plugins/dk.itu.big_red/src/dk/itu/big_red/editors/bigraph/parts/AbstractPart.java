@@ -3,12 +3,8 @@ package dk.itu.big_red.editors.bigraph.parts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.Link;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.EditPart;
@@ -139,39 +135,12 @@ implements PropertyChangeListener, IBigraphPart {
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == getModel()) {
 			String property = evt.getPropertyName();
-			if (property.equals(Layoutable.PROPERTY_NAME) ||
+			if (Layoutable.PROPERTY_NAME.equals(property) ||
 				ExtendedDataUtilities.COMMENT.equals(property) ||
-				property.equals(ExtendedDataUtilities.LAYOUT)) {
+				ExtendedDataUtilities.LAYOUT.equals(property)) {
 				refreshVisuals();
 			}
 		}
-	}
-	
-	/**
-	 * Returns an empty list of {@link Link.Connection}s. {@link PointPart}s
-	 * should probably override this method!
-	 */
-	@Override
-	protected List<LinkPart.Connection> getModelSourceConnections() {
-		return Collections.emptyList();
-    }
-
-	/**
-	 * Returns an empty list of {@link Link.Connection}s. {@link LinkPart}s
-	 * should probably override this method!
-	 */
-	@Override
-	protected List<LinkPart.Connection> getModelTargetConnections() {
-		return Collections.emptyList();
-    }
-
-	/**
-	 * Returns an empty list of {@link ILayoutable}s. Model objects with
-	 * children should probably override this method!
-	 */
-	@Override
-	public List<Layoutable> getModelChildren() {
-		return Collections.emptyList();
 	}
 	
 	/**
