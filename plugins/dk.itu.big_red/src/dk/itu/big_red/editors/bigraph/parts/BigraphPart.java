@@ -81,6 +81,7 @@ public class BigraphPart extends ContainerPart {
 
 	@Override
 	protected void createEditPolicies() {
+		super.createEditPolicies();
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 	}
 	
