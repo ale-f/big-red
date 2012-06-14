@@ -32,6 +32,8 @@ import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.ToggleGridAction;
 import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
+import org.eclipse.gef.ui.actions.ZoomInAction;
+import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.ISelection;
@@ -66,6 +68,15 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public class RuleEditor extends AbstractGEFEditor implements
 	ISelectionChangedListener, ISelectionProvider {
+	@Override
+	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+		if (adapter == ZoomManager.class) {
+			/* required by ZoomComboContributionItem */
+			return ((ScalableRootEditPart)redexViewer.getRootEditPart()).
+					getZoomManager();
+		} else return super.getAdapter(adapter);
+	}
+	
 	private ArrayList<ISelectionChangedListener> listeners =
 		new ArrayList<ISelectionChangedListener>();
 	
@@ -205,6 +216,16 @@ public class RuleEditor extends AbstractGEFEditor implements
 		final ZoomManager
 			redexZoom = redexRoot.getZoomManager(),
 			reactumZoom = reactumRoot.getZoomManager();
+		
+		redexZoom.setZoomLevels(BigraphEditor.STOCK_ZOOM_LEVELS);
+		reactumZoom.setZoomLevels(BigraphEditor.STOCK_ZOOM_LEVELS);
+		redexZoom.setZoomLevelContributions(
+				BigraphEditor.STOCK_ZOOM_CONTRIBUTIONS);
+		reactumZoom.setZoomLevelContributions(
+				BigraphEditor.STOCK_ZOOM_CONTRIBUTIONS);
+		
+	    registerActions(null,
+	    		new ZoomInAction(redexZoom), new ZoomOutAction(reactumZoom));
 		
 		final ZoomListener zoomSynchroniser = new ZoomListener() {
 			private boolean lock = false;
