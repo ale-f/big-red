@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
@@ -79,6 +80,18 @@ public class BigraphEditor extends AbstractGEFEditor {
 		super.dispose();
 	}
 	
+	public static final List<String> STOCK_ZOOM_CONTRIBUTIONS =
+			new ArrayList<String>();
+	static {
+		STOCK_ZOOM_CONTRIBUTIONS.add(ZoomManager.FIT_ALL);
+		STOCK_ZOOM_CONTRIBUTIONS.add(ZoomManager.FIT_HEIGHT);
+		STOCK_ZOOM_CONTRIBUTIONS.add(ZoomManager.FIT_WIDTH);
+	}
+	
+	public static final double[] STOCK_ZOOM_LEVELS = new double[] {
+		0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 10.0, 20.0 
+	};
+	
 	protected void configureGraphicalViewer() {
     	getGraphicalViewer().getControl().setBackground(
 				ColorConstants.listBackground);
@@ -89,20 +102,11 @@ public class BigraphEditor extends AbstractGEFEditor {
 	    ScalableRootEditPart rootEditPart = new ScalableRootEditPart();
 	    viewer.setRootEditPart(rootEditPart);
 	    
-	    double[] zoomLevels = new double[] {
-	    	 0.25, 0.5, 0.75, 1.0, 1.5, 2.0,
-	    	 2.5, 3.0, 4.0, 5.0, 10.0, 20.0 
-	    };
 	    ZoomManager manager = rootEditPart.getZoomManager();
-	    getActionRegistry().registerAction(new ZoomInAction(manager));
-	    getActionRegistry().registerAction(new ZoomOutAction(manager));
-	    manager.setZoomLevels(zoomLevels);
-	     
-	    ArrayList<String> zoomContributions = new ArrayList<String>();
-	    zoomContributions.add(ZoomManager.FIT_ALL);
-	    zoomContributions.add(ZoomManager.FIT_HEIGHT);
-	    zoomContributions.add(ZoomManager.FIT_WIDTH);
-	    manager.setZoomLevelContributions(zoomContributions);
+	    registerActions(null,
+	    		new ZoomInAction(manager), new ZoomOutAction(manager));
+	    manager.setZoomLevels(STOCK_ZOOM_LEVELS);
+	    manager.setZoomLevelContributions(STOCK_ZOOM_CONTRIBUTIONS);
 	     
 	    keyHandler = new KeyHandler();
 	    keyHandler.put(KeyStroke.getPressed(SWT.DEL, SWT.DEL, 0),
