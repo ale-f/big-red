@@ -74,8 +74,10 @@ public class BigraphEditorOutlinePage extends ContentOutlinePage {
 		Canvas canvas = new Canvas(sash, SWT.BORDER);
 		LightweightSystem lws = new LightweightSystem(canvas);
 		
-		thumbnail = new ScrollableThumbnail((Viewport)((ScalableRootEditPart)bigraphEditor.getGraphicalViewer().getRootEditPart()).getFigure());
-		thumbnail.setSource(((ScalableRootEditPart)bigraphEditor.getGraphicalViewer().getRootEditPart()).getLayer(LayerConstants.PRINTABLE_LAYERS));
+		ScalableRootEditPart re = (ScalableRootEditPart)
+				bigraphEditor.getGraphicalViewer().getRootEditPart();
+		thumbnail = new ScrollableThumbnail((Viewport)re.getFigure());
+		thumbnail.setSource(re.getLayer(LayerConstants.PRINTABLE_LAYERS));
 		lws.setContents(thumbnail);
 		
 		disposeListener = new DisposeListener() {

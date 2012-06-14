@@ -18,7 +18,6 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
@@ -201,7 +200,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
     	if (type == ZoomManager.class) {
-    		return ((ScalableRootEditPart)getGraphicalViewer().getRootEditPart()).getZoomManager();
+    		return getScalableRoot(getGraphicalViewer()).getZoomManager();
     	} else if (type == IContentOutlinePage.class) {
     		return new BigraphEditorOutlinePage(this);
     	} else if (type == GraphicalViewer.class) {
@@ -209,8 +208,7 @@ public class BigraphEditor extends AbstractGEFEditor {
     	} else if (type == EditPart.class && getGraphicalViewer() != null) {
 			return getGraphicalViewer().getRootEditPart();
     	} else if (type == IFigure.class && getGraphicalViewer() != null) {
-			return ((GraphicalEditPart) getGraphicalViewer().getRootEditPart())
-					.getFigure();
+			return getScalableRoot(getGraphicalViewer()).getFigure();
 		} else return super.getAdapter(type);
     }
     
