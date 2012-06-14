@@ -9,6 +9,8 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.RetargetAction;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
+
 public class ActionBarContributor extends
 		dk.itu.big_red.editors.assistants.ActionBarContributor {
 	@Override
@@ -18,10 +20,20 @@ public class ActionBarContributor extends
 		
 		addRetargetAction(new RetargetAction(
 				GEFActionConstants.TOGGLE_GRID_VISIBILITY,
-				"Toggle grid", IAction.AS_CHECK_BOX));
+				"Snap to grid", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(RedPlugin.getImageDescriptor(
+						"resources/icons/actions/snap-to-grid.png"));
+			}
+		});
 		addRetargetAction(new RetargetAction(
 				GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
-				"Toggle snap-to-geometry", IAction.AS_CHECK_BOX));
+				"Snap to nearby objects", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(RedPlugin.getImageDescriptor(
+						"resources/icons/actions/snap-to-object.png"));
+			}
+		});
 	}
 
 	@Override
