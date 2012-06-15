@@ -341,6 +341,17 @@
       </exporter>
    </extension>
    <extension
+         point="dk.itu.big_red.xml">
+      <decorator
+            class="dk.itu.big_red.model.load_save.savers.RedXMLDecorator"
+            id="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+      </decorator>
+      <undecorator
+            class="dk.itu.big_red.model.load_save.savers.RedXMLDecorator"
+            id="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+      </undecorator>
+   </extension>
+   <extension
          point="org.eclipse.ui.preferencePages">
       <page
             class="dk.itu.big_red.preferences.RedPreferencePage"
