@@ -3,6 +3,7 @@ package dk.itu.big_red.application.plugin;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -11,10 +12,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import dk.itu.big_red.model.load_save.loaders.XMLLoader;
-import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
-import dk.itu.big_red.model.load_save.savers.XMLSaver;
-
 /**
  * The RedPlugin class is responsible for starting and stopping the Big Red
  * plugin &mdash; and for keeping track of plugin-wide shared objects.
@@ -22,22 +19,15 @@ import dk.itu.big_red.model.load_save.savers.XMLSaver;
 public class RedPlugin extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "dk.itu.big_red";
 	private static RedPlugin plugin;
-	private static final RedXMLDecorator RXMLD = new RedXMLDecorator();
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
-		XMLSaver.addDecorator(RXMLD);
-		XMLLoader.addUndecorator(RXMLD);
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		XMLSaver.removeDecorator(RXMLD);
-		XMLLoader.removeUndecorator(RXMLD);
-		
 		plugin = null;
 		super.stop(context);
 	}
