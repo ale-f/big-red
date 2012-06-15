@@ -23,16 +23,6 @@ public class RootFigure extends AbstractFigure {
 	public void setName(String name) {
 		labelName.setText(name);
 	}
-
-	@Override
-	protected void fillShape(Graphics graphics) {
-		Rectangle a = start(graphics);
-		try {
-			graphics.fillRoundRectangle(a, 20, 20);
-		} finally {
-			stop(graphics);
-		}
-	}
 	
 	@Override
 	protected void outlineShape(Graphics graphics) {
