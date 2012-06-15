@@ -30,7 +30,7 @@ public class EdgePart extends LinkPart {
 	@Override
 	public void refreshVisuals() {
 		super.refreshVisuals();
-		setResizable(false);
+		
 		getFigure().setSingle(getModel().getPoints().size() == 1);
 		getFigure().repaint();
 	}

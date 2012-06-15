@@ -5,18 +5,14 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
-import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.gef.CompoundSnapToHelper;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SnapToGeometry;
 import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.IPageLayout;
@@ -41,7 +37,7 @@ import static java.lang.Boolean.TRUE;
  *
  */
 public abstract class AbstractPart extends AbstractGraphicalEditPart
-implements PropertyChangeListener, IBigraphPart {
+		implements PropertyChangeListener, IBigraphPart {
 	/**
 	 * Gets the model object, cast to a {@link Layoutable}.
 	 */
@@ -115,20 +111,6 @@ implements PropertyChangeListener, IBigraphPart {
 		getFill(null);
 		getOutline(null);
 		super.deactivate();
-	}
-	
-	/**
-	 * Checks to see if this {@link EditPart}'s <code>PRIMARY_DRAG_ROLE</code>
-	 * {@link EditPolicy} is a {@link ResizableEditPolicy}, and - if it is -
-	 * reconfigures it to allow or forbid resizing.
-	 * @param resizable whether or not this Part should be resizable
-	 */
-	protected void setResizable(boolean resizable) {
-		EditPolicy pol = getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
-		if (pol instanceof ResizableEditPolicy) {
-			((ResizableEditPolicy)pol).setResizeDirections(
-				(resizable ? PositionConstants.NSEW : 0));
-		}
 	}
 	
 	@Override

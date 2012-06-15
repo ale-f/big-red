@@ -5,8 +5,6 @@ import java.beans.PropertyChangeEvent;
 import org.bigraph.model.Port;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
-
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.figures.PortFigure;
@@ -44,8 +42,7 @@ public class PortPart extends PointPart {
 	
 	@Override
 	public void installEditPolicy(Object key, EditPolicy editPolicy) {
-		if (key != EditPolicy.PRIMARY_DRAG_ROLE)
-			super.installEditPolicy(key, editPolicy);
+		super.installEditPolicy(key, editPolicy);
 	}
 	
 	@Override
@@ -53,9 +50,6 @@ public class PortPart extends PointPart {
 		super.createEditPolicies();
 		
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new EdgeCreationPolicy());
-		super.installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new NonResizableEditPolicy() {{
-			setDragAllowed(false);
-		}});
 	}
 
 	@Override
@@ -67,12 +61,6 @@ public class PortPart extends PointPart {
 			if (prop.equals(ExtendedDataUtilities.LAYOUT))
 				refreshVisuals();
 		}
-	}
-	
-	@Override
-	protected void refreshVisuals(){
-		super.refreshVisuals();
-		setResizable(false);
 	}
 	
 	@Override
