@@ -9,9 +9,13 @@ import java.util.Map.Entry;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
+import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.ChangeGroup;
@@ -612,10 +616,12 @@ public class ReactionWizard extends Wizard {
 			int rand=(int)(Math.random()*100)%10;
 			
 			for(Layoutable child: reactumRoot.getChildren()){
-				cgA.add(dest.changeAddChild(child.clone(null), child.getName()+ rand));
+				//cgA.add(dest.changeAddChild(child.clone(null), child.getName()+ rand));
+				fillAddChangeItemReactum(child, dest, cgA);
 			}
 			
 		}
+		cgA.add(ExtendedDataUtilities.relayout(target));
 		if (cgA.size() != 0){
 			try {
 				target.tryApplyChange(cgA);
@@ -665,5 +671,71 @@ public class ReactionWizard extends Wizard {
 	{
 		return chosenMatch;
 	}
-
+	
+		
+		
+		
+		
+		private void fillAddChangeReactum(Root rootReactum, Layoutable itemAgent,
+				ChangeGroup cg, MatchData ma) {
+	
+			for (Layoutable l : rootReactum.getChildren()) {
+				if (itemAgent instanceof Container) {
+					
+				}
+	
+			}
+	
+		}
+		
+		private void fillAddChangeItemReactum(Layoutable l, Layoutable itemAgent, ChangeGroup cg){
+			
+			Layoutable newNodeAgent=(Layoutable) l.newInstance();
+		
+			if (rule.getRedexMapName().containsKey(l.getName())) {
+	
+				// same element in the redex
+				Layoutable la = (Layoutable) getMatchData().getMappingData().get(
+						rule.getRedexMapName().get(l.getName()));
+				cg.add(((Container) itemAgent).changeAddChild(
+						newNodeAgent, la.getName()));
+	
+			} else {
+				// element in reactum is non contained i redex
+				cg.add(((Container) itemAgent).changeAddChild(
+						newNodeAgent,
+						l.getName() + (Math.random() % 10)));
+	
+			}
+			if(l instanceof Container){
+				for(Layoutable son: ((Container) l).getChildren()){
+					fillAddChangeItemReactum(son,newNodeAgent,cg);
+				}
+			}
+			
+			/* fare il collegamento dei link */
+			/* e aggiungere nuovi edge nel caso */
+			HashMap <Link,Link> mapLinksRule= rule.getMapLinksReactumRedex();
+	 		
+			
+			if (((Node)l).getPorts().size()>0){
+				for (Port p: ((Node)l).getPorts()){
+					
+					Link link=p.getLink();
+					if (mapLinksRule.containsKey(link)){
+						Link lagent=chosenMatch.getLinkMap().get(mapLinksRule.get(link));
+						cg.add(p.changeConnect(lagent));
+					}else{
+						Edge edge= new Edge();
+						mapLinksRule.put(link, edge);
+						cg.add(p.changeConnect(edge));
+					}
+					
+					//((Node)newNodeAgent).getPort(p.getName());
+				}
+				
+			}
+			
+			
+		}
 }

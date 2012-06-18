@@ -4,7 +4,11 @@ package it.uniud.bigredit.model;
 import java.util.HashMap;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
@@ -38,6 +42,8 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	private HashMap <Site,Site> mapRedexSiteToReactum;
 	private HashMap <Root, Root> mapRedexRootToReactum;
+	
+	private HashMap <String, Layoutable> mapRedex;
 	
 	
 	private Signature sign;
@@ -263,5 +269,77 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		return mapRedexRootToReactum;
 	}
 	
-
+	
+	/**
+	+	 * this store the object Name(string), object(layotable), used to map the object of the redex.
+	 * this store the object Name(string), object(layotable), used to map the object of the redex.
+	 +	 * 
+	 +	 */
+	 	
+	 	public void exploreBigraph(HashMap <String, Layoutable> map, Bigraph b){
+	 		for (Root r: b.getRoots() ){
+	 			for (Layoutable l: r.getChildren()){
+	 				exploreElement(map, l);
+	 			}
+	 		}
+	 		
+	 	}
+	 	
+	 	/** 
+	 	 * explore the container and stores the name in a map 
+	 	 * 
+	 	 * @param map
+	 	 */
+	 	
+	 	private void exploreElement(HashMap <String, Layoutable> map, Layoutable l){
+	 		map.put(l.getName(), l);
+	 		if(l instanceof Container){
+	 			for (Layoutable son: ((Container) l).getChildren()){
+	 				exploreElement(map, son );
+	 			}
+	 		}
+	 	}
+	 	
+	 	public HashMap<String, Layoutable> getRedexMapName() {
+	 		exploreBigraph(mapRedex, redex);
+	 		return mapRedex;
+	 	}
+	 	
+	 	
+	 	private HashMap<Link,Link> mapLinksReactumRedex;
+	 	
+	 	private void mapLinks(){
+	 		mapLinksReactumRedex= new HashMap<Link,Link> ();
+	 		for(Link lReactum: reactum.getEdges()){
+	 			for(Link lRedex: redex.getEdges()){
+	 				if (lReactum.getName().equals(lRedex.getName())){
+	 					mapLinksReactumRedex.put(lReactum, lRedex);
+	 				}
+	 			}
+	 			
+	 		}
+	 		
+	 		for (OuterName nameReactum: reactum.getOuterNames()){
+	 			for (OuterName nameRedex: redex.getOuterNames() ){
+	 				if (nameReactum.getName().equals(nameRedex.getName())){
+	 					mapLinksReactumRedex.put(nameReactum, nameRedex);
+	 				}
+	 			}
+	 			
+	 		}
+	 		
+	 	}
+	 
+	 
+	 
+	 	public HashMap<Link, Link> getMapLinksReactumRedex() {
+	 		return mapLinksReactumRedex;
+	 	}
+	 
+	 
+	 
+	 	public void setMapLinksReactumRedex(HashMap<Link, Link> mapLinksReactumRedex) {
+	 		this.mapLinksReactumRedex = mapLinksReactumRedex;
+	 	}
+	
 }

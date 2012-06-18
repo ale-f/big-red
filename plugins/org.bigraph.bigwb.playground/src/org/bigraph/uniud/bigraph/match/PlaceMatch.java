@@ -513,6 +513,7 @@ public class PlaceMatch {
 			Layoutable redexMatch = listRedex.get(redexColumn);
 			data.addRootMatch(redexMatch, agentMatch);
 		}
+		data.setLinkMap(maplinkAgent_Redex);
 		return data;
 		
 		
