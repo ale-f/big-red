@@ -3,6 +3,9 @@ package it.uniud.bigredit.model;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.bigraph.uniud.bigraph.match.BidiMap;
+
+import dk.itu.big_red.model.Link;
 import dk.itu.big_red.model.ModelObject;
 
 public class MatchData {
@@ -12,10 +15,13 @@ public class MatchData {
 	 * ModelObject in Redex, ModelObject in Agent
 	 */
 	private HashMap <ModelObject,ModelObject> map;
+	private BidiMap <Link, Link> mapLink;
 
 	public void addRootMatch(ModelObject rootR, ModelObject elementA){
 		map.put(rootR, elementA);
 	}
+	
+	
 	
 	public HashMap <ModelObject,ModelObject> getMappingData(){
 		return map;
@@ -23,6 +29,7 @@ public class MatchData {
 	
 	public MatchData(){
 		this.map= new HashMap<ModelObject,ModelObject>();
+		this.mapLink= new BidiMap<Link, Link>();
 	}
 	
 	public ModelObject getRoot(){
@@ -31,6 +38,14 @@ public class MatchData {
 		}
 		
 		return null;
+	}
+	
+	public void setLinkMap(BidiMap<Link, Link> mapLink){
+		this.mapLink=mapLink;
+	}
+	
+	public BidiMap<Link, Link> getLinkMap(){
+		return this.mapLink;
 	}
 	
 }

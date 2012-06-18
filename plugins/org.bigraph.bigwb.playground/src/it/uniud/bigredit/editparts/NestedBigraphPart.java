@@ -1,6 +1,5 @@
 package it.uniud.bigredit.editparts;
 
-import it.uniud.bigredit.figure.GraphFigure;
 import it.uniud.bigredit.figure.NestedBigraphFigure;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
