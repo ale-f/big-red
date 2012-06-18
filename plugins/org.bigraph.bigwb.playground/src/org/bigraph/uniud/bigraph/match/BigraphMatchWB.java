@@ -1,15 +1,16 @@
 package org.bigraph.uniud.bigraph.match;
-import dk.itu.big_red.model.*;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.interfaces.BigraphBuilder;
-import dk.itu.big_red.model.interfaces.IControl;
-import dk.itu.big_red.model.interfaces.INode;
-import dk.itu.big_red.model.interfaces.IOuterName;
-import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.model.interfaces.IRoot;
-import dk.itu.big_red.model.interfaces.ISite;
-import dk.itu.big_red.model.interfaces.SignatureBuilder;
+import org.bigraph.model.*;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.interfaces.BigraphBuilder;
+import org.bigraph.model.interfaces.IControl;
+import org.bigraph.model.interfaces.INode;
+import org.bigraph.model.interfaces.IOuterName;
+import org.bigraph.model.interfaces.IPort;
+import org.bigraph.model.interfaces.IRoot;
+import org.bigraph.model.interfaces.ISite;
+import org.bigraph.model.interfaces.SignatureBuilder;
+
 
 
 public class BigraphMatchWB {

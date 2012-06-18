@@ -7,20 +7,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Signature;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.IChangeValidator;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 
 //import it.uniud.bigredit.PlayEditor;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Signature;
 
-import dk.itu.big_red.model.SimulationSpec.ChangeModel;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeExecutor;
-import dk.itu.big_red.model.changes.IChangeValidator;
 
 
 public class BRS extends ModelObject implements IChangeExecutor{
@@ -237,9 +236,10 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	
 	
 	@Override
-	protected void doChange(Change b) {
-		super.doChange(b);
-		if (b instanceof BRS.ChangeAddChild) {
+	protected boolean doChange(Change b) {
+		if (super.doChange(b)) {
+			/* do nothing */
+		} else if (b instanceof BRS.ChangeAddChild) {
 			BRS.ChangeAddChild c = (BRS.ChangeAddChild)b;
 			((BRS)c.getCreator()).addChild(c.child);
 			//c.child.setName(c.name);
@@ -247,7 +247,8 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		} else if(b instanceof BRS.ChangeLayoutChild){
 			BRS.ChangeLayoutChild c = (BRS.ChangeLayoutChild)b;
 			((BRS)c.getCreator())._changeLayoutChild(c.child, c.layout);
-		}
+		} else return false;
+		return true;
 				
 				
 		 /*else if (b instanceof Point.ChangeConnect) {
@@ -325,7 +326,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 
     public List<Reaction> getRules(){
     	List<Reaction> list=new ArrayList<Reaction>();
-    	for(ModelObject mo: this.getChildren()){
+    	for(ModelObject mo: getChildren()){
     		if(mo instanceof Reaction){
     			list.add((Reaction)mo);
  
@@ -336,7 +337,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
     
     public List<Bigraph> getModels(){
     	List<Bigraph> list=new ArrayList<Bigraph>();
-    	for(ModelObject mo: this.getChildren()){
+    	for(ModelObject mo: getChildren()){
     		if(mo instanceof Bigraph){
     			list.add((Bigraph)mo);
     		}

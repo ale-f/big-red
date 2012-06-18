@@ -4,12 +4,12 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Signature;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;

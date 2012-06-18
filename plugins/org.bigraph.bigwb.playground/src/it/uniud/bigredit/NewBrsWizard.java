@@ -4,6 +4,7 @@ import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.load_save.savers.BRSXMLSaver;
 import it.uniud.bigredit.utils.RcpUtils;
 
+import org.bigraph.model.Signature;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -17,7 +18,6 @@ import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
-import dk.itu.big_red.model.Signature;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;

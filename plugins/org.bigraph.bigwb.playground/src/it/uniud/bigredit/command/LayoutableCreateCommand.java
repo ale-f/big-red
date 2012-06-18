@@ -4,17 +4,17 @@ import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Root;
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.changes.ChangeGroup;
 
 
 

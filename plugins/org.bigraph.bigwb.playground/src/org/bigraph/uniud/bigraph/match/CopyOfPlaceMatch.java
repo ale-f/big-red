@@ -23,6 +23,16 @@ package org.bigraph.uniud.bigraph.match;
  */
 
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.Node;
+import org.bigraph.model.Port;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
+import org.bigraph.model.interfaces.IRoot;
 import org.eclipse.core.runtime.IAdaptable;
 
 import java.text.MessageFormat;
@@ -46,16 +56,6 @@ import choco.kernel.model.variables.integer.IntegerVariable;
 import choco.kernel.model.variables.set.SetConstantVariable;
 import choco.kernel.model.variables.tree.TreeParametersObject;
 import choco.kernel.solver.Solver;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.interfaces.IRoot;
 
 public class CopyOfPlaceMatch {
 

@@ -7,22 +7,22 @@ import java.util.HashMap;
 import java.util.List;
 
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.graphics.Color;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.utilities.ui.UI;
 
 

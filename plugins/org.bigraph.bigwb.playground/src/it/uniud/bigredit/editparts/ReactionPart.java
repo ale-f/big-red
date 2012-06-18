@@ -10,13 +10,13 @@ import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 import it.uniud.bigredit.policy.LayoutableLayoutPolicy;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
 
 
 

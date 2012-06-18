@@ -2,19 +2,18 @@ package it.uniud.bigredit.command;
 
 import it.uniud.bigredit.model.BRS;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Root;
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.InnerName;
 import it.uniud.bigredit.model.Reaction;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {

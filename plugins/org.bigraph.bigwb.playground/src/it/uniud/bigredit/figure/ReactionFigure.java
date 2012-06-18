@@ -2,6 +2,7 @@ package it.uniud.bigredit.figure;
 
 import it.uniud.bigredit.model.Reaction;
 
+import org.bigraph.model.Bigraph;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.ColorConstants;
@@ -17,7 +18,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
 
 
 

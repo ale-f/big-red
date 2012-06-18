@@ -3,6 +3,11 @@ package it.uniud.bigredit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
 import org.bigraph.uniud.bigraph.match.PlaceMatch;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -18,11 +23,6 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
 
 
 
