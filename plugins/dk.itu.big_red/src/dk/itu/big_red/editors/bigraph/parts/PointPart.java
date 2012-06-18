@@ -4,10 +4,12 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.Point;
+
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Point;
 
 public abstract class PointPart extends ConnectablePart {
 	public PointPart() {
@@ -70,13 +72,18 @@ public abstract class PointPart extends ConnectablePart {
 			(l != null ? "\n(connected to link " + l.getName() + ")" : "");
 	}
 	
+	/**
+	 * The colour to be given to Points not connected to a {@link Link}.
+	 */
+	public static final Colour DEFAULT_COLOUR = new Colour("red");
+	
 	@Override
 	protected void refreshVisuals() {
 		super.refreshVisuals();
 		
 		Link l = getModel().getLink();
 		getFigure().setBackgroundColor(getOutline(
-				l != null ? ExtendedDataUtilities.getOutline(l) : Point.DEFAULT_COLOUR));
+				l != null ? ExtendedDataUtilities.getOutline(l) : DEFAULT_COLOUR));
 	}
 	
 	@Override

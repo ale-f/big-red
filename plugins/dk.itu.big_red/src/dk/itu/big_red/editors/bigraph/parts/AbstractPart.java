@@ -2,30 +2,31 @@ package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Collections;
-import java.util.List;
-
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPolicy;
+import java.util.ArrayList;
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
+import org.eclipse.gef.CompoundSnapToHelper;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.SnapToGeometry;
+import org.eclipse.gef.SnapToGrid;
+import org.eclipse.gef.SnapToHelper;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editpolicies.ResizableEditPolicy;
+import org.eclipse.gef.editpolicies.SnapFeedbackPolicy;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.assistants.Colour;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
+
+import static java.lang.Boolean.TRUE;
 
 /**
  * The AbstractPart is the base class for most of the objects in the bigraph
@@ -36,7 +37,7 @@ import dk.itu.big_red.utilities.ui.UI;
  *
  */
 public abstract class AbstractPart extends AbstractGraphicalEditPart
-implements PropertyChangeListener, IBigraphPart {
+		implements PropertyChangeListener, IBigraphPart {
 	/**
 	 * Gets the model object, cast to a {@link Layoutable}.
 	 */
@@ -49,6 +50,18 @@ implements PropertyChangeListener, IBigraphPart {
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class key) {
 		if (key == IPropertySource.class) {
 			return new ModelPropertySource(getModel());
+		} else if (key == SnapToHelper.class) {
+			ArrayList<SnapToHelper> helpers = new ArrayList<SnapToHelper>();
+			EditPartViewer v = getViewer();
+			if (TRUE.equals(
+					v.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED)))
+				helpers.add(new SnapToGeometry(this));
+			if (TRUE.equals(v.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)))
+				helpers.add(new SnapToGrid(this));
+			if (helpers.size() > 0) {
+				return new CompoundSnapToHelper(
+						helpers.toArray(new SnapToHelper[0]));
+			} else return null;
 		} else return super.getAdapter(key);
 	}
 	
@@ -73,6 +86,11 @@ implements PropertyChangeListener, IBigraphPart {
 		return outline.update(c);
 	}
 	
+	@Override
+	protected void createEditPolicies() {
+		installEditPolicy("Snap!", new SnapFeedbackPolicy());
+	}
+	
 	/**
 	 * Extends {@link AbstractGraphicalEditPart#activate()} to also register to
 	 * receive property change notifications from the model object.
@@ -95,57 +113,16 @@ implements PropertyChangeListener, IBigraphPart {
 		super.deactivate();
 	}
 	
-	/**
-	 * Checks to see if this {@link EditPart}'s <code>PRIMARY_DRAG_ROLE</code>
-	 * {@link EditPolicy} is a {@link ResizableEditPolicy}, and - if it is -
-	 * reconfigures it to allow or forbid resizing.
-	 * @param resizable whether or not this Part should be resizable
-	 */
-	protected void setResizable(boolean resizable) {
-		EditPolicy pol = getEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
-		if (pol instanceof ResizableEditPolicy) {
-			((ResizableEditPolicy)pol).setResizeDirections(
-				(resizable ? PositionConstants.NSEW : 0));
-		}
-	}
-	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == getModel()) {
 			String property = evt.getPropertyName();
-			if (property.equals(Layoutable.PROPERTY_NAME) ||
+			if (Layoutable.PROPERTY_NAME.equals(property) ||
 				ExtendedDataUtilities.COMMENT.equals(property) ||
-				property.equals(ExtendedDataUtilities.LAYOUT)) {
+				ExtendedDataUtilities.LAYOUT.equals(property)) {
 				refreshVisuals();
 			}
 		}
-	}
-
-	/**
-	 * Returns an empty list of {@link Link.Connection}s. {@link PointPart}s
-	 * should probably override this method!
-	 */
-	@Override
-	protected List<LinkPart.Connection> getModelSourceConnections() {
-		return Collections.emptyList();
-    }
-
-	/**
-	 * Returns an empty list of {@link Link.Connection}s. {@link LinkPart}s
-	 * should probably override this method!
-	 */
-	@Override
-	protected List<LinkPart.Connection> getModelTargetConnections() {
-		return Collections.emptyList();
-    }
-
-	/**
-	 * Returns an empty list of {@link ILayoutable}s. Model objects with
-	 * children should probably override this method!
-	 */
-	@Override
-	public List<Layoutable> getModelChildren() {
-		return Collections.emptyList();
 	}
 	
 	/**

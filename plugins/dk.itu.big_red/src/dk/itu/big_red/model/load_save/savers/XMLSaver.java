@@ -12,8 +12,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -22,11 +27,27 @@ import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.ModelObject;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 public abstract class XMLSaver extends Saver {
+	public XMLSaver() {
+		IExtensionRegistry r = RegistryFactory.getRegistry();
+		for (IConfigurationElement ice :
+			r.getConfigurationElementsFor(XMLLoader.EXTENSION_POINT)) {
+			if ("decorator".equals(ice.getName())) {
+				try {
+					addDecorator(
+						(Decorator)ice.createExecutableExtension("class"));
+				} catch (CoreException e) {
+					e.printStackTrace();
+					/* do nothing */
+				}
+			}
+		}
+	}
+	
 	private Document doc = null;
 	
 	public Document getDocument() {
@@ -212,14 +233,14 @@ public abstract class XMLSaver extends Saver {
 		void decorate(ModelObject object, Element el);
 	}
 	
-	private static List<Decorator> decorators = null;
+	private List<Decorator> decorators = null;
 	
-	protected static List<Decorator> getDecorators() {
+	protected List<Decorator> getDecorators() {
 		return (decorators != null ? decorators :
 				Collections.<Decorator>emptyList());
 	}
 	
-	public static void addDecorator(Decorator d) {
+	protected void addDecorator(Decorator d) {
 		if (d == null)
 			return;
 		if (decorators == null)
@@ -227,13 +248,13 @@ public abstract class XMLSaver extends Saver {
 		decorators.add(d);
 	}
 	
-	public static void removeDecorator(Decorator d) {
+	protected void removeDecorator(Decorator d) {
 		if (decorators.remove(d))
 			if (decorators.size() == 0)
 				decorators = null;
 	}
 	
-	protected static Element executeDecorators(ModelObject mo, Element el) {
+	protected Element executeDecorators(ModelObject mo, Element el) {
 		if (mo != null && el != null)
 			for (Decorator d : getDecorators())
 				d.decorate(mo, el);

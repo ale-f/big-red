@@ -1,14 +1,14 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Link;
+import org.bigraph.model.Node;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
 
 public class TreePartFactory implements EditPartFactory {
 	@Override

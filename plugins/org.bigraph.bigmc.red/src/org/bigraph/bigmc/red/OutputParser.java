@@ -3,19 +3,20 @@ package org.bigraph.bigmc.red;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Link;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Root;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Site;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.names.HashMapNamespace;
+import org.bigraph.model.names.INamespace;
+
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.names.HashMapNamespace;
-import dk.itu.big_red.model.names.INamespace;
 
 
 public class OutputParser {
@@ -95,7 +96,15 @@ public class OutputParser {
 			return;
 		String name = accept(P_NAM);
 		if (name != null) { /* name is a control */
-			Node n = new Node(s.getControl(name));
+			Node n = null;
+			String[] parts = name.split("_P__", 2);
+			if (parts.length == 1) {
+				n = new Node(s.getControl(name));
+			} else if (parts.length == 2) {
+				n = new Node(s.getControl(parts[0]));
+				ExtendedDataUtilities.setParameter(n, parts[1]);
+			} else throw new Error("Control name couldn't be matched");
+			
 			cg.add(parent.changeAddChild(n, Integer.toString(x++)));
 			if (accept(P_LSQ) != null) { /* ports */
 				int i = 0;

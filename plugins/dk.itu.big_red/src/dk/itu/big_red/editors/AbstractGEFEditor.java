@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.GraphicalViewer;
+import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
+import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.jface.viewers.ISelection;
@@ -33,6 +36,12 @@ INullSelectionListener {
 		if (selectionActions == null)
 			selectionActions = new ArrayList<String>();
 		return selectionActions;
+	}
+	
+	protected static ScalableRootEditPart getScalableRoot(GraphicalViewer v) {
+		RootEditPart r = v.getRootEditPart();
+		return (r instanceof ScalableRootEditPart ?
+				(ScalableRootEditPart)r : null);
 	}
 	
 	protected void setEditDomain(DefaultEditDomain editDomain) {

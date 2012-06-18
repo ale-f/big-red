@@ -2,13 +2,22 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Control;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Root;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Site;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.KeyStroke;
@@ -28,6 +37,8 @@ import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.SelectAllAction;
+import org.eclipse.gef.ui.actions.ToggleGridAction;
+import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
 import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
@@ -53,15 +64,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.Site;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 
@@ -77,6 +79,18 @@ public class BigraphEditor extends AbstractGEFEditor {
 		super.dispose();
 	}
 	
+	public static final List<String> STOCK_ZOOM_CONTRIBUTIONS =
+			new ArrayList<String>();
+	static {
+		STOCK_ZOOM_CONTRIBUTIONS.add(ZoomManager.FIT_ALL);
+		STOCK_ZOOM_CONTRIBUTIONS.add(ZoomManager.FIT_HEIGHT);
+		STOCK_ZOOM_CONTRIBUTIONS.add(ZoomManager.FIT_WIDTH);
+	}
+	
+	public static final double[] STOCK_ZOOM_LEVELS = new double[] {
+		0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 10.0, 20.0 
+	};
+	
 	protected void configureGraphicalViewer() {
     	getGraphicalViewer().getControl().setBackground(
 				ColorConstants.listBackground);
@@ -87,20 +101,11 @@ public class BigraphEditor extends AbstractGEFEditor {
 	    ScalableRootEditPart rootEditPart = new ScalableRootEditPart();
 	    viewer.setRootEditPart(rootEditPart);
 	    
-	    double[] zoomLevels = new double[] {
-	    	 0.25, 0.5, 0.75, 1.0, 1.5, 2.0,
-	    	 2.5, 3.0, 4.0, 5.0, 10.0, 20.0 
-	    };
 	    ZoomManager manager = rootEditPart.getZoomManager();
-	    getActionRegistry().registerAction(new ZoomInAction(manager));
-	    getActionRegistry().registerAction(new ZoomOutAction(manager));
-	    manager.setZoomLevels(zoomLevels);
-	     
-	    ArrayList<String> zoomContributions = new ArrayList<String>();
-	    zoomContributions.add(ZoomManager.FIT_ALL);
-	    zoomContributions.add(ZoomManager.FIT_HEIGHT);
-	    zoomContributions.add(ZoomManager.FIT_WIDTH);
-	    manager.setZoomLevelContributions(zoomContributions);
+	    registerActions(null,
+	    		new ZoomInAction(manager), new ZoomOutAction(manager));
+	    manager.setZoomLevels(STOCK_ZOOM_LEVELS);
+	    manager.setZoomLevelContributions(STOCK_ZOOM_CONTRIBUTIONS);
 	     
 	    keyHandler = new KeyHandler();
 	    keyHandler.put(KeyStroke.getPressed(SWT.DEL, SWT.DEL, 0),
@@ -116,6 +121,10 @@ public class BigraphEditor extends AbstractGEFEditor {
 	     
 	    viewer.setContextMenu(
 	    	new BigraphEditorContextMenuProvider(viewer, getActionRegistry()));
+	    
+	    registerActions(null,
+	    		new ToggleGridAction(getGraphicalViewer()),
+	    		new ToggleSnapToGeometryAction(getGraphicalViewer()));
 	}
 	
 	@Override
@@ -191,7 +200,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
     	if (type == ZoomManager.class) {
-    		return ((ScalableRootEditPart)getGraphicalViewer().getRootEditPart()).getZoomManager();
+    		return getScalableRoot(getGraphicalViewer()).getZoomManager();
     	} else if (type == IContentOutlinePage.class) {
     		return new BigraphEditorOutlinePage(this);
     	} else if (type == GraphicalViewer.class) {
@@ -199,8 +208,7 @@ public class BigraphEditor extends AbstractGEFEditor {
     	} else if (type == EditPart.class && getGraphicalViewer() != null) {
 			return getGraphicalViewer().getRootEditPart();
     	} else if (type == IFigure.class && getGraphicalViewer() != null) {
-			return ((GraphicalEditPart) getGraphicalViewer().getRootEditPart())
-					.getFigure();
+			return getScalableRoot(getGraphicalViewer()).getFigure();
 		} else return super.getAdapter(type);
     }
     

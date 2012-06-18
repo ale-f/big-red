@@ -6,6 +6,13 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Signature;
+import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -29,7 +36,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
@@ -37,13 +43,6 @@ import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.SimulationSpec;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Loader;
@@ -53,6 +52,7 @@ import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
+import dk.itu.big_red.utilities.ui.StockButton;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -227,9 +227,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		brl.pack = false;
 		br.setLayout(brl);
 		
-		Button b = UI.chain(new Button(br, SWT.NONE)).text("&Add...").done();
-		b.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
-		b.addSelectionListener(new SelectionAdapter() {
+		StockButton.ADD.create(br, SWT.NONE, true).addSelectionListener(
+				new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				ResourceTreeSelectionDialog rtsd =
@@ -250,9 +249,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			}
 		});
 		
-		b = UI.chain(new Button(br, SWT.NONE)).text("&Remove...").done();
-		b.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
-		b.addSelectionListener(new SelectionAdapter() {
+		StockButton.REMOVE.create(br).addSelectionListener(
+				new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Iterator<?> it =

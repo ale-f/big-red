@@ -1,8 +1,8 @@
 package dk.itu.big_red.interaction_managers;
 
+import org.bigraph.model.SimulationSpec;
 import org.eclipse.swt.widgets.Shell;
 
-import dk.itu.big_red.model.SimulationSpec;
 
 /**
  * Classes implementing <strong>IInteractionManager</strong> are <i>interaction

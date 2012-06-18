@@ -2,10 +2,10 @@ package dk.itu.big_red.editors.bigraph.parts;
 
 import java.beans.PropertyChangeEvent;
 
+import org.bigraph.model.InnerName;
 import org.eclipse.draw2d.IFigure;
 import dk.itu.big_red.editors.bigraph.figures.NameFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
-import dk.itu.big_red.model.InnerName;
 
 public class OuterNamePart extends LinkPart {
 	@Override

@@ -4,13 +4,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
 
-import dk.itu.big_red.model.ModelObject;
 
 /**
  * Classes extending Loader can read objects from an {@link InputStream}.

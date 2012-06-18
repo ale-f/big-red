@@ -2,6 +2,7 @@ package dk.itu.big_red.editors.bigraph.actions;
 
 import java.util.List;
 
+import org.bigraph.model.Layoutable;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.SelectionAction;
@@ -10,7 +11,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.editors.bigraph.commands.LayoutablePasteCommand;
-import dk.itu.big_red.model.Layoutable;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class ContainerPasteAction extends SelectionAction {

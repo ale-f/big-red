@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core bigraph.org model
+Bundle-SymbolicName: org.bigraph.model
+Bundle-Version: 1.0.0.0
+Bundle-Activator: org.bigraph.model.plugin.Activator
+Bundle-Vendor: bigraph.org
+Require-Bundle: org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Export-Package: org.bigraph.model,
+ org.bigraph.model.assistants,
+ org.bigraph.model.changes,
+ org.bigraph.model.interfaces,
+ org.bigraph.model.names,
+ org.bigraph.model.names.policies

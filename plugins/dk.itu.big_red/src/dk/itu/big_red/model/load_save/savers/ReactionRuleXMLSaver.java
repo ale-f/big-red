@@ -1,25 +1,25 @@
 package dk.itu.big_red.model.load_save.savers;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.Port;
+import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Container.ChangeAddChild;
+import org.bigraph.model.Layoutable.ChangeName;
+import org.bigraph.model.Layoutable.ChangeRemove;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
+import org.bigraph.model.Point.ChangeConnect;
+import org.bigraph.model.Point.ChangeDisconnect;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container.ChangeAddChild;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Layoutable.ChangeName;
-import dk.itu.big_red.model.Layoutable.ChangeRemove;
-import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Point.ChangeConnect;
-import dk.itu.big_red.model.Point.ChangeDisconnect;
-import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 
@@ -118,6 +118,9 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				f = applyAttributes(newElement(CHANGE, "change:site-alias"));
 				if (i.newValue != null)
 					applyAttributes(f, "alias", i.newValue);
+			} else if (ExtendedDataUtilities.PARAMETER.equals(i.key)){
+				f = applyAttributes(newElement(CHANGE, "change:node-parameter"),
+						"parameter", i.newValue);
 			}
 			if (f != null)
 				applyAttributes(f,

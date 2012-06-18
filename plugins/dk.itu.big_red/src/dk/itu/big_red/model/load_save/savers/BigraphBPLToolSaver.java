@@ -3,19 +3,20 @@ package dk.itu.big_red.model.load_save.savers;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.interfaces.IBigraph;
-import dk.itu.big_red.model.interfaces.IChild;
-import dk.itu.big_red.model.interfaces.IControl;
-import dk.itu.big_red.model.interfaces.IEdge;
-import dk.itu.big_red.model.interfaces.IInnerName;
-import dk.itu.big_red.model.interfaces.INode;
-import dk.itu.big_red.model.interfaces.IOuterName;
-import dk.itu.big_red.model.interfaces.IParent;
-import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.model.interfaces.IRoot;
-import dk.itu.big_red.model.interfaces.ISite;
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.interfaces.IBigraph;
+import org.bigraph.model.interfaces.IChild;
+import org.bigraph.model.interfaces.IControl;
+import org.bigraph.model.interfaces.IEdge;
+import org.bigraph.model.interfaces.IInnerName;
+import org.bigraph.model.interfaces.INode;
+import org.bigraph.model.interfaces.IOuterName;
+import org.bigraph.model.interfaces.IParent;
+import org.bigraph.model.interfaces.IPort;
+import org.bigraph.model.interfaces.IRoot;
+import org.bigraph.model.interfaces.ISite;
+
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 

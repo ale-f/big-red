@@ -2,49 +2,50 @@ package dk.itu.big_red.editors.assistants;
 
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Control;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
+import org.bigraph.model.Port;
+import org.bigraph.model.PortSpec;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
+import org.bigraph.model.ModelObject.ExtendedDataValidator;
+import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.RedProperty;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.names.policies.INamePolicy;
+import org.bigraph.model.names.policies.PositiveIntegerNamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.ModelObject.ChangeExtendedData;
-import dk.itu.big_red.model.ModelObject.ExtendedDataValidator;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.PortSpec;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.Ellipse;
-import dk.itu.big_red.model.assistants.IPropertyProvider;
-import dk.itu.big_red.model.assistants.Line;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
-import dk.itu.big_red.model.assistants.RedProperty;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.names.policies.INamePolicy;
-import dk.itu.big_red.model.names.policies.PositiveIntegerNamePolicy;
 
 public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
-	private static Object require(
+	private static <T> T require(
 			IPropertyProvider context, ModelObject o, String name,
-			Class<?> klass) {
+			Class<T> klass) {
 		if (o != null) {
 			Object r = (context != null && context.hasProperty(o, name) ?
 					context.getProperty(o, name) : o.getExtendedData(name));
-			return (klass.isInstance(r) ? r : null);
+			try {
+				return klass.cast(r);
+			} catch (ClassCastException ex) {
+				return null;
+			}
 		} else return null;
 	}
 	
@@ -67,7 +68,7 @@ public final class ExtendedDataUtilities {
 	
 	public static IFile getFile(
 			IPropertyProvider context, ModelObject m) {
-		return (IFile)require(context, m, FILE, IFile.class);
+		return require(context, m, FILE, IFile.class);
 	}
 	
 	public static void setFile(ModelObject m, IFile f) {
@@ -84,7 +85,7 @@ public final class ExtendedDataUtilities {
 	
 	public static String getComment(
 			IPropertyProvider context, ModelObject m) {
-		return (String)require(context, m, COMMENT, String.class);
+		return require(context, m, COMMENT, String.class);
 	}
 	
 	public static void setComment(ModelObject m, String s) {
@@ -105,7 +106,7 @@ public final class ExtendedDataUtilities {
 	
 	public static Colour getFill(
 			IPropertyProvider context, ModelObject m) {
-		Colour c = (Colour)require(context, m, FILL, Colour.class);
+		Colour c = require(context, m, FILL, Colour.class);
 		if (c == null) {
 			if (m instanceof Node) {
 				c = getFill(context, ((Node)m).getControl());
@@ -141,7 +142,7 @@ public final class ExtendedDataUtilities {
 	
 	public static Colour getOutline(
 			IPropertyProvider context, ModelObject m) {
-		Colour c = (Colour)require(context, m, OUTLINE, Colour.class);
+		Colour c = require(context, m, OUTLINE, Colour.class);
 		if (c == null) {
 			if (m instanceof Node) {
 				c = getOutline(context, ((Node)m).getControl());
@@ -179,8 +180,7 @@ public final class ExtendedDataUtilities {
 	
 	public static INamePolicy getParameterPolicy(
 			IPropertyProvider context, Control c) {
-		return (INamePolicy)require(
-				context, c, PARAMETER_POLICY, INamePolicy.class);
+		return require(context, c, PARAMETER_POLICY, INamePolicy.class);
 	}
 	
 	public static void setParameterPolicy(Control c, INamePolicy n) {
@@ -228,12 +228,15 @@ public final class ExtendedDataUtilities {
 	public static String getParameter(
 			IPropertyProvider context, Node n) {
 		INamePolicy p = getParameterPolicy(context, n.getControl());
-		String s = (String)require(context, n, PARAMETER, String.class),
+		String s = require(context, n, PARAMETER, String.class),
 				t = null;
-		if (p != null)
+		if (p != null) {
 			t = p.normalise(s);
+			if (t == null)
+				t = p.get(0);
+		}
 		if (s != null ? !s.equals(t) : s != t)
-			set(context, n, PARAMETER, t);
+			setParameter(context, n, t);
 		return t;
 	}
 	
@@ -259,10 +262,10 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static int getSegment(IPropertyProvider context, PortSpec p) {
-		Integer i = (Integer)require(context, p, SEGMENT, Integer.class);
+		Integer i = require(context, p, SEGMENT, Integer.class);
 		if (i == null) {
 			recalculatePosition(context, p);
-			i = (Integer)require(context, p, SEGMENT, Integer.class);
+			i = require(context, p, SEGMENT, Integer.class);
 		}
 		return i;
 	}
@@ -316,10 +319,10 @@ public final class ExtendedDataUtilities {
 	
 	public static double getDistance(
 			IPropertyProvider context, PortSpec p) {
-		Double d = (Double)require(context, p, DISTANCE, Double.class);
+		Double d = require(context, p, DISTANCE, Double.class);
 		if (d == null) {
 			recalculatePosition(context, p);
-			d = (Double)require(context, p, DISTANCE, Double.class);
+			d = require(context, p, DISTANCE, Double.class);
 		}
 		return d;
 	}
@@ -398,9 +401,9 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static String getLabel(IPropertyProvider context, Control c) {
-		String s = (String)require(context, c, LABEL, String.class);
+		String s = require(context, c, LABEL, String.class);
 		if (s == null)
-			set(context, c, LABEL, s = labelFor(c.getName(context)));
+			setLabel(context, c, s = labelFor(c.getName(context)));
 		return s;
 	}
 	
@@ -434,7 +437,7 @@ public final class ExtendedDataUtilities {
 	
 	public static Rectangle getLayout(
 			IPropertyProvider context, Layoutable l) {
-		Rectangle r = (Rectangle)require(context, l, LAYOUT, Rectangle.class);
+		Rectangle r = require(context, l, LAYOUT, Rectangle.class);
 		if (r == null) {
 			if (l instanceof Port) {
 				Port p = (Port)l;
@@ -469,7 +472,7 @@ public final class ExtendedDataUtilities {
 					r.setLocation(tx / s, ty / s);
 				}
 			} else if (!(l instanceof Bigraph))
-				set(context, l, LAYOUT, r = new Rectangle());
+				setLayout(context, l, r = new Rectangle());
 		}
 		return r;
 	}
@@ -483,8 +486,37 @@ public final class ExtendedDataUtilities {
 		set(context, l, LAYOUT, r);
 	}
 	
+	private static final ExtendedDataValidator layoutValidator =
+			new ExtendedDataValidator() {
+		@Override
+		public String validate(ChangeExtendedData c,
+				IPropertyProvider context) {
+			Layoutable l = (Layoutable)c.getCreator();
+			Container parent = l.getParent(context);
+			if (parent instanceof Bigraph)
+				return null;
+			
+			Rectangle newLayout = getLayout(context, l);
+			Rectangle parentLayout =
+					getLayout(context, parent).getCopy().setLocation(0, 0);
+			if (!parentLayout.contains(newLayout))
+				return "The object can no longer fit into its container";
+			
+			if (l instanceof Container) {
+				newLayout = newLayout.getCopy().setLocation(0, 0);
+				for (Layoutable i : ((Container)l).getChildren(context)) {
+					if (!newLayout.contains(getLayout(context, i)))
+						return "The object is no longer big enough to " +
+								"accommodate its children";
+				}
+			}
+			
+			return null;
+		}
+	};
+	
 	public static Change changeLayout(Layoutable l, Rectangle r) {
-		return l.changeExtendedData(LAYOUT, r);
+		return l.changeExtendedData(LAYOUT, r, null, layoutValidator);
 	}
 	
 	public static Rectangle getRootLayout(Layoutable l) {
@@ -611,7 +643,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static String getAlias(IPropertyProvider context, Site s) {
-		return (String)require(context, s, ALIAS, String.class);
+		return require(context, s, ALIAS, String.class);
 	}
 	
 	public static void setAlias(Site s, String a) {

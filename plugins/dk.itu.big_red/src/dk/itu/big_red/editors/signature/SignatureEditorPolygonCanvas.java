@@ -5,6 +5,11 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.Control;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.PortSpec;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Point;
@@ -30,14 +35,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.assistants.Ellipse;
-import dk.itu.big_red.model.assistants.Line;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.PortSpec;
+import dk.itu.big_red.editors.assistants.Line;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -759,8 +759,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			UI.createMenuItem(m, 0, "&Remove port", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					doChange(getModel().changeRemovePort(
-							getModel().getPorts().get(foundPort)));
+					doChange(getModel().getPorts().get(foundPort).changeRemove());
 				}
 			});
 		}
@@ -785,7 +784,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 				public void widgetSelected(SelectionEvent e) {
 					ChangeGroup cg = new ChangeGroup();
 					for (PortSpec i : getModel().getPorts())
-						cg.add(getModel().changeRemovePort(i));
+						cg.add(i.changeRemove());
 					cg.add(ExtendedDataUtilities.changeShape(getModel(),
 							new PointList(new int[] { 0, 0 })));
 					doChange(cg);
@@ -808,7 +807,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 					if (polySides != null) {
 						ChangeGroup cg = new ChangeGroup();
 						for (PortSpec i : getModel().getPorts())
-							cg.add(getModel().changeRemovePort(i));
+							cg.add(i.changeRemove());
 						cg.add(ExtendedDataUtilities.changeShape(getModel(),
 								Ellipse.SINGLETON.
 								setBounds(new Rectangle(0, 0, 60, 60)).

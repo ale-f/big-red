@@ -13,7 +13,7 @@
          point="dk.itu.big_red.export">
       <exporter
             class="org.bigraph.bigmc.red.SimulationSpecBigMCSaver"
-            exports="dk.itu.big_red.model.SimulationSpec"
+            exports="org.bigraph.model.SimulationSpec"
             id="BigMC for Big Red.exporter1"
             name="BigMC term language">
       </exporter>

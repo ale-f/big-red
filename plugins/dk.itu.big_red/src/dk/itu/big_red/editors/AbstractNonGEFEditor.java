@@ -2,10 +2,10 @@ package dk.itu.big_red.editors;
 
 import java.util.ArrayDeque;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.jface.action.IStatusLineManager;
 
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 
 public abstract class AbstractNonGEFEditor extends AbstractEditor {
 	private Change savePoint = null;

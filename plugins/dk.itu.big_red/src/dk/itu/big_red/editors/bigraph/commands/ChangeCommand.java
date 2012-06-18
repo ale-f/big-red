@@ -1,11 +1,11 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.gef.commands.Command;
 
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeExecutor;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**

@@ -2,8 +2,9 @@ package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import java.util.List;
 
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
+
 
 public abstract class ContainerTreePart extends AbstractTreePart {
 	@Override

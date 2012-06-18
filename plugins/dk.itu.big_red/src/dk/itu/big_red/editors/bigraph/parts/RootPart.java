@@ -2,15 +2,15 @@ package dk.itu.big_red.editors.bigraph.parts;
 
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Root;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.RootFigure;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Root;
 
 /**
  * RootParts represent {@link Root}s, the containers immediately below the
@@ -32,6 +32,8 @@ public class RootPart extends ContainerPart {
 
 	@Override
 	protected void createEditPolicies() {
+		super.createEditPolicies();
+		
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 	}

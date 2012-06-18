@@ -1,20 +1,21 @@
 package dk.itu.big_red.model.load_save.loaders;
 
+import org.bigraph.model.Control;
+import org.bigraph.model.PortSpec;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Control.Kind;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.names.policies.BooleanNamePolicy;
+import org.bigraph.model.names.policies.INamePolicy;
+import org.bigraph.model.names.policies.LongNamePolicy;
+import org.bigraph.model.names.policies.StringNamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.PortSpec;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
-import dk.itu.big_red.model.names.policies.INamePolicy;
-import dk.itu.big_red.model.names.policies.LongNamePolicy;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
@@ -52,6 +53,8 @@ public class SignatureXMLLoader extends XMLLoader {
 			INamePolicy n = null;
 			if (parameter.equals("LONG")) {
 				n = new LongNamePolicy();
+			} else if (parameter.equals("STRING")) {
+				n = new StringNamePolicy();
 			} else if (parameter.equals("BOOLEAN")) {
 				n = new BooleanNamePolicy();
 			}

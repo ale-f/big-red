@@ -5,27 +5,28 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Control;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Port;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.Ellipse;
+import dk.itu.big_red.editors.bigraph.parts.PointPart;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 
@@ -262,14 +263,14 @@ public class BigraphTikZSaver extends Saver {
 			c = rl.getCenter();
 		System.out.println(rl);
 		Colour fillColour =
-			(i.getLink() == null ? dk.itu.big_red.model.Point.DEFAULT_COLOUR : ExtendedDataUtilities.getOutline(i.getLink()));
+			(i.getLink() == null ? PointPart.DEFAULT_COLOUR : ExtendedDataUtilities.getOutline(i.getLink()));
 		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
 		line("draw [internal inner name,fill=" + getNiceName(i) + " color!50] (" + tl.x + "," + tl.y + ") rectangle (" + br.x + "," + br.y + ");");
 		line("node [internal name] (" + getNiceName(i) + ") at (" + c.x + "," + c.y + ") {" + i.getName() + "};");
 		processPoint(i);
 	}
 	
-	private void processPoint(dk.itu.big_red.model.Point p) throws SaveFailedException {
+	private void processPoint(org.bigraph.model.Point p) throws SaveFailedException {
 		Link l = p.getLink();
 		if (l != null) {
 			String in, out;

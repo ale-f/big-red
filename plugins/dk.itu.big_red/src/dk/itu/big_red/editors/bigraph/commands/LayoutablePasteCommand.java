@@ -1,17 +1,18 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
+
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Node;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
+import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.gef.ui.actions.Clipboard;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
-import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class LayoutablePasteCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

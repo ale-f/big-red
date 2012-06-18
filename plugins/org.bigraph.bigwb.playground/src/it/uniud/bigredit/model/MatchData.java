@@ -3,7 +3,8 @@ package it.uniud.bigredit.model;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import dk.itu.big_red.model.ModelObject;
+import org.bigraph.model.ModelObject;
+
 
 public class MatchData {
 

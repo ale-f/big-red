@@ -16,20 +16,41 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.bigraph.model.ModelObject;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.RegistryFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.assistants.Colour;
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 
 public abstract class XMLLoader extends Loader {
+	public static final String EXTENSION_POINT = "dk.itu.big_red.xml";
+	
+	public XMLLoader() {
+		IExtensionRegistry r = RegistryFactory.getRegistry();
+		for (IConfigurationElement ice :
+			r.getConfigurationElementsFor(EXTENSION_POINT)) {
+			if ("undecorator".equals(ice.getName())) {
+				try {
+					addUndecorator(
+						(Undecorator)ice.createExecutableExtension("class"));
+				} catch (CoreException e) {
+					e.printStackTrace();
+					/* do nothing */
+				}
+			}
+		}
+	}
+	
 	private static SchemaFactory sf = null;
 	
 	/**
@@ -197,14 +218,14 @@ public abstract class XMLLoader extends Loader {
 		void undecorate(ModelObject object, Element el);
 	}
 	
-	private static List<Undecorator> undecorators = null;
+	private List<Undecorator> undecorators = null;
 	
-	protected static List<Undecorator> getUndecorators() {
+	protected List<Undecorator> getUndecorators() {
 		return (undecorators != null ? undecorators :
 				Collections.<Undecorator>emptyList());
 	}
 	
-	public static void addUndecorator(Undecorator d) {
+	protected void addUndecorator(Undecorator d) {
 		if (d == null)
 			return;
 		if (undecorators == null)
@@ -212,14 +233,13 @@ public abstract class XMLLoader extends Loader {
 		undecorators.add(d);
 	}
 	
-	public static void removeUndecorator(Undecorator d) {
+	protected void removeUndecorator(Undecorator d) {
 		if (undecorators.remove(d))
 			if (undecorators.size() == 0)
 				undecorators = null;
 	}
 	
-	protected static <T extends ModelObject>
-			T executeUndecorators(T mo, Element el) {
+	protected <T extends ModelObject> T executeUndecorators(T mo, Element el) {
 		if (mo != null && el != null)
 			for (Undecorator d : getUndecorators())
 				d.undecorate(mo, el);

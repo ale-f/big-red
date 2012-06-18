@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.utilities;
 
+import org.bigraph.model.Bigraph;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.GraphicalViewer;
@@ -14,7 +15,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
-import dk.itu.big_red.model.Bigraph;
 
 /**
  * A {@link BigraphCanvas} is a {@link Canvas} to which a {@link

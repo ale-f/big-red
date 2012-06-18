@@ -5,6 +5,16 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.bigraph.model.Control;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Control.Kind;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.names.policies.BooleanNamePolicy;
+import org.bigraph.model.names.policies.INamePolicy;
+import org.bigraph.model.names.policies.LongNamePolicy;
+import org.bigraph.model.names.policies.StringNamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
@@ -20,6 +30,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MenuListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -30,24 +42,17 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.ISharedImages;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
+import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.Control.Kind;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.assistants.Ellipse;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeGroup;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
-import dk.itu.big_red.model.names.policies.BooleanNamePolicy;
-import dk.itu.big_red.model.names.policies.INamePolicy;
-import dk.itu.big_red.model.names.policies.LongNamePolicy;
+import dk.itu.big_red.utilities.ui.StockButton;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SignatureEditor extends AbstractNonGEFEditor
@@ -72,7 +77,7 @@ implements PropertyChangeListener {
 		return model;
 	}
 	
-	private dk.itu.big_red.model.Control currentControl;
+	private org.bigraph.model.Control currentControl;
 	
 	private ListViewer controls;
 	private Button addControl, removeControl;
@@ -162,10 +167,10 @@ implements PropertyChangeListener {
 		}
 	}
 	
-	private static ArrayList<IFactory<INamePolicy>> getNamePolicies() {
-		ArrayList<IFactory<INamePolicy>> r =
-				new ArrayList<IFactory<INamePolicy>>();
+	private static ArrayList<CNPF> getNamePolicies() {
+		ArrayList<CNPF> r = new ArrayList<CNPF>();
 		r.add(new CNPF(LongNamePolicy.class));
+		r.add(new CNPF(StringNamePolicy.class));
 		r.add(new CNPF(BooleanNamePolicy.class));
 		return r;
 	}
@@ -210,12 +215,18 @@ implements PropertyChangeListener {
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((Control)element).getName();
+					Control c = (Control)element;
+					String name = c.getName();
+					INamePolicy n = ExtendedDataUtilities.getParameterPolicy(c);
+					if (n != null)
+						name += " (" + n.getClass().getSimpleName() + ")";
+					return name;
 				}
 				
 				@Override
 				public boolean isLabelProperty(Object element, String property) {
-					return (Control.PROPERTY_NAME.equals(property));
+					return (Control.PROPERTY_NAME.equals(property) ||
+							ExtendedDataUtilities.PARAMETER_POLICY.equals(property));
 				}
 		});
 		GridData controlsLayoutData =
@@ -228,13 +239,75 @@ implements PropertyChangeListener {
 				setControl(getSelectedControl());
 			}
 		});
+		final Menu menu = new Menu(controls.getList());
+		menu.addMenuListener(new MenuListener() {
+			private Control currentControl;
+			private INamePolicy currentPolicy;
+			
+			private void doMenuItem(Menu parent, final CNPF p) {
+				final MenuItem i = new MenuItem(parent, SWT.RADIO);
+				i.setText(p.getName());
+				i.setSelection(p.klass.isInstance(currentPolicy));
+				i.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						if (i.getSelection())
+							doChange(
+								ExtendedDataUtilities.changeParameterPolicy(
+										currentControl, p.newInstance()));
+					}
+				});
+			}
+			
+			@Override
+			public void menuShown(MenuEvent e) {
+				for (MenuItem i : menu.getItems())
+					i.dispose();
+				
+				currentControl = (Control)
+					((IStructuredSelection)controls.getSelection()).
+						getFirstElement();
+				if (currentControl == null) {
+					menu.setVisible(false);
+					return;
+				}
+				
+				currentPolicy =
+					ExtendedDataUtilities.getParameterPolicy(currentControl);
+				
+				MenuItem paramItem = new MenuItem(menu, SWT.CASCADE);
+				paramItem.setText("&Parameter");
+				
+				Menu paramMenu = new Menu(paramItem);
+				final MenuItem n = new MenuItem(paramMenu, SWT.RADIO);
+				n.setText("(none)");
+				n.setSelection(currentPolicy == null);
+				n.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						if (n.getSelection())
+							doChange(
+								ExtendedDataUtilities.changeParameterPolicy(
+										currentControl, null));
+					}
+				});
+				for (CNPF i : getNamePolicies())
+					doMenuItem(paramMenu, i);
+				paramItem.setMenu(paramMenu);
+			}
+			
+			@Override
+			public void menuHidden(MenuEvent e) {
+			}
+		});
+		controls.getList().setMenu(menu);
+		
 		Composite controlButtons = new Composite(left, SWT.NONE);
 		RowLayout controlButtonsLayout = new RowLayout();
 		controlButtons.setLayout(controlButtonsLayout);
 		controlButtons.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
 		
-		addControl = new Button(controlButtons, SWT.NONE);
-		addControl.setImage(UI.getImage(ISharedImages.IMG_OBJ_ADD));
+		addControl = StockButton.ADD.create(controlButtons);
 		addControl.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -249,8 +322,7 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		removeControl = new Button(controlButtons, SWT.NONE);
-		removeControl.setImage(UI.getImage(ISharedImages.IMG_ELCL_REMOVE));
+		removeControl = StockButton.REMOVE.create(controlButtons);
 		removeControl.addSelectionListener(new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

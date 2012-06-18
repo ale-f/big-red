@@ -1,11 +1,11 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
+import org.bigraph.model.Edge;
+import org.bigraph.model.Link;
 import org.eclipse.draw2d.IFigure;
 
 import dk.itu.big_red.editors.bigraph.figures.EdgeFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Link;
 
 /**
  * EdgeParts represent {@link Edge}s, the container for - and target point of -
@@ -30,7 +30,7 @@ public class EdgePart extends LinkPart {
 	@Override
 	public void refreshVisuals() {
 		super.refreshVisuals();
-		setResizable(false);
+		
 		getFigure().setSingle(getModel().getPoints().size() == 1);
 		getFigure().repaint();
 	}

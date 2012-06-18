@@ -2,17 +2,18 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import java.util.ArrayList;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.Node;
+import org.bigraph.model.Point;
+import org.bigraph.model.Port;
+import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.changes.ChangeGroup;
+
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.Link;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Point;
-import dk.itu.big_red.model.Port;
-import dk.itu.big_red.model.assistants.PropertyScratchpad;
-import dk.itu.big_red.model.changes.ChangeGroup;
 
 public class ModelDeleteCommand extends ChangeCommand {
 	@Override

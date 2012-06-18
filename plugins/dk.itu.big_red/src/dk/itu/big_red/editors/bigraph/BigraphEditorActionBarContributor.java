@@ -1,6 +1,5 @@
 package dk.itu.big_red.editors.bigraph;
 
-import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
@@ -8,12 +7,15 @@ import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
-import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
+
+import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.assistants.ActionBarContributor;
 
 public class BigraphEditorActionBarContributor extends ActionBarContributor {
 	@Override
@@ -36,16 +38,27 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 		
 		addRetargetAction(new ZoomInRetargetAction());
 		addRetargetAction(new ZoomOutRetargetAction());
+		
+		addRetargetAction(new RetargetAction(
+				GEFActionConstants.TOGGLE_GRID_VISIBILITY,
+				"Snap to grid", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(RedPlugin.getImageDescriptor(
+						"resources/icons/actions/snap-to-grid.png"));
+			}
+		});
+		addRetargetAction(new RetargetAction(
+				GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
+				"Snap to nearby objects", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(RedPlugin.getImageDescriptor(
+						"resources/icons/actions/snap-to-object.png"));
+			}
+		});
 	}
 
 	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
-		toolBarManager.add(getAction(ActionFactory.NEW.getId()));
-		toolBarManager.add(getAction(ActionFactory.SAVE.getId()));
-		toolBarManager.add(getAction(ActionFactory.PRINT.getId()));
-		
-		toolBarManager.add(new Separator());
-		
 		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
 		toolBarManager.add(getAction(ActionFactory.REDO.getId()));
 		toolBarManager.add(getAction(ActionFactory.DELETE.getId()));
@@ -61,14 +74,12 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 		toolBarManager.add(getAction(GEFActionConstants.ZOOM_IN));
 		toolBarManager.add(getAction(GEFActionConstants.ZOOM_OUT));
 		toolBarManager.add(new ZoomComboContributionItem(getPage()));
-	}
-
-	@Override
-	public void contributeToMenu(IMenuManager menuManager) {
-	}
-	
-	@Override
-	protected void declareGlobalActionKeys() {
-		// TODO Auto-generated method stub
+		
+		toolBarManager.add(new Separator());
+		
+		toolBarManager.add(
+				getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
+		toolBarManager.add(
+				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
 	}
 }

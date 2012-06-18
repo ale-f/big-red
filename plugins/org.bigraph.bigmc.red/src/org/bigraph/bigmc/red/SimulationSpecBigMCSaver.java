@@ -8,21 +8,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Control;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Signature;
+import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.Site;
+import org.bigraph.model.interfaces.IChild;
+import org.bigraph.model.interfaces.ILink;
+import org.bigraph.model.interfaces.INode;
+import org.bigraph.model.interfaces.IOuterName;
+import org.bigraph.model.interfaces.IPort;
+import org.bigraph.model.interfaces.IRoot;
+import org.bigraph.model.interfaces.ISite;
+import org.bigraph.model.names.policies.INamePolicy;
+
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Control;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.ReactionRule;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.SimulationSpec;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.interfaces.IChild;
-import dk.itu.big_red.model.interfaces.ILink;
-import dk.itu.big_red.model.interfaces.INode;
-import dk.itu.big_red.model.interfaces.IOuterName;
-import dk.itu.big_red.model.interfaces.IPort;
-import dk.itu.big_red.model.interfaces.IRoot;
-import dk.itu.big_red.model.interfaces.ISite;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 
@@ -52,7 +57,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	private static Pattern p = Pattern.compile("[^a-zA-Z0-9_]");
 	
 	private String normaliseName(String name) {
-		return p.matcher(name).replaceAll("_");
+		return p.matcher(name.trim()).replaceAll("_");
 	}
 	
 	@Override
@@ -86,9 +91,15 @@ public class SimulationSpecBigMCSaver extends Saver {
 		}
 	}
 
-	private void processSignature(Signature s) throws SaveFailedException {
-		write("# Controls\n");
-		for (Control c : s.getControls()) {
+	private final ArrayList<String> controlNames = new ArrayList<String>();
+	
+	private void writeControl(Control c, String param)
+			throws SaveFailedException {
+		String name = normaliseName(c.getName());
+		if (param != null)
+			name += "_P__" + normaliseName(param);
+		
+		if (!controlNames.contains(name)) {
 			switch (c.getKind()) {
 			case ACTIVE:
 			case ATOMIC:
@@ -99,8 +110,43 @@ public class SimulationSpecBigMCSaver extends Saver {
 				write("%passive ");
 				break;
 			}
-			write(normaliseName(c.getName()) + " : ");
+			
+			write(name + " : ");
 			write(c.getPorts().size() + ";\n");
+			
+			controlNames.add(name);
+		}
+	}
+	
+	private void recHandleParams(Layoutable l) throws SaveFailedException {
+		if (l instanceof Node) {
+			Node n = (Node)l;
+			String param = ExtendedDataUtilities.getParameter(n);
+			if (param != null)
+				writeControl(n.getControl(), param);
+		}
+		
+		if (l instanceof Container)
+			for (Layoutable i : ((Container)l).getChildren())
+				recHandleParams(i);
+	}
+	
+	private void processSignature(SimulationSpec ss) throws SaveFailedException {
+		Signature s = ss.getSignature();
+		write("# Controls\n");
+		boolean parameterised = false;
+		for (Control c : s.getControls()) {
+			INamePolicy policy = ExtendedDataUtilities.getParameterPolicy(c);
+			if (policy == null) {
+				writeControl(c, null);
+			} else parameterised = true;
+		}
+		if (parameterised) {
+			recHandleParams(ss.getModel());
+			for (ReactionRule r : ss.getRules()) {
+				recHandleParams(r.getRedex());
+				recHandleParams(r.getReactum());
+			}
 		}
 		write("\n");
 	}
@@ -137,7 +183,12 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processNode(INode i) throws SaveFailedException {
-		write(normaliseName(i.getControl().getName()));
+		String
+			name = normaliseName(i.getControl().getName()),
+			param = ExtendedDataUtilities.getParameter((Node)i); /* XXX!! */
+		if (param != null)
+			name += "_P__" + normaliseName(param);
+		write(name);
 		
 		Iterator<? extends IPort> it = i.getPorts().iterator();
 		if (it.hasNext()) {
@@ -205,7 +256,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 		return (i.hasNext() == j.hasNext());
 	}
 	
-	public static int i = 0;
+	private int i = 0;
 	
 	private void processRule(ReactionRule r) throws SaveFailedException {
 		if (!iteratorsMatched(
@@ -213,7 +264,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 				r.getReactum().getRoots().iterator()))
 			throw new SaveFailedException("Bananas");
 		if (namedRules)
-			write("%rule r" + (i++) + " "); /* XXX FIXME */
+			write("%rule r_" + (i++) + " "); /* XXX FIXME */
 		processBigraph(r.getRedex());
 		write(" -> ");
 		processBigraph(r.getReactum());
@@ -226,7 +277,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processSimulationSpec(SimulationSpec s) throws SaveFailedException {
-		processSignature(s.getSignature());
+		processSignature(s);
 		processNames(s);
 		
 		List<ReactionRule> rules = s.getRules();

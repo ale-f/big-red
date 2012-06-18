@@ -1,8 +1,9 @@
 package dk.itu.big_red.editors.simulation_spec;
 
 import java.beans.PropertyChangeEvent;
+
+import org.bigraph.model.SimulationSpec;
 import org.eclipse.jface.viewers.AbstractListViewer;
-import dk.itu.big_red.model.SimulationSpec;
 import dk.itu.big_red.utilities.ui.jface.ModelObjectContentProvider;
 
 class SimulationSpecRRContentProvider extends ModelObjectContentProvider {

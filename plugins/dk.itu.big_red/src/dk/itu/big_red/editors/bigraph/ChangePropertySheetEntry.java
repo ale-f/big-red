@@ -1,22 +1,22 @@
 package dk.itu.big_red.editors.bigraph;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.Site;
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.ui.properties.UndoablePropertySheetEntry;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.PropertySheetEntry;
 
+import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Node;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.assistants.Colour;
-import dk.itu.big_red.model.changes.ChangeGroup;
-
+import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
 import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.COMMENT;
 
 public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
@@ -46,6 +46,8 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			// String propertyName = child.getDisplayName();
 			Object propertyID = child.getDescriptor().getId();
 			EditPart j = (EditPart)getValues()[i];
+			if (j instanceof LinkConnectionPart)
+				j = ((LinkConnectionPart)j).getLinkPart();
 			if (j instanceof IBigraphPart)
 				target = ((IBigraphPart)j).getBigraph();
 			

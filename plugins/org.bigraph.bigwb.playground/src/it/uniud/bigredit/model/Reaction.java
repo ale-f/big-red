@@ -1,21 +1,20 @@
 package it.uniud.bigredit.model;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Root;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Site;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.IChangeValidator;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import it.uniud.bigredit.policy.ReactionChangeValidator;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.Root;
-import dk.itu.big_red.model.Signature;
-import dk.itu.big_red.model.Site;
-import dk.itu.big_red.model.changes.Change;
-import dk.itu.big_red.model.changes.ChangeRejectedException;
-import dk.itu.big_red.model.changes.IChangeExecutor;
-import dk.itu.big_red.model.changes.IChangeValidator;
 
 
 
@@ -186,9 +185,10 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	}
 	
 	@Override
-	protected void doChange(Change b) {
-		super.doChange(b);
-		if (b instanceof Reaction.ChangeAddReactum) {
+	protected boolean doChange(Change b) {
+		if (super.doChange(b)) {
+			/* do nothing */
+		} else if (b instanceof Reaction.ChangeAddReactum) {
 
 			Reaction.ChangeAddReactum c = (Reaction.ChangeAddReactum) b;
 			((Reaction) c.getCreator()).changeReactum(c.child);
@@ -199,7 +199,8 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}else if(b instanceof Reaction.ChangeLayoutChild){
 			Reaction.ChangeLayoutChild c = (Reaction.ChangeLayoutChild)b;
 			((Reaction)c.getCreator())._changeLayoutChild(c.child, c.layout);
-		}
+		} else return false;
+		return true;
 	}
 	
 	

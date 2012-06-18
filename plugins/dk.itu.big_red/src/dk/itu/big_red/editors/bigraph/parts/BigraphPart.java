@@ -4,6 +4,14 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Root;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
@@ -11,14 +19,6 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
-import dk.itu.big_red.model.Bigraph;
-import dk.itu.big_red.model.Container;
-import dk.itu.big_red.model.Edge;
-import dk.itu.big_red.model.InnerName;
-import dk.itu.big_red.model.Layoutable;
-import dk.itu.big_red.model.ModelObject;
-import dk.itu.big_red.model.OuterName;
-import dk.itu.big_red.model.Root;
 
 /**
  * BigraphParts represent {@link Bigraph}s, the top-level container of the
@@ -81,6 +81,7 @@ public class BigraphPart extends ContainerPart {
 
 	@Override
 	protected void createEditPolicies() {
+		super.createEditPolicies();
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
 	}
 	
