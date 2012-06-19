@@ -72,11 +72,6 @@ public abstract class Layoutable extends ModelObject {
 	}
 	
 	public class ChangeRemove extends LayoutableChange {
-		@Override
-		public boolean isReady() {
-			return (getCreator().getParent() != null);
-		}
-		
 		private String oldName;
 		private Container oldParent;
 		@Override

@@ -60,11 +60,6 @@ public class PortSpec extends ModelObject implements IPort {
 	}
 	
 	public class ChangeRemovePort extends PortSpecChange {
-		@Override
-		public boolean isReady() {
-			return (getCreator().getControl() != null);
-		}
-		
 		private String oldName;
 		private Control oldControl;
 		@Override
