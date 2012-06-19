@@ -203,16 +203,18 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	private void updateReactum(ReactionRule rr, Element e) throws LoadFailedException {
 		Bigraph reactum = rr.getReactum();
 		NodeList nl = e.getChildNodes();
+		ChangeGroup cg = rr.getChanges();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Change c = changeFromElement(nl.item(i));
-			if (c != null) {
-				try {
-					reactum.tryApplyChange(c);
-					rr.getChanges().add(c);
-				} catch (ChangeRejectedException cre) {
-					throw new LoadFailedException(cre);
-				}
-			}
+			if (c != null)
+				cg.add(c);
+		}
+		
+		try {
+			System.out.println(cg);
+			reactum.tryApplyChange(cg);
+		} catch (ChangeRejectedException cre) {
+			throw new LoadFailedException(cre);
 		}
 	}
 	
