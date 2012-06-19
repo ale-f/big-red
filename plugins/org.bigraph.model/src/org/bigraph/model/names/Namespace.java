@@ -60,7 +60,8 @@ public abstract class Namespace<T> implements INamespace<T> {
 	}
 	
 	public String put(PropertyScratchpad context, String name, T value) {
-		if (value != null && (name = checkName(name)) != null && !has(name)) {
+		if (value != null && (name = checkName(name)) != null &&
+				!has(context, name)) {
 			putProperty(context, name, value);
 			return name;
 		} else return null;
