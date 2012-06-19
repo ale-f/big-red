@@ -63,16 +63,6 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 		changes.remove(c);
 	}
 	
-	@Override
-	public boolean isReady() {
-		if (changes.isEmpty())
-			return false;
-		for (Change c : this)
-			if (!c.isReady())
-				return false;
-		return true;
-	}
-	
 	/**
 	 * Removes all {@link Change}s from this ChangeGroup.
 	 */
