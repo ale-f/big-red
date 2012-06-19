@@ -97,6 +97,7 @@ implements PropertyChangeListener {
 		if (setEnablement(c != null)) {
 			name.setFocus();
 			controlToFields();
+			name.selectAll();
 		}
 	}
 	
