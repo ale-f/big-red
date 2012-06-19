@@ -211,7 +211,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		}
 		
 		try {
-			System.out.println(cg);
 			reactum.tryApplyChange(cg);
 		} catch (ChangeRejectedException cre) {
 			throw new LoadFailedException(cre);
