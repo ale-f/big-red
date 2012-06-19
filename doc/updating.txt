@@ -1,0 +1,35 @@
+Keeping Big Red up-to-date
+==========================
+
+The command line
+----------------
+
+The Git command to update your local copy of Big Red is simply:
+
+	git pull
+
+You'll usually need to refresh the Eclipse workspace for the changes to be
+picked up, though.
+
+From inside Eclipse
+-------------------
+
+If you have the EGit plugin installed, you can also perform these updates from
+within Eclipse. (Many editions of Eclipse include this plugin by default; if
+yours doesn't, you can get it from http://eclipse.org/egit/download/ .)
+
+To associate an existing project with its Git repository:
+
+	* right-click its entry in the Project Explorer and choose "Team ->
+	  Share Project...";
+	* tick the "Use or create repository in parent folder of project" box
+	  at the top of the form (you should see something like "../../.git"
+	  appear the "Repository" column); and
+	* click "Finish".
+
+(When this succeeds, the appearance of the project will change slightly -- an
+orange bar will appear in the bottom-right-hand corner of its icon, and the
+name of its repository and branch will appear after its name.)
+
+Once you've done that, you can keep all the projects up-to-date by simply
+right-clicking one of them and choosing "Team -> Pull".
