@@ -493,7 +493,7 @@ public final class ExtendedDataUtilities {
 				IPropertyProvider context) {
 			Layoutable l = (Layoutable)c.getCreator();
 			Container parent = l.getParent(context);
-			if (parent instanceof Bigraph)
+			if (parent == null || parent instanceof Bigraph)
 				return null;
 			
 			Rectangle newLayout = getLayout(context, l);
