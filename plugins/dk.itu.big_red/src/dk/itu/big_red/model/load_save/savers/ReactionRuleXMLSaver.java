@@ -61,17 +61,9 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		
 		appendChildIfNotNull(e,
 			processRedex(newElement(RULE, "rule:redex"), rr.getRedex()));
-		
-		try {
-			if (getModel().getChanges().size() != 0)
-				getModel().getReactum().tryApplyChange(
-						getModel().getChanges().inverse());
-		} catch (ChangeRejectedException ex) {
-			throw new SaveFailedException(ex);
-		}
-		
 		appendChildIfNotNull(e,
 			processChanges(newElement(RULE, "rule:changes"), rr.getChanges()));
+		
 		return executeDecorators(rr, e);
 	}
 	
@@ -88,7 +80,29 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	
 	private Element processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
 		applyAttributes(e, "xmlns:change", CHANGE);
-		return _processChanges(e, changes);
+		
+		try {
+			if (getModel().getChanges().size() != 0)
+				getModel().getReactum().tryApplyChange(
+						getModel().getChanges().inverse());
+		} catch (ChangeRejectedException ex) {
+			throw new SaveFailedException(ex);
+		}
+		
+		for (Change i_ : changes) {
+			Element f = _serialiseChange(i_);
+			
+			if (e != null && f != null) {
+				e.appendChild(f);
+				try {
+					getModel().getReactum().tryApplyChange(i_);
+				} catch (ChangeRejectedException ex) {
+					throw new SaveFailedException(ex);
+				}
+			}
+		}
+		
+		return e;
 	}
 	
 	private Element _serialiseChange(Change i_) {
@@ -175,22 +189,5 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		}
 		
 		return f;
-	}
-	
-	private Element _processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
-		for (Change i_ : changes) {
-			Element f = _serialiseChange(i_);
-			
-			if (e != null && f != null) {
-				e.appendChild(f);
-				try {
-					getModel().getReactum().tryApplyChange(i_);
-				} catch (ChangeRejectedException ex) {
-					throw new SaveFailedException(ex);
-				}
-			}
-		}
-		
-		return e;
 	}
 }
