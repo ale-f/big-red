@@ -223,12 +223,12 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 	
 	private int translationX() {
 		Rectangle r = requireBounds();
-		return roundToGrid((controlWidth - r.width) / 2) - r.x;
+		return roundToGrid(((controlWidth - r.width) / 2) - r.x);
 	}
 	
 	private int translationY() {
 		Rectangle r = requireBounds();
-		return roundToGrid((controlHeight - r.height) / 2) - r.y;
+		return roundToGrid(((controlHeight - r.height) / 2) - r.y);
 	}
 	
 	private void doChange(Change c) {
