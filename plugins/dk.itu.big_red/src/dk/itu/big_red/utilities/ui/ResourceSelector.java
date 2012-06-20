@@ -36,9 +36,17 @@ public class ResourceSelector {
 			}
 		});
 		
-		container = (k != null ? k : Project.getWorkspaceRoot());
+		setContainer(k);
 		mode = m;
 		contentTypes = cT;
+	}
+	
+	public IContainer getContainer() {
+		return container;
+	}
+	
+	public void setContainer(IContainer c) {
+		container = (c != null ? c : Project.getWorkspaceRoot());
 	}
 	
 	public Button getButton() {
@@ -57,20 +65,25 @@ public class ResourceSelector {
 			setResource(rtsd.getFirstResult());
 	}
 	
+	private final void updateCaption() {
+		if (button != null && !button.isDisposed()) {
+			if (resource != null) {
+				button.setText(resource.getFullPath().toString());
+			} else button.setText("(none)");
+		}
+	}
+	
 	public IResource getResource() {
 		return resource;
 	}
 	
 	public ResourceSelector setResource(IResource resource) {
-		if (resource != null) {
-			button.setText(
-				resource.getFullPath().
-					makeRelativeTo(container.getFullPath()).toString());
-		} else button.setText("(none)");
-		
 		IResource oldResource = this.resource;
 		this.resource = resource;
 		postResourceNotification(oldResource, resource);
+		
+		updateCaption();
+		
 		return this;
 	}
 	
