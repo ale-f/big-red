@@ -44,9 +44,6 @@ public class ReactionRule extends ModelObject {
 		return redexToReactum;
 	}
 	
-	private Map<Change, Change> redexChangesToReactumChanges =
-			new HashMap<Change, Change>();
-	
 	/**
 	 * Translates a {@link Change} targeted at the redex to the reactum.
 	 * @param redexChange a {@link Change} targeted at the redex
@@ -55,19 +52,15 @@ public class ReactionRule extends ModelObject {
 	 * context of the reactum
 	 */
 	public Change getReactumChange(Change redexChange) {
-		Change reactumChange = redexChangesToReactumChanges.get(redexChange);
-		if (reactumChange == null) {
-			reactumChange =
-					translateChange(getRedexToReactumMap(), redexChange);
-			if (reactumChange != null) {
-				try {
-					getReactum().tryValidateChange(reactumChange);
-				} catch (ChangeRejectedException cre) {
-					reactumChange = Change.INVALID;
-				}
-			} else reactumChange = Change.INVALID;
-			redexChangesToReactumChanges.put(redexChange, reactumChange);
-		}
+		Change reactumChange =
+				translateChange(getRedexToReactumMap(), redexChange);
+		if (reactumChange != null) {
+			try {
+				getReactum().tryValidateChange(reactumChange);
+			} catch (ChangeRejectedException cre) {
+				reactumChange = Change.INVALID;
+			}
+		} else reactumChange = Change.INVALID;
 		return reactumChange;
 	}
 	
