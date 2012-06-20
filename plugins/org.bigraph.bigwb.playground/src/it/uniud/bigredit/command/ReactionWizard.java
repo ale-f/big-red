@@ -602,26 +602,38 @@ public class ReactionWizard extends Wizard {
 	public boolean performFinish()
 	{
 		ChangeGroup cgA = new ChangeGroup();
+		ChangeGroup cgLink = new ChangeGroup();
 		HashMap<Root,Root> mapReactionRoots= rule.getMapRedexRootToReactum();
 		chosenMatch= matches.get(selection);
 		
+		//inizializeMap;
+		rule.initializeMap();
+		
 		//MatchesPage matchesPage = ( MatchesPage )getPage( "Matches" );
 		for (Root root : redex.getRoots()){
-			for(ModelObject obj: root.getChildren()){
-				cgA.add(((Layoutable)chosenMatch.getMappingData().get(obj)).changeRemove());
-			}
+			
+
 			
 			Root reactumRoot=mapReactionRoots.get(root);
 			Container dest=(Container)chosenMatch.getMappingData().get(root);
 			int rand=(int)(Math.random()*100)%10;
 			
-			for(Layoutable child: reactumRoot.getChildren()){
-				//cgA.add(dest.changeAddChild(child.clone(null), child.getName()+ rand));
-				fillAddChangeItemReactum(child, dest, cgA);
+			for(ModelObject obj: root.getChildren()){
+				//cgA.add(((Layoutable)chosenMatch.getMappingData().get(obj)).changeRemove());
+				eraseNodeandChild(((Layoutable)chosenMatch.getMappingData().get(obj)),cgA);
 			}
 			
+			for(Layoutable child: reactumRoot.getChildren()){
+				//cgA.add(dest.changeAddChild(child.clone(null), child.getName()+ rand));
+				fillAddChangeItemReactum(child, dest, cgA,cgLink);
+			}
+
+			
 		}
-		cgA.add(ExtendedDataUtilities.relayout(target));
+		//cgA.add(ExtendedDataUtilities.relayout(target));
+		System.out.println(cgA);
+		System.out.println(cgLink);
+		
 		if (cgA.size() != 0){
 			try {
 				target.tryApplyChange(cgA);
@@ -630,6 +642,17 @@ public class ReactionWizard extends Wizard {
 				e.printStackTrace();
 			}
 		}
+		
+
+		if (cgLink.size() != 0){
+			try {
+				target.tryApplyChange(cgLink);
+			} catch (ChangeRejectedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 
 		
 		//OLD
@@ -673,7 +696,7 @@ public class ReactionWizard extends Wizard {
 	}
 	
 		
-		
+	private HashMap <Link,Link> mapEdges =new HashMap<Link,Link>();
 		
 		
 		private void fillAddChangeReactum(Root rootReactum, Layoutable itemAgent,
@@ -688,47 +711,65 @@ public class ReactionWizard extends Wizard {
 	
 		}
 		
-		private void fillAddChangeItemReactum(Layoutable l, Layoutable itemAgent, ChangeGroup cg){
+		private void fillAddChangeItemReactum(Layoutable l, Layoutable itemAgent, ChangeGroup cg, ChangeGroup cgL){
 			
 			Layoutable newNodeAgent=(Layoutable) l.newInstance();
-		
+			
+			
 			if (rule.getRedexMapName().containsKey(l.getName())) {
 	
 				// same element in the redex
 				Layoutable la = (Layoutable) getMatchData().getMappingData().get(
 						rule.getRedexMapName().get(l.getName()));
+				System.out.println("redex name: " + rule.getRedexMapName().get(l.getName()));
+				System.out.println("agent name: " + la.getName());
+				
 				cg.add(((Container) itemAgent).changeAddChild(
-						newNodeAgent, la.getName()));
+						newNodeAgent, la.getName()+""));
+				ExtendedDataUtilities.setLayout(newNodeAgent, ExtendedDataUtilities.getLayout(l));
+				
 	
 			} else {
 				// element in reactum is non contained i redex
 				cg.add(((Container) itemAgent).changeAddChild(
 						newNodeAgent,
-						l.getName() + (Math.random() % 10)));
+						l.getName() + ((int)(Math.random()*100))+ "'"));
+				ExtendedDataUtilities.setLayout(newNodeAgent, ExtendedDataUtilities.getLayout(l));
+
 	
 			}
 			if(l instanceof Container){
 				for(Layoutable son: ((Container) l).getChildren()){
-					fillAddChangeItemReactum(son,newNodeAgent,cg);
+					fillAddChangeItemReactum(son,newNodeAgent,cg, cgL);
 				}
 			}
+			
+
 			
 			/* fare il collegamento dei link */
 			/* e aggiungere nuovi edge nel caso */
 			HashMap <Link,Link> mapLinksRule= rule.getMapLinksReactumRedex();
-	 		
+			
 			
 			if (((Node)l).getPorts().size()>0){
 				for (Port p: ((Node)l).getPorts()){
+					Port pOnNewNode=((Node)newNodeAgent).getPort(p.getName());
 					
 					Link link=p.getLink();
 					if (mapLinksRule.containsKey(link)){
 						Link lagent=chosenMatch.getLinkMap().get(mapLinksRule.get(link));
-						cg.add(p.changeConnect(lagent));
+						cgL.add(pOnNewNode.changeConnect(lagent));
 					}else{
-						Edge edge= new Edge();
-						mapLinksRule.put(link, edge);
-						cg.add(p.changeConnect(edge));
+						Edge edge;
+						if(mapEdges.containsKey(link)){
+							edge=(Edge) mapEdges.get(link);
+							
+						}else{
+						 edge= new Edge();						
+						 cg.add(target.changeAddChild(edge, "e"+((int)(Math.random()*100)) ));
+						 mapEdges.put(link, edge);
+						}
+						cgL.add(pOnNewNode.changeConnect(edge));
 					}
 					
 					//((Node)newNodeAgent).getPort(p.getName());
@@ -738,4 +779,28 @@ public class ReactionWizard extends Wizard {
 			
 			
 		}
+		
+		private void eraseNodeandChild(Layoutable node, ChangeGroup cg){
+			
+			
+			if(node instanceof Container){
+				for(Layoutable son: ((Container) node).getChildren()){
+					eraseNodeandChild(son, cg);
+				}
+			} 
+			
+			//disconnect node
+			if (node instanceof Node){
+				for (Port p :((Node) node).getPorts()){
+					System.out.println("get port");
+
+						cg.add(p.changeDisconnect());
+
+					
+				}
+				
+				cg.add(node.changeRemove());
+			}	
+		}
+		
 }

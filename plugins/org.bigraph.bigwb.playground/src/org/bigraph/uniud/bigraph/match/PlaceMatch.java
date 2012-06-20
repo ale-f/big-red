@@ -553,6 +553,12 @@ public class PlaceMatch {
 						if (!(portAgent.getLink() instanceof Edge)) {
 							/** edge redex -> outer agent return false */
 							return false;
+						}else{
+							/* check that every edge has the same number of connections */
+							if (portRedex.getLink().getPoints().size() != portAgent.getLink().getPoints().size()){
+								return false;
+							}
+							
 						}
 					}
 

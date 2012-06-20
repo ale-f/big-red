@@ -300,8 +300,14 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	 		}
 	 	}
 	 	
-	 	public HashMap<String, Layoutable> getRedexMapName() {
+	 	
+	 	public void initializeMap(){
+	 		mapRedex= new HashMap <String, Layoutable> ();
 	 		exploreBigraph(mapRedex, redex);
+	 		mapLinks();
+	 	}
+	 	
+	 	public HashMap<String, Layoutable> getRedexMapName() {
 	 		return mapRedex;
 	 	}
 	 	
