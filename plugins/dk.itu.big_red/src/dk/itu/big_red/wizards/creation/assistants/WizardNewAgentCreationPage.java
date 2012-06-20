@@ -26,8 +26,12 @@ import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class WizardNewAgentCreationPage extends WizardPage {
+	private IContainer selectorRoot = null;
+	
 	private IFile signature;
 	private IContainer folder;
+	
+	private IResource initialSelection;
 	
 	protected Text nameText = null;
 	
@@ -35,8 +39,38 @@ public class WizardNewAgentCreationPage extends WizardPage {
 			String pageName, IStructuredSelection selection) {
 		super(pageName);
 		setPageComplete(false);
+		
+		Object o = selection.getFirstElement();
+		if (o instanceof IResource && !(o instanceof IWorkspaceRoot)) {
+			initialSelection = (IResource)o;
+			if (o instanceof IContainer)
+				setFolder((IContainer)o);
+		}
+		updateSelectorRoot();
 	}
 
+	private final void updateSelectorRoot() {
+		if (initialSelection != null) {
+			selectorRoot = initialSelection.getProject();
+		} else {
+			IResource
+				folder = getFolder(),
+				signature = getSignature();
+			if (folder == null && signature == null) {
+				selectorRoot = null;
+			} else {
+				selectorRoot =
+						(folder != null ? folder : signature).getProject();
+			}
+		}
+		if (folderSelector != null)
+			folderSelector.setContainer(selectorRoot);
+		if (signatureSelector != null)
+			signatureSelector.setContainer(selectorRoot);
+	}
+	
+	private ResourceSelector folderSelector, signatureSelector;
+	
 	@Override
 	public void createControl(Composite parent) {
 		Composite root = new Composite(parent, SWT.NONE);
@@ -51,14 +85,16 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		
 		UI.chain(new Label(root, 0)).text("&Parent folder:").done();
 		
-		ResourceSelector folderSelector =
-				new ResourceSelector(root, null, Mode.CONTAINER);
+		folderSelector =
+				new ResourceSelector(root, selectorRoot, Mode.CONTAINER);
+		folderSelector.setResource(getFolder());
 		folderSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
 				if (newValue instanceof IContainer) {
 					setFolder((IContainer)newValue);
 				} else setFolder(null);
+				updateSelectorRoot();
 			}
 		});
 		folderSelector.getButton().setLayoutData(
@@ -66,15 +102,17 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		
 		UI.chain(new Label(root, SWT.NONE)).text("&Signature:").done();
 		
-		ResourceSelector signatureSelector =
-				new ResourceSelector(root, null, Mode.FILE,
+		signatureSelector =
+				new ResourceSelector(root, selectorRoot, Mode.FILE,
 						Signature.CONTENT_TYPE);
+		signatureSelector.setResource(getSignature());
 		signatureSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
 				if (newValue instanceof IFile) {
 					setSignature((IFile)newValue);
 				} else setSignature(null);
+				updateSelectorRoot();
 			}
 		});
 		signatureSelector.getButton().setLayoutData(
