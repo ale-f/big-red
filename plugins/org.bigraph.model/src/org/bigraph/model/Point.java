@@ -47,11 +47,6 @@ public abstract class Point extends Layoutable implements IPoint {
 	}
 	
 	public class ChangeDisconnect extends PointChange {
-		@Override
-		public boolean isReady() {
-			return (getCreator().getLink() != null);
-		}
-		
 		private Link oldLink;
 		@Override
 		public void beforeApply() {
@@ -70,7 +65,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		
 		@Override
 		public String toString() {
-			return "Change(disconnect " + getCreator() + " from " + link + ")";
+			return "Change(disconnect " + getCreator() + ")";
 		}
 	}
 
