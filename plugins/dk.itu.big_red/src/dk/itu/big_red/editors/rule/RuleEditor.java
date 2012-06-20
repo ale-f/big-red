@@ -2,6 +2,8 @@ package dk.itu.big_red.editors.rule;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.ReactionRule;
@@ -346,11 +348,23 @@ public class RuleEditor extends AbstractGEFEditor implements
 		return (Bigraph)reactumViewer.getContents().getModel();
 	}
 	
+	private Map<Change, Change> redexToReactum = new HashMap<Change, Change>();
+	
+	private Change getReactumChange(Change c) {
+		Change ch = redexToReactum.get(c);
+		if (ch == null) {
+			ch = getModel().getReactumChange(c);
+			if (ch == Change.INVALID)
+				redexToReactum.put(c, ch);
+		}
+		return ch;
+	}
+	
 	private void processChangeCommand(int detail, ChangeCommand c) {
 		IChangeExecutor target = c.getTarget();
 		
 		if (target == getRedex()) {
-			Change reactumChange = getModel().getReactumChange(c.getChange());
+			Change reactumChange = getReactumChange(c.getChange());
 			
 			if (reactumChange == Change.INVALID) {
 				/* This is a redex change that doesn't make sense in the
@@ -362,6 +376,9 @@ public class RuleEditor extends AbstractGEFEditor implements
 			
 			try {
 				getReactum().tryApplyChange(reactumChange);
+				if (detail != CommandStack.POST_UNDO) {
+					redexToReactum.put(c.getChange(), reactumChange);
+				} else redexToReactum.remove(c.getChange());
 			} catch (ChangeRejectedException cre) {
 				throw new Error("BUG: apparently-valid reactum change " + 
 						reactumChange + " was rejected");
