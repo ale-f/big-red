@@ -178,11 +178,14 @@ public class ReactionRule extends ModelObject {
 		
 		rr.setRedex(getRedex().clone(rCr));
 		
+		Change inv = getChanges().inverse();
 		try {
-			getReactum().tryApplyChange(getChanges().inverse());
+			getReactum().tryApplyChange(inv);
+			inv = null;
 		} catch (ChangeRejectedException cre) {
-			/* very bad news */
-			cre.printStackTrace();
+			throw new Error(
+					"Apparently valid change " + inv +
+					" rejected: shouldn't happen", cre);
 		}
 		rr.setReactum(getReactum().clone(RCR));
 		
@@ -195,8 +198,8 @@ public class ReactionRule extends ModelObject {
 				
 				getReactum().tryApplyChange(c);
 			} catch (ChangeRejectedException cre) {
-				/* very bad news */
-				cre.printStackTrace();
+				throw new Error("Apparently valid change " + c +
+						" rejected: shouldn't happen", cre);
 			}
 		}
 		
