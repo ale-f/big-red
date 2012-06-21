@@ -113,7 +113,6 @@ public class ReactionRule extends ModelObject {
 			if (reactumChild == null)
 				return null;
 			
-			oldToNew.remove(ch.getCreator());
 			return reactumChild.changeRemove();
 		} else if (change instanceof ChangeName) {
 			ChangeName ch = (ChangeName)change;
