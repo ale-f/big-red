@@ -65,5 +65,10 @@ public abstract class Change {
 		public boolean isReady() {
 			return false;
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(invalid)";
+		}
 	};
 }
