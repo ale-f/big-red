@@ -371,7 +371,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 				 * reactum */
 				return;
 			} else if (detail == CommandStack.POST_UNDO) {
-				reactumChange = reactumChange.inverse();
+				if (reactumChange.canInvert()) {
+					reactumChange = reactumChange.inverse();
+				} else throw new Error(
+						"BUG: must invert " + reactumChange + ", but can't");
 			}
 			
 			try {
