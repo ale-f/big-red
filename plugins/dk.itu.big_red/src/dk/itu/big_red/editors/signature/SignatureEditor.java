@@ -195,6 +195,16 @@ implements PropertyChangeListener {
 		-40, 0
 	});
 	
+	private static final Change changeControlName(Control c, String s) {
+		if (c != null && s != null) {
+			ChangeGroup cg = new ChangeGroup();
+			cg.add(c.changeName(s));
+			cg.add(ExtendedDataUtilities.changeLabel(c,
+					ExtendedDataUtilities.labelFor(s)));
+			return cg;
+		} else return null;
+	}
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite self =
@@ -381,7 +391,8 @@ implements PropertyChangeListener {
 			void go() {
 				String n = currentControl.getName();
 				if (!n.equals(name.getText()))
-					if (!doChange(ExtendedDataUtilities.changeControlName(currentControl, name.getText())))
+					if (!doChange(changeControlName(
+							currentControl, name.getText())))
 						lockedTextUpdate(name, n);
 			}
 		};

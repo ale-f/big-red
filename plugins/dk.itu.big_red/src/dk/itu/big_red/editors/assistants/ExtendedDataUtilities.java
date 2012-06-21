@@ -396,7 +396,7 @@ public final class ExtendedDataUtilities {
 		return getLabel(null, c);
 	}
 	
-	private static String labelFor(String s) {
+	public static String labelFor(String s) {
 		return (s != null ? (s.length() > 0 ? s.substring(0, 1) : s) : "?");
 	}
 	
@@ -418,13 +418,6 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeLabel(Control c, String s) {
 		return c.changeExtendedData(LABEL, s, labelValidator);
-	}
-	
-	public static Change changeControlName(Control c, String s) {
-		ChangeGroup cg = new ChangeGroup();
-		cg.add(c.changeName(s));
-		cg.add(changeLabel(c, labelFor(s)));
-		return cg;
 	}
 	
 	@RedProperty(fired = Rectangle.class, retrieved = Rectangle.class)
