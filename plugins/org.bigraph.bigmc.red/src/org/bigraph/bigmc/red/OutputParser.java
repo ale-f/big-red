@@ -18,7 +18,6 @@ import org.bigraph.model.names.INamespace;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 
-
 public class OutputParser {
 	private String string;
 	private static final Pattern scanner = Pattern.compile(
@@ -127,11 +126,8 @@ public class OutputParser {
 			/* Strictly speaking, this doesn't need to be a conditional -- on
 			 * the other hand, it means that the input language can be parsed
 			 * as well */
-			if (accept(P_DOT) != null) { /* children */
-				if (lookahead(P_LBR)) {
-					parseChildren(n, cg);
-				} else parseChild(n, cg);
-			}
+			if (accept(P_DOT) != null)
+				parseChildren(n, cg);
 		} else if ((name = accept(P_SIT)) != null) { /* name is a site id */
 			Site s = new Site();
 			cg.add(parent.changeAddChild(s, name.substring(1)));
@@ -139,11 +135,13 @@ public class OutputParser {
 	}
 	
 	private void parseChildren(Container parent, ChangeGroup cg) {
-		expect(P_LBR);
-		do {
-			parseChild(parent, cg);
-		} while (accept(P_BAR) != null);
-		expect(P_RBR);
+		if (lookahead(P_LBR)) {
+			expect(P_LBR);
+			do {
+				parseChild(parent, cg);
+			} while (accept(P_BAR) != null);
+			expect(P_RBR);
+		} else parseChild(parent, cg);
 	}
 	
 	public Bigraph run() {
