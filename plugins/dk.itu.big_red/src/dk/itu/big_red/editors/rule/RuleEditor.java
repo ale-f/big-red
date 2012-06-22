@@ -28,7 +28,6 @@ import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
@@ -43,6 +42,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -152,21 +152,22 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite c =
-			setComposite(UI.chain(new Composite(setParent(parent), SWT.NONE)).
-			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done());
+		SashForm splitter = setComposite(new SashForm(setParent(parent),
+				SWT.HORIZONTAL | SWT.SMOOTH));
+	
+		createPaletteViewer(splitter);
+		Composite c = setComposite(new Composite(splitter, SWT.NONE));
+		
+		splitter.setWeights(BigraphEditor.INITIAL_SASH_WEIGHTS);
 		
 		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
 			gl.horizontalSpacing = gl.verticalSpacing = 10;
 		c.setLayout(gl);
-		
-		createPaletteViewer(c);
-		getPaletteViewer().getControl().setLayoutData(
-				new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 
 		redexViewer.createControl(c);
-		redexViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		redexViewer.getControl().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		Label l = UI.chain(new Label(c, SWT.NONE)).text(
 				String.valueOf((char)0x2192)).done();
@@ -174,12 +175,13 @@ public class RuleEditor extends AbstractGEFEditor implements
 		l.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, false, false));
 		
 		reactumViewer.createControl(c);
-		reactumViewer.getControl().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		reactumViewer.getControl().setLayoutData(
+				new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		configureGraphicalViewer();
 		
-		org.eclipse.swt.widgets.List list =
-			new org.eclipse.swt.widgets.List(c, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL);
+		org.eclipse.swt.widgets.List list = new org.eclipse.swt.widgets.List(
+				c, SWT.BORDER | SWT.SINGLE | SWT.V_SCROLL);
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1);
 		gd.heightHint = 100;
 		list.setLayoutData(gd);
@@ -300,14 +302,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 	@Override
 	protected PaletteRoot getPaletteRoot() {
 		PaletteRoot root = new PaletteRoot();
-		
-		PaletteToolbar tb = new PaletteToolbar("Horizontal palette");
-		root.add(tb);
-		
-		SelectionToolEntry ste = new SelectionToolEntry();
 		nodeGroup = new PaletteGroup("Node...");
+		SelectionToolEntry ste = new SelectionToolEntry();
 		
-		BigraphEditor.populatePalette(tb, nodeGroup, ste);
+		BigraphEditor.populatePalette(root, nodeGroup, ste);
 		
 		root.setDefaultEntry(ste);
 		return root;

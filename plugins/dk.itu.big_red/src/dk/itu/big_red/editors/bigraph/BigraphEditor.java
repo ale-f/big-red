@@ -155,7 +155,7 @@ public class BigraphEditor extends AbstractGEFEditor {
     			new FilePrintAction(this)));
     }
 	
-	private static final int INITIAL_SASH_WEIGHTS[] = { 20, 80 };
+	public static final int INITIAL_SASH_WEIGHTS[] = { 20, 80 };
 	
     @Override
 	public void createPartControl(Composite parent) {
