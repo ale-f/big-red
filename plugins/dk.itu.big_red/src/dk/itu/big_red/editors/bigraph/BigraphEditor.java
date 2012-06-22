@@ -5,14 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.Bigraph;
-import org.bigraph.model.Control;
-import org.bigraph.model.Edge;
-import org.bigraph.model.InnerName;
-import org.bigraph.model.Node;
-import org.bigraph.model.OuterName;
-import org.bigraph.model.Root;
-import org.bigraph.model.Signature;
-import org.bigraph.model.Site;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -25,15 +17,6 @@ import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
-import org.eclipse.gef.palette.ConnectionCreationToolEntry;
-import org.eclipse.gef.palette.MarqueeToolEntry;
-import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.palette.PaletteGroup;
-import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.palette.PaletteSeparator;
-import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.SelectAllAction;
@@ -43,7 +26,6 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.gef.ui.parts.SelectionSynchronizer;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
@@ -54,7 +36,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -182,19 +163,6 @@ public class BigraphEditor extends AbstractGEFEditor {
 		getSelectionSynchronizer().addViewer(getGraphicalViewer());
 		getSite().setSelectionProvider(getGraphicalViewer());
 	}
-    
-	public static void updateNodePalette(PaletteContainer nodeGroup, Signature signature) {
-    	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
-
-    	ImageDescriptor id =
-    		RedPlugin.getImageDescriptor("resources/icons/triangle.png");
-    	
-		for (Control c : signature.getControls())
-			palette.add(new CombinedTemplateCreationEntry(c.getName(), "Node",
-					Node.class, new NodeFactory(c), id, id));
-		
-		nodeGroup.setChildren(palette);
-	}
 
 	@Override
 	@SuppressWarnings("rawtypes")
@@ -215,63 +183,6 @@ public class BigraphEditor extends AbstractGEFEditor {
 	@Override
 	/* Provisionally */ public DefaultEditDomain getEditDomain() {
 		return super.getEditDomain();
-	}
-	
-    private PaletteGroup nodeGroup;
-    
-    public static <T extends PaletteContainer> T populatePalette(T container, PaletteGroup nodeGroup, SelectionToolEntry defaultTool) {
-    	PaletteGroup selectGroup = new PaletteGroup("Object selection");
-		selectGroup.setId("BigraphEditor.palette.selection");
-		container.add(selectGroup);
-		
-		selectGroup.add((defaultTool != null ? defaultTool : new SelectionToolEntry()));
-		selectGroup.add(new MarqueeToolEntry());
-		
-		container.add(new PaletteSeparator());
-		
-		PaletteGroup creationGroup = new PaletteGroup("Object creation");
-		creationGroup.setId("BigraphEditor.palette.creation");
-		container.add(creationGroup);
-		
-		if (nodeGroup == null)
-			nodeGroup = new PaletteGroup("Node...");
-		nodeGroup.setId("BigraphEditor.palette.node-creation");
-		creationGroup.add(nodeGroup);
-
-		ImageDescriptor
-			site = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/site.png"),
-			root = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/root.png"),
-			edge = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/edge.png");
-		
-		creationGroup.add(new CombinedTemplateCreationEntry("Site", "Add a new site to the bigraph",
-				Site.class, new ModelFactory(Site.class), site, site));
-		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
-				Root.class, new ModelFactory(Root.class), root, root));
-		creationGroup.add(new ConnectionCreationToolEntry("Link", "Connect two points with a link",
-				new ModelFactory(Edge.class), edge, edge));
-		
-		ImageDescriptor
-			inner = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/inner.png"),
-			outer = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/outer.png");
-		
-		creationGroup.add(new CombinedTemplateCreationEntry("Inner name", "Add a new inner name to the bigraph",
-				InnerName.class, new ModelFactory(InnerName.class), inner, inner));
-		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
-				OuterName.class, new ModelFactory(OuterName.class), outer, outer));
-		
-    	return container;
-    }
-    
-	@Override
-	protected PaletteRoot getPaletteRoot() {
-		PaletteRoot root = new PaletteRoot();
-		nodeGroup = new PaletteGroup("Node...");
-		SelectionToolEntry ste = new SelectionToolEntry();
-		
-		BigraphEditor.populatePalette(root, nodeGroup, ste);
-		
-		root.setDefaultEntry(ste);
-		return root;
 	}
 	
 	@Override
@@ -317,7 +228,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	    
 	    addInterestingResource(
 	    		ExtendedDataUtilities.getFile(getModel().getSignature()));
-	    updateNodePalette(nodeGroup, model.getSignature());
+	    updateNodePalette(model.getSignature());
 	    getGraphicalViewer().setContents(model);
 	}
 

@@ -26,9 +26,6 @@ import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
-import org.eclipse.gef.palette.PaletteGroup;
-import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.actions.DeleteAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.ToggleGridAction;
@@ -156,7 +153,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 				SWT.HORIZONTAL | SWT.SMOOTH));
 	
 		createPaletteViewer(splitter);
-		Composite c = setComposite(new Composite(splitter, SWT.NONE));
+		Composite c = new Composite(splitter, SWT.NONE);
 		
 		splitter.setWeights(BigraphEditor.INITIAL_SASH_WEIGHTS);
 		
@@ -296,20 +293,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    			}
 	    		});
 	}
-
-	private PaletteGroup nodeGroup;
-	
-	@Override
-	protected PaletteRoot getPaletteRoot() {
-		PaletteRoot root = new PaletteRoot();
-		nodeGroup = new PaletteGroup("Node...");
-		SelectionToolEntry ste = new SelectionToolEntry();
-		
-		BigraphEditor.populatePalette(root, nodeGroup, ste);
-		
-		root.setDefaultEntry(ste);
-		return root;
-	}
 	
 	private ReactionRule model;
 	
@@ -332,7 +315,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 		
 		Signature s = getModel().getRedex().getSignature();
-	    BigraphEditor.updateNodePalette(nodeGroup, s);
+	    updateNodePalette(s);
 	    addInterestingResource(ExtendedDataUtilities.getFile(s));
 	    redexViewer.setContents(model.getRedex());
 	    reactumViewer.setContents(model.getReactum());

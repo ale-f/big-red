@@ -3,6 +3,14 @@ package dk.itu.big_red.editors;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.Control;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Root;
+import org.bigraph.model.Signature;
+import org.bigraph.model.Site;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.RootEditPart;
@@ -10,8 +18,17 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
+import org.eclipse.gef.palette.ConnectionCreationToolEntry;
+import org.eclipse.gef.palette.MarqueeToolEntry;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
+import org.eclipse.gef.palette.PaletteSeparator;
+import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
@@ -23,7 +40,10 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.PropertySheetPage;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
+import dk.itu.big_red.editors.bigraph.ModelFactory;
+import dk.itu.big_red.editors.bigraph.NodeFactory;
 
 public abstract class AbstractGEFEditor extends AbstractEditor
 implements CommandStackEventListener, ISelectionListener,
@@ -65,8 +85,6 @@ INullSelectionListener {
 	public boolean isDirty() {
 		return getCommandStack().isDirty();
 	}
-	
-	protected abstract PaletteRoot getPaletteRoot();
 	
 	protected void createPaletteViewer(Composite parent) {
 		PaletteViewer viewer = new PaletteViewer();
@@ -157,5 +175,90 @@ INullSelectionListener {
     		psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
     		return psp;
     	} else return super.getAdapter(adapter);
+	}
+	
+	public static <T extends PaletteContainer> T populatePalette(
+			T container, PaletteGroup nodeGroup,
+			SelectionToolEntry defaultTool) {
+    	PaletteGroup selectGroup = new PaletteGroup("Object selection");
+		selectGroup.setId("BigraphEditor.palette.selection");
+		container.add(selectGroup);
+		
+		selectGroup.add((defaultTool != null ? defaultTool : new SelectionToolEntry()));
+		selectGroup.add(new MarqueeToolEntry());
+		
+		container.add(new PaletteSeparator());
+		
+		PaletteGroup creationGroup = new PaletteGroup("Object creation");
+		creationGroup.setId("BigraphEditor.palette.creation");
+		container.add(creationGroup);
+		
+		if (nodeGroup == null)
+			nodeGroup = new PaletteGroup("Node...");
+		nodeGroup.setId("BigraphEditor.palette.node-creation");
+		creationGroup.add(nodeGroup);
+
+		ImageDescriptor
+			site = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/site.png"),
+			root = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/root.png"),
+			edge = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/edge.png");
+		
+		creationGroup.add(new CombinedTemplateCreationEntry("Site", "Add a new site to the bigraph",
+				Site.class, new ModelFactory(Site.class), site, site));
+		creationGroup.add(new CombinedTemplateCreationEntry("Root", "Add a new root to the bigraph",
+				Root.class, new ModelFactory(Root.class), root, root));
+		creationGroup.add(new ConnectionCreationToolEntry("Link", "Connect two points with a link",
+				new ModelFactory(Edge.class), edge, edge));
+		
+		ImageDescriptor
+			inner = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/inner.png"),
+			outer = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/outer.png");
+		
+		creationGroup.add(new CombinedTemplateCreationEntry("Inner name", "Add a new inner name to the bigraph",
+				InnerName.class, new ModelFactory(InnerName.class), inner, inner));
+		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
+				OuterName.class, new ModelFactory(OuterName.class), outer, outer));
+		
+    	return container;
+    }
+	
+	private PaletteGroup nodeGroup;
+    
+	protected PaletteGroup getNodeGroup() {
+		if (nodeGroup == null)
+			nodeGroup = new PaletteGroup("Node...");
+		return nodeGroup;
+	}
+	
+	protected PaletteRoot createPaletteRoot() {
+		PaletteRoot root = new PaletteRoot();
+		nodeGroup = new PaletteGroup("Node...");
+		SelectionToolEntry ste = new SelectionToolEntry();
+		
+		populatePalette(root, getNodeGroup(), ste);
+		
+		root.setDefaultEntry(ste);
+		return root;
+	}
+	
+	private PaletteRoot paletteRoot;
+	
+	protected PaletteRoot getPaletteRoot() {
+		if (paletteRoot == null)
+			paletteRoot = createPaletteRoot();
+		return paletteRoot;
+	}
+	
+	protected void updateNodePalette(Signature signature) {
+    	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
+
+    	ImageDescriptor id =
+    		RedPlugin.getImageDescriptor("resources/icons/triangle.png");
+    	
+		for (Control c : signature.getControls())
+			palette.add(new CombinedTemplateCreationEntry(c.getName(), "Node",
+					Node.class, new NodeFactory(c), id, id));
+		
+		getNodeGroup().setChildren(palette);
 	}
 }
