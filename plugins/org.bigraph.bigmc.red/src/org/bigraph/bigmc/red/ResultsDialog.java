@@ -173,6 +173,8 @@ public class ResultsDialog extends TitleAreaDialog {
 		}));
 		s.setSelection(1);
 		sa.widgetSelected(null);
+		if (getStates().size() < 2)
+			s.setEnabled(false);
 		
 		return c;
 	}
