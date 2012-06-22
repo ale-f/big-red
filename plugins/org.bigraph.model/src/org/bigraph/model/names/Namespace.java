@@ -8,8 +8,9 @@ import org.bigraph.model.names.policies.INamePolicy;
 public abstract class Namespace<T> implements INamespace<T> {
 	@SuppressWarnings("unchecked")
 	protected T getProperty(IPropertyProvider context, String name) {
-		return (context == null ?
-				getRaw(name) : (T)context.getProperty(this, name));
+		if (context != null && context.hasProperty(this, name)) {
+			return (T)context.getProperty(this, name);
+		} else return getRaw(name);
 	}
 	
 	protected void putProperty(
