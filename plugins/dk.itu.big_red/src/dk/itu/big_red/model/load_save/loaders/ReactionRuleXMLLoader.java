@@ -66,8 +66,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	
 	private Layoutable getNamed(Bigraph b, String type, String name) {
 		Namespace<Layoutable> ns = b.getNamespace(Bigraph.getNSI(type));
-		Layoutable l;
-		return ((l = ns.get(scratch, name)) != null ? l : ns.get(name));
+		return ns.get(scratch, name);
 	}
 	
 	private Change changeFromElement(org.w3c.dom.Node n) {
