@@ -1,9 +1,6 @@
 package dk.itu.big_red.editors.bigraph.actions;
 
-import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.print.PrintGraphicalViewerOperation;
 import org.eclipse.swt.printing.PrintDialog;
 import org.eclipse.swt.printing.Printer;
@@ -41,25 +38,17 @@ public class FilePrintAction extends org.eclipse.gef.ui.actions.PrintAction {
 		GraphicalViewer viewer;
 		viewer = (GraphicalViewer)getWorkbenchPart().getAdapter(GraphicalViewer.class);
 				
-		PrintDialog dialog = 
-			new PrintDialog(UI.getShell());
+		PrintDialog dialog =
+				new PrintDialog(getWorkbenchPart().getSite().getShell());
 		PrinterData data = dialog.open();
 		if (data != null) {
 			Printer p = new Printer(data);
-			
-			p.computeTrim(0, 0, 0, 0);
 
-			ZoomManager zm =
-				((ScalableRootEditPart)(viewer.getRootEditPart())).getZoomManager();
-			double oldZoom = zm.getZoom();
-			zm.setZoom(1.0);
-			
-			PrintGraphicalViewerOperation op = new PrintGraphicalViewerOperation(p, viewer);
+			PrintGraphicalViewerOperation op =
+					new PrintGraphicalViewerOperation(p, viewer);
 			op.setPrintMode(PrintGraphicalViewerOperation.FIT_PAGE);
-			op.setPrintMargin(new Insets(28, 28, 28, 28)); // -trim.x, -trim.y, trim.x + trim.width, trim.y + trim.height));
 			op.run(getWorkbenchPart().getTitle());
 			
-			zm.setZoom(oldZoom);
 			p.dispose();
 		}
 	}
