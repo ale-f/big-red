@@ -64,10 +64,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
-
-
 import it.uniud.bigredit.editparts.PartFactory;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
@@ -357,12 +353,6 @@ public class PlayEditor extends BigraphEditor {
 			throws PartInitException {
 		super.init(site, input);
 		initializeActionRegistry();
-	}
-
-	@Override
-	protected void initializeActionRegistry() {
-		super.initializeActionRegistry();
-		updateActions(getStateActions());
 	}
 	
 	@Override

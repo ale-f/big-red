@@ -152,11 +152,9 @@ public abstract class AbstractEditor extends EditorPart
 	 * Initialises the {@link ActionRegistry}. There's no need to call this
 	 * method explicitly; the first call to {@link #getActionRegistry()} will
 	 * do so automatically.
-	 * <p>Subclasses should override this method, but they should also call
-	 * <code>super.initializeActionRegistry()</code> before doing anything
-	 * else.
+	 * @see #createActions()
 	 */
-	protected void initializeActionRegistry() {
+	protected final void initializeActionRegistry() {
 		setGlobalActionHandlers(registerActions(getStateActions(),
 				new UndoProxyAction(this), new RedoProxyAction(this),
 				new RevertProxyAction(this)));

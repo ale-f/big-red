@@ -402,12 +402,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 		registerActions(null, new SelectAllAction(this));
 	}
-
-	@Override
-	protected void initializeActionRegistry() {
-		super.initializeActionRegistry();
-		updateActions(getStateActions());
-	}
 	
 	@Override
 	public void setFocus() {

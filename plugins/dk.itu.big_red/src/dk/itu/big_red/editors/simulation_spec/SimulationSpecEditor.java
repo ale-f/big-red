@@ -322,12 +322,6 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	}
 	
 	@Override
-	protected void initializeActionRegistry() {
-		super.initializeActionRegistry();
-		updateActions(getStateActions());
-	}
-	
-	@Override
 	public void setFocus() {
 		if (getComposite() == null)
 			return;

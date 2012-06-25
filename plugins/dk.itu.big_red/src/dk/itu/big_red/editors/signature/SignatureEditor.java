@@ -630,11 +630,6 @@ implements PropertyChangeListener {
 			}
 		}
 	}
-	
-	@Override
-	protected void initializeActionRegistry() {
-		super.initializeActionRegistry();
-	}
 
 	@Override
 	protected void createActions() {

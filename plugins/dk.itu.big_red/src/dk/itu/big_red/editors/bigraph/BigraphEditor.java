@@ -29,10 +29,7 @@ import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
@@ -230,19 +227,6 @@ public class BigraphEditor extends AbstractGEFEditor {
 	    		ExtendedDataUtilities.getFile(getModel().getSignature()));
 	    updateNodePalette(model.getSignature());
 	    getGraphicalViewer().setContents(model);
-	}
-
-	@Override
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
-		super.init(site, input);
-		initializeActionRegistry();
-	}
-
-	@Override
-	protected void initializeActionRegistry() {
-		super.initializeActionRegistry();
-		updateActions(getStateActions());
 	}
 	
 	@Override
