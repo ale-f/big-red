@@ -8,13 +8,20 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.ui.UI;
 
 /**
  * Utility functions for manipulating an Eclipse {@link IProject project} and
@@ -25,12 +32,20 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 public final class Project {
 	private Project() {}
 	
+	public static IWorkspace getWorkspace() {
+		return ResourcesPlugin.getWorkspace();
+	}
+	
 	/**
 	 * Gets the workspace root.
 	 * @return the workspace root
 	 */
 	public static IWorkspaceRoot getWorkspaceRoot() {
-		return ResourcesPlugin.getWorkspace().getRoot();
+		return getWorkspace().getRoot();
+	}
+	
+	public static IResourceRuleFactory getRuleFactory() {
+		return getWorkspace().getRuleFactory();
 	}
 	
 	/**
@@ -108,17 +123,65 @@ public final class Project {
 		return (r instanceof IFile ? (IFile)r : null);
 	}
 	
+	public static class SaveRunnable {
+		public void onSuccess() {}
+		public void always() {}
+	}
+	
+	private static final class SaveJob extends WorkspaceJob {
+		private IFile file;
+		private InputStream contents;
+		private SaveRunnable payload;
+		
+		private SaveJob(IFile file, InputStream contents, SaveRunnable payload) {
+			super("Setting contents");
+			this.file = file;
+			this.contents = contents;
+			this.payload = payload;
+		}
+		
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor)
+				throws CoreException {
+			try {
+				if (file.exists()) {
+					file.setContents(contents, 0, monitor);
+				} else file.create(contents, 0, monitor);
+				
+				if (payload != null)
+					UI.asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							payload.onSuccess();
+						}
+					});
+				return Status.OK_STATUS;
+			} finally {
+				if (payload != null)
+					UI.asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							payload.always();
+						}
+					});
+			}
+		}
+	}
+	
 	/**
 	 * Sets the contents of the given {@link IFile} (which need not already
 	 * exist).
 	 * @param file an {@link IFile}
 	 * @param contents an {@link InputStream} specifying its contents
+	 * @param r a {@link Runnable} to be executed in the UI thread when the
+	 * operation has completed
 	 * @throws CoreException if the file couldn't be created or modified
 	 */
-	public static void setContents(IFile file, InputStream contents) throws CoreException {
-		if (file.exists()) {
-			file.setContents(contents, 0, null);
-		} else file.create(contents, 0, null);
+	public static void setContents(
+			IFile file, InputStream contents, SaveRunnable r) {
+		SaveJob j = new SaveJob(file, contents, r);
+		j.setRule(getRuleFactory().modifyRule(file));
+		j.schedule();
 	}
 	
 	public static IResourceDelta getSpecificDelta(IResourceDelta rootDelta, IResource r) {

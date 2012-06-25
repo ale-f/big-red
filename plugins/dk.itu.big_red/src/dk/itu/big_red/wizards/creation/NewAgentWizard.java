@@ -59,14 +59,14 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 		addPage(page);
 	}
 
-	protected static void createBigraph(IFile sigFile, IFile bigFile)
+	protected static void createBigraph(IFile sigFile, final IFile bigFile)
 			throws LoadFailedException, SaveFailedException, CoreException {
-		IOAdapter io = new IOAdapter();
+		final IOAdapter io = new IOAdapter();
 		Bigraph b = new Bigraph();
 		
 		b.setSignature((Signature)Loader.fromFile(sigFile));
 		new BigraphXMLSaver().setFile(bigFile).setModel(b).
 			setOutputStream(io.getOutputStream()).exportObject();
-		bigFile.setContents(io.getInputStream(), 0, null);
+		Project.setContents(bigFile, io.getInputStream(), null);
 	}
 }

@@ -11,7 +11,6 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
@@ -37,6 +36,7 @@ import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.resources.Project.SaveRunnable;
 
 public abstract class AbstractEditor extends EditorPart
 		implements IResourceChangeListener, IActionImplementor {
@@ -223,21 +223,34 @@ public abstract class AbstractEditor extends EditorPart
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		setSaving(true);
+		IOAdapter io = new IOAdapter();
+		FileEditorInput i = (FileEditorInput)getEditorInput();
 		try {
-			IOAdapter io = new IOAdapter();
-        	FileEditorInput i = (FileEditorInput)getEditorInput();
-        	
-        	doActualSave(i.getFile(), io.getOutputStream());
-        	
-        	Project.setContents(i.getFile(), io.getInputStream());
-    		firePropertyChange(PROP_DIRTY);
-		} catch (SaveFailedException cre) {
-			cre.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		} finally {
+			doActualSave(i.getFile(), io.getOutputStream());
+			
+			Project.setContents(
+					i.getFile(), io.getInputStream(), new SaveRunnable() {
+				@Override
+				public void onSuccess() {
+					firePropertyChange(PROP_DIRTY);
+				}
+				
+				@Override
+				public void always() {
+					setSaving(false);
+				}
+			});
+		} catch (SaveFailedException e) {
 			setSaving(false);
+			return;
 		}
+	}
+	
+	protected IFile getFile() {
+		IEditorInput i_ = getEditorInput();
+		if (i_ instanceof FileEditorInput) {
+			return ((FileEditorInput)i_).getFile();
+		} else return null;
 	}
 	
 	protected ModelObject loadInput() throws Throwable {

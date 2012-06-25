@@ -55,6 +55,6 @@ public class NewSignatureWizard extends Wizard implements INewWizard {
 		
 		new SignatureXMLSaver().setModel(new Signature()).setFile(sigFile).
 			setOutputStream(io.getOutputStream()).exportObject();
-		sigFile.setContents(io.getInputStream(), 0, null);
+		Project.setContents(sigFile, io.getInputStream(), null);
 	}
 }

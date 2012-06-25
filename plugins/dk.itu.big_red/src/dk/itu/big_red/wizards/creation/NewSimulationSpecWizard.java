@@ -56,6 +56,6 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 		new SimulationSpecXMLSaver().
 			setModel(new SimulationSpec()).setFile(ssFile).
 			setOutputStream(io.getOutputStream()).exportObject();
-		ssFile.setContents(io.getInputStream(), 0, null);
+		Project.setContents(ssFile, io.getInputStream(), null);
 	}
 }

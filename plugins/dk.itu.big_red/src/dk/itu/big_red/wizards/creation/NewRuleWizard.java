@@ -67,6 +67,6 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 		
 		new ReactionRuleXMLSaver().setModel(rr).setFile(rrFile).
 			setOutputStream(io.getOutputStream()).exportObject();
-		rrFile.setContents(io.getInputStream(), 0, null);
+		Project.setContents(rrFile, io.getInputStream(), null);
 	}
 }
