@@ -491,15 +491,21 @@ public final class ExtendedDataUtilities {
 				throws ChangeRejectedException {
 			Layoutable l = (Layoutable)c.getCreator();
 			Container parent = l.getParent(context);
-			if (parent == null || parent instanceof Bigraph)
+			
+			if (l instanceof Edge || parent == null)
 				return;
 			
 			Rectangle newLayout = getLayout(context, l);
-			Rectangle parentLayout =
-					getLayout(context, parent).getCopy().setLocation(0, 0);
-			if (!parentLayout.contains(newLayout))
-				throw new ChangeRejectedException(c,
-						"The object can no longer fit into its container");
+			for (Layoutable i : parent.getChildren(context)) {
+				if (i == l || i instanceof Edge) {
+					continue;
+				} else {
+					if (getLayout(context, i).intersects(newLayout)) {
+						throw new ChangeRejectedException(c,
+								"The object overlaps with one of its siblings");
+					}
+				}
+			}
 			
 			if (l instanceof Container) {
 				newLayout = newLayout.getCopy().setLocation(0, 0);
@@ -509,6 +515,14 @@ public final class ExtendedDataUtilities {
 								"The object is no longer big enough to " +
 								"accommodate its children");
 				}
+			}
+			
+			if (!(parent instanceof Bigraph)) {
+				Rectangle parentLayout =
+						getLayout(context, parent).getCopy().setLocation(0, 0);
+				if (!parentLayout.contains(newLayout))
+					throw new ChangeRejectedException(c,
+							"The object can no longer fit into its container");
 			}
 		}
 	};

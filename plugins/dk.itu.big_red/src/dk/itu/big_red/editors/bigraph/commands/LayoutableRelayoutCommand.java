@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import org.bigraph.model.Bigraph;
-import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -47,19 +46,9 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		if (model == null || layout == null || containerPart == null)
 			return this;
 		setTarget(model.getBigraph());
-		if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
+		if (boundariesSatisfied())
 			cg.add(ExtendedDataUtilities.changeLayout(model, layout));
 		return this;
-	}
-	
-	public boolean noOverlap() {
-		for (Layoutable i : model.getParent().getChildren()) {
-			if (i instanceof Edge || i == model)
-				continue;
-			else if (ExtendedDataUtilities.getLayout(i).intersects(layout))
-				return false;
-		}
-		return true;
 	}
 	
 	private boolean boundariesSatisfied() {
