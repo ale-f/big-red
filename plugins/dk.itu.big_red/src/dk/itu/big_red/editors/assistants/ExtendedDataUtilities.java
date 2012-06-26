@@ -573,7 +573,7 @@ public final class ExtendedDataUtilities {
 				l instanceof OuterName) {
 			setLayout(context, l, r = new Rectangle(0, 0, 50, 50));
 		} else if (l instanceof Edge) {
-			setLayout(context, l, r = new Rectangle(0, 0, 14, 14));
+			setLayout(context, l, r = null);
 		} else if (l instanceof Node || l instanceof Root) {
 			int left = PADDING, height = 0;
 			for (Layoutable i : ((Container)l).getChildren(context)) {
@@ -592,39 +592,46 @@ public final class ExtendedDataUtilities {
 					r = new Rectangle(0, 0, left, (PADDING * 2) + height));
 		} else if (l instanceof Bigraph) {
 			Bigraph b = (Bigraph)l;
-			int left = PADDING, top = PADDING, height = 0;
+			List<Layoutable> children = b.getChildren(context);
 			
-			for (OuterName i : b.getOuterNames()) { /* XXX CONTEXT */
-				r = relayout(context, i, cg).setLocation(left, top);
-				left = left + r.width + PADDING;
-				if (height < r.height)
-					height = r.height;
+			int
+				tallestOuterName = Integer.MIN_VALUE,
+				tallestRoot = Integer.MIN_VALUE;
+			int
+				onLeft = PADDING,
+				rootLeft = PADDING,
+				inLeft = PADDING;
+			
+			for (Layoutable i : children) {
+				r = relayout(context, i, cg);
+				if (i instanceof OuterName) {
+					r.x = onLeft;
+					onLeft = onLeft + r.width + PADDING;
+					if (tallestOuterName < r.height)
+						tallestOuterName = r.height;
+				} else if (i instanceof Root) {
+					r.x = rootLeft;
+					rootLeft = rootLeft + r.width + PADDING;
+					if (tallestRoot < r.height)
+						tallestRoot = r.height;
+				} else if (i instanceof InnerName) {
+					r.x = inLeft;
+					inLeft = inLeft + r.width + PADDING;
+				}
 				cg.add(changeLayout(i, r));
 			}
 			
-			left = PADDING;
-			top = top + height + PADDING;
-			height = 0;
-			
-			for (Root i : b.getRoots()) {
-				r = relayout(context, i, cg).setLocation(left, top);
-				left = left + r.width + PADDING;
-				if (height < r.height)
-					height = r.height;
-				cg.add(changeLayout(i, r));
+			for (Layoutable i : children) {
+				r = getLayout(context, i);
+				if (i instanceof OuterName) {
+					r.y = PADDING;
+				} else if (i instanceof Root) {
+					r.y = PADDING + tallestOuterName + PADDING;
+				} else if (i instanceof InnerName) {
+					r.y = PADDING + tallestOuterName + PADDING +
+							tallestRoot + PADDING;
+				}
 			}
-			
-			left = PADDING;
-			top = top + height + PADDING;
-			
-			for (InnerName i : b.getInnerNames()) {
-				r = relayout(context, i, cg).setLocation(left, top);
-				left = left + r.width + PADDING;
-				cg.add(changeLayout(i, r));
-			}
-			
-			for (Edge e : b.getEdges())
-				cg.add(changeLayout(e, null));
 		}
 		return r;
 	}
