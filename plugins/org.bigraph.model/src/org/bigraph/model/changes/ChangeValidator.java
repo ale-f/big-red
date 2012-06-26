@@ -39,7 +39,7 @@ public abstract class ChangeValidator<T extends IChangeExecutor> implements ICha
 	 * @throws ChangeRejectedException always and forever
 	 */
 	protected void rejectChange(Change b, String rationale) throws ChangeRejectedException {
-		throw new ChangeRejectedException(getChangeable(), b, this, rationale);
+		throw new ChangeRejectedException(b, rationale);
 	}
 	
 	@Override

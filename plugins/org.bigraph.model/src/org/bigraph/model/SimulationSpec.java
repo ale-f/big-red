@@ -209,8 +209,8 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 				b instanceof ChangeModel) {
 			/* do nothing */
 		} else {
-			throw new ChangeRejectedException(this, b, this,
-					"The Change was not recognised");
+			throw new ChangeRejectedException(
+					b, "The Change was not recognised");
 		}
 	}
 
