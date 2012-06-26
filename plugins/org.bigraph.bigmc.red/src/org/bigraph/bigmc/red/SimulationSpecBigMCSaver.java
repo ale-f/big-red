@@ -226,7 +226,8 @@ public class SimulationSpecBigMCSaver extends Saver {
 		}
 		
 		Iterator<? extends ISite> is = i.getSites().iterator();
-		if (is.hasNext()) {
+		boolean anySites = is.hasNext();
+		if (anySites) {
 			if (anyNodes)
 				write(" | ");
 			processSite(is.next());
@@ -235,6 +236,9 @@ public class SimulationSpecBigMCSaver extends Saver {
 				processSite(is.next());
 			}
 		}
+		
+		if (!anyNodes && !anySites)
+			write("nil");
 	}
 	
 	private void processBigraph(Bigraph b) throws SaveFailedException {
@@ -245,7 +249,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 				write(" || ");
 				processRoot(ir.next());
 			}
-		}
+		} else write("nil");
 	}
 	
 	private static <T, V>
@@ -262,7 +266,8 @@ public class SimulationSpecBigMCSaver extends Saver {
 		if (!iteratorsMatched(
 				r.getRedex().getRoots().iterator(),
 				r.getReactum().getRoots().iterator()))
-			throw new SaveFailedException("Bananas");
+			throw new SaveFailedException(
+					"Same number of roots required in redex and reactum");
 		if (namedRules)
 			write("%rule r_" + (i++) + " "); /* XXX FIXME */
 		processBigraph(r.getRedex());
