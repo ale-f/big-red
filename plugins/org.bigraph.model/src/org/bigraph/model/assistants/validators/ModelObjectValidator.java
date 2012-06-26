@@ -38,11 +38,8 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		} else if (b instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)b;
 			ExtendedDataValidator v = c.immediateValidator;
-			if (v != null) {
-				String rationale = v.validate(c, scratch);
-				if (rationale != null)
-					rejectChange(c, rationale);
-			}
+			if (v != null)
+				v.validate(c, scratch);
 			if (c.finalValidator != null)
 				finalChecks.add(c);
 			scratch.setProperty(c.getCreator(), c.key, c.newValue);
@@ -59,10 +56,7 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		if (b != null)
 			rejectChange(b, "The change was not recognised by the validator");
 		
-		for (ChangeExtendedData i : finalChecks) {
-			String rationale = i.finalValidator.validate(i, scratch);
-			if (rationale != null)
-				rejectChange(i, rationale);
-		}
+		for (ChangeExtendedData i : finalChecks)
+			i.finalValidator.validate(i, scratch);
 	}
 }

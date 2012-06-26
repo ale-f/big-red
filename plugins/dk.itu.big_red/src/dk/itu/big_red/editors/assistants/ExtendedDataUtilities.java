@@ -24,6 +24,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.PositiveIntegerNamePolicy;
 import org.eclipse.core.resources.IFile;
@@ -194,26 +195,29 @@ public final class ExtendedDataUtilities {
 	private static final ExtendedDataValidator parameterValidator =
 			new ExtendedDataValidator() {
 		@Override
-		public String validate(ChangeExtendedData c,
-				IPropertyProvider context) {
+		public void validate(ChangeExtendedData c, IPropertyProvider context)
+				throws ChangeRejectedException {
 			if (!(c.getCreator() instanceof Node))
-				return c.getCreator() + " is not a Node";
+				throw new ChangeRejectedException(c,
+						c.getCreator() + " is not a Node");
 			Node n = (Node)c.getCreator();
 				
 			Control control = n.getControl();
 			INamePolicy policy = getParameterPolicy(control);
 			if (policy == null)
-				return "The control " + control.getName() +
-						" does not define a parameter";
+				throw new ChangeRejectedException(c,
+						"The control " + control.getName() +
+						" does not define a parameter");
 			
 			if (!(c.newValue instanceof String))
-				return "Parameter values must be strings";
+				throw new ChangeRejectedException(c,
+						"Parameter values must be strings");
 			
 			String value = (String)c.newValue;
 			if ((c.newValue = policy.normalise(value)) == null)
-				return "\"" + value + "\" is not a valid value for the " +
-						"parameter of " + control.getName();
-			return null;
+				throw new ChangeRejectedException(c,
+						"\"" + value + "\" is not a valid value for the " +
+						"parameter of " + control.getName());
 		}
 	};
 	
@@ -378,13 +382,14 @@ public final class ExtendedDataUtilities {
 	private static final ExtendedDataValidator labelValidator =
 			new ExtendedDataValidator() {
 		@Override
-		public String validate(
-				ChangeExtendedData c, IPropertyProvider context) {
+		public void validate(ChangeExtendedData c, IPropertyProvider context)
+				throws ChangeRejectedException {
 			if (!(c.newValue instanceof String)) {
-				return "Labels must be strings";
+				throw new ChangeRejectedException(c, "Labels must be strings");
 			} else if (((String)c.newValue).length() == 0) {
-				return "Labels must not be empty";
-			} else return null;
+				throw new ChangeRejectedException(c,
+						"Labels must not be empty");
+			}
 		}
 	};
 	
@@ -482,29 +487,29 @@ public final class ExtendedDataUtilities {
 	private static final ExtendedDataValidator layoutValidator =
 			new ExtendedDataValidator() {
 		@Override
-		public String validate(ChangeExtendedData c,
-				IPropertyProvider context) {
+		public void validate(ChangeExtendedData c, IPropertyProvider context)
+				throws ChangeRejectedException {
 			Layoutable l = (Layoutable)c.getCreator();
 			Container parent = l.getParent(context);
 			if (parent == null || parent instanceof Bigraph)
-				return null;
+				return;
 			
 			Rectangle newLayout = getLayout(context, l);
 			Rectangle parentLayout =
 					getLayout(context, parent).getCopy().setLocation(0, 0);
 			if (!parentLayout.contains(newLayout))
-				return "The object can no longer fit into its container";
+				throw new ChangeRejectedException(c,
+						"The object can no longer fit into its container");
 			
 			if (l instanceof Container) {
 				newLayout = newLayout.getCopy().setLocation(0, 0);
 				for (Layoutable i : ((Container)l).getChildren(context)) {
 					if (!newLayout.contains(getLayout(context, i)))
-						return "The object is no longer big enough to " +
-								"accommodate its children";
+						throw new ChangeRejectedException(c,
+								"The object is no longer big enough to " +
+								"accommodate its children");
 				}
 			}
-			
-			return null;
 		}
 	};
 	
@@ -611,22 +616,23 @@ public final class ExtendedDataUtilities {
 	}
 	
 	private static final ExtendedDataValidator aliasValidator =
-		new ExtendedDataValidator() {
-			@Override
-			public String validate(
-					ChangeExtendedData c, IPropertyProvider context) {
-				if (c.newValue != null) {
-					if (!(c.newValue instanceof String))
-						return "Aliases must be strings";
-					PositiveIntegerNamePolicy np =
-							new PositiveIntegerNamePolicy();
-					if (np.normalise((String)c.newValue) == null)
-						return "\"" + c.newValue + "\" is not a valid alias" +
-								" for " + c.getCreator();
-				}
-				return null;
+			new ExtendedDataValidator() {
+		@Override
+		public void validate(ChangeExtendedData c, IPropertyProvider context)
+				throws ChangeRejectedException {
+			if (c.newValue != null) {
+				if (!(c.newValue instanceof String))
+					throw new ChangeRejectedException(c,
+							"Aliases must be strings");
+				PositiveIntegerNamePolicy np =
+						new PositiveIntegerNamePolicy();
+				if (np.normalise((String)c.newValue) == null)
+					throw new ChangeRejectedException(c,
+							"\"" + c.newValue + "\" is not a valid alias" +
+							" for " + c.getCreator());
 			}
-		};
+		}
+	};
 	
 	public static final String ALIAS =
 			"eD!+dk.itu.big_red.model.Site.alias";

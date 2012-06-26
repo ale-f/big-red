@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 
 /**
  * This is the superclass of everything in Big Red's version of the bigraphical
@@ -30,7 +31,8 @@ public abstract class ModelObject {
 	}
 	
 	public static interface ExtendedDataValidator {
-		String validate(ChangeExtendedData c, IPropertyProvider context);
+		void validate(ChangeExtendedData c, IPropertyProvider context)
+			throws ChangeRejectedException;
 	}
 	
 	public class ChangeExtendedData extends ModelObjectChange {
