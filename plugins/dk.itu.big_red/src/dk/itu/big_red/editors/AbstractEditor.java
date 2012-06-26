@@ -16,7 +16,9 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -194,10 +196,40 @@ public abstract class AbstractEditor extends EditorPart
         firePropertyChange(PROP_INPUT);
 	}
 	
+	protected final boolean hasFocus() {
+		return equals(getSite().getPage().getActiveEditor());
+	}
+	
+	private long lastModificationStamp = IResource.NULL_STAMP;
+	
+	protected boolean isSynchronised() {
+		if (lastModificationStamp == IResource.NULL_STAMP)
+			lastModificationStamp = getFile().getModificationStamp();
+		return (lastModificationStamp == getFile().getModificationStamp() &&
+				getFile().isSynchronized(IResource.DEPTH_ZERO));
+	}
+	
+	@Override
+	public void setFocus() {
+		long newModificationStamp = getFile().getModificationStamp();
+		if (!isSynchronised() && !isSaving())
+			promptToReplace();
+		lastModificationStamp = newModificationStamp;
+	}
+	
+	private void promptToReplace() {
+		MessageBox mb = new MessageBox(
+				getSite().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+		mb.setText("File updated");
+		mb.setMessage(getFile().getProjectRelativePath() + " was updated.");
+		mb.open();
+	}
+	
 	protected abstract ModelObject getModel();
 	
 	protected void resourceChanged(IResourceDelta delta) {
-		System.out.println(delta);
+		if (delta.getResource().equals(getFile()) && !isSaving() && hasFocus())
+			promptToReplace();
 	}
 	
 	@Override

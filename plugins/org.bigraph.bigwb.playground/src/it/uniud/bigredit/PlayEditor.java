@@ -357,6 +357,7 @@ public class PlayEditor extends BigraphEditor {
 	
 	@Override
 	public void setFocus() {
+		super.setFocus();
 		if (getComposite() == null)
 			return;
 		getGraphicalViewer().getControl().setFocus();

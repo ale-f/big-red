@@ -405,6 +405,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	@Override
 	public void setFocus() {
+		super.setFocus();
 		if (getComposite() == null)
 			return;
 		getComposite().setFocus();

@@ -323,6 +323,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	
 	@Override
 	public void setFocus() {
+		super.setFocus();
 		if (getComposite() == null)
 			return;
 		signatureSelector.getButton().setFocus();
