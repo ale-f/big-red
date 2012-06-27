@@ -4,8 +4,6 @@ import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
-import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
@@ -20,7 +18,6 @@ import dk.itu.big_red.model.load_save.LoadFailedException;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
 public class SignatureXMLLoader extends XMLLoader {
-	private ChangeGroup cg = new ChangeGroup();
 	private Signature sig;
 	
 	@Override
@@ -38,12 +35,12 @@ public class SignatureXMLLoader extends XMLLoader {
 
 	private void makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
-		cg.add(sig.changeAddControl(model));
-		cg.add(model.changeName(getAttributeNS(e, SIGNATURE, "name")));
+		addChange(sig.changeAddControl(model));
+		addChange(model.changeName(getAttributeNS(e, SIGNATURE, "name")));
 		
 		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null) {
-			cg.add(model.changeKind(
+			addChange(model.changeKind(
 				kind.equals("active") ? Kind.ACTIVE :
 				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC));
 		}
@@ -59,7 +56,8 @@ public class SignatureXMLLoader extends XMLLoader {
 				n = new BooleanNamePolicy();
 			}
 			if (n != null)
-				cg.add(ExtendedDataUtilities.changeParameterPolicy(model, n));
+				addChange(
+						ExtendedDataUtilities.changeParameterPolicy(model, n));
 		}
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "port"))
@@ -72,24 +70,18 @@ public class SignatureXMLLoader extends XMLLoader {
 	public Signature makeObject(Element e) throws LoadFailedException {
 		sig = new Signature();
 		
-		cg.clear();
-		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "control"))
 			makeControl(j);
 		
-		try {
-			if (cg.size() != 0)
-				sig.tryApplyChange(cg);
-		} catch (ChangeRejectedException ex) {
-			throw new LoadFailedException(ex);
-		}
+		executeChanges(sig);
 		
 		return executeUndecorators(sig, e);
 	}
 	
 	private PortSpec makePortSpec(Element e, Control c) {
 		PortSpec model = new PortSpec();
-		cg.add(c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
+		addChange(
+				c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
 		return executeUndecorators(model, e);
 	}
 	

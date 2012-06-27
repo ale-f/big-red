@@ -30,9 +30,8 @@ import org.xml.sax.SAXException;
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.Loader;
 
-public abstract class XMLLoader extends Loader {
+public abstract class XMLLoader extends ChangeLoader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.xml";
 	
 	public XMLLoader() {

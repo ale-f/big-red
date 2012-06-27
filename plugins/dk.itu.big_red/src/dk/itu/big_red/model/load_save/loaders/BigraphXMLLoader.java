@@ -17,7 +17,6 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.core.resources.IFile;
@@ -53,7 +52,6 @@ public class BigraphXMLLoader extends XMLLoader {
 	
 	private boolean partialAppearanceWarning;
 	private Tristate appearanceAllowed;
-	private ChangeGroup cg = new ChangeGroup();
 	
 	@Override
 	public Bigraph importObject() throws LoadFailedException {
@@ -81,7 +79,6 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		partialAppearanceWarning = false;
 		appearanceAllowed = Tristate.UNKNOWN;
-		cg.clear();
 		
 		Element signatureElement =
 			getNamedChildElement(e, BIGRAPH, "signature");
@@ -123,14 +120,13 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		processContainer(e, bigraph);
 		
+		executeChanges(bigraph);
 		try {
-			if (cg.size() != 0)
-				bigraph.tryApplyChange(cg);
 			if (appearanceAllowed == Tristate.FALSE)
 				bigraph.tryApplyChange(
 						ExtendedDataUtilities.relayout(bigraph));
-		} catch (ChangeRejectedException f) {
-			throw new LoadFailedException(f);
+		} catch (ChangeRejectedException cre) {
+			throw new LoadFailedException(cre);
 		}
 		
 		return executeUndecorators(bigraph, e);
@@ -152,7 +148,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		if (model != null) {
 			String link = getAttributeNS(e, BIGRAPH, "link");
 			if (link != null) {
-				cg.add(model.changeConnect(links.get(link)));
+				addChange(model.changeConnect(links.get(link)));
 			}
 		} else {
 			addNotice(Notice.WARNING, "Invalid point referenced; skipping.");
@@ -162,7 +158,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	private void processSite(Element e, Site model) throws LoadFailedException {
 		String alias = getAttributeNS(e, BIGRAPH, "alias");
 		if (alias != null)
-			cg.add(ExtendedDataUtilities.changeAlias(model, alias));
+			addChange(ExtendedDataUtilities.changeAlias(model, alias));
 	}
 	
 	private void processNode(Element e, Node model) throws LoadFailedException {
@@ -174,9 +170,11 @@ public class BigraphXMLLoader extends XMLLoader {
 			addNotice(Notice.WARNING, "Spurious parameter value ignored.");
 		} else if (parameter == null && policy != null) {
 			addNotice(Notice.WARNING, "Default parameter value assigned.");
-			cg.add(ExtendedDataUtilities.changeParameter(model, policy.get(0)));
+			addChange(
+				ExtendedDataUtilities.changeParameter(model, policy.get(0)));
 		} else if (parameter != null && policy != null) {
-			cg.add(ExtendedDataUtilities.changeParameter(model, parameter));
+			addChange(
+					ExtendedDataUtilities.changeParameter(model, parameter));
 		}
 		
 		processContainer(e, model);
@@ -206,7 +204,7 @@ public class BigraphXMLLoader extends XMLLoader {
 
 		if (model instanceof Layoutable) {
 			Layoutable l = (Layoutable)model;
-			cg.add(context.changeAddChild(l,
+			addChange(context.changeAddChild(l,
 					getAttributeNS(e, BIGRAPH, "name")));
 			
 			Element appearance = getNamedChildElement(e, BIG_RED, "appearance");

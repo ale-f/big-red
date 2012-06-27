@@ -4,8 +4,6 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
-import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -86,25 +84,19 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	@Override
 	public SimulationSpec makeObject(Element e) throws LoadFailedException {
 		SimulationSpec ss = new SimulationSpec();
-		ChangeGroup cg = new ChangeGroup();
 		
 		Element signatureElement = getNamedChildElement(e, SPEC, "signature");
 		if (signatureElement != null)
-			cg.add(ss.changeSignature(makeSignature(signatureElement)));
+			addChange(ss.changeSignature(makeSignature(signatureElement)));
 		
 		for (Element i : getNamedChildElements(e, SPEC, "rule"))
-			cg.add(ss.changeAddRule(makeRule(i)));
+			addChange(ss.changeAddRule(makeRule(i)));
 		
 		Element modelElement = getNamedChildElement(e, SPEC, "model");
 		if (modelElement != null)
-			cg.add(ss.changeModel(makeBigraph(modelElement)));
+			addChange(ss.changeModel(makeBigraph(modelElement)));
 		
-		try {
-			if (cg.size() != 0)
-				ss.tryApplyChange(cg);
-		} catch (ChangeRejectedException cre) {
-			throw new LoadFailedException(cre);
-		}
+		executeChanges(ss);
 		
 		return executeUndecorators(ss, e);
 	}
