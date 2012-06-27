@@ -8,7 +8,7 @@ import org.bigraph.model.Node;
  * @see Node
  */
 public interface INode extends IParent, IChild {
-	public IControl getControl();
+	IControl getControl();
 	
-	public Iterable<? extends IPort> getPorts();
+	Iterable<? extends IPort> getPorts();
 }

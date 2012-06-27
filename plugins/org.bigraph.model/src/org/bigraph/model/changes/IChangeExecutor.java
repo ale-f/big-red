@@ -14,5 +14,5 @@ public interface IChangeExecutor extends IChangeValidator {
 	 * @throws ChangeRejectedException if {@link #tryValidateChange(Change)}
 	 * fails
 	 */
-	public void tryApplyChange(Change b) throws ChangeRejectedException;
+	void tryApplyChange(Change b) throws ChangeRejectedException;
 }

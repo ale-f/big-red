@@ -14,5 +14,5 @@ public interface IChangeValidator {
 	 * @throws ChangeRejectedException if {@link #applyChange(Change)} will not
 	 * be allowed
 	 */
-	public void tryValidateChange(Change b) throws ChangeRejectedException;
+	void tryValidateChange(Change b) throws ChangeRejectedException;
 }

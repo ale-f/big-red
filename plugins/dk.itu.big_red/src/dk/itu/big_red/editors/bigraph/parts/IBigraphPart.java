@@ -16,5 +16,5 @@ public interface IBigraphPart extends EditPart {
 	 * object.
 	 * @return a {@link Bigraph}
 	 */
-	public Bigraph getBigraph();
+	Bigraph getBigraph();
 }

@@ -12,14 +12,14 @@ import org.eclipse.swt.widgets.Shell;
  *
  */
 public interface IInteractionManager {
-	public static final String EXTENSION_POINT = "dk.itu.big_red.interactionManagers";
+	String EXTENSION_POINT = "dk.itu.big_red.interactionManagers";
 	
 	/**
 	 * Sets the {@link SimulationSpec} for this {@link IInteractionManager}.
 	 * @param s a {@link SimulationSpec}
 	 * @return <code>this</code>, for convenience
 	 */
-	public IInteractionManager setSimulationSpec(SimulationSpec s);
+	IInteractionManager setSimulationSpec(SimulationSpec s);
 	
 	/**
 	 * Starts this {@link IInteractionManager}. This method will block until
@@ -29,5 +29,5 @@ public interface IInteractionManager {
 	 * modifying the Eclipse workspace and displaying modal dialogs.)
 	 * @param parent the caller's {@link Shell}, if one exists
 	 */
-	public void run(Shell parent);
+	void run(Shell parent);
 }

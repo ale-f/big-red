@@ -9,15 +9,15 @@ import org.bigraph.model.Bigraph;
  * @see Bigraph
  */
 public interface IBigraph {
-	public ISignature getSignature();
+	ISignature getSignature();
 
-	public Iterable<? extends IEdge> getEdges();
+	Iterable<? extends IEdge> getEdges();
 	
 	/* Inner interface */
-	public Iterable<? extends ISite> getSites();
-	public Iterable<? extends IInnerName> getInnerNames();
+	Iterable<? extends ISite> getSites();
+	Iterable<? extends IInnerName> getInnerNames();
 	
 	/* Outer interface */
-	public Iterable<? extends IRoot> getRoots();
-	public Iterable<? extends IOuterName> getOuterNames();
+	Iterable<? extends IRoot> getRoots();
+	Iterable<? extends IOuterName> getOuterNames();
 }

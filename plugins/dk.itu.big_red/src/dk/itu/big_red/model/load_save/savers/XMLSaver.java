@@ -229,7 +229,7 @@ public abstract class XMLSaver extends Saver {
 		return impl;
 	}
 	
-	public static interface Decorator {
+	public interface Decorator {
 		void decorate(ModelObject object, Element el);
 	}
 	

@@ -16,7 +16,7 @@ public interface INamespace<T> {
 	 * @return <code>true</code> if the name is valid and in use, or
 	 * <code>false</code> otherwise
 	 */
-	public boolean has(String name);
+	boolean has(String name);
 	
 	/**
 	 * Returns the object in this {@link INamespace} with the given name, if
@@ -24,7 +24,7 @@ public interface INamespace<T> {
 	 * @param name a name, which must be valid and in use
 	 * @return an object, or <code>null</code>
 	 */
-	public T get(String name);
+	T get(String name);
 	
 	/**
 	 * Adds an object to this {@link INamespace} with the given name.
@@ -33,7 +33,7 @@ public interface INamespace<T> {
 	 * @return the normalised form of <code>name</code> if the object was
 	 * added, or <code>null</code> otherwise
 	 */
-	public String put(String name, T value);
+	String put(String name, T value);
 	
 	/**
 	 * Removes a mapping from this {@link INamespace}.
@@ -41,14 +41,14 @@ public interface INamespace<T> {
 	 * @return <code>true</code> if the mapping was removed, or
 	 * <code>false</code> otherwise
 	 */
-	public boolean remove(String name);
+	boolean remove(String name);
 
 	/**
 	 * Returns a valid name not presently in use in this {@link INamespace}.
 	 * @see #getPolicy()
 	 * @return a valid name, or <code>null</code> if no name policy is set
 	 */
-	public String getNextName();
+	String getNextName();
 	
 	/**
 	 * Returns this {@link INamespace}'s name policy. The name policy decides
@@ -56,7 +56,7 @@ public interface INamespace<T> {
 	 * {@link #getNextName()} to return new valid names.
 	 * @return an {@link INamePolicy} (can be <code>null</code>)
 	 */
-	public INamePolicy getPolicy();
+	INamePolicy getPolicy();
 	
 	/**
 	 * Sets this {@link INamespace}'s name policy. Setting the name policy to
@@ -71,7 +71,7 @@ public interface INamespace<T> {
 	 * @return <code>this</code>, for convenience
 	 * @see #getPolicy()
 	 */
-	public INamespace<T> setPolicy(INamePolicy policy);
+	INamespace<T> setPolicy(INamePolicy policy);
 	
-	public INamespace<T> clone();
+	INamespace<T> clone();
 }

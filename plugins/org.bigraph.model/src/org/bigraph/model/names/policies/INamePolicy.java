@@ -16,7 +16,7 @@ public interface INamePolicy {
 	 * @return the normalised form of <code>name</code> if it is accepted, or
 	 * <code>null</code> otherwise
 	 */
-	public String normalise(String name);
+	String normalise(String name);
 	
 	/**
 	 * Returns a valid name corresponding to an integer.
@@ -26,5 +26,5 @@ public interface INamePolicy {
 	 * @param value an integer specifying a name
 	 * @return a name that would be accepted by this {@link INamePolicy}
 	 */
-	public String get(int value);
+	String get(int value);
 }

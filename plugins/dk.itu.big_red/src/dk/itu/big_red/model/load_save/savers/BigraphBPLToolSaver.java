@@ -85,7 +85,7 @@ public class BigraphBPLToolSaver extends Saver {
 	}
 	
 	interface Processor<T> {
-		public void proc(T t) throws SaveFailedException;
+		void proc(T t) throws SaveFailedException;
 	}
 	private <T> void processIterable(Iterable<? extends T> i, String empty, String left, String sep, String right, Processor<T> p) throws SaveFailedException {
 		boolean first = true;

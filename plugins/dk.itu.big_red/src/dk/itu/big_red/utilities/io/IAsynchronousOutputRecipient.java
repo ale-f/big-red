@@ -7,5 +7,5 @@ public interface IAsynchronousOutputRecipient {
 	 * Called (in the main thread) when the worker thread encounters an error.
 	 * @param e an {@link IOException}
 	 */
-	public void signalOutputError(IOException e);
+	void signalOutputError(IOException e);
 }

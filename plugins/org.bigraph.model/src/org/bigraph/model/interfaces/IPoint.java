@@ -8,5 +8,5 @@ import org.bigraph.model.Point;
  * @see Point
  */
 public interface IPoint extends IEntity {
-	public ILink getLink();
+	ILink getLink();
 }

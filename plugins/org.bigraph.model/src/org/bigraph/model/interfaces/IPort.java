@@ -9,5 +9,5 @@ import org.bigraph.model.Port;
  * @see IPoint
  */
 public interface IPort extends IPoint {
-	public INode getNode();
+	INode getNode();
 }

@@ -214,7 +214,7 @@ public abstract class XMLLoader extends ChangeLoader {
 		else return null;
 	}
 	
-	public static interface Undecorator {
+	public interface Undecorator {
 		Change undecorate(ModelObject object, Element el);
 	}
 	

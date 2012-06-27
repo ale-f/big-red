@@ -8,5 +8,5 @@ import org.bigraph.model.Signature;
  * @see Signature
  */
 public interface ISignature {
-	public Iterable<? extends IControl> getControls();
+	Iterable<? extends IControl> getControls();
 }

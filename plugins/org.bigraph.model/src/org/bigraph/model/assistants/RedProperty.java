@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.FIELD)
 public @interface RedProperty {
-	public Class<?> fired();
-	public Class<?> retrieved();
+	Class<?> fired();
+	Class<?> retrieved();
 }

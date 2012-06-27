@@ -16,5 +16,5 @@ public interface IReadStrategy {
 	 * from the stream
 	 * @throws IOException if an I/O error occurs
 	 */
-	public byte[] read(InputStream is) throws IOException;
+	byte[] read(InputStream is) throws IOException;
 }

@@ -4,7 +4,7 @@ import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.Action;
 
 public abstract class ProxyAction extends Action implements UpdateAction {
-	public static interface IActionImplementor {
+	public interface IActionImplementor {
 		void performAction(String actionID);
 		boolean canPerformAction(String actionID);
 	}

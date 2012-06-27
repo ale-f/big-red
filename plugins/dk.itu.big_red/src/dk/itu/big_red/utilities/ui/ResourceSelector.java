@@ -17,8 +17,8 @@ import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 
 public class ResourceSelector {
-	public static interface ResourceListener {
-		public void resourceChanged(IResource oldValue, IResource newValue);
+	public interface ResourceListener {
+		void resourceChanged(IResource oldValue, IResource newValue);
 	}
 	
 	private Button button;

@@ -5,5 +5,5 @@ package org.bigraph.model.interfaces;
  * @author alec
  */
 public interface IChild extends IPlace {
-	public IParent getIParent();
+	IParent getIParent();
 }

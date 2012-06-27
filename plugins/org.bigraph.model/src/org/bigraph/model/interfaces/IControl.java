@@ -8,7 +8,7 @@ import org.bigraph.model.Control;
  * @see Control
  */
 public interface IControl {
-	public Iterable<? extends IPort> getPorts();
+	Iterable<? extends IPort> getPorts();
 	
-	public String getName();
+	String getName();
 }

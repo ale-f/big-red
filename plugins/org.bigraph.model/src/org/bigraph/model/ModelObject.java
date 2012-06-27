@@ -30,7 +30,7 @@ public abstract class ModelObject {
 		}
 	}
 	
-	public static interface ExtendedDataValidator {
+	public interface ExtendedDataValidator {
 		void validate(ChangeExtendedData c, IPropertyProvider context)
 			throws ChangeRejectedException;
 	}
