@@ -17,7 +17,7 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -49,6 +49,8 @@ public class BigraphXMLLoader extends XMLLoader {
 			return (b ? TRUE : FALSE);
 		}
 	}
+	
+	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
 	private boolean partialAppearanceWarning;
 	private Tristate appearanceAllowed;
@@ -120,14 +122,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		processContainer(e, bigraph);
 		
+		if (appearanceAllowed == Tristate.FALSE)
+			addChange(ExtendedDataUtilities.relayout(scratch, bigraph));
 		executeChanges(bigraph);
-		try {
-			if (appearanceAllowed == Tristate.FALSE)
-				bigraph.tryApplyChange(
-						ExtendedDataUtilities.relayout(bigraph));
-		} catch (ChangeRejectedException cre) {
-			throw new LoadFailedException(cre);
-		}
 		
 		return executeUndecorators(bigraph, e);
 	}
@@ -146,9 +143,13 @@ public class BigraphXMLLoader extends XMLLoader {
 	
 	private void processPoint(Element e, Point model) throws LoadFailedException {
 		if (model != null) {
-			String link = getAttributeNS(e, BIGRAPH, "link");
-			if (link != null) {
-				addChange(model.changeConnect(links.get(link)));
+			String linkName = getAttributeNS(e, BIGRAPH, "link");
+			if (linkName != null) {
+				Link link = links.get(linkName);
+				if (link != null) {
+					addChange(model.changeConnect(link));
+					link.addPoint(scratch, model);
+				}
 			}
 		} else {
 			addNotice(Notice.WARNING, "Invalid point referenced; skipping.");
@@ -204,8 +205,10 @@ public class BigraphXMLLoader extends XMLLoader {
 
 		if (model instanceof Layoutable) {
 			Layoutable l = (Layoutable)model;
-			addChange(context.changeAddChild(l,
-					getAttributeNS(e, BIGRAPH, "name")));
+			
+			String name = getAttributeNS(e, BIGRAPH, "name");
+			addChange(context.changeAddChild(l, name));
+			context.addChild(scratch, l, name);
 			
 			Element appearance = getNamedChildElement(e, BIG_RED, "appearance");
 			if (appearanceAllowed == Tristate.UNKNOWN) {
