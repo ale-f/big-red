@@ -273,6 +273,7 @@ public abstract class AbstractEditor extends EditorPart
 				}
 			});
 		} catch (SaveFailedException e) {
+			e.printStackTrace();
 			setSaving(false);
 			return;
 		}
