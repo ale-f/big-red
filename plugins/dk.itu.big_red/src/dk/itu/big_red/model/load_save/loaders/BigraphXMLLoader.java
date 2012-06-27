@@ -11,6 +11,7 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
@@ -18,6 +19,8 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -122,8 +125,26 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		processContainer(e, bigraph);
 		
-		if (appearanceAllowed == Tristate.FALSE)
-			addChange(ExtendedDataUtilities.relayout(scratch, bigraph));
+		Change relayout = ExtendedDataUtilities.relayout(scratch, bigraph);
+		
+		if (appearanceAllowed == Tristate.FALSE) {
+			addChange(relayout);
+		} else {
+			try {
+				bigraph.tryValidateChange(getChanges());
+			} catch (ChangeRejectedException cre) {
+				Change ch = cre.getRejectedChange();
+				if (ch instanceof ChangeExtendedData) {
+					ChangeExtendedData cd = (ChangeExtendedData)ch;
+					if (ExtendedDataUtilities.LAYOUT.equals(cd.key)) {
+						addNotice(Notice.WARNING,
+								"Layout data invalid: replacing.");
+						addChange(relayout);
+					}
+				}
+			}
+		}
+		
 		executeChanges(bigraph);
 		
 		return executeUndecorators(bigraph, e);
