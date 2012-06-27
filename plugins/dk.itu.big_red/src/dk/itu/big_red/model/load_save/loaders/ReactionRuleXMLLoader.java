@@ -143,8 +143,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					p = ((Node)getNamed(reactum, "node", node)).getPort(name);
 				} else p = (InnerName)getNamed(reactum, "innername", name);
 				
-				if (p != null)
-					c = p.changeConnect((Link)getNamed(reactum, "link", link));
+				Link l = (Link)getNamed(reactum, "link", link);
+				if (p != null && l != null)
+					c = p.changeConnect(l);
 			} else if (el.getLocalName().equals("disconnect")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
