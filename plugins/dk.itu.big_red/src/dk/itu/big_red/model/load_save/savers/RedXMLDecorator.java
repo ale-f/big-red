@@ -18,6 +18,8 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -137,36 +139,39 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 	}
 	
 	@Override
-	public void undecorate(ModelObject object, Element el) {
+	public Change undecorate(ModelObject object, Element el) {
+		ChangeGroup cg = new ChangeGroup();
+		
 		Element eA = getNamedChildElement(el, BIG_RED, "appearance");
 		if (eA != null) {
 			Colour
 				fill = getColorAttribute(eA, BIG_RED, "fillColor"),
 				outline = getColorAttribute(eA, BIG_RED, "outlineColor");
 			if (fill != null)
-				ExtendedDataUtilities.setFill(object, fill);
+				cg.add(ExtendedDataUtilities.changeFill(object, fill));
 			if (outline != null)
-				ExtendedDataUtilities.setOutline(object, outline);
+				cg.add(ExtendedDataUtilities.changeOutline(object, outline));
 	
 			if (object instanceof Layoutable) {
 				Rectangle r = getRectangle(eA);
 				if (r != null)
-					ExtendedDataUtilities.setLayout((Layoutable)object, r);
+					cg.add(
+						ExtendedDataUtilities.changeLayout((Layoutable)object, r));
 			}
 			
 			String comment = XMLLoader.getAttributeNS(eA, BIG_RED, "comment");
 			if (comment != null)
-				ExtendedDataUtilities.setComment(object, comment);
+				cg.add(ExtendedDataUtilities.changeComment(object, comment));
 		}
 		
 		if (object instanceof PortSpec) {
 			PortSpec p = (PortSpec)object;
 			Element eS = getNamedChildElement(el, BIG_RED, "port-appearance");
 			if (eS != null) {
-				ExtendedDataUtilities.setSegment(p,
-						getIntAttribute(eS, BIG_RED, "segment"));
-				ExtendedDataUtilities.setDistance(p,
-						getDoubleAttribute(eS, BIG_RED, "distance"));
+				cg.add(ExtendedDataUtilities.changeSegment(p,
+						getIntAttribute(eS, BIG_RED, "segment")));
+				cg.add(ExtendedDataUtilities.changeDistance(p,
+						getDoubleAttribute(eS, BIG_RED, "distance")));
 			}
 		}
 		
@@ -175,12 +180,13 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			
 			String l = getAttributeNS(el, BIG_RED, "label");
 			if (l != null)
-				ExtendedDataUtilities.setLabel(c, l);
+				cg.add(ExtendedDataUtilities.changeLabel(c, l));
 			
 			Element eS = getNamedChildElement(el, BIG_RED, "shape");
 			if (eS != null) {
 				PointList pl = null;
 				
+				Object shape;
 				String s = getAttributeNS(eS, BIG_RED, "shape");
 				if (s != null && s.equals("polygon")) {
 					pl = new PointList();
@@ -192,9 +198,12 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 								getIntAttribute((Element)i, BIG_RED, "x"),
 								getIntAttribute((Element)i, BIG_RED, "y"));
 					}
-					ExtendedDataUtilities.setShape(c, pl);
-				} else ExtendedDataUtilities.setShape(c, Ellipse.SINGLETON);
+					shape = pl;
+				} else shape = Ellipse.SINGLETON;
+				cg.add(ExtendedDataUtilities.changeShape(c, shape));
 			}
 		}
+		
+		return (cg.size() > 0 ? cg : null);
 	}
 }

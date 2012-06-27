@@ -12,7 +12,8 @@ public abstract class ChangeLoader extends Loader {
 	private ChangeGroup cg = new ChangeGroup();
 	
 	protected void addChange(Change c) {
-		cg.add(c);
+		if (c != null)
+			cg.add(c);
 	}
 	
 	protected ChangeGroup getChanges() {
