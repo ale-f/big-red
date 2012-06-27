@@ -9,6 +9,7 @@ import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Site;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
@@ -237,6 +238,20 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			Change c = changeFromElement(nl.item(i));
 			if (c != null)
 				cg.add(c);
+		}
+		
+		try {
+			reactum.tryValidateChange(cg);
+		} catch (ChangeRejectedException cre) {
+			Change ch = cre.getRejectedChange();
+			if (ch instanceof ChangeExtendedData) {
+				ChangeExtendedData cd = (ChangeExtendedData)ch;
+				if (ExtendedDataUtilities.LAYOUT.equals(cd.key)) {
+					addNotice(Notice.WARNING,
+							"Layout data invalid: replacing.");
+					cg.add(ExtendedDataUtilities.relayout(scratch, reactum));
+				}
+			}
 		}
 		
 		try {
