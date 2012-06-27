@@ -23,12 +23,4 @@ public class HashMapNamespace<T> extends Namespace<T> {
 	protected boolean removeRaw(String name) {
 		return (getMap().remove(name) != null);
 	}
-	
-	@Override
-	public HashMapNamespace<T> clone() {
-		HashMapNamespace<T> copy = new HashMapNamespace<T>();
-		copy.getMap().putAll(getMap());
-		copy.setPolicy(getPolicy());
-		return copy;
-	}
 }

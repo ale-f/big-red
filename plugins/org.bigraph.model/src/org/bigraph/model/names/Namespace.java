@@ -117,7 +117,4 @@ public abstract class Namespace<T> implements INamespace<T> {
 			} else return getPolicy().normalise(name);
 		} else return null;
 	}
-	
-	@Override
-	public abstract Namespace<T> clone();
 }

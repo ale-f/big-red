@@ -72,6 +72,4 @@ public interface INamespace<T> {
 	 * @see #getPolicy()
 	 */
 	INamespace<T> setPolicy(INamePolicy policy);
-	
-	INamespace<T> clone();
 }

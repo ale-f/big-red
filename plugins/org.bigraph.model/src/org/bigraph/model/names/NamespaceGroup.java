@@ -1,7 +1,6 @@
 package org.bigraph.model.names;
 
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 public class NamespaceGroup<T> {
 	private HashMap<Object, HashMapNamespace<T>> namespaces =
@@ -16,13 +15,5 @@ public class NamespaceGroup<T> {
 	
 	public Namespace<T> getNamespace(Object i) {
 		return namespaces.get(i);
-	}
-	
-	@Override
-	public NamespaceGroup<T> clone() {
-		NamespaceGroup<T> r = new NamespaceGroup<T>();
-		for (Entry<Object, HashMapNamespace<T>> i : namespaces.entrySet())
-			r.namespaces.put(i.getKey(), i.getValue().clone());
-		return r;
 	}
 }
