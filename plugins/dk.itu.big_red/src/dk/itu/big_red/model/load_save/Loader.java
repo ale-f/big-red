@@ -137,6 +137,11 @@ public abstract class Loader {
 		public String getMessage() {
 			return message;
 		}
+		
+		@Override
+		public String toString() {
+			return "Notice[type=" + type + ", message=" + message + "]";
+		}
 	}
 	
 	private ArrayList<Notice> notices;
@@ -144,6 +149,7 @@ public abstract class Loader {
 	protected void addNotice(Notice status) {
 		if (notices == null)
 			notices = new ArrayList<Notice>();
+		System.out.println(this + ".addNotice(" + status + ")");
 		notices.add(status);
 	}
 	
