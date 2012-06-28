@@ -555,6 +555,8 @@ implements PropertyChangeListener {
 	
 	@Override
 	protected void initialiseActual() throws Throwable {
+		clearUndo();
+		
 		model = (Signature)loadInput();
 		
 		if (getModel() == null) {

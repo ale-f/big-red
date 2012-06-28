@@ -107,6 +107,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	
 	@Override
 	protected void initialiseActual() throws Throwable {
+		clearUndo();
+		
 		model = (SimulationSpec)loadInput();
 		
 		if (getModel() == null) {

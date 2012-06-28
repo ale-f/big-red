@@ -307,6 +307,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	@Override
 	protected void initialiseActual() throws Throwable {
+		getCommandStack().flush();
+		
 		setModel((ReactionRule)loadInput());
 	    
 		if (getModel() == null) {

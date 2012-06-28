@@ -34,6 +34,7 @@ import dk.itu.big_red.editors.assistants.ProxyAction.IActionImplementor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction;
 import dk.itu.big_red.editors.assistants.RevertProxyAction;
 import dk.itu.big_red.editors.assistants.UndoProxyAction;
+import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
@@ -219,10 +220,11 @@ public abstract class AbstractEditor extends EditorPart
 	
 	private void promptToReplace() {
 		MessageBox mb = new MessageBox(
-				getSite().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+				getSite().getShell(), SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
 		mb.setText("File updated");
-		mb.setMessage(getFile().getProjectRelativePath() + " was updated.");
-		mb.open();
+		mb.setMessage(getFile().getProjectRelativePath() + " was updated. Reload from disk?");
+		if (mb.open() == SWT.YES)
+			initialise();
 	}
 	
 	protected abstract ModelObject getModel();
@@ -286,7 +288,7 @@ public abstract class AbstractEditor extends EditorPart
 		} else return null;
 	}
 	
-	protected ModelObject loadInput() throws Throwable {
+	protected ModelObject loadInput() throws LoadFailedException {
 		IEditorInput i_ = getEditorInput();
 		if (i_ instanceof FileEditorInput) {
 			return Loader.fromFile(((FileEditorInput)i_).getFile());
@@ -304,6 +306,7 @@ public abstract class AbstractEditor extends EditorPart
 	protected void initialise() {
 		try {
 			initialiseActual();
+			firePropertyChange(PROP_DIRTY);
 		} catch (Throwable t) {
 			replaceWithError(t);
 		}

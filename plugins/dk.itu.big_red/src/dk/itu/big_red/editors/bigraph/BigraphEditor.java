@@ -143,12 +143,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 		createPaletteViewer(splitter);
 		createGraphicalViewer(splitter);
 		splitter.setWeights(INITIAL_SASH_WEIGHTS);
-		
-		try {
-			initialiseActual();
-		} catch (Throwable t) {
-			replaceWithError(t);
-		}
+		initialise();
 	}
     
     protected void createGraphicalViewer(Composite parent) {
@@ -216,6 +211,8 @@ public class BigraphEditor extends AbstractGEFEditor {
 
 	@Override
 	protected void initialiseActual() throws Throwable {
+		getCommandStack().flush();
+		
 		model = (Bigraph)loadInput();
 	    
 	    if (getModel() == null) {
