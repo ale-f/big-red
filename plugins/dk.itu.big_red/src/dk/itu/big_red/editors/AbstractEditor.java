@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
@@ -288,7 +289,8 @@ public abstract class AbstractEditor extends EditorPart
 		} else return null;
 	}
 	
-	protected ModelObject loadInput() throws LoadFailedException {
+	protected ModelObject loadInput()
+			throws CoreException, LoadFailedException {
 		IEditorInput i_ = getEditorInput();
 		if (i_ instanceof FileEditorInput) {
 			return Loader.fromFile(((FileEditorInput)i_).getFile());

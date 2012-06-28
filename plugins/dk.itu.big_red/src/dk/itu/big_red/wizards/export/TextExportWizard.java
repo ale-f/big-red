@@ -75,6 +75,9 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 		} catch (SaveFailedException e) {
 			e.printStackTrace();
 			return false;
+		} catch (CoreException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

@@ -559,11 +559,6 @@ implements PropertyChangeListener {
 		
 		model = (Signature)loadInput();
 		
-		if (getModel() == null) {
-			replaceWithError(new Exception("Model is null"));
-			return;
-		}
-		
 		getModel().addPropertyChangeListener(this);
 		for (Control c : getModel().getControls())
 			c.addPropertyChangeListener(this);

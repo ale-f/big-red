@@ -215,11 +215,6 @@ public class BigraphEditor extends AbstractGEFEditor {
 		
 		model = (Bigraph)loadInput();
 	    
-	    if (getModel() == null) {
-	    	replaceWithError(new Exception("Model is null"));
-	    	return;
-	    }
-	    
 	    addInterestingResource(
 	    		ExtendedDataUtilities.getFile(getModel().getSignature()));
 	    updateNodePalette(model.getSignature());

@@ -111,11 +111,6 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		
 		model = (SimulationSpec)loadInput();
 		
-		if (getModel() == null) {
-			replaceWithError(new Exception("Model is null"));
-			return;
-		}
-		
 		rules.setInput(model);
 		model.addPropertyChangeListener(this);
 		modelToControls();
@@ -200,6 +195,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 					doChange(getModel().changeSignature(s));
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
+				} catch (CoreException ce) {
+					ce.printStackTrace();
 				}
 			}
 		});
@@ -246,6 +243,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 						doChange(model.changeAddRule(r));
 					} catch (LoadFailedException ife) {
 						ife.printStackTrace();
+					} catch (CoreException ce) {
+						ce.printStackTrace();
 					}
 				}
 			}
@@ -282,6 +281,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 					doChange(getModel().changeModel(b));
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
+				} catch (CoreException ce) {
+					ce.printStackTrace();
 				}
 			}
 		});

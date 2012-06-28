@@ -311,11 +311,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 		
 		setModel((ReactionRule)loadInput());
 	    
-		if (getModel() == null) {
-			replaceWithError(new Exception("Model is null"));
-			return;
-		}
-		
 		Signature s = getModel().getRedex().getSignature();
 	    updateNodePalette(s);
 	    addInterestingResource(ExtendedDataUtilities.getFile(s));
