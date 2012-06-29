@@ -1,5 +1,6 @@
 package it.uniud.bigredit.command;
 
+import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.MatchData;
 import it.uniud.bigredit.model.Reaction;
 
@@ -22,6 +23,7 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.uniud.bigraph.match.PlaceMatch;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -631,8 +633,8 @@ public class ReactionWizard extends Wizard {
 			
 		}
 		//cgA.add(ExtendedDataUtilities.relayout(target));
-		System.out.println(cgA);
-		System.out.println(cgLink);
+		//System.out.println(cgA);
+		//System.out.println(cgLink);
 		
 		if (cgA.size() != 0){
 			try {
@@ -647,6 +649,31 @@ public class ReactionWizard extends Wizard {
 		if (cgLink.size() != 0){
 			try {
 				target.tryApplyChange(cgLink);
+				cgA.clear();
+				cgA.add(ExtendedDataUtilities.relayout(target));
+				target.tryApplyChange(cgA);
+				
+				Rectangle rectTest=ExtendedDataUtilities.getLayout(target);
+				System.out.println(rectTest);
+				Point mainBigraphBottomRight= rectTest.getBottomRight();
+				
+				for (Root root :target.getRoots()){
+					Rectangle rect=ExtendedDataUtilities.getLayout(root);
+					//Point topLeft= rect.getTopLeft();
+					Point bottomRight = rect.getBottomRight();
+					if (mainBigraphBottomRight.x < bottomRight.x){
+						rectTest.setWidth(bottomRight.x + 10);
+					}
+					if (mainBigraphBottomRight.y < bottomRight.y){
+						rectTest.setHeight(bottomRight.y + 10);
+					}	
+				}
+				
+				
+				
+				
+				
+				
 			} catch (ChangeRejectedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -735,7 +762,7 @@ public class ReactionWizard extends Wizard {
 						newNodeAgent,
 						l.getName() + ((int)(Math.random()*100))+ "'"));
 				ExtendedDataUtilities.setLayout(newNodeAgent, ExtendedDataUtilities.getLayout(l));
-
+				
 	
 			}
 			if(l instanceof Container){

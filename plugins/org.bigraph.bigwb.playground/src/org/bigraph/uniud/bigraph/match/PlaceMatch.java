@@ -142,17 +142,20 @@ public class PlaceMatch {
 		
 		//for column number we keep a separate matrix
 		IntegerVariable[][] varCol = new IntegerVariable[numberCSinR][numberCSinA];
-		for (int i = 0; i < numberCSinR; i++) {
-			for (int j = 0; j < numberCSinA; j++) {
-				// Copy of var in the column order
-				varCol[i][j] = matrix[j][i];
-			}
-
-			
-			m.addConstraint(Choco.eq(Choco.sum(varCol[i]),1));
-			System.out.println(Choco.sum(varCol[i]) + " = 1");
-		}
 		
+		
+		for (int i = 0; i < numberCSinR; i++) {
+			// site can take lot of 
+			if (!(listRedex.get(i) instanceof Site)) {
+				for (int j = 0; j < numberCSinA; j++) {
+					// Copy of var in the column order
+					varCol[i][j] = matrix[j][i];
+				}
+
+				m.addConstraint(Choco.eq(Choco.sum(varCol[i]), 1));
+				System.out.println(Choco.sum(varCol[i]) + " = 1");
+			}
+		}
 		
 		
 		
