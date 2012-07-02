@@ -54,14 +54,7 @@ public class ReactionRule extends ModelObject {
 	public Change getReactumChange(Change redexChange) {
 		Change reactumChange =
 				translateChange(getRedexToReactumMap(), redexChange);
-		if (reactumChange != null) {
-			try {
-				getReactum().tryValidateChange(reactumChange);
-			} catch (ChangeRejectedException cre) {
-				reactumChange = Change.INVALID;
-			}
-		} else reactumChange = Change.INVALID;
-		return reactumChange;
+		return (reactumChange != null ? reactumChange : Change.INVALID);
 	}
 	
 	public static Change translateChange(
