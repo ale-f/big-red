@@ -102,4 +102,16 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	public int size() {
 		return changes.size();
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj.getClass() == ChangeGroup.class) {
+			return changes.equals(((ChangeGroup)obj).changes);
+		} else return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return changes.hashCode();
+	}
 }
