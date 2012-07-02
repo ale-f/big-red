@@ -208,8 +208,8 @@ implements PropertyChangeListener {
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite self =
-			setComposite(UI.chain(new Composite(setParent(parent), SWT.NONE)).
-			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done());
+			UI.chain(new Composite(setParent(parent), SWT.NONE)).
+			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done();
 		
 		GridLayout gl = new GridLayout(2, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
@@ -581,9 +581,11 @@ implements PropertyChangeListener {
 	@Override
 	public void setFocus() {
 		super.setFocus();
-		if (getComposite() == null)
-			return;
-		controls.getControl().setFocus();
+		if (controls != null) {
+			org.eclipse.swt.widgets.Control c = controls.getControl();
+			if (!c.isDisposed())
+				c.setFocus();
+		}
 	}
 
 	@Override

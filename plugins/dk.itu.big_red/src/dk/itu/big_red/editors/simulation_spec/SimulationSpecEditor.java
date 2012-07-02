@@ -168,8 +168,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite self =
-			setComposite(UI.chain(new Composite(setParent(parent), SWT.NONE)).
-			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done());
+			UI.chain(new Composite(setParent(parent), SWT.NONE)).
+			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done();
 		
 		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
@@ -327,9 +327,9 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	@Override
 	public void setFocus() {
 		super.setFocus();
-		if (getComposite() == null)
-			return;
-		signatureSelector.getButton().setFocus();
+		Button b = signatureSelector.getButton();
+		if (b != null && !b.isDisposed())
+			b.setFocus();
 	}
 	
 	@Override

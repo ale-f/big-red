@@ -157,8 +157,8 @@ public class PlayEditor extends BigraphEditor {
 	
     @Override
 	public void createPartControl(Composite parent) {
-		SashForm splitter = setComposite(new SashForm(setParent(parent),
-					SWT.HORIZONTAL | SWT.SMOOTH));
+		SashForm splitter =
+				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
 		
 		createPaletteViewer(splitter);
 		createGraphicalViewer(splitter);
@@ -358,8 +358,8 @@ public class PlayEditor extends BigraphEditor {
 	@Override
 	public void setFocus() {
 		super.setFocus();
-		if (getComposite() == null)
-			return;
-		getGraphicalViewer().getControl().setFocus();
+		org.eclipse.swt.widgets.Control c = getGraphicalViewer().getControl();
+		if (c != null && !c.isDisposed())
+			c.setFocus();
 	}
 }

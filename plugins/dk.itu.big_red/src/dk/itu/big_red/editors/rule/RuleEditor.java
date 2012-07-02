@@ -149,8 +149,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 	@Override
 	public void createPartControl(Composite parent) {
-		SashForm splitter = setComposite(new SashForm(setParent(parent),
-				SWT.HORIZONTAL | SWT.SMOOTH));
+		SashForm splitter =
+				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
 	
 		createPaletteViewer(splitter);
 		Composite c = new Composite(splitter, SWT.NONE);
@@ -398,13 +398,5 @@ public class RuleEditor extends AbstractGEFEditor implements
 			new ContainerPasteAction(this));
 
 		registerActions(null, new SelectAllAction(this));
-	}
-	
-	@Override
-	public void setFocus() {
-		super.setFocus();
-		if (getComposite() == null)
-			return;
-		getComposite().setFocus();
 	}
 }

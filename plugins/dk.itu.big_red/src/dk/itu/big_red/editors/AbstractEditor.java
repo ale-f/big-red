@@ -19,6 +19,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
@@ -314,23 +315,16 @@ public abstract class AbstractEditor extends EditorPart
 		}
 	}
 	
-	private Composite self;
-	
-	protected <T extends Composite> T setComposite(T self) {
-		this.self = self;
-		return self;
-	}
-	
-	protected Composite getComposite() {
-		return self;
-	}
-	
 	private Composite parent;
 	
 	protected Composite setParent(Composite parent) {
 		if (this.parent != null && this.parent != parent)
 			throw new Error("Mysterious parent mismatch");
 		this.parent = parent;
+		return parent;
+	}
+	
+	protected Composite getParent() {
 		return parent;
 	}
 	
@@ -346,8 +340,9 @@ public abstract class AbstractEditor extends EditorPart
 	}
 	
 	protected void replaceWithError(Throwable t) {
-		Composite parent = getComposite().getParent();
-		getComposite().dispose(); setComposite(null);
+		Composite parent = getParent();
+		for (Control c : parent.getChildren())
+			c.dispose();
 		new EditorError(parent, RedPlugin.getThrowableStatus(t));
 	}
 	
