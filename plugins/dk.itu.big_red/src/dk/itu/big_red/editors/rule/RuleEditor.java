@@ -361,6 +361,17 @@ public class RuleEditor extends AbstractGEFEditor implements
 			try {
 				getReactum().tryApplyChange(existingChanges.inverse());
 				
+				{
+					System.out.println("Go! Operation 2!");
+					System.out.println("" + c.getChange());
+					System.out.println("" + existingChanges);
+					ChangeGroup operation2 = getModel().performOperation2(
+							c.getChange(), existingChanges);
+					System.out.println(operation2);
+					if (!existingChanges.equals(operation2))
+						System.out.println("Operation 2 would have helped...");
+				}
+				
 				try {
 					ChangeGroup cg = new ChangeGroup();
 					cg.add(reactumChange);
