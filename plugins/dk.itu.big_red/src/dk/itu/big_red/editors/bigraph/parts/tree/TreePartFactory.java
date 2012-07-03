@@ -1,9 +1,9 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import org.bigraph.model.Bigraph;
-import org.bigraph.model.InnerName;
 import org.bigraph.model.Link;
 import org.bigraph.model.Node;
+import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.eclipse.gef.EditPart;
@@ -22,8 +22,8 @@ public class TreePartFactory implements EditPartFactory {
         	part = new RootTreePart();
         } else if (model instanceof Site) {
     		part = new SiteTreePart();
-        } else if (model instanceof InnerName) {
-        	part = new InnerNameTreePart();
+        } else if (model instanceof Point) {
+        	part = new PointTreePart();
         } else if (model instanceof Link) {
         	part = new LinkTreePart();
         }
