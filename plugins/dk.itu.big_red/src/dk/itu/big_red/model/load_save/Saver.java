@@ -10,7 +10,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 
-
 /**
  * Classes extending Saver can write objects to an {@link OutputStream}.
  * @see Loader

@@ -11,7 +11,6 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
 
-
 public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	/**
 	 * The property name fired when a rule is added or removed.

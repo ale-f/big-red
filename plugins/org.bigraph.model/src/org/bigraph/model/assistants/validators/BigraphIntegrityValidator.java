@@ -12,7 +12,6 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.Namespace;
 
-
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that
  * all changes to {@link Bigraph}s must go through; it checks for both model

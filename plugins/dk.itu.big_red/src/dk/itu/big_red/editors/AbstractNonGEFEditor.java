@@ -6,7 +6,6 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.jface.action.IStatusLineManager;
 
-
 public abstract class AbstractNonGEFEditor extends AbstractEditor {
 	private Change savePoint = null;
 	private ArrayDeque<Change>

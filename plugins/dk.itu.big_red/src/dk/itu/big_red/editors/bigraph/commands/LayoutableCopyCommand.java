@@ -9,7 +9,6 @@ import org.bigraph.model.Site;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.ui.actions.Clipboard;
 
-
 public class LayoutableCopyCommand extends Command {
 	private ArrayList<Layoutable> list =
 		new ArrayList<Layoutable>();

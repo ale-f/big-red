@@ -3,7 +3,6 @@ package dk.itu.big_red.editors.bigraph;
 import org.bigraph.model.ModelObject;
 import org.eclipse.gef.requests.CreationFactory;
 
-
 /**
  * The ModelFactory class creates {@link ModelObject}s on demand.
  * @author alec

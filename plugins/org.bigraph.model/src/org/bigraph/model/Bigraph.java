@@ -21,7 +21,6 @@ import org.bigraph.model.names.NamespaceGroup;
 import org.bigraph.model.names.policies.PositiveIntegerNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
 
-
 /**
  * The Bigraph is the root of any agent, and contains {@link Root}s, {@link
  * InnerName}s, and {@link OuterName}s.

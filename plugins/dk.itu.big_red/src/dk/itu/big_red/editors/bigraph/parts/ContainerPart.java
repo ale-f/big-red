@@ -4,7 +4,6 @@ import java.beans.PropertyChangeEvent;
 
 import org.bigraph.model.Container;
 
-
 /**
  * The ContainerPart is the base class for edit parts whose model objects are
  * instances of {@link Container}.

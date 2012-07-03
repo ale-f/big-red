@@ -11,7 +11,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
 
-
 /**
  * Classes extending Loader can read objects from an {@link InputStream}.
  * @see Saver

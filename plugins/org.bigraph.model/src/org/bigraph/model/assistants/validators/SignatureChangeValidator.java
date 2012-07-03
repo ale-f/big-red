@@ -12,7 +12,6 @@ import org.bigraph.model.Signature.ChangeRemoveControl;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 
-
 public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 	public SignatureChangeValidator(Signature changeable) {
 		super(changeable);

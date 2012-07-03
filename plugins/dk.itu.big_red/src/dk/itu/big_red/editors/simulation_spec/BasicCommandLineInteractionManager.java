@@ -1,6 +1,5 @@
 package dk.itu.big_red.editors.simulation_spec;
 
-
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.widgets.Composite;

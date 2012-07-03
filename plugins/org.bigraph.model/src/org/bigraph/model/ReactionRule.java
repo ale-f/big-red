@@ -15,7 +15,6 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.INamespace;
 
-
 public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;
 	private Map<ModelObject, ModelObject> redexToReactum =

@@ -10,7 +10,6 @@ import org.bigraph.model.interfaces.ILink;
 import org.bigraph.model.interfaces.INode;
 import org.bigraph.model.interfaces.IPort;
 
-
 public class PortSpec extends ModelObject implements IPort {
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String PROPERTY_NAME = "PortSpecName";

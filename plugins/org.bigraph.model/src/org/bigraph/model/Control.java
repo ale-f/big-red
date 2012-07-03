@@ -92,7 +92,6 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	
 	public class ChangeKind extends ControlChange {
 		public Kind kind;
 		public ChangeKind(Kind kind) {

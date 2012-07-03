@@ -5,7 +5,6 @@ import java.util.List;
 import org.bigraph.model.Container;
 import org.bigraph.model.Layoutable;
 
-
 public abstract class ContainerTreePart extends AbstractTreePart {
 	@Override
 	public Container getModel() {

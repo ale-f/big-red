@@ -3,7 +3,6 @@ package dk.itu.big_red.interaction_managers;
 import org.bigraph.model.SimulationSpec;
 import org.eclipse.swt.widgets.Shell;
 
-
 /**
  * Classes implementing <strong>IInteractionManager</strong> are <i>interaction
  * managers</i>, intentionally minimally-specified objects which provide a

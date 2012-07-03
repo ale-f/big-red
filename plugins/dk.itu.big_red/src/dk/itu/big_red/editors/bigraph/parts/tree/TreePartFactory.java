@@ -9,7 +9,6 @@ import org.bigraph.model.Site;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
-
 public class TreePartFactory implements EditPartFactory {
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {

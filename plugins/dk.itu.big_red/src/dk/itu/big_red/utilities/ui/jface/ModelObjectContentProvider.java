@@ -7,7 +7,6 @@ import org.eclipse.jface.viewers.AbstractListViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-
 public abstract class ModelObjectContentProvider
 	implements IStructuredContentProvider, PropertyChangeListener {
 	private AbstractListViewer alv;

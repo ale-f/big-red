@@ -3,7 +3,6 @@ package dk.itu.big_red.editors.bigraph.parts;
 import org.bigraph.model.Bigraph;
 import org.eclipse.gef.EditPart;
 
-
 /**
  * Objects implementing <strong>IBigraphPart</strong> are {@link EditPart}s
  * representing objects on a {@link Bigraph}.
