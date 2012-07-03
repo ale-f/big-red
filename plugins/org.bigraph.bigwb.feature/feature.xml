@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.bigraph.bigwb.feature"
+      label="Feature"
+      version="0.0.0.qualifier">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <includes
+         id="org.bigraph.model.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.bigraph.bigwb.playground.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.bigraph.bigmc.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="dk.itu.big_red.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.rcp"
+         version="0.0.0"/>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+   </requires>
+
+   <plugin
+         id="org.bigraph.bigwb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>
