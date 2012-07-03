@@ -1,13 +1,11 @@
 package org.bigraph.model.names;
 
-import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.names.policies.INamePolicy;
 
-
 public abstract class Namespace<T> implements INamespace<T> {
 	@SuppressWarnings("unchecked")
-	protected T getProperty(IPropertyProvider context, String name) {
+	protected T getProperty(PropertyScratchpad context, String name) {
 		if (context != null && context.hasProperty(this, name)) {
 			return (T)context.getProperty(this, name);
 		} else return getRaw(name);
@@ -40,7 +38,7 @@ public abstract class Namespace<T> implements INamespace<T> {
 		return has(null, key);
 	}
 	
-	public boolean has(IPropertyProvider context, String key) {
+	public boolean has(PropertyScratchpad context, String key) {
 		return (get(context, key) != null);
 	}
 	
@@ -49,7 +47,7 @@ public abstract class Namespace<T> implements INamespace<T> {
 		return get(null, name);
 	}
 
-	public T get(IPropertyProvider context, String name) {
+	public T get(PropertyScratchpad context, String name) {
 		if ((name = checkName(name)) != null) {
 			return getProperty(context, name);
 		} else return null;
@@ -84,7 +82,7 @@ public abstract class Namespace<T> implements INamespace<T> {
 		return getNextName(null);
 	}
 	
-	public String getNextName(IPropertyProvider context) {
+	public String getNextName(PropertyScratchpad context) {
 		INamePolicy policy = getPolicy();
 		if (policy == null)
 			return null;

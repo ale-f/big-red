@@ -19,7 +19,6 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
-import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -37,7 +36,7 @@ public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
 	private static <T> T require(
-			IPropertyProvider context, ModelObject o, String name,
+			PropertyScratchpad context, ModelObject o, String name,
 			Class<T> klass) {
 		if (o != null) {
 			Object r = (context != null && context.hasProperty(o, name) ?
@@ -50,7 +49,7 @@ public final class ExtendedDataUtilities {
 		} else return null;
 	}
 	
-	private static void set(IPropertyProvider context,
+	private static void set(PropertyScratchpad context,
 			ModelObject o, String name, Object value) {
 		if (o == null || name == null)
 			return;
@@ -68,7 +67,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static IFile getFile(
-			IPropertyProvider context, ModelObject m) {
+			PropertyScratchpad context, ModelObject m) {
 		return require(context, m, FILE, IFile.class);
 	}
 	
@@ -85,7 +84,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static String getComment(
-			IPropertyProvider context, ModelObject m) {
+			PropertyScratchpad context, ModelObject m) {
 		return require(context, m, COMMENT, String.class);
 	}
 	
@@ -106,7 +105,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static Colour getFill(
-			IPropertyProvider context, ModelObject m) {
+			PropertyScratchpad context, ModelObject m) {
 		Colour c = require(context, m, FILL, Colour.class);
 		if (c == null) {
 			if (m instanceof Node) {
@@ -125,7 +124,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setFill(
-			IPropertyProvider context, ModelObject m, Colour c) {
+			PropertyScratchpad context, ModelObject m, Colour c) {
 		set(context, m, FILL, c);
 	}
 	
@@ -142,7 +141,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static Colour getOutline(
-			IPropertyProvider context, ModelObject m) {
+			PropertyScratchpad context, ModelObject m) {
 		Colour c = require(context, m, OUTLINE, Colour.class);
 		if (c == null) {
 			if (m instanceof Node) {
@@ -163,7 +162,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setOutline(
-			IPropertyProvider context, ModelObject m, Colour c) {
+			PropertyScratchpad context, ModelObject m, Colour c) {
 		set(context, m, OUTLINE, c);
 	}
 	
@@ -180,7 +179,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static INamePolicy getParameterPolicy(
-			IPropertyProvider context, Control c) {
+			PropertyScratchpad context, Control c) {
 		return require(context, c, PARAMETER_POLICY, INamePolicy.class);
 	}
 	
@@ -195,7 +194,7 @@ public final class ExtendedDataUtilities {
 	private static final ExtendedDataValidator parameterValidator =
 			new ExtendedDataValidator() {
 		@Override
-		public void validate(ChangeExtendedData c, IPropertyProvider context)
+		public void validate(ChangeExtendedData c, PropertyScratchpad context)
 				throws ChangeRejectedException {
 			if (!(c.getCreator() instanceof Node))
 				throw new ChangeRejectedException(c,
@@ -230,7 +229,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static String getParameter(
-			IPropertyProvider context, Node n) {
+			PropertyScratchpad context, Node n) {
 		INamePolicy p = getParameterPolicy(context, n.getControl());
 		String s = require(context, n, PARAMETER, String.class),
 				t = null;
@@ -249,7 +248,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setParameter(
-			IPropertyProvider context, Node n, String s) {
+			PropertyScratchpad context, Node n, String s) {
 		set(context, n, PARAMETER, s);
 	}
 	
@@ -265,7 +264,7 @@ public final class ExtendedDataUtilities {
 		return getSegment(null, p);
 	}
 	
-	public static int getSegment(IPropertyProvider context, PortSpec p) {
+	public static int getSegment(PropertyScratchpad context, PortSpec p) {
 		Integer i = require(context, p, SEGMENT, Integer.class);
 		if (i == null) {
 			recalculatePosition(context, p);
@@ -279,7 +278,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setSegment(
-			IPropertyProvider context, PortSpec p, int i) {
+			PropertyScratchpad context, PortSpec p, int i) {
 		set(context, p, SEGMENT, i);
 	}
 	
@@ -292,7 +291,7 @@ public final class ExtendedDataUtilities {
 			"eD!+dk.itu.big_red.model.PortSpec.distance";
 	
 	private static void recalculatePosition(
-			IPropertyProvider context, PortSpec p) {
+			PropertyScratchpad context, PortSpec p) {
 		int segment = 0;
 		double distance = 0;
 		
@@ -322,7 +321,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static double getDistance(
-			IPropertyProvider context, PortSpec p) {
+			PropertyScratchpad context, PortSpec p) {
 		Double d = require(context, p, DISTANCE, Double.class);
 		if (d == null) {
 			recalculatePosition(context, p);
@@ -336,7 +335,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setDistance(
-			IPropertyProvider context, PortSpec p, double d) {
+			PropertyScratchpad context, PortSpec p, double d) {
 		set(context, p, DISTANCE, d);
 	}
 	
@@ -352,7 +351,7 @@ public final class ExtendedDataUtilities {
 		return getShape(null, c);
 	}
 	
-	public static Object getShape(IPropertyProvider context, Control c) {
+	public static Object getShape(PropertyScratchpad context, Control c) {
 		Object o = require(context, c, SHAPE, Object.class);
 		if (!(o instanceof PointList || o instanceof Ellipse)) {
 			o = new Ellipse(new Rectangle(0, 0, 300, 300)).
@@ -370,7 +369,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setShape(
-			IPropertyProvider context, Control c, Object s) {
+			PropertyScratchpad context, Control c, Object s) {
 		if (s instanceof PointList || s instanceof Ellipse)
 			set(context, c, SHAPE, s);
 	}
@@ -382,7 +381,7 @@ public final class ExtendedDataUtilities {
 	private static final ExtendedDataValidator labelValidator =
 			new ExtendedDataValidator() {
 		@Override
-		public void validate(ChangeExtendedData c, IPropertyProvider context)
+		public void validate(ChangeExtendedData c, PropertyScratchpad context)
 				throws ChangeRejectedException {
 			if (!(c.newValue instanceof String)) {
 				throw new ChangeRejectedException(c, "Labels must be strings");
@@ -405,7 +404,7 @@ public final class ExtendedDataUtilities {
 		return (s != null ? (s.length() > 0 ? s.substring(0, 1) : s) : "?");
 	}
 	
-	public static String getLabel(IPropertyProvider context, Control c) {
+	public static String getLabel(PropertyScratchpad context, Control c) {
 		String s = require(context, c, LABEL, String.class);
 		if (s == null)
 			setLabel(context, c, s = labelFor(c.getName(context)));
@@ -417,7 +416,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setLabel(
-			IPropertyProvider context, Control c, String s) {
+			PropertyScratchpad context, Control c, String s) {
 		set(context, c, LABEL, s);
 	}
 	
@@ -434,7 +433,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static Rectangle getLayout(
-			IPropertyProvider context, Layoutable l) {
+			PropertyScratchpad context, Layoutable l) {
 		Rectangle r = require(context, l, LAYOUT, Rectangle.class);
 		if (r == null) {
 			if (l instanceof Port) {
@@ -480,14 +479,14 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static void setLayout(
-			IPropertyProvider context, Layoutable l, Rectangle r) {
+			PropertyScratchpad context, Layoutable l, Rectangle r) {
 		set(context, l, LAYOUT, r);
 	}
 	
 	private static final ExtendedDataValidator layoutValidator =
 			new ExtendedDataValidator() {
 		@Override
-		public void validate(ChangeExtendedData c, IPropertyProvider context)
+		public void validate(ChangeExtendedData c, PropertyScratchpad context)
 				throws ChangeRejectedException {
 			Layoutable l = (Layoutable)c.getCreator();
 			Container parent = l.getParent(context);
@@ -536,7 +535,7 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static Rectangle getRootLayout(
-			IPropertyProvider context, Layoutable l) {
+			PropertyScratchpad context, Layoutable l) {
 		Rectangle r = getLayout(context, l), r2;
 		if (r != null) {
 			r = r.getCopy();
@@ -557,14 +556,14 @@ public final class ExtendedDataUtilities {
 		return relayout(new PropertyScratchpad(), b);
 	}
 	
-	public static Change relayout(IPropertyProvider context, Bigraph b) {
+	public static Change relayout(PropertyScratchpad context, Bigraph b) {
 		ChangeGroup cg = new ChangeGroup();
 		relayout(context, b, cg);
 		return cg;
 	}
 	
 	private static Rectangle relayout(
-			IPropertyProvider context, Layoutable l, ChangeGroup cg) {
+			PropertyScratchpad context, Layoutable l, ChangeGroup cg) {
 		assert
 			context != null;
 		
@@ -639,7 +638,7 @@ public final class ExtendedDataUtilities {
 	private static final ExtendedDataValidator aliasValidator =
 			new ExtendedDataValidator() {
 		@Override
-		public void validate(ChangeExtendedData c, IPropertyProvider context)
+		public void validate(ChangeExtendedData c, PropertyScratchpad context)
 				throws ChangeRejectedException {
 			if (c.newValue != null) {
 				if (!(c.newValue instanceof String))
@@ -662,7 +661,7 @@ public final class ExtendedDataUtilities {
 		return getAlias(null, s);
 	}
 	
-	public static String getAlias(IPropertyProvider context, Site s) {
+	public static String getAlias(PropertyScratchpad context, Site s) {
 		return require(context, s, ALIAS, String.class);
 	}
 	
@@ -670,7 +669,7 @@ public final class ExtendedDataUtilities {
 		setAlias(null, s, a);
 	}
 	
-	public static void setAlias(IPropertyProvider context, Site s, String a) {
+	public static void setAlias(PropertyScratchpad context, Site s, String a) {
 		set(context, s, ALIAS, a);
 	}
 	

@@ -5,7 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -31,7 +31,7 @@ public abstract class ModelObject {
 	}
 	
 	public interface ExtendedDataValidator {
-		void validate(ChangeExtendedData c, IPropertyProvider context)
+		void validate(ChangeExtendedData c, PropertyScratchpad context)
 			throws ChangeRejectedException;
 	}
 	
@@ -142,7 +142,7 @@ public abstract class ModelObject {
 		return null;
 	}
 	
-	protected Object getProperty(IPropertyProvider context, String name) {
+	protected Object getProperty(PropertyScratchpad context, String name) {
 		if (context == null || !context.hasProperty(this, name)) {
 			return getProperty(name);
 		} else return context.getProperty(this, name);

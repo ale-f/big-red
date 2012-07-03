@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.validators.BigraphIntegrityValidator;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -148,7 +148,7 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	}
 	
 	@Override
-	public Bigraph getBigraph(IPropertyProvider context) {
+	public Bigraph getBigraph(PropertyScratchpad context) {
 		return this;
 	}
 	

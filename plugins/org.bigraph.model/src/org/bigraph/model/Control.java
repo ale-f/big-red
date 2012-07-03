@@ -6,12 +6,10 @@ import java.util.Map;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
-import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.interfaces.IControl;
-
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -211,7 +209,7 @@ public class Control extends ModelObject implements IControl {
 		return name;
 	}
 	
-	public String getName(IPropertyProvider context) {
+	public String getName(PropertyScratchpad context) {
 		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	
@@ -219,7 +217,7 @@ public class Control extends ModelObject implements IControl {
 		return kind;
 	}
 	
-	public Kind getKind(IPropertyProvider context) {
+	public Kind getKind(PropertyScratchpad context) {
 		return (Kind)getProperty(context, PROPERTY_KIND);
 	}
 	
@@ -259,7 +257,7 @@ public class Control extends ModelObject implements IControl {
 		return signature;
 	}
 	
-	public Signature getSignature(IPropertyProvider context) {
+	public Signature getSignature(PropertyScratchpad context) {
 		return (Signature)getProperty(context, PROPERTY_SIGNATURE);
 	}
 	
@@ -281,7 +279,7 @@ public class Control extends ModelObject implements IControl {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<PortSpec> getPorts(IPropertyProvider context) {
+	public List<PortSpec> getPorts(PropertyScratchpad context) {
 		return (List<PortSpec>)getProperty(context, PROPERTY_PORT);
 	}
 	

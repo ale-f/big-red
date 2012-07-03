@@ -3,7 +3,7 @@ package org.bigraph.model;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.interfaces.ILink;
@@ -99,7 +99,7 @@ public class PortSpec extends ModelObject implements IPort {
 		return name;
 	}
 	
-	public String getName(IPropertyProvider context) {
+	public String getName(PropertyScratchpad context) {
 		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	
@@ -113,7 +113,7 @@ public class PortSpec extends ModelObject implements IPort {
 		return control;
 	}
 	
-	public Control getControl(IPropertyProvider context) {
+	public Control getControl(PropertyScratchpad context) {
 		return (Control)getProperty(context, PROPERTY_CONTROL);
 	}
 	

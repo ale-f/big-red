@@ -3,12 +3,10 @@ package org.bigraph.model;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.names.Namespace;
-
 
 /**
  * All of the objects which can actually appear as part of a bigraph are
@@ -106,7 +104,7 @@ public abstract class Layoutable extends ModelObject {
 		return getBigraph(null);
 	}
 
-	public Bigraph getBigraph(IPropertyProvider context) {
+	public Bigraph getBigraph(PropertyScratchpad context) {
 		if (getParent(context) == null) {
 			return null;
 		} else return getParent(context).getBigraph(context);
@@ -120,7 +118,7 @@ public abstract class Layoutable extends ModelObject {
 		return parent;
 	}
 
-	public Container getParent(IPropertyProvider context) {
+	public Container getParent(PropertyScratchpad context) {
 		return (Container)getProperty(context, PROPERTY_PARENT);
 	}
 	
@@ -150,7 +148,7 @@ public abstract class Layoutable extends ModelObject {
 		return name;
 	}
 	
-	public String getName(IPropertyProvider context) {
+	public String getName(PropertyScratchpad context) {
 		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	

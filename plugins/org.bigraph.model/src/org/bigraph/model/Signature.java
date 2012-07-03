@@ -9,7 +9,6 @@ import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
 import org.bigraph.model.Control.ChangeName;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
-import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.validators.SignatureChangeValidator;
@@ -17,7 +16,6 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.interfaces.ISignature;
-
 
 /**
  * The Signature is a central storage point for {@link Control}s and their
@@ -137,7 +135,7 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Control> getControls(IPropertyProvider context) {
+	public List<Control> getControls(PropertyScratchpad context) {
 		return (List<Control>)getProperty(context, PROPERTY_CONTROL);
 	}
 	

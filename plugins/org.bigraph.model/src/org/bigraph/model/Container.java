@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
-
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain
@@ -104,7 +102,7 @@ public abstract class Container extends Layoutable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Layoutable> getChildren(IPropertyProvider context) {
+	public List<Layoutable> getChildren(PropertyScratchpad context) {
 		return (List<Layoutable>)getProperty(context, PROPERTY_CHILD);
 	}
 	
@@ -154,7 +152,7 @@ public abstract class Container extends Layoutable {
 	 * @return a {@link List} of children of the given {@link Class}
 	 */
 	@SuppressWarnings("unchecked")
-	protected <V> ArrayList<V> only(IPropertyProvider context, Class<V> klass) {
+	protected <V> ArrayList<V> only(PropertyScratchpad context, Class<V> klass) {
 		ArrayList<V> r = new ArrayList<V>();
 		for (Layoutable i : getChildren(context))
 			if (klass.isInstance(i))

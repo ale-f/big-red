@@ -3,11 +3,9 @@ package org.bigraph.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bigraph.model.assistants.IPropertyProvider;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.interfaces.ILink;
-
 
 /**
  * A Link is the superclass of {@link Edge}s and {@link OuterName}s &mdash;
@@ -71,7 +69,7 @@ public abstract class Link extends Layoutable implements ILink {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Point> getPoints(IPropertyProvider context) {
+	public List<Point> getPoints(PropertyScratchpad context) {
 		return (List<Point>)getProperty(context, PROPERTY_POINT);
 	}
 	

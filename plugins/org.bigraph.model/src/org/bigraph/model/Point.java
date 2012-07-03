@@ -1,6 +1,6 @@
 package org.bigraph.model;
 
-import org.bigraph.model.assistants.IPropertyProvider;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.interfaces.IPoint;
 
@@ -88,7 +88,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		return link;
 	}
 	
-	public Link getLink(IPropertyProvider context) {
+	public Link getLink(PropertyScratchpad context) {
 		return (Link)getProperty(context, PROPERTY_LINK);
 	}
 	

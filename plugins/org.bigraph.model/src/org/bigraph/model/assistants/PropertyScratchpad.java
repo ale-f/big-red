@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-public class PropertyScratchpad implements IPropertyProvider {
+public class PropertyScratchpad {
 	private static final class NNPair {
 		private Object target;
 		private String name;
@@ -37,7 +36,6 @@ public class PropertyScratchpad implements IPropertyProvider {
 		return new NNPair(target, name);
 	}
 	
-	@Override
 	public void setProperty(Object target, String name, Object newValue) {
 		if (target != null && name != null)
 			changes.put(getKey(target, name), newValue);
@@ -48,7 +46,6 @@ public class PropertyScratchpad implements IPropertyProvider {
 			changes.remove(getKey(target, name));
 	}
 	
-	@Override
 	public boolean hasProperty(Object target, String name) {
 		if (target != null && name != null) {
 			return changes.containsKey(getKey(target, name));
@@ -60,7 +57,6 @@ public class PropertyScratchpad implements IPropertyProvider {
 		return this;
 	}
 	
-	@Override
 	public Object getProperty(Object target, String name) {
 		if (target != null && name != null) {
 			return changes.get(getKey(target, name));
