@@ -44,6 +44,108 @@ public class ReactionRule extends ModelObject {
 		return redexToReactum;
 	}
 	
+	protected abstract class OperationRunner {
+		protected abstract ChangeGroup runStepActual(
+				Change redexChange, ChangeGroup reactumChanges,
+				Change reactumChange);
+		
+		protected ChangeGroup runStep(
+				Change redexChange, ChangeGroup reactumChanges) {
+			ChangeGroup cg = null;
+			for (int i = 0; i < reactumChanges.size(); i++) {
+				Change c = reactumChanges.get(i);
+				if (c instanceof ChangeGroup) {
+					cg = runStep(redexChange, (ChangeGroup)c);
+					if (cg != null) {
+						reactumChanges = reactumChanges.clone();
+						if (cg.size() != 0) {
+							reactumChanges.set(i, cg);
+						} else reactumChanges.remove(c);
+						return reactumChanges;
+					}
+				} else {
+					cg = runStepActual(redexChange, reactumChanges, c);
+					if (cg != null)
+						return cg;
+				}
+			}
+			return null;
+		}
+		
+		public ChangeGroup run(
+				Change redexChange, ChangeGroup reactumChanges) {
+			ChangeGroup cg = null;
+			if (redexChange instanceof ChangeGroup) {
+				ChangeGroup redexChanges = (ChangeGroup)redexChange;
+				while (redexChanges.size() > 0) {
+					Change head = redexChanges.head();
+					cg = run(head, reactumChanges);
+					if (cg != null)
+						reactumChanges = cg;
+					redexChanges = redexChanges.tail();
+				}
+			} else {
+				cg = runStep(redexChange, reactumChanges);
+				if (cg != null)
+					reactumChanges = cg;
+			}
+			return reactumChanges;
+		}
+	}
+	
+	protected class Operation2Runner extends OperationRunner {
+		protected boolean equalsUnder(
+				ModelObject redexObject, ModelObject reactumObject) {
+			return (redexToReactum.get(redexObject) == reactumObject);
+		}
+		
+		protected boolean changesEqualUnder(
+				Change redexChange_, Change reactumChange_) {
+			if (!(redexChange_ instanceof ModelObjectChange &&
+					reactumChange_ instanceof ModelObjectChange))
+				return false;
+			
+			Class<? extends Change> sharedClass = redexChange_.getClass();
+			if (!(reactumChange_.getClass().equals(sharedClass)))
+				return false;
+			
+			ModelObjectChange
+				redexChange = (ModelObjectChange)redexChange_,
+				reactumChange = (ModelObjectChange)reactumChange_;
+			if (equalsUnder(
+					redexChange.getCreator(), reactumChange.getCreator())) {
+				if (sharedClass.equals(ChangeRemove.class) ||
+					sharedClass.equals(ChangeDisconnect.class)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		@Override
+		protected ChangeGroup runStepActual(Change redexChange,
+				ChangeGroup reactumChanges, Change reactumChange) {
+			if (changesEqualUnder(redexChange, reactumChange)) {
+				reactumChanges = reactumChanges.clone();
+				reactumChanges.remove(reactumChange);
+				return reactumChanges;
+			} else return null;
+		}
+	}
+	
+	/**
+	 * <strong>Do not call this method.</strong>
+	 * @deprecated <strong>Do not call this method.</strong>
+	 * @param redexChange an {@link Object}
+	 * @param reactumChanges an {@link Object}
+	 * @return an {@link Object}
+	 */
+	@Deprecated
+	public ChangeGroup performOperation2(
+			Change redexChange, ChangeGroup reactumChanges) {
+		return new Operation2Runner().run(redexChange, reactumChanges);
+	}
+	
 	/**
 	 * Translates a {@link Change} targeted at the redex to the reactum.
 	 * @param redexChange a {@link Change} targeted at the redex
@@ -54,14 +156,7 @@ public class ReactionRule extends ModelObject {
 	public Change getReactumChange(Change redexChange) {
 		Change reactumChange =
 				translateChange(getRedexToReactumMap(), redexChange);
-		if (reactumChange != null) {
-			try {
-				getReactum().tryValidateChange(reactumChange);
-			} catch (ChangeRejectedException cre) {
-				reactumChange = Change.INVALID;
-			}
-		} else reactumChange = Change.INVALID;
-		return reactumChange;
+		return (reactumChange != null ? reactumChange : Change.INVALID);
 	}
 	
 	public static Change translateChange(

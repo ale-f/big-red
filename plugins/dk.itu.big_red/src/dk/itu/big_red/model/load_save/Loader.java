@@ -85,27 +85,17 @@ public abstract class Loader {
 	 * @param f an {@link IFile}
 	 * @return an object, or <code>null</code>
 	 * @throws LoadFailedException if {@link #importObject()} fails
+	 * @throws CoreException if an Eclipse method fails
 	 */
-	public static ModelObject fromFile(IFile f) throws LoadFailedException {
-		IContentType ct;
-		try {
-			ct = f.getContentDescription().getContentType();
-		} catch (CoreException e) {
-			ct = null;
-		}
-		if (ct == null)
-			return null;
+	public static ModelObject fromFile(IFile f)
+			throws CoreException, LoadFailedException {
+		IContentType ct = f.getContentDescription().getContentType();
 		for (IConfigurationElement ice :
 			RegistryFactory.getRegistry().
 				getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
-				Loader i;
-				try {
-					i = (Loader)ice.createExecutableExtension("class");
-					i.setFile(f).setInputStream(f.getContents());
-				} catch (CoreException e) {
-					return null;
-				}
+				Loader i = (Loader)ice.createExecutableExtension("class");
+				i.setFile(f).setInputStream(f.getContents());
 				if (i.canImport()) {
 					return i.importObject();
 				} else {

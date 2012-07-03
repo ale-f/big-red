@@ -9,6 +9,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.core.resources.IFile;
@@ -34,6 +35,7 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -149,8 +151,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 	@Override
 	public void createPartControl(Composite parent) {
-		SashForm splitter = setComposite(new SashForm(setParent(parent),
-				SWT.HORIZONTAL | SWT.SMOOTH));
+		SashForm splitter =
+				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
 	
 		createPaletteViewer(splitter);
 		Composite c = new Composite(splitter, SWT.NONE);
@@ -307,13 +309,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	@Override
 	protected void initialiseActual() throws Throwable {
+		getCommandStack().flush();
+		
 		setModel((ReactionRule)loadInput());
 	    
-		if (getModel() == null) {
-			replaceWithError(new Exception("Model is null"));
-			return;
-		}
-		
 		Signature s = getModel().getRedex().getSignature();
 	    updateNodePalette(s);
 	    addInterestingResource(ExtendedDataUtilities.getFile(s));
@@ -358,15 +357,54 @@ public class RuleEditor extends AbstractGEFEditor implements
 						"BUG: must invert " + reactumChange + ", but can't");
 			}
 			
+			ChangeGroup existingChanges = getModel().getChanges();
 			try {
-				getReactum().tryApplyChange(reactumChange);
-				if (detail != CommandStack.POST_UNDO) {
-					redexToReactum.put(c.getChange(), reactumChange);
-				} else redexToReactum.remove(c.getChange());
+				getReactum().tryApplyChange(existingChanges.inverse());
+				
+				{
+					System.out.println("Go! Operation 2!");
+					System.out.println("" + c.getChange());
+					System.out.println("" + existingChanges);
+					ChangeGroup operation2 = getModel().performOperation2(
+							c.getChange(), existingChanges);
+					System.out.println(operation2);
+					if (!existingChanges.equals(operation2))
+						System.out.println("Operation 2 would have helped...");
+				}
+				
+				try {
+					ChangeGroup cg = new ChangeGroup();
+					cg.add(reactumChange);
+					cg.add(existingChanges);
+					getReactum().tryApplyChange(cg);
+				} catch (ChangeRejectedException cre) {
+					/* In this state, the output file may no longer be
+					 * valid! */
+					new MessageDialog(
+							getSite().getShell(),
+							"Reaction rule problem", null,
+							"" + cre.getRejectedChange() + " conflicts with " +
+								"existing reactum changes.\n\n",
+							MessageDialog.ERROR,
+							new String[] { "Oh no!" }, 0).open();
+					cre.printStackTrace();
+					reactumChange = Change.INVALID;
+					
+					try {
+						getReactum().tryApplyChange(existingChanges);
+					} catch (ChangeRejectedException cre2) {
+						throw new Error("Change fast-forward failed -- " +
+								"shouldn't happen", cre2);
+					}
+				}
 			} catch (ChangeRejectedException cre) {
-				throw new Error("BUG: apparently-valid reactum change " + 
-						reactumChange + " was rejected");
+				throw new Error("Change rollback failed -- " +
+						"shouldn't happen", cre);
 			}
+			
+			if (detail != CommandStack.POST_UNDO) {
+				redexToReactum.put(c.getChange(), reactumChange);
+			} else redexToReactum.remove(c.getChange());
 		} else if (target == getReactum()) {
 			Change ch = c.getChange();
 			if (detail != CommandStack.POST_UNDO) {
@@ -401,13 +439,5 @@ public class RuleEditor extends AbstractGEFEditor implements
 			new ContainerPasteAction(this));
 
 		registerActions(null, new SelectAllAction(this));
-	}
-	
-	@Override
-	public void setFocus() {
-		super.setFocus();
-		if (getComposite() == null)
-			return;
-		getComposite().setFocus();
 	}
 }

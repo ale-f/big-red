@@ -107,12 +107,9 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	
 	@Override
 	protected void initialiseActual() throws Throwable {
-		model = (SimulationSpec)loadInput();
+		clearUndo();
 		
-		if (getModel() == null) {
-			replaceWithError(new Exception("Model is null"));
-			return;
-		}
+		model = (SimulationSpec)loadInput();
 		
 		rules.setInput(model);
 		model.addPropertyChangeListener(this);
@@ -171,8 +168,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite self =
-			setComposite(UI.chain(new Composite(setParent(parent), SWT.NONE)).
-			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done());
+			UI.chain(new Composite(setParent(parent), SWT.NONE)).
+			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done();
 		
 		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
@@ -198,6 +195,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 					doChange(getModel().changeSignature(s));
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
+				} catch (CoreException ce) {
+					ce.printStackTrace();
 				}
 			}
 		});
@@ -244,6 +243,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 						doChange(model.changeAddRule(r));
 					} catch (LoadFailedException ife) {
 						ife.printStackTrace();
+					} catch (CoreException ce) {
+						ce.printStackTrace();
 					}
 				}
 			}
@@ -280,6 +281,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 					doChange(getModel().changeModel(b));
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
+				} catch (CoreException ce) {
+					ce.printStackTrace();
 				}
 			}
 		});
@@ -324,9 +327,9 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	@Override
 	public void setFocus() {
 		super.setFocus();
-		if (getComposite() == null)
-			return;
-		signatureSelector.getButton().setFocus();
+		Button b = signatureSelector.getButton();
+		if (b != null && !b.isDisposed())
+			b.setFocus();
 	}
 	
 	@Override

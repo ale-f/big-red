@@ -90,8 +90,17 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 	public void revert() {
 		while (canUndo())
 			undo();
+		clearUndo();
+	}
+	
+	/**
+	 * Clears the undo and redo buffers and the save point and posts a
+	 * notification.
+	 */
+	protected void clearUndo() {
 		undoBuffer.clear();
 		redoBuffer.clear();
+		savePoint = null;
 		stateChanged();
 	}
 	

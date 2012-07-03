@@ -29,6 +29,7 @@ import org.eclipse.gef.ui.parts.SelectionSynchronizer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
@@ -137,18 +138,13 @@ public class BigraphEditor extends AbstractGEFEditor {
 	
     @Override
 	public void createPartControl(Composite parent) {
-		SashForm splitter = setComposite(new SashForm(setParent(parent),
-					SWT.HORIZONTAL | SWT.SMOOTH));
+		SashForm splitter =
+				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
 		
 		createPaletteViewer(splitter);
 		createGraphicalViewer(splitter);
 		splitter.setWeights(INITIAL_SASH_WEIGHTS);
-		
-		try {
-			initialiseActual();
-		} catch (Throwable t) {
-			replaceWithError(t);
-		}
+		initialise();
 	}
     
     protected void createGraphicalViewer(Composite parent) {
@@ -216,12 +212,9 @@ public class BigraphEditor extends AbstractGEFEditor {
 
 	@Override
 	protected void initialiseActual() throws Throwable {
+		getCommandStack().flush();
+		
 		model = (Bigraph)loadInput();
-	    
-	    if (getModel() == null) {
-	    	replaceWithError(new Exception("Model is null"));
-	    	return;
-	    }
 	    
 	    addInterestingResource(
 	    		ExtendedDataUtilities.getFile(getModel().getSignature()));
@@ -232,8 +225,8 @@ public class BigraphEditor extends AbstractGEFEditor {
 	@Override
 	public void setFocus() {
 		super.setFocus();
-		if (getComposite() == null)
-			return;
-		getGraphicalViewer().getControl().setFocus();
+		Control c = getGraphicalViewer().getControl();
+		if (c != null && !c.isDisposed())
+			c.setFocus();
 	}
 }

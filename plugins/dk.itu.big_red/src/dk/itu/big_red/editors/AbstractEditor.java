@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
@@ -18,6 +19,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
@@ -34,6 +36,7 @@ import dk.itu.big_red.editors.assistants.ProxyAction.IActionImplementor;
 import dk.itu.big_red.editors.assistants.RedoProxyAction;
 import dk.itu.big_red.editors.assistants.RevertProxyAction;
 import dk.itu.big_red.editors.assistants.UndoProxyAction;
+import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
@@ -219,10 +222,11 @@ public abstract class AbstractEditor extends EditorPart
 	
 	private void promptToReplace() {
 		MessageBox mb = new MessageBox(
-				getSite().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+				getSite().getShell(), SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
 		mb.setText("File updated");
-		mb.setMessage(getFile().getProjectRelativePath() + " was updated.");
-		mb.open();
+		mb.setMessage(getFile().getProjectRelativePath() + " was updated. Reload from disk?");
+		if (mb.open() == SWT.YES)
+			initialise();
 	}
 	
 	protected abstract ModelObject getModel();
@@ -286,7 +290,8 @@ public abstract class AbstractEditor extends EditorPart
 		} else return null;
 	}
 	
-	protected ModelObject loadInput() throws Throwable {
+	protected ModelObject loadInput()
+			throws CoreException, LoadFailedException {
 		IEditorInput i_ = getEditorInput();
 		if (i_ instanceof FileEditorInput) {
 			return Loader.fromFile(((FileEditorInput)i_).getFile());
@@ -304,20 +309,10 @@ public abstract class AbstractEditor extends EditorPart
 	protected void initialise() {
 		try {
 			initialiseActual();
+			firePropertyChange(PROP_DIRTY);
 		} catch (Throwable t) {
 			replaceWithError(t);
 		}
-	}
-	
-	private Composite self;
-	
-	protected <T extends Composite> T setComposite(T self) {
-		this.self = self;
-		return self;
-	}
-	
-	protected Composite getComposite() {
-		return self;
 	}
 	
 	private Composite parent;
@@ -326,6 +321,10 @@ public abstract class AbstractEditor extends EditorPart
 		if (this.parent != null && this.parent != parent)
 			throw new Error("Mysterious parent mismatch");
 		this.parent = parent;
+		return parent;
+	}
+	
+	protected Composite getParent() {
 		return parent;
 	}
 	
@@ -341,8 +340,9 @@ public abstract class AbstractEditor extends EditorPart
 	}
 	
 	protected void replaceWithError(Throwable t) {
-		Composite parent = getComposite().getParent();
-		getComposite().dispose(); setComposite(null);
+		Composite parent = getParent();
+		for (Control c : parent.getChildren())
+			c.dispose();
 		new EditorError(parent, RedPlugin.getThrowableStatus(t));
 	}
 	
