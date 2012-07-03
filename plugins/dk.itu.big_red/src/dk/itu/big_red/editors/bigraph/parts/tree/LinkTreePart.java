@@ -1,6 +1,9 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
+import java.util.List;
+
 import org.bigraph.model.Edge;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -16,6 +19,11 @@ public class LinkTreePart extends AbstractTreePart {
 	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
+	}
+	
+	@Override
+	protected List<? extends Layoutable> getLinkChildren() {
+		return getModel().getPoints();
 	}
 	
 	@Override

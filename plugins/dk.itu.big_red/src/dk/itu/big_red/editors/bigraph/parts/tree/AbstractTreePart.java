@@ -2,6 +2,8 @@ package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collections;
+import java.util.List;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
@@ -17,6 +19,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
+import dk.itu.big_red.editors.bigraph.parts.tree.TreePartFactory.Mode;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -77,6 +80,36 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart
 	@Override
 	protected Image getImage() {
 		return (Image)getImageDescriptor().createResource(UI.getDisplay());
+	}
+	
+	private Mode m = Mode.PLACE;
+	
+	protected void setMode(Mode m) {
+		this.m = m;
+	}
+	
+	protected Mode getMode() {
+		return m;
+	}
+	
+	protected List<? extends Layoutable> getPlaceChildren() {
+		return Collections.emptyList();
+	}
+	
+	protected List<? extends Layoutable> getLinkChildren() {
+		return Collections.emptyList();
+	}
+	
+	@Override
+	protected final List<? extends Layoutable> getModelChildren() {
+		switch (getMode()) {
+		case PLACE:
+			return getPlaceChildren();
+		case LINK:
+			return getLinkChildren();
+		default:
+			throw new Error("Oh no, extra enum value");
+		}
 	}
 	
 	@Override

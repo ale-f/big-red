@@ -10,9 +10,20 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 
 public class TreePartFactory implements EditPartFactory {
+	public enum Mode {
+		PLACE,
+		LINK
+	}
+	
+	private Mode m;
+	
+	public TreePartFactory(Mode m) {
+		this.m = m;
+	}
+	
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
-		EditPart part = null; 
+		AbstractTreePart part = null; 
 	    
 		if (model instanceof Bigraph) {
 			part = new BigraphTreePart();
@@ -28,8 +39,10 @@ public class TreePartFactory implements EditPartFactory {
         	part = new LinkTreePart();
         }
 	    
-		if (part != null)
+		if (part != null) {
+			part.setMode(m);
 			part.setModel(model);
+		}
 		
 		return part;
 	}

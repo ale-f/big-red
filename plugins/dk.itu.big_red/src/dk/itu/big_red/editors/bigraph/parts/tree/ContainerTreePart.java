@@ -12,7 +12,7 @@ public abstract class ContainerTreePart extends AbstractTreePart {
 	}
 	
 	@Override
-	protected List<Layoutable> getModelChildren() {
+	protected List<Layoutable> getPlaceChildren() {
 		return getModel().getChildren();
 	}
 }
