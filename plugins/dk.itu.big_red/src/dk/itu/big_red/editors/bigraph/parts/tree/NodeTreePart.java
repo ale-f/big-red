@@ -3,7 +3,7 @@ package dk.itu.big_red.editors.bigraph.parts.tree;
 import org.bigraph.model.Node;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.jface.resource.ImageDescriptor;
-import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.assistants.ControlImageDescriptor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 
@@ -31,6 +31,6 @@ public class NodeTreePart extends ContainerTreePart {
 	
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return RedPlugin.getImageDescriptor("resources/icons/triangle.png");
+		return new ControlImageDescriptor(getModel().getControl(), 16, 16);
 	}
 }
