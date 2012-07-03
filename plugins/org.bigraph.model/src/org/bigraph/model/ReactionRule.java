@@ -57,9 +57,7 @@ public class ReactionRule extends ModelObject {
 					cg = runStep(redexChange, (ChangeGroup)c);
 					if (cg != null) {
 						reactumChanges = reactumChanges.clone();
-						if (cg.size() != 0) {
-							reactumChanges.set(i, cg);
-						} else reactumChanges.remove(c);
+						reactumChanges.set(i, cg);
 						return reactumChanges;
 					}
 				} else {
