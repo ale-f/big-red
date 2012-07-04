@@ -91,6 +91,11 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 						c.child.getType() + "s");
 			}
 			
+			Container existingParent = c.child.getParent(getScratch());
+			if (existingParent != null)
+				rejectChange(b, c.child +
+						" already has a parent (" + existingParent + ")");
+			
 			c.getCreator().addChild(getScratch(), c.child, c.name);
 		} else if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
@@ -101,7 +106,7 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 					rejectChange(b, ch + " has child objects which must be removed first");
 			Container cp = ch.getParent(getScratch());
 			if (cp == null)
-				rejectChange(b, cp + " is not the parent of " + ch);
+				rejectChange(b, ch + " has no parent");
 			cp.removeChild(getScratch(), ch);
 			getChangeable().getNamespace(Bigraph.getNSI(ch)).
 				remove(getScratch(), ch.getName());
