@@ -17,8 +17,6 @@ import org.bigraph.model.names.Namespace;
 
 public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;
-	private Map<ModelObject, ModelObject> redexToReactum =
-		new HashMap<ModelObject, ModelObject>();
 	private ChangeGroup changes;
 	public static final String CONTENT_TYPE = "dk.itu.big_red.rule";
 	
@@ -30,12 +28,11 @@ public class ReactionRule extends ModelObject {
 		this.redex = redex;
 		
 		reactum = null;
-		redexToReactum.clear();
 	}
 
 	public Bigraph getReactum() {
 		if (reactum == null)
-			reactum = redex.clone(redexToReactum);
+			reactum = redex.clone(null);
 		return reactum;
 	}
 	
@@ -89,7 +86,7 @@ public class ReactionRule extends ModelObject {
 	protected class Operation2Runner extends OperationRunner {
 		protected boolean equalsUnder(
 				ModelObject redexObject, ModelObject reactumObject) {
-			return (redexToReactum.get(redexObject) == reactumObject);
+			return false /* XXX */;
 		}
 		
 		protected boolean changesEqualUnder(
@@ -328,12 +325,20 @@ public class ReactionRule extends ModelObject {
 	
 	@Override
 	public void dispose() {
-		redex.dispose();
-		reactum.dispose();
-		redex = reactum = null;
-		redexToReactum.clear();
-		redexToReactum = null;
-		changes.clear();
+		if (redex != null) {
+			redex.dispose();
+			redex = null;
+		}
+		
+		if (reactum != null) {
+			reactum.dispose();
+			reactum = null;
+		}
+		
+		if (changes != null) {
+			changes.clear();
+			changes = null;
+		}
 		
 		super.dispose();
 	}
