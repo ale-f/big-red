@@ -2,18 +2,18 @@ package org.bigraph.model;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Container.ChangeAddChild;
 import org.bigraph.model.Layoutable.ChangeName;
 import org.bigraph.model.Layoutable.ChangeRemove;
 import org.bigraph.model.Point.ChangeConnect;
 import org.bigraph.model.Point.ChangeDisconnect;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.INamespace;
+import org.bigraph.model.names.Namespace;
 
 public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;
@@ -37,10 +37,6 @@ public class ReactionRule extends ModelObject {
 		if (reactum == null)
 			reactum = redex.clone(redexToReactum);
 		return reactum;
-	}
-	
-	public Map<ModelObject, ModelObject> getRedexToReactumMap() {
-		return redexToReactum;
 	}
 	
 	protected abstract class OperationRunner {
@@ -151,18 +147,51 @@ public class ReactionRule extends ModelObject {
 	 * context of the reactum
 	 */
 	public Change getReactumChange(Change redexChange) {
-		Change reactumChange =
-				translateChange(getRedexToReactumMap(), redexChange);
+		Change reactumChange = translateChange(getReactum(), redexChange);
 		return (reactumChange != null ? reactumChange : Change.INVALID);
 	}
 	
-	public static Change translateChange(
-			Map<ModelObject, ModelObject> oldToNew, Change change) {
+	private static Layoutable getReactumObject(
+			Bigraph reactum, Layoutable redexObject) {
+		return getReactumObject(null, reactum, redexObject);
+	}
+	
+	private static Layoutable getReactumObject(PropertyScratchpad context,
+			Bigraph reactum, Layoutable redexObject) {
+		Port p = null;
+		if (redexObject instanceof Port) {
+			p = (Port)redexObject;
+			redexObject = p.getParent(context);
+		}
+		Namespace<Layoutable>
+			reactumNamespace = reactum.getNamespace(
+					Bigraph.getNSI(redexObject));
+		if (reactumNamespace == null)
+			return null;
+		Layoutable
+			counterpart = reactumNamespace.get(context, redexObject.getName());
+		if (counterpart != null) {
+			if (redexObject instanceof Node) {
+				/* XXX */
+				String
+					redexControl = ((Node)redexObject).getControl().getName(),
+					reactumControl =
+						((Node)counterpart).getControl().getName();
+				if (!redexControl.equals(reactumControl))
+					return null;
+			}
+			if (p != null)
+				counterpart = ((Node)counterpart).getPort(p.getName());
+		}
+		return counterpart;
+	}
+	
+	public static Change translateChange(Bigraph reactum, Change change) {
 		if (change instanceof ChangeGroup) {
 			ChangeGroup cg_ = (ChangeGroup)change,
 				cg = new ChangeGroup();
 			for (Change i : cg_) {
-				Change iP = translateChange(oldToNew, i);
+				Change iP = translateChange(reactum, i);
 				if (iP != null) {
 					cg.add(iP);
 				} else {
@@ -175,13 +204,14 @@ public class ReactionRule extends ModelObject {
 		} else if (change instanceof ChangeAddChild) {
 			ChangeAddChild ch = (ChangeAddChild)change;
 			
-			Container reactumParent = (Container)oldToNew.get(ch.getCreator());
-			Layoutable reactumChild = (Layoutable)oldToNew.get(ch.child);
+			Container reactumParent =
+					(Container)getReactumObject(reactum, ch.getCreator());
+			Layoutable reactumChild = getReactumObject(reactum, ch.child);
 			
 			if (reactumParent == null)
 				return null;
 			if (reactumChild == null)
-				reactumChild = ch.child.clone(oldToNew);
+				reactumChild = ch.child.clone(null);
 			
 			/*
 			 * XXX: a BigraphScratchpad should really be used here so that
@@ -200,7 +230,7 @@ public class ReactionRule extends ModelObject {
 			ChangeRemove ch = (ChangeRemove)change;
 			
 			Layoutable reactumChild =
-					(Layoutable)oldToNew.get(ch.getCreator());
+					getReactumObject(reactum, ch.getCreator());
 			
 			if (reactumChild == null)
 				return null;
@@ -209,7 +239,8 @@ public class ReactionRule extends ModelObject {
 		} else if (change instanceof ChangeName) {
 			ChangeName ch = (ChangeName)change;
 			
-			Layoutable reactumModel = (Layoutable)oldToNew.get(ch.getCreator());
+			Layoutable reactumModel =
+					getReactumObject(reactum, ch.getCreator());
 			if (reactumModel == null)
 				return null;
 			
@@ -217,8 +248,10 @@ public class ReactionRule extends ModelObject {
 		} else if (change instanceof ChangeConnect) {
 			ChangeConnect ch = (ChangeConnect)change;
 			
-			Point reactumPoint = (Point)oldToNew.get(ch.getCreator());
-			Link reactumLink = (Link)oldToNew.get(ch.link);
+			Point reactumPoint =
+					(Point)getReactumObject(reactum, ch.getCreator());
+			Link reactumLink =
+					(Link)getReactumObject(reactum, ch.link);
 			if (reactumPoint == null || reactumLink == null)
 				return null;
 			
@@ -226,7 +259,8 @@ public class ReactionRule extends ModelObject {
 		} else if (change instanceof ChangeDisconnect) {
 			ChangeDisconnect ch = (ChangeDisconnect)change;
 			
-			Point reactumPoint = (Point)oldToNew.get(ch.getCreator());
+			Point reactumPoint =
+					(Point)getReactumObject(reactum, ch.getCreator());
 			if (reactumPoint == null)
 				return null;
 			
@@ -234,7 +268,8 @@ public class ReactionRule extends ModelObject {
 		} else if (change instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)change;
 			
-			ModelObject reactumObject = oldToNew.get(ch.getCreator());
+			ModelObject reactumObject =
+					getReactumObject(reactum, (Layoutable)ch.getCreator());
 			if (reactumObject == null)
 				return null;
 			
@@ -250,17 +285,7 @@ public class ReactionRule extends ModelObject {
 			m = new HashMap<ModelObject, ModelObject>();
 		ReactionRule rr = (ReactionRule)super.clone(m);
 		
-		Map<ModelObject, ModelObject>
-			/* redex to reactum */
-			rR = getRedexToReactumMap(),
-			/* redex to cloned redex */
-			rCr = new HashMap<ModelObject, ModelObject>(),
-			/* reactum to cloned reactum */
-			RCR = new HashMap<ModelObject, ModelObject>(),
-			/* cloned redex to cloned reactum */
-			CrCR = rr.getRedexToReactumMap();
-		
-		rr.setRedex(getRedex().clone(rCr));
+		rr.setRedex(getRedex().clone(m));
 		
 		Change inv = getChanges().inverse();
 		try {
@@ -271,13 +296,14 @@ public class ReactionRule extends ModelObject {
 					"Apparently valid change " + inv +
 					" rejected: shouldn't happen", cre);
 		}
-		rr.setReactum(getReactum().clone(RCR));
+		Bigraph rrr = getReactum().clone(m);
+		rr.setReactum(rrr);
 		
 		ChangeGroup cg = rr.getChanges();
 		for (Change c : getChanges()) {
 			try {
-				Change cP = translateChange(RCR, c);
-				rr.getReactum().tryApplyChange(cP);
+				Change cP = translateChange(rrr, c);
+				rrr.tryApplyChange(cP);
 				cg.add(cP);
 				
 				getReactum().tryApplyChange(c);
@@ -285,14 +311,6 @@ public class ReactionRule extends ModelObject {
 				throw new Error("Apparently valid change " + c +
 						" rejected: shouldn't happen", cre);
 			}
-		}
-		
-		for (Entry<ModelObject, ModelObject> e : rCr.entrySet())
-			CrCR.put(e.getValue(), RCR.get(rR.get(e.getKey())));
-		
-		if (m != null) {
-			m.putAll(rCr);
-			m.putAll(RCR);
 		}
 		
 		return rr;
