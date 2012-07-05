@@ -1,5 +1,7 @@
 package org.bigraph.model.changes;
 
+import org.bigraph.model.assistants.PropertyScratchpad;
+
 /**
  * A Change is a reversible modification.
  * @author alec
@@ -45,6 +47,17 @@ public abstract class Change {
 	 */
 	public boolean isReady() {
 		return true /* by default; subclasses can override */;
+	}
+	
+	/**
+	 * Simulates the execution of this {@link Change} in the given {@link
+	 * PropertyScratchpad}. (No validation is performed by this method.)
+	 * @param context a {@link PropertyScratchpad} to populate with
+	 * modifications
+	 */
+	public void simulate(PropertyScratchpad context) {
+		throw new UnsupportedOperationException("" + this +
+				" doesn't support the simulate(PropertyScratchpad) method");
 	}
 	
 	/**
