@@ -47,9 +47,17 @@
                   label="Open"
                   style="push">
             </command>
+            <separator
+                  name="org.bigraph.bigwb.separator4">
+            </separator>
             <command
                   commandId="org.eclipse.ui.file.close"
                   label="Close"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.closeAll"
+                  label="Close All"
                   style="push">
             </command>
             <separator
@@ -57,13 +65,26 @@
                   visible="true">
             </separator>
             <command
-                  commandId="org.eclipse.ui.file.export"
-                  label="Export"
+                  commandId="org.eclipse.ui.file.save"
+                  label="Save"
                   style="push">
             </command>
             <command
+                  commandId="org.eclipse.ui.file.saveAs"
+                  label="Save As..."
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator5">
+            </separator>
+            <command
                   commandId="org.eclipse.ui.file.import"
                   label="Import"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.export"
+                  label="Export"
                   style="push">
             </command>
             <separator
@@ -92,13 +113,13 @@
                   name="org.bigraph.bigwb.separator3">
             </separator>
             <command
-                  commandId="org.eclipse.ui.edit.copy"
-                  label="Copy"
+                  commandId="org.eclipse.ui.edit.cut"
+                  label="Cut"
                   style="push">
             </command>
             <command
-                  commandId="org.eclipse.ui.edit.cut"
-                  label="Cut"
+                  commandId="org.eclipse.ui.edit.copy"
+                  label="Copy"
                   style="push">
             </command>
             <command
@@ -115,6 +136,17 @@
             </command>
             <command
                   commandId="org.eclipse.ui.edit.cut"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="View">
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.perspectives.showPerspective"
                   style="push">
             </command>
          </menu>
