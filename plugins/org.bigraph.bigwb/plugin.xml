@@ -29,6 +29,26 @@
                name="appName"
                value="BigWB">
          </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/bwb_16.gif">
+         </property>
       </product>
    </extension>
    <extension
@@ -44,11 +64,15 @@
             </command>
             <command
                   commandId="org.eclipse.ui.file.openWorkspace"
-                  label="Open"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.text.openLocalFile"
                   style="push">
             </command>
             <separator
-                  name="org.bigraph.bigwb.separator4">
+                  name="org.bigraph.bigwb.separator4"
+                  visible="true">
             </separator>
             <command
                   commandId="org.eclipse.ui.file.close"
@@ -75,7 +99,8 @@
                   style="push">
             </command>
             <separator
-                  name="org.bigraph.bigwb.separator5">
+                  name="org.bigraph.bigwb.separator5"
+                  visible="true">
             </separator>
             <command
                   commandId="org.eclipse.ui.file.import"
@@ -110,7 +135,8 @@
                   style="push">
             </command>
             <separator
-                  name="org.bigraph.bigwb.separator3">
+                  name="org.bigraph.bigwb.separator3"
+                  visible="true">
             </separator>
             <command
                   commandId="org.eclipse.ui.edit.cut"
@@ -135,7 +161,7 @@
                   style="push">
             </command>
             <command
-                  commandId="org.eclipse.ui.edit.cut"
+                  commandId="org.eclipse.equinox.p2.ui.sdk.update"
                   style="push">
             </command>
          </menu>
