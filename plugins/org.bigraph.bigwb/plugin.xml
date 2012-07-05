@@ -36,13 +36,85 @@
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
+               label="File">
+            <command
+                  commandId="org.eclipse.ui.newWizard"
+                  label="New"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.openWorkspace"
+                  label="Open"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.close"
+                  label="Close"
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.export"
+                  label="Export"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.import"
+                  label="Import"
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="Edit">
+            <command
+                  commandId="org.eclipse.ui.edit.undo"
+                  label="Undo"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.redo"
+                  label="Redo"
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator3">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.edit.copy"
+                  label="Copy"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.cut"
+                  label="Cut"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.paste"
+                  label="Paste"
+                  style="push">
+            </command>
+         </menu>
+         <menu
                label="Update">
             <command
                   commandId="org.eclipse.equinox.p2.ui.sdk.install"
                   style="push">
             </command>
             <command
-                  commandId="org.eclipse.equinox.p2.ui.sdk.update"
+                  commandId="org.eclipse.ui.edit.cut"
                   style="push">
             </command>
          </menu>
