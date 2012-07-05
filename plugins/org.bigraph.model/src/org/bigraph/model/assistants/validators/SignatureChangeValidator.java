@@ -8,7 +8,7 @@ import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
 import org.bigraph.model.Control.ChangeName;
 import org.bigraph.model.Signature.ChangeAddControl;
-import org.bigraph.model.Signature.ChangeRemoveControl;
+import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 
@@ -30,7 +30,7 @@ public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 			/* do nothing? */
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
-			checkEligibility(b, c.control);
+			checkEligibility(b, c.getCreator());
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			checkEligibility(b, c.getCreator());

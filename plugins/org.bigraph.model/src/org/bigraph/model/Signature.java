@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
@@ -57,7 +58,7 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 
 		@Override
 		public ChangeRemoveControl inverse() {
-			return new ChangeRemoveControl(control);
+			return control.new ChangeRemoveControl();
 		}
 		
 		@Override
@@ -71,32 +72,6 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 			context.<Control>getModifiableList(
 					getCreator(), PROPERTY_CONTROL, getControls()).
 				add(control);
-			context.setProperty(control,
-					Control.PROPERTY_SIGNATURE, getCreator());
-		}
-	}
-	
-	public class ChangeRemoveControl extends SignatureChange {
-		public ChangeRemoveControl(Control control) {
-			super(control);
-		}
-
-		@Override
-		public ChangeAddControl inverse() {
-			return new ChangeAddControl(control);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(remove control " + control + " from signature " +
-					getCreator();
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.<Control>getModifiableList(
-					getCreator(), PROPERTY_CONTROL, getControls()).
-				remove(control);
 			context.setProperty(control,
 					Control.PROPERTY_SIGNATURE, getCreator());
 		}
@@ -170,7 +145,7 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 			c.getCreator().addControl(c.control);
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
-			c.getCreator().removeControl(c.control);
+			c.getCreator().getSignature().removeControl(c.getCreator());
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			c.getCreator().setName(c.name);
@@ -220,9 +195,5 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	
 	public ChangeAddControl changeAddControl(Control control) {
 		return new ChangeAddControl(control);
-	}
-	
-	public ChangeRemoveControl changeRemoveControl(Control control) {
-		return new ChangeRemoveControl(control);
 	}
 }

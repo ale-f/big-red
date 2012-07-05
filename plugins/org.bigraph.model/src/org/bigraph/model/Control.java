@@ -170,6 +170,36 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 
+	public class ChangeRemoveControl extends ControlChange {
+		private Signature oldSignature;
+		
+		@Override
+		public void beforeApply() {
+			oldSignature = getSignature();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldSignature != null);
+		}
+		
+		@Override
+		public Change inverse() {
+			return oldSignature.new ChangeAddControl(getCreator());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			Signature s = getCreator().getSignature(context);
+			
+			context.<Control>getModifiableList(
+					s, Signature.PROPERTY_CONTROL, s.getControls()).
+				remove(getCreator());
+			context.setProperty(getCreator(),
+					Control.PROPERTY_SIGNATURE, null);
+		}
+	}
+	
 	public static enum Kind {
 		ATOMIC {
 			@Override
@@ -336,5 +366,9 @@ public class Control extends ModelObject implements IControl {
 	
 	public ChangeAddPort changeAddPort(PortSpec port, String name) {
 		return new ChangeAddPort(port, name);
+	}
+	
+	public ChangeRemoveControl changeRemove() {
+		return new ChangeRemoveControl();
 	}
 }

@@ -341,7 +341,7 @@ implements PropertyChangeListener {
 					((IStructuredSelection)controls.getSelection()).iterator();
 				ChangeGroup cg = new ChangeGroup();
 				while (it.hasNext())
-					cg.add(getModel().changeRemoveControl((Control)it.next()));
+					cg.add(((Control)it.next()).changeRemove());
 				doChange(cg);
 				
 				controls.setSelection(StructuredSelection.EMPTY);
