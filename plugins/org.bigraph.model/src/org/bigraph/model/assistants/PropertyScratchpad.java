@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bigraph.model.changes.Change;
+
 public class PropertyScratchpad {
 	private static final class NNPair {
 		private Object target;
@@ -61,6 +63,12 @@ public class PropertyScratchpad {
 		if (target != null && name != null) {
 			return changes.get(getKey(target, name));
 		} else return null;
+	}
+	
+	public Change executeChange(Change c) {
+		if (c != null)
+			c.simulate(this);
+		return c;
 	}
 	
 	public <T> List<T> getModifiableList(
