@@ -29,12 +29,131 @@
                name="appName"
                value="BigWB">
          </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/bwb_16.gif">
+         </property>
       </product>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               label="File">
+            <command
+                  commandId="org.eclipse.ui.newWizard"
+                  label="New"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.openWorkspace"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.text.openLocalFile"
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator4"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.close"
+                  label="Close"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.closeAll"
+                  label="Close All"
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator1"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.save"
+                  label="Save"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.saveAs"
+                  label="Save As..."
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator5"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.import"
+                  label="Import"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.file.export"
+                  label="Export"
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.file.exit"
+                  label="Exit"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="Edit">
+            <command
+                  commandId="org.eclipse.ui.edit.undo"
+                  label="Undo"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.redo"
+                  label="Redo"
+                  style="push">
+            </command>
+            <separator
+                  name="org.bigraph.bigwb.separator3"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.edit.cut"
+                  label="Cut"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.copy"
+                  label="Copy"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.edit.paste"
+                  label="Paste"
+                  style="push">
+            </command>
+         </menu>
          <menu
                label="Update">
             <command
@@ -43,6 +162,17 @@
             </command>
             <command
                   commandId="org.eclipse.equinox.p2.ui.sdk.update"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               label="View">
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.eclipse.ui.perspectives.showPerspective"
                   style="push">
             </command>
          </menu>

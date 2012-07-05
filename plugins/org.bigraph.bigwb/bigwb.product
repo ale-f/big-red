@@ -10,10 +10,13 @@
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages/>
+   <windowImages i16="/org.bigraph.bigwb/icons/bwb_16.gif"/>
 
    <splash
-      location="org.bigraph.bigwb" />
+      location="org.bigraph.bigwb"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="7,252,445,20"
+      startupForegroundColor="000000" />
    <launcher name="bigwb">
       <solaris/>
       <win useIco="false">
