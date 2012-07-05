@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   version="1.1"
+   width="744.09448"
+   height="1052.3622"
+   id="svg2">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient3163-7">
+      <stop
+         id="stop3165-7"
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop3167-5"
+         style="stop-color:#ff0000;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
+    <radialGradient
+       cx="147.14287"
+       cy="68.14286"
+       r="36.42857"
+       fx="147.14287"
+       fy="68.14286"
+       id="radialGradient3036"
+       xlink:href="#linearGradient3163-7"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       cx="147.14287"
+       cy="68.14286"
+       r="36.42857"
+       fx="147.14287"
+       fy="68.14286"
+       id="radialGradient2407"
+       xlink:href="#linearGradient3163"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       cx="147.14287"
+       cy="68.14286"
+       r="36.42857"
+       fx="147.14287"
+       fy="68.14286"
+       id="radialGradient2397"
+       xlink:href="#linearGradient3163"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       cx="147.14287"
+       cy="68.14286"
+       r="36.42857"
+       fx="147.14287"
+       fy="68.14286"
+       id="radialGradient2404"
+       xlink:href="#linearGradient3163"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       id="linearGradient3155">
+      <stop
+         id="stop3157"
+         style="stop-color:#000000;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop3159"
+         style="stop-color:#000000;stop-opacity:0"
+         offset="1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3163">
+      <stop
+         id="stop3165"
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="0" />
+      <stop
+         id="stop3167"
+         style="stop-color:#ff0000;stop-opacity:1"
+         offset="1" />
+    </linearGradient>
+  </defs>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1">
+    <rect
+       width="494"
+       height="294"
+       x="151.52289"
+       y="525.06256"
+       id="rect3029"
+       style="fill:#f9f9f9;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none" />
+    <rect
+       width="498.00522"
+       height="432.34528"
+       x="234.25386"
+       y="84.63604"
+       id="rect3028"
+       style="fill:#ffffff;fill-opacity:0.99607843" />
+    <path
+       d="m 294.44803,319.26143 0,23.73771 43.08179,0 -38.13897,66.08723 27.33801,0 38.13897,-66.08723 72.49459,0 38.13897,66.08723 27.39904,0 -38.13897,-66.08723 43.08179,0 0,-23.73771 -213.39522,0 z"
+       id="rect3033" />
+    <path
+       d="m 473.83049,283.6512 -12.17061,12.17061 -7.90467,-29.48557 -7.77916,7.77918 7.90464,29.48555 -18.56966,18.56965 6.71267,6.71268 38.51944,-38.51947 -6.71267,-6.71263 z"
+       id="path3093" />
+    <rect
+       width="238.39955"
+       height="181.32359"
+       rx="51.347591"
+       x="281.94589"
+       y="119.48407"
+       id="rect4071"
+       style="opacity:0.75;fill:#ffffff;stroke:#b3b3b3;stroke-width:8.39645195;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:25.18935594, 25.18935594;stroke-dashoffset:0" />
+    <path
+       d="m 328.46076,283.6512 12.17062,12.17061 7.90466,-29.48557 7.77915,7.77918 -7.90462,29.48555 18.56966,18.56965 -6.71268,6.71268 -38.51945,-38.51947 6.71267,-6.71263 z"
+       id="path3284" />
+    <path
+       d="m 401.12016,148.46429 -3.60032,6.34632 -30.75527,53.21152 -30.75528,53.27251 -3.66134,6.28531 7.32269,0 61.44952,0 61.51055,0 7.26166,0 -3.60032,-6.28531 -30.75527,-53.27251 -30.75527,-53.21152 -3.66135,-6.34632 z m 0,16.78114 26.7278,46.25496 0.42715,0.73227 27.15495,46.98722 -54.3099,0 -54.24888,0 27.15494,-46.98722 0.42717,-0.73227 26.66677,-46.25496 z"
+       id="path4080"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#b3b3b3;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:4.30000019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+    <g
+       transform="matrix(1.9527158,0,0,1.9527158,-495.73063,-475.82515)"
+       id="text4086"
+       style="font-size:26.40179253px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b4b4b4;fill-opacity:0.99607843;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata">
+      <path
+         d="m 418.59872,318.71223 c 2.04173,2e-5 3.66984,1.09129 4.88433,3.27382 1.09126,1.95375 1.6369,4.33871 1.63691,7.15489 -10e-6,2.76339 -0.52805,5.09555 -1.58411,6.99647 -1.16169,2.11214 -2.73699,3.16822 -4.72592,3.16822 -2.12975,0 -3.81066,-1.06488 -5.04274,-3.19462 -1.10888,-1.91853 -1.66331,-4.26828 -1.66331,-7.04928 0,-2.79858 0.54563,-5.17474 1.63691,-7.12848 1.21448,-2.14733 2.83378,-3.221 4.85793,-3.22102 m 0.21121,18.87728 c 1.21448,0 2.19134,-0.90646 2.9306,-2.71939 0.68644,-1.6545 1.02966,-3.63463 1.02967,-5.9404 -10e-6,-2.27054 -0.34323,-4.17147 -1.02967,-5.70279 -0.75686,-1.7249 -1.80413,-2.58735 -3.14181,-2.58737 -1.3201,2e-5 -2.37617,0.88008 -3.16822,2.64018 -0.72165,1.60172 -1.08247,3.54665 -1.08247,5.83479 0,2.30577 0.36962,4.2507 1.10887,5.8348 0.80965,1.76012 1.92733,2.64018 3.35303,2.64018"
+         id="path4233" />
+    </g>
+    <path
+       d="m 443.11943,209.49299 c 0,6.26408 -5.07805,11.34213 -11.34212,11.34213 -6.26408,0 -11.34211,-5.07805 -11.34211,-11.34213 0,-6.26406 5.07803,-11.3421 11.34211,-11.3421 6.26407,0 11.34212,5.07804 11.34212,11.3421 z"
+       id="path4090"
+       style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
+    <path
+       d="m 440.06722,213.80278 c 2.97634,0.0207 5.72999,-0.55215 8.11597,-1.6476 4.77195,-2.19089 7.97243,-6.14313 10.12972,-10.0687 4.31457,-7.8511 5.00383,-16.47604 5.00383,-16.47604 l -8.36007,-0.79328 c 0,0 -0.82174,7.40847 -4.02748,13.24185 -1.60287,2.91668 -3.70646,5.28437 -6.2853,6.46838 -2.57883,1.18398 -5.90542,1.49103 -11.1671,-0.54921 l -2.99008,7.87188 c 3.41006,1.32226 6.60416,1.93206 9.58051,1.95272 z"
+       id="path4092"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:4.17500019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+    <path
+       d="m 446.51998,173.36254 28.02253,2.19939 -0.86819,11.06151 -28.02253,-2.19936 z"
+       id="rect4098"
+       style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
+    <g
+       transform="matrix(1.7297659,0,0,1.7297659,-260.40999,-117.6536)"
+       id="g4151">
+      <text
+         x="320.77072"
+         y="338.79074"
+         id="text4157"
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+           x="320.77072"
+           y="338.79074"
+           id="tspan4159"
+           style="font-size:40px;font-weight:bold;text-align:start;text-anchor:start">BigWB</tspan></text>
+    </g>
+    <g
+       transform="matrix(0.88582574,0,0,0.88582574,111.2237,229.13654)"
+       id="g4161" />
+    <g
+       transform="matrix(1.3519182,0,0,1.3519182,18.068902,-236.51105)"
+       id="g3831">
+      <path
+         d="m 226.77729,701.29125 0,12.15625 22.0625,0 -19.53125,33.84375 14,0 19.53125,-33.84375 37.125,0 19.53125,33.84375 14.03125,0 -19.53125,-33.84375 22.0625,0 0,-12.15625 -109.28125,0 z"
+         id="path4167" />
+      <path
+         d="m 318.64036,683.05498 -6.23266,6.23266 -4.04804,-15.09977 -3.98376,3.98377 4.04802,15.09977 -9.50966,9.50965 3.43761,3.43761 19.72609,-19.7261 -3.43761,-3.43759 z"
+         id="path4169" />
+      <rect
+         width="122.08614"
+         height="92.85714"
+         rx="26.295475"
+         x="220.37483"
+         y="598.98383"
+         id="rect4171"
+         style="opacity:0.75;fill:#ffffff;stroke:#b3b3b3;stroke-width:4.29988432;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:12.89965296, 12.89965296;stroke-dashoffset:0" />
+      <path
+         d="m 244.19546,683.05498 6.23266,6.23266 4.04804,-15.09977 3.98376,3.98377 -4.04802,15.09977 9.50966,9.50965 -3.43761,3.43761 -19.72609,-19.7261 3.43761,-3.43759 z"
+         id="path4173" />
+      <path
+         d="m 169.20055,40.185825 15.74823,27.27675 15.74824,27.27675 -31.49647,0 -31.49648,-10e-7 15.74824,-27.276749 z"
+         transform="translate(112.21737,577.94978)"
+         id="path4175"
+         style="fill:#ffffff;stroke:#b3b3b3;stroke-width:4.30000019;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+      <text
+         x="232.8784"
+         y="633.08405"
+         id="text4177"
+         xml:space="preserve"
+         style="font-size:26.40179253px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b4b4b4;fill-opacity:0.99607843;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+           x="232.8784"
+           y="633.08405"
+           id="tspan4179">0</tspan></text>
+      <path
+         d="m 278.0445,255.60435 a 7.5761442,7.5761442 0 1 1 -15.15229,0 7.5761442,7.5761442 0 1 1 15.15229,0 z"
+         transform="matrix(0.76666667,0,0,0.76666667,89.745555,449.11469)"
+         id="path4181"
+         style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
+      <path
+         d="m 301.34994,647.2851 c 1.52421,0.0106 2.93437,-0.28276 4.15625,-0.84375 2.44375,-1.12197 4.08274,-3.14594 5.1875,-5.15625 2.20953,-4.02061 2.5625,-8.4375 2.5625,-8.4375 l -4.28125,-0.40625 c 0,0 -0.42082,3.79393 -2.0625,6.78125 -0.82084,1.49366 -1.89811,2.70617 -3.21875,3.3125 -1.32064,0.60633 -3.02421,0.76357 -5.71875,-0.28125 l -1.53125,4.03125 c 1.74632,0.67714 3.38204,0.98942 4.90625,1 z"
+         id="path4183"
+         style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:4.17500019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+      <rect
+         width="14.394673"
+         height="5.6821079"
+         x="352.74698"
+         y="600.81665"
+         transform="matrix(0.99693414,0.07824528,-0.07824528,0.99693414,0,0)"
+         id="rect4185"
+         style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
+    </g>
+    <g
+       transform="matrix(0.98404759,0,0,0.98404759,-154.63077,459.46161)"
+       id="g4187">
+      <text
+         x="379.34213"
+         y="352.10519"
+         id="text4189"
+         xml:space="preserve"
+         style="font-size:31.24471092px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+           x="379.34213"
+           y="352.10519"
+           id="tspan4191"
+           style="font-size:15.62235546px;font-weight:bold;text-align:start;text-anchor:start">the Bigraph Workbench</tspan></text>
+      <text
+         x="320.77072"
+         y="338.79074"
+         id="text4193"
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+           x="320.77072"
+           y="338.79074"
+           id="tspan4195"
+           style="font-size:40px;font-weight:bold;text-align:start;text-anchor:start">BigWB</tspan></text>
+    </g>
+    <text
+       x="396.3735"
+       y="493.09039"
+       id="text4218"
+       xml:space="preserve"
+       style="font-size:54.04601669px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+         x="396.3735"
+         y="493.09039"
+         id="tspan4220"
+         style="font-size:27.02300835px;font-weight:bold;text-align:start;text-anchor:start">the Bigraph Workbench</tspan></text>
+    <path
+       d="m 91.298128,945.82637 0,12.15625 22.062502,0 -19.531252,33.84375 14.000002,0 19.53125,-33.84375 37.125,0 19.53125,33.84375 14.03125,0 -19.53125,-33.84375 22.0625,0 0,-12.15625 -109.281252,0 z"
+       id="path4167-0" />
+    <path
+       d="m 183.1612,927.5901 -6.23266,6.23266 -4.04804,-15.09977 -3.98376,3.98377 4.04802,15.09977 -9.50966,9.50965 3.43761,3.43761 19.72609,-19.7261 -3.43761,-3.43759 z"
+       id="path4169-4" />
+    <rect
+       width="122.08614"
+       height="92.85714"
+       rx="26.295475"
+       x="84.895683"
+       y="843.51892"
+       id="rect4171-1"
+       style="opacity:0.75;fill:#ffffff;stroke:#b3b3b3;stroke-width:4.29988432;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:12.89965296, 12.89965296;stroke-dashoffset:0" />
+    <path
+       d="m 108.7163,927.5901 6.23266,6.23266 4.04804,-15.09977 3.98376,3.98377 -4.04802,15.09977 9.50966,9.50965 -3.43761,3.43761 -19.72609,-19.7261 3.43761,-3.43759 z"
+       id="path4173-6" />
+    <path
+       d="m 169.20055,40.185825 15.74823,27.27675 15.74824,27.27675 -31.49647,0 -31.49648,-10e-7 15.74824,-27.276749 z"
+       transform="translate(-23.261802,822.4849)"
+       id="path4175-5"
+       style="fill:#ffffff;stroke:#b3b3b3;stroke-width:4.30000019;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    <text
+       x="97.399254"
+       y="877.61914"
+       id="text4177-1"
+       xml:space="preserve"
+       style="font-size:26.40179253px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#b4b4b4;fill-opacity:0.99607843;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+         x="97.399254"
+         y="877.61914"
+         id="tspan4179-9">0</tspan></text>
+    <path
+       d="m 278.0445,255.60435 a 7.5761442,7.5761442 0 1 1 -15.15229,0 7.5761442,7.5761442 0 1 1 15.15229,0 z"
+       transform="matrix(0.76666667,0,0,0.76666667,-45.733612,693.64981)"
+       id="path4181-0"
+       style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
+    <path
+       d="m 165.87078,891.82022 c 1.52421,0.0106 2.93437,-0.28276 4.15625,-0.84375 2.44375,-1.12197 4.08274,-3.14594 5.1875,-5.15625 2.20953,-4.02061 2.5625,-8.4375 2.5625,-8.4375 l -4.28125,-0.40625 c 0,0 -0.42082,3.79393 -2.0625,6.78125 -0.82084,1.49366 -1.89811,2.70617 -3.21875,3.3125 -1.32064,0.60633 -3.02421,0.76357 -5.71875,-0.28125 l -1.53125,4.03125 c 1.74632,0.67714 3.38204,0.98942 4.90625,1 z"
+       id="path4183-8"
+       style="font-size:medium;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-indent:0;text-align:start;text-decoration:none;line-height:normal;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;text-anchor:start;baseline-shift:baseline;color:#000000;fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:4.17500019;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate;font-family:Sans;-inkscape-font-specification:Sans" />
+    <rect
+       width="14.394673"
+       height="5.6821079"
+       x="236.81689"
+       y="855.20264"
+       transform="matrix(0.99693414,0.07824528,-0.07824528,0.99693414,0,0)"
+       id="rect4185-6"
+       style="fill:#b3b3b3;fill-opacity:1;stroke:none" />
+    <g
+       transform="matrix(0.98404759,0,0,0.98404759,-103.24106,641.72542)"
+       id="g4187-7">
+      <text
+         x="379.34213"
+         y="352.10519"
+         id="text4189-5"
+         xml:space="preserve"
+         style="font-size:31.24471092px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+           x="379.34213"
+           y="352.10519"
+           id="tspan4191-7"
+           style="font-size:15.62235546px;font-weight:bold;text-align:start;text-anchor:start">the Bigraph Workbench</tspan></text>
+      <text
+         x="320.77072"
+         y="338.79074"
+         id="text4193-8"
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+           x="320.77072"
+           y="338.79074"
+           id="tspan4195-1"
+           style="font-size:40px;font-weight:bold;text-align:start;text-anchor:start">BigWB</tspan></text>
+    </g>
+  </g>
+</svg>

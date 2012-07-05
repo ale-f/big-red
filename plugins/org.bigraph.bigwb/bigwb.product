@@ -14,9 +14,7 @@
 
    <splash
       location="org.bigraph.bigwb"
-      startupProgressRect="5,275,445,15"
-      startupMessageRect="7,252,445,20"
-      startupForegroundColor="000000" />
+      startupProgressRect="1,287,493,7" />
    <launcher name="bigwb">
       <solaris/>
       <win useIco="false">
