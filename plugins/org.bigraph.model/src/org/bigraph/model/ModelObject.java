@@ -247,7 +247,9 @@ public abstract class ModelObject {
 		c_.beforeApply();
 		if (c_ instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)c_)
-				doChange(c);
+				if (!doChange(c))
+					throw new Error("Couldn't apply " + c +
+							" (how did it pass validation?)");
 		} else if (c_ instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)c_;
 			c.getCreator().setExtendedData(c.key, c.newValue);
