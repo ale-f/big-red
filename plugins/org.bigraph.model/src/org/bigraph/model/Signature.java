@@ -121,21 +121,11 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		}
 	}
 	
-	@Deprecated
-	public void addControl(PropertyScratchpad context, Control c) {
-		changeAddControl(c).simulate(context);
-	}
-	
 	protected void removeControl(Control m) {
 		if (controls.remove(m)) {
 			m.setSignature(null);
 			firePropertyChange(PROPERTY_CONTROL, m, null);
 		}
-	}
-	
-	@Deprecated
-	public void removeControl(PropertyScratchpad context, Control c) {
-		changeRemoveControl(c).simulate(context);
 	}
 	
 	public Control getControl(String name) {

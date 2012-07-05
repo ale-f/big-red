@@ -39,10 +39,10 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 			ChangeExtendedData c = (ChangeExtendedData)b;
 			ExtendedDataValidator v = c.immediateValidator;
 			if (v != null)
-				v.validate(c, scratch);
+				v.validate(c, getScratch());
 			if (c.finalValidator != null)
 				finalChecks.add(c);
-			scratch.setProperty(c.getCreator(), c.key, c.newValue);
+			c.simulate(getScratch());
 		} else return b;
 		return null;
 	}

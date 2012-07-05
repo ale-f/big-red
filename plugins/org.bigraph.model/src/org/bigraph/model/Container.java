@@ -80,22 +80,11 @@ public abstract class Container extends Layoutable {
 		}
 	}
 	
-	@Deprecated
-	public void addChild(
-			PropertyScratchpad context, Layoutable child, String name) {
-		changeAddChild(child, name).simulate(context);
-	}
-	
 	protected void removeChild(Layoutable child) {
 		if (children.remove(child)) {
 			child.setParent(null);
 			firePropertyChange(PROPERTY_CHILD, child, null);
 		}
-	}
-	
-	@Deprecated
-	public void removeChild(PropertyScratchpad context, Layoutable child) {
-		child.changeRemove().simulate(context);
 	}
 	
 	public List<Layoutable> getChildren() {

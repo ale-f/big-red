@@ -217,11 +217,6 @@ public class Control extends ModelObject implements IControl {
 			firePropertyChange(PROPERTY_NAME, oldName, name);
 		}
 	}
-
-	@Deprecated
-	public void setName(PropertyScratchpad context, String name) {
-		changeName(name).simulate(context);
-	}
 	
 	@Override
 	public String getName() {
@@ -253,22 +248,11 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	@Deprecated
-	public void addPort(
-			PropertyScratchpad context, PortSpec port, String name) {
-		changeAddPort(port, name).simulate(context);
-	}
-	
 	protected void removePort(PortSpec p) {
 		if (ports.remove(p)) {
 			p.setControl(null);
 			firePropertyChange(PROPERTY_PORT, p, null);
 		}
-	}
-	
-	@Deprecated
-	public void removePort(PropertyScratchpad context, PortSpec p) {
-		p.changeRemove().simulate(context);
 	}
 	
 	public Signature getSignature() {

@@ -167,10 +167,9 @@ public class BigraphXMLLoader extends XMLLoader {
 			String linkName = getAttributeNS(e, BIGRAPH, "link");
 			if (linkName != null) {
 				Link link = links.get(linkName);
-				if (link != null) {
-					addChange(model.changeConnect(link));
-					link.addPoint(scratch, model);
-				}
+				if (link != null)
+					addChange(scratch.executeChange(
+							model.changeConnect(link)));
 			}
 		} else {
 			addNotice(Notice.WARNING, "Invalid point referenced; skipping.");
@@ -228,8 +227,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			Layoutable l = (Layoutable)model;
 			
 			String name = getAttributeNS(e, BIGRAPH, "name");
-			addChange(context.changeAddChild(l, name));
-			context.addChild(scratch, l, name);
+			addChange(scratch.executeChange(context.changeAddChild(l, name)));
 			
 			Element appearance = getNamedChildElement(e, BIG_RED, "appearance");
 			if (appearanceAllowed == Tristate.UNKNOWN) {

@@ -40,12 +40,6 @@ public abstract class Link extends Layoutable implements ILink {
 		firePropertyChange(PROPERTY_POINT, null, point);
 	}
 	
-	public void addPoint(PropertyScratchpad context, Point point) {
-		context.<Point>getModifiableList(
-				this, Link.PROPERTY_POINT, getPoints()).add(point);
-		context.setProperty(point, Point.PROPERTY_LINK, this);
-	}
-	
 	/**
 	 * Removes the given {@link Point} from this Link's set of points.
 	 * @param point a Point
@@ -55,12 +49,6 @@ public abstract class Link extends Layoutable implements ILink {
 			point.setLink(null);
 			firePropertyChange(PROPERTY_POINT, point, null);
 		}
-	}
-	
-	public void removePoint(PropertyScratchpad context, Point point) {
-		context.<Point>getModifiableList(
-				this, Link.PROPERTY_POINT, getPoints()).remove(point);
-		context.setProperty(point, Point.PROPERTY_LINK, null);
 	}
 	
 	@Override

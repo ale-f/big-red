@@ -28,31 +28,33 @@ public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 			/* do nothing */
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
-			getChangeable().addControl(getScratch(), c.control);
+			c.simulate(getScratch());
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
-			getChangeable().removeControl(getScratch(), c.control);
+			c.simulate(getScratch());
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			checkEligibility(b, c.getCreator());
-			c.getCreator().addPort(getScratch(), c.port, c.name);
+			c.simulate(getScratch());
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			Control co = c.getCreator().getControl();
 			checkEligibility(b, co);
-			co.removePort(getScratch(), c.getCreator());
+			c.simulate(getScratch());
 		} else if (b instanceof ChangeKind) {
-			/* do nothing, yet */
+			ChangeKind c = (ChangeKind)b;
+			c.simulate(getScratch());
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
 			if (c.name.trim().length() == 0)
 				rejectChange(b, "Port names must not be empty");
+			c.simulate(getScratch());
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			checkEligibility(b, c.getCreator());
 			if (c.name.trim().length() == 0)
 				rejectChange(b, "Control names must not be empty");
-			c.getCreator().setName(getScratch(), c.name);
+			c.simulate(getScratch());
 		} else return b;
 		return null;
 	}

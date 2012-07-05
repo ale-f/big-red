@@ -187,11 +187,6 @@ public abstract class Layoutable extends ModelObject {
 		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
-	@Deprecated
-	public void setName(PropertyScratchpad context, String name) {
-		changeName(name).simulate(context);
-	}
-	
 	public LayoutableChange changeName(String newName) {
 		return new ChangeName(newName);
 	}

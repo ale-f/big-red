@@ -108,20 +108,17 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 							reactum.getSignature().getControl(control));
 				} else child = (Layoutable)BigraphXMLLoader.getNewObject(type);
 				
-				if (parent != null) {
-					c = parent.changeAddChild(child, name);
-					parent.addChild(scratch, child, name);
-				}
+				if (parent != null)
+					c = scratch.executeChange(
+							parent.changeAddChild(child, name));
 			} else if (el.getLocalName().equals("remove")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					type = getAttributeNS(el, CHANGE, "type");
 				Layoutable l = getNamed(reactum, type, name);
 				
-				if (l != null) {
-					c = l.changeRemove();
-					l.getParent(scratch).removeChild(scratch, l);
-				}
+				if (l != null)
+					c = scratch.executeChange(l.changeRemove());
 			} else if (el.getLocalName().equals("rename")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
@@ -129,10 +126,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					newName = getAttributeNS(el, CHANGE, "new-name");
 				Layoutable l = getNamed(reactum, type, name);
 				
-				if (l != null) {
-					c = l.changeName(newName);
-					l.setName(scratch, newName);
-				}
+				if (l != null)
+					c = scratch.executeChange(l.changeName(newName));
 			} else if (el.getLocalName().equals("connect")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
