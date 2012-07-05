@@ -25,37 +25,32 @@ public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 	@Override
 	public Change doValidateChange(Change b) throws ChangeRejectedException {
 		if (super.doValidateChange(b) == null) {
-			/* do nothing */
+			return null;
 		} else if (b instanceof ChangeAddControl) {
-			ChangeAddControl c = (ChangeAddControl)b;
-			c.simulate(getScratch());
+			/* do nothing? */
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
-			c.simulate(getScratch());
+			checkEligibility(b, c.control);
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			checkEligibility(b, c.getCreator());
-			c.simulate(getScratch());
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			Control co = c.getCreator().getControl();
 			checkEligibility(b, co);
-			c.simulate(getScratch());
 		} else if (b instanceof ChangeKind) {
-			ChangeKind c = (ChangeKind)b;
-			c.simulate(getScratch());
+			/* do nothing */
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
 			if (c.name.trim().length() == 0)
 				rejectChange(b, "Port names must not be empty");
-			c.simulate(getScratch());
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			checkEligibility(b, c.getCreator());
 			if (c.name.trim().length() == 0)
 				rejectChange(b, "Control names must not be empty");
-			c.simulate(getScratch());
 		} else return b;
+		b.simulate(getScratch());
 		return null;
 	}
 }

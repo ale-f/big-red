@@ -50,7 +50,7 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 	protected Change doValidateChange(Change b)
 			throws ChangeRejectedException {
 		if (super.doValidateChange(b) == null) {
-			/* do nothing */
+			return null;
 		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			checkEligibility(b, c.link, c.getCreator());
@@ -58,14 +58,12 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 				rejectChange(b,
 					"Connections can only be established to Points that " +
 					"aren't already connected");
-			c.simulate(getScratch());
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			checkEligibility(b, c.getCreator());
 			Link l = c.getCreator().getLink(getScratch());
 			if (l == null)
 				rejectChange(b, "The Point is already disconnected");
-			c.simulate(getScratch());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			
@@ -95,8 +93,6 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 			if (existingParent != null)
 				rejectChange(b, c.child +
 						" already has a parent (" + existingParent + ")");
-			
-			c.simulate(getScratch());
 		} else if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
@@ -107,13 +103,12 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 			Container cp = ch.getParent(getScratch());
 			if (cp == null)
 				rejectChange(b, ch + " has no parent");
-			c.simulate(getScratch());
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(b, c.getCreator());
 			checkName(b, c.getCreator(), c.newName);
-			c.simulate(getScratch());
 		} else return b;
+		b.simulate(getScratch());
 		return null;
 	}
 }

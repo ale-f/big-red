@@ -35,6 +35,8 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 			for (Change c : (ChangeGroup)b)
 				if ((c = doValidateChange(c)) != null)
 					return c;
+			/* All changes will have been individually simulated */
+			return null;
 		} else if (b instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)b;
 			ExtendedDataValidator v = c.immediateValidator;
@@ -42,8 +44,8 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 				v.validate(c, getScratch());
 			if (c.finalValidator != null)
 				finalChecks.add(c);
-			c.simulate(getScratch());
 		} else return b;
+		b.simulate(getScratch());
 		return null;
 	}
 	
