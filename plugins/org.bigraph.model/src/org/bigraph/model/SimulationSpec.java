@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
@@ -61,6 +62,12 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 			return "Change(set signature of " + getCreator() +
 					" to " + signature + ")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.setProperty(getCreator(),
+					SimulationSpec.PROPERTY_SIGNATURE, signature);
+		}
 	}
 	
 	public class ChangeAddRule extends SimulationSpecChange {
@@ -80,6 +87,13 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 			return "Change(add reaction rule " + rule + " to " +
 					getCreator() + ")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.<ReactionRule>getModifiableList(
+					getCreator(), SimulationSpec.PROPERTY_RULE, getRules()).
+				add(rule);
+		}
 	}
 	
 	public class ChangeRemoveRule extends SimulationSpecChange {
@@ -98,6 +112,13 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		public String toString() {
 			return "Change(remove reaction rule " + rule + " from " +
 					getCreator() + ")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.<ReactionRule>getModifiableList(
+					getCreator(), SimulationSpec.PROPERTY_RULE, getRules()).
+				remove(rule);
 		}
 	}
 	
@@ -124,6 +145,12 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		public String toString() {
 			return "Change(set model of " + getCreator() +
 					" to " + model + ")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.setProperty(getCreator(),
+					SimulationSpec.PROPERTY_MODEL, model);
 		}
 	}
 	

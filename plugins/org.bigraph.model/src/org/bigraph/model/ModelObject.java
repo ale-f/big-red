@@ -67,6 +67,11 @@ public abstract class ModelObject {
 			return "Change(set extended data field " + key + " of " +
 					getCreator() + " to " + newValue + ")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.setProperty(getCreator(), key, newValue);
+		}
 	}
 	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);

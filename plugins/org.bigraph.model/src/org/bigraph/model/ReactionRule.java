@@ -86,7 +86,12 @@ public class ReactionRule extends ModelObject {
 	protected class Operation2Runner extends OperationRunner {
 		protected boolean equalsUnder(
 				ModelObject redexObject, ModelObject reactumObject) {
-			return false /* XXX */;
+			if (redexObject instanceof Layoutable &&
+					reactumObject instanceof Layoutable) {
+				Layoutable reactumCandidate =
+					getReactumObject(getReactum(), (Layoutable)redexObject);
+				return (reactumCandidate == reactumObject);
+			} else return false;
 		}
 		
 		protected boolean changesEqualUnder(

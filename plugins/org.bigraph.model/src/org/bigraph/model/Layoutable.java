@@ -67,6 +67,16 @@ public abstract class Layoutable extends ModelObject {
 		public String toString() {
 			return "Change(set name of " + getCreator() + " to " + newName + ")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			Namespace<Layoutable> ns =
+				getBigraph(context).getNamespace(Bigraph.getNSI(getCreator()));
+			
+			ns.remove(context, getName(context));
+			context.setProperty(getCreator(), Layoutable.PROPERTY_NAME, name);
+			ns.put(context, name, getCreator());
+		}
 	}
 	
 	public class ChangeRemove extends LayoutableChange {
@@ -91,6 +101,21 @@ public abstract class Layoutable extends ModelObject {
 		@Override
 		public String toString() {
 			return "Change(remove child " + getCreator() + ")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			Layoutable l = getCreator();
+			Container c = l.getParent(context);
+			
+			context.<Layoutable>getModifiableList(
+					c, Container.PROPERTY_CHILD, c.getChildren()).
+				remove(l);
+			context.setProperty(l, Layoutable.PROPERTY_PARENT, null);
+			
+			c.getBigraph(context).getNamespace(Bigraph.getNSI(l)).
+				remove(context, l.getName(context));
+			context.setProperty(l, Layoutable.PROPERTY_NAME, null);
 		}
 	}
 	
@@ -162,13 +187,9 @@ public abstract class Layoutable extends ModelObject {
 		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
+	@Deprecated
 	public void setName(PropertyScratchpad context, String name) {
-		Namespace<Layoutable> ns =
-				getBigraph(context).getNamespace(Bigraph.getNSI(this));
-		
-		ns.remove(context, getName(context));
-		context.setProperty(this, Layoutable.PROPERTY_NAME, name);
-		ns.put(context, name, this);
+		changeName(name).simulate(context);
 	}
 	
 	public LayoutableChange changeName(String newName) {

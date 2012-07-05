@@ -54,6 +54,19 @@ public abstract class Container extends Layoutable {
 		public String toString() {
 			return "Change(add child " + child + " to parent " + getCreator() + " with name \"" + name + "\")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.<Layoutable>getModifiableList(
+					getCreator(), Container.PROPERTY_CHILD, getChildren()).
+				add(child);
+			context.setProperty(child,
+					Layoutable.PROPERTY_PARENT, getCreator());
+			
+			getCreator().getBigraph(context).
+				getNamespace(Bigraph.getNSI(child)).put(context, name, child);
+			context.setProperty(child, Layoutable.PROPERTY_NAME, name);
+		}
 	}
 	
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
@@ -67,16 +80,10 @@ public abstract class Container extends Layoutable {
 		}
 	}
 	
+	@Deprecated
 	public void addChild(
 			PropertyScratchpad context, Layoutable child, String name) {
-		context.<Layoutable>getModifiableList(
-				this, Container.PROPERTY_CHILD, getChildren()).
-			add(child);
-		context.setProperty(child, Layoutable.PROPERTY_PARENT, this);
-		
-		getBigraph(context).getNamespace(Bigraph.getNSI(child)).
-			put(context, name, child);
-		context.setProperty(child, Layoutable.PROPERTY_NAME, name);
+		changeAddChild(child, name).simulate(context);
 	}
 	
 	protected void removeChild(Layoutable child) {
@@ -86,15 +93,9 @@ public abstract class Container extends Layoutable {
 		}
 	}
 	
+	@Deprecated
 	public void removeChild(PropertyScratchpad context, Layoutable child) {
-		context.<Layoutable>getModifiableList(
-				this, Container.PROPERTY_CHILD, getChildren()).
-			remove(child);
-		context.setProperty(child, Layoutable.PROPERTY_PARENT, null);
-		
-		getBigraph(context).getNamespace(Bigraph.getNSI(child)).
-			remove(context, child.getName(context));
-		context.setProperty(child, Layoutable.PROPERTY_NAME, null);
+		child.changeRemove().simulate(context);
 	}
 	
 	public List<Layoutable> getChildren() {

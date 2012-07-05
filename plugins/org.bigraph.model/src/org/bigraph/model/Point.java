@@ -44,6 +44,14 @@ public abstract class Point extends Layoutable implements IPoint {
 		public String toString() {
 			return "Change(connect " + getCreator() + " to " + link + ")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.<Point>getModifiableList(
+					link, Link.PROPERTY_POINT, link.getPoints()).
+				add(getCreator());
+			context.setProperty(getCreator(), Point.PROPERTY_LINK, link);
+		}
 	}
 	
 	public class ChangeDisconnect extends PointChange {
@@ -66,6 +74,16 @@ public abstract class Point extends Layoutable implements IPoint {
 		@Override
 		public String toString() {
 			return "Change(disconnect " + getCreator() + ")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			Link l = getCreator().getLink(context);
+			
+			context.<Point>getModifiableList(
+					l, Link.PROPERTY_POINT, l.getPoints()).
+				remove(getCreator());
+			context.setProperty(getCreator(), Point.PROPERTY_LINK, null);
 		}
 	}
 

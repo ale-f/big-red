@@ -56,6 +56,11 @@ public class PortSpec extends ModelObject implements IPort {
 			return "Change(set name of port " + getCreator() +
 					" to " + name + ")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.setProperty(getCreator(), PortSpec.PROPERTY_NAME, name);
+		}
 	}
 	
 	public class ChangeRemovePort extends PortSpecChange {
@@ -80,6 +85,16 @@ public class PortSpec extends ModelObject implements IPort {
 		@Override
 		public String toString() {
 			return "Change(remove port " + getCreator() + ")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			Control c = getCreator().getControl(context);
+			
+			context.<PortSpec>getModifiableList(
+					c, Control.PROPERTY_PORT, c.getPorts()).
+				remove(getCreator());
+			context.setProperty(getCreator(), PortSpec.PROPERTY_CONTROL, null);
 		}
 	}
 	

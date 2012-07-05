@@ -35,7 +35,7 @@ public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			checkEligibility(b, c.getCreator());
-			c.getCreator().addPort(getScratch(), c.port);
+			c.getCreator().addPort(getScratch(), c.port, c.name);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			Control co = c.getCreator().getControl();

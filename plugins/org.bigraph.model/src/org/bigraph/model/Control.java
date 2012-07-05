@@ -90,6 +90,11 @@ public class Control extends ModelObject implements IControl {
 		public String toString() {
 			return "Change(set name of " + getCreator() + " to " + name + ")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.setProperty(getCreator(), PROPERTY_NAME, name);
+		}
 	}
 	
 	public class ChangeKind extends ControlChange {
@@ -123,6 +128,11 @@ public class Control extends ModelObject implements IControl {
 		public String toString() {
 			return "Change(set kind of " + getCreator() + " to " + kind + ")";
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.setProperty(getCreator(), PROPERTY_KIND, kind);
+		}
 	}
 	
 	public class ChangeAddPort extends ControlChange {
@@ -148,6 +158,15 @@ public class Control extends ModelObject implements IControl {
 		public String toString() {
 			return "Change(add port " + port + " to " + getCreator() +
 					" with name \"" + name + "\")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.<PortSpec>getModifiableList(
+					getCreator(), Control.PROPERTY_PORT, getPorts()).
+				add(port);
+			context.setProperty(port, PortSpec.PROPERTY_NAME, name);
+			context.setProperty(port, PortSpec.PROPERTY_CONTROL, getCreator());
 		}
 	}
 
@@ -199,8 +218,9 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 
+	@Deprecated
 	public void setName(PropertyScratchpad context, String name) {
-		context.setProperty(this, PROPERTY_NAME, name);
+		changeName(name).simulate(context);
 	}
 	
 	@Override
@@ -233,10 +253,10 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	public void addPort(PropertyScratchpad context, PortSpec p) {
-		context.<PortSpec>getModifiableList(
-				this, PROPERTY_PORT, getPorts()).add(p);
-		context.setProperty(p, PortSpec.PROPERTY_CONTROL, this);
+	@Deprecated
+	public void addPort(
+			PropertyScratchpad context, PortSpec port, String name) {
+		changeAddPort(port, name).simulate(context);
 	}
 	
 	protected void removePort(PortSpec p) {
@@ -246,10 +266,9 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
+	@Deprecated
 	public void removePort(PropertyScratchpad context, PortSpec p) {
-		context.<PortSpec>getModifiableList(
-				this, PROPERTY_PORT, getPorts()).remove(p);
-		context.setProperty(p, PortSpec.PROPERTY_CONTROL, null);
+		p.changeRemove().simulate(context);
 	}
 	
 	public Signature getSignature() {

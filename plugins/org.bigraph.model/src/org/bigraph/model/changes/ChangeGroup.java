@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bigraph.model.assistants.PropertyScratchpad;
+
 /**
  * A ChangeGroup is a composite of many {@link Change}s.
  * @author alec
@@ -113,5 +115,11 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	@Override
 	public int hashCode() {
 		return changes.hashCode();
+	}
+	
+	@Override
+	public void simulate(PropertyScratchpad context) {
+		for (Change c : changes)
+			c.simulate(context);
 	}
 }

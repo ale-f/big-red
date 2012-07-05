@@ -65,6 +65,15 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 			return "Change(add control " + control + " to signature " +
 					getCreator();
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.<Control>getModifiableList(
+					getCreator(), PROPERTY_CONTROL, getControls()).
+				add(control);
+			context.setProperty(control,
+					Control.PROPERTY_SIGNATURE, getCreator());
+		}
 	}
 	
 	public class ChangeRemoveControl extends SignatureChange {
@@ -81,6 +90,15 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		public String toString() {
 			return "Change(remove control " + control + " from signature " +
 					getCreator();
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.<Control>getModifiableList(
+					getCreator(), PROPERTY_CONTROL, getControls()).
+				remove(control);
+			context.setProperty(control,
+					Control.PROPERTY_SIGNATURE, getCreator());
 		}
 	}
 	
@@ -103,10 +121,9 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		}
 	}
 	
+	@Deprecated
 	public void addControl(PropertyScratchpad context, Control c) {
-		context.<Control>getModifiableList(
-				this, PROPERTY_CONTROL, getControls()).add(c);
-		context.setProperty(c, Control.PROPERTY_SIGNATURE, this);
+		changeAddControl(c).simulate(context);
 	}
 	
 	protected void removeControl(Control m) {
@@ -116,10 +133,9 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 		}
 	}
 	
+	@Deprecated
 	public void removeControl(PropertyScratchpad context, Control c) {
-		context.<Control>getModifiableList(
-				this, PROPERTY_CONTROL, getControls()).remove(c);
-		context.setProperty(c, Control.PROPERTY_SIGNATURE, null);
+		changeRemoveControl(c).simulate(context);
 	}
 	
 	public Control getControl(String name) {
