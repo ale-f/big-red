@@ -52,14 +52,14 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	 * @return the scope within which <code>object</code>'s name must be
 	 * unique, or <code>object</code> if there are no restrictions on its name
 	 */
-	public static Object getNSI(Layoutable object) {
+	public static Class<? extends Layoutable> getNSI(Layoutable object) {
 		return getNSI(object.getType());
 	}
 	
 	/**
 	 * @see #getNSI(Layoutable)
 	 */
-	public static Object getNSI(String objectType) {
+	public static Class<? extends Layoutable> getNSI(String objectType) {
 		objectType = objectType.toLowerCase(Locale.ENGLISH);
 		if (objectType.equals("edge") || objectType.equals("outername") || objectType.equals("link")) {
 			return Link.class;
@@ -80,7 +80,8 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	 * unless you're <i>very</i> sure you know what you're doing
 	 * @return the specified namespace
 	 */
-	public Namespace<Layoutable> getNamespace(Object nsi) {
+	public Namespace<Layoutable> getNamespace(
+			Class<? extends Layoutable> nsi) {
 		return nsg.getNamespace(nsi);
 	}
 	
