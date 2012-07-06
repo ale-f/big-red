@@ -8,6 +8,8 @@ import java.util.Map;
 import org.bigraph.model.changes.Change;
 
 public class PropertyScratchpad {
+	private PropertyScratchpad parent;
+	
 	private static final class NNPair {
 		private Object target;
 		private String name;
@@ -32,6 +34,23 @@ public class PropertyScratchpad {
 		}
 	}
 	
+	/**
+	 * Creates a new, blank {@link PropertyScratchpad}.
+	 */
+	public PropertyScratchpad() {
+	}
+	
+	/**
+	 * Creates a new, blank {@link PropertyScratchpad} with the given parent.
+	 * <p>(Calls to the {@link #hasProperty(Object, String)} and {@link
+	 * #getProperty(Object, String)} methods will be forwarded on to the parent
+	 * when this PropertyScratchpad doesn't have a match.)
+	 * @param parent
+	 */
+	public PropertyScratchpad(PropertyScratchpad parent) {
+		this.parent = parent;
+	}
+	
 	private Map<NNPair, Object> changes = new HashMap<NNPair, Object>();
 	
 	private NNPair getKey(Object target, String name) {
@@ -50,19 +69,27 @@ public class PropertyScratchpad {
 	
 	public boolean hasProperty(Object target, String name) {
 		if (target != null && name != null) {
-			return changes.containsKey(getKey(target, name));
+			if (changes.containsKey(getKey(target, name))) {
+				return true;
+			} else if (parent != null) {
+				return parent.hasProperty(target, name);
+			} else return false;
 		} else return false;
+	}
+	
+	public Object getProperty(Object target, String name) {
+		if (target != null && name != null) {
+			if (changes.containsKey(getKey(target, name))) {
+				return changes.get(getKey(target, name));
+			} else if (parent != null) {
+				return parent.getProperty(target, name);
+			} else return null;
+		} else return null;
 	}
 	
 	public PropertyScratchpad clear() {
 		changes.clear();
 		return this;
-	}
-	
-	public Object getProperty(Object target, String name) {
-		if (target != null && name != null) {
-			return changes.get(getKey(target, name));
-		} else return null;
 	}
 	
 	public Change executeChange(Change c) {
@@ -75,6 +102,11 @@ public class PropertyScratchpad {
 			Object target, String name, List<T> original) {
 		@SuppressWarnings("unchecked")
 		List<T> l = (List<T>)getProperty(target, name);
+		if (l != null && !changes.containsKey(getKey(target, name))) {
+			/* This list has come from the parent, so make a copy of it */
+			original = l;
+			l = null;
+		}
 		if (l == null)
 			setProperty(target, name, l = new ArrayList<T>(original));
 		return l;
