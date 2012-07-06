@@ -159,4 +159,49 @@ public abstract class Container extends Layoutable {
 		public abstract Container lookup(
 				Bigraph universe, PropertyScratchpad context);
 	}
+	
+	@Override
+	public abstract Identifier getIdentifier();
+	@Override
+	public abstract Identifier getIdentifier(PropertyScratchpad context);
+	
+	public static class ChangeAddChildDescriptor implements IChangeDescriptor {
+		private final Identifier parent;
+		private final Layoutable.Identifier child;
+		private final String childName;
+		
+		public ChangeAddChildDescriptor(
+				Identifier parent,
+				Layoutable.Identifier child, String childName) {
+			this.parent = parent;
+			this.child = child;
+			this.childName = childName;
+		}
+		
+		@Override
+		public Change createChange(
+				Bigraph universe, PropertyScratchpad context) {
+			Container c = parent.lookup(universe, context);
+			if (c != null) {
+				Layoutable l = null;
+				if (child instanceof Root.Identifier) {
+					l = new Root();
+				} else if (child instanceof Site.Identifier) {
+					l = new Site();
+				} else if (child instanceof InnerName.Identifier) {
+					l = new InnerName();
+				} else if (child instanceof Edge.Identifier) {
+					l = new Edge();
+				} else if (child instanceof OuterName.Identifier) {
+					l = new OuterName();
+				} else if (child instanceof Node.Identifier) {
+					Node.Identifier id = (Node.Identifier)child;
+					l = new Node(id.getControl());
+				}
+				if (l != null)
+					return c.changeAddChild(l, childName);
+			}
+			return null;
+		}
+	}
 }
