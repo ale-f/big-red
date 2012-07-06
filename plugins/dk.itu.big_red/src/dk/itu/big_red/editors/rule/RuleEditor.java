@@ -12,8 +12,11 @@ import org.bigraph.model.Layoutable.ChangeName;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
 import org.bigraph.model.Layoutable.ChangeNameDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
+import org.bigraph.model.Point.ChangeConnect;
+import org.bigraph.model.Point.ChangeConnectDescriptor;
+import org.bigraph.model.Point.ChangeDisconnect;
+import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Layoutable.IChangeDescriptor;
@@ -469,10 +472,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
-	private Layoutable.Identifier _testGetIdentifier(ModelObject o) {
-		return ((Layoutable)o).getIdentifier(_testScratch);
-	}
-	
 	private void _testExtractDescriptor(Change c) {
 		IChangeDescriptor chd = null;
 		if (c instanceof ChangeGroup) {
@@ -482,16 +481,26 @@ public class RuleEditor extends AbstractGEFEditor implements
 		} else if (c instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)c;
 			chd = new ChangeExtendedDataDescriptor(
-					_testGetIdentifier(ch.getCreator()), ch.key, ch.newValue,
+					((Layoutable)ch.getCreator()).getIdentifier(_testScratch),
+					ch.key, ch.newValue,
 					ch.immediateValidator, ch.finalValidator);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
 			chd = new ChangeRemoveDescriptor(
-					_testGetIdentifier(ch.getCreator()));
+					ch.getCreator().getIdentifier(_testScratch));
 		} else if (c instanceof ChangeName) {
 			ChangeName ch = (ChangeName)c;
 			chd = new ChangeNameDescriptor(
-					_testGetIdentifier(ch.getCreator()), ch.newName);
+					ch.getCreator().getIdentifier(_testScratch), ch.newName);
+		} else if (c instanceof ChangeConnect) {
+			ChangeConnect ch = (ChangeConnect)c;
+			chd = new ChangeConnectDescriptor(
+					ch.getCreator().getIdentifier(_testScratch),
+					ch.link.getIdentifier(_testScratch));
+		} else if (c instanceof ChangeDisconnect) {
+			ChangeDisconnect ch = (ChangeDisconnect)c;
+			chd = new ChangeDisconnectDescriptor(
+					ch.getCreator().getIdentifier(_testScratch));
 		}
 		System.out.println(this +
 				"._testExtractDescriptor(" + c + "): " + chd);
