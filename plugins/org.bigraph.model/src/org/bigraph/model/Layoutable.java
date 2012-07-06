@@ -231,6 +231,7 @@ public abstract class Layoutable extends ModelObject {
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
 	public interface IChangeDescriptor {
+		Identifier getTarget();
 		Change createChange(Bigraph universe, PropertyScratchpad context);
 	}
 	
@@ -253,6 +254,7 @@ public abstract class Layoutable extends ModelObject {
 			this.finalValidator = finalValidator;
 		}
 		
+		@Override
 		public Identifier getTarget() {
 			return target;
 		}
@@ -262,6 +264,47 @@ public abstract class Layoutable extends ModelObject {
 				Bigraph universe, PropertyScratchpad context) {
 			return target.lookup(universe, context).changeExtendedData(
 					key, newValue, immediateValidator, finalValidator);
+		}
+	}
+	
+	public static class ChangeNameDescriptor implements IChangeDescriptor {
+		private final Identifier target;
+		
+		private final String newName;
+		
+		public ChangeNameDescriptor(Identifier target, String newName) {
+			this.target = target;
+			this.newName = newName;
+		}
+		
+		@Override
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		@Override
+		public Change createChange(
+				Bigraph universe, PropertyScratchpad context) {
+			return target.lookup(universe, context).changeName(newName);
+		}
+	}
+	
+	public static class ChangeRemoveDescriptor implements IChangeDescriptor {
+		private final Identifier target;
+		
+		public ChangeRemoveDescriptor(Identifier target) {
+			this.target = target;
+		}
+		
+		@Override
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		@Override
+		public Change createChange(
+				Bigraph universe, PropertyScratchpad context) {
+			return target.lookup(universe, context).changeRemove();
 		}
 	}
 }
