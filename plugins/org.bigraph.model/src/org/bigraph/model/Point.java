@@ -2,6 +2,7 @@ package org.bigraph.model;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
+import org.bigraph.model.changes.Change;
 import org.bigraph.model.interfaces.IPoint;
 
 /**
@@ -133,5 +134,52 @@ public abstract class Point extends Layoutable implements IPoint {
 		@Override
 		public abstract Point lookup(
 				Bigraph universe, PropertyScratchpad context);
+	}
+	
+	@Override
+	public abstract Identifier getIdentifier();
+	@Override
+	public abstract Identifier getIdentifier(PropertyScratchpad context);
+	
+	public static class ChangeConnectDescriptor implements IChangeDescriptor {
+		private final Identifier target;
+		private final Link.Identifier link;
+		
+		public ChangeConnectDescriptor(
+				Identifier target, Link.Identifier link) {
+			this.target = target;
+			this.link = link;
+		}
+		
+		@Override
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		@Override
+		public Change createChange(
+				Bigraph universe, PropertyScratchpad context) {
+			return target.lookup(universe, context).changeConnect(
+					link.lookup(universe, context));
+		}
+	}
+	
+	public static class ChangeDisconnectDescriptor implements IChangeDescriptor {
+		private final Identifier target;
+		
+		public ChangeDisconnectDescriptor(Identifier target) {
+			this.target = target;
+		}
+		
+		@Override
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		@Override
+		public Change createChange(
+				Bigraph universe, PropertyScratchpad context) {
+			return target.lookup(universe, context).changeDisconnect();
+		}
 	}
 }
