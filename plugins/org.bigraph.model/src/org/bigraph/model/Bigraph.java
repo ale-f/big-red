@@ -258,4 +258,25 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		
 		super.dispose();
 	}
+	
+	public static final class Identifier extends Container.Identifier {
+		public Identifier() {
+			super(null);
+		}
+		
+		@Override
+		public Bigraph lookup(Bigraph universe, PropertyScratchpad context) {
+			return universe;
+		}
+	}
+	
+	@Override
+	public Identifier getIdentifier() {
+		return getIdentifier(null);
+	}
+	
+	@Override
+	public Identifier getIdentifier(PropertyScratchpad context) {
+		return new Identifier();
+	}
 }

@@ -211,4 +211,22 @@ public abstract class Layoutable extends ModelObject {
 		
 		super.dispose();
 	}
+	
+	public static abstract class Identifier {
+		private final String name;
+		
+		public Identifier(String name) {
+			this.name = name;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+		public abstract Layoutable lookup(
+				Bigraph universe, PropertyScratchpad context);
+	}
+	
+	public abstract Identifier getIdentifier();
+	public abstract Identifier getIdentifier(PropertyScratchpad context);
 }

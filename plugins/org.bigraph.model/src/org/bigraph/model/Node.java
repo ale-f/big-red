@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IChild;
 import org.bigraph.model.interfaces.INode;
 import org.bigraph.model.interfaces.IParent;
@@ -109,5 +110,36 @@ public class Node extends Container implements INode {
 	@Override
 	public List<IChild> getIChildren() {
 		return only(null, IChild.class);
+	}
+	
+	public static final class Identifier extends Container.Identifier {
+		private final Control control;
+		
+		public Identifier(String name, Control control) {
+			super(name);
+			this.control = control;
+		}
+		
+		public Control getControl() {
+			return control;
+		}
+		
+		@Override
+		public Node lookup(Bigraph universe, PropertyScratchpad context) {
+			Node n = (Node)
+					universe.getNamespace(Node.class).get(context, getName());
+			/* perform a control check */
+			return n;
+		}
+	}
+	
+	@Override
+	public Identifier getIdentifier() {
+		return getIdentifier(null);
+	}
+	
+	@Override
+	public Identifier getIdentifier(PropertyScratchpad context) {
+		return new Identifier(getName(context), getControl());
 	}
 }

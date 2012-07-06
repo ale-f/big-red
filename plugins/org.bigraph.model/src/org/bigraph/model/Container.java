@@ -149,4 +149,14 @@ public abstract class Container extends Layoutable {
 				r.add((V)i);
 		return r;
 	}
+	
+	public static abstract class Identifier extends Layoutable.Identifier {
+		public Identifier(String name) {
+			super(name);
+		}
+		
+		@Override
+		public abstract Container lookup(
+				Bigraph universe, PropertyScratchpad context);
+	}
 }

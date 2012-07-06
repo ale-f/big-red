@@ -1,5 +1,6 @@
 package org.bigraph.model;
 
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.INode;
 import org.bigraph.model.interfaces.IPort;
 
@@ -31,6 +32,11 @@ public class Port extends Point implements IPort {
 	}
 	
 	@Override
+	public Node getParent(PropertyScratchpad context) {
+		return (Node)super.getParent(context);
+	}
+	
+	@Override
 	public String getName() {
 		return getSpec().getName();
 	}
@@ -47,5 +53,37 @@ public class Port extends Point implements IPort {
 	@Override
 	public Point clone() {
 		return null;
+	}
+	
+	public static final class Identifier extends Point.Identifier {
+		private final Node.Identifier node;
+		
+		public Identifier(String name, Node.Identifier node) {
+			super(name);
+			this.node = node;
+		}
+		
+		public Node.Identifier getNode() {
+			return node;
+		}
+		
+		@Override
+		public Port lookup(Bigraph universe, PropertyScratchpad context) {
+			Node n = getNode().lookup(universe, context);
+			if (n != null) {
+				return n.getPort(getName());
+			} else return null;
+		}
+	}
+	
+	@Override
+	public Identifier getIdentifier() {
+		return getIdentifier(null);
+	}
+	
+	@Override
+	public Identifier getIdentifier(PropertyScratchpad context) {
+		return new Identifier(getName(),
+				getParent(context).getIdentifier(context));
 	}
 }

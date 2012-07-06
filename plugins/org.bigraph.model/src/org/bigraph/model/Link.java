@@ -75,4 +75,26 @@ public abstract class Link extends Layoutable implements ILink {
 			return getPoints();
 		} else return super.getProperty(name);
 	}
+	
+	public static class Identifier extends Layoutable.Identifier {
+		public Identifier(String name) {
+			super(name);
+		}
+		
+		@Override
+		public Link lookup(Bigraph universe, PropertyScratchpad context) {
+			return (Link)
+					universe.getNamespace(Link.class).get(context, getName());
+		}
+	}
+	
+	@Override
+	public Identifier getIdentifier() {
+		return getIdentifier(null);
+	}
+	
+	@Override
+	public Identifier getIdentifier(PropertyScratchpad context) {
+		return new Identifier(getName(context));
+	}
 }

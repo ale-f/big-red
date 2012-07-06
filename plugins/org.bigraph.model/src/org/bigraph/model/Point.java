@@ -124,4 +124,14 @@ public abstract class Point extends Layoutable implements IPoint {
 			return getLink();
 		} else return super.getProperty(name);
 	}
+	
+	public static abstract class Identifier extends Layoutable.Identifier {
+		public Identifier(String name) {
+			super(name);
+		}
+		
+		@Override
+		public abstract Point lookup(
+				Bigraph universe, PropertyScratchpad context);
+	}
 }

@@ -2,6 +2,7 @@ package org.bigraph.model;
 
 import java.util.List;
 
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IChild;
 import org.bigraph.model.interfaces.IRoot;
 
@@ -31,5 +32,27 @@ public class Root extends Container implements IRoot {
 	@Override
 	public List<IChild> getIChildren() {
 		return only(null, IChild.class);
+	}
+	
+	public static final class Identifier extends Container.Identifier {
+		public Identifier(String name) {
+			super(name);
+		}
+		
+		@Override
+		public Root lookup(Bigraph universe, PropertyScratchpad context) {
+			return (Root)
+					universe.getNamespace(Root.class).get(context, getName());
+		}
+	}
+	
+	@Override
+	public Identifier getIdentifier() {
+		return getIdentifier(null);
+	}
+	
+	@Override
+	public Identifier getIdentifier(PropertyScratchpad context) {
+		return new Identifier(getName(context));
 	}
 }
