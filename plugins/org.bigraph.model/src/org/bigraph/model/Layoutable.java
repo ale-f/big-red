@@ -1,11 +1,16 @@
 package org.bigraph.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.names.Namespace;
 
 /**
@@ -232,6 +237,43 @@ public abstract class Layoutable extends ModelObject {
 	
 	public interface IChangeDescriptor {
 		Change createChange(Bigraph universe, PropertyScratchpad context);
+	}
+	
+	public static class ChangeDescriptorGroup
+			implements IChangeDescriptor, Iterable<IChangeDescriptor> {
+		private List<IChangeDescriptor> cds =
+				new ArrayList<IChangeDescriptor>();
+		
+		public void add(IChangeDescriptor one) {
+			cds.add(one);
+		}
+		
+		public void add(IChangeDescriptor... many) {
+			for (IChangeDescriptor one : many)
+				cds.add(one);
+		}
+		
+		public void add(Collection<? extends IChangeDescriptor> many) {
+			cds.addAll(many);
+		}
+		
+		@Override
+		public Iterator<IChangeDescriptor> iterator() {
+			return cds.iterator();
+		}
+		
+		@Override
+		public Change createChange(
+				Bigraph universe, PropertyScratchpad context) {
+			ChangeGroup cg = new ChangeGroup();
+			context = new PropertyScratchpad(context);
+			for (IChangeDescriptor one : cds) {
+				Change ch = one.createChange(universe, context);
+				cg.add(ch);
+				ch.simulate(context);
+			}
+			return cg;
+		}
 	}
 	
 	public static class ChangeExtendedDataDescriptor
