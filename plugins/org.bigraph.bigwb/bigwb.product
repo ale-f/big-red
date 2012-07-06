@@ -29,8 +29,8 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.equinox.p2.user.ui" version="2.1.2.R37x_v20110815-1155-6-Bk8pYWZz0qUTX5I15GZWwbXkrl"/>
-      <feature id="org.bigraph.bigwb.feature" version="0.0.0.qualifier"/>
+      <feature id="org.bigraph.bigwb.feature"/>
+      <feature id="org.eclipse.equinox.p2.user.ui"/>
    </features>
 
 
