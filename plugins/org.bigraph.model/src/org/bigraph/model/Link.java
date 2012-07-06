@@ -76,7 +76,7 @@ public abstract class Link extends Layoutable implements ILink {
 		} else return super.getProperty(name);
 	}
 	
-	public static class Identifier extends Layoutable.Identifier {
+	public static abstract class Identifier extends Layoutable.Identifier {
 		public Identifier(String name) {
 			super(name);
 		}
@@ -89,12 +89,7 @@ public abstract class Link extends Layoutable implements ILink {
 	}
 	
 	@Override
-	public Identifier getIdentifier() {
-		return getIdentifier(null);
-	}
-	
+	public abstract Identifier getIdentifier();
 	@Override
-	public Identifier getIdentifier(PropertyScratchpad context) {
-		return new Identifier(getName(context));
-	}
+	public abstract Identifier getIdentifier(PropertyScratchpad context);
 }

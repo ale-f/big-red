@@ -1,5 +1,6 @@
 package org.bigraph.model;
 
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IEdge;
 
 /**
@@ -16,4 +17,24 @@ import org.bigraph.model.interfaces.IEdge;
   *
   */
 public class Edge extends Link implements IEdge {
+	public static final class Identifier extends Link.Identifier {
+		public Identifier(String name) {
+			super(name);
+		}
+		
+		@Override
+		public Edge lookup(Bigraph universe, PropertyScratchpad context) {
+			return (Edge)super.lookup(universe, context);
+		}
+	}
+	
+	@Override
+	public Identifier getIdentifier() {
+		return getIdentifier(null);
+	}
+	
+	@Override
+	public Identifier getIdentifier(PropertyScratchpad context) {
+		return new Identifier(getName(context));
+	}
 }
