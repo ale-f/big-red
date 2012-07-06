@@ -152,11 +152,6 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public Identifier getTarget() {
-			return target;
-		}
-		
-		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			return target.lookup(universe, context).changeConnect(
@@ -169,11 +164,6 @@ public abstract class Point extends Layoutable implements IPoint {
 		
 		public ChangeDisconnectDescriptor(Identifier target) {
 			this.target = target;
-		}
-		
-		@Override
-		public Identifier getTarget() {
-			return target;
 		}
 		
 		@Override
