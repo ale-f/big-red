@@ -229,4 +229,39 @@ public abstract class Layoutable extends ModelObject {
 	
 	public abstract Identifier getIdentifier();
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
+	
+	public interface IChangeDescriptor {
+		Change createChange(Bigraph universe, PropertyScratchpad context);
+	}
+	
+	public static class ChangeExtendedDataDescriptor
+			implements IChangeDescriptor {
+		private final Identifier target;
+		
+		private final String key;
+		private final Object newValue;
+		private final ExtendedDataValidator immediateValidator, finalValidator;
+		
+		public ChangeExtendedDataDescriptor(
+				Identifier target, String key, Object newValue,
+				ExtendedDataValidator immediateValidator,
+				ExtendedDataValidator finalValidator) {
+			this.target = target;
+			this.key = key;
+			this.newValue = newValue;
+			this.immediateValidator = immediateValidator;
+			this.finalValidator = finalValidator;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		@Override
+		public Change createChange(
+				Bigraph universe, PropertyScratchpad context) {
+			return target.lookup(universe, context).changeExtendedData(
+					key, newValue, immediateValidator, finalValidator);
+		}
+	}
 }
