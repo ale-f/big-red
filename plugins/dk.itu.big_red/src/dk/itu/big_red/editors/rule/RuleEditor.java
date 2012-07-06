@@ -6,8 +6,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Layoutable.ChangeExtendedDataDescriptor;
+import org.bigraph.model.Layoutable.ChangeName;
+import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
+import org.bigraph.model.Layoutable.ChangeNameDescriptor;
+import org.bigraph.model.Layoutable.ChangeRemove;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
+import org.bigraph.model.Layoutable.IChangeDescriptor;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -413,6 +423,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
+	private PropertyScratchpad _testScratch = new PropertyScratchpad();
+	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
 		int detail = event.getDetail() & CommandStack.POST_MASK;
@@ -427,9 +439,68 @@ public class RuleEditor extends AbstractGEFEditor implements
 			}
 		}
 		
+		detail = event.getDetail() & CommandStack.PRE_MASK;
+		if (detail != 0) {
+			_testScratch.clear();
+			_testConvert(detail, event.getCommand());
+		}
+		
 		super.stackChanged(event);
 	}
 
+	private void _testConvert(int detail, Command c) {
+		if (c instanceof ChangeCommand) {
+			_testConvertChange(detail, (ChangeCommand)c);
+		} else if (c instanceof CompoundCommand) {
+			for (Object i : ((CompoundCommand)c).getCommands())
+				if (i instanceof Command)
+					_testConvert(detail, c);
+		}
+	}
+	
+	private void _testConvertChange(int detail, ChangeCommand c) {
+		IChangeExecutor target = c.getTarget();
+		if (target == getReactum()) {
+			Change ch = null;
+			if (detail != CommandStack.PRE_UNDO) {
+				ch = c.getChange();
+			} else ch = c.getChange().inverse();
+			_testExtractDescriptor(ch);
+		}
+	}
+	
+	private Layoutable.Identifier _testGetIdentifier(ModelObject o) {
+		return ((Layoutable)o).getIdentifier(_testScratch);
+	}
+	
+	private void _testExtractDescriptor(Change c) {
+		IChangeDescriptor chd = null;
+		if (c instanceof ChangeGroup) {
+			for (Change ch : (ChangeGroup)c)
+				_testExtractDescriptor(ch);
+			return;
+		} else if (c instanceof ChangeExtendedData) {
+			ChangeExtendedData ch = (ChangeExtendedData)c;
+			chd = new ChangeExtendedDataDescriptor(
+					_testGetIdentifier(ch.getCreator()), ch.key, ch.newValue,
+					ch.immediateValidator, ch.finalValidator);
+		} else if (c instanceof ChangeRemove) {
+			ChangeRemove ch = (ChangeRemove)c;
+			chd = new ChangeRemoveDescriptor(
+					_testGetIdentifier(ch.getCreator()));
+		} else if (c instanceof ChangeName) {
+			ChangeName ch = (ChangeName)c;
+			chd = new ChangeNameDescriptor(
+					_testGetIdentifier(ch.getCreator()), ch.newName);
+		}
+		System.out.println(this +
+				"._testExtractDescriptor(" + c + "): " + chd);
+		if (chd != null)
+			System.out.println("\t(instantiates to " +
+					chd.createChange(getReactum(), _testScratch) + ")");
+		c.simulate(_testScratch);
+	}
+	
 	@Override
 	protected void createActions() {
 		registerActions(getSelectionActions(),
