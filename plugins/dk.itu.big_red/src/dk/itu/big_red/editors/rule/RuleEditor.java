@@ -6,7 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container.ChangeAddChild;
+import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Layoutable;
+import org.bigraph.model.Layoutable.ChangeDescriptorGroup;
 import org.bigraph.model.Layoutable.ChangeExtendedDataDescriptor;
 import org.bigraph.model.Layoutable.ChangeName;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
@@ -426,7 +429,9 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
-	private PropertyScratchpad _testScratch = new PropertyScratchpad();
+	private PropertyScratchpad
+		_testScratch = new PropertyScratchpad(),
+		_testParallelScratch = new PropertyScratchpad();
 	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
@@ -445,6 +450,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 		detail = event.getDetail() & CommandStack.PRE_MASK;
 		if (detail != 0) {
 			_testScratch.clear();
+			_testParallelScratch.clear();
 			_testConvert(detail, event.getCommand());
 		}
 		
@@ -472,12 +478,17 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
-	private void _testExtractDescriptor(Change c) {
+	private IChangeDescriptor _testExtractDescriptor(Change c) {
 		IChangeDescriptor chd = null;
 		if (c instanceof ChangeGroup) {
-			for (Change ch : (ChangeGroup)c)
-				_testExtractDescriptor(ch);
-			return;
+			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+			for (Change ch : (ChangeGroup)c) {
+				chd = _testExtractDescriptor(ch);
+				if (chd != null)
+					cdg.add(chd);
+			}
+			/* all changes will have been simulated */
+			return cdg;
 		} else if (c instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)c;
 			chd = new ChangeExtendedDataDescriptor(
@@ -501,13 +512,21 @@ public class RuleEditor extends AbstractGEFEditor implements
 			ChangeDisconnect ch = (ChangeDisconnect)c;
 			chd = new ChangeDisconnectDescriptor(
 					ch.getCreator().getIdentifier(_testScratch));
+		} else if (c instanceof ChangeAddChild) {
+			ChangeAddChild ch = (ChangeAddChild)c;
+			chd = new ChangeAddChildDescriptor(
+					ch.getCreator().getIdentifier(_testScratch),
+					ch.child.getIdentifier(/* name is irrelevant */), ch.name);
 		}
 		System.out.println(this +
 				"._testExtractDescriptor(" + c + "): " + chd);
-		if (chd != null)
-			System.out.println("\t(instantiates to " +
-					chd.createChange(getReactum(), _testScratch) + ")");
+		if (chd != null) {
+			Change d = chd.createChange(getReactum(), _testParallelScratch);
+			System.out.println("\t(instantiates to " + d + ")");
+			d.simulate(_testParallelScratch);
+		}
 		c.simulate(_testScratch);
+		return chd;
 	}
 	
 	@Override
