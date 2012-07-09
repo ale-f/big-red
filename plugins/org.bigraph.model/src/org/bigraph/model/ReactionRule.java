@@ -6,10 +6,7 @@ import java.util.Map;
 import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Layoutable.ChangeDescriptorGroup;
-import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.Point.ChangeDisconnect;
 import org.bigraph.model.changes.Change;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 
 public class ReactionRule extends ModelObject {
@@ -34,93 +31,62 @@ public class ReactionRule extends ModelObject {
 	}
 	
 	protected abstract class OperationRunner {
-		protected abstract ChangeGroup runStepActual(
-				Change redexChange, ChangeGroup reactumChanges,
-				Change reactumChange);
+		protected abstract ChangeDescriptorGroup runStepActual(
+				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
+				IChangeDescriptor reactumCD);
 		
-		protected ChangeGroup runStep(
-				Change redexChange, ChangeGroup reactumChanges) {
-			ChangeGroup cg = null;
-			for (int i = 0; i < reactumChanges.size(); i++) {
-				Change c = reactumChanges.get(i);
-				if (c instanceof ChangeGroup) {
-					cg = runStep(redexChange, (ChangeGroup)c);
-					if (cg != null) {
-						reactumChanges = reactumChanges.clone();
-						reactumChanges.set(i, cg);
-						return reactumChanges;
+		protected ChangeDescriptorGroup runStep(
+				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
+			ChangeDescriptorGroup cdg = null;
+			for (int i = 0; i < reactumCDs.size(); i++) {
+				IChangeDescriptor c = reactumCDs.get(i);
+				if (c instanceof ChangeDescriptorGroup) {
+					cdg = runStep(redexCD, (ChangeDescriptorGroup)c);
+					if (cdg != null) {
+						reactumCDs = reactumCDs.clone();
+						reactumCDs.set(i, cdg);
+						return reactumCDs;
 					}
 				} else {
-					cg = runStepActual(redexChange, reactumChanges, c);
-					if (cg != null)
-						return cg;
+					cdg = runStepActual(redexCD, reactumCDs, c);
+					if (cdg != null)
+						return cdg;
 				}
 			}
 			return null;
 		}
 		
-		public ChangeGroup run(
-				Change redexChange, ChangeGroup reactumChanges) {
-			ChangeGroup cg = null;
-			if (redexChange instanceof ChangeGroup) {
-				ChangeGroup redexChanges = (ChangeGroup)redexChange;
-				while (redexChanges.size() > 0) {
-					Change head = redexChanges.head();
-					cg = run(head, reactumChanges);
+		public ChangeDescriptorGroup run(
+				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
+			ChangeDescriptorGroup cg = null;
+			if (redexCD instanceof ChangeDescriptorGroup) {
+				ChangeDescriptorGroup redexCDs =
+						(ChangeDescriptorGroup)redexCD;
+				while (redexCDs.size() > 0) {
+					IChangeDescriptor head = redexCDs.head();
+					cg = run(head, reactumCDs);
 					if (cg != null)
-						reactumChanges = cg;
-					redexChanges = redexChanges.tail();
+						reactumCDs = cg;
+					redexCDs = redexCDs.tail();
 				}
 			} else {
-				cg = runStep(redexChange, reactumChanges);
+				cg = runStep(redexCD, reactumCDs);
 				if (cg != null)
-					reactumChanges = cg;
+					reactumCDs = cg;
 			}
-			return reactumChanges;
+			return reactumCDs;
 		}
 	}
 	
 	protected class Operation2Runner extends OperationRunner {
-		protected boolean equalsUnder(
-				ModelObject redexObject, ModelObject reactumObject) {
-			if (redexObject instanceof Layoutable &&
-					reactumObject instanceof Layoutable) {
-				Layoutable reactumCandidate = null; /* XXX FIXME */
-					//getReactumObject(getReactum(), (Layoutable)redexObject);
-				return (reactumCandidate == reactumObject);
-			} else return false;
-		}
-		
-		protected boolean changesEqualUnder(
-				Change redexChange_, Change reactumChange_) {
-			if (!(redexChange_ instanceof ModelObjectChange &&
-					reactumChange_ instanceof ModelObjectChange))
-				return false;
-			
-			Class<? extends Change> sharedClass = redexChange_.getClass();
-			if (!(reactumChange_.getClass().equals(sharedClass)))
-				return false;
-			
-			ModelObjectChange
-				redexChange = (ModelObjectChange)redexChange_,
-				reactumChange = (ModelObjectChange)reactumChange_;
-			if (equalsUnder(
-					redexChange.getCreator(), reactumChange.getCreator())) {
-				if (sharedClass.equals(ChangeRemove.class) ||
-					sharedClass.equals(ChangeDisconnect.class)) {
-					return true;
-				}
-			}
-			return false;
-		}
-		
 		@Override
-		protected ChangeGroup runStepActual(Change redexChange,
-				ChangeGroup reactumChanges, Change reactumChange) {
-			if (changesEqualUnder(redexChange, reactumChange)) {
-				reactumChanges = reactumChanges.clone();
-				reactumChanges.remove(reactumChange);
-				return reactumChanges;
+		protected ChangeDescriptorGroup runStepActual(
+				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
+				IChangeDescriptor reactumCD) {
+			if (redexCD.equals(reactumCD)) {
+				reactumCDs = reactumCDs.clone();
+				reactumCDs.remove(reactumCD);
+				return reactumCDs;
 			} else return null;
 		}
 	}
@@ -128,14 +94,14 @@ public class ReactionRule extends ModelObject {
 	/**
 	 * <strong>Do not call this method.</strong>
 	 * @deprecated <strong>Do not call this method.</strong>
-	 * @param redexChange an {@link Object}
-	 * @param reactumChanges an {@link Object}
+	 * @param redexCD an {@link Object}
+	 * @param reactumCDs an {@link Object}
 	 * @return an {@link Object}
 	 */
 	@Deprecated
-	public ChangeGroup performOperation2(
-			Change redexChange, ChangeGroup reactumChanges) {
-		return new Operation2Runner().run(redexChange, reactumChanges);
+	public ChangeDescriptorGroup performOperation2(
+			IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
+		return new Operation2Runner().run(redexCD, reactumCDs);
 	}
 	
 	@Override
