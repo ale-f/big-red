@@ -371,4 +371,36 @@ public class Control extends ModelObject implements IControl {
 	public ChangeRemoveControl changeRemove() {
 		return new ChangeRemoveControl();
 	}
+	
+	public static final class Identifier {
+		private final String name;
+		
+		public Identifier(String name) {
+			this.name = name;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+		public Control lookup(Signature universe, PropertyScratchpad context) {
+			for (Control c : universe.getControls(context))
+				if (c.getName(context).equals(getName()))
+					return c;
+			return null;
+		}
+		
+		@Override
+		public String toString() {
+			return "control " + getName();
+		}
+	}
+	
+	public Identifier getIdentifier() {
+		return getIdentifier(null);
+	}
+	
+	public Identifier getIdentifier(PropertyScratchpad context) {
+		return new Identifier(getName(context));
+	}
 }
