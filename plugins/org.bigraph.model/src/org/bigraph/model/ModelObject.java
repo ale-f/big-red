@@ -256,4 +256,23 @@ public abstract class ModelObject {
 		} else return false;
 		return true;
 	}
+	
+	protected static boolean safeClassCmp(Object o1, Object o2) {
+		return safeEquals(
+				o1 != null ? o1.getClass() : null,
+				o2 != null ? o2.getClass() : null);
+	}
+	
+	protected static boolean safeEquals(Object o1, Object o2) {
+		return (o1 != null ? o1.equals(o2) : o2 == null);
+	}
+	
+	protected static int compositeHashCode(Object... objs) {
+		if (objs != null && objs.length > 0) {
+			int total = 123;
+			for (Object i : objs)
+				total += (i != null ? i.hashCode() : 0);
+			return total;
+		} else return 0;
+	}
 }

@@ -86,7 +86,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	private static Container.Identifier getContainer(
 			String type, String name) {
 		if ("node".equals(type)) {
-			return new Node.Identifier(name, null); /* XXX: not null! */
+			return new Node.Identifier(name, null);
 		} else if ("root".equals(type)) {
 			return new Root.Identifier(name);
 		} else if (type == null && name == null) {
@@ -155,7 +155,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Point.Identifier p;
 				if (node != null) {
 					p = new Port.Identifier(name,
-						new Node.Identifier(node, null)); /* XXX: not null! */
+						new Node.Identifier(node, null));
 				} else p = new InnerName.Identifier(name);
 				
 				Link.Identifier l = getLink(link);
@@ -168,7 +168,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Point.Identifier p = null;
 				if (node != null) {
 					p = new Port.Identifier(name,
-						new Node.Identifier(node, null)); /* XXX: not null! */
+						new Node.Identifier(node, null));
 				} else p = new InnerName.Identifier(name);
 				
 				if (p != null)
@@ -186,7 +186,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					name = getAttributeNS(el, CHANGE, "name"),
 					parameter = getAttributeNS(el, CHANGE, "parameter");
 				Node.Identifier o =
-						new Node.Identifier(name, null); /* XXX: not null! */
+						new Node.Identifier(name, null);
 				
 				if (o != null)
 					cd = ExtendedDataUtilities.changeParameterDescriptor(

@@ -76,6 +76,22 @@ public class Port extends Point implements IPort {
 		}
 		
 		@Override
+		public boolean equals(Object obj_) {
+			if (safeClassCmp(this, obj_)) {
+				Identifier obj = (Identifier)obj_;
+				return
+						safeEquals(getName(), obj.getName()) &&
+						safeEquals(getNode(), obj.getNode());
+			}
+			return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(Identifier.class, getName(), getNode());
+		}
+		
+		@Override
 		public String toString() {
 			return "port " + getName() + " of " + node;
 		}

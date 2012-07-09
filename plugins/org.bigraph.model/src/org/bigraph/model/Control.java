@@ -391,6 +391,18 @@ public class Control extends ModelObject implements IControl {
 		}
 		
 		@Override
+		public boolean equals(Object obj_) {
+			if (safeClassCmp(this, obj_)) {
+				return safeEquals(getName(), ((Identifier)obj_).getName());
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(Identifier.class, name);
+		}
+		
+		@Override
 		public String toString() {
 			return "control " + getName();
 		}

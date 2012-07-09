@@ -128,13 +128,37 @@ public class Node extends Container implements INode {
 		public Node lookup(Bigraph universe, PropertyScratchpad context) {
 			Node n = (Node)
 					universe.getNamespace(Node.class).get(context, getName());
-			/* perform a control check */
-			return n;
+			if (n != null && equals(n.getIdentifier(context))) {
+				return n;
+			} else return null;
+		}
+		
+		@Override
+		public boolean equals(Object obj_) {
+			if (safeClassCmp(this, obj_)) {
+				Identifier obj = (Identifier)obj_;
+				if (!safeEquals(getName(), obj.getName()))
+					return false;
+				Control.Identifier
+					mine = getControl(),
+					theirs = obj.getControl();
+				if (mine != null && theirs != null && !mine.equals(theirs))
+					return false;
+				return true;
+			}
+			return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			/* To ensure that the contract for hashCode() isn't violated,
+			 * don't use getControl() in this method */
+			return compositeHashCode(Identifier.class, getName());
 		}
 		
 		@Override
 		public String toString() {
-			return "node " + getName() + " (of " + control + ")";
+			return "node " + getName() + " (of " + getControl() + ")";
 		}
 	}
 	

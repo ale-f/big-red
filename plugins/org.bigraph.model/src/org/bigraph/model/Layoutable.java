@@ -228,6 +228,17 @@ public abstract class Layoutable extends ModelObject {
 			return name;
 		}
 		
+		@Override
+		public boolean equals(Object obj_) {
+			return safeClassCmp(this, obj_) &&
+					safeEquals(getName(), ((Identifier)obj_).getName());
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(getClass(), getName());
+		}
+		
 		public abstract Layoutable lookup(
 				Bigraph universe, PropertyScratchpad context);
 	}

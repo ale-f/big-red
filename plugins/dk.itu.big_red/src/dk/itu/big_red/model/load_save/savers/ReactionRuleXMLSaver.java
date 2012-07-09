@@ -163,9 +163,9 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 						"parent", parent.getName(),
 						"parent-type", typeFor(parent));
 			if (i.getChild() instanceof Node.Identifier)
-				applyAttributes(f, /* XXX: control? */
-						"control", 
-						((Node.Identifier)i.getChild()).getControl().getName());
+				applyAttributes(f,
+					"control", 
+					((Node.Identifier)i.getChild()).getControl().getName());
 		} else if (i_ instanceof ChangeRemoveDescriptor) {
 			ChangeRemoveDescriptor i = (ChangeRemoveDescriptor)i_;
 			f = applyAttributes(newElement(CHANGE, "change:remove"),
@@ -183,7 +183,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			f = applyAttributes(newElement(CHANGE, "change:connect"),
 					"name", p.getName(),
 					"link", i.getLink().getName());
-			if (p instanceof Port.Identifier) /* XXX: control? */
+			if (p instanceof Port.Identifier)
 				applyAttributes(f,
 						"node", ((Port.Identifier)p).getNode().getName());
 		} else if (i_ instanceof ChangeDisconnectDescriptor) {
