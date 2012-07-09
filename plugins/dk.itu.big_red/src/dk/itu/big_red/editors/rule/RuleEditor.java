@@ -338,14 +338,12 @@ public class RuleEditor extends AbstractGEFEditor implements
     }
 	
 	private Bigraph getRedex() {
-		return (Bigraph)redexViewer.getContents().getModel();
+		return getModel().getRedex();
 	}
 	
 	private Bigraph getReactum() {
-		return (Bigraph)reactumViewer.getContents().getModel();
+		return getModel().getReactum();
 	}
-	
-	private PropertyScratchpad _testScratch = new PropertyScratchpad();
 	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
@@ -366,31 +364,36 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	private void _testConvertChange(int detail, ChangeCommand c) {
+		Change commandChange = c.getChange();
 		IChangeExecutor target = c.getTarget();
 		
-		Change ch = null;
-		if (detail != CommandStack.PRE_UNDO) {
-			ch = c.getChange();
-		} else ch = c.getChange().inverse();
-		IChangeDescriptor d = unappliedChangeToDescriptor(ch);
-		
-		String dest = (target == getRedex() ? "redex" : "reactum");
-		
-		System.out.println("_testConvertChange(" + detail + ", " + c + "): " +
-				"ch is " + ch + ", dest is " + dest + ", ICD is " + d);
+		if (target == getRedex()) {
+			
+		} else if (target == getReactum()) {
+			PropertyScratchpad scratch = null;
+			if (detail == CommandStack.PRE_UNDO) {
+				/* To make sure that the resulting change descriptor is
+				 * coherent (and identical to the forwards one), rewind the
+				 * scratchpad to the state before this change was applied */
+				commandChange.inverse().simulate(
+						scratch = new PropertyScratchpad());
+			}
+			IChangeDescriptor cd =
+				unappliedChangeToDescriptor(scratch, commandChange);
+			
+			if (detail == CommandStack.PRE_UNDO) {
+				getModel().getChanges().remove(cd);
+			} else getModel().getChanges().add(cd);
+		}
 	}
 	
-	private IChangeDescriptor unappliedChangeToDescriptor(Change c) {
-		_testScratch.clear();
-		return _doUnappliedChangeToDescriptor(c);
-	}
-	
-	private IChangeDescriptor _doUnappliedChangeToDescriptor(Change c) {
+	private static IChangeDescriptor unappliedChangeToDescriptor(
+			PropertyScratchpad scratch, Change c) {
 		IChangeDescriptor chd = null;
 		if (c instanceof ChangeGroup) {
 			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 			for (Change ch : (ChangeGroup)c) {
-				chd = _doUnappliedChangeToDescriptor(ch);
+				chd = unappliedChangeToDescriptor(scratch, ch);
 				if (chd != null)
 					cdg.add(chd);
 			}
@@ -399,26 +402,26 @@ public class RuleEditor extends AbstractGEFEditor implements
 		} else if (c instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)c;
 			chd = new ChangeExtendedDataDescriptor(
-					((Layoutable)ch.getCreator()).getIdentifier(_testScratch),
+					((Layoutable)ch.getCreator()).getIdentifier(scratch),
 					ch.key, ch.newValue,
 					ch.immediateValidator, ch.finalValidator);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
 			chd = new ChangeRemoveDescriptor(
-					ch.getCreator().getIdentifier(_testScratch));
+					ch.getCreator().getIdentifier(scratch));
 		} else if (c instanceof ChangeName) {
 			ChangeName ch = (ChangeName)c;
 			chd = new ChangeNameDescriptor(
-					ch.getCreator().getIdentifier(_testScratch), ch.newName);
+					ch.getCreator().getIdentifier(scratch), ch.newName);
 		} else if (c instanceof ChangeConnect) {
 			ChangeConnect ch = (ChangeConnect)c;
 			chd = new ChangeConnectDescriptor(
-					ch.getCreator().getIdentifier(_testScratch),
-					ch.link.getIdentifier(_testScratch));
+					ch.getCreator().getIdentifier(scratch),
+					ch.link.getIdentifier(scratch));
 		} else if (c instanceof ChangeDisconnect) {
 			ChangeDisconnect ch = (ChangeDisconnect)c;
 			chd = new ChangeDisconnectDescriptor(
-					ch.getCreator().getIdentifier(_testScratch));
+					ch.getCreator().getIdentifier(scratch));
 		} else if (c instanceof ChangeAddChild) {
 			ChangeAddChild ch = (ChangeAddChild)c;
 			Layoutable.Identifier id = null;
@@ -438,9 +441,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 						((Node)ch.child).getControl().getIdentifier());
 			}
 			chd = new ChangeAddChildDescriptor(
-					ch.getCreator().getIdentifier(_testScratch), id);
+					ch.getCreator().getIdentifier(scratch), id);
 		}
-		c.simulate(_testScratch);
+		if (scratch != null)
+			c.simulate(scratch);
 		return chd;
 	}
 	
