@@ -2,19 +2,20 @@ package dk.itu.big_red.model.load_save.loaders;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
+import org.bigraph.model.Control;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
+import org.bigraph.model.Layoutable.ChangeDescriptorGroup;
+import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.Link;
 import org.bigraph.model.Node;
 import org.bigraph.model.Point;
+import org.bigraph.model.Port;
 import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Root;
 import org.bigraph.model.Site;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.names.Namespace;
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -63,113 +64,138 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		return im.makeObject(e);
 	}
 	
-	private PropertyScratchpad scratch = new PropertyScratchpad();
-	
-	private Layoutable getNamed(Bigraph b, String type, String name) {
-		Namespace<Layoutable> ns = b.getNamespace(Bigraph.getNSI(type));
-		return ns.get(scratch, name);
+	private static Link.Identifier getLink(String name) {
+		return new Link.Identifier(name);
 	}
 	
-	private Change changeFromElement(org.w3c.dom.Node n) {
+	private static Layoutable.Identifier getLayoutable(
+			String type, String name) {
+		if ("site".equals(type)) {
+			return new Site.Identifier(name);
+		} else if ("node".equals(type) || "root".equals(type) ||
+				(type == null && name != null)) {
+			return getContainer(type, name);
+		} else if ("edge".equals(type) || "outername".equals(type) ||
+				"link".equals(type)) {
+			return getLink(name);
+		} else if ("innername".equals(type)) {
+			return new InnerName.Identifier(name);
+		} else return null;
+	}
+	
+	private static Node.Identifier getNode(Control control, String name) {
+		return new Node.Identifier(name, control);
+	}
+	
+	private static Container.Identifier getContainer(
+			String type, String name) {
+		if ("node".equals(type)) {
+			return getNode(null, name); /* XXX: not null! */
+		} else if ("root".equals(type)) {
+			return new Root.Identifier(name);
+		} else if (type == null && name == null) {
+			return new Bigraph.Identifier();
+		} else return null;
+	}
+	
+	private IChangeDescriptor changeDescriptorFromElement(org.w3c.dom.Node n) {
 		Bigraph reactum = rr.getReactum();
-		Change c = null;
+		IChangeDescriptor cd = null;
 		if (!(n instanceof Element))
 			return null;
 		Element el = (Element)n;
 		if (el.getNamespaceURI().equals(CHANGE)) {
 			if (el.getLocalName().equals("group")) {
-				ChangeGroup cg = new ChangeGroup();
+				ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 				NodeList nl = el.getChildNodes();
 				for (int i = 0; i < nl.getLength(); i++) {
-					Change cp = changeFromElement(nl.item(i));
+					IChangeDescriptor cp =
+							changeDescriptorFromElement(nl.item(i));
 					if (cp != null)
-						cg.add(cp);
+						cdg.add(cp);
 				}
 				
-				if (cg.size() > 0)
-					c = cg;
+				if (cdg.size() > 0)
+					cd = cdg;
 			} else if (el.getLocalName().equals("add")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					type = getAttributeNS(el, CHANGE, "type"),
 					parentName = getAttributeNS(el, CHANGE, "parent"),
 					parentType = getAttributeNS(el, CHANGE, "parent-type");
-				Container parent = null;
-				if (parentName == null && parentType == null) {
-					parent = reactum;
-				} else {
-					parent = (Container)getNamed(reactum, parentType, parentName);
-				}
-				Layoutable child = null;
+				Container.Identifier parent =
+						getContainer(parentType, parentName);
+				Layoutable.Identifier child = null;
 				
 				if (type.equals("node")) {
 					String control = getAttributeNS(el, CHANGE, "control");
-					child = new Node(
+					child = new Node.Identifier(name,
 							reactum.getSignature().getControl(control));
-				} else child = (Layoutable)BigraphXMLLoader.getNewObject(type);
+				} else child = getLayoutable(type, name);
 				
 				if (parent != null)
-					c = scratch.executeChange(
-							parent.changeAddChild(child, name));
+					cd = new Container.ChangeAddChildDescriptor(
+							parent, child, name);
 			} else if (el.getLocalName().equals("remove")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					type = getAttributeNS(el, CHANGE, "type");
-				Layoutable l = getNamed(reactum, type, name);
+				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					c = scratch.executeChange(l.changeRemove());
+					cd = new Layoutable.ChangeRemoveDescriptor(l);
 			} else if (el.getLocalName().equals("rename")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					type = getAttributeNS(el, CHANGE, "type"),
 					newName = getAttributeNS(el, CHANGE, "new-name");
-				Layoutable l = getNamed(reactum, type, name);
+				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					c = scratch.executeChange(l.changeName(newName));
+					cd = new Layoutable.ChangeNameDescriptor(l, newName);
 			} else if (el.getLocalName().equals("connect")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					link = getAttributeNS(el, CHANGE, "link"),
 					node = getAttributeNS(el, CHANGE, "node");
-				Point p;
+				Point.Identifier p;
 				if (node != null) {
-					p = ((Node)getNamed(reactum, "node", node)).getPort(name);
-				} else p = (InnerName)getNamed(reactum, "innername", name);
+					p = new Port.Identifier(name,
+							getNode(null, node)); /* XXX: not null! */
+				} else p = new InnerName.Identifier(name);
 				
-				Link l = (Link)getNamed(reactum, "link", link);
+				Link.Identifier l = getLink(link);
 				if (p != null && l != null)
-					c = p.changeConnect(l);
+					cd = new Point.ChangeConnectDescriptor(p, l);
 			} else if (el.getLocalName().equals("disconnect")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					node = getAttributeNS(el, CHANGE, "node");
-				Point p = null;
+				Point.Identifier p = null;
 				if (node != null) {
-					Node nc = (Node)getNamed(reactum, "node", node);
-					if (nc != null)
-						p = nc.getPort(name);
-				} else p = (InnerName)getNamed(reactum, "innername", name);
+					p = new Port.Identifier(name,
+							getNode(null, node)); /* XXX: not null! */
+				} else p = new InnerName.Identifier(name);
 				
 				if (p != null)
-					c = p.changeDisconnect();
+					cd = new Point.ChangeDisconnectDescriptor(p);
 			} else if (el.getLocalName().equals("site-alias")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					alias = getAttributeNS(el, CHANGE, "alias");
-				Site s = (Site)getNamed(reactum, "site", name);
+				Site.Identifier s = new Site.Identifier(name);
 				
 				if (s != null)
-					c = ExtendedDataUtilities.changeAlias(s, alias);
+					cd = ExtendedDataUtilities.changeAliasDescriptor(s, alias);
 			} else if (el.getLocalName().equals("node-parameter")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					parameter = getAttributeNS(el, CHANGE, "parameter");
-				Node o = (Node)getNamed(reactum, "node", name);
+				Node.Identifier o = getNode(null, name); /* XXX: not null! */
 				
 				if (o != null)
-					c = ExtendedDataUtilities.changeParameter(o, parameter);
+					cd = ExtendedDataUtilities.changeParameterDescriptor(
+							o, parameter);
 			}
 		} else if (el.getNamespaceURI().equals(BIG_RED)) {
 			if (el.getLocalName().equals("layout")) {
@@ -178,10 +204,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				Layoutable l = getNamed(reactum, type, name);
+				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					c = ExtendedDataUtilities.changeLayout(l,
+					cd = ExtendedDataUtilities.changeLayoutDescriptor(l,
 							RedXMLDecorator.getRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
@@ -191,10 +217,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				Layoutable l = getNamed(reactum, type, name);
+				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					c = ExtendedDataUtilities.changeFill(l,
+					cd = ExtendedDataUtilities.changeFillDescriptor(l,
 							new Colour(colour));
 			} else if (el.getLocalName().equals("outline")) {
 				String
@@ -204,10 +230,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				Layoutable l = getNamed(reactum, type, name);
+				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					c = ExtendedDataUtilities.changeOutline(l,
+					cd = ExtendedDataUtilities.changeOutlineDescriptor(l,
 							new Colour(colour));
 			} else if (el.getLocalName().equals("comment")) {
 				String
@@ -217,37 +243,42 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						getAttributeNS(el, BIG_RED, "type"),
 					name =
 						getAttributeNS(el, BIG_RED, "name");
-				Layoutable l = getNamed(reactum, type, name);
+				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					c = ExtendedDataUtilities.changeComment(l, comment);
+					cd = ExtendedDataUtilities.changeCommentDescriptor(
+							l, comment);
 			}
 		}
-		return c;
+		return cd;
 	}
 	
 	private void updateReactum(ReactionRule rr, Element e) throws LoadFailedException {
 		Bigraph reactum = rr.getReactum();
 		NodeList nl = e.getChildNodes();
-		ChangeGroup cg = rr.getChanges();
+		ChangeDescriptorGroup cdg = rr.getChanges();
 		for (int i = 0; i < nl.getLength(); i++) {
-			Change c = changeFromElement(nl.item(i));
+			IChangeDescriptor c = changeDescriptorFromElement(nl.item(i));
 			if (c != null)
-				cg.add(c);
+				cdg.add(c);
 		}
 		
+		ChangeGroup cg = cdg.createChange(reactum, null);
 		try {
 			reactum.tryValidateChange(cg);
 		} catch (ChangeRejectedException cre) {
+			throw new LoadFailedException(cre);
+			/* XXX
 			Change ch = cre.getRejectedChange();
 			if (ch instanceof ChangeExtendedData) {
 				ChangeExtendedData cd = (ChangeExtendedData)ch;
 				if (ExtendedDataUtilities.LAYOUT.equals(cd.key)) {
 					addNotice(Notice.WARNING,
-							"Layout data invalid: replacing.");
+							"Layout data invalid.");
 					cg.add(ExtendedDataUtilities.relayout(scratch, reactum));
 				}
 			}
+			*/
 		}
 		
 		try {

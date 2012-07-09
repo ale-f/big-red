@@ -2,22 +2,19 @@ package org.bigraph.model;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.Container.ChangeAddChild;
-import org.bigraph.model.Layoutable.ChangeName;
+import org.bigraph.model.Layoutable.ChangeDescriptorGroup;
 import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.Point.ChangeConnect;
 import org.bigraph.model.Point.ChangeDisconnect;
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.names.INamespace;
-import org.bigraph.model.names.Namespace;
 
 public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;
-	private ChangeGroup changes;
+	private ChangeDescriptorGroup changes;
 	public static final String CONTENT_TYPE = "dk.itu.big_red.rule";
 	
 	public Bigraph getRedex() {
@@ -88,8 +85,8 @@ public class ReactionRule extends ModelObject {
 				ModelObject redexObject, ModelObject reactumObject) {
 			if (redexObject instanceof Layoutable &&
 					reactumObject instanceof Layoutable) {
-				Layoutable reactumCandidate =
-					getReactumObject(getReactum(), (Layoutable)redexObject);
+				Layoutable reactumCandidate = null; /* XXX FIXME */
+					//getReactumObject(getReactum(), (Layoutable)redexObject);
 				return (reactumCandidate == reactumObject);
 			} else return false;
 		}
@@ -141,146 +138,6 @@ public class ReactionRule extends ModelObject {
 		return new Operation2Runner().run(redexChange, reactumChanges);
 	}
 	
-	/**
-	 * Translates a {@link Change} targeted at the redex to the reactum.
-	 * @param redexChange a {@link Change} targeted at the redex
-	 * @return a {@link Change} targeted at the reactum, or {@link
-	 * Change#INVALID} if the redex change no longer makes sense in the
-	 * context of the reactum
-	 */
-	public Change getReactumChange(Change redexChange) {
-		Change reactumChange = translateChange(getReactum(), redexChange);
-		return (reactumChange != null ? reactumChange : Change.INVALID);
-	}
-	
-	private static Layoutable getReactumObject(
-			Bigraph reactum, Layoutable redexObject) {
-		return getReactumObject(null, reactum, redexObject);
-	}
-	
-	private static Layoutable getReactumObject(PropertyScratchpad context,
-			Bigraph reactum, Layoutable redexObject) {
-		Port p = null;
-		if (redexObject instanceof Port) {
-			p = (Port)redexObject;
-			redexObject = p.getParent(context);
-		}
-		Namespace<Layoutable>
-			reactumNamespace = reactum.getNamespace(
-					Bigraph.getNSI(redexObject));
-		if (reactumNamespace == null)
-			return null;
-		Layoutable
-			counterpart = reactumNamespace.get(context, redexObject.getName());
-		if (counterpart != null) {
-			if (redexObject instanceof Node) {
-				/* XXX */
-				String
-					redexControl = ((Node)redexObject).getControl().getName(),
-					reactumControl =
-						((Node)counterpart).getControl().getName();
-				if (!redexControl.equals(reactumControl))
-					return null;
-			}
-			if (p != null)
-				counterpart = ((Node)counterpart).getPort(p.getName());
-		}
-		return counterpart;
-	}
-	
-	public static Change translateChange(Bigraph reactum, Change change) {
-		if (change instanceof ChangeGroup) {
-			ChangeGroup cg_ = (ChangeGroup)change,
-				cg = new ChangeGroup();
-			for (Change i : cg_) {
-				Change iP = translateChange(reactum, i);
-				if (iP != null) {
-					cg.add(iP);
-				} else {
-					cg.clear();
-					return null;
-				}
-			}
-			
-			return cg;
-		} else if (change instanceof ChangeAddChild) {
-			ChangeAddChild ch = (ChangeAddChild)change;
-			
-			Container reactumParent =
-					(Container)getReactumObject(reactum, ch.getCreator());
-			Layoutable reactumChild = getReactumObject(reactum, ch.child);
-			
-			if (reactumParent == null)
-				return null;
-			if (reactumChild == null)
-				reactumChild = ch.child.clone(null);
-			
-			/*
-			 * XXX: a BigraphScratchpad should really be used here so that
-			 * ChangeGroups will actually work properly
-			 */
-			String reactumName;
-			INamespace<Layoutable> reactumNamespace =
-				reactumParent.getBigraph().
-				getNamespace(Bigraph.getNSI(reactumChild));
-			if (reactumNamespace.get(ch.name) == null) {
-				reactumName = ch.name;
-			} else reactumName = reactumNamespace.getNextName();
-			
-			return reactumParent.changeAddChild(reactumChild, reactumName);
-		} else if (change instanceof ChangeRemove) {
-			ChangeRemove ch = (ChangeRemove)change;
-			
-			Layoutable reactumChild =
-					getReactumObject(reactum, ch.getCreator());
-			
-			if (reactumChild == null)
-				return null;
-			
-			return reactumChild.changeRemove();
-		} else if (change instanceof ChangeName) {
-			ChangeName ch = (ChangeName)change;
-			
-			Layoutable reactumModel =
-					getReactumObject(reactum, ch.getCreator());
-			if (reactumModel == null)
-				return null;
-			
-			return reactumModel.changeName(ch.newName);
-		} else if (change instanceof ChangeConnect) {
-			ChangeConnect ch = (ChangeConnect)change;
-			
-			Point reactumPoint =
-					(Point)getReactumObject(reactum, ch.getCreator());
-			Link reactumLink =
-					(Link)getReactumObject(reactum, ch.link);
-			if (reactumPoint == null || reactumLink == null)
-				return null;
-			
-			return reactumPoint.changeConnect(reactumLink);
-		} else if (change instanceof ChangeDisconnect) {
-			ChangeDisconnect ch = (ChangeDisconnect)change;
-			
-			Point reactumPoint =
-					(Point)getReactumObject(reactum, ch.getCreator());
-			if (reactumPoint == null)
-				return null;
-			
-			return reactumPoint.changeDisconnect();
-		} else if (change instanceof ChangeExtendedData) {
-			ChangeExtendedData ch = (ChangeExtendedData)change;
-			
-			ModelObject reactumObject =
-					getReactumObject(reactum, (Layoutable)ch.getCreator());
-			if (reactumObject == null)
-				return null;
-			
-			return reactumObject.changeExtendedData(
-					ch.key, ch.newValue, ch.immediateValidator,
-					ch.finalValidator);
-		} else throw new Error(change + " unrecognised");
-	}
-	
 	@Override
 	public ReactionRule clone(Map<ModelObject, ModelObject> m) {
 		if (m == null)
@@ -288,31 +145,17 @@ public class ReactionRule extends ModelObject {
 		ReactionRule rr = (ReactionRule)super.clone(m);
 		
 		rr.setRedex(getRedex().clone(m));
+		Bigraph reactum = getReactum().clone(m);
+		rr.setReactum(getReactum().clone(m));
 		
-		Change inv = getChanges().inverse();
+		Change c = getChanges().createChange(reactum, null);
 		try {
-			getReactum().tryApplyChange(inv);
-			inv = null;
+			reactum.tryApplyChange(c);
+			for (IChangeDescriptor d : getChanges())
+				rr.getChanges().add(d);
 		} catch (ChangeRejectedException cre) {
-			throw new Error(
-					"Apparently valid change " + inv +
+			throw new Error("Apparently valid change " + c +
 					" rejected: shouldn't happen", cre);
-		}
-		Bigraph rrr = getReactum().clone(m);
-		rr.setReactum(rrr);
-		
-		ChangeGroup cg = rr.getChanges();
-		for (Change c : getChanges()) {
-			try {
-				Change cP = translateChange(rrr, c);
-				rrr.tryApplyChange(cP);
-				cg.add(cP);
-				
-				getReactum().tryApplyChange(c);
-			} catch (ChangeRejectedException cre) {
-				throw new Error("Apparently valid change " + c +
-						" rejected: shouldn't happen", cre);
-			}
 		}
 		
 		return rr;
@@ -322,9 +165,9 @@ public class ReactionRule extends ModelObject {
 		reactum = b;
 	}
 	
-	public ChangeGroup getChanges() {
+	public ChangeDescriptorGroup getChanges() {
 		if (changes == null)
-			changes = new ChangeGroup();
+			changes = new ChangeDescriptorGroup();
 		return changes;
 	}
 	

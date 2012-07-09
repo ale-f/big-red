@@ -344,111 +344,13 @@ public class RuleEditor extends AbstractGEFEditor implements
 		return (Bigraph)reactumViewer.getContents().getModel();
 	}
 	
-	private Map<Change, Change> redexToReactum = new HashMap<Change, Change>();
-	
-	private Change getReactumChange(Change c) {
-		Change ch = redexToReactum.get(c);
-		if (ch == null) {
-			ch = getModel().getReactumChange(c);
-			if (ch == Change.INVALID)
-				redexToReactum.put(c, ch);
-		}
-		return ch;
-	}
-	
-	private void processChangeCommand(int detail, ChangeCommand c) {
-		IChangeExecutor target = c.getTarget();
-		
-		if (target == getRedex()) {
-			Change reactumChange = getReactumChange(c.getChange());
-			
-			if (reactumChange == Change.INVALID) {
-				/* This is a redex change that doesn't make sense in the
-				 * reactum */
-				return;
-			} else if (detail == CommandStack.POST_UNDO) {
-				if (reactumChange.canInvert()) {
-					reactumChange = reactumChange.inverse();
-				} else throw new Error(
-						"BUG: must invert " + reactumChange + ", but can't");
-			}
-			
-			ChangeGroup existingChanges = getModel().getChanges();
-			try {
-				getReactum().tryApplyChange(existingChanges.inverse());
-				
-				{
-					System.out.println("Go! Operation 2!");
-					System.out.println("" + c.getChange());
-					System.out.println("" + existingChanges);
-					ChangeGroup operation2 = getModel().performOperation2(
-							c.getChange(), existingChanges);
-					System.out.println(operation2);
-					if (!existingChanges.equals(operation2))
-						System.out.println("Operation 2 would have helped...");
-				}
-				
-				try {
-					ChangeGroup cg = new ChangeGroup();
-					cg.add(reactumChange);
-					cg.add(existingChanges);
-					getReactum().tryApplyChange(cg);
-				} catch (ChangeRejectedException cre) {
-					/* In this state, the output file may no longer be
-					 * valid! */
-					new MessageDialog(
-							getSite().getShell(),
-							"Reaction rule problem", null,
-							"" + cre.getRejectedChange() + " conflicts with " +
-								"existing reactum changes.\n\n",
-							MessageDialog.ERROR,
-							new String[] { "Oh no!" }, 0).open();
-					cre.printStackTrace();
-					reactumChange = Change.INVALID;
-					
-					try {
-						getReactum().tryApplyChange(existingChanges);
-					} catch (ChangeRejectedException cre2) {
-						throw new Error("Change fast-forward failed -- " +
-								"shouldn't happen", cre2);
-					}
-				}
-			} catch (ChangeRejectedException cre) {
-				throw new Error("Change rollback failed -- " +
-						"shouldn't happen", cre);
-			}
-			
-			if (detail != CommandStack.POST_UNDO) {
-				redexToReactum.put(c.getChange(), reactumChange);
-			} else redexToReactum.remove(c.getChange());
-		} else if (target == getReactum()) {
-			Change ch = c.getChange();
-			if (detail != CommandStack.POST_UNDO) {
-				getModel().getChanges().add(ch);
-			} else getModel().getChanges().remove(ch);
-		}
-	}
-	
 	private PropertyScratchpad _testScratch = new PropertyScratchpad();
 	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
-		int detail = event.getDetail() & CommandStack.POST_MASK;
-		if (detail != 0) {
-			Command c = event.getCommand();
-			if (c instanceof CompoundCommand) {
-				for (Object i : ((CompoundCommand)c).getCommands())
-					if (i instanceof ChangeCommand)
-						processChangeCommand(detail, (ChangeCommand)i);
-			} else if (c instanceof ChangeCommand) {
-				processChangeCommand(detail, (ChangeCommand)c);
-			}
-		}
-		
-		detail = event.getDetail() & CommandStack.PRE_MASK;
+		int detail = event.getDetail() & CommandStack.PRE_MASK;
 		if (detail != 0)
-			_testConvert(detail, event.getCommand());
-		
+			_testConvert(event.getDetail(), event.getCommand());
 		super.stackChanged(event);
 	}
 
@@ -458,19 +360,23 @@ public class RuleEditor extends AbstractGEFEditor implements
 		} else if (c instanceof CompoundCommand) {
 			for (Object i : ((CompoundCommand)c).getCommands())
 				if (i instanceof Command)
-					_testConvert(detail, c);
+					_testConvert(detail, (Command)i);
 		}
 	}
 	
 	private void _testConvertChange(int detail, ChangeCommand c) {
 		IChangeExecutor target = c.getTarget();
-		if (target == getReactum()) {
-			Change ch = null;
-			if (detail != CommandStack.PRE_UNDO) {
-				ch = c.getChange();
-			} else ch = c.getChange().inverse();
-			System.out.println(unappliedChangeToDescriptor(ch));
-		}
+		
+		Change ch = null;
+		if (detail != CommandStack.PRE_UNDO) {
+			ch = c.getChange();
+		} else ch = c.getChange().inverse();
+		IChangeDescriptor d = unappliedChangeToDescriptor(ch);
+		
+		String dest = (target == getRedex() ? "redex" : "reactum");
+		
+		System.out.println("_testConvertChange(" + detail + ", " + c + "): " +
+				"ch is " + ch + ", dest is " + dest + ", ICD is " + d);
 	}
 	
 	private IChangeDescriptor unappliedChangeToDescriptor(Change c) {

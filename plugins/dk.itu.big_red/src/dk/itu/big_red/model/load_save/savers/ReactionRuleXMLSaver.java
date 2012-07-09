@@ -1,20 +1,25 @@
 package dk.itu.big_red.model.load_save.savers;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
+import org.bigraph.model.Layoutable.ChangeDescriptorGroup;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.ReactionRule;
-import org.bigraph.model.Container.ChangeAddChild;
-import org.bigraph.model.Layoutable.ChangeName;
-import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.Point.ChangeConnect;
-import org.bigraph.model.Point.ChangeDisconnect;
-import org.bigraph.model.changes.Change;
-import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
+import org.bigraph.model.Container.ChangeAddChildDescriptor;
+import org.bigraph.model.Layoutable.ChangeExtendedDataDescriptor;
+import org.bigraph.model.Layoutable.ChangeNameDescriptor;
+import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
+import org.bigraph.model.Layoutable.IChangeDescriptor;
+import org.bigraph.model.Point.ChangeConnectDescriptor;
+import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
@@ -22,8 +27,6 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
-
-import static java.util.Locale.ENGLISH;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
@@ -78,114 +81,119 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	
 	/* XXX: change decoration (?) */
 	
-	private Element processChanges(Element e, ChangeGroup changes) throws SaveFailedException {
+	private Element processChanges(Element e, ChangeDescriptorGroup changes)
+			throws SaveFailedException {
 		applyAttributes(e, "xmlns:change", CHANGE);
 		
-		try {
-			if (getModel().getChanges().size() != 0)
-				getModel().getReactum().tryApplyChange(
-						getModel().getChanges().inverse());
-		} catch (ChangeRejectedException ex) {
-			throw new SaveFailedException(ex);
-		}
-		
-		for (Change i_ : changes) {
+		for (IChangeDescriptor i_ : changes) {
 			Element f = _serialiseChange(i_);
 			
-			if (e != null && f != null) {
+			if (e != null && f != null)
 				e.appendChild(f);
-				try {
-					getModel().getReactum().tryApplyChange(i_);
-				} catch (ChangeRejectedException ex) {
-					throw new SaveFailedException(ex);
-				}
-			}
 		}
 		
 		return e;
 	}
 	
-	private Element _serialiseChange(Change i_) {
+	private String typeFor(Layoutable.Identifier i) {
+		if (i instanceof Node.Identifier) {
+			return "node";
+		} else if (i instanceof Site.Identifier) {
+			return "site";
+		} else if (i instanceof Edge.Identifier) {
+			return "edge";
+		} else if (i instanceof OuterName.Identifier) {
+			return "outername";
+		} else if (i instanceof Root.Identifier) {
+			return "root";
+		} else return null;
+	}
+	
+	private Element _serialiseChange(IChangeDescriptor i_) {
 		Element f = null;
 		
-		if (i_ instanceof ChangeExtendedData) {
-			ChangeExtendedData i = (ChangeExtendedData)i_;
-			if (!(i.getCreator() instanceof Layoutable))
-				return null;
-			Layoutable l = (Layoutable)i.getCreator();
-			if (ExtendedDataUtilities.COMMENT.equals(i.key)) {
+		if (i_ instanceof ChangeExtendedDataDescriptor) {
+			ChangeExtendedDataDescriptor i = (ChangeExtendedDataDescriptor)i_;
+			
+			Layoutable.Identifier l = i.getTarget();
+			String key = i.getKey();
+			Object newValue = i.getNewValue();
+			if (ExtendedDataUtilities.COMMENT.equals(key)) {
 				f = newElement(BIG_RED, "big-red:comment");
-				if (i.newValue != null)
-					applyAttributes(f, "comment", i.newValue);
-			} else if (ExtendedDataUtilities.FILL.equals(i.key)) {
+				if (newValue != null)
+					applyAttributes(f, "comment", newValue);
+			} else if (ExtendedDataUtilities.FILL.equals(key)) {
 				f = applyAttributes(newElement(BIG_RED, "big-red:fill"),
-						"colour", ((Colour)i.newValue).toHexString());
-			} else if (ExtendedDataUtilities.OUTLINE.equals(i.key)) {
+						"colour", ((Colour)newValue).toHexString());
+			} else if (ExtendedDataUtilities.OUTLINE.equals(key)) {
 				f = applyAttributes(newElement(BIG_RED, "big-red:outline"),
-						"colour", ((Colour)i.newValue).toHexString());
-			} else if (ExtendedDataUtilities.LAYOUT.equals(i.key)) {
-				Rectangle r = (Rectangle)i.newValue;
+						"colour", ((Colour)newValue).toHexString());
+			} else if (ExtendedDataUtilities.LAYOUT.equals(key)) {
+				Rectangle r = (Rectangle)newValue;
 				f = applyAttributes(newElement(BIG_RED, "big-red:layout"),
 						"x", r.x(), "y", r.y(),
 						"width", r.width(), "height", r.height());
-			} else if (ExtendedDataUtilities.ALIAS.equals(i.key)) {
+			} else if (ExtendedDataUtilities.ALIAS.equals(key)) {
 				f = applyAttributes(newElement(CHANGE, "change:site-alias"));
-				if (i.newValue != null)
-					applyAttributes(f, "alias", i.newValue);
-			} else if (ExtendedDataUtilities.PARAMETER.equals(i.key)){
+				if (newValue != null)
+					applyAttributes(f, "alias", newValue);
+			} else if (ExtendedDataUtilities.PARAMETER.equals(key)){
 				f = applyAttributes(newElement(CHANGE, "change:node-parameter"),
-						"parameter", i.newValue);
+						"parameter", newValue);
 			}
 			if (f != null)
 				applyAttributes(f,
 						"name", l.getName(),
-						"type", l.getType().toLowerCase(ENGLISH));
-		} else if (i_ instanceof ChangeGroup) {
+						"type", typeFor(l));
+		} else if (i_ instanceof ChangeDescriptorGroup) {
 			f = newElement(CHANGE, "change:group");
-			for (Change c : (ChangeGroup)i_) {
+			for (IChangeDescriptor c : (ChangeDescriptorGroup)i_) {
 				Element e = _serialiseChange(c);
 				if (e != null)
 					f.appendChild(e);
 			}
-		} else if (i_ instanceof ChangeAddChild) {
-			ChangeAddChild i = (ChangeAddChild)i_;
+		} else if (i_ instanceof ChangeAddChildDescriptor) {
+			ChangeAddChildDescriptor i = (ChangeAddChildDescriptor)i_;
 			f = applyAttributes(newElement(CHANGE, "change:add"),
-					"name", i.name,
-					"type", i.child.getType().toLowerCase(ENGLISH));
-			if (!(i.getCreator() instanceof Bigraph))
+					"name", i.getChildName(),
+					"type", typeFor(i.getChild()));
+			Container.Identifier parent = i.getParent();
+			if (!(parent instanceof Bigraph.Identifier))
 				applyAttributes(f,
-						"parent", i.getCreator().getName(),
-						"parent-type",
-							i.getCreator().getType().toLowerCase(ENGLISH));
-			if (i.child instanceof Node)
-				applyAttributes(f,
-						"control", ((Node)i.child).getControl().getName());
-		} else if (i_ instanceof ChangeRemove) {
-			ChangeRemove i = (ChangeRemove)i_;
+						"parent", parent.getName(),
+						"parent-type", typeFor(parent));
+			if (i.getChild() instanceof Node.Identifier)
+				applyAttributes(f, /* XXX: control? */
+						"control", 
+						((Node.Identifier)i.getChild()).getControl().getName());
+		} else if (i_ instanceof ChangeRemoveDescriptor) {
+			ChangeRemoveDescriptor i = (ChangeRemoveDescriptor)i_;
 			f = applyAttributes(newElement(CHANGE, "change:remove"),
-					"name", i.getCreator().getName(),
-					"type", i.getCreator().getType().toLowerCase(ENGLISH));
-		} else if (i_ instanceof ChangeName) {
-			ChangeName i = (ChangeName)i_;
+					"name", i.getTarget().getName(),
+					"type", typeFor(i.getTarget()));
+		} else if (i_ instanceof ChangeNameDescriptor) {
+			ChangeNameDescriptor i = (ChangeNameDescriptor)i_;
 			f = applyAttributes(newElement(CHANGE, "change:rename"),
-					"name", i.getCreator().getName(), 
-					"type", i.getCreator().getType().toLowerCase(ENGLISH),
-					"new-name", i.newName);
-		} else if (i_ instanceof ChangeConnect) {
-			ChangeConnect i = (ChangeConnect)i_;
+					"name", i.getTarget().getName(), 
+					"type", typeFor(i.getTarget()),
+					"new-name", i.getNewName());
+		} else if (i_ instanceof ChangeConnectDescriptor) {
+			ChangeConnectDescriptor i = (ChangeConnectDescriptor)i_;
+			Point.Identifier p = i.getPoint();
 			f = applyAttributes(newElement(CHANGE, "change:connect"),
-					"name", i.getCreator().getName(),
-					"link", i.link.getName());
-			if (i.getCreator() instanceof Port)
+					"name", p.getName(),
+					"link", i.getLink().getName());
+			if (p instanceof Port.Identifier) /* XXX: control? */
 				applyAttributes(f,
-						"node", ((Port)i.getCreator()).getParent().getName());
-		} else if (i_ instanceof ChangeDisconnect) {
-			ChangeDisconnect i = (ChangeDisconnect)i_;
+						"node", ((Port.Identifier)p).getNode().getName());
+		} else if (i_ instanceof ChangeDisconnectDescriptor) {
+			ChangeDisconnectDescriptor i = (ChangeDisconnectDescriptor)i_;
+			Point.Identifier p = i.getPoint();
 			f = applyAttributes(newElement(CHANGE, "change:disconnect"),
-					"name", i.getCreator().getName());
-			if (i.getCreator() instanceof Port)
+					"name", p.getName());
+			if (p instanceof Port.Identifier)
 				applyAttributes(f,
-						"node", ((Port)i.getCreator()).getParent().getName());
+						"node", ((Port.Identifier)p).getNode().getName());
 		}
 		
 		return f;
