@@ -257,13 +257,17 @@ public abstract class Layoutable extends ModelObject {
 			cds.addAll(many);
 		}
 		
+		public void remove(IChangeDescriptor one) {
+			cds.remove(one);
+		}
+		
 		@Override
 		public Iterator<IChangeDescriptor> iterator() {
 			return cds.iterator();
 		}
 		
 		@Override
-		public Change createChange(
+		public ChangeGroup createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			ChangeGroup cg = new ChangeGroup();
 			context = new PropertyScratchpad(context);
@@ -277,6 +281,10 @@ public abstract class Layoutable extends ModelObject {
 		
 		public void clear() {
 			cds.clear();
+		}
+		
+		public int size() {
+			return cds.size();
 		}
 		
 		@Override
