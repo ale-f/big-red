@@ -268,6 +268,23 @@ public abstract class Layoutable extends ModelObject {
 			cds.addAll(many);
 		}
 		
+		public IChangeDescriptor head() {
+			return cds.get(0);
+		}
+		
+		public ChangeDescriptorGroup tail() {
+			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+			cdg.cds = cds.subList(1, size());
+			return cdg;
+		}
+		
+		@Override
+		public ChangeDescriptorGroup clone() {
+			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+			cdg.cds = new ArrayList<IChangeDescriptor>(cds);
+			return cdg;
+		}
+		
 		public void remove(IChangeDescriptor one) {
 			cds.remove(one);
 		}
@@ -275,6 +292,14 @@ public abstract class Layoutable extends ModelObject {
 		@Override
 		public Iterator<IChangeDescriptor> iterator() {
 			return cds.iterator();
+		}
+		
+		public IChangeDescriptor get(int position) {
+			return cds.get(position);
+		}
+		
+		public IChangeDescriptor set(int position, IChangeDescriptor cd) {
+			return cds.set(position, cd);
 		}
 		
 		@Override
