@@ -19,6 +19,11 @@ public class InnerName extends Point implements IInnerName {
 			return (InnerName)
 				universe.getNamespace(InnerName.class).get(context, getName());
 		}
+		
+		@Override
+		public String toString() {
+			return "inner name " + getName();
+		}
 	}
 	
 	@Override

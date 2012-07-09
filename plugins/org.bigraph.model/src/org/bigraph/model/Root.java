@@ -44,6 +44,11 @@ public class Root extends Container implements IRoot {
 			return (Root)
 					universe.getNamespace(Root.class).get(context, getName());
 		}
+		
+		@Override
+		public String toString() {
+			return "root " + getName();
+		}
 	}
 	
 	@Override

@@ -24,6 +24,11 @@ public class Site extends Layoutable implements ISite {
 			return (Site)
 					universe.getNamespace(Site.class).get(context, getName());
 		}
+		
+		@Override
+		public String toString() {
+			return "site " + getName();
+		}
 	}
 	
 	@Override

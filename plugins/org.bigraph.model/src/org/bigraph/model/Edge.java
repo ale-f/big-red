@@ -26,6 +26,11 @@ public class Edge extends Link implements IEdge {
 		public Edge lookup(Bigraph universe, PropertyScratchpad context) {
 			return (Edge)super.lookup(universe, context);
 		}
+		
+		@Override
+		public String toString() {
+			return "edge " + getName();
+		}
 	}
 	
 	@Override

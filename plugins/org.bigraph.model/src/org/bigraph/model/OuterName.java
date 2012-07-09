@@ -18,6 +18,11 @@ public class OuterName extends Link implements IOuterName {
 		public OuterName lookup(Bigraph universe, PropertyScratchpad context) {
 			return (OuterName)super.lookup(universe, context);
 		}
+		
+		@Override
+		public String toString() {
+			return "outer name " + getName();
+		}
 	}
 	
 	@Override

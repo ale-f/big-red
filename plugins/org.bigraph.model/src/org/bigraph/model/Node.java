@@ -131,6 +131,11 @@ public class Node extends Container implements INode {
 			/* perform a control check */
 			return n;
 		}
+		
+		@Override
+		public String toString() {
+			return "node " + getName() + " (with control " + control + ")";
+		}
 	}
 	
 	@Override

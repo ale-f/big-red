@@ -74,6 +74,11 @@ public class Port extends Point implements IPort {
 				return n.getPort(getName());
 			} else return null;
 		}
+		
+		@Override
+		public String toString() {
+			return "port " + getName() + " of " + node;
+		}
 	}
 	
 	@Override

@@ -268,6 +268,11 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 		public Bigraph lookup(Bigraph universe, PropertyScratchpad context) {
 			return universe;
 		}
+		
+		@Override
+		public String toString() {
+			return "bigraph";
+		}
 	}
 	
 	@Override
