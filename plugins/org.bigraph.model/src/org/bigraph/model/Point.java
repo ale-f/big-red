@@ -160,6 +160,22 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 
 		@Override
+		public boolean equals(Object obj_) {
+			if (safeClassCmp(this, obj_)) {
+				ChangeConnectDescriptor obj = (ChangeConnectDescriptor)obj_;
+				return
+						safeEquals(getPoint(), obj.getPoint()) &&
+						safeEquals(getLink(), obj.getLink());
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(
+					ChangeConnectDescriptor.class, point, link);
+		}
+		
+		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			return point.lookup(universe, context).changeConnect(
@@ -181,6 +197,19 @@ public abstract class Point extends Layoutable implements IPoint {
 		
 		public Identifier getPoint() {
 			return point;
+		}
+		
+		@Override
+		public boolean equals(Object obj_) {
+			return safeClassCmp(this, obj_) &&
+					safeEquals(getPoint(),
+							((ChangeDisconnectDescriptor)obj_).getPoint());
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(
+					ChangeDisconnectDescriptor.class, point);
 		}
 		
 		@Override

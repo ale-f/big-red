@@ -184,6 +184,22 @@ public abstract class Container extends Layoutable {
 		}
 
 		@Override
+		public boolean equals(Object obj_) {
+			if (safeClassCmp(this, obj_)) {
+				ChangeAddChildDescriptor obj = (ChangeAddChildDescriptor)obj_;
+				return
+						safeEquals(getParent(), obj.getParent()) &&
+						safeEquals(getChild(), obj.getChild());
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(
+					ChangeAddChildDescriptor.class, parent, child);
+		}
+		
+		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			Container c = parent.lookup(universe, context);
