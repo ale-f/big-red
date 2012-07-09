@@ -275,6 +275,10 @@ public abstract class Layoutable extends ModelObject {
 			return cg;
 		}
 		
+		public void clear() {
+			cds.clear();
+		}
+		
 		@Override
 		public String toString() {
 			return cds.toString();
