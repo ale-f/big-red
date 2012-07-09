@@ -17,6 +17,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -96,6 +97,12 @@ public final class ExtendedDataUtilities {
 		return m.changeExtendedData(COMMENT, s);
 	}
 	
+	public static IChangeDescriptor changeCommentDescriptor(
+			Layoutable.Identifier l, String s) {
+		return new Layoutable.ChangeExtendedDataDescriptor(
+				l, COMMENT, s, null, null);
+	}
+	
 	@RedProperty(fired = Colour.class, retrieved = Colour.class)
 	public static final String FILL =
 			"eD!+dk.itu.big_red.model.Colourable.fill";
@@ -130,6 +137,12 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeFill(ModelObject m, Colour c) {
 		return m.changeExtendedData(FILL, c);
+	}
+	
+	public static IChangeDescriptor changeFillDescriptor(
+			Layoutable.Identifier l, Colour c) {
+		return new Layoutable.ChangeExtendedDataDescriptor(
+				l, FILL, c, null, null);
 	}
 	
 	@RedProperty(fired = Colour.class, retrieved = Colour.class)
@@ -168,6 +181,12 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeOutline(ModelObject m, Colour c) {
 		return m.changeExtendedData(OUTLINE, c);
+	}
+	
+	public static IChangeDescriptor changeOutlineDescriptor(
+			Layoutable.Identifier l, Colour c) {
+		return new Layoutable.ChangeExtendedDataDescriptor(
+				l, OUTLINE, c, null, null);
 	}
 	
 	@RedProperty(fired = INamePolicy.class, retrieved = INamePolicy.class)
@@ -254,6 +273,12 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeParameter(Node n, String s) {
 		return n.changeExtendedData(PARAMETER, s, parameterValidator);
+	}
+	
+	public static IChangeDescriptor changeParameterDescriptor(
+			Node.Identifier n, String s) {
+		return new Layoutable.ChangeExtendedDataDescriptor(
+				n, PARAMETER, s, parameterValidator, null);
 	}
 	
 	@RedProperty(fired = Integer.class, retrieved = Integer.class)
@@ -530,6 +555,12 @@ public final class ExtendedDataUtilities {
 		return l.changeExtendedData(LAYOUT, r, null, layoutValidator);
 	}
 	
+	public static IChangeDescriptor changeLayoutDescriptor(
+			Layoutable.Identifier l, Rectangle r) {
+		return new Layoutable.ChangeExtendedDataDescriptor(
+				l, LAYOUT, r, layoutValidator, null);
+	}
+	
 	public static Rectangle getRootLayout(Layoutable l) {
 		return getRootLayout(null, l);
 	}
@@ -675,5 +706,11 @@ public final class ExtendedDataUtilities {
 	
 	public static Change changeAlias(Site s, String a) {
 		return s.changeExtendedData(ALIAS, a, aliasValidator);
+	}
+	
+	public static IChangeDescriptor changeAliasDescriptor(
+			Site.Identifier s, String a) {
+		return new Layoutable.ChangeExtendedDataDescriptor(
+				s, ALIAS, a, aliasValidator, null);
 	}
 }
