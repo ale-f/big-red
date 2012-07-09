@@ -278,6 +278,18 @@ public abstract class Layoutable extends ModelObject {
 		}
 		
 		@Override
+		public boolean equals(Object obj_) {
+			return
+				safeClassCmp(this, obj_) &&
+				safeEquals(cds, ((ChangeDescriptorGroup)obj_).cds);
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(ChangeDescriptorGroup.class, cds);
+		}
+		
+		@Override
 		public ChangeGroup createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			ChangeGroup cg = new ChangeGroup();
@@ -336,6 +348,24 @@ public abstract class Layoutable extends ModelObject {
 		}
 		
 		@Override
+		public boolean equals(Object obj_) {
+			if (safeClassCmp(this, obj_)) {
+				ChangeExtendedDataDescriptor obj =
+						(ChangeExtendedDataDescriptor)obj_;
+				return
+						safeEquals(getTarget(), obj.getTarget()) &&
+						safeEquals(getKey(), obj.getKey()) &&
+						safeEquals(getNewValue(), obj.getNewValue());
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(
+					ChangeExtendedDataDescriptor.class, target, key, newValue);
+		}
+		
+		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			return target.lookup(universe, context).changeExtendedData(
@@ -367,6 +397,22 @@ public abstract class Layoutable extends ModelObject {
 		}
 		
 		@Override
+		public boolean equals(Object obj_) {
+			if (safeClassCmp(this, obj_)) {
+				ChangeNameDescriptor obj = (ChangeNameDescriptor)obj_;
+				return
+						safeEquals(getTarget(), obj.getTarget()) &&
+						safeEquals(getNewName(), obj.getNewName());
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(
+					ChangeNameDescriptor.class, target, newName);
+		}
+		
+		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			return target.lookup(universe, context).changeName(newName);
@@ -388,6 +434,18 @@ public abstract class Layoutable extends ModelObject {
 		
 		public Identifier getTarget() {
 			return target;
+		}
+		
+		@Override
+		public boolean equals(Object obj_) {
+			return safeClassCmp(this, obj_) &&
+					safeEquals(getTarget(),
+							((ChangeRemoveDescriptor)obj_).getTarget());
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(ChangeRemoveDescriptor.class, target);
 		}
 		
 		@Override
