@@ -83,14 +83,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		} else return null;
 	}
 	
-	private static Node.Identifier getNode(Control control, String name) {
-		return new Node.Identifier(name, control);
-	}
-	
 	private static Container.Identifier getContainer(
 			String type, String name) {
 		if ("node".equals(type)) {
-			return getNode(null, name); /* XXX: not null! */
+			return new Node.Identifier(name, null); /* XXX: not null! */
 		} else if ("root".equals(type)) {
 			return new Root.Identifier(name);
 		} else if (type == null && name == null) {
@@ -99,7 +95,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	}
 	
 	private IChangeDescriptor changeDescriptorFromElement(org.w3c.dom.Node n) {
-		Bigraph reactum = rr.getReactum();
 		IChangeDescriptor cd = null;
 		if (!(n instanceof Element))
 			return null;
@@ -130,7 +125,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				if (type.equals("node")) {
 					String control = getAttributeNS(el, CHANGE, "control");
 					child = new Node.Identifier(name,
-							reactum.getSignature().getControl(control));
+							new Control.Identifier(control));
 				} else child = getLayoutable(type, name);
 				
 				if (parent != null)
@@ -160,7 +155,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Point.Identifier p;
 				if (node != null) {
 					p = new Port.Identifier(name,
-							getNode(null, node)); /* XXX: not null! */
+						new Node.Identifier(node, null)); /* XXX: not null! */
 				} else p = new InnerName.Identifier(name);
 				
 				Link.Identifier l = getLink(link);
@@ -173,7 +168,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Point.Identifier p = null;
 				if (node != null) {
 					p = new Port.Identifier(name,
-							getNode(null, node)); /* XXX: not null! */
+						new Node.Identifier(node, null)); /* XXX: not null! */
 				} else p = new InnerName.Identifier(name);
 				
 				if (p != null)
@@ -190,7 +185,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					parameter = getAttributeNS(el, CHANGE, "parameter");
-				Node.Identifier o = getNode(null, name); /* XXX: not null! */
+				Node.Identifier o =
+						new Node.Identifier(name, null); /* XXX: not null! */
 				
 				if (o != null)
 					cd = ExtendedDataUtilities.changeParameterDescriptor(

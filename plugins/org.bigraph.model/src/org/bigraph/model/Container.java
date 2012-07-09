@@ -201,7 +201,10 @@ public abstract class Container extends Layoutable {
 					l = new OuterName();
 				} else if (child instanceof Node.Identifier) {
 					Node.Identifier id = (Node.Identifier)child;
-					l = new Node(id.getControl());
+					/* There shouldn't be any changes to the signature in this
+					 * context */
+					l = new Node(id.getControl().lookup(
+							universe.getSignature(), null));
 				}
 				if (l != null)
 					return c.changeAddChild(l, child.getName());

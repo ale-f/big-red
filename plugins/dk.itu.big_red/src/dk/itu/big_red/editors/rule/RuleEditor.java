@@ -434,7 +434,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 				id = new OuterName.Identifier(ch.name);
 			} else if (ch.child instanceof Node) {
 				id = new Node.Identifier(
-						ch.name, ((Node)ch.child).getControl());
+						ch.name,
+						((Node)ch.child).getControl().getIdentifier());
 			}
 			chd = new ChangeAddChildDescriptor(
 					ch.getCreator().getIdentifier(_testScratch), id);

@@ -113,14 +113,14 @@ public class Node extends Container implements INode {
 	}
 	
 	public static final class Identifier extends Container.Identifier {
-		private final Control control;
+		private final Control.Identifier control;
 		
-		public Identifier(String name, Control control) {
+		public Identifier(String name, Control.Identifier control) {
 			super(name);
 			this.control = control;
 		}
 		
-		public Control getControl() {
+		public Control.Identifier getControl() {
 			return control;
 		}
 		
@@ -134,7 +134,7 @@ public class Node extends Container implements INode {
 		
 		@Override
 		public String toString() {
-			return "node " + getName() + " (with control " + control + ")";
+			return "node " + getName() + " (of " + control + ")";
 		}
 	}
 	
@@ -145,6 +145,7 @@ public class Node extends Container implements INode {
 	
 	@Override
 	public Identifier getIdentifier(PropertyScratchpad context) {
-		return new Identifier(getName(context), getControl());
+		return new Identifier(getName(context),
+				getControl().getIdentifier(context));
 	}
 }
