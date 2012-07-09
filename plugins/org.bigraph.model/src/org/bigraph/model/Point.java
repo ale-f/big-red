@@ -157,6 +157,11 @@ public abstract class Point extends Layoutable implements IPoint {
 			return target.lookup(universe, context).changeConnect(
 					link.lookup(universe, context));
 		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(connect " + target + " to " + link + ")";
+		}
 	}
 	
 	public static class ChangeDisconnectDescriptor implements IChangeDescriptor {
@@ -170,6 +175,11 @@ public abstract class Point extends Layoutable implements IPoint {
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			return target.lookup(universe, context).changeDisconnect();
+		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(disconnect " + target + ")";
 		}
 	}
 }

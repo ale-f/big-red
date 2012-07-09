@@ -274,6 +274,11 @@ public abstract class Layoutable extends ModelObject {
 			}
 			return cg;
 		}
+		
+		@Override
+		public String toString() {
+			return cds.toString();
+		}
 	}
 	
 	public static class ChangeExtendedDataDescriptor
@@ -301,6 +306,12 @@ public abstract class Layoutable extends ModelObject {
 			return target.lookup(universe, context).changeExtendedData(
 					key, newValue, immediateValidator, finalValidator);
 		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(set extended data field " + key + " of " +
+					target + " to " + newValue + ")"; 
+		}
 	}
 	
 	public static class ChangeNameDescriptor implements IChangeDescriptor {
@@ -318,6 +329,12 @@ public abstract class Layoutable extends ModelObject {
 				Bigraph universe, PropertyScratchpad context) {
 			return target.lookup(universe, context).changeName(newName);
 		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(set name of " + target + " to " + 
+					newName + ")";
+		}
 	}
 	
 	public static class ChangeRemoveDescriptor implements IChangeDescriptor {
@@ -331,6 +348,11 @@ public abstract class Layoutable extends ModelObject {
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
 			return target.lookup(universe, context).changeRemove();
+		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(remove child " + target + ")";
 		}
 	}
 }

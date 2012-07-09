@@ -203,5 +203,11 @@ public abstract class Container extends Layoutable {
 			}
 			return null;
 		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(add child " + child + " to parent " + 
+					parent + " with name \"" + childName + "\")";
+		}
 	}
 }
