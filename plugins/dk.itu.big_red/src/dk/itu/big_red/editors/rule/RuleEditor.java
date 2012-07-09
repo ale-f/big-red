@@ -429,9 +429,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
-	private PropertyScratchpad
-		_testScratch = new PropertyScratchpad(),
-		_testParallelScratch = new PropertyScratchpad();
+	private PropertyScratchpad _testScratch = new PropertyScratchpad();
 	
 	@Override
 	public void stackChanged(CommandStackEvent event) {
@@ -448,11 +446,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 		
 		detail = event.getDetail() & CommandStack.PRE_MASK;
-		if (detail != 0) {
-			_testScratch.clear();
-			_testParallelScratch.clear();
+		if (detail != 0)
 			_testConvert(detail, event.getCommand());
-		}
 		
 		super.stackChanged(event);
 	}
@@ -474,16 +469,21 @@ public class RuleEditor extends AbstractGEFEditor implements
 			if (detail != CommandStack.PRE_UNDO) {
 				ch = c.getChange();
 			} else ch = c.getChange().inverse();
-			_testExtractDescriptor(ch);
+			System.out.println(unappliedChangeToDescriptor(ch));
 		}
 	}
 	
-	private IChangeDescriptor _testExtractDescriptor(Change c) {
+	private IChangeDescriptor unappliedChangeToDescriptor(Change c) {
+		_testScratch.clear();
+		return _doUnappliedChangeToDescriptor(c);
+	}
+	
+	private IChangeDescriptor _doUnappliedChangeToDescriptor(Change c) {
 		IChangeDescriptor chd = null;
 		if (c instanceof ChangeGroup) {
 			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 			for (Change ch : (ChangeGroup)c) {
-				chd = _testExtractDescriptor(ch);
+				chd = _doUnappliedChangeToDescriptor(ch);
 				if (chd != null)
 					cdg.add(chd);
 			}
@@ -519,12 +519,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 					ch.child.getIdentifier(/* name is irrelevant */), ch.name);
 		}
 		System.out.println(this +
-				"._testExtractDescriptor(" + c + "): " + chd);
-		if (chd != null) {
-			Change d = chd.createChange(getReactum(), _testParallelScratch);
-			System.out.println("\t(instantiates to " + d + ")");
-			d.simulate(_testParallelScratch);
-		}
+				"._doUnappliedChangeToDescriptor(" + c + "): " + chd);
 		c.simulate(_testScratch);
 		return chd;
 	}
