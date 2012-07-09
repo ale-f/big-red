@@ -178,6 +178,18 @@ public abstract class Container extends Layoutable {
 			this.childName = childName;
 		}
 		
+		public Identifier getParent() {
+			return parent;
+		}
+
+		public Layoutable.Identifier getChild() {
+			return child;
+		}
+
+		public String getChildName() {
+			return childName;
+		}
+
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {

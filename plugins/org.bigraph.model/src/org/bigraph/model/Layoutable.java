@@ -312,6 +312,18 @@ public abstract class Layoutable extends ModelObject {
 			this.finalValidator = finalValidator;
 		}
 		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public String getKey() {
+			return key;
+		}
+		
+		public Object getNewValue() {
+			return newValue;
+		}
+		
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
@@ -328,12 +340,19 @@ public abstract class Layoutable extends ModelObject {
 	
 	public static class ChangeNameDescriptor implements IChangeDescriptor {
 		private final Identifier target;
-		
 		private final String newName;
 		
 		public ChangeNameDescriptor(Identifier target, String newName) {
 			this.target = target;
 			this.newName = newName;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public String getNewName() {
+			return newName;
 		}
 		
 		@Override
@@ -354,6 +373,10 @@ public abstract class Layoutable extends ModelObject {
 		
 		public ChangeRemoveDescriptor(Identifier target) {
 			this.target = target;
+		}
+		
+		public Identifier getTarget() {
+			return target;
 		}
 		
 		@Override

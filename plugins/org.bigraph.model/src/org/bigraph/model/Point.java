@@ -142,44 +142,56 @@ public abstract class Point extends Layoutable implements IPoint {
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
 	public static class ChangeConnectDescriptor implements IChangeDescriptor {
-		private final Identifier target;
+		private final Identifier point;
 		private final Link.Identifier link;
 		
 		public ChangeConnectDescriptor(
-				Identifier target, Link.Identifier link) {
-			this.target = target;
+				Identifier point, Link.Identifier link) {
+			this.point = point;
 			this.link = link;
 		}
 		
+		public Identifier getPoint() {
+			return point;
+		}
+
+		public Link.Identifier getLink() {
+			return link;
+		}
+
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
-			return target.lookup(universe, context).changeConnect(
+			return point.lookup(universe, context).changeConnect(
 					link.lookup(universe, context));
 		}
 		
 		@Override
 		public String toString() {
-			return "ChangeDescriptor(connect " + target + " to " + link + ")";
+			return "ChangeDescriptor(connect " + point + " to " + link + ")";
 		}
 	}
 	
 	public static class ChangeDisconnectDescriptor implements IChangeDescriptor {
-		private final Identifier target;
+		private final Identifier point;
 		
-		public ChangeDisconnectDescriptor(Identifier target) {
-			this.target = target;
+		public ChangeDisconnectDescriptor(Identifier point) {
+			this.point = point;
+		}
+		
+		public Identifier getPoint() {
+			return point;
 		}
 		
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
-			return target.lookup(universe, context).changeDisconnect();
+			return point.lookup(universe, context).changeDisconnect();
 		}
 		
 		@Override
 		public String toString() {
-			return "ChangeDescriptor(disconnect " + target + ")";
+			return "ChangeDescriptor(disconnect " + point + ")";
 		}
 	}
 }
