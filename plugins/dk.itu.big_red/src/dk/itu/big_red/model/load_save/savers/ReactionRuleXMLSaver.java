@@ -155,7 +155,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		} else if (i_ instanceof ChangeAddChildDescriptor) {
 			ChangeAddChildDescriptor i = (ChangeAddChildDescriptor)i_;
 			f = applyAttributes(newElement(CHANGE, "change:add"),
-					"name", i.getChildName(),
+					"name", i.getChild().getName(),
 					"type", typeFor(i.getChild()));
 			Container.Identifier parent = i.getParent();
 			if (!(parent instanceof Bigraph.Identifier))

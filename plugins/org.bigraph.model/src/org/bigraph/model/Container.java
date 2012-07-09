@@ -168,14 +168,11 @@ public abstract class Container extends Layoutable {
 	public static class ChangeAddChildDescriptor implements IChangeDescriptor {
 		private final Identifier parent;
 		private final Layoutable.Identifier child;
-		private final String childName;
 		
 		public ChangeAddChildDescriptor(
-				Identifier parent,
-				Layoutable.Identifier child, String childName) {
+				Identifier parent, Layoutable.Identifier child) {
 			this.parent = parent;
 			this.child = child;
-			this.childName = childName;
 		}
 		
 		public Identifier getParent() {
@@ -184,10 +181,6 @@ public abstract class Container extends Layoutable {
 
 		public Layoutable.Identifier getChild() {
 			return child;
-		}
-
-		public String getChildName() {
-			return childName;
 		}
 
 		@Override
@@ -211,7 +204,7 @@ public abstract class Container extends Layoutable {
 					l = new Node(id.getControl());
 				}
 				if (l != null)
-					return c.changeAddChild(l, childName);
+					return c.changeAddChild(l, child.getName());
 			}
 			return null;
 		}
@@ -219,7 +212,7 @@ public abstract class Container extends Layoutable {
 		@Override
 		public String toString() {
 			return "ChangeDescriptor(add child " + child + " to parent " + 
-					parent + " with name \"" + childName + "\")";
+					parent + ")";
 		}
 	}
 }

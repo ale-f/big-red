@@ -2,9 +2,6 @@ package dk.itu.big_red.editors.rule;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container.ChangeAddChild;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
@@ -20,13 +17,18 @@ import org.bigraph.model.Point.ChangeConnect;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnect;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
+import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
 import org.bigraph.model.ReactionRule;
+import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
+import org.bigraph.model.Site;
 import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
@@ -51,7 +53,6 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
 import org.eclipse.gef.ui.actions.ZoomOutAction;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -420,12 +421,24 @@ public class RuleEditor extends AbstractGEFEditor implements
 					ch.getCreator().getIdentifier(_testScratch));
 		} else if (c instanceof ChangeAddChild) {
 			ChangeAddChild ch = (ChangeAddChild)c;
+			Layoutable.Identifier id = null;
+			if (ch.child instanceof Root) {
+				id = new Root.Identifier(ch.name);
+			} else if (ch.child instanceof Site) {
+				id = new Site.Identifier(ch.name);
+			} else if (ch.child instanceof InnerName) {
+				id = new InnerName.Identifier(ch.name);
+			} else if (ch.child instanceof Edge) {
+				id = new Edge.Identifier(ch.name);
+			} else if (ch.child instanceof OuterName) {
+				id = new OuterName.Identifier(ch.name);
+			} else if (ch.child instanceof Node) {
+				id = new Node.Identifier(
+						ch.name, ((Node)ch.child).getControl());
+			}
 			chd = new ChangeAddChildDescriptor(
-					ch.getCreator().getIdentifier(_testScratch),
-					ch.child.getIdentifier(/* name is irrelevant */), ch.name);
+					ch.getCreator().getIdentifier(_testScratch), id);
 		}
-		System.out.println(this +
-				"._doUnappliedChangeToDescriptor(" + c + "): " + chd);
 		c.simulate(_testScratch);
 		return chd;
 	}

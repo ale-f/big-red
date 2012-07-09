@@ -134,8 +134,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				} else child = getLayoutable(type, name);
 				
 				if (parent != null)
-					cd = new Container.ChangeAddChildDescriptor(
-							parent, child, name);
+					cd = new Container.ChangeAddChildDescriptor(parent, child);
 			} else if (el.getLocalName().equals("remove")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
