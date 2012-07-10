@@ -255,6 +255,10 @@ public abstract class Layoutable extends ModelObject {
 		private List<IChangeDescriptor> cds =
 				new ArrayList<IChangeDescriptor>();
 		
+		public void prepend(IChangeDescriptor one) {
+			cds.add(0, one);
+		}
+		
 		public void add(IChangeDescriptor one) {
 			cds.add(one);
 		}
