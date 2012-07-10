@@ -82,6 +82,25 @@ public abstract class Link extends Layoutable implements ILink {
 		}
 		
 		@Override
+		public boolean equals(Object obj_) {
+			if (obj_ == null)
+				return false;
+			Class<?>
+				mine = getClass(),
+				theirs = obj_.getClass();
+			if (mine.equals(theirs) ||
+				(mine.equals(Identifier.class) ||
+				 theirs.equals(Identifier.class))) {
+				return getName().equals(((Identifier)obj_).getName());
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(Identifier.class, getName());
+		}
+		
+		@Override
 		public Link lookup(Bigraph universe, PropertyScratchpad context) {
 			return (Link)
 					universe.getNamespace(Link.class).get(context, getName());
