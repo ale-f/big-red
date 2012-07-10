@@ -2,6 +2,9 @@ package dk.itu.big_red.editors.rule;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container.ChangeAddChild;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
@@ -29,6 +32,7 @@ import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
@@ -363,27 +367,46 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
+	private Map<Change, IChangeDescriptor> reactumChangeToDescriptor =
+			new HashMap<Change, IChangeDescriptor>();
+	
 	private void _testConvertChange(int detail, ChangeCommand c) {
 		Change commandChange = c.getChange();
 		IChangeExecutor target = c.getTarget();
 		
+		ChangeDescriptorGroup reactumChanges = getModel().getChanges();
+		PropertyScratchpad scratch = new PropertyScratchpad();
 		if (target == getRedex()) {
+			IChangeDescriptor cd = unappliedChangeToDescriptor(scratch,
+					(detail != CommandStack.PRE_UNDO ?
+							commandChange : commandChange.inverse()));
 			
-		} else if (target == getReactum()) {
-			PropertyScratchpad scratch = null;
-			if (detail == CommandStack.PRE_UNDO) {
-				/* To make sure that the resulting change descriptor is
-				 * coherent (and identical to the forwards one), rewind the
-				 * scratchpad to the state before this change was applied */
-				commandChange.inverse().simulate(
-						scratch = new PropertyScratchpad());
+			if (reactumChanges.size() == 0) {
+				try {
+					getReactum().tryApplyChange(
+							cd.createChange(getReactum(), null));
+				} catch (ChangeRejectedException cre) {
+					throw new Error("Oughtn't happen");
+				}
+			} else {
+				/* Go! Operation 2! */ {
+					System.out.println("Pre was " + reactumChanges);
+					System.out.println("New CD is " + cd);
+					ChangeDescriptorGroup cdg =
+						getModel().performOperation2(cd, reactumChanges);
+					System.out.println("Post op2 was " + cdg);
+				}
 			}
-			IChangeDescriptor cd =
-				unappliedChangeToDescriptor(scratch, commandChange);
-			
+		} else if (target == getReactum()) {
+			IChangeDescriptor cd;
 			if (detail == CommandStack.PRE_UNDO) {
+				cd = reactumChangeToDescriptor.remove(commandChange);
 				getModel().getChanges().remove(cd);
-			} else getModel().getChanges().add(cd);
+			} else {
+				cd = unappliedChangeToDescriptor(scratch, commandChange);
+				reactumChangeToDescriptor.put(commandChange, cd);
+				getModel().getChanges().add(cd);
+			}
 		}
 	}
 	
