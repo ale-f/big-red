@@ -35,7 +35,7 @@ public class ReactionRule extends ModelObject {
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
 				IChangeDescriptor reactumCD);
 		
-		protected ChangeDescriptorGroup runStep(
+		protected final ChangeDescriptorGroup runStep(
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
 			ChangeDescriptorGroup cdg = null;
 			for (int i = 0; i < reactumCDs.size(); i++) {
@@ -56,23 +56,23 @@ public class ReactionRule extends ModelObject {
 			return null;
 		}
 		
-		public ChangeDescriptorGroup run(
+		public final ChangeDescriptorGroup run(
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
-			ChangeDescriptorGroup cg = null;
+			ChangeDescriptorGroup cdg = null;
 			if (redexCD instanceof ChangeDescriptorGroup) {
 				ChangeDescriptorGroup redexCDs =
 						(ChangeDescriptorGroup)redexCD;
 				while (redexCDs.size() > 0) {
 					IChangeDescriptor head = redexCDs.head();
-					cg = run(head, reactumCDs);
-					if (cg != null)
-						reactumCDs = cg;
+					cdg = run(head, reactumCDs);
+					if (cdg != null)
+						reactumCDs = cdg;
 					redexCDs = redexCDs.tail();
 				}
 			} else {
-				cg = runStep(redexCD, reactumCDs);
-				if (cg != null)
-					reactumCDs = cg;
+				cdg = runStep(redexCD, reactumCDs);
+				if (cdg != null)
+					reactumCDs = cdg;
 			}
 			return reactumCDs;
 		}
@@ -91,6 +91,28 @@ public class ReactionRule extends ModelObject {
 		}
 	}
 	
+	protected class Operation3PrimeRunner extends OperationRunner {
+		private boolean conflicts(
+				IChangeDescriptor redexCD, IChangeDescriptor reactumCD) {
+			return false;
+		}
+		
+		private IChangeDescriptor reverseSomehow(IChangeDescriptor cd) {
+			return null;
+		}
+		
+		@Override
+		protected ChangeDescriptorGroup runStepActual(
+				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
+				IChangeDescriptor reactumCD) {
+			if (conflicts(redexCD, reactumCD)) {
+				reactumCDs = reactumCDs.clone();
+				reactumCDs.prepend(reverseSomehow(redexCD));
+				return reactumCDs;
+			} else return null;
+		}
+	}
+	
 	/**
 	 * <strong>Do not call this method.</strong>
 	 * @deprecated <strong>Do not call this method.</strong>
@@ -102,6 +124,19 @@ public class ReactionRule extends ModelObject {
 	public ChangeDescriptorGroup performOperation2(
 			IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
 		return new Operation2Runner().run(redexCD, reactumCDs);
+	}
+	
+	/**
+	 * <strong>Do not call this method.</strong>
+	 * @deprecated <strong>Do not call this method.</strong>
+	 * @param redexCD an {@link Object}
+	 * @param reactumCDs an {@link Object}
+	 * @return an {@link Object}
+	 */
+	@Deprecated
+	public ChangeDescriptorGroup performOperation3Prime(
+			IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
+		return new Operation3PrimeRunner().run(redexCD, reactumCDs);
 	}
 	
 	@Override
