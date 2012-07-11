@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.interaction_managers.InteractionManager;
 import dk.itu.big_red.utilities.io.AsynchronousOutputThread;
+import dk.itu.big_red.utilities.io.IAsynchronousOutputRecipient;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.strategies.LineReadStrategy;
 import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
@@ -246,6 +247,14 @@ public class BigMCInteractionManager extends InteractionManager {
 		}
 	}
 	
+	private static final IAsynchronousOutputRecipient aor =
+			new IAsynchronousOutputRecipient() {
+		@Override
+		public void signalOutputError(IOException e) {
+			e.printStackTrace();
+		}
+	};
+	
 	@Override
 	public void run(Shell parent) {
 		if (new OptionsDialog(parent).open() == Dialog.OK) {
@@ -268,7 +277,7 @@ public class BigMCInteractionManager extends InteractionManager {
 			}
 		
 			AsynchronousOutputThread ot =
-				new AsynchronousOutputThread(null).
+				new AsynchronousOutputThread(aor).
 					setOutputStream(process.getOutputStream());
 			ot.start();
 			ot.add(b);
