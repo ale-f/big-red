@@ -76,7 +76,7 @@ public abstract class Link extends Layoutable implements ILink {
 		} else return super.getProperty(name);
 	}
 	
-	public static class Identifier extends Layoutable.Identifier {
+	public static abstract class Identifier extends Layoutable.Identifier {
 		public Identifier(String name) {
 			super(name);
 		}
@@ -97,11 +97,6 @@ public abstract class Link extends Layoutable implements ILink {
 		public Link lookup(Bigraph universe, PropertyScratchpad context) {
 			return (Link)
 					universe.getNamespace(Link.class).get(context, getName());
-		}
-		
-		@Override
-		public String toString() {
-			return "link " + getName();
 		}
 	}
 	

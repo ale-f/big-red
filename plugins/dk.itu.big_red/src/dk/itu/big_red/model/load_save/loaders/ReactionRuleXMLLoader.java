@@ -3,6 +3,7 @@ package dk.itu.big_red.model.load_save.loaders;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Control;
+import org.bigraph.model.Edge;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Layoutable.ChangeDescriptorGroup;
@@ -10,6 +11,7 @@ import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.ReactionRule;
@@ -74,9 +76,17 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		} else if ("node".equals(type) || "root".equals(type) ||
 				type == null) {
 			return getContainer(type, name);
-		} else if ("edge".equals(type) || "outername".equals(type) ||
-				"link".equals(type)) {
-			return new Link.Identifier(name);
+		} else if ("edge".equals(type)) {
+			return new Edge.Identifier(name);
+		} else if ("outername".equals(type)) {
+			return new OuterName.Identifier(name);
+		} else if ("link".equals(type)) {
+			Link.Identifier l = _getScratchLinkIdentifier(name);
+			if (l == null)
+				throw new Error(
+						"getLayoutable(String, String) can't retrieve an " +
+						"identifier for the nonexistent bare link " + name);
+			return l;
 		} else if ("innername".equals(type)) {
 			return new InnerName.Identifier(name);
 		} else return null;
@@ -90,7 +100,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				throw new Error(
 						"getContainer(String, String) can only retrieve " +
 						"identifiers for Nodes that already exist");
-			return new Node.Identifier(name, n.getControl());
+			return n;
 		} else if ("root".equals(type)) {
 			return new Root.Identifier(name);
 		} else if (type == null && name == null) {
@@ -102,6 +112,12 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		Node n = (Node)
 				rr.getReactum().getNamespace(Node.class).get(scratch, name);
 		return (n != null ? n.getIdentifier(scratch) : null);
+	}
+	
+	private Link.Identifier _getScratchLinkIdentifier(String name) {
+		Link l = (Link)
+				rr.getReactum().getNamespace(Link.class).get(scratch, name);
+		return (l != null ? l.getIdentifier(scratch) : null);
 	}
 	
 	private IChangeDescriptor changeDescriptorFromElement(org.w3c.dom.Node n) {
@@ -167,7 +183,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 							_getScratchNodeIdentifier(node));
 				} else p = new InnerName.Identifier(name);
 				
-				Link.Identifier l = new Link.Identifier(link);
+				Link.Identifier l = _getScratchLinkIdentifier(link);
 				if (p != null && l != null)
 					cd = new Point.ChangeConnectDescriptor(p, l);
 			} else if (el.getLocalName().equals("disconnect")) {
