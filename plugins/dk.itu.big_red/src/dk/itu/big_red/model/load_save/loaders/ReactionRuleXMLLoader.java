@@ -14,6 +14,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.core.resources.IFile;
@@ -64,34 +65,41 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		return im.makeObject(e);
 	}
 	
-	private static Link.Identifier getLink(String name) {
-		return new Link.Identifier(name);
-	}
-	
-	private static Layoutable.Identifier getLayoutable(
+	private Layoutable.Identifier getLayoutable(
 			String type, String name) {
 		if ("site".equals(type)) {
 			return new Site.Identifier(name);
 		} else if ("node".equals(type) || "root".equals(type) ||
-				(type == null && name != null)) {
+				type == null) {
 			return getContainer(type, name);
 		} else if ("edge".equals(type) || "outername".equals(type) ||
 				"link".equals(type)) {
-			return getLink(name);
+			return new Link.Identifier(name);
 		} else if ("innername".equals(type)) {
 			return new InnerName.Identifier(name);
 		} else return null;
 	}
 	
-	private static Container.Identifier getContainer(
+	private Container.Identifier getContainer(
 			String type, String name) {
 		if ("node".equals(type)) {
-			return new Node.Identifier(name, null);
+			Node.Identifier n = _getScratchNodeIdentifier(name);
+			if (n == null)
+				throw new Error(
+						"getContainer(String, String) can only retrieve " +
+						"identifiers for Nodes that already exist");
+			return new Node.Identifier(name, n.getControl());
 		} else if ("root".equals(type)) {
 			return new Root.Identifier(name);
 		} else if (type == null && name == null) {
 			return new Bigraph.Identifier();
 		} else return null;
+	}
+	
+	private Node.Identifier _getScratchNodeIdentifier(String name) {
+		Node n = (Node)
+				rr.getReactum().getNamespace(Node.class).get(scratch, name);
+		return (n != null ? n.getIdentifier(scratch) : null);
 	}
 	
 	private IChangeDescriptor changeDescriptorFromElement(org.w3c.dom.Node n) {
@@ -110,8 +118,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						cdg.add(cp);
 				}
 				
-				if (cdg.size() > 0)
-					cd = cdg;
+				return (cdg.size() > 0 ? cdg : null);
 			} else if (el.getLocalName().equals("add")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
@@ -155,10 +162,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Point.Identifier p;
 				if (node != null) {
 					p = new Port.Identifier(name,
-						new Node.Identifier(node, null));
+							_getScratchNodeIdentifier(node));
 				} else p = new InnerName.Identifier(name);
 				
-				Link.Identifier l = getLink(link);
+				Link.Identifier l = new Link.Identifier(link);
 				if (p != null && l != null)
 					cd = new Point.ChangeConnectDescriptor(p, l);
 			} else if (el.getLocalName().equals("disconnect")) {
@@ -168,7 +175,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Point.Identifier p = null;
 				if (node != null) {
 					p = new Port.Identifier(name,
-						new Node.Identifier(node, null));
+						_getScratchNodeIdentifier(node));
 				} else p = new InnerName.Identifier(name);
 				
 				if (p != null)
@@ -186,7 +193,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					name = getAttributeNS(el, CHANGE, "name"),
 					parameter = getAttributeNS(el, CHANGE, "parameter");
 				Node.Identifier o =
-						new Node.Identifier(name, null);
+						new Node.Identifier(name,
+						_getScratchNodeIdentifier(name).getControl());
 				
 				if (o != null)
 					cd = ExtendedDataUtilities.changeParameterDescriptor(
@@ -245,8 +253,12 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 							l, comment);
 			}
 		}
+		if (cd != null)
+			scratch.executeChange(cd.createChange(rr.getReactum(), scratch));
 		return cd;
 	}
+	
+	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
 	private void updateReactum(ReactionRule rr, Element e) throws LoadFailedException {
 		Bigraph reactum = rr.getReactum();
