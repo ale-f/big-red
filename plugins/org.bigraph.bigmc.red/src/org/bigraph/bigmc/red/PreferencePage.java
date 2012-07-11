@@ -1,7 +1,7 @@
 package org.bigraph.bigmc.red;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
-import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -16,9 +16,15 @@ public class PreferencePage
 
 	@Override
 	protected void createFieldEditors() {
-		addField(new StringFieldEditor(
+		addField(new FileFieldEditor(
 			Preferences.PREFERENCE_BIGMC_PATH, "Path to BigMC",
-				getFieldEditorParent()));
+				getFieldEditorParent()) {
+			@Override
+			protected boolean checkState() {
+				/* Accept anything */
+				return true;
+			}
+		});
 	}
 
 	@Override
