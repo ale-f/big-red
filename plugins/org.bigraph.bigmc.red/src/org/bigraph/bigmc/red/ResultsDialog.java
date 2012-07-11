@@ -120,6 +120,11 @@ public class ResultsDialog extends TitleAreaDialog {
 		return this;
 	}
 	
+	protected OutputParser parserFor(int i) {
+		return new OutputParser().
+				setSignature(ss.getSignature()).setString(getStates().get(i));
+	}
+	
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite c = (Composite)super.createDialogArea(parent);
@@ -156,25 +161,35 @@ public class ResultsDialog extends TitleAreaDialog {
 		
 		final Scale s = new Scale(c, SWT.NONE);
 		s.setLayoutData(new GridData(SWT.FILL, SWT.TOP, true, false));
-		s.setMinimum(1);
-		s.setMaximum(getStates().size());
-		s.addSelectionListener((sa = new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				if (tt != null)
-					tt.cancel();
-				tt = new ParseTask(
-					new OutputParser().setSignature(ss.getSignature()).
-					setString(getStates().get(s.getSelection() - 1)));
-				canvas.setVisible(false);
-				parseTimer.schedule(tt, 300);
-				l.setText("Now showing bigraph " + s.getSelection() + " of " + s.getMaximum() + ".");
-			}
-		}));
-		s.setSelection(1);
-		sa.widgetSelected(null);
-		if (getStates().size() < 2)
+		
+		if (getStates().size() > 1) {
+			s.setMinimum(1);
+			s.setMaximum(getStates().size());
+			s.addSelectionListener((sa = new SelectionAdapter() {
+				private int current = -1;
+				
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					int now = s.getSelection() - 1;
+					if (current == now)
+						return;
+					if (tt != null)
+						tt.cancel();
+					tt = new ParseTask(parserFor(now));
+					canvas.setVisible(false);
+					parseTimer.schedule(tt, 300);
+					l.setText("Now showing bigraph " + s.getSelection() +
+							" of " + s.getMaximum() + ".");
+					current = now;
+				}
+			}));
+			s.setSelection(1);
+			sa.widgetSelected(null);
+		} else {
 			s.setEnabled(false);
+			l.setText("Showing the only bigraph.");
+			parseTimer.schedule(new ParseTask(parserFor(0)), 0);
+		}
 		
 		return c;
 	}
