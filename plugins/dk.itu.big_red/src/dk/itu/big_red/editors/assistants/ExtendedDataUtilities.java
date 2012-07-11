@@ -625,8 +625,8 @@ public final class ExtendedDataUtilities {
 			List<Layoutable> children = b.getChildren(context);
 			
 			int
-				tallestOuterName = Integer.MIN_VALUE,
-				tallestRoot = Integer.MIN_VALUE;
+				tallestOuterName = 0,
+				tallestRoot = 0;
 			int
 				onLeft = PADDING,
 				rootLeft = PADDING,
@@ -634,6 +634,8 @@ public final class ExtendedDataUtilities {
 			
 			for (Layoutable i : children) {
 				r = relayout(context, i, cg);
+				if (r != null)
+					r.y = PADDING;
 				if (i instanceof OuterName) {
 					r.x = onLeft;
 					onLeft = onLeft + r.width + PADDING;
@@ -653,13 +655,14 @@ public final class ExtendedDataUtilities {
 			
 			for (Layoutable i : children) {
 				r = getLayout(context, i);
-				if (i instanceof OuterName) {
-					r.y = PADDING;
-				} else if (i instanceof Root) {
-					r.y = PADDING + tallestOuterName + PADDING;
+				if (i instanceof Root) {
+					if (tallestOuterName > 0)
+						r.y += tallestOuterName + PADDING;
 				} else if (i instanceof InnerName) {
-					r.y = PADDING + tallestOuterName + PADDING +
-							tallestRoot + PADDING;
+					if (tallestOuterName > 0)
+						r.y += tallestOuterName + PADDING;
+					if (tallestRoot > 0)
+						r.y += tallestRoot + PADDING;
 				}
 			}
 		}
