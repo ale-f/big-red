@@ -456,20 +456,39 @@ public abstract class Layoutable extends ModelObject {
 	
 	public static class ChangeRemoveDescriptor implements IChangeDescriptor {
 		private final Identifier target;
+		private final Container.Identifier parent;
 		
 		public ChangeRemoveDescriptor(Identifier target) {
 			this.target = target;
+			parent = null;
+		}
+		
+		public ChangeRemoveDescriptor(
+				Identifier target, Container.Identifier parent) {
+			this.target = target;
+			this.parent = parent;
 		}
 		
 		public Identifier getTarget() {
 			return target;
 		}
 		
+		public Container.Identifier getParent() {
+			return parent;
+		}
+		
 		@Override
 		public boolean equals(Object obj_) {
-			return safeClassCmp(this, obj_) &&
-					safeEquals(getTarget(),
-							((ChangeRemoveDescriptor)obj_).getTarget());
+			if (safeClassCmp(this, obj_)) {
+				ChangeRemoveDescriptor obj = (ChangeRemoveDescriptor)obj_;
+				Container.Identifier
+					myParent = getParent(),
+					theirParent = obj.getParent();
+				return safeEquals(getTarget(), obj.getTarget()) &&
+						(myParent == null || theirParent == null ||
+						 safeEquals(myParent, theirParent));
+				
+			} else return false;
 		}
 		
 		@Override

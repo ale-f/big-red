@@ -190,20 +190,39 @@ public abstract class Point extends Layoutable implements IPoint {
 	
 	public static class ChangeDisconnectDescriptor implements IChangeDescriptor {
 		private final Identifier point;
+		private final Link.Identifier link;
 		
 		public ChangeDisconnectDescriptor(Identifier point) {
 			this.point = point;
+			link = null;
+		}
+		
+		public ChangeDisconnectDescriptor(
+				Identifier point, Link.Identifier link) {
+			this.point = point;
+			this.link = link;
 		}
 		
 		public Identifier getPoint() {
 			return point;
 		}
 		
+		public Link.Identifier getLink() {
+			return link;
+		}
+		
 		@Override
 		public boolean equals(Object obj_) {
-			return safeClassCmp(this, obj_) &&
-					safeEquals(getPoint(),
-							((ChangeDisconnectDescriptor)obj_).getPoint());
+			if (safeClassCmp(this, obj_)) {
+				ChangeDisconnectDescriptor obj =
+						(ChangeDisconnectDescriptor)obj_;
+				Link.Identifier
+					myLink = getLink(),
+					theirLink = obj.getLink();
+				return safeEquals(getPoint(), obj.getPoint()) &&
+						(myLink == null || theirLink == null ||
+						 safeEquals(myLink, theirLink));
+			} else return false;
 		}
 		
 		@Override
