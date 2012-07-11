@@ -293,6 +293,10 @@ public abstract class Layoutable extends ModelObject {
 			cds.remove(one);
 		}
 		
+		public IChangeDescriptor remove(int position) {
+			return cds.remove(position);
+		}
+		
 		@Override
 		public Iterator<IChangeDescriptor> iterator() {
 			return cds.iterator();

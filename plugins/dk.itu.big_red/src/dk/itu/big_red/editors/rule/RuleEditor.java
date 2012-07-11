@@ -370,6 +370,15 @@ public class RuleEditor extends AbstractGEFEditor implements
 	private Map<Change, IChangeDescriptor> reactumChangeToDescriptor =
 			new HashMap<Change, IChangeDescriptor>();
 	
+	private ChangeDescriptorGroup linearise(
+			IChangeDescriptor cd, ChangeDescriptorGroup cdg) {
+		if (cd instanceof ChangeDescriptorGroup) {
+			for (IChangeDescriptor i : (ChangeDescriptorGroup)cd)
+				linearise(i, cdg);
+		} else cdg.add(cd);
+		return cdg;
+	}
+	
 	private void _testConvertChange(int detail, ChangeCommand c) {
 		Change commandChange = c.getChange();
 		IChangeExecutor target = c.getTarget();
@@ -390,11 +399,15 @@ public class RuleEditor extends AbstractGEFEditor implements
 				}
 			} else {
 				/* Go! Operation 2! */ {
+					ChangeDescriptorGroup linearisedCDs =
+							linearise(cd, new ChangeDescriptorGroup());
 					System.out.println("Pre was " + reactumChanges);
-					System.out.println("New CD is " + cd);
+					System.out.println("New CD is " + linearisedCDs);
 					ChangeDescriptorGroup cdg =
-						getModel().performOperation2(cd, reactumChanges);
+						getModel().performOperation2(linearisedCDs,
+								reactumChanges);
 					System.out.println("Post op2 was " + cdg);
+					System.out.println("Post CD is " + linearisedCDs);
 				}
 			}
 		} else if (target == getReactum()) {

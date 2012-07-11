@@ -1,6 +1,7 @@
 package org.bigraph.model;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.bigraph.model.Layoutable.IChangeDescriptor;
@@ -37,42 +38,35 @@ public class ReactionRule extends ModelObject {
 		
 		protected final ChangeDescriptorGroup runStep(
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
-			ChangeDescriptorGroup cdg = null;
 			for (int i = 0; i < reactumCDs.size(); i++) {
 				IChangeDescriptor c = reactumCDs.get(i);
 				if (c instanceof ChangeDescriptorGroup) {
-					cdg = runStep(redexCD, (ChangeDescriptorGroup)c);
+					ChangeDescriptorGroup cdg =
+							runStep(redexCD, (ChangeDescriptorGroup)c);
 					if (cdg != null) {
 						reactumCDs = reactumCDs.clone();
-						reactumCDs.set(i, cdg);
+						if (cdg.size() != 0) {
+							reactumCDs.set(i, cdg);
+						} else reactumCDs.remove(i);
 						return reactumCDs;
 					}
-				} else {
-					cdg = runStepActual(redexCD, reactumCDs, c);
-					if (cdg != null)
-						return cdg;
-				}
+				} else return runStepActual(redexCD, reactumCDs, c);
 			}
 			return null;
 		}
 		
 		public final ChangeDescriptorGroup run(
-				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
-			ChangeDescriptorGroup cdg = null;
-			if (redexCD instanceof ChangeDescriptorGroup) {
-				ChangeDescriptorGroup redexCDs =
-						(ChangeDescriptorGroup)redexCD;
-				while (redexCDs.size() > 0) {
-					IChangeDescriptor head = redexCDs.head();
-					cdg = run(head, reactumCDs);
-					if (cdg != null)
-						reactumCDs = cdg;
-					redexCDs = redexCDs.tail();
-				}
-			} else {
-				cdg = runStep(redexCD, reactumCDs);
-				if (cdg != null)
+				ChangeDescriptorGroup linearisedRedexCDs,
+				ChangeDescriptorGroup reactumCDs) {
+			ChangeDescriptorGroup cdg;
+			Iterator<IChangeDescriptor> it = linearisedRedexCDs.iterator();
+			while (it.hasNext()) {
+				IChangeDescriptor ice = it.next();
+				cdg = runStep(ice, reactumCDs);
+				if (cdg != null) {
 					reactumCDs = cdg;
+					it.remove();
+				}
 			}
 			return reactumCDs;
 		}
@@ -83,7 +77,9 @@ public class ReactionRule extends ModelObject {
 		protected ChangeDescriptorGroup runStepActual(
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
 				IChangeDescriptor reactumCD) {
-			if (redexCD.equals(reactumCD)) {
+			boolean eq = redexCD.equals(reactumCD);
+			System.out.println(redexCD + (eq ? " == " : " != ") + reactumCD);
+			if (eq) {
 				reactumCDs = reactumCDs.clone();
 				reactumCDs.remove(reactumCD);
 				return reactumCDs;
@@ -116,27 +112,29 @@ public class ReactionRule extends ModelObject {
 	/**
 	 * <strong>Do not call this method.</strong>
 	 * @deprecated <strong>Do not call this method.</strong>
-	 * @param redexCD an {@link Object}
+	 * @param lRedexCDs an {@link Object}
 	 * @param reactumCDs an {@link Object}
 	 * @return an {@link Object}
 	 */
 	@Deprecated
 	public ChangeDescriptorGroup performOperation2(
-			IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
-		return new Operation2Runner().run(redexCD, reactumCDs);
+			ChangeDescriptorGroup lRedexCDs,
+			ChangeDescriptorGroup reactumCDs) {
+		return new Operation2Runner().run(lRedexCDs, reactumCDs);
 	}
 	
 	/**
 	 * <strong>Do not call this method.</strong>
 	 * @deprecated <strong>Do not call this method.</strong>
-	 * @param redexCD an {@link Object}
+	 * @param lRedexCDs an {@link Object}
 	 * @param reactumCDs an {@link Object}
 	 * @return an {@link Object}
 	 */
 	@Deprecated
 	public ChangeDescriptorGroup performOperation3Prime(
-			IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
-		return new Operation3PrimeRunner().run(redexCD, reactumCDs);
+			ChangeDescriptorGroup lRedexCDs,
+			ChangeDescriptorGroup reactumCDs) {
+		return new Operation3PrimeRunner().run(lRedexCDs, reactumCDs);
 	}
 	
 	@Override
