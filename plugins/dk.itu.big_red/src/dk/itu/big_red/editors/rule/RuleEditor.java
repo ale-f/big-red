@@ -431,7 +431,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
 			chd = new ChangeRemoveDescriptor(
-					ch.getCreator().getIdentifier(scratch));
+					ch.getCreator().getIdentifier(scratch),
+					ch.getCreator().getParent(scratch).getIdentifier(scratch));
 		} else if (c instanceof ChangeName) {
 			ChangeName ch = (ChangeName)c;
 			chd = new ChangeNameDescriptor(
@@ -444,7 +445,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		} else if (c instanceof ChangeDisconnect) {
 			ChangeDisconnect ch = (ChangeDisconnect)c;
 			chd = new ChangeDisconnectDescriptor(
-					ch.getCreator().getIdentifier(scratch));
+					ch.getCreator().getIdentifier(scratch),
+					ch.getCreator().getLink(scratch).getIdentifier(scratch));
 		} else if (c instanceof ChangeAddChild) {
 			ChangeAddChild ch = (ChangeAddChild)c;
 			Layoutable.Identifier id = null;
