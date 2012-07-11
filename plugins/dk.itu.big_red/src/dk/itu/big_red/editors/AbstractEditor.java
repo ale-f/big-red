@@ -209,8 +209,7 @@ public abstract class AbstractEditor extends EditorPart
 	protected boolean isSynchronised() {
 		if (lastModificationStamp == IResource.NULL_STAMP)
 			lastModificationStamp = getFile().getModificationStamp();
-		return (lastModificationStamp == getFile().getModificationStamp() &&
-				getFile().isSynchronized(IResource.DEPTH_ZERO));
+		return (lastModificationStamp == getFile().getModificationStamp());
 	}
 	
 	@Override
