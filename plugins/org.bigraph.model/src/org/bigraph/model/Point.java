@@ -213,16 +213,9 @@ public abstract class Point extends Layoutable implements IPoint {
 		
 		@Override
 		public boolean equals(Object obj_) {
-			if (safeClassCmp(this, obj_)) {
-				ChangeDisconnectDescriptor obj =
-						(ChangeDisconnectDescriptor)obj_;
-				Link.Identifier
-					myLink = getLink(),
-					theirLink = obj.getLink();
-				return safeEquals(getPoint(), obj.getPoint()) &&
-						(myLink == null || theirLink == null ||
-						 safeEquals(myLink, theirLink));
-			} else return false;
+			return safeClassCmp(this, obj_) &&
+					safeEquals(getPoint(),
+							((ChangeDisconnectDescriptor)obj_).getPoint());
 		}
 		
 		@Override

@@ -479,16 +479,9 @@ public abstract class Layoutable extends ModelObject {
 		
 		@Override
 		public boolean equals(Object obj_) {
-			if (safeClassCmp(this, obj_)) {
-				ChangeRemoveDescriptor obj = (ChangeRemoveDescriptor)obj_;
-				Container.Identifier
-					myParent = getParent(),
-					theirParent = obj.getParent();
-				return safeEquals(getTarget(), obj.getTarget()) &&
-						(myParent == null || theirParent == null ||
-						 safeEquals(myParent, theirParent));
-				
-			} else return false;
+			return safeClassCmp(this, obj_) &&
+					safeEquals(getTarget(),
+							((ChangeRemoveDescriptor)obj_).getTarget());
 		}
 		
 		@Override
