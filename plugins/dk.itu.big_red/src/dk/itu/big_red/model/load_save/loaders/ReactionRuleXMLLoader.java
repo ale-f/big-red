@@ -8,6 +8,7 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.Layoutable.ChangeDescriptorGroup;
 import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.Link;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
@@ -15,6 +16,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.core.resources.IFile;
@@ -274,18 +276,15 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		try {
 			reactum.tryValidateChange(cg);
 		} catch (ChangeRejectedException cre) {
-			throw new LoadFailedException(cre);
-			/* XXX
 			Change ch = cre.getRejectedChange();
 			if (ch instanceof ChangeExtendedData) {
 				ChangeExtendedData cd = (ChangeExtendedData)ch;
 				if (ExtendedDataUtilities.LAYOUT.equals(cd.key)) {
 					addNotice(Notice.WARNING,
-							"Layout data invalid.");
+							"Layout data invalid; replacing.");
 					cg.add(ExtendedDataUtilities.relayout(scratch, reactum));
-				}
-			}
-			*/
+				} else throw new LoadFailedException(cre);
+			} else throw new LoadFailedException(cre);
 		}
 		
 		try {
