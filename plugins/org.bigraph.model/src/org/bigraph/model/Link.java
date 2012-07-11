@@ -83,14 +83,7 @@ public abstract class Link extends Layoutable implements ILink {
 		
 		@Override
 		public boolean equals(Object obj_) {
-			if (obj_ == null)
-				return false;
-			Class<?>
-				mine = getClass(),
-				theirs = obj_.getClass();
-			if (mine.equals(theirs) ||
-				(mine.equals(Identifier.class) ||
-				 theirs.equals(Identifier.class))) {
+			if (obj_ instanceof Identifier) {
 				return getName().equals(((Identifier)obj_).getName());
 			} else return false;
 		}

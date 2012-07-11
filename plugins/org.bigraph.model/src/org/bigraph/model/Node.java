@@ -137,14 +137,9 @@ public class Node extends Container implements INode {
 		public boolean equals(Object obj_) {
 			if (safeClassCmp(this, obj_)) {
 				Identifier obj = (Identifier)obj_;
-				if (!safeEquals(getName(), obj.getName()))
-					return false;
-				Control.Identifier
-					mine = getControl(),
-					theirs = obj.getControl();
-				if (mine != null && theirs != null && !mine.equals(theirs))
-					return false;
-				return true;
+				return
+						safeEquals(getName(), obj.getName()) &&
+						safeEquals(getControl(), obj.getControl());
 			}
 			return false;
 		}
