@@ -42,6 +42,7 @@ import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.Project.SaveRunnable;
+import dk.itu.big_red.utilities.ui.UI;
 
 public abstract class AbstractEditor extends EditorPart
 		implements IResourceChangeListener, IActionImplementor {
@@ -233,7 +234,12 @@ public abstract class AbstractEditor extends EditorPart
 	
 	protected void resourceChanged(IResourceDelta delta) {
 		if (delta.getResource().equals(getFile()) && !isSaving() && hasFocus())
-			promptToReplace();
+			UI.asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					promptToReplace();
+				}
+			});
 	}
 	
 	@Override
