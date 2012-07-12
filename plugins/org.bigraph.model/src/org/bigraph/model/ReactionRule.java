@@ -147,7 +147,7 @@ public class ReactionRule extends ModelObject {
 		Bigraph reactum = getReactum().clone(m);
 		rr.setReactum(getReactum().clone(m));
 		
-		Change c = getChanges().createChange(reactum, null);
+		Change c = getChanges().createChange(null, reactum);
 		try {
 			reactum.tryApplyChange(c);
 			for (IChangeDescriptor d : getChanges())

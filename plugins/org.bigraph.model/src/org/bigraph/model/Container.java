@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -201,8 +202,8 @@ public abstract class Container extends Layoutable {
 		
 		@Override
 		public Change createChange(
-				Bigraph universe, PropertyScratchpad context) {
-			Container c = parent.lookup(context, universe);
+				PropertyScratchpad context, Resolver r) {
+			Container c = parent.lookup(context, r);
 			if (c != null) {
 				Layoutable l = null;
 				if (child instanceof Root.Identifier) {
@@ -219,8 +220,7 @@ public abstract class Container extends Layoutable {
 					Node.Identifier id = (Node.Identifier)child;
 					/* There shouldn't be any changes to the signature in this
 					 * context */
-					l = new Node(id.getControl().lookup(
-							null, universe.getSignature()));
+					l = new Node(id.getControl().lookup(null, r));
 				}
 				if (l != null)
 					return c.changeAddChild(l, child.getName());

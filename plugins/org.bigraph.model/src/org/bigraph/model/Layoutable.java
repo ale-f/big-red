@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -231,7 +232,7 @@ public abstract class Layoutable extends ModelObject {
 	}
 	
 	public interface IChangeDescriptor {
-		Change createChange(Bigraph universe, PropertyScratchpad context);
+		Change createChange(PropertyScratchpad context, Resolver r);
 	}
 	
 	public static class ChangeDescriptorGroup
@@ -308,11 +309,11 @@ public abstract class Layoutable extends ModelObject {
 		
 		@Override
 		public ChangeGroup createChange(
-				Bigraph universe, PropertyScratchpad context) {
+				PropertyScratchpad context, Resolver r) {
 			ChangeGroup cg = new ChangeGroup();
 			context = new PropertyScratchpad(context);
 			for (IChangeDescriptor one : cds) {
-				Change ch = one.createChange(universe, context);
+				Change ch = one.createChange(context, r);
 				cg.add(ch);
 				ch.simulate(context);
 			}
@@ -384,8 +385,8 @@ public abstract class Layoutable extends ModelObject {
 		
 		@Override
 		public Change createChange(
-				Bigraph universe, PropertyScratchpad context) {
-			return target.lookup(context, universe).changeExtendedData(
+				PropertyScratchpad context, Resolver r) {
+			return target.lookup(context, r).changeExtendedData(
 					key, newValue, immediateValidator, finalValidator);
 		}
 		
@@ -431,8 +432,8 @@ public abstract class Layoutable extends ModelObject {
 		
 		@Override
 		public Change createChange(
-				Bigraph universe, PropertyScratchpad context) {
-			return target.lookup(context, universe).changeName(newName);
+				PropertyScratchpad context, Resolver r) {
+			return target.lookup(context, r).changeName(newName);
 		}
 		
 		@Override
@@ -479,8 +480,8 @@ public abstract class Layoutable extends ModelObject {
 		
 		@Override
 		public Change createChange(
-				Bigraph universe, PropertyScratchpad context) {
-			return target.lookup(context, universe).changeRemove();
+				PropertyScratchpad context, Resolver r) {
+			return target.lookup(context, r).changeRemove();
 		}
 		
 		@Override

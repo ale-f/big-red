@@ -1,5 +1,6 @@
 package org.bigraph.model;
 
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -176,9 +177,9 @@ public abstract class Point extends Layoutable implements IPoint {
 		
 		@Override
 		public Change createChange(
-				Bigraph universe, PropertyScratchpad context) {
-			return point.lookup(context, universe).changeConnect(
-					link.lookup(context, universe));
+				PropertyScratchpad context, Resolver r) {
+			return point.lookup(context, r).changeConnect(
+					link.lookup(context, r));
 		}
 		
 		@Override
@@ -225,8 +226,8 @@ public abstract class Point extends Layoutable implements IPoint {
 		
 		@Override
 		public Change createChange(
-				Bigraph universe, PropertyScratchpad context) {
-			return point.lookup(context, universe).changeDisconnect();
+				PropertyScratchpad context, Resolver r) {
+			return point.lookup(context, r).changeDisconnect();
 		}
 		
 		@Override

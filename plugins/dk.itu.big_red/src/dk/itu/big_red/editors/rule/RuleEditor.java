@@ -393,7 +393,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 			if (reactumChanges.size() == 0) {
 				try {
 					getReactum().tryApplyChange(
-							cd.createChange(getReactum(), null));
+							cd.createChange(null, getReactum()));
 				} catch (ChangeRejectedException cre) {
 					throw new Error("Oughtn't happen");
 				}

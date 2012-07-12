@@ -272,7 +272,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			}
 		}
 		if (cd != null)
-			scratch.executeChange(cd.createChange(rr.getReactum(), scratch));
+			scratch.executeChange(cd.createChange(scratch, rr.getReactum()));
 		return cd;
 	}
 	
@@ -288,7 +288,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				cdg.add(c);
 		}
 		
-		ChangeGroup cg = cdg.createChange(reactum, null);
+		ChangeGroup cg = cdg.createChange(null, reactum);
 		try {
 			reactum.tryValidateChange(cg);
 		} catch (ChangeRejectedException cre) {
