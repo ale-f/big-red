@@ -287,9 +287,17 @@ public class Bigraph extends Container
 	}
 
 	@Override
-	public Layoutable lookup(
-			PropertyScratchpad context, Object type, String name) {
-		Namespace<Layoutable> ns = nsg.getNamespace(type);
-		return (ns != null ? ns.get(context, name) : null);
+	public Object lookup(
+			PropertyScratchpad context, Object type_, String name) {
+		if (type_ instanceof Class<?>) {
+			Class<?> type = (Class<?>)type_;
+			if (Layoutable.class.isAssignableFrom(type)) {
+				Namespace<Layoutable> ns = nsg.getNamespace(type);
+				return (ns != null ? ns.get(context, name) : null);
+			} else if (Control.class.equals(type)) {
+				return getSignature().lookup(context, type, name);
+			}
+		}
+		return null;
 	}
 }
