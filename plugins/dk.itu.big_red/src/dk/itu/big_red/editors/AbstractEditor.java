@@ -206,18 +206,17 @@ public abstract class AbstractEditor extends EditorPart
 	
 	private long lastModificationStamp = IResource.NULL_STAMP;
 	
-	protected boolean isSynchronised() {
-		if (lastModificationStamp == IResource.NULL_STAMP)
-			lastModificationStamp = getFile().getModificationStamp();
-		return (lastModificationStamp == getFile().getModificationStamp());
+	protected boolean hasChangedSince() {
+		long stamp = lastModificationStamp;
+		lastModificationStamp = getFile().getModificationStamp();
+		return
+			(stamp == IResource.NULL_STAMP ||stamp == lastModificationStamp);
 	}
 	
 	@Override
 	public void setFocus() {
-		long newModificationStamp = getFile().getModificationStamp();
-		if (!isSynchronised() && !isSaving())
+		if (!hasChangedSince() && !isSaving())
 			promptToReplace();
-		lastModificationStamp = newModificationStamp;
 	}
 	
 	private void promptToReplace() {
@@ -232,13 +231,15 @@ public abstract class AbstractEditor extends EditorPart
 	protected abstract ModelObject getModel();
 	
 	protected void resourceChanged(IResourceDelta delta) {
-		if (delta.getResource().equals(getFile()) && !isSaving() && hasFocus())
+		if (delta.getResource().equals(getFile()) && !isSaving() && hasFocus()) {
 			UI.asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					promptToReplace();
+					if (hasFocus())
+						promptToReplace();
 				}
 			});
+		}
 	}
 	
 	@Override
@@ -273,6 +274,7 @@ public abstract class AbstractEditor extends EditorPart
 					i.getFile(), io.getInputStream(), new SaveRunnable() {
 				@Override
 				public void onSuccess() {
+					hasChangedSince(); /* Updates the modification stamp */
 					firePropertyChange(PROP_DIRTY);
 				}
 				
