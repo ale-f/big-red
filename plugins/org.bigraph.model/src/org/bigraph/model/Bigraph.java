@@ -27,7 +27,8 @@ import org.bigraph.model.names.policies.StringNamePolicy;
  * @author alec
  * @see IBigraph
  */
-public class Bigraph extends Container implements IBigraph, IChangeExecutor {
+public class Bigraph extends Container
+		implements IBigraph, IChangeExecutor, Layoutable.Identifier.Resolver {
 	private Signature signature = null;
 
 	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();
@@ -283,5 +284,12 @@ public class Bigraph extends Container implements IBigraph, IChangeExecutor {
 	@Override
 	public Identifier getIdentifier(PropertyScratchpad context) {
 		return new Identifier();
+	}
+
+	@Override
+	public Layoutable lookup(
+			PropertyScratchpad context, Object type, String name) {
+		Namespace<Layoutable> ns = nsg.getNamespace(type);
+		return (ns != null ? ns.get(context, name) : null);
 	}
 }
