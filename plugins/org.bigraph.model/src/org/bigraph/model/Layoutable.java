@@ -227,69 +227,6 @@ public abstract class Layoutable extends ModelObject {
 				PropertyScratchpad context, Resolver r);
 	}
 	
-	public static class ChangeExtendedDataDescriptor
-			implements IChangeDescriptor {
-		private final Identifier target;
-		
-		private final String key;
-		private final Object newValue;
-		private final ExtendedDataValidator immediateValidator, finalValidator;
-		
-		public ChangeExtendedDataDescriptor(
-				Identifier target, String key, Object newValue,
-				ExtendedDataValidator immediateValidator,
-				ExtendedDataValidator finalValidator) {
-			this.target = target;
-			this.key = key;
-			this.newValue = newValue;
-			this.immediateValidator = immediateValidator;
-			this.finalValidator = finalValidator;
-		}
-		
-		public Identifier getTarget() {
-			return target;
-		}
-		
-		public String getKey() {
-			return key;
-		}
-		
-		public Object getNewValue() {
-			return newValue;
-		}
-		
-		@Override
-		public boolean equals(Object obj_) {
-			if (safeClassCmp(this, obj_)) {
-				ChangeExtendedDataDescriptor obj =
-						(ChangeExtendedDataDescriptor)obj_;
-				return
-						safeEquals(getTarget(), obj.getTarget()) &&
-						safeEquals(getKey(), obj.getKey()) &&
-						safeEquals(getNewValue(), obj.getNewValue());
-			} else return false;
-		}
-		
-		@Override
-		public int hashCode() {
-			return compositeHashCode(
-					ChangeExtendedDataDescriptor.class, target, key, newValue);
-		}
-		
-		@Override
-		public Change createChange(
-				PropertyScratchpad context, Resolver r) {
-			return target.lookup(context, r).changeExtendedData(
-					key, newValue, immediateValidator, finalValidator);
-		}
-		
-		@Override
-		public String toString() {
-			return "ChangeDescriptor(set extended data field " + key + " of " +
-					target + " to " + newValue + ")"; 
-		}
-	}
-	
 	public static class ChangeNameDescriptor implements IChangeDescriptor {
 		private final Identifier target;
 		private final String newName;

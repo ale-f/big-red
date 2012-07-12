@@ -98,8 +98,8 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static IChangeDescriptor changeCommentDescriptor(
-			Layoutable.Identifier l, String s) {
-		return new Layoutable.ChangeExtendedDataDescriptor(
+			ModelObject.Identifier l, String s) {
+		return new ModelObject.ChangeExtendedDataDescriptor(
 				l, COMMENT, s, null, null);
 	}
 	
@@ -140,8 +140,8 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static IChangeDescriptor changeFillDescriptor(
-			Layoutable.Identifier l, Colour c) {
-		return new Layoutable.ChangeExtendedDataDescriptor(
+			ModelObject.Identifier l, Colour c) {
+		return new ModelObject.ChangeExtendedDataDescriptor(
 				l, FILL, c, null, null);
 	}
 	
@@ -184,8 +184,8 @@ public final class ExtendedDataUtilities {
 	}
 	
 	public static IChangeDescriptor changeOutlineDescriptor(
-			Layoutable.Identifier l, Colour c) {
-		return new Layoutable.ChangeExtendedDataDescriptor(
+			ModelObject.Identifier l, Colour c) {
+		return new ModelObject.ChangeExtendedDataDescriptor(
 				l, OUTLINE, c, null, null);
 	}
 	
@@ -277,7 +277,7 @@ public final class ExtendedDataUtilities {
 	
 	public static IChangeDescriptor changeParameterDescriptor(
 			Node.Identifier n, String s) {
-		return new Layoutable.ChangeExtendedDataDescriptor(
+		return new ModelObject.ChangeExtendedDataDescriptor(
 				n, PARAMETER, s, parameterValidator, null);
 	}
 	
@@ -557,7 +557,7 @@ public final class ExtendedDataUtilities {
 	
 	public static IChangeDescriptor changeLayoutDescriptor(
 			Layoutable.Identifier l, Rectangle r) {
-		return new Layoutable.ChangeExtendedDataDescriptor(
+		return new ModelObject.ChangeExtendedDataDescriptor(
 				l, LAYOUT, r, layoutValidator, null);
 	}
 	

@@ -3,7 +3,6 @@ package dk.itu.big_red.model.load_save.savers;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
-import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
@@ -13,9 +12,9 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.Layoutable.ChangeExtendedDataDescriptor;
 import org.bigraph.model.Layoutable.ChangeNameDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
+import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
@@ -95,7 +94,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		return e;
 	}
 	
-	private String typeFor(Layoutable.Identifier i) {
+	private String typeFor(ModelObject.Identifier i) {
 		if (i instanceof Node.Identifier) {
 			return "node";
 		} else if (i instanceof Site.Identifier) {
@@ -115,7 +114,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		if (i_ instanceof ChangeExtendedDataDescriptor) {
 			ChangeExtendedDataDescriptor i = (ChangeExtendedDataDescriptor)i_;
 			
-			Layoutable.Identifier l = i.getTarget();
+			ModelObject.Identifier l = i.getTarget();
 			String key = i.getKey();
 			Object newValue = i.getNewValue();
 			if (ExtendedDataUtilities.COMMENT.equals(key)) {
