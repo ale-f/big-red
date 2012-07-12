@@ -218,6 +218,11 @@ public abstract class Layoutable extends ModelObject {
 	}
 	
 	public static abstract class Identifier {
+		public interface Resolver {
+			Object lookup(
+					PropertyScratchpad context, Object type, String name);
+		}
+		
 		private final String name;
 		
 		public Identifier(String name) {
