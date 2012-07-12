@@ -9,6 +9,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: org.bigraph.model,
  org.bigraph.model.assistants,
  org.bigraph.model.changes,
+ org.bigraph.model.changes.descriptors,
  org.bigraph.model.interfaces,
  org.bigraph.model.names,
  org.bigraph.model.names.policies

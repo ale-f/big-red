@@ -9,6 +9,7 @@ import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain

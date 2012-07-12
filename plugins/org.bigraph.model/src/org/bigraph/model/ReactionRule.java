@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.bigraph.model.Layoutable.IChangeDescriptor;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.Layoutable.ChangeDescriptorGroup;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;
