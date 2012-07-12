@@ -233,6 +233,10 @@ public abstract class Layoutable extends ModelObject {
 			return name;
 		}
 		
+		protected static <T> T require(Object o, Class<? extends T> klass) {
+			return (klass.isInstance(o) ? klass.cast(o) : null);
+		}
+		
 		@Override
 		public boolean equals(Object obj_) {
 			return safeClassCmp(this, obj_) &&
@@ -245,7 +249,7 @@ public abstract class Layoutable extends ModelObject {
 		}
 		
 		public abstract Layoutable lookup(
-				Bigraph universe, PropertyScratchpad context);
+				PropertyScratchpad context, Resolver r);
 	}
 	
 	public abstract Identifier getIdentifier();
@@ -406,7 +410,7 @@ public abstract class Layoutable extends ModelObject {
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
-			return target.lookup(universe, context).changeExtendedData(
+			return target.lookup(context, universe).changeExtendedData(
 					key, newValue, immediateValidator, finalValidator);
 		}
 		
@@ -453,7 +457,7 @@ public abstract class Layoutable extends ModelObject {
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
-			return target.lookup(universe, context).changeName(newName);
+			return target.lookup(context, universe).changeName(newName);
 		}
 		
 		@Override
@@ -501,7 +505,7 @@ public abstract class Layoutable extends ModelObject {
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
-			return target.lookup(universe, context).changeRemove();
+			return target.lookup(context, universe).changeRemove();
 		}
 		
 		@Override

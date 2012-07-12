@@ -15,9 +15,9 @@ public class InnerName extends Point implements IInnerName {
 		}
 		
 		@Override
-		public InnerName lookup(Bigraph universe, PropertyScratchpad context) {
-			return (InnerName)
-				universe.getNamespace(InnerName.class).get(context, getName());
+		public InnerName lookup(PropertyScratchpad context, Resolver r) {
+			return require(r.lookup(context, InnerName.class, getName()),
+					InnerName.class);
 		}
 		
 		@Override

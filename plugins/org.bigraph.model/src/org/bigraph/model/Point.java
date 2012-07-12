@@ -132,8 +132,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public abstract Point lookup(
-				Bigraph universe, PropertyScratchpad context);
+		public abstract Point lookup(PropertyScratchpad context, Resolver r);
 	}
 	
 	@Override
@@ -178,8 +177,8 @@ public abstract class Point extends Layoutable implements IPoint {
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
-			return point.lookup(universe, context).changeConnect(
-					link.lookup(universe, context));
+			return point.lookup(context, universe).changeConnect(
+					link.lookup(context, universe));
 		}
 		
 		@Override
@@ -227,7 +226,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
-			return point.lookup(universe, context).changeDisconnect();
+			return point.lookup(context, universe).changeDisconnect();
 		}
 		
 		@Override

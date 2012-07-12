@@ -40,9 +40,9 @@ public class Root extends Container implements IRoot {
 		}
 		
 		@Override
-		public Root lookup(Bigraph universe, PropertyScratchpad context) {
-			return (Root)
-					universe.getNamespace(Root.class).get(context, getName());
+		public Root lookup(PropertyScratchpad context, Resolver r) {
+			return require(
+					r.lookup(context, Root.class, getName()), Root.class);
 		}
 		
 		@Override

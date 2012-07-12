@@ -68,10 +68,11 @@ public class Port extends Point implements IPort {
 		}
 		
 		@Override
-		public Port lookup(Bigraph universe, PropertyScratchpad context) {
-			Node n = getNode().lookup(universe, context);
+		public Port lookup(PropertyScratchpad context, Resolver r) {
+			Node n = getNode().lookup(context, r);
 			if (n != null) {
-				return n.getPort(getName());
+				Port p = n.getPort(getName());
+				return (equals(p.getIdentifier(context)) ? p : null);
 			} else return null;
 		}
 		

@@ -23,8 +23,8 @@ public class Edge extends Link implements IEdge {
 		}
 		
 		@Override
-		public Edge lookup(Bigraph universe, PropertyScratchpad context) {
-			return (Edge)super.lookup(universe, context);
+		public Edge lookup(PropertyScratchpad context, Resolver r) {
+			return require(super.lookup(context, r), Edge.class);
 		}
 		
 		@Override

@@ -20,9 +20,9 @@ public class Site extends Layoutable implements ISite {
 		}
 		
 		@Override
-		public Site lookup(Bigraph universe, PropertyScratchpad context) {
-			return (Site)
-					universe.getNamespace(Site.class).get(context, getName());
+		public Site lookup(PropertyScratchpad context, Resolver r) {
+			return require(
+					r.lookup(context, Site.class, getName()), Site.class);
 		}
 		
 		@Override

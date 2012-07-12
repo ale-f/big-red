@@ -15,8 +15,8 @@ public class OuterName extends Link implements IOuterName {
 		}
 		
 		@Override
-		public OuterName lookup(Bigraph universe, PropertyScratchpad context) {
-			return (OuterName)super.lookup(universe, context);
+		public OuterName lookup(PropertyScratchpad context, Resolver r) {
+			return require(super.lookup(context, r), OuterName.class);
 		}
 		
 		@Override

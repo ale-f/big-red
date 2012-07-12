@@ -157,7 +157,7 @@ public abstract class Container extends Layoutable {
 		
 		@Override
 		public abstract Container lookup(
-				Bigraph universe, PropertyScratchpad context);
+				PropertyScratchpad context, Resolver r);
 	}
 	
 	@Override
@@ -202,7 +202,7 @@ public abstract class Container extends Layoutable {
 		@Override
 		public Change createChange(
 				Bigraph universe, PropertyScratchpad context) {
-			Container c = parent.lookup(universe, context);
+			Container c = parent.lookup(context, universe);
 			if (c != null) {
 				Layoutable l = null;
 				if (child instanceof Root.Identifier) {

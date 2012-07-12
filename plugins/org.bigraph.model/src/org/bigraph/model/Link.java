@@ -94,9 +94,9 @@ public abstract class Link extends Layoutable implements ILink {
 		}
 		
 		@Override
-		public Link lookup(Bigraph universe, PropertyScratchpad context) {
-			return (Link)
-					universe.getNamespace(Link.class).get(context, getName());
+		public Link lookup(PropertyScratchpad context, Resolver r) {
+			return require(
+					r.lookup(context, Link.class, getName()), Link.class);
 		}
 	}
 	

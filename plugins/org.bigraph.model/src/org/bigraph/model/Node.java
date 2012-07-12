@@ -125,9 +125,9 @@ public class Node extends Container implements INode {
 		}
 		
 		@Override
-		public Node lookup(Bigraph universe, PropertyScratchpad context) {
-			Node n = (Node)
-					universe.getNamespace(Node.class).get(context, getName());
+		public Node lookup(PropertyScratchpad context, Resolver r) {
+			Node n = require(
+					r.lookup(context, Node.class, getName()), Node.class);
 			if (n != null && equals(n.getIdentifier(context))) {
 				return n;
 			} else return null;

@@ -266,8 +266,8 @@ public class Bigraph extends Container
 		}
 		
 		@Override
-		public Bigraph lookup(Bigraph universe, PropertyScratchpad context) {
-			return universe;
+		public Bigraph lookup(PropertyScratchpad context, Resolver r) {
+			return require(r, Bigraph.class);
 		}
 		
 		@Override
