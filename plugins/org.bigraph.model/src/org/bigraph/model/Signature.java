@@ -26,7 +26,9 @@ import org.bigraph.model.interfaces.ISignature;
  * @author alec
  * @see ISignature
  */
-public class Signature extends ModelObject implements ISignature, IChangeExecutor {
+public class Signature extends ModelObject
+		implements ISignature, IChangeExecutor,
+				ModelObject.Identifier.Resolver {
 	/**
 	 * The property name fired when a control is added or removed.
 	 */
@@ -195,5 +197,16 @@ public class Signature extends ModelObject implements ISignature, IChangeExecuto
 	
 	public ChangeAddControl changeAddControl(Control control) {
 		return new ChangeAddControl(control);
+	}
+	
+	@Override
+	public Object lookup(
+			PropertyScratchpad context, Object type, String name) {
+		if (type == Control.class) {
+			for (Control c : getControls(context))
+				if (c.getName(context).equals(name))
+					return c;
+		}
+		return null;
 	}
 }
