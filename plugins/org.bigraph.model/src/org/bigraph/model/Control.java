@@ -372,34 +372,15 @@ public class Control extends ModelObject implements IControl {
 		return new ChangeRemoveControl();
 	}
 	
-	public static final class Identifier {
-		private final String name;
-		
+	public static final class Identifier extends ModelObject.Identifier {
 		public Identifier(String name) {
-			this.name = name;
-		}
-		
-		public String getName() {
-			return name;
-		}
-		
-		public Control lookup(Signature universe, PropertyScratchpad context) {
-			for (Control c : universe.getControls(context))
-				if (c.getName(context).equals(getName()))
-					return c;
-			return null;
+			super(name);
 		}
 		
 		@Override
-		public boolean equals(Object obj_) {
-			if (safeClassCmp(this, obj_)) {
-				return safeEquals(getName(), ((Identifier)obj_).getName());
-			} else return false;
-		}
-		
-		@Override
-		public int hashCode() {
-			return compositeHashCode(Identifier.class, name);
+		public Control lookup(PropertyScratchpad context, Resolver r) {
+			return require(r.lookup(context, Control.class, getName()),
+					Control.class);
 		}
 		
 		@Override

@@ -28,7 +28,7 @@ import org.bigraph.model.names.policies.StringNamePolicy;
  * @see IBigraph
  */
 public class Bigraph extends Container
-		implements IBigraph, IChangeExecutor, Layoutable.Identifier.Resolver {
+		implements IBigraph, IChangeExecutor, ModelObject.Identifier.Resolver {
 	private Signature signature = null;
 
 	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();

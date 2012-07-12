@@ -220,7 +220,7 @@ public abstract class Container extends Layoutable {
 					/* There shouldn't be any changes to the signature in this
 					 * context */
 					l = new Node(id.getControl().lookup(
-							universe.getSignature(), null));
+							null, universe.getSignature()));
 				}
 				if (l != null)
 					return c.changeAddChild(l, child.getName());
