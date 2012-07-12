@@ -257,6 +257,41 @@ public abstract class ModelObject {
 		return true;
 	}
 	
+	public static abstract class Identifier {
+		public interface Resolver {
+			Object lookup(
+					PropertyScratchpad context, Object type, String name);
+		}
+		
+		private final String name;
+		
+		public Identifier(String name) {
+			this.name = name;
+		}
+		
+		public String getName() {
+			return name;
+		}
+		
+		protected static <T> T require(Object o, Class<? extends T> klass) {
+			return (klass.isInstance(o) ? klass.cast(o) : null);
+		}
+		
+		@Override
+		public boolean equals(Object obj_) {
+			return safeClassCmp(this, obj_) &&
+					safeEquals(getName(), ((Identifier)obj_).getName());
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(getClass(), getName());
+		}
+		
+		public abstract ModelObject lookup(
+				PropertyScratchpad context, Resolver r);
+	}
+	
 	public static boolean safeClassCmp(Object o1, Object o2) {
 		return safeEquals(
 				o1 != null ? o1.getClass() : null,

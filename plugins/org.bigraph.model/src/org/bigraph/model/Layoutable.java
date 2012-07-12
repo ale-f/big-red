@@ -217,43 +217,18 @@ public abstract class Layoutable extends ModelObject {
 		super.dispose();
 	}
 	
-	public static abstract class Identifier {
-		public interface Resolver {
-			Object lookup(
-					PropertyScratchpad context, Object type, String name);
-		}
-		
-		private final String name;
-		
+	public abstract Identifier getIdentifier();
+	public abstract Identifier getIdentifier(PropertyScratchpad context);
+	
+	public static abstract class Identifier extends ModelObject.Identifier {
 		public Identifier(String name) {
-			this.name = name;
-		}
-		
-		public String getName() {
-			return name;
-		}
-		
-		protected static <T> T require(Object o, Class<? extends T> klass) {
-			return (klass.isInstance(o) ? klass.cast(o) : null);
+			super(name);
 		}
 		
 		@Override
-		public boolean equals(Object obj_) {
-			return safeClassCmp(this, obj_) &&
-					safeEquals(getName(), ((Identifier)obj_).getName());
-		}
-		
-		@Override
-		public int hashCode() {
-			return compositeHashCode(getClass(), getName());
-		}
-		
 		public abstract Layoutable lookup(
 				PropertyScratchpad context, Resolver r);
 	}
-	
-	public abstract Identifier getIdentifier();
-	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
 	public interface IChangeDescriptor {
 		Change createChange(Bigraph universe, PropertyScratchpad context);
