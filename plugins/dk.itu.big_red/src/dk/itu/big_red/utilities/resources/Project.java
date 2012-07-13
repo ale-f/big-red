@@ -19,7 +19,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -180,7 +179,9 @@ public final class Project {
 	public static void setContents(
 			IFile file, InputStream contents, SaveRunnable r) {
 		SaveJob j = new SaveJob(file, contents, r);
-		j.setRule(getRuleFactory().modifyRule(file));
+		j.setRule(file.exists() ?
+				getRuleFactory().modifyRule(file) :
+				getRuleFactory().createRule(file));
 		j.schedule();
 	}
 	
