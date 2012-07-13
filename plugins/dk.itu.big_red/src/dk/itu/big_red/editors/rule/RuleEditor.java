@@ -408,17 +408,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 					throw new Error("Oughtn't happen");
 				}
 			} else {
-				/* Go! Operation 2! */ {
-					ChangeDescriptorGroup linearisedCDs =
-							linearise(cd, new ChangeDescriptorGroup());
-					System.out.println("Pre was " + reactumChanges);
-					System.out.println("New CD is " + linearisedCDs);
-					ChangeDescriptorGroup cdg =
-						getModel().performOperation2(linearisedCDs,
-								reactumChanges);
-					System.out.println("Post op2 was " + cdg);
-					System.out.println("Post CD is " + linearisedCDs);
-				}
+				ChangeDescriptorGroup lRedexCDs =
+						linearise(cd, new ChangeDescriptorGroup());
+				ChangeDescriptorGroup cdg =
+						ReactionRule.performFixups(lRedexCDs, reactumChanges);
+				System.out.println(cdg);
 			}
 		} else if (target == getReactum()) {
 			IChangeDescriptor cd;

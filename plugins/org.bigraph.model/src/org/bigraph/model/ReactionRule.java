@@ -31,7 +31,7 @@ public class ReactionRule extends ModelObject {
 		return reactum;
 	}
 	
-	protected abstract class OperationRunner {
+	protected static abstract class OperationRunner {
 		protected abstract ChangeDescriptorGroup runStepActual(
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
 				IChangeDescriptor reactumCD);
@@ -72,7 +72,7 @@ public class ReactionRule extends ModelObject {
 		}
 	}
 	
-	protected class Operation2Runner extends OperationRunner {
+	protected static class Operation2Runner extends OperationRunner {
 		@Override
 		protected ChangeDescriptorGroup runStepActual(
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
@@ -87,7 +87,7 @@ public class ReactionRule extends ModelObject {
 		}
 	}
 	
-	protected class Operation3PrimeRunner extends OperationRunner {
+	protected static class Operation3PrimeRunner extends OperationRunner {
 		private boolean conflicts(
 				IChangeDescriptor redexCD, IChangeDescriptor reactumCD) {
 			return false;
@@ -109,32 +109,11 @@ public class ReactionRule extends ModelObject {
 		}
 	}
 	
-	/**
-	 * <strong>Do not call this method.</strong>
-	 * @deprecated <strong>Do not call this method.</strong>
-	 * @param lRedexCDs an {@link Object}
-	 * @param reactumCDs an {@link Object}
-	 * @return an {@link Object}
-	 */
-	@Deprecated
-	public ChangeDescriptorGroup performOperation2(
+	public static ChangeDescriptorGroup performFixups(
 			ChangeDescriptorGroup lRedexCDs,
 			ChangeDescriptorGroup reactumCDs) {
-		return new Operation2Runner().run(lRedexCDs, reactumCDs);
-	}
-	
-	/**
-	 * <strong>Do not call this method.</strong>
-	 * @deprecated <strong>Do not call this method.</strong>
-	 * @param lRedexCDs an {@link Object}
-	 * @param reactumCDs an {@link Object}
-	 * @return an {@link Object}
-	 */
-	@Deprecated
-	public ChangeDescriptorGroup performOperation3Prime(
-			ChangeDescriptorGroup lRedexCDs,
-			ChangeDescriptorGroup reactumCDs) {
-		return new Operation3PrimeRunner().run(lRedexCDs, reactumCDs);
+		return new Operation3PrimeRunner().run(lRedexCDs,
+				new Operation2Runner().run(lRedexCDs, reactumCDs));
 	}
 	
 	@Override
