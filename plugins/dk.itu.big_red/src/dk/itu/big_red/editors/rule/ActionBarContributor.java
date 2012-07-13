@@ -10,6 +10,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.RetargetAction;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.bigraph.BigraphEditorActionBarContributor;
 
 public class ActionBarContributor extends
 		dk.itu.big_red.editors.assistants.ActionBarContributor {
@@ -34,6 +35,9 @@ public class ActionBarContributor extends
 						"resources/icons/actions/snap-to-object.png"));
 			}
 		});
+		addRetargetAction(new RetargetAction(
+				BigraphEditorActionBarContributor.ACTION_GUIDE,
+				"Toggle guide display", IAction.AS_CHECK_BOX));
 	}
 
 	@Override
@@ -48,6 +52,8 @@ public class ActionBarContributor extends
 				getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 		toolBarManager.add(
 				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
+		toolBarManager.add(
+				getAction(BigraphEditorActionBarContributor.ACTION_GUIDE));
 	}
 
 }

@@ -75,6 +75,7 @@ import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.TogglePropertyAction;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -313,6 +314,15 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    				boolean val = isChecked();
 	    				reactumViewer.setProperty(
 	    						SnapToGeometry.PROPERTY_SNAP_ENABLED, val);
+	    			}
+	    		},
+	    		new TogglePropertyAction(
+	    				PROPERTY_DISPLAY_GUIDES, true, redexViewer) {
+	    			@Override
+	    			public void run() {
+	    				super.run();
+	    				reactumViewer.setProperty(
+	    						PROPERTY_DISPLAY_GUIDES, isChecked());
 	    			}
 	    		});
 	}
