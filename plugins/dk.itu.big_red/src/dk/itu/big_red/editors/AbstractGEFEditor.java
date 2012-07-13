@@ -47,8 +47,11 @@ import dk.itu.big_red.editors.bigraph.ModelFactory;
 import dk.itu.big_red.editors.bigraph.NodeFactory;
 
 public abstract class AbstractGEFEditor extends AbstractEditor
-implements CommandStackEventListener, ISelectionListener,
-INullSelectionListener {
+		implements CommandStackEventListener, ISelectionListener,
+		INullSelectionListener {
+	public static final String PROPERTY_DISPLAY_GUIDES =
+			"dk.itu.big_red.editors.AbstractGEFEditor.propertyDisplayGuides";
+	
 	private DefaultEditDomain editDomain;
 	
 	private List<String> selectionActions;
