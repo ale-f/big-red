@@ -421,6 +421,9 @@ public class RuleEditor extends AbstractGEFEditor implements
 			/* Integrity check */
 			try {
 				scratch.clear();
+				if (detail != CommandStack.PRE_UNDO) {
+					commandChange.simulate(scratch);
+				} else commandChange.inverse().simulate(scratch);
 				getRedex().tryValidateChange(
 						reactumChanges.createChange(scratch, getRedex()));
 			} catch (ChangeCreationException cce) {
