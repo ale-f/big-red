@@ -32,6 +32,7 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.core.resources.IFile;
@@ -404,8 +405,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 				try {
 					getReactum().tryApplyChange(
 							cd.createChange(null, getReactum()));
+				} catch (ChangeCreationException cce) {
+					throw new Error("BUG: redex and reactum lost sync", cce);
 				} catch (ChangeRejectedException cre) {
-					throw new Error("Oughtn't happen");
+					throw new Error("BUG: redex and reactum lost sync", cre);
 				}
 			} else {
 				ChangeDescriptorGroup lRedexCDs =

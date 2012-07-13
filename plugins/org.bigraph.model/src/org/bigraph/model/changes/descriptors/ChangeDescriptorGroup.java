@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.ModelObject;
-import org.bigraph.model.ModelObject.Identifier;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
@@ -86,8 +84,8 @@ public class ChangeDescriptorGroup
 	}
 	
 	@Override
-	public ChangeGroup createChange(
-			PropertyScratchpad context, Resolver r) {
+	public ChangeGroup createChange(PropertyScratchpad context, Resolver r)
+			throws ChangeCreationException {
 		ChangeGroup cg = new ChangeGroup();
 		context = new PropertyScratchpad(context);
 		for (IChangeDescriptor one : cds) {

@@ -12,6 +12,7 @@ import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -177,14 +178,16 @@ public class ReactionRule extends ModelObject {
 		Bigraph reactum = getReactum().clone(m);
 		rr.setReactum(getReactum().clone(m));
 		
-		Change c = getChanges().createChange(null, reactum);
+		Change c = null;
 		try {
+			c = getChanges().createChange(null, reactum);
 			reactum.tryApplyChange(c);
 			for (IChangeDescriptor d : getChanges())
 				rr.getChanges().add(d);
+		} catch (ChangeCreationException cce) {
+			throw new Error("BUG: reactum changes were invalid", cce);
 		} catch (ChangeRejectedException cre) {
-			throw new Error("Apparently valid change " + c +
-					" rejected: shouldn't happen", cre);
+			throw new Error("BUG: reactum changes were invalid", cre);
 		}
 		
 		return rr;
