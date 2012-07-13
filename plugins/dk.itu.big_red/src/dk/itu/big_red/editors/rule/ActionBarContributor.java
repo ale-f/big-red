@@ -37,7 +37,12 @@ public class ActionBarContributor extends
 		});
 		addRetargetAction(new RetargetAction(
 				BigraphEditorActionBarContributor.ACTION_GUIDE,
-				"Toggle guide display", IAction.AS_CHECK_BOX));
+				"Toggle guide display", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(RedPlugin.getImageDescriptor(
+						"resources/icons/actions/guide-lines.png"));
+			}
+		});
 	}
 
 	@Override
