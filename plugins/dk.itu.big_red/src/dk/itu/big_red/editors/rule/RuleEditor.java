@@ -401,23 +401,14 @@ public class RuleEditor extends AbstractGEFEditor implements
 					(detail != CommandStack.PRE_UNDO ?
 							commandChange : commandChange.inverse()));
 			
-			if (reactumChanges.size() == 0) {
-				try {
-					getReactum().tryApplyChange(
-							cd.createChange(null, getReactum()));
-				} catch (ChangeCreationException cce) {
-					throw new Error("BUG: redex and reactum lost sync", cce);
-				} catch (ChangeRejectedException cre) {
-					throw new Error("BUG: redex and reactum lost sync", cre);
-				}
-			} else {
-				ChangeDescriptorGroup lRedexCDs =
-						linearise(cd, new ChangeDescriptorGroup());
-				ChangeDescriptorGroup cdg =
-						ReactionRule.performFixups(lRedexCDs, reactumChanges);
-				System.out.println(cdg);
-			}
+			ChangeDescriptorGroup lRedexCDs =
+					linearise(cd, new ChangeDescriptorGroup());
+			ChangeDescriptorGroup cdg =
+					ReactionRule.performFixups(lRedexCDs, reactumChanges);
+			System.out.println(cdg);
 
+			/* (... modify reactum changes...) */
+			
 			/* Integrity check */
 			try {
 				scratch.clear();
@@ -432,6 +423,22 @@ public class RuleEditor extends AbstractGEFEditor implements
 			} catch (ChangeRejectedException cre) {
 				throw new Error("BUG: reactumChanges are inconsistent, " +
 						"don't save", cre);
+			}
+			
+			/* Anything that's left in lRedexCDs after the fixups should be
+			 * unrelated to the reactum changes, and so should be safe to
+			 * apply */
+			/* XXX: this is not quite true when undoing changes (for example,
+			 * newly-created reactum objects won't have layouts) */
+			try {
+				getReactum().tryApplyChange(
+						lRedexCDs.createChange(null, getReactum()));
+			} catch (ChangeCreationException cce) {
+				throw new Error("BUG: unsafe change slipped through the net",
+						cce);
+			} catch (ChangeRejectedException cre) {
+				throw new Error("BUG: unsafe change slipped through the net",
+						cre);
 			}
 		} else if (target == getReactum()) {
 			IChangeDescriptor cd;
