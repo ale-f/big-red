@@ -5,6 +5,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Container.ChangeAddChildDescriptor;
+import org.bigraph.model.Layoutable.ChangeNameDescriptor;
+import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
+import org.bigraph.model.Point.ChangeConnectDescriptor;
+import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
@@ -88,13 +93,59 @@ public class ReactionRule extends ModelObject {
 	}
 	
 	protected static class Operation3PrimeRunner extends OperationRunner {
+		private static class Pair<A, B> {
+			private A a;
+			private B b;
+		}
+		
+		private static <A, B> Pair<A, B> either(
+			Object a, Object b, Class<? extends A> k, Class<? extends B> l) {
+			Pair<A, B> r = new Pair<A, B>();
+			r.a = k.cast(k.isInstance(a) ? a : (k.isInstance(b) ? b : null));
+			r.b = l.cast(l.isInstance(a) ? a : (l.isInstance(b) ? b : null));
+			return (r.a != null && r.b != null ? r : null);
+		}
+		
 		private boolean conflicts(
 				IChangeDescriptor redexCD, IChangeDescriptor reactumCD) {
+			Pair<ChangeAddChildDescriptor, ChangeRemoveDescriptor> ar =
+					either(redexCD, reactumCD,
+							ChangeAddChildDescriptor.class,
+							ChangeRemoveDescriptor.class);
+			if (ar != null)
+				return ar.a.getParent() == ar.b.getTarget();
+			Pair<ChangeConnectDescriptor, ChangeDisconnectDescriptor> cd =
+					either(redexCD, reactumCD,
+							ChangeConnectDescriptor.class,
+							ChangeDisconnectDescriptor.class);
+			if (cd != null)
+				return cd.a.getPoint() == cd.b.getPoint();
 			return false;
 		}
 		
-		private IChangeDescriptor reverseSomehow(IChangeDescriptor cd) {
-			return null;
+		private IChangeDescriptor reverse(IChangeDescriptor cd_) {
+			if (cd_ instanceof ChangeAddChildDescriptor) {
+				ChangeAddChildDescriptor cd = (ChangeAddChildDescriptor)cd_;
+				return new ChangeRemoveDescriptor(
+						cd.getChild(), cd.getParent());
+			} else if (cd_ instanceof ChangeRemoveDescriptor) {
+				ChangeRemoveDescriptor cd = (ChangeRemoveDescriptor)cd_;
+				return new ChangeAddChildDescriptor(
+						cd.getParent(), cd.getTarget());
+			} else if (cd_ instanceof ChangeConnectDescriptor) {
+				ChangeConnectDescriptor cd = (ChangeConnectDescriptor)cd_;
+				return new ChangeDisconnectDescriptor(
+						cd.getPoint(), cd.getLink());
+			} else if (cd_ instanceof ChangeDisconnectDescriptor) {
+				ChangeDisconnectDescriptor cd =
+						(ChangeDisconnectDescriptor)cd_;
+				return new ChangeConnectDescriptor(
+						cd.getPoint(), cd.getLink());
+			} else if (cd_ instanceof ChangeNameDescriptor) {
+				return null;
+			} else if (cd_ instanceof ChangeExtendedDataDescriptor) {
+				return null /* aieee */;
+			} else return null;
 		}
 		
 		@Override
@@ -103,7 +154,7 @@ public class ReactionRule extends ModelObject {
 				IChangeDescriptor reactumCD) {
 			if (conflicts(redexCD, reactumCD)) {
 				reactumCDs = reactumCDs.clone();
-				reactumCDs.prepend(reverseSomehow(redexCD));
+				reactumCDs.prepend(reverse(redexCD));
 				return reactumCDs;
 			} else return null;
 		}
