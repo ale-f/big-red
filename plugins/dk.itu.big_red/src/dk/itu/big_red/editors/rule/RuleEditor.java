@@ -417,6 +417,19 @@ public class RuleEditor extends AbstractGEFEditor implements
 						ReactionRule.performFixups(lRedexCDs, reactumChanges);
 				System.out.println(cdg);
 			}
+
+			/* Integrity check */
+			try {
+				scratch.clear();
+				getRedex().tryValidateChange(
+						reactumChanges.createChange(scratch, getRedex()));
+			} catch (ChangeCreationException cce) {
+				throw new Error("BUG: reactumChanges are inconsistent, " +
+						"don't save", cce);
+			} catch (ChangeRejectedException cre) {
+				throw new Error("BUG: reactumChanges are inconsistent, " +
+						"don't save", cre);
+			}
 		} else if (target == getReactum()) {
 			IChangeDescriptor cd;
 			if (detail == CommandStack.PRE_UNDO) {
