@@ -16,6 +16,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 
+import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
@@ -38,11 +39,13 @@ public class BigraphPart extends ContainerPart {
 		super.activate();
 		for (ModelObject i : getModel().getChildren())
 			i.addPropertyChangeListener(this);
+		getViewer().addPropertyChangeListener(this);
 		refreshBoundaries();
 	}
 	
 	@Override
 	public void deactivate() {
+		getViewer().removePropertyChangeListener(this);
 		for (ModelObject i : getModel().getChildren())
 			i.removePropertyChangeListener(this);
 		super.deactivate();
@@ -50,8 +53,13 @@ public class BigraphPart extends ContainerPart {
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		super.propertyChange(evt);
 		String prop = evt.getPropertyName();
+		if (evt.getSource() == getViewer()) {
+			if (AbstractGEFEditor.PROPERTY_DISPLAY_GUIDES.equals(prop))
+				refreshVisuals();
+			return;
+		}
+		super.propertyChange(evt);
 		if (evt.getSource() == getModel()) {
 			if (prop.equals(Container.PROPERTY_CHILD)) {
 				ModelObject
@@ -173,16 +181,28 @@ public class BigraphPart extends ContainerPart {
 		
 		if (oldUR != upperRootBoundary || oldLR != lowerRootBoundary ||
 				oldLON != lowerOuterNameBoundary ||
-				oldUIN != upperInnerNameBoundary) {
-			BigraphFigure figure = (BigraphFigure)getFigure();
-			
+				oldUIN != upperInnerNameBoundary)
+			refreshVisuals();
+	}
+	
+	@Override
+	protected void refreshVisuals() {
+		BigraphFigure figure = (BigraphFigure)getFigure();
+		
+		Object displayGuidesObj = getViewer().getProperty(
+				AbstractGEFEditor.PROPERTY_DISPLAY_GUIDES);
+		boolean displayGuides = (displayGuidesObj instanceof Boolean ?
+				(Boolean)displayGuidesObj : true);
+		
+		figure.setDisplayGuides(displayGuides);
+		if (displayGuides) {
 			figure.setUpperRootBoundary(upperRootBoundary);
 			figure.setLowerOuterNameBoundary(lowerOuterNameBoundary);
 			figure.setUpperInnerNameBoundary(upperInnerNameBoundary);
 			figure.setLowerRootBoundary(lowerRootBoundary);
-			
-			figure.repaint();
 		}
+		
+		figure.repaint();
 	}
 	
 	@Override
