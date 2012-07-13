@@ -4,6 +4,7 @@ import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.interfaces.IPoint;
 
@@ -177,10 +178,17 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public Change createChange(
-				PropertyScratchpad context, Resolver r) {
-			return point.lookup(context, r).changeConnect(
-					link.lookup(context, r));
+		public Change createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Point p = point.lookup(context, r);
+			if (p == null)
+				throw new ChangeCreationException(this,
+						"" + point + " didn't resolve to a Point");
+			Link l = link.lookup(context, r);
+			if (l == null)
+				throw new ChangeCreationException(this,
+						"" + link + " didn't resolve to a Link");
+			return p.changeConnect(l);
 		}
 		
 		@Override
@@ -226,9 +234,13 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public Change createChange(
-				PropertyScratchpad context, Resolver r) {
-			return point.lookup(context, r).changeDisconnect();
+		public Change createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Point p = point.lookup(context, r);
+			if (point == null)
+				throw new ChangeCreationException(this,
+						"" + point + " didn't resolve to a Point");
+			return p.changeDisconnect();
 		}
 		
 		@Override

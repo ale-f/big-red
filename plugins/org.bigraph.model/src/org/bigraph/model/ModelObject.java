@@ -5,12 +5,12 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bigraph.model.Layoutable.Identifier;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
@@ -345,9 +345,13 @@ public abstract class ModelObject {
 		}
 
 		@Override
-		public Change createChange(
-				PropertyScratchpad context, Resolver r) {
-			return target.lookup(context, r).changeExtendedData(
+		public Change createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			ModelObject m = target.lookup(context, r);
+			if (m == null)
+				throw new ChangeCreationException(this,
+						"" + target + " didn't resolve to a ModelObject");
+			return m.changeExtendedData(
 					key, newValue, immediateValidator, finalValidator);
 		}
 
