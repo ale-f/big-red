@@ -23,4 +23,10 @@ public class ChangeCreationException extends Exception {
 	public String getRationale() {
 		return rationale;
 	}
+	
+	@Override
+	public String getMessage() {
+		return "The change descriptor " + descriptor +
+				"couldn't create a change: " + rationale;
+	}
 }
