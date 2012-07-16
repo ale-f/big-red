@@ -86,7 +86,7 @@ public class NestedBigraphFigure extends AbstractFigure {
 		Rectangle a = start(graphics);
 		try {
 			
-			graphics.setAlpha(63);
+			graphics.setAlpha(100);
 			
 			//graphics.setLineStyle(SWT.LINE_DASH);
 			

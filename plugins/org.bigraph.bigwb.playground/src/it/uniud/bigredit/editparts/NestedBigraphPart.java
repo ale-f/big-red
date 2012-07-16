@@ -35,7 +35,7 @@ public class NestedBigraphPart extends ContainerPart {
 	protected IFigure createFigure() {
 		// figureModel=
 		// return figureModel;//new NestedBigraphFigure();
-
+		
 		return new NestedBigraphFigure();// NestedBigraphFigure();
 	}
 
@@ -92,7 +92,7 @@ public class NestedBigraphPart extends ContainerPart {
 	@Override
 	public String getToolTip() {
 
-		return "Bigraph " + getModel().getName();
+		return "Bigraph ";// + getModel().getName();
 
 	}
 

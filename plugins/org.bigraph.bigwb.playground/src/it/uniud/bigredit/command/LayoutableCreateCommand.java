@@ -87,6 +87,27 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			cg.add(((BRS)container).changeAddChild(node, "B0"),
 			((BRS)container).changeLayoutChild(node, layout));
 			
+			
+			
+			
+			if(node instanceof Reaction){
+				cg.add(((Reaction)node).changeLayoutChild(
+						((Reaction)node).getRedex(), 
+						new Rectangle(layout.x+5, layout.height+5, (layout.width/2)-20, layout.height-10)));
+				cg.add(((Reaction)node).changeLayoutChild(
+						((Reaction)node).getReactum(), 
+						new Rectangle((layout.x/2)+5, layout.height+5, (layout.width/2)-20, layout.height-10)));
+			}
+			
+			if(node instanceof Bigraph){
+				Root root= new Root();
+				String name = ((Bigraph) node).getBigraph().getFirstUnusedName((Layoutable)root);
+				
+				cg.add(((Bigraph) node).changeAddChild(((Root)root), name), 
+						ExtendedDataUtilities.changeLayout(root, 
+								new Rectangle(layout.x+10,layout.y+10,layout.width-20,layout.height-20)));
+			}
+			
 		}
 		
 		if (container instanceof Reaction){

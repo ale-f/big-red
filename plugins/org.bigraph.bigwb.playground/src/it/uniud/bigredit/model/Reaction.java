@@ -13,6 +13,7 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
@@ -37,8 +38,8 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	private Bigraph redex = null;
 	private Bigraph reactum = null;
-	private Rectangle redexLayout = new Rectangle(0,0,100,300);
-	private Rectangle reactumLayout = new Rectangle(100,0,100,300);
+	private Rectangle redexLayout = new Rectangle(15,40,150,200);
+	private Rectangle reactumLayout = new Rectangle(315,40,150,200);
 	
 	private HashMap <Site,Site> mapRedexSiteToReactum;
 	private HashMap <Root, Root> mapRedexRootToReactum;
@@ -95,6 +96,26 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}
 	}
 	
+	public class ChangeInsideModel extends ModelObjectChange{
+		
+		public ModelObject target;
+		public ModelObjectChange change;
+		
+		
+		@Override
+		public Change inverse() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		public ChangeInsideModel(ModelObject target, ModelObjectChange change){
+			this.target=target;
+			this.change=change;
+		}
+		
+	}
+	
+	
 	public class ChangeAddReactum extends ModelObjectChange {
 		public Bigraph child;
 		public Bigraph oldchild;
@@ -119,6 +140,18 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 			return "Change(add reactum" + child + " to parent " + getCreator() + "\")";
 		}
 	}
+	
+	public Reaction(){
+		super();
+		redex= new Bigraph();
+		reactum= new Bigraph();
+		
+		_changeLayoutChild(redex, this.redexLayout);
+		_changeLayoutChild(reactum, this.reactumLayout);
+		
+	}
+	
+	public ChangeGroup cgAux = new ChangeGroup();
 	
 	
 	public class ChangeLayoutChild extends ModelObjectChange {
@@ -190,6 +223,11 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		validator.tryValidateChange(b);
 	}
 	
+	public void _changeInsideModel(ModelObject target, ModelObjectChange change){
+		
+		
+	}
+	
 	@Override
 	protected boolean doChange(Change b) {
 		if (super.doChange(b)) {
@@ -205,7 +243,19 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}else if(b instanceof Reaction.ChangeLayoutChild){
 			Reaction.ChangeLayoutChild c = (Reaction.ChangeLayoutChild)b;
 			((Reaction)c.getCreator())._changeLayoutChild(c.child, c.layout);
-		} else return false;
+		} else if(b instanceof Reaction.ChangeInsideModel){
+			Reaction.ChangeInsideModel c = (Reaction.ChangeInsideModel) b;
+			cgAux.add(c.change);
+			try {
+				((Bigraph)c.target).tryApplyChange(cgAux);
+			} catch (ChangeRejectedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else{
+			return false;
+		}
 		return true;
 	}
 	
