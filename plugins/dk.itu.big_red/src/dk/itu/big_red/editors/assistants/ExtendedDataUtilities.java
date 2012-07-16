@@ -508,6 +508,9 @@ public final class ExtendedDataUtilities {
 		set(context, l, LAYOUT, r);
 	}
 	
+	private static final String BOUNDARIES =
+			"eD!+org.bigraph.model.Bigraph.boundaries";
+	
 	private static final ExtendedDataValidator layoutValidator =
 			new ExtendedDataValidator() {
 		@Override
@@ -548,9 +551,18 @@ public final class ExtendedDataUtilities {
 					throw new ChangeRejectedException(c,
 							"The object can no longer fit into its container");
 			} else {
-				BigraphBoundaryState b =
-						new BigraphBoundaryState(context, (Bigraph)parent);
-				int bs = b.getBoundaryState(newLayout);
+				Bigraph b = (Bigraph)parent;
+				
+				/* Since the layout validator is a final validator, there are
+				 * no further updates to come, so the boundary state can be
+				 * calculated once and then stashed away in the scratchpad */
+				BigraphBoundaryState bbs = require(context, b, BOUNDARIES,
+						BigraphBoundaryState.class);
+				if (bbs == null)
+					set(context, parent, BOUNDARIES,
+							bbs = new BigraphBoundaryState(context, b));
+				
+				int bs = bbs.getBoundaryState(newLayout);
 				if (l instanceof Root) {
 					if ((bs & BigraphBoundaryState.B_UR) != 0) {
 						throw new ChangeRejectedException(c,
