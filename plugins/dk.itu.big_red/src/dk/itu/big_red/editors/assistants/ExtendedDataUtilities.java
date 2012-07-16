@@ -550,8 +550,24 @@ public final class ExtendedDataUtilities {
 			} else {
 				BigraphBoundaryState b =
 						new BigraphBoundaryState(context, (Bigraph)parent);
-				if (!b.boundariesSatisfied(newLayout, l))
-					throw new ChangeRejectedException(c, "Boundary violation");
+				int bs = b.getBoundaryState(newLayout);
+				if (l instanceof Root) {
+					if ((bs & BigraphBoundaryState.B_UR) != 0) {
+						throw new ChangeRejectedException(c,
+								"Roots must be placed below all outer names");
+					} else if ((bs & BigraphBoundaryState.B_LR) != 0) {
+						throw new ChangeRejectedException(c,
+								"Roots must be placed above all inner names");
+					}
+				} else if (l instanceof OuterName &&
+						(bs & BigraphBoundaryState.B_LON) != 0) {
+					throw new ChangeRejectedException(c,
+							"Outer names must be placed above all roots");
+				} else if (l instanceof InnerName &&
+						(bs & BigraphBoundaryState.B_UIN) != 0) {
+					throw new ChangeRejectedException(c,
+							"Inner names must be placed below all roots");
+				}
 			}
 		}
 	};

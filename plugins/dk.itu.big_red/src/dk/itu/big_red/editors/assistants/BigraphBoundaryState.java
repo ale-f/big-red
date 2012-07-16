@@ -99,14 +99,6 @@ public final class BigraphBoundaryState {
 		B_R = B_UR | B_LR,
 		B_UIN = 1 << 3;
 	
-	public boolean boundariesSatisfied(Rectangle r, Object l) {
-		int bs = getBoundaryState(r);
-		return !(
-			(l instanceof Root && (bs & B_R) != 0) ||
-			(l instanceof OuterName && (bs & B_LON) != 0) ||
-			(l instanceof InnerName && (bs & B_UIN) != 0));
-	}
-	
 	public int getBoundaryState(Rectangle r) {
 		int top = r.y(), bottom = r.bottom();
 		return
