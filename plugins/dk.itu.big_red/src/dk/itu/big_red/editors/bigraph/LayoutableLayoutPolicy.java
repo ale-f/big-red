@@ -10,29 +10,13 @@ import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableCreateCommand;
-import dk.itu.big_red.editors.bigraph.commands.LayoutableRelayoutCommand;
+import dk.itu.big_red.editors.bigraph.commands.LayoutableMoveCommand;
 import dk.itu.big_red.editors.bigraph.commands.LayoutableReparentCommand;
-import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.editors.bigraph.parts.EdgePart;
 
 public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
-	@Override
-	protected Command createChangeConstraintCommand(
-			ChangeBoundsRequest cbr, EditPart child, Object constraint) {
-		LayoutableRelayoutCommand command = null;
-		if (!(child instanceof BigraphPart)) {
-			command = new LayoutableRelayoutCommand();
-			command.setModel(child.getModel());
-			command.setLayout(constraint);
-			command.setContainerPart(getHost());
-			command.prepare();
-		}
-		return command;
-	}
-	
 	@Override
 	protected Command createAddCommand(
 			ChangeBoundsRequest cbr, EditPart child, Object constraint) {
@@ -49,14 +33,9 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			cmd2.setConstraint(constraint);
 			cmd = cmd2;
 		} else {
-			Rectangle layout = (Rectangle)constraint;
-			Layoutable self = (Layoutable)getHost().getModel();
-			LayoutableRelayoutCommand cmd2 = new LayoutableRelayoutCommand();
-			cmd2.setModel(child.getModel());
-			cmd2.setLayout(
-				layout.translate(
-					ExtendedDataUtilities.getRootLayout(self).getTopLeft()));
-			cmd2.setContainerPart(getHost().getParent());
+			LayoutableMoveCommand cmd2 = new LayoutableMoveCommand();
+			cmd2.addObject(child.getModel());
+			cmd2.setMoveDelta(cbr.getMoveDelta());
 			cmd = cmd2;
 		}
 		return cmd.prepare();
