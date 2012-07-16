@@ -1,51 +1,80 @@
 package dk.itu.big_red.wizards.creation;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Signature;
+import org.bigraph.model.SimulationSpec;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.SaveFailedException;
-import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
+import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
+import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
+import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.resources.Project.ModificationRunner;
 
 public class NewBRSWizard extends Wizard implements INewWizard {
 	private WizardNewProjectCreationPage page = null;
 	
 	@Override
 	public boolean performFinish() {
-		IProject p =
-			Project.getWorkspaceRoot().getProject(page.getProjectName());
+		String projectName = page.getProjectName();
+		IProject p = Project.getWorkspaceRoot().getProject(projectName);
 		if (p.exists()) {
 			page.setErrorMessage("A project with this name already exists.");
 			return false;
 		} else {
 			try {
-				p.create(null); p.open(null);
-				IFolder signatures = Project.getFolder(p, "signatures"),
-				        agents = Project.getFolder(p, "agents");
-				Project.getFolder(p, "rules");
+				IFolder
+					signatures = p.getFolder("signatures"),
+					agents = p.getFolder("agents"),
+					rules = p.getFolder("rules");
+				IFile
+					signature = signatures.getFile(
+							projectName + ".bigraph-signature"),
+					agent = agents.getFile(
+							projectName + ".bigraph-agent"),
+					spec = p.getFile(
+							projectName + ".bigraph-simulation-spec");
+				IOAdapter
+					big = new IOAdapter(),
+					sig = new IOAdapter(),
+					sim = new IOAdapter();
 				
-				IFile signature =
-					Project.getFile(signatures,
-						page.getProjectName() + ".bigraph-signature");
-				NewSignatureWizard.createSignature(signature);
-				NewAgentWizard.createBigraph(signature,
-					Project.getFile(agents,
-						page.getProjectName() + ".bigraph-agent"));
-				NewSimulationSpecWizard.createSimulationSpec(
-					Project.getFile(p,
-						page.getProjectName() + ".bigraph-simulation-spec"));
+				Signature s = new Signature();
+				ExtendedDataUtilities.setFile(s, signature);
+				new SignatureXMLSaver().setModel(s).setFile(signature).
+					setOutputStream(sig.getOutputStream()).exportObject();
+				
+				Bigraph b = new Bigraph();
+				b.setSignature(s);
+				new BigraphXMLSaver().setModel(b).setFile(agent).
+					setOutputStream(big.getOutputStream()).exportObject();
+				
+				new SimulationSpecXMLSaver().setModel(new SimulationSpec()).
+					setOutputStream(sim.getOutputStream()).setFile(spec).
+					exportObject();
+				
+				new ModificationRunner(new ModificationRunner.Callback(),
+					new Project.CreateProject(p),
+					new Project.OpenProject(p),
+					new Project.CreateFolder(rules),
+					new Project.CreateFolder(agents),
+					new Project.CreateFolder(signatures),
+					new Project.CreateFile(signature, sig.getInputStream()),
+					new Project.CreateFile(agent, big.getInputStream()),
+					new Project.CreateFile(spec, sim.getInputStream())).
+						schedule();
+				
 				return true;
-			} catch (CoreException e) {
-				page.setErrorMessage(e.getLocalizedMessage());
-			} catch (LoadFailedException e) {
-				page.setErrorMessage(e.getLocalizedMessage());
 			} catch (SaveFailedException e) {
 				page.setErrorMessage(e.getLocalizedMessage());
 			}
