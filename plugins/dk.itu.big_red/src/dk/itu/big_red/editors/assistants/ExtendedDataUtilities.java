@@ -547,6 +547,11 @@ public final class ExtendedDataUtilities {
 				if (!parentLayout.contains(newLayout))
 					throw new ChangeRejectedException(c,
 							"The object can no longer fit into its container");
+			} else {
+				BigraphBoundaryState b =
+						new BigraphBoundaryState(context, (Bigraph)parent);
+				if (!b.boundariesSatisfied(newLayout, l))
+					throw new ChangeRejectedException(c, "Boundary violation");
 			}
 		}
 	};
