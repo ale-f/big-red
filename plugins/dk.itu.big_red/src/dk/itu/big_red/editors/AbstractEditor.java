@@ -41,7 +41,8 @@ import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.Project;
-import dk.itu.big_red.utilities.resources.Project.SaveRunnable;
+import dk.itu.big_red.utilities.resources.Project.ModificationRunner;
+import dk.itu.big_red.utilities.resources.Project.ModificationRunner.Callback;
 import dk.itu.big_red.utilities.ui.UI;
 
 public abstract class AbstractEditor extends EditorPart
@@ -271,7 +272,7 @@ public abstract class AbstractEditor extends EditorPart
 			doActualSave(i.getFile(), io.getOutputStream());
 			
 			Project.setContents(
-					i.getFile(), io.getInputStream(), new SaveRunnable() {
+					i.getFile(), io.getInputStream(), new ModificationRunner.Callback() {
 				@Override
 				public void onSuccess() {
 					hasChangedSince(); /* Updates the modification stamp */
