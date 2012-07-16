@@ -6,9 +6,11 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.GroupRequest;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
+import dk.itu.big_red.editors.bigraph.commands.LayoutableMoveCommand;
 import dk.itu.big_red.editors.bigraph.commands.ModelDeleteCommand;
 import dk.itu.big_red.editors.bigraph.parts.AbstractPart;
 import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
@@ -55,5 +57,17 @@ public class CombinedCommandFactory {
 			if (i instanceof AbstractPart || i instanceof LinkConnectionPart)
 				mdc.addObject(((EditPart)i).getModel());
 		return mdc.prepare();
+	}
+	
+	public static Command createMoveCommand(ChangeBoundsRequest r) {
+		if (!tryTag(r))
+			return null;
+		LayoutableMoveCommand lmc = new LayoutableMoveCommand();
+		lmc.setMoveDelta(r.getMoveDelta());
+		lmc.setSizeDelta(r.getSizeDelta());
+		for (Object i : r.getEditParts())
+			if (i instanceof AbstractPart || i instanceof LinkConnectionPart)
+				lmc.addObject(((EditPart)i).getModel());
+		return lmc.prepare();
 	}
 }
