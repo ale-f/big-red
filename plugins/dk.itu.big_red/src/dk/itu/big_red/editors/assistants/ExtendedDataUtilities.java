@@ -654,6 +654,8 @@ public final class ExtendedDataUtilities {
 				inLeft = PADDING;
 			
 			for (Layoutable i : children) {
+				if (i instanceof Edge)
+					continue;
 				r = relayout(context, i, cg);
 				if (r != null)
 					r.y = PADDING;
@@ -684,6 +686,9 @@ public final class ExtendedDataUtilities {
 						r.y += tallestOuterName + PADDING;
 					if (tallestRoot > 0)
 						r.y += tallestRoot + PADDING;
+				} else if (i instanceof Edge) {
+					cg.add(changeLayout(i,
+							relayout(context, i, cg)));
 				}
 			}
 		}
