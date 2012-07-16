@@ -342,7 +342,8 @@ public abstract class AbstractEditor extends EditorPart
 		if (d.open() == Dialog.OK) {
 			IFile f = Project.getWorkspaceRoot().getFile(d.getResult());
 			setInputWithNotify(new FileEditorInput(f));
-			doSave(null);
+			doSave(getEditorSite().getActionBars().
+					getStatusLineManager().getProgressMonitor());
 		}
 	}
 	

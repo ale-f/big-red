@@ -7,13 +7,21 @@ import org.eclipse.swt.SWT;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class BigraphFigure extends AbstractFigure {
+	private boolean displayGuides = true;
 	private int upperRootBoundary = Integer.MIN_VALUE,
 	            lowerOuterNameBoundary = Integer.MAX_VALUE,
 	            upperInnerNameBoundary = Integer.MIN_VALUE,
 	            lowerRootBoundary = Integer.MAX_VALUE;
 
+	public void setDisplayGuides(boolean displayGuides) {
+		this.displayGuides = displayGuides;
+	}
+	
 	@Override
 	protected void outlineShape(Graphics g) {
+		if (!displayGuides)
+			return;
+		
 		Rectangle r = start(g);
 		int width = r.width;
 		try {

@@ -15,9 +15,14 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.assistants.ActionBarContributor;
+import dk.itu.big_red.editors.assistants.TogglePropertyAction;
 
 public class BigraphEditorActionBarContributor extends ActionBarContributor {
+	public static final String ACTION_GUIDE = TogglePropertyAction.getId(
+			AbstractGEFEditor.PROPERTY_DISPLAY_GUIDES);
+	
 	@Override
 	protected void buildActions() {
 		IWorkbenchWindow iww = getPage().getWorkbenchWindow();
@@ -55,6 +60,13 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 						"resources/icons/actions/snap-to-object.png"));
 			}
 		});
+		addRetargetAction(new RetargetAction(
+				ACTION_GUIDE, "Toggle guide display", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(RedPlugin.getImageDescriptor(
+						"resources/icons/actions/guide-lines.png"));
+			}
+		});
 	}
 
 	@Override
@@ -81,5 +93,6 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 				getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 		toolBarManager.add(
 				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
+		toolBarManager.add(getAction(ACTION_GUIDE));
 	}
 }

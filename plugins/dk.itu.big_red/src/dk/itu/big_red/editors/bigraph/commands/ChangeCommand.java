@@ -71,6 +71,8 @@ public abstract class ChangeCommand extends Command {
 	public final boolean canExecute() {
 		boolean status = (change != null && target != null &&
 				change.isReady());
+		if (status && change instanceof ChangeGroup)
+			status = (((ChangeGroup)change).size() != 0);
 		if (status) {
 			try {
 				target.tryValidateChange(change);

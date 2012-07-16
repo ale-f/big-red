@@ -32,6 +32,7 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.core.resources.IFile;
@@ -75,6 +76,7 @@ import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.TogglePropertyAction;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -314,6 +316,15 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    				reactumViewer.setProperty(
 	    						SnapToGeometry.PROPERTY_SNAP_ENABLED, val);
 	    			}
+	    		},
+	    		new TogglePropertyAction(
+	    				PROPERTY_DISPLAY_GUIDES, true, redexViewer) {
+	    			@Override
+	    			public void run() {
+	    				super.run();
+	    				reactumViewer.setProperty(
+	    						PROPERTY_DISPLAY_GUIDES, isChecked());
+	    			}
 	    		});
 	}
 	
@@ -390,25 +401,44 @@ public class RuleEditor extends AbstractGEFEditor implements
 					(detail != CommandStack.PRE_UNDO ?
 							commandChange : commandChange.inverse()));
 			
-			if (reactumChanges.size() == 0) {
-				try {
-					getReactum().tryApplyChange(
-							cd.createChange(null, getReactum()));
-				} catch (ChangeRejectedException cre) {
-					throw new Error("Oughtn't happen");
-				}
-			} else {
-				/* Go! Operation 2! */ {
-					ChangeDescriptorGroup linearisedCDs =
-							linearise(cd, new ChangeDescriptorGroup());
-					System.out.println("Pre was " + reactumChanges);
-					System.out.println("New CD is " + linearisedCDs);
-					ChangeDescriptorGroup cdg =
-						getModel().performOperation2(linearisedCDs,
-								reactumChanges);
-					System.out.println("Post op2 was " + cdg);
-					System.out.println("Post CD is " + linearisedCDs);
-				}
+			ChangeDescriptorGroup lRedexCDs =
+					linearise(cd, new ChangeDescriptorGroup());
+			ChangeDescriptorGroup cdg =
+					ReactionRule.performFixups(lRedexCDs, reactumChanges);
+			System.out.println(cdg);
+
+			/* (... modify reactum changes...) */
+			
+			/* Integrity check */
+			try {
+				scratch.clear();
+				if (detail != CommandStack.PRE_UNDO) {
+					commandChange.simulate(scratch);
+				} else commandChange.inverse().simulate(scratch);
+				getRedex().tryValidateChange(
+						reactumChanges.createChange(scratch, getRedex()));
+			} catch (ChangeCreationException cce) {
+				throw new Error("BUG: reactumChanges are inconsistent, " +
+						"don't save", cce);
+			} catch (ChangeRejectedException cre) {
+				throw new Error("BUG: reactumChanges are inconsistent, " +
+						"don't save", cre);
+			}
+			
+			/* Anything that's left in lRedexCDs after the fixups should be
+			 * unrelated to the reactum changes, and so should be safe to
+			 * apply */
+			/* XXX: this is not quite true when undoing changes (for example,
+			 * newly-created reactum objects won't have layouts) */
+			try {
+				getReactum().tryApplyChange(
+						lRedexCDs.createChange(null, getReactum()));
+			} catch (ChangeCreationException cce) {
+				throw new Error("BUG: unsafe change slipped through the net",
+						cce);
+			} catch (ChangeRejectedException cre) {
+				throw new Error("BUG: unsafe change slipped through the net",
+						cre);
 			}
 		} else if (target == getReactum()) {
 			IChangeDescriptor cd;

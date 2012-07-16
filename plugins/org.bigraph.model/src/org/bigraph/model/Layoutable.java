@@ -7,6 +7,7 @@ import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.Namespace;
 
@@ -261,9 +262,13 @@ public abstract class Layoutable extends ModelObject {
 		}
 		
 		@Override
-		public Change createChange(
-				PropertyScratchpad context, Resolver r) {
-			return target.lookup(context, r).changeName(newName);
+		public Change createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Layoutable l = target.lookup(context, r);
+			if (l == null)
+				throw new ChangeCreationException(this,
+						"" + target + " didn't resolve to a Layoutable");
+			return l.changeName(newName);
 		}
 		
 		@Override
@@ -309,9 +314,13 @@ public abstract class Layoutable extends ModelObject {
 		}
 		
 		@Override
-		public Change createChange(
-				PropertyScratchpad context, Resolver r) {
-			return target.lookup(context, r).changeRemove();
+		public Change createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Layoutable l = target.lookup(context, r);
+			if (l == null)
+				throw new ChangeCreationException(this,
+						"" + target + " didn't resolve to a Layoutable");
+			return l.changeRemove();
 		}
 		
 		@Override

@@ -19,6 +19,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.core.resources.IFile;
@@ -271,8 +272,14 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 							l, comment);
 			}
 		}
-		if (cd != null)
-			scratch.executeChange(cd.createChange(scratch, rr.getReactum()));
+		if (cd != null) {
+			try {
+				scratch.executeChange(
+						cd.createChange(scratch, rr.getReactum()));
+			} catch (ChangeCreationException cce) {
+				cd = null;
+			}
+		}
 		return cd;
 	}
 	
@@ -288,9 +295,12 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				cdg.add(c);
 		}
 		
-		ChangeGroup cg = cdg.createChange(null, reactum);
+		ChangeGroup cg = null;
 		try {
+			cg = cdg.createChange(null, reactum);
 			reactum.tryValidateChange(cg);
+		} catch (ChangeCreationException cce) {
+			throw new LoadFailedException(cce);
 		} catch (ChangeRejectedException cre) {
 			Change ch = cre.getRejectedChange();
 			if (ch instanceof ChangeExtendedData) {
