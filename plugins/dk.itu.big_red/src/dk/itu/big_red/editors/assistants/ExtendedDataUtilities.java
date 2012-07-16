@@ -532,9 +532,9 @@ public final class ExtendedDataUtilities {
 			}
 			
 			if (l instanceof Container) {
-				newLayout = newLayout.getCopy().setLocation(0, 0);
+				Rectangle adjusted = newLayout.getCopy().setLocation(0, 0);
 				for (Layoutable i : ((Container)l).getChildren(context)) {
-					if (!newLayout.contains(getLayout(context, i)))
+					if (!adjusted.contains(getLayout(context, i)))
 						throw new ChangeRejectedException(c,
 								"The object is no longer big enough to " +
 								"accommodate its children");
