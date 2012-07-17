@@ -118,7 +118,6 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		public Rectangle layout;
 		
 		public ChangeLayoutChild(ModelObject child, Rectangle layout) {
-			System.out.println(layout);
 			this.child = child;
 			this.layout=layout;
 		}

@@ -76,7 +76,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		public Bigraph oldchild;
 		
 		public ChangeAddRedex(Bigraph child) {
-			System.out.println("new ChangeAddRedex");
 			this.child = child;
 		}
 		
@@ -121,7 +120,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		public Bigraph oldchild;
 		
 		public ChangeAddReactum(Bigraph child) {
-			System.out.println("new ChangeAddReactum");
 			this.child = child;
 		}
 		
@@ -224,7 +222,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	}
 	
 	public void _changeInsideModel(ModelObject target, Change change){
-		System.out.println("Work in progress");
 		cgAux.clear();
 		
 		cgAux.add(change);
@@ -277,8 +274,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	}
 	
 	public void _changeLayoutChild(ModelObject child, Rectangle rectangle) {
-		
-		System.out.println("change child layout Reaction -> Redex || Reactum");
 		//addChild(child);
 		Rectangle oldRect= null;
 		if (child.equals(redex)){

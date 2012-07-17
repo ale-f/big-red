@@ -52,8 +52,7 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 		
 		Rectangle constraint = ((BRS) getParent().getModel())
 				.getChildrenConstraint(model);
-		System.out.println("constraint in refreshVisual"
-				+ constraint.toString());
+		//System.out.println("constraint in refreshVisual" + constraint.toString());
 		((ReactionFiguren)getFigure()).setConstraint(constraint);// new Rectangle (100,100,400,300));
 	}
 	

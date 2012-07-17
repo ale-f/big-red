@@ -71,7 +71,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		
 		if (container instanceof Bigraph) {
 			if (node instanceof Root){
-				System.out.println("instance of root");
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
 				cg.add(((Bigraph) container).changeAddChild(((Root)node), name), ExtendedDataUtilities.changeLayout(((Layoutable)node), layout));
 			}else{
@@ -94,7 +93,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			
 			
 			if(node instanceof Reaction){
-				System.out.println("Instance of Reaction inside BRS");
 				cg.add( ((BRS)container).changeInsideModel(node, 
 						((Reaction)node).changeLayoutChild(
 						((Reaction)node).getRedex(), 
@@ -162,7 +160,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (e instanceof Container){
 			container = (Container)e;
 		}else if(e instanceof ModelObject){
-			System.out.println("instanceof ModelObject");
 			container = (ModelObject)e;
 		}
 	}

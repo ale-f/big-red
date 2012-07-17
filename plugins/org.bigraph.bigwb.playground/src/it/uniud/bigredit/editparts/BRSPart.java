@@ -55,19 +55,15 @@ public class BRSPart extends AbstractGraphicalEditPart implements PropertyChange
 	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		System.out.println("propertychanged!");
 		String prop = evt.getPropertyName();
 		if (evt.getSource() == getModel()) {
-			System.out.println("evt.getSource() == getModel() " + prop);
+			//System.out.println("evt.getSource() == getModel() " + prop);
 			if (prop.equals(Container.PROPERTY_CHILD)) {
-				System.out.println("refresh children");
 				refreshChildren();
 			} else if(prop.equals(BRS.PROPERTY_LAYOUT)){
-				System.out.println("BRS.propertychanged");
 				refreshChildren();
 				refreshVisuals();
 			}else if(prop.equals(BRS.PROPERTY_PARENT)){
-				System.out.println("BRS.propertychanged");
 				refreshChildren();
 				refreshVisuals();
 			}
