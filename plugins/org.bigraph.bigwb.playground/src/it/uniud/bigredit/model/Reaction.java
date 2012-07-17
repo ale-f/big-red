@@ -30,7 +30,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	public static final int GAP_WIDTH = 96;
 	public static final int MIN_WIDTH_BIG= 100;
-	public static final int MIN_HIGHT_BIG = 100;
+	public static final int MIN_HIGHT_BIG = 40;
 	public static int SEPARATOR_WIDTH = 300;
 	
 	public static final String PROPERTY_RULE = "Reaction_Rule_Change";
@@ -99,7 +99,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	public class ChangeInsideModel extends ModelObjectChange{
 		
 		public ModelObject target;
-		public ModelObjectChange change;
+		public Change change;
 		
 		
 		@Override
@@ -108,7 +108,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 			return null;
 		}
 		
-		public ChangeInsideModel(ModelObject target, ModelObjectChange change){
+		public ChangeInsideModel(ModelObject target, Change change){
 			this.target=target;
 			this.change=change;
 		}
@@ -223,16 +223,21 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		validator.tryValidateChange(b);
 	}
 	
-	public void _changeInsideModel(ModelObject target, ModelObjectChange change){
+	public void _changeInsideModel(ModelObject target, Change change){
+		System.out.println("Work in progress");
+		cgAux.clear();
 		
-		
+		cgAux.add(change);
+		try {
+			((Bigraph)target).tryApplyChange(cgAux);
+		} catch (ChangeRejectedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	protected boolean doChange(Change b) {
-		if (super.doChange(b)) {
-			/* do nothing */
-		} else if (b instanceof Reaction.ChangeAddReactum) {
+		if (b instanceof Reaction.ChangeAddReactum) {
 
 			Reaction.ChangeAddReactum c = (Reaction.ChangeAddReactum) b;
 			((Reaction) c.getCreator()).changeReactum(c.child);
@@ -245,14 +250,9 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 			((Reaction)c.getCreator())._changeLayoutChild(c.child, c.layout);
 		} else if(b instanceof Reaction.ChangeInsideModel){
 			Reaction.ChangeInsideModel c = (Reaction.ChangeInsideModel) b;
-			cgAux.add(c.change);
-			try {
-				((Bigraph)c.target).tryApplyChange(cgAux);
-			} catch (ChangeRejectedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			((Reaction)c.getCreator())._changeInsideModel(c.target, c.change);
+		}else if (super.doChange(b)) {
+				/* do nothing */
 		}else{
 			return false;
 		}
@@ -262,6 +262,10 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	public Change changeAddRedex(Bigraph node) {
 		return new ChangeAddRedex(node);
+	}
+	
+	public Change changeInsideModel(ModelObject target, Change change){
+		return new ChangeInsideModel(target,change);
 	}
 	
 	public Change changeAddReactum(Bigraph node) {

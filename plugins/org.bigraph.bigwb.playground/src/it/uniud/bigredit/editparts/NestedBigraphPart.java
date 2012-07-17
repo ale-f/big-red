@@ -4,6 +4,7 @@ import it.uniud.bigredit.figure.GraphFigure;
 import it.uniud.bigredit.figure.NestedBigraphFigure;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
+import it.uniud.bigredit.policy.LayoutableDeletePolicy;
 import it.uniud.bigredit.policy.LayoutableLayoutPolicy;
 
 import java.beans.PropertyChangeEvent;
@@ -17,7 +18,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 
-import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 
 //import uniud.bigredit.policy.LayoutPolicy;
@@ -65,8 +65,7 @@ public class NestedBigraphPart extends ContainerPart {
 			
 			constraint = ((BRS) getParent().getModel())
 					.getChildrenConstraint(model);
-			System.out.println("constraint in refreshVisual"
-					+ constraint.toString());
+			//System.out.println("constraint in refreshVisual"+ constraint.toString());
 			figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
 			// figure.setInnerLine(model.getUpperInnerNameBoundary());
 			// figure.setOuterLine(model.getLowerOuterNameBoundary());
@@ -74,8 +73,7 @@ public class NestedBigraphPart extends ContainerPart {
 		} else if (getParent() instanceof ReactionPart) {
 			constraint = ((Reaction) getParent().getModel())
 					.getChildConstraint(model);
-			System.out.println("constraint in refreshVisual"
-					+ constraint.toString());
+			//System.out.println("constraint in refreshVisual" + constraint.toString());
 			figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
 			// figure.setInnerLine(model.getUpperInnerNameBoundary());
 			// figure.setOuterLine(model.getLowerOuterNameBoundary());

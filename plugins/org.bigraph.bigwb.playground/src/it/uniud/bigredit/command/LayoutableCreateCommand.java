@@ -82,7 +82,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		}
 		if (container instanceof BRS){
 			/** TODO get a name for Bigraph */
-			System.out.println("Instance of BRS");
+			
 			setTarget((BRS)container);
 			cg.add(((BRS)container).changeAddChild(node, "B0"),
 			((BRS)container).changeLayoutChild(node, layout));
@@ -91,12 +91,17 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			
 			
 			if(node instanceof Reaction){
-				cg.add(((Reaction)node).changeLayoutChild(
+				System.out.println("Instance of Reaction inside BRS");
+				cg.add( ((BRS)container).changeInsideModel(node, 
+						((Reaction)node).changeLayoutChild(
 						((Reaction)node).getRedex(), 
-						new Rectangle(layout.x+5, layout.height+5, (layout.width/2)-20, layout.height-10)));
-				cg.add(((Reaction)node).changeLayoutChild(
+						new Rectangle(15, Reaction.MIN_HIGHT_BIG, layout.width/2-40, layout.height-100))));
+				
+				
+				cg.add( ((BRS)container).changeInsideModel(node, 
+						((Reaction)node).changeLayoutChild(
 						((Reaction)node).getReactum(), 
-						new Rectangle((layout.x/2)+5, layout.height+5, (layout.width/2)-20, layout.height-10)));
+						new Rectangle(layout.width/2+30, Reaction.MIN_HIGHT_BIG, (layout.width/2)-40, layout.height-100))));
 			}
 			
 			if(node instanceof Bigraph){
@@ -112,17 +117,17 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		
 		if (container instanceof Reaction){
 			/** TODO get a name for Bigraph */
-			System.out.println("Instance of Reaction");
-			setTarget((Reaction)container);
-			if(layout.x > ((Reaction)container).SEPARATOR_WIDTH){
-				cg.add(((Reaction) container).changeAddReactum((Bigraph) node),
-						((Reaction) container).changeLayoutChild(
-								(Bigraph) node, layout));
-			}else{
-				cg.add(((Reaction) container).changeAddRedex((Bigraph) node),
-						((Reaction) container).changeLayoutChild(
-								(Bigraph) node, layout));
-			}
+			//System.out.println("Instance of Reaction");
+//			setTarget((Reaction)container);
+//			if(layout.x > ((Reaction)container).SEPARATOR_WIDTH){
+//				cg.add(((Reaction) container).changeAddReactum((Bigraph) node),
+//						((Reaction) container).changeLayoutChild(
+//								(Bigraph) node, layout));
+//			}else{
+//				cg.add(((Reaction) container).changeAddRedex((Bigraph) node),
+//						((Reaction) container).changeLayoutChild(
+//								(Bigraph) node, layout));
+//			}
 		}
 		return this;
 	}
