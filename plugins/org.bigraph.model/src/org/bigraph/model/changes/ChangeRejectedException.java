@@ -9,10 +9,10 @@ package org.bigraph.model.changes;
 public class ChangeRejectedException extends Exception {
 	private static final long serialVersionUID = 7181613421769493596L;
 
-	private Change rejectedChange;
+	private IChange rejectedChange;
 	private String rationale;
 	
-	public ChangeRejectedException(Change rejectedChange, String rationale) {
+	public ChangeRejectedException(IChange rejectedChange, String rationale) {
 		this.rejectedChange = rejectedChange;
 		this.rationale = rationale;
 	}
@@ -21,7 +21,7 @@ public class ChangeRejectedException extends Exception {
 	 * Gets the rejected {@link Change}.
 	 * @return a {@link Change}
 	 */
-	public Change getRejectedChange() {
+	public IChange getRejectedChange() {
 		return rejectedChange;
 	}
 	

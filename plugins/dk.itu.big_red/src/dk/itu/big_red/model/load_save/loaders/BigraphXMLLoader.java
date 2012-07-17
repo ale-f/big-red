@@ -21,6 +21,7 @@ import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -133,7 +134,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			try {
 				bigraph.tryValidateChange(getChanges());
 			} catch (ChangeRejectedException cre) {
-				Change ch = cre.getRejectedChange();
+				IChange ch = cre.getRejectedChange();
 				if (ch instanceof ChangeExtendedData) {
 					ChangeExtendedData cd = (ChangeExtendedData)ch;
 					if (ExtendedDataUtilities.LAYOUT.equals(cd.key)) {

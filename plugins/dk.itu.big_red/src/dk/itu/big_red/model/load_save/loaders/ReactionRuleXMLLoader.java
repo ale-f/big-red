@@ -16,9 +16,9 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -302,7 +302,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		} catch (ChangeCreationException cce) {
 			throw new LoadFailedException(cce);
 		} catch (ChangeRejectedException cre) {
-			Change ch = cre.getRejectedChange();
+			IChange ch = cre.getRejectedChange();
 			if (ch instanceof ChangeExtendedData) {
 				ChangeExtendedData cd = (ChangeExtendedData)ch;
 				if (ExtendedDataUtilities.LAYOUT.equals(cd.key)) {
