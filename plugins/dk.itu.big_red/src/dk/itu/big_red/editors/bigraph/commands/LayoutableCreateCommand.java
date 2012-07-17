@@ -3,6 +3,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
+import org.bigraph.model.Node;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -42,6 +43,13 @@ public class LayoutableCreateCommand extends ChangeCommand {
 				return this;
 		
 		String name = container.getBigraph().getFirstUnusedName(child);
+		
+		if (child instanceof Node){
+			if (layout.width < 30) {layout.width=30;}
+			if (layout.height< 30) {layout.height=30;}
+		}
+		
+		
 		cg.add(container.changeAddChild(child, name),
 			ExtendedDataUtilities.changeLayout(child, layout));
 		return this;
