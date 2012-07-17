@@ -17,9 +17,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import dk.itu.big_red.utilities.io.IOAdapter;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.eclipse.core.runtime.jobs.MultiRule;
+
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -45,38 +46,6 @@ public final class Project {
 	
 	public static IResourceRuleFactory getRuleFactory() {
 		return getWorkspace().getRuleFactory();
-	}
-	
-	/**
-	 * Gets an {@link IFolder} contained by <code>c</code>. If it doesn't exist
-	 * already, then it's created.
-	 * @param c the parent {@link IContainer}
-	 * @param name the folder's name
-	 * @return an IFolder guaranteed to exist on the local filesystem
-	 * @throws CoreException if {@link IFolder#create(int, boolean,
-	 * org.eclipse.core.runtime.IProgressMonitor)} goes wrong
-	 */
-	public static IFolder getFolder(IContainer c, String name) throws CoreException {
-		IFolder f = c.getFolder(new Path(name));
-		if (!f.exists())
-			f.create(0, true, null);
-		return f;
-	}
-	
-	/**
-	 * Gets an {@link IFile} contained by <code>c</code>. If it doesn't exist
-	 * already, then it's created (as an empty file).
-	 * @param c the parent {@link IContainer}
-	 * @param name the file's name
-	 * @return an IFile guaranteed to exist on the local filesystem
-	 * @throws CoreException if {@link IFile#create(java.io.InputStream,
-	 * boolean, org.eclipse.core.runtime.IProgressMonitor)} goes wrong
-	 */
-	public static IFile getFile(IContainer c, String name) throws CoreException {
-		IFile f = c.getFile(new Path(name));
-		if (!f.exists())
-			f.create(IOAdapter.getNullInputStream(), true, null);
-		return f;
 	}
 	
 	/**
@@ -122,30 +91,150 @@ public final class Project {
 		return (r instanceof IFile ? (IFile)r : null);
 	}
 	
-	public static class SaveRunnable {
-		public void onSuccess() {}
-		public void always() {}
+	public interface IWorkspaceModification {
+		ISchedulingRule getSchedulingRule();
+		void run(IProgressMonitor monitor) throws CoreException;
 	}
 	
-	private static final class SaveJob extends WorkspaceJob {
-		private IFile file;
-		private InputStream contents;
-		private SaveRunnable payload;
+	public static class SetContents implements IWorkspaceModification {
+		private final IFile file;
+		private final InputStream contents;
 		
-		private SaveJob(IFile file, InputStream contents, SaveRunnable payload) {
-			super("Setting contents");
+		public SetContents(IFile file, InputStream contents) {
 			this.file = file;
 			this.contents = contents;
+		}
+		
+		@Override
+		public void run(IProgressMonitor monitor) throws CoreException {
+			if (monitor != null)
+				monitor.subTask("Setting contents");
+			file.setContents(contents, IResource.FORCE, monitor);
+		}
+		
+		@Override
+		public ISchedulingRule getSchedulingRule() {
+			return getRuleFactory().modifyRule(file);
+		}
+	}
+	
+	public static class CreateFile implements IWorkspaceModification {
+		private final IFile file;
+		private final InputStream contents;
+		
+		public CreateFile(IFile file, InputStream contents) {
+			this.file = file;
+			this.contents = contents;
+		}
+		
+		@Override
+		public void run(IProgressMonitor monitor) throws CoreException {
+			if (monitor != null)
+				monitor.subTask("Creating file");
+			file.create(contents, IResource.FORCE, monitor);
+		}
+		
+		@Override
+		public ISchedulingRule getSchedulingRule() {
+			return getRuleFactory().createRule(file);
+		}
+	}
+	
+	public static class CreateFolder implements IWorkspaceModification {
+		private final IFolder folder;
+		
+		public CreateFolder(IFolder folder) {
+			this.folder = folder;
+		}
+		
+		@Override
+		public void run(IProgressMonitor monitor) throws CoreException {
+			if (monitor != null)
+				monitor.subTask("Creating folder");
+			folder.create(0, true, monitor);
+		}
+		
+		@Override
+		public ISchedulingRule getSchedulingRule() {
+			return getRuleFactory().createRule(folder);
+		}
+	}
+	
+	public static class CreateProject implements IWorkspaceModification {
+		private final IProject project;
+		
+		public CreateProject(IProject project) {
+			this.project = project;
+		}
+		
+		@Override
+		public void run(IProgressMonitor monitor) throws CoreException {
+			if (monitor != null)
+				monitor.subTask("Creating project");
+			project.create(monitor);
+		}
+		
+		@Override
+		public ISchedulingRule getSchedulingRule() {
+			return getRuleFactory().createRule(project);
+		}
+	}
+	
+	public static class OpenProject implements IWorkspaceModification {
+		private final IProject project;
+		
+		public OpenProject(IProject project) {
+			this.project = project;
+		}
+		
+		@Override
+		public void run(IProgressMonitor monitor) throws CoreException {
+			if (monitor != null)
+				monitor.subTask("Opening project");
+			project.open(monitor);
+		}
+		
+		@Override
+		public ISchedulingRule getSchedulingRule() {
+			return getRuleFactory().modifyRule(project);
+		}
+	}
+	
+	private static IWorkspaceModification getSetModification(
+			IFile file, InputStream contents) {
+		return (file.exists() ?
+				new SetContents(file, contents) :
+					new CreateFile(file, contents));
+	}
+	
+	public static final class ModificationRunner extends WorkspaceJob {
+		public static class Callback {
+			public void onSuccess() {}
+			public void always() {}
+		}
+
+		private IWorkspaceModification modifications[];
+		private Callback payload;
+		
+		public ModificationRunner(
+				Callback payload, IWorkspaceModification... modifications) {
+			super("Performing workspace update");
+			this.modifications = modifications;
 			this.payload = payload;
+			
+			ISchedulingRule schedulingRules[] =
+					new ISchedulingRule[modifications.length];
+			for (int i = 0; i < modifications.length; i++)
+				schedulingRules[i] = modifications[i].getSchedulingRule();
+			setRule(MultiRule.combine(schedulingRules));
 		}
 		
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor)
 				throws CoreException {
 			try {
-				if (file.exists()) {
-					file.setContents(contents, 0, monitor);
-				} else file.create(contents, 0, monitor);
+				for (IWorkspaceModification j : modifications)
+					j.run(monitor);
 				
 				if (payload != null)
 					UI.asyncExec(new Runnable() {
@@ -177,12 +266,9 @@ public final class Project {
 	 * @throws CoreException if the file couldn't be created or modified
 	 */
 	public static void setContents(
-			IFile file, InputStream contents, SaveRunnable r) {
-		SaveJob j = new SaveJob(file, contents, r);
-		j.setRule(file.exists() ?
-				getRuleFactory().modifyRule(file) :
-				getRuleFactory().createRule(file));
-		j.schedule();
+			IFile file, InputStream contents, ModificationRunner.Callback r) {
+		new ModificationRunner(r,
+				getSetModification(file, contents)).schedule();
 	}
 	
 	public static IResourceDelta getSpecificDelta(IResourceDelta rootDelta, IResource r) {

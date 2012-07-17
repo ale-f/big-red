@@ -508,6 +508,9 @@ public final class ExtendedDataUtilities {
 		set(context, l, LAYOUT, r);
 	}
 	
+	private static final String BOUNDARIES =
+			"eD!+org.bigraph.model.Bigraph.boundaries";
+	
 	private static final ExtendedDataValidator layoutValidator =
 			new ExtendedDataValidator() {
 		@Override
@@ -532,9 +535,9 @@ public final class ExtendedDataUtilities {
 			}
 			
 			if (l instanceof Container) {
-				newLayout = newLayout.getCopy().setLocation(0, 0);
+				Rectangle adjusted = newLayout.getCopy().setLocation(0, 0);
 				for (Layoutable i : ((Container)l).getChildren(context)) {
-					if (!newLayout.contains(getLayout(context, i)))
+					if (!adjusted.contains(getLayout(context, i)))
 						throw new ChangeRejectedException(c,
 								"The object is no longer big enough to " +
 								"accommodate its children");
@@ -547,6 +550,36 @@ public final class ExtendedDataUtilities {
 				if (!parentLayout.contains(newLayout))
 					throw new ChangeRejectedException(c,
 							"The object can no longer fit into its container");
+			} else {
+				Bigraph b = (Bigraph)parent;
+				
+				/* Since the layout validator is a final validator, there are
+				 * no further updates to come, so the boundary state can be
+				 * calculated once and then stashed away in the scratchpad */
+				BigraphBoundaryState bbs = require(context, b, BOUNDARIES,
+						BigraphBoundaryState.class);
+				if (bbs == null)
+					set(context, parent, BOUNDARIES,
+							bbs = new BigraphBoundaryState(context, b));
+				
+				int bs = bbs.getBoundaryState(newLayout);
+				if (l instanceof Root) {
+					if ((bs & BigraphBoundaryState.B_UR) != 0) {
+						throw new ChangeRejectedException(c,
+								"Roots must be placed below all outer names");
+					} else if ((bs & BigraphBoundaryState.B_LR) != 0) {
+						throw new ChangeRejectedException(c,
+								"Roots must be placed above all inner names");
+					}
+				} else if (l instanceof OuterName &&
+						(bs & BigraphBoundaryState.B_LON) != 0) {
+					throw new ChangeRejectedException(c,
+							"Outer names must be placed above all roots");
+				} else if (l instanceof InnerName &&
+						(bs & BigraphBoundaryState.B_UIN) != 0) {
+					throw new ChangeRejectedException(c,
+							"Inner names must be placed below all roots");
+				}
 			}
 		}
 	};
@@ -633,6 +666,8 @@ public final class ExtendedDataUtilities {
 				inLeft = PADDING;
 			
 			for (Layoutable i : children) {
+				if (i instanceof Edge)
+					continue;
 				r = relayout(context, i, cg);
 				if (r != null)
 					r.y = PADDING;
@@ -663,6 +698,9 @@ public final class ExtendedDataUtilities {
 						r.y += tallestOuterName + PADDING;
 					if (tallestRoot > 0)
 						r.y += tallestRoot + PADDING;
+				} else if (i instanceof Edge) {
+					cg.add(changeLayout(i,
+							relayout(context, i, cg)));
 				}
 			}
 		}

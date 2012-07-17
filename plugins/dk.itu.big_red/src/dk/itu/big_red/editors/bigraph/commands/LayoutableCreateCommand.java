@@ -8,7 +8,6 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 
 public class LayoutableCreateCommand extends ChangeCommand {
@@ -36,11 +35,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			else if (ExtendedDataUtilities.getLayout(i).intersects(layout))
 				return this;
 		}
-		
-		if (containerPart instanceof BigraphPart)
-			if (!((BigraphPart)containerPart).
-					boundariesSatisfied(layout, child))
-				return this;
 		
 		String name = container.getBigraph().getFirstUnusedName(child);
 		

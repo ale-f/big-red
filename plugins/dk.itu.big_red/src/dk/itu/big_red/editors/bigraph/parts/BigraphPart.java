@@ -7,16 +7,13 @@ import java.util.List;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
-import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.OuterName;
-import org.bigraph.model.Root;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editors.AbstractGEFEditor;
+import dk.itu.big_red.editors.assistants.BigraphBoundaryState;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
@@ -75,10 +72,9 @@ public class BigraphPart extends ContainerPart {
 			}
 		} else if (evt.getSource() instanceof Layoutable) {
 			Layoutable l = (Layoutable)evt.getSource();
-			if (l.getParent() == getModel()) {
-				if (prop.equals(ExtendedDataUtilities.LAYOUT))
+			if (l.getParent() == getModel() &&
+					prop.equals(ExtendedDataUtilities.LAYOUT))
 					refreshBoundaries();
-			}
 		}
 	}
 	
@@ -103,85 +99,11 @@ public class BigraphPart extends ContainerPart {
 		}
 		return nc;
 	}
-	
-	public static final int
-		B_NONE = 0,
-		B_LON = 1,
-		B_UR = 1 << 1,
-		B_LR = 1 << 2,
-		B_R = B_UR | B_LR,
-		B_UIN = 1 << 3;
-	
-	public boolean boundariesSatisfied(Rectangle r, Object l) {
-		int bs = getBoundaryState(r);
-		return !(
-			(l instanceof Root && (bs & BigraphPart.B_R) != 0) ||
-			(l instanceof OuterName && (bs & BigraphPart.B_LON) != 0) ||
-			(l instanceof InnerName && (bs & BigraphPart.B_UIN) != 0));
-	}
-	
-	public int getBoundaryState(Rectangle r) {
-		int top = r.y(), bottom = r.bottom();
-		return
-			(top < upperRootBoundary ? B_UR : 0) |
-			(bottom > lowerRootBoundary ? B_LR : 0) |
-			(bottom > lowerOuterNameBoundary ? B_LON : 0) |
-			(top < upperInnerNameBoundary ? B_UIN : 0);
-	}
-	
-	private int upperRootBoundary = Integer.MIN_VALUE,
-            lowerOuterNameBoundary = Integer.MAX_VALUE,
-            upperInnerNameBoundary = Integer.MIN_VALUE,
-            lowerRootBoundary = Integer.MAX_VALUE;
-	
-	public int getUpperRootBoundary() {
-		return upperRootBoundary;
-	}
 
-	public int getLowerOuterNameBoundary() {
-		return lowerOuterNameBoundary;
-	}
-
-	public int getUpperInnerNameBoundary() {
-		return upperInnerNameBoundary;
-	}
-
-	public int getLowerRootBoundary() {
-		return lowerRootBoundary;
-	}
-
+	private BigraphBoundaryState bs = new BigraphBoundaryState();
+	
 	protected void refreshBoundaries() {
-		int oldUR = upperRootBoundary,
-			    oldLON = lowerOuterNameBoundary,
-			    oldUIN = upperInnerNameBoundary,
-			    oldLR = lowerRootBoundary;
-		upperRootBoundary = Integer.MIN_VALUE;
-		lowerOuterNameBoundary = Integer.MAX_VALUE;
-		upperInnerNameBoundary = Integer.MIN_VALUE;
-		lowerRootBoundary = Integer.MAX_VALUE;
-		
-		for (Layoutable i : getModel().getChildren()) {
-			if (i instanceof Edge)
-				continue;
-			Rectangle r = ExtendedDataUtilities.getLayout(i);
-			int top = r.y(), bottom = r.y() + r.height();
-			if (i instanceof OuterName) {
-				if (bottom > upperRootBoundary)
-					upperRootBoundary = bottom;
-			} else if (i instanceof Root) {
-				if (top < lowerOuterNameBoundary)
-					lowerOuterNameBoundary = top;
-				if (bottom > upperInnerNameBoundary)
-					upperInnerNameBoundary = bottom;
-			} else if (i instanceof InnerName) {
-				if (top < lowerRootBoundary)
-					lowerRootBoundary = top;
-			}
-		}
-		
-		if (oldUR != upperRootBoundary || oldLR != lowerRootBoundary ||
-				oldLON != lowerOuterNameBoundary ||
-				oldUIN != upperInnerNameBoundary)
+		if (bs.refresh(getModel()))
 			refreshVisuals();
 	}
 	
@@ -196,10 +118,10 @@ public class BigraphPart extends ContainerPart {
 		
 		figure.setDisplayGuides(displayGuides);
 		if (displayGuides) {
-			figure.setUpperRootBoundary(upperRootBoundary);
-			figure.setLowerOuterNameBoundary(lowerOuterNameBoundary);
-			figure.setUpperInnerNameBoundary(upperInnerNameBoundary);
-			figure.setLowerRootBoundary(lowerRootBoundary);
+			figure.setUpperRootBoundary(bs.getUpperRootBoundary());
+			figure.setLowerOuterNameBoundary(bs.getLowerOuterNameBoundary());
+			figure.setUpperInnerNameBoundary(bs.getUpperInnerNameBoundary());
+			figure.setLowerRootBoundary(bs.getLowerRootBoundary());
 		}
 		
 		figure.repaint();
