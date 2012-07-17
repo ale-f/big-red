@@ -9,11 +9,11 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.ChangeValidator;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.IChangeValidator;
 
 abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
-		extends ChangeValidator<T> {
+		implements IChangeValidator {
 	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
 	protected PropertyScratchpad getScratch() {
@@ -23,14 +23,20 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 	private ArrayList<ChangeExtendedData> finalChecks =
 			new ArrayList<ChangeExtendedData>();
 	
-	public ModelObjectValidator(T changeable) {
-		super(changeable);
+	private final T changeExecutor;
+	
+	public ModelObjectValidator(T changeExecutor) {
+		this.changeExecutor = changeExecutor;
 	}
 
+	protected T getChangeable() {
+		return changeExecutor;
+	}
+	
 	protected Change doValidateChange(Change b)
 			throws ChangeRejectedException {
 		if (!b.isReady()) {
-			rejectChange(b, "The Change is not ready");
+			throw new ChangeRejectedException(b, "The Change is not ready");
 		} else if (b instanceof ChangeGroup) {
 			for (Change c : (ChangeGroup)b)
 				if ((c = doValidateChange(c)) != null)
@@ -56,7 +62,7 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		
 		b = doValidateChange(b);
 		if (b != null)
-			rejectChange(b, "The change was not recognised by the validator");
+			throw new ChangeRejectedException(b, "The change was not recognised by the validator");
 		
 		for (ChangeExtendedData i : finalChecks)
 			i.finalValidator.validate(i, scratch);

@@ -19,7 +19,7 @@ public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 	
 	private void checkEligibility(Change b, Control c) throws ChangeRejectedException {
 		if (c.getSignature(getScratch()) != getChangeable())
-			rejectChange(b, "The control " + c + " is not part of this Signature");
+			throw new ChangeRejectedException(b, "The control " + c + " is not part of this Signature");
 	}
 	
 	@Override
@@ -43,12 +43,12 @@ public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
 			if (c.name.trim().length() == 0)
-				rejectChange(b, "Port names must not be empty");
+				throw new ChangeRejectedException(b, "Port names must not be empty");
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			checkEligibility(b, c.getCreator());
 			if (c.name.trim().length() == 0)
-				rejectChange(b, "Control names must not be empty");
+				throw new ChangeRejectedException(b, "Control names must not be empty");
 		} else return b;
 		b.simulate(getScratch());
 		return null;

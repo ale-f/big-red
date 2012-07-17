@@ -28,22 +28,22 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 			throws ChangeRejectedException {
 		for (Layoutable i : l)
 			if (i.getBigraph(getScratch()) != getChangeable())
-				rejectChange(b, i + " is not part of this Bigraph");
+				throw new ChangeRejectedException(b, i + " is not part of this Bigraph");
 	}
 	
 	private void checkName(Change b, Layoutable l, String cdt)
 			throws ChangeRejectedException {
 		if (cdt == null)
-			rejectChange(b, "Setting an object's name to null is no longer supported");
+			throw new ChangeRejectedException(b, "Setting an object's name to null is no longer supported");
 		Namespace<Layoutable> ns =
 				getChangeable().getNamespace(Bigraph.getNSI(l));
 		if (ns == null)
 			return; /* not subject to any checks */
 		if (ns.get(getScratch(), cdt) != null)
 			if (!ns.get(getScratch(), cdt).equals(l))
-				rejectChange(b, "Names must be unique");
+				throw new ChangeRejectedException(b, "Names must be unique");
 		if (ns.getPolicy().normalise(cdt) == null)
-			rejectChange(b, "\"" + cdt + "\" is not a valid name for " + l);
+			throw new ChangeRejectedException(b, "\"" + cdt + "\" is not a valid name for " + l);
 	}
 	
 	@Override
@@ -55,54 +55,50 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			checkEligibility(b, c.link, c.getCreator());
 			if (c.getCreator().getLink(getScratch()) != null)
-				rejectChange(b,
-					"Connections can only be established to Points that " +
-					"aren't already connected");
+				throw new ChangeRejectedException(b, "Connections can only be established to Points that " +
+				"aren't already connected");
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
 			checkEligibility(b, c.getCreator());
 			Link l = c.getCreator().getLink(getScratch());
 			if (l == null)
-				rejectChange(b, "The Point is already disconnected");
+				throw new ChangeRejectedException(b, "The Point is already disconnected");
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			
 			if (c.getCreator() instanceof Node &&
 				((Node)c.getCreator()).getControl().getKind() == Kind.ATOMIC)
-				rejectChange(b,
-						((Node)c.getCreator()).getControl().getName() +
-						" is an atomic control");
+				throw new ChangeRejectedException(b, ((Node)c.getCreator()).getControl().getName() +
+				" is an atomic control");
 			
 			checkName(b, c.child, c.name);
 
 			if (c.child instanceof Edge) {
 				if (!(c.getCreator() instanceof Bigraph))
-					rejectChange(b,
-						"Edges must be children of the top-level Bigraph");
+					throw new ChangeRejectedException(b, "Edges must be children of the top-level Bigraph");
 			} else {
 				if (c.child instanceof Container)
 					if (((Container)c.child).getChildren(getScratch()).size() != 0)
-						rejectChange(b, c.child + " already has child objects");
+						throw new ChangeRejectedException(b, c.child + " already has child objects");
 				if (!c.getCreator().canContain(c.child))
-					rejectChange(b,
-						c.getCreator().getType() + "s can't contain " +
-						c.child.getType() + "s");
+					throw new ChangeRejectedException(b, c.getCreator().getType() + "s can't contain " +
+					c.child.getType() + "s");
 			}
 			
 			Container existingParent = c.child.getParent(getScratch());
 			if (existingParent != null)
-				rejectChange(b, c.child +
-						" already has a parent (" + existingParent + ")");
+				throw new ChangeRejectedException(b, c.child +
+				" already has a parent (" + existingParent + ")");
 		} else if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
 			checkEligibility(b, ch);
 			if (ch instanceof Container)
 				if (((Container)ch).getChildren(getScratch()).size() != 0)
-					rejectChange(b, ch + " has child objects which must be removed first");
+					throw new ChangeRejectedException(b, ch + " has child objects which must be removed first");
 			Container cp = ch.getParent(getScratch());
 			if (cp == null)
-				rejectChange(b, ch + " has no parent");
+				throw new ChangeRejectedException(b, ch + " has no parent");
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(b, c.getCreator());

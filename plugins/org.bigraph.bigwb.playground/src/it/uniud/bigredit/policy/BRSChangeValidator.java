@@ -5,14 +5,13 @@ import it.uniud.bigredit.model.BRS;
 import java.util.ArrayList;
 
 import org.bigraph.model.Bigraph;
-import org.bigraph.model.Container;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Node;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.ChangeValidator;
+import org.bigraph.model.changes.IChangeValidator;
 
 
 
@@ -23,12 +22,11 @@ import org.bigraph.model.changes.ChangeValidator;
  * @author carlo
  *
  */
-public class BRSChangeValidator extends ChangeValidator<BRS> {
+public class BRSChangeValidator implements IChangeValidator {
 	//private BigraphScratchpad scratch = null;
 	private Change activeChange = null;
 	
 	public BRSChangeValidator(BRS changeable) {
-		super(changeable);
 		//scratch = new BigraphScratchpad(changeable);
 	}
 	
@@ -37,7 +35,7 @@ public class BRSChangeValidator extends ChangeValidator<BRS> {
 	
 	protected void rejectChange(String rationale)
 			throws ChangeRejectedException {
-		super.rejectChange(activeChange, rationale);
+		throw new ChangeRejectedException(activeChange, rationale);
 	}
 
 	
