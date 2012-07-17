@@ -155,7 +155,7 @@ public class ReactionRule extends ModelObject {
 				IChangeDescriptor reactumCD) {
 			if (conflicts(redexCD, reactumCD)) {
 				reactumCDs = reactumCDs.clone();
-				reactumCDs.prepend(reverse(redexCD));
+				reactumCDs.add(0, reverse(redexCD));
 				return reactumCDs;
 			} else return null;
 		}
