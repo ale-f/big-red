@@ -28,6 +28,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
@@ -242,7 +243,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					cd = ExtendedDataUtilities.changeFillDescriptor(l,
+					cd = ColourUtilities.changeFillDescriptor(l,
 							new Colour(colour));
 			} else if (el.getLocalName().equals("outline")) {
 				String
@@ -255,7 +256,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					cd = ExtendedDataUtilities.changeOutlineDescriptor(l,
+					cd = ColourUtilities.changeOutlineDescriptor(l,
 							new Colour(colour));
 			} else if (el.getLocalName().equals("comment")) {
 				String

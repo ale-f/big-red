@@ -47,6 +47,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
@@ -127,8 +128,8 @@ implements PropertyChangeListener {
 		ovalMode.setSelection(!polygon);
 		polygonMode.setSelection(polygon);
 		
-		outline.setColorValue(ExtendedDataUtilities.getOutline(currentControl).getRGB());
-		fill.setColorValue(ExtendedDataUtilities.getFill(currentControl).getRGB());
+		outline.setColorValue(ColourUtilities.getOutline(currentControl).getRGB());
+		fill.setColorValue(ColourUtilities.getFill(currentControl).getRGB());
 		
 		activeKind.setSelection(currentControl.getKind() == Kind.ACTIVE);
 		atomicKind.setSelection(currentControl.getKind() == Kind.ATOMIC);
@@ -522,8 +523,8 @@ implements PropertyChangeListener {
 				if (!shouldPropagateUI())
 					return;
 				Colour newColour = new Colour(outline.getColorValue());
-				if (!ExtendedDataUtilities.getOutline(currentControl).equals(newColour))
-					doChange(ExtendedDataUtilities.changeOutline(currentControl, newColour));
+				if (!ColourUtilities.getOutline(currentControl).equals(newColour))
+					doChange(ColourUtilities.changeOutline(currentControl, newColour));
 			}
 		});
 		
@@ -536,8 +537,8 @@ implements PropertyChangeListener {
 				if (!shouldPropagateUI())
 					return;
 				Colour newColour = new Colour(fill.getColorValue());
-				if (!ExtendedDataUtilities.getFill(currentControl).equals(newColour))
-					doChange(ExtendedDataUtilities.changeFill(currentControl, newColour));
+				if (!ColourUtilities.getFill(currentControl).equals(newColour))
+					doChange(ColourUtilities.changeFill(currentControl, newColour));
 			}
 		});
 		
@@ -607,9 +608,9 @@ implements PropertyChangeListener {
 				} else if (propertyName.equals(ExtendedDataUtilities.SHAPE)) {
 					ovalMode.setSelection(newValue instanceof Ellipse);
 					polygonMode.setSelection(newValue instanceof PointList);
-				} else if (propertyName.equals(ExtendedDataUtilities.FILL)) {
+				} else if (propertyName.equals(ColourUtilities.FILL)) {
 					fill.setColorValue(((Colour)newValue).getRGB());
-				} else if (propertyName.equals(ExtendedDataUtilities.OUTLINE)) {
+				} else if (propertyName.equals(ColourUtilities.OUTLINE)) {
 					outline.setColorValue(((Colour)newValue).getRGB());
 				} else if (propertyName.equals(Control.PROPERTY_KIND)) {
 					activeKind.setSelection(Kind.ACTIVE.equals(newValue));

@@ -23,6 +23,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
@@ -121,10 +122,10 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				f = newElement(BIG_RED, "big-red:comment");
 				if (newValue != null)
 					applyAttributes(f, "comment", newValue);
-			} else if (ExtendedDataUtilities.FILL.equals(key)) {
+			} else if (ColourUtilities.FILL.equals(key)) {
 				f = applyAttributes(newElement(BIG_RED, "big-red:fill"),
 						"colour", ((Colour)newValue).toHexString());
-			} else if (ExtendedDataUtilities.OUTLINE.equals(key)) {
+			} else if (ColourUtilities.OUTLINE.equals(key)) {
 				f = applyAttributes(newElement(BIG_RED, "big-red:outline"),
 						"colour", ((Colour)newValue).toHexString());
 			} else if (ExtendedDataUtilities.LAYOUT.equals(key)) {

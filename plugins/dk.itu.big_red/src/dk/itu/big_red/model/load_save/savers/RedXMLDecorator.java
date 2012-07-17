@@ -29,6 +29,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
@@ -89,8 +90,8 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			rectangleToElement(aE, ExtendedDataUtilities.getLayout(((Layoutable)object)));
 		
 		Colour
-			fill = ExtendedDataUtilities.getFill(object),
-			outline = ExtendedDataUtilities.getOutline(object);
+			fill = ColourUtilities.getFill(object),
+			outline = ColourUtilities.getOutline(object);
 		if (fill != null)
 			aE.setAttributeNS(BIG_RED, "big-red:fillColor",
 					fill.toHexString());
@@ -148,9 +149,9 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 				fill = getColorAttribute(eA, BIG_RED, "fillColor"),
 				outline = getColorAttribute(eA, BIG_RED, "outlineColor");
 			if (fill != null)
-				cg.add(ExtendedDataUtilities.changeFill(object, fill));
+				cg.add(ColourUtilities.changeFill(object, fill));
 			if (outline != null)
-				cg.add(ExtendedDataUtilities.changeOutline(object, outline));
+				cg.add(ColourUtilities.changeOutline(object, outline));
 	
 			if (object instanceof Layoutable) {
 				Rectangle r = getRectangle(eA);

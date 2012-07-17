@@ -1,0 +1,103 @@
+package dk.itu.big_red.editors.assistants;
+
+import org.bigraph.model.Control;
+import org.bigraph.model.Link;
+import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.RedProperty;
+import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+
+import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.set;
+import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.require;
+
+public final class ColourUtilities {
+	private ColourUtilities() {}
+
+	@RedProperty(fired = Colour.class, retrieved = Colour.class)
+	public static final String FILL =
+			"eD!+dk.itu.big_red.model.Colourable.fill";
+	
+	public static Colour getFill(ModelObject m) {
+		return getFill(null, m);
+	}
+
+	public static Colour getFill(
+			PropertyScratchpad context, ModelObject m) {
+		Colour c = require(context, m, FILL, Colour.class);
+		if (c == null) {
+			if (m instanceof Node) {
+				c = getFill(context, ((Node)m).getControl());
+			} else if (m instanceof Control) {
+				c = new Colour("white");
+			}
+			if (c != null)
+				setFill(context, m, c);
+		}
+		return c;
+	}
+
+	public static void setFill(ModelObject m, Colour c) {
+		setFill(null, m, c);
+	}
+
+	public static void setFill(
+			PropertyScratchpad context, ModelObject m, Colour c) {
+		set(context, m, FILL, c);
+	}
+
+	public static IChange changeFill(ModelObject m, Colour c) {
+		return m.changeExtendedData(FILL, c);
+	}
+
+	public static IChangeDescriptor changeFillDescriptor(
+			ModelObject.Identifier l, Colour c) {
+		return new ModelObject.ChangeExtendedDataDescriptor(
+				l, FILL, c, null, null);
+	}
+
+	@RedProperty(fired = Colour.class, retrieved = Colour.class)
+	public static final String OUTLINE =
+			"eD!+dk.itu.big_red.model.Colourable.outline";
+	
+	public static Colour getOutline(ModelObject m) {
+		return getOutline(null, m);
+	}
+
+	public static Colour getOutline(
+			PropertyScratchpad context, ModelObject m) {
+		Colour c = require(context, m, OUTLINE, Colour.class);
+		if (c == null) {
+			if (m instanceof Node) {
+				c = getOutline(context, ((Node)m).getControl());
+			} else if (m instanceof Control) {
+				c = new Colour("black");
+			} else if (m instanceof Link) {
+				c = new Colour("green");
+			}
+			if (c != null)
+				setOutline(context, m, c);
+		}
+		return c;
+	}
+
+	public static void setOutline(ModelObject m, Colour c) {
+		setOutline(null, m, c);
+	}
+
+	public static void setOutline(
+			PropertyScratchpad context, ModelObject m, Colour c) {
+		set(context, m, OUTLINE, c);
+	}
+
+	public static IChange changeOutline(ModelObject m, Colour c) {
+		return m.changeExtendedData(OUTLINE, c);
+	}
+
+	public static IChangeDescriptor changeOutlineDescriptor(
+			ModelObject.Identifier l, Colour c) {
+		return new ModelObject.ChangeExtendedDataDescriptor(
+				l, OUTLINE, c, null, null);
+	}
+}

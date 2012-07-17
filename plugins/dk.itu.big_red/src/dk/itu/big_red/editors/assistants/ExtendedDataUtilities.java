@@ -8,7 +8,6 @@ import org.bigraph.model.Control;
 import org.bigraph.model.Edge;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
@@ -36,9 +35,8 @@ import dk.itu.big_red.editors.bigraph.parts.NodePart;
 public final class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
-	private static <T> T require(
-			PropertyScratchpad context, ModelObject o, String name,
-			Class<T> klass) {
+	static <T> T require(PropertyScratchpad context, ModelObject o,
+			String name, Class<T> klass) {
 		if (o != null) {
 			Object r = (context != null && context.hasProperty(o, name) ?
 					context.getProperty(o, name) : o.getExtendedData(name));
@@ -50,8 +48,8 @@ public final class ExtendedDataUtilities {
 		} else return null;
 	}
 	
-	private static void set(PropertyScratchpad context,
-			ModelObject o, String name, Object value) {
+	static void set(PropertyScratchpad context, ModelObject o, String name,
+			Object value) {
 		if (o == null || name == null)
 			return;
 		if (context != null) {
@@ -101,92 +99,6 @@ public final class ExtendedDataUtilities {
 			ModelObject.Identifier l, String s) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
 				l, COMMENT, s, null, null);
-	}
-	
-	@RedProperty(fired = Colour.class, retrieved = Colour.class)
-	public static final String FILL =
-			"eD!+dk.itu.big_red.model.Colourable.fill";
-	
-	public static Colour getFill(ModelObject m) {
-		return getFill(null, m);
-	}
-	
-	public static Colour getFill(
-			PropertyScratchpad context, ModelObject m) {
-		Colour c = require(context, m, FILL, Colour.class);
-		if (c == null) {
-			if (m instanceof Node) {
-				c = getFill(context, ((Node)m).getControl());
-			} else if (m instanceof Control) {
-				c = new Colour("white");
-			}
-			if (c != null)
-				setFill(context, m, c);
-		}
-		return c;
-	}
-	
-	public static void setFill(ModelObject m, Colour c) {
-		setFill(null, m, c);
-	}
-	
-	public static void setFill(
-			PropertyScratchpad context, ModelObject m, Colour c) {
-		set(context, m, FILL, c);
-	}
-	
-	public static IChange changeFill(ModelObject m, Colour c) {
-		return m.changeExtendedData(FILL, c);
-	}
-	
-	public static IChangeDescriptor changeFillDescriptor(
-			ModelObject.Identifier l, Colour c) {
-		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, FILL, c, null, null);
-	}
-	
-	@RedProperty(fired = Colour.class, retrieved = Colour.class)
-	public static final String OUTLINE =
-			"eD!+dk.itu.big_red.model.Colourable.outline";
-	
-	public static Colour getOutline(ModelObject m) {
-		return getOutline(null, m);
-	}
-	
-	public static Colour getOutline(
-			PropertyScratchpad context, ModelObject m) {
-		Colour c = require(context, m, OUTLINE, Colour.class);
-		if (c == null) {
-			if (m instanceof Node) {
-				c = getOutline(context, ((Node)m).getControl());
-			} else if (m instanceof Control) {
-				c = new Colour("black");
-			} else if (m instanceof Link) {
-				c = new Colour("green");
-			}
-			if (c != null)
-				setOutline(context, m, c);
-		}
-		return c;
-	}
-	
-	public static void setOutline(ModelObject m, Colour c) {
-		setOutline(null, m, c);
-	}
-	
-	public static void setOutline(
-			PropertyScratchpad context, ModelObject m, Colour c) {
-		set(context, m, OUTLINE, c);
-	}
-	
-	public static IChange changeOutline(ModelObject m, Colour c) {
-		return m.changeExtendedData(OUTLINE, c);
-	}
-	
-	public static IChangeDescriptor changeOutlineDescriptor(
-			ModelObject.Identifier l, Colour c) {
-		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, OUTLINE, c, null, null);
 	}
 	
 	@RedProperty(fired = INamePolicy.class, retrieved = INamePolicy.class)

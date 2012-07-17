@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.PropertySheetEntry;
 
 import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
@@ -63,11 +64,11 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 			} else if (COMMENT.equals(propertyID)) {
 				cg.add(ExtendedDataUtilities.changeComment(
 						(ModelObject)j.getModel(), (String)newValue));
-			} else if (propertyID.equals(ExtendedDataUtilities.FILL)) {
-				cg.add(ExtendedDataUtilities.changeFill(
+			} else if (propertyID.equals(ColourUtilities.FILL)) {
+				cg.add(ColourUtilities.changeFill(
 						(ModelObject)j.getModel(), (Colour)newValue));
-			} else if (propertyID.equals(ExtendedDataUtilities.OUTLINE)) {
-				cg.add(ExtendedDataUtilities.changeOutline(
+			} else if (propertyID.equals(ColourUtilities.OUTLINE)) {
+				cg.add(ColourUtilities.changeOutline(
 						(ModelObject)j.getModel(), (Colour)newValue));
 			} else if (propertyID.equals(ExtendedDataUtilities.ALIAS)) {
 				cg.add(ExtendedDataUtilities.changeAlias(((Site)j.getModel()), (String)newValue));

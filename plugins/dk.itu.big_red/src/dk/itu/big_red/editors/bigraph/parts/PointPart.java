@@ -9,6 +9,7 @@ import org.bigraph.model.Link;
 import org.bigraph.model.Point;
 
 import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 
 public abstract class PointPart extends ConnectablePart {
@@ -57,7 +58,7 @@ public abstract class PointPart extends ConnectablePart {
 		    }
 		} else if (source == getModel().getLink()) {
 			if (prop.equals(Link.PROPERTY_NAME) ||
-				prop.equals(ExtendedDataUtilities.OUTLINE)) {
+				prop.equals(ColourUtilities.OUTLINE)) {
 				refreshVisuals();
 			}
 		}
@@ -83,7 +84,7 @@ public abstract class PointPart extends ConnectablePart {
 		
 		Link l = getModel().getLink();
 		getFigure().setBackgroundColor(getOutline(
-				l != null ? ExtendedDataUtilities.getOutline(l) : DEFAULT_COLOUR));
+				l != null ? ColourUtilities.getOutline(l) : DEFAULT_COLOUR));
 	}
 	
 	@Override

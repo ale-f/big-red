@@ -22,7 +22,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.editors.assistants.Colour;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
@@ -108,7 +108,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (evt.getSource() == getModel().getLink() &&
-			prop.equals(ExtendedDataUtilities.OUTLINE))
+			prop.equals(ColourUtilities.OUTLINE))
 			refreshVisuals();
 	}
 
@@ -119,7 +119,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart implements No
 		
 		figure.setToolTip(getDisplayName());
 		figure.setForegroundColor(
-				getColour(ExtendedDataUtilities.getOutline(model.getLink())));
+				getColour(ColourUtilities.getOutline(model.getLink())));
 	}
 
 	/**

@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.Line;
@@ -145,8 +146,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 				shape = null;
 				pointsBounds = null;
 				redraw();
-			} else if (ExtendedDataUtilities.FILL.equals(name) ||
-					ExtendedDataUtilities.OUTLINE.equals(name)) {
+			} else if (ColourUtilities.FILL.equals(name) ||
+					ColourUtilities.OUTLINE.equals(name)) {
 				redraw();
 			}
 		} else if (source instanceof PortSpec) {
@@ -530,9 +531,9 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		Line l = new Line();
 		
 		gc.setForeground(
-			outline.update(ExtendedDataUtilities.getOutline(model)));
+			outline.update(ColourUtilities.getOutline(model)));
 		gc.setBackground(
-			fill.update(ExtendedDataUtilities.getFill(model)));
+			fill.update(ColourUtilities.getFill(model)));
 		
 		Object shape = getShape();
 		if (shape instanceof PointList) {

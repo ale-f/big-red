@@ -8,7 +8,7 @@ import org.bigraph.model.Link;
 import org.bigraph.model.Point;
 import org.eclipse.gef.EditPolicy;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
@@ -63,7 +63,7 @@ public abstract class LinkPart extends ConnectablePart {
 		    	refreshTargetConnections();
 		    	refreshVisuals();
 		    } else if (property.equals(Link.PROPERTY_NAME) ||
-		    		property.equals(ExtendedDataUtilities.OUTLINE)) {
+		    		property.equals(ColourUtilities.OUTLINE)) {
 		    	refreshVisuals();
 		    }
 		}
@@ -73,7 +73,7 @@ public abstract class LinkPart extends ConnectablePart {
 	protected void refreshVisuals(){
 		super.refreshVisuals();
 		getFigure().setBackgroundColor(
-				getOutline(ExtendedDataUtilities.getOutline(getModel())));
+				getOutline(ColourUtilities.getOutline(getModel())));
 	}
 	
 	/**

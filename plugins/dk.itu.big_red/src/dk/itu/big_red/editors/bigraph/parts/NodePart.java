@@ -13,6 +13,7 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
@@ -50,8 +51,8 @@ public class NodePart extends ContainerPart {
 		if (ExtendedDataUtilities.LAYOUT.equals(name))
 			fittedPolygon = null;
 		super.propertyChange(evt);
-		if (ExtendedDataUtilities.FILL.equals(name) ||
-	        ExtendedDataUtilities.OUTLINE.equals(name) ||
+		if (ColourUtilities.FILL.equals(name) ||
+	        ColourUtilities.OUTLINE.equals(name) ||
 	        ExtendedDataUtilities.PARAMETER.equals(name)) {
 	    	refreshVisuals();
 	    }
@@ -101,8 +102,8 @@ public class NodePart extends ContainerPart {
 		figure.setLabel(label);
 		figure.setToolTip(getToolTip());
 		
-		figure.setBackgroundColor(getFill(ExtendedDataUtilities.getFill(model)));
-		figure.setForegroundColor(getOutline(ExtendedDataUtilities.getOutline(model)));
+		figure.setBackgroundColor(getFill(ColourUtilities.getFill(model)));
+		figure.setForegroundColor(getOutline(ColourUtilities.getOutline(model)));
 		
 		figure.repaint();
 	}

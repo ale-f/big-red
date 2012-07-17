@@ -38,9 +38,9 @@ public final class ControlImageDescriptor extends ImageDescriptor {
 			gc.setAntialias(SWT.ON);
 			try {
 				gc.setBackground(
-						outline.update(ExtendedDataUtilities.getFill(c)));
+						outline.update(ColourUtilities.getFill(c)));
 				gc.setForeground(
-						outline.update(ExtendedDataUtilities.getOutline(c)));
+						outline.update(ColourUtilities.getOutline(c)));
 				Object shape = ExtendedDataUtilities.getShape(c);
 				if (shape instanceof PointList) {
 					PointList modified =

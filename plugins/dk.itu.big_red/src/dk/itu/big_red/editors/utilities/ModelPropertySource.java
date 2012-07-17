@@ -14,6 +14,8 @@ import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
+
+import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 
 public class ModelPropertySource implements IPropertySource {
@@ -64,10 +66,10 @@ public class ModelPropertySource implements IPropertySource {
 		properties.add(new PropertyDescriptor("Class", "Class"));
 		
 		if (object instanceof Link) {
-			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.OUTLINE, "Colour"));
+			properties.add(new ColorPropertyDescriptor(ColourUtilities.OUTLINE, "Colour"));
 		} else if (object instanceof Node) {
-			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.FILL, "Fill colour"));
-			properties.add(new ColorPropertyDescriptor(ExtendedDataUtilities.OUTLINE, "Outline colour"));
+			properties.add(new ColorPropertyDescriptor(ColourUtilities.FILL, "Fill colour"));
+			properties.add(new ColorPropertyDescriptor(ColourUtilities.OUTLINE, "Outline colour"));
 			if (ExtendedDataUtilities.getParameterPolicy(((Node)object).getControl()) != null)
 				properties.add(new NullTextPropertyDescriptor(ExtendedDataUtilities.PARAMETER, "Parameter"));
 		}
@@ -99,10 +101,10 @@ public class ModelPropertySource implements IPropertySource {
 				return ExtendedDataUtilities.getParameter((Node)object);
 			} else if (ExtendedDataUtilities.COMMENT.equals(id)) {
 				return ExtendedDataUtilities.getComment(object);
-			} else if (ExtendedDataUtilities.FILL.equals(id)) {
-				return ExtendedDataUtilities.getFill(object).getRGB();
-			} else if (ExtendedDataUtilities.OUTLINE.equals(id)) {
-				return ExtendedDataUtilities.getOutline(object).getRGB();
+			} else if (ColourUtilities.FILL.equals(id)) {
+				return ColourUtilities.getFill(object).getRGB();
+			} else if (ColourUtilities.OUTLINE.equals(id)) {
+				return ColourUtilities.getOutline(object).getRGB();
 			} else if (ExtendedDataUtilities.ALIAS.equals(id)) {
 				return ExtendedDataUtilities.getAlias(((Site)object));
 			} else if (Layoutable.PROPERTY_NAME.equals(id)) {
