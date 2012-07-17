@@ -7,8 +7,11 @@ import it.uniud.bigredit.model.Reaction;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -114,6 +117,13 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			}
 			
 		}
+		
+		
+		if ((node instanceof OuterName)||(node instanceof InnerName)){
+			if (layout.width < 20) {layout.width=20;}
+			if (layout.height< 20) {layout.height=20;}
+		}
+		
 		
 		if (container instanceof Reaction){
 			/** TODO get a name for Bigraph */
