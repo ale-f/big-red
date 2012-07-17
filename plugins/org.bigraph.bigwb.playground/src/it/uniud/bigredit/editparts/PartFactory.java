@@ -47,7 +47,7 @@ public class PartFactory implements EditPartFactory {
 		
 		
 		if (target == Bigraph.class) {
-			System.out.println("created new Bigraph");
+			//System.out.println("created new Bigraph");
 			part = new NestedBigraphPart();
 		} else if (target == Node.class) {
 			part = new NodePart();
@@ -70,7 +70,7 @@ public class PartFactory implements EditPartFactory {
         } else if (target == BRS.class) {
         	part = new BRSPart();
         }else if (target == ModelObject.class) {
-        	System.out.println("created new MODELObject");
+        	//System.out.println("created new MODELObject");
 			
         	part = new NestedBigraphPart();
         }

@@ -7,12 +7,16 @@ import it.uniud.bigredit.model.Reaction;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
+import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 
@@ -68,7 +72,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		
 		if (container instanceof Bigraph) {
 			if (node instanceof Root){
-				System.out.println("instance of root");
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
 				cg.add(((Bigraph) container).changeAddChild(((Root)node), name));
 				cg.add(LayoutUtilities.changeLayout(((Layoutable)node), layout));
@@ -84,12 +87,48 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		}
 		if (container instanceof BRS){
 			/** TODO get a name for Bigraph */
-			System.out.println("Instance of BRS");
+			
 			setTarget((BRS)container);
 			cg.add(((BRS)container).changeAddChild(node, "B0"));
 			cg.add(((BRS)container).changeLayoutChild(node, layout));
 			
+			
+			
+			
+			if(node instanceof Reaction){
+				cg.add( ((BRS)container).changeInsideModel(node, 
+						((Reaction)node).changeLayoutChild(
+						((Reaction)node).getRedex(), 
+						new Rectangle(15, Reaction.MIN_HIGHT_BIG, layout.width/2-40, layout.height-100))));
+				
+				
+				cg.add( ((BRS)container).changeInsideModel(node, 
+						((Reaction)node).changeLayoutChild(
+						((Reaction)node).getReactum(), 
+						new Rectangle(layout.width/2+30, Reaction.MIN_HIGHT_BIG, (layout.width/2)-40, layout.height-100))));
+			}
+			
+			if(node instanceof Bigraph){
+				Root root= new Root();
+				String name = ((Bigraph) node).getBigraph().getFirstUnusedName((Layoutable)root);
+				
+				cg.add(((Bigraph) node).changeAddChild(((Root)root), name));
+				cg.add(LayoutUtilities.changeLayout(root, new Rectangle(layout.x+10,layout.y+10,layout.width-20,layout.height-20)));
+			}
+			
 		}
+		
+		
+		if ((node instanceof OuterName)||(node instanceof InnerName)){
+			if (layout.width < 20) {layout.width=20;}
+			if (layout.height< 20) {layout.height=20;}
+		}
+		
+		if (node instanceof Root){
+			if (layout.width < 40) {layout.width=40;}
+			if (layout.height< 40) {layout.height=40;}
+		}
+		
 		
 		if (container instanceof Reaction){
 			/** TODO get a name for Bigraph */
@@ -123,7 +162,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (e instanceof Container){
 			container = (Container)e;
 		}else if(e instanceof ModelObject){
-			System.out.println("instanceof ModelObject");
 			container = (ModelObject)e;
 		}
 	}

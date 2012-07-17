@@ -29,9 +29,9 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public class ReactionFiguren extends AbstractFigure {//extends RoundedRectangle  {
 	
-	public static final int MARGIN = 200;
-	public static final int DEF_WIDTH  = Reaction.GAP_WIDTH * 3 + MARGIN * 4;
-	public static final int DEF_HEIGHT = Reaction.GAP_WIDTH + MARGIN * 4;
+	public static final int MARGIN = 10;
+	public static final int DEF_WIDTH  = Reaction.MIN_WIDTH_BIG ;
+	public static final int DEF_HEIGHT = Reaction.MIN_HIGHT_BIG;
 	
 	private Bigraph reactum = null;
 	private Bigraph redex = null;

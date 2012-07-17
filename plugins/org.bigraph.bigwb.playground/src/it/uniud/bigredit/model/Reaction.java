@@ -13,6 +13,7 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -30,7 +31,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	public static final int GAP_WIDTH = 96;
 	public static final int MIN_WIDTH_BIG= 100;
-	public static final int MIN_HIGHT_BIG = 100;
+	public static final int MIN_HIGHT_BIG = 40;
 	public static int SEPARATOR_WIDTH = 300;
 	
 	public static final String PROPERTY_RULE = "Reaction_Rule_Change";
@@ -38,8 +39,8 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	private Bigraph redex = null;
 	private Bigraph reactum = null;
-	private Rectangle redexLayout = new Rectangle(0,0,100,300);
-	private Rectangle reactumLayout = new Rectangle(100,0,100,300);
+	private Rectangle redexLayout = new Rectangle(15,40,150,200);
+	private Rectangle reactumLayout = new Rectangle(315,40,150,200);
 	
 	private HashMap <Site,Site> mapRedexSiteToReactum;
 	private HashMap <Root, Root> mapRedexRootToReactum;
@@ -76,7 +77,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		public Bigraph oldchild;
 		
 		public ChangeAddRedex(Bigraph child) {
-			System.out.println("new ChangeAddRedex");
 			this.child = child;
 		}
 		
@@ -96,12 +96,31 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}
 	}
 	
+	public class ChangeInsideModel extends ModelObjectChange{
+		
+		public ModelObject target;
+		public Change change;
+		
+		
+		@Override
+		public Change inverse() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		public ChangeInsideModel(ModelObject target, Change change){
+			this.target=target;
+			this.change=change;
+		}
+		
+	}
+	
+	
 	public class ChangeAddReactum extends ModelObjectChange {
 		public Bigraph child;
 		public Bigraph oldchild;
 		
 		public ChangeAddReactum(Bigraph child) {
-			System.out.println("new ChangeAddReactum");
 			this.child = child;
 		}
 		
@@ -120,6 +139,18 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 			return "Change(add reactum" + child + " to parent " + getCreator() + "\")";
 		}
 	}
+	
+	public Reaction(){
+		super();
+		redex= new Bigraph();
+		reactum= new Bigraph();
+		
+		_changeLayoutChild(redex, redexLayout);
+		_changeLayoutChild(reactum, reactumLayout);
+		
+	}
+	
+	public ChangeGroup cgAux = new ChangeGroup();
 	
 	
 	public class ChangeLayoutChild extends ModelObjectChange {
@@ -191,11 +222,20 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		validator.tryValidateChange(b);
 	}
 	
+	public void _changeInsideModel(ModelObject target, Change change){
+		cgAux.clear();
+		
+		cgAux.add(change);
+		try {
+			((Bigraph)target).tryApplyChange(cgAux);
+		} catch (ChangeRejectedException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	protected boolean doChange(IChange b) {
-		if (super.doChange(b)) {
-			/* do nothing */
-		} else if (b instanceof Reaction.ChangeAddReactum) {
+		if (b instanceof Reaction.ChangeAddReactum) {
 
 			Reaction.ChangeAddReactum c = (Reaction.ChangeAddReactum) b;
 			((Reaction) c.getCreator()).changeReactum(c.child);
@@ -206,13 +246,24 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}else if(b instanceof Reaction.ChangeLayoutChild){
 			Reaction.ChangeLayoutChild c = (Reaction.ChangeLayoutChild)b;
 			((Reaction)c.getCreator())._changeLayoutChild(c.child, c.layout);
-		} else return false;
+		} else if(b instanceof Reaction.ChangeInsideModel){
+			Reaction.ChangeInsideModel c = (Reaction.ChangeInsideModel) b;
+			((Reaction)c.getCreator())._changeInsideModel(c.target, c.change);
+		}else if (super.doChange(b)) {
+				/* do nothing */
+		}else{
+			return false;
+		}
 		return true;
 	}
 	
 	
 	public Change changeAddRedex(Bigraph node) {
 		return new ChangeAddRedex(node);
+	}
+	
+	public Change changeInsideModel(ModelObject target, Change change){
+		return new ChangeInsideModel(target,change);
 	}
 	
 	public Change changeAddReactum(Bigraph node) {
@@ -224,8 +275,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	}
 	
 	public void _changeLayoutChild(ModelObject child, Rectangle rectangle) {
-		
-		System.out.println("change child layout Reaction -> Redex || Reactum");
 		//addChild(child);
 		Rectangle oldRect= null;
 		if (child.equals(redex)){

@@ -8,6 +8,7 @@ import java.util.List;
 import it.uniud.bigredit.figure.ReactionFiguren;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
+import it.uniud.bigredit.policy.LayoutableDeletePolicy;
 import it.uniud.bigredit.policy.LayoutableLayoutPolicy;
 
 import org.bigraph.model.Bigraph;
@@ -16,6 +17,8 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+
+
 
 
 
@@ -38,6 +41,7 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 	protected void createEditPolicies()
 	{
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LayoutableLayoutPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LayoutableDeletePolicy());
 		//installEditPolicy( EditPolicy.COMPONENT_ROLE, new DeletePolicy() );
 	}
 	
@@ -48,8 +52,7 @@ public class ReactionPart extends AbstractGraphicalEditPart implements PropertyC
 		
 		Rectangle constraint = ((BRS) getParent().getModel())
 				.getChildrenConstraint(model);
-		System.out.println("constraint in refreshVisual"
-				+ constraint.toString());
+		//System.out.println("constraint in refreshVisual" + constraint.toString());
 		((ReactionFiguren)getFigure()).setConstraint(constraint);// new Rectangle (100,100,400,300));
 	}
 	

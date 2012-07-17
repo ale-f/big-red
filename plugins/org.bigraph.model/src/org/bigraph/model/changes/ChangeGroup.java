@@ -15,7 +15,7 @@ public class ChangeGroup extends ArrayList<IChange> implements IChange {
 	public ChangeGroup() {
 		super();
 	}
-
+	
 	public ChangeGroup(Collection<? extends IChange> c) {
 		super(c);
 	}

@@ -1,6 +1,7 @@
 package it.uniud.bigredit.model;
 
 import it.uniud.bigredit.PlayEditor;
+import it.uniud.bigredit.model.Reaction.ChangeInsideModel;
 import it.uniud.bigredit.policy.BRSChangeValidator;
 
 import java.util.ArrayList;
@@ -10,7 +11,9 @@ import java.util.List;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
+import org.bigraph.model.ModelObject.ModelObjectChange;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -116,7 +119,6 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		public Rectangle layout;
 		
 		public ChangeLayoutChild(ModelObject child, Rectangle layout) {
-			System.out.println(layout);
 			this.child = child;
 			this.layout=layout;
 		}
@@ -148,6 +150,26 @@ public class BRS extends ModelObject implements IChangeExecutor{
 			return "Change(change layout of: " + child + " in " + getCreator() + ")";
 		}
 	}
+	
+	public class ChangeInsideModel extends ModelObjectChange{
+		
+		public ModelObject target;
+		public Change change;
+		
+		
+		@Override
+		public Change inverse() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		public ChangeInsideModel(ModelObject target, Change change){
+			this.target=target;
+			this.change=change;
+		}
+		
+	}
+	
 	
 	
 	
@@ -220,6 +242,27 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		firePropertyChange(BRS.PROPERTY_LAYOUT,oldRect, rectangle);//children.get(child), rectangle);
 		
 	}
+	
+	public void _changeRemoveChild(ModelObject child){
+		children.remove(child);
+		firePropertyChange(BRS.PROPERTY_PARENT,child , null);
+		
+	}
+	
+	
+	ChangeGroup cgAux= new ChangeGroup();
+	public void _changeInsideModel(ModelObject target, Change change){
+		
+		
+		cgAux.clear();
+		
+		cgAux.add(change);
+		try {
+			((Reaction)target).tryApplyChange(cgAux);
+		} catch (ChangeRejectedException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void addBigraph( Bigraph bigraph )
 	{
@@ -236,6 +279,10 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	}
 	
 	
+	public Change changeInsideModel(ModelObject target, Change change){
+		return new ChangeInsideModel(target,change);
+	}
+	
 	@Override
 	protected boolean doChange(IChange b) {
 		if (super.doChange(b)) {
@@ -248,7 +295,13 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		} else if(b instanceof BRS.ChangeLayoutChild){
 			BRS.ChangeLayoutChild c = (BRS.ChangeLayoutChild)b;
 			((BRS)c.getCreator())._changeLayoutChild(c.child, c.layout);
-		} else return false;
+		} else if(b instanceof BRS.ChangeInsideModel){
+			BRS.ChangeInsideModel c = (BRS.ChangeInsideModel) b;
+			((BRS)c.getCreator())._changeInsideModel(c.target, c.change);
+		} else if(b instanceof BRS.ChangeRemoveChild){
+			BRS.ChangeRemoveChild c = (BRS.ChangeRemoveChild) b;
+			((BRS)c.getCreator())._changeRemoveChild(c.child);
+		}else return false;
 		return true;
 				
 				
@@ -304,6 +357,11 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		return new ChangeAddChild(node, string);
 	}
 
+	public Change changeRemoveChild(ModelObject node) {
+		
+		return new ChangeRemoveChild(node);
+	}
+	
 	private IChangeValidator validator = new BRSChangeValidator(this);
 	
 	@Override
