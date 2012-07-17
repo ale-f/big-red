@@ -133,6 +133,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 				modelSelector.setResource(f);
 		}
 		
+		recalculateExportEnabled();
 		uiUpdateInProgress = false;
 	}
 	
@@ -161,8 +162,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	
 	private void recalculateExportEnabled() {
 		export.setEnabled(
-			signatureSelector.getResource() != null &&
-			modelSelector.getResource() != null);
+			getModel().getModel() != null &&
+			getModel().getSignature() != null);
 	}
 	
 	@Override
@@ -185,14 +186,13 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		signatureSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
-				recalculateExportEnabled();
+				if (uiUpdateInProgress)
+					return;
 				try {
-					if (uiUpdateInProgress)
-						return;
-					Signature s = null;
-					if (newValue != null)
-						s = (Signature)Loader.fromFile((IFile)newValue);
+					Signature s = (newValue != null ?
+						(Signature)Loader.fromFile((IFile)newValue) : null);
 					doChange(getModel().changeSignature(s));
+					recalculateExportEnabled();
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
 				} catch (CoreException ce) {
@@ -271,14 +271,13 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		modelSelector.addListener(new ResourceListener() {
 			@Override
 			public void resourceChanged(IResource oldValue, IResource newValue) {
-				recalculateExportEnabled();
+				if (uiUpdateInProgress)
+					return;
 				try {
-					if (uiUpdateInProgress)
-						return;
-					Bigraph b = null;
-					if (newValue != null)
-						b = (Bigraph)Loader.fromFile((IFile)newValue);
+					Bigraph b = (newValue != null ?
+						(Bigraph)Loader.fromFile((IFile)newValue) : null);
 					doChange(getModel().changeModel(b));
+					recalculateExportEnabled();
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
 				} catch (CoreException ce) {
