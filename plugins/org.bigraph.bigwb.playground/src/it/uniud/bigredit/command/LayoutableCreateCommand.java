@@ -124,6 +124,11 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			if (layout.height< 20) {layout.height=20;}
 		}
 		
+		if (node instanceof Root){
+			if (layout.width < 40) {layout.width=40;}
+			if (layout.height< 40) {layout.height=40;}
+		}
+		
 		
 		if (container instanceof Reaction){
 			/** TODO get a name for Bigraph */
