@@ -9,21 +9,22 @@ import org.bigraph.model.Control.ChangeKind;
 import org.bigraph.model.Control.ChangeName;
 import org.bigraph.model.Signature.ChangeAddControl;
 import org.bigraph.model.Control.ChangeRemoveControl;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 
 public class SignatureChangeValidator extends ModelObjectValidator<Signature> {
 	public SignatureChangeValidator(Signature changeable) {
 		super(changeable);
 	}
 	
-	private void checkEligibility(Change b, Control c) throws ChangeRejectedException {
+	private void checkEligibility(IChange b, Control c) throws ChangeRejectedException {
 		if (c.getSignature(getScratch()) != getChangeable())
-			throw new ChangeRejectedException(b, "The control " + c + " is not part of this Signature");
+			throw new ChangeRejectedException(b,
+					"The control " + c + " is not part of this Signature");
 	}
 	
 	@Override
-	public Change doValidateChange(Change b) throws ChangeRejectedException {
+	public IChange doValidateChange(IChange b) throws ChangeRejectedException {
 		if (super.doValidateChange(b) == null) {
 			return null;
 		} else if (b instanceof ChangeAddControl) {

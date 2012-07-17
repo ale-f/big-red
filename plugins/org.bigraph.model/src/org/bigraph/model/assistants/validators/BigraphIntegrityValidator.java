@@ -8,8 +8,8 @@ import org.bigraph.model.Link;
 import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.Control.Kind;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.Namespace;
 
 /**
@@ -24,17 +24,19 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 		super(changeable);
 	}
 	
-	private void checkEligibility(Change b, Layoutable... l)
+	private void checkEligibility(IChange b, Layoutable... l)
 			throws ChangeRejectedException {
 		for (Layoutable i : l)
 			if (i.getBigraph(getScratch()) != getChangeable())
-				throw new ChangeRejectedException(b, i + " is not part of this Bigraph");
+				throw new ChangeRejectedException(b,
+						i + " is not part of this Bigraph");
 	}
 	
-	private void checkName(Change b, Layoutable l, String cdt)
+	private void checkName(IChange b, Layoutable l, String cdt)
 			throws ChangeRejectedException {
 		if (cdt == null)
-			throw new ChangeRejectedException(b, "Setting an object's name to null is no longer supported");
+			throw new ChangeRejectedException(b,
+					"Setting an object's name to null is no longer supported");
 		Namespace<Layoutable> ns =
 				getChangeable().getNamespace(Bigraph.getNSI(l));
 		if (ns == null)
@@ -43,11 +45,12 @@ public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
 			if (!ns.get(getScratch(), cdt).equals(l))
 				throw new ChangeRejectedException(b, "Names must be unique");
 		if (ns.getPolicy().normalise(cdt) == null)
-			throw new ChangeRejectedException(b, "\"" + cdt + "\" is not a valid name for " + l);
+			throw new ChangeRejectedException(b,
+					"\"" + cdt + "\" is not a valid name for " + l);
 	}
 	
 	@Override
-	protected Change doValidateChange(Change b)
+	protected IChange doValidateChange(IChange b)
 			throws ChangeRejectedException {
 		if (super.doValidateChange(b) == null) {
 			return null;

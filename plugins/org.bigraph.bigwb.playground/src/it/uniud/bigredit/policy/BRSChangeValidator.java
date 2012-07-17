@@ -11,6 +11,7 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeValidator;
 
 
@@ -24,7 +25,7 @@ import org.bigraph.model.changes.IChangeValidator;
  */
 public class BRSChangeValidator implements IChangeValidator {
 	//private BigraphScratchpad scratch = null;
-	private Change activeChange = null;
+	private IChange activeChange = null;
 	
 	public BRSChangeValidator(BRS changeable) {
 		//scratch = new BigraphScratchpad(changeable);
@@ -40,7 +41,7 @@ public class BRSChangeValidator implements IChangeValidator {
 
 	
 	@Override
-	public void tryValidateChange(Change b)
+	public void tryValidateChange(IChange b)
 			throws ChangeRejectedException {
 		activeChange = b;
 		
@@ -55,7 +56,7 @@ public class BRSChangeValidator implements IChangeValidator {
 		activeChange = null;
 	}
 	
-	protected void _tryValidateChange(Change b)
+	protected void _tryValidateChange(IChange b)
 			throws ChangeRejectedException {
 		//System.out.println("called _tryValidateChange BRSChangeValidator");
 		if (!b.isReady()) {

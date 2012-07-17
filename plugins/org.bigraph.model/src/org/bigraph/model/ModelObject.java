@@ -10,6 +10,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -246,10 +247,10 @@ public abstract class ModelObject {
 		} else extendedData = null;
 	}
 	
-	protected boolean doChange(Change c_) {
+	protected boolean doChange(IChange c_) {
 		c_.beforeApply();
 		if (c_ instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)c_)
+			for (IChange c : (ChangeGroup)c_)
 				if (!doChange(c))
 					throw new Error("Couldn't apply " + c +
 							" (how did it pass validation?)");

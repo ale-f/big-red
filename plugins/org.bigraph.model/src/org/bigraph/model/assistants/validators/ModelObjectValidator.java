@@ -6,9 +6,9 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
 
@@ -33,12 +33,12 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		return changeExecutor;
 	}
 	
-	protected Change doValidateChange(Change b)
+	protected IChange doValidateChange(IChange b)
 			throws ChangeRejectedException {
 		if (!b.isReady()) {
 			throw new ChangeRejectedException(b, "The Change is not ready");
 		} else if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b)
+			for (IChange c : (ChangeGroup)b)
 				if ((c = doValidateChange(c)) != null)
 					return c;
 			/* All changes will have been individually simulated */
@@ -56,7 +56,7 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 	}
 	
 	@Override
-	public void tryValidateChange(Change b) throws ChangeRejectedException {
+	public void tryValidateChange(IChange b) throws ChangeRejectedException {
 		getScratch().clear();
 		finalChecks.clear();
 		

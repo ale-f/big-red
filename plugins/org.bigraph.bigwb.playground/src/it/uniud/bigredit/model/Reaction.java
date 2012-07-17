@@ -14,6 +14,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -175,7 +176,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	}
 	
 	@Override
-	public void tryApplyChange(Change b) throws ChangeRejectedException {
+	public void tryApplyChange(IChange b) throws ChangeRejectedException {
 		
 		tryValidateChange(b);
 		doChange(b);
@@ -185,13 +186,13 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	private IChangeValidator validator = new ReactionChangeValidator(this);
 	
 	@Override
-	public void tryValidateChange(Change b) throws ChangeRejectedException {
+	public void tryValidateChange(IChange b) throws ChangeRejectedException {
 		
 		validator.tryValidateChange(b);
 	}
 	
 	@Override
-	protected boolean doChange(Change b) {
+	protected boolean doChange(IChange b) {
 		if (super.doChange(b)) {
 			/* do nothing */
 		} else if (b instanceof Reaction.ChangeAddReactum) {

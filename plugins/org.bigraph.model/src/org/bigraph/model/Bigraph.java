@@ -11,8 +11,8 @@ import java.util.Map.Entry;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.validators.BigraphIntegrityValidator;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
 import org.bigraph.model.interfaces.IBigraph;
@@ -212,18 +212,18 @@ public class Bigraph extends Container
 	}
 	
 	@Override
-	public void tryValidateChange(Change b) throws ChangeRejectedException {
+	public void tryValidateChange(IChange b) throws ChangeRejectedException {
 		validator.tryValidateChange(b);
 	}
 	
 	@Override
-	public void tryApplyChange(Change b) throws ChangeRejectedException {
+	public void tryApplyChange(IChange b) throws ChangeRejectedException {
 		tryValidateChange(b);
 		doChange(b);
 	}
 	
 	@Override
-	protected boolean doChange(Change b) {
+	protected boolean doChange(IChange b) {
 		if (super.doChange(b)) {
 			/* do nothing */
 		} else if (b instanceof Point.ChangeConnect) {
