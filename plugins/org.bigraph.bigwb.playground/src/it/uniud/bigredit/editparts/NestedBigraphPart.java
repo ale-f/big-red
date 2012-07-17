@@ -26,6 +26,9 @@ public class NestedBigraphPart extends ContainerPart {
 
 	// NestedBigraphFigure figureModel;
 
+	private int outernamePoint=40;
+	private int innernamePoint=40;
+	
 	@Override
 	public Bigraph getModel() {
 		return (Bigraph) super.getModel();
@@ -65,18 +68,21 @@ public class NestedBigraphPart extends ContainerPart {
 			
 			constraint = ((BRS) getParent().getModel())
 					.getChildrenConstraint(model);
+			
+			
+			
 			//System.out.println("constraint in refreshVisual"+ constraint.toString());
 			figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
-			// figure.setInnerLine(model.getUpperInnerNameBoundary());
-			// figure.setOuterLine(model.getLowerOuterNameBoundary());
+			 figure.setInnerLine(constraint.height- innernamePoint);//.getUpperInnerNameBoundary());
+			 figure.setOuterLine(outernamePoint);
 			
 		} else if (getParent() instanceof ReactionPart) {
 			constraint = ((Reaction) getParent().getModel())
 					.getChildConstraint(model);
 			//System.out.println("constraint in refreshVisual" + constraint.toString());
 			figure.setConstraint(constraint);// new Rectangle (100,100,400,300));
-			// figure.setInnerLine(model.getUpperInnerNameBoundary());
-			// figure.setOuterLine(model.getLowerOuterNameBoundary());
+			 figure.setInnerLine(constraint.height- innernamePoint);//.getUpperInnerNameBoundary());
+			 figure.setOuterLine(outernamePoint);
 		}
 
 

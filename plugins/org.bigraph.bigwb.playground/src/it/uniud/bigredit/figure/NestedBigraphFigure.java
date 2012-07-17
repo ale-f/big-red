@@ -95,9 +95,11 @@ public class NestedBigraphFigure extends AbstractFigure {
 			graphics.drawRoundRectangle(a, 20, 20);
 			if(innerLine != 0){
 				graphics.drawLine(0, innerLine, a.width, innerLine);
+				graphics.drawText("inner name boundary", 10, innerLine - 14);
 			}
 			if(outerLine != 0){
 				graphics.drawLine(0, outerLine, a.width, outerLine);
+				graphics.drawText("outer name boundary", 10, outerLine + 2 );
 			}
 			
 		} finally {
