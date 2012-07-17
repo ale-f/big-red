@@ -148,7 +148,8 @@ import it.uniud.bigredit.model.Reaction;
 					String x=eA.getAttribute("x");
 					String y=eA.getAttribute("y");
 					Rectangle rect=new Rectangle(Integer.parseInt(x),Integer.parseInt(y), Integer.parseInt(width),Integer.parseInt(height));
-					cg.add(ss.changeAddChild(created,""), ss.changeLayoutChild(created, rect));
+					cg.add(ss.changeAddChild(created,""));
+					cg.add(ss.changeLayoutChild(created, rect));
 					
 					}
 				}
@@ -163,7 +164,8 @@ import it.uniud.bigredit.model.Reaction;
 				String x=eA.getAttribute("x");
 				String y=eA.getAttribute("y");
 				Rectangle rect=new Rectangle(Integer.parseInt(x),Integer.parseInt(y), Integer.parseInt(width),Integer.parseInt(height));
-				cg.add(ss.changeAddChild(created,""), ss.changeLayoutChild(created, rect));
+				cg.add(ss.changeAddChild(created,""));
+				cg.add(ss.changeLayoutChild(created, rect));
 				
 				}
 			}

@@ -53,16 +53,16 @@ public class LayoutableReparentCommand extends ChangeCommand {
 				Link li = p.getLink();
 				if (li != null) {
 					cg.add(p.changeDisconnect());
-					post.prepend(p.changeConnect(li));
+					post.add(0, p.changeConnect(li));
 				}
 			}
 		}
 		
 		cg.add(l.changeRemove());
 		if (!root) {
-			post.prepend(ExtendedDataUtilities.changeLayout(
-					l, ExtendedDataUtilities.getLayout(l)));
-			post.prepend(l.getParent().changeAddChild(l, l.getName()));
+			post.add(0, ExtendedDataUtilities.changeLayout(
+			l, ExtendedDataUtilities.getLayout(l)));
+			post.add(0, l.getParent().changeAddChild(l, l.getName()));
 		}
 	}
 	

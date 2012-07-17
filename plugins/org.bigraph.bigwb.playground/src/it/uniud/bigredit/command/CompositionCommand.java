@@ -117,7 +117,7 @@ public class CompositionCommand extends Command {
 		for (Site site : placeMap.keySet()) {
 			Container parent = site.getParent();
 			Root root = placeMap.get(site);
-			cgA.prepend(site.changeRemove());
+			cgA.add(0, site.changeRemove());
 			for (Layoutable children : root.getChildren()) {
 				System.out.println(children.getType());
 

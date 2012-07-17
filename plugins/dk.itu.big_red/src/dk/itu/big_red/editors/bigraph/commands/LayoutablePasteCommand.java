@@ -76,10 +76,9 @@ public class LayoutablePasteCommand extends ChangeCommand {
 				
 				String name = newParent.getBigraph().
 						getNamespace(Bigraph.getNSI(j)).getNextName(scratch);
-				cg.add(
-					scratch.executeChange(newParent.changeAddChild(j, name)),
-					ExtendedDataUtilities.changeLayout(j,
-						ExtendedDataUtilities.getLayout(j).getCopy().translate(20, 20)));
+				cg.add(scratch.executeChange(newParent.changeAddChild(j, name)));
+				cg.add(ExtendedDataUtilities.changeLayout(j,
+										ExtendedDataUtilities.getLayout(j).getCopy().translate(20, 20)));
 			}
 		}
 		return this;

@@ -56,7 +56,8 @@ public class ReactionXMLLoader extends XMLLoader{
 			String y=eA.getAttribute("y");
 			Rectangle rect=new Rectangle(Integer.parseInt(x),Integer.parseInt(y), Integer.parseInt(width),Integer.parseInt(height));
 		
-			cg.add(ra.changeAddRedex((Bigraph)created),ra.changeLayoutChild((Bigraph)created, rect));
+			cg.add(ra.changeAddRedex((Bigraph)created));
+			cg.add(ra.changeLayoutChild((Bigraph)created, rect));
 			
 		}else{
 			System.out.println("redex=null");
@@ -72,7 +73,8 @@ public class ReactionXMLLoader extends XMLLoader{
 			String xb=eB.getAttribute("x");
 			String yb=eB.getAttribute("y");
 			Rectangle rectt=new Rectangle(Integer.parseInt(xb),Integer.parseInt(yb), Integer.parseInt(widthb),Integer.parseInt(heightb));
-			cg.add(ra.changeAddReactum((Bigraph)createdM), ra.changeLayoutChild((Bigraph)createdM, rectt));
+			cg.add(ra.changeAddReactum((Bigraph)createdM));
+			cg.add(ra.changeLayoutChild((Bigraph)createdM, rectt));
 		}
 		
 		try {

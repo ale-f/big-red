@@ -36,8 +36,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		}
 		
 		String name = container.getBigraph().getFirstUnusedName(child);
-		cg.add(container.changeAddChild(child, name),
-			ExtendedDataUtilities.changeLayout(child, layout));
+		cg.add(container.changeAddChild(child, name));
+		cg.add(ExtendedDataUtilities.changeLayout(child, layout));
 		return this;
 	}
 	

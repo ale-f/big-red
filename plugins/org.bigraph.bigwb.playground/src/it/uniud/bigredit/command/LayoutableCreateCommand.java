@@ -70,10 +70,12 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			if (node instanceof Root){
 				System.out.println("instance of root");
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
-				cg.add(((Bigraph) container).changeAddChild(((Root)node), name), ExtendedDataUtilities.changeLayout(((Layoutable)node), layout));
+				cg.add(((Bigraph) container).changeAddChild(((Root)node), name));
+				cg.add(ExtendedDataUtilities.changeLayout(((Layoutable)node), layout));
 			}else{
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
-				cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name), ExtendedDataUtilities.changeLayout(((Layoutable)node), layout));
+				cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name));
+				cg.add(ExtendedDataUtilities.changeLayout(((Layoutable)node), layout));
 			}
 			/** TODO add name */
 			//String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
@@ -84,8 +86,8 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			/** TODO get a name for Bigraph */
 			System.out.println("Instance of BRS");
 			setTarget((BRS)container);
-			cg.add(((BRS)container).changeAddChild(node, "B0"),
-			((BRS)container).changeLayoutChild(node, layout));
+			cg.add(((BRS)container).changeAddChild(node, "B0"));
+			cg.add(((BRS)container).changeLayoutChild(node, layout));
 			
 		}
 		
@@ -94,13 +96,13 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			System.out.println("Instance of Reaction");
 			setTarget((Reaction)container);
 			if(layout.x > ((Reaction)container).SEPARATOR_WIDTH){
-				cg.add(((Reaction) container).changeAddReactum((Bigraph) node),
-						((Reaction) container).changeLayoutChild(
-								(Bigraph) node, layout));
+				cg.add(((Reaction) container).changeAddReactum((Bigraph) node));
+				cg.add(((Reaction) container).changeLayoutChild(
+												(Bigraph) node, layout));
 			}else{
-				cg.add(((Reaction) container).changeAddRedex((Bigraph) node),
-						((Reaction) container).changeLayoutChild(
-								(Bigraph) node, layout));
+				cg.add(((Reaction) container).changeAddRedex((Bigraph) node));
+				cg.add(((Reaction) container).changeLayoutChild(
+												(Bigraph) node, layout));
 			}
 		}
 		return this;
