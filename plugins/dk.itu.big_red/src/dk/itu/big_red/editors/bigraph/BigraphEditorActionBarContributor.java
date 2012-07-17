@@ -16,8 +16,8 @@ import org.eclipse.ui.actions.RetargetAction;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.AbstractGEFEditor;
+import dk.itu.big_red.editors.actions.TogglePropertyAction;
 import dk.itu.big_red.editors.assistants.ActionBarContributor;
-import dk.itu.big_red.editors.assistants.TogglePropertyAction;
 
 public class BigraphEditorActionBarContributor extends ActionBarContributor {
 	public static final String ACTION_GUIDE = TogglePropertyAction.getId(

@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.assistants;
+package dk.itu.big_red.editors.actions;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.jface.action.Action;

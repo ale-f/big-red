@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.assistants;
+package dk.itu.big_red.editors.actions;
 
 import org.eclipse.ui.actions.ActionFactory;
 

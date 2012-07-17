@@ -31,11 +31,11 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.editors.actions.RedoProxyAction;
+import dk.itu.big_red.editors.actions.RevertProxyAction;
+import dk.itu.big_red.editors.actions.UndoProxyAction;
+import dk.itu.big_red.editors.actions.ProxyAction.IActionImplementor;
 import dk.itu.big_red.editors.assistants.EditorError;
-import dk.itu.big_red.editors.assistants.ProxyAction.IActionImplementor;
-import dk.itu.big_red.editors.assistants.RedoProxyAction;
-import dk.itu.big_red.editors.assistants.RevertProxyAction;
-import dk.itu.big_red.editors.assistants.UndoProxyAction;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
