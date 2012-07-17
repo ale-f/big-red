@@ -7,7 +7,6 @@ import java.util.Map;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -228,7 +227,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
 		if (b instanceof ChangeGroup) {
-			for (Change i : (ChangeGroup)b)
+			for (IChange i : (ChangeGroup)b)
 				tryValidateChange(i);
 		} else if (b instanceof ChangeSignature ||
 				b instanceof ChangeAddRule ||

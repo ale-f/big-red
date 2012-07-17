@@ -8,7 +8,6 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Node;
 import org.bigraph.model.Control.Kind;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -62,7 +61,7 @@ public class BRSChangeValidator implements IChangeValidator {
 		if (!b.isReady()) {
 			rejectChange("The Change is not ready");
 		} else if (b instanceof ChangeGroup) {
-			for (Change c : (ChangeGroup)b)
+			for (IChange c : (ChangeGroup)b)
 				_tryValidateChange(c);
 		
 		} else if (b instanceof BRS.ChangeAddChild) {

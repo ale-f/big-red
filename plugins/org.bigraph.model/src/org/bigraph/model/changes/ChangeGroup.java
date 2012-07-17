@@ -7,18 +7,18 @@ import java.util.List;
 import org.bigraph.model.assistants.PropertyScratchpad;
 
 /**
- * A ChangeGroup is a composite of many {@link Change}s.
+ * A ChangeGroup is a composite of many {@link IChange}s.
  * @author alec
  *
  */
-public class ChangeGroup extends Change implements Iterable<Change> {
-	private List<Change> changes = new ArrayList<Change>();
+public class ChangeGroup extends Change implements Iterable<IChange> {
+	private List<IChange> changes = new ArrayList<IChange>();
 	
 	/**
 	 * Adds a {@link Change} to the end of this ChangeGroup.
 	 * @param c a {@link Change} to add
 	 */
-	public void add(Change c) {
+	public void add(IChange c) {
 		changes.add(c);
 	}
 	
@@ -26,19 +26,19 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	 * Adds some {@link Change}s to the end of this ChangeGroup.
 	 * @param changes some {@link Change}s to add
 	 */
-	public void add(Change... changes) {
-		for (Change c : changes)
+	public void add(IChange... changes) {
+		for (IChange c : changes)
 			this.changes.add(c);
 	}
 	
 	@Override
 	public ChangeGroup clone() {
 		ChangeGroup cg = new ChangeGroup();
-		cg.changes = new ArrayList<Change>(changes);
+		cg.changes = new ArrayList<IChange>(changes);
 		return cg;
 	}
 	
-	public Change head() {
+	public IChange head() {
 		return changes.get(0);
 	}
 	
@@ -52,7 +52,7 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	 * Adds a {@link Change} to the beginning of this ChangeGroup.
 	 * @param c a {@link Change}s to add
 	 */
-	public void prepend(Change c) {
+	public void prepend(IChange c) {
 		changes.add(0, c);
 	}
 	
@@ -60,7 +60,7 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	 * Removes any instances of a {@link Change} from this {@link ChangeGroup}.
 	 * @param c a {@link Change} to remove
 	 */
-	public void remove(Change c) {
+	public void remove(IChange c) {
 		changes.remove(c);
 	}
 	
@@ -74,13 +74,13 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	@Override
 	public ChangeGroup inverse() {
 		ChangeGroup changes = new ChangeGroup();
-		for (Change c : this)
+		for (IChange c : this)
 			changes.prepend(c.inverse());
 		return changes;
 	}
 
 	@Override
-	public Iterator<Change> iterator() {
+	public Iterator<IChange> iterator() {
 		return changes.iterator();
 	}
 	
@@ -89,11 +89,11 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 		return changes.toString();
 	}
 	
-	public Change get(int position) {
+	public IChange get(int position) {
 		return changes.get(position);
 	}
 	
-	public Change set(int position, Change c) {
+	public IChange set(int position, Change c) {
 		return changes.set(position, c);
 	}
 	
@@ -119,7 +119,7 @@ public class ChangeGroup extends Change implements Iterable<Change> {
 	
 	@Override
 	public void simulate(PropertyScratchpad context) {
-		for (Change c : changes)
+		for (IChange c : changes)
 			c.simulate(context);
 	}
 }

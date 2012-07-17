@@ -31,6 +31,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
@@ -454,11 +455,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	private static IChangeDescriptor unappliedChangeToDescriptor(
-			PropertyScratchpad scratch, Change c) {
+			PropertyScratchpad scratch, IChange c) {
 		IChangeDescriptor chd = null;
 		if (c instanceof ChangeGroup) {
 			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
-			for (Change ch : (ChangeGroup)c) {
+			for (IChange ch : (ChangeGroup)c) {
 				chd = unappliedChangeToDescriptor(scratch, ch);
 				if (chd != null)
 					cdg.add(chd);
