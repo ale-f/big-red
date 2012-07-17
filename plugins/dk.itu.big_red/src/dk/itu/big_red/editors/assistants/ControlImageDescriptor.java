@@ -5,6 +5,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -34,6 +35,7 @@ public final class ControlImageDescriptor extends ImageDescriptor {
 				outline = new ColorWrapper();
 			
 			GC gc = new GC(i);
+			gc.setAntialias(SWT.ON);
 			try {
 				gc.setBackground(
 						outline.update(ExtendedDataUtilities.getFill(c)));
