@@ -21,6 +21,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
@@ -119,7 +120,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart
 			String property = evt.getPropertyName();
 			if (Layoutable.PROPERTY_NAME.equals(property) ||
 				ExtendedDataUtilities.COMMENT.equals(property) ||
-				ExtendedDataUtilities.LAYOUT.equals(property)) {
+				LayoutUtilities.LAYOUT.equals(property)) {
 				refreshVisuals();
 			}
 		}
@@ -144,7 +145,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart
 	protected void refreshVisuals() {
 		Layoutable model = getModel();
 		AbstractFigure figure = getFigure();
-		figure.setConstraint(ExtendedDataUtilities.getLayout(model));
+		figure.setConstraint(LayoutUtilities.getLayout(model));
 		String
 			comment = ExtendedDataUtilities.getComment(model),
 			tooltip = getToolTip();

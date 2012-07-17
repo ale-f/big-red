@@ -30,6 +30,7 @@ import org.w3c.dom.NodeList;
 import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
@@ -230,7 +231,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					cd = ExtendedDataUtilities.changeLayoutDescriptor(l,
+					cd = LayoutUtilities.changeLayoutDescriptor(l,
 							RedXMLDecorator.getRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
@@ -306,10 +307,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			IChange ch = cre.getRejectedChange();
 			if (ch instanceof ChangeExtendedData) {
 				ChangeExtendedData cd = (ChangeExtendedData)ch;
-				if (ExtendedDataUtilities.LAYOUT.equals(cd.key)) {
+				if (LayoutUtilities.LAYOUT.equals(cd.key)) {
 					addNotice(Notice.WARNING,
 							"Layout data invalid; replacing.");
-					cg.add(ExtendedDataUtilities.relayout(scratch, reactum));
+					cg.add(LayoutUtilities.relayout(scratch, reactum));
 				} else throw new LoadFailedException(cre);
 			} else throw new LoadFailedException(cre);
 		}

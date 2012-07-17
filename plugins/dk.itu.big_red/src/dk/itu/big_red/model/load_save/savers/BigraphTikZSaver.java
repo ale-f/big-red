@@ -26,6 +26,7 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.editors.bigraph.parts.PointPart;
 import dk.itu.big_red.model.load_save.SaveFailedException;
@@ -146,9 +147,9 @@ public class BigraphTikZSaver extends Saver {
 		
 		List<Layoutable> ch = b.getChildren();
 		if (ch.size() > 0) {
-			Rectangle bounding = ExtendedDataUtilities.getLayout(ch.get(0)).getCopy();
+			Rectangle bounding = LayoutUtilities.getLayout(ch.get(0)).getCopy();
 			for (Layoutable i : ch)
-				bounding.union(ExtendedDataUtilities.getLayout(i));
+				bounding.union(LayoutUtilities.getLayout(i));
 			translate = bounding.getTopLeft().getNegated();
 			System.out.println("(translating everything by " + translate + ")");
 		}
@@ -194,7 +195,7 @@ public class BigraphTikZSaver extends Saver {
 	
 	private void processNode(Node n) throws SaveFailedException {
 		Control con = n.getControl();
-		Rectangle rl = ExtendedDataUtilities.getRootLayout(n).translate(translate);
+		Rectangle rl = LayoutUtilities.getRootLayout(n).translate(translate);
 		Point rltl = rl.getTopLeft();
 		
 		Point tmp;
@@ -233,7 +234,7 @@ public class BigraphTikZSaver extends Saver {
 	}
 	
 	private void processPort(Port p) throws SaveFailedException {
-		Rectangle rl = ExtendedDataUtilities.getRootLayout(p).translate(translate);
+		Rectangle rl = LayoutUtilities.getRootLayout(p).translate(translate);
 		Point tmp =
 			rl.getCenter();
 		line("node [internal port] (" + getNiceName(p) + ") at (" + tmp.x + "," + tmp.y + ") {};");
@@ -241,7 +242,7 @@ public class BigraphTikZSaver extends Saver {
 	}
 	
 	private void processLink(Link e) throws SaveFailedException {
-		Rectangle rl = ExtendedDataUtilities.getRootLayout(e).translate(translate);
+		Rectangle rl = LayoutUtilities.getRootLayout(e).translate(translate);
 		Point
 			tl = rl.getTopLeft(),
 			br = rl.getBottomRight(),
@@ -257,7 +258,7 @@ public class BigraphTikZSaver extends Saver {
 	}
 	
 	private void processInnerName(InnerName i) throws SaveFailedException {
-		Rectangle rl = ExtendedDataUtilities.getRootLayout(i).translate(translate);
+		Rectangle rl = LayoutUtilities.getRootLayout(i).translate(translate);
 		Point
 			tl = rl.getTopLeft(),
 			br = rl.getBottomRight(),
@@ -275,8 +276,8 @@ public class BigraphTikZSaver extends Saver {
 		Link l = p.getLink();
 		if (l != null) {
 			String in, out;
-			Point source = ExtendedDataUtilities.getRootLayout(p).getCenter(),
-			      target = ExtendedDataUtilities.getRootLayout(l).getCenter();
+			Point source = LayoutUtilities.getRootLayout(p).getCenter(),
+			      target = LayoutUtilities.getRootLayout(l).getCenter();
 			System.out.println(source);
 			System.out.println(target);
 			if (source.y < target.y)
@@ -298,7 +299,7 @@ public class BigraphTikZSaver extends Saver {
 	}
 	
 	private void processSite(Site r) throws SaveFailedException {
-		Rectangle rl = ExtendedDataUtilities.getRootLayout(r).translate(translate);
+		Rectangle rl = LayoutUtilities.getRootLayout(r).translate(translate);
 		Point
 			ptl = rl.getTopLeft(),
 			ptr = rl.getBottomRight();
@@ -308,7 +309,7 @@ public class BigraphTikZSaver extends Saver {
 	}
 	
 	private void processRoot(Root r) throws SaveFailedException {
-		Rectangle rl = ExtendedDataUtilities.getRootLayout(r).translate(translate);
+		Rectangle rl = LayoutUtilities.getRootLayout(r).translate(translate);
 		Point
 			ptl = rl.getTopLeft(),
 			ptr = rl.getBottomRight();

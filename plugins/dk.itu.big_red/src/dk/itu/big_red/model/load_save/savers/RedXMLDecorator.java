@@ -32,6 +32,7 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
@@ -87,7 +88,7 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 		Element aE = doc.createElementNS(BIG_RED, "big-red:appearance");
 		
 		if (object instanceof Layoutable)
-			rectangleToElement(aE, ExtendedDataUtilities.getLayout(((Layoutable)object)));
+			rectangleToElement(aE, LayoutUtilities.getLayout(((Layoutable)object)));
 		
 		Colour
 			fill = ColourUtilities.getFill(object),
@@ -157,7 +158,7 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 				Rectangle r = getRectangle(eA);
 				if (r != null)
 					cg.add(
-						ExtendedDataUtilities.changeLayout((Layoutable)object, r));
+						LayoutUtilities.changeLayout((Layoutable)object, r));
 			}
 			
 			String comment = XMLLoader.getAttributeNS(eA, BIG_RED, "comment");

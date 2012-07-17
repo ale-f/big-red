@@ -12,7 +12,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.gef.ui.actions.Clipboard;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 
 public class LayoutablePasteCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -77,8 +77,8 @@ public class LayoutablePasteCommand extends ChangeCommand {
 				String name = newParent.getBigraph().
 						getNamespace(Bigraph.getNSI(j)).getNextName(scratch);
 				cg.add(scratch.executeChange(newParent.changeAddChild(j, name)));
-				cg.add(ExtendedDataUtilities.changeLayout(j,
-										ExtendedDataUtilities.getLayout(j).getCopy().translate(20, 20)));
+				cg.add(LayoutUtilities.changeLayout(j,
+										LayoutUtilities.getLayout(j).getCopy().translate(20, 20)));
 			}
 		}
 		return this;

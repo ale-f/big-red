@@ -46,7 +46,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 
 
@@ -457,7 +457,7 @@ public class ReactionWizard extends Wizard {
 			textAssignment.setText(matchNames.get(selection));
 			
 			ModelObject rr = matches.get( selection).getRoot();
-			Rectangle r =  ExtendedDataUtilities.getLayout(((Layoutable)matches.get( selection ).getMappingData().get(rr)));//     .match.get( rr ).reference.getEditPart().getFigure().getBounds() );
+			Rectangle r =  LayoutUtilities.getLayout(((Layoutable)matches.get( selection ).getMappingData().get(rr)));//     .match.get( rr ).reference.getEditPart().getFigure().getBounds() );
 //			r.x -= BaseNode.MARGIN;
 //			r.y -= BaseNode.MARGIN;
 //			r.width  += 2 * BaseNode.MARGIN;
@@ -650,15 +650,15 @@ public class ReactionWizard extends Wizard {
 			try {
 				target.tryApplyChange(cgLink);
 				cgA.clear();
-				cgA.add(ExtendedDataUtilities.relayout(target));
+				cgA.add(LayoutUtilities.relayout(target));
 				target.tryApplyChange(cgA);
 				
-				Rectangle rectTest=ExtendedDataUtilities.getLayout(target);
+				Rectangle rectTest=LayoutUtilities.getLayout(target);
 				System.out.println(rectTest);
 				Point mainBigraphBottomRight= rectTest.getBottomRight();
 				
 				for (Root root :target.getRoots()){
-					Rectangle rect=ExtendedDataUtilities.getLayout(root);
+					Rectangle rect=LayoutUtilities.getLayout(root);
 					//Point topLeft= rect.getTopLeft();
 					Point bottomRight = rect.getBottomRight();
 					if (mainBigraphBottomRight.x < bottomRight.x){
@@ -753,7 +753,7 @@ public class ReactionWizard extends Wizard {
 				
 				cg.add(((Container) itemAgent).changeAddChild(
 						newNodeAgent, la.getName()+""));
-				ExtendedDataUtilities.setLayout(newNodeAgent, ExtendedDataUtilities.getLayout(l));
+				LayoutUtilities.setLayout(newNodeAgent, LayoutUtilities.getLayout(l));
 				
 	
 			} else {
@@ -761,7 +761,7 @@ public class ReactionWizard extends Wizard {
 				cg.add(((Container) itemAgent).changeAddChild(
 						newNodeAgent,
 						l.getName() + ((int)(Math.random()*100))+ "'"));
-				ExtendedDataUtilities.setLayout(newNodeAgent, ExtendedDataUtilities.getLayout(l));
+				LayoutUtilities.setLayout(newNodeAgent, LayoutUtilities.getLayout(l));
 				
 	
 			}

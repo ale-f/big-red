@@ -41,7 +41,7 @@ public final class BigraphBoundaryState {
 		for (Layoutable i : b.getChildren(context)) {
 			if (i instanceof Edge)
 				continue;
-			Rectangle r = ExtendedDataUtilities.getLayout(context, i);
+			Rectangle r = LayoutUtilities.getLayout(context, i);
 			int top = r.y(), bottom = r.y() + r.height();
 			if (i instanceof OuterName) {
 				if (bottom > upperRootBoundary)

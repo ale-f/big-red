@@ -5,7 +5,8 @@ import java.beans.PropertyChangeEvent;
 import org.bigraph.model.Port;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.figures.PortFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
@@ -58,7 +59,7 @@ public class PortPart extends PointPart {
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
 		if (source == getModel().getParent()) {
-			if (prop.equals(ExtendedDataUtilities.LAYOUT))
+			if (prop.equals(LayoutUtilities.LAYOUT))
 				refreshVisuals();
 		}
 	}

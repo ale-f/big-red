@@ -2,7 +2,7 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import org.bigraph.model.Bigraph;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 
 public class BigraphRelayoutCommand extends ChangeCommand {
 	private Bigraph bigraph = null;
@@ -16,7 +16,7 @@ public class BigraphRelayoutCommand extends ChangeCommand {
 	public BigraphRelayoutCommand prepare() {
 		if (bigraph != null) {
 			setTarget(bigraph);
-			setChange(ExtendedDataUtilities.relayout(bigraph));
+			setChange(LayoutUtilities.relayout(bigraph));
 		}
 		return this;
 	}

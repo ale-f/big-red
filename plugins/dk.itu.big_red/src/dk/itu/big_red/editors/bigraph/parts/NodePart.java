@@ -16,6 +16,7 @@ import org.eclipse.gef.EditPolicy;
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
@@ -48,7 +49,7 @@ public class NodePart extends ContainerPart {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String name = evt.getPropertyName();
-		if (ExtendedDataUtilities.LAYOUT.equals(name))
+		if (LayoutUtilities.LAYOUT.equals(name))
 			fittedPolygon = null;
 		super.propertyChange(evt);
 		if (ColourUtilities.FILL.equals(name) ||
@@ -90,7 +91,7 @@ public class NodePart extends ContainerPart {
 		Object shape = ExtendedDataUtilities.getShape(control);
 		if (shape instanceof PointList && fittedPolygon == null)
 			fittedPolygon = fitPolygon((PointList)shape,
-					ExtendedDataUtilities.getLayout(model));
+					LayoutUtilities.getLayout(model));
 		figure.setShape(
 			shape instanceof PointList ? fittedPolygon : Ellipse.SINGLETON);
 		

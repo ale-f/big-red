@@ -29,6 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.resources.Project;
@@ -125,7 +126,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		processContainer(e, bigraph);
 		
-		IChange relayout = ExtendedDataUtilities.relayout(scratch, bigraph);
+		IChange relayout = LayoutUtilities.relayout(scratch, bigraph);
 		
 		if (appearanceAllowed == Tristate.FALSE) {
 			addChange(relayout);
@@ -136,7 +137,7 @@ public class BigraphXMLLoader extends XMLLoader {
 				IChange ch = cre.getRejectedChange();
 				if (ch instanceof ChangeExtendedData) {
 					ChangeExtendedData cd = (ChangeExtendedData)ch;
-					if (ExtendedDataUtilities.LAYOUT.equals(cd.key)) {
+					if (LayoutUtilities.LAYOUT.equals(cd.key)) {
 						addNotice(Notice.WARNING,
 								"Layout data invalid: replacing.");
 						addChange(relayout);

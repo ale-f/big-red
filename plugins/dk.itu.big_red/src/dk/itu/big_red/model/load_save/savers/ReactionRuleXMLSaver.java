@@ -25,6 +25,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 
@@ -128,7 +129,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			} else if (ColourUtilities.OUTLINE.equals(key)) {
 				f = applyAttributes(newElement(BIG_RED, "big-red:outline"),
 						"colour", ((Colour)newValue).toHexString());
-			} else if (ExtendedDataUtilities.LAYOUT.equals(key)) {
+			} else if (LayoutUtilities.LAYOUT.equals(key)) {
 				Rectangle r = (Rectangle)newValue;
 				f = applyAttributes(newElement(BIG_RED, "big-red:layout"),
 						"x", r.x(), "y", r.y(),

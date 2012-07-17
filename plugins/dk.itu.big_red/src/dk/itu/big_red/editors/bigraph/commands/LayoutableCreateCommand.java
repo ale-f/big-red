@@ -6,7 +6,7 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
 
 public class LayoutableCreateCommand extends ChangeCommand {
@@ -31,13 +31,13 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		for (Layoutable i : container.getChildren()) {
 			if (i instanceof Edge)
 				continue;
-			else if (ExtendedDataUtilities.getLayout(i).intersects(layout))
+			else if (LayoutUtilities.getLayout(i).intersects(layout))
 				return this;
 		}
 		
 		String name = container.getBigraph().getFirstUnusedName(child);
 		cg.add(container.changeAddChild(child, name));
-		cg.add(ExtendedDataUtilities.changeLayout(child, layout));
+		cg.add(LayoutUtilities.changeLayout(child, layout));
 		return this;
 	}
 	

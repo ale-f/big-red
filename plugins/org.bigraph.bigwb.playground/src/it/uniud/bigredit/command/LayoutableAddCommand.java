@@ -6,7 +6,7 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 
 
@@ -29,22 +29,22 @@ public class LayoutableAddCommand extends ChangeCommand {
 			
 			if (!(child instanceof Edge)) {
 				for (Layoutable i : parent.getChildren()) {
-					if (ExtendedDataUtilities.getLayout(i).intersects(constraint))
+					if (LayoutUtilities.getLayout(i).intersects(constraint))
 						return this;
 				}
-				if (!ExtendedDataUtilities.getLayout(parent).getCopy().setLocation(0, 0).contains(constraint))
+				if (!LayoutUtilities.getLayout(parent).getCopy().setLocation(0, 0).contains(constraint))
 					return this;
 			}
 			
 			Rectangle nr = constraint;
 			
 			if (child instanceof Edge) {
-				nr.translate(ExtendedDataUtilities.getRootLayout(parent).getTopLeft());
+				nr.translate(LayoutUtilities.getRootLayout(parent).getTopLeft());
 				parent = parent.getBigraph();
 			}
 			
 			cg.add(parent.changeAddChild(child, child.getName()));
-			cg.add(ExtendedDataUtilities.changeLayout(child, nr));
+			cg.add(LayoutUtilities.changeLayout(child, nr));
 		}
 		return this;
 	}

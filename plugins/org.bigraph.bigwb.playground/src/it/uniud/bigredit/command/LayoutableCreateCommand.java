@@ -13,7 +13,7 @@ import org.bigraph.model.Root;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 
 
@@ -59,7 +59,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			for (Layoutable i : ((Container) container).getChildren()) {
 				if (i instanceof Edge)
 					continue;
-				else if (ExtendedDataUtilities.getLayout(i).intersects(layout))
+				else if (LayoutUtilities.getLayout(i).intersects(layout))
 					return this;
 			}
 		}
@@ -71,11 +71,11 @@ public class LayoutableCreateCommand extends ChangeCommand {
 				System.out.println("instance of root");
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
 				cg.add(((Bigraph) container).changeAddChild(((Root)node), name));
-				cg.add(ExtendedDataUtilities.changeLayout(((Layoutable)node), layout));
+				cg.add(LayoutUtilities.changeLayout(((Layoutable)node), layout));
 			}else{
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
 				cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name));
-				cg.add(ExtendedDataUtilities.changeLayout(((Layoutable)node), layout));
+				cg.add(LayoutUtilities.changeLayout(((Layoutable)node), layout));
 			}
 			/** TODO add name */
 			//String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);

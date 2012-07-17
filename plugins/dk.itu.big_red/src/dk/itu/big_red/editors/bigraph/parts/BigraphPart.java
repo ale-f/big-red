@@ -14,7 +14,7 @@ import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.assistants.BigraphBoundaryState;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
 
@@ -73,7 +73,7 @@ public class BigraphPart extends ContainerPart {
 		} else if (evt.getSource() instanceof Layoutable) {
 			Layoutable l = (Layoutable)evt.getSource();
 			if (l.getParent() == getModel() &&
-					prop.equals(ExtendedDataUtilities.LAYOUT))
+					prop.equals(LayoutUtilities.LAYOUT))
 					refreshBoundaries();
 		}
 	}

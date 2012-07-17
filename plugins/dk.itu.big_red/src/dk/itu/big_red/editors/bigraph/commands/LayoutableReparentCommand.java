@@ -8,7 +8,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 
 public class LayoutableReparentCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();
@@ -60,8 +60,8 @@ public class LayoutableReparentCommand extends ChangeCommand {
 		
 		cg.add(l.changeRemove());
 		if (!root) {
-			post.add(0, ExtendedDataUtilities.changeLayout(
-			l, ExtendedDataUtilities.getLayout(l)));
+			post.add(0, LayoutUtilities.changeLayout(
+			l, LayoutUtilities.getLayout(l)));
 			post.add(0, l.getParent().changeAddChild(l, l.getName()));
 		}
 	}
@@ -76,7 +76,7 @@ public class LayoutableReparentCommand extends ChangeCommand {
 		remove(child, true);
 		
 		cg.add(parent.changeAddChild(child, child.getName()));
-		cg.add(ExtendedDataUtilities.changeLayout(child, constraint));
+		cg.add(LayoutUtilities.changeLayout(child, constraint));
 		cg.add(post);
 		
 		return this;

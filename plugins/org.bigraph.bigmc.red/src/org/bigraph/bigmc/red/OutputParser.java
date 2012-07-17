@@ -17,6 +17,7 @@ import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.INamespace;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.editors.assistants.LayoutUtilities;
 
 public class OutputParser {
 	private String string;
@@ -157,7 +158,7 @@ public class OutputParser {
 			
 			workingBigraph.tryApplyChange(cg);
 			workingBigraph.tryApplyChange(
-					ExtendedDataUtilities.relayout(workingBigraph));
+					LayoutUtilities.relayout(workingBigraph));
 			
 			return workingBigraph;
 		} catch (ChangeRejectedException cre) {
