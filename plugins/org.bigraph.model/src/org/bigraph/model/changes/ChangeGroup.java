@@ -11,7 +11,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
  * @author alec
  *
  */
-public class ChangeGroup extends Change implements Iterable<IChange> {
+public class ChangeGroup implements IChange, Iterable<IChange> {
 	private List<IChange> changes = new ArrayList<IChange>();
 	
 	/**
@@ -121,5 +121,26 @@ public class ChangeGroup extends Change implements Iterable<IChange> {
 	public void simulate(PropertyScratchpad context) {
 		for (IChange c : changes)
 			c.simulate(context);
+	}
+
+	@Override
+	public boolean canInvert() {
+		for (IChange c : changes)
+			if (!c.canInvert())
+				return false;
+		return true;
+	}
+
+	@Override
+	public void beforeApply() {
+		/* do nothing */
+	}
+
+	@Override
+	public boolean isReady() {
+		for (IChange c : changes)
+			if (!c.isReady())
+				return false;
+		return true;
 	}
 }

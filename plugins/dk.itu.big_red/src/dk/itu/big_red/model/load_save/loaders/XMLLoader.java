@@ -17,7 +17,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.IChange;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -215,7 +215,7 @@ public abstract class XMLLoader extends ChangeLoader {
 	}
 	
 	public interface Undecorator {
-		Change undecorate(ModelObject object, Element el);
+		IChange undecorate(ModelObject object, Element el);
 	}
 	
 	private List<Undecorator> undecorators = null;

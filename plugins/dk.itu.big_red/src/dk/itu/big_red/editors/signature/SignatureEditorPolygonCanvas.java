@@ -8,8 +8,8 @@ import java.util.List;
 import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.IChange;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Point;
@@ -231,7 +231,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		return roundToGrid(((controlHeight - r.height) / 2) - r.y);
 	}
 	
-	private void doChange(Change c) {
+	private void doChange(IChange c) {
 		editor.doChange(c);
 	}	
 	private void opMovePoint(int moveIndex, int mx, int my) {

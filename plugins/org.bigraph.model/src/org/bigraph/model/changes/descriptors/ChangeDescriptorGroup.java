@@ -8,7 +8,6 @@ import java.util.List;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 
 public class ChangeDescriptorGroup
@@ -88,11 +87,8 @@ public class ChangeDescriptorGroup
 			throws ChangeCreationException {
 		ChangeGroup cg = new ChangeGroup();
 		context = new PropertyScratchpad(context);
-		for (IChangeDescriptor one : cds) {
-			Change ch = one.createChange(context, r);
-			cg.add(ch);
-			ch.simulate(context);
-		}
+		for (IChangeDescriptor one : cds)
+			cg.add(context.executeChange(one.createChange(context, r)));
 		return cg;
 	}
 	

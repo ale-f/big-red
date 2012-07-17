@@ -28,7 +28,6 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -379,8 +378,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
-	private Map<Change, IChangeDescriptor> reactumChangeToDescriptor =
-			new HashMap<Change, IChangeDescriptor>();
+	private Map<IChange, IChangeDescriptor> reactumChangeToDescriptor =
+			new HashMap<IChange, IChangeDescriptor>();
 	
 	private ChangeDescriptorGroup linearise(
 			IChangeDescriptor cd, ChangeDescriptorGroup cdg) {
@@ -392,7 +391,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	private void _testConvertChange(int detail, ChangeCommand c) {
-		Change commandChange = c.getChange();
+		IChange commandChange = c.getChange();
 		IChangeExecutor target = c.getTarget();
 		
 		ChangeDescriptorGroup reactumChanges = getModel().getChanges();

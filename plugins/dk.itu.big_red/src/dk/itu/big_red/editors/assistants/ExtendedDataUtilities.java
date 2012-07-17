@@ -21,9 +21,9 @@ import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.PositiveIntegerNamePolicy;
@@ -93,7 +93,7 @@ public final class ExtendedDataUtilities {
 		m.setExtendedData(COMMENT, s);
 	}
 	
-	public static Change changeComment(ModelObject m, String s) {
+	public static IChange changeComment(ModelObject m, String s) {
 		return m.changeExtendedData(COMMENT, s);
 	}
 	
@@ -135,7 +135,7 @@ public final class ExtendedDataUtilities {
 		set(context, m, FILL, c);
 	}
 	
-	public static Change changeFill(ModelObject m, Colour c) {
+	public static IChange changeFill(ModelObject m, Colour c) {
 		return m.changeExtendedData(FILL, c);
 	}
 	
@@ -179,7 +179,7 @@ public final class ExtendedDataUtilities {
 		set(context, m, OUTLINE, c);
 	}
 	
-	public static Change changeOutline(ModelObject m, Colour c) {
+	public static IChange changeOutline(ModelObject m, Colour c) {
 		return m.changeExtendedData(OUTLINE, c);
 	}
 	
@@ -206,7 +206,7 @@ public final class ExtendedDataUtilities {
 		c.setExtendedData(PARAMETER_POLICY, n);
 	}
 	
-	public static Change changeParameterPolicy(Control c, INamePolicy n) {
+	public static IChange changeParameterPolicy(Control c, INamePolicy n) {
 		return c.changeExtendedData(PARAMETER_POLICY, n);
 	}
 	
@@ -271,7 +271,7 @@ public final class ExtendedDataUtilities {
 		set(context, n, PARAMETER, s);
 	}
 	
-	public static Change changeParameter(Node n, String s) {
+	public static IChange changeParameter(Node n, String s) {
 		return n.changeExtendedData(PARAMETER, s, parameterValidator);
 	}
 	
@@ -307,7 +307,7 @@ public final class ExtendedDataUtilities {
 		set(context, p, SEGMENT, i);
 	}
 	
-	public static Change changeSegment(PortSpec p, int i) {
+	public static IChange changeSegment(PortSpec p, int i) {
 		return p.changeExtendedData(SEGMENT, i);
 	}
 	
@@ -364,7 +364,7 @@ public final class ExtendedDataUtilities {
 		set(context, p, DISTANCE, d);
 	}
 	
-	public static Change changeDistance(PortSpec p, double d) {
+	public static IChange changeDistance(PortSpec p, double d) {
 		return p.changeExtendedData(DISTANCE, d);
 	}
 	
@@ -399,7 +399,7 @@ public final class ExtendedDataUtilities {
 			set(context, c, SHAPE, s);
 	}
 	
-	public static Change changeShape(Control c, Object s) {
+	public static IChange changeShape(Control c, Object s) {
 		return c.changeExtendedData(SHAPE, s);
 	}
 	
@@ -445,7 +445,7 @@ public final class ExtendedDataUtilities {
 		set(context, c, LABEL, s);
 	}
 	
-	public static Change changeLabel(Control c, String s) {
+	public static IChange changeLabel(Control c, String s) {
 		return c.changeExtendedData(LABEL, s, labelValidator);
 	}
 	
@@ -584,7 +584,7 @@ public final class ExtendedDataUtilities {
 		}
 	};
 	
-	public static Change changeLayout(Layoutable l, Rectangle r) {
+	public static IChange changeLayout(Layoutable l, Rectangle r) {
 		return l.changeExtendedData(LAYOUT, r, null, layoutValidator);
 	}
 	
@@ -616,11 +616,11 @@ public final class ExtendedDataUtilities {
 	 */
 	protected static final int PADDING = 25;
 	
-	public static Change relayout(Bigraph b) {
+	public static IChange relayout(Bigraph b) {
 		return relayout(new PropertyScratchpad(), b);
 	}
 	
-	public static Change relayout(PropertyScratchpad context, Bigraph b) {
+	public static IChange relayout(PropertyScratchpad context, Bigraph b) {
 		ChangeGroup cg = new ChangeGroup();
 		relayout(context, b, cg);
 		return cg;
@@ -745,7 +745,7 @@ public final class ExtendedDataUtilities {
 		set(context, s, ALIAS, a);
 	}
 	
-	public static Change changeAlias(Site s, String a) {
+	public static IChange changeAlias(Site s, String a) {
 		return s.changeExtendedData(ALIAS, a, aliasValidator);
 	}
 	

@@ -18,8 +18,8 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.IChange;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -139,7 +139,7 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 	}
 	
 	@Override
-	public Change undecorate(ModelObject object, Element el) {
+	public IChange undecorate(ModelObject object, Element el) {
 		ChangeGroup cg = new ChangeGroup();
 		
 		Element eA = getNamedChildElement(el, BIG_RED, "appearance");

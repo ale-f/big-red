@@ -1,36 +1,37 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
- * {@link ChangeCommand}s apply a {@link Change} to an {@link IChangeExecutor}.
+ * {@link IChangeCommand}s apply a {@link IChange} to an {@link
+ * IChangeExecutor}.
  * @author alec
  *
  */
 public abstract class ChangeCommand extends Command {
-	private Change change;
+	private IChange change;
 	private IChangeExecutor target;
 	
 	/**
-	 * Gets the {@link Change} that will be applied by this command.
-	 * @return a {@link Change}
+	 * Gets the {@link IChange} that will be applied by this command.
+	 * @return a {@link IChange}
 	 */
-	public Change getChange() {
+	public IChange getChange() {
 		return change;
 	}
 
 	/**
-	 * Sets the {@link Change} that will be applied by this command.
-	 * @param change a {@link Change}
+	 * Sets the {@link IChange} that will be applied by this command.
+	 * @param change a {@link IChange}
 	 * @return <code>this</code>, for convenience
 	 */
-	public ChangeCommand setChange(Change change) {
+	public ChangeCommand setChange(IChange change) {
 		this.change = change;
 		return this;
 	}
@@ -61,10 +62,10 @@ public abstract class ChangeCommand extends Command {
 	public abstract ChangeCommand prepare();
 	
 	/**
-	 * If this command's {@link Change change} and {@link IChangeExecutor target}
-	 * have been set, and the {@link Change} is suitably configured and ready
-	 * to go, returns <code>true</code>.
-	 * @return <code>true</code> if this {@link ChangeCommand} is ready to be
+	 * If this command's {@link IChange change} and {@link IChangeExecutor
+	 * target} have been set, and the {@link IChange} is suitably configured
+	 * and ready to go, returns <code>true</code>.
+	 * @return <code>true</code> if this {@link IChangeCommand} is ready to be
 	 * executed, or <code>false</code> otherwise
 	 */
 	@Override
@@ -87,7 +88,8 @@ public abstract class ChangeCommand extends Command {
 	}
 	
 	/**
-	 * Applies this command's {@link Change} to its {@link IChangeExecutor target}.
+	 * Applies this command's {@link IChange} to its {@link IChangeExecutor
+	 * target}.
 	 */
 	@Override
 	public final void execute() {
@@ -98,11 +100,11 @@ public abstract class ChangeCommand extends Command {
 		}
 	}
 	
-	private Change inverse = null;
+	private IChange inverse = null;
 	
 	/**
-	 * Reverses the effects of this command's {@link Change} (by applying its
-	 * {@link Change#inverse() inverse}).
+	 * Reverses the effects of this command's {@link IChange} (by applying its
+	 * {@link IChange#inverse() inverse}).
 	 */
 	@Override
 	public final void undo() {
@@ -116,7 +118,7 @@ public abstract class ChangeCommand extends Command {
 	}
 	
 	/**
-	 * Re-applies this command's {@link Change} to its {@link IChangeExecutor
+	 * Re-applies this command's {@link IChange} to its {@link IChangeExecutor
 	 * target}.
 	 */
 	@Override

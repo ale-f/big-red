@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.IChange;
 
 public class PropertyScratchpad {
 	private PropertyScratchpad parent;
@@ -92,10 +92,10 @@ public class PropertyScratchpad {
 		return this;
 	}
 	
-	public Change executeChange(Change c) {
-		if (c != null)
-			c.simulate(this);
-		return c;
+	public IChange executeChange(IChange change) {
+		if (change != null)
+			change.simulate(this);
+		return change;
 	}
 	
 	public <T> List<T> getModifiableList(

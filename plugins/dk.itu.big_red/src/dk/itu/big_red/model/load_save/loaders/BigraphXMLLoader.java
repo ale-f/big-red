@@ -19,7 +19,6 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.policies.INamePolicy;
@@ -126,7 +125,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		processContainer(e, bigraph);
 		
-		Change relayout = ExtendedDataUtilities.relayout(scratch, bigraph);
+		IChange relayout = ExtendedDataUtilities.relayout(scratch, bigraph);
 		
 		if (appearanceAllowed == Tristate.FALSE) {
 			addChange(relayout);

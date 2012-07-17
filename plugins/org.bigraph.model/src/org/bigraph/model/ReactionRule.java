@@ -10,8 +10,8 @@ import org.bigraph.model.Layoutable.ChangeNameDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -178,7 +178,7 @@ public class ReactionRule extends ModelObject {
 		Bigraph reactum = getReactum().clone(m);
 		rr.setReactum(getReactum().clone(m));
 		
-		Change c = null;
+		IChange c = null;
 		try {
 			c = getChanges().createChange(null, reactum);
 			reactum.tryApplyChange(c);

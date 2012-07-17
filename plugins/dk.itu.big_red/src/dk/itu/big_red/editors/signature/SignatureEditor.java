@@ -8,9 +8,9 @@ import java.util.Iterator;
 import org.bigraph.model.Control;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
@@ -195,7 +195,7 @@ implements PropertyChangeListener {
 		-40, 0
 	});
 	
-	private static final Change changeControlName(Control c, String s) {
+	private static final IChange changeControlName(Control c, String s) {
 		if (c != null && s != null) {
 			ChangeGroup cg = new ChangeGroup();
 			cg.add(c.changeName(s));
@@ -638,12 +638,12 @@ implements PropertyChangeListener {
 	}
 
 	@Override
-	protected void tryApplyChange(Change c) throws ChangeRejectedException {
+	protected void tryApplyChange(IChange c) throws ChangeRejectedException {
 		getModel().tryApplyChange(c);
 	}
 	
 	@Override
-	public boolean doChange(Change c) {
+	public boolean doChange(IChange c) {
 		return super.doChange(c);
 	}
 }

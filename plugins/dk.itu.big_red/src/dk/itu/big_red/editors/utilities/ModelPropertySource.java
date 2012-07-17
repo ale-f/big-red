@@ -7,8 +7,8 @@ import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
@@ -29,7 +29,7 @@ public class ModelPropertySource implements IPropertySource {
 	}
 	
 	private abstract class ChangeValidator implements ICellEditorValidator {
-		public abstract Change getChange(Object value);
+		public abstract IChange getChange(Object value);
 		
 		@Override
 		public String isValid(Object value) {
@@ -44,15 +44,16 @@ public class ModelPropertySource implements IPropertySource {
 	
 	private class NameValidator extends ChangeValidator {
 		@Override
-		public Change getChange(Object value) {
+		public IChange getChange(Object value) {
 			return object.changeName((String)value);
 		}
 	}
 	
 	private class AliasValidator extends ChangeValidator {
 		@Override
-		public Change getChange(Object value) {
-			return ExtendedDataUtilities.changeAlias(((Site)object), (String)value);
+		public IChange getChange(Object value) {
+			return ExtendedDataUtilities.changeAlias(
+					((Site)object), (String)value);
 		}
 	}
 	
