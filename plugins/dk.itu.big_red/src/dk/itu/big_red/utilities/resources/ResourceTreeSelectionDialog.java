@@ -50,7 +50,7 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 		FILE
 	};
 	
-	public static int CLEAR = 0x19890522;
+	public static int CLEAR = 0x98765432;
 	
 	public ResourceTreeSelectionDialog(Shell parent, IContainer input, Mode mode, String... contentTypes) {
 		super(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
@@ -58,10 +58,7 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 		setInput(input);
 		if (mode == Mode.FILE) {
 			setValidator(fileValidator);
-			FileTypeViewerFilter fv = new FileTypeViewerFilter();
-			addFilter(fv);
-			for (String i : contentTypes)
-				fv.addContentType(i);
+			addFilter(new FileTypeViewerFilter(contentTypes));
 		} else if (mode == Mode.CONTAINER) {
 			setValidator(containerValidator);
 			addFilter(new ContainerViewerFilter());
