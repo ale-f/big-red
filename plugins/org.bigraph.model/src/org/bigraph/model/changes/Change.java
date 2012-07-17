@@ -7,54 +7,25 @@ import org.bigraph.model.assistants.PropertyScratchpad;
  * @author alec
  *
  */
-public abstract class Change {
-	/**
-	 * Gets a new {@link Change} which, when applied, will reverse this one.
-	 * <p><strong>Depending on the {@link Change}, it is possible that this
-	 * function will only have a meaningful result <i>after</i> this {@link
-	 * Change} has been applied. See {@link #canInvert()}.</strong>
-	 * @return this Change's inverse
-	 * @see #canInvert()
-	 */
+public abstract class Change implements IChange {
+	@Override
 	public abstract Change inverse();
 	
-	/**
-	 * Indicates whether or not this {@link Change} needs more information to
-	 * be reversible. For example, inverting the change "resize X to 40x40"
-	 * requires knowledge of the size of X before the change was made.
-	 * @return <code>true</code> if {@link #inverse()} will work, or
-	 * <code>false</code> if more information is needed first
-	 * @see #beforeApply()
-	 */
+	@Override
 	public boolean canInvert() {
 		return true /* by default; subclasses can override */;
 	}
 	
-	/**
-	 * Called by {@link IChangeExecutor}s just before they apply this {@link
-	 * Change}.
-	 * <p>(Subclasses should override this method if they need to save some
-	 * properties of an object before a change in order to be able to {@link
-	 * #inverse() reverse} it.)
-	 */
+	@Override
 	public void beforeApply() {
 	}
 	
-	/**
-	 * Indicates whether or not this {@link Change} has all the information it
-	 * needs to be applied.
-	 * @return <code>true</code> if this {@link Change} is ready to apply
-	 */
+	@Override
 	public boolean isReady() {
 		return true /* by default; subclasses can override */;
 	}
 	
-	/**
-	 * Simulates the execution of this {@link Change} in the given {@link
-	 * PropertyScratchpad}. (No validation is performed by this method.)
-	 * @param context a {@link PropertyScratchpad} to populate with
-	 * modifications
-	 */
+	@Override
 	public void simulate(PropertyScratchpad context) {
 		throw new UnsupportedOperationException("" + this +
 				" doesn't support the simulate(PropertyScratchpad) method");
