@@ -34,10 +34,16 @@ public abstract class DescriptorConflicts {
 			V vInstance = vK.cast(
 					vK.isInstance(a) ? a : (vK.isInstance(b) ? b : null));
 			if (tInstance != null && vInstance != null) {
-				System.out.println("Running check for conflict " + this + 
+				System.out.println("Running check for " + this + 
 						" with (" + a + ", " + b + ")");
 				return conflicts(tInstance, vInstance);
 			} else return false;
+		}
+		
+		@Override
+		public String toString() {
+			return "Conflict(" + tK.getSimpleName() +
+					", " + vK.getSimpleName() + ")";
 		}
 	}
 	
