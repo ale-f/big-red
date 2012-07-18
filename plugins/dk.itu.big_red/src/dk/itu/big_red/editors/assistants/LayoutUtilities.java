@@ -122,7 +122,7 @@ public final class LayoutUtilities {
 
 	public static Rectangle getLayout(
 			PropertyScratchpad context, Layoutable l) {
-		Rectangle r = require(context, l, LAYOUT, Rectangle.class);
+		Rectangle r = getLayoutRaw(context, l);
 		if (r == null) {
 			if (l instanceof Port) {
 				Port p = (Port)l;
@@ -162,6 +162,15 @@ public final class LayoutUtilities {
 		return r;
 	}
 
+	public static Rectangle getLayoutRaw(Layoutable l) {
+		return getLayoutRaw(null, l);
+	}
+	
+	public static Rectangle getLayoutRaw(
+			PropertyScratchpad context, Layoutable l) {
+		return require(context, l, LAYOUT, Rectangle.class);
+	}
+	
 	public static void setLayout(Layoutable l, Rectangle r) {
 		setLayout(null, l, r);
 	}
