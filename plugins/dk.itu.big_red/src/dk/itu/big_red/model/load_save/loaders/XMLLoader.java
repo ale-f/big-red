@@ -161,7 +161,8 @@ public abstract class XMLLoader extends ChangeLoader {
 	 * @see DOM#getAttribute
 	 */
 	public static Colour getColorAttribute(Element d, String nsURI, String n) {
-		return new Colour(getAttributeNS(d, nsURI, n));
+		String attr = getAttributeNS(d, nsURI, n);
+		return (attr != null ? new Colour(attr) : null);
 	}
 
 	/**
