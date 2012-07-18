@@ -19,14 +19,8 @@ import org.bigraph.model.Point.ChangeConnect;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnect;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
-import org.bigraph.model.Edge;
-import org.bigraph.model.InnerName;
-import org.bigraph.model.Node;
-import org.bigraph.model.OuterName;
 import org.bigraph.model.ReactionRule;
-import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
-import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -519,24 +513,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 					ch.getCreator().getLink(context).getIdentifier(context));
 		} else if (c instanceof ChangeAddChild) {
 			ChangeAddChild ch = (ChangeAddChild)c;
-			Layoutable.Identifier id = null;
-			if (ch.child instanceof Root) {
-				id = new Root.Identifier(ch.name);
-			} else if (ch.child instanceof Site) {
-				id = new Site.Identifier(ch.name);
-			} else if (ch.child instanceof InnerName) {
-				id = new InnerName.Identifier(ch.name);
-			} else if (ch.child instanceof Edge) {
-				id = new Edge.Identifier(ch.name);
-			} else if (ch.child instanceof OuterName) {
-				id = new OuterName.Identifier(ch.name);
-			} else if (ch.child instanceof Node) {
-				id = new Node.Identifier(
-						ch.name,
-						((Node)ch.child).getControl().getIdentifier());
-			}
 			chd = new ChangeAddChildDescriptor(
-					ch.getCreator().getIdentifier(context), id);
+					ch.getCreator().getIdentifier(context),
+					/* The new child's name should be null at this point */
+					ch.child.getIdentifier(context).getRenamed(ch.name));
 		}
 		if (context != null)
 			c.simulate(context);
