@@ -262,6 +262,12 @@ public abstract class ModelObject {
 	}
 	
 	public static abstract class Identifier {
+		/**
+		 * Classes implementing <strong>Resolver</strong> can resolve {@link
+		 * Object}-{@link String} pairs into {@link Object}s.
+		 * @author alec
+		 *
+		 */
 		public interface Resolver {
 			Object lookup(
 					PropertyScratchpad context, Object type, String name);
@@ -273,6 +279,10 @@ public abstract class ModelObject {
 			this.name = name;
 		}
 		
+		/**
+		 * Returns this {@link Identifier}'s name.
+		 * @return a name; can be <code>null</code>
+		 */
 		public String getName() {
 			return name;
 		}
@@ -292,9 +302,25 @@ public abstract class ModelObject {
 			return compositeHashCode(getClass(), getName());
 		}
 		
+		/**
+		 * Retrieves the {@link ModelObject} corresponding to this {@link
+		 * Identifier} from the given {@link Resolver}.
+		 * @param context a {@link PropertyScratchpad} containing changes to
+		 * the {@link Resolver}'s state; can be <code>null</code>
+		 * @param r a {@link Resolver}
+		 * @return a {@link ModelObject}, or <code>null</code> if the lookup
+		 * failed
+		 */
 		public abstract ModelObject lookup(
 				PropertyScratchpad context, Resolver r);
 		
+		/**
+		 * Returns a copy of this {@link Identifier} with a different name.
+		 * (Other identifying properties, if there are any, will not be
+		 * changed.)
+		 * @param name a new name
+		 * @return a renamed copy of this {@link Identifier}
+		 */
 		public abstract Identifier getRenamed(String name);
 	}
 	
