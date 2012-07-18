@@ -10,6 +10,8 @@ import org.bigraph.model.Layoutable.ChangeNameDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
+import org.bigraph.model.assistants.DescriptorConflicts;
+import org.bigraph.model.assistants.DescriptorConflicts.IConflict;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -93,34 +95,25 @@ public class ReactionRule extends ModelObject {
 		}
 	}
 	
+	private static final IConflict dcs[] = {
+		DescriptorConflicts.ADD_ADD,
+		DescriptorConflicts.ADD_REM,
+		DescriptorConflicts.ADD_REN,
+		DescriptorConflicts.REM_REM,
+		DescriptorConflicts.REM_CON,
+		DescriptorConflicts.REM_REN,
+		DescriptorConflicts.CON_CON,
+		DescriptorConflicts.CON_REN,
+		DescriptorConflicts.DIS_REN,
+		DescriptorConflicts.REN_REN
+	};
+	
 	protected static class Operation3PrimeRunner extends OperationRunner {
-		private static class Pair<A, B> {
-			private A a;
-			private B b;
-		}
-		
-		private static <A, B> Pair<A, B> either(
-			Object a, Object b, Class<? extends A> k, Class<? extends B> l) {
-			Pair<A, B> r = new Pair<A, B>();
-			r.a = k.cast(k.isInstance(a) ? a : (k.isInstance(b) ? b : null));
-			r.b = l.cast(l.isInstance(a) ? a : (l.isInstance(b) ? b : null));
-			return (r.a != null && r.b != null ? r : null);
-		}
-		
 		private boolean conflicts(
 				IChangeDescriptor redexCD, IChangeDescriptor reactumCD) {
-			Pair<ChangeAddChildDescriptor, ChangeRemoveDescriptor> ar =
-					either(redexCD, reactumCD,
-							ChangeAddChildDescriptor.class,
-							ChangeRemoveDescriptor.class);
-			if (ar != null)
-				return ar.a.getParent() == ar.b.getTarget();
-			Pair<ChangeConnectDescriptor, ChangeDisconnectDescriptor> cd =
-					either(redexCD, reactumCD,
-							ChangeConnectDescriptor.class,
-							ChangeDisconnectDescriptor.class);
-			if (cd != null)
-				return cd.a.getPoint() == cd.b.getPoint();
+			for (IConflict i : dcs)
+				if (i.run(redexCD, reactumCD))
+					return true;
 			return false;
 		}
 		
