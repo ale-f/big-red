@@ -77,6 +77,11 @@ public class Port extends Point implements IPort {
 		}
 		
 		@Override
+		public Identifier getRenamed(String name) {
+			return new Identifier(name, getNode());
+		}
+		
+		@Override
 		public boolean equals(Object obj_) {
 			if (safeClassCmp(this, obj_)) {
 				Identifier obj = (Identifier)obj_;

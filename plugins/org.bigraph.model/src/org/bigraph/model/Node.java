@@ -134,6 +134,11 @@ public class Node extends Container implements INode {
 		}
 		
 		@Override
+		public Identifier getRenamed(String name) {
+			return new Node.Identifier(name, getControl());
+		}
+		
+		@Override
 		public boolean equals(Object obj_) {
 			if (safeClassCmp(this, obj_)) {
 				Identifier obj = (Identifier)obj_;

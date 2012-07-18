@@ -98,6 +98,9 @@ public abstract class Link extends Layoutable implements ILink {
 			return require(
 					r.lookup(context, Link.class, getName()), Link.class);
 		}
+		
+		@Override
+		public abstract Identifier getRenamed(String name);
 	}
 	
 	@Override

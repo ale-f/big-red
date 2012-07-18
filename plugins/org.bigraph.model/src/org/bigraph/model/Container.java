@@ -161,6 +161,9 @@ public abstract class Container extends Layoutable {
 		@Override
 		public abstract Container lookup(
 				PropertyScratchpad context, Resolver r);
+		
+		@Override
+		public abstract Identifier getRenamed(String name);
 	}
 	
 	@Override

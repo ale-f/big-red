@@ -384,6 +384,11 @@ public class Control extends ModelObject implements IControl {
 		}
 		
 		@Override
+		public Identifier getRenamed(String name) {
+			return new Identifier(name);
+		}
+		
+		@Override
 		public String toString() {
 			return "control " + getName();
 		}

@@ -28,6 +28,11 @@ public class Edge extends Link implements IEdge {
 		}
 		
 		@Override
+		public Identifier getRenamed(String name) {
+			return new Identifier(name);
+		}
+		
+		@Override
 		public String toString() {
 			return "edge " + getName();
 		}

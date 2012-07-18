@@ -226,6 +226,9 @@ public abstract class Layoutable extends ModelObject {
 		@Override
 		public abstract Layoutable lookup(
 				PropertyScratchpad context, Resolver r);
+		
+		@Override
+		public abstract Identifier getRenamed(String name);
 	}
 	
 	public static class ChangeNameDescriptor implements IChangeDescriptor {

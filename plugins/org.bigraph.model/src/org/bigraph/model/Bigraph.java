@@ -271,6 +271,11 @@ public class Bigraph extends Container
 		}
 		
 		@Override
+		public Identifier getRenamed(String name) {
+			return new Identifier();
+		}
+		
+		@Override
 		public String toString() {
 			return "bigraph";
 		}

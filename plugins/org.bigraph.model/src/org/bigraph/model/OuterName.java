@@ -20,6 +20,11 @@ public class OuterName extends Link implements IOuterName {
 		}
 		
 		@Override
+		public Identifier getRenamed(String name) {
+			return new Identifier(name);
+		}
+		
+		@Override
 		public String toString() {
 			return "outer name " + getName();
 		}

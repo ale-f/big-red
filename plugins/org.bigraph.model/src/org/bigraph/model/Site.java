@@ -26,6 +26,11 @@ public class Site extends Layoutable implements ISite {
 		}
 		
 		@Override
+		public Identifier getRenamed(String name) {
+			return new Identifier(name);
+		}
+		
+		@Override
 		public String toString() {
 			return "site " + getName();
 		}

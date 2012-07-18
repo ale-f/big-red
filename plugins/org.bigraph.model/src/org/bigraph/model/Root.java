@@ -46,6 +46,11 @@ public class Root extends Container implements IRoot {
 		}
 		
 		@Override
+		public Identifier getRenamed(String name) {
+			return new Identifier(name);
+		}
+		
+		@Override
 		public String toString() {
 			return "root " + getName();
 		}

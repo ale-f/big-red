@@ -294,6 +294,8 @@ public abstract class ModelObject {
 		
 		public abstract ModelObject lookup(
 				PropertyScratchpad context, Resolver r);
+		
+		public abstract Identifier getRenamed(String name);
 	}
 	
 	public static class ChangeExtendedDataDescriptor

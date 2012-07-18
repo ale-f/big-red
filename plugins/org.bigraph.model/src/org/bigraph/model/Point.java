@@ -136,6 +136,9 @@ public abstract class Point extends Layoutable implements IPoint {
 		
 		@Override
 		public abstract Point lookup(PropertyScratchpad context, Resolver r);
+		
+		@Override
+		public abstract Identifier getRenamed(String name);
 	}
 	
 	@Override
