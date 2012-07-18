@@ -136,7 +136,10 @@ public class ReactionRule extends ModelObject {
 				return new ChangeConnectDescriptor(
 						cd.getPoint(), cd.getLink());
 			} else if (cd_ instanceof ChangeNameDescriptor) {
-				return null;
+				ChangeNameDescriptor cd = (ChangeNameDescriptor)cd_;
+				Layoutable.Identifier target = cd.getTarget();
+				return new ChangeNameDescriptor(
+						target.getRenamed(cd.getNewName()), target.getName());
 			} else if (cd_ instanceof ChangeExtendedDataDescriptor) {
 				return null /* aieee */;
 			} else return null;
