@@ -25,19 +25,26 @@ public final class ColourUtilities {
 
 	public static Colour getFill(
 			PropertyScratchpad context, ModelObject m) {
-		Colour c = require(context, m, FILL, Colour.class);
+		Colour c = getFillRaw(context, m);
 		if (c == null) {
 			if (m instanceof Node) {
 				c = getFill(context, ((Node)m).getControl());
 			} else if (m instanceof Control) {
 				c = new Colour("white");
 			}
-			if (c != null)
-				setFill(context, m, c);
 		}
 		return c;
 	}
 
+	public static Colour getFillRaw(ModelObject m) {
+		return getFillRaw(null, m);
+	}
+	
+	public static Colour getFillRaw(
+			PropertyScratchpad context, ModelObject m) {
+		return require(context, m, FILL, Colour.class);
+	}
+	
 	public static void setFill(ModelObject m, Colour c) {
 		setFill(null, m, c);
 	}
@@ -76,12 +83,19 @@ public final class ColourUtilities {
 			} else if (m instanceof Link) {
 				c = new Colour("green");
 			}
-			if (c != null)
-				setOutline(context, m, c);
 		}
 		return c;
 	}
 
+	public static Colour getOutlineRaw(ModelObject m) {
+		return getOutlineRaw(null, m);
+	}
+	
+	public static Colour getOutlineRaw(
+			PropertyScratchpad context, ModelObject m) {
+		return require(context, m, OUTLINE, Colour.class);
+	}
+	
 	public static void setOutline(ModelObject m, Colour c) {
 		setOutline(null, m, c);
 	}
