@@ -185,9 +185,10 @@ public class ReactionRule extends ModelObject {
 			for (IChangeDescriptor d : getChanges())
 				rr.getChanges().add(d);
 		} catch (ChangeCreationException cce) {
-			throw new Error("BUG: reactum changes were invalid", cce);
+			throw new Error("BUG: reactum changes were completely invalid",
+					cce);
 		} catch (ChangeRejectedException cre) {
-			throw new Error("BUG: reactum changes were invalid", cre);
+			throw new Error("BUG: reactum changes were slightly invalid", cre);
 		}
 		
 		return rr;

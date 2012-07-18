@@ -395,9 +395,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		IChangeExecutor target = c.getTarget();
 		
 		ChangeDescriptorGroup reactumChanges = getModel().getChanges();
-		PropertyScratchpad scratch = new PropertyScratchpad();
 		if (target == getRedex()) {
-			IChangeDescriptor cd = unappliedChangeToDescriptor(scratch,
+			IChangeDescriptor cd = createDescriptor(
 					(detail != CommandStack.PRE_UNDO ?
 							commandChange : commandChange.inverse()));
 			
@@ -411,34 +410,36 @@ public class RuleEditor extends AbstractGEFEditor implements
 			
 			/* Integrity check */
 			try {
-				scratch.clear();
+				PropertyScratchpad scratch = new PropertyScratchpad();
 				if (detail != CommandStack.PRE_UNDO) {
 					commandChange.simulate(scratch);
 				} else commandChange.inverse().simulate(scratch);
 				getRedex().tryValidateChange(
 						reactumChanges.createChange(scratch, getRedex()));
 			} catch (ChangeCreationException cce) {
-				throw new Error("BUG: reactumChanges are inconsistent, " +
-						"don't save", cce);
+				throw new Error("BUG: reactumChanges are completely " +
+						"inconsistent, don't save", cce);
 			} catch (ChangeRejectedException cre) {
-				throw new Error("BUG: reactumChanges are inconsistent, " +
-						"don't save", cre);
+				throw new Error("BUG: reactumChanges are slightly " +
+						"inconsistent, don't save", cre);
 			}
 			
+			ChangeGroup instantiatedRedexChanges;
 			/* Anything that's left in lRedexCDs after the fixups should be
 			 * unrelated to the reactum changes, and so should be safe to
 			 * apply */
 			/* XXX: this is not quite true when undoing changes (for example,
 			 * newly-created reactum objects won't have layouts) */
 			try {
-				getReactum().tryApplyChange(
-						lRedexCDs.createChange(null, getReactum()));
+				instantiatedRedexChanges =
+						lRedexCDs.createChange(null, getReactum());
+				getReactum().tryApplyChange(instantiatedRedexChanges);
 			} catch (ChangeCreationException cce) {
-				throw new Error("BUG: unsafe change slipped through the net",
-						cce);
+				throw new Error("BUG: completely unsafe change slipped " +
+						"through the net", cce);
 			} catch (ChangeRejectedException cre) {
-				throw new Error("BUG: unsafe change slipped through the net",
-						cre);
+				throw new Error("BUG: slightly unsafe change slipped " +
+						"through the net", cre);
 			}
 		} else if (target == getReactum()) {
 			IChangeDescriptor cd;
@@ -446,50 +447,76 @@ public class RuleEditor extends AbstractGEFEditor implements
 				cd = reactumChangeToDescriptor.remove(commandChange);
 				getModel().getChanges().remove(cd);
 			} else {
-				cd = unappliedChangeToDescriptor(scratch, commandChange);
+				cd = createDescriptor(commandChange);
 				reactumChangeToDescriptor.put(commandChange, cd);
 				getModel().getChanges().add(cd);
 			}
 		}
 	}
 	
-	private static IChangeDescriptor unappliedChangeToDescriptor(
-			PropertyScratchpad scratch, IChange c) {
+	/**
+	 * Converts an {@link IChange} that hasn't been applied yet into an {@link
+	 * IChangeDescriptor}.
+	 * @param c the {@link IChange} to convert
+	 * @return an {@link IChangeDescriptor}, or <code>null</code> in the event
+	 * of a conversion error
+	 * @see #createDescriptor(PropertyScratchpad, IChange)
+	 */
+	private static IChangeDescriptor createDescriptor(IChange c) {
+		return createDescriptor(null, c);
+	}
+	
+	/**
+	 * Converts an {@link IChange} into an {@link IChangeDescriptor}.
+	 * @param context a {@link PropertyScratchpad} representing an appropriate
+	 * initial model state; can be <code>null</code>
+	 * @param c the {@link IChange} to convert
+	 * @return an {@link IChangeDescriptor}, or <code>null</code> in the event
+	 * of a conversion error
+	 * @see #createDescriptor(IChange)
+	 */
+	private static IChangeDescriptor createDescriptor(
+			PropertyScratchpad context, IChange c) {
 		IChangeDescriptor chd = null;
 		if (c instanceof ChangeGroup) {
 			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+			context = new PropertyScratchpad(context);
 			for (IChange ch : (ChangeGroup)c) {
-				chd = unappliedChangeToDescriptor(scratch, ch);
-				if (chd != null)
+				chd = createDescriptor(context, ch);
+				if (chd != null) {
 					cdg.add(chd);
+				} else {
+					cdg.clear();
+					return null;
+				}
 			}
-			/* all changes will have been simulated */
+			/* All changes will have been simulated */
 			return cdg;
 		} else if (c instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)c;
 			chd = new ChangeExtendedDataDescriptor(
-					((Layoutable)ch.getCreator()).getIdentifier(scratch),
+					((Layoutable)ch.getCreator()).getIdentifier(context),
 					ch.key, ch.newValue,
 					ch.immediateValidator, ch.finalValidator);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
 			chd = new ChangeRemoveDescriptor(
-					ch.getCreator().getIdentifier(scratch),
-					ch.getCreator().getParent(scratch).getIdentifier(scratch));
+					ch.getCreator().getIdentifier(context),
+					ch.getCreator().getParent(context).getIdentifier(context));
 		} else if (c instanceof ChangeName) {
 			ChangeName ch = (ChangeName)c;
 			chd = new ChangeNameDescriptor(
-					ch.getCreator().getIdentifier(scratch), ch.newName);
+					ch.getCreator().getIdentifier(context), ch.newName);
 		} else if (c instanceof ChangeConnect) {
 			ChangeConnect ch = (ChangeConnect)c;
 			chd = new ChangeConnectDescriptor(
-					ch.getCreator().getIdentifier(scratch),
-					ch.link.getIdentifier(scratch));
+					ch.getCreator().getIdentifier(context),
+					ch.link.getIdentifier(context));
 		} else if (c instanceof ChangeDisconnect) {
 			ChangeDisconnect ch = (ChangeDisconnect)c;
 			chd = new ChangeDisconnectDescriptor(
-					ch.getCreator().getIdentifier(scratch),
-					ch.getCreator().getLink(scratch).getIdentifier(scratch));
+					ch.getCreator().getIdentifier(context),
+					ch.getCreator().getLink(context).getIdentifier(context));
 		} else if (c instanceof ChangeAddChild) {
 			ChangeAddChild ch = (ChangeAddChild)c;
 			Layoutable.Identifier id = null;
@@ -509,10 +536,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 						((Node)ch.child).getControl().getIdentifier());
 			}
 			chd = new ChangeAddChildDescriptor(
-					ch.getCreator().getIdentifier(scratch), id);
+					ch.getCreator().getIdentifier(context), id);
 		}
-		if (scratch != null)
-			c.simulate(scratch);
+		if (context != null)
+			c.simulate(context);
 		return chd;
 	}
 	
