@@ -91,8 +91,8 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			rectangleToElement(aE, LayoutUtilities.getLayout(((Layoutable)object)));
 		
 		Colour
-			fill = ColourUtilities.getFill(object),
-			outline = ColourUtilities.getOutline(object);
+			fill = ColourUtilities.getFillRaw(object),
+			outline = ColourUtilities.getOutlineRaw(object);
 		if (fill != null)
 			aE.setAttributeNS(BIG_RED, "big-red:fillColor",
 					fill.toHexString());
