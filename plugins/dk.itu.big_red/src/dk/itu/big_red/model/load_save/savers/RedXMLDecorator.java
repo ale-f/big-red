@@ -87,8 +87,12 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 		
 		Element aE = doc.createElementNS(BIG_RED, "big-red:appearance");
 		
-		if (object instanceof Layoutable)
-			rectangleToElement(aE, LayoutUtilities.getLayout(((Layoutable)object)));
+		if (object instanceof Layoutable) {
+			Rectangle layout =
+					LayoutUtilities.getLayoutRaw((Layoutable)object);
+			if (layout != null)
+				rectangleToElement(aE, layout);
+		}
 		
 		Colour
 			fill = ColourUtilities.getFillRaw(object),
