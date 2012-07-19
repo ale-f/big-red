@@ -30,6 +30,8 @@ import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.Colour;
+import dk.itu.big_red.model.load_save.IXMLLoader;
+import dk.itu.big_red.model.load_save.IXMLUndecorator;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 
 public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
@@ -41,9 +43,9 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 			r.getConfigurationElementsFor(EXTENSION_POINT)) {
 			if ("undecorator".equals(ice.getName())) {
 				try {
-					Undecorator u = (Undecorator)
+					IXMLUndecorator u = (IXMLUndecorator)
 							ice.createExecutableExtension("class");
-					addUndecorator(u);
+					addIXMLUndecorator(u);
 				} catch (CoreException e) {
 					e.printStackTrace();
 					/* do nothing */
@@ -216,37 +218,25 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		else return null;
 	}
 	
-	public interface Undecorator {
-		void setLoader(IXMLLoader loader);
-		void undecorate(ModelObject object, Element el);
-		void finish(IChangeExecutor ex);
-	}
+	private List<IXMLUndecorator> undecorators = null;
 	
-	private List<Undecorator> undecorators = null;
-	
-	protected List<Undecorator> getUndecorators() {
+	protected List<IXMLUndecorator> getUndecorators() {
 		return (undecorators != null ? undecorators :
-				Collections.<Undecorator>emptyList());
+				Collections.<IXMLUndecorator>emptyList());
 	}
 	
-	protected void addUndecorator(Undecorator d) {
+	protected void addIXMLUndecorator(IXMLUndecorator d) {
 		if (d == null)
 			return;
 		if (undecorators == null)
-			undecorators = new ArrayList<Undecorator>();
+			undecorators = new ArrayList<IXMLUndecorator>();
 		undecorators.add(d);
 		d.setLoader(this);
 	}
 	
-	protected void removeUndecorator(Undecorator d) {
-		if (undecorators.remove(d))
-			if (undecorators.size() == 0)
-				undecorators = null;
-	}
-	
 	protected <T extends ModelObject> T executeUndecorators(T mo, Element el) {
 		if (mo != null && el != null)
-			for (Undecorator d : getUndecorators())
+			for (IXMLUndecorator d : getUndecorators())
 				d.undecorate(mo, el);
 		return mo;
 	}
@@ -264,7 +254,7 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	@Override
 	protected void executeChanges(IChangeExecutor ex)
 			throws LoadFailedException {
-		for (Undecorator d : getUndecorators())
+		for (IXMLUndecorator d : getUndecorators())
 			d.finish(ex);
 		super.executeChanges(ex);
 	}

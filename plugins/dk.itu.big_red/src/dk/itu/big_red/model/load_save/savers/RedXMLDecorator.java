@@ -37,13 +37,13 @@ import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
+import dk.itu.big_red.model.load_save.IXMLLoader;
+import dk.itu.big_red.model.load_save.IXMLUndecorator;
 import dk.itu.big_red.model.load_save.LoaderNotice;
-import dk.itu.big_red.model.load_save.loaders.IXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
-import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
-public class RedXMLDecorator implements Decorator, Undecorator {
+public class RedXMLDecorator implements Decorator, IXMLUndecorator {
 	public static Element rectangleToElement(Element e, Rectangle r) {
 		return XMLSaver.applyAttributes(e,
 			"width", r.width(), "height", r.height(), "x", r.x(), "y", r.y());
