@@ -32,6 +32,7 @@ import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.LoaderNotice;
 import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
@@ -308,7 +309,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			if (ch instanceof ChangeExtendedData) {
 				ChangeExtendedData cd = (ChangeExtendedData)ch;
 				if (LayoutUtilities.LAYOUT.equals(cd.key)) {
-					addNotice(Notice.WARNING,
+					addNotice(LoaderNotice.Type.WARNING,
 							"Layout data invalid; replacing.");
 					cg.add(LayoutUtilities.relayout(scratch, reactum));
 				} else throw new LoadFailedException(cre);

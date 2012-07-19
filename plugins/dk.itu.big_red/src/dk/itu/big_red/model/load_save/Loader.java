@@ -105,48 +105,20 @@ public abstract class Loader {
 		return null;
 	}
 	
-	public static final class Notice {
-		public static final int OK = 0;
-		public static final int INFO = 10;
-		public static final int WARNING = 20;
-		public static final int ERROR = 30;
-		
-		private int type;
-		private String message;
-		
-		protected Notice(int type, String message) {
-			this.type = type;
-			this.message = message;
-		}
-		
-		public int getType() {
-			return type;
-		}
-		
-		public String getMessage() {
-			return message;
-		}
-		
-		@Override
-		public String toString() {
-			return "Notice[type=" + type + ", message=" + message + "]";
-		}
-	}
+	private ArrayList<LoaderNotice> notices;
 	
-	private ArrayList<Notice> notices;
-	
-	protected void addNotice(Notice status) {
+	protected void addNotice(LoaderNotice status) {
 		if (notices == null)
-			notices = new ArrayList<Notice>();
+			notices = new ArrayList<LoaderNotice>();
 		System.out.println(this + ".addNotice(" + status + ")");
 		notices.add(status);
 	}
 	
-	protected void addNotice(int type, String message) {
-		addNotice(new Notice(type, message));
+	protected void addNotice(LoaderNotice.Type type, String message) {
+		addNotice(new LoaderNotice(type, message));
 	}
 	
-	public List<Notice> getNotices() {
+	public List<LoaderNotice> getNotices() {
 		return notices;
 	}
 }

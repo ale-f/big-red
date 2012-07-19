@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.LoadFailedException;
+import dk.itu.big_red.model.load_save.LoaderNotice;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.resources.Project;
 
@@ -137,7 +138,7 @@ public class BigraphXMLLoader extends XMLLoader {
 				if (ch instanceof ChangeExtendedData) {
 					ChangeExtendedData cd = (ChangeExtendedData)ch;
 					if (LayoutUtilities.LAYOUT.equals(cd.key)) {
-						addNotice(Notice.WARNING,
+						addNotice(LoaderNotice.Type.WARNING,
 								"Layout data invalid: replacing.");
 						addChange(relayout);
 					}
@@ -172,7 +173,8 @@ public class BigraphXMLLoader extends XMLLoader {
 							model.changeConnect(link)));
 			}
 		} else {
-			addNotice(Notice.WARNING, "Invalid point referenced; skipping.");
+			addNotice(LoaderNotice.Type.WARNING,
+					"Invalid point referenced; skipping.");
 		}
 	}
 	
@@ -188,9 +190,11 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		 /* FIXME - details */
 		if (parameter != null && policy == null) {
-			addNotice(Notice.WARNING, "Spurious parameter value ignored.");
+			addNotice(LoaderNotice.Type.WARNING,
+					"Spurious parameter value ignored.");
 		} else if (parameter == null && policy != null) {
-			addNotice(Notice.WARNING, "Default parameter value assigned.");
+			addNotice(LoaderNotice.Type.WARNING,
+					"Default parameter value assigned.");
 			addChange(
 				ExtendedDataUtilities.changeParameter(model, policy.get(0)));
 		} else if (parameter != null && policy != null) {
@@ -240,7 +244,7 @@ public class BigraphXMLLoader extends XMLLoader {
 						     appearance != null) ||
 						    (appearanceAllowed == Tristate.TRUE &&
 						     appearance == null)) {
-					addNotice(Notice.WARNING,
+					addNotice(LoaderNotice.Type.WARNING,
 						"The layout data for this bigraph is incomplete and " +
 						"so has been ignored.");
 					appearanceAllowed = Tristate.FALSE;
