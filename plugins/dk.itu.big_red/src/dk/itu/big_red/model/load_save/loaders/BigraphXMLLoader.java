@@ -229,19 +229,23 @@ public class BigraphXMLLoader extends XMLLoader {
 			String name = getAttributeNS(e, BIGRAPH, "name");
 			addChange(scratch.executeChange(context.changeAddChild(l, name)));
 			
-			Element appearance = getNamedChildElement(e, BIG_RED, "appearance");
-			if (appearanceAllowed == Tristate.UNKNOWN) {
-				appearanceAllowed = Tristate.fromBoolean(appearance != null);
-			} else if (!partialAppearanceWarning &&
-					    (appearanceAllowed == Tristate.FALSE &&
-					     appearance != null) ||
-					    (appearanceAllowed == Tristate.TRUE &&
-					     appearance == null)) {
-				addNotice(Notice.WARNING,
-					"The layout data for this bigraph is incomplete and so " +
-					"has been ignored.");
-				appearanceAllowed = Tristate.FALSE;
-				partialAppearanceWarning = true;
+			if (!(model instanceof Edge)) {
+				Element appearance =
+						getNamedChildElement(e, BIG_RED, "appearance");
+				if (appearanceAllowed == Tristate.UNKNOWN) {
+					appearanceAllowed =
+							Tristate.fromBoolean(appearance != null);
+				} else if (!partialAppearanceWarning &&
+						    (appearanceAllowed == Tristate.FALSE &&
+						     appearance != null) ||
+						    (appearanceAllowed == Tristate.TRUE &&
+						     appearance == null)) {
+					addNotice(Notice.WARNING,
+						"The layout data for this bigraph is incomplete and " +
+						"so has been ignored.");
+					appearanceAllowed = Tristate.FALSE;
+					partialAppearanceWarning = true;
+				}
 			}
 		}
 		
