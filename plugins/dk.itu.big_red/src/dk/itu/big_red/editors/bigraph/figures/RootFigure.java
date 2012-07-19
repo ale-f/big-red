@@ -28,7 +28,8 @@ public class RootFigure extends AbstractFigure {
 	protected void outlineShape(Graphics graphics) {
 		Rectangle a = start(graphics);
 		try {
-			graphics.setLineStyle(SWT.LINE_DOT);
+			graphics.setLineStyle(SWT.LINE_CUSTOM);
+			graphics.setLineDash(SiteFigure.OUTLINE_DASH);
 			a.width--; a.height--;
 			graphics.drawRoundRectangle(a, 20, 20);
 		} finally {

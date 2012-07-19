@@ -36,11 +36,14 @@ public class SiteFigure extends AbstractFigure {
 		}
 	}
 	
+	static final float OUTLINE_DASH[] = new float[] { 4, 4 };
+	
 	@Override
 	protected void outlineShape(Graphics graphics) {
 		Rectangle a = start(graphics);
 		try {
-			graphics.setLineStyle(SWT.LINE_DOT);
+			graphics.setLineStyle(SWT.LINE_CUSTOM);
+			graphics.setLineDash(OUTLINE_DASH);
 			a.width--; a.height--;
 			graphics.drawRoundRectangle(a, 20, 20);
 		} finally {
