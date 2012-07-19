@@ -199,7 +199,7 @@ public abstract class ModelObject {
 		}
 	}
 	
-	private Map<String, Object> extendedData;
+	private Map<String, Object> extendedData = new HashMap<String, Object>();
 	
 	/**
 	 * Retrieves a piece of extended data from this object.
@@ -208,7 +208,7 @@ public abstract class ModelObject {
 	 * associated data
 	 */
 	public Object getExtendedData(String key) {
-		return (extendedData != null ? extendedData.get(key) : null);
+		return extendedData.get(key);
 	}
 	
 	/**
@@ -220,19 +220,8 @@ public abstract class ModelObject {
 	public void setExtendedData(String key, Object value) {
 		if (key == null)
 			return;
-		Object oldValue;
-		if (value == null) {
-			if (extendedData == null)
-				return;
-			if ((oldValue = extendedData.remove(key)) != null) {
-				if (extendedData.isEmpty())
-					extendedData = null;
-			}
-		} else {
-			if (extendedData == null)
-				extendedData = new HashMap<String, Object>();
-			oldValue = extendedData.put(key, value);
-		}
+		Object oldValue = (value != null ?
+				extendedData.put(key, value) : extendedData.remove(key));
 		firePropertyChange(key, oldValue, value);
 	}
 	
@@ -242,9 +231,9 @@ public abstract class ModelObject {
 	 * @param m a {@link ModelObject} (can be <code>null</code>)
 	 */
 	protected void setExtendedDataFrom(ModelObject m) {
-		if (m != null && m.extendedData != null) {
-			extendedData = new HashMap<String, Object>(m.extendedData);
-		} else extendedData = null;
+		extendedData.clear();
+		if (m != null)
+			extendedData.putAll(m.extendedData);
 	}
 	
 	protected boolean doChange(IChange c_) {
