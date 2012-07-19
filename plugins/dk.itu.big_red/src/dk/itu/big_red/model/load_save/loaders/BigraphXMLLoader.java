@@ -11,15 +11,12 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -28,13 +25,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.LoaderNotice;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.resources.Project;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
 
 /**
@@ -43,19 +38,6 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
  * @see BigraphXMLSaver
  */
 public class BigraphXMLLoader extends XMLLoader {
-	private enum Tristate {
-		TRUE,
-		FALSE,
-		UNKNOWN;
-		
-		private static Tristate fromBoolean(boolean b) {
-			return (b ? TRUE : FALSE);
-		}
-	}
-	
-	private boolean partialAppearanceWarning;
-	private Tristate appearanceAllowed;
-	
 	@Override
 	public Bigraph importObject() throws LoadFailedException {
 		try {
@@ -79,9 +61,6 @@ public class BigraphXMLLoader extends XMLLoader {
 			throw new LoadFailedException("Element is null");
 		
 		bigraph = new Bigraph();
-		
-		partialAppearanceWarning = false;
-		appearanceAllowed = Tristate.UNKNOWN;
 		
 		Element signatureElement =
 			getNamedChildElement(e, BIGRAPH, "signature");
@@ -122,29 +101,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		}
 		
 		processContainer(e, bigraph);
-		
-		IChange relayout = LayoutUtilities.relayout(getScratch(), bigraph);
-		
-		if (appearanceAllowed == Tristate.FALSE) {
-			addChange(relayout);
-		} else {
-			try {
-				bigraph.tryValidateChange(getChanges());
-			} catch (ChangeRejectedException cre) {
-				IChange ch = cre.getRejectedChange();
-				if (ch instanceof ChangeExtendedData) {
-					ChangeExtendedData cd = (ChangeExtendedData)ch;
-					if (LayoutUtilities.LAYOUT.equals(cd.key)) {
-						addNotice(LoaderNotice.Type.WARNING,
-								"Layout data invalid: replacing.");
-						addChange(relayout);
-					}
-				}
-			}
-		}
-		
 		executeChanges(bigraph);
-		
 		return executeUndecorators(bigraph, e);
 	}
 	
@@ -223,31 +180,9 @@ public class BigraphXMLLoader extends XMLLoader {
 			model = BigraphXMLLoader.getNewObject(e.getLocalName());
 		}
 
-		if (model instanceof Layoutable) {
-			Layoutable l = (Layoutable)model;
-			
-			String name = getAttributeNS(e, BIGRAPH, "name");
-			addChange(context.changeAddChild(l, name));
-			
-			if (!(model instanceof Edge)) {
-				Element appearance =
-						getNamedChildElement(e, BIG_RED, "appearance");
-				if (appearanceAllowed == Tristate.UNKNOWN) {
-					appearanceAllowed =
-							Tristate.fromBoolean(appearance != null);
-				} else if (!partialAppearanceWarning &&
-						    (appearanceAllowed == Tristate.FALSE &&
-						     appearance != null) ||
-						    (appearanceAllowed == Tristate.TRUE &&
-						     appearance == null)) {
-					addNotice(LoaderNotice.Type.WARNING,
-						"The layout data for this bigraph is incomplete and " +
-						"so has been ignored.");
-					appearanceAllowed = Tristate.FALSE;
-					partialAppearanceWarning = true;
-				}
-			}
-		}
+		if (model instanceof Layoutable)
+			addChange(context.changeAddChild(
+					(Layoutable)model, getAttributeNS(e, BIGRAPH, "name")));
 		
 		if (model instanceof Node) {
 			processNode(e, (Node)model);

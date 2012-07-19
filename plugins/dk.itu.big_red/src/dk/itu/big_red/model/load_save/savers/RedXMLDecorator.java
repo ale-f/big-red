@@ -11,6 +11,7 @@ import static
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
+import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Port;
@@ -18,7 +19,10 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -33,6 +37,7 @@ import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
+import dk.itu.big_red.model.load_save.LoaderNotice;
 import dk.itu.big_red.model.load_save.loaders.IXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
@@ -145,10 +150,38 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 		return null;
 	}
 	
+	private enum Tristate {
+		TRUE,
+		FALSE,
+		UNKNOWN;
+		
+		private static Tristate fromBoolean(boolean b) {
+			return (b ? TRUE : FALSE);
+		}
+	}
+	
+	private boolean partialAppearanceWarning = false;
+	private Tristate appearanceAllowed = Tristate.UNKNOWN;
+	
+	private void doLayoutCheck(Rectangle r) {
+		if (appearanceAllowed == Tristate.UNKNOWN) {
+			appearanceAllowed = Tristate.fromBoolean(r != null);
+		} else if (!partialAppearanceWarning &&
+				(appearanceAllowed == Tristate.FALSE && r != null) ||
+				(appearanceAllowed == Tristate.TRUE && r == null)) {
+			loader.addNotice(LoaderNotice.Type.WARNING,
+				"The layout data for this bigraph is incomplete and " +
+				"so has been ignored.");
+			appearanceAllowed = Tristate.FALSE;
+			partialAppearanceWarning = true;
+		}
+	}
+	
 	@Override
 	public void undecorate(ModelObject object, Element el) {
 		ChangeGroup cg = new ChangeGroup();
 		
+		Rectangle r = null;
 		Element eA = getNamedChildElement(el, BIG_RED, "appearance");
 		if (eA != null) {
 			Colour
@@ -160,7 +193,7 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 				cg.add(ColourUtilities.changeOutline(object, outline));
 	
 			if (object instanceof Layoutable) {
-				Rectangle r = getRectangle(eA);
+				r = getRectangle(eA);
 				if (r != null)
 					cg.add(
 						LayoutUtilities.changeLayout((Layoutable)object, r));
@@ -170,6 +203,9 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 			if (comment != null)
 				cg.add(ExtendedDataUtilities.changeComment(object, comment));
 		}
+		
+		if (object instanceof Layoutable && !(object instanceof Edge))
+			doLayoutCheck(r);
 		
 		if (object instanceof PortSpec) {
 			PortSpec p = (PortSpec)object;
@@ -224,5 +260,28 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 	
 	@Override
 	public void finish(IChangeExecutor ex) {
+		if (ex instanceof Bigraph) {
+			Bigraph bigraph = (Bigraph)ex;
+			IChange relayout =
+					LayoutUtilities.relayout(loader.getScratch(), bigraph);
+			
+			if (appearanceAllowed == Tristate.FALSE) {
+				loader.addChange(relayout);
+			} else {
+				try {
+					bigraph.tryValidateChange(loader.getChanges());
+				} catch (ChangeRejectedException cre) {
+					IChange ch = cre.getRejectedChange();
+					if (ch instanceof ChangeExtendedData) {
+						ChangeExtendedData cd = (ChangeExtendedData)ch;
+						if (LayoutUtilities.LAYOUT.equals(cd.key)) {
+							loader.addNotice(LoaderNotice.Type.WARNING,
+									"Layout data invalid: replacing.");
+							loader.addChange(relayout);
+						}
+					}
+				}
+			}
+		}
 	}
 }
