@@ -282,7 +282,8 @@ public final class LayoutUtilities {
 				r = getLayout(context, i);
 				if (i instanceof Root) {
 					if (tallestOuterName > 0)
-						r.y += tallestOuterName + PADDING;
+						r.y += ((tallestRoot - r.height) / 2) +
+								tallestOuterName + PADDING;
 				} else if (i instanceof InnerName) {
 					if (tallestOuterName > 0)
 						r.y += tallestOuterName + PADDING;
