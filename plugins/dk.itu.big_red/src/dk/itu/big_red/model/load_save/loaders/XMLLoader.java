@@ -32,7 +32,7 @@ import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 
-public abstract class XMLLoader extends ChangeLoader {
+public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.xml";
 	
 	public XMLLoader() {
@@ -41,8 +41,9 @@ public abstract class XMLLoader extends ChangeLoader {
 			r.getConfigurationElementsFor(EXTENSION_POINT)) {
 			if ("undecorator".equals(ice.getName())) {
 				try {
-					addUndecorator(
-						(Undecorator)ice.createExecutableExtension("class"));
+					Undecorator u = (Undecorator)
+							ice.createExecutableExtension("class");
+					addUndecorator(u);
 				} catch (CoreException e) {
 					e.printStackTrace();
 					/* do nothing */

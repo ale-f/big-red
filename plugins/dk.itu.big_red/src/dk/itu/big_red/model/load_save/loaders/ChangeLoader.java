@@ -8,7 +8,7 @@ import org.bigraph.model.changes.IChangeExecutor;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 
-public abstract class ChangeLoader extends Loader {
+public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	private ChangeGroup cg = new ChangeGroup();
 	
 	protected void addChange(IChange c) {
