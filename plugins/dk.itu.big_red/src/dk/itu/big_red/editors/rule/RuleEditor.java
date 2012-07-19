@@ -379,8 +379,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 					ReactionRule.performFixups(lRedexCDs, reactumChanges);
 			System.out.println(cdg);
 
-			/* (... modify reactum changes...) */
-			
 			/* Integrity check */
 			try {
 				PropertyScratchpad scratch = new PropertyScratchpad();
@@ -388,14 +386,17 @@ public class RuleEditor extends AbstractGEFEditor implements
 					commandChange.simulate(scratch);
 				} else commandChange.inverse().simulate(scratch);
 				getRedex().tryValidateChange(
-						reactumChanges.createChange(scratch, getRedex()));
+						cdg.createChange(scratch, getRedex()));
 			} catch (ChangeCreationException cce) {
-				throw new Error("BUG: reactumChanges are completely " +
-						"inconsistent, don't save", cce);
+				throw new Error("BUG: post-fixup reactum changes are " +
+						"completely inconsistent, don't save", cce);
 			} catch (ChangeRejectedException cre) {
-				throw new Error("BUG: reactumChanges are slightly " +
-						"inconsistent, don't save", cre);
+				throw new Error("BUG: post-fixup reactum changes are " +
+						"slightly inconsistent, don't save", cre);
 			}
+			
+			reactumChanges.clear();
+			reactumChanges.addAll(cdg);
 			
 			ChangeGroup instantiatedRedexChanges;
 			/* Anything that's left in lRedexCDs after the fixups should be
