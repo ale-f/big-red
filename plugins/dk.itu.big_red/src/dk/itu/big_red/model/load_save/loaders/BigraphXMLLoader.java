@@ -18,7 +18,6 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.policies.INamePolicy;
@@ -53,8 +52,6 @@ public class BigraphXMLLoader extends XMLLoader {
 			return (b ? TRUE : FALSE);
 		}
 	}
-	
-	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
 	private boolean partialAppearanceWarning;
 	private Tristate appearanceAllowed;
@@ -126,7 +123,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		processContainer(e, bigraph);
 		
-		IChange relayout = LayoutUtilities.relayout(scratch, bigraph);
+		IChange relayout = LayoutUtilities.relayout(getScratch(), bigraph);
 		
 		if (appearanceAllowed == Tristate.FALSE) {
 			addChange(relayout);
@@ -169,8 +166,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			if (linkName != null) {
 				Link link = links.get(linkName);
 				if (link != null)
-					addChange(scratch.executeChange(
-							model.changeConnect(link)));
+					addChange(model.changeConnect(link));
 			}
 		} else {
 			addNotice(LoaderNotice.Type.WARNING,
@@ -231,7 +227,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			Layoutable l = (Layoutable)model;
 			
 			String name = getAttributeNS(e, BIGRAPH, "name");
-			addChange(scratch.executeChange(context.changeAddChild(l, name)));
+			addChange(context.changeAddChild(l, name));
 			
 			if (!(model instanceof Edge)) {
 				Element appearance =
