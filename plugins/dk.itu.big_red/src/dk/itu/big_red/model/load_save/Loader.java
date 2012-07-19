@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.content.IContentType;
  * @see Saver
  * @author alec
  */
-public abstract class Loader {
+public abstract class Loader implements ILoader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 	
 	protected InputStream source = null;
@@ -107,14 +107,16 @@ public abstract class Loader {
 	
 	private ArrayList<LoaderNotice> notices;
 	
-	protected void addNotice(LoaderNotice status) {
+	@Override
+	public void addNotice(LoaderNotice status) {
 		if (notices == null)
 			notices = new ArrayList<LoaderNotice>();
 		System.out.println(this + ".addNotice(" + status + ")");
 		notices.add(status);
 	}
 	
-	protected void addNotice(LoaderNotice.Type type, String message) {
+	@Override
+	public void addNotice(LoaderNotice.Type type, String message) {
 		addNotice(new LoaderNotice(type, message));
 	}
 	
