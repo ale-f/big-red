@@ -6,19 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bigraph.model.Bigraph;
-import org.bigraph.model.Container.ChangeAddChild;
-import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.Layoutable;
-import org.bigraph.model.Layoutable.ChangeName;
-import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
-import org.bigraph.model.Layoutable.ChangeNameDescriptor;
-import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
-import org.bigraph.model.Point.ChangeConnect;
-import org.bigraph.model.Point.ChangeConnectDescriptor;
-import org.bigraph.model.Point.ChangeDisconnect;
-import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -375,27 +362,19 @@ public class RuleEditor extends AbstractGEFEditor implements
 	private Map<IChange, IChangeDescriptor> reactumChangeToDescriptor =
 			new HashMap<IChange, IChangeDescriptor>();
 	
-	private ChangeDescriptorGroup linearise(
-			IChangeDescriptor cd, ChangeDescriptorGroup cdg) {
-		if (cd instanceof ChangeDescriptorGroup) {
-			for (IChangeDescriptor i : (ChangeDescriptorGroup)cd)
-				linearise(i, cdg);
-		} else cdg.add(cd);
-		return cdg;
-	}
-	
 	private void _testConvertChange(int detail, ChangeCommand c) {
 		IChange commandChange = c.getChange();
 		IChangeExecutor target = c.getTarget();
 		
 		ChangeDescriptorGroup reactumChanges = getModel().getChanges();
 		if (target == getRedex()) {
-			IChangeDescriptor cd = createDescriptor(
+			IChangeDescriptor cd =
+				DescriptorUtilities.createDescriptor(
 					(detail != CommandStack.PRE_UNDO ?
-							commandChange : commandChange.inverse()));
+						commandChange : commandChange.inverse()));
 			
 			ChangeDescriptorGroup lRedexCDs =
-					linearise(cd, new ChangeDescriptorGroup());
+					DescriptorUtilities.linearise(cd);
 			ChangeDescriptorGroup cdg =
 					ReactionRule.performFixups(lRedexCDs, reactumChanges);
 			System.out.println(cdg);
@@ -441,86 +420,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 				cd = reactumChangeToDescriptor.remove(commandChange);
 				getModel().getChanges().remove(cd);
 			} else {
-				cd = createDescriptor(commandChange);
+				cd = DescriptorUtilities.createDescriptor(commandChange);
 				reactumChangeToDescriptor.put(commandChange, cd);
 				getModel().getChanges().add(cd);
 			}
 		}
-	}
-	
-	/**
-	 * Converts an {@link IChange} that hasn't been applied yet into an {@link
-	 * IChangeDescriptor}.
-	 * @param c the {@link IChange} to convert
-	 * @return an {@link IChangeDescriptor}, or <code>null</code> in the event
-	 * of a conversion error
-	 * @see #createDescriptor(PropertyScratchpad, IChange)
-	 */
-	private static IChangeDescriptor createDescriptor(IChange c) {
-		return createDescriptor(null, c);
-	}
-	
-	/**
-	 * Converts an {@link IChange} into an {@link IChangeDescriptor}.
-	 * @param context a {@link PropertyScratchpad} representing an appropriate
-	 * initial model state; can be <code>null</code>
-	 * @param c the {@link IChange} to convert
-	 * @return an {@link IChangeDescriptor}, or <code>null</code> in the event
-	 * of a conversion error
-	 * @see #createDescriptor(IChange)
-	 */
-	private static IChangeDescriptor createDescriptor(
-			PropertyScratchpad context, IChange c) {
-		IChangeDescriptor chd = null;
-		if (c instanceof ChangeGroup) {
-			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
-			context = new PropertyScratchpad(context);
-			for (IChange ch : (ChangeGroup)c) {
-				chd = createDescriptor(context, ch);
-				if (chd != null) {
-					cdg.add(chd);
-				} else {
-					cdg.clear();
-					return null;
-				}
-			}
-			/* All changes will have been simulated */
-			return cdg;
-		} else if (c instanceof ChangeExtendedData) {
-			ChangeExtendedData ch = (ChangeExtendedData)c;
-			chd = new ChangeExtendedDataDescriptor(
-					((Layoutable)ch.getCreator()).getIdentifier(context),
-					ch.key, ch.newValue,
-					ch.immediateValidator, ch.finalValidator);
-		} else if (c instanceof ChangeRemove) {
-			ChangeRemove ch = (ChangeRemove)c;
-			chd = new ChangeRemoveDescriptor(
-					ch.getCreator().getIdentifier(context),
-					ch.getCreator().getParent(context).getIdentifier(context));
-		} else if (c instanceof ChangeName) {
-			ChangeName ch = (ChangeName)c;
-			chd = new ChangeNameDescriptor(
-					ch.getCreator().getIdentifier(context), ch.newName);
-		} else if (c instanceof ChangeConnect) {
-			ChangeConnect ch = (ChangeConnect)c;
-			chd = new ChangeConnectDescriptor(
-					ch.getCreator().getIdentifier(context),
-					ch.link.getIdentifier(context));
-		} else if (c instanceof ChangeDisconnect) {
-			ChangeDisconnect ch = (ChangeDisconnect)c;
-			chd = new ChangeDisconnectDescriptor(
-					ch.getCreator().getIdentifier(context),
-					ch.getCreator().getLink(context).getIdentifier(context));
-		} else if (c instanceof ChangeAddChild) {
-			ChangeAddChild ch = (ChangeAddChild)c;
-			chd = new ChangeAddChildDescriptor(
-					ch.getCreator().getIdentifier(context),
-					/* The new child's name should be null at this point */
-					ch.child.getIdentifier(context).getRenamed(ch.name));
-		}
-		if (context != null)
-			c.simulate(context);
-		return chd;
 	}
 	
 	@Override
