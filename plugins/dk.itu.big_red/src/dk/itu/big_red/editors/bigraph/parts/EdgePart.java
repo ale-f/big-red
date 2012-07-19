@@ -14,7 +14,6 @@ import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orient
  * @see Link.Connection
  * @see LinkConnectionPart
  * @author alec
- *
  */
 public class EdgePart extends LinkPart {
 	@Override

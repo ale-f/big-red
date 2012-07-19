@@ -29,7 +29,6 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
  * XMLSaver writes a {@link Bigraph} out as an XML document.
  * @author alec
  * @see BigraphXMLLoader
- *
  */
 public class BigraphXMLSaver extends XMLSaver {
 	public BigraphXMLSaver() {

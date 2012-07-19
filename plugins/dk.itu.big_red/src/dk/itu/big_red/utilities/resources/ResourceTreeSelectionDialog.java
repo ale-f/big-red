@@ -21,7 +21,6 @@ import dk.itu.big_red.utilities.ui.jface.FileTypeViewerFilter;
  * ResourceTreeSelectionDialogs are reasonably customisable dialogs designed
  * for selecting a single resource from a tree.
  * @author alec
- *
  */
 public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 	private static final IStatus

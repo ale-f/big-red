@@ -6,7 +6,6 @@ import org.eclipse.gef.requests.CreationFactory;
 /**
  * The ModelFactory class creates {@link ModelObject}s on demand.
  * @author alec
- *
  */
 public class ModelFactory implements CreationFactory {
 	private Class<? extends ModelObject> type;

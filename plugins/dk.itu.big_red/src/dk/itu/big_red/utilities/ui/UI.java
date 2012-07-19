@@ -31,7 +31,6 @@ import org.eclipse.ui.ide.IDE;
 /**
  * Utility methods for the SWT user interface.
  * @author alec
- *
  */
 public final class UI {
 	private UI() {}

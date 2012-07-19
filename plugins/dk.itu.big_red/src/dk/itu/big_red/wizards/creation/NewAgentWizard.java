@@ -24,7 +24,6 @@ import dk.itu.big_red.wizards.creation.assistants.WizardNewAgentCreationPage;
  * NewAgentWizards are responsible for creating {@link Bigraph} files within a
  * project.
  * @author alec
- *
  */
 public class NewAgentWizard extends Wizard implements INewWizard {
 	private WizardNewAgentCreationPage page = null;

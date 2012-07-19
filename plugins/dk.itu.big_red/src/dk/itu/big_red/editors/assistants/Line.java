@@ -7,7 +7,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * Lines represent line segments.
  * @author alec
- *
  */
 public class Line {
 	private Point p1 = new Point(),

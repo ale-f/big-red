@@ -6,7 +6,6 @@ import org.bigraph.bigmc.red.interfaces.IModelChecker.IBigraph;
  * An <strong>IModelCheckerState</strong> represents a state in the state space
  * of an {@link IModelCheckerResult}.
  * @author alec
- *
  */
 public interface IModelCheckerState {
 	/**

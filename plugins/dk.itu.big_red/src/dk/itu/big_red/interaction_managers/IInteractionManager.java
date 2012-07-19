@@ -8,7 +8,6 @@ import org.eclipse.swt.widgets.Shell;
  * managers</i>, intentionally minimally-specified objects which provide a
  * flexible interface between Big Red and external tools.
  * @author alec
- *
  */
 public interface IInteractionManager {
 	String EXTENSION_POINT = "dk.itu.big_red.interactionManagers";

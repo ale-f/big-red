@@ -5,7 +5,6 @@ import org.bigraph.model.SimulationSpec;
 /**
  * A basic concrete implementation of {@link IInteractionManager}.
  * @author alec
- *
  */
 public abstract class InteractionManager implements IInteractionManager {
 	private SimulationSpec simulationSpec = null;

@@ -56,7 +56,6 @@ import static
  * the user design a polygon. They keep track of a {@link PointList}, and the
  * user can modify that PointList by clicking on the widget.
  * @author alec
- *
  */
 public class SignatureEditorPolygonCanvas extends Canvas implements
 		ControlListener, MouseListener, MouseMoveListener, PaintListener,

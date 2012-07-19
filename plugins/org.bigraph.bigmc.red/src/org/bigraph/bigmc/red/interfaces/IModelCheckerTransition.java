@@ -6,7 +6,6 @@ import org.bigraph.bigmc.red.interfaces.IModelChecker.IReactionRule;
  * An <strong>IModelCheckerTransition</strong> represents a single step through
  * an {@link IModelCheckerResult}'s state space.
  * @author alec
- *
  */
 public interface IModelCheckerTransition {
 	/**

@@ -5,14 +5,12 @@ package org.bigraph.bigmc.red.interfaces;
  * IModelChecker}. It contains the reaction graph, and, if there was one, the
  * property violation which caused the execution to stop.
  * @author alec
- *
  */
 public interface IModelCheckerResult {
 	/**
 	 * An <strong>Outcome</strong> indicates the kind of result represented by
 	 * an {@link IModelCheckerResult}.
 	 * @author alec
-	 *
 	 */
 	enum Outcome {
 		/**
@@ -52,7 +50,6 @@ public interface IModelCheckerResult {
 	 * @return an {@link IModelCheckerViolation}, if a violation was found, or
 	 * <code>null</code> otherwise
 	 * @see #getOutcome()
-	 * 
 	 */
 	IModelCheckerViolation getViolation();
 	

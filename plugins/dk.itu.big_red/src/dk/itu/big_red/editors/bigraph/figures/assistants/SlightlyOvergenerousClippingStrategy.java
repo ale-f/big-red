@@ -8,7 +8,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * SlightlyOvergenerousClippingStrategies expand the clipping region of {@link
  * IFigure}s to include a five-pixel margin on all sides.
  * @author alec
- *
  */
 public class SlightlyOvergenerousClippingStrategy implements IClippingStrategy {
 	/**

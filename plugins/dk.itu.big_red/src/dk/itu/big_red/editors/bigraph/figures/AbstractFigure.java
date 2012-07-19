@@ -50,7 +50,6 @@ public abstract class AbstractFigure extends Shape {
 	/**
 	 * Cleans up after an invocation of {@link #start}, popping the state of
 	 * the specified {@link Graphics}.
-	 *
 	 * <p>Although this is currently equivalent to <code>g.popState()</code>,
 	 * it's not guaranteed to remain that way - if <code>start</code> acquires
 	 * more functionality, then this method will clean up after that, too.

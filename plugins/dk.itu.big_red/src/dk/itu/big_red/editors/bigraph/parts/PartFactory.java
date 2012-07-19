@@ -15,7 +15,6 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 /**
  * PartFactories produce {@link EditPart}s from bigraph model objects.
  * @author alec
- *
  */
 public class PartFactory implements EditPartFactory {
 	@Override

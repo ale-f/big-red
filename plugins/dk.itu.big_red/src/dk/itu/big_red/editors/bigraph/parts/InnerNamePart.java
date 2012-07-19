@@ -15,7 +15,6 @@ import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orient
  * (along with outer names) a bigraph's interface.
  * @see InnerName
  * @author alec
- *
  */
 public class InnerNamePart extends PointPart {
 	@Override

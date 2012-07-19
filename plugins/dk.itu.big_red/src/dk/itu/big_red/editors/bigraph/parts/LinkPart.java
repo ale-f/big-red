@@ -79,7 +79,6 @@ public abstract class LinkPart extends ConnectablePart {
 	/**
 	 * Returns a list of all the {@link Link.Connection}s for which the model
 	 * object is the <i>target</i>.
-	 * 
 	 * <p>Note that LinkParts are always targets rather than sources, so
 	 * there's no need to override the {@link
 	 * AbstractPart#getModelSourceConnections()} implementation.

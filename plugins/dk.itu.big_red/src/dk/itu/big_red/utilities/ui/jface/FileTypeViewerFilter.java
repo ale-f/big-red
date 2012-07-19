@@ -14,13 +14,11 @@ import org.eclipse.jface.viewers.Viewer;
 /**
  * ContentTypeViewerFilters filter {@link IResource} trees based on Eclipse
  * content types.
- * 
  * <p>They'll always allow {@link IWorkspaceRoot}s, {@link IProject}s, and
  * {@link IFolder}s through, but they'll only allow {@link IFile}s through if
  * their content types have been added to the filter with {@link
  * #addContentType(String)}.
  * @author alec
- *
  */
 public class FileTypeViewerFilter extends ContainerViewerFilter {
 	private ArrayList<IContentType> contentTypes =

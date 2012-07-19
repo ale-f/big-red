@@ -36,7 +36,6 @@ import static java.lang.Boolean.TRUE;
  * from {@link AbstractGraphicalEditPart}, and also some generally-useful
  * functionality, like receiving property notifications from model objects.
  * @author alec
- *
  */
 public abstract class AbstractPart extends AbstractGraphicalEditPart
 		implements PropertyChangeListener, IBigraphPart {

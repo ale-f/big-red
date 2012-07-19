@@ -25,7 +25,6 @@ import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.
  * @see Node
  * @author alec
- *
  */
 public class NodePart extends ContainerPart {
 	@Override

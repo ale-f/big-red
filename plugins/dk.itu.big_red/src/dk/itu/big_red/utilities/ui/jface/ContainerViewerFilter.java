@@ -8,7 +8,6 @@ import org.eclipse.jface.viewers.ViewerFilter;
 /**
  * ContainerViewerFilters filter {@link IResource} trees to hide files.
  * @author alec
- *
  */
 public class ContainerViewerFilter extends ViewerFilter {
 	@Override

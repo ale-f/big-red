@@ -21,7 +21,6 @@ import dk.itu.big_red.editors.bigraph.parts.PartFactory;
  * GraphicalViewer} has been connected, allowing it to display {@link
  * Bigraph}s.
  * @author alec
- *
  */
 public class BigraphCanvas extends Canvas {
 	private GraphicalViewerImpl gvi = null;

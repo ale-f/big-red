@@ -41,7 +41,6 @@ import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.
  * @author alec
  * @see BigraphXMLSaver
- *
  */
 public class BigraphXMLLoader extends XMLLoader {
 	private enum Tristate {

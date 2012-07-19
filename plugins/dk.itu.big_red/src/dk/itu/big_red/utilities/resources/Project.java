@@ -27,7 +27,6 @@ import dk.itu.big_red.utilities.ui.UI;
  * Utility functions for manipulating an Eclipse {@link IProject project} and
  * the {@link IResource resources} they contain.
  * @author alec
- *
  */
 public final class Project {
 	private Project() {}

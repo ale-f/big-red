@@ -15,7 +15,6 @@ import dk.itu.big_red.editors.bigraph.parts.LinkPart;
  * together, creating a new {@link Edge} in the process.
  * </ul>
  * @author alec
- *
  */
 public class LinkConnectionCreateCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

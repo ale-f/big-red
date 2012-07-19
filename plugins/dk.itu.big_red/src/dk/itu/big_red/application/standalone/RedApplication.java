@@ -12,7 +12,6 @@ import dk.itu.big_red.utilities.ui.UI;
  * When Big Red is running as a stand-alone Eclipse application, this class
  * is responsible for setting up a workbench so that the Big Red plugin can
  * operate.
- * 
  * <p>Running the <i>plugin</i> is the responsibility of {@link RedPlugin}.
  */
 public class RedApplication implements IApplication {

@@ -16,7 +16,6 @@ import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orient
  * connected to {@link Edge}s.
  * @see Port
  * @author alec
- *
  */
 public class PortPart extends PointPart {
 	@Override

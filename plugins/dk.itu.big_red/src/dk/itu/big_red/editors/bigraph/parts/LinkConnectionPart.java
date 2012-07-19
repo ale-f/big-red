@@ -37,7 +37,6 @@ import dk.itu.big_red.utilities.ui.UI;
  * @see Link.Connection
  * @see EdgePart
  * @author alec
- *
  */
 public class LinkConnectionPart extends AbstractConnectionEditPart implements NodeEditPart, PropertyChangeListener {
 	/**

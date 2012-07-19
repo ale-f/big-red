@@ -9,7 +9,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * FixedPointAnchors always return a fixed point on the bounding box of their
  * owning {@link IFigure}.
  * @author alec
- *
  */
 public class FixedPointAnchor extends AbstractConnectionAnchor {
 	public enum Orientation {

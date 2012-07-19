@@ -6,7 +6,6 @@ import org.bigraph.bigmc.red.interfaces.IModelChecker.IProperty;
  * An <strong>IModelCheckerViolation</strong> represents a property violation
  * found by an {@link IModelChecker}.
  * @author alec
- *
  */
 public interface IModelCheckerViolation {
 	/**

@@ -24,7 +24,6 @@ import dk.itu.big_red.editors.bigraph.parts.tree.TreePartFactory.Mode;
 
 public class BigraphEditorOutlinePage extends ContentOutlinePage {
 	/**
-	 * 
 	 */
 	private final BigraphEditor bigraphEditor;
 	/*

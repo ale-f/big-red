@@ -7,7 +7,6 @@ import org.eclipse.gef.EditPart;
  * Objects implementing <strong>IBigraphPart</strong> are {@link EditPart}s
  * representing objects on a {@link Bigraph}.
  * @author alec
- *
  */
 public interface IBigraphPart extends EditPart {
 	/**

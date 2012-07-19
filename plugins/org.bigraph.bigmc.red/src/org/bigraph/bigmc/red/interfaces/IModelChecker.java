@@ -4,7 +4,6 @@ package org.bigraph.bigmc.red.interfaces;
  * An <strong>IModelChecker</strong> is an abstract interface to a bigraphical
  * model checking tool.
  * @author alec
- *
  */
 public interface IModelChecker {
 	interface IBigraph { /* placeholder */ }

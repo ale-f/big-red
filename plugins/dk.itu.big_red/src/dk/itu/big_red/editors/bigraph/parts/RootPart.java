@@ -17,7 +17,6 @@ import dk.itu.big_red.editors.bigraph.figures.RootFigure;
  * {@link Bigraph}.
  * @see Root
  * @author alec
- *
  */
 public class RootPart extends ContainerPart {
 	@Override

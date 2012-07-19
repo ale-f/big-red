@@ -30,7 +30,6 @@ import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
  * most one {@link ChangeCommand} will be generated for each {@link
  * GroupRequest}, so the validation works properly and the model is safe.
  * @author alec
- *
  */
 public class CombinedCommandFactory {
 	private static final Object TAG = new Object();

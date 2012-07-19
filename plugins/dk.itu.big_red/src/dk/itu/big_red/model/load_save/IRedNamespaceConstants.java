@@ -3,7 +3,6 @@ package dk.itu.big_red.model.load_save;
 /**
  * A collection of bigraph-related XML namespaces.
  * @author alec
- *
  */
 public interface IRedNamespaceConstants {
 	/**

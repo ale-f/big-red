@@ -7,7 +7,6 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
  * The <strong>QuadraticBezierCurve</strong> does exactly what it says on the
  * tin: it models quadratic Bézier curves.
  * @author alec
- *
  */
 class QuadraticBezierCurve {
 	private PrecisionPoint p0, p1, p2;

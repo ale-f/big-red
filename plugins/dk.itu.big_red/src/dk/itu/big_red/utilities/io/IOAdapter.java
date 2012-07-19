@@ -9,7 +9,6 @@ import java.util.ArrayList;
  * An <strong>IOAdapter</strong> is a buffer which can be written to as an
  * {@link OutputStream} and read from as an {@link InputStream}.
  * @author alec
- *
  */
 public class IOAdapter {
 	private boolean bufferClosed = false;

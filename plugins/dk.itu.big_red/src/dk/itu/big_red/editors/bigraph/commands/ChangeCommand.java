@@ -12,7 +12,6 @@ import dk.itu.big_red.utilities.ui.UI;
  * {@link IChangeCommand}s apply a {@link IChange} to an {@link
  * IChangeExecutor}.
  * @author alec
- *
  */
 public abstract class ChangeCommand extends Command {
 	private IChange change;

@@ -23,7 +23,6 @@ import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
  * model.
  * @see Bigraph
  * @author alec
- *
  */
 public class BigraphPart extends ContainerPart {
 	@Override
