@@ -3,11 +3,13 @@ package org.bigraph.model.assistants.validators;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
+import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.Port;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.Namespace;
@@ -96,9 +98,26 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
 			checkEligibility(b, ch);
-			if (ch instanceof Container)
+			
+			if (ch instanceof InnerName)
+				if (((InnerName) ch).getLink(getScratch()) != null)
+					throw new ChangeRejectedException(b,
+							"The point " + ch + " must be disconnected " +
+							"before it can be deleted");
+			
+			if (ch instanceof Container) {
 				if (((Container)ch).getChildren(getScratch()).size() != 0)
-					throw new ChangeRejectedException(b, ch + " has child objects which must be removed first");
+					throw new ChangeRejectedException(b,
+							ch + " has child objects which must be " +
+							"removed first");
+				if (ch instanceof Node) {
+					for (Port p : ((Node)ch).getPorts())
+						if (p.getLink(getScratch()) != null)
+							throw new ChangeRejectedException(b,
+									"The point " + ch + " must be " +
+									"disconnected before it can be deleted");
+				}
+			}
 			Container cp = ch.getParent(getScratch());
 			if (cp == null)
 				throw new ChangeRejectedException(b, ch + " has no parent");
