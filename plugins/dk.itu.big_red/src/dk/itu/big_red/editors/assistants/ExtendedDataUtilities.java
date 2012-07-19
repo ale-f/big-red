@@ -15,8 +15,8 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.names.policies.BoundedIntegerNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
-import org.bigraph.model.names.policies.PositiveIntegerNamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -359,8 +359,7 @@ public final class ExtendedDataUtilities {
 				if (!(c.newValue instanceof String))
 					throw new ChangeRejectedException(c,
 							"Aliases must be strings");
-				PositiveIntegerNamePolicy np =
-						new PositiveIntegerNamePolicy();
+				INamePolicy np = new BoundedIntegerNamePolicy(0);
 				if (np.normalise((String)c.newValue) == null)
 					throw new ChangeRejectedException(c,
 							"\"" + c.newValue + "\" is not a valid alias" +

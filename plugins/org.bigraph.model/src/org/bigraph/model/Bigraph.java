@@ -18,7 +18,7 @@ import org.bigraph.model.changes.IChangeValidator;
 import org.bigraph.model.interfaces.IBigraph;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.NamespaceGroup;
-import org.bigraph.model.names.policies.PositiveIntegerNamePolicy;
+import org.bigraph.model.names.policies.BoundedIntegerNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
 
 /**
@@ -38,8 +38,10 @@ public class Bigraph extends Container
 		nsg.createNamespace(Node.class).setPolicy(new StringNamePolicy());
 		nsg.createNamespace(InnerName.class).setPolicy(new StringNamePolicy());
 		
-		nsg.createNamespace(Root.class).setPolicy(new PositiveIntegerNamePolicy());
-		nsg.createNamespace(Site.class).setPolicy(new PositiveIntegerNamePolicy());
+		nsg.createNamespace(Root.class).setPolicy(
+				new BoundedIntegerNamePolicy(0));
+		nsg.createNamespace(Site.class).setPolicy(
+				new BoundedIntegerNamePolicy(0));
 	}
 	
 	/**
