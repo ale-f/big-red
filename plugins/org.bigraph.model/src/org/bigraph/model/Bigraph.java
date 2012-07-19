@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.validators.BigraphIntegrityValidator;
+import org.bigraph.model.assistants.validators.BigraphValidator;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -95,7 +95,7 @@ public class Bigraph extends Container
 		return getNamespace(getNSI(l)).getNextName();
 	}
 	
-	private IChangeValidator validator = new BigraphIntegrityValidator(this);
+	private IChangeValidator validator = new BigraphValidator(this);
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
 	

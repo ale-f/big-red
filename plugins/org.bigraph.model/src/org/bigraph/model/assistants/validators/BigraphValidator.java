@@ -19,8 +19,8 @@ import org.bigraph.model.names.Namespace;
  * @author alec
  *
  */
-public class BigraphIntegrityValidator extends ModelObjectValidator<Bigraph> {
-	public BigraphIntegrityValidator(Bigraph changeable) {
+public class BigraphValidator extends ModelObjectValidator<Bigraph> {
+	public BigraphValidator(Bigraph changeable) {
 		super(changeable);
 	}
 	
