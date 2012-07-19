@@ -217,7 +217,9 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	}
 	
 	public interface Undecorator {
+		void setLoader(IXMLLoader loader);
 		IChange undecorate(ModelObject object, Element el);
+		void finish();
 	}
 	
 	private List<Undecorator> undecorators = null;
@@ -233,6 +235,7 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		if (undecorators == null)
 			undecorators = new ArrayList<Undecorator>();
 		undecorators.add(d);
+		d.setLoader(this);
 	}
 	
 	protected void removeUndecorator(Undecorator d) {

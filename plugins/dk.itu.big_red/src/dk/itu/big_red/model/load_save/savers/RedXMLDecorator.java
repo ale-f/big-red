@@ -33,6 +33,7 @@ import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.Ellipse;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
+import dk.itu.big_red.model.load_save.loaders.IXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader.Undecorator;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
@@ -211,5 +212,16 @@ public class RedXMLDecorator implements Decorator, Undecorator {
 		}
 		
 		return (cg.size() > 0 ? cg : null);
+	}
+	
+	private IXMLLoader loader;
+	
+	@Override
+	public void setLoader(IXMLLoader loader) {
+		this.loader = loader;
+	}
+	
+	@Override
+	public void finish() {
 	}
 }
