@@ -95,4 +95,11 @@ public abstract class PointPart extends ConnectablePart {
 			l.add(new LinkPart.Connection(link, getModel()));
         return l;
     }
+	
+	@Override
+	void layoutChange(int generations) {
+		EdgePart ep = getPartFor(getModel().getLink(), EdgePart.class);
+		if (ep != null)
+			ep.refreshLocation();
+	}
 }

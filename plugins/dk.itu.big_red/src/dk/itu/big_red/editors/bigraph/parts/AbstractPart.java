@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.eclipse.gef.CompoundSnapToHelper;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -119,9 +120,11 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart
 		if (evt.getSource() == getModel()) {
 			String property = evt.getPropertyName();
 			if (Layoutable.PROPERTY_NAME.equals(property) ||
-				ExtendedDataUtilities.COMMENT.equals(property) ||
-				LayoutUtilities.LAYOUT.equals(property)) {
+				ExtendedDataUtilities.COMMENT.equals(property)) {
 				refreshVisuals();
+			} else if (LayoutUtilities.LAYOUT.equals(property)) {
+				refreshVisuals();
+				layoutChange(0);
 			}
 		}
 	}
@@ -141,11 +144,15 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart
 		}
 	}
 	
+	protected void refreshLocation() {
+		getFigure().setConstraint(LayoutUtilities.getLayout(getModel()));
+	}
+	
 	@Override
 	protected void refreshVisuals() {
 		Layoutable model = getModel();
 		AbstractFigure figure = getFigure();
-		figure.setConstraint(LayoutUtilities.getLayout(model));
+		refreshLocation();
 		String
 			comment = ExtendedDataUtilities.getComment(model),
 			tooltip = getToolTip();
@@ -154,4 +161,22 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart
 	}
 	
 	public abstract String getToolTip();
+	
+	/**
+	 * Returns the edit part corresponding to a given model object.
+	 * @param o a model object
+	 * @param klass the class of which the edit part must be an instance
+	 * @return an edit part, or <code>null</code> if one couldn't be found
+	 * &mdash; or if its type was incompatible with <code>klass</code>
+	 */
+	protected <T extends EditPart> T getPartFor(Object o, Class<T> klass) {
+		if (o == null)
+			return null;
+		Object r = getViewer().getEditPartRegistry().get(o);
+		return (klass.isInstance(r) ? klass.cast(r) : null);
+	}
+	
+	void layoutChange(int generations) {
+		/* do nothing */
+	}
 }

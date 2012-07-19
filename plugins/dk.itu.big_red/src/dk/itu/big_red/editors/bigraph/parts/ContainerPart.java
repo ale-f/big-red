@@ -24,4 +24,11 @@ public abstract class ContainerPart extends AbstractPart {
 				refreshChildren();
 		}
 	}
+	
+	@Override
+	void layoutChange(int generationsAgo) {
+		for (Object i : getChildren())
+			if (i instanceof AbstractPart)
+				((AbstractPart)i).layoutChange(generationsAgo + 1);
+	}
 }
