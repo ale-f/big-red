@@ -35,8 +35,8 @@ import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 public class RedXMLUndecorator implements IXMLUndecorator {
 	private enum Tristate {
-		TRUE,
 		FALSE,
+		TRUE,
 		UNKNOWN;
 		
 		private static Tristate fromBoolean(boolean b) {
@@ -84,8 +84,8 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 		if (appearanceAllowed == Tristate.UNKNOWN) {
 			appearanceAllowed = Tristate.fromBoolean(r != null);
 		} else if (!partialAppearanceWarning &&
-				(appearanceAllowed == Tristate.FALSE && r != null) ||
-				(appearanceAllowed == Tristate.TRUE && r == null)) {
+				((appearanceAllowed == Tristate.FALSE && r != null) ||
+				 (appearanceAllowed == Tristate.TRUE && r == null))) {
 			loader.addNotice(LoaderNotice.Type.WARNING,
 				"The layout data for this bigraph is incomplete and " +
 				"so has been ignored.");
@@ -121,7 +121,8 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 				cg.add(ExtendedDataUtilities.changeComment(object, comment));
 		}
 		
-		if (object instanceof Layoutable && !(object instanceof Edge))
+		if (object instanceof Layoutable && !(object instanceof Edge) &&
+				!(object instanceof Bigraph))
 			doLayoutCheck(r);
 		
 		if (object instanceof PortSpec) {
