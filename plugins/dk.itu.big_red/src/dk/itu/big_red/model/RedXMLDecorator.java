@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save.savers;
+package dk.itu.big_red.model;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.loaders.XMLLoader.getAttributeNS;
@@ -41,6 +41,7 @@ import dk.itu.big_red.model.load_save.IXMLLoader;
 import dk.itu.big_red.model.load_save.IXMLUndecorator;
 import dk.itu.big_red.model.load_save.LoaderNotice;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
+import dk.itu.big_red.model.load_save.savers.XMLSaver;
 import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
 public class RedXMLDecorator implements Decorator, IXMLUndecorator {
