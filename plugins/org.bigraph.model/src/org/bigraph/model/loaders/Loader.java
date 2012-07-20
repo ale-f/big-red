@@ -7,7 +7,7 @@ import java.util.List;
 import org.bigraph.model.ModelObject;
 
 public abstract class Loader implements ILoader {
-	protected InputStream source = null;
+	private InputStream source = null;
 	
 	/**
 	 * Sets the source of the import to the given {@link InputStream}. The
@@ -19,6 +19,10 @@ public abstract class Loader implements ILoader {
 		if (is != null)
 			source = is;
 		return this;
+	}
+	
+	protected InputStream getInputStream() {
+		return source;
 	}
 	
 	/**

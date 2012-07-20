@@ -91,7 +91,7 @@ public class ReactionXMLLoader extends XMLLoader{
 	public Reaction importObject() throws LoadFailedException {
 		try {
 			Document d =
-					validate(parse(source), "resources/schema/reaction.xsd");
+					validate(parse(getInputStream()), "resources/schema/reaction.xsd");
 			Reaction b = makeObject(d.getDocumentElement());
 			ExtendedDataUtilities.setFile(b, getFile());
 			return b;

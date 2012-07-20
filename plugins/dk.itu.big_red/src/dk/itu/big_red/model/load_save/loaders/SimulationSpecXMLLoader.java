@@ -21,7 +21,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	public SimulationSpec importObject() throws LoadFailedException {
 		try {
 			Document d =
-					validate(parse(source), "resources/schema/spec.xsd");
+					validate(parse(getInputStream()), "resources/schema/spec.xsd");
 			SimulationSpec ss = makeObject(d.getDocumentElement());
 			ExtendedDataUtilities.setFile(ss, getFile());
 			return ss;

@@ -61,7 +61,7 @@ import it.uniud.bigredit.model.Reaction;
 		public BRS importObject() throws LoadFailedException {
 			try {
 				Document d =
-						validate(parse(source), "resources/schema/brs.xsd");
+						validate(parse(getInputStream()), "resources/schema/brs.xsd");
 				System.out.println("not there");
 				BRS ss = makeObject(d.getDocumentElement());
 				ExtendedDataUtilities.setFile(ss, getFile());

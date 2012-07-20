@@ -45,7 +45,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	public ReactionRule importObject() throws LoadFailedException {
 		try {
 			Document d =
-					validate(parse(source), "resources/schema/rule.xsd");
+					validate(parse(getInputStream()), "resources/schema/rule.xsd");
 			ReactionRule rr = makeObject(d.getDocumentElement());
 			ExtendedDataUtilities.setFile(rr, getFile());
 			return rr;

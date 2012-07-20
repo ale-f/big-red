@@ -42,7 +42,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	public Bigraph importObject() throws LoadFailedException {
 		try {
 			Document d =
-					validate(parse(source), "resources/schema/bigraph.xsd");
+					validate(parse(getInputStream()), "resources/schema/bigraph.xsd");
 			Bigraph b = makeObject(d.getDocumentElement());
 			ExtendedDataUtilities.setFile(b, getFile());
 			return b;
