@@ -73,9 +73,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		for (Element j : getNamedChildElements(e, SIGNATURE, "control"))
 			makeControl(j);
 		
+		executeUndecorators(sig, e);
 		executeChanges(sig);
-		
-		return executeUndecorators(sig, e);
+		return sig;
 	}
 	
 	private PortSpec makePortSpec(Element e, Control c) {

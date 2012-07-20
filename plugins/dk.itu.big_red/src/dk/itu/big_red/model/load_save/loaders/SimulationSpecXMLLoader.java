@@ -96,9 +96,9 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		if (modelElement != null)
 			addChange(ss.changeModel(makeBigraph(modelElement)));
 		
+		executeUndecorators(ss, e);
 		executeChanges(ss);
-		
-		return executeUndecorators(ss, e);
+		return ss;
 	}
 	
 	@Override

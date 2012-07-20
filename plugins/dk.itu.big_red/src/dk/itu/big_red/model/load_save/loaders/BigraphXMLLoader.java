@@ -101,8 +101,10 @@ public class BigraphXMLLoader extends XMLLoader {
 		}
 		
 		processContainer(e, bigraph);
+		
+		executeUndecorators(bigraph, e);
 		executeChanges(bigraph);
-		return executeUndecorators(bigraph, e);
+		return bigraph;
 	}
 	
 	private void processContainer(Element e, Container model) throws LoadFailedException {
