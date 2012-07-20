@@ -52,7 +52,9 @@ public class ResourceTreeSelectionDialog extends ElementTreeSelectionDialog {
 	public static int CLEAR = 0x98765432;
 	
 	public ResourceTreeSelectionDialog(Shell parent, IContainer input, Mode mode, String... contentTypes) {
-		super(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
+		super(parent,
+				WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider(),
+				new WorkbenchContentProvider());
 		setAllowMultiple(false);
 		setInput(input);
 		if (mode == Mode.FILE) {
