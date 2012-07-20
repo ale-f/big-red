@@ -2,6 +2,7 @@ package it.uniud.bigredit.model;
 
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
@@ -19,13 +20,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
 import org.eclipse.draw2d.geometry.Rectangle;
-
 import it.uniud.bigredit.policy.ReactionChangeValidator;
-
-
-
-
-
 
 public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
@@ -42,7 +37,9 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	private Rectangle redexLayout = new Rectangle(15,40,150,200);
 	private Rectangle reactumLayout = new Rectangle(315,40,150,200);
 	
-	private HashMap <Site,Site> mapRedexSiteToReactum;
+	public HashMap <Site,Site> mapReactumSiteToRedex;
+	public HashMap <Site, Integer> mapRedexSiteSon;
+	
 	private HashMap <Root, Root> mapRedexRootToReactum;
 	
 	private HashMap <String, Layoutable> mapRedex;

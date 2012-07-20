@@ -1,6 +1,8 @@
 package it.uniud.bigredit.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.bigraph.model.Link;
@@ -13,10 +15,22 @@ public class MatchData {
 	 * ModelObject in Redex, ModelObject in Agent
 	 */
 	private HashMap<ModelObject, ModelObject> map;
+	private HashMap<ModelObject, ArrayList<ModelObject>> mapSites;
 	private BidiMap<Link, Link> mapLink;
 
 	public void addRootMatch(ModelObject rootR, ModelObject elementA) {
 		map.put(rootR, elementA);
+	}
+	
+	public void addSiteMatch(ModelObject rootR, ModelObject elementA) {
+		if (mapSites.get(rootR)==null){
+			mapSites.put(rootR, new ArrayList<ModelObject>());
+		}
+		mapSites.get(rootR).add(elementA);
+	}
+	
+	public ArrayList<ModelObject> getSiteMapping(ModelObject siteR){
+		return mapSites.get(siteR);
 	}
 
 	public HashMap<ModelObject, ModelObject> getMappingData() {
@@ -26,6 +40,7 @@ public class MatchData {
 	public MatchData() {
 		this.map = new HashMap<ModelObject, ModelObject>();
 		this.mapLink = new BidiMap<Link, Link>();
+		this.mapSites= new HashMap <ModelObject, ArrayList<ModelObject>> ();
 	}
 
 	public ModelObject getRoot() {

@@ -514,6 +514,14 @@ public class PlaceMatch {
 			int agentRow = getMatchingAgent(input, redexColumn);
 			Layoutable agentMatch = listAgent.get(agentRow);
 			Layoutable redexMatch = listRedex.get(redexColumn);
+			if(redexMatch instanceof Site){
+				for(int i = 0; i< input.length;i++){
+					if(input[i][redexColumn] == 1){
+						data.addSiteMatch(redexMatch, listAgent.get(i));
+					}
+				}
+			}
+			
 			data.addRootMatch(redexMatch, agentMatch);
 		}
 		data.setLinkMap(maplinkAgent_Redex);
