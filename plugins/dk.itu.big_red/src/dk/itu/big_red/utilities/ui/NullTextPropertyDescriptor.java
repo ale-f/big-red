@@ -1,10 +1,12 @@
-package dk.itu.big_red.editors.utilities;
+package dk.itu.big_red.utilities.ui;
 
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
-class NullTextPropertyDescriptor extends PropertyDescriptor {
+import dk.itu.big_red.utilities.ui.jface.NullTextCellEditor;
+
+public class NullTextPropertyDescriptor extends PropertyDescriptor {
     public NullTextPropertyDescriptor(Object id, String displayName) {
         super(id, displayName);
     }
