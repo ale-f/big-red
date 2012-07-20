@@ -4,6 +4,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
@@ -11,7 +12,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.utilities.resources.Project;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;

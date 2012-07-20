@@ -17,6 +17,7 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.loaders.LoaderNotice;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
@@ -30,7 +31,6 @@ import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.model.load_save.IXMLLoader;
 import dk.itu.big_red.model.load_save.IXMLUndecorator;
-import dk.itu.big_red.model.load_save.LoaderNotice;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 public class RedXMLUndecorator implements IXMLUndecorator {

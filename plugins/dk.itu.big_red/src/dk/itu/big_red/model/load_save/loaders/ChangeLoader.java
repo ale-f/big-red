@@ -5,9 +5,9 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.loaders.LoadFailedException;
 
 import dk.itu.big_red.model.load_save.IChangeLoader;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 
 public abstract class ChangeLoader extends Loader implements IChangeLoader {

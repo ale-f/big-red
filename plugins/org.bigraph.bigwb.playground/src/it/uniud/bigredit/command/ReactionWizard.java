@@ -21,6 +21,7 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.uniud.bigraph.match.PlaceMatch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -47,7 +48,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 
 
 

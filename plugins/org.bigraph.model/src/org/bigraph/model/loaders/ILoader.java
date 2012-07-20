@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.loaders;
 
 public interface ILoader {
 	void addNotice(LoaderNotice notice);

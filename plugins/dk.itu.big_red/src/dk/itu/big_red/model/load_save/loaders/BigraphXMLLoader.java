@@ -17,6 +17,8 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
+import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -25,8 +27,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.LoaderNotice;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.resources.Project;
 

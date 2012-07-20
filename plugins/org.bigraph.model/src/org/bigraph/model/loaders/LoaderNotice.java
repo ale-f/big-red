@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.loaders;
 
 public final class LoaderNotice {
 	public static enum Type {
@@ -11,7 +11,7 @@ public final class LoaderNotice {
 	private final Type type;
 	private final String message;
 	
-	protected LoaderNotice(Type type, String message) {
+	public LoaderNotice(Type type, String message) {
 		this.type = type;
 		this.message = message;
 	}

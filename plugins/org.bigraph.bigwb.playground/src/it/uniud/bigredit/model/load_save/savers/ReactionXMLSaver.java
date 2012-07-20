@@ -7,10 +7,10 @@ import it.uniud.bigredit.model.Reaction;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
