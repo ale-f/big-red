@@ -31,7 +31,7 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
-import dk.itu.big_red.model.RedXMLDecorator;
+import dk.itu.big_red.model.RedXMLUndecorator;
 import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.LoaderNotice;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
@@ -233,7 +233,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				
 				if (l != null)
 					cd = LayoutUtilities.changeLayoutDescriptor(l,
-							RedXMLDecorator.getRectangle(el));
+							RedXMLUndecorator.getRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
 					colour =
