@@ -27,6 +27,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.load_save.IXMLDecorator;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
@@ -39,7 +40,7 @@ public abstract class XMLSaver extends Saver {
 			if ("decorator".equals(ice.getName())) {
 				try {
 					addDecorator(
-						(Decorator)ice.createExecutableExtension("class"));
+						(IXMLDecorator)ice.createExecutableExtension("class"));
 				} catch (CoreException e) {
 					e.printStackTrace();
 					/* do nothing */
@@ -229,26 +230,22 @@ public abstract class XMLSaver extends Saver {
 		return impl;
 	}
 	
-	public interface Decorator {
-		void decorate(ModelObject object, Element el);
-	}
+	private List<IXMLDecorator> decorators = null;
 	
-	private List<Decorator> decorators = null;
-	
-	protected List<Decorator> getDecorators() {
+	protected List<IXMLDecorator> getDecorators() {
 		return (decorators != null ? decorators :
-				Collections.<Decorator>emptyList());
+				Collections.<IXMLDecorator>emptyList());
 	}
 	
-	protected void addDecorator(Decorator d) {
+	protected void addDecorator(IXMLDecorator d) {
 		if (d == null)
 			return;
 		if (decorators == null)
-			decorators = new ArrayList<Decorator>();
+			decorators = new ArrayList<IXMLDecorator>();
 		decorators.add(d);
 	}
 	
-	protected void removeDecorator(Decorator d) {
+	protected void removeDecorator(IXMLDecorator d) {
 		if (decorators.remove(d))
 			if (decorators.size() == 0)
 				decorators = null;
@@ -256,7 +253,7 @@ public abstract class XMLSaver extends Saver {
 	
 	protected Element executeDecorators(ModelObject mo, Element el) {
 		if (mo != null && el != null)
-			for (Decorator d : getDecorators())
+			for (IXMLDecorator d : getDecorators())
 				d.decorate(mo, el);
 		return el;
 	}

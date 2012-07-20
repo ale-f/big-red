@@ -21,10 +21,10 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
+import dk.itu.big_red.model.load_save.IXMLDecorator;
 import dk.itu.big_red.model.load_save.savers.XMLSaver;
-import dk.itu.big_red.model.load_save.savers.XMLSaver.Decorator;
 
-public class RedXMLDecorator implements Decorator {
+public class RedXMLDecorator implements IXMLDecorator {
 	public static Element rectangleToElement(Element e, Rectangle r) {
 		return XMLSaver.applyAttributes(e,
 			"width", r.width(), "height", r.height(), "x", r.x(), "y", r.y());
