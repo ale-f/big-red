@@ -558,10 +558,9 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 				fillCircleCentredAt(gc, getPoint(i), 3);
 			
 			gc.setForeground(ColorConstants.black);
+			gc.setBackground(ColorConstants.red);
 			
 			for (PortSpec p : getModel().getPorts()) {
-				gc.setBackground(ColorConstants.red);
-				
 				int segment = getSegment(p);
 				l.setFirstPoint(getPoint(segment));
 				l.setSecondPoint(getPoint(segment + 1));
@@ -577,6 +576,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			gc.fillOval(30, 30, w, h);
 			gc.drawOval(30, 30, w, h);
 			
+			gc.setForeground(ColorConstants.black);
 			gc.setBackground(ColorConstants.red);
 			for (PortSpec p : getModel().getPorts()) {
 				Point portCenter = el.getPointFromOffset(getDistance(p));
