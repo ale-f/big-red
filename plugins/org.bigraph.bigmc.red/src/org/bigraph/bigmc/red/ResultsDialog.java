@@ -7,8 +7,8 @@ import java.util.TimerTask;
 import org.bigraph.bigmc.red.BigMCInteractionManager.State;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.savers.SaveFailedException;
 
-import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;

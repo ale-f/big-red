@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.savers;
 
 /**
  * Classes extending {@link Saver} throw an SaveFailedException if the

@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.simulation_spec;
 
+import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.widgets.Composite;
@@ -7,7 +8,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import dk.itu.big_red.interaction_managers.InteractionManager;
 import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;

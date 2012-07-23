@@ -14,8 +14,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Widget;
 
-import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.model.load_save.Saver.Option;
+import org.bigraph.model.savers.Saver;
+import org.bigraph.model.savers.Saver.Option;;
 
 public class SaverOptionsGroup {
 	private Composite optionsGroup;

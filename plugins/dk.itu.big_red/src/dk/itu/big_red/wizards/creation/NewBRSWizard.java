@@ -3,6 +3,7 @@ package dk.itu.big_red.wizards.creation;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -13,7 +14,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
@@ -60,7 +60,7 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 					setOutputStream(big.getOutputStream()).exportObject();
 				
 				new SimulationSpecXMLSaver().setModel(new SimulationSpec()).
-					setOutputStream(sim.getOutputStream()).setFile(spec).
+					setFile(spec).setOutputStream(sim.getOutputStream()).
 					exportObject();
 				
 				new ModificationRunner(null,

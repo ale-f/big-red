@@ -3,9 +3,9 @@ package dk.itu.big_red.model.load_save.savers;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.savers.SaveFailedException;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.load_save.SaveFailedException;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 

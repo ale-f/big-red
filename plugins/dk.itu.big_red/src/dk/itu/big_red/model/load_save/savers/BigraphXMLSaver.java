@@ -16,10 +16,10 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.savers.SaveFailedException;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
