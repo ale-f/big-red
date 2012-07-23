@@ -20,6 +20,8 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
 import org.eclipse.draw2d.geometry.Rectangle;
+
+import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import it.uniud.bigredit.policy.ReactionChangeValidator;
 
 public class Reaction  extends ModelObject  implements IChangeExecutor{
@@ -37,8 +39,8 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	private Rectangle redexLayout = new Rectangle(15,40,150,200);
 	private Rectangle reactumLayout = new Rectangle(315,40,150,200);
 	
-	public HashMap <Site,Site> mapReactumSiteToRedex;
-	public HashMap <Site, Integer> mapRedexSiteSon;
+	public HashMap <Site,Site> mapReactumSiteToRedex= new HashMap <Site,Site>();
+	public HashMap <Site, Integer> mapRedexSiteSon= new HashMap<Site,Integer>();
 	
 	private HashMap <Root, Root> mapRedexRootToReactum;
 	
@@ -300,6 +302,8 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	
 	public void analyzeReaction(){
+		
+		mapRedexRootToReactum=new HashMap<Root, Root> ();
 		for (Root root : redex.getRoots()){
 			String name=root.getName();
 			for(Root root2: reactum.getRoots()){
@@ -308,6 +312,23 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 				}
 			}
 		}
+		mapRedexSiteSon= new HashMap<Site,Integer>();
+		
+		for (Site siteReactum: reactum.getSites()){
+			String alias=ExtendedDataUtilities.getAlias(siteReactum);
+			for (Site siteRedex: redex.getSites()){
+				if(siteRedex.getName().equals(alias)){
+					mapReactumSiteToRedex.put(siteReactum, siteRedex);
+					if(mapRedexSiteSon.get(siteRedex)==null){
+						mapRedexSiteSon.put(siteRedex, 1);
+					}else{
+						mapRedexSiteSon.put(siteRedex,mapRedexSiteSon.get(siteRedex)+1);
+					}
+					
+				}
+			}
+		}
+		
 	}
 	
 	public HashMap<Root, Root> getMapRedexRootToReactum() {

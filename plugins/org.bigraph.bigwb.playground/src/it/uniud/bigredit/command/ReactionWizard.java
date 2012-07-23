@@ -178,9 +178,21 @@ public class ReactionWizard extends Wizard {
 						s += matchRootR.getType() +" "+ ((Layoutable)matchRootR).getName();
 						
 						ModelObject matchElementA = e.getValue();
-						
-						s += " -> " + matchElementA.getType() +" "+ ((Layoutable)matchElementA).getName() + "\n";
-						
+						if (!(matchRootR instanceof Site)) {
+							
+
+							s += " -> " + matchElementA.getType() + " "
+									+ ((Layoutable) matchElementA).getName()
+									+ "\n";
+						}else{
+							s += " -> ";
+							for (ModelObject mo:m.getSiteMapping(matchRootR) ){
+								s += mo.getType() + " ";
+								s += ((Layoutable)mo).getName()+ ", ";
+							}
+							s += "\n";
+							
+						}
 //						matchList.add( "Match " + ( i + 1 ) + ": " + s );
 //						matchNames.add( s );
 //						i++;
@@ -621,7 +633,13 @@ public class ReactionWizard extends Wizard {
 			
 			for(ModelObject obj: root.getChildren()){
 				//cgA.add(((Layoutable)chosenMatch.getMappingData().get(obj)).changeRemove());
-				eraseNodeandChild(((Layoutable)chosenMatch.getMappingData().get(obj)),cgA);
+				if(!(obj instanceof Site)){
+					eraseNodeandChild(((Layoutable)chosenMatch.getMappingData().get(obj)),cgA);
+				}else{
+					for (ModelObject mo:chosenMatch.getSiteMapping(obj) ){
+						eraseNodeandChild((Layoutable)mo,cgA);
+					}
+				}
 			}
 			
 			for(Layoutable child: reactumRoot.getChildren()){
@@ -651,21 +669,21 @@ public class ReactionWizard extends Wizard {
 				cgA.add(LayoutUtilities.relayout(target));
 				target.tryApplyChange(cgA);
 				
-				Rectangle rectTest=LayoutUtilities.getLayout(target);
-				System.out.println(rectTest);
-				Point mainBigraphBottomRight= rectTest.getBottomRight();
-				
-				for (Root root :target.getRoots()){
-					Rectangle rect=LayoutUtilities.getLayout(root);
-					//Point topLeft= rect.getTopLeft();
-					Point bottomRight = rect.getBottomRight();
-					if (mainBigraphBottomRight.x < bottomRight.x){
-						rectTest.setWidth(bottomRight.x + 10);
-					}
-					if (mainBigraphBottomRight.y < bottomRight.y){
-						rectTest.setHeight(bottomRight.y + 10);
-					}	
-				}
+//				Rectangle rectTest=LayoutUtilities.getLayout(target);
+//				System.out.println(rectTest);
+//				Point mainBigraphBottomRight= rectTest.getBottomRight();
+//				
+//				for (Root root :target.getRoots()){
+//					Rectangle rect=LayoutUtilities.getLayout(root);
+//					//Point topLeft= rect.getTopLeft();
+//					Point bottomRight = rect.getBottomRight();
+//					if (mainBigraphBottomRight.x < bottomRight.x){
+//						rectTest.setWidth(bottomRight.x + 10);
+//					}
+//					if (mainBigraphBottomRight.y < bottomRight.y){
+//						rectTest.setHeight(bottomRight.y + 10);
+//					}	
+//				}
 					
 				
 			} catch (ChangeRejectedException e) {
@@ -697,7 +715,7 @@ public class ReactionWizard extends Wizard {
 		
 		
 		
-		
+		LayoutUtilities.relayout(target);
 		return true;
 	}
 	
@@ -816,6 +834,7 @@ public class ReactionWizard extends Wizard {
 		switch(rule.mapRedexSiteSon.get(redexS)){
 			case 0:
 				// delete (1 site in redex -> 0 site in reactum)
+				System.out.println("add no site");
 				//eraseNodeandChild
 				break;
 				
@@ -823,13 +842,14 @@ public class ReactionWizard extends Wizard {
 				// no biection on site (1 site in redex -> 1 site in reactum) no
 				// renaming of controls
 				//addOneSite()
+				System.out.println("add one site");
 				addOneSite(matches,agentParent,cgAdd,cgRem);
-				
 				break;
 				
 			default:
 				// biection more site in reactum (1 site in redex -> * in reactum)
 				// renaming of controls
+				System.out.println("add more sites");
 				addOneSiteRenaming(matches,agentParent,cgAdd,cgRem);				
 				break;
 
@@ -850,8 +870,19 @@ public class ReactionWizard extends Wizard {
 		for (Layoutable match : agentMatchedComponets) {
 			Layoutable newNodeAgent = (Layoutable) match.newInstance();
 			String name = match.getName();
-			newNodeAgent.changeName(name + ((int) (Math.random() * 100)));
-
+			//newNodeAgent.changeName(name + ((int) (Math.random() * 100)));
+			
+			cgAdd.add(((Container) newParentAgent).changeAddChild(newNodeAgent,name));
+			
+			Rectangle parentRect= LayoutUtilities.getLayout(newParentAgent);
+			Rectangle rect=LayoutUtilities.getLayout(match);
+			
+			rect.width=(rect.width < parentRect.width) ? rect.width : (parentRect.width*2)/3;
+			rect.height=(rect.height < parentRect.height) ? rect.height : (parentRect.height*2)/3;
+			LayoutUtilities.setLayout(newNodeAgent, new Rectangle(parentRect.x+1,parentRect.y+1,rect.width,rect.height));
+					
+			
+			
 			if (match instanceof Container) {
 				addOneSite(
 						(ArrayList<Layoutable>) ((Container) match)
@@ -866,7 +897,7 @@ public class ReactionWizard extends Wizard {
 
 					Link link = p.getLink();
 
-					// cgL.add(pOnNewNode.changeConnect(link));
+					cgRem.add(pOnNewNode.changeConnect(link));
 
 					// ((Node)newNodeAgent).getPort(p.getName());
 				}
@@ -882,7 +913,15 @@ public class ReactionWizard extends Wizard {
 		for (Layoutable match : agentMatchedComponets) {
 			Layoutable newNodeAgent = (Layoutable) match.newInstance();
 			String name = match.getName();
-			newNodeAgent.changeName(name);
+			name=name + ((int) (Math.random() * 100));
+			
+			//newNodeAgent.changeName(name + ((int) (Math.random() * 100)));
+			
+			cgAdd.add(((Container) newParentAgent).changeAddChild(newNodeAgent,name));
+			LayoutUtilities.setLayout(newNodeAgent,
+					LayoutUtilities.getLayout(match));
+			
+			
 
 			if (match instanceof Container) {
 				addOneSite(
@@ -898,13 +937,12 @@ public class ReactionWizard extends Wizard {
 
 					Link link = p.getLink();
 
-					// cgL.add(pOnNewNode.changeConnect(link));
+					cgRem.add(pOnNewNode.changeConnect(link));
 
 					// ((Node)newNodeAgent).getPort(p.getName());
 				}
 
 			}
-
 		}
 
 	}

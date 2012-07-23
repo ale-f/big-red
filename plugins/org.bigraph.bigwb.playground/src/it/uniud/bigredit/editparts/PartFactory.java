@@ -56,7 +56,7 @@ public class PartFactory implements EditPartFactory {
         }else if (target == Root.class) {
         	part = new RootPart();
         } else if (target == Site.class) {
-    		part = new SitePart();
+    		part = new SitePlusPart();
         } else if (target == LinkPart.Connection.class) {
         	part = new LinkConnectionPart();
         } else if (target == Edge.class) {

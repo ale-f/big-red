@@ -146,14 +146,19 @@ public class PlaceMatch {
 		
 		for (int i = 0; i < numberCSinR; i++) {
 			// site can take lot of 
-			if (!(listRedex.get(i) instanceof Site)) {
+			
 				for (int j = 0; j < numberCSinA; j++) {
 					// Copy of var in the column order
 					varCol[i][j] = matrix[j][i];
 				}
 
+			if (!(listRedex.get(i) instanceof Site)) {
 				m.addConstraint(Choco.eq(Choco.sum(varCol[i]), 1));
 				System.out.println(Choco.sum(varCol[i]) + " = 1");
+			}else{
+				m.addConstraint(Choco.gt(Choco.sum(varCol[i]), 0));
+				System.out.println(Choco.sum(varCol[i]) + " > 0");
+				
 			}
 		}
 		
@@ -514,6 +519,7 @@ public class PlaceMatch {
 			int agentRow = getMatchingAgent(input, redexColumn);
 			Layoutable agentMatch = listAgent.get(agentRow);
 			Layoutable redexMatch = listRedex.get(redexColumn);
+			
 			if(redexMatch instanceof Site){
 				for(int i = 0; i< input.length;i++){
 					if(input[i][redexColumn] == 1){
@@ -541,7 +547,7 @@ public class PlaceMatch {
 			int agentRow = getMatchingAgent(input, redexColumn);
 			Layoutable agentMatch = listAgent.get(agentRow);
 			Layoutable redexMatch = listRedex.get(redexColumn);
-			System.out.println("match A: " + agentRow + " "+agentMatch.getType()+" " +agentMatch.getName() + ", R:" + redexColumn +" "+ redexMatch.getType()+" "+  redexMatch.getName()  );
+			//System.out.println("match A: " + agentRow + " "+agentMatch.getType()+" " +agentMatch.getName() + ", R:" + redexColumn +" "+ redexMatch.getType()+" "+  redexMatch.getName()  );
 
 
 			if (agentMatch instanceof Node && redexMatch instanceof Node) {
