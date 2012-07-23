@@ -298,11 +298,14 @@ public final class Project {
 				throws CoreException {
 			if (monitor == null)
 				monitor = new NullProgressMonitor();
+			monitor.beginTask(
+					"Performing workspace update", modifications.length);
 			try {
 				for (IWorkspaceModification j : modifications) {
 					if (monitor.isCanceled())
 						break;
 					j.run(monitor);
+					monitor.worked(1);
 				}
 				
 				if (payload != null && !monitor.isCanceled())
