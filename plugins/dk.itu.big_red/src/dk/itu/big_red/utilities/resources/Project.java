@@ -209,6 +209,7 @@ public final class Project {
 	public static final class ModificationRunner extends WorkspaceJob {
 		public static class Callback {
 			public void onSuccess() {}
+			public void onError(CoreException e) {}
 			public void always() {}
 		}
 
@@ -243,6 +244,15 @@ public final class Project {
 						}
 					});
 				return Status.OK_STATUS;
+			} catch (final CoreException e) {
+				if (payload != null)
+					UI.asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							payload.onError(e);
+						}
+					});
+				throw e;
 			} finally {
 				if (payload != null)
 					UI.asyncExec(new Runnable() {
