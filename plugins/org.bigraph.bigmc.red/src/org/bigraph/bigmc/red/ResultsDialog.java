@@ -15,6 +15,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,6 +32,8 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 
 import dk.itu.big_red.editors.utilities.BigraphCanvas;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.Project;
+import dk.itu.big_red.utilities.resources.Project.ModificationRunner.Callback;
 
 public class ResultsDialog extends TitleAreaDialog {
 	private Timer parseTimer;
@@ -207,7 +210,7 @@ public class ResultsDialog extends TitleAreaDialog {
 			SaveAsDialog d = new SaveAsDialog(getShell());
 			d.setBlockOnOpen(true);
 			if (d.open() == Dialog.OK) {
-				IFile f = ResourcesPlugin.getWorkspace().getRoot().
+				final IFile f = ResourcesPlugin.getWorkspace().getRoot().
 						getFile(d.getResult());
 				IOAdapter io = new IOAdapter();
 				setErrorMessage(null);
@@ -219,12 +222,20 @@ public class ResultsDialog extends TitleAreaDialog {
 					setErrorMessage(e.getMessage());
 					return;
 				}
-				try {
-					f.create(io.getInputStream(), 0, null);
-				} catch (CoreException e) {
-					setErrorMessage(e.getMessage());
-					return;
-				}
+				Project.setContents(f, io.getInputStream(), new Callback() {
+					@Override
+					public void onSuccess() {
+						setErrorMessage(null);
+						setMessage("State saved to " + f.getFullPath() + ".",
+								IMessageProvider.INFORMATION);
+					}
+					
+					@Override
+					public void onError(CoreException e) {
+						setErrorMessage(e.getMessage());
+						return;
+					}
+				});
 			}
 		}
 	}
