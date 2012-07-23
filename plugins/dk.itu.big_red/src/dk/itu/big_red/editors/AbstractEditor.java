@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -36,7 +37,6 @@ import dk.itu.big_red.editors.actions.RevertProxyAction;
 import dk.itu.big_red.editors.actions.UndoProxyAction;
 import dk.itu.big_red.editors.actions.ProxyAction.IActionImplementor;
 import dk.itu.big_red.editors.assistants.EditorError;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.utilities.io.IOAdapter;

@@ -4,6 +4,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
@@ -13,7 +14,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
@@ -24,7 +24,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	public Signature importObject() throws LoadFailedException {
 		try {
 			Document d =
-				validate(parse(source), "resources/schema/signature.xsd");
+				validate(parse(getInputStream()), "resources/schema/signature.xsd");
 			Signature s = makeObject(d.getDocumentElement());
 			ExtendedDataUtilities.setFile(s, getFile());
 			return s;
@@ -73,9 +73,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		for (Element j : getNamedChildElements(e, SIGNATURE, "control"))
 			makeControl(j);
 		
+		executeUndecorators(sig, e);
 		executeChanges(sig);
-		
-		return executeUndecorators(sig, e);
+		return sig;
 	}
 	
 	private PortSpec makePortSpec(Element e, Control c) {

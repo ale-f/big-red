@@ -1,5 +1,8 @@
 package org.bigraph.model.assistants;
 
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Point;
+import org.bigraph.model.Port;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Layoutable.ChangeNameDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
@@ -108,8 +111,10 @@ public abstract class DescriptorConflicts {
 		@Override
 		public boolean conflicts(ChangeRemoveDescriptor a,
 				ChangeConnectDescriptor b) {
-			// TODO Auto-generated method stub
-			return false;
+			Layoutable.Identifier l = b.getPoint();
+			if (l instanceof Port.Identifier)
+				l = ((Port.Identifier)l).getNode();
+			return (a.getTarget().equals(l));
 		}
 	};
 	
@@ -150,8 +155,9 @@ public abstract class DescriptorConflicts {
 		@Override
 		public boolean conflicts(ChangeDisconnectDescriptor a,
 				ChangeNameDescriptor b) {
-			// TODO Auto-generated method stub
-			return false;
+			/* More */
+			Point.Identifier point = a.getPoint();
+			return (point.equals(b.getTarget()));
 		}
 	};
 	

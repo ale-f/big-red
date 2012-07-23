@@ -69,8 +69,9 @@ public abstract class ChangeCommand extends Command {
 	 */
 	@Override
 	public final boolean canExecute() {
-		boolean status = (change != null && target != null &&
-				change.isReady());
+		IChange change = getChange();
+		boolean status =
+				(change != null && target != null && change.isReady());
 		if (status && change instanceof ChangeGroup)
 			status = (((ChangeGroup)change).size() != 0);
 		if (status) {
@@ -93,7 +94,7 @@ public abstract class ChangeCommand extends Command {
 	@Override
 	public final void execute() {
 		try {
-			target.tryApplyChange(change);
+			target.tryApplyChange(getChange());
 		} catch (ChangeRejectedException cre) {
 			/* do nothing */
 		}
@@ -101,16 +102,20 @@ public abstract class ChangeCommand extends Command {
 	
 	private IChange inverse = null;
 	
+	protected IChange getInverse() {
+		if (inverse == null)
+			inverse = getChange().inverse();
+		return inverse;
+	}
+	
 	/**
 	 * Reverses the effects of this command's {@link IChange} (by applying its
 	 * {@link IChange#inverse() inverse}).
 	 */
 	@Override
 	public final void undo() {
-		if (inverse == null)
-			inverse = change.inverse();
 		try {
-			target.tryApplyChange(inverse);
+			target.tryApplyChange(getInverse());
 		} catch (ChangeRejectedException cre) {
 			/* do nothing */
 		}

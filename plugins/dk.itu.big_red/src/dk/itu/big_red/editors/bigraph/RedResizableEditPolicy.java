@@ -18,13 +18,26 @@ public class RedResizableEditPolicy extends ResizableEditPolicy {
 			setDragAllowed(false);
 	}
 	
+	private static final ChangeBoundsRequest cbr(
+			ChangeBoundsRequest request, Object nt) {
+		ChangeBoundsRequest cbr = new ChangeBoundsRequest(nt);
+		cbr.setLocation(request.getLocation());
+		cbr.setEditParts(request.getEditParts());
+		cbr.setMoveDelta(request.getMoveDelta());
+		cbr.setSizeDelta(request.getSizeDelta());
+		cbr.setExtendedData(request.getExtendedData());
+		return cbr;
+	}
+	
 	@Override
 	protected Command getMoveCommand(ChangeBoundsRequest request) {
-		return CombinedCommandFactory.createMoveCommand(request);
+		return getHost().getParent().getCommand(
+				cbr(request, REQ_MOVE_CHILDREN));
 	}
 	
 	@Override
 	protected Command getResizeCommand(ChangeBoundsRequest request) {
-		return CombinedCommandFactory.createMoveCommand(request);
+		return getHost().getParent().getCommand(
+				cbr(request, REQ_RESIZE_CHILDREN));
 	}
 }

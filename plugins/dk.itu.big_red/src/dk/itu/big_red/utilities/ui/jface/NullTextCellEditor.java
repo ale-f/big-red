@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.utilities;
+package dk.itu.big_red.utilities.ui.jface;
 
 import java.text.MessageFormat;
 
@@ -6,7 +6,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.widgets.Composite;
 
-class NullTextCellEditor extends TextCellEditor {
+public class NullTextCellEditor extends TextCellEditor {
 	public NullTextCellEditor() {
 		super();
 	}

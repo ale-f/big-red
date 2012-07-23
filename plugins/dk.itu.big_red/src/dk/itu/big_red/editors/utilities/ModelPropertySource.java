@@ -17,6 +17,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.utilities.ui.NullTextPropertyDescriptor;
 
 public class ModelPropertySource implements IPropertySource {
 	private Layoutable object;

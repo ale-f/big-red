@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.loaders;
 
 /**
  * Classes extending {@link Loader} throw an LoadFailedException if the

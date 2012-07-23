@@ -18,7 +18,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.eclipse.core.resources.IFile;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -32,7 +32,6 @@ import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.model.load_save.IXMLLoader;
 import dk.itu.big_red.model.load_save.IXMLUndecorator;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 
 public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.xml";
@@ -89,14 +88,13 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	 * event of an exception
 	 * @return a Document
 	 * @throws SAXException as {@link DocumentBuilder#parse(File)}
-	 * @throws CoreException as {@link IFile#getContents()}
 	 * @throws IOException as {@link DocumentBuilder#parse(File)} or
 	 * {@link InputStream#close}
 	 * @throws ParserConfigurationException as {@link
 	 * DocumentBuilderFactory#newDocumentBuilder()}
 	 */
-	protected static Document parse(InputStream is) throws SAXException,
-	CoreException, IOException, ParserConfigurationException {
+	protected static Document parse(InputStream is)
+			throws SAXException, IOException, ParserConfigurationException {
 		try {
 			if (dbf == null) {
 				dbf = DocumentBuilderFactory.newInstance();
@@ -145,7 +143,8 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	 *         attribute couldn't be found
 	 * @see DOM#getAttribute
 	 */
-	public static double getDoubleAttribute(Element d, String nsURI, String n) {
+	public static double getDoubleAttribute(
+			Element d, String nsURI, String n) {
 		try {
 			return Double.parseDouble(getAttributeNS(d, nsURI, n));
 		} catch (Exception e) {
@@ -194,7 +193,8 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	 * @param n the tag name to search for
 	 * @return an ArrayList of child elements
 	 */
-	protected static ArrayList<Element> getNamedChildElements(Element d, String ns, String n) {
+	protected static ArrayList<Element> getNamedChildElements(
+			Element d, String ns, String n) {
 		ArrayList<Element> r = new ArrayList<Element>();
 		for (Element t : getChildElements(d))
 			if (t.getNamespaceURI().equals(ns) && t.getLocalName().equals(n))
@@ -211,7 +211,8 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	 *         or more than one matches
 	 * @see XMLLoader#getNamedChildElements
 	 */
-	protected static Element getNamedChildElement(Element d, String nsURI, String n) {
+	protected static Element getNamedChildElement(
+			Element d, String nsURI, String n) {
 		ArrayList<Element> r = getNamedChildElements(d, nsURI, n);
 		if (r.size() == 1)
 			return r.get(0);
@@ -242,13 +243,11 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	}
 	
 	protected <T extends XMLLoader> T newLoader(Class<T> klass) {
-		T loader;
 		try {
-			loader = klass.newInstance();
+			return klass.newInstance();
 		} catch (Exception e) {
 			return null;
 		}
-		return loader;
 	}
 	
 	@Override

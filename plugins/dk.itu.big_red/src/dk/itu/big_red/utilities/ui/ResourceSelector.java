@@ -6,17 +6,22 @@ import java.util.List;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.LabelProviderChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.services.IDisposable;
 
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 
-public class ResourceSelector {
+public class ResourceSelector implements IDisposable, ILabelProviderListener {
 	public interface ResourceListener {
 		void resourceChanged(IResource oldValue, IResource newValue);
 	}
@@ -26,6 +31,7 @@ public class ResourceSelector {
 	private Mode mode;
 	private String[] contentTypes;
 	private IResource resource;
+	private final ILabelProvider labelProvider;
 	
 	public ResourceSelector(Composite c, IContainer k, Mode m, String... cT) {
 		button = UI.chain(new Button(c, SWT.PUSH)).text("(none)").done();
@@ -39,6 +45,15 @@ public class ResourceSelector {
 		setContainer(k);
 		mode = m;
 		contentTypes = cT;
+		
+		labelProvider =
+				WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider();
+		labelProvider.addListener(this);
+	}
+	
+	@Override
+	public void labelProviderChanged(LabelProviderChangedEvent event) {
+		updateCaption();
 	}
 	
 	public IContainer getContainer() {
@@ -68,8 +83,12 @@ public class ResourceSelector {
 	private final void updateCaption() {
 		if (button != null && !button.isDisposed()) {
 			if (resource != null) {
-				button.setText(resource.getFullPath().toString());
-			} else button.setText("(none)");
+				button.setImage(labelProvider.getImage(resource));
+				button.setText(labelProvider.getText(resource));
+			} else {
+				button.setImage(null);
+				button.setText("(none)");
+			}
 		}
 	}
 	
@@ -109,5 +128,11 @@ public class ResourceSelector {
 			(oldResource != null && !oldResource.equals(newResource)))
 			for (ResourceListener l : getListeners())
 				l.resourceChanged(oldResource, newResource);
+	}
+	
+	@Override
+	public void dispose() {
+		labelProvider.removeListener(this);
+		labelProvider.dispose();
 	}
 }

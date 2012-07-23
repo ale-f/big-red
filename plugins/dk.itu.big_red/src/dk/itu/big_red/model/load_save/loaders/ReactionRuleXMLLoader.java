@@ -22,6 +22,8 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.LoaderNotice;
 import org.eclipse.core.resources.IFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -31,9 +33,7 @@ import dk.itu.big_red.editors.assistants.Colour;
 import dk.itu.big_red.editors.assistants.ColourUtilities;
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.LayoutUtilities;
-import dk.itu.big_red.model.load_save.LoadFailedException;
-import dk.itu.big_red.model.load_save.LoaderNotice;
-import dk.itu.big_red.model.load_save.savers.RedXMLDecorator;
+import dk.itu.big_red.model.RedXMLUndecorator;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
@@ -45,7 +45,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	public ReactionRule importObject() throws LoadFailedException {
 		try {
 			Document d =
-					validate(parse(source), "resources/schema/rule.xsd");
+					validate(parse(getInputStream()), "resources/schema/rule.xsd");
 			ReactionRule rr = makeObject(d.getDocumentElement());
 			ExtendedDataUtilities.setFile(rr, getFile());
 			return rr;
@@ -233,7 +233,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				
 				if (l != null)
 					cd = LayoutUtilities.changeLayoutDescriptor(l,
-							RedXMLDecorator.getRectangle(el));
+							RedXMLUndecorator.getRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
 					colour =

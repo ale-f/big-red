@@ -36,10 +36,14 @@ public class CombinedCommandFactory {
 	
 	@SuppressWarnings("unchecked")
 	private static final boolean tryTag(Request r) {
-		if (r.getExtendedData().get(TAG) != TAG) {
+		if (!isTagged(r)) {
 			r.getExtendedData().put(TAG, TAG);
 			return true;
 		} else return false;
+	}
+	
+	public static boolean isTagged(Request r) {
+		return (r.getExtendedData().get(TAG) == TAG);
 	}
 	
 	/**

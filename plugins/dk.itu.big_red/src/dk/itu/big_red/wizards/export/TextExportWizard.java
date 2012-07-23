@@ -9,6 +9,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -36,12 +37,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
 
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.SaveFailedException;
 import dk.itu.big_red.model.load_save.Saver;
@@ -49,7 +50,6 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
-import dk.itu.big_red.utilities.ui.jface.WorkspaceProvider;
 
 public class TextExportWizard extends Wizard implements IExportWizard {
 	@Override
@@ -214,7 +214,6 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 			public void createControl(Composite parent) {
 				final TreeViewer t = new TreeViewer(parent,
 						SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-				WorkspaceProvider p = new WorkspaceProvider();
 				t.addFilter(new ViewerFilter() {
 					@Override
 					public boolean select(Viewer viewer, Object parentElement,
@@ -230,7 +229,7 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 				t.setLabelProvider(
 						WorkbenchLabelProvider.
 							getDecoratingWorkbenchLabelProvider());
-				t.setContentProvider(p);
+				t.setContentProvider(new WorkbenchContentProvider());
 				t.setInput(ResourcesPlugin.getWorkspace().getRoot());
 				
 				t.addDoubleClickListener(new IDoubleClickListener() {

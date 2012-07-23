@@ -19,14 +19,13 @@ public abstract class Saver {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
 	
 	public class Option {
-		private String id, name, description;
+		private final String id, name, description;
 		
-		public Option(String id, String name) {
-			this.id = id;
-			this.name = name;
+		protected Option(String id, String name) {
+			this(id, name, null);
 		}
 		
-		public Option(String id, String name, String description) {
+		protected Option(String id, String name, String description) {
 			this.id = id;
 			this.name = name;
 			this.description = description;

@@ -18,6 +18,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -31,7 +32,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.LoadFailedException;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader;
@@ -61,7 +61,7 @@ import it.uniud.bigredit.model.Reaction;
 		public BRS importObject() throws LoadFailedException {
 			try {
 				Document d =
-						validate(parse(source), "resources/schema/brs.xsd");
+						validate(parse(getInputStream()), "resources/schema/brs.xsd");
 				System.out.println("not there");
 				BRS ss = makeObject(d.getDocumentElement());
 				ExtendedDataUtilities.setFile(ss, getFile());
