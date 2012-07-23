@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.MultiRule;
@@ -92,6 +93,10 @@ public final class Project {
 	
 	public interface IWorkspaceModification {
 		ISchedulingRule getSchedulingRule();
+		/**
+		 * @param monitor an {@link IProgressMonitor} (not <code>null</code>)
+		 * @throws CoreException
+		 */
 		void run(IProgressMonitor monitor) throws CoreException;
 	}
 	
@@ -106,8 +111,7 @@ public final class Project {
 		
 		@Override
 		public void run(IProgressMonitor monitor) throws CoreException {
-			if (monitor != null)
-				monitor.subTask("Setting contents");
+			monitor.subTask("Setting contents");
 			file.setContents(contents, IResource.FORCE, monitor);
 		}
 		
@@ -128,8 +132,7 @@ public final class Project {
 		
 		@Override
 		public void run(IProgressMonitor monitor) throws CoreException {
-			if (monitor != null)
-				monitor.subTask("Creating file");
+			monitor.subTask("Creating file");
 			file.create(contents, IResource.FORCE, monitor);
 		}
 		
@@ -148,8 +151,7 @@ public final class Project {
 		
 		@Override
 		public void run(IProgressMonitor monitor) throws CoreException {
-			if (monitor != null)
-				monitor.subTask("Creating folder");
+			monitor.subTask("Creating folder");
 			folder.create(0, true, monitor);
 		}
 		
@@ -168,8 +170,7 @@ public final class Project {
 		
 		@Override
 		public void run(IProgressMonitor monitor) throws CoreException {
-			if (monitor != null)
-				monitor.subTask("Creating project");
+			monitor.subTask("Creating project");
 			project.create(monitor);
 		}
 		
@@ -188,8 +189,7 @@ public final class Project {
 		
 		@Override
 		public void run(IProgressMonitor monitor) throws CoreException {
-			if (monitor != null)
-				monitor.subTask("Opening project");
+			monitor.subTask("Opening project");
 			project.open(monitor);
 		}
 		
@@ -210,6 +210,7 @@ public final class Project {
 		public static class Callback {
 			public void onSuccess() {}
 			public void onError(CoreException e) {}
+			public void onCancel() {}
 			public void always() {}
 		}
 
@@ -232,17 +233,32 @@ public final class Project {
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor)
 				throws CoreException {
+			if (monitor == null)
+				monitor = new NullProgressMonitor();
 			try {
-				for (IWorkspaceModification j : modifications)
+				for (IWorkspaceModification j : modifications) {
+					if (monitor.isCanceled())
+						break;
 					j.run(monitor);
+				}
 				
-				if (payload != null)
-					UI.asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							payload.onSuccess();
-						}
-					});
+				if (payload != null) {
+					if (!monitor.isCanceled()) {
+						UI.asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								payload.onSuccess();
+							}
+						});
+					} else {
+						UI.asyncExec(new Runnable() {
+							@Override
+							public void run() {
+								payload.onCancel();
+							}
+						});
+					}
+				}
 				return Status.OK_STATUS;
 			} catch (final CoreException e) {
 				if (payload != null)
@@ -261,6 +277,7 @@ public final class Project {
 							payload.always();
 						}
 					});
+				monitor.done();
 			}
 		}
 	}
