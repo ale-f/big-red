@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Bigwb
 Bundle-SymbolicName: org.bigraph.bigwb; singleton:=true
-Bundle-Version: 0.0.0.qualifier
+Bundle-Version: 0.0.0
 Bundle-Activator: org.bigraph.bigwb.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime

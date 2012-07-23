@@ -36,10 +36,12 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <wizard
+            category="dk.itu.big_red.new"
             class="it.uniud.bigredit.NewBrsWizard"
             icon="resources/icons/playground2.png"
             id="org.uniud.bigredit.NewBRSWizard"
-            name="Playground">
+            name="Playground"
+            project="false">
          <description>
             Create a new playground based on existing signature and agents
          </description>
