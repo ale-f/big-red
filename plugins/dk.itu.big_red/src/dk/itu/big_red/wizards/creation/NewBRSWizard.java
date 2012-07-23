@@ -63,7 +63,7 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 					setOutputStream(sim.getOutputStream()).setFile(spec).
 					exportObject();
 				
-				new ModificationRunner(new ModificationRunner.Callback(),
+				new ModificationRunner(null,
 					new Project.CreateProject(p),
 					new Project.OpenProject(p),
 					new Project.CreateFolder(rules),

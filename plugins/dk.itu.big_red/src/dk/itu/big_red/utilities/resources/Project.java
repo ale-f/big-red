@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.MultiRule;
@@ -32,18 +33,29 @@ import dk.itu.big_red.utilities.ui.UI;
 public final class Project {
 	private Project() {}
 	
+	/**
+	 * Returns the workspace.
+	 * @return the workspace
+	 * @see ResourcesPlugin#getWorkspace()
+	 */
 	public static IWorkspace getWorkspace() {
 		return ResourcesPlugin.getWorkspace();
 	}
 	
 	/**
-	 * Gets the workspace root.
+	 * Returns the workspace root.
 	 * @return the workspace root
+	 * @see IWorkspace#getRoot()
 	 */
 	public static IWorkspaceRoot getWorkspaceRoot() {
 		return getWorkspace().getRoot();
 	}
 	
+	/**
+	 * Returns the workspace's rule factory.
+	 * @return an {@link IResourceRuleFactory}
+	 * @see IWorkspace#getRuleFactory()
+	 */
 	public static IResourceRuleFactory getRuleFactory() {
 		return getWorkspace().getRuleFactory();
 	}
@@ -91,11 +103,26 @@ public final class Project {
 		return (r instanceof IFile ? (IFile)r : null);
 	}
 	
+	/**
+	 * Classes implementing <strong>IWorkspaceModification</strong> can be
+	 * executed by a {@link ModificationRunner} to make changes to the Eclipse
+	 * workspace.
+	 * @author alec
+	 *
+	 */
 	public interface IWorkspaceModification {
-		ISchedulingRule getSchedulingRule();
 		/**
-		 * @param monitor an {@link IProgressMonitor} (not <code>null</code>)
-		 * @throws CoreException
+		 * Returns the scheduling rule required by this modification.
+		 * @return an {@link ISchedulingRule}; can be <code>null</code>
+		 * @see Project#getRuleFactory()
+		 */
+		ISchedulingRule getSchedulingRule();
+		
+		/**
+		 * Executes this modification.
+		 * @param monitor an {@link IProgressMonitor}; will not be
+		 * <code>null</code>
+		 * @throws CoreException if the modification fails
 		 */
 		void run(IProgressMonitor monitor) throws CoreException;
 	}
@@ -206,11 +233,47 @@ public final class Project {
 					new CreateFile(file, contents));
 	}
 	
+	/**
+	 * <strong>ModificationRunner</strong> is a wrapper class which executes
+	 * {@link IWorkspaceModification}s safely.
+	 * @author alec
+	 *
+	 */
 	public static final class ModificationRunner extends WorkspaceJob {
-		public static class Callback {
+		/**
+		 * Classes extending <strong>Callback</strong> will be notified when
+		 * something interesting happens to a {@link ModificationRunner}.
+		 * <p>Note that {@link ModificationRunner} will always arrange for
+		 * these methods to be called as part of the event loop (in the UI
+		 * thread).
+		 * @author alec
+		 *
+		 */
+		public abstract static class Callback {
+			/**
+			 * Called when a {@link ModificationRunner} successfully completes
+			 * all jobs.
+			 */
 			public void onSuccess() {}
+			
+			/**
+			 * Called when a {@link ModificationRunner} has not completed
+			 * successfully due to:&mdash;
+			 * <ul>
+			 * <li>an exception being thrown by one of its {@link
+			 * IWorkspaceModification}s; or
+			 * <li>a cancellation request from the user (in which case
+			 * <code>e</code> will be an {@link OperationCanceledException}).
+			 * </ul>
+			 * @param e a {@link CoreException}
+			 */
 			public void onError(CoreException e) {}
-			public void onCancel() {}
+			
+			/**
+			 * Called when {@link
+			 * ModificationRunner#runInWorkspace(IProgressMonitor)} completes,
+			 * regardless of the outcome.
+			 */
 			public void always() {}
 		}
 
@@ -242,24 +305,17 @@ public final class Project {
 					j.run(monitor);
 				}
 				
-				if (payload != null) {
-					if (!monitor.isCanceled()) {
-						UI.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								payload.onSuccess();
-							}
-						});
-					} else {
-						UI.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								payload.onCancel();
-							}
-						});
-					}
-				}
-				return Status.OK_STATUS;
+				if (payload != null && !monitor.isCanceled())
+					UI.asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							payload.onSuccess();
+						}
+					});
+				
+				if (!monitor.isCanceled()) {
+					return Status.OK_STATUS;
+				} else throw new OperationCanceledException();
 			} catch (final CoreException e) {
 				if (payload != null)
 					UI.asyncExec(new Runnable() {
@@ -289,12 +345,16 @@ public final class Project {
 	 * @param contents an {@link InputStream} specifying its contents
 	 * @param r a {@link Runnable} to be executed in the UI thread when the
 	 * operation has completed
+	 * @return the (scheduled) {@link ModificationRunner} encapsulating the
+	 * required workspace operations
 	 * @throws CoreException if the file couldn't be created or modified
 	 */
-	public static void setContents(
+	public static ModificationRunner setContents(
 			IFile file, InputStream contents, ModificationRunner.Callback r) {
-		new ModificationRunner(r,
-				getSetModification(file, contents)).schedule();
+		ModificationRunner mr =
+				new ModificationRunner(r,getSetModification(file, contents));
+		mr.schedule();
+		return mr;
 	}
 	
 	public static IResourceDelta getSpecificDelta(IResourceDelta rootDelta, IResource r) {
