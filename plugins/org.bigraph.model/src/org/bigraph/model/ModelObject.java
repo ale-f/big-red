@@ -15,18 +15,30 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
- * This is the superclass of everything in Big Red's version of the bigraphical
- * model. It allows {@link PropertyChangeListener}s to register for, and
- * unregister from, change notifications, and has a {@link String} comment
- * which can be set and retrieved.
+ * All model objects inherit from <strong>ModelObject</strong>. It provides,
+ * amongst other things:&mdash;
+ * <ul>
+ * <li>property change notifications to interested parties;
+ * <li>an extensibility mechanism called <i>extended data</i>; and
+ * <li>several useful base classes, like {@link ModelObjectChange} and {@link
+ * Identifier}.
+ * </ul>
  * @author alec
- * @see Layoutable
- *
+ * @see ModelObjectChange
+ * @see Identifier
+ * @see #setExtendedData(String, Object)
  */
 public abstract class ModelObject {
+	/**
+	 * All {@link Change}s which operate on {@link ModelObject}s inherit from
+	 * <strong>ModelObjectChange</strong>.
+	 * @author alec
+	 * @see #getCreator()
+	 */
 	public abstract class ModelObjectChange extends Change {
 		/**
-		 * Gets the {@link ModelObject} which created this {@link ModelObjectChange}.
+		 * Gets the {@link ModelObject} which created this {@link
+		 * ModelObjectChange}.
 		 * @return
 		 */
 		public ModelObject getCreator() {
@@ -39,6 +51,12 @@ public abstract class ModelObject {
 			throws ChangeRejectedException;
 	}
 	
+	/**
+	 * The <strong>ChangeExtendedData</strong> class represents a change to one
+	 * of a {@link ModelObject}'s extended data properties.
+	 * @author alec
+	 * @see ModelObject#setExtendedData(String, Object)
+	 */
 	public class ChangeExtendedData extends ModelObjectChange {
 		public String key;
 		public Object newValue;
@@ -127,12 +145,12 @@ public abstract class ModelObject {
 	}
 	
 	/**
-	 * Creates and returns a new copy of this {@link ModelObject}.
+	 * Creates and returns a new deep copy of this {@link ModelObject}.
 	 * <p>(Although the returned copy is a {@link ModelObject}, it's
 	 * really an instance of whatever subclass this object is.)
 	 * @param m a {@link CloneMap} to be notified of the new copy, or
 	 * <code>null</code>
-	 * @return a new copy of this {@link ModelObject}
+	 * @return a new deep copy of this {@link ModelObject}
 	 */
 	public ModelObject clone(Map<ModelObject, ModelObject> m) {
 		ModelObject i = newInstance();
@@ -142,6 +160,10 @@ public abstract class ModelObject {
 		return i;
 	}
 	
+	/**
+	 * Creates and returns a new deep copy of this {@link ModelObject} as
+	 * though by {@link #clone(Map) clone(null)}.
+	 */
 	@Override
 	public ModelObject clone() {
 		return clone(null);
@@ -202,20 +224,21 @@ public abstract class ModelObject {
 	private Map<String, Object> extendedData = new HashMap<String, Object>();
 	
 	/**
-	 * Retrieves a piece of extended data from this object.
-	 * @param key a key
-	 * @return an {@link Object}, or <code>null</code> if the key has no
-	 * associated data
+	 * Retrieves one of this object's extended data properties.
+	 * @param key the property name
+	 * @return an {@link Object}, or <code>null</code> if the named property
+	 * has no content
 	 */
 	public Object getExtendedData(String key) {
 		return extendedData.get(key);
 	}
 	
 	/**
-	 * Adds a piece of extended data to this object.
-	 * @param key a key
-	 * @param value an {@link Object} to associate with the key, or
-	 * <code>null</code> to remove an existing association
+	 * Sets one of this object's extended data properties, broadcasting a
+	 * property change event in the process.
+	 * @param key the property name
+	 * @param value an {@link Object} to assign to the named property, or
+	 * <code>null</code> to remove an existing assignment
 	 */
 	public void setExtendedData(String key, Object value) {
 		if (key == null)
@@ -250,6 +273,12 @@ public abstract class ModelObject {
 		return true;
 	}
 	
+	/**
+	 * Classes extending <strong>Identifier</strong> are <i>abstract object
+	 * identifiers</i> &mdash; that is, they refer to {@link ModelObject}s by
+	 * name rather than by a Java object reference.
+	 * @author alec
+	 */
 	public static abstract class Identifier {
 		/**
 		 * Classes implementing <strong>Resolver</strong> can resolve {@link
