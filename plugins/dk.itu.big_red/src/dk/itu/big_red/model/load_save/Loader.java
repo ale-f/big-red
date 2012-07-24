@@ -16,29 +16,6 @@ import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 public abstract class Loader extends org.bigraph.model.loaders.Loader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 	
-	private IFile file;
-	
-	/**
-	 * Associates an {@link IFile} with this {@link Loader}. (The file will
-	 * <i>not</i> be automatically opened by this method &mdash; {@link
-	 * #setInputStream(InputStream)} must be called separately.)
-	 * @param file an {@link IFile}
-	 * @return <code>this</code>, for convenience
-	 */
-	public Loader setFile(IFile file) {
-		this.file = file;
-		return this;
-	}
-	
-	/**
-	 * Returns the {@link IFile} associated with this {@link Loader}, if there
-	 * is one.
-	 * @return an {@link IFile}, or <code>null</code>
-	 */
-	public IFile getFile() {
-		return file;
-	}
-	
 	/**
 	 * Loads an object from an {@link IFile} by:
 	 * <ul>

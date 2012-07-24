@@ -1,19 +1,18 @@
 package dk.itu.big_red.model.load_save.loaders;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.loaders.LoadFailedException;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
+import org.bigraph.model.resources.IFileWrapper;
+import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.utilities.resources.Project;
-
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
@@ -23,61 +22,58 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/spec.xsd");
 			SimulationSpec ss = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(ss, getFile());
+			/* XXX: this is a hilariously awful hack */
+			ExtendedDataUtilities.setFile(ss,
+					((EclipseFileWrapper)getFile()).getResource());
 			return ss;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}
 	}
 	
+	private ModelObject tryLoad(String relPath) throws LoadFailedException {
+		IResourceWrapper rw = getFile().getParent().getResource(relPath);
+		if (!(rw instanceof IFileWrapper))
+			throw new LoadFailedException("The path does not identify a file");
+		return ((IFileWrapper)rw).load();
+	}
+	
 	private Signature makeSignature(Element e) throws LoadFailedException {
 		String signaturePath = getAttributeNS(e, SPEC, "src");
-		SignatureXMLLoader l = newLoader(SignatureXMLLoader.class);
 		if (signaturePath != null && getFile() != null) {
-			IFile f = Project.findFileByPath(
-					getFile().getParent(), new Path(signaturePath));
-			try {
-				l.setFile(f).setInputStream(f.getContents());
-			} catch (CoreException ex) {
-				throw new LoadFailedException(ex);
-			}
-			return l.importObject();
+			ModelObject mo = tryLoad(signaturePath);
+			if (mo instanceof Signature) {
+				return (Signature)mo;
+			} else throw new LoadFailedException(
+					"The path does not identify a signature file");
 		} else {
-			return l.setFile(getFile()).makeObject(e);
+			return new SignatureXMLLoader().setFile(getFile()).makeObject(e);
 		}
 	}
 	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
 		String bigraphPath = getAttributeNS(e, SPEC, "src");
-		BigraphXMLLoader l = newLoader(BigraphXMLLoader.class);
 		if (bigraphPath != null && getFile() != null) {
-			IFile f = Project.findFileByPath(
-					getFile().getParent(), new Path(bigraphPath));
-			try {
-				l.setFile(f).setInputStream(f.getContents());
-			} catch (CoreException ex) {
-				throw new LoadFailedException(ex);
-			}
-			return l.importObject();
+			ModelObject mo = tryLoad(bigraphPath);
+			if (mo instanceof Bigraph) {
+				return (Bigraph)mo;
+			} else throw new LoadFailedException(
+					"The path does not identify a bigraph file");
 		} else {
-			return l.setFile(getFile()).makeObject(e);
+			return new BigraphXMLLoader().setFile(getFile()).makeObject(e);
 		}
 	}
 	
 	private ReactionRule makeRule(Element e) throws LoadFailedException {
 		String rulePath = getAttributeNS(e, SPEC, "src");
-		ReactionRuleXMLLoader l = newLoader(ReactionRuleXMLLoader.class);
 		if (rulePath != null && getFile() != null) {
-			IFile f = Project.findFileByPath(
-					getFile().getParent(), new Path(rulePath));
-			try {
-				l.setFile(f).setInputStream(f.getContents());
-			} catch (CoreException ex) {
-				throw new LoadFailedException(ex);
-			}
-			return l.importObject();
+			ModelObject mo = tryLoad(rulePath);
+			if (mo instanceof ReactionRule) {
+				return (ReactionRule)mo;
+			} else throw new LoadFailedException(
+					"The path does not identify a reaction rule file");
 		} else {
-			return l.setFile(getFile()).makeObject(e);
+			return new ReactionRuleXMLLoader().setFile(getFile()).makeObject(e);
 		}
 	}
 	
@@ -102,7 +98,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	}
 	
 	@Override
-	public SimulationSpecXMLLoader setFile(IFile f) {
+	public SimulationSpecXMLLoader setFile(IFileWrapper f) {
 		return (SimulationSpecXMLLoader)super.setFile(f);
 	}
 }

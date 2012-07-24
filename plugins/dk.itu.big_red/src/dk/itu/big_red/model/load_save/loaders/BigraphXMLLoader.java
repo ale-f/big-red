@@ -20,16 +20,14 @@ import org.bigraph.model.Site;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.names.policies.INamePolicy;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
+import org.bigraph.model.resources.IFileWrapper;
+import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.utilities.resources.Project;
-
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
 
 /**
@@ -44,7 +42,9 @@ public class BigraphXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/bigraph.xsd");
 			Bigraph b = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(b, getFile());
+			/* XXX: this is a hilariously awful hack */
+			ExtendedDataUtilities.setFile(b,
+					((EclipseFileWrapper)getFile()).getResource());
 			return b;
 		} catch (LoadFailedException e) {
 			throw e;
@@ -72,28 +72,25 @@ public class BigraphXMLLoader extends XMLLoader {
 			signaturePath = getAttributeNS(e, BIGRAPH, "signature");
 		}
 		
-		SignatureXMLLoader si = newLoader(SignatureXMLLoader.class);
 		if (signaturePath != null) {
-			IFile sigFile = null;
-			if (getFile() != null)
-				sigFile =
-					Project.findFileByPath(getFile().getParent(),
-							new Path(signaturePath));
+			IResourceWrapper sigR = null;
+			IFileWrapper sigFile = null;
+			if (getFile() != null) {
+				sigR = getFile().getParent().getResource(signaturePath);
+				if (sigR instanceof IFileWrapper) {
+					sigFile = (IFileWrapper)sigR;
+				} else throw new LoadFailedException(
+						"The path given does not identify a file");
+			} else throw new Error("BUG: relative path to resolve, " +
+					"but no IFileWrapper set on BigraphXMLLoader");
 			
-			if (sigFile == null) { /* backwards compatibility */
-				sigFile = 
-					Project.findFileByPath(null, new Path(signaturePath));
-				if (sigFile == null)
-					throw new LoadFailedException("The signature \"" + signaturePath + "\" does not exist.");
-			}
-			
-			try {
-				si.setFile(sigFile).setInputStream(sigFile.getContents());
-			} catch (CoreException ex) {
-				throw new LoadFailedException(ex);
-			}
-			bigraph.setSignature(si.importObject());
+			ModelObject mo = sigFile.load();
+			if (!(mo instanceof Signature))
+				throw new LoadFailedException(
+						"The path given does not identify a signature file");
+			bigraph.setSignature((Signature)mo);
 		} else if (signatureElement != null) {
+			SignatureXMLLoader si = new SignatureXMLLoader();
 			bigraph.setSignature(
 					si.setFile(getFile()).makeObject(signatureElement));
 		} else {
@@ -207,7 +204,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	}
 
 	@Override
-	public BigraphXMLLoader setFile(IFile f) {
+	public BigraphXMLLoader setFile(IFileWrapper f) {
 		return (BigraphXMLLoader)super.setFile(f);
 	}
 

@@ -1,6 +1,7 @@
 package it.uniud.bigredit.model.load_save.loaders;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,8 +20,8 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.loaders.LoadFailedException;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.CoreException;
+import org.bigraph.model.resources.IFileWrapper;
+import org.bigraph.model.resources.IResourceWrapper;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -30,6 +31,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 
 public class ReactionXMLLoader extends XMLLoader{
 
@@ -56,8 +58,8 @@ public class ReactionXMLLoader extends XMLLoader{
 			String y=eA.getAttribute("y");
 			Rectangle rect=new Rectangle(Integer.parseInt(x),Integer.parseInt(y), Integer.parseInt(width),Integer.parseInt(height));
 		
-			cg.add(ra.changeAddRedex((Bigraph)created));
-			cg.add(ra.changeLayoutChild((Bigraph)created, rect));
+			cg.add(ra.changeAddRedex(created));
+			cg.add(ra.changeLayoutChild(created, rect));
 			
 		}else{
 			System.out.println("redex=null");
@@ -73,8 +75,8 @@ public class ReactionXMLLoader extends XMLLoader{
 			String xb=eB.getAttribute("x");
 			String yb=eB.getAttribute("y");
 			Rectangle rectt=new Rectangle(Integer.parseInt(xb),Integer.parseInt(yb), Integer.parseInt(widthb),Integer.parseInt(heightb));
-			cg.add(ra.changeAddReactum((Bigraph)createdM));
-			cg.add(ra.changeLayoutChild((Bigraph)createdM, rectt));
+			cg.add(ra.changeAddReactum(createdM));
+			cg.add(ra.changeLayoutChild(createdM, rectt));
 		}
 		
 		try {
@@ -93,7 +95,9 @@ public class ReactionXMLLoader extends XMLLoader{
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/reaction.xsd");
 			Reaction b = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(b, getFile());
+			/* XXX: this is a hilariously awful hack */
+			ExtendedDataUtilities.setFile(b,
+					((EclipseFileWrapper)getFile()).getResource());
 			return b;
 		} catch (LoadFailedException e) {
 			throw e;
@@ -102,25 +106,28 @@ public class ReactionXMLLoader extends XMLLoader{
 		}
 	}
 	
+	private ModelObject tryLoad(String relPath) throws LoadFailedException {
+		IResourceWrapper rw = getFile().getParent().getResource(relPath);
+		if (!(rw instanceof IFileWrapper))
+			throw new LoadFailedException("The path does not identify a file");
+		return ((IFileWrapper)rw).load();
+	}
+	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
-		String bigraphPath = getAttributeNS(e, REACTION, "src");
-		BigraphXMLLoader l = newLoader(BigraphXMLLoader.class);
+		String bigraphPath = getAttributeNS(e, SPEC, "src");
 		if (bigraphPath != null && getFile() != null) {
-
-			IFile f =  Project.findFileByPath(getFile().getParent(), new Path(bigraphPath));    
-			try {
-				l.setFile(f).setInputStream(f.getContents());
-			} catch (CoreException ex) {
-				throw new LoadFailedException(ex);
-			}
-			return l.importObject();
+			ModelObject mo = tryLoad(bigraphPath);
+			if (mo instanceof Bigraph) {
+				return (Bigraph)mo;
+			} else throw new LoadFailedException(
+					"The path does not identify a bigraph file");
 		} else {
-			return l.setFile(getFile()).makeObject(e);
+			return new BigraphXMLLoader().setFile(getFile()).makeObject(e);
 		}
 	}
 	
 	@Override
-	public ReactionXMLLoader setFile(IFile f) {
+	public ReactionXMLLoader setFile(IFileWrapper f) {
 		return (ReactionXMLLoader)super.setFile(f);
 	}
 	

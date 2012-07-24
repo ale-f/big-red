@@ -2,6 +2,7 @@ package dk.itu.big_red.utilities.resources;
 
 import org.bigraph.model.resources.IContainerWrapper;
 import org.bigraph.model.resources.IResourceWrapper;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 
@@ -21,6 +22,7 @@ abstract class EclipseResourceWrapper implements IResourceWrapper {
 	
 	@Override
 	public IContainerWrapper getParent() {
-		return new EclipseContainerWrapper(getResource().getParent());
+		IContainer parent = getResource().getParent();
+		return (parent != null ? new EclipseContainerWrapper(parent) : null);
 	}
 }

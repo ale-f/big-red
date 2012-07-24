@@ -16,7 +16,7 @@ public class EclipseFileWrapper extends EclipseResourceWrapper
 	private final IFile file;
 
 	@Override
-	protected IFile getResource() {
+	public IFile getResource() {
 		return file;
 	}
 	
@@ -34,7 +34,7 @@ public class EclipseFileWrapper extends EclipseResourceWrapper
 					getConfigurationElementsFor(Loader.EXTENSION_POINT)) {
 				if (ct.getId().equals(ice.getAttribute("contentType"))) {
 					Loader i = (Loader)ice.createExecutableExtension("class");
-					i.setFile(getResource()).setInputStream(
+					i.setFile(this).setInputStream(
 							getResource().getContents());
 					if (i.canImport()) {
 						return i.importObject();

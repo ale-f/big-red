@@ -24,7 +24,7 @@ import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
-import org.eclipse.core.resources.IFile;
+import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -34,6 +34,7 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
@@ -47,7 +48,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/rule.xsd");
 			ReactionRule rr = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(rr, getFile());
+			/* XXX: this is a hilariously awful hack */
+			ExtendedDataUtilities.setFile(rr,
+					((EclipseFileWrapper)getFile()).getResource());
 			return rr;
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
@@ -324,7 +327,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	}
 	
 	@Override
-	public ReactionRuleXMLLoader setFile(IFile f) {
+	public ReactionRuleXMLLoader setFile(IFileWrapper f) {
 		return (ReactionRuleXMLLoader)super.setFile(f);
 	}
 }

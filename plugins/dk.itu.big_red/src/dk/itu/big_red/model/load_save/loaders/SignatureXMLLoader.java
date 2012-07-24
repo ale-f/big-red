@@ -9,11 +9,12 @@ import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
-import org.eclipse.core.resources.IFile;
+import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
@@ -26,7 +27,9 @@ public class SignatureXMLLoader extends XMLLoader {
 			Document d =
 				validate(parse(getInputStream()), "resources/schema/signature.xsd");
 			Signature s = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(s, getFile());
+			/* XXX: this is a hilariously awful hack */
+			ExtendedDataUtilities.setFile(s,
+					((EclipseFileWrapper)getFile()).getResource());
 			return s;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
@@ -86,7 +89,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	}
 	
 	@Override
-	public SignatureXMLLoader setFile(IFile f) {
+	public SignatureXMLLoader setFile(IFileWrapper f) {
 		return (SignatureXMLLoader)super.setFile(f);
 	}
 }

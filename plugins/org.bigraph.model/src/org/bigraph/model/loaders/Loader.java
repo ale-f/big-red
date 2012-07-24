@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Loader implements ILoader {
 	private InputStream source = null;
@@ -16,13 +17,23 @@ public abstract class Loader implements ILoader {
 	 * @return <code>this</code>, for convenience
 	 */
 	public Loader setInputStream(InputStream is) {
-		if (is != null)
-			source = is;
+		source = is;
 		return this;
 	}
 	
 	protected InputStream getInputStream() {
 		return source;
+	}
+	
+	private IFileWrapper file;
+	
+	public Loader setFile(IFileWrapper file) {
+		this.file = file;
+		return this;
+	}
+	
+	protected IFileWrapper getFile() {
+		return file;
 	}
 	
 	/**
