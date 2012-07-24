@@ -15,6 +15,7 @@ import org.eclipse.ui.PartInitException;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.Project.ModificationRunner.Callback;
 import dk.itu.big_red.utilities.ui.UI;
@@ -46,7 +47,8 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 				Bigraph b = new Bigraph();
 				
 				b.setSignature(getSyntheticSignature(sigFile));
-				new BigraphXMLSaver().setFile(bigFile).setModel(b).
+				BigraphXMLSaver r = new BigraphXMLSaver();
+				r.setFile(new EclipseFileWrapper(bigFile)).setModel(b).
 					setOutputStream(io.getOutputStream()).exportObject();
 				Project.setContents(bigFile, io.getInputStream(),
 						new Callback() {

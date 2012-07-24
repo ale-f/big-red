@@ -14,6 +14,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.Project.ModificationRunner.Callback;
 import dk.itu.big_red.utilities.ui.UI;
@@ -29,9 +30,10 @@ public class NewSimulationSpecWizard extends Wizard implements INewWizard {
 			try {
 				final IFile ssFile = c.getFile(new Path(page.getFileName()));
 				IOAdapter io = new IOAdapter();
+				SimulationSpecXMLSaver r = new SimulationSpecXMLSaver().
+					setModel(new SimulationSpec());
 				
-				new SimulationSpecXMLSaver().
-					setModel(new SimulationSpec()).setFile(ssFile).
+				r.setFile(new EclipseFileWrapper(ssFile)).
 					setOutputStream(io.getOutputStream()).exportObject();
 				Project.setContents(ssFile, io.getInputStream(),
 						new Callback() {

@@ -22,6 +22,7 @@ import org.eclipse.ui.IWorkbench;
 
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
 
@@ -69,7 +70,8 @@ public class NewBrsWizard  extends Wizard implements INewWizard {
 		BRS b = new BRS();
 		
 		b.setSignature((Signature)Loader.fromFile(sigFile));
-		new BRSXMLSaver().setFile(bigFile).setModel(b).
+		BRSXMLSaver r = new BRSXMLSaver();
+		r.setFile(new EclipseFileWrapper(bigFile)).setModel(b).
 			setOutputStream(io.getOutputStream()).exportObject();
 		bigFile.setContents(io.getInputStream(), 0, null);
 	}

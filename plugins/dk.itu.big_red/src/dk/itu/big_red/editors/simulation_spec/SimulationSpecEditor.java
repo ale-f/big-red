@@ -48,6 +48,7 @@ import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
@@ -84,7 +85,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	@Override
 	public void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
-    	new SimulationSpecXMLSaver().setModel(getModel()).setFile(f).
+    	SimulationSpecXMLSaver r = new SimulationSpecXMLSaver().setModel(getModel());
+		r.setFile(new EclipseFileWrapper(f)).
     		setOutputStream(os).exportObject();
     	setSavePoint();
 	}

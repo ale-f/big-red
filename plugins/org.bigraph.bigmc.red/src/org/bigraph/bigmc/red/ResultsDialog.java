@@ -32,6 +32,7 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 
 import dk.itu.big_red.editors.utilities.BigraphCanvas;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.Project.ModificationRunner.Callback;
 
@@ -215,7 +216,8 @@ public class ResultsDialog extends TitleAreaDialog {
 				IOAdapter io = new IOAdapter();
 				setErrorMessage(null);
 				try {
-					Saver.forContentType(Bigraph.CONTENT_TYPE).setFile(f).
+					Saver r = Saver.forContentType(Bigraph.CONTENT_TYPE);
+					r.setFile(new EclipseFileWrapper(f)).
 						setModel(b).setOutputStream(io.getOutputStream()).
 						exportObject();
 				} catch (SaveFailedException e) {

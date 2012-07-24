@@ -14,6 +14,7 @@ import org.eclipse.ui.PartInitException;
 
 import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.Project.ModificationRunner.Callback;
 import dk.itu.big_red.utilities.ui.UI;
@@ -35,8 +36,9 @@ public class NewRuleWizard extends Wizard implements INewWizard {
 				rr.setRedex(new Bigraph());
 				rr.getRedex().setSignature(
 						NewAgentWizard.getSyntheticSignature(sigFile));
+				ReactionRuleXMLSaver r = new ReactionRuleXMLSaver().setModel(rr);
 				
-				new ReactionRuleXMLSaver().setModel(rr).setFile(rrFile).
+				r.setFile(new EclipseFileWrapper(rrFile)).
 					setOutputStream(io.getOutputStream()).exportObject();
 				Project.setContents(rrFile, io.getInputStream(),
 						new Callback() {

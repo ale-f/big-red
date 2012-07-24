@@ -18,6 +18,7 @@ import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.Project.ModificationRunner;
 
@@ -51,16 +52,18 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 				
 				Signature s = new Signature();
 				ExtendedDataUtilities.setFile(s, signature);
-				new SignatureXMLSaver().setModel(s).setFile(signature).
+				SignatureXMLSaver r = new SignatureXMLSaver().setModel(s);
+				r.setFile(new EclipseFileWrapper(signature)).
 					setOutputStream(sig.getOutputStream()).exportObject();
 				
 				Bigraph b = new Bigraph();
 				b.setSignature(s);
-				new BigraphXMLSaver().setModel(b).setFile(agent).
+				BigraphXMLSaver r1 = new BigraphXMLSaver().setModel(b);
+				r1.setFile(new EclipseFileWrapper(agent)).
 					setOutputStream(big.getOutputStream()).exportObject();
+				SimulationSpecXMLSaver r2 = new SimulationSpecXMLSaver().setModel(new SimulationSpec());
 				
-				new SimulationSpecXMLSaver().setModel(new SimulationSpec()).
-					setFile(spec).setOutputStream(sim.getOutputStream()).
+				r2.setFile(new EclipseFileWrapper(spec)).setOutputStream(sim.getOutputStream()).
 					exportObject();
 				
 				new ModificationRunner(null,

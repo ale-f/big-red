@@ -5,8 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Saver {
+	private IFileWrapper file;
+	
+	public Saver setFile(IFileWrapper file) {
+		this.file = file;
+		return this;
+	}
+	
+	public IFileWrapper getFile() {
+		return file;
+	}
+	
 	public class Option {
 		private final String id, name, description;
 		

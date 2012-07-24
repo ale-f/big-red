@@ -14,6 +14,7 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.Project.ModificationRunner.Callback;
 import dk.itu.big_red.utilities.ui.UI;
@@ -29,9 +30,9 @@ public class NewSignatureWizard extends Wizard implements INewWizard {
 			try {
 				final IFile sigFile = c.getFile(new Path(page.getFileName()));
 				IOAdapter io = new IOAdapter();
+				SignatureXMLSaver r = new SignatureXMLSaver().setModel(new Signature());
 				
-				new SignatureXMLSaver().setModel(new Signature()).
-					setFile(sigFile).setOutputStream(io.getOutputStream()).
+				r.setFile(new EclipseFileWrapper(sigFile)).setOutputStream(io.getOutputStream()).
 					exportObject();
 				Project.setContents(sigFile, io.getInputStream(),
 						new Callback() {

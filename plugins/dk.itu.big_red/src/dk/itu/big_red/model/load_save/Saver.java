@@ -1,7 +1,7 @@
 package dk.itu.big_red.model.load_save;
 
 import java.io.OutputStream;
-import org.eclipse.core.resources.IFile;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
@@ -13,17 +13,6 @@ import org.eclipse.core.runtime.RegistryFactory;
  */
 public abstract class Saver extends org.bigraph.model.savers.Saver {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
-	
-	private IFile file;
-	
-	public Saver setFile(IFile file) {
-		this.file = file;
-		return this;
-	}
-	
-	public IFile getFile() {
-		return file;
-	}
 	
 	public static final Saver forContentType(String contentType) {
 		for (IConfigurationElement ice :
