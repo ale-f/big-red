@@ -5,9 +5,8 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.RegistryFactory;
-import org.eclipse.core.runtime.content.IContentType;
+
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 
 /**
  * Classes extending Loader can read objects from an {@link InputStream}.
@@ -51,25 +50,11 @@ public abstract class Loader extends org.bigraph.model.loaders.Loader {
 	 * </ul>
 	 * @param f an {@link IFile}
 	 * @return an object, or <code>null</code>
+	 * @throws CoreException never; for backwards compatibility
 	 * @throws LoadFailedException if {@link #importObject()} fails
-	 * @throws CoreException if an Eclipse method fails
 	 */
 	public static ModelObject fromFile(IFile f)
 			throws CoreException, LoadFailedException {
-		IContentType ct = f.getContentDescription().getContentType();
-		for (IConfigurationElement ice :
-			RegistryFactory.getRegistry().
-				getConfigurationElementsFor(EXTENSION_POINT)) {
-			if (ct.getId().equals(ice.getAttribute("contentType"))) {
-				Loader i = (Loader)ice.createExecutableExtension("class");
-				i.setFile(f).setInputStream(f.getContents());
-				if (i.canImport()) {
-					return i.importObject();
-				} else {
-					throw new LoadFailedException("What?");
-				}
-			}
-		}
-		return null;
+		return new EclipseFileWrapper(f).load();
 	}
 }
