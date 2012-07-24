@@ -31,7 +31,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader;

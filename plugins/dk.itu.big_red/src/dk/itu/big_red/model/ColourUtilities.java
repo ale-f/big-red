@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.assistants;
+package dk.itu.big_red.model;
 
 import org.bigraph.model.Control;
 import org.bigraph.model.Link;
@@ -9,8 +9,8 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
-import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.set;
-import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.require;
+import static dk.itu.big_red.model.ExtendedDataUtilities.require;
+import static dk.itu.big_red.model.ExtendedDataUtilities.set;
 
 /**
  * The <strong>ColourUtilities</strong> class is a collection of static

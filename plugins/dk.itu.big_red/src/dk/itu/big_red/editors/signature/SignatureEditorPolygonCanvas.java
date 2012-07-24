@@ -35,21 +35,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
-import dk.itu.big_red.editors.assistants.ColourUtilities;
-import dk.itu.big_red.editors.assistants.Ellipse;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.editors.assistants.Line;
+import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.Ellipse;
+import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.Line;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
-import static
-	dk.itu.big_red.editors.assistants.ExtendedDataUtilities.getDistance;
-import static
-	dk.itu.big_red.editors.assistants.ExtendedDataUtilities.getSegment;
-import static
-	dk.itu.big_red.editors.assistants.ExtendedDataUtilities.changeDistance;
-import static
-	dk.itu.big_red.editors.assistants.ExtendedDataUtilities.changeSegment;
+import static dk.itu.big_red.model.ExtendedDataUtilities.changeDistance;
+import static dk.itu.big_red.model.ExtendedDataUtilities.changeSegment;
+import static dk.itu.big_red.model.ExtendedDataUtilities.getDistance;
+import static dk.itu.big_red.model.ExtendedDataUtilities.getSegment;
 
 /**
  * SignatureEditorPolygonCanvases are widgets based on {@link Canvas} that let

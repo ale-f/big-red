@@ -13,13 +13,13 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 
-import dk.itu.big_red.editors.assistants.ColourUtilities;
-import dk.itu.big_red.editors.assistants.Ellipse;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
+import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.Ellipse;
+import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.LayoutUtilities;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.

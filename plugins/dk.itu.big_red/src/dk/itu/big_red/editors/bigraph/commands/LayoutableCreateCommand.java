@@ -7,8 +7,8 @@ import org.bigraph.model.Node;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
+import dk.itu.big_red.model.LayoutUtilities;
 
 public class LayoutableCreateCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

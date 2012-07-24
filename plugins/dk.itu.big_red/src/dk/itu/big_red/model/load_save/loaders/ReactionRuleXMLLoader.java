@@ -29,11 +29,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.editors.assistants.Colour;
-import dk.itu.big_red.editors.assistants.ColourUtilities;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
-import dk.itu.big_red.model.RedXMLUndecorator;
+import dk.itu.big_red.model.Colour;
+import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;

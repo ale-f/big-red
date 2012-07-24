@@ -42,9 +42,9 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
 
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;

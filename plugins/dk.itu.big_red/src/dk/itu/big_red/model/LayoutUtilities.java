@@ -1,4 +1,4 @@
-package dk.itu.big_red.editors.assistants;
+package dk.itu.big_red.model;
 
 import java.util.List;
 
@@ -25,8 +25,8 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.set;
-import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.require;
+import static dk.itu.big_red.model.ExtendedDataUtilities.require;
+import static dk.itu.big_red.model.ExtendedDataUtilities.set;
 
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 

@@ -11,7 +11,7 @@ import org.bigraph.model.names.policies.StringNamePolicy;
 import org.bigraph.model.savers.SaveFailedException;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;

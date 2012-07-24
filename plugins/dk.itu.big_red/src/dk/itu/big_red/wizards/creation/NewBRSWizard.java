@@ -13,7 +13,7 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;

@@ -13,10 +13,10 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editors.AbstractGEFEditor;
-import dk.itu.big_red.editors.assistants.BigraphBoundaryState;
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.BigraphFigure;
+import dk.itu.big_red.model.BigraphBoundaryState;
+import dk.itu.big_red.model.LayoutUtilities;
 
 /**
  * BigraphParts represent {@link Bigraph}s, the top-level container of the

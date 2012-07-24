@@ -12,6 +12,9 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
+import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.Ellipse;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 

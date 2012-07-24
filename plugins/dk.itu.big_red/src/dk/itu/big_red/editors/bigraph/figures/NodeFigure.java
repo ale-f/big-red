@@ -7,7 +7,7 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 
-import dk.itu.big_red.editors.assistants.Ellipse;
+import dk.itu.big_red.model.Ellipse;
 
 public class NodeFigure extends AbstractFigure {
 	private Object shape;

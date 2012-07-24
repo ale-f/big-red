@@ -48,7 +48,7 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
+import dk.itu.big_red.model.LayoutUtilities;
 
 
 

@@ -12,8 +12,8 @@ import org.bigraph.model.Root;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
+import dk.itu.big_red.model.LayoutUtilities;
 import it.uniud.bigredit.model.Reaction;
 
 public class LayoutableRelayoutCommand extends ChangeCommand {

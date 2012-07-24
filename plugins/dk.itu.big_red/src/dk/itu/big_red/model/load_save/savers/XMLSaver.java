@@ -27,7 +27,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.IXMLDecorator;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;

@@ -28,7 +28,7 @@ import org.bigraph.model.interfaces.ISite;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.savers.SaveFailedException;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.Saver;
 
 public class SimulationSpecBigMCSaver extends Saver {

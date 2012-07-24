@@ -16,8 +16,8 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.INamespace;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.LayoutUtilities;
 
 public class OutputParser {
 	private String string;

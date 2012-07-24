@@ -343,11 +343,11 @@
    <extension
          point="dk.itu.big_red.xml">
       <decorator
-            class="dk.itu.big_red.model.RedXMLDecorator"
+            class="dk.itu.big_red.model.load_save.RedXMLDecorator"
             id="http://www.itu.dk/research/pls/xmlns/2010/big-red">
       </decorator>
       <undecorator
-            class="dk.itu.big_red.model.RedXMLUndecorator"
+            class="dk.itu.big_red.model.load_save.RedXMLUndecorator"
             id="http://www.itu.dk/research/pls/xmlns/2010/big-red">
       </undecorator>
    </extension>

@@ -8,7 +8,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
+import dk.itu.big_red.model.LayoutUtilities;
 
 public class LayoutableReparentCommand extends ChangeCommand {
 	private ChangeGroup cg = new ChangeGroup();

@@ -9,7 +9,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
+import dk.itu.big_red.model.LayoutUtilities;
 
 public class LayoutableMoveCommand extends ChangeCommand {
 	private Point moveDelta = new Point();

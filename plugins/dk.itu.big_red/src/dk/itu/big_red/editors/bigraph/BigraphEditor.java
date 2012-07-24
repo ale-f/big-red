@@ -37,7 +37,6 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.actions.TogglePropertyAction;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCopyAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
@@ -45,6 +44,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 
 public class BigraphEditor extends AbstractGEFEditor {

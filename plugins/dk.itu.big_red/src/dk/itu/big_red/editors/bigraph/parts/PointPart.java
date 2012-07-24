@@ -8,9 +8,9 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.Point;
 
-import dk.itu.big_red.editors.assistants.Colour;
-import dk.itu.big_red.editors.assistants.ColourUtilities;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.Colour;
+import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 
 public abstract class PointPart extends ConnectablePart {
 	public PointPart() {

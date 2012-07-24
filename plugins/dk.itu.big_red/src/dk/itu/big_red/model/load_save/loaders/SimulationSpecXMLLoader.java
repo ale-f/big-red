@@ -11,7 +11,7 @@ import org.eclipse.core.runtime.Path;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.utilities.resources.Project;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;

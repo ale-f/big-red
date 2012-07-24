@@ -20,11 +20,11 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import dk.itu.big_red.editors.assistants.Colour;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
+import dk.itu.big_red.model.Colour;
+import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 

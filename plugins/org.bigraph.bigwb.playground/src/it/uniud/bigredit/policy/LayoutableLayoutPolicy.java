@@ -23,8 +23,8 @@ import it.uniud.bigredit.command.ReactionCommand;
 import it.uniud.bigredit.editparts.BigreditRootEditPart;
 import it.uniud.bigredit.model.Reaction;
 
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
+import dk.itu.big_red.model.LayoutUtilities;
 
 /**
  * This class is an elaboration of the original LayoutableLayoutPolicy in BigRed

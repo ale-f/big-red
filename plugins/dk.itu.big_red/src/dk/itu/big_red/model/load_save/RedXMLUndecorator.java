@@ -1,4 +1,4 @@
-package dk.itu.big_red.model;
+package dk.itu.big_red.model.load_save;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.loaders.XMLLoader.getAttributeNS;
@@ -24,13 +24,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.editors.assistants.Colour;
-import dk.itu.big_red.editors.assistants.ColourUtilities;
-import dk.itu.big_red.editors.assistants.Ellipse;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
-import dk.itu.big_red.editors.assistants.LayoutUtilities;
-import dk.itu.big_red.model.load_save.IXMLLoader;
-import dk.itu.big_red.model.load_save.IXMLUndecorator;
+import dk.itu.big_red.model.Colour;
+import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.Ellipse;
+import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 public class RedXMLUndecorator implements IXMLUndecorator {

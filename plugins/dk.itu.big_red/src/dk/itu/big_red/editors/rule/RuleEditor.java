@@ -58,7 +58,6 @@ import org.eclipse.ui.actions.ActionFactory;
 
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.actions.TogglePropertyAction;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
@@ -68,6 +67,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.utilities.ui.UI;
 

@@ -21,7 +21,7 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 import it.uniud.bigredit.policy.ReactionChangeValidator;
 
 public class Reaction  extends ModelObject  implements IChangeExecutor{

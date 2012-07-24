@@ -4,8 +4,8 @@ import org.bigraph.model.Node;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.jface.resource.ImageDescriptor;
 import dk.itu.big_red.editors.assistants.ControlImageDescriptor;
-import dk.itu.big_red.editors.assistants.ExtendedDataUtilities;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
+import dk.itu.big_red.model.ExtendedDataUtilities;
 
 public class NodeTreePart extends ContainerTreePart {
 	@Override
