@@ -14,4 +14,5 @@ Export-Package: org.bigraph.model,
  org.bigraph.model.loaders,
  org.bigraph.model.names,
  org.bigraph.model.names.policies,
+ org.bigraph.model.resources,
  org.bigraph.model.savers
