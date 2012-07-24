@@ -15,9 +15,14 @@ import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
-public final class ControlImageDescriptor extends ImageDescriptor {
-	private Control c;
-	private int width, height;
+/**
+ * The <strong>ControlImageDescriptor</strong> class can be used to return a
+ * thumbnail for a {@link Control}.
+ * @author alec
+ */
+public class ControlImageDescriptor extends ImageDescriptor {
+	private final Control c;
+	private final int width, height;
 	
 	public ControlImageDescriptor(Control c, int width, int height) {
 		this.c = c;

@@ -21,7 +21,15 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public final class ExtendedDataUtilities {
+/**
+ * The <strong>ExtendedDataUtilities</strong> class is a collection of static
+ * methods and fields for manipulating some of the extended data used by Big
+ * Red.
+ * @author alec
+ * @see ColourUtilities
+ * @see LayoutUtilities
+ */
+public abstract class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
 	static <T> T require(PropertyScratchpad context, ModelObject o,

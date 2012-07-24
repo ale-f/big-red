@@ -12,7 +12,14 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.set;
 import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.require;
 
-public final class ColourUtilities {
+/**
+ * The <strong>ColourUtilities</strong> class is a collection of static
+ * methods and fields for manipulating objects' outline and fill colours.
+ * @author alec
+ * @see ExtendedDataUtilities
+ * @see LayoutUtilities
+ */
+public abstract class ColourUtilities {
 	private ColourUtilities() {}
 
 	@RedProperty(fired = Colour.class, retrieved = Colour.class)

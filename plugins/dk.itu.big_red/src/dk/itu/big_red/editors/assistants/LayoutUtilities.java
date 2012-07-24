@@ -30,7 +30,16 @@ import static dk.itu.big_red.editors.assistants.ExtendedDataUtilities.require;
 
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 
-public final class LayoutUtilities {
+/**
+ * The <strong>LayoutUtilities</strong> class is a collection of static
+ * methods and fields for manipulating objects' layout information.
+ * @author alec
+ * @see ColourUtilities
+ * @see ExtendedDataUtilities
+ */
+public abstract class LayoutUtilities {
+	private LayoutUtilities() {}
+	
 	@RedProperty(fired = Rectangle.class, retrieved = Rectangle.class)
 	public static final String LAYOUT =
 			"eD!+dk.itu.big_red.Layoutable.layout";
@@ -113,8 +122,6 @@ public final class LayoutUtilities {
 	 * after a <i>relayout</i> has been applied.
 	 */
 	protected static final int PADDING = 25;
-
-	private LayoutUtilities() {}
 
 	public static Rectangle getLayout(Layoutable l) {
 		return getLayout(null, l);
