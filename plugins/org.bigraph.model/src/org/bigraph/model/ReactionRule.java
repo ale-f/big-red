@@ -1,9 +1,6 @@
 package org.bigraph.model;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Layoutable.ChangeNameDescriptor;
@@ -35,7 +32,7 @@ public class ReactionRule extends ModelObject {
 
 	public Bigraph getReactum() {
 		if (reactum == null)
-			reactum = redex.clone(null);
+			reactum = redex.clone();
 		return reactum;
 	}
 	
@@ -165,14 +162,12 @@ public class ReactionRule extends ModelObject {
 	}
 	
 	@Override
-	public ReactionRule clone(Map<ModelObject, ModelObject> m) {
-		if (m == null)
-			m = new HashMap<ModelObject, ModelObject>();
-		ReactionRule rr = (ReactionRule)super.clone(m);
+	public ReactionRule clone() {
+		ReactionRule rr = (ReactionRule)super.clone();
 		
-		rr.setRedex(getRedex().clone(m));
-		Bigraph reactum = getReactum().clone(m);
-		rr.setReactum(getReactum().clone(m));
+		rr.setRedex(getRedex().clone());
+		Bigraph reactum = getReactum().clone();
+		rr.setReactum(getReactum().clone());
 		
 		IChange c = null;
 		try {

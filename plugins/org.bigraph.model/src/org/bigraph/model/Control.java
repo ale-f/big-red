@@ -2,8 +2,6 @@ package org.bigraph.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -227,9 +225,8 @@ public class Control extends ModelObject implements IControl {
 	private Control.Kind kind = Kind.ACTIVE;
 	private Signature signature = null;
 	
-	@Override
-	public Control clone(Map<ModelObject,ModelObject> m) {
-		Control c = (Control)super.clone(m);
+	protected Control clone(Signature m) {
+		Control c = (Control)super.clone();
 		
 		c.setName(getName());
 		c.setKind(getKind());

@@ -2,8 +2,6 @@ package org.bigraph.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -167,13 +165,13 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	@Override
-	public SimulationSpec clone(Map<ModelObject, ModelObject> m) {
-		SimulationSpec ss = (SimulationSpec)super.clone(m);
+	public SimulationSpec clone() {
+		SimulationSpec ss = (SimulationSpec)super.clone();
 		
-		ss.setSignature(getSignature().clone(m));
+		ss.setSignature(getSignature().clone());
 		for (ReactionRule r : getRules())
-			ss.addRule(r.clone(m));
-		ss.setModel(getModel().clone(m));
+			ss.addRule(r.clone());
+		ss.setModel(getModel().clone());
 		
 		return ss;
 	}

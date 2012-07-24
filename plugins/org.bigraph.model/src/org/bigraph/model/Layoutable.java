@@ -1,7 +1,5 @@
 package org.bigraph.model;
 
-import java.util.Map;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -161,9 +159,10 @@ public abstract class Layoutable extends ModelObject {
 		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
 	}
 	
-	@Override
-	public Layoutable clone(Map<ModelObject, ModelObject> m) {
-		Layoutable l = (Layoutable)super.clone(m);
+	protected Layoutable clone(Bigraph m) {
+		Layoutable l = (Layoutable)super.clone();
+		l.setName(getName());
+		m.getNamespace(Bigraph.getNSI(l)).put(getName(), l);
 		return l;
 	}
 	

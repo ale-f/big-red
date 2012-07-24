@@ -2,9 +2,6 @@ package org.bigraph.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -100,7 +97,7 @@ public abstract class Container extends Layoutable {
 	}
 	
 	@Override
-	public Container clone(Map<ModelObject, ModelObject> m) {
+	protected Container clone(Bigraph m) {
 		Container c = (Container)super.clone(m);
 		
 		for (Layoutable child : getChildren())

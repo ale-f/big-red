@@ -2,12 +2,8 @@ package org.bigraph.model;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.validators.BigraphValidator;
@@ -108,37 +104,22 @@ public class Bigraph extends Container
 	 * @return an exact copy of this {@link Bigraph}
 	 */
 	@Override
-	public Bigraph clone(Map<ModelObject, ModelObject> m) {
-		if (m == null)
-			m = new HashMap<ModelObject, ModelObject>();
+	public Bigraph clone() {
 		Bigraph b = (Bigraph)newInstance();
 		
-		b.setSignature(getSignature().clone(m));
+		b.setSignature(getSignature().clone());
 		
 		/* ModelObject.clone */
-		m.put(this, b);
 		b.setExtendedDataFrom(this);
 		
 		/* Container.clone */
 		for (Layoutable child : getChildren())
-			b.addChild(child.clone(m));
+			b.addChild(child.clone(b));
 		
 		for (Link i : only(null, Link.class)) {
-			Link iClone = (Link)m.get(i);
+			Link iClone = i.getIdentifier().lookup(null, b);
 			for (Point p : i.getPoints())
-				iClone.addPoint((Point)m.get(p));
-		}
-		
-		for (Entry<ModelObject, ModelObject> e : m.entrySet()) {
-			ModelObject o = e.getKey();
-			if (o instanceof Layoutable) {
-				Layoutable l = (Layoutable)o,
-						lClone = (Layoutable)e.getValue();
-				lClone.setName(l.getName());
-				Namespace<Layoutable> ns = b.getNamespace(getNSI(lClone));
-				if (ns != null)
-					ns.put(lClone.getName(), lClone);
-			}
+				iClone.addPoint(p.getIdentifier().lookup(null, b));
 		}
 		
 		return b;

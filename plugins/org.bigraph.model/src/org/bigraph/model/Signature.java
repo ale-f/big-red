@@ -2,8 +2,6 @@ package org.bigraph.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Control.ChangeAddPort;
@@ -82,11 +80,11 @@ public class Signature extends ModelObject
 	private ArrayList<Control> controls = new ArrayList<Control>();
 	
 	@Override
-	public Signature clone(Map<ModelObject, ModelObject> m) {
-		Signature s = (Signature)super.clone(m);
+	public Signature clone() {
+		Signature s = (Signature)super.clone();
 		
 		for (Control c : getControls())
-			s.addControl(c.clone(m));
+			s.addControl(c.clone(s));
 		
 		return s;
 	}

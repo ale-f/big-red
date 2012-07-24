@@ -2,9 +2,6 @@ package org.bigraph.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IChild;
 import org.bigraph.model.interfaces.INode;
@@ -35,23 +32,9 @@ public class Node extends Container implements INode {
 	}
 	
 	@Override
-	public Node clone(Map<ModelObject, ModelObject> m) {
+	protected Node clone(Bigraph m) {
 		Node n = (Node)super.clone(m);
-		
-		/*
-		 * If this Node's Control has a counterpart in the map, then use that
-		 * (the Bigraph is probably being cloned).
-		 */
-		Control cloneControl = null;
-		if (m != null)
-			cloneControl = (Control)m.get(getControl());
-		n.setControl(cloneControl == null ? getControl() : cloneControl);
-		
-		if (m != null) {
-			/* Manually claim that the new Node's Ports are clones. */
-			for (int i = 0; i < getPorts().size(); i++)
-				m.put(getPorts().get(i), n.getPorts().get(i));
-		}
+		n.setControl(getControl().getIdentifier().lookup(null, m));
 		return n;
 	}
 	

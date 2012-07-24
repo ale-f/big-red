@@ -1,7 +1,5 @@
 package org.bigraph.model;
 
-import java.util.Map;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -101,9 +99,8 @@ public class PortSpec extends ModelObject implements IPort {
 	private String name;
 	private Control control;
 	
-	@Override
-	public PortSpec clone(Map<ModelObject, ModelObject> m) {
-		PortSpec p = (PortSpec)super.clone(m);
+	protected PortSpec clone(Signature m) {
+		PortSpec p = (PortSpec)super.clone();
 		p.setName(getName());
 		return p;
 	}

@@ -144,29 +144,11 @@ public abstract class ModelObject {
 		}
 	}
 	
-	/**
-	 * Creates and returns a new deep copy of this {@link ModelObject}.
-	 * <p>(Although the returned copy is a {@link ModelObject}, it's
-	 * really an instance of whatever subclass this object is.)
-	 * @param m a {@link CloneMap} to be notified of the new copy, or
-	 * <code>null</code>
-	 * @return a new deep copy of this {@link ModelObject}
-	 */
-	public ModelObject clone(Map<ModelObject, ModelObject> m) {
+	@Override
+	protected ModelObject clone() {
 		ModelObject i = newInstance();
-		if (m != null)
-			m.put(this, i);
 		i.setExtendedDataFrom(this);
 		return i;
-	}
-	
-	/**
-	 * Creates and returns a new deep copy of this {@link ModelObject} as
-	 * though by {@link #clone(Map) clone(null)}.
-	 */
-	@Override
-	public ModelObject clone() {
-		return clone(null);
 	}
 	
 	protected Object getProperty(String name) {
