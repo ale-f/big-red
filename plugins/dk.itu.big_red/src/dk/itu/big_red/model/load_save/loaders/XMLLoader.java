@@ -6,15 +6,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-
 import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.runtime.CoreException;
@@ -49,8 +46,6 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 		}
 	}
 	
-	private static SchemaFactory sf = null;
-	
 	/**
 	 * Validates the given {@link Document} with the {@link Schema} constructed
 	 * from the given {@link InputStream}.
@@ -63,10 +58,7 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 	protected static Document validate(Document d, String schema)
 			throws LoadFailedException {
 		try {
-			if (sf == null)
-				sf =
-				SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			sf.newSchema(
+			getSharedSchemaFactory().newSchema(
 					new StreamSource(RedPlugin.getResource(schema))).
 				newValidator().validate(new DOMSource(d));
 			return d;
@@ -75,8 +67,6 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 		}
 	}
 
-	private static DocumentBuilderFactory dbf = null;
-	
 	/**
 	 * Attempts to parse the specified {@link InputStream} into a DOM {@link
 	 * Document}.
@@ -90,13 +80,9 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 	 * DocumentBuilderFactory#newDocumentBuilder()}
 	 */
 	protected static Document parse(InputStream is)
-			throws SAXException, IOException, ParserConfigurationException {
+			throws SAXException, IOException {
 		try {
-			if (dbf == null) {
-				dbf = DocumentBuilderFactory.newInstance();
-				dbf.setNamespaceAware(true);
-			}
-			return dbf.newDocumentBuilder().parse(is);
+			return getSharedDocumentBuilder().parse(is);
 		} finally {
 			is.close();
 		}

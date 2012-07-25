@@ -4,11 +4,41 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.validation.SchemaFactory;
+
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.w3c.dom.Element;
 
 public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
+	private static final SchemaFactory sf;
+	private static final DocumentBuilderFactory dbf;
+	private static final DocumentBuilder db;
+	static {
+		sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		dbf = DocumentBuilderFactory.newInstance();
+		dbf.setNamespaceAware(true);
+		DocumentBuilder db_ = null;
+		try {
+			db_ = dbf.newDocumentBuilder();
+		} catch (ParserConfigurationException pce) {
+			/* do nothing */
+		}
+		db = db_;
+	}
+	
+	protected static SchemaFactory getSharedSchemaFactory() {
+		return sf;
+	}
+	
+	protected static DocumentBuilder getSharedDocumentBuilder() {
+		return db;
+	}
+	
 	public static String getAttributeNS(Element d, String nsURI, String n) {
 		String r = d.getAttributeNS(nsURI, n);
 		if (r.length() == 0 && d.getNamespaceURI().equals(nsURI))
