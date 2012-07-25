@@ -13,12 +13,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.SaveFailedException;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
@@ -147,14 +146,13 @@ public abstract class XMLSaver extends Saver {
 	
 	protected Element processOrReference(
 		Element e, ModelObject object, Class<? extends XMLSaver> klass) {
-		IFile f;
+		IFileWrapper f;
 		if (e == null || object == null) {
 			return null;
 		} else if (getFile() != null &&
 				(f = ExtendedDataUtilities.getFile(object)) != null) {
-			Path mine = new Path(getFile().getParent().getPath());
 			e.setAttributeNS(null,
-				"src", f.getFullPath().makeRelativeTo(mine).toString());
+				"src", f.getRelativePath(getFile().getParent().getPath()));
 			/* No decoration takes place! */
 		} else {
 			XMLSaver ex;

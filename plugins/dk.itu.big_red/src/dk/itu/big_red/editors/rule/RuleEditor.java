@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.ReactionRule;
-import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -67,7 +66,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.UI;
@@ -328,9 +326,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 		
 		setModel((ReactionRule)loadInput());
 	    
-		Signature s = getModel().getRedex().getSignature();
-	    updateNodePalette(s);
-	    addInterestingResource(ExtendedDataUtilities.getFile(s));
+	    updateNodePalette(getModel().getRedex().getSignature());
 	    redexViewer.setContents(model.getRedex());
 	    reactumViewer.setContents(model.getReactum());
     }

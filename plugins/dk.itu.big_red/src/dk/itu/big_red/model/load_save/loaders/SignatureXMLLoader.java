@@ -14,8 +14,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
-
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
 public class SignatureXMLLoader extends XMLLoader {
@@ -27,9 +25,7 @@ public class SignatureXMLLoader extends XMLLoader {
 			Document d =
 				validate(parse(getInputStream()), "resources/schema/signature.xsd");
 			Signature s = makeObject(d.getDocumentElement());
-			/* XXX: this is a hilariously awful hack */
-			ExtendedDataUtilities.setFile(s,
-					((EclipseFileWrapper)getFile()).getResource());
+			ExtendedDataUtilities.setFile(s, getFile());
 			return s;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);

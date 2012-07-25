@@ -34,7 +34,6 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
-import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
@@ -48,9 +47,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/rule.xsd");
 			ReactionRule rr = makeObject(d.getDocumentElement());
-			/* XXX: this is a hilariously awful hack */
-			ExtendedDataUtilities.setFile(rr,
-					((EclipseFileWrapper)getFile()).getResource());
+			ExtendedDataUtilities.setFile(rr, getFile());
 			return rr;
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {

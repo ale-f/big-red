@@ -31,7 +31,6 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
-import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 
 public class ReactionXMLLoader extends XMLLoader{
 
@@ -95,9 +94,7 @@ public class ReactionXMLLoader extends XMLLoader{
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/reaction.xsd");
 			Reaction b = makeObject(d.getDocumentElement());
-			/* XXX: this is a hilariously awful hack */
-			ExtendedDataUtilities.setFile(b,
-					((EclipseFileWrapper)getFile()).getResource());
+			ExtendedDataUtilities.setFile(b, getFile());
 			return b;
 		} catch (LoadFailedException e) {
 			throw e;

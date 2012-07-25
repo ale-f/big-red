@@ -44,7 +44,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 
@@ -221,8 +220,6 @@ public class BigraphEditor extends AbstractGEFEditor {
 		
 		model = (Bigraph)loadInput();
 	    
-	    addInterestingResource(
-	    		ExtendedDataUtilities.getFile(getModel().getSignature()));
 	    updateNodePalette(model.getSignature());
 	    getGraphicalViewer().setContents(model);
 	}

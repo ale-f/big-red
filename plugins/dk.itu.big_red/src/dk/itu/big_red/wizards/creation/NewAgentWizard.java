@@ -31,7 +31,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 	
 	protected static Signature getSyntheticSignature(IFile sigFile) {
 		Signature s = new Signature();
-		ExtendedDataUtilities.setFile(s, sigFile);
+		ExtendedDataUtilities.setFile(s, new EclipseFileWrapper(sigFile));
 		return s;
 	}
 	

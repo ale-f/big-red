@@ -14,6 +14,7 @@ import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -117,22 +118,17 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		modelToControls();
 	}
 	
+	private static final IFile getFileFrom(ModelObject m) {
+		IFileWrapper fw = ExtendedDataUtilities.getFile(m);
+		return (fw instanceof EclipseFileWrapper ?
+				((EclipseFileWrapper)fw).getResource() : null);
+	}
+	
 	private void modelToControls() {
 		uiUpdateInProgress = true;
 		
-		Signature s = model.getSignature();
-		if (s != null) {
-			IFile f = ExtendedDataUtilities.getFile(s);
-			if (f != null)
-				signatureSelector.setResource(f);
-		}
-		
-		Bigraph b = model.getModel();
-		if (b != null) {
-			IFile f = ExtendedDataUtilities.getFile(b);
-			if (f != null)
-				modelSelector.setResource(f);
-		}
+		modelSelector.setResource(getFileFrom(model.getModel()));
+		signatureSelector.setResource(getFileFrom(model.getSignature()));
 		
 		recalculateExportEnabled();
 		uiUpdateInProgress = false;
@@ -207,8 +203,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					IFile f =
-						ExtendedDataUtilities.getFile((ModelObject)element);
+					IFile f = getFileFrom((ModelObject)element);
 					if (f != null) {
 						return f.getProjectRelativePath().toString();
 					} else return "(embedded rule)";
@@ -337,12 +332,10 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			uiUpdateInProgress = true;
 			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
 				Signature s = (Signature)newValue;
-				signatureSelector.setResource(
-						ExtendedDataUtilities.getFile(s));
+				signatureSelector.setResource(getFileFrom(s));
 			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
 				Bigraph b = (Bigraph)newValue;
-				modelSelector.setResource(
-						ExtendedDataUtilities.getFile(b));
+				modelSelector.setResource(getFileFrom(b));
 			}
 		} finally {
 			uiUpdateInProgress = false;

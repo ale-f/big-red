@@ -27,7 +27,6 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
 
 /**
@@ -43,8 +42,7 @@ public class BigraphXMLLoader extends XMLLoader {
 					validate(parse(getInputStream()), "resources/schema/bigraph.xsd");
 			Bigraph b = makeObject(d.getDocumentElement());
 			/* XXX: this is a hilariously awful hack */
-			ExtendedDataUtilities.setFile(b,
-					((EclipseFileWrapper)getFile()).getResource());
+			ExtendedDataUtilities.setFile(b, getFile());
 			return b;
 		} catch (LoadFailedException e) {
 			throw e;

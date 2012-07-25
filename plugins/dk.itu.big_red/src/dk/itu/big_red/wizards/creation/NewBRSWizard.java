@@ -51,7 +51,8 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 					sim = new IOAdapter();
 				
 				Signature s = new Signature();
-				ExtendedDataUtilities.setFile(s, signature);
+				ExtendedDataUtilities.setFile(s,
+						new EclipseFileWrapper(signature));
 				SignatureXMLSaver r = new SignatureXMLSaver().setModel(s);
 				r.setFile(new EclipseFileWrapper(signature)).
 					setOutputStream(sig.getOutputStream()).exportObject();

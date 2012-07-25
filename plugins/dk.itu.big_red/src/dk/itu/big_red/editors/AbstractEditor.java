@@ -38,7 +38,6 @@ import dk.itu.big_red.editors.actions.RevertProxyAction;
 import dk.itu.big_red.editors.actions.UndoProxyAction;
 import dk.itu.big_red.editors.actions.ProxyAction.IActionImplementor;
 import dk.itu.big_red.editors.assistants.EditorError;
-import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;

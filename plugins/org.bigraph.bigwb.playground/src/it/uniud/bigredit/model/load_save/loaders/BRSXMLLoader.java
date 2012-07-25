@@ -28,8 +28,6 @@ import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
-import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
-
 import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.BRS;
 
@@ -56,9 +54,7 @@ import it.uniud.bigredit.model.BRS;
 						validate(parse(getInputStream()), "resources/schema/brs.xsd");
 				System.out.println("not there");
 				BRS ss = makeObject(d.getDocumentElement());
-				/* XXX: this is a hilariously awful hack */
-				ExtendedDataUtilities.setFile(ss,
-						((EclipseFileWrapper)getFile()).getResource());
+				ExtendedDataUtilities.setFile(ss, getFile());
 				return ss;
 			} catch (Exception e) {
 				throw new LoadFailedException(e);

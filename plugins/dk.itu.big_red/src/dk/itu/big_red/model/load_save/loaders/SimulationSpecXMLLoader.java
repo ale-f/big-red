@@ -12,7 +12,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
@@ -22,9 +21,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/spec.xsd");
 			SimulationSpec ss = makeObject(d.getDocumentElement());
-			/* XXX: this is a hilariously awful hack */
-			ExtendedDataUtilities.setFile(ss,
-					((EclipseFileWrapper)getFile()).getResource());
+			ExtendedDataUtilities.setFile(ss, getFile());
 			return ss;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
