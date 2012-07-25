@@ -15,6 +15,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.Saver;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -28,7 +29,6 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.IXMLDecorator;
-import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 public abstract class XMLSaver extends Saver {

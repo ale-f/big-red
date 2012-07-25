@@ -16,6 +16,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.Saver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -46,7 +47,7 @@ import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
@@ -145,7 +146,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			factories.add(new ConfigurationElementInteractionManagerFactory(ce));
 		
 		for (IConfigurationElement ce :
-		     r.getConfigurationElementsFor(Saver.EXTENSION_POINT)) {
+		     r.getConfigurationElementsFor(SaverUtilities.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
 			if (exports.equals(SimulationSpec.class.getCanonicalName()))
 				factories.add(new ExportInteractionManagerFactory(ce));

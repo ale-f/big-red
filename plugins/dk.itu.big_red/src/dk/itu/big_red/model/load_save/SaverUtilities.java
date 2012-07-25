@@ -1,19 +1,15 @@
 package dk.itu.big_red.model.load_save;
 
-import java.io.OutputStream;
-
+import org.bigraph.model.savers.Saver;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 
-/**
- * Classes extending Saver can write objects to an {@link OutputStream}.
- * @see Loader
- * @author alec
- */
-public abstract class Saver extends org.bigraph.model.savers.Saver {
+public abstract class SaverUtilities {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
-	
+
+	private SaverUtilities() {}
+
 	public static final Saver forContentType(String contentType) {
 		for (IConfigurationElement ice :
 			RegistryFactory.getRegistry().

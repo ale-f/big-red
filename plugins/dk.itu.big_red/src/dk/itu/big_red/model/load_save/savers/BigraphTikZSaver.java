@@ -19,6 +19,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.Saver;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -30,7 +31,6 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.load_save.Saver;
 
 public class BigraphTikZSaver extends Saver {
 	private BufferedWriter writer;

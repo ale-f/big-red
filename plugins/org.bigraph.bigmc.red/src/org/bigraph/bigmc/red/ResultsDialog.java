@@ -8,8 +8,9 @@ import org.bigraph.bigmc.red.BigMCInteractionManager.State;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.Saver;
 
-import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -216,7 +217,7 @@ public class ResultsDialog extends TitleAreaDialog {
 				IOAdapter io = new IOAdapter();
 				setErrorMessage(null);
 				try {
-					Saver r = Saver.forContentType(Bigraph.CONTENT_TYPE);
+					Saver r = SaverUtilities.forContentType(Bigraph.CONTENT_TYPE);
 					r.setFile(new EclipseFileWrapper(f)).
 						setModel(b).setOutputStream(io.getOutputStream()).
 						exportObject();

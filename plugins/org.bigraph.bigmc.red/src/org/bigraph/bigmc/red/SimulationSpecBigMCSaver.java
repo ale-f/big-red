@@ -27,9 +27,9 @@ import org.bigraph.model.interfaces.IRoot;
 import org.bigraph.model.interfaces.ISite;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.Saver;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.Saver;
 
 public class SimulationSpecBigMCSaver extends Saver {
 	private OutputStreamWriter osw = null;

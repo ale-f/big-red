@@ -11,6 +11,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.Saver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -44,7 +45,7 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
-import dk.itu.big_red.model.load_save.Saver;
+import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
@@ -148,7 +149,7 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 			ArrayList<IFactory<Saver>> f = new ArrayList<IFactory<Saver>>();
 			for (final IConfigurationElement ice :
 				RegistryFactory.getRegistry().
-					getConfigurationElementsFor(Saver.EXTENSION_POINT)) {
+					getConfigurationElementsFor(SaverUtilities.EXTENSION_POINT)) {
 				if (id.equals(ice.getAttribute("exports"))) {
 					f.add(new IFactory<Saver>() {
 						@Override
