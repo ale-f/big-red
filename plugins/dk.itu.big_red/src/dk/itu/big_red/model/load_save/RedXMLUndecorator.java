@@ -1,10 +1,9 @@
 package dk.itu.big_red.model.load_save;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
-import static dk.itu.big_red.model.load_save.loaders.XMLLoader.getAttributeNS;
-import static dk.itu.big_red.model.load_save.loaders.XMLLoader.getColorAttribute;
-import static dk.itu.big_red.model.load_save.loaders.XMLLoader.getDoubleAttribute;
-import static dk.itu.big_red.model.load_save.loaders.XMLLoader.getIntAttribute;
+import static
+	dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static
+	dk.itu.big_red.model.load_save.loaders.XMLLoader.getColorAttribute;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
@@ -30,7 +29,10 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.load_save.loaders.XMLLoader;
+
+import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
+import static org.bigraph.model.loaders.XMLLoader.getDoubleAttribute;
+import static org.bigraph.model.loaders.XMLLoader.getIntAttribute;
 
 public class RedXMLUndecorator implements IXMLUndecorator {
 	private enum Tristate {
@@ -63,10 +65,10 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 
 	public static Rectangle getRectangle(Element e) {
 		String
-			rectX = XMLLoader.getAttributeNS(e, BIG_RED, "x"),
-			rectY = XMLLoader.getAttributeNS(e, BIG_RED, "y"),
-			rectW = XMLLoader.getAttributeNS(e, BIG_RED, "width"),
-			rectH = XMLLoader.getAttributeNS(e, BIG_RED, "height");
+			rectX = getAttributeNS(e, BIG_RED, "x"),
+			rectY = getAttributeNS(e, BIG_RED, "y"),
+			rectW = getAttributeNS(e, BIG_RED, "width"),
+			rectH = getAttributeNS(e, BIG_RED, "height");
 		if (rectX != null && rectY != null && rectW != null && rectH != null) {
 			try {
 				return new Rectangle(
@@ -115,7 +117,7 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 						LayoutUtilities.changeLayout((Layoutable)object, r));
 			}
 			
-			String comment = XMLLoader.getAttributeNS(eA, BIG_RED, "comment");
+			String comment = getAttributeNS(eA, BIG_RED, "comment");
 			if (comment != null)
 				cg.add(ExtendedDataUtilities.changeComment(object, comment));
 		}

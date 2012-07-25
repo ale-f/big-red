@@ -69,7 +69,7 @@ import it.uniud.bigredit.model.BRS;
 		}
 		
 		private Signature makeSignature(Element e) throws LoadFailedException {
-			String signaturePath = getAttributeNS(e, SPEC, "src");
+			String signaturePath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
 			if (signaturePath != null && getFile() != null) {
 				ModelObject mo = tryLoad(signaturePath);
 				if (mo instanceof Signature) {
@@ -82,7 +82,7 @@ import it.uniud.bigredit.model.BRS;
 		}
 		
 		private Bigraph makeBigraph(Element e) throws LoadFailedException {
-			String bigraphPath = getAttributeNS(e, SPEC, "src");
+			String bigraphPath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
 			if (bigraphPath != null && getFile() != null) {
 				ModelObject mo = tryLoad(bigraphPath);
 				if (mo instanceof Bigraph) {
@@ -95,7 +95,7 @@ import it.uniud.bigredit.model.BRS;
 		}
 		
 		private ReactionRule makeRule(Element e) throws LoadFailedException {
-			String rulePath = getAttributeNS(e, SPEC, "src");
+			String rulePath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
 			if (rulePath != null && getFile() != null) {
 				ModelObject mo = tryLoad(rulePath);
 				if (mo instanceof ReactionRule) {

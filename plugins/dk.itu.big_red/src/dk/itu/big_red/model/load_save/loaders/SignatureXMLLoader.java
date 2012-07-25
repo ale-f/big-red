@@ -35,16 +35,16 @@ public class SignatureXMLLoader extends XMLLoader {
 	private void makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
 		addChange(sig.changeAddControl(model));
-		addChange(model.changeName(getAttributeNS(e, SIGNATURE, "name")));
+		addChange(model.changeName(org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SIGNATURE, "name")));
 		
-		String kind = getAttributeNS(e, SIGNATURE, "kind");
+		String kind = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null) {
 			addChange(model.changeKind(
 				kind.equals("active") ? Kind.ACTIVE :
 				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC));
 		}
 		
-		String parameter = getAttributeNS(e, SIGNATURE, "parameter");
+		String parameter = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SIGNATURE, "parameter");
 		if (parameter != null) {
 			INamePolicy n = null;
 			if (parameter.equals("LONG")) {
@@ -80,7 +80,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	private PortSpec makePortSpec(Element e, Control c) {
 		PortSpec model = new PortSpec();
 		addChange(
-				c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
+				c.changeAddPort(model, org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SIGNATURE, "name")));
 		return executeUndecorators(model, e);
 	}
 	

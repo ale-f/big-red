@@ -111,7 +111,7 @@ public class ReactionXMLLoader extends XMLLoader{
 	}
 	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
-		String bigraphPath = getAttributeNS(e, SPEC, "src");
+		String bigraphPath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
 		if (bigraphPath != null && getFile() != null) {
 			ModelObject mo = tryLoad(bigraphPath);
 			if (mo instanceof Bigraph) {

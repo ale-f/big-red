@@ -65,9 +65,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		String signaturePath;
 		if (signatureElement != null) {
-			signaturePath = getAttributeNS(signatureElement, BIGRAPH, "src");
+			signaturePath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(signatureElement, BIGRAPH, "src");
 		} else {
-			signaturePath = getAttributeNS(e, BIGRAPH, "signature");
+			signaturePath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, BIGRAPH, "signature");
 		}
 		
 		if (signaturePath != null) {
@@ -111,12 +111,12 @@ public class BigraphXMLLoader extends XMLLoader {
 			new HashMap<String, Link>();
 	
 	private void processLink(Element e, Link model) throws LoadFailedException {
-		links.put(getAttributeNS(e, BIGRAPH, "name"), model);
+		links.put(org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, BIGRAPH, "name"), model);
 	}
 	
 	private void processPoint(Element e, Point model) throws LoadFailedException {
 		if (model != null) {
-			String linkName = getAttributeNS(e, BIGRAPH, "link");
+			String linkName = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, BIGRAPH, "link");
 			if (linkName != null) {
 				Link link = links.get(linkName);
 				if (link != null)
@@ -129,13 +129,13 @@ public class BigraphXMLLoader extends XMLLoader {
 	}
 	
 	private void processSite(Element e, Site model) throws LoadFailedException {
-		String alias = getAttributeNS(e, BIGRAPH, "alias");
+		String alias = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, BIGRAPH, "alias");
 		if (alias != null)
 			addChange(ExtendedDataUtilities.changeAlias(model, alias));
 	}
 	
 	private void processNode(Element e, Node model) throws LoadFailedException {
-		String parameter = getAttributeNS(e, BIGRAPH, "parameter");
+		String parameter = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, BIGRAPH, "parameter");
 		INamePolicy policy = ExtendedDataUtilities.getParameterPolicy(model.getControl());
 		
 		 /* FIXME - details */
@@ -159,7 +159,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		ModelObject model = null;
 		boolean port = false;
 		if (e.getLocalName().equals("node")) {
-			String controlName = getAttributeNS(e, BIGRAPH, "control");
+			String controlName = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, BIGRAPH, "control");
 			Control c = bigraph.getSignature().getControl(controlName);
 			if (c == null)
 				throw new LoadFailedException(
@@ -179,7 +179,7 @@ public class BigraphXMLLoader extends XMLLoader {
 
 		if (model instanceof Layoutable)
 			addChange(context.changeAddChild(
-					(Layoutable)model, getAttributeNS(e, BIGRAPH, "name")));
+					(Layoutable)model, org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, BIGRAPH, "name")));
 		
 		if (model instanceof Node) {
 			processNode(e, (Node)model);
@@ -188,7 +188,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		} else if (port) {
 			Node n = (Node)context;
 			processPoint(e,
-				n.getPort(getAttributeNS(e, BIGRAPH, "name")));
+				n.getPort(org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, BIGRAPH, "name")));
 		} else if (model instanceof Link) {
 			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {
