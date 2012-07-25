@@ -1,9 +1,5 @@
 package dk.itu.big_red.model.load_save.savers;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -14,8 +10,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.resources.IFileWrapper;
+import org.bigraph.model.savers.IXMLDecorator;
 import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.savers.Saver;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -28,10 +24,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.IXMLDecorator;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
-public abstract class XMLSaver extends Saver {
+public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 	public XMLSaver() {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
@@ -225,33 +220,5 @@ public abstract class XMLSaver extends Saver {
 			
 		}
 		return impl;
-	}
-	
-	private List<IXMLDecorator> decorators = null;
-	
-	protected List<IXMLDecorator> getDecorators() {
-		return (decorators != null ? decorators :
-				Collections.<IXMLDecorator>emptyList());
-	}
-	
-	protected void addDecorator(IXMLDecorator d) {
-		if (d == null)
-			return;
-		if (decorators == null)
-			decorators = new ArrayList<IXMLDecorator>();
-		decorators.add(d);
-	}
-	
-	protected void removeDecorator(IXMLDecorator d) {
-		if (decorators.remove(d))
-			if (decorators.size() == 0)
-				decorators = null;
-	}
-	
-	protected Element executeDecorators(ModelObject mo, Element el) {
-		if (mo != null && el != null)
-			for (IXMLDecorator d : getDecorators())
-				d.decorate(mo, el);
-		return el;
 	}
 }

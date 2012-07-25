@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.savers;
 
 import org.bigraph.model.ModelObject;
 import org.w3c.dom.Element;
