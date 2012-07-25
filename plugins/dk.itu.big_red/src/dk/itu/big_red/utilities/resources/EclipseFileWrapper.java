@@ -39,13 +39,14 @@ public class EclipseFileWrapper extends EclipseResourceWrapper
 					if (i.canImport()) {
 						return i.importObject();
 					} else {
-						throw new LoadFailedException("What?");
+						throw new LoadFailedException("The loader for " +
+								file + " could not be configured properly");
 					}
 				}
 			}
+			throw new LoadFailedException("No loader was found for " + file);
 		} catch (CoreException ce) {
 			throw new LoadFailedException(ce);
 		}
-		return null;
 	}
 }

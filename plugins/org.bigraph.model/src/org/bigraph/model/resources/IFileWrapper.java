@@ -14,7 +14,7 @@ import org.bigraph.model.loaders.LoadFailedException;
 public interface IFileWrapper extends IResourceWrapper {
 	/**
 	 * Attempts to load the contents of this file as a {@link ModelObject}.
-	 * @return a {@link ModelObject}
+	 * @return a {@link ModelObject} (not <code>null</code>)
 	 * @throws LoadFailedException if something goes wrong
 	 */
 	public ModelObject load() throws LoadFailedException;
