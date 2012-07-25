@@ -43,7 +43,7 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 				try {
 					IXMLUndecorator u = (IXMLUndecorator)
 							ice.createExecutableExtension("class");
-					addIXMLUndecorator(u);
+					addUndecorator(u);
 				} catch (CoreException e) {
 					e.printStackTrace();
 					/* do nothing */
@@ -181,7 +181,7 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 				Collections.<IXMLUndecorator>emptyList());
 	}
 	
-	protected void addIXMLUndecorator(IXMLUndecorator d) {
+	protected void addUndecorator(IXMLUndecorator d) {
 		if (d == null)
 			return;
 		if (undecorators == null)
@@ -195,14 +195,6 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 			for (IXMLUndecorator d : getUndecorators())
 				d.undecorate(mo, el);
 		return mo;
-	}
-	
-	protected <T extends XMLLoader> T newLoader(Class<T> klass) {
-		try {
-			return klass.newInstance();
-		} catch (Exception e) {
-			return null;
-		}
 	}
 	
 	@Override
