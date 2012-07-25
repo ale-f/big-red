@@ -17,10 +17,12 @@ public interface IResourceWrapper {
 	
 	/**
 	 * Returns the absolute path to this resource.
-	 * <p>The precise format of an absolute path is not specified, but:&mdash;
+	 * <p>The precise format of a path is not specified, but:&mdash;
 	 * <ul>
-	 * <li>it will use <code>/</code> as a path separator; and
-	 * <li>it will not contain <code>.</code> or <code>..</code> components.
+	 * <li>the path separator will be the <code>/</code> character;
+	 * <li>absolute paths will not contain <code>.</code> or <code>..</code>
+	 * components; and
+	 * <li>relative paths will not begin with the <code>/</code> character.
 	 * </ul>
 	 * @return the absolute path to this resource
 	 * @see #getRelativePath(String)
