@@ -11,7 +11,7 @@ public class EclipseContainerWrapper extends EclipseResourceWrapper
 	private final IContainer container;
 	
 	@Override
-	protected IContainer getResource() {
+	public IContainer getResource() {
 		return container;
 	}
 	

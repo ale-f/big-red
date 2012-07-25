@@ -7,7 +7,11 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 
 abstract class EclipseResourceWrapper implements IResourceWrapper {
-	protected abstract IResource getResource();
+	/**
+	 * Returns this wrapper's underlying {@link IResource}.
+	 * @return an {@link IResource}
+	 */
+	public abstract IResource getResource();
 	
 	@Override
 	public String getPath() {
