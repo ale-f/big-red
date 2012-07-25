@@ -1,8 +1,7 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.loaders;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.loaders.IXMLLoader;
 import org.w3c.dom.Element;
 
 public interface IXMLUndecorator {

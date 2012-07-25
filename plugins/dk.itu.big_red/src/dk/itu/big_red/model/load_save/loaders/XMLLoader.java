@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.XMLConstants;
@@ -16,8 +15,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import org.bigraph.model.ModelObject;
-import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -30,7 +28,6 @@ import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Colour;
-import dk.itu.big_red.model.load_save.IXMLUndecorator;
 
 public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.xml";
@@ -172,36 +169,5 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 		if (r.size() == 1)
 			return r.get(0);
 		else return null;
-	}
-	
-	private List<IXMLUndecorator> undecorators = null;
-	
-	protected List<IXMLUndecorator> getUndecorators() {
-		return (undecorators != null ? undecorators :
-				Collections.<IXMLUndecorator>emptyList());
-	}
-	
-	protected void addUndecorator(IXMLUndecorator d) {
-		if (d == null)
-			return;
-		if (undecorators == null)
-			undecorators = new ArrayList<IXMLUndecorator>();
-		undecorators.add(d);
-		d.setLoader(this);
-	}
-	
-	protected <T extends ModelObject> T executeUndecorators(T mo, Element el) {
-		if (mo != null && el != null)
-			for (IXMLUndecorator d : getUndecorators())
-				d.undecorate(mo, el);
-		return mo;
-	}
-	
-	@Override
-	protected void executeChanges(IChangeExecutor ex)
-			throws LoadFailedException {
-		for (IXMLUndecorator d : getUndecorators())
-			d.finish(ex);
-		super.executeChanges(ex);
 	}
 }
