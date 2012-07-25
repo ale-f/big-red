@@ -34,4 +34,9 @@ abstract class EclipseResourceWrapper implements IResourceWrapper {
 		IContainer parent = getResource().getParent();
 		return (parent != null ? new EclipseContainerWrapper(parent) : null);
 	}
+	
+	@Override
+	public String toString() {
+		return getResource().toString();
+	}
 }
