@@ -18,6 +18,7 @@ import javax.xml.validation.SchemaFactory;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.loaders.ChangeLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;

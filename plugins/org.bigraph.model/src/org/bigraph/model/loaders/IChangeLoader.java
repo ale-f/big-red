@@ -1,10 +1,8 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.loaders;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.loaders.ILoader;
-
 
 public interface IChangeLoader extends ILoader {
 	void addChange(IChange c);

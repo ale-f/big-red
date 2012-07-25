@@ -1,14 +1,10 @@
-package dk.itu.big_red.model.load_save.loaders;
+package org.bigraph.model.loaders;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.loaders.LoadFailedException;
-import org.bigraph.model.loaders.Loader;
-
-import dk.itu.big_red.model.load_save.IChangeLoader;
 
 public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	private ChangeGroup cg = new ChangeGroup();
