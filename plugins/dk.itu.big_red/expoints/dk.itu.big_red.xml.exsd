@@ -63,7 +63,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":dk.itu.big_red.model.load_save.IXMLDecorator"/>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.savers.IXMLDecorator"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -85,7 +85,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":dk.itu.big_red.model.load_save.IXMLUndecorator"/>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.loaders.IXMLUndecorator"/>
                </appinfo>
             </annotation>
          </attribute>
