@@ -32,7 +32,8 @@ public abstract class Loader implements ILoader {
 		return this;
 	}
 	
-	protected IFileWrapper getFile() {
+	@Override
+	public IFileWrapper getFile() {
 		return file;
 	}
 	
