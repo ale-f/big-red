@@ -70,7 +70,7 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 				Collections.<IXMLUndecorator>emptyList());
 	}
 
-	protected void addUndecorator(IXMLUndecorator d) {
+	public void addUndecorator(IXMLUndecorator d) {
 		if (d == null)
 			return;
 		if (undecorators == null)

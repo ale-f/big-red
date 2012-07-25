@@ -15,18 +15,12 @@ public abstract class XMLSaver extends Saver {
 				Collections.<IXMLDecorator>emptyList());
 	}
 	
-	protected void addDecorator(IXMLDecorator d) {
+	public void addDecorator(IXMLDecorator d) {
 		if (d == null)
 			return;
 		if (decorators == null)
 			decorators = new ArrayList<IXMLDecorator>();
 		decorators.add(d);
-	}
-	
-	protected void removeDecorator(IXMLDecorator d) {
-		if (decorators.remove(d))
-			if (decorators.size() == 0)
-				decorators = null;
 	}
 	
 	protected Element executeDecorators(ModelObject mo, Element el) {
