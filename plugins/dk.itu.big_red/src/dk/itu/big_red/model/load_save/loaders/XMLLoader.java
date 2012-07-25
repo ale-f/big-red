@@ -18,7 +18,6 @@ import javax.xml.validation.SchemaFactory;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.loaders.ChangeLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -31,10 +30,9 @@ import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Colour;
-import dk.itu.big_red.model.load_save.IXMLLoader;
 import dk.itu.big_red.model.load_save.IXMLUndecorator;
 
-public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
+public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.xml";
 	
 	public XMLLoader() {
