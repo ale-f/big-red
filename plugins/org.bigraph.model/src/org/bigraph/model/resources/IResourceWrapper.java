@@ -10,6 +10,12 @@ package org.bigraph.model.resources;
  */
 public interface IResourceWrapper {
 	/**
+	 * Returns this resource's name (the last component of its path).
+	 * @return this resource's name
+	 */
+	public String getName();
+	
+	/**
 	 * Returns the absolute path to this resource.
 	 * <p>The precise format of an absolute path is not specified, but:&mdash;
 	 * <ul>

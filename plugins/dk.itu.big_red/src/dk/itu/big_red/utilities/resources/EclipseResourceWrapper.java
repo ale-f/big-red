@@ -14,6 +14,11 @@ abstract class EclipseResourceWrapper implements IResourceWrapper {
 	public abstract IResource getResource();
 	
 	@Override
+	public String getName() {
+		return getResource().getName();
+	}
+	
+	@Override
 	public String getPath() {
 		return getResource().getFullPath().toString();
 	}
