@@ -69,7 +69,7 @@ public class NewBrsWizard  extends Wizard implements INewWizard {
 		IOAdapter io = new IOAdapter();
 		BRS b = new BRS();
 		
-		b.setSignature((Signature)Loader.fromFile(sigFile));
+		b.setSignature((Signature)new EclipseFileWrapper(sigFile).load());
 		BRSXMLSaver r = new BRSXMLSaver();
 		r.setFile(new EclipseFileWrapper(bigFile)).setModel(b).
 			setOutputStream(io.getOutputStream()).exportObject();

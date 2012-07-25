@@ -44,10 +44,10 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
-import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.Saver;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
 import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 
@@ -62,7 +62,7 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 	public boolean performFinish() {
 		try {
 			IOAdapter io = new IOAdapter();
-			selectedExporter.setModel(Loader.fromFile(selectedFile));
+			selectedExporter.setModel(new EclipseFileWrapper(selectedFile).load());
 			selectedExporter.setOutputStream(io.getOutputStream());
 			selectedExporter.exportObject();
 			new ExportResults(
@@ -73,9 +73,6 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 			e.printStackTrace();
 			return false;
 		} catch (SaveFailedException e) {
-			e.printStackTrace();
-			return false;
-		} catch (CoreException e) {
 			e.printStackTrace();
 			return false;
 		}

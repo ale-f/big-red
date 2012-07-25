@@ -46,7 +46,6 @@ import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.Saver;
-import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
@@ -192,13 +191,11 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 					return;
 				try {
 					Signature s = (newValue != null ?
-						(Signature)Loader.fromFile((IFile)newValue) : null);
+						(Signature)new EclipseFileWrapper((IFile)newValue).load() : null);
 					doChange(getModel().changeSignature(s));
 					recalculateExportEnabled();
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
-				} catch (CoreException ce) {
-					ce.printStackTrace();
 				}
 			}
 		});
@@ -241,12 +238,10 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 				if (rtsd.open() == Dialog.OK) {
 					IFile f = (IFile)rtsd.getFirstResult();
 					try {
-						ReactionRule r = (ReactionRule)Loader.fromFile(f);
+						ReactionRule r = (ReactionRule)new EclipseFileWrapper(f).load();
 						doChange(model.changeAddRule(r));
 					} catch (LoadFailedException ife) {
 						ife.printStackTrace();
-					} catch (CoreException ce) {
-						ce.printStackTrace();
 					}
 				}
 			}
@@ -277,13 +272,11 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 					return;
 				try {
 					Bigraph b = (newValue != null ?
-						(Bigraph)Loader.fromFile((IFile)newValue) : null);
+						(Bigraph)new EclipseFileWrapper((IFile)newValue).load() : null);
 					doChange(getModel().changeModel(b));
 					recalculateExportEnabled();
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
-				} catch (CoreException ce) {
-					ce.printStackTrace();
 				}
 			}
 		});

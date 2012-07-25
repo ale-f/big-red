@@ -40,6 +40,7 @@ import dk.itu.big_red.editors.actions.ProxyAction.IActionImplementor;
 import dk.itu.big_red.editors.assistants.EditorError;
 import dk.itu.big_red.model.load_save.Loader;
 import dk.itu.big_red.utilities.io.IOAdapter;
+import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.Project.ModificationRunner;
 import dk.itu.big_red.utilities.ui.UI;
@@ -302,7 +303,7 @@ public abstract class AbstractEditor extends EditorPart
 			throws CoreException, LoadFailedException {
 		IEditorInput i_ = getEditorInput();
 		if (i_ instanceof FileEditorInput) {
-			return Loader.fromFile(((FileEditorInput)i_).getFile());
+			return new EclipseFileWrapper(((FileEditorInput)i_).getFile()).load();
 		} else return null;
 	}
 	
