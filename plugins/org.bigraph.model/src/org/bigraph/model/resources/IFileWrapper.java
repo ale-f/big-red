@@ -1,5 +1,7 @@
 package org.bigraph.model.resources;
 
+import java.io.InputStream;
+
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.loaders.LoadFailedException;
 
@@ -13,9 +15,16 @@ import org.bigraph.model.loaders.LoadFailedException;
  */
 public interface IFileWrapper extends IResourceWrapper {
 	/**
-	 * Attempts to load the contents of this file as a {@link ModelObject}.
+	 * Loads the contents of this file as a {@link ModelObject}.
 	 * @return a {@link ModelObject} (not <code>null</code>)
 	 * @throws LoadFailedException if something goes wrong
 	 */
 	public ModelObject load() throws LoadFailedException;
+	
+	/**
+	 * Produces an {@link InputStream} representing the contents of this file.
+	 * @return an {@link InputStream} (not <code>null</code>)
+	 * @throws LoadFailedException if something goes wrong
+	 */
+	public InputStream getContents() throws LoadFailedException;
 }

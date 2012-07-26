@@ -1,5 +1,7 @@
 package dk.itu.big_red.utilities.resources;
 
+import java.io.InputStream;
+
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.Loader;
@@ -35,8 +37,7 @@ public class EclipseFileWrapper extends EclipseResourceWrapper
 					getConfigurationElementsFor(LoaderUtilities.EXTENSION_POINT)) {
 				if (ct.getId().equals(ice.getAttribute("contentType"))) {
 					Loader i = (Loader)ice.createExecutableExtension("class");
-					i.setFile(this).setInputStream(
-							getResource().getContents());
+					i.setFile(this).setInputStream(getContents());
 					if (i.canImport()) {
 						return i.importObject();
 					} else {
@@ -46,6 +47,15 @@ public class EclipseFileWrapper extends EclipseResourceWrapper
 				}
 			}
 			throw new LoadFailedException("No loader was found for " + file);
+		} catch (CoreException ce) {
+			throw new LoadFailedException(ce);
+		}
+	}
+	
+	@Override
+	public InputStream getContents() throws LoadFailedException {
+		try {
+			return getResource().getContents();
 		} catch (CoreException ce) {
 			throw new LoadFailedException(ce);
 		}
