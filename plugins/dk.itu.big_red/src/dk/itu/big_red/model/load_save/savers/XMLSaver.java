@@ -11,12 +11,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.resources.IFileWrapper;
-import org.bigraph.model.savers.IXMLDecorator;
 import org.bigraph.model.savers.SaveFailedException;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.RegistryFactory;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -24,23 +19,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
-import dk.itu.big_red.model.load_save.loaders.XMLLoader;
+import dk.itu.big_red.model.load_save.SaverUtilities;
 
 public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 	public XMLSaver() {
-		IExtensionRegistry r = RegistryFactory.getRegistry();
-		for (IConfigurationElement ice :
-			r.getConfigurationElementsFor(XMLLoader.EXTENSION_POINT)) {
-			if ("decorator".equals(ice.getName())) {
-				try {
-					addDecorator(
-						(IXMLDecorator)ice.createExecutableExtension("class"));
-				} catch (CoreException e) {
-					e.printStackTrace();
-					/* do nothing */
-				}
-			}
-		}
+		SaverUtilities.installDecorators(this);
 	}
 	
 	private Document doc = null;
