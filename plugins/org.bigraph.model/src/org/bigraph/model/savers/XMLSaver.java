@@ -9,6 +9,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import org.bigraph.model.ModelObject;
 import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
@@ -42,6 +43,28 @@ public abstract class XMLSaver extends Saver {
 	
 	protected static DOMImplementation getSharedDOMImplementation() {
 		return impl;
+	}
+	
+	private Document doc = null;
+	
+	public Document getDocument() {
+		return doc;
+	}
+	
+	public Element getDocumentElement() {
+		if (getDocument() != null) {
+			return getDocument().getDocumentElement();
+		} else return null;
+	}
+	
+	public XMLSaver setDocument(Document doc) {
+		this.doc = doc;
+		return this;
+	}
+	
+	@Override
+	public boolean canExport() {
+		return (super.canExport() && doc != null);
 	}
 	
 	private List<IXMLDecorator> decorators = null;

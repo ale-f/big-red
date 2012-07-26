@@ -23,28 +23,6 @@ public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 		SaverUtilities.installDecorators(this);
 	}
 	
-	private Document doc = null;
-	
-	public Document getDocument() {
-		return doc;
-	}
-	
-	public Element getDocumentElement() {
-		if (getDocument() != null) {
-			return getDocument().getDocumentElement();
-		} else return null;
-	}
-	
-	public XMLSaver setDocument(Document doc) {
-		this.doc = doc;
-		return this;
-	}
-	
-	@Override
-	public boolean canExport() {
-		return (super.canExport() && doc != null);
-	}
-	
 	public static final String OPTION_DEFAULT_NS = "XMLSaverDefaultNS";
 	private boolean useDefaultNamespace = false;
 	
@@ -88,8 +66,9 @@ public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 	
 	protected Element newElement(String nsURI, String qualifiedName) {
 		if (defNSMatch(nsURI)) {
-			return doc.createElementNS(nsURI, unqualifyName(qualifiedName));
-		} else return doc.createElementNS(nsURI, qualifiedName);
+			return getDocument().createElementNS(
+					nsURI, unqualifyName(qualifiedName));
+		} else return getDocument().createElementNS(nsURI, qualifiedName);
 	}
 	
 	protected XMLSaver finish() throws SaveFailedException {
