@@ -25,4 +25,6 @@ public interface IRedNamespaceConstants {
 	String RULE = "http://www.itu.dk/research/pls/xmlns/2011/rule";
 	
 	String SPEC = "http://www.itu.dk/research/pls/xmlns/2012/simulation-spec";
+	
+	String PARAM = "http://bigraph.org/xmlns/2012/bigraph-extension-param";
 }
