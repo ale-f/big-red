@@ -1,7 +1,8 @@
 package dk.itu.big_red.model.load_save;
 
-import static
-	dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.PARAM;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
@@ -17,6 +18,10 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.loaders.LoaderNotice;
+import org.bigraph.model.names.policies.BooleanNamePolicy;
+import org.bigraph.model.names.policies.INamePolicy;
+import org.bigraph.model.names.policies.LongNamePolicy;
+import org.bigraph.model.names.policies.StringNamePolicy;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
@@ -162,6 +167,22 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 					shape = pl;
 				} else shape = Ellipse.SINGLETON;
 				cg.add(ExtendedDataUtilities.changeShape(c, shape));
+			}
+			
+			String parameter = getAttributeNS(el, PARAM, "type");
+			if (parameter == null)
+				parameter = getAttributeNS(el, SIGNATURE, "parameter");
+			if (parameter != null) {
+				INamePolicy n = null;
+				if (parameter.equals("LONG")) {
+					n = new LongNamePolicy();
+				} else if (parameter.equals("STRING")) {
+					n = new StringNamePolicy();
+				} else if (parameter.equals("BOOLEAN")) {
+					n = new BooleanNamePolicy();
+				}
+				if (n != null)
+					cg.add(ExtendedDataUtilities.changeParameterPolicy(c, n));
 			}
 		}
 		
