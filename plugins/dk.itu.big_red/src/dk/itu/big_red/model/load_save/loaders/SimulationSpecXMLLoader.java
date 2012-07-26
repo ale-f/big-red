@@ -5,13 +5,13 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
@@ -21,7 +21,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/spec.xsd");
 			SimulationSpec ss = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(ss, getFile());
+			FileData.setFile(ss, getFile());
 			return ss;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);

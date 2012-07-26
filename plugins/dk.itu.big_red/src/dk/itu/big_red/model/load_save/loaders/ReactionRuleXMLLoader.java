@@ -15,6 +15,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -47,7 +48,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/rule.xsd");
 			ReactionRule rr = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(rr, getFile());
+			FileData.setFile(rr, getFile());
 			return rr;
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {

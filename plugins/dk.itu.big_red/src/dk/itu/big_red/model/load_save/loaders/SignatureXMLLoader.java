@@ -4,6 +4,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
@@ -25,7 +26,7 @@ public class SignatureXMLLoader extends XMLLoader {
 			Document d =
 				validate(parse(getInputStream()), "resources/schema/signature.xsd");
 			Signature s = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(s, getFile());
+			FileData.setFile(s, getFile());
 			return s;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
@@ -35,16 +36,16 @@ public class SignatureXMLLoader extends XMLLoader {
 	private void makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
 		addChange(sig.changeAddControl(model));
-		addChange(model.changeName(org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SIGNATURE, "name")));
+		addChange(model.changeName(getAttributeNS(e, SIGNATURE, "name")));
 		
-		String kind = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SIGNATURE, "kind");
+		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null) {
 			addChange(model.changeKind(
 				kind.equals("active") ? Kind.ACTIVE :
 				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC));
 		}
 		
-		String parameter = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SIGNATURE, "parameter");
+		String parameter = getAttributeNS(e, SIGNATURE, "parameter");
 		if (parameter != null) {
 			INamePolicy n = null;
 			if (parameter.equals("LONG")) {
@@ -79,7 +80,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	private PortSpec makePortSpec(Element e, Control c) {
 		PortSpec model = new PortSpec();
 		addChange(
-				c.changeAddPort(model, org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SIGNATURE, "name")));
+				c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
 		return executeUndecorators(model, e);
 	}
 	

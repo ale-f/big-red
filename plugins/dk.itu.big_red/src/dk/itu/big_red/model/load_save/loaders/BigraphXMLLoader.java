@@ -17,6 +17,7 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.names.policies.INamePolicy;
@@ -42,7 +43,7 @@ public class BigraphXMLLoader extends XMLLoader {
 					validate(parse(getInputStream()), "resources/schema/bigraph.xsd");
 			Bigraph b = makeObject(d.getDocumentElement());
 			/* XXX: this is a hilariously awful hack */
-			ExtendedDataUtilities.setFile(b, getFile());
+			FileData.setFile(b, getFile());
 			return b;
 		} catch (LoadFailedException e) {
 			throw e;

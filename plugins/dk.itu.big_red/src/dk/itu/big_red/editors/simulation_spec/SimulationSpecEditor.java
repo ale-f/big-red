@@ -11,6 +11,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -46,7 +47,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.interaction_managers.IInteractionManager;
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
@@ -120,7 +120,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	}
 	
 	private static final IFile getFileFrom(ModelObject m) {
-		IFileWrapper fw = ExtendedDataUtilities.getFile(m);
+		IFileWrapper fw = FileData.getFile(m);
 		return (fw instanceof EclipseFileWrapper ?
 				((EclipseFileWrapper)fw).getResource() : null);
 	}

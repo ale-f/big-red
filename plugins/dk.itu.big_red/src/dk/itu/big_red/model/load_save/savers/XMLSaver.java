@@ -9,6 +9,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.IXMLDecorator;
 import org.bigraph.model.savers.SaveFailedException;
@@ -23,7 +24,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
@@ -145,7 +145,7 @@ public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 		if (e == null || object == null) {
 			return null;
 		} else if (getFile() != null &&
-				(f = ExtendedDataUtilities.getFile(object)) != null) {
+				(f = FileData.getFile(object)) != null) {
 			e.setAttributeNS(null,
 				"src", f.getRelativePath(getFile().getParent().getPath()));
 			/* No decoration takes place! */

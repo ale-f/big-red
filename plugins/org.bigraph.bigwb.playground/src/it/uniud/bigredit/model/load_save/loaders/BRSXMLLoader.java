@@ -14,6 +14,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -23,7 +24,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader;
@@ -54,7 +54,7 @@ import it.uniud.bigredit.model.BRS;
 						validate(parse(getInputStream()), "resources/schema/brs.xsd");
 				System.out.println("not there");
 				BRS ss = makeObject(d.getDocumentElement());
-				ExtendedDataUtilities.setFile(ss, getFile());
+				FileData.setFile(ss, getFile());
 				return ss;
 			} catch (Exception e) {
 				throw new LoadFailedException(e);

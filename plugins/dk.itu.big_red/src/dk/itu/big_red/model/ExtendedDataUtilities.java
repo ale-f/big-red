@@ -17,7 +17,6 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.policies.BoundedIntegerNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
-import org.bigraph.model.resources.IFileWrapper;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -52,23 +51,6 @@ public abstract class ExtendedDataUtilities {
 		if (context != null) {
 			context.setProperty(o, name, value);
 		} else o.setExtendedData(name, value);
-	}
-	
-	@RedProperty(fired = IFileWrapper.class, retrieved = IFileWrapper.class)
-	public static final String FILE =
-			"eD!+dk.itu.big_red.model.ModelObject.file";
-	
-	public static IFileWrapper getFile(ModelObject m) {
-		return getFile(null, m);
-	}
-	
-	public static IFileWrapper getFile(
-			PropertyScratchpad context, ModelObject m) {
-		return require(context, m, FILE, IFileWrapper.class);
-	}
-	
-	public static void setFile(ModelObject m, IFileWrapper f) {
-		m.setExtendedData(FILE, f);
 	}
 	
 	@RedProperty(fired = String.class, retrieved = String.class)

@@ -17,6 +17,7 @@ import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -28,7 +29,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
@@ -93,7 +93,7 @@ public class ReactionXMLLoader extends XMLLoader{
 			Document d =
 					validate(parse(getInputStream()), "resources/schema/reaction.xsd");
 			Reaction b = makeObject(d.getDocumentElement());
-			ExtendedDataUtilities.setFile(b, getFile());
+			FileData.setFile(b, getFile());
 			return b;
 		} catch (LoadFailedException e) {
 			throw e;

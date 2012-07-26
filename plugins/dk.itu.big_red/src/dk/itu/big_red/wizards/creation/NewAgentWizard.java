@@ -2,6 +2,7 @@ package dk.itu.big_red.wizards.creation;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Signature;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -12,7 +13,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
@@ -31,7 +31,7 @@ public class NewAgentWizard extends Wizard implements INewWizard {
 	
 	protected static Signature getSyntheticSignature(IFile sigFile) {
 		Signature s = new Signature();
-		ExtendedDataUtilities.setFile(s, new EclipseFileWrapper(sigFile));
+		FileData.setFile(s, new EclipseFileWrapper(sigFile));
 		return s;
 	}
 	
