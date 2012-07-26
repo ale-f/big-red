@@ -12,37 +12,20 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
-import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.loaders.LoadFailedException;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.RegistryFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.model.load_save.LoaderUtilities;
 
 public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.xml";
 	
 	public XMLLoader() {
-		IExtensionRegistry r = RegistryFactory.getRegistry();
-		for (IConfigurationElement ice :
-			r.getConfigurationElementsFor(EXTENSION_POINT)) {
-			if ("undecorator".equals(ice.getName())) {
-				try {
-					IXMLUndecorator u = (IXMLUndecorator)
-							ice.createExecutableExtension("class");
-					addUndecorator(u);
-				} catch (CoreException e) {
-					e.printStackTrace();
-					/* do nothing */
-				}
-			}
-		}
+		LoaderUtilities.installUndecorators(this);
 	}
 	
 	/**
