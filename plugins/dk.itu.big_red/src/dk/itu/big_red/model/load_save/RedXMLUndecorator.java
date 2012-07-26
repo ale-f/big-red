@@ -1,5 +1,6 @@
 package dk.itu.big_red.model.load_save;
 
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.PARAM;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
@@ -183,6 +184,29 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 				}
 				if (n != null)
 					cg.add(ExtendedDataUtilities.changeParameterPolicy(c, n));
+			}
+		}
+		
+		if (object instanceof org.bigraph.model.Node) {
+			org.bigraph.model.Node n = (org.bigraph.model.Node)object;
+			INamePolicy policy =
+					ExtendedDataUtilities.getParameterPolicy(n.getControl());
+			
+			String parameter = getAttributeNS(el, PARAM, "value");
+			if (parameter == null)
+				parameter = getAttributeNS(el, BIGRAPH, "parameter");
+			
+			 /* FIXME - details */
+			if (parameter != null && policy == null) {
+				loader.addNotice(LoaderNotice.Type.WARNING,
+						"Spurious parameter value ignored.");
+			} else if (parameter == null && policy != null) {
+				loader.addNotice(LoaderNotice.Type.WARNING,
+						"Default parameter value assigned.");
+				cg.add(
+					ExtendedDataUtilities.changeParameter(n, policy.get(0)));
+			} else if (parameter != null && policy != null) {
+				cg.add(ExtendedDataUtilities.changeParameter(n, parameter));
 			}
 		}
 		
