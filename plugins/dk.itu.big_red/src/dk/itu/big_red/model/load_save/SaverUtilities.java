@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.load_save;
 
 import org.bigraph.model.savers.IXMLDecorator;
+import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.core.runtime.CoreException;
@@ -44,5 +45,19 @@ public abstract class SaverUtilities {
 				}
 			}
 		}
+	}
+	
+	protected static <T extends XMLSaver> T newSaver(Class<T> klass)
+			throws SaveFailedException {
+		T s;
+		try {
+			s = klass.newInstance();
+		} catch (IllegalAccessException iae) {
+			throw new SaveFailedException(iae);
+		} catch (InstantiationException ie) {
+			throw new SaveFailedException(ie);
+		}
+		installDecorators(s);
+		return s;
 	}
 }

@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.load_save;
 
 import org.bigraph.model.loaders.IXMLUndecorator;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.XMLLoader;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -27,5 +28,19 @@ public abstract class LoaderUtilities {
 				}
 			}
 		}
+	}
+	
+	protected static <T extends XMLLoader> T newLoader(Class<T> klass)
+			throws LoadFailedException {
+		T l;
+		try {
+			l = klass.newInstance();
+		} catch (IllegalAccessException iae) {
+			throw new LoadFailedException(iae);
+		} catch (InstantiationException ie) {
+			throw new LoadFailedException(ie);
+		}
+		installUndecorators(l);
+		return l;
 	}
 }
