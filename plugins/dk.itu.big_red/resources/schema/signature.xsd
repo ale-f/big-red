@@ -2,7 +2,7 @@
 <!--
 	signature.xsd, the IT University of Copenhagen's proposed XML Schema
 	for <signature> documents
-	Copyright © Alexander Faithfull 2010, 2011
+	Copyright © Alexander Faithfull 2010, 2011, 2012
 	
 	Copying and distribution of this file, with or without modification,
 	are permitted in any medium without royalty provided that the copyright
@@ -148,12 +148,21 @@
 						</li>
 						<a id="control_parameter"/>
 						<li>
-							<code>parameter</code> (<code>string</code>): the type of this control's parameter, if it has one.
+							<code>parameter</code> (<code>string</code>): this control's parameter type.
+							<br />
+							<strong>This attribute is deprecated.</strong>
 						</li>
 					</ul>
 					<p>
 						Additionally, attributes from other namespaces MAY be present on <code>control</code>s.
 					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						The <a href="#control_parameter"><code>parameter</code> attribute</a> is a legacy attribute; applications MUST NOT produce it. Applications that understand parameterised controls SHOULD treat it as though it were a <code>type</code> attribute with the namespace <code>http://bigraph.org/xmlns/2012/bigraph-extension-param</code>.
+					</p>
+					<hr />
 				</body>
 			</html>
 		</xsd:documentation>
