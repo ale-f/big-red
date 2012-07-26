@@ -53,7 +53,6 @@ public class BigraphXMLLoader extends XMLLoader {
 	
 	private Bigraph bigraph = null;
 	
-	@Override
 	public Bigraph makeObject(Element e) throws LoadFailedException {
 		if (e == null)
 			throw new LoadFailedException("Element is null");

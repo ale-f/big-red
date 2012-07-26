@@ -107,7 +107,6 @@ import it.uniud.bigredit.model.BRS;
 			}
 		}
 		
-		@Override
 		public BRS makeObject(Element e) throws LoadFailedException {
 			BRS ss = new BRS();
 			ChangeGroup cg = new ChangeGroup();

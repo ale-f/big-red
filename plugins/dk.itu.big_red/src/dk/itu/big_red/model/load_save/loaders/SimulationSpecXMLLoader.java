@@ -74,7 +74,6 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		}
 	}
 	
-	@Override
 	public SimulationSpec makeObject(Element e) throws LoadFailedException {
 		SimulationSpec ss = new SimulationSpec();
 		

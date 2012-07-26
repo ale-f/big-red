@@ -41,7 +41,6 @@ public class ReactionXMLLoader extends XMLLoader{
 	public static final String REACTION =
 			"http://www.itu.dk/research/pls/xmlns/2012/reaction";
 	
-	@Override
 	public Reaction makeObject(Element e) throws LoadFailedException {
 		Reaction ra= new Reaction();
 		

@@ -56,7 +56,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		}
 	}
 
-	@Override
 	public ReactionRule makeObject(Element e) throws LoadFailedException {
 		rr = new ReactionRule();
 		

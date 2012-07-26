@@ -65,7 +65,6 @@ public class SignatureXMLLoader extends XMLLoader {
 		executeUndecorators(model, e);
 	}
 	
-	@Override
 	public Signature makeObject(Element e) throws LoadFailedException {
 		sig = new Signature();
 		

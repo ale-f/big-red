@@ -86,8 +86,6 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 			is.close();
 		}
 	}
-	
-	public abstract Object makeObject(Element e) throws LoadFailedException;
 
 	/**
 	 * Returns all the child {@link Node}s of the specified {@link Element}
