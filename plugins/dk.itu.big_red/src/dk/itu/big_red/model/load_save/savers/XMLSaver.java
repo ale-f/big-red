@@ -4,7 +4,6 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
@@ -17,8 +16,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-
 import dk.itu.big_red.model.load_save.SaverUtilities;
 
 public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
@@ -95,18 +92,12 @@ public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 		} else return doc.createElementNS(nsURI, qualifiedName);
 	}
 	
-	private static TransformerFactory tf;
-	private static DOMImplementation impl = null;
-	
 	protected XMLSaver finish() throws SaveFailedException {
 		try {
-			if (tf == null)
-				tf = TransformerFactory.newInstance();
-			
 			Source source = new DOMSource(getDocument());
 			Result result = new StreamResult(getOutputStream());
 			
-			Transformer t = tf.newTransformer();
+			Transformer t = getSharedTransformerFactory().newTransformer();
 			t.setOutputProperty(OutputKeys.INDENT, "yes");
 			t.setOutputProperty(
 					"{http://xml.apache.org/xslt}indent-amount", "2");
@@ -180,28 +171,9 @@ public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 	 * @return a new {@link Document}
 	 */
 	protected Document createDocument(String ns, String qName) {
-		DOMImplementation impl = getImplementation();
+		DOMImplementation impl = getSharedDOMImplementation();
 		if (defNSMatch(ns)) {
 			return impl.createDocument(ns, unqualifyName(qName), null);
 		} else return impl.createDocument(ns, qName, null);
-	}
-
-	/**
-	 * Gets the shared DOM implementation object (required to actually
-	 * <i>do</i> anything XML-related), creating it if necessary.
-	 * @return the shared DOM implementation object, or <code>null</code> if it
-	 *         couldn't be created
-	 */
-	protected static DOMImplementation getImplementation() {
-		if (impl == null) {
-			try {
-				impl = DOMImplementationRegistry.newInstance().
-				       getDOMImplementation("XML 3.0");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
-		return impl;
 	}
 }
