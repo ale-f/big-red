@@ -4,14 +4,8 @@ import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
-import org.bigraph.model.names.policies.BooleanNamePolicy;
-import org.bigraph.model.names.policies.INamePolicy;
-import org.bigraph.model.names.policies.LongNamePolicy;
-import org.bigraph.model.names.policies.StringNamePolicy;
 import org.bigraph.model.savers.SaveFailedException;
 import org.w3c.dom.Element;
-
-import dk.itu.big_red.model.ExtendedDataUtilities;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
@@ -58,15 +52,6 @@ public class SignatureXMLSaver extends XMLSaver {
 		applyAttributes(e,
 				"name", c.getName(),
 				"kind", c.getKind().toString());
-		
-		INamePolicy parameterPolicy = ExtendedDataUtilities.getParameterPolicy(c);
-		if (parameterPolicy instanceof LongNamePolicy) {
-			applyAttributes(e, "parameter", "LONG");
-		} else if (parameterPolicy instanceof StringNamePolicy) {
-			applyAttributes(e, "parameter", "STRING");
-		} else if (parameterPolicy instanceof BooleanNamePolicy) {
-			applyAttributes(e, "parameter", "BOOLEAN");
-		}
 		
 		for (PortSpec p : c.getPorts())
 			e.appendChild(processPort(

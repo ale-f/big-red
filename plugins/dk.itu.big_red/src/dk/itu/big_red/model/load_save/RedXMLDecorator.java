@@ -1,5 +1,6 @@
 package dk.itu.big_red.model.load_save;
 
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.PARAM;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
 
 import org.bigraph.model.Bigraph;
@@ -11,6 +12,10 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.names.policies.BooleanNamePolicy;
+import org.bigraph.model.names.policies.INamePolicy;
+import org.bigraph.model.names.policies.LongNamePolicy;
+import org.bigraph.model.names.policies.StringNamePolicy;
 import org.bigraph.model.savers.IXMLDecorator;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -53,6 +58,19 @@ public class RedXMLDecorator implements IXMLDecorator {
 				}
 			}
 
+			INamePolicy parameterPolicy =
+					ExtendedDataUtilities.getParameterPolicy(c);
+			String policyName = null;
+			if (parameterPolicy instanceof LongNamePolicy) {
+				policyName = "LONG";
+			} else if (parameterPolicy instanceof StringNamePolicy) {
+				policyName = "STRING";
+			} else if (parameterPolicy instanceof BooleanNamePolicy) {
+				policyName = "BOOLEAN";
+			}
+			if (policyName != null)
+				el.setAttributeNS(PARAM, "param:type", policyName);
+			
 			el.setAttributeNS(BIG_RED, "big-red:label",
 					ExtendedDataUtilities.getLabel(c));
 			el.appendChild(aE);
