@@ -24,7 +24,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.model.Colour;
 
 public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.xml";
@@ -89,21 +88,6 @@ public abstract class XMLLoader extends org.bigraph.model.loaders.XMLLoader {
 	}
 	
 	public abstract Object makeObject(Element e) throws LoadFailedException;
-
-	/**
-	 * Retrieves the given named attribute from the specified Element,
-	 * automatically converting the result from a string into a {@link Colour}.
-	 * @param d an Element with attributes set
-	 * @param nsURI the attribute's namespace
-	 * @param n the attribute name to search for
-	 * @return the attribute's value as a {@link Colour}, or <code>null</code>
-	 *         if the attribute couldn't be found
-	 * @see DOM#getAttribute
-	 */
-	public static Colour getColorAttribute(Element d, String nsURI, String n) {
-		String attr = getAttributeNS(d, nsURI, n);
-		return (attr != null ? new Colour(attr) : null);
-	}
 
 	/**
 	 * Returns all the child {@link Node}s of the specified {@link Element}

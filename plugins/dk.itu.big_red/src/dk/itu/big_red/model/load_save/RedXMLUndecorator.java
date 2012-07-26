@@ -2,8 +2,6 @@ package dk.itu.big_red.model.load_save;
 
 import static
 	dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
-import static
-	dk.itu.big_red.model.load_save.loaders.XMLLoader.getColorAttribute;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
@@ -104,8 +102,8 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 		Element eA = getNamedChildElement(el, BIG_RED, "appearance");
 		if (eA != null) {
 			Colour
-				fill = getColorAttribute(eA, BIG_RED, "fillColor"),
-				outline = getColorAttribute(eA, BIG_RED, "outlineColor");
+				fill = RedXMLUndecorator.getColorAttribute(eA, BIG_RED, "fillColor"),
+				outline = RedXMLUndecorator.getColorAttribute(eA, BIG_RED, "outlineColor");
 			if (fill != null)
 				cg.add(ColourUtilities.changeFill(object, fill));
 			if (outline != null)
@@ -201,5 +199,11 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 				}
 			}
 		}
+	}
+
+	private static final Colour
+			getColorAttribute(Element d, String nsURI, String n) {
+		String attr = getAttributeNS(d, nsURI, n);
+		return (attr != null ? new Colour(attr) : null);
 	}
 }
