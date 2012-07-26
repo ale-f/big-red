@@ -162,9 +162,6 @@ public class BigraphXMLSaver extends XMLSaver {
 		applyAttributes(e,
 			"control", n.getControl().getName(),
 			"name", n.getName());
-		String parameter = ExtendedDataUtilities.getParameter(n);
-		if (parameter != null)
-			applyAttributes(e, "parameter", parameter);
 		
 		for (Port p : n.getPorts())
 			appendChildIfNotNull(e, processPoint(

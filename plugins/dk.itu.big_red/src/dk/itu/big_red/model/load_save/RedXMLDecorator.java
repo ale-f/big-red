@@ -7,6 +7,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
 import org.bigraph.model.Port;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.ReactionRule;
@@ -97,6 +98,12 @@ public class RedXMLDecorator implements IXMLDecorator {
 					LayoutUtilities.getLayoutRaw((Layoutable)object);
 			if (layout != null)
 				rectangleToElement(aE, layout);
+			if (object instanceof Node) {
+				String parameter =
+						ExtendedDataUtilities.getParameter((Node)object);
+				if (parameter != null)
+					el.setAttributeNS(PARAM, "param:value", parameter);
+			}
 		}
 		
 		Colour
