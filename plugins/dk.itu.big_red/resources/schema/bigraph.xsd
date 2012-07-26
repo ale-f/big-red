@@ -333,13 +333,19 @@
 					<ul>
 						<li>
 							<a id="node_parameter" />
-							<code>parameter</code> (<code>string</code>): this node's parameter.
+							<code>parameter</code> (<code>string</code>): this node's parameter value.
 							<br />
-							This attribute SHOULD only be set if this node's <a href="#">control</a> defines a parameter.
+							<strong>This attribute is deprecated.</strong>
 						</li>
 					</ul>
 					<p>
 						Additionally, attributes from other namespaces MAY be present on <code>node</code>s.
+					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						The <a href="#node_parameter"><code>parameter</code> attribute</a> is a legacy attribute; applications MUST NOT produce it. Applications that understand parameterised controls SHOULD treat it as though it were a <code>value</code> attribute with the namespace <code>http://bigraph.org/xmlns/2012/bigraph-extension-param</code>.
 					</p>
 					<hr />
 				</body>
