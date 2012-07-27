@@ -12,6 +12,8 @@ import javax.xml.validation.SchemaFactory;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.loaders.internal.SchemaResolver;
+import org.bigraph.model.resources.IOpenable;
 import org.w3c.dom.Element;
 
 public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
@@ -20,6 +22,8 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	private static final DocumentBuilder db;
 	static {
 		sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		sf.setResourceResolver(SchemaResolver.getInstance());
+		
 		dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
 		DocumentBuilder db_ = null;
@@ -37,6 +41,14 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	
 	protected static DocumentBuilder getSharedDocumentBuilder() {
 		return db;
+	}
+	
+	public static void registerSchema(String namespaceURI, IOpenable of) {
+		SchemaResolver.registerSchema(namespaceURI, of);
+	}
+	
+	public static void unregisterSchema(String namespaceURI) {
+		SchemaResolver.unregisterSchema(namespaceURI);
 	}
 	
 	public static String getAttributeNS(Element d, String nsURI, String n) {
