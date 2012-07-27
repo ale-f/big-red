@@ -39,4 +39,17 @@ abstract class EclipseResourceWrapper implements IResourceWrapper {
 	public String toString() {
 		return getResource().toString();
 	}
+	
+	@Override
+	public boolean equals(Object obj_) {
+		if (obj_ != null && obj_.getClass().equals(getClass())) {
+			EclipseResourceWrapper obj = (EclipseResourceWrapper)obj_;
+			return getResource().equals(obj.getResource());
+		} else return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 1234 + getResource().hashCode();
+	}
 }
