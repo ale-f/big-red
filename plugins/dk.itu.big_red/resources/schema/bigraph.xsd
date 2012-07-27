@@ -11,6 +11,7 @@
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph"
+            xmlns:signature="http://www.itu.dk/research/pls/xmlns/2010/signature"
             targetNamespace="http://www.itu.dk/research/pls/xmlns/2010/bigraph">
 
 	<xsd:annotation>
@@ -38,6 +39,10 @@
 			</html>
 		</xsd:documentation>
 	</xsd:annotation>
+
+	<xsd:import
+		namespace="http://www.itu.dk/research/pls/xmlns/2010/signature"
+		schemaLocation="signature.xsd" />
 
 	<xsd:group name="anyForeignElements">
 		<xsd:sequence>
@@ -69,7 +74,16 @@
 					</p>
 					<ul>
 						<li>
-							at most one <a href="#signature">signature</a>, followed by
+							either
+							<ul>
+								<li>
+									a <a href="#signature">signature</a>, or
+								</li>
+								<li>
+									a <a href="signature.xsd#signature">signature:signature</a>
+								</li>
+							</ul>
+							followed by
 						</li>
 						<li>
 							zero or more <a href="#edge">edge</a>s, followed by
@@ -91,24 +105,10 @@
 						Attributes
 					</h3>
 					<p>
-						The following attributes MAY be present:
+						No attributes are defined for <code>bigraph</code>s.
 					</p>
-					<ul>
-						<a id="bigraph_signature" />
-						<li>
-							<code>signature</code> (<code>string</code>): specifies the path to this bigraph's <i>signature</i>.
-							<br />
-							<strong>This attribute is deprecated</strong> in favour of the <a href="#signature_src"><code>src</code> attribute on <code>signature</code></a>.
-						</li>
-					</ul>
 					<p>
-						Additionally, attributes from other namespaces MAY be present on <code>bigraph</code>s.
-					</p>
-					<h3>
-						Notes
-					</h3>
-					<p>
-						The <a href="#bigraph_signature"><code>signature</code> attribute</a> only appears in a handful of bigraphs created with early versions of Big Red. Newly-written code SHOULD NOT attempt to handle it and MUST NOT produce it.
+						Attributes from other namespaces MAY be present on <code>bigraph</code>s.
 					</p>
 					<hr />
 				</body>
@@ -118,7 +118,10 @@
 	<xsd:element name="bigraph">
 		<xsd:complexType>
 			<xsd:sequence>
-				<xsd:element ref="bigraph:signature" minOccurs="0" />
+				<xsd:choice>
+					<xsd:element ref="bigraph:signature" />
+					<xsd:element ref="signature:signature" />
+				</xsd:choice>
 				<xsd:element ref="bigraph:edge" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:element ref="bigraph:outername" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:element ref="bigraph:root" minOccurs="0" maxOccurs="unbounded" />
