@@ -74,15 +74,13 @@ public class BigraphXMLSaver extends XMLSaver {
 	@Override
 	public void exportObject() throws SaveFailedException {
 		setDocument(createDocument(BIGRAPH, "bigraph:bigraph"));
-		processObject(getDocumentElement(), getModel());
+		processModel(getDocumentElement());
 		finish();
 	}
 	
 	@Override
-	public Element processObject(Element e, Object obj_) throws SaveFailedException {
-		if (!(obj_ instanceof Bigraph))
-			throw new SaveFailedException(obj_ + " isn't a Bigraph");
-		Bigraph obj = (Bigraph)obj_;
+	public Element processModel(Element e) throws SaveFailedException {
+		Bigraph obj = getModel();
 		
 		if (exportAppearance)
 			applyAttributes(getDocumentElement(), "xmlns:big-red", BIG_RED);

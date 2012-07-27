@@ -29,15 +29,13 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 	@Override
 	public void exportObject() throws SaveFailedException {
 		setDocument(createDocument(SPEC, "spec:spec"));
-		processObject(getDocumentElement(), getModel());
+		processModel(getDocumentElement());
 		finish();
 	}
 	
 	@Override
-	public Element processObject(Element e, Object ss_) throws SaveFailedException {
-		if (!(ss_ instanceof SimulationSpec))
-			throw new SaveFailedException(ss_ + " isn't a SimulationSpec");
-		SimulationSpec ss = (SimulationSpec)ss_;
+	public Element processModel(Element e) throws SaveFailedException {
+		SimulationSpec ss = getModel();
 		
 		appendChildIfNotNull(e,
 			processOrReference(newElement(SPEC, "spec:signature"),

@@ -89,7 +89,7 @@ public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 		}
 	}
 	
-	public abstract Element processObject(Element e, Object object)
+	public abstract Element processModel(Element e)
 		throws SaveFailedException;
 	
 	protected Element processOrReference(
@@ -107,7 +107,7 @@ public abstract class XMLSaver extends org.bigraph.model.savers.XMLSaver {
 			try {
 				ex = klass.newInstance();
 				ex.setDocument(getDocument()).setModel(object);
-				ex.processObject(e, object);
+				ex.processModel(e);
 			} catch (Exception exc) {
 				return e;
 			}

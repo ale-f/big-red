@@ -53,15 +53,13 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	@Override
 	public void exportObject() throws SaveFailedException {
 		setDocument(createDocument(RULE, "rule:rule"));
-		processObject(getDocumentElement(), getModel());
+		processModel(getDocumentElement());
 		finish();
 	}
 
 	@Override
-	public Element processObject(Element e, Object rr_) throws SaveFailedException {
-		if (!(rr_ instanceof ReactionRule))
-			throw new SaveFailedException(rr_ + " isn't a ReactionRule");
-		ReactionRule rr = (ReactionRule)rr_;
+	public Element processModel(Element e) throws SaveFailedException {
+		ReactionRule rr = getModel();
 		
 		appendChildIfNotNull(e,
 			processRedex(newElement(RULE, "rule:redex"), rr.getRedex()));
@@ -77,7 +75,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		ex.setFile(getFile());
 		ex.setModel(redex);
 		ex.setDocument(getDocument());
-		return ex.processObject(e, ex.getModel());
+		return ex.processModel(e);
 	}
 	
 	/* XXX: change decoration (?) */

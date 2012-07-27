@@ -30,15 +30,13 @@ public class SignatureXMLSaver extends XMLSaver {
 	@Override
 	public void exportObject() throws SaveFailedException {
 		setDocument(createDocument(SIGNATURE, "signature:signature"));
-		processObject(getDocumentElement(), getModel());
+		processModel(getDocumentElement());
 		finish();
 	}
 
 	@Override
-	public Element processObject(Element e, Object s_) throws SaveFailedException {
-		if (!(s_ instanceof Signature))
-			throw new SaveFailedException(s_ + " isn't a Signature");
-		Signature s = (Signature)s_;
+	public Element processModel(Element e) throws SaveFailedException {
+		Signature s = getModel();
 		
 		applyAttributes(e, "xmlns:big-red", BIG_RED);
 		

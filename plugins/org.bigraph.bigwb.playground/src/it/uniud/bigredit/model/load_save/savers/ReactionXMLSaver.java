@@ -1,21 +1,14 @@
 package it.uniud.bigredit.model.load_save.savers;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
-import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
-import org.bigraph.model.ModelObject;
-import org.bigraph.model.Signature;
-import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
-import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.model.load_save.savers.XMLSaver;
 
 public class ReactionXMLSaver extends XMLSaver{
@@ -28,8 +21,8 @@ public class ReactionXMLSaver extends XMLSaver{
 	
 
 	@Override
-	public Element processObject(Element e, Object object)
-			throws SaveFailedException {
+	public Element processModel(Element e) throws SaveFailedException {
+		Object object = getModel();
 	
 		if (!(object instanceof Reaction))
 			throw new SaveFailedException(object + " isn't a valid BRS");
@@ -68,7 +61,7 @@ public class ReactionXMLSaver extends XMLSaver{
 	@Override
 	public void exportObject() throws SaveFailedException {
 		setDocument(createDocument(REACTION, "reaction:reaction"));
-		processObject(getDocumentElement(), getModel());
+		processModel(getDocumentElement());
 		finish();
 		
 	}

@@ -1,7 +1,6 @@
 package it.uniud.bigredit.model.load_save.savers;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
@@ -12,7 +11,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.model.load_save.savers.XMLSaver;
 
@@ -43,15 +41,13 @@ public class BRSXMLSaver extends XMLSaver {
 	@Override
 	public void exportObject() throws SaveFailedException {
 		setDocument(createDocument(BRS, "brs:brs"));
-		processObject(getDocumentElement(), getModel());
+		processModel(getDocumentElement());
 		finish();
 	}
 	
 	@Override
-	public Element processObject(Element e, Object ss_) throws SaveFailedException {
-		if (!(ss_ instanceof BRS))
-			throw new SaveFailedException(ss_ + " isn't a valid BRS");
-		BRS ss = (BRS)ss_;
+	public Element processModel(Element e) throws SaveFailedException {
+		BRS ss = getModel();
 		
 		appendChildIfNotNull(e,
 			processOrReference(newElement(BRS, "brs:signature"),
