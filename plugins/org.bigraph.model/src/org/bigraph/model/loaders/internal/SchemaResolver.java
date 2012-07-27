@@ -32,7 +32,6 @@ public final class SchemaResolver implements LSResourceResolver {
 	@Override
 	public LSInput resolveResource(String type, String namespaceURI,
 			String publicId, String systemId, String baseURI) {
-		System.out.println("SchemaResolver.resolveResource(" + type + ", " + namespaceURI + ", ...)");
 		if (XMLConstants.W3C_XML_SCHEMA_NS_URI.equals(type)) {
 			IOpenable f = schemaOpeners.get(namespaceURI);
 			if (f != null) {
