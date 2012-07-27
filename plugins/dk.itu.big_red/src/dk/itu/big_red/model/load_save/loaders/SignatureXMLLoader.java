@@ -1,12 +1,14 @@
 package dk.itu.big_red.model.load_save.loaders;
 
 import org.bigraph.model.Control;
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.resources.IFileWrapper;
+import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -47,6 +49,23 @@ public class SignatureXMLLoader extends XMLLoader {
 	}
 	
 	public Signature makeObject(Element e) throws LoadFailedException {
+		String replacement = getAttributeNS(e, SIGNATURE, "src");
+		if (replacement != null) {
+			if (getFile() == null)
+				 throw new Error("BUG: relative path to resolve, " +
+							"but no IFileWrapper set on SignatureXMLLoader");
+			IResourceWrapper rw =
+					getFile().getParent().getResource(replacement);
+			if (rw instanceof IFileWrapper) {
+				ModelObject mo = ((IFileWrapper)rw).load();
+				if (mo instanceof Signature) {
+					return (Signature)mo;
+				} else throw new LoadFailedException(
+						"Referenced document is not a signature");
+			} else throw new LoadFailedException(
+					"Referenced document is not valid");
+		}
+		
 		sig = new Signature();
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "control"))
