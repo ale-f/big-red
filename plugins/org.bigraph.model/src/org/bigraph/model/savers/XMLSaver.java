@@ -4,8 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.bigraph.model.ModelObject;
 import org.w3c.dom.DOMImplementation;
@@ -35,6 +41,72 @@ public abstract class XMLSaver extends Saver {
 			tf_ = null;
 		}
 		tf = tf_;
+	}
+	
+	public static final String OPTION_DEFAULT_NS = "XMLSaverDefaultNS";
+	private boolean useDefaultNamespace = false;
+	
+	{
+		addOption(OPTION_DEFAULT_NS, "Use a default namespace",
+			"Don't use a namespace for the basic document elements.");
+	}
+	
+	@Override
+	protected Object getOption(String id) {
+		if (OPTION_DEFAULT_NS.equals(id)) {
+			return useDefaultNamespace;
+		} else return super.getOption(id);
+	}
+	
+	@Override
+	protected void setOption(String id, Object value) {
+		if (OPTION_DEFAULT_NS.equals(id)) {
+			useDefaultNamespace = (Boolean)value;
+		} else super.setOption(id, value);
+	}
+	
+	protected boolean defNSMatch(String nsURI) {
+		return useDefaultNamespace && defaultNamespace != null &&
+				nsURI != null && defaultNamespace.equals(nsURI);
+	}
+	
+	protected String unqualifyName(String name) {
+		return name.substring(name.indexOf(':') + 1);
+	}
+	
+	protected Element newElement(String nsURI, String qualifiedName) {
+		if (defNSMatch(nsURI)) {
+			return getDocument().createElementNS(
+					nsURI, unqualifyName(qualifiedName));
+		} else return getDocument().createElementNS(nsURI, qualifiedName);
+	}
+	
+	protected XMLSaver finish() throws SaveFailedException {
+		try {
+			Source source = new DOMSource(getDocument());
+			Result result = new StreamResult(getOutputStream());
+			
+			Transformer t = getSharedTransformerFactory().newTransformer();
+			t.setOutputProperty(OutputKeys.INDENT, "yes");
+			t.setOutputProperty(
+					"{http://xml.apache.org/xslt}indent-amount", "2");
+			t.transform(source, result);
+			getOutputStream().close();
+			
+			return this;
+		} catch (Exception e) {
+			throw new SaveFailedException(e);
+		}
+	}
+	
+	private String defaultNamespace = null;
+	
+	protected void setDefaultNamespace(String defaultNamespace) {
+		this.defaultNamespace = defaultNamespace;
+	}
+	
+	protected String getDefaultNamespace() {
+		return defaultNamespace;
 	}
 	
 	protected static TransformerFactory getSharedTransformerFactory() {
