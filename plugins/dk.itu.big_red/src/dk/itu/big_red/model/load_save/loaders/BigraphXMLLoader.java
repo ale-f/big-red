@@ -21,7 +21,6 @@ import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.resources.IFileWrapper;
-import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -54,10 +53,11 @@ public class BigraphXMLLoader extends XMLLoader {
 	private Bigraph bigraph = null;
 	
 	public Bigraph makeObject(Element e) throws LoadFailedException {
-		if (e == null)
-			throw new LoadFailedException("Element is null");
-		
-		bigraph = new Bigraph();
+		bigraph = loadRelative(
+				getAttributeNS(e, BIGRAPH, "src"), Bigraph.class);
+		if (bigraph != null) {
+			return bigraph;
+		} else bigraph = new Bigraph();
 		
 		Element signatureElement =
 			getNamedChildElement(e, SIGNATURE, "signature");
@@ -75,19 +75,8 @@ public class BigraphXMLLoader extends XMLLoader {
 						getAttributeNS(signatureElement, BIGRAPH, "src");
 			
 			if (signaturePath != null) {
-				if (getFile() == null)
-					 throw new Error("BUG: relative path to resolve, " +
-								"but no IFileWrapper set on BigraphXMLLoader");
-				IResourceWrapper rw =
-						getFile().getParent().getResource(signaturePath);
-				if (rw instanceof IFileWrapper) {
-					ModelObject mo = ((IFileWrapper)rw).load();
-					if (mo instanceof Signature) {
-						bigraph.setSignature((Signature)mo);
-					} else throw new LoadFailedException(
-							"Referenced document is not a signature");
-				} else throw new LoadFailedException(
-						"Referenced document is not a file");
+				bigraph.setSignature(
+						loadRelative(signaturePath, Signature.class));
 			} else if (signatureElement != null) {
 				si = new SignatureXMLLoader();
 				bigraph.setSignature(

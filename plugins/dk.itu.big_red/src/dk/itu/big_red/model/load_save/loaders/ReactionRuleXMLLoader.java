@@ -57,7 +57,11 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	}
 
 	public ReactionRule makeObject(Element e) throws LoadFailedException {
-		rr = new ReactionRule();
+		rr = loadRelative(
+				getAttributeNS(e, RULE, "src"), ReactionRule.class);
+		if (rr != null) {
+			return rr;
+		} else rr = new ReactionRule();
 		
 		rr.setRedex(
 			makeRedex(getNamedChildElement(e, RULE, "redex")));

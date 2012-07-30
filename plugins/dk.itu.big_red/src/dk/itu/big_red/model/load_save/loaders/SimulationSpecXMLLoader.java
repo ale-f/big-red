@@ -75,7 +75,11 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	}
 	
 	public SimulationSpec makeObject(Element e) throws LoadFailedException {
-		SimulationSpec ss = new SimulationSpec();
+		SimulationSpec ss = loadRelative(
+				getAttributeNS(e, SPEC, "src"), SimulationSpec.class);
+		if (ss != null) {
+			return ss;
+		} else ss = new SimulationSpec();
 		
 		Element signatureElement = getNamedChildElement(e, SPEC, "signature");
 		if (signatureElement != null)

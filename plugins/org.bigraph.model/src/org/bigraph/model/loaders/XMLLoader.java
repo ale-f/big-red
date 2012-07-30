@@ -19,7 +19,9 @@ import javax.xml.validation.SchemaFactory;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.internal.SchemaResolver;
+import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.resources.IOpenable;
+import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -173,6 +175,26 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		if (r.size() == 1)
 			return r.get(0);
 		else return null;
+	}
+	
+	protected <T extends ModelObject> T loadRelative(
+			String replacement, Class<? extends T> klass)
+			throws LoadFailedException {
+		if (replacement != null) {
+			if (getFile() == null)
+				 throw new Error("BUG: relative path to resolve, " +
+							"but no IFileWrapper set on " + this);
+			IResourceWrapper rw =
+					getFile().getParent().getResource(replacement);
+			if (rw instanceof IFileWrapper) {
+				ModelObject mo = ((IFileWrapper)rw).load();
+				if (klass.isInstance(mo)) {
+					return klass.cast(mo);
+				} else throw new LoadFailedException(
+						"Referenced document is not of the correct type");
+			} else throw new LoadFailedException(
+					"Referenced document is not valid");
+		} else return null;
 	}
 	
 	private List<IXMLUndecorator> undecorators = null;
