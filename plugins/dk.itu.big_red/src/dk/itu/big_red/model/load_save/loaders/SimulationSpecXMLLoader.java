@@ -22,9 +22,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		try {
 			Document d = validate(parse(getInputStream()),
 					RedPlugin.getResource("resources/schema/spec.xsd"));
-			SimulationSpec ss = makeObject(d.getDocumentElement());
-			FileData.setFile(ss, getFile());
-			return ss;
+			return makeObject(d.getDocumentElement());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}
@@ -92,6 +90,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		
 		executeUndecorators(ss, e);
 		executeChanges(ss);
+		FileData.setFile(ss, getFile());
 		return ss;
 	}
 	

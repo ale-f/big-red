@@ -48,9 +48,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		try {
 			Document d = validate(parse(getInputStream()),
 					RedPlugin.getResource("resources/schema/rule.xsd"));
-			ReactionRule rr = makeObject(d.getDocumentElement());
-			FileData.setFile(rr, getFile());
-			return rr;
+			return makeObject(d.getDocumentElement());
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
 				throw (LoadFailedException)e;
@@ -65,7 +63,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			makeRedex(getNamedChildElement(e, RULE, "redex")));
 		updateReactum(rr, getNamedChildElement(e, RULE, "changes"));
 		
-		return executeUndecorators(rr, e);
+		executeUndecorators(rr, e);
+		FileData.setFile(rr, getFile());
+		return rr;
 	}
 	
 	private Bigraph makeRedex(Element e) throws LoadFailedException {

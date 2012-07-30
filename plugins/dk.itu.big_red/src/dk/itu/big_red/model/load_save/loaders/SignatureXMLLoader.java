@@ -24,9 +24,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		try {
 			Document d = validate(parse(getInputStream()),
 					RedPlugin.getResource("resources/schema/signature.xsd"));
-			Signature s = makeObject(d.getDocumentElement());
-			FileData.setFile(s, getFile());
-			return s;
+			return makeObject(d.getDocumentElement());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}
@@ -75,6 +73,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		executeUndecorators(sig, e);
 		executeChanges(sig);
+		FileData.setFile(sig, getFile());
 		return sig;
 	}
 	

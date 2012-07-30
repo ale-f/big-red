@@ -43,9 +43,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		try {
 			Document d = validate(parse(getInputStream()),
 					RedPlugin.getResource("resources/schema/bigraph.xsd"));
-			Bigraph b = makeObject(d.getDocumentElement());
-			FileData.setFile(b, getFile());
-			return b;
+			return makeObject(d.getDocumentElement());
 		} catch (LoadFailedException e) {
 			throw e;
 		} catch (Exception e) {
@@ -105,6 +103,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		executeUndecorators(bigraph, e);
 		executeChanges(bigraph);
+		FileData.setFile(bigraph, getFile());
 		return bigraph;
 	}
 	
