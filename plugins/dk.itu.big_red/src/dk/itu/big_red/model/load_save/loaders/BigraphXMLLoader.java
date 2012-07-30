@@ -61,26 +61,22 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		Element signatureElement =
 			getNamedChildElement(e, SIGNATURE, "signature");
-		SignatureXMLLoader si;
 		if (signatureElement != null) {
-			si = new SignatureXMLLoader();
-			bigraph.setSignature(
-					si.setFile(getFile()).makeObject(signatureElement));
+			bigraph.setSignature(new SignatureXMLLoader().
+					setFile(getFile()).makeObject(signatureElement));
 		} else {
 			signatureElement = getNamedChildElement(e, BIGRAPH, "signature");
 			
-			String signaturePath = null;
-			if (signatureElement != null)
-				signaturePath =
+			if (signatureElement != null) {
+				String signaturePath =
 						getAttributeNS(signatureElement, BIGRAPH, "src");
-			
-			if (signaturePath != null) {
-				bigraph.setSignature(
-						loadRelative(signaturePath, Signature.class));
-			} else if (signatureElement != null) {
-				si = new SignatureXMLLoader();
-				bigraph.setSignature(
-						si.setFile(getFile()).makeObject(signatureElement));
+				if (signaturePath != null) {
+					bigraph.setSignature(
+							loadRelative(signaturePath, Signature.class));
+				} else {
+					bigraph.setSignature(new SignatureXMLLoader().
+							setFile(getFile()).makeObject(signatureElement));
+				}
 			}
 		}
 		
