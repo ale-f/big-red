@@ -228,6 +228,9 @@
 						Notes
 					</h3>
 					<p>
+						<strong>This element is deprecated</strong> in favour of the <a href="signature.xsd#signature">signature:signature</a> element.
+					</p>
+					<p>
 						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;signature&gt;</code> document defining this bigraph's signature.
 					</p>
 					<hr />
