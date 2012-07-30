@@ -12,14 +12,16 @@ import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
+
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
 	@Override
 	public SimulationSpec importObject() throws LoadFailedException {
 		try {
-			Document d =
-					validate(parse(getInputStream()), "resources/schema/spec.xsd");
+			Document d = validate(parse(getInputStream()),
+					RedPlugin.getResource("resources/schema/spec.xsd"));
 			SimulationSpec ss = makeObject(d.getDocumentElement());
 			FileData.setFile(ss, getFile());
 			return ss;

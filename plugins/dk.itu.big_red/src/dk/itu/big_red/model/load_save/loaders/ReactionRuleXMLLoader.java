@@ -30,6 +30,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
@@ -45,8 +46,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	@Override
 	public ReactionRule importObject() throws LoadFailedException {
 		try {
-			Document d =
-					validate(parse(getInputStream()), "resources/schema/rule.xsd");
+			Document d = validate(parse(getInputStream()),
+					RedPlugin.getResource("resources/schema/rule.xsd"));
 			ReactionRule rr = makeObject(d.getDocumentElement());
 			FileData.setFile(rr, getFile());
 			return rr;

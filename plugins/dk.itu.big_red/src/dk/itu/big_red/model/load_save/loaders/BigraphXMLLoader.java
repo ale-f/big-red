@@ -25,6 +25,7 @@ import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 
@@ -40,8 +41,8 @@ public class BigraphXMLLoader extends XMLLoader {
 	@Override
 	public Bigraph importObject() throws LoadFailedException {
 		try {
-			Document d =
-					validate(parse(getInputStream()), "resources/schema/bigraph.xsd");
+			Document d = validate(parse(getInputStream()),
+					RedPlugin.getResource("resources/schema/bigraph.xsd"));
 			Bigraph b = makeObject(d.getDocumentElement());
 			FileData.setFile(b, getFile());
 			return b;
