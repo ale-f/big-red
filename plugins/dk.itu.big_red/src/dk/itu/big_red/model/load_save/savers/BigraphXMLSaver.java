@@ -24,6 +24,7 @@ import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
 /**
  * XMLSaver writes a {@link Bigraph} out as an XML document.
@@ -86,7 +87,7 @@ public class BigraphXMLSaver extends XMLSaver {
 			applyAttributes(getDocumentElement(), "xmlns:big-red", BIG_RED);
 		appendChildIfNotNull(e,
 			processOrReference(
-				newElement(BIGRAPH, "bigraph:signature"),
+				newElement(SIGNATURE, "signature:signature"),
 				obj.getSignature(), SignatureXMLSaver.class));
 		
 		ArrayList<Element>
