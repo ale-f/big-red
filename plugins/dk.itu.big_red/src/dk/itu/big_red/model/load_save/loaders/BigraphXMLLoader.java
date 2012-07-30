@@ -124,10 +124,6 @@ public class BigraphXMLLoader extends XMLLoader {
 			addChange(ExtendedDataUtilities.changeAlias(model, alias));
 	}
 	
-	private void processNode(Element e, Node model) throws LoadFailedException {
-		processContainer(e, model);
-	}
-	
 	private void addChild(Container context, Element e) throws LoadFailedException {
 		ModelObject model = null;
 		boolean port = false;
@@ -154,9 +150,7 @@ public class BigraphXMLLoader extends XMLLoader {
 			addChange(context.changeAddChild(
 					(Layoutable)model, getAttributeNS(e, BIGRAPH, "name")));
 		
-		if (model instanceof Node) {
-			processNode(e, (Node)model);
-		} else if (model instanceof Container) {
+		if (model instanceof Container) {
 			processContainer(e, (Container)model);
 		} else if (port) {
 			Node n = (Node)context;
