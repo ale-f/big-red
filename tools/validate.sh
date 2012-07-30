@@ -5,7 +5,7 @@ SELFDIR="`dirname "$SELF"`"
 SCHEMAPATH="$SELFDIR/../plugins/dk.itu.big_red/resources/schema"
 
 usage() {
-	echo "Usage: $0 [bigraph|signature|rule|spec] XML-DOCUMENT"
+	echo "Usage: $0 [bigraph|signature|rule|spec|edit] XML-DOCUMENT"
 	exit "$1"
 }
 
@@ -13,7 +13,7 @@ if [ "$1" != "" -a "$2" != "" ]; then
 	FILE="$1"
 	shift 1
 	case "$FILE" in
-	bigraph|signature|rule|spec)
+	bigraph|signature|rule|spec|edit)
 		FILE="$SCHEMAPATH/$FILE.xsd" ;;
 	*)
 		usage 1 ;;
