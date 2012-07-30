@@ -171,10 +171,11 @@ public class BigraphXMLSaver extends XMLSaver {
 	
 	private Element processPoint(Element e, Point p) throws SaveFailedException {
 		Link link = p.getLink();
-		applyAttributes(e, "name", p.getName());
-		if (link != null)
+		if (link != null) {
+			applyAttributes(e, "name", p.getName());
 			applyAttributes(e, "link", link.getName());
-		return e;
+			return e;
+		} else return null;
 	}
 		
 	private Element applyCommonProperties(Element e, Layoutable l) {
