@@ -28,7 +28,6 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.load_save.savers.XMLSaver;
 
 public class RedXMLDecorator implements IXMLDecorator {
 	@Override
@@ -37,8 +36,11 @@ public class RedXMLDecorator implements IXMLDecorator {
 	}
 	
 	public static Element rectangleToElement(Element e, Rectangle r) {
-		return XMLSaver.applyAttributes(e,
-			"width", r.width(), "height", r.height(), "x", r.x(), "y", r.y());
+		e.setAttributeNS(null, "width", "" + r.width());
+		e.setAttributeNS(null, "height", "" + r.height());
+		e.setAttributeNS(null, "x", "" + r.x());
+		e.setAttributeNS(null, "y", "" + r.y());
+		return e;
 	}
 	
 	@Override
