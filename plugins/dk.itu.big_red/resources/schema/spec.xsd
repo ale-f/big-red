@@ -60,30 +60,54 @@
 						Children
 					</h3>
 					<p>
-						<code>spec</code>s MUST contain:
+						<code>spec</code>s MUST either:
 					</p>
 					<ul>
 						<li>
-							at most one <a href="#signature">signature</a>, followed by
+							be empty, or
 						</li>
 						<li>
-							zero or more <a href="#rule">rule</a>s, followed by
-						</li>
-						<li>
-							at most one <a href="#model">model</a>s, followed by
-						</li>
-						<li>
-							zero or more elements from other namespaces.
+							contain
+							<ul>
+								<li>
+									at most one <a href="#signature">signature</a>, followed by
+								</li>
+								<li>
+									zero or more <a href="#rule">rule</a>s, followed by
+								</li>
+								<li>
+									at most one <a href="#model">model</a>s, followed by
+								</li>
+								<li>
+									zero or more elements from other namespaces.
+								</li>
+							</ul>
 						</li>
 					</ul>
 					<h3>
 						Attributes
 					</h3>
 					<p>
-						No attributes are defined for <code>spec</code>s.
+						The following attributes MAY be present:
 					</p>
+					<ul>
+						<a id="spec_src" />
+						<li>
+							<code>src</code> (<code>string</code>): specifies a replacement simulation spec.
+							<br />
+							If this attribute is present, it SHOULD be a relative path to another <code>spec</code> document.
+							<br />
+							This attribute SHOULD be present on an empty <code>spec</code> element.
+						</li>
+					</ul>
 					<p>
-						Attributes from other namespaces MAY be present on <code>spec</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>spec</code>s.
+					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						The <a href="#spec_src"><code>src</code> attribute</a> is provided primarily to support the embedding of <code>spec</code> elements into other documents.
 					</p>
 					<hr />
 				</body>
@@ -92,12 +116,13 @@
 	</xsd:annotation>
 	<xsd:element name="spec">
 		<xsd:complexType>
-			<xsd:sequence>
+			<xsd:sequence minOccurs="0">
 				<xsd:element ref="spec:signature" minOccurs="0" />
 				<xsd:element ref="spec:rule" minOccurs="0" maxOccurs="unbounded" />
 				<xsd:element ref="spec:model" minOccurs="0" />
 				<xsd:group ref="spec:anyForeignElements" />
 			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>

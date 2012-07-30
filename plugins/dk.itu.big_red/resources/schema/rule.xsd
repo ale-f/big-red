@@ -60,27 +60,51 @@
 						Children
 					</h3>
 					<p>
-						<code>rule</code>s MUST contain:
+						<code>rule</code>s MUST either:
 					</p>
 					<ul>
 						<li>
-							a <a href="#redex">redex</a>, followed by
+							be empty, or
 						</li>
 						<li>
-							a <a href="#changes">changes</a>, followed by
-						</li>
-						<li>
-							zero or more elements from other namespaces.
+							contain
+							<ul>
+								<li>
+									a <a href="#redex">redex</a>, followed by
+								</li>
+								<li>
+									a <a href="#changes">changes</a>, followed by
+								</li>
+								<li>
+									zero or more elements from other namespaces.
+								</li>
+							</ul>
 						</li>
 					</ul>
 					<h3>
 						Attributes
 					</h3>
 					<p>
-						No attributes are defined for <code>rule</code>s.
+						The following attributes MAY be present:
 					</p>
+					<ul>
+						<a id="rule_src" />
+						<li>
+							<code>src</code> (<code>string</code>): specifies a replacement reaction rule.
+							<br />
+							If this attribute is present, it SHOULD be a relative path to another <code>rule</code> document.
+							<br />
+							This attribute SHOULD be present on an empty <code>rule</code> element.
+						</li>
+					</ul>
 					<p>
-						Attributes from other namespaces MAY be present on <code>rule</code>s.
+						Additionally, attributes from other namespaces MAY be present on <code>rule</code>s.
+					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						The <a href="#rule_src"><code>src</code> attribute</a> is provided primarily to support the embedding of <code>rule</code> elements into other documents.
 					</p>
 					<hr />
 				</body>
@@ -89,11 +113,12 @@
 	</xsd:annotation>
 	<xsd:element name="rule">
 		<xsd:complexType>
-			<xsd:sequence>
+			<xsd:sequence minOccurs="0">
 				<xsd:element ref="rule:redex" />
 				<xsd:element ref="rule:changes" />
 				<xsd:group ref="rule:anyForeignElements" />
 			</xsd:sequence>
+			<xsd:attribute name="src" type="xsd:string" />
 			<xsd:anyAttribute namespace="##other"
 				processContents="lax" />
 		</xsd:complexType>
