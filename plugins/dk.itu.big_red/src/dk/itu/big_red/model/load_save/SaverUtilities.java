@@ -9,7 +9,6 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 
-import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 public abstract class SaverUtilities {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
@@ -34,7 +33,7 @@ public abstract class SaverUtilities {
 	public static void installDecorators(XMLSaver saver) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
-			r.getConfigurationElementsFor(XMLLoader.EXTENSION_POINT)) {
+			r.getConfigurationElementsFor(LoaderUtilities.EXTENSION_POINT_XML)) {
 			if ("decorator".equals(ice.getName())) {
 				try {
 					saver.addDecorator(

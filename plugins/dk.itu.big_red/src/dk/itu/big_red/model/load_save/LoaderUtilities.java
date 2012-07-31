@@ -11,15 +11,14 @@ import org.eclipse.core.runtime.RegistryFactory;
 public abstract class LoaderUtilities {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 
-	private static final String EXTENSION_POINT_IMPORT =
-			dk.itu.big_red.model.load_save.loaders.XMLLoader.EXTENSION_POINT;
+	public static final String EXTENSION_POINT_XML = "dk.itu.big_red.xml";
 	
 	private LoaderUtilities() {}
 	
 	public static void installUndecorators(XMLLoader l) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
-			r.getConfigurationElementsFor(EXTENSION_POINT_IMPORT)) {
+			r.getConfigurationElementsFor(EXTENSION_POINT_XML)) {
 			if ("undecorator".equals(ice.getName())) {
 				try {
 					IXMLUndecorator u = (IXMLUndecorator)
