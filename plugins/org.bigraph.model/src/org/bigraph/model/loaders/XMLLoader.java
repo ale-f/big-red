@@ -12,7 +12,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
@@ -83,25 +82,6 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 			return Double.parseDouble(getAttributeNS(d, nsURI, n));
 		} catch (Exception e) {
 			return 0;
-		}
-	}
-
-	/**
-	 * Validates the given {@link Document} with the {@link Schema} constructed
-	 * from the given {@link InputStream}.
-	 * @param d a Document
-	 * @param schema an InputStream
-	 * @return <code>d</code>, for convenience
-	 * @throws LoadFailedException if the validation (or the validator's
-	 *         initialisation and configuration) failed
-	 */
-	protected static Document validate(Document d, InputStream schema)
-			throws LoadFailedException {
-		try {
-			return validate(d, getSharedSchemaFactory().newSchema(
-					new StreamSource(schema)));
-		} catch (SAXException e) {
-			throw new LoadFailedException(e);
 		}
 	}
 	
