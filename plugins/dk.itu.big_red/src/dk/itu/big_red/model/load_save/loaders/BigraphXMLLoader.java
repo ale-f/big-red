@@ -1,6 +1,5 @@
 package dk.itu.big_red.model.load_save.loaders;
 
-import java.util.HashMap;
 import java.util.Locale;
 
 import org.bigraph.model.Bigraph;
@@ -97,18 +96,12 @@ public class BigraphXMLLoader extends XMLLoader {
 			addChild(model, i);
 	}
 	
-	private HashMap<String, Link> links =
-			new HashMap<String, Link>();
-	
-	private void processLink(Element e, Link model) throws LoadFailedException {
-		links.put(getAttributeNS(e, BIGRAPH, "name"), model);
-	}
-	
 	private void processPoint(Element e, Point model) throws LoadFailedException {
 		if (model != null) {
 			String linkName = getAttributeNS(e, BIGRAPH, "link");
 			if (linkName != null) {
-				Link link = links.get(linkName);
+				Link link = (Link)bigraph.getNamespace(Link.class).get(
+						getScratch(), linkName);
 				if (link != null)
 					addChange(model.changeConnect(link));
 			}
@@ -156,8 +149,6 @@ public class BigraphXMLLoader extends XMLLoader {
 			Node n = (Node)context;
 			processPoint(e,
 				n.getPort(getAttributeNS(e, BIGRAPH, "name")));
-		} else if (model instanceof Link) {
-			processLink(e, (Link)model);
 		} else if (model instanceof InnerName) {
 			processPoint(e, (InnerName)model);
 		} else if (model instanceof Site) {
