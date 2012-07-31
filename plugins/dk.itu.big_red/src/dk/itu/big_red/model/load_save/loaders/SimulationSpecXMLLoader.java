@@ -12,7 +12,7 @@ import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.model.load_save.LoaderUtilities;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
 
@@ -21,7 +21,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	public SimulationSpec importObject() throws LoadFailedException {
 		try {
 			Document d = validate(parse(getInputStream()),
-					RedPlugin.getResource("resources/schema/spec.xsd"));
+					LoaderUtilities.getSpecSchema());
 			return makeObject(d.getDocumentElement());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);

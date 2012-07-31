@@ -30,11 +30,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.load_save.LoaderUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
@@ -47,7 +47,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	public ReactionRule importObject() throws LoadFailedException {
 		try {
 			Document d = validate(parse(getInputStream()),
-					RedPlugin.getResource("resources/schema/rule.xsd"));
+					LoaderUtilities.getRuleSchema());
 			return makeObject(d.getDocumentElement());
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {

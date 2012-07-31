@@ -10,7 +10,7 @@ import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
+import dk.itu.big_red.model.load_save.LoaderUtilities;
 
 import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
@@ -21,7 +21,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	public Signature importObject() throws LoadFailedException {
 		try {
 			Document d = validate(parse(getInputStream()),
-					RedPlugin.getResource("resources/schema/signature.xsd"));
+					LoaderUtilities.getSignatureSchema());
 			return makeObject(d.getDocumentElement());
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
