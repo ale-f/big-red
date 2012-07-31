@@ -33,6 +33,11 @@ public abstract class LoaderUtilities {
 	
 	private LoaderUtilities() {}
 	
+	/**
+	 * Installs the undecorators registered with the XML extension point into
+	 * the given {@link XMLLoader}.
+	 * @param l a {@link XMLLoader} to populate with undecorators
+	 */
 	public static void installUndecorators(XMLLoader l) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
@@ -78,22 +83,48 @@ public abstract class LoaderUtilities {
 		edit = tryOpenRegister(null, "/resources/schema/edit.xsd");
 	}
 	
+	/**
+	 * Returns the shared {@link Schema} suitable for validating
+	 * <code>bigraph</code> documents.
+	 * @return a {@link Schema}
+	 */
 	public static Schema getBigraphSchema() {
 		return bigraph;
 	}
 
+	/**
+	 * Returns the shared {@link Schema} suitable for validating
+	 * <code>signature</code> documents.
+	 * @return a {@link Schema}
+	 */
 	public static Schema getSignatureSchema() {
 		return signature;
 	}
 
+	/**
+	 * Returns the shared {@link Schema} suitable for validating
+	 * <code>rule</code> documents.
+	 * @return a {@link Schema}
+	 */
 	public static Schema getRuleSchema() {
 		return rule;
 	}
 
+	/**
+	 * Returns the shared {@link Schema} suitable for validating
+	 * <code>spec</code> documents.
+	 * @return a {@link Schema}
+	 */
 	public static Schema getSpecSchema() {
 		return spec;
 	}
 
+	/**
+	 * Returns the shared {@link Schema} suitable for validating
+	 * <code>edit</code> documents.
+	 * @return a {@link Schema}
+	 * @deprecated This method may go away at any point.
+	 */
 	@Deprecated
 	public static Schema getEditSchema() {
 		return edit;
