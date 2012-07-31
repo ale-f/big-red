@@ -48,7 +48,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	
 	public Signature makeObject(Element e) throws LoadFailedException {
 		sig = loadRelative(
-				getAttributeNS(e, SIGNATURE, "src"), Signature.class);
+				getAttributeNS(e, SIGNATURE, "src"), Signature.class, this);
 		if (sig != null) {
 			return sig;
 		} else sig = new Signature();

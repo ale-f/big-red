@@ -31,12 +31,13 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	private ModelObject tryLoad(String relPath) throws LoadFailedException {
 		IResourceWrapper rw = getFile().getParent().getResource(relPath);
 		if (!(rw instanceof IFileWrapper))
-			throw new LoadFailedException("The path does not identify a file");
+			throw new LoadFailedException(
+					"The path " + relPath + " does not identify a file");
 		return ((IFileWrapper)rw).load();
 	}
 	
 	private Signature makeSignature(Element e) throws LoadFailedException {
-		String signaturePath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
+		String signaturePath = getAttributeNS(e, SPEC, "src");
 		if (signaturePath != null && getFile() != null) {
 			ModelObject mo = tryLoad(signaturePath);
 			if (mo instanceof Signature) {
@@ -49,7 +50,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	}
 	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
-		String bigraphPath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
+		String bigraphPath = getAttributeNS(e, SPEC, "src");
 		if (bigraphPath != null && getFile() != null) {
 			ModelObject mo = tryLoad(bigraphPath);
 			if (mo instanceof Bigraph) {
@@ -62,7 +63,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	}
 	
 	private ReactionRule makeRule(Element e) throws LoadFailedException {
-		String rulePath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
+		String rulePath = getAttributeNS(e, SPEC, "src");
 		if (rulePath != null && getFile() != null) {
 			ModelObject mo = tryLoad(rulePath);
 			if (mo instanceof ReactionRule) {
@@ -76,7 +77,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	
 	public SimulationSpec makeObject(Element e) throws LoadFailedException {
 		SimulationSpec ss = loadRelative(
-				getAttributeNS(e, SPEC, "src"), SimulationSpec.class);
+				getAttributeNS(e, SPEC, "src"), SimulationSpec.class, this);
 		if (ss != null) {
 			return ss;
 		} else ss = new SimulationSpec();

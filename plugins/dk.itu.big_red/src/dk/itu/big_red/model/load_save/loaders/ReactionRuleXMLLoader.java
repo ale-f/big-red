@@ -58,7 +58,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 
 	public ReactionRule makeObject(Element e) throws LoadFailedException {
 		rr = loadRelative(
-				getAttributeNS(e, RULE, "src"), ReactionRule.class);
+				getAttributeNS(e, RULE, "src"), ReactionRule.class, this);
 		if (rr != null) {
 			return rr;
 		} else rr = new ReactionRule();

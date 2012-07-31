@@ -53,16 +53,17 @@ public class BigraphXMLLoader extends XMLLoader {
 	
 	public Bigraph makeObject(Element e) throws LoadFailedException {
 		bigraph = loadRelative(
-				getAttributeNS(e, BIGRAPH, "src"), Bigraph.class);
+				getAttributeNS(e, BIGRAPH, "src"), Bigraph.class, this);
 		if (bigraph != null) {
 			return bigraph;
 		} else bigraph = new Bigraph();
 		
 		Element signatureElement =
 			getNamedChildElement(e, SIGNATURE, "signature");
+		SignatureXMLLoader si = new SignatureXMLLoader();
 		if (signatureElement != null) {
-			bigraph.setSignature(new SignatureXMLLoader().
-					setFile(getFile()).makeObject(signatureElement));
+			bigraph.setSignature(
+					si.setFile(getFile()).makeObject(signatureElement));
 		} else {
 			signatureElement = getNamedChildElement(e, BIGRAPH, "signature");
 			
@@ -71,10 +72,10 @@ public class BigraphXMLLoader extends XMLLoader {
 						getAttributeNS(signatureElement, BIGRAPH, "src");
 				if (signaturePath != null) {
 					bigraph.setSignature(
-							loadRelative(signaturePath, Signature.class));
+							loadRelative(signaturePath, Signature.class, si));
 				} else {
-					bigraph.setSignature(new SignatureXMLLoader().
-							setFile(getFile()).makeObject(signatureElement));
+					bigraph.setSignature(si.setFile(getFile()).
+							makeObject(signatureElement));
 				}
 			}
 		}

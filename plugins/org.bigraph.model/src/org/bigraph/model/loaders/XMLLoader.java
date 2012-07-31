@@ -168,9 +168,9 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		else return null;
 	}
 	
-	protected <T extends ModelObject> T loadRelative(
-			String replacement, Class<? extends T> klass)
-			throws LoadFailedException {
+	protected <T extends ModelObject> T loadRelative(String replacement,
+			Class<? extends T> klass, XMLLoader loader)
+					throws LoadFailedException {
 		if (replacement != null) {
 			if (getFile() == null)
 				 throw new Error("BUG: relative path to resolve, " +
@@ -178,7 +178,9 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 			IResourceWrapper rw =
 					getFile().getParent().getResource(replacement);
 			if (rw instanceof IFileWrapper) {
-				ModelObject mo = ((IFileWrapper)rw).load();
+				IFileWrapper fw = (IFileWrapper)rw;
+				loader.setFile(fw).setInputStream(fw.getContents());
+				ModelObject mo = loader.importObject();
 				if (klass.isInstance(mo)) {
 					return klass.cast(mo);
 				} else throw new LoadFailedException(
