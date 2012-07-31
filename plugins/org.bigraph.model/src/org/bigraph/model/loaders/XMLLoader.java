@@ -98,10 +98,21 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	protected static Document validate(Document d, InputStream schema)
 			throws LoadFailedException {
 		try {
-			getSharedSchemaFactory().newSchema(new StreamSource(schema)).
-				newValidator().validate(new DOMSource(d));
+			return validate(d, getSharedSchemaFactory().newSchema(
+					new StreamSource(schema)));
+		} catch (SAXException e) {
+			throw new LoadFailedException(e);
+		}
+	}
+	
+	protected static Document validate(Document d, Schema schema)
+			throws LoadFailedException {
+		try {
+			schema.newValidator().validate(new DOMSource(d));
 			return d;
-		} catch (Exception e) {
+		} catch (SAXException e) {
+			throw new LoadFailedException(e);
+		} catch (IOException e) {
 			throw new LoadFailedException(e);
 		}
 	}
