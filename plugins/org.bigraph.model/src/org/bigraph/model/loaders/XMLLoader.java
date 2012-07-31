@@ -46,11 +46,11 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		db = db_;
 	}
 	
-	protected static SchemaFactory getSharedSchemaFactory() {
+	public static SchemaFactory getSharedSchemaFactory() {
 		return sf;
 	}
 	
-	protected static DocumentBuilder getSharedDocumentBuilder() {
+	public static DocumentBuilder getSharedDocumentBuilder() {
 		return db;
 	}
 	
