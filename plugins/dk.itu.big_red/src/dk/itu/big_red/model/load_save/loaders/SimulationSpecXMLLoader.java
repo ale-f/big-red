@@ -27,31 +27,21 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	}
 	
 	private Signature makeSignature(Element e) throws LoadFailedException {
-		String signaturePath = getAttributeNS(e, SPEC, "src");
-		SignatureXMLLoader si = new SignatureXMLLoader();
-		if (signaturePath != null && getFile() != null) {
-			return loadRelative(signaturePath, Signature.class, si);
-		} else return si.setFile(getFile()).makeObject(e);
+		return loadEmbedded(e, SPEC, "src", Signature.class,
+				new SignatureXMLLoader());
 	}
 	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
-		String bigraphPath = getAttributeNS(e, SPEC, "src");
-		BigraphXMLLoader bi = new BigraphXMLLoader();
-		if (bigraphPath != null && getFile() != null) {
-			return loadRelative(bigraphPath, Bigraph.class, bi);
-		} else return bi.setFile(getFile()).makeObject(e);
+		return loadEmbedded(e, SPEC, "src", Bigraph.class,
+				new BigraphXMLLoader());
 	}
 	
 	private ReactionRule makeRule(Element e) throws LoadFailedException {
-		String rulePath = getAttributeNS(e, SPEC, "src");
-		ReactionRuleXMLLoader re = new ReactionRuleXMLLoader();
-		if (rulePath != null && getFile() != null) {
-			return loadRelative(rulePath, ReactionRule.class, re);
-		} else {
-			return re.setFile(getFile()).makeObject(e);
-		}
+		return loadEmbedded(e, SPEC, "src", ReactionRule.class,
+				new ReactionRuleXMLLoader());
 	}
 	
+	@Override
 	public SimulationSpec makeObject(Element e) throws LoadFailedException {
 		SimulationSpec ss = loadRelative(
 				getAttributeNS(e, SPEC, "src"), SimulationSpec.class, this);
