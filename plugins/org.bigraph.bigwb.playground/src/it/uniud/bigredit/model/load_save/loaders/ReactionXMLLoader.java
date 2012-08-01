@@ -103,7 +103,7 @@ public class ReactionXMLLoader extends XMLLoader{
 	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
 		return loadEmbedded(e, SPEC, "src", Bigraph.class,
-				newLoader(BigraphXMLLoader.class));
+				new BigraphXMLLoader().addNewUndecorators(getUndecorators()));
 	}
 	
 	@Override

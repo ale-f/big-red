@@ -226,12 +226,12 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		one.setLoader(this);
 	}
 
-	public void addNewUndecorators(
+	public XMLLoader addNewUndecorators(
 			Collection<? extends IXMLUndecorator> many) {
-		if (many == null)
-			return;
-		for (IXMLUndecorator i : many)
-			addUndecorator(i.newInstance());
+		if (many != null)
+			for (IXMLUndecorator i : many)
+				addUndecorator(i.newInstance());
+		return this;
 	}
 	
 	protected <T extends ModelObject> T executeUndecorators(T mo, Element el) {
@@ -247,26 +247,5 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		for (IXMLUndecorator d : getUndecorators())
 			d.finish(ex);
 		super.executeChanges(ex);
-	}
-	
-	/**
-	 * Creates a new {@link XMLLoader}, and gives it new instances of this
-	 * XMLLoader's undecorators.
-	 * @param klass the new XMLLoader's {@link Class}
-	 * @return a new {@link XMLLoader}, or <code>null</code> if the
-	 * instantiation failed
-	 */
-	protected <T extends XMLLoader> T newLoader(Class<? extends T> klass) {
-		try {
-			T loader = klass.newInstance();
-			loader.addNewUndecorators(getUndecorators());
-			return loader;
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 }

@@ -75,8 +75,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	}
 	
 	private Bigraph makeRedex(Element e) throws LoadFailedException {
-		return newLoader(BigraphXMLLoader.class).
-				setFile(getFile()).makeObject(e);
+		BigraphXMLLoader bi = new BigraphXMLLoader();
+		bi.addNewUndecorators(getUndecorators()).setFile(getFile());
+		return bi.makeObject(e);
 	}
 	
 	private Layoutable.Identifier getLayoutable(

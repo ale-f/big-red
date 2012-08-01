@@ -62,17 +62,17 @@ import it.uniud.bigredit.model.BRS;
 		
 		private Signature makeSignature(Element e) throws LoadFailedException {
 			return loadEmbedded(e, SPEC, "src", Signature.class,
-					newLoader(SignatureXMLLoader.class));
+					new SignatureXMLLoader().addNewUndecorators(getUndecorators()));
 		}
 		
 		private Bigraph makeBigraph(Element e) throws LoadFailedException {
 			return loadEmbedded(e, SPEC, "src", Bigraph.class,
-					newLoader(BigraphXMLLoader.class));
+					new BigraphXMLLoader().addNewUndecorators(getUndecorators()));
 		}
 		
 		private ReactionRule makeRule(Element e) throws LoadFailedException {
 			return loadEmbedded(e, SPEC, "src", ReactionRule.class,
-					newLoader(ReactionRuleXMLLoader.class));
+					new ReactionRuleXMLLoader().addNewUndecorators(getUndecorators()));
 		}
 		
 		@Override
