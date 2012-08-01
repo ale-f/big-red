@@ -7,7 +7,6 @@ import java.util.TimerTask;
 import org.bigraph.bigmc.red.BigMCInteractionManager.State;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.SimulationSpec;
-import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.Saver;
 
 import dk.itu.big_red.model.load_save.SaverUtilities;
@@ -221,7 +220,7 @@ public class ResultsDialog extends TitleAreaDialog {
 					r.setFile(new EclipseFileWrapper(f)).
 						setModel(b).setOutputStream(io.getOutputStream()).
 						exportObject();
-				} catch (SaveFailedException e) {
+				} catch (Exception e) {
 					setErrorMessage(e.getMessage());
 					return;
 				}

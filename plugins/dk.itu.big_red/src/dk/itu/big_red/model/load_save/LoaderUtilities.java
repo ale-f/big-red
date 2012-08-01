@@ -17,7 +17,11 @@ import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
 import org.xml.sax.SAXException;
 
+import dk.itu.big_red.utilities.resources.Project;
+
 public abstract class LoaderUtilities {
+	private LoaderUtilities() {}
+	
 	private static final class ResourceOpenable implements IOpenable {
 		private final String path;
 		
@@ -34,8 +38,6 @@ public abstract class LoaderUtilities {
 	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 
 	public static final String EXTENSION_POINT_XML = "dk.itu.big_red.xml";
-	
-	private LoaderUtilities() {}
 	
 	/**
 	 * Installs the undecorators registered with the XML extension point into
@@ -132,6 +134,11 @@ public abstract class LoaderUtilities {
 	@Deprecated
 	public static Schema getEditSchema() {
 		return edit;
+	}
+	
+	public static Loader forContentType(String ct) throws CoreException {
+		return forContentType(
+				Project.getContentTypeManager().getContentType(ct));
 	}
 	
 	/**
