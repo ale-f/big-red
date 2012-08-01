@@ -44,6 +44,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 
@@ -209,6 +210,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	protected void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
 		BigraphXMLSaver r = new BigraphXMLSaver().setModel(getModel());
+		SaverUtilities.installDecorators(r);
 		r.setFile(new EclipseFileWrapper(f)).
 			setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();

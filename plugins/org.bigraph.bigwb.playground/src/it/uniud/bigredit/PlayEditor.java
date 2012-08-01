@@ -63,6 +63,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerCutAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
+import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 
 import it.uniud.bigredit.editparts.PartFactory;
@@ -319,6 +320,7 @@ public class PlayEditor extends BigraphEditor {
 	protected void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
 		BRSXMLSaver r = new BRSXMLSaver().setModel(getBRSModel());
+		SaverUtilities.installDecorators(r);
 		r.setFile(new EclipseFileWrapper(f)).
 			setOutputStream(os).exportObject();
 		

@@ -4,8 +4,8 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
-
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 

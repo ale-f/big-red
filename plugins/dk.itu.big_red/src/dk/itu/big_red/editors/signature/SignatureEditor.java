@@ -52,6 +52,7 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.StockButton;
@@ -68,6 +69,7 @@ implements PropertyChangeListener {
 	public void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
     	SignatureXMLSaver r = new SignatureXMLSaver().setModel(getModel());
+    	SaverUtilities.installDecorators(r);
 		r.setFile(new EclipseFileWrapper(f)).
     		setOutputStream(os).exportObject();
 		setSavePoint();

@@ -21,6 +21,7 @@ import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.RedNamespaceConstants;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
@@ -72,9 +73,8 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	private Element processRedex(Element e, Bigraph redex) throws SaveFailedException {
 		applyAttributes(e, "xmlns:bigraph", RedNamespaceConstants.BIGRAPH);
 		BigraphXMLSaver ex = new BigraphXMLSaver();
-		ex.setFile(getFile());
-		ex.setModel(redex);
-		ex.setDocument(getDocument());
+		ex.addNewDecorators(getDecorators()).setDocument(getDocument()).
+				setFile(getFile()).setModel(redex);
 		return ex.processModel(e);
 	}
 	

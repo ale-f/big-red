@@ -1,6 +1,7 @@
 package org.bigraph.model.savers;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -153,7 +154,7 @@ public abstract class XMLSaver extends Saver {
 		} else {
 			XMLSaver ex;
 			try {
-				ex = klass.newInstance();
+				ex = klass.newInstance().addNewDecorators(getDecorators());
 				ex.setDocument(getDocument()).
 						setModel(object).setFile(getFile());
 				ex.processModel(e);
@@ -223,6 +224,14 @@ public abstract class XMLSaver extends Saver {
 		if (decorators == null)
 			decorators = new ArrayList<IXMLDecorator>();
 		decorators.add(d);
+	}
+	
+	public XMLSaver addNewDecorators(
+			Collection<? extends IXMLDecorator> many) {
+		if (many != null)
+			for (IXMLDecorator d : many)
+				addDecorator(d.newInstance());
+		return this;
 	}
 	
 	protected Element executeDecorators(ModelObject mo, Element el) {

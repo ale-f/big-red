@@ -9,7 +9,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.model.load_save.savers.XMLSaver;
+import org.bigraph.model.savers.XMLSaver;
 
 public class ReactionXMLSaver extends XMLSaver{
 	

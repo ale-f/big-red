@@ -87,6 +87,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	public void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
     	SimulationSpecXMLSaver r = new SimulationSpecXMLSaver().setModel(getModel());
+    	SaverUtilities.installDecorators(r);
 		r.setFile(new EclipseFileWrapper(f)).
     		setOutputStream(os).exportObject();
     	setSavePoint();

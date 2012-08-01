@@ -66,6 +66,7 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
+import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.UI;
@@ -139,6 +140,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	public void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
     	ReactionRuleXMLSaver r = new ReactionRuleXMLSaver().setModel(getModel());
+    	SaverUtilities.installDecorators(r);
 		r.setFile(new EclipseFileWrapper(f)).
     		setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();
