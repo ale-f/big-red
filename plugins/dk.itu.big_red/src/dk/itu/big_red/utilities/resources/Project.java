@@ -19,7 +19,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentTypeManager;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.MultiRule;
 
@@ -40,6 +42,15 @@ public final class Project {
 	 */
 	public static IWorkspace getWorkspace() {
 		return ResourcesPlugin.getWorkspace();
+	}
+	
+	/**
+	 * Returns the platform's content type manager.
+	 * @return the content type manager
+	 * @see Platform#getContentTypeManager()
+	 */
+	public static IContentTypeManager getContentTypeManager() {
+		return Platform.getContentTypeManager();
 	}
 	
 	/**
