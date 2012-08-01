@@ -5,6 +5,7 @@ import java.io.InputStream;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 
+import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.RedNamespaceConstants;
 import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.loaders.XMLLoader;
@@ -13,6 +14,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
+import org.eclipse.core.runtime.content.IContentType;
 import org.xml.sax.SAXException;
 
 public abstract class LoaderUtilities {
@@ -151,5 +153,30 @@ public abstract class LoaderUtilities {
 	@Deprecated
 	public static Schema getEditSchema() {
 		return edit;
+	}
+	
+	/**
+	 * Creates and returns a new {@link Loader} for the given content type.
+	 * <p>If the {@link Loader} is a {@link XMLLoader}, then this method will
+	 * automatically call {@link #installUndecorators(XMLLoader)}.
+	 * @param ct an {@link IContentType}
+	 * @return a {@link Loader}, or <code>null</code> if one couldn't be found
+	 * for the given content type
+	 * @throws CoreException as {@link
+	 * IConfigurationElement#createExecutableExtension(String)}
+	 */
+	public static Loader newLoaderFor(IContentType ct) throws CoreException {
+		Loader l = null;
+		for (IConfigurationElement ice :
+				RegistryFactory.getRegistry().
+				getConfigurationElementsFor(EXTENSION_POINT)) {
+			if (ct.getId().equals(ice.getAttribute("contentType"))) {
+				l = (Loader)ice.createExecutableExtension("class");
+				break;
+			}
+		}
+		if (l instanceof XMLLoader)
+			installUndecorators((XMLLoader)l);
+		return l;
 	}
 }
