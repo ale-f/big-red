@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -216,15 +217,23 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 				Collections.<IXMLUndecorator>emptyList());
 	}
 
-	public void addUndecorator(IXMLUndecorator d) {
-		if (d == null)
+	public void addUndecorator(IXMLUndecorator one) {
+		if (one == null)
 			return;
 		if (undecorators == null)
 			undecorators = new ArrayList<IXMLUndecorator>();
-		undecorators.add(d);
-		d.setLoader(this);
+		undecorators.add(one);
+		one.setLoader(this);
 	}
 
+	public void addNewUndecorators(
+			Collection<? extends IXMLUndecorator> many) {
+		if (many == null)
+			return;
+		for (IXMLUndecorator i : many)
+			addUndecorator(i.newInstance());
+	}
+	
 	protected <T extends ModelObject> T executeUndecorators(T mo, Element el) {
 		if (mo != null && el != null)
 			for (IXMLUndecorator d : getUndecorators())
@@ -238,5 +247,26 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		for (IXMLUndecorator d : getUndecorators())
 			d.finish(ex);
 		super.executeChanges(ex);
+	}
+	
+	/**
+	 * Creates a new {@link XMLLoader}, and gives it new instances of this
+	 * XMLLoader's undecorators.
+	 * @param klass the new XMLLoader's {@link Class}
+	 * @return a new {@link XMLLoader}, or <code>null</code> if the
+	 * instantiation failed
+	 */
+	protected <T extends XMLLoader> T newLoader(Class<? extends T> klass) {
+		try {
+			T loader = klass.newInstance();
+			loader.addNewUndecorators(getUndecorators());
+			return loader;
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
