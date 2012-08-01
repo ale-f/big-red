@@ -14,21 +14,6 @@ public abstract class SaverUtilities {
 
 	private SaverUtilities() {}
 
-	public static final Saver forContentType(String contentType) {
-		for (IConfigurationElement ice :
-			RegistryFactory.getRegistry().
-				getConfigurationElementsFor(EXTENSION_POINT)) {
-			if (contentType.equals(ice.getAttribute("contentType"))) {
-				try {
-					return (Saver)ice.createExecutableExtension("class");
-				} catch (CoreException e) {
-					return null;
-				}
-			}
-		}
-		return null;
-	}
-
 	public static void installDecorators(XMLSaver saver) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
@@ -43,5 +28,20 @@ public abstract class SaverUtilities {
 				}
 			}
 		}
+	}
+	
+	public static final Saver forContentType(String ct) throws CoreException {
+		Saver s = null;
+		for (IConfigurationElement ice :
+			RegistryFactory.getRegistry().
+				getConfigurationElementsFor(EXTENSION_POINT)) {
+			if (ct.equals(ice.getAttribute("contentType"))) {
+				s = (Saver)ice.createExecutableExtension("class");
+				break;
+			}
+		}
+		if (s instanceof XMLSaver)
+			installDecorators((XMLSaver)s);
+		return s;
 	}
 }

@@ -144,7 +144,7 @@ public abstract class LoaderUtilities {
 	 * @throws CoreException as {@link
 	 * IConfigurationElement#createExecutableExtension(String)}
 	 */
-	public static Loader newLoaderFor(IContentType ct) throws CoreException {
+	public static Loader forContentType(IContentType ct) throws CoreException {
 		Loader l = null;
 		for (IConfigurationElement ice :
 				RegistryFactory.getRegistry().

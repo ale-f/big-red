@@ -30,7 +30,7 @@ public class EclipseFileWrapper extends EclipseResourceWrapper
 		try {
 			IContentType ct =
 					getResource().getContentDescription().getContentType();
-			Loader l = LoaderUtilities.newLoaderFor(ct);
+			Loader l = LoaderUtilities.forContentType(ct);
 			if (l != null) {
 				l.setFile(this).setInputStream(getContents());
 				if (l.canImport()) {
