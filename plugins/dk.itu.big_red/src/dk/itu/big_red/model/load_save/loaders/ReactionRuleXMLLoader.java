@@ -49,7 +49,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		try {
 			Document d = validate(parse(getInputStream()),
 					LoaderUtilities.getRuleSchema());
-			return makeObject(d.getDocumentElement());
+			ReactionRule rr = makeObject(d.getDocumentElement());
+			FileData.setFile(rr, getFile());
+			return rr;
 		} catch (Exception e) {
 			if (e instanceof LoadFailedException) {
 				throw (LoadFailedException)e;
@@ -70,7 +72,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		updateReactum(rr, getNamedChildElement(e, RULE, "changes"));
 		
 		executeUndecorators(rr, e);
-		FileData.setFile(rr, getFile());
 		return rr;
 	}
 	

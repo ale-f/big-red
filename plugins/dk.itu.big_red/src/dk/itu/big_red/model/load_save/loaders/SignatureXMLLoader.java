@@ -23,7 +23,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		try {
 			Document d = validate(parse(getInputStream()),
 					LoaderUtilities.getSignatureSchema());
-			return makeObject(d.getDocumentElement());
+			Signature s = makeObject(d.getDocumentElement());
+			FileData.setFile(s, getFile());
+			return s;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}
@@ -60,7 +62,6 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		executeUndecorators(sig, e);
 		executeChanges(sig);
-		FileData.setFile(sig, getFile());
 		return sig;
 	}
 	

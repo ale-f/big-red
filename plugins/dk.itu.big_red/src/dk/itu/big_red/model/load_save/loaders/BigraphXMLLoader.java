@@ -42,7 +42,9 @@ public class BigraphXMLLoader extends XMLLoader {
 		try {
 			Document d = validate(parse(getInputStream()),
 					LoaderUtilities.getBigraphSchema());
-			return makeObject(d.getDocumentElement());
+			Bigraph b = makeObject(d.getDocumentElement());
+			FileData.setFile(b, getFile());
+			return b;
 		} catch (LoadFailedException e) {
 			throw e;
 		} catch (Exception e) {
@@ -83,7 +85,6 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		executeUndecorators(bigraph, e);
 		executeChanges(bigraph);
-		FileData.setFile(bigraph, getFile());
 		return bigraph;
 	}
 	

@@ -21,7 +21,9 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		try {
 			Document d = validate(parse(getInputStream()),
 					LoaderUtilities.getSpecSchema());
-			return makeObject(d.getDocumentElement());
+			SimulationSpec ss = makeObject(d.getDocumentElement());
+			FileData.setFile(ss, getFile());
+			return ss;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}
@@ -63,7 +65,6 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		
 		executeUndecorators(ss, e);
 		executeChanges(ss);
-		FileData.setFile(ss, getFile());
 		return ss;
 	}
 	
