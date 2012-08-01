@@ -19,6 +19,7 @@ import org.bigraph.model.Site;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
+import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -51,6 +52,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	
 	private Bigraph bigraph = null;
 	
+	@Override
 	public Bigraph makeObject(Element e) throws LoadFailedException {
 		bigraph = loadRelative(
 				getAttributeNS(e, BIGRAPH, "src"), Bigraph.class, this);
@@ -60,7 +62,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		Element signatureElement =
 			getNamedChildElement(e, SIGNATURE, "signature");
-		SignatureXMLLoader si = new SignatureXMLLoader();
+		SignatureXMLLoader si = newLoader(SignatureXMLLoader.class);
 		if (signatureElement != null) {
 			bigraph.setSignature(
 					si.setFile(getFile()).makeObject(signatureElement));

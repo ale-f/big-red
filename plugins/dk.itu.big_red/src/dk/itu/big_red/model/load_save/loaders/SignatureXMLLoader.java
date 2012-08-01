@@ -6,6 +6,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,6 +47,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		executeUndecorators(model, e);
 	}
 	
+	@Override
 	public Signature makeObject(Element e) throws LoadFailedException {
 		sig = loadRelative(
 				getAttributeNS(e, SIGNATURE, "src"), Signature.class, this);

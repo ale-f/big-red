@@ -16,13 +16,12 @@ import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
-import org.bigraph.model.resources.IResourceWrapper;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -30,7 +29,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
-import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 
 public class ReactionXMLLoader extends XMLLoader{
 
@@ -41,6 +39,7 @@ public class ReactionXMLLoader extends XMLLoader{
 	public static final String REACTION =
 			"http://www.itu.dk/research/pls/xmlns/2012/reaction";
 	
+	@Override
 	public Reaction makeObject(Element e) throws LoadFailedException {
 		Reaction ra= new Reaction();
 		
@@ -102,24 +101,9 @@ public class ReactionXMLLoader extends XMLLoader{
 		}
 	}
 	
-	private ModelObject tryLoad(String relPath) throws LoadFailedException {
-		IResourceWrapper rw = getFile().getParent().getResource(relPath);
-		if (!(rw instanceof IFileWrapper))
-			throw new LoadFailedException("The path does not identify a file");
-		return ((IFileWrapper)rw).load();
-	}
-	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
-		String bigraphPath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
-		if (bigraphPath != null && getFile() != null) {
-			ModelObject mo = tryLoad(bigraphPath);
-			if (mo instanceof Bigraph) {
-				return (Bigraph)mo;
-			} else throw new LoadFailedException(
-					"The path does not identify a bigraph file");
-		} else {
-			return new BigraphXMLLoader().setFile(getFile()).makeObject(e);
-		}
+		return loadEmbedded(e, SPEC, "src", Bigraph.class,
+				newLoader(BigraphXMLLoader.class));
 	}
 	
 	@Override

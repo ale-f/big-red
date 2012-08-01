@@ -6,6 +6,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,17 +29,17 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	
 	private Signature makeSignature(Element e) throws LoadFailedException {
 		return loadEmbedded(e, SPEC, "src", Signature.class,
-				new SignatureXMLLoader());
+				newLoader(SignatureXMLLoader.class));
 	}
 	
 	private Bigraph makeBigraph(Element e) throws LoadFailedException {
 		return loadEmbedded(e, SPEC, "src", Bigraph.class,
-				new BigraphXMLLoader());
+				newLoader(BigraphXMLLoader.class));
 	}
 	
 	private ReactionRule makeRule(Element e) throws LoadFailedException {
 		return loadEmbedded(e, SPEC, "src", ReactionRule.class,
-				new ReactionRuleXMLLoader());
+				newLoader(ReactionRuleXMLLoader.class));
 	}
 	
 	@Override

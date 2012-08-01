@@ -18,8 +18,8 @@ import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
-import org.bigraph.model.resources.IResourceWrapper;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,7 +27,6 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader;
-import dk.itu.big_red.model.load_save.loaders.XMLLoader;
 import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.BRS;
 
@@ -61,52 +60,22 @@ import it.uniud.bigredit.model.BRS;
 			}
 		}
 		
-		private ModelObject tryLoad(String relPath) throws LoadFailedException {
-			IResourceWrapper rw = getFile().getParent().getResource(relPath);
-			if (!(rw instanceof IFileWrapper))
-				throw new LoadFailedException("The path does not identify a file");
-			return ((IFileWrapper)rw).load();
-		}
-		
 		private Signature makeSignature(Element e) throws LoadFailedException {
-			String signaturePath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
-			if (signaturePath != null && getFile() != null) {
-				ModelObject mo = tryLoad(signaturePath);
-				if (mo instanceof Signature) {
-					return (Signature)mo;
-				} else throw new LoadFailedException(
-						"The path does not identify a signature file");
-			} else {
-				return new SignatureXMLLoader().setFile(getFile()).makeObject(e);
-			}
+			return loadEmbedded(e, SPEC, "src", Signature.class,
+					newLoader(SignatureXMLLoader.class));
 		}
 		
 		private Bigraph makeBigraph(Element e) throws LoadFailedException {
-			String bigraphPath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
-			if (bigraphPath != null && getFile() != null) {
-				ModelObject mo = tryLoad(bigraphPath);
-				if (mo instanceof Bigraph) {
-					return (Bigraph)mo;
-				} else throw new LoadFailedException(
-						"The path does not identify a bigraph file");
-			} else {
-				return new BigraphXMLLoader().setFile(getFile()).makeObject(e);
-			}
+			return loadEmbedded(e, SPEC, "src", Bigraph.class,
+					newLoader(BigraphXMLLoader.class));
 		}
 		
 		private ReactionRule makeRule(Element e) throws LoadFailedException {
-			String rulePath = org.bigraph.model.loaders.XMLLoader.getAttributeNS(e, SPEC, "src");
-			if (rulePath != null && getFile() != null) {
-				ModelObject mo = tryLoad(rulePath);
-				if (mo instanceof ReactionRule) {
-					return (ReactionRule)mo;
-				} else throw new LoadFailedException(
-						"The path does not identify a reaction rule file");
-			} else {
-				return new ReactionRuleXMLLoader().setFile(getFile()).makeObject(e);
-			}
+			return loadEmbedded(e, SPEC, "src", ReactionRule.class,
+					newLoader(ReactionRuleXMLLoader.class));
 		}
 		
+		@Override
 		public BRS makeObject(Element e) throws LoadFailedException {
 			BRS ss = new BRS();
 			ChangeGroup cg = new ChangeGroup();

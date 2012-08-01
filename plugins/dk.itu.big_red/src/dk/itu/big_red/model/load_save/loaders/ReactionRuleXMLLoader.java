@@ -25,6 +25,7 @@ import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
+import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -56,6 +57,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		}
 	}
 
+	@Override
 	public ReactionRule makeObject(Element e) throws LoadFailedException {
 		rr = loadRelative(
 				getAttributeNS(e, RULE, "src"), ReactionRule.class, this);
@@ -73,7 +75,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	}
 	
 	private Bigraph makeRedex(Element e) throws LoadFailedException {
-		return new BigraphXMLLoader().setFile(getFile()).makeObject(e);
+		return newLoader(BigraphXMLLoader.class).
+				setFile(getFile()).makeObject(e);
 	}
 	
 	private Layoutable.Identifier getLayoutable(
