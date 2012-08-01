@@ -12,7 +12,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.load_save.LoaderUtilities;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 public class SignatureXMLLoader extends XMLLoader {
 	private Signature sig;

@@ -1,6 +1,6 @@
 package it.uniud.bigredit.model.load_save.savers;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 

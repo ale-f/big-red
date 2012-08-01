@@ -1,7 +1,7 @@
 package it.uniud.bigredit.model.load_save.loaders;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 
 import java.io.IOException;
 import java.io.InputStream;

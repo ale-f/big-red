@@ -22,9 +22,9 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 /**
  * XMLSaver writes a {@link Bigraph} out as an XML document.

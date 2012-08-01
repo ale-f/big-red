@@ -19,6 +19,7 @@ import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.loaders.RedNamespaceConstants;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
@@ -27,11 +28,10 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.load_save.IRedNamespaceConstants;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 
 public class ReactionRuleXMLSaver extends XMLSaver {
 	public ReactionRuleXMLSaver() {
@@ -70,7 +70,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	}
 	
 	private Element processRedex(Element e, Bigraph redex) throws SaveFailedException {
-		applyAttributes(e, "xmlns:bigraph", IRedNamespaceConstants.BIGRAPH);
+		applyAttributes(e, "xmlns:bigraph", RedNamespaceConstants.BIGRAPH);
 		BigraphXMLSaver ex = new BigraphXMLSaver();
 		ex.setFile(getFile());
 		ex.setModel(redex);

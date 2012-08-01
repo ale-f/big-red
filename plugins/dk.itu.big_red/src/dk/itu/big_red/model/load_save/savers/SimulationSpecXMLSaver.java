@@ -7,7 +7,7 @@ import org.bigraph.model.savers.SaveFailedException;
 import org.w3c.dom.Element;
 
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 
 public class SimulationSpecXMLSaver extends XMLSaver {
 	public SimulationSpecXMLSaver() {

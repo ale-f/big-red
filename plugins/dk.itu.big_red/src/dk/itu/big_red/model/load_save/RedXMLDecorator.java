@@ -1,7 +1,7 @@
 package dk.itu.big_red.model.load_save;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.PARAM;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.PARAM;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;

@@ -1,9 +1,5 @@
 package dk.itu.big_red.model.load_save;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.PARAM;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
@@ -35,6 +31,10 @@ import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.PARAM;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
 import static org.bigraph.model.loaders.XMLLoader.getDoubleAttribute;
 import static org.bigraph.model.loaders.XMLLoader.getIntAttribute;

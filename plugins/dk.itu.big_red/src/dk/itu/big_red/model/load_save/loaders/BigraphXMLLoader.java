@@ -27,8 +27,8 @@ import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.load_save.LoaderUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIGRAPH;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.

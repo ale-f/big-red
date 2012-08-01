@@ -36,9 +36,9 @@ import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.load_save.LoaderUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.RULE;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.CHANGE;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
 	private ReactionRule rr = null;

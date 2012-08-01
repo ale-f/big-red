@@ -7,8 +7,8 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.savers.SaveFailedException;
 import org.w3c.dom.Element;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.BIG_RED;
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SIGNATURE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 public class SignatureXMLSaver extends XMLSaver {
 	public SignatureXMLSaver() {

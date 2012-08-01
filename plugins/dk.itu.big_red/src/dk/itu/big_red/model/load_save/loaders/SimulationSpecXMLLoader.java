@@ -12,7 +12,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.load_save.LoaderUtilities;
 
-import static dk.itu.big_red.model.load_save.IRedNamespaceConstants.SPEC;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
 	@Override

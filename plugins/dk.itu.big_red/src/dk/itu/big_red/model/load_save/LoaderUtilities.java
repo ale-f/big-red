@@ -4,6 +4,8 @@ import java.io.InputStream;
 
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
+
+import org.bigraph.model.loaders.RedNamespaceConstants;
 import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IOpenable;
@@ -72,13 +74,13 @@ public abstract class LoaderUtilities {
 	private static final Schema
 		bigraph, signature, rule, spec, edit;
 	static {
-		signature = tryOpenRegister(IRedNamespaceConstants.SIGNATURE,
+		signature = tryOpenRegister(RedNamespaceConstants.SIGNATURE,
 				"/resources/schema/signature.xsd");
-		bigraph = tryOpenRegister(IRedNamespaceConstants.BIGRAPH,
+		bigraph = tryOpenRegister(RedNamespaceConstants.BIGRAPH,
 				"/resources/schema/bigraph.xsd");
-		rule = tryOpenRegister(IRedNamespaceConstants.RULE,
+		rule = tryOpenRegister(RedNamespaceConstants.RULE,
 				"/resources/schema/rule.xsd");
-		spec = tryOpenRegister(IRedNamespaceConstants.SPEC,
+		spec = tryOpenRegister(RedNamespaceConstants.SPEC,
 				"/resources/schema/spec.xsd");
 		edit = tryOpenRegister(null, "/resources/schema/edit.xsd");
 	}
