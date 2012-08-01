@@ -57,6 +57,27 @@ public abstract class LoaderUtilities {
 		}
 	}
 	
+	/**
+	 * Creates a new {@link XMLLoader} and calls {@link
+	 * #installUndecorators(XMLLoader)} on it.
+	 * @param klass the new loader's {@link Class}
+	 * @return a new {@link XMLLoader}, or <code>null</code> if the
+	 * instantiation failed for some reason
+	 */
+	public <T extends XMLLoader> T newLoader(Class<? extends T> klass) {
+		try {
+			T loader = klass.newInstance();
+			installUndecorators(loader);
+			return loader;
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 	private static Schema tryOpenRegister(String ns, String path) {
 		ResourceOpenable file = new ResourceOpenable(path);
 		try {
