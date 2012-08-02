@@ -7,6 +7,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.eclipse.gef.CompoundSnapToHelper;
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -19,9 +20,9 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.IPropertySourceProvider;
 
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
-import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
@@ -39,13 +40,16 @@ import static java.lang.Boolean.TRUE;
  */
 public abstract class AbstractPart extends AbstractGraphicalEditPart
 		implements PropertyChangeListener, IBigraphPart {
-	private ModelPropertySource propertySource;
+	private IPropertySource propertySource;
 	
-	protected ModelPropertySource createPropertySource() {
-		return new ModelPropertySource(getModel());
+	protected IPropertySource createPropertySource() {
+		EditPartFactory f = getViewer().getEditPartFactory();
+		if (f instanceof IPropertySourceProvider) {
+			return ((IPropertySourceProvider)f).getPropertySource(getModel());
+		} else return null;
 	}
 	
-	protected final ModelPropertySource getPropertySource() {
+	protected final IPropertySource getPropertySource() {
 		return (propertySource != null ? propertySource :
 			(propertySource = createPropertySource()));
 	}

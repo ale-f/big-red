@@ -8,6 +8,7 @@ import java.util.List;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractTreeEditPart;
@@ -17,21 +18,24 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.IPropertySourceProvider;
 
 import dk.itu.big_red.editors.bigraph.parts.IBigraphPart;
 import dk.itu.big_red.editors.bigraph.parts.tree.TreePartFactory.Mode;
-import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.utilities.ui.UI;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart
 		implements IBigraphPart, PropertyChangeListener {
-	private ModelPropertySource propertySource;
+	private IPropertySource propertySource;
 	
-	protected ModelPropertySource createPropertySource() {
-		return new ModelPropertySource(getModel());
+	protected IPropertySource createPropertySource() {
+		EditPartFactory f = getViewer().getEditPartFactory();
+		if (f instanceof IPropertySourceProvider) {
+			return ((IPropertySourceProvider)f).getPropertySource(getModel());
+		} else return null;
 	}
 	
-	protected final ModelPropertySource getPropertySource() {
+	protected final IPropertySource getPropertySource() {
 		return (propertySource != null ? propertySource :
 			(propertySource = createPropertySource()));
 	}
