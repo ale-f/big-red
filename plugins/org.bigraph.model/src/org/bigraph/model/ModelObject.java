@@ -51,6 +51,10 @@ public abstract class ModelObject {
 			throws ChangeRejectedException;
 	}
 	
+	public interface ExtendedDataNormaliser {
+		Object normalise(ChangeExtendedData c, Object rawValue);
+	}
+	
 	/**
 	 * The <strong>ChangeExtendedData</strong> class represents a change to one
 	 * of a {@link ModelObject}'s extended data properties.
@@ -61,14 +65,17 @@ public abstract class ModelObject {
 		public String key;
 		public Object newValue;
 		public ExtendedDataValidator immediateValidator, finalValidator;
+		public ExtendedDataNormaliser normaliser;
 		
 		protected ChangeExtendedData(String key, Object newValue,
 				ExtendedDataValidator immediateValidator,
-				ExtendedDataValidator finalValidator) {
+				ExtendedDataValidator finalValidator,
+				ExtendedDataNormaliser normaliser) {
 			this.key = key;
 			this.newValue = newValue;
 			this.immediateValidator = immediateValidator;
 			this.finalValidator = finalValidator;
+			this.normaliser = normaliser;
 		}
 		
 		private Object oldValue;
@@ -81,7 +88,8 @@ public abstract class ModelObject {
 		@Override
 		public Change inverse() {
 			return new ChangeExtendedData(
-					key, oldValue, immediateValidator, finalValidator);
+					key, oldValue, immediateValidator, finalValidator,
+					normaliser);
 		}
 		
 		@Override
@@ -92,7 +100,8 @@ public abstract class ModelObject {
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			context.setProperty(getCreator(), key, newValue);
+			context.setProperty(getCreator(), key, (normaliser == null ?
+					newValue : normaliser.normalise(this, newValue)));
 		}
 	}
 	
@@ -186,8 +195,16 @@ public abstract class ModelObject {
 	public Change changeExtendedData(String key, Object newValue,
 			ExtendedDataValidator immediateValidator,
 			ExtendedDataValidator finalValidator) {
+		return changeExtendedData(
+				key, newValue, immediateValidator, finalValidator, null);
+	}
+	
+	public Change changeExtendedData(String key, Object newValue,
+			ExtendedDataValidator immediateValidator,
+			ExtendedDataValidator finalValidator,
+			ExtendedDataNormaliser normaliser) {
 		return new ChangeExtendedData(
-				key, newValue, immediateValidator, finalValidator);
+				key, newValue, immediateValidator, finalValidator, normaliser);
 	}
 	
 	public void dispose() {
@@ -250,7 +267,8 @@ public abstract class ModelObject {
 							" (how did it pass validation?)");
 		} else if (c_ instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)c_;
-			c.getCreator().setExtendedData(c.key, c.newValue);
+			c.getCreator().setExtendedData(c.key, (c.normaliser == null ?
+					c.newValue : c.normaliser.normalise(c, c.newValue)));
 		} else return false;
 		return true;
 	}
@@ -331,16 +349,24 @@ public abstract class ModelObject {
 		private final String key;
 		private final Object newValue;
 		private final ExtendedDataValidator immediateValidator, finalValidator;
+		private final ExtendedDataNormaliser normaliser;
 
+		public ChangeExtendedDataDescriptor(Identifier t, String k, Object n,
+				ExtendedDataValidator i, ExtendedDataValidator f) {
+			this(t, k, n, i, f, null);
+		}
+		
 		public ChangeExtendedDataDescriptor(
 				Identifier target, String key, Object newValue,
 				ExtendedDataValidator immediateValidator,
-				ExtendedDataValidator finalValidator) {
+				ExtendedDataValidator finalValidator,
+				ExtendedDataNormaliser normaliser) {
 			this.target = target;
 			this.key = key;
 			this.newValue = newValue;
 			this.immediateValidator = immediateValidator;
 			this.finalValidator = finalValidator;
+			this.normaliser = normaliser;
 		}
 
 		public Identifier getTarget() {
@@ -380,8 +406,8 @@ public abstract class ModelObject {
 			if (m == null)
 				throw new ChangeCreationException(this,
 						"" + target + " didn't resolve to a ModelObject");
-			return m.changeExtendedData(
-					key, newValue, immediateValidator, finalValidator);
+			return m.changeExtendedData(key,
+					newValue, immediateValidator, finalValidator, normaliser);
 		}
 
 		@Override
