@@ -39,6 +39,17 @@ import static java.lang.Boolean.TRUE;
  */
 public abstract class AbstractPart extends AbstractGraphicalEditPart
 		implements PropertyChangeListener, IBigraphPart {
+	private ModelPropertySource propertySource;
+	
+	protected ModelPropertySource createPropertySource() {
+		return new ModelPropertySource(getModel());
+	}
+	
+	protected final ModelPropertySource getPropertySource() {
+		return (propertySource != null ? propertySource :
+			(propertySource = createPropertySource()));
+	}
+	
 	/**
 	 * Gets the model object, cast to a {@link Layoutable}.
 	 */
@@ -50,7 +61,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart
 	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class key) {
 		if (key == IPropertySource.class) {
-			return new ModelPropertySource(getModel());
+			return getPropertySource();
 		} else if (key == SnapToHelper.class) {
 			ArrayList<SnapToHelper> helpers = new ArrayList<SnapToHelper>();
 			EditPartViewer v = getViewer();

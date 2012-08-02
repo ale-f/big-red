@@ -25,6 +25,17 @@ import dk.itu.big_red.utilities.ui.UI;
 
 public abstract class AbstractTreePart extends AbstractTreeEditPart
 		implements IBigraphPart, PropertyChangeListener {
+	private ModelPropertySource propertySource;
+	
+	protected ModelPropertySource createPropertySource() {
+		return new ModelPropertySource(getModel());
+	}
+	
+	protected final ModelPropertySource getPropertySource() {
+		return (propertySource != null ? propertySource :
+			(propertySource = createPropertySource()));
+	}
+	
 	@Override
 	public Layoutable getModel() {
 		return (Layoutable)super.getModel();
@@ -33,7 +44,7 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart
 	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class key) {
 		if (key == IPropertySource.class) {
-			return new ModelPropertySource(getModel());
+			return getPropertySource();
 		} else return super.getAdapter(key);
 	}
 	
