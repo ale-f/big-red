@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
+import org.bigraph.model.ModelObject.ExtendedDataNormaliser;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
 import org.bigraph.model.Node;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -26,6 +27,15 @@ public abstract class ParameterUtilities {
 	public static final String PARAMETER_POLICY =
 			"eD!+dk.itu.big_red.model.Control.parameter-policy";
 	
+	private static final ExtendedDataNormaliser parameterNormaliser =
+			new ExtendedDataNormaliser() {
+		@Override
+		public Object normalise(ChangeExtendedData c, Object rawValue) {
+			return getParameterPolicy(((Node)c.getCreator()).getControl()).
+					normalise((String)rawValue);
+		}
+	};
+	
 	private static final ExtendedDataValidator parameterValidator =
 			new ExtendedDataValidator() {
 		@Override
@@ -47,11 +57,10 @@ public abstract class ParameterUtilities {
 				throw new ChangeRejectedException(c,
 						"Parameter values must be strings");
 			
-			String value = (String)c.newValue;
-			if ((c.newValue = policy.normalise(value)) == null)
+			if (policy.normalise((String)c.newValue) == null)
 				throw new ChangeRejectedException(c,
-						"\"" + value + "\" is not a valid value for the " +
-						"parameter of " + control.getName());
+						"\"" + c.newValue + "\" is not a valid value for " +
+						"the parameter of " + control.getName());
 		}
 	};
 
@@ -101,12 +110,13 @@ public abstract class ParameterUtilities {
 	}
 
 	public static IChange changeParameter(Node n, String s) {
-		return n.changeExtendedData(PARAMETER, s, parameterValidator);
+		return n.changeExtendedData(
+				PARAMETER, s, parameterValidator, null, parameterNormaliser);
 	}
 
 	public static IChangeDescriptor changeParameterDescriptor(
 			Node.Identifier n, String s) {
-		return new ModelObject.ChangeExtendedDataDescriptor(
-				n, PARAMETER, s, parameterValidator, null);
+		return new ModelObject.ChangeExtendedDataDescriptor(n,
+				PARAMETER, s, parameterValidator, null, parameterNormaliser);
 	}
 }
