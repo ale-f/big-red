@@ -53,6 +53,8 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
+
+import dk.itu.big_red.editors.assistants.ControlImageDescriptor;
 import dk.itu.big_red.editors.bigraph.BigraphEditor;
 import dk.itu.big_red.editors.bigraph.BigraphEditorContextMenuProvider;
 import dk.itu.big_red.editors.bigraph.ModelFactory;
@@ -187,12 +189,13 @@ public class PlayEditor extends BigraphEditor {
 	public static void updateNodePalette(PaletteContainer nodeGroup, Signature signature) {
     	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
 
-    	ImageDescriptor id =
-    		Activator.getImageDescriptor("resources/icons/triangle.png");
+//    	ImageDescriptor id =
+//    		Activator.getImageDescriptor("resources/icons/triangle.png");
     	
 		for (Control c : signature.getControls())
 			palette.add(new CombinedTemplateCreationEntry(c.getName(), "Node",
-					Node.class, new NodeFactory(c), id, id));
+					Node.class, new NodeFactory(c),new ControlImageDescriptor(c, 16, 16),
+					new ControlImageDescriptor(c, 48, 48)));
 		
 		nodeGroup.setChildren(palette);
 	}
@@ -340,7 +343,8 @@ public class PlayEditor extends BigraphEditor {
 	    if (getBRSModel() == null) {
 	    	replaceWithError(new Exception("BRS Model is null"));
 	    	return;
-	    } else updateNodePalette(nodeGroup, model.getSignature());
+	    } else PlayEditor.updateNodePalette(nodeGroup, model.getSignature());
+	    	    
 	    
 	    /*if (input == null) {
 	    	replaceWithError(new Exception("Model is null"));

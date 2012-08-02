@@ -1,6 +1,7 @@
 package it.uniud.bigredit.model.load_save.loaders;
 
 
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 
@@ -46,6 +47,10 @@ import it.uniud.bigredit.model.BRS;
 		public static final String BRS =
 				"http://www.itu.dk/research/pls/xmlns/2012/brs";
 		
+		public static final
+		String SIGNATURE = "http://www.itu.dk/research/pls/xmlns/2010/signature";
+		
+		
 		@Override
 		public BRS importObject() throws LoadFailedException {
 			try {
@@ -77,12 +82,23 @@ import it.uniud.bigredit.model.BRS;
 		
 		@Override
 		public BRS makeObject(Element e) throws LoadFailedException {
-			BRS ss = new BRS();
+			BRS ss = loadRelative(
+					getAttributeNS(e, BRS, "src"), BRS.class, this);
+			if (ss != null) {
+				return ss;
+			} else ss = new BRS();
+			
 			ChangeGroup cg = new ChangeGroup();
 			
-			Element signatureElement = getNamedChildElement(e, BRS, "signature");
+			SignatureXMLLoader si = new SignatureXMLLoader();
+			Element signatureElement = getNamedChildElement(e, SIGNATURE, "signature");
 			if (signatureElement != null){
-				ss.setSignature(makeSignature(signatureElement));
+				ss.setSignature(
+				si.setFile(getFile()).makeObject(signatureElement));
+				
+				//ss.setSignature(makeSignature(signatureElement));
+			}else{
+				System.out.println("Signature ==  null");
 			}
 //				cg.add(ss.setSignature(makeSignature(signatureElement)));
 //			
