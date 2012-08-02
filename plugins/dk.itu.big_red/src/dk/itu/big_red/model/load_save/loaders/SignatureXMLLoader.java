@@ -6,6 +6,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
@@ -22,7 +23,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	public Signature importObject() throws LoadFailedException {
 		try {
 			Document d = validate(parse(getInputStream()),
-					LoaderUtilities.getSignatureSchema());
+					Schemas.getSignatureSchema());
 			Signature s = makeObject(d.getDocumentElement());
 			FileData.setFile(s, getFile());
 			return s;

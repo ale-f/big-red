@@ -6,6 +6,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
@@ -20,7 +21,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	public SimulationSpec importObject() throws LoadFailedException {
 		try {
 			Document d = validate(parse(getInputStream()),
-					LoaderUtilities.getSpecSchema());
+					Schemas.getSpecSchema());
 			SimulationSpec ss = makeObject(d.getDocumentElement());
 			FileData.setFile(ss, getFile());
 			return ss;

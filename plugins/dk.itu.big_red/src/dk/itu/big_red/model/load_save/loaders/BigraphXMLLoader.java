@@ -19,6 +19,7 @@ import org.bigraph.model.Site;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
+import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
@@ -41,7 +42,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	public Bigraph importObject() throws LoadFailedException {
 		try {
 			Document d = validate(parse(getInputStream()),
-					LoaderUtilities.getBigraphSchema());
+					Schemas.getBigraphSchema());
 			Bigraph b = makeObject(d.getDocumentElement());
 			FileData.setFile(b, getFile());
 			return b;

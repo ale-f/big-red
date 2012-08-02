@@ -25,6 +25,7 @@ import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
+import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
@@ -49,7 +50,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	public ReactionRule importObject() throws LoadFailedException {
 		try {
 			Document d = validate(parse(getInputStream()),
-					LoaderUtilities.getRuleSchema());
+					Schemas.getRuleSchema());
 			ReactionRule rr = makeObject(d.getDocumentElement());
 			FileData.setFile(rr, getFile());
 			return rr;
