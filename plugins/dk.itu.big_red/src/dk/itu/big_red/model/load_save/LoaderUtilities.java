@@ -1,10 +1,7 @@
 package dk.itu.big_red.model.load_save;
 
-import javax.xml.validation.Schema;
-
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.IXMLUndecorator;
-import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.XMLLoader;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;

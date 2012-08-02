@@ -1,11 +1,9 @@
-package dk.itu.big_red.model.load_save.savers;
+package org.bigraph.model.savers;
 
 import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
-import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;

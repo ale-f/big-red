@@ -7,11 +7,11 @@ import it.uniud.bigredit.model.Reaction;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.SignatureXMLSaver;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import org.bigraph.model.savers.XMLSaver;
 
 public class BRSXMLSaver extends XMLSaver {

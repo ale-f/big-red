@@ -20,13 +20,13 @@ import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.loaders.Schemas;
+import org.bigraph.model.loaders.SignatureXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.LoaderUtilities;
 import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;

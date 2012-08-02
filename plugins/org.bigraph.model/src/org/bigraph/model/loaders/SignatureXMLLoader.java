@@ -1,18 +1,13 @@
-package dk.itu.big_red.model.load_save.loaders;
+package org.bigraph.model.loaders;
 
 import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.loaders.LoadFailedException;
-import org.bigraph.model.loaders.Schemas;
-import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import dk.itu.big_red.model.load_save.LoaderUtilities;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 

@@ -17,6 +17,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.SignatureXMLSaver;
 import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
 

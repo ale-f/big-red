@@ -258,7 +258,7 @@
             name="Bigraph from XML">
       </importer>
       <importer
-            class="dk.itu.big_red.model.load_save.loaders.SignatureXMLLoader"
+            class="org.bigraph.model.loaders.SignatureXMLLoader"
             contentType="dk.itu.big_red.signature"
             icon="resources/icons/icon16.png"
             id="big_red.importer2"
@@ -303,7 +303,7 @@
          </description>
       </exporter>
       <exporter
-            class="dk.itu.big_red.model.load_save.savers.SignatureXMLSaver"
+            class="org.bigraph.model.savers.SignatureXMLSaver"
             contentType="dk.itu.big_red.signature"
             exports="org.bigraph.model.Signature"
             icon="resources/icons/icon16.png"

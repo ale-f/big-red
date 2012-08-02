@@ -16,7 +16,6 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.INamespace;
 
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 
