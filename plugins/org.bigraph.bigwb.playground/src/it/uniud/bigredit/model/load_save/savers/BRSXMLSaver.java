@@ -1,6 +1,7 @@
 package it.uniud.bigredit.model.load_save.savers;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
 
@@ -49,9 +50,14 @@ public class BRSXMLSaver extends XMLSaver {
 	public Element processModel(Element e) throws SaveFailedException {
 		BRS ss = getModel();
 		
+//		appendChildIfNotNull(e,
+//			processOrReference(newElement(BRS, "brs:signature"),
+//				ss.getSignature(), SignatureXMLSaver.class));
+		
 		appendChildIfNotNull(e,
-			processOrReference(newElement(BRS, "brs:signature"),
-				ss.getSignature(), SignatureXMLSaver.class));
+				processOrReference(
+					newElement(SIGNATURE, "signature:signature"),
+					ss.getSignature(), SignatureXMLSaver.class));
 		
 		for (Reaction rr : ss.getRules()){
 			Element t1=newElement(BRS, "brs:rule");
