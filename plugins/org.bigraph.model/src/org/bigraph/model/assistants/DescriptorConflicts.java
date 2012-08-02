@@ -35,7 +35,7 @@ public abstract class DescriptorConflicts {
 			T tInstance = tK.cast(
 					tK.isInstance(a) ? a : (tK.isInstance(b) ? b : null));
 			V vInstance = vK.cast(
-					vK.isInstance(a) ? a : (vK.isInstance(b) ? b : null));
+					vK.isInstance(b) ? b : (vK.isInstance(a) ? a : null));
 			if (tInstance != null && vInstance != null &&
 					tInstance != vInstance) {
 				System.out.println("Running check for " + this + 
