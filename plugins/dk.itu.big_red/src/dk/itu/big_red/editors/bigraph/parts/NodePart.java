@@ -20,6 +20,7 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.
@@ -53,7 +54,7 @@ public class NodePart extends ContainerPart {
 		super.propertyChange(evt);
 		if (ColourUtilities.FILL.equals(name) ||
 	        ColourUtilities.OUTLINE.equals(name) ||
-	        ExtendedDataUtilities.PARAMETER.equals(name)) {
+	        ParameterUtilities.PARAMETER.equals(name)) {
 	    	refreshVisuals();
 	    }
 	}
@@ -96,7 +97,7 @@ public class NodePart extends ContainerPart {
 		
 		String
 			label = ExtendedDataUtilities.getLabel(control),
-			parameter = ExtendedDataUtilities.getParameter(model);
+			parameter = ParameterUtilities.getParameter(model);
 		if (parameter != null)
 			label = parameter + " : " + label;
 		figure.setLabel(label);

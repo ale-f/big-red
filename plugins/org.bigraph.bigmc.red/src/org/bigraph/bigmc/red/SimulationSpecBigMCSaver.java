@@ -30,6 +30,7 @@ import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.Saver;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 
 public class SimulationSpecBigMCSaver extends Saver {
 	private OutputStreamWriter osw = null;
@@ -121,7 +122,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	private void recHandleParams(Layoutable l) throws SaveFailedException {
 		if (l instanceof Node) {
 			Node n = (Node)l;
-			String param = ExtendedDataUtilities.getParameter(n);
+			String param = ParameterUtilities.getParameter(n);
 			if (param != null)
 				writeControl(n.getControl(), param);
 		}
@@ -136,7 +137,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 		write("# Controls\n");
 		boolean parameterised = false;
 		for (Control c : s.getControls()) {
-			INamePolicy policy = ExtendedDataUtilities.getParameterPolicy(c);
+			INamePolicy policy = ParameterUtilities.getParameterPolicy(c);
 			if (policy == null) {
 				writeControl(c, null);
 			} else parameterised = true;
@@ -185,7 +186,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	private void processNode(INode i) throws SaveFailedException {
 		String
 			name = normaliseName(i.getControl().getName()),
-			param = ExtendedDataUtilities.getParameter((Node)i); /* XXX!! */
+			param = ParameterUtilities.getParameter((Node)i); /* XXX!! */
 		if (param != null)
 			name += "_P__" + normaliseName(param);
 		write(name);

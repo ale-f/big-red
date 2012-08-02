@@ -30,6 +30,7 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
@@ -188,14 +189,14 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 					n = new BooleanNamePolicy();
 				}
 				if (n != null)
-					cg.add(ExtendedDataUtilities.changeParameterPolicy(c, n));
+					cg.add(ParameterUtilities.changeParameterPolicy(c, n));
 			}
 		}
 		
 		if (object instanceof org.bigraph.model.Node) {
 			org.bigraph.model.Node n = (org.bigraph.model.Node)object;
 			INamePolicy policy =
-					ExtendedDataUtilities.getParameterPolicy(n.getControl());
+					ParameterUtilities.getParameterPolicy(n.getControl());
 			
 			String parameter = getAttributeNS(el, PARAM, "value");
 			if (parameter == null)
@@ -209,9 +210,9 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 				loader.addNotice(LoaderNotice.Type.WARNING,
 						"Default parameter value assigned.");
 				cg.add(
-					ExtendedDataUtilities.changeParameter(n, policy.get(0)));
+					ParameterUtilities.changeParameter(n, policy.get(0)));
 			} else if (parameter != null && policy != null) {
-				cg.add(ExtendedDataUtilities.changeParameter(n, parameter));
+				cg.add(ParameterUtilities.changeParameter(n, parameter));
 			}
 		}
 		

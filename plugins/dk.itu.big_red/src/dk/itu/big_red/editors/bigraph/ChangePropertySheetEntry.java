@@ -18,6 +18,7 @@ import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 import static dk.itu.big_red.model.ExtendedDataUtilities.COMMENT;
 
 public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
@@ -72,9 +73,8 @@ public class ChangePropertySheetEntry extends UndoablePropertySheetEntry {
 						(ModelObject)j.getModel(), (Colour)newValue));
 			} else if (propertyID.equals(ExtendedDataUtilities.ALIAS)) {
 				cg.add(ExtendedDataUtilities.changeAlias(((Site)j.getModel()), (String)newValue));
-			} else if (propertyID.equals(ExtendedDataUtilities.PARAMETER)) {
-				cg.add(ExtendedDataUtilities.changeParameter(
-						(Node)j.getModel(), (String)newValue));
+			} else if (propertyID.equals(ParameterUtilities.PARAMETER)) {
+				cg.add(ParameterUtilities.changeParameter((Node)j.getModel(), (String)newValue));
 			}
 		}
 		if (getParent() != null) {

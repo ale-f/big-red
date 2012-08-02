@@ -52,6 +52,7 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.model.load_save.savers.SignatureXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
@@ -233,7 +234,7 @@ implements PropertyChangeListener {
 				public String getText(Object element) {
 					Control c = (Control)element;
 					String name = c.getName();
-					INamePolicy n = ExtendedDataUtilities.getParameterPolicy(c);
+					INamePolicy n = ParameterUtilities.getParameterPolicy(c);
 					if (n != null)
 						name += " (" + n.getClass().getSimpleName() + ")";
 					return name;
@@ -242,7 +243,7 @@ implements PropertyChangeListener {
 				@Override
 				public boolean isLabelProperty(Object element, String property) {
 					return (Control.PROPERTY_NAME.equals(property) ||
-							ExtendedDataUtilities.PARAMETER_POLICY.equals(property));
+							ParameterUtilities.PARAMETER_POLICY.equals(property));
 				}
 		});
 		GridData controlsLayoutData =
@@ -269,8 +270,7 @@ implements PropertyChangeListener {
 					public void widgetSelected(SelectionEvent e) {
 						if (i.getSelection())
 							doChange(
-								ExtendedDataUtilities.changeParameterPolicy(
-										currentControl, p.newInstance()));
+								ParameterUtilities.changeParameterPolicy(currentControl, p.newInstance()));
 					}
 				});
 			}
@@ -289,7 +289,7 @@ implements PropertyChangeListener {
 				}
 				
 				currentPolicy =
-					ExtendedDataUtilities.getParameterPolicy(currentControl);
+					ParameterUtilities.getParameterPolicy(currentControl);
 				
 				MenuItem paramItem = new MenuItem(menu, SWT.CASCADE);
 				paramItem.setText("&Parameter");
@@ -303,8 +303,7 @@ implements PropertyChangeListener {
 					public void widgetSelected(SelectionEvent e) {
 						if (n.getSelection())
 							doChange(
-								ExtendedDataUtilities.changeParameterPolicy(
-										currentControl, null));
+								ParameterUtilities.changeParameterPolicy(currentControl, null));
 					}
 				});
 				for (CNPF i : getNamePolicies())

@@ -35,6 +35,7 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 import dk.itu.big_red.model.load_save.LoaderUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
@@ -227,8 +228,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						_getScratchNodeIdentifier(name).getControl());
 				
 				if (o != null)
-					cd = ExtendedDataUtilities.changeParameterDescriptor(
-							o, parameter);
+					cd = ParameterUtilities.changeParameterDescriptor(o, parameter);
 			}
 		} else if (el.getNamespaceURI().equals(BIG_RED)) {
 			if (el.getLocalName().equals("layout")) {

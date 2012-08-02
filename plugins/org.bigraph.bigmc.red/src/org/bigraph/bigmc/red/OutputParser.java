@@ -18,6 +18,7 @@ import org.bigraph.model.names.INamespace;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 
 public class OutputParser {
 	private String string;
@@ -102,7 +103,7 @@ public class OutputParser {
 				n = new Node(s.getControl(name));
 			} else if (parts.length == 2) {
 				n = new Node(s.getControl(parts[0]));
-				ExtendedDataUtilities.setParameter(n, parts[1]);
+				ParameterUtilities.setParameter(n, parts[1]);
 			} else throw new Error("Control name couldn't be matched");
 			
 			cg.add(parent.changeAddChild(n, Integer.toString(x++)));

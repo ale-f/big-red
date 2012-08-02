@@ -17,6 +17,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 import dk.itu.big_red.utilities.ui.NullTextPropertyDescriptor;
 
 public class ModelPropertySource implements IPropertySource {
@@ -71,8 +72,8 @@ public class ModelPropertySource implements IPropertySource {
 		} else if (object instanceof Node) {
 			properties.add(new ColorPropertyDescriptor(ColourUtilities.FILL, "Fill colour"));
 			properties.add(new ColorPropertyDescriptor(ColourUtilities.OUTLINE, "Outline colour"));
-			if (ExtendedDataUtilities.getParameterPolicy(((Node)object).getControl()) != null)
-				properties.add(new NullTextPropertyDescriptor(ExtendedDataUtilities.PARAMETER, "Parameter"));
+			if (ParameterUtilities.getParameterPolicy(((Node)object).getControl()) != null)
+				properties.add(new NullTextPropertyDescriptor(ParameterUtilities.PARAMETER, "Parameter"));
 		}
 		
 		if (object instanceof ModelObject)
@@ -98,8 +99,8 @@ public class ModelPropertySource implements IPropertySource {
 		if (id.equals("Class")) {
 			return object.getType();
 		} else {
-			if (ExtendedDataUtilities.PARAMETER.equals(id)) {
-				return ExtendedDataUtilities.getParameter((Node)object);
+			if (ParameterUtilities.PARAMETER.equals(id)) {
+				return ParameterUtilities.getParameter((Node)object);
 			} else if (ExtendedDataUtilities.COMMENT.equals(id)) {
 				return ExtendedDataUtilities.getComment(object);
 			} else if (ColourUtilities.FILL.equals(id)) {

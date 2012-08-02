@@ -28,6 +28,7 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 
 public class RedXMLDecorator implements IXMLDecorator {
 	@Override
@@ -67,7 +68,7 @@ public class RedXMLDecorator implements IXMLDecorator {
 			}
 
 			INamePolicy parameterPolicy =
-					ExtendedDataUtilities.getParameterPolicy(c);
+					ParameterUtilities.getParameterPolicy(c);
 			String policyName = null;
 			if (parameterPolicy instanceof LongNamePolicy) {
 				policyName = "LONG";
@@ -107,7 +108,7 @@ public class RedXMLDecorator implements IXMLDecorator {
 				rectangleToElement(aE, layout);
 			if (object instanceof Node) {
 				String parameter =
-						ExtendedDataUtilities.getParameter((Node)object);
+						ParameterUtilities.getParameter((Node)object);
 				if (parameter != null)
 					el.setAttributeNS(PARAM, "param:value", parameter);
 			}

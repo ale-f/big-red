@@ -29,6 +29,7 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
@@ -136,7 +137,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				f = applyAttributes(newElement(CHANGE, "change:site-alias"));
 				if (newValue != null)
 					applyAttributes(f, "alias", newValue);
-			} else if (ExtendedDataUtilities.PARAMETER.equals(key)){
+			} else if (ParameterUtilities.PARAMETER.equals(key)){
 				f = applyAttributes(newElement(CHANGE, "change:node-parameter"),
 						"parameter", newValue);
 			}

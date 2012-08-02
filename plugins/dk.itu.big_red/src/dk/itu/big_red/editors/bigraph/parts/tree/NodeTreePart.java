@@ -6,6 +6,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import dk.itu.big_red.editors.assistants.ControlImageDescriptor;
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ParameterUtilities;
 
 public class NodeTreePart extends ContainerTreePart {
 	@Override
@@ -23,7 +24,7 @@ public class NodeTreePart extends ContainerTreePart {
 		Node model = getModel();
 		
 		String text = model.getControl().getName() + " " + model.getName();
-		String parameter = ExtendedDataUtilities.getParameter(model);
+		String parameter = ParameterUtilities.getParameter(model);
 		if (parameter != null) {
 			return parameter + " : " + text;
 		} else return text;
