@@ -62,10 +62,10 @@ public abstract class ModelObject {
 	 * @see ModelObject#setExtendedData(String, Object)
 	 */
 	public class ChangeExtendedData extends ModelObjectChange {
-		public String key;
-		public Object newValue;
-		public ExtendedDataValidator immediateValidator, finalValidator;
-		public ExtendedDataNormaliser normaliser;
+		public final String key;
+		public final Object newValue;
+		public final ExtendedDataValidator immediateValidator, finalValidator;
+		public final ExtendedDataNormaliser normaliser;
 		
 		protected ChangeExtendedData(String key, Object newValue,
 				ExtendedDataValidator immediateValidator,

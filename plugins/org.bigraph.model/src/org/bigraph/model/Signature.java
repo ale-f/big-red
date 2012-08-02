@@ -38,22 +38,13 @@ public class Signature extends ModelObject
 		public Signature getCreator() {
 			return Signature.this;
 		}
-		
-		public Control control;
-		
-		public SignatureChange(Control control) {
-			this.control = control;
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (control != null);
-		}
 	}
 	
 	public class ChangeAddControl extends SignatureChange {
+		public final Control control;
+		
 		public ChangeAddControl(Control control) {
-			super(control);
+			this.control = control;
 		}
 
 		@Override
@@ -65,6 +56,11 @@ public class Signature extends ModelObject
 		public String toString() {
 			return "Change(add control " + control + " to signature " +
 					getCreator();
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (control != null);
 		}
 		
 		@Override

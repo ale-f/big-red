@@ -37,7 +37,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	public class ChangeSignature extends SimulationSpecChange {
-		public Signature signature;
+		public final Signature signature;
 		
 		protected ChangeSignature(Signature signature) {
 			this.signature = signature;
@@ -69,7 +69,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	public class ChangeAddRule extends SimulationSpecChange {
-		public ReactionRule rule;
+		public final ReactionRule rule;
 		
 		protected ChangeAddRule(ReactionRule rule) {
 			this.rule = rule;
@@ -95,7 +95,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	public class ChangeRemoveRule extends SimulationSpecChange {
-		public ReactionRule rule;
+		public final ReactionRule rule;
 		
 		protected ChangeRemoveRule(ReactionRule rule) {
 			this.rule = rule;
@@ -121,7 +121,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	public class ChangeModel extends SimulationSpecChange {
-		public Bigraph model;
+		public final Bigraph model;
 		
 		protected ChangeModel(Bigraph model) {
 			this.model = model;

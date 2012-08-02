@@ -57,7 +57,7 @@ public class Control extends ModelObject implements IControl {
 	}
 	
 	public class ChangeName extends ControlChange {
-		public String name;
+		public final String name;
 		
 		public ChangeName(String name) {
 			this.name = name;
@@ -96,7 +96,8 @@ public class Control extends ModelObject implements IControl {
 	}
 	
 	public class ChangeKind extends ControlChange {
-		public Kind kind;
+		public final Kind kind;
+		
 		public ChangeKind(Kind kind) {
 			this.kind = kind;
 		}
@@ -134,8 +135,8 @@ public class Control extends ModelObject implements IControl {
 	}
 	
 	public class ChangeAddPort extends ControlChange {
-		public PortSpec port;
-		public String name;
+		public final PortSpec port;
+		public final String name;
 		
 		public ChangeAddPort(PortSpec port, String name) {
 			this.port = port;

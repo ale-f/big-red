@@ -23,7 +23,8 @@ public class PortSpec extends ModelObject implements IPort {
 	}
 	
 	public class ChangeName extends PortSpecChange {
-		public String name;
+		public final String name;
+		
 		public ChangeName(String name) {
 			this.name = name;
 		}
@@ -64,6 +65,7 @@ public class PortSpec extends ModelObject implements IPort {
 	public class ChangeRemovePort extends PortSpecChange {
 		private String oldName;
 		private Control oldControl;
+		
 		@Override
 		public void beforeApply() {
 			oldName = getCreator().getName();
