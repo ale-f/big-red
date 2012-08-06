@@ -69,8 +69,9 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 		return new RedPropertySheetEntry();
 	}
 	
-	protected final IRedPropertySource getPropertySourceFor(Object object) {
-		IPropertySource r = getPropertySource(object);
+	@Override
+	protected IRedPropertySource getPropertySource(Object object) {
+		IPropertySource r = super.getPropertySource(object);
 		return (r instanceof IRedPropertySource ?
 				(IRedPropertySource)r : null);
 	}
@@ -86,7 +87,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 			Object o = values[i];
 			if (ex == null && o instanceof IBigraphPart)
 				ex = ((IBigraphPart)o).getBigraph();
-			IRedPropertySource rps = getPropertySourceFor(values[i]);
+			IRedPropertySource rps = getPropertySource(values[i]);
 			if (rps == null)
 				continue;
 			IChange rch =
@@ -113,7 +114,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 			Object o = values[i];
 			if (ex == null && o instanceof IBigraphPart)
 				ex = ((IBigraphPart)o).getBigraph();
-			IRedPropertySource rps = getPropertySourceFor(values[i]);
+			IRedPropertySource rps = getPropertySource(values[i]);
 			if (rps == null)
 				continue;
 			IChange rch = rps.setPropertyValueChange(
