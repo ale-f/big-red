@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
@@ -54,6 +55,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.views.properties.IPropertySource;
 
 import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.actions.TogglePropertyAction;
@@ -202,7 +204,13 @@ public class RuleEditor extends AbstractGEFEditor implements
 		reactumViewer.setEditDomain(getEditDomain());
 		
 		redexViewer.setEditPartFactory(new PartFactory());
-		reactumViewer.setEditPartFactory(new PartFactory());
+		reactumViewer.setEditPartFactory(new PartFactory() {
+			@Override
+			public IPropertySource getPropertySource(Object o) {
+				return (o instanceof Layoutable ?
+						new ReactumPropertySource((Layoutable)o) : null);
+			}
+		});
 		
 		ScalableRootEditPart
 			redexRoot = new ScalableRootEditPart(),

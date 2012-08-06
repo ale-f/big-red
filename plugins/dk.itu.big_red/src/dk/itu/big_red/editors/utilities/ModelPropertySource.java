@@ -7,7 +7,6 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
-import org.bigraph.model.Site;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.policies.INamePolicy;
@@ -59,14 +58,6 @@ public class ModelPropertySource implements IRedPropertySource {
 		}
 	}
 	
-	private class AliasValidator extends ChangeValidator {
-		@Override
-		public IChange getChange(Object value) {
-			return ExtendedDataUtilities.changeAlias(
-					((Site)getModel()), (String)value);
-		}
-	}
-	
 	private List<IPropertyDescriptor> properties =
 			new ArrayList<IPropertyDescriptor>();
 	
@@ -74,6 +65,12 @@ public class ModelPropertySource implements IRedPropertySource {
 		properties.add(d);
 	}
 	
+	/**
+	 * Creates the {@link IPropertyDescriptor}s for this {@link
+	 * ModelPropertySource}.
+	 * <p>Subclasses can override, but they should call the {@code super}
+	 * implementation at the earliest opportunity.
+	 */
 	protected void buildPropertyDescriptors() {
 		addPropertyDescriptor(new PropertyDescriptor("Class", "Class"));
 		
@@ -101,16 +98,10 @@ public class ModelPropertySource implements IRedPropertySource {
 			d.setValidator(new NameValidator());
 			addPropertyDescriptor(d);
 		}
-		if (object instanceof Site) {
-			NullTextPropertyDescriptor d = new NullTextPropertyDescriptor(
-					ExtendedDataUtilities.ALIAS, "Alias");
-			d.setValidator(new AliasValidator());
-			addPropertyDescriptor(d);
-		}
 	}
 	
 	@Override
-	public IPropertyDescriptor[] getPropertyDescriptors() {
+	public final IPropertyDescriptor[] getPropertyDescriptors() {
 		properties.clear();
 		buildPropertyDescriptors();
 		return properties.toArray(new IPropertyDescriptor[0]);
@@ -129,8 +120,6 @@ public class ModelPropertySource implements IRedPropertySource {
 				return ColourUtilities.getFill(object).getRGB();
 			} else if (ColourUtilities.OUTLINE.equals(id)) {
 				return ColourUtilities.getOutline(object).getRGB();
-			} else if (ExtendedDataUtilities.ALIAS.equals(id)) {
-				return ExtendedDataUtilities.getAlias(((Site)object));
 			} else if (Layoutable.PROPERTY_NAME.equals(id)) {
 				return object.getName();
 			} else return null;
@@ -148,7 +137,7 @@ public class ModelPropertySource implements IRedPropertySource {
 	 */
 	@Override
 	@Deprecated
-	public void setPropertyValue(Object id, Object value) {
+	public final void setPropertyValue(Object id, Object value) {
 		throw new UnsupportedOperationException("" + id + ", " + value);
 	}
 
@@ -158,7 +147,7 @@ public class ModelPropertySource implements IRedPropertySource {
 	 */
 	@Override
 	@Deprecated
-	public void resetPropertyValue(Object id) {
+	public final void resetPropertyValue(Object id) {
 		throw new UnsupportedOperationException("" + id);
 	}
 	
@@ -173,9 +162,6 @@ public class ModelPropertySource implements IRedPropertySource {
 			return ColourUtilities.changeFill(getModel(), (Colour)newValue);
 		} else if (ColourUtilities.OUTLINE.equals(id)) {
 			return ColourUtilities.changeOutline(getModel(), (Colour)newValue);
-		} else if (ExtendedDataUtilities.ALIAS.equals(id)) {
-			return ExtendedDataUtilities.changeAlias(
-					((Site)getModel()), (String)newValue);
 		} else if (ParameterUtilities.PARAMETER.equals(id)) {
 			return ParameterUtilities.changeParameter(
 					(Node)getModel(), (String)newValue);
