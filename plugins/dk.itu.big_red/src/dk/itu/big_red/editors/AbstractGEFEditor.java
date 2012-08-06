@@ -42,9 +42,9 @@ import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.assistants.ControlImageDescriptor;
-import dk.itu.big_red.editors.bigraph.ChangePropertySheetEntry;
 import dk.itu.big_red.editors.bigraph.ModelFactory;
 import dk.itu.big_red.editors.bigraph.NodeFactory;
+import dk.itu.big_red.editors.utilities.RedPropertySheetEntry;
 
 public abstract class AbstractGEFEditor extends AbstractEditor
 		implements CommandStackEventListener, ISelectionListener,
@@ -176,7 +176,7 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 			return getCommandStack();
 		} else if (adapter == IPropertySheetPage.class) {
     		PropertySheetPage psp = new PropertySheetPage();
-    		psp.setRootEntry(new ChangePropertySheetEntry(getCommandStack()));
+    		psp.setRootEntry(new RedPropertySheetEntry(getCommandStack()));
     		return psp;
     	} else return super.getAdapter(adapter);
 	}
