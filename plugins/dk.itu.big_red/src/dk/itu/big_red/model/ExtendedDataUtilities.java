@@ -3,6 +3,7 @@ package dk.itu.big_red.model;
 
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.ExtendedDataNormaliser;
 import org.bigraph.model.Site;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
@@ -47,6 +48,19 @@ public abstract class ExtendedDataUtilities {
 		} else o.setExtendedData(name, value);
 	}
 	
+	private static final ExtendedDataNormaliser commentNormaliser =
+			new ExtendedDataNormaliser() {
+		@Override
+		public Object normalise(ChangeExtendedData c, Object rawValue) {
+			if (rawValue instanceof String) {
+				String s = ((String)rawValue).trim();
+				if (s.length() > 0)
+					return s;
+			}
+			return null;
+		}
+	};
+	
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String COMMENT =
 			"eD!+dk.itu.big_red.model.ModelObject.comment";
@@ -65,13 +79,13 @@ public abstract class ExtendedDataUtilities {
 	}
 	
 	public static IChange changeComment(ModelObject m, String s) {
-		return m.changeExtendedData(COMMENT, s);
+		return m.changeExtendedData(COMMENT, s, null, null, commentNormaliser);
 	}
 	
 	public static IChangeDescriptor changeCommentDescriptor(
 			ModelObject.Identifier l, String s) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, COMMENT, s, null, null);
+				l, COMMENT, s, null, null, commentNormaliser);
 	}
 	
 	private static final ExtendedDataValidator aliasValidator =
