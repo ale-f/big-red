@@ -116,8 +116,10 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 			IRedPropertySource rps = getPropertySourceFor(values[i]);
 			if (rps == null)
 				continue;
-			cg.add(rps.setPropertyValueChange(
-					child.getDescriptor().getId(), child.getEditValue(i)));
+			IChange rch = rps.setPropertyValueChange(
+					child.getDescriptor().getId(), child.getEditValue(i));
+			if (rch != null)
+				cg.add(rch);
 		}
 		if (getParent() != null) {
 			getParent().valueChanged(this, cg);
