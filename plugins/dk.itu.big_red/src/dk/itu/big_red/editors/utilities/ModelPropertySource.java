@@ -138,7 +138,8 @@ public class ModelPropertySource implements IRedPropertySource {
 	@Override
 	@Deprecated
 	public final void setPropertyValue(Object id, Object value) {
-		throw new UnsupportedOperationException("" + id + ", " + value);
+		throw new Error(new UnsupportedOperationException(
+				"" + id + ", " + value).fillInStackTrace());
 	}
 
 	/**
@@ -148,7 +149,8 @@ public class ModelPropertySource implements IRedPropertySource {
 	@Override
 	@Deprecated
 	public final void resetPropertyValue(Object id) {
-		throw new UnsupportedOperationException("" + id);
+		throw new Error(
+				new UnsupportedOperationException("" + id).fillInStackTrace());
 	}
 	
 	@Override
