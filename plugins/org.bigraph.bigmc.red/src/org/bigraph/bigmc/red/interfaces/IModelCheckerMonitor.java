@@ -7,12 +7,12 @@ package org.bigraph.bigmc.red.interfaces;
  * @author alec
  */
 public interface IModelCheckerMonitor {
-	public void start(String name, int totalWork);
+	void start(String name, int totalWork);
 	
-	public void worked(int units);
-	public void subtask(String name);
+	void worked(int units);
+	void subtask(String name);
 	
-	public void end();
+	void end();
 	
 	boolean isCanceled();
 	void setCanceled(boolean canceled);

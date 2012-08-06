@@ -13,7 +13,7 @@ public interface IResourceWrapper {
 	 * Returns this resource's name (the last component of its path).
 	 * @return this resource's name
 	 */
-	public String getName();
+	String getName();
 	
 	/**
 	 * Returns the absolute path to this resource.
@@ -27,7 +27,7 @@ public interface IResourceWrapper {
 	 * @return the absolute path to this resource
 	 * @see #getRelativePath(String)
 	 */
-	public String getPath();
+	String getPath();
 	
 	/**
 	 * Returns a path to this resource relative to the given absolute path.
@@ -36,12 +36,12 @@ public interface IResourceWrapper {
 	 * @see #getPath()
 	 * @see IContainerWrapper
 	 */
-	public String getRelativePath(String relativeTo);
+	String getRelativePath(String relativeTo);
 	
 	/**
 	 * Returns the parent container of this resource.
 	 * @return an {@link IContainerWrapper}, or <code>null</code> if this
 	 * resource is the root
 	 */
-	public IContainerWrapper getParent();
+	IContainerWrapper getParent();
 }

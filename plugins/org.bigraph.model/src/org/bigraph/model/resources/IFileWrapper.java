@@ -19,12 +19,12 @@ public interface IFileWrapper extends IResourceWrapper {
 	 * @return a {@link ModelObject} (not <code>null</code>)
 	 * @throws LoadFailedException if something goes wrong
 	 */
-	public ModelObject load() throws LoadFailedException;
+	ModelObject load() throws LoadFailedException;
 	
 	/**
 	 * Produces an {@link InputStream} representing the contents of this file.
 	 * @return an {@link InputStream} (not <code>null</code>)
 	 * @throws LoadFailedException if something goes wrong
 	 */
-	public InputStream getContents() throws LoadFailedException;
+	InputStream getContents() throws LoadFailedException;
 }

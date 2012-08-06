@@ -16,5 +16,5 @@ public interface IContainerWrapper extends IResourceWrapper {
 	 * @return an {@link IResourceWrapper}, or <code>null</code> if no resource
 	 * was found at the given relative path
 	 */
-	public IResourceWrapper getResource(String path);
+	IResourceWrapper getResource(String path);
 }
