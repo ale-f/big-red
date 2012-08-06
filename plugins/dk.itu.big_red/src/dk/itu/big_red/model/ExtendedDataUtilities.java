@@ -27,7 +27,7 @@ public abstract class ExtendedDataUtilities {
 	
 	static <T> T require(PropertyScratchpad context, ModelObject o,
 			String name, Class<T> klass) {
-		if (o != null) {
+		if (o != null && name != null) {
 			Object r = (context != null && context.hasProperty(o, name) ?
 					context.getProperty(o, name) : o.getExtendedData(name));
 			try {
