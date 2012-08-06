@@ -36,16 +36,16 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.Line;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
-import static dk.itu.big_red.model.ExtendedDataUtilities.changeDistance;
-import static dk.itu.big_red.model.ExtendedDataUtilities.changeSegment;
-import static dk.itu.big_red.model.ExtendedDataUtilities.getDistance;
-import static dk.itu.big_red.model.ExtendedDataUtilities.getSegment;
+import static dk.itu.big_red.model.ControlUtilities.changeDistance;
+import static dk.itu.big_red.model.ControlUtilities.changeSegment;
+import static dk.itu.big_red.model.ControlUtilities.getDistance;
+import static dk.itu.big_red.model.ControlUtilities.getSegment;
 
 /**
  * SignatureEditorPolygonCanvases are widgets based on {@link Canvas} that let
@@ -72,7 +72,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 	
 	private Object getShape() {
 		if (shape == null)
-			shape = ExtendedDataUtilities.getShape(getModel());
+			shape = ControlUtilities.getShape(getModel());
 		return shape;
 	}
 	
@@ -137,7 +137,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 					stopListeningTo((PortSpec)oldValue);
 				}
 				redraw();
-			} else if (ExtendedDataUtilities.SHAPE.equals(name)) {
+			} else if (ControlUtilities.SHAPE.equals(name)) {
 				shape = null;
 				pointsBounds = null;
 				redraw();
@@ -146,8 +146,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 				redraw();
 			}
 		} else if (source instanceof PortSpec) {
-			if (ExtendedDataUtilities.SEGMENT.equals(name) ||
-				ExtendedDataUtilities.DISTANCE.equals(name))
+			if (ControlUtilities.SEGMENT.equals(name) ||
+				ControlUtilities.DISTANCE.equals(name))
 				redraw();
 		}
 	}
@@ -234,7 +234,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		int x = mx - translationX(), y = my - translationY();
 		PointList pl = getPoints().getCopy();
 		pl.setPoint(new Point(x, y), moveIndex);
-		doChange(ExtendedDataUtilities.changeShape(getModel(), pl));
+		doChange(ControlUtilities.changeShape(getModel(), pl));
 	}
 	
 	private void opDeletePoint(int deleteIndex) {
@@ -261,7 +261,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 		PointList pl = getPoints().getCopy();
 		pl.removePoint(deleteIndex);
-		cg.add(ExtendedDataUtilities.changeShape(getModel(), pl));
+		cg.add(ControlUtilities.changeShape(getModel(), pl));
 		doChange(cg);
 	}
 	
@@ -289,7 +289,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 		PointList pl = getPoints().getCopy();
 		pl.insertPoint(p, insertIndex);
-		cg.add(ExtendedDataUtilities.changeShape(getModel(), pl));
+		cg.add(ControlUtilities.changeShape(getModel(), pl));
 		doChange(cg);
 	}
 	
@@ -783,7 +783,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 					ChangeGroup cg = new ChangeGroup();
 					for (PortSpec i : getModel().getPorts())
 						cg.add(i.changeRemove());
-					cg.add(ExtendedDataUtilities.changeShape(getModel(),
+					cg.add(ControlUtilities.changeShape(getModel(),
 							new PointList(new int[] { 0, 0 })));
 					doChange(cg);
 				}
@@ -806,7 +806,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 						ChangeGroup cg = new ChangeGroup();
 						for (PortSpec i : getModel().getPorts())
 							cg.add(i.changeRemove());
-						cg.add(ExtendedDataUtilities.changeShape(getModel(),
+						cg.add(ControlUtilities.changeShape(getModel(),
 								Ellipse.SINGLETON.
 								setBounds(new Rectangle(0, 0, 60, 60)).
 								getPolygon(Integer.parseInt(polySides))));

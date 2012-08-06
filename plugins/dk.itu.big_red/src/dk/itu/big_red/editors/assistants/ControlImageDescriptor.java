@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.Display;
 
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -49,7 +49,7 @@ public class ControlImageDescriptor extends ImageDescriptor {
 						outline.update(ColourUtilities.getFill(c)));
 				gc.setForeground(
 						outline.update(ColourUtilities.getOutline(c)));
-				Object shape = ExtendedDataUtilities.getShape(c);
+				Object shape = ControlUtilities.getShape(c);
 				if (shape instanceof PointList) {
 					PointList modified =
 							NodePart.fitPolygon((PointList)shape,

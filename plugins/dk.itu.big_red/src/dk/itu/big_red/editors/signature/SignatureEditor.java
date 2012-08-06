@@ -51,8 +51,8 @@ import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
@@ -119,10 +119,10 @@ implements PropertyChangeListener {
 	protected void controlToFields() {
 		uiUpdateInProgress = true;
 		
-		Object shape = ExtendedDataUtilities.getShape(currentControl);
+		Object shape = ControlUtilities.getShape(currentControl);
 		boolean polygon = (shape instanceof PointList);
 		
-		label.setText(ExtendedDataUtilities.getLabel(currentControl));
+		label.setText(ControlUtilities.getLabel(currentControl));
 		name.setText(currentControl.getName());
 		
 		appearance.setModel(currentControl);
@@ -205,8 +205,8 @@ implements PropertyChangeListener {
 		if (c != null && s != null) {
 			ChangeGroup cg = new ChangeGroup();
 			cg.add(c.changeName(s));
-			cg.add(ExtendedDataUtilities.changeLabel(c,
-					ExtendedDataUtilities.labelFor(s)));
+			cg.add(ControlUtilities.changeLabel(c,
+					ControlUtilities.labelFor(s)));
 			return cg;
 		} else return null;
 	}
@@ -410,9 +410,9 @@ implements PropertyChangeListener {
 		TextListener labelListener = new TextListener() {
 			@Override
 			void go() {
-				String l = ExtendedDataUtilities.getLabel(currentControl);
+				String l = ControlUtilities.getLabel(currentControl);
 				if (!l.equals(label.getText()))
-					if (!doChange(ExtendedDataUtilities.changeLabel(currentControl, label.getText())))
+					if (!doChange(ControlUtilities.changeLabel(currentControl, label.getText())))
 						lockedTextUpdate(label, l);
 			}
 		};
@@ -480,7 +480,7 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					doChange(ExtendedDataUtilities.changeShape(
+					doChange(ControlUtilities.changeShape(
 							currentControl, Ellipse.SINGLETON));
 			}
 		});
@@ -491,7 +491,7 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					doChange(ExtendedDataUtilities.changeShape(
+					doChange(ControlUtilities.changeShape(
 							currentControl, POINTS_QUAD));
 			}
 		});
@@ -604,11 +604,11 @@ implements PropertyChangeListener {
 				return;
 			uiUpdateInProgress = true;
 			try {
-				if (propertyName.equals(ExtendedDataUtilities.LABEL)) {
+				if (propertyName.equals(ControlUtilities.LABEL)) {
 					label.setText((String)newValue);
 				} else if (propertyName.equals(Control.PROPERTY_NAME)) {
 					name.setText((String)newValue);
-				} else if (propertyName.equals(ExtendedDataUtilities.SHAPE)) {
+				} else if (propertyName.equals(ControlUtilities.SHAPE)) {
 					ovalMode.setSelection(newValue instanceof Ellipse);
 					polygonMode.setSelection(newValue instanceof PointList);
 				} else if (propertyName.equals(ColourUtilities.FILL)) {

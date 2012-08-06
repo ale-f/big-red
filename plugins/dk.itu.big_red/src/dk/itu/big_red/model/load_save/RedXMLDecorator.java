@@ -26,6 +26,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
@@ -52,7 +53,7 @@ public class RedXMLDecorator implements IXMLDecorator {
 			Control c = (Control)object;
 			Element aE = doc.createElementNS(BIG_RED, "big-red:shape");
 			
-			Object shape = ExtendedDataUtilities.getShape(c);
+			Object shape = ControlUtilities.getShape(c);
 			aE.setAttributeNS(BIG_RED, "big-red:shape",
 					(shape instanceof PointList ? "polygon" : "oval"));
 			
@@ -81,7 +82,7 @@ public class RedXMLDecorator implements IXMLDecorator {
 				el.setAttributeNS(PARAM, "param:type", policyName);
 			
 			el.setAttributeNS(BIG_RED, "big-red:label",
-					ExtendedDataUtilities.getLabel(c));
+					ControlUtilities.getLabel(c));
 			el.appendChild(aE);
 			/* continue */
 		} else if (object instanceof PortSpec) {
@@ -89,8 +90,8 @@ public class RedXMLDecorator implements IXMLDecorator {
 			
 			Element pA =
 				doc.createElementNS(BIG_RED, "big-red:port-appearance");
-			pA.setAttributeNS(BIG_RED, "big-red:segment", "" + ExtendedDataUtilities.getSegment(p));
-			pA.setAttributeNS(BIG_RED, "big-red:distance", "" + ExtendedDataUtilities.getDistance(p));
+			pA.setAttributeNS(BIG_RED, "big-red:segment", "" + ControlUtilities.getSegment(p));
+			pA.setAttributeNS(BIG_RED, "big-red:distance", "" + ControlUtilities.getDistance(p));
 			
 			el.appendChild(pA);
 			return;

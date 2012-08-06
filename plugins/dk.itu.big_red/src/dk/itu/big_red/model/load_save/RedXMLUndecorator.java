@@ -27,6 +27,7 @@ import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
@@ -141,9 +142,9 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 			PortSpec p = (PortSpec)object;
 			Element eS = getNamedChildElement(el, BIG_RED, "port-appearance");
 			if (eS != null) {
-				cg.add(ExtendedDataUtilities.changeSegment(p,
+				cg.add(ControlUtilities.changeSegment(p,
 						getIntAttribute(eS, BIG_RED, "segment")));
-				cg.add(ExtendedDataUtilities.changeDistance(p,
+				cg.add(ControlUtilities.changeDistance(p,
 						getDoubleAttribute(eS, BIG_RED, "distance")));
 			}
 		}
@@ -153,7 +154,7 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 			
 			String l = getAttributeNS(el, BIG_RED, "label");
 			if (l != null)
-				cg.add(ExtendedDataUtilities.changeLabel(c, l));
+				cg.add(ControlUtilities.changeLabel(c, l));
 			
 			Element eS = getNamedChildElement(el, BIG_RED, "shape");
 			if (eS != null) {
@@ -173,7 +174,7 @@ public class RedXMLUndecorator implements IXMLUndecorator {
 					}
 					shape = pl;
 				} else shape = Ellipse.SINGLETON;
-				cg.add(ExtendedDataUtilities.changeShape(c, shape));
+				cg.add(ControlUtilities.changeShape(c, shape));
 			}
 			
 			String parameter = getAttributeNS(el, PARAM, "type");

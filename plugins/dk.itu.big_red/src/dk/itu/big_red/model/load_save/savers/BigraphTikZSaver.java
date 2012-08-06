@@ -28,8 +28,8 @@ import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.editors.bigraph.parts.PointPart;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 
 public class BigraphTikZSaver extends Saver {
@@ -200,7 +200,7 @@ public class BigraphTikZSaver extends Saver {
 		
 		Point tmp;
 		String shapeDescriptor = "";
-		Object shape = ExtendedDataUtilities.getShape(con);
+		Object shape = ControlUtilities.getShape(con);
 		if (shape instanceof Ellipse) {
 			tmp = rl.getCenter();
 			shapeDescriptor += "(" + tmp.x + "," + tmp.y + ") ellipse (" +
@@ -224,7 +224,7 @@ public class BigraphTikZSaver extends Saver {
 		line("definecolor{" + n.getName() + " fill}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
 		line("definecolor{" + n.getName() + " outline}{RGB}{" + outlineColour.getRed() + "," + outlineColour.getGreen() + "," + outlineColour.getBlue() + "}");
 		line("draw [" + n.getControl().getName() + ",fill=" + n.getName() + " fill,draw=" + n.getName()+ " outline] " + shapeDescriptor + ";");
-		line("node at (" + rltl.x + "," + rltl.y + ") {" + ExtendedDataUtilities.getLabel(con) + "};");
+		line("node at (" + rltl.x + "," + rltl.y + ") {" + ControlUtilities.getLabel(con) + "};");
 		
 		beginScope(n);
 		process(n.getNodes());

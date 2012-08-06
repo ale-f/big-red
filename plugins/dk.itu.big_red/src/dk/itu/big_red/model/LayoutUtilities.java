@@ -134,12 +134,12 @@ public abstract class LayoutUtilities {
 			if (l instanceof Port) {
 				Port p = (Port)l;
 				r = new Rectangle(0, 0, 10, 10);
-				Object shape = ExtendedDataUtilities.getShape(p.getParent().getControl());
-				double distance = ExtendedDataUtilities.getDistance(context, p.getSpec());
+				Object shape = ControlUtilities.getShape(p.getParent().getControl());
+				double distance = ControlUtilities.getDistance(context, p.getSpec());
 				if (shape instanceof PointList) {
 					PointList polypt = NodePart.fitPolygon(
 							(PointList)shape, getLayout(p.getParent(context)));
-					int segment = ExtendedDataUtilities.getSegment(context, p.getSpec());
+					int segment = ControlUtilities.getSegment(context, p.getSpec());
 					org.eclipse.draw2d.geometry.Point
 						p1 = polypt.getPoint(segment),
 						p2 = polypt.getPoint((segment + 1) % polypt.size());

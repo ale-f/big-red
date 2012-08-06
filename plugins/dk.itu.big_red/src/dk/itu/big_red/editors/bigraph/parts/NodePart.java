@@ -17,8 +17,8 @@ import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.editors.bigraph.figures.NodeFigure;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
-import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 
@@ -88,7 +88,7 @@ public class NodePart extends ContainerPart {
 		Node model = getModel();
 		Control control = model.getControl();
 		
-		Object shape = ExtendedDataUtilities.getShape(control);
+		Object shape = ControlUtilities.getShape(control);
 		if (shape instanceof PointList && fittedPolygon == null)
 			fittedPolygon = fitPolygon((PointList)shape,
 					LayoutUtilities.getLayout(model));
@@ -96,7 +96,7 @@ public class NodePart extends ContainerPart {
 			shape instanceof PointList ? fittedPolygon : Ellipse.SINGLETON);
 		
 		String
-			label = ExtendedDataUtilities.getLabel(control),
+			label = ControlUtilities.getLabel(control),
 			parameter = ParameterUtilities.getParameter(model);
 		if (parameter != null)
 			label = parameter + " : " + label;
