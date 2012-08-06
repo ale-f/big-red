@@ -38,7 +38,7 @@ public class ModelPropertySource implements IRedPropertySource {
 		return null;
 	}
 	
-	private abstract class ChangeValidator implements ICellEditorValidator {
+	public abstract class ChangeValidator implements ICellEditorValidator {
 		public abstract IChange getChange(Object value);
 		
 		@Override
