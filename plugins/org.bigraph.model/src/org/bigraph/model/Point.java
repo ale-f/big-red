@@ -204,11 +204,6 @@ public abstract class Point extends Layoutable implements IPoint {
 		private final Identifier point;
 		private final Link.Identifier link;
 		
-		public ChangeDisconnectDescriptor(Identifier point) {
-			this.point = point;
-			link = null;
-		}
-		
 		public ChangeDisconnectDescriptor(
 				Identifier point, Link.Identifier link) {
 			this.point = point;
