@@ -45,17 +45,18 @@ public class ReactionRule extends ModelObject {
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs) {
 			for (int i = 0; i < reactumCDs.size(); i++) {
 				IChangeDescriptor c = reactumCDs.get(i);
+				ChangeDescriptorGroup cdg = null;
 				if (c instanceof ChangeDescriptorGroup) {
-					ChangeDescriptorGroup cdg =
-							runStep(redexCD, (ChangeDescriptorGroup)c);
-					if (cdg != null) {
-						reactumCDs = reactumCDs.clone();
-						if (cdg.size() != 0) {
-							reactumCDs.set(i, cdg);
-						} else reactumCDs.remove(i);
-						return reactumCDs;
-					}
-				} else return runStepActual(redexCD, reactumCDs, c);
+					cdg = runStep(redexCD, (ChangeDescriptorGroup)c);
+				} else cdg = runStepActual(redexCD, reactumCDs, c);
+				
+				if (cdg != null) {
+					reactumCDs = reactumCDs.clone();
+					if (cdg.size() != 0) {
+						reactumCDs.set(i, cdg);
+					} else reactumCDs.remove(i);
+					return reactumCDs;
+				}
 			}
 			return null;
 		}
@@ -82,9 +83,7 @@ public class ReactionRule extends ModelObject {
 		protected ChangeDescriptorGroup runStepActual(
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
 				IChangeDescriptor reactumCD) {
-			boolean eq = redexCD.equals(reactumCD);
-			System.out.println(redexCD + (eq ? " == " : " != ") + reactumCD);
-			if (eq) {
+			if (redexCD.equals(reactumCD)) {
 				reactumCDs = reactumCDs.clone();
 				reactumCDs.remove(reactumCD);
 				return reactumCDs;
@@ -104,7 +103,8 @@ public class ReactionRule extends ModelObject {
 		DescriptorConflicts.CON_REN,
 		DescriptorConflicts.DIS_REN,
 		DescriptorConflicts.REN_REN,
-		DescriptorConflicts.REN_EXT
+		DescriptorConflicts.REN_EXT,
+		DescriptorConflicts.EXT_EXT
 	};
 	
 	protected static class Operation3PrimeRunner extends OperationRunner {

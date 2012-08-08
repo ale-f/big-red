@@ -173,8 +173,7 @@ public abstract class DescriptorConflicts {
 		}
 	};
 	
-	public static IConflict REN_REN =
-			new Conflict1
+	public static IConflict REN_REN = new Conflict1
 			<ChangeNameDescriptor>
 			(ChangeNameDescriptor.class) {
 		@Override
@@ -192,6 +191,17 @@ public abstract class DescriptorConflicts {
 		public boolean conflicts(ChangeNameDescriptor a,
 				ChangeExtendedDataDescriptor b) {
 			return a.getTarget().equals(b.getTarget());
+		}
+	};
+	
+	public static IConflict EXT_EXT = new Conflict1
+			<ChangeExtendedDataDescriptor>
+			(ChangeExtendedDataDescriptor.class) {
+		@Override
+		public boolean conflicts2(ChangeExtendedDataDescriptor a,
+				ChangeExtendedDataDescriptor b) {
+			return a.getTarget().equals(b.getTarget()) &&
+					a.getKey().equals(b.getKey());
 		}
 	};
 }
