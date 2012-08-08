@@ -10,7 +10,6 @@ import org.bigraph.model.assistants.validators.BigraphValidator;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.changes.IChangeValidator;
 import org.bigraph.model.interfaces.IBigraph;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.NamespaceGroup;
@@ -93,7 +92,7 @@ public class Bigraph extends Container
 		return getNamespace(getNSI(l)).getNextName();
 	}
 	
-	private IChangeValidator validator = new BigraphValidator(this);
+	private BigraphValidator validator = new BigraphValidator(this);
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
 	
@@ -196,7 +195,12 @@ public class Bigraph extends Container
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		validator.tryValidateChange(b);
+		tryValidateChange(null, b);
+	}
+	
+	public void tryValidateChange(PropertyScratchpad context, IChange b)
+			throws ChangeRejectedException {
+		validator.tryValidateChange(context, b);
 	}
 	
 	@Override
