@@ -140,8 +140,10 @@ public class ReactionRule extends ModelObject {
 				return new ChangeNameDescriptor(
 						target.getRenamed(cd.getNewName()), target.getName());
 			} else if (cd_ instanceof ChangeExtendedDataDescriptor) {
-				return null /* aieee */;
-			} else return null;
+				throw new Error("BUG: " +
+						"can't reverse the extended data descriptor " + cd_);
+			} else throw new Error(
+					"BUG: can't reverse the unrecognised descriptor " + cd_);
 		}
 		
 		@Override
