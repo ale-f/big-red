@@ -38,9 +38,11 @@ import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
-import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
+
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
 	private ReactionRule rr = null;
@@ -68,18 +70,21 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			return rr;
 		} else rr = new ReactionRule();
 		
-		rr.setRedex(
-			makeRedex(getNamedChildElement(e, RULE, "redex")));
+		Element redexElement = getNamedChildElement(e, BIGRAPH, "bigraph");
+		BigraphXMLLoader bi = new BigraphXMLLoader();
+		bi.addNewUndecorators(getUndecorators());
+		if (redexElement != null) {
+			rr.setRedex(bi.setFile(getFile()).makeObject(redexElement));
+		} else {
+			redexElement = getNamedChildElement(e, RULE, "redex");
+			if (redexElement != null)
+				rr.setRedex(loadEmbedded(
+						redexElement, null, null, Bigraph.class, bi));
+		}
 		updateReactum(rr, getNamedChildElement(e, RULE, "changes"));
 		
 		executeUndecorators(rr, e);
 		return rr;
-	}
-	
-	private Bigraph makeRedex(Element e) throws LoadFailedException {
-		BigraphXMLLoader bi = new BigraphXMLLoader();
-		bi.addNewUndecorators(getUndecorators()).setFile(getFile());
-		return bi.makeObject(e);
 	}
 	
 	private Layoutable.Identifier getLayoutable(
