@@ -99,10 +99,12 @@ public class ReactionRule extends ModelObject {
 		DescriptorConflicts.REM_REM,
 		DescriptorConflicts.REM_CON,
 		DescriptorConflicts.REM_REN,
+		DescriptorConflicts.REM_EXT,
 		DescriptorConflicts.CON_CON,
 		DescriptorConflicts.CON_REN,
 		DescriptorConflicts.DIS_REN,
-		DescriptorConflicts.REN_REN
+		DescriptorConflicts.REN_REN,
+		DescriptorConflicts.REN_EXT
 	};
 	
 	protected static class Operation3PrimeRunner extends OperationRunner {

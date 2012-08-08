@@ -1,6 +1,7 @@
 package org.bigraph.model.assistants;
 
 import org.bigraph.model.Layoutable;
+import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
@@ -129,6 +130,16 @@ public abstract class DescriptorConflicts {
 		}
 	};
 	
+	public static IConflict REM_EXT = new Conflict
+			<ChangeRemoveDescriptor, ChangeExtendedDataDescriptor>
+			(ChangeRemoveDescriptor.class, ChangeExtendedDataDescriptor.class) {
+		@Override
+		public boolean conflicts(ChangeRemoveDescriptor a,
+				ChangeExtendedDataDescriptor b) {
+			return a.getTarget().equals(b.getTarget());
+		}
+	};
+	
 	public static IConflict CON_CON = new Conflict1
 			<ChangeConnectDescriptor>
 			(ChangeConnectDescriptor.class) {
@@ -170,6 +181,16 @@ public abstract class DescriptorConflicts {
 		public boolean conflicts2(ChangeNameDescriptor a,
 				ChangeNameDescriptor b) {
 			/* More */
+			return a.getTarget().equals(b.getTarget());
+		}
+	};
+	
+	public static IConflict REN_EXT = new Conflict
+			<ChangeNameDescriptor, ChangeExtendedDataDescriptor>
+			(ChangeNameDescriptor.class, ChangeExtendedDataDescriptor.class) {
+		@Override
+		public boolean conflicts(ChangeNameDescriptor a,
+				ChangeExtendedDataDescriptor b) {
 			return a.getTarget().equals(b.getTarget());
 		}
 	};
