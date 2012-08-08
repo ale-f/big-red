@@ -10,4 +10,4 @@ If the "bigmc" executable isn't in your system's path, then you'll need to
 tell the plugin where it can be found; this can be done from the "Big Red ->
 BigMC for Big Red" preferences page inside Eclipse.
 
-(This requires the development version of BigMC to work properly.)
+(This requires version 20120807 or later of BigMC in order to work properly.)
