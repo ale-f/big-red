@@ -14,7 +14,7 @@ import org.bigraph.model.changes.IChangeValidator;
 
 abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		implements IChangeValidator {
-	private PropertyScratchpad scratch = new PropertyScratchpad();
+	private PropertyScratchpad scratch = null;
 	
 	protected PropertyScratchpad getScratch() {
 		return scratch;
@@ -57,7 +57,12 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		getScratch().clear();
+		tryValidateChange(null, b);
+	}
+	
+	public void tryValidateChange(PropertyScratchpad context, IChange b)
+			throws ChangeRejectedException {
+		scratch = new PropertyScratchpad(context);
 		finalChecks.clear();
 		
 		b = doValidateChange(b);
@@ -66,5 +71,8 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		
 		for (ChangeExtendedData i : finalChecks)
 			i.finalValidator.validate(i, scratch);
+		
+		scratch.clear();
+		scratch = null;
 	}
 }
