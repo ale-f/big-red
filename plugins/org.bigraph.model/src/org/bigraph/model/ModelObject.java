@@ -394,6 +394,18 @@ public abstract class ModelObject {
 			return oldValue;
 		}
 		
+		public ExtendedDataValidator getImmediateValidator() {
+			return immediateValidator;
+		}
+		
+		public ExtendedDataValidator getFinalValidator() {
+			return finalValidator;
+		}
+		
+		public ExtendedDataNormaliser getNormaliser() {
+			return normaliser;
+		}
+		
 		@Override
 		public boolean equals(Object obj_) {
 			if (safeClassCmp(this, obj_)) {
