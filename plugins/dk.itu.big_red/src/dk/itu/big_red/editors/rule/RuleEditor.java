@@ -393,8 +393,12 @@ public class RuleEditor extends AbstractGEFEditor implements
 				if (detail != CommandStack.PRE_UNDO) {
 					commandChange.simulate(scratch);
 				} else commandChange.inverse().simulate(scratch);
-				getRedex().tryValidateChange(
-						cdg.createChange(scratch, getRedex()));
+				/* scratch now contains the prospective state of the redex
+				 * after the change has been applied. Check that we can still
+				 * get to the reactum from there */
+				IChange instantiated = cdg.createChange(scratch, getRedex());
+				getRedex().tryValidateChange(scratch, instantiated);
+				/* XXX: save instantiated for undo */
 			} catch (ChangeCreationException cce) {
 				throw new Error("BUG: post-fixup reactum changes are " +
 						"completely inconsistent, don't save", cce);
