@@ -77,9 +77,14 @@ abstract class DescriptorUtilities {
 			return cdg;
 		} else if (c instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)c;
+			Layoutable creator = (Layoutable)ch.getCreator();
+			Object oldValue;
+			if (context == null || !context.hasProperty(creator, ch.key)) {
+				oldValue = creator.getExtendedData(ch.key);
+			} else oldValue = context.getProperty(creator, ch.key);
 			chd = new ChangeExtendedDataDescriptor(
-					((Layoutable)ch.getCreator()).getIdentifier(context),
-					ch.key, ch.newValue,
+					creator.getIdentifier(context),
+					ch.key, ch.newValue, oldValue,
 					ch.immediateValidator, ch.finalValidator, ch.normaliser);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
