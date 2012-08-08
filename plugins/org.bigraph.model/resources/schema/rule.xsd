@@ -11,6 +11,7 @@
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:rule="http://www.itu.dk/research/pls/xmlns/2011/rule"
+            xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph"
             targetNamespace="http://www.itu.dk/research/pls/xmlns/2011/rule">
 
 	<xsd:annotation>
@@ -38,6 +39,10 @@
 			</html>
 		</xsd:documentation>
 	</xsd:annotation>
+
+	<xsd:import
+		namespace="http://www.itu.dk/research/pls/xmlns/2010/bigraph"
+		schemaLocation="bigraph.xsd" />
 
 	<xsd:group name="anyForeignElements">
 		<xsd:sequence>
@@ -69,6 +74,18 @@
 						<li>
 							contain
 							<ul>
+								<li>
+									either
+									<ul>
+										<li>
+											a <a href="#redex">redex</a>, or
+										</li>
+										<li>
+											a <a href="bigraph.xsd#bigraph">bigraph:bigraph</a>
+										</li>
+									</ul>
+									followed by
+								</li>
 								<li>
 									a <a href="#redex">redex</a>, followed by
 								</li>
@@ -114,7 +131,10 @@
 	<xsd:element name="rule">
 		<xsd:complexType>
 			<xsd:sequence minOccurs="0">
-				<xsd:element ref="rule:redex" />
+				<xsd:choice>
+					<xsd:element ref="rule:redex" />
+					<xsd:element ref="bigraph:bigraph" />
+				</xsd:choice>
 				<xsd:element ref="rule:changes" />
 				<xsd:group ref="rule:anyForeignElements" />
 			</xsd:sequence>
@@ -155,6 +175,9 @@
 					<h3>
 						Notes
 					</h3>
+					<p>
+						<strong>This element is deprecated</strong> in favour of the <a href="bigraph.xsd#bigraph">bigraph:bigraph</a> element.
+					</p>
 					<p>
 						This element should typically be treated as though it were the root of a <code>&lt;bigraph&gt;</code> document defining this rule's redex.
 					</p>
