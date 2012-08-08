@@ -19,7 +19,6 @@ import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.loaders.RedNamespaceConstants;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -31,9 +30,10 @@ import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
-import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 
 public class ReactionRuleXMLSaver extends XMLSaver {
 	public ReactionRuleXMLSaver() {
@@ -64,19 +64,13 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		ReactionRule rr = getModel();
 		
 		appendChildIfNotNull(e,
-			processRedex(newElement(RULE, "rule:redex"), rr.getRedex()));
+			processOrReference(
+				newElement(BIGRAPH, "bigraph:bigraph"),
+				rr.getRedex(), BigraphXMLSaver.class));
 		appendChildIfNotNull(e,
 			processChanges(newElement(RULE, "rule:changes"), rr.getChanges()));
 		
 		return executeDecorators(rr, e);
-	}
-	
-	private Element processRedex(Element e, Bigraph redex) throws SaveFailedException {
-		applyAttributes(e, "xmlns:bigraph", RedNamespaceConstants.BIGRAPH);
-		BigraphXMLSaver ex = new BigraphXMLSaver();
-		ex.addNewDecorators(getDecorators()).setDocument(getDocument()).
-				setFile(getFile()).setModel(redex);
-		return ex.processModel(e);
 	}
 	
 	/* XXX: change decoration (?) */
