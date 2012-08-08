@@ -80,7 +80,7 @@ abstract class DescriptorUtilities {
 			chd = new ChangeExtendedDataDescriptor(
 					((Layoutable)ch.getCreator()).getIdentifier(context),
 					ch.key, ch.newValue,
-					ch.immediateValidator, ch.finalValidator);
+					ch.immediateValidator, ch.finalValidator, ch.normaliser);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
 			chd = new ChangeRemoveDescriptor(

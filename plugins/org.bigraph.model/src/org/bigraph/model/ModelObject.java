@@ -347,28 +347,37 @@ public abstract class ModelObject {
 		private final Identifier target;
 
 		private final String key;
-		private final Object newValue;
+		private final Object newValue, oldValue;
 		private final ExtendedDataValidator immediateValidator, finalValidator;
 		private final ExtendedDataNormaliser normaliser;
 
+		@Deprecated
 		public ChangeExtendedDataDescriptor(Identifier t, String k, Object n,
 				ExtendedDataValidator i, ExtendedDataValidator f) {
 			this(t, k, n, i, f, null);
 		}
 		
-		public ChangeExtendedDataDescriptor(
-				Identifier target, String key, Object newValue,
+		@Deprecated
+		public ChangeExtendedDataDescriptor(Identifier t, String k, Object n,
+				ExtendedDataValidator i, ExtendedDataValidator f,
+				ExtendedDataNormaliser no) {
+			this(t, k, n, null, i, f, no);
+		}
+
+		public ChangeExtendedDataDescriptor(Identifier target, String key,
+				Object newValue, Object oldValue,
 				ExtendedDataValidator immediateValidator,
 				ExtendedDataValidator finalValidator,
 				ExtendedDataNormaliser normaliser) {
 			this.target = target;
 			this.key = key;
 			this.newValue = newValue;
+			this.oldValue = oldValue;
 			this.immediateValidator = immediateValidator;
 			this.finalValidator = finalValidator;
 			this.normaliser = normaliser;
 		}
-
+		
 		public Identifier getTarget() {
 			return target;
 		}
@@ -381,6 +390,10 @@ public abstract class ModelObject {
 			return newValue;
 		}
 
+		public Object getOldValue() {
+			return oldValue;
+		}
+		
 		@Override
 		public boolean equals(Object obj_) {
 			if (safeClassCmp(this, obj_)) {
