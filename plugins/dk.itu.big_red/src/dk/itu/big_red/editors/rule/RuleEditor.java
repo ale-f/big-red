@@ -9,7 +9,6 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -369,6 +368,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	private Map<IChange, IChangeDescriptor> reactumChangeToDescriptor =
 			new HashMap<IChange, IChangeDescriptor>();
+	private Map<IChange, IChange> safeRedexToReactum =
+			new HashMap<IChange, IChange>();
 	
 	private void _testConvertChange(int detail, ChangeCommand c) {
 		IChange commandChange = c.getChange();
@@ -385,7 +386,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 					DescriptorUtilities.linearise(cd);
 			ChangeDescriptorGroup cdg =
 					ReactionRule.performFixups(lRedexCDs, reactumChanges);
-			System.out.println(cdg);
 
 			/* Integrity check */
 			try {
@@ -396,9 +396,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 				/* scratch now contains the prospective state of the redex
 				 * after the change has been applied. Check that we can still
 				 * get to the reactum from there */
-				IChange instantiated = cdg.createChange(scratch, getRedex());
-				getRedex().tryValidateChange(scratch, instantiated);
-				/* XXX: save instantiated for undo */
+				getRedex().tryValidateChange(scratch,
+						cdg.createChange(scratch, getRedex()));
 			} catch (ChangeCreationException cce) {
 				throw new Error("BUG: post-fixup reactum changes are " +
 						"completely inconsistent, don't save", cce);
@@ -407,19 +406,30 @@ public class RuleEditor extends AbstractGEFEditor implements
 						"slightly inconsistent, don't save", cre);
 			}
 			
-			reactumChanges.clear();
-			reactumChanges.addAll(cdg);
+			/* cdg will be equal to reactumChanges if the fixup operations made
+			 * no changes */
+			if (cdg != reactumChanges) {
+				reactumChanges.clear();
+				reactumChanges.addAll(cdg);
+			}
 			
-			ChangeGroup instantiatedRedexChanges;
+			IChange instantiatedReactumChanges;
 			/* Anything that's left in lRedexCDs after the fixups should be
 			 * unrelated to the reactum changes, and so should be safe to
 			 * apply */
-			/* XXX: this is not quite true when undoing changes (for example,
-			 * newly-created reactum objects won't have layouts) */
 			try {
-				instantiatedRedexChanges =
-						lRedexCDs.createChange(null, getReactum());
-				getReactum().tryApplyChange(instantiatedRedexChanges);
+				if (detail != CommandStack.PRE_UNDO) { 
+					instantiatedReactumChanges =
+							lRedexCDs.createChange(null, getReactum());
+					getReactum().tryApplyChange(instantiatedReactumChanges);
+					safeRedexToReactum.put(
+							commandChange, instantiatedReactumChanges);
+				} else {
+					instantiatedReactumChanges =
+							safeRedexToReactum.remove(commandChange);
+					getReactum().tryApplyChange(
+							instantiatedReactumChanges.inverse());
+				}
 			} catch (ChangeCreationException cce) {
 				throw new Error("BUG: completely unsafe change slipped " +
 						"through the net", cce);
