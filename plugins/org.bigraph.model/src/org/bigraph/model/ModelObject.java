@@ -232,6 +232,12 @@ public abstract class ModelObject {
 		return extendedData.get(key);
 	}
 	
+	public Object getExtendedData(PropertyScratchpad context, String key) {
+		if (context == null || !context.hasProperty(this, key)) {
+			return getExtendedData(key);
+		} else return context.getProperty(this, key);
+	}
+	
 	/**
 	 * Sets one of this object's extended data properties, broadcasting a
 	 * property change event in the process.
