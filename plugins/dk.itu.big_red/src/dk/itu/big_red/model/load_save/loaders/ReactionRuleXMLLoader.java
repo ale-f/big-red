@@ -223,19 +223,23 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					name = getAttributeNS(el, CHANGE, "name"),
 					alias = getAttributeNS(el, CHANGE, "alias");
 				Site.Identifier s = new Site.Identifier(name);
+				Site si = s.lookup(scratch, rr.getReactum());
 				
 				if (s != null)
-					cd = ExtendedDataUtilities.changeAliasDescriptor(s, alias);
+					cd = ExtendedDataUtilities.changeAliasDescriptor(s,
+							ExtendedDataUtilities.getAlias(scratch, si),
+							alias);
 			} else if (el.getLocalName().equals("node-parameter")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					parameter = getAttributeNS(el, CHANGE, "parameter");
-				Node.Identifier o =
-						new Node.Identifier(name,
-						_getScratchNodeIdentifier(name).getControl());
+				Node.Identifier o = _getScratchNodeIdentifier(name);
+				Node no = o.lookup(scratch, rr.getReactum());
 				
 				if (o != null)
-					cd = ParameterUtilities.changeParameterDescriptor(o, parameter);
+					cd = ParameterUtilities.changeParameterDescriptor(o,
+							ParameterUtilities.getParameter(scratch, no),
+							parameter);
 			}
 		} else if (el.getNamespaceURI().equals(BIG_RED)) {
 			if (el.getLocalName().equals("layout")) {
@@ -245,9 +249,11 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					name =
 						getAttributeNS(el, BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
+				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
 					cd = LayoutUtilities.changeLayoutDescriptor(l,
+							LayoutUtilities.getLayout(scratch, la),
 							RedXMLUndecorator.getRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
@@ -258,9 +264,11 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					name =
 						getAttributeNS(el, BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
+				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
 					cd = ColourUtilities.changeFillDescriptor(l,
+							ColourUtilities.getFill(scratch, la),
 							new Colour(colour));
 			} else if (el.getLocalName().equals("outline")) {
 				String
@@ -271,9 +279,11 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					name =
 						getAttributeNS(el, BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
+				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
 					cd = ColourUtilities.changeOutlineDescriptor(l,
+							ColourUtilities.getOutline(scratch, la),
 							new Colour(colour));
 			} else if (el.getLocalName().equals("comment")) {
 				String
@@ -284,10 +294,12 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					name =
 						getAttributeNS(el, BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
+				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
-					cd = ExtendedDataUtilities.changeCommentDescriptor(
-							l, comment);
+					cd = ExtendedDataUtilities.changeCommentDescriptor(l,
+							ExtendedDataUtilities.getComment(scratch, la),
+							comment);
 			}
 		}
 		if (cd != null) {
