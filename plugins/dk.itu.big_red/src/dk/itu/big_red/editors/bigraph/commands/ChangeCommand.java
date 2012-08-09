@@ -138,4 +138,9 @@ public abstract class ChangeCommand extends Command {
 			((ChangeGroup)inverse).clear();
 		change = inverse = null;
 	}
+	
+	@Override
+	public String toString() {
+		return "ChangeCommand(" + getChange() + ")";
+	}
 }
