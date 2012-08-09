@@ -64,12 +64,6 @@ public abstract class ColourUtilities {
 	public static IChange changeFill(ModelObject m, Colour c) {
 		return m.changeExtendedData(FILL, c);
 	}
-
-	@Deprecated
-	public static IChangeDescriptor changeFillDescriptor(
-			ModelObject.Identifier l, Colour c) {
-		return changeFillDescriptor(l, null, c);
-	}
 	
 	public static IChangeDescriptor changeFillDescriptor(
 			ModelObject.Identifier l, Colour oldC, Colour newC) {
@@ -120,12 +114,6 @@ public abstract class ColourUtilities {
 
 	public static IChange changeOutline(ModelObject m, Colour c) {
 		return m.changeExtendedData(OUTLINE, c);
-	}
-
-	@Deprecated
-	public static IChangeDescriptor changeOutlineDescriptor(
-			ModelObject.Identifier l, Colour c) {
-		return changeOutlineDescriptor(l, null, c);
 	}
 	
 	public static IChangeDescriptor changeOutlineDescriptor(

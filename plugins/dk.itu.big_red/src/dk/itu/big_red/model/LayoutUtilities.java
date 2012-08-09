@@ -190,12 +190,6 @@ public abstract class LayoutUtilities {
 	public static IChange changeLayout(Layoutable l, Rectangle r) {
 		return l.changeExtendedData(LAYOUT, r, null, layoutValidator);
 	}
-
-	@Deprecated
-	public static IChangeDescriptor changeLayoutDescriptor(
-			Layoutable.Identifier l, Rectangle r) {
-		return changeLayoutDescriptor(l, null, r);
-	}
 	
 	public static IChangeDescriptor changeLayoutDescriptor(
 			Layoutable.Identifier l, Rectangle oldR, Rectangle newR) {

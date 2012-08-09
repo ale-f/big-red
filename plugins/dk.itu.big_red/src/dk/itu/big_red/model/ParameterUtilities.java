@@ -113,12 +113,6 @@ public abstract class ParameterUtilities {
 		return n.changeExtendedData(
 				PARAMETER, s, parameterValidator, null, parameterNormaliser);
 	}
-
-	@Deprecated
-	public static IChangeDescriptor changeParameterDescriptor(
-			Node.Identifier n, String s) {
-		return changeParameterDescriptor(n, null, s);
-	}
 	
 	public static IChangeDescriptor changeParameterDescriptor(
 			Node.Identifier n, String oldP, String newP) {

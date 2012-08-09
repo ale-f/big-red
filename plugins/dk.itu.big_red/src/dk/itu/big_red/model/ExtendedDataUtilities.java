@@ -80,12 +80,6 @@ public abstract class ExtendedDataUtilities {
 		return m.changeExtendedData(COMMENT, s, null, null, commentNormaliser);
 	}
 	
-	@Deprecated
-	public static IChangeDescriptor changeCommentDescriptor(
-			ModelObject.Identifier l, String s) {
-		return changeCommentDescriptor(l, null, s);
-	}
-	
 	public static IChangeDescriptor changeCommentDescriptor(
 			ModelObject.Identifier l, String oldC, String newC) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
@@ -131,12 +125,6 @@ public abstract class ExtendedDataUtilities {
 	
 	public static IChange changeAlias(Site s, String a) {
 		return s.changeExtendedData(ALIAS, a, aliasValidator);
-	}
-	
-	@Deprecated
-	public static IChangeDescriptor changeAliasDescriptor(
-			Site.Identifier s, String a) {
-		return changeAliasDescriptor(s, null, a);
 	}
 	
 	public static IChangeDescriptor changeAliasDescriptor(
