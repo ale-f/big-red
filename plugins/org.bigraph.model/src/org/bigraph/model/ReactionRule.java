@@ -48,14 +48,20 @@ public class ReactionRule extends ModelObject {
 				ChangeDescriptorGroup cdg = null;
 				if (c instanceof ChangeDescriptorGroup) {
 					cdg = runStep(redexCD, (ChangeDescriptorGroup)c);
-				} else cdg = runStepActual(redexCD, reactumCDs, c);
-				
-				if (cdg != null) {
-					reactumCDs = reactumCDs.clone();
-					if (cdg.size() != 0) {
-						reactumCDs.set(i, cdg);
-					} else reactumCDs.remove(i);
-					return reactumCDs;
+					if (cdg != null) {
+						/* c is a subgroup, so move cdg into a copy of c and
+						 * return that */
+						reactumCDs = reactumCDs.clone();
+						if (cdg.size() != 0) {
+							reactumCDs.set(i, cdg);
+						} else reactumCDs.remove(i);
+						return reactumCDs;
+					}
+				} else {
+					cdg = runStepActual(redexCD, reactumCDs, c);
+					if (cdg != null)
+						/* c isn't a subgroup, so just return cdg directly */
+						return cdg;
 				}
 			}
 			return null;
@@ -103,8 +109,8 @@ public class ReactionRule extends ModelObject {
 		DescriptorConflicts.CON_REN,
 		DescriptorConflicts.DIS_REN,
 		DescriptorConflicts.REN_REN,
-		DescriptorConflicts.REN_EXT/*,
-		DescriptorConflicts.EXT_EXT*/
+		DescriptorConflicts.REN_EXT,
+		DescriptorConflicts.EXT_EXT
 	};
 	
 	protected static class Operation3PrimeRunner extends OperationRunner {
