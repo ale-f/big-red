@@ -191,10 +191,16 @@ public abstract class LayoutUtilities {
 		return l.changeExtendedData(LAYOUT, r, null, layoutValidator);
 	}
 
+	@Deprecated
 	public static IChangeDescriptor changeLayoutDescriptor(
 			Layoutable.Identifier l, Rectangle r) {
+		return changeLayoutDescriptor(l, null, r);
+	}
+	
+	public static IChangeDescriptor changeLayoutDescriptor(
+			Layoutable.Identifier l, Rectangle oldR, Rectangle newR) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, LAYOUT, r, layoutValidator, null);
+				l, LAYOUT, newR, oldR, layoutValidator, null, null);
 	}
 
 	public static Rectangle getRootLayout(Layoutable l) {

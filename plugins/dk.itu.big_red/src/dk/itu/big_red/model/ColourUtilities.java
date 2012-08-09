@@ -65,10 +65,16 @@ public abstract class ColourUtilities {
 		return m.changeExtendedData(FILL, c);
 	}
 
+	@Deprecated
 	public static IChangeDescriptor changeFillDescriptor(
 			ModelObject.Identifier l, Colour c) {
+		return changeFillDescriptor(l, null, c);
+	}
+	
+	public static IChangeDescriptor changeFillDescriptor(
+			ModelObject.Identifier l, Colour oldC, Colour newC) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, FILL, c, null, null);
+				l, FILL, newC, oldC, null, null, null);
 	}
 
 	@RedProperty(fired = Colour.class, retrieved = Colour.class)
@@ -116,9 +122,15 @@ public abstract class ColourUtilities {
 		return m.changeExtendedData(OUTLINE, c);
 	}
 
+	@Deprecated
 	public static IChangeDescriptor changeOutlineDescriptor(
 			ModelObject.Identifier l, Colour c) {
+		return changeOutlineDescriptor(l, null, c);
+	}
+	
+	public static IChangeDescriptor changeOutlineDescriptor(
+			ModelObject.Identifier l, Colour oldC, Colour newC) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, OUTLINE, c, null, null);
+				l, OUTLINE, newC, oldC, null, null, null);
 	}
 }

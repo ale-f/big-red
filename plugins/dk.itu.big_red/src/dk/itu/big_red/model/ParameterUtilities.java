@@ -114,9 +114,15 @@ public abstract class ParameterUtilities {
 				PARAMETER, s, parameterValidator, null, parameterNormaliser);
 	}
 
+	@Deprecated
 	public static IChangeDescriptor changeParameterDescriptor(
 			Node.Identifier n, String s) {
-		return new ModelObject.ChangeExtendedDataDescriptor(n,
-				PARAMETER, s, parameterValidator, null, parameterNormaliser);
+		return changeParameterDescriptor(n, null, s);
+	}
+	
+	public static IChangeDescriptor changeParameterDescriptor(
+			Node.Identifier n, String oldP, String newP) {
+		return new ModelObject.ChangeExtendedDataDescriptor(n, PARAMETER,
+				newP, oldP, parameterValidator, null, parameterNormaliser);
 	}
 }
