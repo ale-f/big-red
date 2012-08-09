@@ -441,11 +441,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 			IChangeDescriptor cd;
 			if (detail == CommandStack.PRE_UNDO) {
 				cd = reactumChangeToDescriptor.remove(commandChange);
-				getModel().getChanges().remove(cd);
+				reactumChanges.remove(cd);
 			} else {
 				cd = DescriptorUtilities.createDescriptor(commandChange);
 				reactumChangeToDescriptor.put(commandChange, cd);
-				getModel().getChanges().add(cd);
+				reactumChanges.add(cd);
 			}
 		}
 	}
