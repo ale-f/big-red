@@ -150,7 +150,7 @@ public class ReactionRule extends ModelObject {
 						(ChangeExtendedDataDescriptor)cd_;
 				return new ChangeExtendedDataDescriptor(
 						cd.getTarget(), cd.getKey(),
-						cd.getOldValue(), cd.getNewValue(),
+						cd.getNewValue(), cd.getOldValue(),
 						cd.getImmediateValidator(), cd.getFinalValidator(),
 						cd.getNormaliser());
 			} else throw new Error(

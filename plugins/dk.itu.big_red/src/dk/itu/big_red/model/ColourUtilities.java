@@ -74,7 +74,7 @@ public abstract class ColourUtilities {
 	public static IChangeDescriptor changeFillDescriptor(
 			ModelObject.Identifier l, Colour oldC, Colour newC) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, FILL, newC, oldC, null, null, null);
+				l, FILL, oldC, newC, null, null, null);
 	}
 
 	@RedProperty(fired = Colour.class, retrieved = Colour.class)
@@ -131,6 +131,6 @@ public abstract class ColourUtilities {
 	public static IChangeDescriptor changeOutlineDescriptor(
 			ModelObject.Identifier l, Colour oldC, Colour newC) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, OUTLINE, newC, oldC, null, null, null);
+				l, OUTLINE, oldC, newC, null, null, null);
 	}
 }

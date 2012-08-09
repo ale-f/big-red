@@ -123,6 +123,6 @@ public abstract class ParameterUtilities {
 	public static IChangeDescriptor changeParameterDescriptor(
 			Node.Identifier n, String oldP, String newP) {
 		return new ModelObject.ChangeExtendedDataDescriptor(n, PARAMETER,
-				newP, oldP, parameterValidator, null, parameterNormaliser);
+				oldP, newP, parameterValidator, null, parameterNormaliser);
 	}
 }

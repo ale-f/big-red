@@ -84,7 +84,7 @@ abstract class DescriptorUtilities {
 			} else oldValue = context.getProperty(creator, ch.key);
 			chd = new ChangeExtendedDataDescriptor(
 					creator.getIdentifier(context),
-					ch.key, ch.newValue, oldValue,
+					ch.key, oldValue, ch.newValue,
 					ch.immediateValidator, ch.finalValidator, ch.normaliser);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;

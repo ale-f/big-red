@@ -89,7 +89,7 @@ public abstract class ExtendedDataUtilities {
 	public static IChangeDescriptor changeCommentDescriptor(
 			ModelObject.Identifier l, String oldC, String newC) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, COMMENT, newC, oldC, null, null, commentNormaliser);
+				l, COMMENT, oldC, newC, null, null, commentNormaliser);
 	}
 	
 	private static final ExtendedDataValidator aliasValidator =
@@ -142,6 +142,6 @@ public abstract class ExtendedDataUtilities {
 	public static IChangeDescriptor changeAliasDescriptor(
 			Site.Identifier s, String oldA, String newA) {
 		return new Layoutable.ChangeExtendedDataDescriptor(
-				s, ALIAS, newA, oldA, aliasValidator, null, null);
+				s, ALIAS, oldA, newA, aliasValidator, null, null);
 	}
 }

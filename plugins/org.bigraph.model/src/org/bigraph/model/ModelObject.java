@@ -353,25 +353,12 @@ public abstract class ModelObject {
 		private final Identifier target;
 
 		private final String key;
-		private final Object newValue, oldValue;
+		private final Object oldValue, newValue;
 		private final ExtendedDataValidator immediateValidator, finalValidator;
 		private final ExtendedDataNormaliser normaliser;
 
-		@Deprecated
-		public ChangeExtendedDataDescriptor(Identifier t, String k, Object n,
-				ExtendedDataValidator i, ExtendedDataValidator f) {
-			this(t, k, n, i, f, null);
-		}
-		
-		@Deprecated
-		public ChangeExtendedDataDescriptor(Identifier t, String k, Object n,
-				ExtendedDataValidator i, ExtendedDataValidator f,
-				ExtendedDataNormaliser no) {
-			this(t, k, n, null, i, f, no);
-		}
-
 		public ChangeExtendedDataDescriptor(Identifier target, String key,
-				Object newValue, Object oldValue,
+				Object oldValue, Object newValue,
 				ExtendedDataValidator immediateValidator,
 				ExtendedDataValidator finalValidator,
 				ExtendedDataNormaliser normaliser) {
