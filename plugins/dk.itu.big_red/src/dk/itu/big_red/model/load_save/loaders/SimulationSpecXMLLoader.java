@@ -12,8 +12,13 @@ import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
+import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
 	@Override
@@ -29,21 +34,6 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		}
 	}
 	
-	private Signature makeSignature(Element e) throws LoadFailedException {
-		return loadEmbedded(e, SPEC, "src", Signature.class,
-				new SignatureXMLLoader().addNewUndecorators(getUndecorators()));
-	}
-	
-	private Bigraph makeBigraph(Element e) throws LoadFailedException {
-		return loadEmbedded(e, SPEC, "src", Bigraph.class,
-				new BigraphXMLLoader().addNewUndecorators(getUndecorators()));
-	}
-	
-	private ReactionRule makeRule(Element e) throws LoadFailedException {
-		return loadEmbedded(e, SPEC, "src", ReactionRule.class,
-				new ReactionRuleXMLLoader().addNewUndecorators(getUndecorators()));
-	}
-	
 	@Override
 	public SimulationSpec makeObject(Element e) throws LoadFailedException {
 		SimulationSpec ss = loadRelative(
@@ -52,16 +42,39 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			return ss;
 		} else ss = new SimulationSpec();
 		
-		Element signatureElement = getNamedChildElement(e, SPEC, "signature");
-		if (signatureElement != null)
-			addChange(ss.changeSignature(makeSignature(signatureElement)));
+		Signature s = loadSub(
+				selectFirst(
+					getNamedChildElement(e, SIGNATURE, "signature"),
+					getNamedChildElement(e, SPEC, "signature")),
+				SPEC, Signature.class, new SignatureXMLLoader().
+					addNewUndecorators(getUndecorators()));
+		if (s != null)
+			addChange(ss.changeSignature(s));
 		
-		for (Element i : getNamedChildElements(e, SPEC, "rule"))
-			addChange(ss.changeAddRule(makeRule(i)));
+		NodeList nl = e.getChildNodes();
+		for (int i_ = 0; i_ < nl.getLength(); i_++) {
+			Node n = nl.item(i_);
+			if (!(n instanceof Element))
+				continue;
+			String ns = n.getNamespaceURI();
+			if ((SPEC.equals(ns) || RULE.equals(ns)) &&
+					"rule".equals(n.getLocalName())) {
+				ReactionRule rr = loadSub((Element)n, SPEC, ReactionRule.class,
+						new ReactionRuleXMLLoader().
+							addNewUndecorators(getUndecorators()));
+				if (rr != null)
+					addChange(ss.changeAddRule(rr));
+			}
+		}
 		
-		Element modelElement = getNamedChildElement(e, SPEC, "model");
-		if (modelElement != null)
-			addChange(ss.changeModel(makeBigraph(modelElement)));
+		Bigraph b = loadSub(
+				selectFirst(
+					getNamedChildElement(e, BIGRAPH, "bigraph"),
+					getNamedChildElement(e, SPEC, "model")),
+				SPEC, Bigraph.class, new BigraphXMLLoader().
+					addNewUndecorators(getUndecorators()));
+		if (b != null)
+			addChange(ss.changeModel(b));
 		
 		executeUndecorators(ss, e);
 		executeChanges(ss);

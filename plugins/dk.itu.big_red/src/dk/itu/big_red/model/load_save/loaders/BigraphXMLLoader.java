@@ -63,24 +63,16 @@ public class BigraphXMLLoader extends XMLLoader {
 			return bigraph;
 		} else bigraph = new Bigraph();
 		
-		Element signatureElement =
-			getNamedChildElement(e, SIGNATURE, "signature");
-		SignatureXMLLoader si = new SignatureXMLLoader();
-		si.addNewUndecorators(getUndecorators());
-		if (signatureElement != null) {
-			bigraph.setSignature(
-					si.setFile(getFile()).makeObject(signatureElement));
-		} else {
-			signatureElement = getNamedChildElement(e, BIGRAPH, "signature");
-			
-			if (signatureElement != null)
-				bigraph.setSignature(loadEmbedded(signatureElement,
-						BIGRAPH, "src", Signature.class, si));
-		}
-		
-		if (bigraph.getSignature() == null)
-			throw new LoadFailedException(
-					"The bigraph does not define or reference a signature.");
+		Signature s = loadSub(
+				selectFirst(
+					getNamedChildElement(e, SIGNATURE, "signature"),
+					getNamedChildElement(e, BIGRAPH, "signature")),
+				BIGRAPH, Signature.class, new SignatureXMLLoader().
+					addNewUndecorators(getUndecorators()));
+		if (s != null) {
+			bigraph.setSignature(s);
+		} else throw new LoadFailedException(
+				"The bigraph does not define or reference a signature.");
 		
 		processContainer(e, bigraph);
 		

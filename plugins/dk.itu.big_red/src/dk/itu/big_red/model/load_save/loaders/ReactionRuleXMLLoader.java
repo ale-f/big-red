@@ -70,17 +70,12 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			return rr;
 		} else rr = new ReactionRule();
 		
-		Element redexElement = getNamedChildElement(e, BIGRAPH, "bigraph");
-		BigraphXMLLoader bi = new BigraphXMLLoader();
-		bi.addNewUndecorators(getUndecorators());
-		if (redexElement != null) {
-			rr.setRedex(bi.setFile(getFile()).makeObject(redexElement));
-		} else {
-			redexElement = getNamedChildElement(e, RULE, "redex");
-			if (redexElement != null)
-				rr.setRedex(loadEmbedded(
-						redexElement, null, null, Bigraph.class, bi));
-		}
+		rr.setRedex(loadSub(
+				selectFirst(
+					getNamedChildElement(e, BIGRAPH, "bigraph"),
+					getNamedChildElement(e, RULE, "redex")),
+				RULE, Bigraph.class, new BigraphXMLLoader().
+					addNewUndecorators(getUndecorators())));
 		updateReactum(rr, getNamedChildElement(e, RULE, "changes"));
 		
 		executeUndecorators(rr, e);

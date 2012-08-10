@@ -1,7 +1,6 @@
 package it.uniud.bigredit.model.load_save.loaders;
 
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 
@@ -66,17 +65,17 @@ import it.uniud.bigredit.model.BRS;
 		}
 		
 		private Signature makeSignature(Element e) throws LoadFailedException {
-			return loadEmbedded(e, SPEC, "src", Signature.class,
+			return loadSub(e, SPEC, Signature.class,
 					new SignatureXMLLoader().addNewUndecorators(getUndecorators()));
 		}
 		
 		private Bigraph makeBigraph(Element e) throws LoadFailedException {
-			return loadEmbedded(e, SPEC, "src", Bigraph.class,
+			return loadSub(e, SPEC, Bigraph.class,
 					new BigraphXMLLoader().addNewUndecorators(getUndecorators()));
 		}
 		
 		private ReactionRule makeRule(Element e) throws LoadFailedException {
-			return loadEmbedded(e, SPEC, "src", ReactionRule.class,
+			return loadSub(e, SPEC, ReactionRule.class,
 					new ReactionRuleXMLLoader().addNewUndecorators(getUndecorators()));
 		}
 		
