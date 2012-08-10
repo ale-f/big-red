@@ -210,6 +210,33 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		return result;
 	}
 	
+	protected static <T> T selectFirst(T... objects) {
+		for (T i : objects)
+			if (i != null)
+				return i;
+		return null;
+	}
+	
+	protected <T extends ModelObject> T loadSub(
+			Element el, String myNS, Class<T> klass, XMLLoader loader)
+			throws LoadFailedException {
+		loader.setFile(getFile());
+		String
+			src = getAttributeNS(el, myNS, "src"),
+			theirNS = el.getNamespaceURI();
+		/* If this element is foreign, or if it doesn't have a src attribute,
+		 * then let the loader do everything */
+		if (!(myNS != null ? myNS.equals(theirNS) : theirNS == null) ||
+				src == null) {
+			try {
+				return klass.cast(loader.makeObject(el));
+			} catch (ClassCastException cce) {
+				throw new LoadFailedException(cce);
+			}
+		/* Otherwise, interpret the src attribute (which can't be null) */
+		} else return loadRelative(src, klass, loader);
+	}
+	
 	private List<IXMLUndecorator> undecorators = null;
 
 	protected List<IXMLUndecorator> getUndecorators() {
