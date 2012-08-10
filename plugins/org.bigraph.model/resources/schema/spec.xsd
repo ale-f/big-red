@@ -10,7 +10,10 @@
 	without any warranty.
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:rule="http://www.itu.dk/research/pls/xmlns/2011/rule"
             xmlns:spec="http://www.itu.dk/research/pls/xmlns/2012/simulation-spec"
+            xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph"
+            xmlns:signature="http://www.itu.dk/research/pls/xmlns/2010/signature"
             targetNamespace="http://www.itu.dk/research/pls/xmlns/2012/simulation-spec">
 
 	<xsd:annotation>
@@ -38,6 +41,18 @@
 			</html>
 		</xsd:documentation>
 	</xsd:annotation>
+
+	<xsd:import
+		namespace="http://www.itu.dk/research/pls/xmlns/2011/rule"
+		schemaLocation="rule.xsd" />
+
+	<xsd:import
+		namespace="http://www.itu.dk/research/pls/xmlns/2010/bigraph"
+		schemaLocation="bigraph.xsd" />
+
+	<xsd:import
+		namespace="http://www.itu.dk/research/pls/xmlns/2010/signature"
+		schemaLocation="signature.xsd" />
 
 	<xsd:group name="anyForeignElements">
 		<xsd:sequence>
@@ -70,13 +85,40 @@
 							contain
 							<ul>
 								<li>
-									at most one <a href="#signature">signature</a>, followed by
+									either
+									<ul>
+										<li>
+											at most one <a href="#signature">signature</a>, or
+										</li>
+										<li>
+											at most one <a href="signature.xsd#signature">signature:signature</a>
+										</li>
+									</ul>
+									followed by
 								</li>
 								<li>
-									zero or more <a href="#rule">rule</a>s, followed by
+									zero or more
+									<ul>
+										<li>
+											<a href="#rule">rule</a>s or
+										</li>
+										<li>
+											<a href="rule.xsd#rule">rule:rule</a>s
+										</li>
+									</ul>
+									followed by
 								</li>
 								<li>
-									at most one <a href="#model">model</a>, followed by
+									either
+									<ul>
+										<li>
+											at most one <a href="#model">model</a>, or
+										</li>
+										<li>
+											at most one <a href="bigraph.xsd#bigraph">bigraph:bigraph</a>
+										</li>
+									</ul>
+									followed by
 								</li>
 								<li>
 									at most one <a href="#external">external</a>.
@@ -117,9 +159,18 @@
 	<xsd:element name="spec">
 		<xsd:complexType>
 			<xsd:sequence minOccurs="0">
-				<xsd:element ref="spec:signature" minOccurs="0" />
-				<xsd:element ref="spec:rule" minOccurs="0" maxOccurs="unbounded" />
-				<xsd:element ref="spec:model" minOccurs="0" />
+				<xsd:choice minOccurs="0">
+					<xsd:element ref="spec:signature" />
+					<xsd:element ref="signature:signature" />
+				</xsd:choice>
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:element ref="spec:rule" />
+					<xsd:element ref="rule:rule" />
+				</xsd:choice>
+				<xsd:choice minOccurs="0">
+					<xsd:element ref="spec:model" />
+					<xsd:element ref="bigraph:bigraph" />
+				</xsd:choice>
 				<xsd:element ref="spec:external" minOccurs="0" />
 			</xsd:sequence>
 			<xsd:attribute name="src" type="xsd:string" />
@@ -167,6 +218,9 @@
 					<h3>
 						Notes
 					</h3>
+					<p>
+						<strong>This element is deprecated</strong> in favour of the <a href="signature.xsd#signature">signature:signature</a> element.
+					</p>
 					<p>
 						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;signature&gt;</code> document defining this simulation spec's signature.
 					</p>
@@ -226,6 +280,9 @@
 						Notes
 					</h3>
 					<p>
+						<strong>This element is deprecated</strong> in favour of the <a href="rule.xsd#rule">rule:rule</a> element.
+					</p>
+					<p>
 						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;rule&gt;</code> document defining a rule for this simulation spec.
 					</p>
 					<hr />
@@ -283,6 +340,9 @@
 					<h3>
 						Notes
 					</h3>
+					<p>
+						<strong>This element is deprecated</strong> in favour of the <a href="bigraph.xsd#bigraph">bigraph:bigraph</a> element.
+					</p>
 					<p>
 						If the <code>src</code> attribute is not present, then this element should typically be treated as though it were the root of a <code>&lt;bigraph&gt;</code> document defining the model for this simulation spec.
 					</p>
