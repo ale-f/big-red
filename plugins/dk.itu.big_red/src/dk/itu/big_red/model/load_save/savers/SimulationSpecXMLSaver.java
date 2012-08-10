@@ -8,7 +8,10 @@ import org.bigraph.model.savers.SignatureXMLSaver;
 import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
 
+import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
+import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
+import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 public class SimulationSpecXMLSaver extends XMLSaver {
 	public SimulationSpecXMLSaver() {
@@ -39,16 +42,16 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 		SimulationSpec ss = getModel();
 		
 		appendChildIfNotNull(e,
-			processOrReference(newElement(SPEC, "spec:signature"),
+			processOrReference(newElement(SIGNATURE, "signature:signature"),
 				ss.getSignature(), SignatureXMLSaver.class));
 		
 		for (ReactionRule rr : ss.getRules())
 			appendChildIfNotNull(e,
-				processOrReference(newElement(SPEC, "spec:rule"),
+				processOrReference(newElement(RULE, "rule:rule"),
 					rr, ReactionRuleXMLSaver.class));
 		
 		appendChildIfNotNull(e,
-			processOrReference(newElement(SPEC, "spec:model"),
+			processOrReference(newElement(BIGRAPH, "bigraph:bigraph"),
 				ss.getModel(), BigraphXMLSaver.class));
 		
 		return executeDecorators(ss, e);
