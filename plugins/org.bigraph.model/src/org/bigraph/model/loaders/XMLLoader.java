@@ -204,6 +204,8 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	protected <T extends ModelObject> T loadSub(
 			Element el, String myNS, Class<T> klass, XMLLoader loader)
 			throws LoadFailedException {
+		if (el == null)
+			return null;
 		loader.setFile(getFile());
 		String
 			src = getAttributeNS(el, myNS, "src"),
