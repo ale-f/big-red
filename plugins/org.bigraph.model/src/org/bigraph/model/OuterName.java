@@ -4,7 +4,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IOuterName;
 
 /**
- * 
  * @author alec
  * @see IOuterName
  */

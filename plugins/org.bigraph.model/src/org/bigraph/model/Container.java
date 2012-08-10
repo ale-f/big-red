@@ -15,7 +15,6 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
  * With the notable exception of {@link Bigraph}s, they can all be moved around
  * and resized.
  * @author alec
- *
  */
 public abstract class Container extends Layoutable {
 	/**

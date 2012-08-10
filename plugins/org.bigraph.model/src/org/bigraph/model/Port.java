@@ -9,7 +9,6 @@ import org.bigraph.model.interfaces.IPort;
  * {@link Edge} (the other being the {@link InnerName}). Ports are only ever found
  * on a {@link Node}, and inherit their name from a {@link Control}.
  * @author alec
- *
  */
 public class Port extends Point implements IPort {
 	private PortSpec spec;

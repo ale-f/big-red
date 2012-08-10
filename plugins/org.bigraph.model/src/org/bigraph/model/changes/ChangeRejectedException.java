@@ -4,7 +4,6 @@ package org.bigraph.model.changes;
  * {@link IChangeValidator}s throw {@link ChangeRejectedException}s when a
  * {@link Change} could not be applied.
  * @author alec
- *
  */
 public class ChangeRejectedException extends Exception {
 	private static final long serialVersionUID = 7181613421769493596L;

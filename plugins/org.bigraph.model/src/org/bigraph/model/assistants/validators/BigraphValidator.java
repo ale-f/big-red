@@ -19,7 +19,6 @@ import org.bigraph.model.names.Namespace;
  * all changes to {@link Bigraph}s must go through; it checks for both model
  * consistency and visual sensibleness.
  * @author alec
- *
  */
 public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 	public BigraphValidator(Bigraph changeable) {

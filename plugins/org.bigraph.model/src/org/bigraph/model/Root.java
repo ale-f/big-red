@@ -7,7 +7,6 @@ import org.bigraph.model.interfaces.IChild;
 import org.bigraph.model.interfaces.IRoot;
 
 /**
- * 
  * @author alec
  * @see IRoot
  */

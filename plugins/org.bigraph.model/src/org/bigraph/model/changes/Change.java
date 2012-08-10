@@ -5,7 +5,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 /**
  * A Change is a reversible modification.
  * @author alec
- *
  */
 public abstract class Change implements IChange {
 	@Override

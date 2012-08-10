@@ -119,7 +119,6 @@ public final class Project {
 	 * executed by a {@link ModificationRunner} to make changes to the Eclipse
 	 * workspace.
 	 * @author alec
-	 *
 	 */
 	public interface IWorkspaceModification {
 		/**
@@ -248,7 +247,6 @@ public final class Project {
 	 * <strong>ModificationRunner</strong> is a wrapper class which executes
 	 * {@link IWorkspaceModification}s safely.
 	 * @author alec
-	 *
 	 */
 	public static final class ModificationRunner extends WorkspaceJob {
 		/**
@@ -258,7 +256,6 @@ public final class Project {
 		 * these methods to be called as part of the event loop (in the UI
 		 * thread).
 		 * @author alec
-		 *
 		 */
 		public abstract static class Callback {
 			/**

@@ -290,7 +290,6 @@ public abstract class ModelObject {
 		 * Classes implementing <strong>Resolver</strong> can resolve {@link
 		 * Object}-{@link String} pairs into {@link Object}s.
 		 * @author alec
-		 *
 		 */
 		public interface Resolver {
 			Object lookup(

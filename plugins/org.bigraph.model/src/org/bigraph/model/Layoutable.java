@@ -14,7 +14,6 @@ import org.bigraph.model.names.Namespace;
  * instances of <strong>Layoutable</strong>.
  * @author alec
  * @see ModelObject
- *
  */
 public abstract class Layoutable extends ModelObject {
 	/**

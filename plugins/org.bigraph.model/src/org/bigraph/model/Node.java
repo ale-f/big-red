@@ -8,7 +8,6 @@ import org.bigraph.model.interfaces.INode;
 import org.bigraph.model.interfaces.IParent;
 
 /**
- * 
  * @author alec
  * @see INode
  */
