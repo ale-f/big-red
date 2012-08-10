@@ -1,7 +1,14 @@
 package org.bigraph.model.changes;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
+/**
+ * Classes implementing <strong>IChange</strong> are <i>changes</i>: reversible
+ * and validated modifications to model objects. 
+ * @author alec
+ * @see IChangeDescriptor
+ */
 public interface IChange {
 	/**
 	 * Gets a new {@link IChange} which, when applied, will reverse this one.

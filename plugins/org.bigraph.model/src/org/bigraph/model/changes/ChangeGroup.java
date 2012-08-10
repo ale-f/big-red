@@ -5,9 +5,9 @@ import java.util.Collection;
 import org.bigraph.model.assistants.PropertyScratchpad;
 
 /**
- * A ChangeGroup is a composite of many {@link IChange}s.
+ * A <strong>ChangeGroup</strong> is a collection of {@link IChange}s.
  * @author alec
- *
+ * @see ArrayList
  */
 public class ChangeGroup extends ArrayList<IChange> implements IChange {
 	private static final long serialVersionUID = -5459931168098216972L;

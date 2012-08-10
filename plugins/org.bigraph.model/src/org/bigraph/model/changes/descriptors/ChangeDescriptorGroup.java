@@ -6,6 +6,12 @@ import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 
+/**
+ * A <strong>ChangeDescriptorGroup</strong> is a collection of {@link
+ * IChangeDescriptor}s.
+ * @author alec
+ * @see ArrayList
+ */
 public class ChangeDescriptorGroup extends ArrayList<IChangeDescriptor>
 		implements IChangeDescriptor {
 	private static final long serialVersionUID = 8660898241398280925L;
