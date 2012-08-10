@@ -194,22 +194,6 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	protected abstract ModelObject makeObject(Element el)
 			throws LoadFailedException;
 	
-	protected <T extends ModelObject> T loadEmbedded(Element el, String refNS,
-			String refAttr, Class<? extends T> klass, XMLLoader loader)
-					throws LoadFailedException {
-		T result = loadRelative(
-				getAttributeNS(el, refNS, refAttr), klass, loader);
-		if (result == null) {
-			loader.setFile(getFile());
-			ModelObject mo = loader.makeObject(el);
-			if (klass.isInstance(mo)) {
-				return klass.cast(mo);
-			} else throw new LoadFailedException(
-					"Embedded document loading failed");
-		}
-		return result;
-	}
-	
 	protected static <T> T selectFirst(T... objects) {
 		for (T i : objects)
 			if (i != null)
