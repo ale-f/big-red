@@ -7,6 +7,11 @@ import java.util.Map;
 
 import org.bigraph.model.changes.IChange;
 
+/**
+ * The <strong>PropertyScratchpad</strong> is used to track simulated updates
+ * to the model.
+ * @author alec
+ */
 public class PropertyScratchpad {
 	private PropertyScratchpad parent;
 	
@@ -44,7 +49,7 @@ public class PropertyScratchpad {
 	 * Creates a new, blank {@link PropertyScratchpad} with the given parent.
 	 * <p>(Calls to the {@link #hasProperty(Object, String)} and {@link
 	 * #getProperty(Object, String)} methods will be forwarded on to the parent
-	 * when this PropertyScratchpad doesn't have a match.)
+	 * when this PropertyScratchpad doesn't have a property value.)
 	 * @param parent
 	 */
 	public PropertyScratchpad(PropertyScratchpad parent) {
@@ -57,16 +62,36 @@ public class PropertyScratchpad {
 		return new NNPair(target, name);
 	}
 	
+	/**
+	 * Sets a property value for the given object.
+	 * @param target an object
+	 * @param name a property name
+	 * @param newValue the value of the property
+	 */
 	public void setProperty(Object target, String name, Object newValue) {
 		if (target != null && name != null)
 			changes.put(getKey(target, name), newValue);
 	}
 	
+	/**
+	 * Removes an existing property value.
+	 * @param target an object
+	 * @param name a property name
+	 */
 	public void removeProperty(Object target, String name) {
 		if (target != null && name != null)
 			changes.remove(getKey(target, name));
 	}
 	
+	/**
+	 * Indicates whether or not this {@link PropertyScratchpad} contains a
+	 * property value.
+	 * @param target the object to check
+	 * @param name a property name
+	 * @return <code>true</code> if this {@link PropertyScratchpad} contains a
+	 * value for the given property of the given object, or <code>false</code>
+	 * otherwise
+	 */
 	public boolean hasProperty(Object target, String name) {
 		if (target != null && name != null) {
 			if (changes.containsKey(getKey(target, name))) {
@@ -77,6 +102,13 @@ public class PropertyScratchpad {
 		} else return false;
 	}
 	
+	/**
+	 * Retrieves a property value.
+	 * @param target an object
+	 * @param name a property name
+	 * @return the value associated with the given property of the given
+	 * object, or <code>null</code>
+	 */
 	public Object getProperty(Object target, String name) {
 		if (target != null && name != null) {
 			if (changes.containsKey(getKey(target, name))) {
@@ -87,11 +119,20 @@ public class PropertyScratchpad {
 		} else return null;
 	}
 	
+	/**
+	 * Removes all property values from this {@link PropertyScratchpad}.
+	 * @return {@code this}, for convenience
+	 */
 	public PropertyScratchpad clear() {
 		changes.clear();
 		return this;
 	}
 	
+	/**
+	 * Simulates an {@link IChange} in this {@link PropertyScratchpad}.
+	 * @param change an {@link IChange} (can be <code>null</code>)
+	 * @return {@code change}, for convenience
+	 */
 	public IChange executeChange(IChange change) {
 		if (change != null)
 			change.simulate(this);
