@@ -59,7 +59,7 @@ public class Bigraph extends Container
 	 */
 	public static Class<? extends Layoutable> getNSI(String objectType) {
 		objectType = objectType.toLowerCase(Locale.ENGLISH);
-		if (objectType.equals("edge") || objectType.equals("outername") || objectType.equals("link")) {
+		if (objectType.equals("edge") || objectType.equals("outername")) {
 			return Link.class;
 		} else if (objectType.equals("innername")) {
 			return InnerName.class;

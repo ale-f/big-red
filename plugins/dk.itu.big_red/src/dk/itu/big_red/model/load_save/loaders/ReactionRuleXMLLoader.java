@@ -93,13 +93,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			return new Edge.Identifier(name);
 		} else if ("outername".equals(type)) {
 			return new OuterName.Identifier(name);
-		} else if ("link".equals(type)) {
-			Link.Identifier l = _getScratchLinkIdentifier(name);
-			if (l == null)
-				throw new Error(
-						"getLayoutable(String, String) can't retrieve an " +
-						"identifier for the nonexistent bare link " + name);
-			return l;
 		} else if ("innername".equals(type)) {
 			return new InnerName.Identifier(name);
 		} else return null;
