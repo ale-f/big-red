@@ -11,6 +11,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.jface.viewers.ICellEditorValidator;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.views.properties.ColorPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
@@ -161,9 +162,11 @@ public class ModelPropertySource implements IRedPropertySource {
 			return ExtendedDataUtilities.changeComment(
 					getModel(), (String)newValue);
 		} else if (ColourUtilities.FILL.equals(id)) {
-			return ColourUtilities.changeFill(getModel(), (Colour)newValue);
+			return ColourUtilities.changeFill(
+					getModel(), new Colour((RGB)newValue));
 		} else if (ColourUtilities.OUTLINE.equals(id)) {
-			return ColourUtilities.changeOutline(getModel(), (Colour)newValue);
+			return ColourUtilities.changeOutline(
+					getModel(), new Colour((RGB)newValue));
 		} else if (ParameterUtilities.PARAMETER.equals(id)) {
 			return ParameterUtilities.changeParameter(
 					(Node)getModel(), (String)newValue);
