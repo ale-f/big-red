@@ -176,8 +176,13 @@ public abstract class XMLSaver extends Saver {
 	 * @see #applyAttributesNS(Element, Object...)
 	 */
 	protected static Element applyAttributes(Element d, Object... attrs) {
-		for (int i = 0; i < attrs.length; i += 2)
-			d.setAttribute(attrs[i].toString(), attrs[i + 1].toString());
+		for (int i = 0; i < attrs.length; i += 2) {
+			Object
+				attrName = attrs[i],
+				attrValue = attrs[i + 1];
+			if (attrName != null && attrValue != null)
+				d.setAttribute(attrName.toString(), attrValue.toString());
+		}
 		return d;
 	}
 
