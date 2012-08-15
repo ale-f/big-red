@@ -65,9 +65,10 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		scratch = new PropertyScratchpad(context);
 		finalChecks.clear();
 		
-		b = doValidateChange(b);
-		if (b != null)
-			throw new ChangeRejectedException(b, "The change was not recognised by the validator");
+		IChange c = doValidateChange(b);
+		if (c != null)
+			throw new ChangeRejectedException(c,
+					"The change was not recognised by the validator");
 		
 		for (ChangeExtendedData i : finalChecks)
 			i.finalValidator.validate(i, scratch);
