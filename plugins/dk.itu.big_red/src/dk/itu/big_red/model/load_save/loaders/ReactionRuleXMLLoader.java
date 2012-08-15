@@ -257,7 +257,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				if (l != null)
 					cd = ColourUtilities.changeFillDescriptor(l,
 							ColourUtilities.getFill(scratch, la),
-							new Colour(colour));
+							(colour != null ? new Colour(colour) : null));
 			} else if (el.getLocalName().equals("outline")) {
 				String
 					colour =
@@ -272,7 +272,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				if (l != null)
 					cd = ColourUtilities.changeOutlineDescriptor(l,
 							ColourUtilities.getOutline(scratch, la),
-							new Colour(colour));
+							(colour != null ? new Colour(colour) : null));
 			} else if (el.getLocalName().equals("comment")) {
 				String
 					comment =
