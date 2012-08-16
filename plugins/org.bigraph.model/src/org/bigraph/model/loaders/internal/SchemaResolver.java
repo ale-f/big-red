@@ -12,20 +12,23 @@ import org.w3c.dom.ls.LSResourceResolver;
 
 public final class SchemaResolver implements LSResourceResolver {
 	private SchemaResolver() {}
-	private static final SchemaResolver INSTANCE = new SchemaResolver();
 	
-	public static SchemaResolver getInstance() {
-		return INSTANCE;
+	private static final class Holder {
+		private static final SchemaResolver INSTANCE = new SchemaResolver();
 	}
 	
-	private static final Map<String, IOpenable> schemaOpeners =
+	public static SchemaResolver getInstance() {
+		return Holder.INSTANCE;
+	}
+	
+	private final Map<String, IOpenable> schemaOpeners =
 			new HashMap<String, IOpenable>();
 	
-	public static void registerSchema(String namespaceURI, IOpenable of) {
+	public void registerSchema(String namespaceURI, IOpenable of) {
 		schemaOpeners.put(namespaceURI, of);
 	}
 	
-	public static void unregisterSchema(String namespaceURI) {
+	public void unregisterSchema(String namespaceURI) {
 		schemaOpeners.remove(namespaceURI);
 	}
 	

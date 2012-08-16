@@ -55,11 +55,11 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	}
 	
 	public static void registerSchema(String namespaceURI, IOpenable of) {
-		SchemaResolver.registerSchema(namespaceURI, of);
+		SchemaResolver.getInstance().registerSchema(namespaceURI, of);
 	}
 	
 	public static void unregisterSchema(String namespaceURI) {
-		SchemaResolver.unregisterSchema(namespaceURI);
+		SchemaResolver.getInstance().unregisterSchema(namespaceURI);
 	}
 	
 	public static String getAttributeNS(Element d, String nsURI, String n) {
