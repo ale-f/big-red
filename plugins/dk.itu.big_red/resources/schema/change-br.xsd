@@ -1,0 +1,44 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red"
+            targetNamespace="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+	<xsd:complexType name="selector-T">
+		<xsd:attribute name="type"
+			type="xsd:string" use="required" />
+		<xsd:attribute name="name"
+			type="xsd:string" use="required" />
+	</xsd:complexType>
+
+	<xsd:complexType name="colour-T">
+		<xsd:complexContent><xsd:extension base="big-red:selector-T">
+			<xsd:attribute name="colour"
+				type="xsd:string" use="required" />
+		</xsd:extension></xsd:complexContent>
+	</xsd:complexType>
+
+	<xsd:element name="layout">
+		<xsd:complexType><xsd:complexContent>
+			<xsd:extension base="big-red:selector-T">
+				<xsd:attribute name="x"
+					type="xsd:integer" use="required" />
+				<xsd:attribute name="y"
+					type="xsd:integer" use="required" />
+				<xsd:attribute name="width"
+					type="xsd:integer" use="required" />
+				<xsd:attribute name="height"
+					type="xsd:integer" use="required" />
+			</xsd:extension>
+		</xsd:complexContent></xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="fill" type="big-red:colour-T" />
+	<xsd:element name="outline" type="big-red:colour-T" />
+	
+	<xsd:element name="comment">
+		<xsd:complexType><xsd:complexContent>
+			<xsd:extension base="big-red:selector-T">
+				<xsd:attribute name="comment"
+					type="xsd:string" use="optional" />
+			</xsd:extension>
+		</xsd:complexContent></xsd:complexType>
+	</xsd:element>
+</xsd:schema>

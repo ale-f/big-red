@@ -1,0 +1,150 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red"
+            xmlns:change="http://www.itu.dk/research/pls/xmlns/2010/change"
+            targetNamespace="http://www.itu.dk/research/pls/xmlns/2010/change">
+	<xsd:annotation><xsd:documentation><html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>change schema</title>
+</head>
+<body>
+	<h1>
+		<code>change</code> schema
+	</h1>
+	<p>
+		This document is part of the <a href="http://www.itu.dk/">IT University of Copenhagen</a>'s
+		set of <a href="http://www.w3.org/XML/Schema">XML Schema</a>s for <i>bigraphs</i>: it can be
+		used to validate <code>&lt;change&gt;</code> documents.
+	</p>
+	<p>
+		The <code>change</code> XML namespace name is <code><a href="http://www.itu.dk/research/pls/xmlns/2010/change">http://www.itu.dk/research/pls/xmlns/2010/change</a></code>.
+	</p>
+	<p>
+		The key words <q>MUST</q>, <q>MUST NOT</q>, <q>REQUIRED</q>, <q>SHALL</q>, <q>SHALL NOT</q>,
+		<q>SHOULD</q>, <q>SHOULD NOT</q>, <q>RECOMMENDED</q>,  <q>MAY</q>, and <q>OPTIONAL</q> in
+		this document are to be interpreted as described in <a href="http://www.ietf.org/rfc/rfc2119.txt">RFC 2119</a>.
+	</p>
+	<h2>
+		Notes
+	</h2>
+	<p>
+		This schema documents a particularly unfortunate and irregular form of edit script used by old versions of Big Red. <strong>This schema is deprecated, and the use of documents and fragments conforming to it is strongly discouraged</strong>; the <code>edit</code> schema should be preferred in all circumstances.
+	</p>
+	<hr />
+</body>
+	</html></xsd:documentation></xsd:annotation>
+	
+	<xsd:import
+		namespace="http://www.itu.dk/research/pls/xmlns/2010/big-red"
+		schemaLocation="change-br.xsd" />
+	
+	<xsd:group name="anything">
+		<xsd:choice>
+			<xsd:element ref="change:group" />
+			<xsd:element ref="change:add" />
+			<xsd:element ref="change:remove" />
+			<xsd:element ref="change:connect" />
+			<xsd:element ref="change:disconnect" />
+			<xsd:element ref="change:rename" />
+			<xsd:element ref="change:site-alias" />
+			<xsd:element ref="change:node-parameter" />
+			
+			<xsd:element ref="big-red:layout" />
+			<xsd:element ref="big-red:fill" />
+			<xsd:element ref="big-red:outline" />
+			<xsd:element ref="big-red:comment" />
+		</xsd:choice>
+	</xsd:group>
+	
+	<xsd:element name="change">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group
+					ref="change:anything" minOccurs="0"
+					maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="group">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group
+					ref="change:anything" minOccurs="0"
+					maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="add">
+		<xsd:complexType>
+			<xsd:attribute name="name"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="type"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="parent"
+				type="xsd:string" use="optional" />
+			<xsd:attribute name="parent-type"
+				type="xsd:string" use="optional" />
+			<xsd:attribute name="control"
+				type="xsd:string" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="remove">
+		<xsd:complexType>
+			<xsd:attribute name="name"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="type"
+				type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="connect">
+		<xsd:complexType>
+			<xsd:attribute name="name"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="node"
+				type="xsd:string" use="optional" />
+			<xsd:attribute name="link"
+				type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="disconnect">
+		<xsd:complexType>
+			<xsd:attribute name="name"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="node"
+				type="xsd:string" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="rename">
+		<xsd:complexType>
+			<xsd:attribute name="name"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="type"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="new-name"
+				type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="site-alias">
+		<xsd:complexType>
+			<xsd:attribute name="name"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="alias"
+				type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="node-parameter">
+		<xsd:complexType>
+			<xsd:attribute name="name"
+				type="xsd:string" use="required" />
+			<xsd:attribute name="parameter"
+				type="xsd:string" use="required" />
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
