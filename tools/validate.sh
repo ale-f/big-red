@@ -2,7 +2,7 @@
 
 SELF="`readlink -f "$0"`"
 SELFDIR="`dirname "$SELF"`"
-SCHEMAPATH="$SELFDIR/../plugins/dk.itu.big_red/resources/schema"
+SCHEMAPATH="$SELFDIR/../plugins/org.bigraph.model/resources/schema"
 
 usage() {
 	echo "Usage: $0 [bigraph|signature|rule|spec|edit] XML-DOCUMENT"
