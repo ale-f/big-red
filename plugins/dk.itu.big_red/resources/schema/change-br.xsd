@@ -19,13 +19,13 @@
 		<xsd:complexType><xsd:complexContent>
 			<xsd:extension base="big-red:selector-T">
 				<xsd:attribute name="x"
-					type="xsd:integer" use="required" />
+					type="xsd:integer" use="optional" />
 				<xsd:attribute name="y"
-					type="xsd:integer" use="required" />
+					type="xsd:integer" use="optional" />
 				<xsd:attribute name="width"
-					type="xsd:integer" use="required" />
+					type="xsd:integer" use="optional" />
 				<xsd:attribute name="height"
-					type="xsd:integer" use="required" />
+					type="xsd:integer" use="optional" />
 			</xsd:extension>
 		</xsd:complexContent></xsd:complexType>
 	</xsd:element>

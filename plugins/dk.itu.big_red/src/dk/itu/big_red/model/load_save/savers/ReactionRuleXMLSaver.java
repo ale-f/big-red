@@ -126,9 +126,11 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 						"colour", (c != null ? c.toHexString() : null));
 			} else if (LayoutUtilities.LAYOUT.equals(key)) {
 				Rectangle r = (Rectangle)newValue;
-				f = applyAttributes(newElement(BIG_RED, "big-red:layout"),
-						"x", r.x(), "y", r.y(),
-						"width", r.width(), "height", r.height());
+				f = newElement(BIG_RED, "big-red:layout");
+				if (r != null)
+					applyAttributes(f,
+							"x", r.x(), "y", r.y(),
+							"width", r.width(), "height", r.height());
 			} else if (ExtendedDataUtilities.ALIAS.equals(key)) {
 				f = applyAttributes(newElement(CHANGE, "change:site-alias"));
 				if (newValue != null)
