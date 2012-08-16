@@ -49,7 +49,8 @@ public abstract class Schemas {
 				"/resources/schema/rule.xsd");
 		spec = tryOpenRegister(RedNamespaceConstants.SPEC,
 				"/resources/schema/spec.xsd");
-		edit = tryOpenRegister(null, "/resources/schema/edit.xsd");
+		edit = tryOpenRegister(RedNamespaceConstants.EDIT,
+				"/resources/schema/edit.xsd");
 	}
 	
 	/**
