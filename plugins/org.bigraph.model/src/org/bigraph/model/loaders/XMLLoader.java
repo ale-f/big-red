@@ -86,7 +86,7 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		}
 	}
 	
-	protected static Document validate(Document d, Schema schema)
+	protected static <T extends Node> T validate(T d, Schema schema)
 			throws LoadFailedException {
 		try {
 			schema.newValidator().validate(new DOMSource(d));
