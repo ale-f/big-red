@@ -1,0 +1,110 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:edit="http://bigraph.org/xmlns/2012/edit"
+            xmlns:edit-big="http://bigraph.org/xmlns/2012/edit-big"
+            xmlns:edit-sig="http://bigraph.org/xmlns/2012/edit-sig"
+            targetNamespace="http://bigraph.org/xmlns/2012/edit-big">
+	<xsd:import
+		namespace="http://bigraph.org/xmlns/2012/edit"
+		schemaLocation="edit.xsd" />
+
+	<xsd:import
+		namespace="http://bigraph.org/xmlns/2012/edit-sig"
+		schemaLocation="edit-sig.xsd" />
+
+	<xsd:element name="bigraph-id" />
+
+	<xsd:element name="site-id" substitutionGroup="edit:rename-id-subst" />
+	<xsd:element name="root-id" substitutionGroup="edit:rename-id-subst" />
+	<xsd:element name="innername-id" substitutionGroup="edit:rename-id-subst" />
+	<xsd:element name="outername-id" substitutionGroup="edit:rename-id-subst" />
+	<xsd:element name="edge-id" substitutionGroup="edit:rename-id-subst" />
+	
+	<xsd:element name="port-id">
+		<xsd:complexType><xsd:complexContent>
+			<xsd:extension base="edit:named-id-subst-T">
+				<xsd:sequence>
+					<xsd:element
+						ref="edit-big:node-id" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent></xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="node-id" substitutionGroup="edit:rename-id-subst">
+		<xsd:complexType><xsd:complexContent>
+			<xsd:extension base="edit:named-id-subst-T">
+				<xsd:sequence>
+					<xsd:element
+						ref="edit-sig:control-id" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent></xsd:complexType>
+	</xsd:element>
+
+	<xsd:group name="any-parent-id">
+		<xsd:choice>
+			<xsd:element ref="edit-big:bigraph-id" />
+			<xsd:element ref="edit-big:root-id" />
+			<xsd:element ref="edit-big:node-id" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:group name="any-child-id">
+		<xsd:choice>
+			<xsd:element ref="edit-big:edge-id" />
+			<xsd:element ref="edit-big:node-id" />
+			<xsd:element ref="edit-big:root-id" />
+			<xsd:element ref="edit-big:site-id" />
+			<xsd:element ref="edit-big:innername-id" />
+			<xsd:element ref="edit-big:outername-id" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:group name="any-link-id">
+		<xsd:choice>
+			<xsd:element ref="edit-big:edge-id" />
+			<xsd:element ref="edit-big:outername-id" />
+		</xsd:choice>
+	</xsd:group>
+
+	<xsd:group name="any-point-id">
+		<xsd:choice>
+			<xsd:element ref="edit-big:port-id" />
+			<xsd:element ref="edit-big:innername-id" />
+		</xsd:choice>
+	</xsd:group>
+	
+	<xsd:element name="add">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="edit-big:any-parent-id" />
+				<xsd:group ref="edit-big:any-child-id" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="remove">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="edit-big:any-child-id" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="connect">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="edit-big:any-point-id" />
+				<xsd:group ref="edit-big:any-link-id" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="disconnect">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:group ref="edit-big:any-point-id" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

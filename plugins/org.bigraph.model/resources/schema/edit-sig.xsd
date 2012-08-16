@@ -1,0 +1,55 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:edit="http://bigraph.org/xmlns/2012/edit"
+            xmlns:edit-sig="http://bigraph.org/xmlns/2012/edit-sig"
+            targetNamespace="http://bigraph.org/xmlns/2012/edit-sig">
+	<xsd:import
+		namespace="http://bigraph.org/xmlns/2012/edit"
+		schemaLocation="edit.xsd" />
+
+	<xsd:element name="signature-id" />
+	<xsd:element name="control-id"
+		substitutionGroup="edit:rename-id-subst" />
+	<xsd:element name="port-id"
+			substitutionGroup="edit:rename-id-subst">
+		<xsd:complexType><xsd:complexContent>
+			<xsd:extension base="edit:named-id-subst-T">
+				<xsd:sequence>
+					<xsd:element
+						ref="edit-sig:control-id" />
+				</xsd:sequence>
+			</xsd:extension>
+		</xsd:complexContent></xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="add-control">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="edit-sig:control-id" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="remove-control">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="edit-sig:control-id" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="add-port">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="edit-sig:port-id" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:element name="remove-port">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element ref="edit-sig:port-id" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>
