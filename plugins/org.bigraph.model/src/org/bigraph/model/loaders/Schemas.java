@@ -1,27 +1,12 @@
 package org.bigraph.model.loaders;
 
-import java.io.InputStream;
-
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 
-import org.bigraph.model.resources.IOpenable;
+import org.bigraph.model.resources.ResourceOpenable;
 import org.xml.sax.SAXException;
 
 public abstract class Schemas {
-	private static final class ResourceOpenable implements IOpenable {
-		private final String path;
-		
-		private ResourceOpenable(String path) {
-			this.path = path;
-		}
-		
-		@Override
-		public InputStream open() {
-			return getClass().getResourceAsStream(path);
-		}
-	}
-	
 	private Schemas() {}
 	
 	private static Schema tryOpenRegister(String ns, String path) {
