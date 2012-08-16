@@ -13,7 +13,7 @@ import org.bigraph.model.loaders.LoadFailedException;
  * @see IFileWrapper
  * @see IResourceWrapper
  */
-public interface IFileWrapper extends IResourceWrapper {
+public interface IFileWrapper extends IResourceWrapper, IOpenable {
 	/**
 	 * Loads the contents of this file as a {@link ModelObject}.
 	 * @return a {@link ModelObject} (not <code>null</code>)

@@ -24,7 +24,7 @@ public class EclipseFileWrapper extends EclipseResourceWrapper
 	public EclipseFileWrapper(IFile file) {
 		this.file = file;
 	}
-
+	
 	@Override
 	public ModelObject load() throws LoadFailedException {
 		try {
@@ -41,6 +41,15 @@ public class EclipseFileWrapper extends EclipseResourceWrapper
 					"No loader was found for " + getResource());
 		} catch (CoreException ce) {
 			throw new LoadFailedException(ce);
+		}
+	}
+	
+	@Override
+	public InputStream open() {
+		try {
+			return getContents();
+		} catch (LoadFailedException e) {
+			return null;
 		}
 	}
 	
