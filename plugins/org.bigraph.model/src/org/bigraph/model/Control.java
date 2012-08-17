@@ -398,4 +398,19 @@ public class Control extends ModelObject implements IControl {
 	public Identifier getIdentifier(PropertyScratchpad context) {
 		return new Identifier(getName(context));
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (safeClassCmp(this, obj)) {
+			Control c = (Control)obj;
+			return safeEquals(getKind(), c.getKind()) &&
+					safeEquals(getName(), c.getName()) &&
+					safeEquals(getPorts(), c.getPorts());
+		} else return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return compositeHashCode(getKind(), getName(), getPorts());
+	}
 }

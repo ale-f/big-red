@@ -203,4 +203,15 @@ public class Signature extends ModelObject
 		}
 		return null;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return safeClassCmp(this, obj) &&
+				((Signature)obj).getControls().equals(getControls());
+	}
+	
+	@Override
+	public int hashCode() {
+		return compositeHashCode(getControls());
+	}
 }

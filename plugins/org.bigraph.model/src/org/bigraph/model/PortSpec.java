@@ -162,4 +162,15 @@ public class PortSpec extends ModelObject implements IPort {
 			return getControl();
 		} else return super.getProperty(name);
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return safeClassCmp(this, obj) &&
+				safeEquals(getName(), ((PortSpec)obj).getName());
+	}
+	
+	@Override
+	public int hashCode() {
+		return compositeHashCode(getName());
+	}
 }
