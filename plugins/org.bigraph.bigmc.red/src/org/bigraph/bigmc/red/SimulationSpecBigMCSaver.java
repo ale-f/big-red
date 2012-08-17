@@ -286,7 +286,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 		processSignature(s);
 		processNames(s);
 		
-		List<ReactionRule> rules = s.getRules();
+		List<? extends ReactionRule> rules = s.getRules();
 		if (rules.size() != 0) {
 			write("# Rules\n");
 			for (ReactionRule r : s.getRules())

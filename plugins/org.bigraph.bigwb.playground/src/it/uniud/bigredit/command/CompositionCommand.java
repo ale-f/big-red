@@ -131,7 +131,8 @@ public class CompositionCommand extends Command {
 
 		
 		/** connect link and ports */
-		HashMap<Link, List<Point>> connection= new HashMap<Link, List<Point>> ();
+		HashMap<Link, List<? extends Point>> connection=
+				new HashMap<Link, List<? extends Point>> ();
 		
 		for(InnerName innerName : linkMap.keySet()){
 			
@@ -140,8 +141,7 @@ public class CompositionCommand extends Command {
 			OuterName outerName=linkMap.get(innerName);
 			System.out.println("compute innerName"+ innerName.getName());
 			
-			List<Point> points=new ArrayList<Point>();
-			points= outerName.getPoints();
+			List<? extends Point> points=outerName.getPoints();
 			connection.put(link, points);
 
 			if(innerName.getLink()!=null){
@@ -158,7 +158,7 @@ public class CompositionCommand extends Command {
 		
 		/** from hashMap connection create update links*/
 		for(Link link : connection.keySet()){
-			List<Point> points=connection.get(link);
+			List<? extends Point> points=connection.get(link);
 			System.out.println(points.size());
 			for(int i=0;i<points.size();i++){
 				System.out.println(points.size());

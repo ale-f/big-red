@@ -48,7 +48,7 @@ public class RootPart extends ContainerPart {
 	}
 	
 	@Override
-	public List<Layoutable> getModelChildren() {
+	public List<? extends Layoutable> getModelChildren() {
 		return getModel().getChildren();
 	}
 	

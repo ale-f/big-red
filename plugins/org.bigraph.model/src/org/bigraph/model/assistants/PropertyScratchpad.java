@@ -140,7 +140,7 @@ public class PropertyScratchpad {
 	}
 	
 	public <T> List<T> getModifiableList(
-			Object target, String name, List<T> original) {
+			Object target, String name, List<? extends T> original) {
 		@SuppressWarnings("unchecked")
 		List<T> l = (List<T>)getProperty(target, name);
 		if (l != null && !changes.containsKey(getKey(target, name))) {

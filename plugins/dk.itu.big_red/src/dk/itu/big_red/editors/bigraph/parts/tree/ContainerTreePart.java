@@ -12,7 +12,7 @@ public abstract class ContainerTreePart extends AbstractTreePart {
 	}
 	
 	@Override
-	protected List<Layoutable> getPlaceChildren() {
+	protected List<? extends Layoutable> getPlaceChildren() {
 		return getModel().getChildren();
 	}
 }

@@ -11,7 +11,6 @@ import org.bigraph.model.interfaces.IRoot;
  * @see IRoot
  */
 public class Root extends Container implements IRoot {
-	
 	@Override
 	public boolean canContain(Layoutable child) {
 		Class<? extends Layoutable> c = child.getClass();
@@ -19,17 +18,17 @@ public class Root extends Container implements IRoot {
 	}
 
 	@Override
-	public List<Node> getNodes() {
+	public List<? extends Node> getNodes() {
 		return only(null, Node.class);
 	}
 
 	@Override
-	public List<Site> getSites() {
+	public List<? extends Site> getSites() {
 		return only(null, Site.class);
 	}
 
 	@Override
-	public List<IChild> getIChildren() {
+	public List<? extends IChild> getIChildren() {
 		return only(null, IChild.class);
 	}
 	

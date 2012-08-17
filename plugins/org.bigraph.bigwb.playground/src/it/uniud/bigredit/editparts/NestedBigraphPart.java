@@ -1,6 +1,5 @@
 package it.uniud.bigredit.editparts;
 
-import it.uniud.bigredit.figure.GraphFigure;
 import it.uniud.bigredit.figure.NestedBigraphFigure;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
@@ -89,7 +88,7 @@ public class NestedBigraphPart extends ContainerPart {
 	}
 
 	@Override
-	public List<Layoutable> getModelChildren() {
+	public List<? extends Layoutable> getModelChildren() {
 		return getModel().getChildren();
 	}
 

@@ -145,7 +145,7 @@ public class BigraphTikZSaver extends Saver {
 		line("tikzset{internal outer name/.style={draw=none,rectangle}}");
 		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
 		
-		List<Layoutable> ch = b.getChildren();
+		List<? extends Layoutable> ch = b.getChildren();
 		if (ch.size() > 0) {
 			Rectangle bounding = LayoutUtilities.getLayout(ch.get(0)).getCopy();
 			for (Layoutable i : ch)

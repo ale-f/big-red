@@ -107,13 +107,14 @@ public class Signature extends ModelObject
 	}
 	
 	@Override
-	public List<Control> getControls() {
+	public List<? extends Control> getControls() {
 		return controls;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Control> getControls(PropertyScratchpad context) {
-		return (List<Control>)getProperty(context, PROPERTY_CONTROL);
+	public List<? extends Control> getControls(PropertyScratchpad context) {
+		return (List<? extends Control>)
+				getProperty(context, PROPERTY_CONTROL);
 	}
 	
 	private SignatureValidator validator =

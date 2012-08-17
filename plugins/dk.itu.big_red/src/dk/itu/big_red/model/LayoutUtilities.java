@@ -152,7 +152,7 @@ public abstract class LayoutUtilities {
 							getPointFromOffset(distance).translate(-5, -5));
 				}
 			} else if (l instanceof Edge) {
-				List<Point> points = ((Edge)l).getPoints(context);
+				List<? extends Point> points = ((Edge)l).getPoints(context);
 				int s = points.size();
 				r = new Rectangle(50, 50, 10, 10);
 				if (s != 0) {
@@ -252,7 +252,7 @@ public abstract class LayoutUtilities {
 					r = new Rectangle(0, 0, left, (PADDING * 2) + height));
 		} else if (l instanceof Bigraph) {
 			Bigraph b = (Bigraph)l;
-			List<Layoutable> children = b.getChildren(context);
+			List<? extends Layoutable> children = b.getChildren(context);
 			
 			int
 				tallestOuterName = 0,

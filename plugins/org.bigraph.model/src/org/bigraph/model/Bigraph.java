@@ -155,22 +155,22 @@ public class Bigraph extends Container
 	}
 
 	@Override
-	public List<Edge> getEdges() {
+	public List<? extends Edge> getEdges() {
 		return only(null, Edge.class);
 	}
 
 	@Override
-	public List<Root> getRoots() {
+	public List<? extends Root> getRoots() {
 		return only(null, Root.class);
 	}
 
 	@Override
-	public List<InnerName> getInnerNames() {
+	public List<? extends InnerName> getInnerNames() {
 		return only(null, InnerName.class);
 	}
 	
 	@Override
-	public List<Site> getSites() {
+	public List<? extends Site> getSites() {
 		ArrayList<Site> sites = new ArrayList<Site>();
 		ArrayDeque<Container> queue = new ArrayDeque<Container>();
 		queue.add(this);
@@ -189,7 +189,7 @@ public class Bigraph extends Container
 	}
 	
 	@Override
-	public List<OuterName> getOuterNames() {
+	public List<? extends OuterName> getOuterNames() {
 		return only(null, OuterName.class);
 	}
 	

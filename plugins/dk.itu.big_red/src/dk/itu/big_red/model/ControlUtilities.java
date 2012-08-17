@@ -56,7 +56,7 @@ public abstract class ControlUtilities {
 		double distance = 0;
 		
 		Object shape = getShape(context, p.getControl(context));
-		List<PortSpec> l = p.getControl(context).getPorts(context);
+		List<? extends PortSpec> l = p.getControl(context).getPorts(context);
 		int index = l.indexOf(p) + 1;
 		
 		if (shape instanceof PointList) {

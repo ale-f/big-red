@@ -303,13 +303,13 @@ public class Control extends ModelObject implements IControl {
 	 * @see #createPorts()
 	 */
 	@Override
-	public List<PortSpec> getPorts() {
+	public List<? extends PortSpec> getPorts() {
 		return ports;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<PortSpec> getPorts(PropertyScratchpad context) {
-		return (List<PortSpec>)getProperty(context, PROPERTY_PORT);
+	public List<? extends PortSpec> getPorts(PropertyScratchpad context) {
+		return (List<? extends PortSpec>)getProperty(context, PROPERTY_PORT);
 	}
 	
 	/**

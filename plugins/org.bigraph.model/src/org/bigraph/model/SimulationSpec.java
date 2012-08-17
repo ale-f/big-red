@@ -179,16 +179,16 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	private ArrayList<ReactionRule> rules = new ArrayList<ReactionRule>();
 	
 	protected void addRule(ReactionRule r) {
-		if (getRules().add(r))
+		if (rules.add(r))
 			firePropertyChange(PROPERTY_RULE, null, r);
 	}
 	
 	protected void removeRule(ReactionRule r) {
-		if (getRules().remove(r))
+		if (rules.remove(r))
 			firePropertyChange(PROPERTY_RULE, r, null);
 	}
 	
-	public List<ReactionRule> getRules() {
+	public List<? extends ReactionRule> getRules() {
 		return rules;
 	}
 	
