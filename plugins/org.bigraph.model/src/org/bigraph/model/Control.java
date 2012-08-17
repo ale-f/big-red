@@ -376,8 +376,7 @@ public class Control extends ModelObject implements IControl {
 		
 		@Override
 		public Control lookup(PropertyScratchpad context, Resolver r) {
-			return require(r.lookup(context, Control.class, getName()),
-					Control.class);
+			return require(r.lookup(context, this), Control.class);
 		}
 		
 		@Override

@@ -279,17 +279,23 @@ public class Bigraph extends Container
 	}
 
 	@Override
-	public Object lookup(
-			PropertyScratchpad context, Object type_, String name) {
-		if (type_ instanceof Class<?>) {
-			Class<?> type = (Class<?>)type_;
-			if (Layoutable.class.isAssignableFrom(type)) {
-				Namespace<Layoutable> ns = nsg.getNamespace(type);
-				return (ns != null ? ns.get(context, name) : null);
-			} else if (Control.class.equals(type)) {
-				return getSignature().lookup(context, type, name);
-			}
-		}
-		return null;
+	public Object lookup(PropertyScratchpad context,
+			org.bigraph.model.ModelObject.Identifier identifier) {
+		if (identifier instanceof Layoutable.Identifier) {
+			String name = identifier.getName();
+			if (identifier instanceof Node.Identifier) {
+				return getNamespace(Node.class).get(context, name);
+			} else if (identifier instanceof Root.Identifier) {
+				return getNamespace(Root.class).get(context, name);
+			} else if (identifier instanceof Site.Identifier) {
+				return getNamespace(Site.class).get(context, name);
+			} else if (identifier instanceof Link.Identifier) {
+				return getNamespace(Link.class).get(context, name);
+			} else if (identifier instanceof InnerName.Identifier) {
+				return getNamespace(InnerName.class).get(context, name);
+			} else return null;
+		} else if (identifier instanceof Control.Identifier) {
+			return getSignature().lookup(context, identifier);
+		} else return null;
 	}
 }

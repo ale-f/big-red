@@ -95,8 +95,7 @@ public abstract class Link extends Layoutable implements ILink {
 		
 		@Override
 		public Link lookup(PropertyScratchpad context, Resolver r) {
-			return require(
-					r.lookup(context, Link.class, getName()), Link.class);
+			return require(r.lookup(context, this), Link.class);
 		}
 		
 		@Override

@@ -194,9 +194,9 @@ public class Signature extends ModelObject
 	}
 	
 	@Override
-	public Object lookup(
-			PropertyScratchpad context, Object type, String name) {
-		if (type == Control.class) {
+	public Object lookup(PropertyScratchpad context, Identifier identifier) {
+		if (identifier instanceof Control.Identifier) {
+			String name = identifier.getName();
 			for (Control c : getControls(context))
 				if (c.getName(context).equals(name))
 					return c;

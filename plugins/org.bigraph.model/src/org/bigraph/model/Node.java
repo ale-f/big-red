@@ -108,8 +108,7 @@ public class Node extends Container implements INode {
 		
 		@Override
 		public Node lookup(PropertyScratchpad context, Resolver r) {
-			Node n = require(
-					r.lookup(context, Node.class, getName()), Node.class);
+			Node n = require(r.lookup(context, this), Node.class);
 			if (n != null && equals(n.getIdentifier(context))) {
 				return n;
 			} else return null;

@@ -40,8 +40,7 @@ public class Root extends Container implements IRoot {
 		
 		@Override
 		public Root lookup(PropertyScratchpad context, Resolver r) {
-			return require(
-					r.lookup(context, Root.class, getName()), Root.class);
+			return require(r.lookup(context, this), Root.class);
 		}
 		
 		@Override

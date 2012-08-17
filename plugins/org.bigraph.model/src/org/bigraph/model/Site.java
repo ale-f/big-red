@@ -21,8 +21,7 @@ public class Site extends Layoutable implements ISite {
 		
 		@Override
 		public Site lookup(PropertyScratchpad context, Resolver r) {
-			return require(
-					r.lookup(context, Site.class, getName()), Site.class);
+			return require(r.lookup(context, this), Site.class);
 		}
 		
 		@Override

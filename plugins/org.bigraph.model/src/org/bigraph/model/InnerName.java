@@ -15,8 +15,7 @@ public class InnerName extends Point implements IInnerName {
 		
 		@Override
 		public InnerName lookup(PropertyScratchpad context, Resolver r) {
-			return require(r.lookup(context, InnerName.class, getName()),
-					InnerName.class);
+			return require(r.lookup(context, this), InnerName.class);
 		}
 		
 		@Override

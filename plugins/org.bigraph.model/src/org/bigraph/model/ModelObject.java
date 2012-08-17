@@ -288,12 +288,11 @@ public abstract class ModelObject {
 	public static abstract class Identifier {
 		/**
 		 * Classes implementing <strong>Resolver</strong> can resolve {@link
-		 * Object}-{@link String} pairs into {@link Object}s.
+		 * Identifier}s into {@link Object}s.
 		 * @author alec
 		 */
 		public interface Resolver {
-			Object lookup(
-					PropertyScratchpad context, Object type, String name);
+			Object lookup(PropertyScratchpad context, Identifier identifier);
 		}
 		
 		private final String name;
