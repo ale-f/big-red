@@ -22,7 +22,6 @@ import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
@@ -196,11 +195,6 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 		PaletteGroup creationGroup = new PaletteGroup("Object creation");
 		creationGroup.setId("BigraphEditor.palette.creation");
 		container.add(creationGroup);
-		
-		if (nodeGroup == null)
-			nodeGroup = new PaletteGroup("Node...");
-		nodeGroup.setId("BigraphEditor.palette.node-creation");
-		creationGroup.add(nodeGroup);
 
 		ImageDescriptor
 			site = RedPlugin.getImageDescriptor("resources/icons/bigraph-palette/site.png"),
@@ -223,6 +217,13 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 		creationGroup.add(new CombinedTemplateCreationEntry("Outer name", "Add a new outer name to the bigraph",
 				OuterName.class, new ModelFactory(OuterName.class), outer, outer));
 		
+		creationGroup.add(new PaletteSeparator());
+		
+		if (nodeGroup == null)
+			nodeGroup = new PaletteGroup("Node...");
+		nodeGroup.setId("BigraphEditor.palette.node-creation");
+		creationGroup.add(nodeGroup);
+		
     	return container;
     }
 	
@@ -236,7 +237,6 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 	
 	protected PaletteRoot createPaletteRoot() {
 		PaletteRoot root = new PaletteRoot();
-		nodeGroup = new PaletteGroup("Node...");
 		SelectionToolEntry ste = new SelectionToolEntry();
 		
 		populatePalette(root, getNodeGroup(), ste);
@@ -253,16 +253,30 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 		return paletteRoot;
 	}
 	
-	protected void updateNodePalette(Signature signature) {
-    	ArrayList<PaletteEntry> palette = new ArrayList<PaletteEntry>();
-    	
+	private static PaletteContainer sigPop(
+			List<String> names, PaletteContainer pc, Signature signature) {
+		pc.setLabel(signature.toString());
 		for (Control c : signature.getControls()) {
-			palette.add(new CombinedTemplateCreationEntry(c.getName(), "Node",
+			if (names.contains(c.getName()))
+				continue;
+			names.add(c.getName());
+			pc.add(new CombinedTemplateCreationEntry(c.getName(),"Node",
 					Node.class, new NodeFactory(c),
 					new ControlImageDescriptor(c, 16, 16),
 					new ControlImageDescriptor(c, 48, 48)));
 		}
 		
-		getNodeGroup().setChildren(palette);
+		for (Signature s : signature.getSignatures()) {
+			PaletteContainer cpc = new PaletteGroup(null);
+			sigPop(names, cpc, s);
+			if (cpc.getChildren().size() != 0)
+				pc.add(cpc);
+		}
+		return pc;
+	}
+	
+	protected void updateNodePalette(Signature signature) {
+		getNodeGroup().getChildren().clear();
+		sigPop(new ArrayList<String>(), getNodeGroup(), signature);
 	}
 }
