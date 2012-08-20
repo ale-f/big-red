@@ -132,17 +132,28 @@ public class SimulationSpecBigMCSaver extends Saver {
 				recHandleParams(i);
 	}
 	
-	private void processSignature(SimulationSpec ss) throws SaveFailedException {
-		Signature s = ss.getSignature();
-		write("# Controls\n");
+	private boolean recProcessSignature(List<String> names, Signature s)
+			throws SaveFailedException {
 		boolean parameterised = false;
 		for (Control c : s.getControls()) {
+			if (names.contains(c.getName()))
+				continue;
 			INamePolicy policy = ParameterUtilities.getParameterPolicy(c);
 			if (policy == null) {
 				writeControl(c, null);
 			} else parameterised = true;
 		}
-		if (parameterised) {
+		for (Signature t : s.getSignatures()) {
+			if (recProcessSignature(names, t))
+				parameterised = true;
+		}
+		return parameterised;
+	}
+	
+	private void processSignature(SimulationSpec ss) throws SaveFailedException {
+		write("# Controls\n");
+		if (recProcessSignature(
+				new ArrayList<String>(), ss.getSignature())) {
 			recHandleParams(ss.getModel());
 			for (ReactionRule r : ss.getRules()) {
 				recHandleParams(r.getRedex());
