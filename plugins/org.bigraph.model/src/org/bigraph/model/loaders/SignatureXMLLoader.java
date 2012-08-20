@@ -45,6 +45,14 @@ public class SignatureXMLLoader extends XMLLoader {
 		executeUndecorators(model, e);
 	}
 	
+	private void makeSignature(Element e) throws LoadFailedException {
+		SignatureXMLLoader si = new SignatureXMLLoader();
+		si.addNewUndecorators(getUndecorators()).setFile(getFile());
+		Signature t = si.makeObject(e);
+		if (t != null)
+			addChange(sig.changeAddSignature(t));
+	}
+	
 	@Override
 	public Signature makeObject(Element e) throws LoadFailedException {
 		sig = loadRelative(
@@ -52,6 +60,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		if (sig != null) {
 			return sig;
 		} else sig = new Signature();
+		
+		for (Element j : getNamedChildElements(e, SIGNATURE, "signature"))
+			makeSignature(j);
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "control"))
 			makeControl(j);
