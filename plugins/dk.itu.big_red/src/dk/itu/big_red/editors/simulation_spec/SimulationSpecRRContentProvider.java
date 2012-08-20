@@ -4,9 +4,9 @@ import java.beans.PropertyChangeEvent;
 
 import org.bigraph.model.SimulationSpec;
 import org.eclipse.jface.viewers.AbstractListViewer;
-import dk.itu.big_red.utilities.ui.jface.ModelObjectContentProvider;
+import dk.itu.big_red.utilities.ui.jface.ModelObjectListContentProvider;
 
-class SimulationSpecRRContentProvider extends ModelObjectContentProvider {
+class SimulationSpecRRContentProvider extends ModelObjectListContentProvider {
 	public SimulationSpecRRContentProvider(AbstractListViewer alv) {
 		super(alv);
 	}
