@@ -106,6 +106,41 @@
 					<p>
 						The <a href="#signature_src"><code>src</code> attribute</a> is provided primarily to support the embedding of <code>signature</code> elements into other documents.
 					</p>
+					<h4>
+						Embedded signatures
+					</h4>
+					<p>
+						When a <a href="#signature">signature</a> (the <em>parent</em>) contains another <a href="#signature">signature</a> as a child element, the child is considered an <em>embedded signature</em> of the parent. (Embedded signatures may themselves contain other embedded signatures.)
+					</p>
+					<p>
+						When resolving <a href="#control">control</a> names:
+					</p>
+					<ul>
+						<li>
+							controls defined in the parent SHOULD be preferred to controls defined by any of its embedded signatures; and
+						</li>
+						<li>
+							controls defined in an embedded signature SHOULD be preferred to those defined in subsequent embedded signatures.
+						</li>
+					</ul>
+					<p>
+						By way of example, each <a href="#control">control</a> in the short document below is commented with the invocations of the function <code>resolve :: Signature -> Name -> Control</code> that would return it:
+					</p>
+<pre><code>&lt;signature
+		xmlns="http://www.itu.dk/research/pls/xmlns/2010/signature"
+		xmlns:marker="http://example.invalid/marker"
+		marker:id="sig"&gt;
+	&lt;signature marker:id="sig1"&gt; <i>&lt;!-- embedded signature of sig --&gt;</i>
+		&lt;signature marker:id="sig2"&gt; <i>&lt;!-- first embedded signature of sig1 --&gt;</i>
+			&lt;control name="cone" /&gt; <b>&lt;!-- resolve(sig, "cone"), resolve(sig1, "cone"), resolve(sig2, "cone") --&gt;</b>
+			&lt;control name="zone" /&gt; <b>&lt;!-- resolve(sig1, "zone"), resolve(sig2, "zone") --&gt;</b>
+		&lt;/signature&gt;
+		&lt;signature marker:id="sig3"&gt; <i>&lt;!-- second embedded signature of sig1 --&gt;</i>
+			&lt;control name="zone" /&gt; <b>&lt;!-- resolve(sig3, "zone") --&gt;</b>
+		&lt;/signature&gt;
+	&lt;/signature&gt;
+	&lt;control name="zone" /&gt; <b>&lt;!-- resolve(sig, "zone") --&gt;</b>
+&lt;/signature&gt;</code></pre>
 					<hr />
 				</body>
 			</html>
