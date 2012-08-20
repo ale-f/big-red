@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -236,6 +237,13 @@ implements PropertyChangeListener {
 		left.setLayout(leftLayout);
 		
 		controls = new TreeViewer(left);
+		controls.setComparator(new ViewerComparator() {
+			@Override
+			public int category(Object element) {
+				return (element instanceof Signature ? 1 :
+						element instanceof Control ? 2 : 0);
+			}
+		});
 		controls.setContentProvider(
 				new SignatureControlsContentProvider(controls));
 		controls.setLabelProvider(new SignatureControlsLabelProvider());
