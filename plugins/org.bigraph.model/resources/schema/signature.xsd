@@ -70,6 +70,9 @@
 							contain
 							<ul>
 								<li>
+									zero or more <a href="#signature">signature</a>s, followed by
+								</li>
+								<li>
 									zero or more <a href="#control">control</a>s, followed by
 								</li>
 								<li>
@@ -111,7 +114,12 @@
 	<xsd:element name="signature">
 		<xsd:complexType>
 			<xsd:sequence minOccurs="0">
-				<xsd:element ref="signature:control" minOccurs="0" maxOccurs="unbounded" />
+				<xsd:element ref="signature:signature"
+					minOccurs="0"
+					maxOccurs="unbounded" />
+				<xsd:element ref="signature:control"
+					minOccurs="0"
+					maxOccurs="unbounded" />
 				<xsd:group ref="signature:anyForeignElements" />
 			</xsd:sequence>
 			<xsd:attribute name="src" type="xsd:string" />
