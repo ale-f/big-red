@@ -27,11 +27,20 @@ import org.bigraph.model.interfaces.ISignature;
 public class Signature extends ModelObject
 		implements ISignature, IChangeExecutor,
 				ModelObject.Identifier.Resolver {
+	private Signature parent;
+	private List<Signature> signatures = new ArrayList<Signature>();
+	
 	/**
 	 * The property name fired when a control is added or removed.
 	 */
 	@RedProperty(fired = Control.class, retrieved = List.class)
 	public static final String PROPERTY_CONTROL = "SignatureControl";
+	
+	@RedProperty(fired = Signature.class, retrieved = List.class)
+	public static final String PROPERTY_CHILD = "SignatureChild";
+	
+	@RedProperty(fired = Signature.class, retrieved = Signature.class)
+	public static final String PROPERTY_PARENT = "SignatureParent";
 	
 	abstract class SignatureChange extends ModelObjectChange {
 		@Override
@@ -73,6 +82,56 @@ public class Signature extends ModelObject
 		}
 	}
 	
+	public class ChangeAddSignature extends SignatureChange {
+		public final Signature signature;
+		
+		public ChangeAddSignature(Signature signature) {
+			this.signature = signature;
+		}
+		
+		@Override
+		public ChangeRemoveSignature inverse() {
+			return signature.new ChangeRemoveSignature();
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			context.<Signature>getModifiableList(
+					getCreator(), PROPERTY_CHILD, getSignatures()).
+				add(signature);
+			context.setProperty(signature,
+					PROPERTY_PARENT, getCreator());
+		}
+	}
+	
+	public class ChangeRemoveSignature extends SignatureChange {
+		public ChangeRemoveSignature() {
+		}
+		
+		private Signature oldParent;
+		
+		@Override
+		public void beforeApply() {
+			oldParent = getCreator().getParent();
+		}
+		
+		@Override
+		public ChangeAddSignature inverse() {
+			return oldParent.new ChangeAddSignature(getCreator());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			Signature self = getCreator();
+			Signature parent = self.getParent(context);
+			
+			context.<Signature>getModifiableList(
+					parent, PROPERTY_CHILD, parent.getSignatures()).
+				remove(self);
+			context.setProperty(self, PROPERTY_PARENT, null);
+		}
+	}
+	
 	private ArrayList<Control> controls = new ArrayList<Control>();
 	
 	@Override
@@ -100,8 +159,12 @@ public class Signature extends ModelObject
 	}
 	
 	public Control getControl(String name) {
-		for (Control c : controls)
+		for (Control c : getControls())
 			if (c.getName().equals(name))
+				return c;
+		Control c = null;
+		for (Signature s : getSignatures())
+			if ((c = s.getControl(name)) != null)
 				return c;
 		return null;
 	}
@@ -117,8 +180,7 @@ public class Signature extends ModelObject
 				getProperty(context, PROPERTY_CONTROL);
 	}
 	
-	private SignatureValidator validator =
-		new SignatureValidator(this);
+	private SignatureValidator validator = new SignatureValidator(this);
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
 	
@@ -159,6 +221,12 @@ public class Signature extends ModelObject
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
 			c.getCreator().setName(c.name);
+		} else if (b instanceof ChangeAddSignature) {
+			ChangeAddSignature c = (ChangeAddSignature)b;
+			c.getCreator().addSignature(c.signature);
+		} else if (b instanceof ChangeRemoveSignature) {
+			ChangeRemoveSignature c = (ChangeRemoveSignature)b;
+			c.getCreator().getParent().removeSignature(c.getCreator());
 		} else return false;
 		return true;
 	}
@@ -169,6 +237,12 @@ public class Signature extends ModelObject
 			c.dispose();
 		getControls().clear();
 		controls = null;
+		
+		for (Signature s : getSignatures())
+			s.dispose();
+		getSignatures().clear();
+		signatures = null;
+
 		validator = null;
 		
 		super.dispose();
@@ -181,17 +255,71 @@ public class Signature extends ModelObject
 	 * <li>Passing {@link #PROPERTY_CONTROL} will return a
 	 * {@link List}&lt;{@link Control}&gt;, <strong>not</strong> a {@link
 	 * Control}.
+	 * <li>Passing {@link #PROPERTY_CHILD} will return a
+	 * {@link List}&lt;{@link Signature}&gt;, <strong>not</strong> a {@link
+	 * Signature}.
 	 * </ul>
 	 */
 	@Override
 	protected Object getProperty(String name) {
 		if (PROPERTY_CONTROL.equals(name)) {
 			return getControls();
+		} else if (PROPERTY_PARENT.equals(name)) {
+			return getParent();
+		} else if (PROPERTY_CHILD.equals(name)) {
+			return getSignatures();
 		} else return super.getProperty(name);
+	}
+	
+	public Signature getParent() {
+		return parent;
+	}
+	
+	public Signature getParent(PropertyScratchpad context) {
+		return (Signature)getProperty(context, PROPERTY_PARENT);
+	}
+	
+	protected void setParent(Signature newValue) {
+		Signature oldValue = parent;
+		parent = newValue;
+		firePropertyChange(PROPERTY_PARENT, oldValue, newValue);
+	}
+	
+	public List<? extends Signature> getSignatures() {
+		return signatures;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<? extends Signature> getSignatures(
+			PropertyScratchpad context) {
+		return (List<? extends Signature>)
+				getProperty(context, PROPERTY_CHILD);
+	}
+	
+	protected void addSignature(Signature s) {
+		if (signatures.add(s)) {
+			s.setParent(this);
+			firePropertyChange(PROPERTY_CHILD, null, s);
+		}
+	}
+	
+	protected void removeSignature(Signature s) {
+		if (signatures.remove(s)) {
+			s.setParent(null);
+			firePropertyChange(PROPERTY_CHILD, s, null);
+		}
 	}
 	
 	public ChangeAddControl changeAddControl(Control control) {
 		return new ChangeAddControl(control);
+	}
+	
+	public ChangeAddSignature changeAddSignature(Signature signature) {
+		return new ChangeAddSignature(signature);
+	}
+	
+	public ChangeRemoveSignature changeRemoveSignature() {
+		return new ChangeRemoveSignature();
 	}
 	
 	@Override

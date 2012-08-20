@@ -8,6 +8,8 @@ import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
 import org.bigraph.model.Control.ChangeName;
 import org.bigraph.model.Signature.ChangeAddControl;
+import org.bigraph.model.Signature.ChangeAddSignature;
+import org.bigraph.model.Signature.ChangeRemoveSignature;
 import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -50,6 +52,16 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 			checkEligibility(b, c.getCreator());
 			if (c.name.trim().length() == 0)
 				throw new ChangeRejectedException(b, "Control names must not be empty");
+		} else if (b instanceof ChangeAddSignature) {
+			ChangeAddSignature c = (ChangeAddSignature)b;
+			if (c.signature.getParent(getScratch()) != null)
+				throw new ChangeRejectedException(b,
+						"Signature " + c.signature + " already has a parent");
+		} else if (b instanceof ChangeRemoveSignature) {
+			ChangeRemoveSignature c = (ChangeRemoveSignature)b;
+			if (c.getCreator().getParent(getScratch()) == null)
+				throw new ChangeRejectedException(b,
+						"Signature " + c.getCreator() + " doesn't have a parent");
 		} else return b;
 		b.simulate(getScratch());
 		return null;
