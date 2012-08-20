@@ -608,9 +608,15 @@ implements PropertyChangeListener {
 					ovalMode.setSelection(newValue instanceof Ellipse);
 					polygonMode.setSelection(newValue instanceof PointList);
 				} else if (propertyName.equals(ColourUtilities.FILL)) {
-					fill.setColorValue(((Colour)newValue).getRGB());
+					Colour c = (Colour)newValue;
+					if (c == null)
+						c = ColourUtilities.getDefaultFill(currentControl);
+					fill.setColorValue(c.getRGB());
 				} else if (propertyName.equals(ColourUtilities.OUTLINE)) {
-					outline.setColorValue(((Colour)newValue).getRGB());
+					Colour c = (Colour)newValue;
+					if (c == null)
+						c = ColourUtilities.getDefaultOutline(currentControl);
+					outline.setColorValue(c.getRGB());
 				} else if (propertyName.equals(Control.PROPERTY_KIND)) {
 					activeKind.setSelection(Kind.ACTIVE.equals(newValue));
 					atomicKind.setSelection(Kind.ATOMIC.equals(newValue));
