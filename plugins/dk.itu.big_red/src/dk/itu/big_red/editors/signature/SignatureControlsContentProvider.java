@@ -12,7 +12,34 @@ class SignatureControlsContentProvider extends ModelObjectTreeContentProvider {
 	public SignatureControlsContentProvider(AbstractTreeViewer atv) {
 		super(atv);
 	}
-
+	
+	private void recursivelyListen(Signature s) {
+		for (Control c : s.getControls())
+			listenTo(c);
+		for (Signature t : s.getSignatures()) {
+			recursivelyListen(t);
+			listenTo(t);
+		}
+	}
+	
+	private void recursivelyStopListening(Signature s) {
+		for (Control c : s.getControls())
+			stopListeningTo(c);
+		for (Signature t : s.getSignatures()) {
+			recursivelyStopListening(t);
+			stopListeningTo(t);
+		}
+	}
+	
+	@Override
+	protected void setInput(Object oldInput, Object newInput) {
+		if (oldInput instanceof Signature)
+			recursivelyStopListening((Signature)oldInput);
+		super.setInput(oldInput, newInput);
+		if (newInput instanceof Signature)
+			recursivelyListen((Signature)newInput);
+	}
+	
 	@Override
 	public Object[] getElements(Object inputElement) {
 		return getChildren(inputElement);
@@ -63,20 +90,20 @@ class SignatureControlsContentProvider extends ModelObjectTreeContentProvider {
 				if (oldValue == null) {
 					Control c = (Control)newValue;
 					getViewer().add(c.getSignature(), c);
-					c.addPropertyChangeListener(this);
+					listenTo(c);
 				} else if (newValue == null) {
 					Control c = (Control)oldValue;
-					c.removePropertyChangeListener(this);
+					stopListeningTo(c);
 					getViewer().remove(c);
 				}
 			} else if (Signature.PROPERTY_CHILD.equals(pn)) {
 				if (oldValue == null) {
 					Signature s = (Signature)newValue;
 					getViewer().add(s.getParent(), s);
-					s.addPropertyChangeListener(this);
+					listenTo(s);
 				} else if (newValue == null) {
 					Signature s = (Signature)oldValue;
-					s.removePropertyChangeListener(this);
+					stopListeningTo(s);
 					getViewer().remove(s);
 				}
 			}
