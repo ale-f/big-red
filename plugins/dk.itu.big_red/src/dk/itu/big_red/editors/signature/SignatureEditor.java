@@ -593,9 +593,6 @@ implements PropertyChangeListener {
 
 	@Override
 	public void propertyChange(java.beans.PropertyChangeEvent evt) {
-		if (evt.getSource() instanceof Control)
-			controls.update(evt.getSource(),
-					new String[] { evt.getPropertyName() });
 		String propertyName = evt.getPropertyName();
 		Object newValue = evt.getNewValue();
 		if (evt.getSource().equals(currentControl)) {

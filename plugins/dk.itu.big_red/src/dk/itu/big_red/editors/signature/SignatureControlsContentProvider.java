@@ -46,27 +46,41 @@ class SignatureControlsContentProvider extends ModelObjectTreeContentProvider {
 					s.getSignatures().size() > 0);
 		} else return false;
 	}
-
+	
+	private void updateViewer(Object object, String... properties) {
+		getViewer().update(object, properties);
+	}
+	
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		Object
+			source = evt.getSource(),
 			oldValue = evt.getOldValue(),
 			newValue = evt.getNewValue();
 		String pn = evt.getPropertyName();
-		if (Signature.PROPERTY_CONTROL.equals(pn)) {
-			if (oldValue == null) {
-				Control c = (Control)newValue;
-				getViewer().add(c.getSignature(), c);
-			} else if (newValue == null) {
-				getViewer().remove(oldValue);
-			}
-		} else if (Signature.PROPERTY_CHILD.equals(pn)) {
-			if (oldValue == null) {
-				Signature s = (Signature)newValue;
-				getViewer().add(s.getParent(), s);
-			} else if (newValue == null) {
-				getViewer().remove(oldValue);
+		if (source instanceof Signature) {
+			if (Signature.PROPERTY_CONTROL.equals(pn)) {
+				if (oldValue == null) {
+					Control c = (Control)newValue;
+					getViewer().add(c.getSignature(), c);
+					c.addPropertyChangeListener(this);
+				} else if (newValue == null) {
+					Control c = (Control)oldValue;
+					c.removePropertyChangeListener(this);
+					getViewer().remove(c);
+				}
+			} else if (Signature.PROPERTY_CHILD.equals(pn)) {
+				if (oldValue == null) {
+					Signature s = (Signature)newValue;
+					getViewer().add(s.getParent(), s);
+					s.addPropertyChangeListener(this);
+				} else if (newValue == null) {
+					Signature s = (Signature)oldValue;
+					s.removePropertyChangeListener(this);
+					getViewer().remove(s);
+				}
 			}
 		}
+		updateViewer(source, pn);
 	}
 }
