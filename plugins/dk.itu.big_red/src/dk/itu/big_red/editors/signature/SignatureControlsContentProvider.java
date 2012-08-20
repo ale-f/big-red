@@ -3,6 +3,7 @@ package dk.itu.big_red.editors.signature;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import org.bigraph.model.Control;
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 
@@ -15,19 +16,19 @@ class SignatureControlsContentProvider extends ModelObjectTreeContentProvider {
 	
 	private void recursivelyListen(Signature s) {
 		for (Control c : s.getControls())
-			listenTo(c);
+			c.addPropertyChangeListener(this);
 		for (Signature t : s.getSignatures()) {
 			recursivelyListen(t);
-			listenTo(t);
+			t.addPropertyChangeListener(this);
 		}
 	}
 	
 	private void recursivelyStopListening(Signature s) {
 		for (Control c : s.getControls())
-			stopListeningTo(c);
+			c.removePropertyChangeListener(this);
 		for (Signature t : s.getSignatures()) {
 			recursivelyStopListening(t);
-			stopListeningTo(t);
+			t.removePropertyChangeListener(this);
 		}
 	}
 	
@@ -90,20 +91,20 @@ class SignatureControlsContentProvider extends ModelObjectTreeContentProvider {
 				if (oldValue == null) {
 					Control c = (Control)newValue;
 					getViewer().add(c.getSignature(), c);
-					listenTo(c);
+					c.addPropertyChangeListener(this);
 				} else if (newValue == null) {
 					Control c = (Control)oldValue;
-					stopListeningTo(c);
+					c.removePropertyChangeListener(this);
 					getViewer().remove(c);
 				}
 			} else if (Signature.PROPERTY_CHILD.equals(pn)) {
 				if (oldValue == null) {
 					Signature s = (Signature)newValue;
 					getViewer().add(s.getParent(), s);
-					listenTo(s);
+					s.addPropertyChangeListener(this);
 				} else if (newValue == null) {
 					Signature s = (Signature)oldValue;
-					stopListeningTo(s);
+					s.removePropertyChangeListener(this);
 					getViewer().remove(s);
 				}
 			}
