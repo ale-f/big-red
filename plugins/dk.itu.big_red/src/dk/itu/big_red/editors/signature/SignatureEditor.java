@@ -8,6 +8,7 @@ import java.util.Iterator;
 import org.bigraph.model.Control;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -15,6 +16,7 @@ import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
+import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.SignatureXMLSaver;
 import org.eclipse.core.resources.IFile;
@@ -26,9 +28,9 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -85,7 +87,7 @@ implements PropertyChangeListener {
 	
 	private org.bigraph.model.Control currentControl;
 	
-	private ListViewer controls;
+	private TreeViewer controls;
 	private Button addControl, removeControl;
 	
 	private Text name, label;
@@ -110,10 +112,9 @@ implements PropertyChangeListener {
 	private boolean uiUpdateInProgress = false;
 	
 	private Control getSelectedControl() {
-		return
-			(Control)
-				((IStructuredSelection)controls.getSelection()).
-					getFirstElement();
+		Object o = ((IStructuredSelection)controls.getSelection()).
+				getFirstElement();
+		return (o instanceof Control ? (Control)o : null);
 	}
 	
 	protected void controlToFields() {
@@ -227,36 +228,46 @@ implements PropertyChangeListener {
 		GridLayout leftLayout = new GridLayout(1, false);
 		left.setLayout(leftLayout);
 		
-		controls = new ListViewer(left);
+		controls = new TreeViewer(left);
 		UI.setProviders(controls, new SignatureControlsContentProvider(controls),
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					Control c = (Control)element;
-					String name = c.getName();
-					INamePolicy n = ParameterUtilities.getParameterPolicy(c);
-					if (n != null)
-						name += " (" + n.getClass().getSimpleName() + ")";
-					return name;
+					if (element instanceof Signature) {
+						Signature s = (Signature)element;
+						IFileWrapper f = FileData.getFile(s);
+						return (f != null ? f.getPath() : "(embedded)");
+					} else if (element instanceof Control) {
+						Control c = (Control)element;
+						String name = c.getName();
+						INamePolicy n =
+								ParameterUtilities.getParameterPolicy(c);
+						if (n != null)
+							name += " (" + n.getClass().getSimpleName() + ")";
+						return name;
+					} else return null;
 				}
 				
 				@Override
 				public boolean isLabelProperty(Object element, String property) {
-					return (Control.PROPERTY_NAME.equals(property) ||
-							ParameterUtilities.PARAMETER_POLICY.equals(property));
+					if (element instanceof Control) {
+						return (Control.PROPERTY_NAME.equals(property) ||
+								ParameterUtilities.PARAMETER_POLICY.
+									equals(property));
+					} else return false;
 				}
 		});
 		GridData controlsLayoutData =
 			new GridData(SWT.FILL, SWT.FILL, true, true);
 		controlsLayoutData.widthHint = 100;
-		controls.getList().setLayoutData(controlsLayoutData);
+		controls.getTree().setLayoutData(controlsLayoutData);
 		controls.addSelectionChangedListener(new ISelectionChangedListener() {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				setControl(getSelectedControl());
 			}
 		});
-		final Menu menu = new Menu(controls.getList());
+		final Menu menu = new Menu(controls.getTree());
 		menu.addMenuListener(new MenuListener() {
 			private Control currentControl;
 			private INamePolicy currentPolicy;
@@ -280,9 +291,7 @@ implements PropertyChangeListener {
 				for (MenuItem i : menu.getItems())
 					i.dispose();
 				
-				currentControl = (Control)
-					((IStructuredSelection)controls.getSelection()).
-						getFirstElement();
+				currentControl = getSelectedControl();
 				if (currentControl == null) {
 					menu.setVisible(false);
 					return;
@@ -315,7 +324,7 @@ implements PropertyChangeListener {
 			public void menuHidden(MenuEvent e) {
 			}
 		});
-		controls.getList().setMenu(menu);
+		controls.getTree().setMenu(menu);
 		
 		Composite controlButtons = new Composite(left, SWT.NONE);
 		RowLayout controlButtonsLayout = new RowLayout();

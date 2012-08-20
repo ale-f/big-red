@@ -1,31 +1,70 @@
 package dk.itu.big_red.editors.signature;
 
 import java.beans.PropertyChangeEvent;
-
+import java.util.ArrayList;
+import org.bigraph.model.Control;
 import org.bigraph.model.Signature;
-import org.eclipse.jface.viewers.AbstractListViewer;
-import dk.itu.big_red.utilities.ui.jface.ModelObjectListContentProvider;
+import org.eclipse.jface.viewers.AbstractTreeViewer;
 
-class SignatureControlsContentProvider extends ModelObjectListContentProvider {
-	public SignatureControlsContentProvider(AbstractListViewer alv) {
-		super(alv);
+import dk.itu.big_red.utilities.ui.jface.ModelObjectTreeContentProvider;
+
+class SignatureControlsContentProvider extends ModelObjectTreeContentProvider {
+	public SignatureControlsContentProvider(AbstractTreeViewer atv) {
+		super(atv);
 	}
-	
+
 	@Override
 	public Object[] getElements(Object inputElement) {
-		return ((Signature)inputElement).getControls().toArray();
+		return getChildren(inputElement);
+	}
+
+	@Override
+	public Object[] getChildren(Object parentElement) {
+		if (parentElement instanceof Signature) {
+			Signature s = (Signature)parentElement;
+			ArrayList<Object> r = new ArrayList<Object>();
+			r.addAll(s.getSignatures());
+			r.addAll(s.getControls());
+			return r.toArray();
+		} else return null;
+	}
+
+	@Override
+	public Object getParent(Object element) {
+		if (element instanceof Signature) {
+			return ((Signature)element).getParent();
+		} else if (element instanceof Control) {
+			return ((Control)element).getSignature();
+		} else return null;
+	}
+
+	@Override
+	public boolean hasChildren(Object element) {
+		if (element instanceof Signature) {
+			Signature s = (Signature)element;
+			return (s.getControls().size() > 0 ||
+					s.getSignatures().size() > 0);
+		} else return false;
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (!evt.getSource().equals(getInput()))
-			return;
-		String propertyName = evt.getPropertyName();
-		Object oldValue = evt.getOldValue(), newValue = evt.getNewValue();
-		if (propertyName.equals(Signature.PROPERTY_CONTROL)) {
-			if (oldValue == null && newValue != null) { /* added */
-				getViewer().add(newValue);
-			} else if (oldValue != null && newValue == null) { /* removed */
+		Object
+			oldValue = evt.getOldValue(),
+			newValue = evt.getNewValue();
+		String pn = evt.getPropertyName();
+		if (Signature.PROPERTY_CONTROL.equals(pn)) {
+			if (oldValue == null) {
+				Control c = (Control)newValue;
+				getViewer().add(c.getSignature(), c);
+			} else if (newValue == null) {
+				getViewer().remove(oldValue);
+			}
+		} else if (Signature.PROPERTY_CHILD.equals(pn)) {
+			if (oldValue == null) {
+				Signature s = (Signature)newValue;
+				getViewer().add(s.getParent(), s);
+			} else if (newValue == null) {
 				getViewer().remove(oldValue);
 			}
 		}
