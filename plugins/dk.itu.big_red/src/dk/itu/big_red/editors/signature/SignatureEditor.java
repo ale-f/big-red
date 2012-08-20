@@ -102,11 +102,8 @@ implements PropertyChangeListener {
 	
 	protected void setControl(Control c) {
 		currentControl = c;
-		if (setEnablement(c != null)) {
-			name.setFocus();
+		if (setEnablement(c != null))
 			controlToFields();
-			name.selectAll();
-		}
 	}
 	
 	private boolean uiUpdateInProgress = false;
@@ -120,28 +117,41 @@ implements PropertyChangeListener {
 	protected void controlToFields() {
 		uiUpdateInProgress = true;
 		
-		Object shape = ControlUtilities.getShape(currentControl);
-		boolean polygon = (shape instanceof PointList);
-		
-		label.setText(ControlUtilities.getLabel(currentControl));
-		name.setText(currentControl.getName());
-		
-		appearance.setModel(currentControl);
-		
-		if (getSelectedControl() != currentControl)
-			controls.setSelection(new StructuredSelection(currentControl), true);
-		
-		ovalMode.setSelection(!polygon);
-		polygonMode.setSelection(polygon);
-		
-		outline.setColorValue(ColourUtilities.getOutline(currentControl).getRGB());
-		fill.setColorValue(ColourUtilities.getFill(currentControl).getRGB());
-		
-		activeKind.setSelection(currentControl.getKind() == Kind.ACTIVE);
-		atomicKind.setSelection(currentControl.getKind() == Kind.ATOMIC);
-		passiveKind.setSelection(currentControl.getKind() == Kind.PASSIVE);
-		
-		uiUpdateInProgress = false;
+		try {
+			Object shape = ControlUtilities.getShape(currentControl);
+			boolean polygon = (shape instanceof PointList);
+			
+			label.setText(ControlUtilities.getLabel(currentControl));
+			name.setText(currentControl.getName());
+			
+			appearance.setModel(currentControl);
+			
+			if (getSelectedControl() != currentControl)
+				controls.setSelection(
+						new StructuredSelection(currentControl), true);
+			
+			ovalMode.setSelection(!polygon);
+			polygonMode.setSelection(polygon);
+			
+			outline.setColorValue(
+					ColourUtilities.getOutline(currentControl).getRGB());
+			fill.setColorValue(
+					ColourUtilities.getFill(currentControl).getRGB());
+			
+			activeKind.setSelection(currentControl.getKind() == Kind.ACTIVE);
+			atomicKind.setSelection(currentControl.getKind() == Kind.ATOMIC);
+			passiveKind.setSelection(currentControl.getKind() == Kind.PASSIVE);
+			
+			/* Don't allow controls from nested signatures to be edited */
+			if (setEnablement(
+					currentControl.getSignature().equals(getModel()))) {
+				name.setFocus();
+				name.selectAll();
+			}
+			
+		} finally {
+			uiUpdateInProgress = false;
+		}
 	}
 	
 	private void lockedTextUpdate(Text t, String newValue) {
