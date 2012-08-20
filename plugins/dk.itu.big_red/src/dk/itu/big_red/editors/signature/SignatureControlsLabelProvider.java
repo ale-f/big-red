@@ -1,5 +1,7 @@
 package dk.itu.big_red.editors.signature;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bigraph.model.Control;
 import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.FileData;
@@ -12,15 +14,45 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 
+import dk.itu.big_red.editors.assistants.ControlImageDescriptor;
+import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 
 class SignatureControlsLabelProvider
 		extends BaseLabelProvider implements ILabelProvider, IColorProvider {
+	private List<Image> images = new ArrayList<Image>();
+	
+	@Override
+	public void dispose() {
+		for (Image i : images)
+			i.dispose();
+		super.dispose();
+	}
+	
+	private Image getControlImage(Control e) {
+		Image i = new ControlImageDescriptor(e, 16, 16).createImage();
+		images.add(i);
+		return i;
+	}
+	
 	@Override
 	public Image getImage(Object element) {
-		return null;
+		if (element instanceof Control) {
+			return getControlImage((Control)element);
+		} else return null;
 	}
 
+	@Override
+	public boolean isLabelProperty(Object element, String property) {
+		if (element instanceof Control) {
+			return (Control.PROPERTY_NAME.equals(property) ||
+					ControlUtilities.SHAPE.equals(property) ||
+					ColourUtilities.FILL.equals(property) ||
+					ColourUtilities.OUTLINE.equals(property));
+		} else return false;
+	}
+	
 	@Override
 	public String getText(Object element) {
 		if (element instanceof Signature) {
