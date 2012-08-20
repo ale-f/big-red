@@ -39,6 +39,11 @@ public class SignatureXMLSaver extends XMLSaver {
 		
 		applyAttributes(e, "xmlns:big-red", BIG_RED);
 		
+		for (Signature t : s.getSignatures())
+			appendChildIfNotNull(e, processOrReference(
+					newElement(SIGNATURE, "signature:signature"),
+					t, SignatureXMLSaver.class));
+		
 		for (Control c : s.getControls())
 			appendChildIfNotNull(e,
 				processControl(newElement(SIGNATURE, "signature:control"), c));
