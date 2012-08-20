@@ -141,6 +141,9 @@ public class Signature extends ModelObject
 		for (Control c : getControls())
 			s.addControl(c.clone(s));
 		
+		for (Signature t : getSignatures())
+			s.addSignature(t.clone());
+		
 		return s;
 	}
 	
@@ -325,12 +328,8 @@ public class Signature extends ModelObject
 	@Override
 	public Object lookup(PropertyScratchpad context, Identifier identifier) {
 		if (identifier instanceof Control.Identifier) {
-			String name = identifier.getName();
-			for (Control c : getControls(context))
-				if (c.getName(context).equals(name))
-					return c;
-		}
-		return null;
+			return getControl(identifier.getName());
+		} else return null;
 	}
 	
 	@Override
