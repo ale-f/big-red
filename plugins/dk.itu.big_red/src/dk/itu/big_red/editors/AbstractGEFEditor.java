@@ -55,23 +55,44 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 	
 	private List<String> selectionActions;
 	
+	/**
+	 * Returns the list of <i>selection actions</i>, those actions which want
+	 * to be updated when the editor's selection changes.
+	 * @return a list of action IDs
+	 * @see AbstractEditor#updateActions(List)
+	 */
 	protected List<String> getSelectionActions() {
 		if (selectionActions == null)
 			selectionActions = new ArrayList<String>();
 		return selectionActions;
 	}
 	
+	/**
+	 * Returns the {@link ScalableRootEditPart} of a given {@link
+	 * GraphicalViewer}, if it has one.
+	 * @param v a {@link GraphicalViewer}; must not be <code>null</code>
+	 * @return a {@link ScalableRootEditPart}; can be <code>null</code>
+	 */
 	protected static ScalableRootEditPart getScalableRoot(GraphicalViewer v) {
 		RootEditPart r = v.getRootEditPart();
 		return (r instanceof ScalableRootEditPart ?
 				(ScalableRootEditPart)r : null);
 	}
 	
+	/**
+	 * Assigns a {@link DefaultEditDomain} to this editor, and sets the
+	 * editor's palette root into it.
+	 * @param editDomain a {@link DefaultEditDomain}
+	 */
 	protected void setEditDomain(DefaultEditDomain editDomain) {
 		this.editDomain = editDomain;
 		getEditDomain().setPaletteRoot(getPaletteRoot());
 	}
 	
+	/**
+	 * Returns this editor's {@link DefaultEditDomain}.
+	 * @return a {@link DefaultEditDomain}
+	 */
 	protected DefaultEditDomain getEditDomain() {
 		return editDomain;
 	}
@@ -80,6 +101,11 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 		setEditDomain(new DefaultEditDomain(this));
 	}
 	
+	/**
+	 * Returns the {@link CommandStack} associated with this editor's edit
+	 * domain.
+	 * @return a {@link CommandStack}
+	 */
 	public CommandStack getCommandStack() {
 		return getEditDomain().getCommandStack();
 	}
@@ -89,6 +115,12 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 		return getCommandStack().isDirty();
 	}
 	
+	/**
+	 * Creates the {@link PaletteViewer} for this editor, creating its control
+	 * and setting it into the edit domain.
+	 * @param parent the {@link Composite} that should contain the {@link
+	 * PaletteViewer}'s control
+	 */
 	protected void createPaletteViewer(Composite parent) {
 		PaletteViewer viewer = new PaletteViewer();
 		setPaletteViewer(viewer);

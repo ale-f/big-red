@@ -300,9 +300,9 @@ public abstract class AbstractEditor extends EditorPart
 	
 	protected ModelObject loadInput()
 			throws CoreException, LoadFailedException {
-		IEditorInput i_ = getEditorInput();
-		if (i_ instanceof FileEditorInput) {
-			return new EclipseFileWrapper(((FileEditorInput)i_).getFile()).load();
+		IFile file = getFile();
+		if (file != null) {
+			return new EclipseFileWrapper(file).load();
 		} else return null;
 	}
 	
@@ -373,7 +373,7 @@ public abstract class AbstractEditor extends EditorPart
 			globalActionIDs.add(id);
 			bars.setGlobalActionHandler(id, i);
 		}
-		getEditorSite().getActionBars().updateActionBars();
+		bars.updateActionBars();
 	}
 	
 	protected void stateChanged() {
