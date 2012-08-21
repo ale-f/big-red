@@ -6,6 +6,11 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Path;
 
+/**
+ * The <strong>EclipseResourceWrapper</strong> class implements the {@link
+ * IResourceWrapper} interface on top of an {@link IResource}.
+ * @author alec
+ */
 abstract class EclipseResourceWrapper implements IResourceWrapper {
 	/**
 	 * Returns this wrapper's underlying {@link IResource}.

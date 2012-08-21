@@ -12,6 +12,14 @@ import org.eclipse.core.runtime.content.IContentType;
 
 import dk.itu.big_red.model.load_save.LoaderUtilities;
 
+/**
+ * The <strong>EclipseFileWrapper</strong> class implements the {@link
+ * IFileWrapper} interface on top of an {@link IFile}.
+ * <p>Note that the {@link #load()} method is the recommended way to open a
+ * file &mdash; it consults the extension registry to get the right loader and
+ * to configure it with the appropriate participants.
+ * @author alec
+ */
 public class EclipseFileWrapper extends EclipseResourceWrapper
 		implements IFileWrapper {
 	private final IFile file;

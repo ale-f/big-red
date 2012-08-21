@@ -6,6 +6,11 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 
+/**
+ * The <strong>EclipseContainerWrapper</strong> class implements the {@link
+ * IContainerWrapper} interface on top of an {@link IContainer}.
+ * @author alec
+ */
 public class EclipseContainerWrapper extends EclipseResourceWrapper
 		implements IContainerWrapper {
 	private final IContainer container;
