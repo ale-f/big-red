@@ -343,12 +343,24 @@ implements PropertyChangeListener {
 				Iterator<?> it =
 					((IStructuredSelection)controls.getSelection()).iterator();
 				ChangeGroup cg = new ChangeGroup();
-				while (it.hasNext())
-					cg.add(((Control)it.next()).changeRemove());
-				doChange(cg);
+				while (it.hasNext()) {
+					Object i = it.next();
+					if (i instanceof Control) {
+						Control c = (Control)i;
+						if (c.getSignature().equals(getModel()))
+							cg.add(c.changeRemove());
+					} else if (i instanceof Signature) {
+						Signature s = (Signature)i;
+						if (s.getParent().equals(getModel()))
+							cg.add(s.changeRemoveSignature());
+					}
+				}
 				
-				controls.setSelection(StructuredSelection.EMPTY);
-				setControl(null);
+				if (cg.size() > 0) {
+					doChange(cg);
+					controls.setSelection(StructuredSelection.EMPTY);
+					setControl(null);
+				}
 			}
 			
 			@Override
