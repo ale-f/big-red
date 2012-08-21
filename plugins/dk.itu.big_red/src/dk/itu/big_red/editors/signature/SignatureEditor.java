@@ -11,6 +11,7 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
@@ -20,6 +21,7 @@ import org.bigraph.model.savers.SignatureXMLSaver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -56,6 +58,8 @@ import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ParameterUtilities;
 import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
+import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.StockButton;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -86,7 +90,7 @@ implements PropertyChangeListener {
 	private org.bigraph.model.Control currentControl;
 	
 	private TreeViewer controls;
-	private Button addControl, removeControl;
+	private Button embedSignature, addControl, remove;
 	
 	private Text name, label;
 	private SignatureEditorPolygonCanvas appearance;
@@ -321,23 +325,40 @@ implements PropertyChangeListener {
 		controlButtons.setLayout(controlButtonsLayout);
 		controlButtons.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
 		
+		embedSignature = StockButton.ADD.create(controlButtons, SWT.NONE);
+		embedSignature.setText("Add &signature...");
+		embedSignature.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ResourceTreeSelectionDialog rtsd =
+						new ResourceTreeSelectionDialog(
+								getSite().getShell(),
+								getFile().getProject(),
+								Mode.FILE, Signature.CONTENT_TYPE);
+				if (rtsd.open() == Dialog.OK) {
+					try {
+						IFile f = (IFile)rtsd.getFirstResult();
+						doChange(getModel().changeAddSignature(
+								(Signature)new EclipseFileWrapper(f).load()));
+					} catch (LoadFailedException ex) {
+						return;
+					}
+				}
+			}
+		});
+		
 		addControl = StockButton.ADD.create(controlButtons);
-		addControl.addSelectionListener(new SelectionListener() {
+		addControl.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Control c = new Control();
 				doChange(getModel().changeAddControl(c));
 				controls.setSelection(new StructuredSelection(c), true);
 			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				return;
-			}
 		});
 		
-		removeControl = StockButton.REMOVE.create(controlButtons);
-		removeControl.addSelectionListener(new SelectionListener() {
+		remove = StockButton.REMOVE.create(controlButtons);
+		remove.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Iterator<?> it =
@@ -361,11 +382,6 @@ implements PropertyChangeListener {
 					controls.setSelection(StructuredSelection.EMPTY);
 					setControl(null);
 				}
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				widgetSelected(e);
 			}
 		});
 		
