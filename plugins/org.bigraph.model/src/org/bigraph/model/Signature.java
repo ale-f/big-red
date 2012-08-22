@@ -51,9 +51,11 @@ public class Signature extends ModelObject
 	
 	public class ChangeAddControl extends SignatureChange {
 		public final Control control;
+		public final String name;
 		
-		public ChangeAddControl(Control control) {
+		public ChangeAddControl(Control control, String name) {
 			this.control = control;
+			this.name = name;
 		}
 
 		@Override
@@ -64,7 +66,7 @@ public class Signature extends ModelObject
 		@Override
 		public String toString() {
 			return "Change(add control " + control + " to signature " +
-					getCreator();
+					getCreator() + " with name " + name + ")";
 		}
 		
 		@Override
@@ -204,6 +206,7 @@ public class Signature extends ModelObject
 			/* do nothing */
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
+			c.control.setName(c.name);
 			c.getCreator().addControl(c.control);
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
@@ -313,8 +316,8 @@ public class Signature extends ModelObject
 		}
 	}
 	
-	public ChangeAddControl changeAddControl(Control control) {
-		return new ChangeAddControl(control);
+	public ChangeAddControl changeAddControl(Control control, String name) {
+		return new ChangeAddControl(control, name);
 	}
 	
 	public ChangeAddSignature changeAddSignature(Signature signature) {

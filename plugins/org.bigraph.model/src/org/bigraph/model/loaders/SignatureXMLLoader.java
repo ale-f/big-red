@@ -29,8 +29,8 @@ public class SignatureXMLLoader extends XMLLoader {
 
 	private void makeControl(Element e) throws LoadFailedException {
 		Control model = new Control();
-		addChange(sig.changeAddControl(model));
-		addChange(model.changeName(getAttributeNS(e, SIGNATURE, "name")));
+		addChange(sig.changeAddControl(
+				model, getAttributeNS(e, SIGNATURE, "name")));
 		
 		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null) {

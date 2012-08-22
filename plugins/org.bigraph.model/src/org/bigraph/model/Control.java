@@ -169,10 +169,12 @@ public class Control extends ModelObject implements IControl {
 	}
 
 	public class ChangeRemoveControl extends ControlChange {
+		private String oldName;
 		private Signature oldSignature;
 		
 		@Override
 		public void beforeApply() {
+			oldName = getCreator().getName();
 			oldSignature = getSignature();
 		}
 		
@@ -183,7 +185,7 @@ public class Control extends ModelObject implements IControl {
 		
 		@Override
 		public Change inverse() {
-			return oldSignature.new ChangeAddControl(getCreator());
+			return oldSignature.new ChangeAddControl(getCreator(), oldName);
 		}
 		
 		@Override
@@ -221,7 +223,7 @@ public class Control extends ModelObject implements IControl {
 	
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
 	
-	private String name = "Unknown";
+	private String name = "Untitled1";
 	private Control.Kind kind = Kind.ACTIVE;
 	private Signature signature = null;
 	

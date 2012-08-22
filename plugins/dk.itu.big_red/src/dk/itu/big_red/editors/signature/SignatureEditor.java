@@ -266,7 +266,7 @@ implements PropertyChangeListener {
 			private Control currentControl;
 			private INamePolicy currentPolicy;
 			
-			private void doMenuItem(Menu parent, final CNPF p) {
+			private void createPolicyMenuItem(Menu parent, final CNPF p) {
 				final MenuItem i = new MenuItem(parent, SWT.RADIO);
 				i.setText(p.getName());
 				i.setSelection(p.klass.isInstance(currentPolicy));
@@ -274,8 +274,8 @@ implements PropertyChangeListener {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						if (i.getSelection())
-							doChange(
-								ParameterUtilities.changeParameterPolicy(currentControl, p.newInstance()));
+							doChange(ParameterUtilities.changeParameterPolicy(
+									currentControl, p.newInstance()));
 					}
 				});
 			}
@@ -306,11 +306,12 @@ implements PropertyChangeListener {
 					public void widgetSelected(SelectionEvent e) {
 						if (n.getSelection())
 							doChange(
-								ParameterUtilities.changeParameterPolicy(currentControl, null));
+								ParameterUtilities.changeParameterPolicy(
+										currentControl, null));
 					}
 				});
 				for (CNPF i : getNamePolicies())
-					doMenuItem(paramMenu, i);
+					createPolicyMenuItem(paramMenu, i);
 				paramItem.setMenu(paramMenu);
 			}
 			
@@ -352,7 +353,7 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Control c = new Control();
-				doChange(getModel().changeAddControl(c));
+				doChange(getModel().changeAddControl(c, "Untitled1"));
 				controls.setSelection(new StructuredSelection(c), true);
 			}
 		});

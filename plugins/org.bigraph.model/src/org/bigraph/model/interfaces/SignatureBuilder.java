@@ -12,8 +12,7 @@ public class SignatureBuilder {
 	
 	public IControl newControl(String name) {
 		Control c = new Control();
-		cg.add(s.changeAddControl(c));
-		cg.add(c.changeName(name));
+		cg.add(s.changeAddControl(c, name));
 		return c;
 	}
 	
