@@ -55,7 +55,7 @@ public interface INamespace<T> {
 	/**
 	 * Returns a valid name not presently in use in this {@link INamespace}.
 	 * @see #getPolicy()
-	 * @return a valid name, or <code>null</code> if no name policy is set
+	 * @return a valid name
 	 */
 	String getNextName();
 	

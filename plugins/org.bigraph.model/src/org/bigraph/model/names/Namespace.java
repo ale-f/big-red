@@ -2,6 +2,7 @@ package org.bigraph.model.names;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.names.policies.INamePolicy;
+import org.bigraph.model.names.policies.StringNamePolicy;
 
 public abstract class Namespace<T> implements INamespace<T> {
 	@SuppressWarnings("unchecked")
@@ -106,7 +107,7 @@ public abstract class Namespace<T> implements INamespace<T> {
 	public String getNextName(PropertyScratchpad context) {
 		INamePolicy policy = getPolicy();
 		if (policy == null)
-			return null;
+			policy = new StringNamePolicy();
 		
 		int i = 0;
 		String name;
