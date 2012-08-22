@@ -67,6 +67,27 @@ public abstract class Namespace<T> implements INamespace<T> {
 	}
 	
 	@Override
+	public String rename(String name, String newName) {
+		return rename(null, name, newName);
+	}
+	
+	public String rename(
+			PropertyScratchpad context, String name, String newName) {
+		name = checkName(name);
+		newName = checkName(newName);
+		if ((name != null ? name.equals(newName) : name == newName) &&
+				has(context, name))
+			return newName;
+		if (name != null && newName != null &&
+				has(context, name) && !has(context, newName)) {
+			T value = getProperty(context, name);
+			removeProperty(context, name);
+			putProperty(context, newName, value);
+			return newName;
+		} else return null;
+	}
+	
+	@Override
 	public boolean remove(String name) {
 		return remove(null, name);
 	}

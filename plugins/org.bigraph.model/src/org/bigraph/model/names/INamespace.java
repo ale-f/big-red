@@ -36,6 +36,15 @@ public interface INamespace<T> {
 	String put(String name, T value);
 	
 	/**
+	 * Replaces the name associated with an object in this {@link INamespace}.
+	 * @param name a name, which must be valid and in use
+	 * @param newName the new name, which must be valid and not in use
+	 * @return the normalised form of <code>newName</code> if the object was
+	 * renamed, or <code>null</code> otherwise
+	 */
+	String rename(String name, String newName);
+	
+	/**
 	 * Removes a mapping from this {@link INamespace}.
 	 * @param name a name, which must be valid and in use
 	 * @return <code>true</code> if the mapping was removed, or
