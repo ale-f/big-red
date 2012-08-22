@@ -13,8 +13,6 @@ import org.bigraph.model.Signature.ChangeRemoveSignature;
 import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.names.Namespace;
-import org.bigraph.model.names.policies.INamePolicy;
 
 public class SignatureValidator extends ModelObjectValidator<Signature> {
 	public SignatureValidator(Signature changeable) {
@@ -27,28 +25,13 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 					"The control " + c + " is not part of this Signature");
 	}
 	
-	private void checkName(IChange b, Control c, String cdt)
-			throws ChangeRejectedException {
-		if (cdt == null || cdt.length() == 0)
-			throw new ChangeRejectedException(b,
-					"Control names cannot be empty");
-		Namespace<Control> ns = getChangeable().getNamespace();
-		Control co = null;
-		if ((co = ns.get(getScratch(), cdt)) != null && co != c)
-			throw new ChangeRejectedException(b, "Names must be unique");
-		INamePolicy p = ns.getPolicy();
-		if (p != null && p.normalise(cdt) == null)
-			throw new ChangeRejectedException(b,
-					"\"" + cdt + "\" is not a valid name for " + c);
-	}
-	
 	@Override
 	public IChange doValidateChange(IChange b) throws ChangeRejectedException {
 		if (super.doValidateChange(b) == null) {
 			return null;
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
-			checkName(c, c.control, c.name);
+			checkName(c, c.control, getChangeable().getNamespace(), c.name);
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
 			checkEligibility(b, c.getCreator());
@@ -68,7 +51,8 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			checkEligibility(b, c.getCreator());
-			checkName(c, c.getCreator(), c.name);
+			checkName(c, c.getCreator(),
+					getChangeable().getNamespace(), c.name);
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
 			if (c.signature.getParent(getScratch()) != null)

@@ -11,6 +11,8 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
+import org.bigraph.model.names.Namespace;
+import org.bigraph.model.names.policies.INamePolicy;
 
 abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		implements IChangeValidator {
@@ -31,6 +33,23 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 
 	protected T getChangeable() {
 		return changeExecutor;
+	}
+	
+	protected <V> void checkName(
+			IChange c, V object, Namespace<? extends V> ns, String cdt)
+			throws ChangeRejectedException {
+		if (cdt == null || cdt.length() == 0)
+			throw new ChangeRejectedException(c, "Names cannot be empty");
+		if (ns == null)
+			return;
+		INamePolicy p = ns.getPolicy();
+		String mcdt = (p != null ? p.normalise(cdt) : cdt);
+		if (mcdt == null)
+			throw new ChangeRejectedException(c,
+					"\"" + cdt + "\" is not a valid name for " + object);
+		V current = ns.get(getScratch(), mcdt);
+		if (current != null && current != object)
+			throw new ChangeRejectedException(c, "Names must be unique");
 	}
 	
 	protected IChange doValidateChange(IChange b)

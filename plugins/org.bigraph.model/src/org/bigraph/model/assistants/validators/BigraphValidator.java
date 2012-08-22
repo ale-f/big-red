@@ -12,7 +12,6 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Port;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.names.Namespace;
 
 /**
  * The <strong>BigraphIntegrityValidator</strong> is the basic validator that
@@ -31,23 +30,6 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 			if (i.getBigraph(getScratch()) != getChangeable())
 				throw new ChangeRejectedException(b,
 						i + " is not part of this Bigraph");
-	}
-	
-	private void checkName(IChange b, Layoutable l, String cdt)
-			throws ChangeRejectedException {
-		if (cdt == null)
-			throw new ChangeRejectedException(b,
-					"Setting an object's name to null is no longer supported");
-		Namespace<Layoutable> ns =
-				getChangeable().getNamespace(Bigraph.getNSI(l));
-		if (ns == null)
-			return; /* not subject to any checks */
-		if (ns.get(getScratch(), cdt) != null)
-			if (!ns.get(getScratch(), cdt).equals(l))
-				throw new ChangeRejectedException(b, "Names must be unique");
-		if (ns.getPolicy().normalise(cdt) == null)
-			throw new ChangeRejectedException(b,
-					"\"" + cdt + "\" is not a valid name for " + l);
 	}
 	
 	@Override
@@ -75,7 +57,9 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 				throw new ChangeRejectedException(b, ((Node)c.getCreator()).getControl().getName() +
 				" is an atomic control");
 			
-			checkName(b, c.child, c.name);
+			checkName(b, c.child,
+					getChangeable().getNamespace(Bigraph.getNSI(c.child)),
+					c.name);
 
 			if (c.child instanceof Edge) {
 				if (!(c.getCreator() instanceof Bigraph))
@@ -123,7 +107,8 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(b, c.getCreator());
-			checkName(b, c.getCreator(), c.newName);
+			checkName(b, c.getCreator(), getChangeable().
+					getNamespace(Bigraph.getNSI(c.getCreator())), c.newName);
 		} else return b;
 		b.simulate(getScratch());
 		return null;
