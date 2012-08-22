@@ -70,13 +70,11 @@ public abstract class Layoutable extends ModelObject {
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
+			Layoutable cr = getCreator();
 			Namespace<Layoutable> ns =
-				getBigraph(context).getNamespace(Bigraph.getNSI(getCreator()));
-			
-			ns.remove(context, getCreator().getName(context));
-			context.setProperty(
-					getCreator(), Layoutable.PROPERTY_NAME, newName);
-			ns.put(context, newName, getCreator());
+					cr.getBigraph(context).getNamespace(Bigraph.getNSI(cr));
+			context.setProperty(cr, Layoutable.PROPERTY_NAME,
+					ns.rename(context, cr.getName(context), newName));
 		}
 	}
 	

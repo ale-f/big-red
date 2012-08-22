@@ -8,7 +8,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.interfaces.IControl;
-import org.bigraph.model.names.Namespace;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -91,12 +90,9 @@ public class Control extends ModelObject implements IControl {
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			Namespace<Control> ns =
-					getCreator().getSignature(context).getNamespace();
-			
-			ns.remove(context, getCreator().getName(context));
-			context.setProperty(getCreator(), PROPERTY_NAME, name);
-			ns.put(context, name, getCreator());
+			context.setProperty(getCreator(), PROPERTY_NAME,
+					getCreator().getSignature(context).getNamespace().rename(
+							context, getCreator().getName(context), name));
 		}
 	}
 	

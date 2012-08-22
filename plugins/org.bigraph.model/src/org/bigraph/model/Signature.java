@@ -234,9 +234,8 @@ public class Signature extends ModelObject
 			getNamespace().remove(c.getCreator().getName());
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
-			Control co = c.getCreator();
-			getNamespace().remove(co.getName());
-			co.setName(getNamespace().put(c.name, co));
+			c.getCreator().setName(
+					getNamespace().rename(c.getCreator().getName(), c.name));
 		} else if (b instanceof ChangeKind) {
 			ChangeKind c = (ChangeKind)b;
 			c.getCreator().setKind(c.kind);

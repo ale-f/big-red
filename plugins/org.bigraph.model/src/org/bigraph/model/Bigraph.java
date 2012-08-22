@@ -231,10 +231,9 @@ public class Bigraph extends Container
 			getNamespace(getNSI(ch)).remove(ch.getName());
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			getNamespace(getNSI(c.getCreator())).remove(c.getCreator().getName());
 			c.getCreator().setName(
-					getNamespace(getNSI(c.getCreator())).put(
-							c.newName, c.getCreator()));
+					getNamespace(getNSI(c.getCreator())).rename(
+							c.getCreator().getName(), c.newName));
 		} else return false;
 		return true;
 	}
