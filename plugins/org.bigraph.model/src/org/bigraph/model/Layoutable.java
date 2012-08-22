@@ -71,8 +71,7 @@ public abstract class Layoutable extends ModelObject {
 		@Override
 		public void simulate(PropertyScratchpad context) {
 			Layoutable cr = getCreator();
-			Namespace<Layoutable> ns =
-					cr.getBigraph(context).getNamespace(Bigraph.getNSI(cr));
+			Namespace<Layoutable> ns = cr.getBigraph(context).getNamespace(cr);
 			context.setProperty(cr, Layoutable.PROPERTY_NAME,
 					ns.rename(context, cr.getName(context), newName));
 		}
@@ -112,8 +111,8 @@ public abstract class Layoutable extends ModelObject {
 				remove(l);
 			context.setProperty(l, Layoutable.PROPERTY_PARENT, null);
 			
-			c.getBigraph(context).getNamespace(Bigraph.getNSI(l)).
-				remove(context, l.getName(context));
+			c.getBigraph(context).getNamespace(l).
+					remove(context, l.getName(context));
 			context.setProperty(l, Layoutable.PROPERTY_NAME, null);
 		}
 	}
@@ -159,7 +158,7 @@ public abstract class Layoutable extends ModelObject {
 	protected Layoutable clone(Bigraph m) {
 		Layoutable l = (Layoutable)super.clone();
 		l.setName(getName());
-		m.getNamespace(Bigraph.getNSI(l)).put(getName(), l);
+		m.getNamespace(l).put(getName(), l);
 		return l;
 	}
 	

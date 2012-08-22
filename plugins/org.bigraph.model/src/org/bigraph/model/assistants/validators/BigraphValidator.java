@@ -58,8 +58,7 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 				" is an atomic control");
 			
 			checkName(b, c.child,
-					getChangeable().getNamespace(Bigraph.getNSI(c.child)),
-					c.name);
+					getChangeable().getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {
 				if (!(c.getCreator() instanceof Bigraph))
@@ -107,8 +106,8 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(b, c.getCreator());
-			checkName(b, c.getCreator(), getChangeable().
-					getNamespace(Bigraph.getNSI(c.getCreator())), c.newName);
+			checkName(b, c.getCreator(),
+					getChangeable().getNamespace(c.getCreator()), c.newName);
 		} else return b;
 		b.simulate(getScratch());
 		return null;

@@ -62,8 +62,8 @@ public abstract class Container extends Layoutable {
 			context.setProperty(child,
 					Layoutable.PROPERTY_PARENT, getCreator());
 			
-			getCreator().getBigraph(context).
-				getNamespace(Bigraph.getNSI(child)).put(context, name, child);
+			getCreator().getBigraph(context).getNamespace(child).
+					put(context, name, child);
 			context.setProperty(child, Layoutable.PROPERTY_NAME, name);
 		}
 	}

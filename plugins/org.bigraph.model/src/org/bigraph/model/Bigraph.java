@@ -36,22 +36,15 @@ public class Bigraph extends Container
 				new BoundedIntegerNamePolicy(0));
 	
 	/**
-	 * Returns the <i>namespace identifier</i> for the given {@link
-	 * Layoutable}, which identifies the scope in which its name must be
-	 * unique.
+	 * Returns the <i>namespace identifier</i> for a {@link Layoutable}, which
+	 * identifies the scope in which its name must be unique.
 	 * <p>{@link InnerName}s, {@link Root}s, {@link Site}s and {@link Node}s
 	 * all have separate namespaces, all {@link Link}s occupy the same
 	 * namespace, and all other objects have no restrictions on their names.
-	 * @param object a {@link Layoutable}
+	 * @param objectType a {@link String} returned by {@link
+	 * Layoutable#getType()}
 	 * @return the scope within which <code>object</code>'s name must be
-	 * unique, or <code>object</code> if there are no restrictions on its name
-	 */
-	public static Class<? extends Layoutable> getNSI(Layoutable object) {
-		return getNSI(object.getType());
-	}
-	
-	/**
-	 * @see #getNSI(Layoutable)
+	 * unique, or <code>null</code> if there are no restrictions on its name
 	 */
 	public static Class<? extends Layoutable> getNSI(String objectType) {
 		objectType = objectType.toLowerCase(Locale.ENGLISH);
@@ -89,13 +82,17 @@ public class Bigraph extends Container
 		} else return null;
 	}
 	
+	public Namespace<Layoutable> getNamespace(Layoutable l) {
+		return getNamespace(getNSI(l.getType()));
+	}
+	
 	/**
 	 * Gets the first unused name suitable for the given {@link Layoutable}.
 	 * @param l a {@link Layoutable}
 	 * @return a {@link String} suitable for a {@link BigraphChangeName}
 	 */
 	public String getFirstUnusedName(Layoutable l) {
-		return getNamespace(getNSI(l)).getNextName();
+		return getNamespace(l).getNextName();
 	}
 	
 	private BigraphValidator validator = new BigraphValidator(this);
@@ -227,19 +224,17 @@ public class Bigraph extends Container
 			c.getCreator().getLink().removePoint(c.getCreator());
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
-			c.child.setName(
-					getNamespace(getNSI(c.child)).put(c.name, c.child));
+			c.child.setName(getNamespace(c.child).put(c.name, c.child));
 			c.getCreator().addChild(c.child);
 		} else if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
 			ch.getParent().removeChild(ch);
-			getNamespace(getNSI(ch)).remove(ch.getName());
+			getNamespace(ch).remove(ch.getName());
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			c.getCreator().setName(
-					getNamespace(getNSI(c.getCreator())).rename(
-							c.getCreator().getName(), c.newName));
+			c.getCreator().setName(getNamespace(c.getCreator()).rename(
+					c.getCreator().getName(), c.newName));
 		} else return false;
 		return true;
 	}
