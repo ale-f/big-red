@@ -326,8 +326,8 @@ implements PropertyChangeListener {
 		controlButtons.setLayout(controlButtonsLayout);
 		controlButtons.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
 		
-		embedSignature = StockButton.ADD.create(controlButtons, SWT.NONE);
-		embedSignature.setText("Add &signature...");
+		embedSignature = StockButton.OPEN.create(controlButtons, SWT.NONE);
+		embedSignature.setText("&Import...");
 		embedSignature.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

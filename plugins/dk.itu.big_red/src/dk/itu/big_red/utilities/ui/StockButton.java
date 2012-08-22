@@ -36,5 +36,7 @@ public final class StockButton {
 		ADD = new StockButton(
 				getImage(ISharedImages.IMG_OBJ_ADD), "&Add"),
 		REMOVE = new StockButton(
-				getImage(ISharedImages.IMG_ELCL_REMOVE), "&Remove");
+				getImage(ISharedImages.IMG_ELCL_REMOVE), "&Remove"),
+		OPEN = new StockButton(
+				getImage(ISharedImages.IMG_OBJ_FOLDER), "&Open");
 }
