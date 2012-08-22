@@ -5,6 +5,13 @@ import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
 
 public abstract class Namespace<T> implements INamespace<T> {
+	public Namespace() {
+	}
+	
+	public Namespace(INamePolicy policy) {
+		setPolicy(policy);
+	}
+	
 	@SuppressWarnings("unchecked")
 	protected T getProperty(PropertyScratchpad context, String name) {
 		if (context != null && context.hasProperty(this, name)) {
