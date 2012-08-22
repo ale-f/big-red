@@ -73,7 +73,7 @@ public abstract class Layoutable extends ModelObject {
 			Namespace<Layoutable> ns =
 				getBigraph(context).getNamespace(Bigraph.getNSI(getCreator()));
 			
-			ns.remove(context, getName(context));
+			ns.remove(context, getCreator().getName(context));
 			context.setProperty(
 					getCreator(), Layoutable.PROPERTY_NAME, newName);
 			ns.put(context, newName, getCreator());

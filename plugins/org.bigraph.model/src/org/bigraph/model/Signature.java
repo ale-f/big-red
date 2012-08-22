@@ -15,6 +15,8 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.interfaces.ISignature;
+import org.bigraph.model.names.HashMapNamespace;
+import org.bigraph.model.names.Namespace;
 
 /**
  * The Signature is a central storage point for {@link Control}s and their
@@ -81,6 +83,9 @@ public class Signature extends ModelObject
 				add(control);
 			context.setProperty(control,
 					Control.PROPERTY_SIGNATURE, getCreator());
+			
+			getCreator().getNamespace().put(context, name, control);
+			context.setProperty(control, Control.PROPERTY_NAME, name);
 		}
 	}
 	
@@ -132,6 +137,12 @@ public class Signature extends ModelObject
 				remove(self);
 			context.setProperty(self, PROPERTY_PARENT, null);
 		}
+	}
+	
+	private Namespace<Control> ns = new HashMapNamespace<Control>();
+	
+	public Namespace<Control> getNamespace() {
+		return ns;
 	}
 	
 	private ArrayList<Control> controls = new ArrayList<Control>();
@@ -206,14 +217,17 @@ public class Signature extends ModelObject
 			/* do nothing */
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
-			c.control.setName(c.name);
+			c.control.setName(getNamespace().put(c.name, c.control));
 			c.getCreator().addControl(c.control);
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
 			c.getCreator().getSignature().removeControl(c.getCreator());
+			getNamespace().remove(c.getCreator().getName());
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
-			c.getCreator().setName(c.name);
+			Control co = c.getCreator();
+			getNamespace().remove(co.getName());
+			co.setName(getNamespace().put(c.name, co));
 		} else if (b instanceof ChangeKind) {
 			ChangeKind c = (ChangeKind)b;
 			c.getCreator().setKind(c.kind);
