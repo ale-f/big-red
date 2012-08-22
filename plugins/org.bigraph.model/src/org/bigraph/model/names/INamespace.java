@@ -66,19 +66,4 @@ public interface INamespace<T> {
 	 * @return an {@link INamePolicy} (can be <code>null</code>)
 	 */
 	INamePolicy getPolicy();
-	
-	/**
-	 * Sets this {@link INamespace}'s name policy. Setting the name policy to
-	 * <code>null</code> will cause this namespace to accept all names &mdash;
-	 * apart from <code>null</code> &mdash; as valid (but see {@link
-	 * #getNextName()}).
-	 * <p>(Note that <i>all</i> uses of a name are validated by the name
-	 * policy, including {@link #get(String)}; in particular, note that
-	 * switching to a less permissive name policy may cause existing mappings
-	 * to become hidden.)
-	 * @param policy an {@link INamePolicy} (can be <code>null</code>)
-	 * @return <code>this</code>, for convenience
-	 * @see #getPolicy()
-	 */
-	INamespace<T> setPolicy(INamePolicy policy);
 }

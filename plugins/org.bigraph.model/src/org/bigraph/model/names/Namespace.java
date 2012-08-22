@@ -5,11 +5,14 @@ import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
 
 public abstract class Namespace<T> implements INamespace<T> {
+	private final INamePolicy policy;
+	
 	public Namespace() {
+		this(null);
 	}
 	
 	public Namespace(INamePolicy policy) {
-		setPolicy(policy);
+		this.policy = policy;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -124,17 +127,9 @@ public abstract class Namespace<T> implements INamespace<T> {
 		return name;
 	}
 	
-	private INamePolicy policy;
-	
 	@Override
 	public INamePolicy getPolicy() {
 		return policy;
-	}
-
-	@Override
-	public INamespace<T> setPolicy(INamePolicy policy) {
-		this.policy = policy;
-		return this;
 	}
 
 	protected String checkName(String name) {

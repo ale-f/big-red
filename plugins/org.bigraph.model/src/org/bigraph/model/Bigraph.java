@@ -11,8 +11,8 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.interfaces.IBigraph;
+import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
-import org.bigraph.model.names.NamespaceGroup;
 import org.bigraph.model.names.policies.BoundedIntegerNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
 
@@ -26,18 +26,14 @@ public class Bigraph extends Container
 		implements IBigraph, IChangeExecutor, ModelObject.Identifier.Resolver {
 	private Signature signature = null;
 
-	private NamespaceGroup<Layoutable> nsg = new NamespaceGroup<Layoutable>();
-	
-	{
-		nsg.createNamespace(Link.class).setPolicy(new StringNamePolicy());
-		nsg.createNamespace(Node.class).setPolicy(new StringNamePolicy());
-		nsg.createNamespace(InnerName.class).setPolicy(new StringNamePolicy());
-		
-		nsg.createNamespace(Root.class).setPolicy(
+	private Namespace<Layoutable>
+		linkNS = new HashMapNamespace<Layoutable>(new StringNamePolicy()),
+		nodeNS = new HashMapNamespace<Layoutable>(new StringNamePolicy()),
+		innerNameNS = new HashMapNamespace<Layoutable>(new StringNamePolicy()),
+		rootNS = new HashMapNamespace<Layoutable>(
+				new BoundedIntegerNamePolicy(0)),
+		siteNS = new HashMapNamespace<Layoutable>(
 				new BoundedIntegerNamePolicy(0));
-		nsg.createNamespace(Site.class).setPolicy(
-				new BoundedIntegerNamePolicy(0));
-	}
 	
 	/**
 	 * Returns the <i>namespace identifier</i> for the given {@link
@@ -80,7 +76,17 @@ public class Bigraph extends Container
 	 */
 	public Namespace<Layoutable> getNamespace(
 			Class<? extends Layoutable> nsi) {
-		return nsg.getNamespace(nsi);
+		if (Link.class.equals(nsi)) {
+			return linkNS;
+		} else if (InnerName.class.equals(nsi)) {
+			return innerNameNS;
+		} else if (Root.class.equals(nsi)) {
+			return rootNS;
+		} else if (Site.class.equals(nsi)) {
+			return siteNS;
+		} else if (Node.class.equals(nsi)) {
+			return nodeNS;
+		} else return null;
 	}
 	
 	/**

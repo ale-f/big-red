@@ -140,15 +140,13 @@ public class Signature extends ModelObject
 		}
 	}
 	
-	private Namespace<Control> ns = new HashMapNamespace<Control>();
-	{
-		ns.setPolicy(new StringNamePolicy() {
-			@Override
-			public String get(int value) {
-				return "Control" + (value + 1);
-			}
-		});
-	}
+	private Namespace<Control> ns = new HashMapNamespace<Control>(
+			new StringNamePolicy() {
+		@Override
+		public String get(int value) {
+			return "Control" + (value + 1);
+		}
+	});
 	
 	public Namespace<Control> getNamespace() {
 		return ns;
