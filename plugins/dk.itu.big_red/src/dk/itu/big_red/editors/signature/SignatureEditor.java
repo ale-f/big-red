@@ -353,7 +353,8 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Control c = new Control();
-				doChange(getModel().changeAddControl(c, "Untitled1"));
+				doChange(getModel().changeAddControl(c,
+						getModel().getNamespace().getNextName()));
 				controls.setSelection(new StructuredSelection(c), true);
 			}
 		});

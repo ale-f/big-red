@@ -17,6 +17,7 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.interfaces.ISignature;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
+import org.bigraph.model.names.policies.StringNamePolicy;
 
 /**
  * The Signature is a central storage point for {@link Control}s and their
@@ -140,6 +141,14 @@ public class Signature extends ModelObject
 	}
 	
 	private Namespace<Control> ns = new HashMapNamespace<Control>();
+	{
+		ns.setPolicy(new StringNamePolicy() {
+			@Override
+			public String get(int value) {
+				return "Control" + (value + 1);
+			}
+		});
+	}
 	
 	public Namespace<Control> getNamespace() {
 		return ns;
