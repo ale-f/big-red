@@ -236,6 +236,8 @@ public class Control extends ModelObject implements IControl {
 		Control c = (Control)super.clone();
 		
 		c.setName(getName());
+		m.getNamespace().put(c.getName(), c);
+		
 		c.setKind(getKind());
 		
 		for (PortSpec p : getPorts())
