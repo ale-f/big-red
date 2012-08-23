@@ -240,13 +240,16 @@ public class Signature extends ModelObject
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			c.getCreator().addPort(c.port);
-			c.port.setName(c.name);
+			c.port.setName(c.getCreator().getNamespace().put(c.name, c.port));
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			c.getCreator().getControl().removePort(c.getCreator());
+			getNamespace().remove(c.getCreator().getName());
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
-			c.getCreator().setName(c.name);
+			PortSpec p = c.getCreator();
+			p.setName(
+					p.getControl().getNamespace().rename(p.getName(), c.name));
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
 			c.getCreator().addSignature(c.signature);

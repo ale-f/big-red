@@ -38,6 +38,7 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			checkEligibility(b, c.getCreator());
+			checkName(c, c.port, c.getCreator().getNamespace(), c.name);
 		} else if (b instanceof ChangeRemovePort) {
 			ChangeRemovePort c = (ChangeRemovePort)b;
 			Control co = c.getCreator().getControl();
@@ -46,8 +47,9 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 			/* do nothing */
 		} else if (b instanceof PortSpec.ChangeName) {
 			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
-			if (c.name.trim().length() == 0)
-				throw new ChangeRejectedException(b, "Port names must not be empty");
+			checkName(c, c.getCreator(),
+					c.getCreator().getControl(getScratch()).getNamespace(),
+					c.name);
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
 			checkEligibility(b, c.getCreator());

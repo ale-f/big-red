@@ -58,7 +58,10 @@ public class PortSpec extends ModelObject implements IPort {
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			context.setProperty(getCreator(), PortSpec.PROPERTY_NAME, name);
+			PortSpec cr = getCreator();
+			context.setProperty(cr, PROPERTY_NAME,
+					cr.getControl(context).getNamespace().rename(
+							context, cr.getName(context), name));
 		}
 	}
 	
@@ -95,6 +98,9 @@ public class PortSpec extends ModelObject implements IPort {
 					c, Control.PROPERTY_PORT, c.getPorts()).
 				remove(getCreator());
 			context.setProperty(getCreator(), PortSpec.PROPERTY_CONTROL, null);
+			
+			c.getNamespace().remove(getCreator().getName(context));
+			context.setProperty(getCreator(), PROPERTY_NAME, null);
 		}
 	}
 	

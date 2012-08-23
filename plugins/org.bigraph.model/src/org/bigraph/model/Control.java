@@ -8,6 +8,8 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.interfaces.IControl;
+import org.bigraph.model.names.HashMapNamespace;
+import org.bigraph.model.names.Namespace;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -165,8 +167,10 @@ public class Control extends ModelObject implements IControl {
 			context.<PortSpec>getModifiableList(
 					getCreator(), Control.PROPERTY_PORT, getPorts()).
 				add(port);
-			context.setProperty(port, PortSpec.PROPERTY_NAME, name);
 			context.setProperty(port, PortSpec.PROPERTY_CONTROL, getCreator());
+			
+			getCreator().getNamespace().put(context, name, port);
+			context.setProperty(port, PortSpec.PROPERTY_NAME, name);
 		}
 	}
 
@@ -224,6 +228,12 @@ public class Control extends ModelObject implements IControl {
 				return "passive";
 			}
 		};
+	}
+	
+	private Namespace<PortSpec> ns = new HashMapNamespace<PortSpec>();
+	
+	public Namespace<PortSpec> getNamespace() {
+		return ns;
 	}
 	
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
