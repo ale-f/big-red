@@ -201,15 +201,15 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		UI.chain(new Label(self, SWT.RIGHT)).text("Reaction rules:").done().
 			setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		rules = new ListViewer(self);
-		UI.setProviders(rules, new SimulationSpecRRContentProvider(rules),
-			new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					IFile f = getFileFrom((ModelObject)element);
-					if (f != null) {
-						return f.getProjectRelativePath().toString();
-					} else return "(embedded rule)";
-				}
+		rules.setContentProvider(new SimulationSpecRRContentProvider(rules));
+		rules.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				IFile f = getFileFrom((ModelObject)element);
+				if (f != null) {
+					return f.getProjectRelativePath().toString();
+				} else return "(embedded rule)";
+			}
 		});
 		rules.getList().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -281,13 +281,14 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		new Label(self, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
 		UI.chain(new Label(self, SWT.RIGHT)).text("Tool:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-		final ComboViewer cv = UI.setProviders(new ComboViewer(self),
-			new ArrayContentProvider(), new LabelProvider() {
-				@Override
-				public String getText(Object element) {
-					return ((IFactory<?>)element).getName();
-				}
-			});
+		final ComboViewer cv = new ComboViewer(self);
+		cv.setContentProvider(new ArrayContentProvider());
+		cv.setLabelProvider(new LabelProvider() {
+			@Override
+			public String getText(Object element) {
+				return ((IFactory<?>)element).getName();
+			}
+		});
 		cv.getCombo().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		ArrayList<IFactory<IInteractionManager>> exporters = getIMFactories();
 		cv.setInput(exporters);

@@ -5,9 +5,6 @@ import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.ContentViewer;
-import org.eclipse.jface.viewers.IContentProvider;
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
@@ -246,13 +243,6 @@ public final class UI {
 	 */
 	public static void asyncExec(Runnable r) {
 		getDisplay().asyncExec(r);
-	}
-	
-	public static <T extends ContentViewer> T setProviders(T viewer,
-			IContentProvider cp, ILabelProvider lp) {
-		viewer.setContentProvider(cp);
-		viewer.setLabelProvider(lp);
-		return viewer;
 	}
 
 	public static <T extends Control> ChainHelper<T> chain(T object) {
