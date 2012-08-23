@@ -36,7 +36,7 @@ public abstract class Layoutable extends ModelObject {
 	}
 
 	public class ChangeName extends LayoutableChange {
-		public String newName;
+		public final String newName;
 		
 		protected ChangeName(String newName) {
 			this.newName = newName;

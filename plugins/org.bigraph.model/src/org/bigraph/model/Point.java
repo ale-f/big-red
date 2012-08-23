@@ -29,7 +29,8 @@ public abstract class Point extends Layoutable implements IPoint {
 	}
 	
 	public class ChangeConnect extends PointChange {
-		public Link link;
+		public final Link link;
+		
 		public ChangeConnect(Link link) {
 			this.link = link;
 		}

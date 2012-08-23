@@ -31,8 +31,8 @@ public abstract class Container extends Layoutable {
 	}
 	
 	public class ChangeAddChild extends ContainerChange {
-		public Layoutable child;
-		public String name;
+		public final Layoutable child;
+		public final String name;
 		
 		public ChangeAddChild(Layoutable child, String name) {
 			this.child = child;
