@@ -148,7 +148,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			}
 		} else if (source instanceof PortSpec) {
 			if (ControlUtilities.SEGMENT.equals(name) ||
-				ControlUtilities.DISTANCE.equals(name))
+				ControlUtilities.DISTANCE.equals(name) ||
+				PortSpec.PROPERTY_NAME.equals(name))
 				redraw();
 		}
 	}
