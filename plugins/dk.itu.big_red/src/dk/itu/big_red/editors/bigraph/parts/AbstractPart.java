@@ -42,16 +42,16 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart
 		implements PropertyChangeListener, IBigraphPart {
 	private IPropertySource propertySource;
 	
-	protected IPropertySource createPropertySource() {
-		EditPartFactory f = getViewer().getEditPartFactory();
-		if (f instanceof IPropertySourceProvider) {
-			return ((IPropertySourceProvider)f).getPropertySource(getModel());
-		} else return null;
+	public static IPropertySource createPropertySource(EditPart e) {
+		EditPartFactory f = e.getViewer().getEditPartFactory();
+		return (f instanceof IPropertySourceProvider ?
+				((IPropertySourceProvider)f).getPropertySource(e.getModel()) :
+					null);
 	}
 	
 	protected final IPropertySource getPropertySource() {
 		return (propertySource != null ? propertySource :
-			(propertySource = createPropertySource()));
+			(propertySource = createPropertySource(this)));
 	}
 	
 	/**

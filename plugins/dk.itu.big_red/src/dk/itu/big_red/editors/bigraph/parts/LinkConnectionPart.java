@@ -9,7 +9,6 @@ import org.bigraph.model.OuterName;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
@@ -21,8 +20,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.views.properties.IPropertySource;
-import org.eclipse.ui.views.properties.IPropertySourceProvider;
-
 import dk.itu.big_red.editors.bigraph.EdgeCreationPolicy;
 import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
@@ -43,16 +40,9 @@ public class LinkConnectionPart extends AbstractConnectionEditPart
 		implements NodeEditPart, PropertyChangeListener {
 	private IPropertySource propertySource;
 	
-	protected IPropertySource createPropertySource() {
-		EditPartFactory f = getViewer().getEditPartFactory();
-		if (f instanceof IPropertySourceProvider) {
-			return ((IPropertySourceProvider)f).getPropertySource(getModel());
-		} else return null;
-	}
-	
 	protected final IPropertySource getPropertySource() {
 		return (propertySource != null ? propertySource :
-			(propertySource = createPropertySource()));
+			(propertySource = AbstractPart.createPropertySource(this)));
 	}
 	
 	/**
