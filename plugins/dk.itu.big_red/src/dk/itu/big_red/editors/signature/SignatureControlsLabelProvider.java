@@ -49,7 +49,8 @@ class SignatureControlsLabelProvider
 			return (Control.PROPERTY_NAME.equals(property) ||
 					ControlUtilities.SHAPE.equals(property) ||
 					ColourUtilities.FILL.equals(property) ||
-					ColourUtilities.OUTLINE.equals(property));
+					ColourUtilities.OUTLINE.equals(property) ||
+					ParameterUtilities.PARAMETER_POLICY.equals(property));
 		} else return false;
 	}
 	
