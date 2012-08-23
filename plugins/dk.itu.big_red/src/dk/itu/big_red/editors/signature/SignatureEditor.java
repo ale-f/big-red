@@ -247,6 +247,12 @@ implements PropertyChangeListener {
 				return (element instanceof Signature ? 1 :
 						element instanceof Control ? 2 : 0);
 			}
+			
+			@Override
+			public boolean isSorterProperty(Object element, String property) {
+				return (element instanceof Control &&
+						Control.PROPERTY_NAME.equals(property));
+			}
 		});
 		controls.setContentProvider(
 				new SignatureControlsContentProvider(controls));
