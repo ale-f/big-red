@@ -9,6 +9,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
@@ -152,17 +153,21 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 	}
 	
+	private static final PortSpec ps = new PortSpec();
+	
 	private IInputValidator getPortNameValidator(final PortSpec current) {
 		return new IInputValidator() {
 			@Override
 			public String isValid(String newText) {
-				if (newText.length() == 0)
-					return "Port names must not be empty.";
-				for (PortSpec i : getModel().getPorts())
-					if (i != current && i.getName().equals(newText))
-						return "This port name is already in use.";
-				return null;
-
+				IChange c = (current != null ?
+						current.changeName(newText) :
+						getModel().changeAddPort(ps, newText));
+				try {
+					getModel().getSignature().tryValidateChange(c);
+					return null;
+				} catch (ChangeRejectedException e) {
+					return e.getRationale();
+				}
 			}
 		};
 	}
