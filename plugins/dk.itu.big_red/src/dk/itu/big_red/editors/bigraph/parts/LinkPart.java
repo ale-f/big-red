@@ -13,11 +13,9 @@ import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
 import dk.itu.big_red.editors.bigraph.LayoutableLayoutPolicy;
 import dk.itu.big_red.model.ColourUtilities;
 
+import static org.bigraph.model.ModelObject.safeEquals;
+
 public abstract class LinkPart extends ConnectablePart {
-	private static final boolean cmp(Object o1, Object o2) {
-		return (o1 != null ? o1.equals(o2) : o1 == o2);
-	}
-	
 	public static final class Connection {
 		private Link link;
 		private Point point;
@@ -39,7 +37,8 @@ public abstract class LinkPart extends ConnectablePart {
 		public boolean equals(Object obj_) {
 			if (obj_ instanceof Connection) {
 				Connection obj = (Connection)obj_;
-				return (cmp(obj.link, link) && cmp(obj.point, point));
+				return (safeEquals(obj.link, link) &&
+						safeEquals(obj.point, point));
 			} else return false;
 		}
 		
