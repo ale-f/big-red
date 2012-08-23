@@ -3,7 +3,6 @@ package dk.itu.big_red.editors.signature;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import org.bigraph.model.Control;
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 

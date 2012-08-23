@@ -11,7 +11,6 @@ import org.eclipse.core.runtime.content.IContentType;
 
 import dk.itu.big_red.utilities.resources.Project;
 
-
 public abstract class SaverUtilities {
 	private SaverUtilities() {}
 	

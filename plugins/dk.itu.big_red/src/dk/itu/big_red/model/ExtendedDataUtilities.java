@@ -1,6 +1,5 @@
 package dk.itu.big_red.model;
 
-
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ExtendedDataNormaliser;

@@ -43,7 +43,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			if (layout.height< 30) {layout.height=30;}
 		}
 		
-		
 		cg.add(container.changeAddChild(child, name));
 		cg.add(LayoutUtilities.changeLayout(child, layout));
 		return this;

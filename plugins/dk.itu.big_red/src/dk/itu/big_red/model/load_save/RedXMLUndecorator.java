@@ -1,6 +1,5 @@
 package dk.itu.big_red.model.load_save;
 
-
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
 import org.bigraph.model.Edge;
