@@ -297,6 +297,9 @@ implements PropertyChangeListener {
 					return;
 				}
 				
+				boolean nested =
+						(currentControl.getSignature().getParent() != null);
+				
 				currentPolicy =
 					ParameterUtilities.getParameterPolicy(currentControl);
 				
@@ -316,8 +319,10 @@ implements PropertyChangeListener {
 										currentControl, null));
 					}
 				});
-				for (CNPF i : getNamePolicies())
-					createPolicyMenuItem(paramMenu, i);
+				if (!nested) {
+					for (CNPF i : getNamePolicies())
+						createPolicyMenuItem(paramMenu, i);
+				} else paramItem.setEnabled(false);
 				paramItem.setMenu(paramMenu);
 			}
 			
