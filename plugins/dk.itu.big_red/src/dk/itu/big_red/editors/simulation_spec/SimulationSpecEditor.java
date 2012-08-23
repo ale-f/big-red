@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -55,7 +56,6 @@ import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.StockButton;
-import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractNonGEFEditor
@@ -282,7 +282,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		
 		UI.chain(new Label(self, SWT.RIGHT)).text("Tool:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		final ComboViewer cv = UI.setProviders(new ComboViewer(self),
-			new ListContentProvider(), new LabelProvider() {
+			new ArrayContentProvider(), new LabelProvider() {
 				@Override
 				public String getText(Object element) {
 					return ((IFactory<?>)element).getName();

@@ -18,6 +18,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -50,7 +51,6 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
-import dk.itu.big_red.utilities.ui.jface.ListContentProvider;
 
 public class TextExportWizard extends Wizard implements IExportWizard {
 	@Override
@@ -108,7 +108,7 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 			Composite self = new Composite(parent, SWT.NONE);
 			self.setLayout(new GridLayout(1, true));
 			cv = new ComboViewer(self);
-			cv.setContentProvider(new ListContentProvider());
+			cv.setContentProvider(new ArrayContentProvider());
 			cv.setLabelProvider(new LabelProvider() {
 				@Override
 				public String getText(Object element) {
