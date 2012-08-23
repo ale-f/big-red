@@ -10,6 +10,7 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.interfaces.IControl;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
+import org.bigraph.model.names.policies.StringNamePolicy;
 
 /**
  * A Control is the bigraphical analogue of a <i>class</i> - a template from
@@ -230,7 +231,8 @@ public class Control extends ModelObject implements IControl {
 		};
 	}
 	
-	private Namespace<PortSpec> ns = new HashMapNamespace<PortSpec>();
+	private Namespace<PortSpec> ns = new HashMapNamespace<PortSpec>(
+			new StringNamePolicy());
 	
 	public Namespace<PortSpec> getNamespace() {
 		return ns;
