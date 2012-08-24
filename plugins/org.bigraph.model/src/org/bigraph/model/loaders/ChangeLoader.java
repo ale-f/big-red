@@ -7,6 +7,13 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 
 public abstract class ChangeLoader extends Loader implements IChangeLoader {
+	public ChangeLoader() {
+	}
+	
+	public ChangeLoader(Loader parent) {
+		super(parent);
+	}
+	
 	private ChangeGroup cg = new ChangeGroup();
 	private PropertyScratchpad scratch = new PropertyScratchpad();
 	

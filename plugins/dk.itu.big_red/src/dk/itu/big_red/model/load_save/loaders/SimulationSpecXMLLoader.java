@@ -6,6 +6,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.SignatureXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;
@@ -21,6 +22,13 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
+	public SimulationSpecXMLLoader() {
+	}
+	
+	public SimulationSpecXMLLoader(Loader parent) {
+		super(parent);
+	}
+	
 	@Override
 	public SimulationSpec importObject() throws LoadFailedException {
 		try {

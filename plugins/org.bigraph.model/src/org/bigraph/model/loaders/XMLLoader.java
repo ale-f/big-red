@@ -28,6 +28,13 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
+	public XMLLoader() {
+	}
+	
+	public XMLLoader(Loader parent) {
+		super(parent);
+	}
+	
 	private static final SchemaFactory sf;
 	private static final DocumentBuilderFactory dbf;
 	private static final DocumentBuilder db;

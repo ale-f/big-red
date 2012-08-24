@@ -8,6 +8,20 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Loader implements ILoader {
+	private final Loader parent;
+	
+	public Loader() {
+		this(null);
+	}
+	
+	public Loader(Loader parent) {
+		this.parent = parent;
+	}
+	
+	protected Loader getParent() {
+		return parent;
+	}
+	
 	private InputStream source = null;
 	
 	/**

@@ -24,6 +24,7 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.XMLLoader;
@@ -45,6 +46,13 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
+	public ReactionRuleXMLLoader() {
+	}
+	
+	public ReactionRuleXMLLoader(Loader parent) {
+		super(parent);
+	}
+	
 	private ReactionRule rr = null;
 	
 	@Override

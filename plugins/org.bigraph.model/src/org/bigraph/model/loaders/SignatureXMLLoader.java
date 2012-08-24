@@ -12,6 +12,13 @@ import org.w3c.dom.Element;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 public class SignatureXMLLoader extends XMLLoader {
+	public SignatureXMLLoader() {
+	}
+	
+	public SignatureXMLLoader(Loader parent) {
+		super(parent);
+	}
+	
 	private Signature sig;
 	
 	@Override

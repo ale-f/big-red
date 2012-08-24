@@ -18,6 +18,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.SignatureXMLLoader;
@@ -38,6 +39,13 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
  * @see BigraphXMLSaver
  */
 public class BigraphXMLLoader extends XMLLoader {
+	public BigraphXMLLoader() {
+	}
+	
+	public BigraphXMLLoader(Loader parent) {
+		super(parent);
+	}
+	
 	@Override
 	public Bigraph importObject() throws LoadFailedException {
 		try {
