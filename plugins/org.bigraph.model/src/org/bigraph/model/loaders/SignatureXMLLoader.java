@@ -29,6 +29,8 @@ public class SignatureXMLLoader extends XMLLoader {
 			Signature s = makeObject(d.getDocumentElement());
 			FileData.setFile(s, getFile());
 			return s;
+		} catch (LoadFailedException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}

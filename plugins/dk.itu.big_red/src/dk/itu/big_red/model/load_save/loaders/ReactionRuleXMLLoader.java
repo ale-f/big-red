@@ -63,10 +63,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			ReactionRule rr = makeObject(d.getDocumentElement());
 			FileData.setFile(rr, getFile());
 			return rr;
+		} catch (LoadFailedException e) {
+			throw e;
 		} catch (Exception e) {
-			if (e instanceof LoadFailedException) {
-				throw (LoadFailedException)e;
-			} else throw new LoadFailedException(e);
+			throw new LoadFailedException(e);
 		}
 	}
 

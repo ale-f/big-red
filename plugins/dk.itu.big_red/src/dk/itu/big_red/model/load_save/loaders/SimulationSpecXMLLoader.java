@@ -37,6 +37,8 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			SimulationSpec ss = makeObject(d.getDocumentElement());
 			FileData.setFile(ss, getFile());
 			return ss;
+		} catch (LoadFailedException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new LoadFailedException(e);
 		}
