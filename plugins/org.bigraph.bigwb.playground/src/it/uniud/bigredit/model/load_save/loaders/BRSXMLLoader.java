@@ -86,11 +86,10 @@ import it.uniud.bigredit.model.BRS;
 			
 			ChangeGroup cg = new ChangeGroup();
 			
-			SignatureXMLLoader si = new SignatureXMLLoader();
+			SignatureXMLLoader si = new SignatureXMLLoader(this);
 			Element signatureElement = getNamedChildElement(e, SIGNATURE, "signature");
 			if (signatureElement != null){
-				ss.setSignature(
-				si.setFile(getFile()).makeObject(signatureElement));
+				ss.setSignature(si.makeObject(signatureElement));
 				
 				//ss.setSignature(makeSignature(signatureElement));
 			}else{

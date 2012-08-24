@@ -215,7 +215,6 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 			throws LoadFailedException {
 		if (el == null)
 			return null;
-		loader.setFile(getFile());
 		String
 			src = getAttributeNS(el, myNS, "src"),
 			theirNS = el.getNamespaceURI();

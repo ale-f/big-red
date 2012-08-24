@@ -48,6 +48,14 @@ public abstract class Loader implements ILoader {
 	
 	@Override
 	public IFileWrapper getFile() {
+		IFileWrapper file = this.file;
+		Loader parent;
+		if (file == null && (parent = getParent()) != null)
+			file = parent.getFile();
+		return file;
+	}
+	
+	protected IFileWrapper getFileRaw() {
 		return file;
 	}
 	
