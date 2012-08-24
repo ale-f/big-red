@@ -75,8 +75,7 @@ public class BigraphXMLLoader extends XMLLoader {
 				selectFirst(
 					getNamedChildElement(e, SIGNATURE, "signature"),
 					getNamedChildElement(e, BIGRAPH, "signature")),
-				BIGRAPH, Signature.class, new SignatureXMLLoader(this).
-					addNewUndecorators(getUndecorators()));
+				BIGRAPH, Signature.class, new SignatureXMLLoader(this));
 		if (s != null) {
 			bigraph.setSignature(s);
 		} else throw new LoadFailedException(

@@ -54,8 +54,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 				selectFirst(
 					getNamedChildElement(e, SIGNATURE, "signature"),
 					getNamedChildElement(e, SPEC, "signature")),
-				SPEC, Signature.class, new SignatureXMLLoader(this).
-					addNewUndecorators(getUndecorators()));
+				SPEC, Signature.class, new SignatureXMLLoader(this));
 		if (s != null)
 			addChange(ss.changeSignature(s));
 		
@@ -68,8 +67,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			if ((SPEC.equals(ns) || RULE.equals(ns)) &&
 					"rule".equals(n.getLocalName())) {
 				ReactionRule rr = loadSub((Element)n, SPEC, ReactionRule.class,
-						new ReactionRuleXMLLoader(this).
-							addNewUndecorators(getUndecorators()));
+						new ReactionRuleXMLLoader(this));
 				if (rr != null)
 					addChange(ss.changeAddRule(rr));
 			}
@@ -79,8 +77,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 				selectFirst(
 					getNamedChildElement(e, BIGRAPH, "bigraph"),
 					getNamedChildElement(e, SPEC, "model")),
-				SPEC, Bigraph.class, new BigraphXMLLoader(this).
-					addNewUndecorators(getUndecorators()));
+				SPEC, Bigraph.class, new BigraphXMLLoader(this));
 		if (b != null)
 			addChange(ss.changeModel(b));
 		

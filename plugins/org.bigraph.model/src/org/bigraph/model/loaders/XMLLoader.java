@@ -33,6 +33,8 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	
 	public XMLLoader(Loader parent) {
 		super(parent);
+		if (parent instanceof XMLLoader)
+			addNewUndecorators(((XMLLoader)parent).getUndecorators());
 	}
 	
 	private static final SchemaFactory sf;

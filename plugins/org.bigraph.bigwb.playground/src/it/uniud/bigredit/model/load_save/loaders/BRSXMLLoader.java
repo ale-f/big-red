@@ -65,18 +65,15 @@ import it.uniud.bigredit.model.BRS;
 		}
 		
 		private Signature makeSignature(Element e) throws LoadFailedException {
-			return loadSub(e, SPEC, Signature.class,
-					new SignatureXMLLoader().addNewUndecorators(getUndecorators()));
+			return loadSub(e, SPEC, Signature.class, new SignatureXMLLoader(this));
 		}
 		
 		private Bigraph makeBigraph(Element e) throws LoadFailedException {
-			return loadSub(e, SPEC, Bigraph.class,
-					new BigraphXMLLoader().addNewUndecorators(getUndecorators()));
+			return loadSub(e, SPEC, Bigraph.class, new BigraphXMLLoader(this));
 		}
 		
 		private ReactionRule makeRule(Element e) throws LoadFailedException {
-			return loadSub(e, SPEC, ReactionRule.class,
-					new ReactionRuleXMLLoader().addNewUndecorators(getUndecorators()));
+			return loadSub(e, SPEC, ReactionRule.class, new ReactionRuleXMLLoader(this));
 		}
 		
 		@Override
