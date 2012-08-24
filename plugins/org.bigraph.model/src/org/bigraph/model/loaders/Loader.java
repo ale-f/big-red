@@ -22,6 +22,19 @@ public abstract class Loader implements ILoader {
 		return parent;
 	}
 	
+	protected void cycleCheck() throws LoadFailedException {
+		Loader parent = getParent();
+		IFileWrapper mf = getFileRaw();
+		if (parent == null || mf == null)
+			return;
+		while (parent != null) {
+			IFileWrapper tf = parent.getFileRaw();
+			if (mf.equals(tf))
+				throw new LoadFailedException("Cycle detected: " + mf);
+			parent = parent.getParent();
+		}
+	}
+	
 	private InputStream source = null;
 	
 	/**

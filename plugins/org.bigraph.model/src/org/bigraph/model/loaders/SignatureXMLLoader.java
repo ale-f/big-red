@@ -61,6 +61,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	
 	@Override
 	public Signature makeObject(Element e) throws LoadFailedException {
+		cycleCheck();
 		sig = loadRelative(
 				getAttributeNS(e, SIGNATURE, "src"), Signature.class, this);
 		if (sig != null) {

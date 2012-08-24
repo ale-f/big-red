@@ -65,6 +65,7 @@ public class BigraphXMLLoader extends XMLLoader {
 	
 	@Override
 	public Bigraph makeObject(Element e) throws LoadFailedException {
+		cycleCheck();
 		bigraph = loadRelative(
 				getAttributeNS(e, BIGRAPH, "src"), Bigraph.class, this);
 		if (bigraph != null) {
