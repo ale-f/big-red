@@ -53,7 +53,7 @@ public class SignatureXMLLoader extends XMLLoader {
 	}
 	
 	private void makeSignature(Element e) throws LoadFailedException {
-		SignatureXMLLoader si = new SignatureXMLLoader();
+		SignatureXMLLoader si = new SignatureXMLLoader(this);
 		si.addNewUndecorators(getUndecorators()).setFile(getFile());
 		Signature t = si.makeObject(e);
 		if (t != null)

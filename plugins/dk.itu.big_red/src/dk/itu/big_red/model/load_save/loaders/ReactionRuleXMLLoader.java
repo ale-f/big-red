@@ -82,7 +82,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				selectFirst(
 					getNamedChildElement(e, BIGRAPH, "bigraph"),
 					getNamedChildElement(e, RULE, "redex")),
-				RULE, Bigraph.class, new BigraphXMLLoader().
+				RULE, Bigraph.class, new BigraphXMLLoader(this).
 					addNewUndecorators(getUndecorators())));
 		updateReactum(rr, getNamedChildElement(e, RULE, "changes"));
 		
