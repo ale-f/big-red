@@ -6,7 +6,6 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.w3c.dom.Element;
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 public class SignatureXMLSaver extends XMLSaver {
@@ -36,8 +35,6 @@ public class SignatureXMLSaver extends XMLSaver {
 	@Override
 	public Element processModel(Element e) throws SaveFailedException {
 		Signature s = getModel();
-		
-		applyAttributes(e, "xmlns:big-red", BIG_RED);
 		
 		for (Signature t : s.getSignatures())
 			appendChildIfNotNull(e, processOrReference(
