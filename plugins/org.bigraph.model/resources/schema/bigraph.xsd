@@ -443,10 +443,18 @@
 						<li>
 							<a id="site_alias" />
 							<code>alias</code> (<code>string</code>): this site's alias.
+							<br />
+							<strong>This attribute is deprecated.</strong>
 						</li>
 					</ul>
 					<p>
 						Additionally, attributes from other namespaces MAY be present on <code>site</code>s.
+					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						The <a href="#site_alias"><code>alias</code> attribute</a> is a legacy attribute, and appears in this schema as the result of a limitation in old versions of Big Red; applications are not required to take any action upon encountering it.
 					</p>
 					<hr />
 				</body>
