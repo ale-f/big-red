@@ -3,7 +3,7 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.interfaces.IPoint;
@@ -115,11 +115,11 @@ public abstract class Point extends Layoutable implements IPoint {
 		return (Link)getProperty(context, PROPERTY_LINK);
 	}
 	
-	public LayoutableChange changeConnect(Link l) {
+	public IChange changeConnect(Link l) {
 		return new ChangeConnect(l);
 	}
 	
-	public LayoutableChange changeDisconnect() {
+	public IChange changeDisconnect() {
 		return new ChangeDisconnect();
 	}
 	
@@ -182,7 +182,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public Change createChange(PropertyScratchpad context, Resolver r)
+		public IChange createChange(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
 			Point p = point.lookup(context, r);
 			if (p == null)
@@ -233,7 +233,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public Change createChange(PropertyScratchpad context, Resolver r)
+		public IChange createChange(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
 			Point p = point.lookup(context, r);
 			if (point == null)

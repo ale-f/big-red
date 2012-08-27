@@ -4,6 +4,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.interfaces.ILink;
 import org.bigraph.model.interfaces.INode;
 import org.bigraph.model.interfaces.IPort;
@@ -152,11 +153,11 @@ public class PortSpec extends ModelObject implements IPort {
 		return null;
 	}
 	
-	public ChangeName changeName(String name) {
+	public IChange changeName(String name) {
 		return new ChangeName(name);
 	}
 	
-	public ChangeRemovePort changeRemove() {
+	public IChange changeRemove() {
 		return new ChangeRemovePort();
 	}
 	

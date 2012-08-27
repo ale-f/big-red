@@ -6,6 +6,7 @@ import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -106,7 +107,7 @@ public abstract class Container extends Layoutable {
 		return c;
 	}
 	
-	public ContainerChange changeAddChild(Layoutable child, String name) {
+	public IChange changeAddChild(Layoutable child, String name) {
 		return new ChangeAddChild(child, name);
 	}
 	
@@ -203,7 +204,7 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public Change createChange(PropertyScratchpad context, Resolver r)
+		public IChange createChange(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
 			Container c = parent.lookup(context, r);
 			if (c != null) {

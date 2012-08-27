@@ -183,23 +183,23 @@ public abstract class ModelObject {
 		return getClass().getSimpleName();
 	}
 	
-	public Change changeExtendedData(String key, Object newValue) {
+	public IChange changeExtendedData(String key, Object newValue) {
 		return changeExtendedData(key, newValue, null);
 	}
 	
-	public Change changeExtendedData(
+	public IChange changeExtendedData(
 			String key, Object newValue, ExtendedDataValidator validator) {
 		return changeExtendedData(key, newValue, validator, null);
 	}
 	
-	public Change changeExtendedData(String key, Object newValue,
+	public IChange changeExtendedData(String key, Object newValue,
 			ExtendedDataValidator immediateValidator,
 			ExtendedDataValidator finalValidator) {
 		return changeExtendedData(
 				key, newValue, immediateValidator, finalValidator, null);
 	}
 	
-	public Change changeExtendedData(String key, Object newValue,
+	public IChange changeExtendedData(String key, Object newValue,
 			ExtendedDataValidator immediateValidator,
 			ExtendedDataValidator finalValidator,
 			ExtendedDataNormaliser normaliser) {
@@ -416,7 +416,7 @@ public abstract class ModelObject {
 		}
 
 		@Override
-		public Change createChange(PropertyScratchpad context, Resolver r)
+		public IChange createChange(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
 			ModelObject m = target.lookup(context, r);
 			if (m == null)

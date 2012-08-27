@@ -7,6 +7,7 @@ import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.interfaces.IControl;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -154,7 +155,7 @@ public class Control extends ModelObject implements IControl {
 		
 		@Override
 		public ChangeRemovePort inverse() {
-			return port.changeRemove();
+			return port.new ChangeRemovePort();
 		}
 		
 		@Override
@@ -374,19 +375,19 @@ public class Control extends ModelObject implements IControl {
 		super.dispose();
 	}
 	
-	public Change changeName(String name) {
+	public IChange changeName(String name) {
 		return new ChangeName(name);
 	}
 	
-	public ChangeKind changeKind(Kind kind) {
+	public IChange changeKind(Kind kind) {
 		return new ChangeKind(kind);
 	}
 	
-	public ChangeAddPort changeAddPort(PortSpec port, String name) {
+	public IChange changeAddPort(PortSpec port, String name) {
 		return new ChangeAddPort(port, name);
 	}
 	
-	public ChangeRemoveControl changeRemove() {
+	public IChange changeRemove() {
 		return new ChangeRemoveControl();
 	}
 	

@@ -339,15 +339,15 @@ public class Signature extends ModelObject
 		}
 	}
 	
-	public ChangeAddControl changeAddControl(Control control, String name) {
+	public IChange changeAddControl(Control control, String name) {
 		return new ChangeAddControl(control, name);
 	}
 	
-	public ChangeAddSignature changeAddSignature(Signature signature) {
+	public IChange changeAddSignature(Signature signature) {
 		return new ChangeAddSignature(signature);
 	}
 	
-	public ChangeRemoveSignature changeRemoveSignature() {
+	public IChange changeRemoveSignature() {
 		return new ChangeRemoveSignature();
 	}
 	

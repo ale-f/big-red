@@ -206,19 +206,19 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		return model;
 	}
 	
-	public ChangeSignature changeSignature(Signature signature) {
+	public IChange changeSignature(Signature signature) {
 		return new ChangeSignature(signature);
 	}
 	
-	public ChangeAddRule changeAddRule(ReactionRule rule) {
+	public IChange changeAddRule(ReactionRule rule) {
 		return new ChangeAddRule(rule);
 	}
 	
-	public ChangeRemoveRule changeRemoveRule(ReactionRule rule) {
+	public IChange changeRemoveRule(ReactionRule rule) {
 		return new ChangeRemoveRule(rule);
 	}
 
-	public ChangeModel changeModel(Bigraph model) {
+	public IChange changeModel(Bigraph model) {
 		return new ChangeModel(model);
 	}
 	
