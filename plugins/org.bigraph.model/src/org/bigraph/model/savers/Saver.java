@@ -53,11 +53,11 @@ public abstract class Saver implements ISaver {
 	protected class Option extends SaverOption {
 		private final String id;
 		
-		protected Option(String id, String name) {
+		public Option(String id, String name) {
 			this(id, name, null);
 		}
 		
-		protected Option(String id, String name, String description) {
+		public Option(String id, String name, String description) {
 			super(name, description);
 			this.id = id;
 		}
@@ -143,20 +143,6 @@ public abstract class Saver implements ISaver {
 	@Override
 	public final void addOption(ISaverOption d) {
 		options.add(d);
-	}
-	
-	/**
-	 * @see #addOption(Option)
-	 */
-	protected final void addOption(String id, String name) {
-		addOption(new Option(id, name));
-	}
-	
-	/**
-	 * @see #addOption(Option)
-	 */
-	protected final void addOption(String id, String name, String description) {
-		addOption(new Option(id, name, description));
 	}
 	
 	/**

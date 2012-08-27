@@ -38,7 +38,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	private boolean namedRules = true;
 	
 	{
-		addOption("NameRules", "Export named rules");
+		addOption(new Option("NameRules", "Export named rules"));
 	}
 	
 	@Override

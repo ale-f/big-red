@@ -17,6 +17,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.resources.IFileWrapper;
+import org.bigraph.model.savers.Saver.Option;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -52,8 +53,7 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	private boolean useDefaultNamespace = false;
 	
 	{
-		addOption(OPTION_DEFAULT_NS, "Use a default namespace",
-			"Don't use a namespace for the basic document elements.");
+		addOption(new Option(OPTION_DEFAULT_NS, "Use a default namespace", "Don't use a namespace for the basic document elements."));
 	}
 	
 	@Override

@@ -53,8 +53,8 @@ public class BigraphTikZSaver extends Saver {
 		"BigraphTikZExportWholeDocument";
 	
 	{
-		addOption(OPTION_COMPLETE_DOCUMENT,
-				"Produce a complete LaTeX document");
+		addOption(new Option(OPTION_COMPLETE_DOCUMENT,
+				"Produce a complete LaTeX document"));
 	}
 	
 	@Override
