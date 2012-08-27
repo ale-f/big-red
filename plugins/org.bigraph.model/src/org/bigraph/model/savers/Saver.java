@@ -19,35 +19,59 @@ public abstract class Saver {
 		return file;
 	}
 	
-	public class Option {
-		private final String id, name, description;
+	public interface ISaverOption {
+		String getName();
+		String getDescription();
+		
+		Object get();
+		void set(Object value);
+	}
+	
+	public static abstract class SaverOption implements ISaverOption {
+		private final String name, description;
+		
+		public SaverOption(String name) {
+			this(name, null);
+		}
+		
+		public SaverOption(String name, String description) {
+			this.name = name;
+			this.description = description;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
+		}
+		
+		@Override
+		public String getDescription() {
+			return description;
+		}
+	}
+	
+	protected class Option extends SaverOption {
+		private final String id;
 		
 		protected Option(String id, String name) {
 			this(id, name, null);
 		}
 		
 		protected Option(String id, String name, String description) {
+			super(name, description);
 			this.id = id;
-			this.name = name;
-			this.description = description;
 		}
 		
 		public String getID() {
 			return id;
 		}
 		
-		public String getName() {
-			return name;
-		}
-
-		public String getDescription() {
-			return description;
-		}
-		
+		@Override
 		public Object get() {
 			return getOption(id);
 		}
 		
+		@Override
 		public void set(Object o) {
 			setOption(id, o);
 		}
@@ -110,13 +134,13 @@ public abstract class Saver {
 	 */
 	public abstract void exportObject() throws SaveFailedException;
 	
-	private ArrayList<Option> options = new ArrayList<Option>();
+	private ArrayList<ISaverOption> options = new ArrayList<ISaverOption>();
 	
 	/**
 	 * Adds an option to this {@link Saver}.
 	 * @param d an {@link Option} specifying the new option
 	 */
-	protected final void addOption(Option d) {
+	public final void addOption(ISaverOption d) {
 		options.add(d);
 	}
 	
@@ -138,7 +162,7 @@ public abstract class Saver {
 	 * Returns all of the options supported by this {@link Saver}.
 	 * @return a list of {@link Option}s
 	 */
-	public final List<Option> getOptions() {
+	public final List<? extends ISaverOption> getOptions() {
 		return options;
 	}
 	

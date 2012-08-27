@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Widget;
 
 import org.bigraph.model.savers.Saver;
-import org.bigraph.model.savers.Saver.Option;;
+import org.bigraph.model.savers.Saver.ISaverOption;;
 
 public class SaverOptionsGroup {
 	private Composite optionsGroup;
@@ -48,7 +48,7 @@ public class SaverOptionsGroup {
 		getGroup().pack();
 		if (s != null && s.getOptions().size() > 0) {
 			ArrayList<Control> optionControls = new ArrayList<Control>();
-			for (final Option d : s.getOptions()) {
+			for (final ISaverOption d : s.getOptions()) {
 				Composite opt = new Composite(getGroup(), SWT.NONE);
 				opt.setLayout(new RowLayout(SWT.VERTICAL));
 				optionControls.add(opt);
