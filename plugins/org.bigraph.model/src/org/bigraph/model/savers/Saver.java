@@ -7,7 +7,7 @@ import java.util.List;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.resources.IFileWrapper;
 
-public abstract class Saver {
+public abstract class Saver implements ISaver {
 	private IFileWrapper file;
 	
 	public Saver setFile(IFileWrapper file) {
@@ -140,6 +140,7 @@ public abstract class Saver {
 	 * Adds an option to this {@link Saver}.
 	 * @param d an {@link Option} specifying the new option
 	 */
+	@Override
 	public final void addOption(ISaverOption d) {
 		options.add(d);
 	}
@@ -162,6 +163,7 @@ public abstract class Saver {
 	 * Returns all of the options supported by this {@link Saver}.
 	 * @return a list of {@link Option}s
 	 */
+	@Override
 	public final List<? extends ISaverOption> getOptions() {
 		return options;
 	}

@@ -24,7 +24,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
-public abstract class XMLSaver extends Saver {
+public abstract class XMLSaver extends Saver implements IXMLSaver {
 	private static final TransformerFactory tf;
 	private static final DOMImplementation impl;
 	static {
