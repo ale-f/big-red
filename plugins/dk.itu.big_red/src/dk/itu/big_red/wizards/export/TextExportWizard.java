@@ -38,10 +38,13 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.views.navigator.ResourceComparator;
 
 import dk.itu.big_red.editors.assistants.IFactory;
@@ -51,6 +54,7 @@ import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.SaverOptionsGroup;
+import dk.itu.big_red.utilities.ui.UI;
 
 public class TextExportWizard extends Wizard implements IExportWizard {
 	@Override
@@ -63,7 +67,8 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 	public boolean performFinish() {
 		try {
 			IOAdapter io = new IOAdapter();
-			selectedExporter.setModel(new EclipseFileWrapper(selectedFile).load());
+			selectedExporter.setModel(
+					new EclipseFileWrapper(selectedFile).load());
 			selectedExporter.setOutputStream(io.getOutputStream());
 			selectedExporter.exportObject();
 			new ExportResults(
@@ -202,6 +207,14 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 			if (i instanceof IResource) {
 				initialResource = (IResource)i;
 				break;
+			}
+		}
+		if (initialResource == null) {
+			IEditorPart ep = UI.getWorkbenchPage().getActiveEditor();
+			if (ep != null) {
+				IEditorInput ei = ep.getEditorInput();
+				if (ei instanceof FileEditorInput)
+					initialResource = ((FileEditorInput)ei).getFile();
 			}
 		}
 		
