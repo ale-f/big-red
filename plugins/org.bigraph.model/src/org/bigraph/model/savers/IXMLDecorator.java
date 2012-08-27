@@ -6,5 +6,6 @@ import org.w3c.dom.Element;
 public interface IXMLDecorator {
 	IXMLDecorator newInstance();
 	
+	void setSaver(Saver saver);
 	void decorate(ModelObject object, Element el);
 }

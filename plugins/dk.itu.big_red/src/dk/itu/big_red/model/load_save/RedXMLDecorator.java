@@ -18,6 +18,8 @@ import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
 import org.bigraph.model.savers.IXMLDecorator;
+import org.bigraph.model.savers.Saver;
+import org.bigraph.model.savers.Saver.SaverOption;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -32,9 +34,30 @@ import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 
 public class RedXMLDecorator implements IXMLDecorator {
+	private boolean generateAppearance = true;
+	
+	@Override
+	public void setSaver(Saver saver) {
+		saver.addOption(new SaverOption("Generate appearance data",
+				"Include Big Red-specific appearance data in the output.") {
+			@Override
+			public Object get() {
+				return generateAppearance;
+			}
+			
+			@Override
+			public void set(Object value) {
+				if (value instanceof Boolean)
+					generateAppearance = (Boolean)value;
+			}
+		});
+	}
+	
 	@Override
 	public RedXMLDecorator newInstance() {
-		return new RedXMLDecorator();
+		RedXMLDecorator d = new RedXMLDecorator();
+		d.generateAppearance = generateAppearance;
+		return d;
 	}
 	
 	public static Element rectangleToElement(Element e, Rectangle r) {
@@ -51,23 +74,7 @@ public class RedXMLDecorator implements IXMLDecorator {
 		
 		if (object instanceof Control) {
 			Control c = (Control)object;
-			Element aE = doc.createElementNS(BIG_RED, "big-red:shape");
 			
-			Object shape = ControlUtilities.getShape(c);
-			aE.setAttributeNS(BIG_RED, "big-red:shape",
-					(shape instanceof PointList ? "polygon" : "oval"));
-			
-			if (shape instanceof PointList) {
-				PointList pl = (PointList)shape;
-				for (int i = 0; i < pl.size(); i++) {
-					Point p = pl.getPoint(i);
-					Element pE = doc.createElementNS(BIG_RED, "big-red:point");
-					pE.setAttributeNS(BIG_RED, "big-red:x", "" + p.x);
-					pE.setAttributeNS(BIG_RED, "big-red:y", "" + p.y);
-					aE.appendChild(pE);
-				}
-			}
-
 			INamePolicy parameterPolicy =
 					ParameterUtilities.getParameterPolicy(c);
 			String policyName = null;
@@ -81,19 +88,42 @@ public class RedXMLDecorator implements IXMLDecorator {
 			if (policyName != null)
 				el.setAttributeNS(PARAM, "param:type", policyName);
 			
-			el.setAttributeNS(BIG_RED, "big-red:label",
-					ControlUtilities.getLabel(c));
-			el.appendChild(aE);
+			if (generateAppearance) {
+				Element aE = doc.createElementNS(BIG_RED, "big-red:shape");
+				
+				Object shape = ControlUtilities.getShape(c);
+				aE.setAttributeNS(BIG_RED, "big-red:shape",
+						(shape instanceof PointList ? "polygon" : "oval"));
+				
+				if (shape instanceof PointList) {
+					PointList pl = (PointList)shape;
+					for (int i = 0; i < pl.size(); i++) {
+						Point p = pl.getPoint(i);
+						Element pE =
+								doc.createElementNS(BIG_RED, "big-red:point");
+						pE.setAttributeNS(BIG_RED, "big-red:x", "" + p.x);
+						pE.setAttributeNS(BIG_RED, "big-red:y", "" + p.y);
+						aE.appendChild(pE);
+					}
+				}
+			
+				el.setAttributeNS(BIG_RED, "big-red:label",
+						ControlUtilities.getLabel(c));
+				el.appendChild(aE);
+			}
 			/* continue */
 		} else if (object instanceof PortSpec) {
 			PortSpec p = (PortSpec)object;
 			
-			Element pA =
-				doc.createElementNS(BIG_RED, "big-red:port-appearance");
-			pA.setAttributeNS(BIG_RED, "big-red:segment", "" + ControlUtilities.getSegment(p));
-			pA.setAttributeNS(BIG_RED, "big-red:distance", "" + ControlUtilities.getDistance(p));
-			
-			el.appendChild(pA);
+			if (generateAppearance) {
+				Element pA =
+					doc.createElementNS(BIG_RED, "big-red:port-appearance");
+				pA.setAttributeNS(BIG_RED, "big-red:segment",
+						"" + ControlUtilities.getSegment(p));
+				pA.setAttributeNS(BIG_RED, "big-red:distance",
+						"" + ControlUtilities.getDistance(p));
+				el.appendChild(pA);
+			}
 			return;
 		} else if (object instanceof Signature || object instanceof Bigraph ||
 				object instanceof Port || object instanceof SimulationSpec ||
@@ -129,7 +159,7 @@ public class RedXMLDecorator implements IXMLDecorator {
 		if (comment != null)
 			aE.setAttributeNS(BIG_RED, "big-red:comment", comment);
 		
-		if (aE.hasChildNodes() || aE.hasAttributes())
+		if (generateAppearance && (aE.hasChildNodes() || aE.hasAttributes()))
 			el.appendChild(aE);
 	}
 }

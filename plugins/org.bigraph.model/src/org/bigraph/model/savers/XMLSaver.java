@@ -229,6 +229,7 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 		if (decorators == null)
 			decorators = new ArrayList<IXMLDecorator>();
 		decorators.add(d);
+		d.setSaver(this);
 	}
 	
 	public XMLSaver addNewDecorators(
