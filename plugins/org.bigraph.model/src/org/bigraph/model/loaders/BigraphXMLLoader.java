@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save.loaders;
+package org.bigraph.model.loaders;
 
 import java.util.Locale;
 
@@ -17,12 +17,6 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.loaders.LoadFailedException;
-import org.bigraph.model.loaders.Loader;
-import org.bigraph.model.loaders.LoaderNotice;
-import org.bigraph.model.loaders.Schemas;
-import org.bigraph.model.loaders.SignatureXMLLoader;
-import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

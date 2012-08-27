@@ -5,6 +5,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
+import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.Schemas;

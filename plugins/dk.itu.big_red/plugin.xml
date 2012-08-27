@@ -251,7 +251,7 @@
    <extension
          point="dk.itu.big_red.import">
       <importer
-            class="dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader"
+            class="org.bigraph.model.loaders.BigraphXMLLoader"
             contentType="dk.itu.big_red.bigraph"
             icon="resources/icons/icon16.png"
             id="big_red.importer1"

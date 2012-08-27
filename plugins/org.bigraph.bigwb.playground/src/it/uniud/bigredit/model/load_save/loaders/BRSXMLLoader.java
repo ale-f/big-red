@@ -17,6 +17,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.SignatureXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;
@@ -25,7 +26,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
 import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.BRS;
