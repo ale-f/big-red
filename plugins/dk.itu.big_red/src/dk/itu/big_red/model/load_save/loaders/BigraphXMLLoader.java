@@ -27,16 +27,12 @@ import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
-
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 /**
  * XMLImport reads a XML document and produces a corresponding {@link Bigraph}.
  * @author alec
- * @see BigraphXMLSaver
  */
 public class BigraphXMLLoader extends XMLLoader {
 	public BigraphXMLLoader() {
@@ -109,12 +105,6 @@ public class BigraphXMLLoader extends XMLLoader {
 		}
 	}
 	
-	private void processSite(Element e, Site model) throws LoadFailedException {
-		String alias = getAttributeNS(e, BIGRAPH, "alias");
-		if (alias != null)
-			addChange(ExtendedDataUtilities.changeAlias(model, alias));
-	}
-	
 	private void addChild(Container context, Element e) throws LoadFailedException {
 		ModelObject model = null;
 		boolean port = false;
@@ -149,8 +139,6 @@ public class BigraphXMLLoader extends XMLLoader {
 				n.getPort(getAttributeNS(e, BIGRAPH, "name")));
 		} else if (model instanceof InnerName) {
 			processPoint(e, (InnerName)model);
-		} else if (model instanceof Site) {
-			processSite(e, (Site)model);
 		}
 		
 		if (model != null)

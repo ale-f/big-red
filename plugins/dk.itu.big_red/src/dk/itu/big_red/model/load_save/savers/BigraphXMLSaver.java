@@ -21,9 +21,6 @@ import org.bigraph.model.savers.SignatureXMLSaver;
 import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.model.load_save.loaders.BigraphXMLLoader;
-
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
@@ -31,7 +28,6 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 /**
  * XMLSaver writes a {@link Bigraph} out as an XML document.
  * @author alec
- * @see BigraphXMLLoader
  */
 public class BigraphXMLSaver extends XMLSaver {
 	public BigraphXMLSaver() {
@@ -142,20 +138,12 @@ public class BigraphXMLSaver extends XMLSaver {
 				nodes.add(f =
 					processNode(newElement(BIGRAPH, "bigraph:node"), (Node)i));
 			} else if (i instanceof Site) {
-				sites.add(f =
-					processSite(newElement(BIGRAPH, "bigraph:site"), (Site)i));
+				sites.add(f = newElement(BIGRAPH, "bigraph:site"));
 			}
 			applyCommonProperties(f, i);
 		}
 		appendChildren(e, nodes);
 		appendChildren(e, sites);
-		return e;
-	}
-	
-	private Element processSite(Element e, Site s) throws SaveFailedException {
-		String alias = ExtendedDataUtilities.getAlias(s);
-		if (alias != null)
-			applyAttributes(e, "alias", alias);
 		return e;
 	}
 	

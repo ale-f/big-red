@@ -344,11 +344,19 @@
          point="dk.itu.big_red.xml">
       <decorator
             class="dk.itu.big_red.model.load_save.RedXMLDecorator"
-            id="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+            id="RedDecorator">
       </decorator>
       <undecorator
             class="dk.itu.big_red.model.load_save.RedXMLUndecorator"
-            id="http://www.itu.dk/research/pls/xmlns/2010/big-red">
+            id="RedUndecorator">
+      </undecorator>
+      <decorator
+            class="dk.itu.big_red.model.load_save.AliasSupport$Decorator"
+            id="AliasDecorator">
+      </decorator>
+      <undecorator
+            class="dk.itu.big_red.model.load_save.AliasSupport$Undecorator"
+            id="AliasUndecorator">
       </undecorator>
    </extension>
    <extension
