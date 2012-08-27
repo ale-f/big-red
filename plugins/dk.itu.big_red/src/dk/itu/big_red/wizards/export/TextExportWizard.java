@@ -12,6 +12,7 @@ import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.Saver;
+import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -165,8 +166,12 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 						@Override
 						public Saver newInstance() {
 							try {
-								return (Saver)
+								Saver s = (Saver)
 									ice.createExecutableExtension("class");
+								if (s instanceof XMLSaver)
+									SaverUtilities.installDecorators(
+											(XMLSaver)s);
+								return s;
 							} catch (CoreException e) {
 								return null;
 							}
