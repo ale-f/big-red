@@ -4,11 +4,11 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.XMLSaver;
 
 public class ReactionXMLSaver extends XMLSaver{

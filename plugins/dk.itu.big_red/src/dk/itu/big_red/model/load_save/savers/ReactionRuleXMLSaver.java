@@ -19,6 +19,7 @@ import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.draw2d.geometry.Rectangle;

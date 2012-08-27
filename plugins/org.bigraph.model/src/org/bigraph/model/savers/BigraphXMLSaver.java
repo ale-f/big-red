@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save.savers;
+package org.bigraph.model.savers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +16,6 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
-import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.savers.SignatureXMLSaver;
-import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;

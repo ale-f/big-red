@@ -3,6 +3,7 @@ package dk.itu.big_red.wizards.creation;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.FileData;
+import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -13,7 +14,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 
-import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.Project;

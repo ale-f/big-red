@@ -292,7 +292,7 @@
          </description>
       </exporter>
       <exporter
-            class="dk.itu.big_red.model.load_save.savers.BigraphXMLSaver"
+            class="org.bigraph.model.savers.BigraphXMLSaver"
             contentType="dk.itu.big_red.bigraph"
             exports="org.bigraph.model.Bigraph"
             icon="resources/icons/icon16.png"

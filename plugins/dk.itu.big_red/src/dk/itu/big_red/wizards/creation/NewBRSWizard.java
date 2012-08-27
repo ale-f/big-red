@@ -4,6 +4,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
+import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.SignatureXMLSaver;
 import org.eclipse.core.resources.IFile;
@@ -15,7 +16,6 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
-import dk.itu.big_red.model.load_save.savers.BigraphXMLSaver;
 import dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
