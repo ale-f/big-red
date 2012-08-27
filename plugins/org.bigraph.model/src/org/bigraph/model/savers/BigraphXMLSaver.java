@@ -19,7 +19,6 @@ import org.bigraph.model.Site;
 import org.w3c.dom.Element;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 /**
@@ -43,30 +42,6 @@ public class BigraphXMLSaver extends XMLSaver {
 		return this;
 	}
 	
-	private boolean exportAppearance = true;
-	
-	public static final String
-		OPTION_APPEARANCE = "BigraphXMLSaverAppearance";
-	
-	{
-		addOption(OPTION_APPEARANCE, "Export appearance data",
-			"Include Big Red-specific appearance information in the output.");
-	}
-	
-	@Override
-	public Object getOption(String id) {
-		if (id.equals(OPTION_APPEARANCE)) {
-			return exportAppearance;
-		} else return super.getOption(id);
-	}
-	
-	@Override
-	public void setOption(String id, Object value) {
-		if (id.equals(OPTION_APPEARANCE)) {
-			exportAppearance = (Boolean)value;
-		} else super.setOption(id, value);
-	}
-	
 	@Override
 	public void exportObject() throws SaveFailedException {
 		setDocument(createDocument(BIGRAPH, "bigraph:bigraph"));
@@ -78,8 +53,6 @@ public class BigraphXMLSaver extends XMLSaver {
 	public Element processModel(Element e) throws SaveFailedException {
 		Bigraph obj = getModel();
 		
-		if (exportAppearance)
-			applyAttributes(getDocumentElement(), "xmlns:big-red", BIG_RED);
 		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(SIGNATURE, "signature:signature"),
