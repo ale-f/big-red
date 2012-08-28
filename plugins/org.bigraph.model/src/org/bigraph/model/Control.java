@@ -254,7 +254,7 @@ public class Control extends ModelObject implements IControl {
 		c.setKind(getKind());
 		
 		for (PortSpec p : getPorts())
-			c.addPort(p.clone(m));
+			c.addPort(p.clone(c));
 		
 		return c;
 	}

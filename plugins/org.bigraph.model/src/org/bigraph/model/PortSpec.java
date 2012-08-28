@@ -108,9 +108,10 @@ public class PortSpec extends ModelObject implements IPort {
 	private String name;
 	private Control control;
 	
-	protected PortSpec clone(Signature m) {
+	protected PortSpec clone(Control c) {
 		PortSpec p = (PortSpec)super.clone();
 		p.setName(getName());
+		c.getNamespace().put(p.getName(), p);
 		return p;
 	}
 	
