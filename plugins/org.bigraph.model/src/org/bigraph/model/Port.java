@@ -11,18 +11,19 @@ import org.bigraph.model.interfaces.IPort;
  * @author alec
  */
 public class Port extends Point implements IPort {
-	private PortSpec spec;
+	private final PortSpec spec;
 	
-	private void setSpec(PortSpec spec) {
-		this.spec = spec;
+	@Override
+	public Port newInstance() {
+		return new Port(getSpec());
 	}
 	
 	public PortSpec getSpec() {
 		return spec;
 	}
 	
-	public Port(PortSpec i) {
-		setSpec(i);
+	public Port(PortSpec spec) {
+		this.spec = spec;
 	}
 	
 	@Override
@@ -43,15 +44,6 @@ public class Port extends Point implements IPort {
 	@Override
 	public INode getNode() {
 		return getParent();
-	}
-	
-	/**
-	 * This method should never be called; {@link Port}s are created only when
-	 * a {@link Control} is given to a {@link Node}.
-	 */
-	@Override
-	public Point clone() {
-		return null;
 	}
 	
 	public static final class Identifier extends Point.Identifier {
