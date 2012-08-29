@@ -50,33 +50,6 @@ public abstract class Saver implements ISaver {
 		}
 	}
 	
-	protected class Option extends SaverOption {
-		private final String id;
-		
-		public Option(String id, String name) {
-			this(id, name, null);
-		}
-		
-		public Option(String id, String name, String description) {
-			super(name, description);
-			this.id = id;
-		}
-		
-		public String getID() {
-			return id;
-		}
-		
-		@Override
-		public Object get() {
-			return getOption(id);
-		}
-		
-		@Override
-		public void set(Object o) {
-			setOption(id, o);
-		}
-	};
-	
 	private ModelObject model = null;
 	
 	/**
@@ -152,25 +125,5 @@ public abstract class Saver implements ISaver {
 	@Override
 	public final List<? extends ISaverOption> getOptions() {
 		return options;
-	}
-	
-	/**
-	 * Retrieves the value of the named option.
-	 * <p>Subclasses should override this method.
-	 * @param id the ID of one of this {@link Saver}'s options
-	 * @return the current value of this option, or <code>null</code>
-	 */
-	protected Object getOption(String id) {
-		return null;
-	}
-	
-	/**
-	 * Changes the value of the named option.
-	 * <p>Subclasses should override this method.
-	 * @param id the ID of one of this {@link Saver}'s options
-	 * @param value the option's new value
-	 */
-	protected void setOption(String id, Object value) {
-		return;
 	}
 }

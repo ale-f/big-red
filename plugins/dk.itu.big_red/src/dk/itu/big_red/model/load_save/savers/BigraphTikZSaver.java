@@ -53,22 +53,18 @@ public class BigraphTikZSaver extends Saver {
 		"BigraphTikZExportWholeDocument";
 	
 	{
-		addOption(new Option(OPTION_COMPLETE_DOCUMENT,
-				"Produce a complete LaTeX document"));
-	}
-	
-	@Override
-	public Object getOption(String id) {
-		if (id.equals(OPTION_COMPLETE_DOCUMENT)) {
-			return completeDocument;
-		} else return super.getOption(id);
-	}
-	
-	@Override
-	public void setOption(String id, Object value) {
-		if (id.equals(OPTION_COMPLETE_DOCUMENT)) {
-			completeDocument = (Boolean)value;
-		} else super.setOption(id, value);
+		addOption(new SaverOption(OPTION_COMPLETE_DOCUMENT,
+				"Produce a complete LaTeX document") {
+			@Override
+			public Object get() {
+				return completeDocument;
+			}
+			
+			@Override
+			public void set(Object value) {
+				completeDocument = (Boolean)value;
+			}
+		});
 	}
 	
 	@Override

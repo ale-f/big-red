@@ -17,7 +17,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.resources.IFileWrapper;
-import org.bigraph.model.savers.Saver.Option;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -53,21 +52,18 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	private boolean useDefaultNamespace = false;
 	
 	{
-		addOption(new Option(OPTION_DEFAULT_NS, "Use a default namespace", "Don't use a namespace for the basic document elements."));
-	}
-	
-	@Override
-	protected Object getOption(String id) {
-		if (OPTION_DEFAULT_NS.equals(id)) {
-			return useDefaultNamespace;
-		} else return super.getOption(id);
-	}
-	
-	@Override
-	protected void setOption(String id, Object value) {
-		if (OPTION_DEFAULT_NS.equals(id)) {
-			useDefaultNamespace = (Boolean)value;
-		} else super.setOption(id, value);
+		addOption(new SaverOption("Use a default namespace",
+				"Don't use a namespace for the basic document elements.") {
+			@Override
+			public Object get() {
+				return useDefaultNamespace;
+			}
+			
+			@Override
+			public void set(Object value) {
+				useDefaultNamespace = (Boolean)value;
+			}
+		});
 	}
 	
 	protected boolean defNSMatch(String nsURI) {

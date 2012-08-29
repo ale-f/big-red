@@ -38,21 +38,17 @@ public class SimulationSpecBigMCSaver extends Saver {
 	private boolean namedRules = true;
 	
 	{
-		addOption(new Option("NameRules", "Export named rules"));
-	}
-	
-	@Override
-	public Object getOption(String id) {
-		if (id.equals("NameRules")) {
-			return namedRules;
-		} else return super.getOption(id);
-	}
-	
-	@Override
-	public void setOption(String id, Object value) {
-		if (id.equals("NameRules")) {
-			namedRules = (Boolean)value;
-		} else super.setOption(id, value);
+		addOption(new SaverOption("Export named rules") {
+			@Override
+			public Object get() {
+				return namedRules;
+			}
+			
+			@Override
+			public void set(Object value) {
+				namedRules = (Boolean)value;
+			}
+		});
 	}
 	
 	private static Pattern p = Pattern.compile("[^a-zA-Z0-9_]");
