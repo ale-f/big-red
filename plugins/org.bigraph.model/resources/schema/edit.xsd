@@ -19,32 +19,19 @@
 		name="rename-id-subst" type="edit:named-id-subst-T"
 		substitutionGroup="edit:named-id-subst" abstract="true" />
 	
-	<xsd:group name="any-element">
-		<xsd:choice>
-			<xsd:any
-				namespace="##other"
-				processContents="lax" />
-			<xsd:element ref="edit:group" />
-			<xsd:element ref="edit:rename" />
-		</xsd:choice>
-	</xsd:group>
-	
 	<xsd:element name="edit">
 		<xsd:complexType>
 			<xsd:sequence minOccurs="0">
-				<xsd:group ref="edit:any-element"
-					minOccurs="0" maxOccurs="unbounded" />
+				<xsd:choice minOccurs="0"
+						maxOccurs="unbounded">
+					<xsd:any
+						namespace="##other"
+						processContents="lax" />
+					<xsd:element ref="edit:edit" />
+					<xsd:element ref="edit:rename" />
+				</xsd:choice>
 			</xsd:sequence>
 			<xsd:attribute name="src" type="xsd:string" />
-		</xsd:complexType>
-	</xsd:element>
-	
-	<xsd:element name="group">
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:group ref="edit:any-element"
-					minOccurs="0" maxOccurs="unbounded" />
-			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>
 	
@@ -58,6 +45,4 @@
 				use="required" />
 		</xsd:complexType>
 	</xsd:element>
-	
-	<xsd:element name="null-id" />
 </xsd:schema>
