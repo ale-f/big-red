@@ -3,6 +3,7 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
+import org.bigraph.model.assistants.validators.EditValidator;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -73,18 +74,18 @@ public class Edit extends ModelObject
 		}
 	}
 	
-	public class ChangeAddChild extends EditChange {
+	public class ChangeDescriptorAdd extends EditChange {
 		public final int index;
 		public final IChangeDescriptor descriptor;
 		
-		public ChangeAddChild(int index, IChangeDescriptor descriptor) {
+		public ChangeDescriptorAdd(int index, IChangeDescriptor descriptor) {
 			this.index = index;
 			this.descriptor = descriptor;
 		}
 		
 		@Override
-		public ChangeRemoveChild inverse() {
-			return new ChangeRemoveChild(index, descriptor);
+		public ChangeDescriptorRemove inverse() {
+			return new ChangeDescriptorRemove(index, descriptor);
 		}
 		
 		@Override
@@ -95,18 +96,19 @@ public class Edit extends ModelObject
 		}
 	}
 	
-	public class ChangeRemoveChild extends EditChange {
+	public class ChangeDescriptorRemove extends EditChange {
 		public final int index;
 		public final IChangeDescriptor descriptor;
 		
-		public ChangeRemoveChild(int index, IChangeDescriptor descriptor) {
+		public ChangeDescriptorRemove(
+				int index, IChangeDescriptor descriptor) {
 			this.index = index;
 			this.descriptor = descriptor;
 		}
 		
 		@Override
-		public ChangeAddChild inverse() {
-			return new ChangeAddChild(index, descriptor);
+		public ChangeDescriptorAdd inverse() {
+			return new ChangeDescriptorAdd(index, descriptor);
 		}
 		
 		@Override
@@ -123,16 +125,29 @@ public class Edit extends ModelObject
 		return cdg.createChange(context, r);
 	}
 
+	private EditValidator validator = new EditValidator(this);
+	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		// TODO Auto-generated method stub
-		
+		validator.tryValidateChange(b);
 	}
 
 	@Override
+	protected boolean doChange(IChange c_) {
+		if (super.doChange(c_)) {
+			/* do nothing */
+		} else if (c_ instanceof ChangeDescriptorAdd) {
+			
+		} else if (c_ instanceof ChangeDescriptorRemove) {
+			
+		} else return false;
+		return true;
+	}
+	
+	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		// TODO Auto-generated method stub
-		
+		tryValidateChange(b);
+		doChange(b);
 	}
 	
 	@Override
@@ -144,12 +159,13 @@ public class Edit extends ModelObject
 		} else return super.getProperty(name);
 	}
 	
-	public IChange changeAddChild(int index,
+	public IChange changeDescriptorAdd(int index,
 			IChangeDescriptor descriptor) {
-		return new ChangeAddChild(index, descriptor);
+		return new ChangeDescriptorAdd(index, descriptor);
 	}
 	
-	public IChange changeRemoveChild(int index, IChangeDescriptor descriptor) {
-		return new ChangeRemoveChild(index, descriptor);
+	public IChange changeDescriptorRemove(int index,
+			IChangeDescriptor descriptor) {
+		return new ChangeDescriptorRemove(index, descriptor);
 	}
 }
