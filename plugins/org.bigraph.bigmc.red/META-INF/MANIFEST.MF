@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: BigMC for Big Red
 Bundle-SymbolicName: org.bigraph.bigmc.red;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.0.1-DEVELOPMENT-qualifier
 Bundle-Activator: org.bigraph.bigmc.red.Activator
 Bundle-Vendor: Alexander Faithfull
 Require-Bundle: org.eclipse.ui,
