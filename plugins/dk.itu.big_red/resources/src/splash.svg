@@ -8,236 +8,113 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
    width="455"
    height="295"
-   id="svg2"
-   sodipodi:version="0.32"
-   inkscape:version="0.48.1 r9760"
-   version="1.0"
-   sodipodi:docname="splash.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/alec/branches/big-red/content/splash.png"
-   inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     gridtolerance="10000"
-     guidetolerance="10"
-     objecttolerance="10"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="389.97008"
-     inkscape:cy="117.00516"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
-     showgrid="false"
-     showguides="true"
-     inkscape:guide-bbox="true"
-     inkscape:window-width="1440"
-     inkscape:window-height="877"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1" />
+   id="svg2">
   <defs
      id="defs4">
     <linearGradient
        id="linearGradient3163">
       <stop
-         style="stop-color:#ffffff;stop-opacity:1;"
-         offset="0"
-         id="stop3165" />
+         id="stop3165"
+         style="stop-color:#ffffff;stop-opacity:1"
+         offset="0" />
       <stop
-         style="stop-color:#ff0000;stop-opacity:1;"
-         offset="1"
-         id="stop3167" />
+         id="stop3167"
+         style="stop-color:#ff0000;stop-opacity:1"
+         offset="1" />
     </linearGradient>
-    <inkscape:perspective
-       id="perspective10"
-       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
-       inkscape:vp_z="744.09448 : 526.18109 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 526.18109 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <inkscape:perspective
-       id="perspective2837"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <inkscape:perspective
-       id="perspective2851"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <inkscape:perspective
-       id="perspective2865"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <inkscape:perspective
-       id="perspective2879"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <inkscape:perspective
-       id="perspective2975"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <inkscape:perspective
-       id="perspective7611"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
     <clipPath
-       id="clipPath3856"
-       clipPathUnits="userSpaceOnUse">
+       id="clipPath3856">
       <path
-         id="path3858"
-         d="m 380.864,356.312 378.348,0 0,69.83 -378.348,0 0,-69.83 z" />
+         d="m 380.864,356.312 378.348,0 0,69.83 -378.348,0 0,-69.83 z"
+         id="path3858" />
     </clipPath>
     <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3163"
+       cx="147.14287"
+       cy="68.14286"
+       r="36.42857"
+       fx="147.14287"
+       fy="68.14286"
        id="radialGradient3036"
-       gradientUnits="userSpaceOnUse"
-       cx="147.14287"
-       cy="68.14286"
-       fx="147.14287"
-       fy="68.14286"
-       r="36.42857" />
-    <inkscape:perspective
-       id="perspective2917"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <clipPath
-       id="clipPath4251"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path4253"
-         d="m 384.094,142.902 153.205,0 0,125.077 -153.205,0 0,-125.077 z" />
-    </clipPath>
-    <clipPath
-       id="clipPath3871"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path3873"
-         d="m 380.864,356.312 378.348,0 0,69.83 -378.348,0 0,-69.83 z" />
-    </clipPath>
-    <clipPath
-       id="clipPath2973"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path2975"
-         d="m 7.211,464.173 131.687,0 0,113.552 -131.687,0 0,-113.552 z" />
-    </clipPath>
-    <clipPath
-       id="clipPath2959"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path2961"
-         d="m -9.50394,604.78 151.98594,0 0,-614.28378 -151.98594,0 0,614.28378 z" />
-    </clipPath>
-    <clipPath
-       id="clipPath2949"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path2951"
-         d="m 0,0 841.89,0 0,595.276 L 0,595.276 0,0 z" />
-    </clipPath>
-    <inkscape:perspective
-       id="perspective2941"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <clipPath
-       id="clipPath8999"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path9001"
-         d="m 384.094,142.902 153.205,0 0,125.077 -153.205,0 0,-125.077 z" />
-    </clipPath>
-    <clipPath
-       id="clipPath8619"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path8621"
-         d="m 380.864,356.312 378.348,0 0,69.83 -378.348,0 0,-69.83 z" />
-    </clipPath>
-    <clipPath
-       id="clipPath7721"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path7723"
-         d="m 7.211,464.173 131.687,0 0,113.552 -131.687,0 0,-113.552 z" />
-    </clipPath>
-    <clipPath
-       id="clipPath7707"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path7709"
-         d="m -9.50394,604.78 151.98594,0 0,-614.28378 -151.98594,0 0,614.28378 z" />
-    </clipPath>
-    <clipPath
-       id="clipPath7697"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path7699"
-         d="m 0,0 841.89,0 0,595.276 L 0,595.276 0,0 z" />
-    </clipPath>
-    <inkscape:perspective
-       id="perspective7689"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <clipPath
-       id="clipPath15258"
-       clipPathUnits="userSpaceOnUse">
-      <path
-         id="path15260"
-         d="m 0,595.28 841.89,0 L 841.89,0 0,0 0,595.28 z" />
-    </clipPath>
-    <inkscape:perspective
-       id="perspective15250"
-       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
-       inkscape:vp_z="1 : 0.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 0.5 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <radialGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient3163"
-       id="radialGradient3074"
-       gradientUnits="userSpaceOnUse"
+       gradientUnits="userSpaceOnUse" />
+    <clipPath
+       id="clipPath4251">
+      <path
+         d="m 384.094,142.902 153.205,0 0,125.077 -153.205,0 0,-125.077 z"
+         id="path4253" />
+    </clipPath>
+    <clipPath
+       id="clipPath3871">
+      <path
+         d="m 380.864,356.312 378.348,0 0,69.83 -378.348,0 0,-69.83 z"
+         id="path3873" />
+    </clipPath>
+    <clipPath
+       id="clipPath2973">
+      <path
+         d="m 7.211,464.173 131.687,0 0,113.552 -131.687,0 0,-113.552 z"
+         id="path2975" />
+    </clipPath>
+    <clipPath
+       id="clipPath2959">
+      <path
+         d="m -9.50394,604.78 151.98594,0 0,-614.28378 -151.98594,0 0,614.28378 z"
+         id="path2961" />
+    </clipPath>
+    <clipPath
+       id="clipPath2949">
+      <path
+         d="m 0,0 841.89,0 0,595.276 L 0,595.276 0,0 z"
+         id="path2951" />
+    </clipPath>
+    <clipPath
+       id="clipPath8999">
+      <path
+         d="m 384.094,142.902 153.205,0 0,125.077 -153.205,0 0,-125.077 z"
+         id="path9001" />
+    </clipPath>
+    <clipPath
+       id="clipPath8619">
+      <path
+         d="m 380.864,356.312 378.348,0 0,69.83 -378.348,0 0,-69.83 z"
+         id="path8621" />
+    </clipPath>
+    <clipPath
+       id="clipPath7721">
+      <path
+         d="m 7.211,464.173 131.687,0 0,113.552 -131.687,0 0,-113.552 z"
+         id="path7723" />
+    </clipPath>
+    <clipPath
+       id="clipPath7707">
+      <path
+         d="m -9.50394,604.78 151.98594,0 0,-614.28378 -151.98594,0 0,614.28378 z"
+         id="path7709" />
+    </clipPath>
+    <clipPath
+       id="clipPath7697">
+      <path
+         d="m 0,0 841.89,0 0,595.276 L 0,595.276 0,0 z"
+         id="path7699" />
+    </clipPath>
+    <clipPath
+       id="clipPath15258">
+      <path
+         d="m 0,595.28 841.89,0 L 841.89,0 0,0 0,595.28 z"
+         id="path15260" />
+    </clipPath>
+    <radialGradient
        cx="147.14287"
        cy="68.14286"
+       r="36.42857"
        fx="147.14287"
        fy="68.14286"
-       r="36.42857" />
+       id="radialGradient3074"
+       xlink:href="#linearGradient3163"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <metadata
      id="metadata7">
@@ -252,152 +129,136 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1"
-     inkscape:groupmode="layer"
-     inkscape:label="Layer 1">
+     id="layer1">
     <path
-       id="path2824"
        d="M 2,2 453,2 453,293 2,293 2,2 z"
-       style="fill:#ffffff;stroke-width:2.5;stroke-miterlimit:4;stroke-dasharray:none"
-       sodipodi:nodetypes="ccccc" />
+       id="path2824"
+       style="fill:#ffffff;stroke-width:2.5;stroke-miterlimit:4;stroke-dasharray:none" />
     <rect
-       style="fill:#fff5f5;fill-opacity:1;stroke:none"
-       id="rect3062"
        width="25.455845"
        height="407.29349"
        x="4.0606751"
        y="-72.744659"
        transform="matrix(0.8660254,0.5,-0.5,0.8660254,0,0)"
-       inkscape:tile-cx="-50.91169"
-       inkscape:tile-cy="121.75883"
-       inkscape:tile-w="225.69215"
-       inkscape:tile-h="365.45443"
-       inkscape:tile-x0="-163.75777"
-       inkscape:tile-y0="-60.968385" />
+       id="rect3062"
+       style="fill:#ffdcf5;fill-opacity:1;stroke:none" />
     <use
-       x="0"
-       y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
        transform="translate(56.423038,0)"
-       id="use3950" />
-    <use
+       id="use3950"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(112.84608,0)"
-       id="use3952" />
-    <use
+       id="use3952"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(169.26911,0)"
-       id="use3954" />
-    <use
+       id="use3954"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(225.69215,0)"
-       id="use3956" />
-    <use
+       id="use3956"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(282.11519,0)"
-       id="use3958" />
-    <use
+       id="use3958"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(338.53823,0)"
-       id="use3960" />
-    <use
+       id="use3960"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(394.96127,0)"
-       id="use3962" />
-    <use
+       id="use3962"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(451.38431,0)"
-       id="use3964" />
-    <use
+       id="use3964"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(507.80734,0)"
-       id="use3966" />
-    <use
+       id="use3966"
        x="0"
        y="0"
-       inkscape:tiled-clone-of="#rect3062"
-       xlink:href="#rect3062"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
+    <use
        transform="translate(564.23038,0)"
-       id="use3968" />
+       id="use3968"
+       x="0"
+       y="0"
+       width="455"
+       height="295"
+       xlink:href="#rect3062" />
     <g
-       id="g7705"
-       transform="matrix(1.25,0,0,-1.25,-1067.7959,477.45279)" />
+       transform="matrix(1.25,0,0,-1.25,-1067.7959,477.45279)"
+       id="g7705" />
     <text
-       xml:space="preserve"
-       style="font-size:90px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
        x="399.07315"
        y="229.17593"
-       id="text3025"><tspan
-         sodipodi:role="line"
-         id="tspan3027"
-         x="399.07315"
-         y="229.17593"><tspan
-           style="font-size:50px;text-align:end;text-anchor:end"
-           id="tspan3040">2.1</tspan></tspan></text>
-    <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
-       transform="matrix(1.7491135,0,0,1.7568024,-105.77974,-37.301128)"
-       d="m 166.78572,83.5 a 36.42857,36.42857 0 1 1 -72.857143,0 36.42857,36.42857 0 1 1 72.857143,0 z"
-       sodipodi:ry="36.42857"
-       sodipodi:rx="36.42857"
-       sodipodi:cy="83.5"
-       sodipodi:cx="130.35715"
-       id="path2916"
-       style="fill:url(#radialGradient3074);fill-opacity:1;stroke:none"
-       sodipodi:type="arc" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path2938"
-       d="m 118.89971,180.74967 c 0,-2.21995 1.08,-3.32995 3.24,-3.33 2.27999,5e-5 3.41999,1.11005 3.42,3.33 l 0,44.91 c -10e-6,2.28 -1.11001,3.42 -3.33,3.42 -2.22,0 -3.33,-1.14 -3.33,-3.42 l 0,-44.91"
-       style="font-size:90px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
-       inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <text
-       id="text3062"
-       y="229.17593"
-       x="68.330956"
-       style="font-size:90px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"
+       id="text3025"
        xml:space="preserve"
-       inkscape:export-filename="/home/alec/.gvfs/SFTP for alef on ssh.itu.dk/import/home/alef/public_html/logo-big.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90"><tspan
+       style="font-size:90px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
+         x="399.07315"
          y="229.17593"
+         id="tspan3027"><tspan
+           id="tspan3040"
+           style="font-size:50px;text-align:end;text-anchor:end">2.1</tspan></tspan></text>
+    <path
+       d="m 166.78572,83.5 a 36.42857,36.42857 0 1 1 -72.857143,0 36.42857,36.42857 0 1 1 72.857143,0 z"
+       transform="matrix(1.7491135,0,0,1.7568024,-105.77974,-37.301128)"
+       id="path2916"
+       style="fill:url(#radialGradient3074);fill-opacity:1;stroke:none" />
+    <path
+       d="m 118.89971,180.74967 c 0,-2.21995 1.08,-3.32995 3.24,-3.33 2.27999,5e-5 3.41999,1.11005 3.42,3.33 l 0,44.91 c -10e-6,2.28 -1.11001,3.42 -3.33,3.42 -2.22,0 -3.33,-1.14 -3.33,-3.42 l 0,-44.91"
+       id="path2938"
+       style="font-size:90px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata" />
+    <text
+       x="68.330956"
+       y="229.17593"
+       id="text3062"
+       xml:space="preserve"
+       style="font-size:90px;font-style:normal;font-weight:normal;text-align:start;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:MgOpen Modata;-inkscape-font-specification:MgOpen Modata"><tspan
          x="68.330956"
-         id="tspan3064"
-         sodipodi:role="line">b<tspan
+         y="229.17593"
+         id="tspan3064">b<tspan
    id="tspan3066"
    style="fill:none">i</tspan>gred</tspan></text>
     <path
-       style="fill:#000000;stroke-width:2.50000000000000000;stroke-miterlimit:4;stroke-dasharray:none"
-       d="M 0 0 L 0 295 L 455 295 L 455 0 L 0 0 z M 2 2 L 453 2 L 453 293 L 2 293 L 2 2 z "
-       id="rect4138" />
+       d="M 0,0 0,295 455,295 455,0 0,0 z M 2,2 453,2 453,293 2,293 2,2 z"
+       id="rect4138"
+       style="fill:#000000;stroke-width:2.5;stroke-miterlimit:4;stroke-dasharray:none" />
   </g>
 </svg>
