@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rule:rule xmlns:rule="http://www.itu.dk/research/pls/xmlns/2011/rule">
+  <bigraph:bigraph xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph">
+    <signature:signature src="../signatures/printing.bigraph-signature" xmlns:signature="http://www.itu.dk/research/pls/xmlns/2010/signature"/>
+    <bigraph:outername name="x">
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#000000" big-red:outlineColor="#008000" height="52" width="88" x="129" y="19"/>
+    </bigraph:outername>
+    <bigraph:outername name="y">
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#000000" big-red:outlineColor="#ff0000" height="47" width="78" x="406" y="22"/>
+    </bigraph:outername>
+    <bigraph:root name="1">
+      <bigraph:node control="User" name="a">
+        <bigraph:port link="x" name="identifier"/>
+        <bigraph:node control="Job" name="b">
+          <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#ff0000" height="31" width="23" x="38" y="45"/>
+        </bigraph:node>
+        <bigraph:site name="1">
+          <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#000000" big-red:outlineColor="#000000" height="34" width="29" x="21" y="83"/>
+        </bigraph:site>
+        <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="123" width="100" x="40" y="22"/>
+      </bigraph:node>
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#000000" big-red:outlineColor="#000000" height="169" width="164" x="45" y="100"/>
+    </bigraph:root>
+    <bigraph:root name="2">
+      <bigraph:node control="Spool" name="c">
+        <bigraph:port link="y" name="pool"/>
+        <bigraph:site name="2">
+          <big-red:appearance height="32" width="29" x="32" y="14" xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red"/>
+        </bigraph:site>
+        <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="98" width="90" x="40" y="35"/>
+      </bigraph:node>
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#000000" big-red:outlineColor="#000000" height="159" width="177" x="264" y="102"/>
+    </bigraph:root>
+  </bigraph:bigraph>
+  <rule:changes xmlns:change="http://www.itu.dk/research/pls/xmlns/2010/change">
+    <change:group>
+      <change:remove name="b" type="node"/>
+      <change:add control="Job" name="b" parent="c" parent-type="node" type="node"/>
+      <big-red:layout height="31" name="b" type="node" width="23" x="25" y="53" xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red"/>
+    </change:group>
+    <change:group>
+      <change:connect link="x" name="owner" node="b"/>
+    </change:group>
+  </rule:changes>
+</rule:rule>

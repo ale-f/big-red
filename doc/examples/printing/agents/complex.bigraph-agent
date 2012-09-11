@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bigraph:bigraph xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph">
+  <signature:signature src="../signatures/printing.bigraph-signature" xmlns:signature="http://www.itu.dk/research/pls/xmlns/2010/signature"/>
+  <bigraph:edge name="a">
+    <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#000000" big-red:outlineColor="#7f7f7f" height="10" width="10" x="294" y="141"/>
+  </bigraph:edge>
+  <bigraph:edge name="b">
+    <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#000000" big-red:outlineColor="#008000" height="10" width="10" x="252" y="313"/>
+  </bigraph:edge>
+  <bigraph:outername name="David">
+    <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:outlineColor="#c62c2c" height="30" width="67" x="47" y="25"/>
+  </bigraph:outername>
+  <bigraph:outername name="Mike">
+    <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:outlineColor="#1e90ff" height="30" width="68" x="478" y="25"/>
+  </bigraph:outername>
+  <bigraph:root name="1">
+    <bigraph:node control="Room" name="a">
+      <bigraph:port link="b" name="door"/>
+      <bigraph:node control="Printer" name="d">
+        <bigraph:port link="a" name="spool"/>
+        <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="56" width="62" x="40" y="54"/>
+      </bigraph:node>
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="145" width="148" x="30" y="31"/>
+    </bigraph:node>
+    <bigraph:node control="Room" name="b">
+      <bigraph:port link="b" name="door"/>
+      <bigraph:node control="Printer" name="e">
+        <bigraph:port link="a" name="spool"/>
+        <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="55" width="68" x="58" y="51"/>
+      </bigraph:node>
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="141" width="164" x="277" y="33"/>
+    </bigraph:node>
+    <bigraph:node control="Spool" name="c">
+      <bigraph:port link="a" name="pool"/>
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="66" width="72" x="189" y="90"/>
+    </bigraph:node>
+    <bigraph:node control="Room" name="f">
+      <bigraph:port link="b" name="door"/>
+      <bigraph:node control="User" name="g">
+        <bigraph:port link="Mike" name="identifier"/>
+        <bigraph:node control="Job" name="h">
+          <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#ff0000" height="27" width="20" x="23" y="44"/>
+        </bigraph:node>
+        <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="79" width="67" x="63" y="21"/>
+      </bigraph:node>
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="123" width="148" x="302" y="229"/>
+    </bigraph:node>
+    <bigraph:node control="Room" name="i">
+      <bigraph:port link="b" name="door"/>
+      <bigraph:node control="User" name="j">
+        <bigraph:port link="David" name="identifier"/>
+        <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="48" width="40" x="28" y="31"/>
+      </bigraph:node>
+      <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#ffffff" big-red:outlineColor="#000000" height="103" width="105" x="39" y="236"/>
+    </bigraph:node>
+    <big-red:appearance xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:fillColor="#000000" big-red:outlineColor="#000000" height="365" width="474" x="61" y="97"/>
+  </bigraph:root>
+</bigraph:bigraph>

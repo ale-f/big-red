@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<signature:signature xmlns:signature="http://www.itu.dk/research/pls/xmlns/2010/signature">
+  <signature:control xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:label="P" kind="active" name="Printer">
+    <signature:port name="spool">
+      <big-red:port-appearance big-red:distance="0.4857142857142857" big-red:segment="2"/>
+    </signature:port>
+    <big-red:shape big-red:shape="polygon">
+      <big-red:point big-red:x="30" big-red:y="40"/>
+      <big-red:point big-red:x="-40" big-red:y="40"/>
+      <big-red:point big-red:x="-40" big-red:y="-30"/>
+      <big-red:point big-red:x="30" big-red:y="-20"/>
+    </big-red:shape>
+    <big-red:appearance big-red:fillColor="#ffffff" big-red:outlineColor="#000000"/>
+  </signature:control>
+  <signature:control xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:label="U" kind="active" name="User">
+    <signature:port name="identifier">
+      <big-red:port-appearance big-red:distance="0.0" big-red:segment="0"/>
+    </signature:port>
+    <big-red:shape big-red:shape="polygon">
+      <big-red:point big-red:x="150" big-red:y="0"/>
+      <big-red:point big-red:x="279" big-red:y="225"/>
+      <big-red:point big-red:x="20" big-red:y="225"/>
+    </big-red:shape>
+    <big-red:appearance big-red:fillColor="#ffffff" big-red:outlineColor="#000000"/>
+  </signature:control>
+  <signature:control xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:label="J" kind="active" name="Job">
+    <signature:port name="owner">
+      <big-red:port-appearance big-red:distance="0.9952856772511103" big-red:segment="0"/>
+    </signature:port>
+    <big-red:shape big-red:shape="oval"/>
+    <big-red:appearance big-red:fillColor="#ffffff" big-red:outlineColor="#ff0000"/>
+  </signature:control>
+  <signature:control xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:label="R" kind="active" name="Room">
+    <signature:port name="door">
+      <big-red:port-appearance big-red:distance="0.5" big-red:segment="1"/>
+    </signature:port>
+    <big-red:shape big-red:shape="polygon">
+      <big-red:point big-red:x="0" big-red:y="0"/>
+      <big-red:point big-red:x="0" big-red:y="40"/>
+      <big-red:point big-red:x="-40" big-red:y="40"/>
+      <big-red:point big-red:x="-40" big-red:y="0"/>
+    </big-red:shape>
+    <big-red:appearance big-red:fillColor="#ffffff" big-red:outlineColor="#000000"/>
+  </signature:control>
+  <signature:control xmlns:big-red="http://www.itu.dk/research/pls/xmlns/2010/big-red" big-red:label="S" kind="active" name="Spool">
+    <signature:port name="pool">
+      <big-red:port-appearance big-red:distance="0.48148148148148145" big-red:segment="3"/>
+    </signature:port>
+    <big-red:shape big-red:shape="polygon">
+      <big-red:point big-red:x="30" big-red:y="0"/>
+      <big-red:point big-red:x="53" big-red:y="11"/>
+      <big-red:point big-red:x="59" big-red:y="36"/>
+      <big-red:point big-red:x="43" big-red:y="57"/>
+      <big-red:point big-red:x="16" big-red:y="57"/>
+      <big-red:point big-red:x="0" big-red:y="36"/>
+      <big-red:point big-red:x="6" big-red:y="11"/>
+    </big-red:shape>
+    <big-red:appearance big-red:fillColor="#ffffff" big-red:outlineColor="#000000"/>
+  </signature:control>
+</signature:signature>

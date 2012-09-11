@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<spec:spec xmlns:spec="http://www.itu.dk/research/pls/xmlns/2012/simulation-spec">
+  <signature:signature src="signatures/printing.bigraph-signature" xmlns:signature="http://www.itu.dk/research/pls/xmlns/2010/signature"/>
+  <rule:rule src="rules/finish-job.bigraph-rule" xmlns:rule="http://www.itu.dk/research/pls/xmlns/2011/rule"/>
+  <rule:rule src="rules/job-to-printer.bigraph-rule" xmlns:rule="http://www.itu.dk/research/pls/xmlns/2011/rule"/>
+  <rule:rule src="rules/move-room.bigraph-rule" xmlns:rule="http://www.itu.dk/research/pls/xmlns/2011/rule"/>
+  <rule:rule src="rules/submit-job.bigraph-rule" xmlns:rule="http://www.itu.dk/research/pls/xmlns/2011/rule"/>
+  <bigraph:bigraph src="agents/complex.bigraph-agent" xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph"/>
+</spec:spec>
