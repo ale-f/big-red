@@ -1,7 +1,9 @@
 package org.bigraph.model.loaders;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.bigraph.model.Edit;
-import org.bigraph.model.Layoutable;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.w3c.dom.Document;
@@ -13,6 +15,18 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 
 @SuppressWarnings("deprecation")
 public class EditXMLLoader extends XMLLoader {
+	protected interface IParticipant {
+		IChangeDescriptor getDescriptor(Element descriptor);
+		IChangeDescriptor getRenameDescriptor(Element id, String name);
+	}
+	
+	private List<IParticipant> participants;
+	
+	protected List<? extends IParticipant> getParticipants() {
+		return (participants != null ? participants :
+				Collections.<IParticipant>emptyList());
+	}
+	
 	public EditXMLLoader() {
 	}
 	
@@ -36,19 +50,28 @@ public class EditXMLLoader extends XMLLoader {
 	}
 
 	private IChangeDescriptor makeDescriptor(Element el) {
-		return null;
-	}
-	
-	private Layoutable.Identifier getIdentifier(Element el) {
-		return null;
+		IChangeDescriptor cd = null;
+		for (IParticipant p : getParticipants()) {
+			cd = p.getDescriptor(el);
+			if (cd != null)
+				break;
+		}
+		return cd;
 	}
 	
 	private IChangeDescriptor makeRename(Element el) {
-		Node n = el.getFirstChild();
-		if (!(n instanceof Element))
+		Node id = el.getFirstChild();
+		if (!(id instanceof Element))
 			return null;
-		return new Layoutable.ChangeNameDescriptor(
-				getIdentifier((Element)n), el.getAttributeNS(EDIT, "name"));
+		String name = getAttributeNS(el, EDIT, "name");
+		
+		IChangeDescriptor cd = null;
+		for (IParticipant p : getParticipants()) {
+			cd = p.getRenameDescriptor((Element)id, name);
+			if (cd != null)
+				break;
+		}
+		return cd;
 	}
 	
 	@Override
@@ -78,7 +101,7 @@ public class EditXMLLoader extends XMLLoader {
 				} else if ("rename".equals(localName)) {
 					cd = makeRename(el);
 				}
-			} else makeDescriptor(el);
+			} else cd = makeDescriptor(el);
 			
 			if (cd != null)
 				addChange(ed.changeDescriptorAdd(index++, cd));
