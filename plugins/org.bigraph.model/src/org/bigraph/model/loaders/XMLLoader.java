@@ -194,9 +194,11 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 				if (klass.isInstance(mo)) {
 					return klass.cast(mo);
 				} else throw new LoadFailedException(
-						"Referenced document is not of the correct type");
+						"Referenced document \"" + replacement +
+						"\" is not of the correct type");
 			} else throw new LoadFailedException(
-					"Referenced document is not valid");
+					"Referenced document \"" + replacement +
+					"\" is not valid");
 		} else return null;
 	}
 	
