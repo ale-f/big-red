@@ -1,6 +1,7 @@
 package org.bigraph.model.loaders;
 
 import org.bigraph.model.Edit;
+import org.bigraph.model.Layoutable;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.w3c.dom.Document;
@@ -38,6 +39,18 @@ public class EditXMLLoader extends XMLLoader {
 		return null;
 	}
 	
+	private Layoutable.Identifier getIdentifier(Element el) {
+		return null;
+	}
+	
+	private IChangeDescriptor makeRename(Element el) {
+		Node n = el.getFirstChild();
+		if (!(n instanceof Element))
+			return null;
+		return new Layoutable.ChangeNameDescriptor(
+				getIdentifier((Element)n), el.getAttributeNS(EDIT, "name"));
+	}
+	
 	@Override
 	protected Edit makeObject(Element el) throws LoadFailedException {
 		cycleCheck();
@@ -54,10 +67,17 @@ public class EditXMLLoader extends XMLLoader {
 			if (!(i_ instanceof Element))
 				continue;
 			Element i = (Element)i_;
+			String
+				localName = i.getLocalName(),
+				namespaceURI = i.getNamespaceURI();
 			
 			IChangeDescriptor cd = null;
-			if (EDIT.equals(i.getNamespaceURI())) {
-				cd = new EditXMLLoader(this).makeObject(i);
+			if (EDIT.equals(namespaceURI)) {
+				if ("edit".equals(localName)) {
+					cd = new EditXMLLoader(this).makeObject(i);
+				} else if ("rename".equals(localName)) {
+					cd = makeRename(el);
+				}
 			} else makeDescriptor(el);
 			
 			if (cd != null)
