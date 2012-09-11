@@ -34,7 +34,7 @@ public class EditorError {
 		c.setBackgroundMode(SWT.INHERIT_FORCE);
 		
 		if (error == null)
-			error = new Image(null, RedPlugin.getResource("content/error.png"));
+			error = new Image(null, RedPlugin.getResource("resources/error.png"));
 		Label l = new Label(c, SWT.NONE);
 		l.setImage(error);
 		l.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
