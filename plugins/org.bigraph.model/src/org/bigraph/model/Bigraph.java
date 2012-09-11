@@ -254,7 +254,7 @@ public class Bigraph extends Container
 		
 		@Override
 		public Bigraph lookup(PropertyScratchpad context, Resolver r) {
-			return require(r, Bigraph.class);
+			return require(r.lookup(context, this), Bigraph.class);
 		}
 		
 		@Override
@@ -281,7 +281,9 @@ public class Bigraph extends Container
 	@Override
 	public Object lookup(PropertyScratchpad context,
 			org.bigraph.model.ModelObject.Identifier identifier) {
-		if (identifier instanceof Layoutable.Identifier) {
+		if (identifier instanceof Bigraph.Identifier) {
+			return this;
+		} else if (identifier instanceof Layoutable.Identifier) {
 			String name = identifier.getName();
 			if (identifier instanceof Node.Identifier) {
 				return getNamespace(Node.class).get(context, name);
