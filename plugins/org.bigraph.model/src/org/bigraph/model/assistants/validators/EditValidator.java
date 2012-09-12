@@ -6,7 +6,6 @@ import org.bigraph.model.Edit.ChangeDescriptorRemove;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
-@SuppressWarnings("deprecation")
 public class EditValidator extends ModelObjectValidator<Edit> {
 	public EditValidator(Edit changeExecutor) {
 		super(changeExecutor);

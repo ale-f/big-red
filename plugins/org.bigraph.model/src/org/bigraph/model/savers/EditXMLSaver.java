@@ -28,7 +28,6 @@ import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.w3c.dom.Element;
 
-@Deprecated
 public class EditXMLSaver extends XMLSaver {
 	protected interface IParticipant {
 		Element processDescriptor(IChangeDescriptor cd);

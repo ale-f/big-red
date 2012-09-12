@@ -6,7 +6,6 @@ import javax.xml.validation.Schema;
 import org.bigraph.model.resources.ResourceOpenable;
 import org.xml.sax.SAXException;
 
-@SuppressWarnings("deprecation")
 public abstract class Schemas {
 	private Schemas() {}
 	
@@ -79,9 +78,7 @@ public abstract class Schemas {
 	 * Returns the shared {@link Schema} suitable for validating
 	 * <code>edit</code> documents.
 	 * @return a {@link Schema}
-	 * @deprecated This method may go away at any point.
 	 */
-	@Deprecated
 	public static Schema getEditSchema() {
 		return edit;
 	}

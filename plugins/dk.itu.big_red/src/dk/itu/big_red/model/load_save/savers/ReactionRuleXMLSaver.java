@@ -41,7 +41,6 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 
-@SuppressWarnings("deprecation")
 public class ReactionRuleXMLSaver extends XMLSaver {
 	public ReactionRuleXMLSaver() {
 		setDefaultNamespace(RULE);

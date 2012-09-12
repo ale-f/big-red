@@ -13,7 +13,6 @@ import org.w3c.dom.NodeList;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 
-@SuppressWarnings("deprecation")
 public class EditXMLLoader extends XMLLoader {
 	protected interface IParticipant {
 		IChangeDescriptor getDescriptor(Element descriptor);

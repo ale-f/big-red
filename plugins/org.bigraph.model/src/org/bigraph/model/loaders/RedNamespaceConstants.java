@@ -49,15 +49,12 @@ public abstract class RedNamespaceConstants {
 	public static final
 	String PARAM = "http://bigraph.org/xmlns/2012/bigraph-extension-param";
 	
-	@Deprecated
 	public static final
 	String EDIT = "http://bigraph.org/xmlns/2012/edit";
 	
-	@Deprecated
 	public static final
 	String EDIT_BIG = "http://bigraph.org/xmlns/2012/edit-big";
 	
-	@Deprecated
 	public static final
 	String EDIT_SIG = "http://bigraph.org/xmlns/2012/edit-sig";
 }

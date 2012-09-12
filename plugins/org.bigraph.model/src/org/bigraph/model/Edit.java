@@ -11,7 +11,6 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
-@Deprecated
 public class Edit extends ModelObject
 		implements IChangeDescriptor, IChangeExecutor {
 	@RedProperty(fired = Edit.class, retrieved = Edit.class)
