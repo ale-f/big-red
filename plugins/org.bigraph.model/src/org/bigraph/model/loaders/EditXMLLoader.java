@@ -1,6 +1,7 @@
 package org.bigraph.model.loaders;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bigraph.model.Edit;
@@ -19,11 +20,21 @@ public class EditXMLLoader extends XMLLoader {
 		IChangeDescriptor getRenameDescriptor(Element id, String name);
 	}
 	
-	private List<IParticipant> participants;
+	private List<IParticipant> participants = new ArrayList<IParticipant>();
 	
-	protected List<? extends IParticipant> getParticipants() {
-		return (participants != null ? participants :
-				Collections.<IParticipant>emptyList());
+	public EditXMLLoader addParticipant(IParticipant one) {
+		participants.add(one);
+		return this;
+	}
+	
+	public EditXMLLoader addParticipants(
+			Collection<? extends IParticipant> many) {
+		participants.addAll(many);
+		return this;
+	}
+	
+	protected List<IParticipant> getParticipants() {
+		return participants;
 	}
 	
 	public EditXMLLoader() {

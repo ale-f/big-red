@@ -5,7 +5,7 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_BIG;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_SIG;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
@@ -97,13 +97,23 @@ public class EditXMLSaver extends XMLSaver {
 	
 	private List<IParticipant> participants = new ArrayList<IParticipant>();
 	
+	public EditXMLSaver addParticipant(IParticipant one) {
+		participants.add(one);
+		return this;
+	}
+	
+	public EditXMLSaver addParticipants(
+			Collection<? extends IParticipant> many) {
+		participants.addAll(many);
+		return this;
+	}
+	
 	{
 		participants.add(new BigraphEditHandler());
 	}
 	
-	protected List<? extends IParticipant> getParticipants() {
-		return (participants != null ? participants :
-				Collections.<IParticipant>emptyList());
+	protected List<IParticipant> getParticipants() {
+		return participants;
 	}
 	
 	@Override
