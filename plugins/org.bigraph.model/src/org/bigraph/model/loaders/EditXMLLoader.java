@@ -4,7 +4,19 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
+import org.bigraph.model.Control;
+import org.bigraph.model.Edge;
 import org.bigraph.model.Edit;
+import org.bigraph.model.InnerName;
+import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
+import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
+import org.bigraph.model.Port;
+import org.bigraph.model.Root;
+import org.bigraph.model.Site;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.w3c.dom.Document;
@@ -13,11 +25,146 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
+import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_BIG;
+import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_SIG;
 
 public class EditXMLLoader extends XMLLoader {
 	protected interface IParticipant {
 		IChangeDescriptor getDescriptor(Element descriptor);
 		IChangeDescriptor getRenameDescriptor(Element id, String name);
+	}
+	
+	private final class BigraphEditHandler implements IParticipant {
+		private Root.Identifier getRootIdentifier(Element el) {
+			return new Root.Identifier(getAttributeNS(el, EDIT_BIG, "name"));
+		}
+		
+		private Site.Identifier getSiteIdentifier(Element el) {
+			return new Site.Identifier(getAttributeNS(el, EDIT_BIG, "name"));
+		}
+		
+		private Edge.Identifier getEdgeIdentifier(Element el) {
+			return new Edge.Identifier(getAttributeNS(el, EDIT_BIG, "name"));
+		}
+		
+		private InnerName.Identifier getInnerNameIdentifier(Element el) {
+			return new InnerName.Identifier(
+					getAttributeNS(el, EDIT_BIG, "name"));
+		}
+		
+		private OuterName.Identifier getOuterNameIdentifier(Element el) {
+			return new OuterName.Identifier(
+					getAttributeNS(el, EDIT_BIG, "name"));
+		}
+		
+		private Bigraph.Identifier getBigraphIdentifier() {
+			return new Bigraph.Identifier();
+		}
+		
+		private Port.Identifier getPortIdentifier(Element el) {
+			org.bigraph.model.Node.Identifier id = getNodeIdentifier(
+					getNamedChildElement(el, EDIT_BIG, "node-id"));
+			return new Port.Identifier(
+					getAttributeNS(el, EDIT_BIG, "name"), id);
+		}
+		
+		private org.bigraph.model.Node.Identifier getNodeIdentifier(
+				Element el) {
+			Control.Identifier id = getControlIdentifier(
+					getNamedChildElement(el, EDIT_SIG, "control-id"));
+			return new org.bigraph.model.Node.Identifier(
+					getAttributeNS(el, EDIT_BIG, "name"), id);
+		}
+		
+		private Control.Identifier getControlIdentifier(Element el) {
+			return new Control.Identifier(
+					getAttributeNS(el, EDIT_SIG, "name"));
+		}
+		
+		private Container.Identifier getParentIdentifier(Element el) {
+			String localName = el.getLocalName();
+			if ("bigraph-id".equals(localName)) {
+				return getBigraphIdentifier();
+			} else if ("root-id".equals(localName)) {
+				return getRootIdentifier(el);
+			} else if ("node-id".equals(localName)) {
+				return getNodeIdentifier(el);
+			} else return null;
+		}
+		
+		private Layoutable.Identifier getChildIdentifier(Element el) {
+			String localName = el.getLocalName();
+			if ("root-id".equals(localName)) {
+				return getRootIdentifier(el);
+			} else if ("node-id".equals(localName)) {
+				return getNodeIdentifier(el);
+			} else if ("site-id".equals(localName)) {
+				return getSiteIdentifier(el);
+			} else if ("edge-id".equals(localName)) {
+				return getEdgeIdentifier(el);
+			} else if ("innername-id".equals(localName)) {
+				return getInnerNameIdentifier(el);
+			} else if ("outername-id".equals(localName)) {
+				return getOuterNameIdentifier(el);
+			} else return null;
+		}
+		
+		private Point.Identifier getPointIdentifier(Element el) {
+			String localName = el.getLocalName();
+			if ("port-id".equals(localName)) {
+				return getPortIdentifier(el);
+			} else if ("innername-id".equals(localName)) {
+				return getInnerNameIdentifier(el);
+			} else return null;
+		}
+		
+		private Link.Identifier getLinkIdentifier(Element el) {
+			String localName = el.getLocalName();
+			if ("edge-id".equals(localName)) {
+				return getEdgeIdentifier(el);
+			} else if ("outername-id".equals(localName)) {
+				return getOuterNameIdentifier(el);
+			} else return null;
+		}
+		
+		@Override
+		public IChangeDescriptor getDescriptor(Element descriptor) {
+			String
+				nsURI = descriptor.getNamespaceURI(),
+				localName = descriptor.getLocalName();
+			if (EDIT_BIG.equals(nsURI)) {
+				List<Element> ids = getChildElements(descriptor);
+				if ("add".equals(localName)) {
+					Container.Identifier parent =
+						getParentIdentifier(ids.get(0));
+					Layoutable.Identifier child =
+						getChildIdentifier(ids.get(1));
+					return new Container.ChangeAddChildDescriptor(
+							parent, child);
+				} else if ("remove".equals(localName)) {
+					Layoutable.Identifier target =
+						getChildIdentifier(ids.get(0));
+					return new Layoutable.ChangeRemoveDescriptor(target);
+				} else if ("connect".equals(localName)) {
+					Point.Identifier point =
+						getPointIdentifier(ids.get(0));
+					Link.Identifier link =
+						getLinkIdentifier(ids.get(1));
+					return new Point.ChangeConnectDescriptor(point, link);
+				} else if ("disconnect".equals(localName)) {
+					Point.Identifier point =
+						getPointIdentifier(ids.get(0));
+					return new Point.ChangeDisconnectDescriptor(point);
+				} else return null;
+			} else return null;
+		}
+		
+		@Override
+		public IChangeDescriptor getRenameDescriptor(Element id, String name) {
+			Layoutable.Identifier lid = getChildIdentifier(id);
+			return (lid != null ?
+					new Layoutable.ChangeNameDescriptor(lid, name) : null);
+		}
 	}
 	
 	private List<IParticipant> participants = new ArrayList<IParticipant>();
@@ -31,6 +178,10 @@ public class EditXMLLoader extends XMLLoader {
 			Collection<? extends IParticipant> many) {
 		participants.addAll(many);
 		return this;
+	}
+	
+	{
+		addParticipant(new BigraphEditHandler());
 	}
 	
 	protected List<IParticipant> getParticipants() {
@@ -109,9 +260,9 @@ public class EditXMLLoader extends XMLLoader {
 				if ("edit".equals(localName)) {
 					cd = new EditXMLLoader(this).makeObject(i);
 				} else if ("rename".equals(localName)) {
-					cd = makeRename(el);
+					cd = makeRename(i);
 				}
-			} else cd = makeDescriptor(el);
+			} else cd = makeDescriptor(i);
 			
 			if (cd != null)
 				addChange(ed.changeDescriptorAdd(index++, cd));
