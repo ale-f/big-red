@@ -31,14 +31,35 @@ import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 
+import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 
+@SuppressWarnings("deprecation")
 public class ReactionRuleXMLSaver extends XMLSaver {
 	public ReactionRuleXMLSaver() {
 		setDefaultNamespace(RULE);
+	}
+	
+	private boolean exportEdits = false;
+	
+	{
+		addOption(new SaverOption("Export edits instead of changes (BROKEN)",
+				"Use an experimental new format to represent edits. " +
+				"(Big Red cannot currently load this format!)") {
+			@Override
+			public void set(Object value) {
+				if (value instanceof Boolean)
+					exportEdits = (Boolean)value;
+			}
+			
+			@Override
+			public Boolean get() {
+				return exportEdits;
+			}
+		});
 	}
 	
 	@Override
@@ -68,8 +89,12 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			processOrReference(
 				newElement(BIGRAPH, "bigraph:bigraph"),
 				rr.getRedex(), BigraphXMLSaver.class));
-		appendChildIfNotNull(e,
-			processChanges(newElement(RULE, "rule:changes"), rr.getChanges()));
+		if (!exportEdits) {
+			appendChildIfNotNull(e, processChanges(
+					newElement(RULE, "rule:changes"), rr.getChanges()));
+		} else {
+			appendChildIfNotNull(e, newElement(EDIT, "edit:edit"));
+		}
 		
 		return executeDecorators(rr, e);
 	}
