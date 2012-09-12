@@ -240,7 +240,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		public IChange createChange(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
 			Point p = point.lookup(context, r);
-			if (point == null)
+			if (p == null)
 				throw new ChangeCreationException(this,
 						"" + point + " didn't resolve to a Point");
 			return p.changeDisconnect();
