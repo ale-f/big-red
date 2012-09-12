@@ -3,6 +3,7 @@ package dk.itu.big_red.model.load_save.savers;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
+import org.bigraph.model.Edit;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
@@ -17,9 +18,12 @@ import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
 import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
+import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.savers.BigraphXMLSaver;
+import org.bigraph.model.savers.EditXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -93,7 +97,23 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			appendChildIfNotNull(e, processChanges(
 					newElement(RULE, "rule:changes"), rr.getChanges()));
 		} else {
-			appendChildIfNotNull(e, newElement(EDIT, "edit:edit"));
+			Edit ed = new Edit();
+			ChangeGroup cg = new ChangeGroup();
+			
+			int i = 0;
+			for (IChangeDescriptor cd : rr.getChanges())
+				cg.add(ed.changeDescriptorAdd(i++, cd));
+			
+			try {
+				ed.tryApplyChange(cg);
+			} catch (ChangeRejectedException cre) {
+				throw new SaveFailedException(cre);
+			}
+			
+			appendChildIfNotNull(e,
+				processOrReference(
+					newElement(EDIT, "edit:edit"),
+					ed, EditXMLSaver.class));
 		}
 		
 		return executeDecorators(rr, e);
