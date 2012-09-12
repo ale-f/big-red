@@ -137,9 +137,11 @@ public class Edit extends ModelObject
 		if (super.doChange(c_)) {
 			/* do nothing */
 		} else if (c_ instanceof ChangeDescriptorAdd) {
-			
+			ChangeDescriptorAdd c = (ChangeDescriptorAdd)c_;
+			c.getCreator().addDescriptor(c.index, c.descriptor);
 		} else if (c_ instanceof ChangeDescriptorRemove) {
-			
+			ChangeDescriptorRemove c = (ChangeDescriptorRemove)c_;
+			c.getCreator().removeDescriptor(c.index);
 		} else return false;
 		return true;
 	}
