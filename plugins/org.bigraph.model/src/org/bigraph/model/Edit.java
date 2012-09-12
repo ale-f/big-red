@@ -93,6 +93,12 @@ public class Edit extends ModelObject
 			if (descriptor instanceof Edit)
 				context.setProperty(descriptor, PROPERTY_PARENT, getCreator());
 		}
+		
+		@Override
+		public String toString() {
+			return "Change(add descriptor " + descriptor + " at index " +
+					index + " to " + getCreator() + ")";
+		}
 	}
 	
 	public class ChangeDescriptorRemove extends EditChange {
@@ -115,6 +121,12 @@ public class Edit extends ModelObject
 			getCreator().getModifiableChildren(context).remove(index);
 			if (descriptor instanceof Edit)
 				context.setProperty(descriptor, PROPERTY_PARENT, null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(remove descriptor " + descriptor + " at index " +
+					index + " from " + getCreator() + ")";
 		}
 	}
 	
