@@ -10,6 +10,7 @@
 	without any warranty.
 -->
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:edit="http://bigraph.org/xmlns/2012/edit"
             xmlns:rule="http://www.itu.dk/research/pls/xmlns/2011/rule"
             xmlns:bigraph="http://www.itu.dk/research/pls/xmlns/2010/bigraph"
             targetNamespace="http://www.itu.dk/research/pls/xmlns/2011/rule">
@@ -43,6 +44,10 @@
 	<xsd:import
 		namespace="http://www.itu.dk/research/pls/xmlns/2010/bigraph"
 		schemaLocation="bigraph.xsd" />
+
+	<xsd:import
+		namespace="http://bigraph.org/xmlns/2012/edit"
+		schemaLocation="edit.xsd" />
 
 	<xsd:group name="anyForeignElements">
 		<xsd:sequence>
@@ -87,10 +92,16 @@
 									followed by
 								</li>
 								<li>
-									a <a href="#redex">redex</a>, followed by
-								</li>
-								<li>
-									a <a href="#changes">changes</a>, followed by
+									either
+									<ul>
+										<li>
+											a <a href="#changes">changes</a>, or
+										</li>
+										<li>
+											an <a href="edit.xsd#edit">edit:edit</a>
+										</li>
+									</ul>
+									followed by
 								</li>
 								<li>
 									zero or more elements from other namespaces.
@@ -135,7 +146,10 @@
 					<xsd:element ref="rule:redex" />
 					<xsd:element ref="bigraph:bigraph" />
 				</xsd:choice>
-				<xsd:element ref="rule:changes" />
+				<xsd:choice>
+					<xsd:element ref="rule:changes" />
+					<xsd:element ref="edit:edit" />
+				</xsd:choice>
 				<xsd:group ref="rule:anyForeignElements" />
 			</xsd:sequence>
 			<xsd:attribute name="src" type="xsd:string" />
@@ -223,6 +237,12 @@
 					</p>
 					<p>
 						Attributes from other namespaces MAY be present on <code>changes</code>s.
+					</p>
+					<h3>
+						Notes
+					</h3>
+					<p>
+						<strong>This element is deprecated</strong> in favour of the <a href="edit.xsd#edit">edit:edit</a> element.
 					</p>
 					<hr />
 				</body>

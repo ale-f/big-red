@@ -31,12 +31,12 @@ public abstract class Schemas {
 				"/resources/schema/signature.xsd");
 		bigraph = tryOpenRegister(RedNamespaceConstants.BIGRAPH,
 				"/resources/schema/bigraph.xsd");
+		edit = tryOpenRegister(RedNamespaceConstants.EDIT,
+				"/resources/schema/edit.xsd");
 		rule = tryOpenRegister(RedNamespaceConstants.RULE,
 				"/resources/schema/rule.xsd");
 		spec = tryOpenRegister(RedNamespaceConstants.SPEC,
 				"/resources/schema/spec.xsd");
-		edit = tryOpenRegister(RedNamespaceConstants.EDIT,
-				"/resources/schema/edit.xsd");
 	}
 	
 	/**
