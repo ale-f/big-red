@@ -75,7 +75,7 @@ public class EditXMLLoader extends XMLLoader {
 	}
 	
 	@Override
-	protected Edit makeObject(Element el) throws LoadFailedException {
+	public Edit makeObject(Element el) throws LoadFailedException {
 		cycleCheck();
 		Edit ed = loadRelative(
 				getAttributeNS(el, EDIT, "src"), Edit.class, this);

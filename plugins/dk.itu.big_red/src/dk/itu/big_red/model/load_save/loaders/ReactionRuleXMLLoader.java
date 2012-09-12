@@ -4,6 +4,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Control;
 import org.bigraph.model.Edge;
+import org.bigraph.model.Edit;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
@@ -24,6 +25,7 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.BigraphXMLLoader;
+import org.bigraph.model.loaders.EditXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.LoaderNotice;
@@ -41,6 +43,7 @@ import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 
+import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
@@ -85,7 +88,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 					getNamedChildElement(e, BIGRAPH, "bigraph"),
 					getNamedChildElement(e, RULE, "redex")),
 				RULE, Bigraph.class, new BigraphXMLLoader(this)));
-		updateReactum(rr, getNamedChildElement(e, RULE, "changes"));
+		populateRRDescriptorGroup(e);
+		updateReactum();
 		
 		executeUndecorators(rr, e);
 		return rr;
@@ -312,15 +316,30 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	
 	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
-	private void updateReactum(ReactionRule rr, Element e) throws LoadFailedException {
-		Bigraph reactum = rr.getReactum();
-		NodeList nl = e.getChildNodes();
+	private void populateRRDescriptorGroup(Element root)
+			throws LoadFailedException {
 		ChangeDescriptorGroup cdg = rr.getChanges();
-		for (int i = 0; i < nl.getLength(); i++) {
-			IChangeDescriptor c = changeDescriptorFromElement(nl.item(i));
-			if (c != null)
-				cdg.add(c);
+		Element e = getNamedChildElement(root, RULE, "changes");
+		if (e != null) {
+			NodeList nl = e.getChildNodes();
+			for (int i = 0; i < nl.getLength(); i++) {
+				IChangeDescriptor c = changeDescriptorFromElement(nl.item(i));
+				if (c != null)
+					cdg.add(c);
+			}
+		} else {
+			e = getNamedChildElement(root, EDIT, "edit");
+			if (e != null) {
+				Edit ed = new EditXMLLoader(this).makeObject(e);
+				for (IChangeDescriptor cd : ed.getChildren())
+					cdg.add(cd);
+			}
 		}
+	}
+	
+	private void updateReactum() throws LoadFailedException {
+		Bigraph reactum = rr.getReactum();
+		ChangeDescriptorGroup cdg = rr.getChanges();
 		
 		ChangeGroup cg = null;
 		try {
