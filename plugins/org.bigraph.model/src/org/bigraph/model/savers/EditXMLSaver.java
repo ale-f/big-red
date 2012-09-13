@@ -8,8 +8,10 @@ import java.util.List;
 
 import org.bigraph.model.Edit;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Element;
 
 public class EditXMLSaver extends XMLSaver {
@@ -64,10 +66,20 @@ public class EditXMLSaver extends XMLSaver {
 		return el;
 	}
 	
-	protected Element processGroup(ChangeDescriptorGroup ed, Element e) {
+	protected Element processGroup(ChangeDescriptorGroup cdg, Element e) {
 		Element ch;
-		for (IChangeDescriptor cd : ed) {
-			if (cd instanceof ChangeDescriptorGroup) {
+		for (IChangeDescriptor cd : cdg) {
+			if (cd instanceof Edit) {
+				ch = newElement(EDIT, "edit:edit");
+				Edit ed = (Edit)cd;
+				IFileWrapper
+					me = getFile(),
+					them = FileData.getFile(ed);
+				if (me != null && them != null) {
+					ch.setAttributeNS(null, "src", them.getRelativePath(
+							me.getParent().getPath()));
+				} else ch = processGroup(ed.getChildren(), ch);
+			} else if (cd instanceof ChangeDescriptorGroup) {
 				ch = processGroup((ChangeDescriptorGroup)cd,
 						newElement(EDIT, "edit:edit"));
 			} else ch = processDescriptor(cd);
