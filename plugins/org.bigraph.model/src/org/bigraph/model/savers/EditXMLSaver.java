@@ -29,11 +29,24 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.w3c.dom.Element;
 
 public class EditXMLSaver extends XMLSaver {
-	protected interface IParticipant {
+	public interface Participant {
+		void setSaver(IXMLSaver saver);
+		
 		Element processDescriptor(IChangeDescriptor cd);
 	}
 	
-	private final class BigraphEditHandler implements IParticipant {
+	private final class BigraphEditHandler implements Participant {
+		private IXMLSaver saver;
+		
+		@Override
+		public void setSaver(IXMLSaver saver) {
+			this.saver = saver;
+		}
+		
+		private final Element newElement(String ns, String qn) {
+			return saver.getDocument().createElementNS(ns, qn);
+		}
+		
 		protected Element makeID(Identifier id) {
 			String name = id.getName();
 			Element el = null;
@@ -95,24 +108,26 @@ public class EditXMLSaver extends XMLSaver {
 		}
 	}
 	
-	private List<IParticipant> participants = new ArrayList<IParticipant>();
+	private List<Participant> participants = new ArrayList<Participant>();
 	
-	public EditXMLSaver addParticipant(IParticipant one) {
+	public EditXMLSaver addParticipant(Participant one) {
 		participants.add(one);
+		one.setSaver(this);
 		return this;
 	}
 	
 	public EditXMLSaver addParticipants(
-			Collection<? extends IParticipant> many) {
-		participants.addAll(many);
+			Collection<? extends Participant> many) {
+		for (Participant p : many)
+			addParticipant(p);
 		return this;
 	}
 	
 	{
-		participants.add(new BigraphEditHandler());
+		addParticipant(new BigraphEditHandler());
 	}
 	
-	protected List<IParticipant> getParticipants() {
+	protected List<Participant> getParticipants() {
 		return participants;
 	}
 	
@@ -130,7 +145,7 @@ public class EditXMLSaver extends XMLSaver {
 	
 	protected Element processDescriptor(IChangeDescriptor cd) {
 		Element el = null;
-		for (IParticipant p : getParticipants()) {
+		for (Participant p : getParticipants()) {
 			el = p.processDescriptor(cd);
 			if (el != null)
 				break;
