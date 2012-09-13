@@ -37,7 +37,7 @@ public class EditXMLSaver extends XMLSaver {
 	}
 	
 	{
-		addParticipant(new BigraphEditHandler());
+		addParticipant(new BigraphEditSaver());
 	}
 	
 	protected List<Participant> getParticipants() {

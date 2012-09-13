@@ -23,7 +23,7 @@ import org.bigraph.model.savers.EditXMLSaver.Participant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-final class BigraphEditHandler implements Participant {
+public final class BigraphEditSaver implements Participant {
 	private IXMLSaver saver;
 	
 	@Override

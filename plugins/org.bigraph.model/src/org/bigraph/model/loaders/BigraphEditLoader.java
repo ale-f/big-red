@@ -21,7 +21,7 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.EditXMLLoader.Participant;
 import org.w3c.dom.Element;
 
-final class BigraphEditHandler implements Participant {
+public class BigraphEditLoader implements Participant {
 	private Root.Identifier getRootIdentifier(Element el) {
 		return new Root.Identifier(EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"));
 	}

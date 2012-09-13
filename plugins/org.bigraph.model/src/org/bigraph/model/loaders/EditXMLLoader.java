@@ -34,7 +34,7 @@ public class EditXMLLoader extends XMLLoader {
 	}
 	
 	{
-		addParticipant(new BigraphEditHandler());
+		addParticipant(new BigraphEditLoader());
 	}
 	
 	protected List<Participant> getParticipants() {
@@ -67,7 +67,7 @@ public class EditXMLLoader extends XMLLoader {
 	}
 
 	private final Participant bigraphEditHandler =
-			new BigraphEditHandler();
+			new BigraphEditLoader();
 	
 	private IChangeDescriptor makeDescriptor(Element el) {
 		IChangeDescriptor cd = null;
