@@ -120,6 +120,7 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	
 	private Document doc = null;
 	
+	@Override
 	public Document getDocument() {
 		return doc;
 	}
