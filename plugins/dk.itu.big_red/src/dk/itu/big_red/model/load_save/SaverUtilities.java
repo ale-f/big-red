@@ -1,5 +1,6 @@
 package dk.itu.big_red.model.load_save;
 
+import org.bigraph.model.savers.EditXMLSaver;
 import org.bigraph.model.savers.IXMLSaver;
 import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.XMLSaver;
@@ -32,6 +33,10 @@ public abstract class SaverUtilities {
 		}
 	}
 	
+	public static void installEditParticipants(EditXMLSaver s) {
+		s.addParticipant(new RedXMLEdits.SaveParticipant());
+	}
+	
 	public static Saver forContentType(String ct) throws CoreException {
 		return forContentType(
 				Project.getContentTypeManager().getContentType(ct));
@@ -47,8 +52,11 @@ public abstract class SaverUtilities {
 				break;
 			}
 		}
-		if (s instanceof XMLSaver)
+		if (s instanceof XMLSaver) {
 			installDecorators((XMLSaver)s);
+			if (s instanceof EditXMLSaver)
+				installEditParticipants((EditXMLSaver)s);
+		}
 		return s;
 	}
 }
