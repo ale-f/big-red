@@ -1,6 +1,6 @@
 package dk.itu.big_red.model.load_save;
 
-import org.bigraph.model.savers.IXMLDecorator;
+import org.bigraph.model.savers.IXMLSaver;
 import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.core.runtime.CoreException;
@@ -22,8 +22,8 @@ public abstract class SaverUtilities {
 			r.getConfigurationElementsFor(LoaderUtilities.EXTENSION_POINT_XML)) {
 			if ("decorator".equals(ice.getName())) {
 				try {
-					saver.addDecorator(
-						(IXMLDecorator)ice.createExecutableExtension("class"));
+					saver.addDecorator((IXMLSaver.Decorator)
+							ice.createExecutableExtension("class"));
 				} catch (CoreException e) {
 					e.printStackTrace();
 					/* do nothing */

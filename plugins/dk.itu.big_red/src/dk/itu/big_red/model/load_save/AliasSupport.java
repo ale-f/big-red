@@ -5,8 +5,7 @@ import org.bigraph.model.Site;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.IXMLUndecorator;
-import org.bigraph.model.savers.IXMLDecorator;
-import org.bigraph.model.savers.Saver;
+import org.bigraph.model.savers.IXMLSaver;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
@@ -46,14 +45,14 @@ public abstract class AliasSupport {
 		}
 	}
 	
-	public static final class Decorator implements IXMLDecorator {
+	public static final class Decorator implements IXMLSaver.Decorator {
 		@Override
-		public void setSaver(Saver saver) {
+		public void setSaver(IXMLSaver saver) {
 			/* do nothing */
 		}
 		
 		@Override
-		public IXMLDecorator newInstance() {
+		public Decorator newInstance() {
 			return new Decorator();
 		}
 

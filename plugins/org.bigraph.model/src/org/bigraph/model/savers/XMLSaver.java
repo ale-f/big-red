@@ -213,33 +213,33 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 		return (super.canExport() && doc != null);
 	}
 	
-	private List<IXMLDecorator> decorators = null;
+	private List<Decorator> decorators = null;
 	
-	protected List<IXMLDecorator> getDecorators() {
+	protected List<Decorator> getDecorators() {
 		return (decorators != null ? decorators :
-				Collections.<IXMLDecorator>emptyList());
+				Collections.<Decorator>emptyList());
 	}
 	
-	public void addDecorator(IXMLDecorator d) {
+	public void addDecorator(Decorator d) {
 		if (d == null)
 			return;
 		if (decorators == null)
-			decorators = new ArrayList<IXMLDecorator>();
+			decorators = new ArrayList<Decorator>();
 		decorators.add(d);
 		d.setSaver(this);
 	}
 	
 	public XMLSaver addNewDecorators(
-			Collection<? extends IXMLDecorator> many) {
+			Collection<? extends Decorator> many) {
 		if (many != null)
-			for (IXMLDecorator d : many)
+			for (Decorator d : many)
 				addDecorator(d.newInstance());
 		return this;
 	}
 	
 	protected Element executeDecorators(ModelObject mo, Element el) {
 		if (mo != null && el != null)
-			for (IXMLDecorator d : getDecorators())
+			for (Decorator d : getDecorators())
 				d.decorate(mo, el);
 		return el;
 	}

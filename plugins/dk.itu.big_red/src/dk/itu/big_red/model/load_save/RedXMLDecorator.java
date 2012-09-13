@@ -17,8 +17,7 @@ import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
-import org.bigraph.model.savers.IXMLDecorator;
-import org.bigraph.model.savers.Saver;
+import org.bigraph.model.savers.IXMLSaver;
 import org.bigraph.model.savers.Saver.SaverOption;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -33,11 +32,11 @@ import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.ParameterUtilities;
 
-public class RedXMLDecorator implements IXMLDecorator {
+public class RedXMLDecorator implements IXMLSaver.Decorator {
 	private boolean generateAppearance = true;
 	
 	@Override
-	public void setSaver(Saver saver) {
+	public void setSaver(IXMLSaver saver) {
 		saver.addOption(new SaverOption("Generate appearance data",
 				"Include Big Red-specific appearance data in the output.") {
 			@Override
