@@ -233,33 +233,33 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		} else return loadRelative(src, klass, loader);
 	}
 	
-	private List<IXMLUndecorator> undecorators = null;
+	private List<Undecorator> undecorators = null;
 
-	protected List<IXMLUndecorator> getUndecorators() {
+	protected List<Undecorator> getUndecorators() {
 		return (undecorators != null ? undecorators :
-				Collections.<IXMLUndecorator>emptyList());
+				Collections.<Undecorator>emptyList());
 	}
 
-	public void addUndecorator(IXMLUndecorator one) {
+	public void addUndecorator(Undecorator one) {
 		if (one == null)
 			return;
 		if (undecorators == null)
-			undecorators = new ArrayList<IXMLUndecorator>();
+			undecorators = new ArrayList<Undecorator>();
 		undecorators.add(one);
 		one.setLoader(this);
 	}
 
 	public XMLLoader addNewUndecorators(
-			Collection<? extends IXMLUndecorator> many) {
+			Collection<? extends Undecorator> many) {
 		if (many != null)
-			for (IXMLUndecorator i : many)
+			for (Undecorator i : many)
 				addUndecorator(i.newInstance());
 		return this;
 	}
 	
 	protected <T extends ModelObject> T executeUndecorators(T mo, Element el) {
 		if (mo != null && el != null)
-			for (IXMLUndecorator d : getUndecorators())
+			for (Undecorator d : getUndecorators())
 				d.undecorate(mo, el);
 		return mo;
 	}
@@ -267,7 +267,7 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	@Override
 	protected void executeChanges(IChangeExecutor ex)
 			throws LoadFailedException {
-		for (IXMLUndecorator d : getUndecorators())
+		for (Undecorator d : getUndecorators())
 			d.finish(ex);
 		super.executeChanges(ex);
 	}

@@ -1,7 +1,7 @@
 package dk.itu.big_red.model.load_save;
 
+import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.Loader;
-import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.loaders.XMLLoader;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -28,9 +28,8 @@ public abstract class LoaderUtilities {
 			r.getConfigurationElementsFor(EXTENSION_POINT_XML)) {
 			if ("undecorator".equals(ice.getName())) {
 				try {
-					IXMLUndecorator u = (IXMLUndecorator)
-							ice.createExecutableExtension("class");
-					l.addUndecorator(u);
+					l.addUndecorator((IXMLLoader.Undecorator)
+							ice.createExecutableExtension("class"));
 				} catch (CoreException e) {
 					e.printStackTrace();
 					/* do nothing */

@@ -4,7 +4,6 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
-import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.savers.IXMLSaver;
 import org.w3c.dom.Element;
 
@@ -16,7 +15,7 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 public abstract class AliasSupport {
 	private AliasSupport() {}
 	
-	public static final class Undecorator implements IXMLUndecorator {
+	public static final class Undecorator implements IXMLLoader.Undecorator {
 		private IXMLLoader loader;
 		
 		@Override
@@ -40,7 +39,7 @@ public abstract class AliasSupport {
 		}
 
 		@Override
-		public IXMLUndecorator newInstance() {
+		public Undecorator newInstance() {
 			return new Undecorator();
 		}
 	}

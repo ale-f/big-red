@@ -12,7 +12,6 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
-import org.bigraph.model.loaders.IXMLUndecorator;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
@@ -40,7 +39,7 @@ import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
 import static org.bigraph.model.loaders.XMLLoader.getDoubleAttribute;
 import static org.bigraph.model.loaders.XMLLoader.getIntAttribute;
 
-public class RedXMLUndecorator implements IXMLUndecorator {
+public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 	@Override
 	public RedXMLUndecorator newInstance() {
 		return new RedXMLUndecorator();
