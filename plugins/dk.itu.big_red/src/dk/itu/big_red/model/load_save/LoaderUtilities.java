@@ -1,5 +1,6 @@
 package dk.itu.big_red.model.load_save;
 
+import org.bigraph.model.loaders.EditXMLLoader;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.XMLLoader;
@@ -38,6 +39,10 @@ public abstract class LoaderUtilities {
 		}
 	}
 	
+	public static void installEditParticipants(EditXMLLoader l) {
+		l.addParticipant(new RedXMLEdits.LoadParticipant());
+	}
+	
 	public static Loader forContentType(String ct) throws CoreException {
 		return forContentType(
 				Project.getContentTypeManager().getContentType(ct));
@@ -63,8 +68,11 @@ public abstract class LoaderUtilities {
 				break;
 			}
 		}
-		if (l instanceof XMLLoader)
+		if (l instanceof XMLLoader) {
 			installUndecorators((XMLLoader)l);
+			if (l instanceof EditXMLLoader)
+				installEditParticipants((EditXMLLoader)l);
+		}
 		return l;
 	}
 }
