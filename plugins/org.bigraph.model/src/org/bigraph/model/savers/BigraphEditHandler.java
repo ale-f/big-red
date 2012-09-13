@@ -20,6 +20,7 @@ import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.savers.EditXMLSaver.Participant;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 final class BigraphEditHandler implements Participant {
@@ -34,33 +35,37 @@ final class BigraphEditHandler implements Participant {
 		return saver.getDocument().createElementNS(ns, qn);
 	}
 	
-	protected Element makeID(Identifier id) {
+	public static Element makeID(Document d, Identifier id) {
 		String name = id.getName();
 		Element el = null;
 		if (id instanceof Site.Identifier) {
-			el = newElement(EDIT_BIG, "edit-big:site-id");
+			el = d.createElementNS(EDIT_BIG, "edit-big:site-id");
 		} else if (id instanceof Root.Identifier) {
-			el = newElement(EDIT_BIG, "edit-big:root-id");
+			el = d.createElementNS(EDIT_BIG, "edit-big:root-id");
 		} else if (id instanceof Node.Identifier) {
-			el = newElement(EDIT_BIG, "edit-big:node-id");
+			el = d.createElementNS(EDIT_BIG, "edit-big:node-id");
 			el.appendChild(
-					makeID(((Node.Identifier)id).getControl()));
+					makeID(d, ((Node.Identifier)id).getControl()));
 		} else if (id instanceof Port.Identifier) {
-			el = newElement(EDIT_BIG, "edit-big:port-id");
+			el = d.createElementNS(EDIT_BIG, "edit-big:port-id");
 			el.appendChild(
-					makeID(((Port.Identifier)id).getNode()));
+					makeID(d, ((Port.Identifier)id).getNode()));
 		} else if (id instanceof InnerName.Identifier) {
-			el = newElement(EDIT_BIG, "edit-big:innername-id");
+			el = d.createElementNS(EDIT_BIG, "edit-big:innername-id");
 		} else if (id instanceof OuterName.Identifier) {
-			el = newElement(EDIT_BIG, "edit-big:outername-id");
+			el = d.createElementNS(EDIT_BIG, "edit-big:outername-id");
 		} else if (id instanceof Edge.Identifier) {
-			el = newElement(EDIT_BIG, "edit-big:edge-id");
+			el = d.createElementNS(EDIT_BIG, "edit-big:edge-id");
 		} else if (id instanceof Control.Identifier) {
-			el = newElement(EDIT_SIG, "edit-sig:control-id");
+			el = d.createElementNS(EDIT_SIG, "edit-sig:control-id");
 		}
 		if (el != null && name != null)
 			el.setAttributeNS(null, "name", name);
 		return el;
+	}
+	
+	protected Element makeID(Identifier id) {
+		return makeID(saver.getDocument(), id);
 	}
 	
 	@Override
