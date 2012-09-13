@@ -29,12 +29,12 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_BIG;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_SIG;
 
 public class EditXMLLoader extends XMLLoader {
-	protected interface IParticipant {
+	public interface Participant {
 		IChangeDescriptor getDescriptor(Element descriptor);
 		IChangeDescriptor getRenameDescriptor(Element id, String name);
 	}
 	
-	private final class BigraphEditHandler implements IParticipant {
+	private final class BigraphEditHandler implements Participant {
 		private Root.Identifier getRootIdentifier(Element el) {
 			return new Root.Identifier(getAttributeNS(el, EDIT_BIG, "name"));
 		}
@@ -167,15 +167,15 @@ public class EditXMLLoader extends XMLLoader {
 		}
 	}
 	
-	private List<IParticipant> participants = new ArrayList<IParticipant>();
+	private List<Participant> participants = new ArrayList<Participant>();
 	
-	public EditXMLLoader addParticipant(IParticipant one) {
+	public EditXMLLoader addParticipant(Participant one) {
 		participants.add(one);
 		return this;
 	}
 	
 	public EditXMLLoader addParticipants(
-			Collection<? extends IParticipant> many) {
+			Collection<? extends Participant> many) {
 		participants.addAll(many);
 		return this;
 	}
@@ -184,7 +184,7 @@ public class EditXMLLoader extends XMLLoader {
 		addParticipant(new BigraphEditHandler());
 	}
 	
-	protected List<IParticipant> getParticipants() {
+	protected List<Participant> getParticipants() {
 		return participants;
 	}
 	
@@ -212,7 +212,7 @@ public class EditXMLLoader extends XMLLoader {
 
 	private IChangeDescriptor makeDescriptor(Element el) {
 		IChangeDescriptor cd = null;
-		for (IParticipant p : getParticipants()) {
+		for (Participant p : getParticipants()) {
 			cd = p.getDescriptor(el);
 			if (cd != null)
 				break;
@@ -227,7 +227,7 @@ public class EditXMLLoader extends XMLLoader {
 		String name = getAttributeNS(el, EDIT, "name");
 		
 		IChangeDescriptor cd = null;
-		for (IParticipant p : getParticipants()) {
+		for (Participant p : getParticipants()) {
 			cd = p.getRenameDescriptor((Element)id, name);
 			if (cd != null)
 				break;
