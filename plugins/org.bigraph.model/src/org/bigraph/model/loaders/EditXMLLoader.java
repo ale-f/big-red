@@ -46,8 +46,11 @@ public class EditXMLLoader extends XMLLoader {
 	
 	public EditXMLLoader(Loader parent) {
 		super(parent);
+		if (parent instanceof EditXMLLoader)
+			for (Participant p : ((EditXMLLoader)parent).getParticipants())
+				addParticipant(p);
 	}
-
+	
 	@Override
 	public Edit importObject() throws LoadFailedException {
 		try {
@@ -63,8 +66,13 @@ public class EditXMLLoader extends XMLLoader {
 		}
 	}
 
+	private final Participant bigraphEditHandler =
+			new BigraphEditHandler();
+	
 	private IChangeDescriptor makeDescriptor(Element el) {
 		IChangeDescriptor cd = null;
+		if ((cd = bigraphEditHandler.getDescriptor(el)) != null)
+			return cd;
 		for (Participant p : getParticipants()) {
 			cd = p.getDescriptor(el);
 			if (cd != null)
@@ -74,14 +82,17 @@ public class EditXMLLoader extends XMLLoader {
 	}
 	
 	private IChangeDescriptor makeRename(Element el) {
-		Node id = el.getFirstChild();
-		if (!(id instanceof Element))
+		Node id_ = el.getFirstChild();
+		if (!(id_ instanceof Element))
 			return null;
+		Element id = (Element)id_;
 		String name = getAttributeNS(el, EDIT, "name");
 		
 		IChangeDescriptor cd = null;
+		if ((cd = bigraphEditHandler.getRenameDescriptor(id, name)) != null)
+			return cd;
 		for (Participant p : getParticipants()) {
-			cd = p.getRenameDescriptor((Element)id, name);
+			cd = p.getRenameDescriptor(id, name);
 			if (cd != null)
 				break;
 		}

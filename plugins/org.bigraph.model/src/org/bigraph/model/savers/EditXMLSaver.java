@@ -88,5 +88,4 @@ public class EditXMLSaver extends XMLSaver {
 		processModel(getDocumentElement());
 		finish();
 	}
-
 }
