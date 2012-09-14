@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.XMLConstants;
@@ -33,8 +31,6 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	
 	public XMLLoader(Loader parent) {
 		super(parent);
-		if (parent instanceof XMLLoader)
-			addNewUndecorators(((XMLLoader)parent).getUndecorators());
 	}
 	
 	private static final SchemaFactory sf;
@@ -233,42 +229,20 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		} else return loadRelative(src, klass, loader);
 	}
 	
-	private List<Undecorator> undecorators = null;
-
-	protected List<Undecorator> getUndecorators() {
-		return (undecorators != null ? undecorators :
-				Collections.<Undecorator>emptyList());
-	}
-
-	public void addUndecorator(Undecorator one) {
-		if (one == null)
-			return;
-		if (undecorators == null)
-			undecorators = new ArrayList<Undecorator>();
-		undecorators.add(one);
-		one.setLoader(this);
-	}
-
-	public XMLLoader addNewUndecorators(
-			Collection<? extends Undecorator> many) {
-		if (many != null)
-			for (Undecorator i : many)
-				addUndecorator(i.newInstance());
-		return this;
-	}
-	
 	protected <T extends ModelObject> T executeUndecorators(T mo, Element el) {
 		if (mo != null && el != null)
-			for (Undecorator d : getUndecorators())
-				d.undecorate(mo, el);
+			for (Participant p : getParticipants())
+				if (p instanceof Undecorator)
+					((Undecorator)p).undecorate(mo, el);
 		return mo;
 	}
 
 	@Override
 	protected void executeChanges(IChangeExecutor ex)
 			throws LoadFailedException {
-		for (Undecorator d : getUndecorators())
-			d.finish(ex);
+		for (Participant p : getParticipants())
+			if (p instanceof Undecorator)
+				((Undecorator)p).finish(ex);
 		super.executeChanges(ex);
 	}
 }

@@ -29,7 +29,7 @@ public abstract class LoaderUtilities {
 			r.getConfigurationElementsFor(EXTENSION_POINT_XML)) {
 			if ("undecorator".equals(ice.getName())) {
 				try {
-					l.addUndecorator((IXMLLoader.Undecorator)
+					l.addParticipant((IXMLLoader.Undecorator)
 							ice.createExecutableExtension("class"));
 				} catch (CoreException e) {
 					e.printStackTrace();

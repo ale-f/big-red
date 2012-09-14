@@ -146,4 +146,14 @@ public class BigraphEditLoader implements Participant {
 		return (lid != null ?
 				new Layoutable.ChangeNameDescriptor(lid, name) : null);
 	}
+	
+	@Override
+	public BigraphEditLoader newInstance() {
+		return new BigraphEditLoader();
+	}
+	
+	@Override
+	public void setLoader(ILoader loader) {
+		/* do nothing */
+	}
 }

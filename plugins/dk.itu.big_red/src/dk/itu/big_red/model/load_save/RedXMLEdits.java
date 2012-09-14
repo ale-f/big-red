@@ -3,6 +3,8 @@ package dk.itu.big_red.model.load_save;
 import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.EditXMLLoader;
+import org.bigraph.model.loaders.ILoader;
+import org.bigraph.model.loaders.ILoader.Participant;
 import org.bigraph.model.savers.BigraphEditSaver;
 import org.bigraph.model.savers.EditXMLSaver;
 import org.bigraph.model.savers.ISaver;
@@ -22,6 +24,17 @@ public abstract class RedXMLEdits {
 	
 	public static final class LoadParticipant
 			implements EditXMLLoader.Participant {
+		@Override
+		public Participant newInstance() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+		@Override
+		public void setLoader(ILoader loader) {
+			// TODO Auto-generated method stub
+		}
+		
 		@Override
 		public IChangeDescriptor getDescriptor(Element descriptor) {
 			// TODO Auto-generated method stub

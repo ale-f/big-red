@@ -3,6 +3,7 @@ package dk.itu.big_red.model.load_save;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.IXMLSaver;
@@ -20,8 +21,9 @@ public abstract class AliasSupport {
 		private IXMLLoader loader;
 		
 		@Override
-		public void setLoader(IXMLLoader loader) {
-			this.loader = loader;
+		public void setLoader(ILoader loader) {
+			if (loader instanceof IXMLLoader)
+				this.loader = (IXMLLoader)loader;
 		}
 	
 		@Override

@@ -16,6 +16,9 @@ public abstract class Loader implements ILoader {
 	
 	public Loader(Loader parent) {
 		this.parent = parent;
+		if (parent != null)
+			for (Participant p : parent.getParticipants())
+				addParticipant(p.newInstance());
 	}
 	
 	protected Loader getParent() {
@@ -105,5 +108,18 @@ public abstract class Loader implements ILoader {
 	
 	public List<LoaderNotice> getNotices() {
 		return notices;
+	}
+	
+	private List<Participant> participants = new ArrayList<Participant>();
+	
+	@Override
+	public void addParticipant(Participant p) {
+		participants.add(p);
+		p.setLoader(this);
+	}
+	
+	@Override
+	public List<Participant> getParticipants() {
+		return participants;
 	}
 }
