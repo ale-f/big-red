@@ -5,6 +5,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.SignatureXMLSaver;
 import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
@@ -16,6 +17,11 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 
 public class SimulationSpecXMLSaver extends XMLSaver {
 	public SimulationSpecXMLSaver() {
+		this(null);
+	}
+	
+	public SimulationSpecXMLSaver(Saver parent) {
+		super(parent);
 		setDefaultNamespace(SPEC);
 	}
 	

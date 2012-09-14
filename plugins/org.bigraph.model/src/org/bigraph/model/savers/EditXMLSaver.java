@@ -15,6 +15,15 @@ import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Element;
 
 public class EditXMLSaver extends XMLSaver {
+	public EditXMLSaver() {
+		this(null);
+	}
+	
+	public EditXMLSaver(Saver parent) {
+		super(parent);
+		setDefaultNamespace(EDIT);
+	}
+	
 	public interface Participant {
 		void setSaver(IXMLSaver saver);
 		

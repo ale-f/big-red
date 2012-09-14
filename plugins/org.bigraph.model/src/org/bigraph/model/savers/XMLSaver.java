@@ -25,6 +25,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 public abstract class XMLSaver extends Saver implements IXMLSaver {
+	public XMLSaver() {
+	}
+	
+	public XMLSaver(Saver parent) {
+		super(parent);
+	}
+	
 	private static final TransformerFactory tf;
 	private static final DOMImplementation impl;
 	static {

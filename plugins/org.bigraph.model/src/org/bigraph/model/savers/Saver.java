@@ -8,6 +8,20 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Saver implements ISaver {
+	private final Saver parent;
+	
+	public Saver() {
+		this(null);
+	}
+	
+	public Saver(Saver parent) {
+		this.parent = parent;
+	}
+	
+	protected Saver getParent() {
+		return parent;
+	}
+	
 	private IFileWrapper file;
 	
 	public Saver setFile(IFileWrapper file) {
@@ -15,7 +29,16 @@ public abstract class Saver implements ISaver {
 		return this;
 	}
 	
+	@Override
 	public IFileWrapper getFile() {
+		IFileWrapper file = this.file;
+		Saver parent;
+		if (file == null && (parent = getParent()) != null)
+			file = parent.getFile();
+		return file;
+	}
+	
+	protected IFileWrapper getFileRaw() {
 		return file;
 	}
 	

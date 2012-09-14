@@ -27,6 +27,11 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
  */
 public class BigraphXMLSaver extends XMLSaver {
 	public BigraphXMLSaver() {
+		this(null);
+	}
+	
+	public BigraphXMLSaver(Saver parent) {
+		super(parent);
 		setDefaultNamespace(BIGRAPH);
 	}
 	
