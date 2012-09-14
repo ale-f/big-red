@@ -4,8 +4,8 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.savers.BigraphXMLSaver;
+import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.SignatureXMLSaver;
 import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
@@ -20,7 +20,7 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 		this(null);
 	}
 	
-	public SimulationSpecXMLSaver(Saver parent) {
+	public SimulationSpecXMLSaver(ISaver parent) {
 		super(parent);
 		setDefaultNamespace(SPEC);
 	}

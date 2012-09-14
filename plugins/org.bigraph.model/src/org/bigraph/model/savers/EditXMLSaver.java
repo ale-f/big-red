@@ -15,7 +15,7 @@ public class EditXMLSaver extends XMLSaver {
 		this(null);
 	}
 	
-	public EditXMLSaver(Saver parent) {
+	public EditXMLSaver(ISaver parent) {
 		super(parent);
 		setDefaultNamespace(EDIT);
 	}

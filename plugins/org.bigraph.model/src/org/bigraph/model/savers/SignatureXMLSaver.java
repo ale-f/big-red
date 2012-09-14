@@ -13,7 +13,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		this(null);
 	}
 	
-	public SignatureXMLSaver(Saver parent) {
+	public SignatureXMLSaver(ISaver parent) {
 		super(parent);
 		setDefaultNamespace(SIGNATURE);
 	}

@@ -30,7 +30,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		this(null);
 	}
 	
-	public BigraphXMLSaver(Saver parent) {
+	public BigraphXMLSaver(ISaver parent) {
 		super(parent);
 		setDefaultNamespace(BIGRAPH);
 	}

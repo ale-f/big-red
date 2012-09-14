@@ -23,7 +23,7 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	public XMLSaver() {
 	}
 	
-	public XMLSaver(Saver parent) {
+	public XMLSaver(ISaver parent) {
 		super(parent);
 		if (parent instanceof XMLSaver)
 			setDocument(((XMLSaver)parent).getDocument());

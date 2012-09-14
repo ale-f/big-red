@@ -24,8 +24,8 @@ import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.EditXMLSaver;
+import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
@@ -47,7 +47,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		this(null);
 	}
 	
-	public ReactionRuleXMLSaver(Saver parent) {
+	public ReactionRuleXMLSaver(ISaver parent) {
 		super(parent);
 		setDefaultNamespace(RULE);
 	}
