@@ -2,10 +2,6 @@ package org.bigraph.model.savers;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.bigraph.model.Edit;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.FileData;
@@ -24,33 +20,12 @@ public class EditXMLSaver extends XMLSaver {
 		setDefaultNamespace(EDIT);
 	}
 	
-	public interface Participant {
-		void setSaver(IXMLSaver saver);
-		
+	public interface Participant extends ISaver.Participant {
 		Element processDescriptor(IChangeDescriptor cd);
-	}
-	
-	private List<Participant> participants = new ArrayList<Participant>();
-	
-	public EditXMLSaver addParticipant(Participant one) {
-		participants.add(one);
-		one.setSaver(this);
-		return this;
-	}
-	
-	public EditXMLSaver addParticipants(
-			Collection<? extends Participant> many) {
-		for (Participant p : many)
-			addParticipant(p);
-		return this;
 	}
 	
 	{
 		addParticipant(new BigraphEditSaver());
-	}
-	
-	protected List<Participant> getParticipants() {
-		return participants;
 	}
 	
 	@Override
@@ -67,8 +42,10 @@ public class EditXMLSaver extends XMLSaver {
 	
 	protected Element processDescriptor(IChangeDescriptor cd) {
 		Element el = null;
-		for (Participant p : getParticipants()) {
-			el = p.processDescriptor(cd);
+		for (ISaver.Participant p : getParticipants()) {
+			if (!(p instanceof Participant))
+				continue;
+			el = ((Participant)p).processDescriptor(cd);
 			if (el != null)
 				break;
 		}

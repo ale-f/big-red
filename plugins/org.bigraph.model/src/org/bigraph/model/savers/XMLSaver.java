@@ -1,10 +1,5 @@
 package org.bigraph.model.savers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -30,11 +25,8 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	
 	public XMLSaver(Saver parent) {
 		super(parent);
-		if (parent instanceof XMLSaver) {
-			XMLSaver xs = (XMLSaver)parent;
-			setDocument(xs.getDocument());
-			addNewDecorators(xs.getDecorators());
-		}
+		if (parent instanceof XMLSaver)
+			setDocument(((XMLSaver)parent).getDocument());
 	}
 	
 	private static final TransformerFactory tf;
@@ -222,34 +214,13 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 		return (super.canExport() && doc != null);
 	}
 	
-	private List<Decorator> decorators = null;
-	
-	protected List<Decorator> getDecorators() {
-		return (decorators != null ? decorators :
-				Collections.<Decorator>emptyList());
-	}
-	
-	public void addDecorator(Decorator d) {
-		if (d == null)
-			return;
-		if (decorators == null)
-			decorators = new ArrayList<Decorator>();
-		decorators.add(d);
-		d.setSaver(this);
-	}
-	
-	public XMLSaver addNewDecorators(
-			Collection<? extends Decorator> many) {
-		if (many != null)
-			for (Decorator d : many)
-				addDecorator(d.newInstance());
-		return this;
-	}
-	
 	protected Element executeDecorators(ModelObject mo, Element el) {
 		if (mo != null && el != null)
-			for (Decorator d : getDecorators())
-				d.decorate(mo, el);
+			for (ISaver.Participant p : getParticipants()) {
+				if (!(p instanceof Decorator))
+					continue;
+				((Decorator)p).decorate(mo, el);
+			}
 		return el;
 	}
 }

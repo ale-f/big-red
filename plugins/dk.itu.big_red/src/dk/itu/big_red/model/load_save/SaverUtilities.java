@@ -23,7 +23,7 @@ public abstract class SaverUtilities {
 			r.getConfigurationElementsFor(LoaderUtilities.EXTENSION_POINT_XML)) {
 			if ("decorator".equals(ice.getName())) {
 				try {
-					saver.addDecorator((IXMLSaver.Decorator)
+					saver.addParticipant((IXMLSaver.Decorator)
 							ice.createExecutableExtension("class"));
 				} catch (CoreException e) {
 					e.printStackTrace();

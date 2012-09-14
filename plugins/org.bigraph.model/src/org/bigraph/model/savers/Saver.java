@@ -16,6 +16,9 @@ public abstract class Saver implements ISaver {
 	
 	public Saver(Saver parent) {
 		this.parent = parent;
+		if (parent != null)
+			for (Participant p : parent.getParticipants())
+				addParticipant(p.newInstance());
 	}
 	
 	protected Saver getParent() {
@@ -122,7 +125,7 @@ public abstract class Saver implements ISaver {
 	 */
 	public abstract void exportObject() throws SaveFailedException;
 	
-	private ArrayList<Option> options = new ArrayList<Option>();
+	private List<Option> options = new ArrayList<Option>();
 	
 	/**
 	 * Adds an option to this {@link Saver}.
@@ -138,7 +141,20 @@ public abstract class Saver implements ISaver {
 	 * @return a list of {@link Option}s
 	 */
 	@Override
-	public final List<? extends Option> getOptions() {
+	public final List<Option> getOptions() {
 		return options;
+	}
+	
+	private List<Participant> participants = new ArrayList<Participant>();
+	
+	@Override
+	public void addParticipant(Participant p) {
+		participants.add(p);
+		p.setSaver(this);
+	}
+	
+	@Override
+	public List<? extends Participant> getParticipants() {
+		return participants;
 	}
 }

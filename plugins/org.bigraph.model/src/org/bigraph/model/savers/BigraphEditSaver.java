@@ -24,11 +24,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public final class BigraphEditSaver implements Participant {
+	@Override
+	public BigraphEditSaver newInstance() {
+		return new BigraphEditSaver();
+	}
+	
 	private IXMLSaver saver;
 	
 	@Override
-	public void setSaver(IXMLSaver saver) {
-		this.saver = saver;
+	public void setSaver(ISaver saver) {
+		if (saver instanceof IXMLSaver)
+			this.saver = (IXMLSaver)saver;
 	}
 	
 	private final Element newElement(String ns, String qn) {

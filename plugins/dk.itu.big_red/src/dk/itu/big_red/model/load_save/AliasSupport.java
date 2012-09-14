@@ -4,6 +4,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
+import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.IXMLSaver;
 import org.w3c.dom.Element;
 
@@ -46,7 +47,7 @@ public abstract class AliasSupport {
 	
 	public static final class Decorator implements IXMLSaver.Decorator {
 		@Override
-		public void setSaver(IXMLSaver saver) {
+		public void setSaver(ISaver saver) {
 			/* do nothing */
 		}
 		

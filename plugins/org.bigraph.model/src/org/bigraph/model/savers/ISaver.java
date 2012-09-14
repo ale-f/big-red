@@ -5,6 +5,14 @@ import java.util.List;
 import org.bigraph.model.resources.IFileWrapper;
 
 public interface ISaver {
+	public interface Participant {
+		void setSaver(ISaver saver);
+		Participant newInstance();
+	}
+	
+	void addParticipant(Participant p);
+	List<? extends Participant> getParticipants();
+	
 	public interface Option {
 		String getName();
 		String getDescription();

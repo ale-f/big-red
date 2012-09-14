@@ -5,6 +5,7 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.EditXMLLoader;
 import org.bigraph.model.savers.BigraphEditSaver;
 import org.bigraph.model.savers.EditXMLSaver;
+import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.IXMLSaver;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
@@ -39,8 +40,14 @@ public abstract class RedXMLEdits {
 		private IXMLSaver saver;
 		
 		@Override
-		public void setSaver(IXMLSaver saver) {
-			this.saver = saver;
+		public void setSaver(ISaver saver) {
+			if (saver instanceof IXMLSaver)
+				this.saver = (IXMLSaver)saver;
+		}
+		
+		@Override
+		public SaveParticipant newInstance() {
+			return new SaveParticipant();
 		}
 		
 		private final Element newElement(String ns, String qn) {
