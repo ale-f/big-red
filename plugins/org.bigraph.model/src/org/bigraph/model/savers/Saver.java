@@ -42,15 +42,7 @@ public abstract class Saver implements ISaver {
 		return file;
 	}
 	
-	public interface ISaverOption {
-		String getName();
-		String getDescription();
-		
-		Object get();
-		void set(Object value);
-	}
-	
-	public static abstract class SaverOption implements ISaverOption {
+	public static abstract class SaverOption implements Option {
 		private final String name, description;
 		
 		public SaverOption(String name) {
@@ -130,14 +122,14 @@ public abstract class Saver implements ISaver {
 	 */
 	public abstract void exportObject() throws SaveFailedException;
 	
-	private ArrayList<ISaverOption> options = new ArrayList<ISaverOption>();
+	private ArrayList<Option> options = new ArrayList<Option>();
 	
 	/**
 	 * Adds an option to this {@link Saver}.
 	 * @param d an {@link Option} specifying the new option
 	 */
 	@Override
-	public final void addOption(ISaverOption d) {
+	public final void addOption(Option d) {
 		options.add(d);
 	}
 	
@@ -146,7 +138,7 @@ public abstract class Saver implements ISaver {
 	 * @return a list of {@link Option}s
 	 */
 	@Override
-	public final List<? extends ISaverOption> getOptions() {
+	public final List<? extends Option> getOptions() {
 		return options;
 	}
 }
