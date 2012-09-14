@@ -57,14 +57,15 @@ public class BRSXMLSaver extends XMLSaver {
 		appendChildIfNotNull(e,
 				processOrReference(
 					newElement(SIGNATURE, "signature:signature"),
-					ss.getSignature(), SignatureXMLSaver.class));
+					ss.getSignature(), new SignatureXMLSaver(this)));
 		
 		for (Reaction rr : ss.getRules()){
 			Element t1=newElement(BRS, "brs:rule");
 			rr.setSign(ss.getSignature());
-			appendChildIfNotNull(e,
-				processOrReference(t1,
-					rr, ReactionXMLSaver.class));
+			ReactionXMLSaver rxs = new ReactionXMLSaver();
+			rxs.setDocument(getDocument());
+			rxs.addNewDecorators(getDecorators());
+			appendChildIfNotNull(e, processOrReference(t1, rr, rxs));
 			Element pE = newElement(BIG_RED, "big-red:appearance");
 			Rectangle rect= ss.getChildrenConstraint(rr);
 			rectangleToElement(pE, rect);
@@ -79,7 +80,7 @@ public class BRSXMLSaver extends XMLSaver {
 			
 			appendChildIfNotNull(e,
 					processOrReference(t1,
-							bb, BigraphXMLSaver.class));
+							bb, new BigraphXMLSaver(this)));
 			
 			Element pE = newElement(BIG_RED, "big-red:appearance");
 			Rectangle rect= ss.getChildrenConstraint(bb);

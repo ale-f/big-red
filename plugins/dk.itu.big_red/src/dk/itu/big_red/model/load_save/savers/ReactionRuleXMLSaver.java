@@ -97,7 +97,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(BIGRAPH, "bigraph:bigraph"),
-				rr.getRedex(), BigraphXMLSaver.class));
+				rr.getRedex(), new BigraphXMLSaver(this)));
 		if (!exportEdits) {
 			appendChildIfNotNull(e, processChanges(
 					newElement(RULE, "rule:changes"), rr.getChanges()));
@@ -118,7 +118,7 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			appendChildIfNotNull(e,
 				processOrReference(
 					newElement(EDIT, "edit:edit"),
-					ed, EditXMLSaver.class));
+					ed, new EditXMLSaver(this)));
 		}
 		
 		return executeDecorators(rr, e);

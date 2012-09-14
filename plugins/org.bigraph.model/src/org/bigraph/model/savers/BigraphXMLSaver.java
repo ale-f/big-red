@@ -61,7 +61,7 @@ public class BigraphXMLSaver extends XMLSaver {
 		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(SIGNATURE, "signature:signature"),
-				obj.getSignature(), SignatureXMLSaver.class));
+				obj.getSignature(), new SignatureXMLSaver(this)));
 		
 		ArrayList<Element>
 			edges = new ArrayList<Element>(),

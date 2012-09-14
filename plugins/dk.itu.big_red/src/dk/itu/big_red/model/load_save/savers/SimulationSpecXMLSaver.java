@@ -50,16 +50,16 @@ public class SimulationSpecXMLSaver extends XMLSaver {
 		
 		appendChildIfNotNull(e,
 			processOrReference(newElement(SIGNATURE, "signature:signature"),
-				ss.getSignature(), SignatureXMLSaver.class));
+				ss.getSignature(), new SignatureXMLSaver(this)));
 		
 		for (ReactionRule rr : ss.getRules())
 			appendChildIfNotNull(e,
 				processOrReference(newElement(RULE, "rule:rule"),
-					rr, ReactionRuleXMLSaver.class));
+					rr, new ReactionRuleXMLSaver(this)));
 		
 		appendChildIfNotNull(e,
 			processOrReference(newElement(BIGRAPH, "bigraph:bigraph"),
-				ss.getModel(), BigraphXMLSaver.class));
+				ss.getModel(), new BigraphXMLSaver(this)));
 		
 		return executeDecorators(ss, e);
 	}

@@ -30,6 +30,11 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	
 	public XMLSaver(Saver parent) {
 		super(parent);
+		if (parent instanceof XMLSaver) {
+			XMLSaver xs = (XMLSaver)parent;
+			setDocument(xs.getDocument());
+			addNewDecorators(xs.getDecorators());
+		}
 	}
 	
 	private static final TransformerFactory tf;
@@ -144,9 +149,9 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	}
 	
 	public abstract Element processModel(Element e) throws SaveFailedException;
-
+	
 	protected Element processOrReference(
-			Element e, ModelObject object, Class<? extends XMLSaver> klass) {
+			Element e, ModelObject object, XMLSaver ex) {
 		IFileWrapper f;
 		if (e == null || object == null) {
 			return null;
@@ -156,11 +161,8 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 				"src", f.getRelativePath(getFile().getParent().getPath()));
 			/* No decoration takes place! */
 		} else {
-			XMLSaver ex;
 			try {
-				ex = klass.newInstance().addNewDecorators(getDecorators());
-				ex.setDocument(getDocument()).
-						setModel(object).setFile(getFile());
+				ex.setModel(object).setFile(getFile());
 				ex.processModel(e);
 			} catch (Exception exc) {
 				return e;

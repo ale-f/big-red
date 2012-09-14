@@ -44,7 +44,7 @@ public class SignatureXMLSaver extends XMLSaver {
 		for (Signature t : s.getSignatures())
 			appendChildIfNotNull(e, processOrReference(
 					newElement(SIGNATURE, "signature:signature"),
-					t, SignatureXMLSaver.class));
+					t, new SignatureXMLSaver(this)));
 		
 		for (Control c : s.getControls())
 			appendChildIfNotNull(e,
