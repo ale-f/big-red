@@ -1,6 +1,9 @@
 <!doctype html>
 <html>
 	<head>
+		<title>
+			Creating a simulation spec
+		</title>
 		<link rel="stylesheet" media="screen" href="../big-red.css" />
 	</head>
 	<body>
@@ -8,6 +11,49 @@
 		<h2>
 			Creating a simulation spec
 		</h2>
+		<p>
+			At this point, your project contains all of the pieces
+			of a complete bigraphical reactive system:
+		</p>
+		<ul>
+			<li>
+				it has a signature, defining its controls;
+			</li>
+			<li>
+				it has an agent, defining its initial state;
+				and
+			</li>
+			<li>
+				it has some reaction rules, specifying how the
+				agent can be changed.
+			</li>
+		</ul>
+		<p>
+			Big Red's last file format, the <em>simulation
+			spec</em>, is used to group these together into a
+			complete system, ready for execution by simulation
+			tools.
+		</p>
+		<p>
+			When you created the project, Big Red automatically
+			created a simulation spec &mdash; the <code class="filename">PLACEHOLDER.bigraph-simulation-spec</code>
+			file in the project's root. Double-click it to open it.
+		</p>
+		<p class="info note">
+			To create a new simulation spec, choose <span class="menu-path">Big
+			Red &rarr; Simulation spec</span> from the <span class="menu-path">New</span>
+			menu.
+		</p>
+		<p>
+			Now that the simulation spec is complete, the <span class="button">Export...</span>
+			button in the bottom-right of the editor has become
+			active. Use the tool menu to select a target for your
+			simulation spec, then click <span class="button">Export...</span>.
+		</p>
+		<p class="info note">
+			The contents of the tool menu will vary depending on
+			which plug-ins you have installed.
+		</p>
 		<div id="trail">
 			<p class="previous">
 				<a href="rule.html">Creating a reaction rule</a>

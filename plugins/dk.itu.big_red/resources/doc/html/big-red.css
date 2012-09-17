@@ -1,5 +1,5 @@
 body {
-	background-color: #ffeeee;
+	background-color: #fee;
 }
 
 a, a:link, a:active, a:visited {
@@ -16,6 +16,53 @@ a:active {
 
 a:visited {
 	color: #800;
+}
+
+.note {
+	padding: 16px;
+	padding-left: 80px;
+	min-height: 48px;
+	
+	background-repeat: no-repeat;
+	background-position: top 16px left 16px;
+}
+
+/* Make childen of .notes behave properly */
+
+.note > * {
+	margin-bottom: 0;
+	margin-top: default;
+}
+
+.note > :first-child {
+	margin-top: 0;
+}
+
+.note.info {
+	border: 1px solid #f88;
+	background-color: #fdd;
+	background-image: url('../../icons/info.png');
+}
+
+.note.warning {
+	border: 1px solid #f33;
+	background-color: #f88;
+	background-image: url('../../icons/warning.png');
+}
+
+.button {
+	background-color: #ccc;
+	
+	border: 0.1em outset silver;
+	
+	font-size: 0.8em;
+	
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.menu-path {
+	font-style: italic;
 }
 
 div#header {
