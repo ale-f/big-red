@@ -8,70 +8,36 @@
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.0"
    width="250"
    height="200"
-   id="svg2">
+   id="svg2"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="logo.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview3882"
+     showgrid="false"
+     inkscape:zoom="1.18"
+     inkscape:cx="125"
+     inkscape:cy="100"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2" />
   <defs
      id="defs4">
-    <linearGradient
-       id="linearGradient3163">
-      <stop
-         id="stop3165"
-         style="stop-color:#ffffff;stop-opacity:1"
-         offset="0" />
-      <stop
-         id="stop3167"
-         style="stop-color:#ff0000;stop-opacity:1"
-         offset="1" />
-    </linearGradient>
-    <linearGradient
-       id="linearGradient3155">
-      <stop
-         id="stop3157"
-         style="stop-color:#000000;stop-opacity:1"
-         offset="0" />
-      <stop
-         id="stop3159"
-         style="stop-color:#000000;stop-opacity:0"
-         offset="1" />
-    </linearGradient>
-    <radialGradient
-       cx="147.14287"
-       cy="68.14286"
-       r="36.42857"
-       fx="147.14287"
-       fy="68.14286"
-       id="radialGradient2404"
-       xlink:href="#linearGradient3163"
-       gradientUnits="userSpaceOnUse" />
-    <radialGradient
-       cx="147.14287"
-       cy="68.14286"
-       r="36.42857"
-       fx="147.14287"
-       fy="68.14286"
-       id="radialGradient2397"
-       xlink:href="#linearGradient3163"
-       gradientUnits="userSpaceOnUse" />
-    <radialGradient
-       cx="147.14287"
-       cy="68.14286"
-       r="36.42857"
-       fx="147.14287"
-       fy="68.14286"
-       id="radialGradient2407"
-       xlink:href="#linearGradient3163"
-       gradientUnits="userSpaceOnUse" />
-    <radialGradient
-       cx="147.14287"
-       cy="68.14286"
-       r="36.42857"
-       fx="147.14287"
-       fy="68.14286"
-       id="radialGradient3036"
-       xlink:href="#linearGradient3163-7"
-       gradientUnits="userSpaceOnUse" />
     <linearGradient
        id="linearGradient3163-7">
       <stop
@@ -101,7 +67,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

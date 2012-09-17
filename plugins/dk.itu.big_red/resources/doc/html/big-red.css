@@ -50,6 +50,12 @@ a:visited {
 	background-image: url('../../icons/warning.png');
 }
 
+.note.bug {
+	border: 1px solid #f00;
+	background-color: #f55;
+	background-image: url('../../icons/bug.png');
+}
+
 .button {
 	background-color: #ccc;
 	
