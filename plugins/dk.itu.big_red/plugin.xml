@@ -373,4 +373,32 @@
             class="dk.itu.big_red.preferences.RedPreferences">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.help.toc">
+      <toc
+            category="Big Red"
+            file="resources/doc/toc.xml"
+            primary="true">
+      </toc>
+      <toc
+            file="resources/doc/tocconcepts.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="resources/doc/tocgettingstarted.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="resources/doc/tocreference.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="resources/doc/tocsamples.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="resources/doc/toctasks.xml"
+            primary="false">
+      </toc>
+   </extension>
 </plugin>
