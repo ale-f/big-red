@@ -99,23 +99,20 @@
 			</li>
 		</ul>
 		<h3>
-			Notes
+			See also
 		</h3>
-		<p>
-			See also the edits defined by <a href="edit-big.xsd"><code>edit-big</code></a>:
-		</p>
 		<ul>
 			<li>
-				<a href="edit-big.xsd#add"><code>edit-big:add</code></a>;
+				<a href="edit-big.xsd#add"><code>edit-big:add</code></a>
 			</li>
 			<li>
-				<a href="edit-big.xsd#remove"><code>edit-big:remove</code></a>;
+				<a href="edit-big.xsd#remove"><code>edit-big:remove</code></a>
 			</li>
 			<li>
-				<a href="edit-big.xsd#connect"><code>edit-big:connect</code></a>; and
+				<a href="edit-big.xsd#connect"><code>edit-big:connect</code></a>
 			</li>
 			<li>
-				<a href="edit-big.xsd#disconnect"><code>edit-big:disconnect</code></a>.
+				<a href="edit-big.xsd#disconnect"><code>edit-big:disconnect</code></a>
 			</li>
 		</ul>
 		<hr />
