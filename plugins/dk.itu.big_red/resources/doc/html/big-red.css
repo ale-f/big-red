@@ -51,8 +51,8 @@ a:visited {
 }
 
 .note.bug {
-	border: 1px solid #f00;
-	background-color: #f55;
+	border: 1px solid #c00;
+	background-color: #c55;
 	background-image: url('../../icons/bug.png');
 }
 
