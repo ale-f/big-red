@@ -36,6 +36,12 @@
 						<q>SHOULD</q>, <q>SHOULD NOT</q>, <q>RECOMMENDED</q>,  <q>MAY</q>, and <q>OPTIONAL</q> in
 						this document are to be interpreted as described in <a href="http://www.ietf.org/rfc/rfc2119.txt">RFC 2119</a>.
 					</p>
+					<h2>
+						Notes
+					</h2>
+					<p>
+						This schema incorporates by reference the <a href="bigraph.xsd"><code>bigraph</code> schema</a>, the <a href="signature.xsd"><code>signature</code> schema</a> and the <a href="rule.xsd"><code>rule</code> schema</a>.
+					</p>
 					<hr />
 				</body>
 			</html>
