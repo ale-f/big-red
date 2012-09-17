@@ -5,6 +5,38 @@
 		namespace="http://bigraph.org/xmlns/2012/edit-big"
 		schemaLocation="edit-big.xsd" />
 	
+	<xsd:annotation>
+		<xsd:documentation>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<body>
+		<h1>
+			<code>edit</code> schema
+		</h1>
+		<p>
+			This document is part of the <a href="http://www.itu.dk/">IT University of Copenhagen</a>'s set of <a href="http://www.w3.org/XML/Schema">XML Schema</a>s for <i>bigraphs</i>: it can be used to validate <code>edit</code> documents.
+		</p>
+		<p>
+			The <code>edit</code> XML namespace name is <code><a href="http://bigraph.org/xmlns/2012/edit">http://bigraph.org/xmlns/2012/edit</a></code>.
+		</p>
+		<p>
+			The key words <q>MUST</q>, <q>MUST NOT</q>, <q>REQUIRED</q>, <q>SHALL</q>, <q>SHALL NOT</q>, <q>SHOULD</q>, <q>SHOULD NOT</q>, <q>RECOMMENDED</q>,  <q>MAY</q>, and <q>OPTIONAL</q> in this document are to be interpreted as described in <a href="http://www.ietf.org/rfc/rfc2119.txt">RFC 2119</a>.
+		</p>
+		<hr />
+		<h2>
+			Notes
+		</h2>
+		<p>
+			<code>edit</code> documents define <i>edit scripts</i>: a sequence of simple modifications to a bigraph. Big Red uses edit scripts in its reaction rule representation: a reaction rule is defined as a redex and the edit script that transforms it into the reactum.
+		</p>
+		<p>
+			This schema also incorporates by reference the <a href="edit-big.xsd"><code>edit-big</code></a> and <a href="edit-sig.xsd"><code>edit-sig</code></a> schemas; when validating an <code>edit</code> document, elements from these schemas SHOULD be validated along with the native content.
+		</p>
+		<hr />
+	</body>
+</html>
+		</xsd:documentation>
+	</xsd:annotation>
+	
 	<xsd:element name="edit-subst" abstract="true" />
 	
 	<xsd:complexType name="named-id-subst-T">
@@ -20,6 +52,78 @@
 		substitutionGroup="edit:named-id-subst" abstract="true" />
 	
 	<xsd:element name="edit">
+		<xsd:annotation>
+			<xsd:documentation>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<body>
+		<a id="edit" />
+		<h2>
+			<code>edit</code>
+		</h2>
+		<h3>
+			Children
+		</h3>
+		<p>
+			<code>edit</code>s MUST either:
+		</p>
+		<ul>
+			<li>
+				be empty, or
+			</li>
+			<li>
+				contain zero or more
+				<ul>
+					<li>
+						<a href="#edit"><code>edit</code></a>s;
+					</li>
+					<li>
+						<a href="#rename"><code>rename</code></a>s; or
+					</li>
+					<li>
+						elements from foreign namespaces.
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<h3>
+			Attributes
+		</h3>
+		<p>
+			The following attribute MAY be present:
+		</p>
+		<ul>
+			<a id="edit_src" />
+			<li>
+				<code>src</code> (<code>string</code>): the path to a replacement edit script.
+				<br />
+				If this attribute is present, it SHOULD be a relative path to another <code>edit</code> document.
+			</li>
+		</ul>
+		<h3>
+			Notes
+		</h3>
+		<p>
+			See also the edits defined by <a href="edit-big.xsd"><code>edit-big</code></a>:
+		</p>
+		<ul>
+			<li>
+				<a href="edit-big.xsd#add"><code>edit-big:add</code></a>;
+			</li>
+			<li>
+				<a href="edit-big.xsd#remove"><code>edit-big:remove</code></a>;
+			</li>
+			<li>
+				<a href="edit-big.xsd#connect"><code>edit-big:connect</code></a>; and
+			</li>
+			<li>
+				<a href="edit-big.xsd#disconnect"><code>edit-big:disconnect</code></a>.
+			</li>
+		</ul>
+		<hr />
+	</body>
+</html>
+			</xsd:documentation>
+		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:sequence minOccurs="0">
 				<xsd:choice minOccurs="0"
@@ -36,6 +140,42 @@
 	</xsd:element>
 	
 	<xsd:element name="rename">
+		<xsd:annotation>
+			<xsd:documentation>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<body>
+		<a id="rename" />
+		<h2>
+			<code>rename</code>
+		</h2>
+		<h3>
+			Children
+		</h3>
+		<p>
+			<code>rename</code>s MUST contain:
+		</p>
+		<ul>
+			<li>
+				an element of the <code>rename-id-subst</code> substitution group.
+			</li>
+		</ul>
+		<h3>
+			Attributes
+		</h3>
+		<p>
+			The following attribute MUST be present:
+		</p>
+		<ul>
+			<a id="rename_name" />
+			<li>
+				<code>name</code> (<code>string</code>): the new name for the selected object.
+			</li>
+		</ul>
+		<hr />
+	</body>
+</html>
+			</xsd:documentation>
+		</xsd:annotation>
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:element ref="edit:rename-id-subst" />
