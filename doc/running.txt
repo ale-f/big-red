@@ -13,5 +13,5 @@ Once you have a copy of Eclipse Modeling Tools:
     heading).
 
 This will open a new copy of Eclipse, configured to include Big Red with BigMC
-support. (The "doc/examples/" folder includes a sample bigraphical reactive
-system which you may want to import into the new workspace.)
+support. (The "doc/examples/" folder includes some sample bigraphical reactive
+systems which you may want to import into the new workspace.)

@@ -2,32 +2,38 @@ Data support in Big Red
 =======================
 
 Big Red's bigraph model has some early and limited support for data in the
-form of "parameters", validated strings associated with Nodes.
+form of "parameters", validated strings associated with nodes.
 
-Every Control can optionally have a single "parameter policy", which is a
-class implementing the dk.itu.big_red.model.names.policies.INamePolicy
-interface. Parameter policies do three things:
+Every control can optionally have a single "parameter policy", which is a
+class implementing the org.bigraph.model.names.policies.INamePolicy interface.
+Parameter policies do three things:
 
 	* they check that parameter values are valid;
 	* they normalise parameter values into a canonical form; and
 	* they provide a default parameter value.
 
-If a Node's Control has a parameter policy, then that Node must have a
-parameter value. (It must not have one otherwise.) Parameters are set using
-Big Red's change mechanisms, and are retrieved with the Node.getParameter
-method.
+If a node's control has a parameter policy, then that node must have a
+parameter value. (It must not have one otherwise.) Parameters can be modified
+using Big Red's change mechanisms, and are stored in and retrieved from an
+extended data field.
 
 Other than ensuring that they pass validation, Big Red doesn't do anything
 with parameter values; it's entirely up to external tools to assign some
 meaning to them.
 
+Data support in the UI
+----------------------
+
+Parameter policies can be assigned to controls in the signature editor: simply
+right-click a control in the left-hand list view, choose the "Parameter"
+option, and select the desired policy.
+
+The bigraph editor will display an additional "Parameter" property for nodes
+whose control defines a parameter policy; the values given here are naturally
+validated by the parameter policy before being applied.
+
 Notes
 -----
-
-Parameters aren't fully supported by the UI at the moment. The bigraph editor
-has good support for them (parameter values are displayed and can be edited),
-but the signature editor has no way of assigning parameter policies to
-Controls. (The signature file format has support for this, though.)
 
 As parameters are an extension to the bigraph model, Big Red has an unusually
 permissive attitude towards their presence (or absence). When bigraph files
