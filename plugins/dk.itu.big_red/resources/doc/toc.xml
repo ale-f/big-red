@@ -2,13 +2,11 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="Big Red help" topic="html/toc.html">
-   <topic label="Getting Started">
-      <anchor id="gettingstarted"/>
-      <topic href="resources/doc/html/index.html" label="Welcome to Big Red">
-      </topic>
-   </topic>
    <topic label="Concepts">
       <anchor id="concepts"/>
+   </topic>
+   <topic label="Getting started">
+      <anchor id="gettingstarted"/>
    </topic>
    <topic label="Tasks">
       <anchor id="tasks"/>

@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 
-<toc label="Getting Started" link_to="resources/doc/toc.xml#gettingstarted"> 
-	<topic label="Main Topic"  href="resources/doc/html/gettingstarted/maintopic.html"> 
-		<topic label="Sub Topic" href="resources/doc/html/gettingstarted/subtopic.html" /> 
-	</topic>
-	<topic label="Main Topic 2">
-		<topic label="Sub Topic 2" href="resources/doc/html/gettingstarted/subtopic2.html" />
-	</topic> 
+<toc label="Getting started" link_to="resources/doc/toc.xml#gettingstarted">
+   <topic href="resources/doc/html/gettingstarted/index.html" label="Creating a bigraphical reactive system">
+	   <topic href="resources/doc/html/gettingstarted/project.html" label="Creating a project">
+	   </topic>
+	   <topic href="resources/doc/html/gettingstarted/signature.html" label="Creating a signature">
+	   </topic>
+	   <topic href="resources/doc/html/gettingstarted/agent.html" label="Creating an agent">
+	   </topic>
+	   <topic href="resources/doc/html/gettingstarted/rule.html" label="Creating a reaction rule">
+	   </topic>
+	   <topic href="resources/doc/html/gettingstarted/spec.html" label="Creating a simulation spec">
+	   </topic>
+   </topic> 
 </toc>

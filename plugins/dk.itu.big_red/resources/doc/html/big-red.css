@@ -1,0 +1,49 @@
+body {
+	background-color: #ffeeee;
+}
+
+a, a:link, a:active, a:visited {
+	font-weight: 900;
+}
+
+a:link {
+	color: #f00;
+}
+
+a:active {
+	color: #000;
+}
+
+a:visited {
+	color: #800;
+}
+
+div#header {
+	height: 70px;
+	
+	background-image: url('../../logo.png');
+	background-repeat: no-repeat;
+	background-position: top right;
+}
+
+div#trail {
+	text-align: center;
+}
+
+div#trail > .previous {
+	float: left;
+	text-align: left;
+}
+
+div#trail > .previous:before {
+	content: "« ";
+}
+
+div#trail > .next {
+	float: right;
+	text-align: right;
+}
+
+div#trail > .next:after {
+	content: " »";
+}
