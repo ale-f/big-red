@@ -1,7 +1,6 @@
 package dk.itu.big_red.model.load_save;
 
-import org.bigraph.model.savers.EditXMLSaver;
-import org.bigraph.model.savers.IXMLSaver;
+import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.core.runtime.CoreException;
@@ -21,9 +20,9 @@ public abstract class SaverUtilities {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
 			r.getConfigurationElementsFor(LoaderUtilities.EXTENSION_POINT_XML)) {
-			if ("decorator".equals(ice.getName())) {
+			if ("saveParticipant".equals(ice.getName())) {
 				try {
-					saver.addParticipant((IXMLSaver.Decorator)
+					saver.addParticipant((ISaver.Participant)
 							ice.createExecutableExtension("class"));
 				} catch (CoreException e) {
 					e.printStackTrace();
@@ -31,10 +30,6 @@ public abstract class SaverUtilities {
 				}
 			}
 		}
-	}
-	
-	public static void installEditParticipants(EditXMLSaver s) {
-		s.addParticipant(new RedXMLEdits.SaveParticipant());
 	}
 	
 	public static Saver forContentType(String ct) throws CoreException {
@@ -52,11 +47,8 @@ public abstract class SaverUtilities {
 				break;
 			}
 		}
-		if (s instanceof XMLSaver) {
+		if (s instanceof XMLSaver)
 			installDecorators((XMLSaver)s);
-			if (s instanceof EditXMLSaver)
-				installEditParticipants((EditXMLSaver)s);
-		}
 		return s;
 	}
 }

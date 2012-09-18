@@ -1,7 +1,6 @@
 package dk.itu.big_red.model.load_save;
 
-import org.bigraph.model.loaders.EditXMLLoader;
-import org.bigraph.model.loaders.IXMLLoader;
+import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.XMLLoader;
 import org.eclipse.core.runtime.CoreException;
@@ -23,13 +22,13 @@ public abstract class LoaderUtilities {
 	 * the given {@link XMLLoader}.
 	 * @param l a {@link XMLLoader} to populate with undecorators
 	 */
-	public static void installUndecorators(XMLLoader l) {
+	public static void installParticipants(XMLLoader l) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
 			r.getConfigurationElementsFor(EXTENSION_POINT_XML)) {
-			if ("undecorator".equals(ice.getName())) {
+			if ("loadParticipant".equals(ice.getName())) {
 				try {
-					l.addParticipant((IXMLLoader.Undecorator)
+					l.addParticipant((ILoader.Participant)
 							ice.createExecutableExtension("class"));
 				} catch (CoreException e) {
 					e.printStackTrace();
@@ -37,10 +36,6 @@ public abstract class LoaderUtilities {
 				}
 			}
 		}
-	}
-	
-	public static void installEditParticipants(EditXMLLoader l) {
-		l.addParticipant(new RedXMLEdits.LoadParticipant());
 	}
 	
 	public static Loader forContentType(String ct) throws CoreException {
@@ -68,11 +63,8 @@ public abstract class LoaderUtilities {
 				break;
 			}
 		}
-		if (l instanceof XMLLoader) {
-			installUndecorators((XMLLoader)l);
-			if (l instanceof EditXMLLoader)
-				installEditParticipants((EditXMLLoader)l);
-		}
+		if (l instanceof XMLLoader)
+			installParticipants((XMLLoader)l);
 		return l;
 	}
 }

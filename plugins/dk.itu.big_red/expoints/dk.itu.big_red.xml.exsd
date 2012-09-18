@@ -18,8 +18,8 @@
       </annotation>
       <complexType>
          <sequence>
-            <element ref="decorator" minOccurs="0" maxOccurs="unbounded"/>
-            <element ref="undecorator" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="saveParticipant" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="loadParticipant" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -48,7 +48,7 @@
       </complexType>
    </element>
 
-   <element name="decorator">
+   <element name="saveParticipant">
       <complexType>
          <attribute name="id" type="string">
             <annotation>
@@ -63,14 +63,14 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.bigraph.model.savers.IXMLDecorator"/>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.savers.ISaver$Participant"/>
                </appinfo>
             </annotation>
          </attribute>
       </complexType>
    </element>
 
-   <element name="undecorator">
+   <element name="loadParticipant">
       <complexType>
          <attribute name="id" type="string">
             <annotation>
@@ -85,7 +85,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.bigraph.model.loaders.IXMLUndecorator"/>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.loaders.ILoader$Participant"/>
                </appinfo>
             </annotation>
          </attribute>
