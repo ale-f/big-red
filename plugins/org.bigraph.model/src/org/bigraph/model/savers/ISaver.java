@@ -5,7 +5,7 @@ import java.util.List;
 import org.bigraph.model.resources.IFileWrapper;
 
 public interface ISaver {
-	public interface Participant {
+	interface Participant {
 		void setSaver(ISaver saver);
 		Participant newInstance();
 	}
@@ -13,7 +13,7 @@ public interface ISaver {
 	void addParticipant(Participant p);
 	Iterable<? extends Participant> getParticipants();
 	
-	public interface Option {
+	interface Option {
 		String getName();
 		String getDescription();
 		
