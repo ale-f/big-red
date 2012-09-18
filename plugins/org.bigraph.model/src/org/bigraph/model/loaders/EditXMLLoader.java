@@ -49,10 +49,8 @@ public class EditXMLLoader extends XMLLoader {
 		IChangeDescriptor cd = null;
 		if ((cd = bigraphEditHandler.getDescriptor(el)) != null)
 			return cd;
-		for (ILoader.Participant p : getParticipants()) {
-			if (!(p instanceof Participant))
-				continue;
-			cd = ((Participant)p).getDescriptor(el);
+		for (Participant p : getParticipants(Participant.class)) {
+			cd = p.getDescriptor(el);
 			if (cd != null)
 				break;
 		}
@@ -69,10 +67,8 @@ public class EditXMLLoader extends XMLLoader {
 		IChangeDescriptor cd = null;
 		if ((cd = bigraphEditHandler.getRenameDescriptor(id, name)) != null)
 			return cd;
-		for (ILoader.Participant p : getParticipants()) {
-			if (!(p instanceof Participant))
-				continue;
-			cd = ((Participant)p).getRenameDescriptor(id, name);
+		for (Participant p : getParticipants(Participant.class)) {
+			cd = p.getRenameDescriptor(id, name);
 			if (cd != null)
 				break;
 		}

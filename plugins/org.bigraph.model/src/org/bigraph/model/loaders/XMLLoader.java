@@ -231,18 +231,16 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	
 	protected <T extends ModelObject> T executeUndecorators(T mo, Element el) {
 		if (mo != null && el != null)
-			for (Participant p : getParticipants())
-				if (p instanceof Undecorator)
-					((Undecorator)p).undecorate(mo, el);
+			for (Undecorator u : getParticipants(Undecorator.class))
+				u.undecorate(mo, el);
 		return mo;
 	}
 
 	@Override
 	protected void executeChanges(IChangeExecutor ex)
 			throws LoadFailedException {
-		for (Participant p : getParticipants())
-			if (p instanceof Undecorator)
-				((Undecorator)p).finish(ex);
+		for (Undecorator u : getParticipants(Undecorator.class))
+			u.finish(ex);
 		super.executeChanges(ex);
 	}
 }

@@ -216,11 +216,8 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	
 	protected Element executeDecorators(ModelObject mo, Element el) {
 		if (mo != null && el != null)
-			for (ISaver.Participant p : getParticipants()) {
-				if (!(p instanceof Decorator))
-					continue;
-				((Decorator)p).decorate(mo, el);
-			}
+			for (Decorator d : getParticipants(Decorator.class))
+				d.decorate(mo, el);
 		return el;
 	}
 }

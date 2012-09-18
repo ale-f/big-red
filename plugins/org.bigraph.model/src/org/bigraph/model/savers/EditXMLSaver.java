@@ -42,10 +42,8 @@ public class EditXMLSaver extends XMLSaver {
 	
 	protected Element processDescriptor(IChangeDescriptor cd) {
 		Element el = null;
-		for (ISaver.Participant p : getParticipants()) {
-			if (!(p instanceof Participant))
-				continue;
-			el = ((Participant)p).processDescriptor(cd);
+		for (Participant p : getParticipants(Participant.class)) {
+			el = p.processDescriptor(cd);
 			if (el != null)
 				break;
 		}
