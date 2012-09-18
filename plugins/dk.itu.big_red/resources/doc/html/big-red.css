@@ -100,3 +100,20 @@ div#trail > .next {
 div#trail > .next:after {
 	content: " »";
 }
+
+div.figure {
+	padding-top: 1em;
+	padding-bottom: 1em;
+	
+	text-align: center;
+	font-style: italic;
+}
+
+div.figure img {
+	display: block;
+	max-width: 100%;
+	
+	margin: 0;
+	margin-left: auto;
+	margin-right: auto;
+}
