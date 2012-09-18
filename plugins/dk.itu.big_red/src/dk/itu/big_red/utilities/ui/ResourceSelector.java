@@ -34,7 +34,7 @@ public class ResourceSelector implements IDisposable, ILabelProviderListener {
 	private final ILabelProvider labelProvider;
 	
 	public ResourceSelector(Composite c, IContainer k, Mode m, String... cT) {
-		button = UI.chain(new Button(c, SWT.PUSH)).text("(none)").done();
+		(button = new Button(c, SWT.PUSH)).setText("(none)");
 		button.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

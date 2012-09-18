@@ -226,9 +226,8 @@ implements PropertyChangeListener {
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite self =
-			UI.chain(new Composite(setParent(parent), SWT.NONE)).
-			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done();
+		Composite self = new Composite(setParent(parent), SWT.NONE);
+		self.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		GridLayout gl = new GridLayout(2, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
@@ -441,7 +440,7 @@ implements PropertyChangeListener {
 			}
 		};
 		
-		nameLabel = UI.chain(new Label(right, SWT.NONE)).text("Name:").done();
+		(nameLabel = new Label(right, SWT.NONE)).setText("Name:");
 		name = new Text(right, SWT.BORDER);
 		name.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		name.addSelectionListener(nameListener);
@@ -457,19 +456,19 @@ implements PropertyChangeListener {
 			}
 		};
 		
-		labelLabel = UI.chain(new Label(right, SWT.NONE)).text("Label:").done();
+		(labelLabel = new Label(right, SWT.NONE)).setText("Label:");
 		label = new Text(right, SWT.BORDER);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		label.addSelectionListener(labelListener);
 		label.addFocusListener(labelListener);
 		
-		kindLabel = UI.chain(new Label(right, SWT.NONE)).text("Kind:").done();
+		(kindLabel = new Label(right, SWT.NONE)).setText("Kind:");
 		
 		Composite kindGroup = new Composite(right, SWT.NONE);
 		kindGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		kindGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
 		
-		atomicKind = UI.chain(new Button(kindGroup, SWT.RADIO)).text("Atomic").done();
+		(atomicKind = new Button(kindGroup, SWT.RADIO)).setText("Atomic");
 		atomicKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -479,7 +478,7 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		activeKind = UI.chain(new Button(kindGroup, SWT.RADIO)).text("Active").done();
+		(activeKind = new Button(kindGroup, SWT.RADIO)).setText("Active");
 		activeKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -489,7 +488,7 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		passiveKind = UI.chain(new Button(kindGroup, SWT.RADIO)).text("Passive").done();
+		(passiveKind = new Button(kindGroup, SWT.RADIO)).setText("Passive");
 		passiveKind.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -499,7 +498,7 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		appearanceLabel = UI.chain(new Label(right, SWT.NONE)).text("Appearance:").done();
+		(appearanceLabel = new Label(right, SWT.NONE)).setText("Appearance:");
 		GridData appearanceLabelLayoutData = new GridData(SWT.FILL, SWT.FILL, false, true);
 		appearanceLabel.setLayoutData(appearanceLabelLayoutData);
 		
@@ -515,7 +514,7 @@ implements PropertyChangeListener {
 		firstLine.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		firstLine.setLayout(new RowLayout(SWT.HORIZONTAL));
 		
-		ovalMode = UI.chain(new Button(firstLine, SWT.RADIO)).text("Oval").done();
+		(ovalMode = new Button(firstLine, SWT.RADIO)).setText("Oval");
 		ovalMode.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -525,7 +524,7 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		polygonMode = UI.chain(new Button(firstLine, SWT.RADIO)).text("Polygon").done();
+		(polygonMode = new Button(firstLine, SWT.RADIO)).setText("Polygon");
 		polygonMode.setSelection(true);
 		polygonMode.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -547,9 +546,11 @@ implements PropertyChangeListener {
 		if (smiff == null)
 			smiff = UI.tweakFont(appearanceLabel.getFont(), 8, SWT.ITALIC);
 		
-		appearanceDescription = UI.chain(new Label(appearanceGroup, SWT.CENTER | SWT.WRAP)).text("Click to add a new point. Double-click a point to delete it. " +
-		"Move elements by clicking and dragging. " +
-		"Right-click for more options.").done();
+		appearanceDescription = new Label(appearanceGroup, SWT.CENTER | SWT.WRAP);
+		appearanceDescription.setText(
+				"Click to add a new point. Double-click a point to delete " +
+				"it. Move elements by clicking and dragging. Right-click for" +
+				"more options.");
 		GridData appearanceDescriptionData = new GridData();
 		appearanceDescriptionData.verticalAlignment = SWT.TOP;
 		appearanceDescriptionData.horizontalAlignment = SWT.FILL;
@@ -557,7 +558,7 @@ implements PropertyChangeListener {
 		appearanceDescription.setLayoutData(appearanceDescriptionData);
 		appearanceDescription.setFont(smiff);
 		
-		outlineLabel = UI.chain(new Label(right, SWT.NONE)).text("Outline:").done();
+		(outlineLabel = new Label(right, SWT.NONE)).setText("Outline:");
 		outline = new ColorSelector(right);
 		outline.getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		outline.addListener(new IPropertyChangeListener() {
@@ -571,7 +572,7 @@ implements PropertyChangeListener {
 			}
 		});
 		
-		fillLabel = UI.chain(new Label(right, SWT.NONE)).text("Fill:").done();
+		(fillLabel = new Label(right, SWT.NONE)).setText("Fill:");
 		fill = new ColorSelector(right);
 		fill.getButton().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		fill.addListener(new IPropertyChangeListener() {

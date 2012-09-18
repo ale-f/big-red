@@ -32,8 +32,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import dk.itu.big_red.utilities.ui.UI;
-
 public class NewBrsWizardPage extends WizardPage{
 	private IStructuredSelection selection = null;
 	private IPath folderPath = null, signaturePath = null;
@@ -58,13 +56,14 @@ public class NewBrsWizardPage extends WizardPage{
 			}
 		};
 		
-		UI.chain(new Label(root, 0)).text("&Parent folder:").done();
+		new Label(root, 0).setText("&Parent folder:");
 		
 		folderText = new Text(root, SWT.BORDER);
 		folderText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		folderText.addModifyListener(sharedModifyListener);
 		
-		Button folderButton = UI.chain(new Button(root, SWT.CENTER)).text("&Browse...").done();
+		Button folderButton = new Button(root, SWT.CENTER);
+		folderButton.setText("&Browse...");
 		folderButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -106,13 +105,14 @@ public class NewBrsWizardPage extends WizardPage{
 		folderButtonLayoutData.widthHint = 100;
 		folderButton.setLayoutData(folderButtonLayoutData);
 		
-		UI.chain(new Label(root, SWT.NONE)).text("&Signature:").done();
+		new Label(root, SWT.NONE).setText("&Signature:");
 		
 		signatureText = new Text(root, SWT.BORDER);
 		signatureText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));
 		signatureText.addModifyListener(sharedModifyListener);
 		
-		Button signatureButton = UI.chain(new Button(root, SWT.NONE)).text("B&rowse...").done();
+		Button signatureButton = new Button(root, SWT.NONE);
+		signatureButton.setText("B&rowse...");
 		signatureButton.addSelectionListener(new SelectionListener() {
 			
 			@Override
@@ -145,7 +145,7 @@ public class NewBrsWizardPage extends WizardPage{
 		new Label(root, SWT.HORIZONTAL | SWT.SEPARATOR);
 		new Label(root, SWT.NONE);
 		
-		UI.chain(new Label(root, SWT.NONE)).text("&Name:").done();
+		new Label(root, SWT.NONE).setText("&Name:");
 		
 		nameText = new Text(root, SWT.BORDER);
 		nameText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));

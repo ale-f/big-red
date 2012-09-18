@@ -244,8 +244,4 @@ public final class UI {
 	public static void asyncExec(Runnable r) {
 		getDisplay().asyncExec(r);
 	}
-
-	public static <T extends Control> ChainHelper<T> chain(T object) {
-		return new ChainHelper<T>(object);
-	}
 }

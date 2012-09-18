@@ -56,7 +56,6 @@ import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
 import dk.itu.big_red.utilities.ui.StockButton;
-import dk.itu.big_red.utilities.ui.UI;
 
 public class SimulationSpecEditor extends AbstractNonGEFEditor
 		implements PropertyChangeListener {
@@ -167,16 +166,17 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	
 	@Override
 	public void createPartControl(Composite parent) {
-		Composite self =
-			UI.chain(new Composite(setParent(parent), SWT.NONE)).
-			layoutData(new GridData(SWT.FILL, SWT.FILL, true, true)).done();
+		Composite self = new Composite(setParent(parent), SWT.NONE);
+		self.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
 			gl.horizontalSpacing = gl.verticalSpacing = 10;
 		self.setLayout(gl);
 		
-		UI.chain(new Label(self, SWT.RIGHT)).text("Signature:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		Label l;
+		(l = new Label(self, SWT.RIGHT)).setText("Signature:");
+		l.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		signatureSelector = new ResourceSelector(self,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
 			Mode.FILE, Signature.CONTENT_TYPE);
@@ -198,8 +198,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			}
 		});
 		
-		UI.chain(new Label(self, SWT.RIGHT)).text("Reaction rules:").done().
-			setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
+		(l = new Label(self, SWT.RIGHT)).setText("Reaction rules:");
+		l.setLayoutData(new GridData(SWT.RIGHT, SWT.TOP, false, false));
 		rules = new ListViewer(self);
 		rules.setContentProvider(new SimulationSpecRRContentProvider(rules));
 		rules.setLabelProvider(new LabelProvider() {
@@ -256,7 +256,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			}
 		});
 		
-		UI.chain(new Label(self, SWT.RIGHT)).text("Model:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		(l = new Label(self, SWT.RIGHT)).setText("Model:");
+		l.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		modelSelector = new ResourceSelector(self,
 			((FileEditorInput)getEditorInput()).getFile().getProject(),
 			Mode.FILE, Bigraph.CONTENT_TYPE);
@@ -280,7 +281,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		
 		new Label(self, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 3, 1));
 		
-		UI.chain(new Label(self, SWT.RIGHT)).text("Tool:").done().setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+		(l = new Label(self, SWT.RIGHT)).setText("Tool:");
+		l.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
 		final ComboViewer cv = new ComboViewer(self);
 		cv.setContentProvider(new ArrayContentProvider());
 		cv.setLabelProvider(new LabelProvider() {
@@ -294,7 +296,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		cv.setInput(exporters);
 		cv.setSelection(new StructuredSelection(exporters.get(0)));
 		
-		export = UI.chain(new Button(self, SWT.NONE)).text("&Export...").done();
+		(export = new Button(self, SWT.NONE)).setText("&Export...");
 		export.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false));
 		export.addSelectionListener(new SelectionAdapter() {
 			@Override

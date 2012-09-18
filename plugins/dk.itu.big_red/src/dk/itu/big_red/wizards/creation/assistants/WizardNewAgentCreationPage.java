@@ -23,7 +23,6 @@ import dk.itu.big_red.utilities.resources.Project;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;
 import dk.itu.big_red.utilities.ui.ResourceSelector;
 import dk.itu.big_red.utilities.ui.ResourceSelector.ResourceListener;
-import dk.itu.big_red.utilities.ui.UI;
 
 public class WizardNewAgentCreationPage extends WizardPage {
 	private IContainer selectorRoot = null;
@@ -83,7 +82,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 			}
 		};
 		
-		UI.chain(new Label(root, 0)).text("&Parent folder:").done();
+		new Label(root, SWT.NONE).setText("&Parent folder:");
 		
 		folderSelector =
 				new ResourceSelector(root, selectorRoot, Mode.CONTAINER);
@@ -100,7 +99,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		folderSelector.getButton().setLayoutData(
 				new GridData(SWT.FILL, SWT.FILL, true, false));
 		
-		UI.chain(new Label(root, SWT.NONE)).text("&Signature:").done();
+		new Label(root, SWT.NONE).setText("&Signature:");
 		
 		signatureSelector =
 				new ResourceSelector(root, selectorRoot, Mode.FILE,
@@ -121,7 +120,7 @@ public class WizardNewAgentCreationPage extends WizardPage {
 		new Label(root, SWT.HORIZONTAL | SWT.SEPARATOR).setLayoutData(
 				new GridData(SWT.FILL, SWT.NONE, true, false, 2, 1));
 		
-		UI.chain(new Label(root, SWT.NONE)).text("&Name:").done();
+		new Label(root, SWT.NONE).setText("&Name:");
 		
 		nameText = new Text(root, SWT.BORDER);
 		nameText.setLayoutData(new GridData(SWT.FILL, SWT.NONE, true, false));

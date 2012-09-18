@@ -27,16 +27,14 @@ public class SaverOptionsGroup {
 	public SaverOptionsGroup(Composite parent) {
 		GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 		gd.heightHint = 0;
-		ScrolledComposite sc =
-			UI.chain(new ScrolledComposite(parent, SWT.V_SCROLL)).
-			layoutData(gd).done();
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL);
+		sc.setLayoutData(gd);
 		
 		RowLayout rl = new RowLayout(SWT.VERTICAL);
 		rl.marginLeft = rl.marginRight = rl.marginTop = 10;
 		rl.spacing = 5;
-		optionsGroup =
-			UI.chain(new Composite(sc, SWT.NONE)).layout(rl).
-			done();
+		optionsGroup = new Composite(sc, SWT.NONE);
+		optionsGroup.setLayout(rl);
 		sc.setContent(optionsGroup);
 		
 		setSaver(null);
@@ -56,9 +54,8 @@ public class SaverOptionsGroup {
 				Widget w = null;
 				Object ov = d.get();
 				if (ov instanceof Boolean) {
-					final Button b =
-						UI.chain(new Button(opt, SWT.CHECK)).
-						text(d.getName()).done();
+					final Button b = new Button(opt, SWT.CHECK);
+					b.setText(d.getName());
 					b.setSelection((Boolean)ov);
 					b.addSelectionListener(new SelectionAdapter() {
 						@Override
