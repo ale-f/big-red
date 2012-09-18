@@ -117,3 +117,16 @@ div.figure img {
 	margin-left: auto;
 	margin-right: auto;
 }
+
+img.border {
+	padding: 0.5em;
+	border: 1px solid gray;
+}
+
+img.border.tight {
+	padding: 0;
+}
+
+code.control-name {
+	font-weight: 900;
+}
