@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.internal.utilities.FilteringIterable;
 import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Loader implements ILoader {
@@ -121,5 +122,10 @@ public abstract class Loader implements ILoader {
 	@Override
 	public List<Participant> getParticipants() {
 		return participants;
+	}
+	
+	protected <T extends Participant>
+	Iterable<T> getParticipants(Class<T> klass) {
+		return new FilteringIterable<T>(klass, participants);
 	}
 }

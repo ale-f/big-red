@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.internal.utilities.FilteringIterable;
 import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Saver implements ISaver {
@@ -156,5 +157,10 @@ public abstract class Saver implements ISaver {
 	@Override
 	public List<? extends Participant> getParticipants() {
 		return participants;
+	}
+	
+	protected <T extends Participant>
+	Iterable<T> getParticipants(Class<T> klass) {
+		return new FilteringIterable<T>(klass, participants);
 	}
 }

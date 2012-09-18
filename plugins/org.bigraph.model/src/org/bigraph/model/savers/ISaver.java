@@ -11,7 +11,7 @@ public interface ISaver {
 	}
 	
 	void addParticipant(Participant p);
-	List<? extends Participant> getParticipants();
+	Iterable<? extends Participant> getParticipants();
 	
 	public interface Option {
 		String getName();
