@@ -2,6 +2,7 @@ package dk.itu.big_red.utilities.resources;
 
 import java.io.InputStream;
 
+import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -26,6 +27,8 @@ import org.eclipse.core.runtime.content.IContentTypeManager;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.MultiRule;
 
+import dk.itu.big_red.builder.BigraphBuilder;
+import dk.itu.big_red.builder.BigraphNature;
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
@@ -70,6 +73,17 @@ public final class Project {
 	 */
 	public static IResourceRuleFactory getRuleFactory() {
 		return getWorkspace().getRuleFactory();
+	}
+	
+	public static IProjectDescription newBigraphProjectDescription(
+			String projectName) {
+		IProjectDescription desc =
+				getWorkspace().newProjectDescription(projectName);
+		ICommand cmd = desc.newCommand();
+		cmd.setBuilderName(BigraphBuilder.BUILDER_ID);
+		desc.setNatureIds(new String[] { BigraphNature.NATURE_ID });
+		desc.setBuildSpec(new ICommand[] { cmd });
+		return desc;
 	}
 	
 	/**

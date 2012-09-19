@@ -68,7 +68,8 @@ public class NewBRSWizard extends Wizard implements INewWizard {
 					exportObject();
 				
 				new ModificationRunner(null,
-					new Project.CreateProject(p),
+					new Project.CreateProject(p,
+							Project.newBigraphProjectDescription(projectName)),
 					new Project.OpenProject(p),
 					new Project.CreateFolder(rules),
 					new Project.CreateFolder(agents),
