@@ -48,11 +48,11 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 	@Override
 	public SimulationSpec makeObject(Element e) throws LoadFailedException {
 		cycleCheck();
-		SimulationSpec ss = loadRelative(
-				getAttributeNS(e, SPEC, "src"), SimulationSpec.class, this);
-		if (ss != null) {
-			return ss;
-		} else ss = new SimulationSpec();
+		String replacement = getAttributeNS(e, SPEC, "src");
+		if (replacement != null)
+			return loadRelative(replacement, SimulationSpec.class,
+					new SimulationSpecXMLLoader(this));
+		SimulationSpec ss = new SimulationSpec();
 		
 		Signature s = loadSub(
 				selectFirst(

@@ -77,10 +77,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	@Override
 	public ReactionRule makeObject(Element e) throws LoadFailedException {
 		cycleCheck();
-		rr = loadRelative(
-				getAttributeNS(e, RULE, "src"), ReactionRule.class, this);
-		if (rr != null) {
-			return rr;
+		String replacement = getAttributeNS(e, RULE, "src");
+		if (replacement != null) {
+			return loadRelative(replacement, ReactionRule.class,
+					new ReactionRuleXMLLoader(this));
 		} else rr = new ReactionRule();
 		
 		rr.setRedex(loadSub(

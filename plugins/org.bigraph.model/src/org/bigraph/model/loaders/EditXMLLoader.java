@@ -78,11 +78,11 @@ public class EditXMLLoader extends XMLLoader {
 	@Override
 	public Edit makeObject(Element el) throws LoadFailedException {
 		cycleCheck();
-		Edit ed = loadRelative(
-				getAttributeNS(el, EDIT, "src"), Edit.class, this);
-		if (ed != null) {
-			return ed;
-		} else ed = new Edit();
+		String replacement = getAttributeNS(el, EDIT, "src");
+		if (replacement != null)
+			return loadRelative(replacement, Edit.class,
+					new EditXMLLoader(this));
+		Edit ed = new Edit();
 		
 		NodeList nl = el.getChildNodes();
 		int len = nl.getLength(), index = 0;

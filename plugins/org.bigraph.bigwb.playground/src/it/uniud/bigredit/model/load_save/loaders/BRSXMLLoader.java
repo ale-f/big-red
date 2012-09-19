@@ -78,11 +78,11 @@ import it.uniud.bigredit.model.BRS;
 		
 		@Override
 		public BRS makeObject(Element e) throws LoadFailedException {
-			BRS ss = loadRelative(
-					getAttributeNS(e, BRS, "src"), BRS.class, this);
-			if (ss != null) {
-				return ss;
-			} else ss = new BRS();
+			String replacement = getAttributeNS(e, BRS, "src");
+			if (replacement != null)
+				return loadRelative(replacement, BRS.class,
+						new BRSXMLLoader());
+			BRS ss = new BRS();
 			
 			ChangeGroup cg = new ChangeGroup();
 			

@@ -64,10 +64,10 @@ public class SignatureXMLLoader extends XMLLoader {
 	@Override
 	public Signature makeObject(Element e) throws LoadFailedException {
 		cycleCheck();
-		sig = loadRelative(
-				getAttributeNS(e, SIGNATURE, "src"), Signature.class, this);
-		if (sig != null) {
-			return sig;
+		String replacement = getAttributeNS(e, SIGNATURE, "src");
+		if (replacement != null) {
+			return loadRelative(replacement, Signature.class,
+					new SignatureXMLLoader(this));
 		} else sig = new Signature();
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "signature"))
