@@ -6,6 +6,7 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.IResourceRuleFactory;
@@ -200,15 +201,22 @@ public final class Project {
 	
 	public static class CreateProject implements IWorkspaceModification {
 		private final IProject project;
+		private final IProjectDescription description;
 		
 		public CreateProject(IProject project) {
+			this(project, null);
+		}
+		
+		public CreateProject(
+				IProject project, IProjectDescription description) {
 			this.project = project;
+			this.description = description;
 		}
 		
 		@Override
 		public void run(IProgressMonitor monitor) throws CoreException {
 			monitor.subTask("Creating project");
-			project.create(monitor);
+			project.create(description, monitor);
 		}
 		
 		@Override
