@@ -19,6 +19,7 @@
       <complexType>
          <sequence>
             <element ref="exporter" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="participant" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -118,9 +119,34 @@
             <meta.element translatable="true"/>
          </appinfo>
          <documentation>
-            An optional sub-element whose body should describe this text exporter.
+            An optional sub-element whose body should describe an exporter or participant.
          </documentation>
       </annotation>
+   </element>
+
+   <element name="participant">
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.savers.ISaver$Participant"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
    </element>
 
    <annotation>

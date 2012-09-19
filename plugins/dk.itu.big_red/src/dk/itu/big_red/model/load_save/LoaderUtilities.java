@@ -15,8 +15,6 @@ public abstract class LoaderUtilities {
 	
 	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 
-	public static final String EXTENSION_POINT_XML = "dk.itu.big_red.xml";
-	
 	/**
 	 * Installs the undecorators registered with the XML extension point into
 	 * the given {@link XMLLoader}.
@@ -25,8 +23,8 @@ public abstract class LoaderUtilities {
 	public static void installParticipants(XMLLoader l) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
-			r.getConfigurationElementsFor(EXTENSION_POINT_XML)) {
-			if ("loadParticipant".equals(ice.getName())) {
+			r.getConfigurationElementsFor(EXTENSION_POINT)) {
+			if ("participant".equals(ice.getName())) {
 				try {
 					l.addParticipant((ILoader.Participant)
 							ice.createExecutableExtension("class"));

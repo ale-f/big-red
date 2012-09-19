@@ -19,8 +19,8 @@ public abstract class SaverUtilities {
 	public static void installDecorators(XMLSaver saver) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
-			r.getConfigurationElementsFor(LoaderUtilities.EXTENSION_POINT_XML)) {
-			if ("saveParticipant".equals(ice.getName())) {
+			r.getConfigurationElementsFor(EXTENSION_POINT)) {
+			if ("participant".equals(ice.getName())) {
 				try {
 					saver.addParticipant((ISaver.Participant)
 							ice.createExecutableExtension("class"));

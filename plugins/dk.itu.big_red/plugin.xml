@@ -4,7 +4,6 @@
    <extension-point id="dk.itu.big_red.export" name="Model exporters" schema="expoints/dk.itu.big_red.export.exsd"/>
    <extension-point id="dk.itu.big_red.import" name="Model importers" schema="expoints/dk.itu.big_red.import.exsd"/>
    <extension-point id="dk.itu.big_red.interactionManagers" name="Interaction managers" schema="expoints/dk.itu.big_red.interactionManagers.exsd"/>
-   <extension-point id="dk.itu.big_red.xml" name="XML loading and saving particpants" schema="expoints/dk.itu.big_red.xml.exsd"/>
 
    <extension
          id="application"
@@ -278,6 +277,12 @@
             id="big_red.importer4"
             name="Simulation spec from XML">
       </importer>
+      <participant
+            class="dk.itu.big_red.model.load_save.RedXMLUndecorator"
+            id="RedUndecorator" />
+      <participant
+            class="dk.itu.big_red.model.load_save.AliasSupport$Undecorator"
+            id="AliasUndecorator" />
    </extension>
    <extension
          point="dk.itu.big_red.export">
@@ -339,25 +344,12 @@
             id="big-red.exporter3"
             name="Traverse">
       </exporter>
-   </extension>
-   <extension
-         point="dk.itu.big_red.xml">
-      <saveParticipant
+      <participant
             class="dk.itu.big_red.model.load_save.RedXMLDecorator"
-            id="RedDecorator">
-      </saveParticipant>
-      <loadParticipant
-            class="dk.itu.big_red.model.load_save.RedXMLUndecorator"
-            id="RedUndecorator">
-      </loadParticipant>
-      <saveParticipant
+            id="RedDecorator" />
+      <participant
             class="dk.itu.big_red.model.load_save.AliasSupport$Decorator"
-            id="AliasDecorator">
-      </saveParticipant>
-      <loadParticipant
-            class="dk.itu.big_red.model.load_save.AliasSupport$Undecorator"
-            id="AliasUndecorator">
-      </loadParticipant>
+            id="AliasDecorator" />
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
