@@ -401,4 +401,28 @@
             primary="false">
       </toc>
    </extension>
+   <extension
+         id="dk.itu.big_red.utilities.resources.builder.BigraphBuilder"
+         name="Big Red bigraph builder"
+         point="org.eclipse.core.resources.builders">
+      <builder
+            hasNature="true">
+         <run
+               class="dk.itu.big_red.builder.BigraphBuilder">
+         </run>
+      </builder>
+   </extension>
+   <extension
+         id="dk.itu.big_red.utilities.resources.builder.BigraphNature"
+         name="Big Red bigraph nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="dk.itu.big_red.builder.BigraphNature">
+         </run>
+      </runtime>
+      <builder
+            id="dk.itu.big_red.utilities.resources.builder.BigraphBuilder">
+      </builder>
+   </extension>
 </plugin>
