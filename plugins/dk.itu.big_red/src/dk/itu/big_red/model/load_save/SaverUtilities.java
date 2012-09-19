@@ -2,7 +2,6 @@ package dk.itu.big_red.model.load_save;
 
 import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.Saver;
-import org.bigraph.model.savers.XMLSaver;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -16,7 +15,7 @@ public abstract class SaverUtilities {
 	
 	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
 
-	public static void installDecorators(XMLSaver saver) {
+	public static void installParticipants(Saver saver) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
 			r.getConfigurationElementsFor(EXTENSION_POINT)) {
@@ -47,8 +46,8 @@ public abstract class SaverUtilities {
 				break;
 			}
 		}
-		if (s instanceof XMLSaver)
-			installDecorators((XMLSaver)s);
+		if (s != null)
+			installParticipants(s);
 		return s;
 	}
 }

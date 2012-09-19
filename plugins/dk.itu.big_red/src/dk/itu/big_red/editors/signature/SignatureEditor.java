@@ -74,7 +74,7 @@ implements PropertyChangeListener {
 	public void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
     	SignatureXMLSaver r = new SignatureXMLSaver().setModel(getModel());
-    	SaverUtilities.installDecorators(r);
+    	SaverUtilities.installParticipants(r);
 		r.setFile(new EclipseFileWrapper(f)).
     		setOutputStream(os).exportObject();
 		setSavePoint();

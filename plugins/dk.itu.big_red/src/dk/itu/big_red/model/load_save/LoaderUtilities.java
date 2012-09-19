@@ -20,7 +20,7 @@ public abstract class LoaderUtilities {
 	 * the given {@link XMLLoader}.
 	 * @param l a {@link XMLLoader} to populate with undecorators
 	 */
-	public static void installParticipants(XMLLoader l) {
+	public static void installParticipants(Loader l) {
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
 			r.getConfigurationElementsFor(EXTENSION_POINT)) {
@@ -61,8 +61,8 @@ public abstract class LoaderUtilities {
 				break;
 			}
 		}
-		if (l instanceof XMLLoader)
-			installParticipants((XMLLoader)l);
+		if (l != null)
+			installParticipants(l);
 		return l;
 	}
 }

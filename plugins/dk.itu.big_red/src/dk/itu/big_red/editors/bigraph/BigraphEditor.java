@@ -210,7 +210,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	protected void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
 		BigraphXMLSaver r = new BigraphXMLSaver().setModel(getModel());
-		SaverUtilities.installDecorators(r);
+		SaverUtilities.installParticipants(r);
 		r.setFile(new EclipseFileWrapper(f)).
 			setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();

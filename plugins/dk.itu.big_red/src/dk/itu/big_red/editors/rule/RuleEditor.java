@@ -141,7 +141,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	public void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
     	ReactionRuleXMLSaver r = new ReactionRuleXMLSaver().setModel(getModel());
-    	SaverUtilities.installDecorators(r);
+    	SaverUtilities.installParticipants(r);
 		r.setFile(new EclipseFileWrapper(f)).
     		setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();

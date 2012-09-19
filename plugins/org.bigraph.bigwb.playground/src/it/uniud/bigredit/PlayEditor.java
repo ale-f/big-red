@@ -323,7 +323,7 @@ public class PlayEditor extends BigraphEditor {
 	protected void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
 		BRSXMLSaver r = new BRSXMLSaver().setModel(getBRSModel());
-		SaverUtilities.installDecorators(r);
+		SaverUtilities.installParticipants(r);
 		r.setFile(new EclipseFileWrapper(f)).
 			setOutputStream(os).exportObject();
 		

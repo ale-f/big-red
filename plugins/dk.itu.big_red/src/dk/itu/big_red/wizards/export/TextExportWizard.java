@@ -169,7 +169,7 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 								Saver s = (Saver)
 									ice.createExecutableExtension("class");
 								if (s instanceof XMLSaver)
-									SaverUtilities.installDecorators(
+									SaverUtilities.installParticipants(
 											(XMLSaver)s);
 								return s;
 							} catch (CoreException e) {
