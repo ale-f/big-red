@@ -235,8 +235,11 @@ public abstract class AbstractEditor extends EditorPart
 			UI.asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					if (hasFocus())
+					if (!getFile().isAccessible()) {
+						getSite().getPage().closeEditor(AbstractEditor.this, false);
+					} else if (hasFocus()) {
 						promptToReplace();
+					}
 				}
 			});
 		}
