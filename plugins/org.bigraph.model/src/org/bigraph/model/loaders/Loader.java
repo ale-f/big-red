@@ -23,7 +23,8 @@ public abstract class Loader implements ILoader {
 				addParticipant(p.newInstance());
 	}
 	
-	protected Loader getParent() {
+	@Override
+	public Loader getParent() {
 		return parent;
 	}
 	

@@ -23,7 +23,8 @@ public abstract class Saver implements ISaver {
 				addParticipant(p.newInstance());
 	}
 	
-	protected ISaver getParent() {
+	@Override
+	public ISaver getParent() {
 		return parent;
 	}
 	

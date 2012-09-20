@@ -11,6 +11,8 @@ public interface ILoader {
 	interface InheritableParticipant extends Participant {
 	}
 	
+	ILoader getParent();
+	
 	void addParticipant(Participant p);
 	Iterable<? extends Participant> getParticipants();
 	
