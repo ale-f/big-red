@@ -10,6 +10,9 @@ public interface ISaver {
 		Participant newInstance();
 	}
 	
+	interface InheritableParticipant extends Participant {
+	}
+	
 	void addParticipant(Participant p);
 	Iterable<? extends Participant> getParticipants();
 	

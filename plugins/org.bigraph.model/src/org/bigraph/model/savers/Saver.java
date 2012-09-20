@@ -18,7 +18,8 @@ public abstract class Saver implements ISaver {
 	public Saver(ISaver parent) {
 		this.parent = parent;
 		if (parent != null)
-			for (Participant p : parent.getParticipants())
+			for (Participant p : getParticipants(
+					parent, InheritableParticipant.class))
 				addParticipant(p.newInstance());
 	}
 	
@@ -160,7 +161,12 @@ public abstract class Saver implements ISaver {
 	}
 	
 	protected <T extends Participant>
-	Iterable<T> getParticipants(Class<T> klass) {
-		return new FilteringIterable<T>(klass, participants);
+			Iterable<T> getParticipants(Class<T> klass) {
+		return getParticipants(this, klass);
+	}
+	
+	protected static <T extends Participant>
+			Iterable<T> getParticipants(ISaver saver, Class<T> klass) {
+		return new FilteringIterable<T>(klass, saver.getParticipants());
 	}
 }
