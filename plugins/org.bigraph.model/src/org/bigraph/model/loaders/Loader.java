@@ -18,7 +18,8 @@ public abstract class Loader implements ILoader {
 	public Loader(Loader parent) {
 		this.parent = parent;
 		if (parent != null)
-			for (Participant p : parent.getParticipants())
+			for (Participant p : parent.getParticipants(
+					InheritableParticipant.class))
 				addParticipant(p.newInstance());
 	}
 	
