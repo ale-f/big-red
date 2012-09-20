@@ -1,15 +1,14 @@
 package org.bigraph.model.internal.utilities;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class FilteringIterable<T> implements Iterable<T> {
 	private final Class<T> klass;
-	private final Collection<?> collection;
+	private final Iterable<?> iterable;
 	
 	private final class FilteringIterator implements Iterator<T> {
-		private final Iterator<?> actual = collection.iterator();
+		private final Iterator<?> actual = iterable.iterator();
 		private T buffer;
 		
 		private void prepBuffer() {
@@ -45,9 +44,9 @@ public class FilteringIterable<T> implements Iterable<T> {
 		}
 	}
 	
-	public FilteringIterable(Class<T> klass, Collection<?> collection) {
+	public FilteringIterable(Class<T> klass, Iterable<?> iterable) {
 		this.klass = klass;
-		this.collection = collection;
+		this.iterable = iterable;
 	}
 	
 	@Override
