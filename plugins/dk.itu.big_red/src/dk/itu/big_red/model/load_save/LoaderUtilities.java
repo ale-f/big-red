@@ -1,6 +1,7 @@
 package dk.itu.big_red.model.load_save;
 
 import org.bigraph.model.loaders.ILoader;
+import org.bigraph.model.loaders.ILoader.Participant;
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.XMLLoader;
 import org.eclipse.core.runtime.CoreException;
@@ -11,30 +12,34 @@ import org.eclipse.core.runtime.content.IContentType;
 import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class LoaderUtilities {
-	private LoaderUtilities() {}
-	
-	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
-
-	/**
-	 * Installs the undecorators registered with the XML extension point into
-	 * the given {@link XMLLoader}.
-	 * @param l a {@link XMLLoader} to populate with undecorators
-	 */
-	public static void installParticipants(Loader l) {
-		IExtensionRegistry r = RegistryFactory.getRegistry();
-		for (IConfigurationElement ice :
-			r.getConfigurationElementsFor(EXTENSION_POINT)) {
-			if ("participant".equals(ice.getName())) {
-				try {
-					l.addParticipant((ILoader.Participant)
-							ice.createExecutableExtension("class"));
-				} catch (CoreException e) {
-					e.printStackTrace();
-					/* do nothing */
+	private static final class ParticipantContributor
+			implements ILoader.InheritableParticipant {
+		@Override
+		public void setLoader(ILoader loader) {
+			IExtensionRegistry r = RegistryFactory.getRegistry();
+			for (IConfigurationElement ice :
+					r.getConfigurationElementsFor(EXTENSION_POINT)) {
+				if ("participant".equals(ice.getName())) {
+					try {
+						loader.addParticipant((ILoader.Participant)
+								ice.createExecutableExtension("class"));
+					} catch (CoreException e) {
+						e.printStackTrace();
+						/* do nothing */
+					}
 				}
 			}
 		}
+
+		@Override
+		public Participant newInstance() {
+			return new ParticipantContributor();
+		}
 	}
+	
+	private LoaderUtilities() {}
+	
+	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
 	
 	public static Loader forContentType(String ct) throws CoreException {
 		return forContentType(
@@ -62,7 +67,7 @@ public abstract class LoaderUtilities {
 			}
 		}
 		if (l != null)
-			installParticipants(l);
+			l.addParticipant(new ParticipantContributor());
 		return l;
 	}
 }
