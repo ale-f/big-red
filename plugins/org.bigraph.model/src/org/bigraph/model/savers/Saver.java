@@ -142,6 +142,7 @@ public abstract class Saver implements ISaver {
 	@Override
 	public final void addOption(Option d) {
 		options.add(d);
+		copyOption(d, getParent());
 	}
 	
 	/**
@@ -174,5 +175,17 @@ public abstract class Saver implements ISaver {
 	protected static <T extends Participant>
 			Iterable<T> getParticipants(ISaver saver, Class<T> klass) {
 		return new FilteringIterable<T>(klass, saver.getParticipants());
+	}
+	
+	private static final void copyOption(Option option, ISaver parent) {
+		if (option == null || parent == null)
+			return;
+		for (Option i : parent.getOptions()) {
+			if (option.getCookie().equals(i.getCookie())) {
+				option.set(i.get());
+				return;
+			}
+		}
+		copyOption(option, parent.getParent());
 	}
 }
