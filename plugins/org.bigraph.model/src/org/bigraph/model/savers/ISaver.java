@@ -24,6 +24,14 @@ public interface ISaver {
 		
 		Object get();
 		void set(Object value);
+		
+		/**
+		 * Returns this {@link Option}'s <i>cookie</i>.
+		 * <p>(Two Options with {@link Object#equals(Object) equal} cookies are
+		 * considered to represent the same option.)
+		 * @return an opaque, comparable object
+		 */
+		Object getCookie();
 	}
 
 	void addOption(Option o);

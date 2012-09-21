@@ -69,6 +69,11 @@ public abstract class Saver implements ISaver {
 		public String getDescription() {
 			return description;
 		}
+		
+		@Override
+		public Object getCookie() {
+			return getClass();
+		}
 	}
 	
 	private ModelObject model = null;
