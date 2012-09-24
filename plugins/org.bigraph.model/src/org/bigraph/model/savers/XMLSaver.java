@@ -179,7 +179,8 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 				attrName = attrs[i],
 				attrValue = attrs[i + 1];
 			if (attrName != null && attrValue != null)
-				d.setAttribute(attrName.toString(), attrValue.toString());
+				d.setAttributeNS(null,
+						attrName.toString(), attrValue.toString());
 		}
 		return d;
 	}
