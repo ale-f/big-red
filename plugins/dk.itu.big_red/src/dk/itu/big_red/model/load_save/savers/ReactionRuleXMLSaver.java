@@ -128,8 +128,6 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 	
 	private Element processChanges(Element e, ChangeDescriptorGroup changes)
 			throws SaveFailedException {
-		applyAttributes(e, "xmlns:change", CHANGE);
-		
 		for (IChangeDescriptor i_ : changes) {
 			Element f = _serialiseChange(i_);
 			
