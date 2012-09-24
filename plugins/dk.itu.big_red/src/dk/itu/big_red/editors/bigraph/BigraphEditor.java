@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.core.resources.IFile;
@@ -141,14 +142,14 @@ public class BigraphEditor extends AbstractGEFEditor {
 	public static final int INITIAL_SASH_WEIGHTS[] = { 20, 80 };
 	
     @Override
-	public void createPartControl(Composite parent) {
-		SashForm splitter =
-				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
+	public Control createEditorControl(Composite parent) {
+		SashForm splitter = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
 		
 		createPaletteViewer(splitter);
 		createGraphicalViewer(splitter);
 		splitter.setWeights(INITIAL_SASH_WEIGHTS);
-		initialise();
+		
+		return splitter;
 	}
     
     protected void createGraphicalViewer(Composite parent) {
@@ -217,13 +218,14 @@ public class BigraphEditor extends AbstractGEFEditor {
 	}
 
 	@Override
-	protected void initialiseActual() throws Throwable {
-		getCommandStack().flush();
-		
+	protected void loadModel() throws LoadFailedException {
 		model = (Bigraph)loadInput();
-	    
-	    updateNodePalette(model.getSignature());
-	    getGraphicalViewer().setContents(model);
+	}
+	
+	@Override
+	protected void updateEditorControl() {
+		updateNodePalette(model.getSignature());
+		getGraphicalViewer().setContents(model);
 	}
 	
 	@Override

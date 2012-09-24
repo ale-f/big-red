@@ -12,6 +12,7 @@ import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
@@ -160,19 +161,15 @@ public class PlayEditor extends BigraphEditor {
 	private static final int INITIAL_SASH_WEIGHTS[] = { 30, 70 };
 	
     @Override
-	public void createPartControl(Composite parent) {
+	public SashForm createEditorControl(Composite parent) {
 		SashForm splitter =
-				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
+				new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
 		
 		createPaletteViewer(splitter);
 		createGraphicalViewer(splitter);
 		splitter.setWeights(INITIAL_SASH_WEIGHTS);
 		
-		try {
-			initialiseActual();
-		} catch (Throwable t) {
-			replaceWithError(t);
-		}
+		return splitter;
 	}
     
     @Override
@@ -333,24 +330,18 @@ public class PlayEditor extends BigraphEditor {
 	}
 
 	@Override
-	protected void initialiseActual() throws Throwable {
-		model = (BRS)loadInput(); //;// (
-		
-		//Bigraph input = (Bigraph)loadInput();
+	protected void loadModel() throws LoadFailedException {
+		model = (BRS)loadInput();
 		
 		if(model == null ){System.out.println("BRS Model is null"); model= new BRS(this);}
-	    
-	    if (getBRSModel() == null) {
-	    	replaceWithError(new Exception("BRS Model is null"));
-	    	return;
-	    } else PlayEditor.updateNodePalette(nodeGroup, model.getSignature());
-	    	    
-	    
-	    /*if (input == null) {
-	    	replaceWithError(new Exception("Model is null"));
-	    	return;
-	    } else updateNodePalette(nodeGroup, input.getSignature());*/
-	    
+		
+		if (getBRSModel() == null)
+	    	throw new LoadFailedException("BRS Model is null");
+	}
+	
+	@Override
+	protected void updateEditorControl() {
+		PlayEditor.updateNodePalette(nodeGroup, model.getSignature());
 	    getGraphicalViewer().setContents(model);
 	}
 	

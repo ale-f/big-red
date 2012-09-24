@@ -225,10 +225,8 @@ implements PropertyChangeListener {
 	}
 	
 	@Override
-	public void createPartControl(Composite parent) {
-		Composite self = new Composite(setParent(parent), SWT.NONE);
-		self.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+	public Composite createEditorControl(Composite parent) {
+		Composite self = new Composite(parent, SWT.NONE);
 		GridLayout gl = new GridLayout(2, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
 			gl.horizontalSpacing = gl.verticalSpacing = 10;
@@ -587,7 +585,7 @@ implements PropertyChangeListener {
 		});
 		
 		setEnablement(false);
-		initialise();
+		return self;
 	}
 
 	private boolean setEnablement(boolean enabled) {
@@ -599,11 +597,12 @@ implements PropertyChangeListener {
 	}
 	
 	@Override
-	protected void initialiseActual() throws Throwable {
-		clearUndo();
-		
+	protected void loadModel() throws LoadFailedException {
 		model = (Signature)loadInput();
-		
+	}
+	
+	@Override
+	protected void updateEditorControl() {
 		getModel().addPropertyChangeListener(this);
 		for (Control c : getModel().getControls())
 			c.addPropertyChangeListener(this);

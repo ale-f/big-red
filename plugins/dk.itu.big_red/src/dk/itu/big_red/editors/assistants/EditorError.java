@@ -3,7 +3,6 @@ package dk.itu.big_red.editors.assistants;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -23,23 +22,27 @@ public class EditorError {
 	private static Font font;
 	private static Image error;
 	
-	public EditorError(final Composite parent, IStatus reason) {
-		Composite c = new Composite(parent, SWT.NONE);
+	private Text text;
+	private Composite control;
+	
+	public EditorError(final Composite parent, Throwable throwable) {
+		control = new Composite(parent, SWT.NONE);
 		GridLayout gl = new GridLayout(2, false);
 		gl.marginLeft = gl.marginRight = gl.marginTop = gl.marginBottom = 10;
 		gl.horizontalSpacing = 10;
-		c.setLayout(gl);
-		c.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		c.setBackground(ColorConstants.white);
-		c.setBackgroundMode(SWT.INHERIT_FORCE);
+		control.setLayout(gl);
+		control.setBackground(ColorConstants.white);
+		control.setBackgroundMode(SWT.INHERIT_FORCE);
 		
 		if (error == null)
-			error = new Image(null, RedPlugin.getResource("resources/error.png"));
-		Label l = new Label(c, SWT.NONE);
+			error = new Image(null,
+					RedPlugin.getResource("resources/error.png"));
+		Label l = new Label(control, SWT.NONE);
 		l.setImage(error);
-		l.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
+		l.setLayoutData(
+				new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
 		
-		Composite rhs = new Composite(c, SWT.NONE);
+		Composite rhs = new Composite(control, SWT.NONE);
 		GridLayout rhsl = new GridLayout(1, false);
 		rhsl.verticalSpacing = 10;
 		rhs.setLayout(rhsl);
@@ -51,22 +54,38 @@ public class EditorError {
 		header.setFont(font);
 		header.setText("Oh no!");
 		
-		Text t = new Text(rhs, SWT.BORDER | SWT.WRAP | SWT.READ_ONLY | SWT.MULTI | SWT.V_SCROLL);
-		t.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		text = new Text(rhs,
+				SWT.BORDER | SWT.WRAP | SWT.READ_ONLY | SWT.MULTI |
+				SWT.V_SCROLL);
+		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
-		String errorText = reason.toString();
+		setThrowable(throwable);
+	}
+	
+	public Composite getControl() {
+		return control;
+	}
+	
+	public void dispose() {
+		control.dispose();
+	}
+	
+	public void setThrowable(Throwable t) {
+		String desc = "(no error)";
 		
-		Throwable ex;
-		if ((ex = reason.getException()) != null) {
+		if (t != null) {
+			desc = t.getLocalizedMessage();
+			
 			IOAdapter io = new IOAdapter();
-			ex.printStackTrace(new PrintStream(io.getOutputStream()));
+			t.printStackTrace(new PrintStream(io.getOutputStream()));
 			try {
 				io.getOutputStream().close();
-				errorText += "\n\n" + TotalReadStrategy.readString(io.getInputStream());
+				desc += "\n\n" +
+						TotalReadStrategy.readString(io.getInputStream());
 			} catch (IOException e) {
 			}
 		}
 		
-		t.setText(errorText);
+		text.setText(desc);
 	}
 }

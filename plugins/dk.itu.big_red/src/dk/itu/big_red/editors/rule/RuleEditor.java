@@ -15,6 +15,7 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
@@ -48,6 +49,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -151,16 +153,16 @@ public class RuleEditor extends AbstractGEFEditor implements
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		super.init(site, input);
-		redexViewer = new ScrollingGraphicalViewer();
-		reactumViewer = new ScrollingGraphicalViewer();
-		firePropertyChange(PROP_INPUT);
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
+	public Control createEditorControl(Composite parent) {
 		SashForm splitter =
 				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
-	
+		
+		redexViewer = new ScrollingGraphicalViewer();
+		reactumViewer = new ScrollingGraphicalViewer();
+		
 		createPaletteViewer(splitter);
 		Composite c = new Composite(splitter, SWT.NONE);
 		
@@ -195,7 +197,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 		redexViewer.getControl().setBackground(ColorConstants.listBackground);
 		reactumViewer.getControl().setBackground(ColorConstants.listBackground);
 	    
-		initialise();
+		return splitter;
 	}
 	
 	protected void configureGraphicalViewer() {
@@ -325,16 +327,14 @@ public class RuleEditor extends AbstractGEFEditor implements
 		return model;
 	}
 	
-	public void setModel(ReactionRule model) {
-		this.model = model;
+	@Override
+	protected void loadModel() throws LoadFailedException {
+		model = (ReactionRule)loadInput();		
 	}
 	
 	@Override
-	protected void initialiseActual() throws Throwable {
+	protected void updateEditorControl() {		
 		getCommandStack().flush();
-		
-		setModel((ReactionRule)loadInput());
-	    
 	    updateNodePalette(getModel().getRedex().getSignature());
 	    redexViewer.setContents(model.getRedex());
 	    reactumViewer.setContents(model.getReactum());

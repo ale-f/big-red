@@ -13,16 +13,15 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -32,7 +31,6 @@ import org.eclipse.ui.dialogs.SaveAsDialog;
 import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
 import dk.itu.big_red.editors.actions.RedoProxyAction;
 import dk.itu.big_red.editors.actions.RevertProxyAction;
 import dk.itu.big_red.editors.actions.UndoProxyAction;
@@ -220,12 +218,7 @@ public abstract class AbstractEditor extends EditorPart
 	}
 	
 	private void promptToReplace() {
-		MessageBox mb = new MessageBox(
-				getSite().getShell(), SWT.ICON_INFORMATION | SWT.YES | SWT.NO);
-		mb.setText("File updated");
-		mb.setMessage(getFile().getProjectRelativePath() + " was updated. Reload from disk?");
-		if (mb.open() == SWT.YES)
-			initialise();
+		/* XXX */
 	}
 	
 	protected abstract ModelObject getModel();
@@ -301,29 +294,13 @@ public abstract class AbstractEditor extends EditorPart
 		} else return null;
 	}
 	
-	protected ModelObject loadInput()
-			throws CoreException, LoadFailedException {
+	protected abstract void loadModel() throws LoadFailedException;
+	
+	protected ModelObject loadInput() throws LoadFailedException {
 		IFile file = getFile();
 		if (file != null) {
 			return new EclipseFileWrapper(file).load();
 		} else return null;
-	}
-	
-	/**
-	 * Initialises the editor once the controls have been created.
-	 * <p>Anything thrown by this method will cause the editor to be torn down
-	 * and replaced with an {@link EditorError}.
-	 * @throws Throwable if something went wrong
-	 */
-	abstract protected void initialiseActual() throws Throwable;
-	
-	protected void initialise() {
-		try {
-			initialiseActual();
-			firePropertyChange(PROP_DIRTY);
-		} catch (Throwable t) {
-			replaceWithError(t);
-		}
 	}
 	
 	private Composite parent;
@@ -351,11 +328,63 @@ public abstract class AbstractEditor extends EditorPart
 		}
 	}
 	
-	protected void replaceWithError(Throwable t) {
-		Composite parent = getParent();
-		for (Control c : parent.getChildren())
-			c.dispose();
-		new EditorError(parent, RedPlugin.getThrowableStatus(t));
+	private Control errorControl, editorControl;
+	
+	private EditorError editorError;
+	
+	protected Control createErrorControl(Composite parent) {
+		return (editorError = new EditorError(parent, null)).getControl();
+	}
+	
+	protected void updateErrorControl(Throwable t) {
+		editorError.setThrowable(t);
+	}
+	
+	/**
+	 * Creates the editor's {@link Control}.
+	 * @param parent the editor's parent {@link Composite}
+	 * @return
+	 */
+	protected abstract Control createEditorControl(Composite parent);
+	protected abstract void updateEditorControl();
+	
+	protected void setError(Exception t) {
+		if (t == null) {
+			if (editorControl == null)
+				editorControl = createEditorControl(getParent());
+			
+			updateEditorControl();
+			
+			editorControl.setVisible(true);
+			if (errorControl != null)
+				errorControl.setVisible(false);
+		} else {
+			if (errorControl == null)
+				errorControl = createErrorControl(getParent());
+			
+			updateErrorControl(t);
+			
+			errorControl.setVisible(true);
+			if (editorControl != null)
+				editorControl.setVisible(false);
+		}
+		
+		getParent().pack(true);
+		getParent().redraw();
+		getParent().update();
+	}
+	
+	@Override
+	public final void createPartControl(Composite parent) {
+		Composite c = new Composite(parent, SWT.NONE);
+		c.setLayout(new FillLayout(SWT.VERTICAL));
+		setParent(c);
+		try {
+			loadModel();
+			setError(null);
+		} catch (LoadFailedException e) {
+			setError(e);
+		}
 	}
 	
 	private ArrayList<String> globalActionIDs = new ArrayList<String>();

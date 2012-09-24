@@ -108,21 +108,22 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	
 	private boolean uiUpdateInProgress = false;
 	
-	@Override
-	protected void initialiseActual() throws Throwable {
-		clearUndo();
-		
-		model = (SimulationSpec)loadInput();
-		
-		rules.setInput(model);
-		model.addPropertyChangeListener(this);
-		modelToControls();
-	}
-	
 	private static final IFile getFileFrom(ModelObject m) {
 		IFileWrapper fw = FileData.getFile(m);
 		return (fw instanceof EclipseFileWrapper ?
 				((EclipseFileWrapper)fw).getResource() : null);
+	}
+	
+	@Override
+	protected void loadModel() throws LoadFailedException {
+		model = (SimulationSpec)loadInput();
+	}
+	
+	@Override
+	protected void updateEditorControl() {
+		rules.setInput(model);
+		model.addPropertyChangeListener(this);
+		modelToControls();
 	}
 	
 	private void modelToControls() {
@@ -141,14 +142,15 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		
 		IExtensionRegistry r = RegistryFactory.getRegistry();
 		for (IConfigurationElement ce :
-			 r.getConfigurationElementsFor(
-					 IInteractionManager.EXTENSION_POINT))
+				r.getConfigurationElementsFor(
+						IInteractionManager.EXTENSION_POINT))
 			factories.add(new ConfigurationElementInteractionManagerFactory(ce));
 		
 		for (IConfigurationElement ce :
-		     r.getConfigurationElementsFor(SaverUtilities.EXTENSION_POINT)) {
+				r.getConfigurationElementsFor(
+						SaverUtilities.EXTENSION_POINT)) {
 			String exports = ce.getAttribute("exports");
-			if (exports.equals(SimulationSpec.class.getCanonicalName()))
+			if (SimulationSpec.class.getCanonicalName().equals(exports))
 				factories.add(new ExportInteractionManagerFactory(ce));
 		}
 		return factories;
@@ -165,10 +167,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	}
 	
 	@Override
-	public void createPartControl(Composite parent) {
-		Composite self = new Composite(setParent(parent), SWT.NONE);
-		self.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		
+	public Composite createEditorControl(Composite parent) {
+		Composite self = new Composite(parent, SWT.NONE);
 		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
 			gl.horizontalSpacing = gl.verticalSpacing = 10;
@@ -311,7 +311,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		});
 		export.setEnabled(false);
 		
-		initialise();
+		return self;
 	}
 	
 	@Override
@@ -321,9 +321,11 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	@Override
 	public void setFocus() {
 		super.setFocus();
-		Button b = signatureSelector.getButton();
-		if (b != null && !b.isDisposed())
-			b.setFocus();
+		if (signatureSelector != null) {
+			Button b = signatureSelector.getButton();
+			if (b != null && !b.isDisposed() && b.isVisible())
+				b.setFocus();
+		}
 	}
 	
 	@Override
