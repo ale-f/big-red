@@ -166,7 +166,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	public Object getAdapter(Class type) {
     	if (type == ZoomManager.class) {
     		return getScalableRoot(getGraphicalViewer()).getZoomManager();
-    	} else if (type == IContentOutlinePage.class) {
+    	} else if (type == IContentOutlinePage.class && getModel() != null) {
     		return new BigraphEditorOutlinePage(this);
     	} else if (type == GraphicalViewer.class) {
 			return getGraphicalViewer();
