@@ -16,6 +16,8 @@ public class ActionBarContributor extends
 		dk.itu.big_red.editors.assistants.ActionBarContributor {
 	@Override
 	protected void buildActions() {
+		super.buildActions();
+		
 		addRetargetAction(new ZoomInRetargetAction());
 		addRetargetAction(new ZoomOutRetargetAction());
 		

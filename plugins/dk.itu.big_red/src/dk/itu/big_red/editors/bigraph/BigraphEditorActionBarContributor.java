@@ -2,8 +2,6 @@ package dk.itu.big_red.editors.bigraph;
 
 import org.eclipse.gef.ui.actions.DeleteRetargetAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.actions.RedoRetargetAction;
-import org.eclipse.gef.ui.actions.UndoRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
@@ -25,16 +23,14 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 	
 	@Override
 	protected void buildActions() {
+		super.buildActions();
+		
 		IWorkbenchWindow iww = getPage().getWorkbenchWindow();
 		
 		addAction(ActionFactory.NEW.create(iww));
 		addAction(ActionFactory.SAVE.create(iww));
 		addAction(ActionFactory.PRINT.create(iww));
 		
-		addRetargetAction((RetargetAction)ActionFactory.REVERT.create(iww));
-		
-		addRetargetAction(new UndoRetargetAction());
-		addRetargetAction(new RedoRetargetAction());
 		addRetargetAction(new DeleteRetargetAction());
 
 		addRetargetAction((RetargetAction)ActionFactory.CUT.create(iww));
