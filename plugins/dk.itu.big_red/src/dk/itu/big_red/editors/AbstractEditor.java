@@ -311,6 +311,12 @@ public abstract class AbstractEditor extends EditorPart
 		}
 	}
 	
+	/**
+	 * Attempts to return this {@link AbstractEditor}'s input as an {@link
+	 * IFile}.
+	 * @return an {@link IFile}, if one could be extracted, or {@code null}
+	 * otherwise
+	 */
 	protected IFile getFile() {
 		IEditorInput i_ = getEditorInput();
 		if (i_ instanceof FileEditorInput) {
@@ -318,8 +324,21 @@ public abstract class AbstractEditor extends EditorPart
 		} else return null;
 	}
 	
+	/**
+	 * Loads the model object into this {@link AbstractEditor}. (Note that this
+	 * method may be called more than once!)
+	 * @throws LoadFailedException if the loading process fails
+	 * @see #loadInput()
+	 */
 	protected abstract void loadModel() throws LoadFailedException;
 	
+	/**
+	 * Loads this {@link AbstractEditor}'s input {@link IFile} as a {@link
+	 * ModelObject}.
+	 * @return a {@link ModelObject}, or {@code null} if {@link #getFile()}
+	 * returns {@code null} 
+	 * @throws LoadFailedException if the file loading process fails
+	 */
 	protected ModelObject loadInput() throws LoadFailedException {
 		IFile file = getFile();
 		if (file != null) {
@@ -329,7 +348,7 @@ public abstract class AbstractEditor extends EditorPart
 	
 	private Composite parent;
 	
-	protected Composite setParent(Composite parent) {
+	private final Composite setParent(Composite parent) {
 		if (this.parent != null && this.parent != parent)
 			throw new Error("Mysterious parent mismatch");
 		this.parent = parent;
@@ -357,31 +376,67 @@ public abstract class AbstractEditor extends EditorPart
 	
 	private EditorError editorError;
 	
+	/**
+	 * Creates the error control.
+	 * @param parent the parent {@link Composite}, which is guaranteed to use a
+	 * {@link FillLayout}
+	 */
 	protected void createErrorControl(Composite parent) {
 		editorError = new EditorError(parent, null);
 	}
 	
+	/**
+	 * Updates the error control.
+	 * <p>This method should typically cause the error control to display
+	 * details of the error presently associated with this {@link
+	 * AbstractEditor}.
+	 * @see #setError(Exception)
+	 */
 	protected void updateErrorControl() {
 		editorError.setThrowable(getError());
 	}
 	
 	/**
 	 * Creates the editor's {@link Control}.
-	 * @param parent the editor's parent {@link Composite}
-	 * @return
+	 * @param parent the parent {@link Composite}, which is guaranteed to use a
+	 * {@link FillLayout}
 	 */
 	protected abstract void createEditorControl(Composite parent);
+	
+	/**
+	 * Updates the editor control.
+	 * <p>When this {@link AbstractEditor} has no error associated with it,
+	 * this method should typically prepare the model object for editing by
+	 * installing it into the control.
+	 * @see #setError(Exception)
+	 */
 	protected abstract void updateEditorControl();
 	
 	private Exception lastError;
 	
+	/**
+	 * Returns the error presently associated with this {@link AbstractEditor}.
+	 * @return an {@link Exception}
+	 */
 	protected Exception getError() {
 		return lastError;
 	}
 	
-	protected void setError(Exception t) {
-		lastError = t;
-		boolean error = (t != null);
+	/**
+	 * Sets the error presently associated with this {@link AbstractEditor}.
+	 * <p>If {@code ex} is {@code null}, then the editor control will be
+	 * displayed; if it's non-{@code null}, then the error control will be
+	 * displayed instead. (Both the editor control and the error control are
+	 * created as needed by this method.)
+	 * <p>If the editor or error controls exist, then their respective update
+	 * methods will be called before this method returns.
+	 * <p>(This method is an important part of the {@link AbstractEditor}
+	 * lifecycle.)
+	 * @param ex an {@link Exception}
+	 */
+	protected void setError(Exception ex) {
+		lastError = ex;
+		boolean error = (ex != null);
 		
 		if (!error && editorContainer == null) {
 			editorContainer = new Composite(getParent(), SWT.NONE);
@@ -422,6 +477,13 @@ public abstract class AbstractEditor extends EditorPart
 		load();
 	}
 	
+	/**
+	 * Calls {@link #loadModel()}, followed by:&mdash;
+	 * <ul>
+	 * <li>{@link #setError(Exception) setError(null)} upon success; or
+	 * <li>{@link #setError(Exception)} upon failure.
+	 * </ul>
+	 */
 	protected void load() {
 		try {
 			loadModel();
