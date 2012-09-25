@@ -121,6 +121,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	
 	@Override
 	protected void updateEditorControl() {
+		if (getError() != null)
+			return;
 		rules.setInput(model);
 		model.addPropertyChangeListener(this);
 		modelToControls();
@@ -167,7 +169,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	}
 	
 	@Override
-	public Composite createEditorControl(Composite parent) {
+	public void createEditorControl(Composite parent) {
 		Composite self = new Composite(parent, SWT.NONE);
 		GridLayout gl = new GridLayout(3, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
@@ -310,8 +312,6 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			}
 		});
 		export.setEnabled(false);
-		
-		return self;
 	}
 	
 	@Override

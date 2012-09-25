@@ -161,15 +161,13 @@ public class PlayEditor extends BigraphEditor {
 	private static final int INITIAL_SASH_WEIGHTS[] = { 30, 70 };
 	
     @Override
-	public SashForm createEditorControl(Composite parent) {
+	public void createEditorControl(Composite parent) {
 		SashForm splitter =
 				new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
 		
 		createPaletteViewer(splitter);
 		createGraphicalViewer(splitter);
 		splitter.setWeights(INITIAL_SASH_WEIGHTS);
-		
-		return splitter;
 	}
     
     @Override
@@ -341,11 +339,11 @@ public class PlayEditor extends BigraphEditor {
 	
 	@Override
 	protected void updateEditorControl() {
+		if (getError() != null)
+			return;
 		PlayEditor.updateNodePalette(nodeGroup, model.getSignature());
 	    getGraphicalViewer().setContents(model);
 	}
-	
-	
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input)

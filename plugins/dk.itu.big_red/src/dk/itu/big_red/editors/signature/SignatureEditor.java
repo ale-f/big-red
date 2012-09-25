@@ -225,7 +225,7 @@ implements PropertyChangeListener {
 	}
 	
 	@Override
-	public Composite createEditorControl(Composite parent) {
+	public void createEditorControl(Composite parent) {
 		Composite self = new Composite(parent, SWT.NONE);
 		GridLayout gl = new GridLayout(2, false);
 		gl.marginTop = gl.marginLeft = gl.marginBottom = gl.marginRight = 
@@ -585,7 +585,6 @@ implements PropertyChangeListener {
 		});
 		
 		setEnablement(false);
-		return self;
 	}
 
 	private boolean setEnablement(boolean enabled) {
@@ -603,6 +602,8 @@ implements PropertyChangeListener {
 	
 	@Override
 	protected void updateEditorControl() {
+		if (getError() != null)
+			return;
 		getModel().addPropertyChangeListener(this);
 		for (Control c : getModel().getControls())
 			c.addPropertyChangeListener(this);

@@ -49,7 +49,6 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -156,7 +155,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 
 	@Override
-	public Control createEditorControl(Composite parent) {
+	public void createEditorControl(Composite parent) {
 		SashForm splitter =
 				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
 		
@@ -196,8 +195,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 		
 		redexViewer.getControl().setBackground(ColorConstants.listBackground);
 		reactumViewer.getControl().setBackground(ColorConstants.listBackground);
-	    
-		return splitter;
 	}
 	
 	protected void configureGraphicalViewer() {
@@ -333,7 +330,9 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	@Override
-	protected void updateEditorControl() {		
+	protected void updateEditorControl() {
+		if (getError() != null)
+			return;
 		getCommandStack().flush();
 	    updateNodePalette(getModel().getRedex().getSignature());
 	    redexViewer.setContents(model.getRedex());

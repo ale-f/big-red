@@ -142,14 +142,12 @@ public class BigraphEditor extends AbstractGEFEditor {
 	public static final int INITIAL_SASH_WEIGHTS[] = { 20, 80 };
 	
     @Override
-	public Control createEditorControl(Composite parent) {
+	public void createEditorControl(Composite parent) {
 		SashForm splitter = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
 		
 		createPaletteViewer(splitter);
 		createGraphicalViewer(splitter);
 		splitter.setWeights(INITIAL_SASH_WEIGHTS);
-		
-		return splitter;
 	}
     
     protected void createGraphicalViewer(Composite parent) {
@@ -224,6 +222,8 @@ public class BigraphEditor extends AbstractGEFEditor {
 	
 	@Override
 	protected void updateEditorControl() {
+		if (getError() != null)
+			return;
 		updateNodePalette(model.getSignature());
 		getGraphicalViewer().setContents(model);
 	}

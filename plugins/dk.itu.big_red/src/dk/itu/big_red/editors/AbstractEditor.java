@@ -20,6 +20,8 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.IActionBars;
@@ -328,16 +330,17 @@ public abstract class AbstractEditor extends EditorPart
 		}
 	}
 	
-	private Control errorControl, editorControl;
+	private Composite errorContainer, editorContainer;
+	private GridData errorContainerData, editorContainerData;
 	
 	private EditorError editorError;
 	
-	protected Control createErrorControl(Composite parent) {
-		return (editorError = new EditorError(parent, null)).getControl();
+	protected void createErrorControl(Composite parent) {
+		editorError = new EditorError(parent, null);
 	}
 	
-	protected void updateErrorControl(Throwable t) {
-		editorError.setThrowable(t);
+	protected void updateErrorControl() {
+		editorError.setThrowable(getError());
 	}
 	
 	/**
@@ -345,39 +348,54 @@ public abstract class AbstractEditor extends EditorPart
 	 * @param parent the editor's parent {@link Composite}
 	 * @return
 	 */
-	protected abstract Control createEditorControl(Composite parent);
+	protected abstract void createEditorControl(Composite parent);
 	protected abstract void updateEditorControl();
 	
+	private Exception lastError;
+	
+	protected Exception getError() {
+		return lastError;
+	}
+	
 	protected void setError(Exception t) {
-		if (t == null) {
-			if (editorControl == null)
-				editorControl = createEditorControl(getParent());
-			
-			updateEditorControl();
-			
-			editorControl.setVisible(true);
-			if (errorControl != null)
-				errorControl.setVisible(false);
-		} else {
-			if (errorControl == null)
-				errorControl = createErrorControl(getParent());
-			
-			updateErrorControl(t);
-			
-			errorControl.setVisible(true);
-			if (editorControl != null)
-				editorControl.setVisible(false);
+		lastError = t;
+		boolean error = (t != null);
+		
+		if (!error && editorContainer == null) {
+			editorContainer = new Composite(getParent(), SWT.NONE);
+			editorContainer.setLayoutData(editorContainerData =
+					new GridData(SWT.FILL, SWT.FILL, true, true));
+			editorContainer.setLayout(new FillLayout());
+			createEditorControl(editorContainer);
+		} else if (error && errorContainer == null) {
+			errorContainer = new Composite(getParent(), SWT.NONE);
+			errorContainer.setLayoutData(errorContainerData =
+					new GridData(SWT.FILL, SWT.FILL, true, true));
+			errorContainer.setLayout(new FillLayout());
+			createErrorControl(errorContainer);
 		}
 		
-		getParent().pack(true);
-		getParent().redraw();
-		getParent().update();
+		if (editorContainer != null) {
+			editorContainer.setVisible(!error);
+			editorContainerData.exclude = error;
+			updateEditorControl();
+		}
+		if (errorContainer != null) {
+			errorContainer.setVisible(error);
+			errorContainerData.exclude = !error;
+			updateErrorControl();
+		}
+		
+		getParent().layout(true);
 	}
 	
 	@Override
 	public final void createPartControl(Composite parent) {
 		Composite c = new Composite(parent, SWT.NONE);
-		c.setLayout(new FillLayout(SWT.VERTICAL));
+		GridLayout gl = new GridLayout(1, true);
+		gl.marginHeight = gl.marginWidth =
+				gl.horizontalSpacing = gl.verticalSpacing = 0;
+		c.setLayout(gl);
 		setParent(c);
 		try {
 			loadModel();
