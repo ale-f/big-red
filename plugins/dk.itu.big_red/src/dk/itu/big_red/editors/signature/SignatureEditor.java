@@ -3,9 +3,12 @@ package dk.itu.big_red.editors.signature;
 import java.beans.PropertyChangeListener;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.bigraph.model.Control;
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.ChangeGroup;
@@ -51,6 +54,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.IFactory;
+import dk.itu.big_red.editors.assistants.ModelListenerProxy;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
@@ -101,6 +105,9 @@ implements PropertyChangeListener {
 		appearanceDescription, kindLabel, labelLabel,
 		outlineLabel, fillLabel, nameLabel, appearanceLabel;
 	private ColorSelector outline, fill;
+	
+	private Map<ModelObject, ModelListenerProxy> proxies =
+			new HashMap<ModelObject, ModelListenerProxy>();
 	
 	protected void setControl(Control c) {
 		currentControl = c;
@@ -600,21 +607,33 @@ implements PropertyChangeListener {
 		model = (Signature)loadInput();
 	}
 	
+	private void addListenerProxy(ModelObject m) {
+		proxies.put(m, new ModelListenerProxy(m, this));
+	}
+	
 	@Override
 	protected void updateEditorControl() {
 		if (getError() != null)
 			return;
-		getModel().addPropertyChangeListener(this);
+		
+		for (ModelListenerProxy p : proxies.values())
+			p.dispose();
+		proxies.clear();
+		
+		addListenerProxy(getModel());
 		for (Control c : getModel().getControls())
-			c.addPropertyChangeListener(this);
+			addListenerProxy(c);
 		controls.setInput(getModel());
+		
+		setControl(null);
 	}
 
 	@Override
 	public void dispose() {
-		for (Control c : getModel().getControls())
-			c.removePropertyChangeListener(this);
-		getModel().removePropertyChangeListener(this);
+		for (ModelListenerProxy p : proxies.values())
+			p.dispose();
+		proxies.clear();
+		
 		model = null;
 		
 		appearance.dispose();
@@ -671,9 +690,9 @@ implements PropertyChangeListener {
 			Object oldValue = evt.getOldValue();
 			if (Signature.PROPERTY_CONTROL.equals(propertyName)) {
 				if (oldValue == null && newValue != null) {
-					((Control)newValue).addPropertyChangeListener(this);
+					addListenerProxy((Control)newValue);
 				} else if (oldValue != null && newValue == null) {
-					((Control)oldValue).removePropertyChangeListener(this);
+					proxies.remove(oldValue).dispose();
 				}
 			}
 		}
