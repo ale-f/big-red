@@ -542,9 +542,9 @@ public abstract class AbstractEditor extends EditorPart
 	@Override
 	public boolean canPerformAction(String actionID) {
 		if (ActionFactory.UNDO.getId().equals(actionID)) {
-			return canUndo();
+			return getError() == null && canUndo();
 		} else if (ActionFactory.REDO.getId().equals(actionID)) {
-			return canRedo();
+			return getError() == null && canRedo();
 		} else if (ActionFactory.REVERT.getId().equals(actionID)) {
 			return canRevert();
 		} else return false;
