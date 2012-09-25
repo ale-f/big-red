@@ -18,6 +18,7 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.UpdateAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -204,23 +205,47 @@ public abstract class AbstractEditor extends EditorPart
 		return equals(getSite().getPage().getActiveEditor());
 	}
 	
-	private long lastModificationStamp = IResource.NULL_STAMP;
+	boolean promptOnFocus = false;
+	private long modificationStamp = IResource.NULL_STAMP;
 	
-	protected boolean hasChangedSince() {
-		long stamp = lastModificationStamp;
-		lastModificationStamp = getFile().getModificationStamp();
-		return
-			(stamp == IResource.NULL_STAMP ||stamp == lastModificationStamp);
+	protected boolean hasFileChanged() {
+		long oldModificationStamp = modificationStamp;
+		modificationStamp = getFile().getModificationStamp();
+		if (oldModificationStamp != IResource.NULL_STAMP)
+			if (oldModificationStamp != modificationStamp)
+				return true;
+		return false;
 	}
 	
 	@Override
 	public void setFocus() {
-		if (!hasChangedSince() && !isSaving())
+		if (hasFileChanged())
+			onChange();
+		if (promptOnFocus)
 			promptToReplace();
 	}
 	
-	private void promptToReplace() {
-		/* XXX */
+	private void onChange() {
+		if (!getFile().isAccessible()) {
+			getSite().getPage().closeEditor(this, false);
+		} else if (getError() != null) {
+			load();
+		} else if (hasFocus()) {
+			promptToReplace();
+		} else if (!isSaving()) {
+			promptOnFocus = true;
+		}
+	}
+	
+	protected void promptToReplace() {
+		promptOnFocus = false;
+		
+		MessageDialog md = new MessageDialog(getSite().getShell(),
+				"Update?", null,
+				"Should the contents of this editor be updated?",
+				MessageDialog.QUESTION, new String[] { "Yes", "No" }, 1);
+		if (md.open() == 0)
+			load();
 	}
 	
 	protected abstract ModelObject getModel();
@@ -230,11 +255,7 @@ public abstract class AbstractEditor extends EditorPart
 			UI.asyncExec(new Runnable() {
 				@Override
 				public void run() {
-					if (!getFile().isAccessible()) {
-						getSite().getPage().closeEditor(AbstractEditor.this, false);
-					} else if (hasFocus()) {
-						promptToReplace();
-					}
+					onChange();
 				}
 			});
 		}
@@ -273,7 +294,6 @@ public abstract class AbstractEditor extends EditorPart
 					new ModificationRunner.Callback() {
 				@Override
 				public void onSuccess() {
-					hasChangedSince(); /* Updates the modification stamp */
 					firePropertyChange(PROP_DIRTY);
 				}
 				
@@ -397,6 +417,10 @@ public abstract class AbstractEditor extends EditorPart
 				gl.horizontalSpacing = gl.verticalSpacing = 0;
 		c.setLayout(gl);
 		setParent(c);
+		load();
+	}
+	
+	protected void load() {
 		try {
 			loadModel();
 			setError(null);
