@@ -202,7 +202,7 @@ public abstract class AbstractEditor extends EditorPart
 	}
 	
 	protected final boolean hasFocus() {
-		return equals(getSite().getPage().getActiveEditor());
+		return equals(getSite().getPage().getActivePart());
 	}
 	
 	boolean promptOnFocus = false;
@@ -235,6 +235,7 @@ public abstract class AbstractEditor extends EditorPart
 		} else if (!isSaving()) {
 			promptOnFocus = true;
 		}
+		hasFileChanged(); /* Update the modification stamp */
 	}
 	
 	protected void promptToReplace() {
@@ -294,6 +295,7 @@ public abstract class AbstractEditor extends EditorPart
 					new ModificationRunner.Callback() {
 				@Override
 				public void onSuccess() {
+					hasFileChanged(); /* Update the modification stamp */
 					firePropertyChange(PROP_DIRTY);
 				}
 				
