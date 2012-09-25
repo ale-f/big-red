@@ -74,7 +74,7 @@ import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class RuleEditor extends AbstractGEFEditor implements
-	ISelectionChangedListener, ISelectionProvider {
+		ISelectionChangedListener, ISelectionProvider {
 	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 		if (adapter == ZoomManager.class) {
@@ -156,8 +156,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 
 	@Override
 	public void createEditorControl(Composite parent) {
-		SashForm splitter =
-				new SashForm(setParent(parent), SWT.HORIZONTAL | SWT.SMOOTH);
+		SashForm splitter = new SashForm(parent, SWT.HORIZONTAL | SWT.SMOOTH);
 		
 		redexViewer = new ScrollingGraphicalViewer();
 		reactumViewer = new ScrollingGraphicalViewer();
