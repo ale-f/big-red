@@ -123,6 +123,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	protected void updateEditorControl() {
 		if (getError() != null)
 			return;
+		clearUndo();
 		rules.setInput(model);
 		model.addPropertyChangeListener(this);
 		modelToControls();

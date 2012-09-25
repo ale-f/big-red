@@ -224,6 +224,7 @@ public class BigraphEditor extends AbstractGEFEditor {
 	protected void updateEditorControl() {
 		if (getError() != null)
 			return;
+		getCommandStack().flush();
 		updateNodePalette(model.getSignature());
 		getGraphicalViewer().setContents(model);
 	}

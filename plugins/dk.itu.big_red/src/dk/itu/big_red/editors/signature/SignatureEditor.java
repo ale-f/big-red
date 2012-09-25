@@ -616,6 +616,7 @@ implements PropertyChangeListener {
 		if (getError() != null)
 			return;
 		
+		clearUndo();
 		for (ModelListenerProxy p : proxies.values())
 			p.dispose();
 		proxies.clear();
