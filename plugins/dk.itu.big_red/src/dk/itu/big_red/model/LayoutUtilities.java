@@ -25,8 +25,8 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import static dk.itu.big_red.model.ExtendedDataUtilities.require;
-import static dk.itu.big_red.model.ExtendedDataUtilities.set;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 
@@ -90,11 +90,11 @@ public abstract class LayoutUtilities {
 				/* Since the layout validator is a final validator, there are
 				 * no further updates to come, so the boundary state can be
 				 * calculated once and then stashed away in the scratchpad */
-				BigraphBoundaryState bbs = require(context, b, BOUNDARIES,
-						BigraphBoundaryState.class);
-				if (bbs == null)
-					set(context, parent, BOUNDARIES,
-							bbs = new BigraphBoundaryState(context, b));
+				BigraphBoundaryState bbs = getProperty(context, b, BOUNDARIES, BigraphBoundaryState.class);
+				if (bbs == null) {
+					Object value = bbs = new BigraphBoundaryState(context, b);
+					setProperty(context, parent, BOUNDARIES, value);
+				}
 				
 				int bs = bbs.getBoundaryState(newLayout);
 				if (l instanceof Root) {
@@ -175,7 +175,7 @@ public abstract class LayoutUtilities {
 	
 	public static Rectangle getLayoutRaw(
 			PropertyScratchpad context, Layoutable l) {
-		return require(context, l, LAYOUT, Rectangle.class);
+		return getProperty(context, l, LAYOUT, Rectangle.class);
 	}
 	
 	public static void setLayout(Layoutable l, Rectangle r) {
@@ -184,7 +184,7 @@ public abstract class LayoutUtilities {
 
 	public static void setLayout(
 			PropertyScratchpad context, Layoutable l, Rectangle r) {
-		set(context, l, LAYOUT, r);
+		setProperty(context, l, LAYOUT, r);
 	}
 
 	public static IChange changeLayout(Layoutable l, Rectangle r) {

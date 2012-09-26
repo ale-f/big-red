@@ -13,8 +13,8 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.policies.INamePolicy;
 
-import static dk.itu.big_red.model.ExtendedDataUtilities.set;
-import static dk.itu.big_red.model.ExtendedDataUtilities.require;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
 
 public abstract class ParameterUtilities {
 	private ParameterUtilities() {}
@@ -70,7 +70,7 @@ public abstract class ParameterUtilities {
 
 	public static INamePolicy getParameterPolicy(
 			PropertyScratchpad context, Control c) {
-		return require(context, c, PARAMETER_POLICY, INamePolicy.class);
+		return getProperty(context, c, PARAMETER_POLICY, INamePolicy.class);
 	}
 
 	public static void setParameterPolicy(Control c, INamePolicy n) {
@@ -88,7 +88,7 @@ public abstract class ParameterUtilities {
 	public static String getParameter(
 			PropertyScratchpad context, Node n) {
 		INamePolicy p = getParameterPolicy(context, n.getControl());
-		String s = require(context, n, PARAMETER, String.class),
+		String s = getProperty(context, n, PARAMETER, String.class),
 				t = null;
 		if (p != null) {
 			t = p.normalise(s);
@@ -106,7 +106,7 @@ public abstract class ParameterUtilities {
 	
 	public static void setParameter(
 			PropertyScratchpad context, Node n, String s) {
-		set(context, n, PARAMETER, s);
+		setProperty(context, n, PARAMETER, s);
 	}
 
 	public static IChange changeParameter(Node n, String s) {

@@ -9,8 +9,8 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
-import static dk.itu.big_red.model.ExtendedDataUtilities.require;
-import static dk.itu.big_red.model.ExtendedDataUtilities.set;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 
 /**
  * The <strong>ColourUtilities</strong> class is a collection of static
@@ -57,7 +57,7 @@ public abstract class ColourUtilities {
 	
 	public static Colour getFillRaw(
 			PropertyScratchpad context, ModelObject m) {
-		return require(context, m, FILL, Colour.class);
+		return getProperty(context, m, FILL, Colour.class);
 	}
 	
 	public static void setFill(ModelObject m, Colour c) {
@@ -66,7 +66,7 @@ public abstract class ColourUtilities {
 
 	public static void setFill(
 			PropertyScratchpad context, ModelObject m, Colour c) {
-		set(context, m, FILL, c);
+		setProperty(context, m, FILL, c);
 	}
 
 	public static IChange changeFill(ModelObject m, Colour c) {
@@ -89,7 +89,7 @@ public abstract class ColourUtilities {
 
 	public static Colour getOutline(
 			PropertyScratchpad context, ModelObject m) {
-		Colour c = require(context, m, OUTLINE, Colour.class);
+		Colour c = getProperty(context, m, OUTLINE, Colour.class);
 		if (c == null)
 			c = getDefaultOutline(context, m);
 		return c;
@@ -116,7 +116,7 @@ public abstract class ColourUtilities {
 	
 	public static Colour getOutlineRaw(
 			PropertyScratchpad context, ModelObject m) {
-		return require(context, m, OUTLINE, Colour.class);
+		return getProperty(context, m, OUTLINE, Colour.class);
 	}
 	
 	public static void setOutline(ModelObject m, Colour c) {
@@ -125,7 +125,7 @@ public abstract class ColourUtilities {
 
 	public static void setOutline(
 			PropertyScratchpad context, ModelObject m, Colour c) {
-		set(context, m, OUTLINE, c);
+		setProperty(context, m, OUTLINE, c);
 	}
 
 	public static IChange changeOutline(ModelObject m, Colour c) {

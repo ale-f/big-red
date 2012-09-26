@@ -13,6 +13,9 @@ import org.bigraph.model.changes.IChange;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
+
 public abstract class ControlUtilities {
 	private ControlUtilities() {}
 
@@ -25,10 +28,10 @@ public abstract class ControlUtilities {
 	}
 
 	public static int getSegment(PropertyScratchpad context, PortSpec p) {
-		Integer i = ExtendedDataUtilities.require(context, p, SEGMENT, Integer.class);
+		Integer i = getProperty(context, p, SEGMENT, Integer.class);
 		if (i == null) {
 			recalculatePosition(context, p);
-			i = ExtendedDataUtilities.require(context, p, SEGMENT, Integer.class);
+			i = getProperty(context, p, SEGMENT, Integer.class);
 		}
 		return i;
 	}
@@ -39,7 +42,7 @@ public abstract class ControlUtilities {
 
 	public static void setSegment(
 			PropertyScratchpad context, PortSpec p, int i) {
-		ExtendedDataUtilities.set(context, p, SEGMENT, i);
+		setProperty(context, p, SEGMENT, i);
 	}
 
 	public static IChange changeSegment(PortSpec p, int i) {
@@ -82,10 +85,10 @@ public abstract class ControlUtilities {
 
 	public static double getDistance(
 			PropertyScratchpad context, PortSpec p) {
-		Double d = ExtendedDataUtilities.require(context, p, DISTANCE, Double.class);
+		Double d = getProperty(context, p, DISTANCE, Double.class);
 		if (d == null) {
 			recalculatePosition(context, p);
-			d = ExtendedDataUtilities.require(context, p, DISTANCE, Double.class);
+			d = getProperty(context, p, DISTANCE, Double.class);
 		}
 		return d;
 	}
@@ -96,7 +99,7 @@ public abstract class ControlUtilities {
 
 	public static void setDistance(
 			PropertyScratchpad context, PortSpec p, double d) {
-		ExtendedDataUtilities.set(context, p, DISTANCE, d);
+		setProperty(context, p, DISTANCE, d);
 	}
 
 	public static IChange changeDistance(PortSpec p, double d) {
@@ -112,7 +115,7 @@ public abstract class ControlUtilities {
 	}
 
 	public static Object getShape(PropertyScratchpad context, Control c) {
-		Object o = ExtendedDataUtilities.require(context, c, SHAPE, Object.class);
+		Object o = getProperty(context, c, SHAPE, Object.class);
 		if (!(o instanceof PointList || o instanceof Ellipse)) {
 			o = new Ellipse(new Rectangle(0, 0, 300, 300)).
 				getPolygon(Math.max(3, c.getPorts(context).size()));
@@ -131,7 +134,7 @@ public abstract class ControlUtilities {
 	public static void setShape(
 			PropertyScratchpad context, Control c, Object s) {
 		if (s instanceof PointList || s instanceof Ellipse)
-			ExtendedDataUtilities.set(context, c, SHAPE, s);
+			setProperty(context, c, SHAPE, s);
 	}
 
 	public static IChange changeShape(Control c, Object s) {
@@ -165,7 +168,7 @@ public abstract class ControlUtilities {
 	}
 
 	public static String getLabel(PropertyScratchpad context, Control c) {
-		String s = ExtendedDataUtilities.require(context, c, LABEL, String.class);
+		String s = getProperty(context, c, LABEL, String.class);
 		if (s == null)
 			setLabel(context, c, s = labelFor(c.getName(context)));
 		return s;
@@ -177,7 +180,7 @@ public abstract class ControlUtilities {
 
 	public static void setLabel(
 			PropertyScratchpad context, Control c, String s) {
-		ExtendedDataUtilities.set(context, c, LABEL, s);
+		setProperty(context, c, LABEL, s);
 	}
 
 	public static IChange changeLabel(Control c, String s) {

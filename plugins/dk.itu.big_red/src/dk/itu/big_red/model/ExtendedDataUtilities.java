@@ -28,16 +28,6 @@ import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 public abstract class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
-	static <T> T require(PropertyScratchpad context, ModelObject o,
-			String name, Class<T> klass) {
-		return getProperty(context, o, name, klass);
-	}
-	
-	static void set(PropertyScratchpad context, ModelObject o, String name,
-			Object value) {
-		setProperty(context, o, name, value);
-	}
-	
 	private static final ExtendedDataNormaliser commentNormaliser =
 			new ExtendedDataNormaliser() {
 		@Override
@@ -61,7 +51,7 @@ public abstract class ExtendedDataUtilities {
 	
 	public static String getComment(
 			PropertyScratchpad context, ModelObject m) {
-		return require(context, m, COMMENT, String.class);
+		return getProperty(context, m, COMMENT, String.class);
 	}
 	
 	public static void setComment(ModelObject m, String s) {
@@ -104,7 +94,7 @@ public abstract class ExtendedDataUtilities {
 	}
 	
 	public static String getAlias(PropertyScratchpad context, Site s) {
-		return require(context, s, ALIAS, String.class);
+		return getProperty(context, s, ALIAS, String.class);
 	}
 	
 	public static void setAlias(Site s, String a) {
@@ -112,7 +102,7 @@ public abstract class ExtendedDataUtilities {
 	}
 	
 	public static void setAlias(PropertyScratchpad context, Site s, String a) {
-		set(context, s, ALIAS, a);
+		setProperty(context, s, ALIAS, a);
 	}
 	
 	public static IChange changeAlias(Site s, String a) {
