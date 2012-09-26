@@ -14,6 +14,9 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.policies.BoundedIntegerNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 
+import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
+
 /**
  * The <strong>ExtendedDataUtilities</strong> class is a collection of static
  * methods and fields for manipulating some of the extended data used by Big
@@ -27,22 +30,12 @@ public abstract class ExtendedDataUtilities {
 	
 	static <T> T require(PropertyScratchpad context, ModelObject o,
 			String name, Class<T> klass) {
-		if (o != null && name != null) {
-			try {
-				return klass.cast(o.getExtendedData(context, name));
-			} catch (ClassCastException ex) {
-				return null;
-			}
-		} else return null;
+		return getProperty(context, o, name, klass);
 	}
 	
 	static void set(PropertyScratchpad context, ModelObject o, String name,
 			Object value) {
-		if (o == null || name == null)
-			return;
-		if (context != null) {
-			context.setProperty(o, name, value);
-		} else o.setExtendedData(name, value);
+		setProperty(context, o, name, value);
 	}
 	
 	private static final ExtendedDataNormaliser commentNormaliser =
