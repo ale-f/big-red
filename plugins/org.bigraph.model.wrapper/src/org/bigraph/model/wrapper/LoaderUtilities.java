@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.wrapper;
 
 import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.ILoader.Participant;
@@ -7,9 +7,9 @@ import org.bigraph.model.loaders.XMLLoader;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
-import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class LoaderUtilities {
 	private static final class ParticipantContributor
@@ -39,11 +39,12 @@ public abstract class LoaderUtilities {
 	
 	private LoaderUtilities() {}
 	
-	public static final String EXTENSION_POINT = "dk.itu.big_red.import";
+	public static final String EXTENSION_POINT =
+			"org.bigraph.model.wrapper.import";
 	
 	public static Loader forContentType(String ct) throws CoreException {
 		return forContentType(
-				Project.getContentTypeManager().getContentType(ct));
+				Platform.getContentTypeManager().getContentType(ct));
 	}
 	
 	/**

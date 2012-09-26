@@ -13,6 +13,7 @@ import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.XMLSaver;
+import org.bigraph.model.wrapper.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -50,7 +51,6 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
-import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.utilities.io.IOAdapter;
 import dk.itu.big_red.utilities.io.strategies.TotalReadStrategy;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;

@@ -24,7 +24,7 @@
       </content-type>
    </extension>
    <extension
-         point="dk.itu.big_red.import">
+         point="org.bigraph.model.wrapper.import">
       <importer
             class="it.uniud.bigredit.model.load_save.loaders.BRSXMLLoader"
             contentType="org.bigraph.bigwb.playground.brs"

@@ -10,7 +10,7 @@
       </interactionManager>
    </extension>
    <extension
-         point="dk.itu.big_red.export">
+         point="org.bigraph.model.wrapper.export">
       <exporter
             class="org.bigraph.bigmc.red.SimulationSpecBigMCSaver"
             exports="org.bigraph.model.SimulationSpec"

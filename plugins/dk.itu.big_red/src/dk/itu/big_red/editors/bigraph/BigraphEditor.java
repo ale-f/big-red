@@ -8,6 +8,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
+import org.bigraph.model.wrapper.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -46,7 +47,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.actions.FilePrintAction;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
-import dk.itu.big_red.model.load_save.SaverUtilities;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 
 public class BigraphEditor extends AbstractGEFEditor {

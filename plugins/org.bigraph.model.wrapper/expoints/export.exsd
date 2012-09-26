@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="dk.itu.big_red" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="org.bigraph.model.wrapper" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="dk.itu.big_red" id="dk.itu.big_red.export" name="Model exporters"/>
+         <meta.schema plugin="org.bigraph.model.wrapper" id="org.bigraph.model.wrapper.export" name="Model export"/>
       </appinfo>
       <documentation>
          The model exporter extension point allows plug-ins to contribute model exporters. Export wizards will be automatically created for contributed exporters.

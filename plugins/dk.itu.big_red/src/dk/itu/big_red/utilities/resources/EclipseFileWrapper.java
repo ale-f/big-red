@@ -6,11 +6,11 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.resources.IFileWrapper;
+import org.bigraph.model.wrapper.LoaderUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.content.IContentType;
 
-import dk.itu.big_red.model.load_save.LoaderUtilities;
 
 /**
  * The <strong>EclipseFileWrapper</strong> class implements the {@link

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="dk.itu.big_red.export" name="Model exporters" schema="expoints/dk.itu.big_red.export.exsd"/>
-   <extension-point id="dk.itu.big_red.import" name="Model importers" schema="expoints/dk.itu.big_red.import.exsd"/>
    <extension-point id="dk.itu.big_red.interactionManagers" name="Interaction managers" schema="expoints/dk.itu.big_red.interactionManagers.exsd"/>
 
    <extension
@@ -248,7 +246,7 @@
       </content-type>
    </extension>
    <extension
-         point="dk.itu.big_red.import">
+         point="org.bigraph.model.wrapper.import">
       <importer
             class="org.bigraph.model.loaders.BigraphXMLLoader"
             contentType="dk.itu.big_red.bigraph"
@@ -285,7 +283,7 @@
             id="AliasUndecorator" />
    </extension>
    <extension
-         point="dk.itu.big_red.export">
+         point="org.bigraph.model.wrapper.export">
       <exporter
             class="dk.itu.big_red.model.load_save.savers.BigraphTikZSaver"
             exports="org.bigraph.model.Bigraph"

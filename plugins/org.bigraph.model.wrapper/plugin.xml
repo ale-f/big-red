@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.bigraph.model.wrapper.export" name="Model export" schema="expoints/export.exsd"/>
+   <extension-point id="org.bigraph.model.wrapper.import" name="Model import" schema="expoints/import.exsd"/>
+</plugin>

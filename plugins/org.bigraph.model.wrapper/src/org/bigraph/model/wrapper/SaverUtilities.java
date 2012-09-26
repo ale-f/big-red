@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save;
+package org.bigraph.model.wrapper;
 
 import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.Saver;
@@ -6,10 +6,9 @@ import org.bigraph.model.savers.ISaver.Participant;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
-
-import dk.itu.big_red.utilities.resources.Project;
 
 public abstract class SaverUtilities {
 	private static final class ParticipantContributor
@@ -39,7 +38,8 @@ public abstract class SaverUtilities {
 	
 	private SaverUtilities() {}
 	
-	public static final String EXTENSION_POINT = "dk.itu.big_red.export";
+	public static final String EXTENSION_POINT =
+			"org.bigraph.model.wrapper.export";
 
 	public static void installParticipants(Saver saver) {
 		if (saver != null)
@@ -48,13 +48,13 @@ public abstract class SaverUtilities {
 	
 	public static Saver forContentType(String ct) throws CoreException {
 		return forContentType(
-				Project.getContentTypeManager().getContentType(ct));
+				Platform.getContentTypeManager().getContentType(ct));
 	}
 	
 	public static Saver forContentType(IContentType ct) throws CoreException {
 		Saver s = null;
 		for (IConfigurationElement ice :
-			RegistryFactory.getRegistry().
+				RegistryFactory.getRegistry().
 				getConfigurationElementsFor(EXTENSION_POINT)) {
 			if (ct.getId().equals(ice.getAttribute("contentType"))) {
 				s = (Saver)ice.createExecutableExtension("class");

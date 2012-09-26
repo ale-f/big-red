@@ -8,8 +8,8 @@ import org.bigraph.bigmc.red.BigMCInteractionManager.State;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.savers.Saver;
+import org.bigraph.model.wrapper.SaverUtilities;
 
-import dk.itu.big_red.model.load_save.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
