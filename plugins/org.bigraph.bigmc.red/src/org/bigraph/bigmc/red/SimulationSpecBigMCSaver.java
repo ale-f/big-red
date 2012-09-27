@@ -30,7 +30,7 @@ import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.Saver;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import dk.itu.big_red.model.ParameterUtilities;
+import org.bigraph.extensions.param.ParameterUtilities;
 
 public class SimulationSpecBigMCSaver extends Saver {
 	private OutputStreamWriter osw = null;

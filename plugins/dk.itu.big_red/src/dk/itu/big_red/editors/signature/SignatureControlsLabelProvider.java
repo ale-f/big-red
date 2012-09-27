@@ -17,7 +17,7 @@ import org.eclipse.swt.graphics.Image;
 import dk.itu.big_red.editors.assistants.ControlImageDescriptor;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
-import dk.itu.big_red.model.ParameterUtilities;
+import org.bigraph.extensions.param.ParameterUtilities;
 
 class SignatureControlsLabelProvider
 		extends BaseLabelProvider implements ILabelProvider, IColorProvider {

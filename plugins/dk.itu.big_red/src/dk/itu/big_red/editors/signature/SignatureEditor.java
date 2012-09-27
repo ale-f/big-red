@@ -60,7 +60,7 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
-import dk.itu.big_red.model.ParameterUtilities;
+import org.bigraph.extensions.param.ParameterUtilities;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog;
 import dk.itu.big_red.utilities.resources.ResourceTreeSelectionDialog.Mode;

@@ -43,12 +43,6 @@ public abstract class RedNamespaceConstants {
 	public static final
 	String SPEC = "http://www.itu.dk/research/pls/xmlns/2012/simulation-spec";
 	
-	/**
-	 * The XML namespace for the parameterised control extensions.
-	 */
-	public static final
-	String PARAM = "http://bigraph.org/xmlns/2012/bigraph-extension-param";
-	
 	public static final
 	String EDIT = "http://bigraph.org/xmlns/2012/edit";
 	

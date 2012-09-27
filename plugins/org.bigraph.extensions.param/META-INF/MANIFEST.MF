@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Parameterised controls
+Bundle-SymbolicName: org.bigraph.extensions.param;singleton:=true
+Bundle-Version: 1.0.0.0
+Bundle-Vendor: bigraph.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.bigraph.extensions.param
+Require-Bundle: org.bigraph.model.wrapper;bundle-version="1.0.0"

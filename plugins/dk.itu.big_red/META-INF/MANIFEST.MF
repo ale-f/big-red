@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.navigator,
  org.eclipse.ui.navigator.resources,
  org.eclipse.ui.views.log,
- org.bigraph.model.wrapper;bundle-version="1.0.0";visibility:=reexport
+ org.bigraph.model.wrapper;bundle-version="1.0.0";visibility:=reexport,
+ org.bigraph.extensions.param;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: dk.itu.big_red.editors,

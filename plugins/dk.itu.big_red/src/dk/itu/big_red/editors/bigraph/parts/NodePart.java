@@ -20,7 +20,7 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.ParameterUtilities;
+import org.bigraph.extensions.param.ParameterUtilities;
 
 /**
  * NodeParts represent {@link Node}s, the basic building block of bigraphs.

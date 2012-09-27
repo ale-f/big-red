@@ -1,4 +1,4 @@
-package dk.itu.big_red.model;
+package org.bigraph.extensions.param;
 
 import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;

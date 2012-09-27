@@ -14,10 +14,6 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
-import org.bigraph.model.names.policies.BooleanNamePolicy;
-import org.bigraph.model.names.policies.INamePolicy;
-import org.bigraph.model.names.policies.LongNamePolicy;
-import org.bigraph.model.names.policies.StringNamePolicy;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
@@ -30,12 +26,7 @@ import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.ParameterUtilities;
-
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
-import static org.bigraph.model.loaders.RedNamespaceConstants.PARAM;
-import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
 import static org.bigraph.model.loaders.XMLLoader.getDoubleAttribute;
 import static org.bigraph.model.loaders.XMLLoader.getIntAttribute;
@@ -174,45 +165,6 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 					shape = pl;
 				} else shape = Ellipse.SINGLETON;
 				cg.add(ControlUtilities.changeShape(c, shape));
-			}
-			
-			String parameter = getAttributeNS(el, PARAM, "type");
-			if (parameter == null)
-				parameter = getAttributeNS(el, SIGNATURE, "parameter");
-			if (parameter != null) {
-				INamePolicy n = null;
-				if (parameter.equals("LONG")) {
-					n = new LongNamePolicy();
-				} else if (parameter.equals("STRING")) {
-					n = new StringNamePolicy();
-				} else if (parameter.equals("BOOLEAN")) {
-					n = new BooleanNamePolicy();
-				}
-				if (n != null)
-					cg.add(ParameterUtilities.changeParameterPolicy(c, n));
-			}
-		}
-		
-		if (object instanceof org.bigraph.model.Node) {
-			org.bigraph.model.Node n = (org.bigraph.model.Node)object;
-			INamePolicy policy =
-					ParameterUtilities.getParameterPolicy(n.getControl());
-			
-			String parameter = getAttributeNS(el, PARAM, "value");
-			if (parameter == null)
-				parameter = getAttributeNS(el, BIGRAPH, "parameter");
-			
-			 /* FIXME - details */
-			if (parameter != null && policy == null) {
-				loader.addNotice(LoaderNotice.Type.WARNING,
-						"Spurious parameter value ignored.");
-			} else if (parameter == null && policy != null) {
-				loader.addNotice(LoaderNotice.Type.WARNING,
-						"Default parameter value assigned.");
-				cg.add(
-					ParameterUtilities.changeParameter(n, policy.get(0)));
-			} else if (parameter != null && policy != null) {
-				cg.add(ParameterUtilities.changeParameter(n, parameter));
 			}
 		}
 		

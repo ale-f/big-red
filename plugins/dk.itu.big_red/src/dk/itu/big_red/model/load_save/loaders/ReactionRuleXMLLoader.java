@@ -40,7 +40,7 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.ParameterUtilities;
+import org.bigraph.extensions.param.ParameterUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;

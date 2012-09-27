@@ -1,22 +1,15 @@
 package dk.itu.big_red.model.load_save;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
-import static org.bigraph.model.loaders.RedNamespaceConstants.PARAM;
-
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.Node;
 import org.bigraph.model.Port;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
-import org.bigraph.model.names.policies.BooleanNamePolicy;
-import org.bigraph.model.names.policies.INamePolicy;
-import org.bigraph.model.names.policies.LongNamePolicy;
-import org.bigraph.model.names.policies.StringNamePolicy;
 import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.IXMLSaver;
 import org.bigraph.model.savers.Saver.SaverOption;
@@ -31,7 +24,6 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.ParameterUtilities;
 
 public class RedXMLDecorator implements IXMLSaver.Decorator {
 	private boolean generateAppearance = true;
@@ -74,19 +66,6 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 		
 		if (object instanceof Control) {
 			Control c = (Control)object;
-			
-			INamePolicy parameterPolicy =
-					ParameterUtilities.getParameterPolicy(c);
-			String policyName = null;
-			if (parameterPolicy instanceof LongNamePolicy) {
-				policyName = "LONG";
-			} else if (parameterPolicy instanceof StringNamePolicy) {
-				policyName = "STRING";
-			} else if (parameterPolicy instanceof BooleanNamePolicy) {
-				policyName = "BOOLEAN";
-			}
-			if (policyName != null)
-				el.setAttributeNS(PARAM, "param:type", policyName);
 			
 			if (generateAppearance) {
 				Element aE = doc.createElementNS(BIG_RED, "big-red:shape");
@@ -137,12 +116,6 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 					LayoutUtilities.getLayoutRaw((Layoutable)object);
 			if (layout != null)
 				rectangleToElement(aE, layout);
-			if (object instanceof Node) {
-				String parameter =
-						ParameterUtilities.getParameter((Node)object);
-				if (parameter != null)
-					el.setAttributeNS(PARAM, "param:value", parameter);
-			}
 		}
 		
 		Colour

@@ -17,7 +17,7 @@ import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.INamespace;
 
 import dk.itu.big_red.model.LayoutUtilities;
-import dk.itu.big_red.model.ParameterUtilities;
+import org.bigraph.extensions.param.ParameterUtilities;
 
 public class OutputParser {
 	private String string;
