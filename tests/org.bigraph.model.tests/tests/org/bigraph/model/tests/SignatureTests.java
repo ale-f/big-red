@@ -54,4 +54,9 @@ public class SignatureTests {
 				s.changeAddControl(c0, "c0"),
 				s.changeAddControl(c1, "c0")));
 	}
+	
+	@Test
+	public void addNestedSignature() throws ChangeRejectedException {
+		new Signature().changeAddSignature(new Signature());
+	}
 }

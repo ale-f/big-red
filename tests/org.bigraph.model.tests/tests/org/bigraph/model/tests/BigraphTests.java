@@ -75,6 +75,24 @@ public class BigraphTests {
 		b.tryApplyChange(cg);
 	}
 	
+	@Test
+	public void removeRoot() throws ChangeRejectedException {
+		Bigraph b = new Bigraph();
+		Root r = new Root();
+		try {
+			b.tryApplyChange(b.changeAddChild(r, "0"));
+		} catch (ChangeRejectedException e) {
+			fail(e.getRationale());
+		}
+		
+		b.tryApplyChange(r.changeRemove());
+	}
+	
+	@Test(expected = ChangeRejectedException.class)
+	public void removeAbsentRoot() throws ChangeRejectedException {
+		new Bigraph().tryApplyChange(new Root().changeRemove());
+	}
+	
 	private void tryAddAndConnect(Bigraph b, InnerName in, Link l)
 			throws ChangeRejectedException {
 		b.tryApplyChange(cg(
@@ -91,6 +109,38 @@ public class BigraphTests {
 	@Test
 	public void connectInnerToOuter() throws ChangeRejectedException {
 		tryAddAndConnect(new Bigraph(), new InnerName(), new OuterName());
+	}
+	
+	@Test(expected = ChangeRejectedException.class)
+	public void connectPointTwice() throws ChangeRejectedException {
+		Bigraph b = new Bigraph();
+		Edge e1 = new Edge(), e2 = new Edge();
+		InnerName in = new InnerName();
+		try {
+			b.tryApplyChange(cg(
+					b.changeAddChild(e1, "a"),
+					b.changeAddChild(e2, "b"),
+					b.changeAddChild(in, "a"),
+					in.changeConnect(e1)));
+		} catch (ChangeRejectedException e) {
+			fail(e.getRationale());
+		}
+		
+		b.tryApplyChange(in.changeConnect(e2));
+	}
+	
+	@Test(expected = ChangeRejectedException.class)
+	public void disconnectUnconnectedPoint() throws ChangeRejectedException {
+		Bigraph b = new Bigraph();
+		InnerName in = new InnerName();
+		try {
+			b.tryApplyChange(
+					b.changeAddChild(in, "a"));
+		} catch (ChangeRejectedException e) {
+			fail(e.getRationale());
+		}
+		
+		b.tryApplyChange(in.changeDisconnect());
 	}
 	
 	@Test(expected = ChangeRejectedException.class)
