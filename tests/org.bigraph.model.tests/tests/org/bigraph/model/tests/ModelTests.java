@@ -5,7 +5,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ BigraphTests.class })
+@SuiteClasses({
+	BigraphTests.class,
+	SignatureTests.class
+})
 public class ModelTests {
-
 }

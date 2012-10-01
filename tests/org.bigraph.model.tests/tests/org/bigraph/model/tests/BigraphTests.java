@@ -26,7 +26,7 @@ public class BigraphTests {
 	private Signature signature;
 	private Control control0, control1;
 	
-	private static ChangeGroup cg(IChange... changes) {
+	static ChangeGroup cg(IChange... changes) {
 		return new ChangeGroup(Arrays.asList(changes));
 	}
 	
