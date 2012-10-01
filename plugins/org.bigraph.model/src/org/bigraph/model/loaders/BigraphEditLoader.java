@@ -13,6 +13,7 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
@@ -53,17 +54,16 @@ public class BigraphEditLoader implements Participant {
 	}
 	
 	private static Port.Identifier getPortIdentifier(Element el) {
-		org.bigraph.model.Node.Identifier id = getNodeIdentifier(
+		Node.Identifier id = getNodeIdentifier(
 				EditXMLLoader.getNamedChildElement(el, EDIT_BIG, "node-id"));
 		return new Port.Identifier(
 				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"), id);
 	}
 	
-	private static org.bigraph.model.Node.Identifier getNodeIdentifier(
-			Element el) {
+	private static Node.Identifier getNodeIdentifier(Element el) {
 		Control.Identifier id = getControlIdentifier(
 				EditXMLLoader.getNamedChildElement(el, EDIT_SIG, "control-id"));
-		return new org.bigraph.model.Node.Identifier(
+		return new Node.Identifier(
 				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"), id);
 	}
 	
@@ -145,11 +145,6 @@ public class BigraphEditLoader implements Participant {
 			lid = getIdentifier(id, Layoutable.Identifier.class);
 		return (lid != null ?
 				new Layoutable.ChangeNameDescriptor(lid, name) : null);
-	}
-	
-	@Override
-	public BigraphEditLoader newInstance() {
-		return new BigraphEditLoader();
 	}
 	
 	@Override

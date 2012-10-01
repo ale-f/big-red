@@ -5,10 +5,10 @@ import org.bigraph.model.resources.IFileWrapper;
 public interface ILoader {
 	interface Participant {
 		void setLoader(ILoader loader);
-		Participant newInstance();
 	}
 	
 	interface InheritableParticipant extends Participant {
+		InheritableParticipant newInstance();
 	}
 	
 	ILoader getParent();

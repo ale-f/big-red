@@ -24,11 +24,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public final class BigraphEditSaver implements Participant {
-	@Override
-	public BigraphEditSaver newInstance() {
-		return new BigraphEditSaver();
-	}
-	
 	private IXMLSaver saver;
 	
 	@Override

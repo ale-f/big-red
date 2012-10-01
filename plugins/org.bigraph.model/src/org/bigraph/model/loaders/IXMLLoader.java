@@ -6,9 +6,6 @@ import org.w3c.dom.Element;
 
 public interface IXMLLoader extends IChangeLoader {
 	interface Undecorator extends Participant {
-		@Override
-		Undecorator newInstance();
-		
 		void undecorate(ModelObject object, Element el);
 		void finish(IChangeExecutor ex);
 	}

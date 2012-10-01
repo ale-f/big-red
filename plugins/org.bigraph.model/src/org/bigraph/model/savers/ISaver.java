@@ -16,16 +16,15 @@ public interface ISaver {
 	 */
 	interface Participant {
 		void setSaver(ISaver saver);
-		Participant newInstance();
 	}
 	
 	/**
 	 * Classes implementing <strong>InheritableParticipant</strong> are {@link
-	 * Participant}s that should be propagated down to sub-savers. (This
-	 * interface defines no additional methods or fields.)
+	 * Participant}s that should be propagated down to sub-savers.
 	 * @author alec
 	 */
 	interface InheritableParticipant extends Participant {
+		InheritableParticipant newInstance();
 	}
 	
 	ISaver getParent();

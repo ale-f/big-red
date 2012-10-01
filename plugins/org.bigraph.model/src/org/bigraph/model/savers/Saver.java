@@ -18,7 +18,7 @@ public abstract class Saver implements ISaver {
 	public Saver(ISaver parent) {
 		this.parent = parent;
 		if (parent != null)
-			for (Participant p : getParticipants(
+			for (InheritableParticipant p : getParticipants(
 					parent, InheritableParticipant.class))
 				addParticipant(p.newInstance());
 	}

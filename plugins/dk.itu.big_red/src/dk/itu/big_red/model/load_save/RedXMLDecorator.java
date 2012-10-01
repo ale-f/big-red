@@ -45,13 +45,6 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 		});
 	}
 	
-	@Override
-	public RedXMLDecorator newInstance() {
-		RedXMLDecorator d = new RedXMLDecorator();
-		d.generateAppearance = generateAppearance;
-		return d;
-	}
-	
 	public static Element rectangleToElement(Element e, Rectangle r) {
 		e.setAttributeNS(null, "width", "" + r.width());
 		e.setAttributeNS(null, "height", "" + r.height());

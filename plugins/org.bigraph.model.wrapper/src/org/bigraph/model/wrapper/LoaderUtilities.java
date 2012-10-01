@@ -2,6 +2,7 @@ package org.bigraph.model.wrapper;
 
 import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.ILoader.Participant;
+import org.bigraph.model.loaders.ILoader.InheritableParticipant;
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.loaders.XMLLoader;
 import org.eclipse.core.runtime.CoreException;
@@ -13,7 +14,7 @@ import org.eclipse.core.runtime.content.IContentType;
 
 public abstract class LoaderUtilities {
 	private static final class ParticipantContributor
-			implements ILoader.InheritableParticipant {
+			implements InheritableParticipant {
 		@Override
 		public void setLoader(ILoader loader) {
 			IExtensionRegistry r = RegistryFactory.getRegistry();
@@ -21,7 +22,7 @@ public abstract class LoaderUtilities {
 					r.getConfigurationElementsFor(EXTENSION_POINT)) {
 				if ("participant".equals(ice.getName())) {
 					try {
-						loader.addParticipant((ILoader.Participant)
+						loader.addParticipant((Participant)
 								ice.createExecutableExtension("class"));
 					} catch (CoreException e) {
 						e.printStackTrace();
@@ -32,7 +33,7 @@ public abstract class LoaderUtilities {
 		}
 
 		@Override
-		public Participant newInstance() {
+		public InheritableParticipant newInstance() {
 			return new ParticipantContributor();
 		}
 	}

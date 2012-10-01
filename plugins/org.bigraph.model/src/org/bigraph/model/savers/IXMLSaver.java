@@ -6,9 +6,6 @@ import org.w3c.dom.Element;
 
 public interface IXMLSaver extends ISaver {
 	interface Decorator extends Participant {
-		@Override
-		Decorator newInstance();
-		
 		void decorate(ModelObject object, Element el);
 	}
 	

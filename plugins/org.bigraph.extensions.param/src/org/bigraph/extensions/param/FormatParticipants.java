@@ -36,11 +36,6 @@ public abstract class FormatParticipants {
 		}
 
 		@Override
-		public Decorator newInstance() {
-			return new Decorator();
-		}
-
-		@Override
 		public void decorate(ModelObject object, Element el) {
 			if (object instanceof Control) {
 				Control c = (Control)object;
@@ -73,11 +68,6 @@ public abstract class FormatParticipants {
 		public void setLoader(ILoader loader) {
 			if (loader instanceof IXMLLoader)
 				this.loader = (IXMLLoader)loader;
-		}
-
-		@Override
-		public Undecorator newInstance() {
-			return new Undecorator();
 		}
 
 		@Override

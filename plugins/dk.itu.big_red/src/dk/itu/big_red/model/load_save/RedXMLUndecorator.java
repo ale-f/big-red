@@ -32,11 +32,6 @@ import static org.bigraph.model.loaders.XMLLoader.getDoubleAttribute;
 import static org.bigraph.model.loaders.XMLLoader.getIntAttribute;
 
 public class RedXMLUndecorator implements IXMLLoader.Undecorator {
-	@Override
-	public RedXMLUndecorator newInstance() {
-		return new RedXMLUndecorator();
-	}
-	
 	private enum Tristate {
 		FALSE,
 		TRUE,

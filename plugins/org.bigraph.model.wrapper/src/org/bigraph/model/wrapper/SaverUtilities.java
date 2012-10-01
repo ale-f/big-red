@@ -3,6 +3,7 @@ package org.bigraph.model.wrapper;
 import org.bigraph.model.savers.ISaver;
 import org.bigraph.model.savers.Saver;
 import org.bigraph.model.savers.ISaver.Participant;
+import org.bigraph.model.savers.ISaver.InheritableParticipant;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -12,7 +13,7 @@ import org.eclipse.core.runtime.content.IContentType;
 
 public abstract class SaverUtilities {
 	private static final class ParticipantContributor
-			implements ISaver.InheritableParticipant {
+			implements InheritableParticipant {
 		@Override
 		public void setSaver(ISaver saver) {
 			IExtensionRegistry r = RegistryFactory.getRegistry();
@@ -20,7 +21,7 @@ public abstract class SaverUtilities {
 					r.getConfigurationElementsFor(EXTENSION_POINT)) {
 				if ("participant".equals(ice.getName())) {
 					try {
-						saver.addParticipant((ISaver.Participant)
+						saver.addParticipant((Participant)
 								ice.createExecutableExtension("class"));
 					} catch (CoreException e) {
 						e.printStackTrace();
@@ -31,7 +32,7 @@ public abstract class SaverUtilities {
 		}
 		
 		@Override
-		public Participant newInstance() {
+		public InheritableParticipant newInstance() {
 			return new ParticipantContributor();
 		}
 	}

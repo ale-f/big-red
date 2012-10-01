@@ -64,7 +64,8 @@ public class BRSXMLSaver extends XMLSaver {
 			rr.setSign(ss.getSignature());
 			ReactionXMLSaver rxs = new ReactionXMLSaver();
 			rxs.setDocument(getDocument());
-			for (Participant p : getParticipants())
+			for (InheritableParticipant p :
+					getParticipants(InheritableParticipant.class))
 				rxs.addParticipant(p.newInstance());
 			appendChildIfNotNull(e, processOrReference(t1, rr, rxs));
 			Element pE = newElement(BIG_RED, "big-red:appearance");

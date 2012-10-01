@@ -40,22 +40,12 @@ public abstract class AliasSupport {
 		@Override
 		public void finish(IChangeExecutor ex) {
 		}
-
-		@Override
-		public Undecorator newInstance() {
-			return new Undecorator();
-		}
 	}
 	
 	public static final class Decorator implements IXMLSaver.Decorator {
 		@Override
 		public void setSaver(ISaver saver) {
 			/* do nothing */
-		}
-		
-		@Override
-		public Decorator newInstance() {
-			return new Decorator();
 		}
 
 		@Override
