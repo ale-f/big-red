@@ -48,7 +48,11 @@ public class BigraphTests {
 	@Test
 	public void basicAdd() throws ChangeRejectedException {
 		Bigraph b = new Bigraph();
-		b.tryApplyChange(b.changeAddChild(new Root(), "0"));
+		Root r = new Root();
+		b.tryApplyChange(b.changeAddChild(r, "0"));
+		
+		assertTrue("Root addition failed", b.getChildren().size() == 1 &&
+				b.getChildren().get(0).equals(r) && r.getName().equals("0"));
 	}
 	
 	@Test
@@ -81,11 +85,17 @@ public class BigraphTests {
 		Root r = new Root();
 		try {
 			b.tryApplyChange(b.changeAddChild(r, "0"));
+			assertTrue("Root addition failed",
+					b.getChildren().size() == 1 &&
+							b.getChildren().get(0).equals(r) &&
+							r.getName().equals("0"));
 		} catch (ChangeRejectedException e) {
 			fail(e.getRationale());
 		}
 		
 		b.tryApplyChange(r.changeRemove());
+		
+		assertTrue("Root removal failed", b.getChildren().size() == 0);
 	}
 	
 	@Test(expected = ChangeRejectedException.class)
@@ -99,6 +109,8 @@ public class BigraphTests {
 				b.changeAddChild(l, "a"),
 				b.changeAddChild(in, "a"),
 				in.changeConnect(l)));
+		assertTrue(in.getLink().equals(l) &&
+				l.getPoints().contains(in));
 	}
 	
 	@Test
