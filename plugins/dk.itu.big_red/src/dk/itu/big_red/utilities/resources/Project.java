@@ -1,6 +1,8 @@
 package dk.itu.big_red.utilities.resources;
 
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collection;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IContainer;
@@ -247,13 +249,6 @@ public final class Project {
 		}
 	}
 	
-	private static IWorkspaceModification getSetModification(
-			IFile file, InputStream contents) {
-		return (file.exists() ?
-				new SetContents(file, contents) :
-					new CreateFile(file, contents));
-	}
-	
 	/**
 	 * <strong>ModificationRunner</strong> is a wrapper class which executes
 	 * {@link IWorkspaceModification}s safely.
@@ -296,20 +291,26 @@ public final class Project {
 			public void always() {}
 		}
 
-		private IWorkspaceModification modifications[];
-		private Callback payload;
+		private final Callback payload;
+		private final
+			Collection<? extends IWorkspaceModification> modifications;
 		
 		public ModificationRunner(
 				Callback payload, IWorkspaceModification... modifications) {
+			this(payload, Arrays.asList(modifications));
+		}
+		
+		public ModificationRunner(
+				Callback payload,
+				Collection<? extends IWorkspaceModification> modifications) {
 			super("Performing workspace update");
-			this.modifications = modifications;
 			this.payload = payload;
+			this.modifications = modifications;
 			
-			ISchedulingRule schedulingRules[] =
-					new ISchedulingRule[modifications.length];
-			for (int i = 0; i < modifications.length; i++)
-				schedulingRules[i] = modifications[i].getSchedulingRule();
-			setRule(MultiRule.combine(schedulingRules));
+			ISchedulingRule result = null;
+			for (IWorkspaceModification m : modifications)
+				result = MultiRule.combine(result, m.getSchedulingRule());
+			setRule(result);
 		}
 		
 		@Override
@@ -318,7 +319,7 @@ public final class Project {
 			if (monitor == null)
 				monitor = new NullProgressMonitor();
 			monitor.beginTask(
-					"Performing workspace update", modifications.length);
+					"Performing workspace update", modifications.size());
 			try {
 				for (IWorkspaceModification j : modifications) {
 					if (monitor.isCanceled())
@@ -373,8 +374,9 @@ public final class Project {
 	 */
 	public static ModificationRunner setContents(
 			IFile file, InputStream contents, ModificationRunner.Callback r) {
-		ModificationRunner mr =
-				new ModificationRunner(r, getSetModification(file, contents));
+		ModificationRunner mr = new ModificationRunner(r, (file.exists() ?
+				new SetContents(file, contents) :
+				new CreateFile(file, contents)));
 		mr.schedule();
 		return mr;
 	}
