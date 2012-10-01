@@ -42,9 +42,10 @@ public abstract class SaverUtilities {
 	public static final String EXTENSION_POINT =
 			"org.bigraph.model.wrapper.export";
 
-	public static void installParticipants(Saver saver) {
+	public static Saver installParticipants(Saver saver) {
 		if (saver != null)
 			saver.addParticipant(new ParticipantContributor());
+		return saver;
 	}
 	
 	public static Saver forContentType(String ct) throws CoreException {
@@ -62,7 +63,6 @@ public abstract class SaverUtilities {
 				break;
 			}
 		}
-		installParticipants(s);
-		return s;
+		return installParticipants(s);
 	}
 }
