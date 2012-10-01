@@ -268,7 +268,7 @@ public abstract class AbstractEditor extends EditorPart
 			return;
 		for (IResource r : interestingResources) {
 			IResourceDelta specificDelta =
-				Project.getSpecificDelta(event.getDelta(), r);
+				Project.getSpecificDelta(event.getDelta(), r.getFullPath());
 			if (specificDelta != null)
 				resourceChanged(specificDelta);
 		}
