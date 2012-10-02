@@ -3,6 +3,7 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
+import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -26,6 +27,11 @@ public abstract class Point extends Layoutable implements IPoint {
 		public Point getCreator() {
 			return Point.this;
 		}
+	}
+	
+	interface ConnectValidator {
+		void validate(ChangeConnect c, PropertyScratchpad context)
+				throws ChangeRejectedException;
 	}
 	
 	public class ChangeConnect extends PointChange {
@@ -57,6 +63,11 @@ public abstract class Point extends Layoutable implements IPoint {
 				add(getCreator());
 			context.setProperty(getCreator(), Point.PROPERTY_LINK, link);
 		}
+	}
+	
+	interface DisconnectValidator {
+		void validate(ChangeDisconnect c, PropertyScratchpad context)
+				throws ChangeRejectedException;
 	}
 	
 	public class ChangeDisconnect extends PointChange {
