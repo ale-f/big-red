@@ -3,7 +3,6 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -29,9 +28,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 	}
 	
-	interface ConnectValidator {
-		void validate(ChangeConnect c, PropertyScratchpad context)
-				throws ChangeRejectedException;
+	interface ConnectValidator extends Validator<ChangeConnect> {
 	}
 	
 	public class ChangeConnect extends PointChange {
@@ -65,9 +62,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 	}
 	
-	interface DisconnectValidator {
-		void validate(ChangeDisconnect c, PropertyScratchpad context)
-				throws ChangeRejectedException;
+	interface DisconnectValidator extends Validator<ChangeDisconnect> {
 	}
 	
 	public class ChangeDisconnect extends PointChange {
