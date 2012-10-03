@@ -85,7 +85,7 @@ abstract class DescriptorUtilities {
 			chd = new ChangeExtendedDataDescriptor(
 					creator.getIdentifier(context),
 					ch.key, oldValue, ch.newValue,
-					ch.immediateValidator, ch.finalValidator, ch.normaliser);
+					ch.validator, ch.normaliser);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
 			chd = new ChangeRemoveDescriptor(

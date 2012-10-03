@@ -9,7 +9,7 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.ModelObject.ExtendedDataValidator;
+import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
@@ -28,7 +28,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
 import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 
-import dk.itu.big_red.editors.bigraph.parts.NodePart;
+import static dk.itu.big_red.editors.bigraph.parts.NodePart.fitPolygon;
 
 /**
  * The <strong>LayoutUtilities</strong> class is a collection of static
@@ -44,11 +44,19 @@ public abstract class LayoutUtilities {
 	public static final String LAYOUT =
 			"eD!+dk.itu.big_red.Layoutable.layout";
 	private static final String BOUNDARIES =
-	"eD!+org.bigraph.model.Bigraph.boundaries";
-	static final ExtendedDataValidator layoutValidator =
-			new ExtendedDataValidator() {
+			"eD!+org.bigraph.model.Bigraph.boundaries";
+	
+	static final FinalExtendedDataValidator layoutValidator =
+			new FinalExtendedDataValidator() {
 		@Override
 		public void validate(ChangeExtendedData c, PropertyScratchpad context)
+				throws ChangeRejectedException {
+			/* do nothing */
+		}
+		
+		@Override
+		public void finalValidate(
+				ChangeExtendedData c, PropertyScratchpad context)
 				throws ChangeRejectedException {
 			Layoutable l = (Layoutable)c.getCreator();
 			Container parent = l.getParent(context);
@@ -90,7 +98,8 @@ public abstract class LayoutUtilities {
 				/* Since the layout validator is a final validator, there are
 				 * no further updates to come, so the boundary state can be
 				 * calculated once and then stashed away in the scratchpad */
-				BigraphBoundaryState bbs = getProperty(context, b, BOUNDARIES, BigraphBoundaryState.class);
+				BigraphBoundaryState bbs = getProperty(
+						context, b, BOUNDARIES, BigraphBoundaryState.class);
 				if (bbs == null) {
 					Object value = bbs = new BigraphBoundaryState(context, b);
 					setProperty(context, parent, BOUNDARIES, value);
@@ -117,6 +126,7 @@ public abstract class LayoutUtilities {
 			}
 		}
 	};
+	
 	/**
 	 * The space that should be present between any two {@link Layoutable}s
 	 * after a <i>relayout</i> has been applied.
@@ -137,7 +147,7 @@ public abstract class LayoutUtilities {
 				Object shape = ControlUtilities.getShape(p.getParent().getControl());
 				double distance = ControlUtilities.getDistance(context, p.getSpec());
 				if (shape instanceof PointList) {
-					PointList polypt = NodePart.fitPolygon(
+					PointList polypt = fitPolygon(
 							(PointList)shape, getLayout(p.getParent(context)));
 					int segment = ControlUtilities.getSegment(context, p.getSpec());
 					org.eclipse.draw2d.geometry.Point
@@ -188,13 +198,13 @@ public abstract class LayoutUtilities {
 	}
 
 	public static IChange changeLayout(Layoutable l, Rectangle r) {
-		return l.changeExtendedData(LAYOUT, r, null, layoutValidator);
+		return l.changeExtendedData(LAYOUT, r, layoutValidator);
 	}
 	
 	public static IChangeDescriptor changeLayoutDescriptor(
 			Layoutable.Identifier l, Rectangle oldR, Rectangle newR) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, LAYOUT, oldR, newR, layoutValidator, null, null);
+				l, LAYOUT, oldR, newR, layoutValidator, null);
 	}
 
 	public static Rectangle getRootLayout(Layoutable l) {

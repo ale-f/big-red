@@ -111,12 +111,12 @@ public abstract class ParameterUtilities {
 
 	public static IChange changeParameter(Node n, String s) {
 		return n.changeExtendedData(
-				PARAMETER, s, parameterValidator, null, parameterNormaliser);
+				PARAMETER, s, parameterValidator, parameterNormaliser);
 	}
 	
 	public static IChangeDescriptor changeParameterDescriptor(
 			Node.Identifier n, String oldP, String newP) {
 		return new ModelObject.ChangeExtendedDataDescriptor(n, PARAMETER,
-				oldP, newP, parameterValidator, null, parameterNormaliser);
+				oldP, newP, parameterValidator, parameterNormaliser);
 	}
 }

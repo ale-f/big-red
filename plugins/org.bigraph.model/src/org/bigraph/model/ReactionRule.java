@@ -151,8 +151,7 @@ public class ReactionRule extends ModelObject {
 				return new ChangeExtendedDataDescriptor(
 						cd.getTarget(), cd.getKey(),
 						cd.getNewValue(), cd.getOldValue(),
-						cd.getImmediateValidator(), cd.getFinalValidator(),
-						cd.getNormaliser());
+						cd.getValidator(), cd.getNormaliser());
 			} else throw new Error(
 					"BUG: can't reverse the unrecognised descriptor " + cd_);
 		}

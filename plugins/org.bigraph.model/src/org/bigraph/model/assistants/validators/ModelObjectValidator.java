@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
+import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -64,11 +65,12 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 			return null;
 		} else if (b instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)b;
-			ExtendedDataValidator v = c.immediateValidator;
-			if (v != null)
+			ExtendedDataValidator v = c.validator;
+			if (v != null) {
 				v.validate(c, getScratch());
-			if (c.finalValidator != null)
-				finalChecks.add(c);
+				if (v instanceof FinalExtendedDataValidator)
+					finalChecks.add(c);
+			}
 		} else return b;
 		b.simulate(getScratch());
 		return null;
@@ -90,7 +92,8 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 					"The change was not recognised by the validator");
 		
 		for (ChangeExtendedData i : finalChecks)
-			i.finalValidator.validate(i, scratch);
+			((FinalExtendedDataValidator)i.validator).
+					finalValidate(i, scratch);
 		
 		scratch.clear();
 		scratch = null;
