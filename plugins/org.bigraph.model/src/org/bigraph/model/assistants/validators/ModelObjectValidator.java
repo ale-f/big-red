@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.ModelObject.ExtendedDataValidator;
-import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
+import org.bigraph.model.ModelObject.ModelObjectChange;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -17,14 +16,17 @@ import org.bigraph.model.names.policies.INamePolicy;
 
 abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		implements IChangeValidator {
+	private interface FinalCheck {
+		void run() throws ChangeRejectedException;
+	}
+	
 	private PropertyScratchpad scratch = null;
 	
 	protected PropertyScratchpad getScratch() {
 		return scratch;
 	}
 	
-	private ArrayList<ChangeExtendedData> finalChecks =
-			new ArrayList<ChangeExtendedData>();
+	private ArrayList<FinalCheck> finalChecks = new ArrayList<FinalCheck>();
 	
 	private final T changeExecutor;
 	
@@ -53,6 +55,27 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 			throw new ChangeRejectedException(c, "Names must be unique");
 	}
 	
+	protected <V extends ModelObjectChange> FinalCheck makeFinalCheck(
+			final V change, final ModelObject.FinalValidator<V> validator) {
+		return new FinalCheck() {
+			@Override
+			public void run() throws ChangeRejectedException {
+				validator.finalValidate(change, getScratch());
+			}
+		};
+	}
+	
+	protected <V extends ModelObjectChange> void doExternalValidation(
+			final V change, final ModelObject.Validator<V> validator)
+			throws ChangeRejectedException {
+		if (validator != null) {
+			validator.validate(change, getScratch());
+			if (validator instanceof ModelObject.FinalValidator<?>)
+				finalChecks.add(makeFinalCheck(change,
+						(ModelObject.FinalValidator<V>)validator));
+		}
+	}
+	
 	protected IChange doValidateChange(IChange b)
 			throws ChangeRejectedException {
 		if (!b.isReady()) {
@@ -65,12 +88,7 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 			return null;
 		} else if (b instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)b;
-			ExtendedDataValidator v = c.validator;
-			if (v != null) {
-				v.validate(c, getScratch());
-				if (v instanceof FinalExtendedDataValidator)
-					finalChecks.add(c);
-			}
+			doExternalValidation(c, c.validator);
 		} else return b;
 		b.simulate(getScratch());
 		return null;
@@ -91,9 +109,8 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 			throw new ChangeRejectedException(c,
 					"The change was not recognised by the validator");
 		
-		for (ChangeExtendedData i : finalChecks)
-			((FinalExtendedDataValidator)i.validator).
-					finalValidate(i, scratch);
+		for (FinalCheck i : finalChecks)
+			i.run();
 		
 		scratch.clear();
 		scratch = null;
