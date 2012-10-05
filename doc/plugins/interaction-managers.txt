@@ -1,0 +1,35 @@
+Big Red interaction managers
+============================
+
+What is an interaction manager?
+-------------------------------
+
+An interaction manager is essentially a subprogram that operates on complete
+bigraphical reactive systems. When an interaction manager is activated, it
+blocks the Big Red user interface and takes control of all interaction with
+the user (thus the name).
+
+How do I write an interaction manager?
+--------------------------------------
+
+Implement the dk.itu.big_red.interaction_managers.IInteractionManager interface
+(usually by subclassing the InteractionManager class from the same package).
+This interface defines only three methods:
+
+	dk.itu.big_red.interaction_managers.IInteractionManager
+		setSimulationSpec(org.bigraph.model.SimulationSpec)
+	org.bigraph.model.SimulationSpec
+		getSimulationSpec()
+	void
+		run(org.eclipse.swt.widgets.Shell)
+
+How do I make Big Red use an interaction manager?
+-------------------------------------------------
+
+Create an Eclipse plugin (with dependencies upon the Eclipse UI core and Big
+Red), edit the plugin manifest to include an "interactionManager" extension for
+the "dk.itu.big_red.interactionManagers" extension point, and then configure
+this extension with the details of your interaction manager.
+
+(An example of how to do this correctly can be found in the
+doc/plugins/examples/dummy-interaction-manager/ directory.)
