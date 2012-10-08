@@ -215,49 +215,61 @@ public class Signature extends ModelObject
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
 		tryValidateChange(b);
-		doChange(b);
+		ChangeExecutor.INSTANCE.doChange(b);
 	}
 
-	@Override
-	protected boolean doChange(IChange b) {
-		if (super.doChange(b)) {
-			/* do nothing */
-		} else if (b instanceof ChangeAddControl) {
-			ChangeAddControl c = (ChangeAddControl)b;
-			c.control.setName(getNamespace().put(c.name, c.control));
-			c.getCreator().addControl(c.control);
-		} else if (b instanceof ChangeRemoveControl) {
-			ChangeRemoveControl c = (ChangeRemoveControl)b;
-			c.getCreator().getSignature().removeControl(c.getCreator());
-			getNamespace().remove(c.getCreator().getName());
-		} else if (b instanceof ChangeName) {
-			ChangeName c = (ChangeName)b;
-			c.getCreator().setName(
-					getNamespace().rename(c.getCreator().getName(), c.name));
-		} else if (b instanceof ChangeKind) {
-			ChangeKind c = (ChangeKind)b;
-			c.getCreator().setKind(c.kind);
-		} else if (b instanceof ChangeAddPort) {
-			ChangeAddPort c = (ChangeAddPort)b;
-			c.getCreator().addPort(c.port);
-			c.port.setName(c.getCreator().getNamespace().put(c.name, c.port));
-		} else if (b instanceof ChangeRemovePort) {
-			ChangeRemovePort c = (ChangeRemovePort)b;
-			c.getCreator().getControl().removePort(c.getCreator());
-			getNamespace().remove(c.getCreator().getName());
-		} else if (b instanceof PortSpec.ChangeName) {
-			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
-			PortSpec p = c.getCreator();
-			p.setName(
-					p.getControl().getNamespace().rename(p.getName(), c.name));
-		} else if (b instanceof ChangeAddSignature) {
-			ChangeAddSignature c = (ChangeAddSignature)b;
-			c.getCreator().addSignature(c.signature);
-		} else if (b instanceof ChangeRemoveSignature) {
-			ChangeRemoveSignature c = (ChangeRemoveSignature)b;
-			c.getCreator().getParent().removeSignature(c.getCreator());
-		} else return false;
-		return true;
+	static final class ChangeExecutor extends ModelObject.ChangeExecutor {
+		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
+		
+		@Override
+		protected boolean doChange(IChange b) {
+			if (super.doChange(b)) {
+				/* do nothing */
+			} else if (b instanceof ChangeAddControl) {
+				ChangeAddControl c = (ChangeAddControl)b;
+				Namespace<Control> ns = c.getCreator().getNamespace();
+				c.control.setName(ns.put(c.name, c.control));
+				c.getCreator().addControl(c.control);
+			} else if (b instanceof ChangeRemoveControl) {
+				ChangeRemoveControl c = (ChangeRemoveControl)b;
+				Namespace<Control> ns =
+						c.getCreator().getSignature().getNamespace();
+				c.getCreator().getSignature().removeControl(c.getCreator());
+				ns.remove(c.getCreator().getName());
+			} else if (b instanceof ChangeName) {
+				ChangeName c = (ChangeName)b;
+				Namespace<Control> ns =
+						c.getCreator().getSignature().getNamespace();
+				c.getCreator().setName(
+						ns.rename(c.getCreator().getName(), c.name));
+			} else if (b instanceof ChangeKind) {
+				ChangeKind c = (ChangeKind)b;
+				c.getCreator().setKind(c.kind);
+			} else if (b instanceof ChangeAddPort) {
+				ChangeAddPort c = (ChangeAddPort)b;
+				c.getCreator().addPort(c.port);
+				c.port.setName(
+						c.getCreator().getNamespace().put(c.name, c.port));
+			} else if (b instanceof ChangeRemovePort) {
+				ChangeRemovePort c = (ChangeRemovePort)b;
+				Namespace<PortSpec> ns =
+						c.getCreator().getControl().getNamespace();
+				c.getCreator().getControl().removePort(c.getCreator());
+				ns.remove(c.getCreator().getName());
+			} else if (b instanceof PortSpec.ChangeName) {
+				PortSpec.ChangeName c = (PortSpec.ChangeName)b;
+				PortSpec p = c.getCreator();
+				p.setName(p.getControl().getNamespace().rename(
+						p.getName(), c.name));
+			} else if (b instanceof ChangeAddSignature) {
+				ChangeAddSignature c = (ChangeAddSignature)b;
+				c.getCreator().addSignature(c.signature);
+			} else if (b instanceof ChangeRemoveSignature) {
+				ChangeRemoveSignature c = (ChangeRemoveSignature)b;
+				c.getCreator().getParent().removeSignature(c.getCreator());
+			} else return false;
+			return true;
+		}
 	}
 	
 	@Override

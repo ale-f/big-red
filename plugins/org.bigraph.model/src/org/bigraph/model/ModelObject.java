@@ -116,6 +116,23 @@ public abstract class ModelObject {
 		}
 	}
 	
+	protected abstract static class ChangeExecutor {
+		protected boolean doChange(IChange c_) {
+			c_.beforeApply();
+			if (c_ instanceof ChangeGroup) {
+				for (IChange c : (ChangeGroup)c_)
+					if (!doChange(c))
+						throw new Error("Couldn't apply " + c +
+								" (how did it pass validation?)");
+			} else if (c_ instanceof ChangeExtendedData) {
+				ChangeExtendedData c = (ChangeExtendedData)c_;
+				c.getCreator().setExtendedData(c.key, (c.normaliser == null ?
+						c.newValue : c.normaliser.normalise(c, c.newValue)));
+			} else return false;
+			return true;
+		}
+	}
+	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	/**
@@ -265,21 +282,6 @@ public abstract class ModelObject {
 		extendedData.clear();
 		if (m != null)
 			extendedData.putAll(m.extendedData);
-	}
-	
-	protected boolean doChange(IChange c_) {
-		c_.beforeApply();
-		if (c_ instanceof ChangeGroup) {
-			for (IChange c : (ChangeGroup)c_)
-				if (!doChange(c))
-					throw new Error("Couldn't apply " + c +
-							" (how did it pass validation?)");
-		} else if (c_ instanceof ChangeExtendedData) {
-			ChangeExtendedData c = (ChangeExtendedData)c_;
-			c.getCreator().setExtendedData(c.key, (c.normaliser == null ?
-					c.newValue : c.normaliser.normalise(c, c.newValue)));
-		} else return false;
-		return true;
 	}
 	
 	/**

@@ -209,34 +209,42 @@ public class Bigraph extends Container
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
 		tryValidateChange(b);
-		doChange(b);
+		ChangeExecutor.INSTANCE.doChange(b);
 	}
 	
-	@Override
-	protected boolean doChange(IChange b) {
-		if (super.doChange(b)) {
-			/* do nothing */
-		} else if (b instanceof Point.ChangeConnect) {
-			Point.ChangeConnect c = (Point.ChangeConnect)b;
-			c.link.addPoint(c.getCreator());
-		} else if (b instanceof Point.ChangeDisconnect) {
-			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			c.getCreator().getLink().removePoint(c.getCreator());
-		} else if (b instanceof Container.ChangeAddChild) {
-			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
-			c.child.setName(getNamespace(c.child).put(c.name, c.child));
-			c.getCreator().addChild(c.child);
-		} else if (b instanceof Layoutable.ChangeRemove) {
-			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
-			Layoutable ch = c.getCreator();
-			ch.getParent().removeChild(ch);
-			getNamespace(ch).remove(ch.getName());
-		} else if (b instanceof Layoutable.ChangeName) {
-			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			c.getCreator().setName(getNamespace(c.getCreator()).rename(
-					c.getCreator().getName(), c.newName));
-		} else return false;
-		return true;
+	final static class ChangeExecutor extends ModelObject.ChangeExecutor {
+		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
+		
+		@Override
+		protected boolean doChange(IChange b) {
+			if (super.doChange(b)) {
+				/* do nothing */
+			} else if (b instanceof Point.ChangeConnect) {
+				Point.ChangeConnect c = (Point.ChangeConnect)b;
+				c.link.addPoint(c.getCreator());
+			} else if (b instanceof Point.ChangeDisconnect) {
+				Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
+				c.getCreator().getLink().removePoint(c.getCreator());
+			} else if (b instanceof Container.ChangeAddChild) {
+				Container.ChangeAddChild c = (Container.ChangeAddChild)b;
+				Namespace<Layoutable> ns =
+						c.getCreator().getBigraph().getNamespace(c.child);
+				c.child.setName(ns.put(c.name, c.child));
+				c.getCreator().addChild(c.child);
+			} else if (b instanceof Layoutable.ChangeRemove) {
+				Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
+				Layoutable ch = c.getCreator();
+				Namespace<Layoutable> ns = ch.getBigraph().getNamespace(ch);
+				ch.getParent().removeChild(ch);
+				ns.remove(ch.getName());
+			} else if (b instanceof Layoutable.ChangeName) {
+				Layoutable.ChangeName c = (Layoutable.ChangeName)b;
+				Layoutable ch = c.getCreator();
+				Namespace<Layoutable> ns = ch.getBigraph().getNamespace(ch);
+				c.getCreator().setName(ns.rename(ch.getName(), c.newName));
+			} else return false;
+			return true;
+		}
 	}
 	
 	@Override

@@ -209,7 +209,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
 		
 		tryValidateChange(b);
-		doChange(b);
+		ChangeExecutor.INSTANCE.doChange(b);
 		
 	}
 
@@ -232,30 +232,33 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}
 	}
 	
-	@Override
-	protected boolean doChange(IChange b) {
-		if (b instanceof Reaction.ChangeAddReactum) {
-
-			Reaction.ChangeAddReactum c = (Reaction.ChangeAddReactum) b;
-			((Reaction) c.getCreator()).changeReactum(c.child);
-			
-		} else if (b instanceof Reaction.ChangeAddRedex) {
-			Reaction.ChangeAddRedex c = (Reaction.ChangeAddRedex) b;
-			((Reaction) c.getCreator()).changeRedex(c.child);
-		}else if(b instanceof Reaction.ChangeLayoutChild){
-			Reaction.ChangeLayoutChild c = (Reaction.ChangeLayoutChild)b;
-			((Reaction)c.getCreator())._changeLayoutChild(c.child, c.layout);
-		} else if(b instanceof Reaction.ChangeInsideModel){
-			Reaction.ChangeInsideModel c = (Reaction.ChangeInsideModel) b;
-			((Reaction)c.getCreator())._changeInsideModel(c.target, c.change);
-		}else if (super.doChange(b)) {
-				/* do nothing */
-		}else{
-			return false;
-		}
-		return true;
-	}
+	static final class ChangeExecutor extends ModelObject.ChangeExecutor {
+		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
+		
+		@Override
+		protected boolean doChange(IChange b) {
+			if (b instanceof Reaction.ChangeAddReactum) {
 	
+				Reaction.ChangeAddReactum c = (Reaction.ChangeAddReactum) b;
+				((Reaction) c.getCreator()).changeReactum(c.child);
+				
+			} else if (b instanceof Reaction.ChangeAddRedex) {
+				Reaction.ChangeAddRedex c = (Reaction.ChangeAddRedex) b;
+				((Reaction) c.getCreator()).changeRedex(c.child);
+			}else if(b instanceof Reaction.ChangeLayoutChild){
+				Reaction.ChangeLayoutChild c = (Reaction.ChangeLayoutChild)b;
+				((Reaction)c.getCreator())._changeLayoutChild(c.child, c.layout);
+			} else if(b instanceof Reaction.ChangeInsideModel){
+				Reaction.ChangeInsideModel c = (Reaction.ChangeInsideModel) b;
+				((Reaction)c.getCreator())._changeInsideModel(c.target, c.change);
+			}else if (super.doChange(b)) {
+					/* do nothing */
+			}else{
+				return false;
+			}
+			return true;
+		}
+	}
 	
 	public Change changeAddRedex(Bigraph node) {
 		return new ChangeAddRedex(node);

@@ -241,23 +241,31 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
 		tryValidateChange(b);
-		doChange(b);
+		ChangeExecutor.INSTANCE.doChange(b);
 	}
 	
-	@Override
-	protected boolean doChange(IChange b) {
-		if (super.doChange(b)) {
-			/* do nothing */
-		} else if (b instanceof ChangeSignature) {
-			setSignature(((ChangeSignature) b).signature);
-		} else if (b instanceof ChangeAddRule) {
-			addRule(((ChangeAddRule) b).rule);
-		} else if (b instanceof ChangeRemoveRule) {
-			removeRule(((ChangeRemoveRule) b).rule);
-		} else if (b instanceof ChangeModel) {
-			setModel(((ChangeModel) b).model);
-		} else return false;
-		return true;
+	static final class ChangeExecutor extends ModelObject.ChangeExecutor {
+		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
+		
+		@Override
+		protected boolean doChange(IChange b) {
+			if (super.doChange(b)) {
+				/* do nothing */
+			} else if (b instanceof ChangeSignature) {
+				ChangeSignature c = (ChangeSignature)b;
+				c.getCreator().setSignature(c.signature);
+			} else if (b instanceof ChangeAddRule) {
+				ChangeAddRule c = (ChangeAddRule)b;
+				c.getCreator().addRule(c.rule);
+			} else if (b instanceof ChangeRemoveRule) {
+				ChangeRemoveRule c = (ChangeRemoveRule)b;
+				c.getCreator().removeRule(c.rule);
+			} else if (b instanceof ChangeModel) {
+				ChangeModel c = (ChangeModel)b;
+				c.getCreator().setModel(c.model);
+			} else return false;
+			return true;
+		}
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ public class Edit extends ModelObject
 		implements IChangeDescriptor, IChangeExecutor {
 	@RedProperty(fired = Edit.class, retrieved = Edit.class)
 	public static final String PROPERTY_PARENT = "EditParent";
+	
 	private Edit parent;
 	
 	public Edit getParent() {
@@ -142,25 +143,29 @@ public class Edit extends ModelObject
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
 		validator.tryValidateChange(b);
 	}
-
-	@Override
-	protected boolean doChange(IChange c_) {
-		if (super.doChange(c_)) {
-			/* do nothing */
-		} else if (c_ instanceof ChangeDescriptorAdd) {
-			ChangeDescriptorAdd c = (ChangeDescriptorAdd)c_;
-			c.getCreator().addDescriptor(c.index, c.descriptor);
-		} else if (c_ instanceof ChangeDescriptorRemove) {
-			ChangeDescriptorRemove c = (ChangeDescriptorRemove)c_;
-			c.getCreator().removeDescriptor(c.index);
-		} else return false;
-		return true;
+	
+	static final class ChangeExecutor extends ModelObject.ChangeExecutor {
+		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
+		
+		@Override
+		protected boolean doChange(IChange c_) {
+			if (super.doChange(c_)) {
+				/* do nothing */
+			} else if (c_ instanceof ChangeDescriptorAdd) {
+				ChangeDescriptorAdd c = (ChangeDescriptorAdd)c_;
+				c.getCreator().addDescriptor(c.index, c.descriptor);
+			} else if (c_ instanceof ChangeDescriptorRemove) {
+				ChangeDescriptorRemove c = (ChangeDescriptorRemove)c_;
+				c.getCreator().removeDescriptor(c.index);
+			} else return false;
+			return true;
+		}
 	}
 	
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
 		tryValidateChange(b);
-		doChange(b);
+		ChangeExecutor.INSTANCE.doChange(b);
 	}
 	
 	@Override
