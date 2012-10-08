@@ -285,18 +285,18 @@ public abstract class ModelObject {
 	}
 	
 	/**
-	 * Classes extending <strong>Identifier</strong> are <i>abstract object
-	 * identifiers</i> &mdash; that is, they refer to {@link ModelObject}s by
-	 * name rather than by a Java object reference.
+	 * Classes implementing <strong>Identifier</strong> are <i>abstract object
+	 * identifiers</i> &mdash; that is, they refer to {@link ModelObject}s in
+	 * a less specific way than a Java object reference does.
 	 * @author alec
 	 */
-	public static abstract class Identifier {
+	public interface Identifier {
 		/**
 		 * Classes implementing <strong>Resolver</strong> can resolve {@link
 		 * Identifier}s into {@link Object}s.
 		 * @author alec
 		 */
-		public interface Resolver {
+		interface Resolver {
 			Object lookup(PropertyScratchpad context, Identifier identifier);
 		}
 		
@@ -309,8 +309,7 @@ public abstract class ModelObject {
 		 * @return a {@link ModelObject}, or <code>null</code> if the lookup
 		 * failed
 		 */
-		public abstract ModelObject lookup(
-				PropertyScratchpad context, Resolver r);
+		ModelObject lookup(PropertyScratchpad context, Resolver r);
 	}
 	
 	public static class ChangeExtendedDataDescriptor
