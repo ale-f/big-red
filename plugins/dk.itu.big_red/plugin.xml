@@ -48,7 +48,7 @@
             name="Big Red">
          <property
                name="windowImages"
-               value="icons/icon16.png,icons/icon32.png">
+               value="resources/icons/icon16.png,resources/icons/icon32.png">
          </property>
          <property
                name="appName"
@@ -56,7 +56,7 @@
          </property>
          <property
                name="aboutImage"
-               value="content/logo-big.png">
+               value="resources/logo-big.png">
          </property>
          <property
                name="aboutText"

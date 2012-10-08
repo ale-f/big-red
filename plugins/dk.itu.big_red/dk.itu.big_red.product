@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Big Red" uid="dk.itu.big_red.product" id="dk.itu.big_red.product" application="dk.itu.big_red.application" version="2.1.0.0-PRERELEASE-qualifier" useFeatures="false" includeLaunchers="true">
+<product name="Big Red" uid="dk.itu.big_red.product" id="dk.itu.big_red.product" application="dk.itu.big_red.application" version="2.1.0.1-DEVELOPMENT-qualifier" useFeatures="false" includeLaunchers="true">
 
    <aboutInfo>
-      <image path="content/logo-big.png"/>
+      <image path="resources/logo-big.png"/>
       <text>
          Big Red, the graphical development environment for
 bigraphs
@@ -27,7 +27,7 @@ Apache Software Foundation, http://apache.org/ .
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="icons/icon16.png" i32="icons/icon32.png"/>
+   <windowImages i16="resources/icons/icon16.png" i32="resources/icons/icon32.png"/>
 
    <splash
       startupProgressRect="2,284,451,10"
@@ -40,12 +40,17 @@ Apache Software Foundation, http://apache.org/ .
       </win>
    </launcher>
 
+
    <vm>
    </vm>
+
 
    <plugins>
       <plugin id="com.ibm.icu"/>
       <plugin id="dk.itu.big_red"/>
+      <plugin id="org.bigraph.extensions.param"/>
+      <plugin id="org.bigraph.model"/>
+      <plugin id="org.bigraph.model.wrapper"/>
       <plugin id="org.eclipse.compare"/>
       <plugin id="org.eclipse.compare.core"/>
       <plugin id="org.eclipse.core.commands"/>
