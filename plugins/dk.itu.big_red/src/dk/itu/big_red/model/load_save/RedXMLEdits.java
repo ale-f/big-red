@@ -1,6 +1,8 @@
 package dk.itu.big_red.model.load_save;
 
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
+import org.bigraph.model.ModelObject.Identifier;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.EditXMLLoader;
 import org.bigraph.model.loaders.ILoader;
@@ -77,6 +79,7 @@ public abstract class RedXMLEdits {
 			if (cd_ instanceof ChangeExtendedDataDescriptor) {
 				ChangeExtendedDataDescriptor cd =
 						(ChangeExtendedDataDescriptor)cd_;
+				Identifier target = cd.getTarget();
 				String key = cd.getKey();
 				System.out.println(key);
 				if (LayoutUtilities.LAYOUT.equals(key)) {
@@ -93,9 +96,10 @@ public abstract class RedXMLEdits {
 					e.setAttributeNS(null,
 							"comment", (String)cd.getNewValue());
 				}
-				if (e != null)
+				if (e != null && target instanceof NamedModelObject.Identifier)
 					e.appendChild(BigraphEditSaver.makeID(
-							saver.getDocument(), cd.getTarget()));
+							saver.getDocument(),
+							(NamedModelObject.Identifier)target));
 			}
 			return e;
 		}

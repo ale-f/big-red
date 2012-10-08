@@ -301,16 +301,6 @@ public abstract class ModelObject {
 		}
 		
 		/**
-		 * Returns this {@link Identifier}'s name.
-		 * @return a name; can be <code>null</code>
-		 */
-		public abstract String getName();
-		
-		protected static <T> T require(Object o, Class<? extends T> klass) {
-			return (klass.isInstance(o) ? klass.cast(o) : null);
-		}
-		
-		/**
 		 * Retrieves the {@link ModelObject} corresponding to this {@link
 		 * Identifier} from the given {@link Resolver}.
 		 * @param context a {@link PropertyScratchpad} containing changes to

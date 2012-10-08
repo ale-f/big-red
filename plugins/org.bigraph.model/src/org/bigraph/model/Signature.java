@@ -366,7 +366,7 @@ public class Signature extends ModelObject
 	@Override
 	public Object lookup(PropertyScratchpad context, Identifier identifier) {
 		if (identifier instanceof Control.Identifier) {
-			return getControl(identifier.getName());
+			return getControl(((Control.Identifier)identifier).getName());
 		} else return null;
 	}
 	

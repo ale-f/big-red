@@ -15,7 +15,7 @@ import org.bigraph.model.Site;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Layoutable.ChangeNameDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
-import org.bigraph.model.ModelObject.Identifier;
+import org.bigraph.model.NamedModelObject.Identifier;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;

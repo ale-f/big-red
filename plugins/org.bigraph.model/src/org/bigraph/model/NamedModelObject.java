@@ -14,9 +14,16 @@ public abstract class NamedModelObject extends ModelObject {
 			this.name = name;
 		}
 		
-		@Override
+		/**
+		 * Returns this {@link Identifier}'s name.
+		 * @return a name; can be <code>null</code>
+		 */
 		public String getName() {
 			return name;
+		}
+		
+		protected static <T> T require(Object o, Class<? extends T> klass) {
+			return (klass.isInstance(o) ? klass.cast(o) : null);
 		}
 		
 		@Override

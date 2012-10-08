@@ -5,6 +5,7 @@ import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
 import org.bigraph.model.Edit;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
@@ -188,9 +189,9 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				f = applyAttributes(newElement(CHANGE, "change:node-parameter"),
 						"parameter", newValue);
 			}
-			if (f != null)
+			if (f != null && l instanceof NamedModelObject.Identifier)
 				applyAttributes(f,
-						"name", l.getName(),
+						"name", ((NamedModelObject.Identifier)l).getName(),
 						"type", typeFor(l));
 		} else if (i_ instanceof ChangeDescriptorGroup) {
 			f = newElement(CHANGE, "change:group");

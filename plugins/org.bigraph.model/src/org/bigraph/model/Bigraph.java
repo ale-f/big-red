@@ -288,11 +288,11 @@ public class Bigraph extends Container
 
 	@Override
 	public Object lookup(PropertyScratchpad context,
-			org.bigraph.model.ModelObject.Identifier identifier) {
+			ModelObject.Identifier identifier) {
 		if (identifier instanceof Bigraph.Identifier) {
 			return this;
 		} else if (identifier instanceof Layoutable.Identifier) {
-			String name = identifier.getName();
+			String name = ((Layoutable.Identifier)identifier).getName();
 			if (identifier instanceof Node.Identifier) {
 				return getNamespace(Node.class).get(context, name);
 			} else if (identifier instanceof Root.Identifier) {
