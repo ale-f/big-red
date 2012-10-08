@@ -300,33 +300,14 @@ public abstract class ModelObject {
 			Object lookup(PropertyScratchpad context, Identifier identifier);
 		}
 		
-		private final String name;
-		
-		public Identifier(String name) {
-			this.name = name;
-		}
-		
 		/**
 		 * Returns this {@link Identifier}'s name.
 		 * @return a name; can be <code>null</code>
 		 */
-		public String getName() {
-			return name;
-		}
+		public abstract String getName();
 		
 		protected static <T> T require(Object o, Class<? extends T> klass) {
 			return (klass.isInstance(o) ? klass.cast(o) : null);
-		}
-		
-		@Override
-		public boolean equals(Object obj_) {
-			return safeClassCmp(this, obj_) &&
-					safeEquals(getName(), ((Identifier)obj_).getName());
-		}
-		
-		@Override
-		public int hashCode() {
-			return compositeHashCode(getClass(), getName());
 		}
 		
 		/**
@@ -340,15 +321,6 @@ public abstract class ModelObject {
 		 */
 		public abstract ModelObject lookup(
 				PropertyScratchpad context, Resolver r);
-		
-		/**
-		 * Returns a copy of this {@link Identifier} with a different name.
-		 * (Other identifying properties, if there are any, will not be
-		 * changed.)
-		 * @param name a new name
-		 * @return a renamed copy of this {@link Identifier}
-		 */
-		public abstract Identifier getRenamed(String name);
 	}
 	
 	public static class ChangeExtendedDataDescriptor

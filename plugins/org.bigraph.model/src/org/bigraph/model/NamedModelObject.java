@@ -8,15 +8,39 @@ public abstract class NamedModelObject extends ModelObject {
 	public static final String PROPERTY_NAME = "NamedModelObjectName";
 	
 	public static abstract class Identifier extends ModelObject.Identifier {
+		private final String name;
+		
 		public Identifier(String name) {
-			super(name);
+			this.name = name;
+		}
+		
+		@Override
+		public String getName() {
+			return name;
+		}
+		
+		@Override
+		public boolean equals(Object obj_) {
+			return safeClassCmp(this, obj_) &&
+					safeEquals(getName(), ((Identifier)obj_).getName());
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(getClass(), getName());
 		}
 		
 		@Override
 		public abstract NamedModelObject lookup(
 				PropertyScratchpad context, Resolver r);
 		
-		@Override
+		/**
+		 * Returns a copy of this {@link Identifier} with a different name.
+		 * (Other identifying properties, if there are any, will not be
+		 * changed.)
+		 * @param name a new name
+		 * @return a renamed copy of this {@link Identifier}
+		 */
 		public abstract Identifier getRenamed(String name);
 	}
 	
