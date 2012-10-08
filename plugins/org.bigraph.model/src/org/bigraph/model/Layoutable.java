@@ -181,7 +181,8 @@ public abstract class Layoutable extends NamedModelObject {
 	public abstract Identifier getIdentifier();
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
-	public static abstract class Identifier extends ModelObject.Identifier {
+	public static abstract class Identifier
+			extends NamedModelObject.Identifier {
 		public Identifier(String name) {
 			super(name);
 		}

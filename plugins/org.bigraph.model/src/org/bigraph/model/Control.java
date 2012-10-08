@@ -2,7 +2,6 @@ package org.bigraph.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -363,7 +362,7 @@ public class Control extends NamedModelObject implements IControl {
 		return new ChangeRemoveControl();
 	}
 	
-	public static final class Identifier extends ModelObject.Identifier {
+	public static final class Identifier extends NamedModelObject.Identifier {
 		public Identifier(String name) {
 			super(name);
 		}

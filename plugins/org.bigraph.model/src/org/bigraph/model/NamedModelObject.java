@@ -7,6 +7,19 @@ public abstract class NamedModelObject extends ModelObject {
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String PROPERTY_NAME = "NamedModelObjectName";
 	
+	public static abstract class Identifier extends ModelObject.Identifier {
+		public Identifier(String name) {
+			super(name);
+		}
+		
+		@Override
+		public abstract NamedModelObject lookup(
+				PropertyScratchpad context, Resolver r);
+		
+		@Override
+		public abstract Identifier getRenamed(String name);
+	}
+	
 	private String name;
 	
 	public String getName() {
