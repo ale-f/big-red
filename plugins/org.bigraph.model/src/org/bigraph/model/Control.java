@@ -341,6 +341,13 @@ public class Control extends NamedModelObject implements IControl {
 	
 	@Override
 	public void dispose() {
+		if (ports != null) {
+			for (PortSpec i : ports)
+				i.dispose();
+			ports.clear();
+			ports = null;
+		}
+		
 		kind = null;
 		
 		super.dispose();

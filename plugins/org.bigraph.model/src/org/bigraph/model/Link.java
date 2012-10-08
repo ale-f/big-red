@@ -106,4 +106,14 @@ public abstract class Link extends Layoutable implements ILink {
 	public abstract Identifier getIdentifier();
 	@Override
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
+	
+	@Override
+	public void dispose() {
+		if (points != null) {
+			points.clear();
+			points = null;
+		}
+		
+		super.dispose();
+	}
 }

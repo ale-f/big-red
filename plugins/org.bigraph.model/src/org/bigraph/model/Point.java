@@ -257,4 +257,11 @@ public abstract class Point extends Layoutable implements IPoint {
 			return "ChangeDescriptor(disconnect " + point + ")";
 		}
 	}
+	
+	@Override
+	public void dispose() {
+		link = null;
+		
+		super.dispose();
+	}
 }

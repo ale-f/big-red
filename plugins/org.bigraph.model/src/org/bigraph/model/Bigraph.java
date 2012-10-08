@@ -249,8 +249,10 @@ public class Bigraph extends Container
 	
 	@Override
 	public void dispose() {
-		signature.dispose();
-		signature = null;
+		if (signature != null) {
+			signature.dispose();
+			signature = null;
+		}
 		
 		super.dispose();
 	}

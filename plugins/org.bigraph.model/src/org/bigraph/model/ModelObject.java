@@ -228,11 +228,12 @@ public abstract class ModelObject {
 	}
 	
 	public void dispose() {
-		PropertyChangeListener[] pls =
-			listeners.getPropertyChangeListeners().clone();
-		for (PropertyChangeListener i : pls)
-			listeners.removePropertyChangeListener(i);
-		listeners = null;
+		if (listeners != null) {
+			for (PropertyChangeListener i :
+					listeners.getPropertyChangeListeners().clone())
+				listeners.removePropertyChangeListener(i);
+			listeners = null;
+		}
 		
 		if (extendedData != null) {
 			extendedData.clear();

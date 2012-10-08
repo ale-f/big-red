@@ -159,4 +159,11 @@ public class PortSpec extends NamedModelObject implements IPort {
 	public int hashCode() {
 		return compositeHashCode(getName());
 	}
+	
+	@Override
+	public void dispose() {
+		control = null;
+		
+		super.dispose();
+	}
 }

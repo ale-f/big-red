@@ -128,9 +128,12 @@ public abstract class Container extends Layoutable {
 	
 	@Override
 	public void dispose() {
-		for (Layoutable i : children)
-			i.dispose();
-		children.clear();
+		if (children != null) {
+			for (Layoutable i : children)
+				i.dispose();
+			children.clear();
+			children = null;
+		}
 		
 		super.dispose();
 	}

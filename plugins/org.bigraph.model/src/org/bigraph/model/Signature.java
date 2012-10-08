@@ -274,15 +274,19 @@ public class Signature extends ModelObject
 	
 	@Override
 	public void dispose() {
-		for (Control c : getControls())
-			c.dispose();
-		getControls().clear();
-		controls = null;
+		if (controls != null) {
+			for (Control c : controls)
+				c.dispose();
+			controls.clear();
+			controls = null;
+		}
 		
-		for (Signature s : getSignatures())
-			s.dispose();
-		getSignatures().clear();
-		signatures = null;
+		if (signatures != null) {
+			for (Signature s : signatures)
+				s.dispose();
+			signatures.clear();
+			signatures = null;
+		}
 
 		validator = null;
 		

@@ -153,4 +153,16 @@ public class Node extends Container implements INode {
 		return new Identifier(getName(context),
 				getControl().getIdentifier(context));
 	}
+	
+	@Override
+	public void dispose() {
+		if (ports != null) {
+			for (Port p : ports)
+				p.dispose();
+			ports.clear();
+			ports = null;
+		}
+		
+		super.dispose();
+	}
 }
