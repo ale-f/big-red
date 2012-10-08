@@ -1,0 +1,10 @@
+User documentation
+==================
+
+A correctly configured version of Big Red will contribute documentation to the
+Eclipse help system under the title "Big Red help". You can also open these
+help topics in any web browser -- see the directory
+
+	plugins/dk.itu.big_red/resources/doc/html/
+
+for all of the relevant content.
