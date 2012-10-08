@@ -52,7 +52,7 @@ public class Signature extends ModelObject
 		}
 	}
 	
-	public class ChangeAddControl extends SignatureChange {
+	public final class ChangeAddControl extends SignatureChange {
 		public final Control control;
 		public final String name;
 		
@@ -90,7 +90,7 @@ public class Signature extends ModelObject
 		}
 	}
 	
-	public class ChangeAddSignature extends SignatureChange {
+	public final class ChangeAddSignature extends SignatureChange {
 		public final Signature signature;
 		
 		public ChangeAddSignature(Signature signature) {
@@ -112,7 +112,7 @@ public class Signature extends ModelObject
 		}
 	}
 	
-	public class ChangeRemoveSignature extends SignatureChange {
+	public final class ChangeRemoveSignature extends SignatureChange {
 		public ChangeRemoveSignature() {
 		}
 		

@@ -36,7 +36,7 @@ public abstract class Layoutable extends ModelObject {
 		}
 	}
 
-	public class ChangeName extends LayoutableChange {
+	public final class ChangeName extends LayoutableChange {
 		public final String newName;
 		
 		protected ChangeName(String newName) {
@@ -78,7 +78,7 @@ public abstract class Layoutable extends ModelObject {
 		}
 	}
 	
-	public class ChangeRemove extends LayoutableChange {
+	public final class ChangeRemove extends LayoutableChange {
 		private String oldName;
 		private Container oldParent;
 		@Override

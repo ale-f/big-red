@@ -73,7 +73,7 @@ public class Edit extends ModelObject
 		}
 	}
 	
-	public class ChangeDescriptorAdd extends EditChange {
+	public final class ChangeDescriptorAdd extends EditChange {
 		public final int index;
 		public final IChangeDescriptor descriptor;
 		
@@ -101,7 +101,7 @@ public class Edit extends ModelObject
 		}
 	}
 	
-	public class ChangeDescriptorRemove extends EditChange {
+	public final class ChangeDescriptorRemove extends EditChange {
 		public final int index;
 		public final IChangeDescriptor descriptor;
 		

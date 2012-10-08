@@ -59,7 +59,7 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	public class ChangeName extends ControlChange {
+	public final class ChangeName extends ControlChange {
 		public final String name;
 		
 		public ChangeName(String name) {
@@ -100,7 +100,7 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	public class ChangeKind extends ControlChange {
+	public final class ChangeKind extends ControlChange {
 		public final Kind kind;
 		
 		public ChangeKind(Kind kind) {
@@ -139,7 +139,7 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 	
-	public class ChangeAddPort extends ControlChange {
+	public final class ChangeAddPort extends ControlChange {
 		public final PortSpec port;
 		public final String name;
 		
@@ -176,7 +176,7 @@ public class Control extends ModelObject implements IControl {
 		}
 	}
 
-	public class ChangeRemoveControl extends ControlChange {
+	public final class ChangeRemoveControl extends ControlChange {
 		private String oldName;
 		private Signature oldSignature;
 		

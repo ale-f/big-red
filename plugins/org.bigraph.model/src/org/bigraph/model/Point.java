@@ -31,7 +31,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	interface ConnectValidator extends Validator<ChangeConnect> {
 	}
 	
-	public class ChangeConnect extends PointChange {
+	public final class ChangeConnect extends PointChange {
 		public final Link link;
 		
 		public ChangeConnect(Link link) {
@@ -65,7 +65,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	interface DisconnectValidator extends Validator<ChangeDisconnect> {
 	}
 	
-	public class ChangeDisconnect extends PointChange {
+	public final class ChangeDisconnect extends PointChange {
 		private Link oldLink;
 		@Override
 		public void beforeApply() {

@@ -31,7 +31,7 @@ public abstract class Container extends Layoutable {
 		}
 	}
 	
-	public class ChangeAddChild extends ContainerChange {
+	public final class ChangeAddChild extends ContainerChange {
 		public final Layoutable child;
 		public final String name;
 		

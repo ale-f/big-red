@@ -75,7 +75,7 @@ public abstract class ModelObject {
 	 * @author alec
 	 * @see ModelObject#setExtendedData(String, Object)
 	 */
-	public class ChangeExtendedData extends ModelObjectChange {
+	public final class ChangeExtendedData extends ModelObjectChange {
 		public final String key;
 		public final Object newValue;
 		public final ExtendedDataValidator validator;
