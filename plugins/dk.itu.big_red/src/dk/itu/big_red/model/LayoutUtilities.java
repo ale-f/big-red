@@ -28,8 +28,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
 import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 
-import static dk.itu.big_red.editors.bigraph.parts.NodePart.fitPolygon;
-
 /**
  * The <strong>LayoutUtilities</strong> class is a collection of static
  * methods and fields for manipulating objects' layout information.
@@ -100,10 +98,9 @@ public abstract class LayoutUtilities {
 				 * calculated once and then stashed away in the scratchpad */
 				BigraphBoundaryState bbs = getProperty(
 						context, b, BOUNDARIES, BigraphBoundaryState.class);
-				if (bbs == null) {
-					Object value = bbs = new BigraphBoundaryState(context, b);
-					setProperty(context, parent, BOUNDARIES, value);
-				}
+				if (bbs == null)
+					setProperty(context, parent, BOUNDARIES,
+							bbs = new BigraphBoundaryState(context, b));
 				
 				int bs = bbs.getBoundaryState(newLayout);
 				if (l instanceof Root) {
@@ -313,5 +310,24 @@ public abstract class LayoutUtilities {
 			}
 		}
 		return r;
+	}
+
+	public static final PointList fitPolygon(PointList p, Rectangle l) {
+		(p = p.getCopy()).translate(p.getBounds().getTopLeft().getNegated());
+		
+		Rectangle adjustedBounds = new Rectangle(p.getBounds());
+		double xScale = l.width() - 2,
+		       yScale = l.height() - 2;
+		xScale /= adjustedBounds.width() - 1;
+		yScale /= adjustedBounds.height() - 1;
+		
+		org.eclipse.draw2d.geometry.Point tmp =
+				org.eclipse.draw2d.geometry.Point.SINGLETON;
+		for (int i = 0; i < p.size(); i++) {
+			p.getPoint(tmp, i).scale(xScale, yScale).translate(1, 1);
+			p.setPoint(tmp, i);
+		}
+		
+		return p;
 	}
 }

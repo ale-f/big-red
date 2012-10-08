@@ -8,9 +8,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Node;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 
 import dk.itu.big_red.editors.bigraph.LayoutableDeletePolicy;
@@ -59,25 +57,6 @@ public class NodePart extends ContainerPart {
 	    }
 	}
 	
-	public static final PointList fitPolygon(PointList p, Rectangle l) {
-		p = p.getCopy();
-		p.translate(p.getBounds().getTopLeft().getNegated());
-		
-		Rectangle adjustedBounds = new Rectangle(p.getBounds());
-		double xScale = l.width() - 2,
-		       yScale = l.height() - 2;
-		xScale /= adjustedBounds.width() - 1;
-		yScale /= adjustedBounds.height() - 1;
-		
-		Point tmp = Point.SINGLETON;
-		for (int i = 0; i < p.size(); i++) {
-			p.getPoint(tmp, i).scale(xScale, yScale).translate(1, 1);
-			p.setPoint(tmp, i);
-		}
-		
-		return p;
-	}
-	
 	private PointList fittedPolygon;
 	
 	@Override
@@ -90,8 +69,8 @@ public class NodePart extends ContainerPart {
 		
 		Object shape = ControlUtilities.getShape(control);
 		if (shape instanceof PointList && fittedPolygon == null)
-			fittedPolygon = fitPolygon((PointList)shape,
-					LayoutUtilities.getLayout(model));
+			fittedPolygon = LayoutUtilities.fitPolygon(
+					(PointList)shape, LayoutUtilities.getLayout(model));
 		figure.setShape(
 			shape instanceof PointList ? fittedPolygon : Ellipse.SINGLETON);
 		

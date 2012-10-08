@@ -11,10 +11,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 
-import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
+import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -52,7 +52,7 @@ public class ControlImageDescriptor extends ImageDescriptor {
 				Object shape = ControlUtilities.getShape(c);
 				if (shape instanceof PointList) {
 					PointList modified =
-							NodePart.fitPolygon((PointList)shape,
+							LayoutUtilities.fitPolygon((PointList)shape,
 									new Rectangle(0, 0, width, height));
 					gc.fillPolygon(modified.toIntArray());
 					gc.drawPolygon(modified.toIntArray());
