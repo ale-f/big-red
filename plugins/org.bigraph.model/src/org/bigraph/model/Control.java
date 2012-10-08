@@ -346,6 +346,7 @@ public class Control extends NamedModelObject implements IControl {
 		super.dispose();
 	}
 	
+	@Override
 	public IChange changeName(String name) {
 		return new ChangeName(name);
 	}

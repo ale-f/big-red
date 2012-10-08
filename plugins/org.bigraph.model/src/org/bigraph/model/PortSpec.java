@@ -133,6 +133,7 @@ public class PortSpec extends NamedModelObject implements IPort {
 		return null;
 	}
 	
+	@Override
 	public IChange changeName(String name) {
 		return new ChangeName(name);
 	}

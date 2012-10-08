@@ -2,10 +2,10 @@ package org.bigraph.model.assistants;
 
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
+import org.bigraph.model.NamedModelObject.ChangeNameDescriptor;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.Layoutable.ChangeNameDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;

@@ -13,6 +13,7 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
@@ -144,7 +145,7 @@ public class BigraphEditLoader implements Participant {
 		Layoutable.Identifier
 			lid = getIdentifier(id, Layoutable.Identifier.class);
 		return (lid != null ?
-				new Layoutable.ChangeNameDescriptor(lid, name) : null);
+				new NamedModelObject.ChangeNameDescriptor(lid, name) : null);
 	}
 	
 	@Override

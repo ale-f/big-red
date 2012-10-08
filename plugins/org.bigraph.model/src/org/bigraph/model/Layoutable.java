@@ -156,6 +156,7 @@ public abstract class Layoutable extends NamedModelObject {
 		return l;
 	}
 	
+	@Override
 	public IChange changeName(String newName) {
 		return new ChangeName(newName);
 	}
@@ -193,56 +194,6 @@ public abstract class Layoutable extends NamedModelObject {
 		
 		@Override
 		public abstract Identifier getRenamed(String name);
-	}
-	
-	public static class ChangeNameDescriptor implements IChangeDescriptor {
-		private final Identifier target;
-		private final String newName;
-		
-		public ChangeNameDescriptor(Identifier target, String newName) {
-			this.target = target;
-			this.newName = newName;
-		}
-		
-		public Identifier getTarget() {
-			return target;
-		}
-		
-		public String getNewName() {
-			return newName;
-		}
-		
-		@Override
-		public boolean equals(Object obj_) {
-			if (safeClassCmp(this, obj_)) {
-				ChangeNameDescriptor obj = (ChangeNameDescriptor)obj_;
-				return
-						safeEquals(getTarget(), obj.getTarget()) &&
-						safeEquals(getNewName(), obj.getNewName());
-			} else return false;
-		}
-		
-		@Override
-		public int hashCode() {
-			return compositeHashCode(
-					ChangeNameDescriptor.class, target, newName);
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			Layoutable l = target.lookup(context, r);
-			if (l == null)
-				throw new ChangeCreationException(this,
-						"" + target + " didn't resolve to a Layoutable");
-			return l.changeName(newName);
-		}
-		
-		@Override
-		public String toString() {
-			return "ChangeDescriptor(set name of " + target + " to " + 
-					newName + ")";
-		}
 	}
 	
 	public static class ChangeRemoveDescriptor implements IChangeDescriptor {

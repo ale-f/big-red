@@ -3,8 +3,8 @@ package org.bigraph.model;
 import java.util.Iterator;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.Layoutable.ChangeNameDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
+import org.bigraph.model.NamedModelObject.ChangeNameDescriptor;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.assistants.DescriptorConflicts;
@@ -142,8 +142,8 @@ public class ReactionRule extends ModelObject {
 						cd.getPoint(), cd.getLink());
 			} else if (cd_ instanceof ChangeNameDescriptor) {
 				ChangeNameDescriptor cd = (ChangeNameDescriptor)cd_;
-				Layoutable.Identifier target = cd.getTarget();
-				return new ChangeNameDescriptor(
+				NamedModelObject.Identifier target = cd.getTarget();
+				return new NamedModelObject.ChangeNameDescriptor(
 						target.getRenamed(cd.getNewName()), target.getName());
 			} else if (cd_ instanceof ChangeExtendedDataDescriptor) {
 				ChangeExtendedDataDescriptor cd =

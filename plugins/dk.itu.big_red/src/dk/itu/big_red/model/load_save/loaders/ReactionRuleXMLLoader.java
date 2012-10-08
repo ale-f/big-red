@@ -9,6 +9,7 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
@@ -190,7 +191,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					cd = new Layoutable.ChangeNameDescriptor(l, newName);
+					cd = new NamedModelObject.ChangeNameDescriptor(l, newName);
 			} else if (el.getLocalName().equals("connect")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
