@@ -23,18 +23,12 @@ import org.bigraph.model.names.policies.StringNamePolicy;
  * @author alec
  * @see IControl
  */
-public class Control extends ModelObject implements IControl {
+public class Control extends NamedModelObject implements IControl {
 	/**
 	 * The property name fired when the kind changes.
 	 */
 	@RedProperty(fired = Kind.class, retrieved = Kind.class)
 	public static final String PROPERTY_KIND = "ControlKind";
-	
-	/**
-	 * The property name fired when the name changes.
-	 */
-	@RedProperty(fired = String.class, retrieved = String.class)
-	public static final String PROPERTY_NAME = "ControlName";
 	
 	/**
 	 * The property name fired when the set of ports changes. If this changes
@@ -241,14 +235,12 @@ public class Control extends ModelObject implements IControl {
 	
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
 	
-	private String name = "Untitled1";
 	private Control.Kind kind = Kind.ACTIVE;
 	private Signature signature = null;
 	
 	protected Control clone(Signature m) {
 		Control c = (Control)super.clone();
 		
-		c.setName(getName());
 		m.getNamespace().put(c.getName(), c);
 		
 		c.setKind(getKind());
@@ -257,23 +249,6 @@ public class Control extends ModelObject implements IControl {
 			c.addPort(p.clone(c));
 		
 		return c;
-	}
-
-	protected void setName(String name) {
-		if (name != null) {
-			String oldName = this.name;
-			this.name = name;
-			firePropertyChange(PROPERTY_NAME, oldName, name);
-		}
-	}
-	
-	@Override
-	public String getName() {
-		return name;
-	}
-	
-	public String getName(PropertyScratchpad context) {
-		return (String)getProperty(context, PROPERTY_NAME);
 	}
 	
 	public Kind getKind() {
@@ -356,9 +331,7 @@ public class Control extends ModelObject implements IControl {
 	 */
 	@Override
 	protected Object getProperty(String name) {
-		if (PROPERTY_NAME.equals(name)) {
-			return getName();
-		} else if (PROPERTY_PORT.equals(name)) {
+		if (PROPERTY_PORT.equals(name)) {
 			return getPorts();
 		} else if (PROPERTY_KIND.equals(name)) {
 			return getKind();
@@ -370,7 +343,6 @@ public class Control extends ModelObject implements IControl {
 	@Override
 	public void dispose() {
 		kind = null;
-		name = null;
 		
 		super.dispose();
 	}

@@ -16,13 +16,7 @@ import org.bigraph.model.names.Namespace;
  * @author alec
  * @see ModelObject
  */
-public abstract class Layoutable extends ModelObject {
-	/**
-	 * The property name fired when the name changes.
-	 */
-	@RedProperty(fired = String.class, retrieved = String.class)
-	public static final String PROPERTY_NAME = "LayoutableName";
-	
+public abstract class Layoutable extends NamedModelObject {
 	/**
 	 * The property name fired when the parent changes.
 	 */
@@ -158,33 +152,8 @@ public abstract class Layoutable extends ModelObject {
 	
 	protected Layoutable clone(Bigraph m) {
 		Layoutable l = (Layoutable)super.clone();
-		l.setName(getName());
 		m.getNamespace(l).put(getName(), l);
 		return l;
-	}
-	
-	private String name = null;
-	
-	/**
-	 * Gets this object's name.
-	 * @return a String
-	 */
-	public String getName() {
-		return name;
-	}
-	
-	public String getName(PropertyScratchpad context) {
-		return (String)getProperty(context, PROPERTY_NAME);
-	}
-	
-	/**
-	 * Sets this object's name.
-	 * @param name the new name for this object
-	 */
-	protected void setName(String name) {
-		String oldName = this.name;
-		this.name = name;
-		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
 	public IChange changeName(String newName) {
@@ -197,16 +166,13 @@ public abstract class Layoutable extends ModelObject {
 	
 	@Override
 	protected Object getProperty(String name) {
-		if (PROPERTY_NAME.equals(name)) {
-			return getName();
-		} else if (PROPERTY_PARENT.equals(name)) {
+		if (PROPERTY_PARENT.equals(name)) {
 			return getParent();
 		} else return super.getProperty(name);
 	}
 	
 	@Override
 	public void dispose() {
-		name = null;
 		parent = null;
 		
 		super.dispose();

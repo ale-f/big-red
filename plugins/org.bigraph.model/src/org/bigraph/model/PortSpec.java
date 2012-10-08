@@ -1,6 +1,5 @@
 package org.bigraph.model;
 
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -9,10 +8,7 @@ import org.bigraph.model.interfaces.ILink;
 import org.bigraph.model.interfaces.INode;
 import org.bigraph.model.interfaces.IPort;
 
-public class PortSpec extends ModelObject implements IPort {
-	@RedProperty(fired = String.class, retrieved = String.class)
-	public static final String PROPERTY_NAME = "PortSpecName";
-	
+public class PortSpec extends NamedModelObject implements IPort {
 	@RedProperty(fired = Control.class, retrieved = Control.class)
 	public static final String PROPERTY_CONTROL = "PortSpecControl";
 	
@@ -105,29 +101,12 @@ public class PortSpec extends ModelObject implements IPort {
 		}
 	}
 	
-	private String name;
 	private Control control;
 	
 	protected PortSpec clone(Control c) {
 		PortSpec p = (PortSpec)super.clone();
-		p.setName(getName());
 		c.getNamespace().put(p.getName(), p);
 		return p;
-	}
-	
-	@Override
-	public String getName() {
-		return name;
-	}
-	
-	public String getName(PropertyScratchpad context) {
-		return (String)getProperty(context, PROPERTY_NAME);
-	}
-	
-	protected void setName(String name) {
-		String oldName = this.name;
-		this.name = name;
-		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
 	public Control getControl() {
@@ -164,9 +143,7 @@ public class PortSpec extends ModelObject implements IPort {
 	
 	@Override
 	protected Object getProperty(String name) {
-		if (PROPERTY_NAME.equals(name)) {
-			return getName();
-		} else if (PROPERTY_CONTROL.equals(name)) {
+		if (PROPERTY_CONTROL.equals(name)) {
 			return getControl();
 		} else return super.getProperty(name);
 	}
