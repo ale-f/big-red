@@ -74,9 +74,11 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 	 * @return a {@link ScalableRootEditPart}; can be <code>null</code>
 	 */
 	protected static ScalableRootEditPart getScalableRoot(GraphicalViewer v) {
-		RootEditPart r = v.getRootEditPart();
-		return (r instanceof ScalableRootEditPart ?
-				(ScalableRootEditPart)r : null);
+		if (v != null) {
+			RootEditPart r = v.getRootEditPart();
+			return (r instanceof ScalableRootEditPart ?
+					(ScalableRootEditPart)r : null);
+		} else return null;
 	}
 	
 	/**

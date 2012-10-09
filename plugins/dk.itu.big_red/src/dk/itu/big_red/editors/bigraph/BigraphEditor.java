@@ -164,7 +164,8 @@ public class BigraphEditor extends AbstractGEFEditor {
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class type) {
     	if (type == ZoomManager.class) {
-    		return getScalableRoot(getGraphicalViewer()).getZoomManager();
+    		ScalableRootEditPart sep = getScalableRoot(getGraphicalViewer());
+    		return (sep != null ? sep.getZoomManager() : null);
     	} else if (type == IContentOutlinePage.class && getModel() != null) {
     		return new BigraphEditorOutlinePage(this);
     	} else if (type == GraphicalViewer.class) {
@@ -172,7 +173,8 @@ public class BigraphEditor extends AbstractGEFEditor {
     	} else if (type == EditPart.class && getGraphicalViewer() != null) {
 			return getGraphicalViewer().getRootEditPart();
     	} else if (type == IFigure.class && getGraphicalViewer() != null) {
-			return getScalableRoot(getGraphicalViewer()).getFigure();
+    		ScalableRootEditPart sep = getScalableRoot(getGraphicalViewer());
+			return (sep != null ? sep.getFigure() : null);
 		} else return super.getAdapter(type);
     }
     
@@ -232,8 +234,11 @@ public class BigraphEditor extends AbstractGEFEditor {
 	@Override
 	public void setFocus() {
 		super.setFocus();
-		Control c = getGraphicalViewer().getControl();
-		if (c != null && !c.isDisposed())
-			c.setFocus();
+		GraphicalViewer gv = getGraphicalViewer();
+		if (gv != null) {
+			Control c = gv.getControl();
+			if (c != null && !c.isDisposed())
+				c.setFocus();
+		}
 	}
 }

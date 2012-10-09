@@ -79,7 +79,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 		if (adapter == ZoomManager.class) {
 			/* required by ZoomComboContributionItem */
-			return getScalableRoot(redexViewer).getZoomManager();
+			ScalableRootEditPart sep = getScalableRoot(redexViewer);
+			return (sep != null ? sep.getZoomManager() : null);
 		} else return super.getAdapter(adapter);
 	}
 	
