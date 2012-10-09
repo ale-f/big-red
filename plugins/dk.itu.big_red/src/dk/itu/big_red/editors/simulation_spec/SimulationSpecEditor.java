@@ -12,6 +12,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
+import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -253,9 +254,12 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			public void widgetSelected(SelectionEvent e) {
 				Iterator<?> it =
 					((IStructuredSelection)rules.getSelection()).iterator();
+				ChangeGroup cg = new ChangeGroup();
 				while (it.hasNext())
-					doChange(getModel().
+					cg.add(getModel().
 							changeRemoveRule((ReactionRule)it.next()));
+				if (!cg.isEmpty())
+					doChange(cg);
 			}
 		});
 		
