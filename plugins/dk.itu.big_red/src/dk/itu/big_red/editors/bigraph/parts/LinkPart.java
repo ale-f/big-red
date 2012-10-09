@@ -58,11 +58,11 @@ public abstract class LinkPart extends ConnectablePart {
 		super.propertyChange(evt);
 		if (evt.getSource() == getModel()) {
 			String property = evt.getPropertyName();
-			if (property.equals(Link.PROPERTY_POINT)) {
+			if (Link.PROPERTY_POINT.equals(property)) {
 		    	refreshTargetConnections();
 		    	refreshVisuals();
-		    } else if (property.equals(Link.PROPERTY_NAME) ||
-		    		property.equals(ColourUtilities.OUTLINE)) {
+		    } else if (Link.PROPERTY_NAME.equals(property) ||
+		    		ColourUtilities.OUTLINE.equals(property)) {
 		    	refreshVisuals();
 		    }
 		}

@@ -22,7 +22,7 @@ class SimulationSpecRRContentProvider extends ModelObjectListContentProvider {
 			return;
 		String propertyName = evt.getPropertyName();
 		Object oldValue = evt.getOldValue(), newValue = evt.getNewValue();
-		if (propertyName.equals(SimulationSpec.PROPERTY_RULE)) {
+		if (SimulationSpec.PROPERTY_RULE.equals(propertyName)) {
 			if (oldValue == null && newValue != null) { /* added */
 				getViewer().add(newValue);
 			} else if (oldValue != null && newValue == null) { /* removed */

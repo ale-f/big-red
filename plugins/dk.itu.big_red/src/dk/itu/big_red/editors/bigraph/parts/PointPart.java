@@ -42,9 +42,9 @@ public abstract class PointPart extends ConnectablePart {
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
 		if (source == getModel()) {
-			if (prop.equals(Layoutable.PROPERTY_NAME)) {
+			if (Layoutable.PROPERTY_NAME.equals(prop)) {
 				refreshVisuals();
-			} else if (prop.equals(Point.PROPERTY_LINK)) {
+			} else if (Point.PROPERTY_LINK.equals(prop)) {
 				Link oldLink = (Link)evt.getOldValue(),
 						newLink = (Link)evt.getNewValue();
 				if (oldLink != null)
@@ -57,8 +57,8 @@ public abstract class PointPart extends ConnectablePart {
 		    	refreshVisuals();
 		    }
 		} else if (source == getModel().getLink()) {
-			if (prop.equals(Link.PROPERTY_NAME) ||
-				prop.equals(ColourUtilities.OUTLINE)) {
+			if (Link.PROPERTY_NAME.equals(prop) ||
+				ColourUtilities.OUTLINE.equals(prop)) {
 				refreshVisuals();
 			}
 		}

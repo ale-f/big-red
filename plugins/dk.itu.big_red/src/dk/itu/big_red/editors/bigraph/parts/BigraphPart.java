@@ -57,7 +57,7 @@ public class BigraphPart extends ContainerPart {
 		}
 		super.propertyChange(evt);
 		if (evt.getSource() == getModel()) {
-			if (prop.equals(Container.PROPERTY_CHILD)) {
+			if (Container.PROPERTY_CHILD.equals(prop)) {
 				ModelObject
 					oldValue = (ModelObject)evt.getOldValue(),
 					newValue = (ModelObject)evt.getNewValue();
@@ -72,7 +72,7 @@ public class BigraphPart extends ContainerPart {
 		} else if (evt.getSource() instanceof Layoutable) {
 			Layoutable l = (Layoutable)evt.getSource();
 			if (l.getParent() == getModel() &&
-					prop.equals(LayoutUtilities.LAYOUT))
+					LayoutUtilities.LAYOUT.equals(prop))
 					refreshBoundaries();
 		}
 	}

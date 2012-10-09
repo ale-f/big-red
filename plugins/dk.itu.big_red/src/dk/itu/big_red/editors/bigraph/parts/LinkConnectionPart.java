@@ -113,7 +113,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (evt.getSource() == getModel().getLink() &&
-			prop.equals(ColourUtilities.OUTLINE))
+				ColourUtilities.OUTLINE.equals(prop))
 			refreshVisuals();
 	}
 

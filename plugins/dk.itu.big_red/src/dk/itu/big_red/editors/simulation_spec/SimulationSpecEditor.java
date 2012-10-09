@@ -342,10 +342,10 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			String propertyName = evt.getPropertyName();
 			Object newValue = evt.getNewValue();
 			uiUpdateInProgress = true;
-			if (propertyName.equals(SimulationSpec.PROPERTY_SIGNATURE)) {
+			if (SimulationSpec.PROPERTY_SIGNATURE.equals(propertyName)) {
 				Signature s = (Signature)newValue;
 				signatureSelector.setResource(getFileFrom(s));
-			} else if (propertyName.equals(SimulationSpec.PROPERTY_MODEL)) {
+			} else if (SimulationSpec.PROPERTY_MODEL.equals(propertyName)) {
 				Bigraph b = (Bigraph)newValue;
 				modelSelector.setResource(getFileFrom(b));
 			}

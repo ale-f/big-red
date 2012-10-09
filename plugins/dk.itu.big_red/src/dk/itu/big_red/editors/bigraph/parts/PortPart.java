@@ -57,10 +57,9 @@ public class PortPart extends PointPart {
 		super.propertyChange(evt);
 		String prop = evt.getPropertyName();
 		Object source = evt.getSource();
-		if (source == getModel().getParent()) {
-			if (prop.equals(LayoutUtilities.LAYOUT))
-				refreshVisuals();
-		}
+		if (source == getModel().getParent() &&
+				LayoutUtilities.LAYOUT.equals(prop))
+			refreshVisuals();
 	}
 	
 	@Override

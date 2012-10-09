@@ -662,24 +662,24 @@ implements PropertyChangeListener {
 				return;
 			uiUpdateInProgress = true;
 			try {
-				if (propertyName.equals(ControlUtilities.LABEL)) {
+				if (ControlUtilities.LABEL.equals(propertyName)) {
 					label.setText((String)newValue);
-				} else if (propertyName.equals(Control.PROPERTY_NAME)) {
+				} else if (Control.PROPERTY_NAME.equals(propertyName)) {
 					name.setText((String)newValue);
-				} else if (propertyName.equals(ControlUtilities.SHAPE)) {
+				} else if (ControlUtilities.SHAPE.equals(propertyName)) {
 					ovalMode.setSelection(newValue instanceof Ellipse);
 					polygonMode.setSelection(newValue instanceof PointList);
-				} else if (propertyName.equals(ColourUtilities.FILL)) {
+				} else if (ColourUtilities.FILL.equals(propertyName)) {
 					Colour c = (Colour)newValue;
 					if (c == null)
 						c = ColourUtilities.getDefaultFill(currentControl);
 					fill.setColorValue(c.getRGB());
-				} else if (propertyName.equals(ColourUtilities.OUTLINE)) {
+				} else if (ColourUtilities.OUTLINE.equals(propertyName)) {
 					Colour c = (Colour)newValue;
 					if (c == null)
 						c = ColourUtilities.getDefaultOutline(currentControl);
 					outline.setColorValue(c.getRGB());
-				} else if (propertyName.equals(Control.PROPERTY_KIND)) {
+				} else if (Control.PROPERTY_KIND.equals(propertyName)) {
 					activeKind.setSelection(Kind.ACTIVE.equals(newValue));
 					atomicKind.setSelection(Kind.ATOMIC.equals(newValue));
 					passiveKind.setSelection(Kind.PASSIVE.equals(newValue));
