@@ -18,9 +18,26 @@ public class LinkConnectionFigure extends PolylineConnection {
 			ROUTER_MANHATTAN = new ManhattanConnectionRouter();
 	
 	public static enum Style {
-		CURVY,
-		STRAIGHT,
-		MANHATTAN
+		CURVY {
+			@Override
+			public String getDisplayName() {
+				return "Bézier curve (default)";
+			}
+		},
+		STRAIGHT {
+			@Override
+			public String getDisplayName() {
+				return "Straight lines";
+			}
+		},
+		MANHATTAN {
+			@Override
+			public String getDisplayName() {
+				return "Taxicab geometry";
+			}
+		};
+		
+		public abstract String getDisplayName();
 	}
 	private Style style = Style.CURVY;
 	
