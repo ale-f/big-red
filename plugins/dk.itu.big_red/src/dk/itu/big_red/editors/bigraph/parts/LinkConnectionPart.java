@@ -25,6 +25,7 @@ import dk.itu.big_red.editors.bigraph.LinkConnectionDeletePolicy;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.LinkStyleUtilities;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
@@ -113,7 +114,8 @@ public class LinkConnectionPart extends AbstractConnectionEditPart
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (evt.getSource() == getModel().getLink() &&
-				ColourUtilities.OUTLINE.equals(prop))
+				(ColourUtilities.OUTLINE.equals(prop) ||
+				 LinkStyleUtilities.STYLE.equals(prop)))
 			refreshVisuals();
 	}
 
@@ -122,6 +124,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart
 		LinkConnectionFigure figure = (LinkConnectionFigure)getFigure();
 		LinkPart.Connection model = getModel();
 		
+		figure.setStyle(LinkStyleUtilities.getStyle(model.getLink()));
 		figure.setToolTip(getDisplayName());
 		figure.setForegroundColor(
 				getColour(ColourUtilities.getOutline(model.getLink())));
