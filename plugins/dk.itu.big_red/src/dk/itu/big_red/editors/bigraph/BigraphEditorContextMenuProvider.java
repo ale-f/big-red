@@ -9,7 +9,6 @@ import org.eclipse.gef.ui.actions.ActionRegistry;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
@@ -19,29 +18,32 @@ import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
 	
-	public BigraphEditorContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
+	public BigraphEditorContextMenuProvider(
+			EditPartViewer viewer, ActionRegistry registry) {
 		super(viewer);
 		setActionRegistry(registry);
 	}
 	
-	private void populateMenu(final PaletteViewer pv, final PaletteContainer pc, final IMenuManager menu) {
+	private void populateMenu(
+			final PaletteViewer pv, final PaletteContainer pc,
+			final IMenuManager menu) {
 		for (Object j : pc.getChildren()) {
 			if (j instanceof ToolEntry) {
 				final ToolEntry k = (ToolEntry)j;
-				Action toolAction = new Action() {
+				Action toolAction = new Action(k.getLabel()) {
 					@Override
 					public void run() {
 						pv.setActiveTool(k);
 					}
 				};
-				toolAction.setText(k.getLabel());
-				menu.appendToGroup(GEFActionConstants.GROUP_REST, toolAction);
+				menu.add(toolAction);
 			} else if (j instanceof PaletteContainer) {
 				PaletteContainer k = (PaletteContainer)j;
 				MenuManager sub = new MenuManager(k.getLabel());
-				sub.add(new GroupMarker(GEFActionConstants.GROUP_REST));
 				populateMenu(pv, k, sub);
-				menu.appendToGroup(GEFActionConstants.GROUP_REST, sub);
+				menu.add(sub);
+			} else if (j instanceof PaletteSeparator) {
+				menu.add(new Separator());
 			}
 		}
 	}
@@ -77,24 +79,11 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 		menu.appendToGroup(GEFActionConstants.GROUP_REST,
 				new Separator());
 		
-		final PaletteViewer pv = getViewer().getEditDomain().getPaletteViewer();
-		if (pv != null) {
-			for (Object i : pv.getPaletteRoot().getChildren()) {
-				if (i instanceof PaletteContainer) {
-					PaletteContainer pc = (PaletteContainer)i;
-					
-					Action menuAction = new Action() {
-					};
-					menuAction.setEnabled(false);
-					menuAction.setText(pc.getLabel());
-					menu.appendToGroup(GEFActionConstants.GROUP_REST, menuAction);
-					
-					populateMenu(pv, pc, menu);
-				} else if (i instanceof PaletteSeparator) {
-					menu.appendToGroup(GEFActionConstants.GROUP_REST, new Separator());
-				}
-			}
-		}
+		MenuManager palette = new MenuManager("Palette");
+		menu.appendToGroup(GEFActionConstants.GROUP_REST, palette);
+		PaletteViewer pv = getViewer().getEditDomain().getPaletteViewer();
+		populateMenu(getViewer().getEditDomain().getPaletteViewer(),
+				pv.getPaletteRoot(), palette);
 	}
 
 	private ActionRegistry getActionRegistry() {
