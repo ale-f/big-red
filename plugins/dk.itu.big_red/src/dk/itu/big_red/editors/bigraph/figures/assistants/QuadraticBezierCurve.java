@@ -42,13 +42,21 @@ class QuadraticBezierCurve {
 	}
 	
 	/**
+	 * @see #getPoint(PrecisionPoint, double)
+	 */
+	public PrecisionPoint getPoint(double t) {
+		return getPoint(new PrecisionPoint(), t);
+	}
+	
+	/**
 	 * Calculates a point on the curve.
+	 * @param p the destination {@link PrecisionPoint}; must not be
+	 * <code>null</code>
 	 * @param t the parameter (must be between <code>0.0</code> and
 	 * <code>1.0</code> inclusive)
 	 * @return a {@link PrecisionPoint} on the curve
 	 */
-	public PrecisionPoint getPoint(double t) {
-		PrecisionPoint p = new PrecisionPoint();
+	public PrecisionPoint getPoint(PrecisionPoint p, double t) {
 		double t_ = 1 - t;
 		return
 			p.setPreciseX(
