@@ -2,9 +2,11 @@ package dk.itu.big_red.editors.bigraph;
 
 import java.util.Iterator;
 
+import org.bigraph.model.Edge;
 import org.bigraph.model.Link;
 import org.bigraph.model.utilities.FilteringIterable;
 
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
@@ -25,6 +27,7 @@ import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure.Style;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
+import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.LinkStyleUtilities;
 
 public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
@@ -105,6 +108,24 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 			styleMenu.add(a);
 		}
 		menu.appendToGroup(GROUP_VARYING, styleMenu);
+		
+		if (l instanceof Edge) {
+			Action a = new Action("Autolayout", Action.AS_CHECK_BOX) {
+				@Override
+				public void run() {
+					Rectangle r;
+					if (isChecked()) {
+						r = null;
+					} else r = LayoutUtilities.getLayout(l);
+					getViewer().getEditDomain().getCommandStack().execute(
+							new ChangeCommand(
+									LayoutUtilities.changeLayout(l, r),
+									l.getBigraph()));
+				}
+			};
+			a.setChecked(LayoutUtilities.getLayoutRaw(l) == null);
+			menu.appendToGroup(GROUP_VARYING, a);
+		}
 	}
 	
 	@Override
