@@ -281,6 +281,10 @@
       <participant
             class="dk.itu.big_red.model.load_save.AliasSupport$Undecorator"
             id="AliasUndecorator" />
+      <participant
+            class="dk.itu.big_red.model.LinkStyleUtilities$Undecorator"
+            id="LinkStyleUndecorator">
+      </participant>
    </extension>
    <extension
          point="org.bigraph.model.wrapper.export">
@@ -348,6 +352,10 @@
       <participant
             class="dk.itu.big_red.model.load_save.AliasSupport$Decorator"
             id="AliasDecorator" />
+      <participant
+            class="dk.itu.big_red.model.LinkStyleUtilities$Decorator"
+            id="LinkStyleDecorator">
+      </participant>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
