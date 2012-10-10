@@ -13,9 +13,17 @@ import dk.itu.big_red.utilities.ui.UI;
  * IChangeExecutor}.
  * @author alec
  */
-public abstract class ChangeCommand extends Command {
+public class ChangeCommand extends Command {
 	private IChange change;
 	private IChangeExecutor target;
+	
+	public ChangeCommand() {
+	}
+	
+	public ChangeCommand(IChange change, IChangeExecutor target) {
+		this.change = change;
+		this.target = target;
+	}
 	
 	/**
 	 * Gets the {@link IChange} that will be applied by this command.
@@ -58,7 +66,9 @@ public abstract class ChangeCommand extends Command {
 	 * set.
 	 * @return <code>this</code>, for convenience
 	 */
-	public abstract ChangeCommand prepare();
+	public ChangeCommand prepare() {
+		return this;
+	}
 	
 	/**
 	 * If this command's {@link IChange change} and {@link IChangeExecutor
@@ -142,5 +152,10 @@ public abstract class ChangeCommand extends Command {
 	@Override
 	public String toString() {
 		return "ChangeCommand(" + getChange() + ")";
+	}
+	
+	@Override
+	public String getLabel() {
+		return toString();
 	}
 }
