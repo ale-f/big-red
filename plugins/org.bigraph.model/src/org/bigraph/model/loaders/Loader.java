@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.internal.utilities.FilteringIterable;
 import org.bigraph.model.resources.IFileWrapper;
+import org.bigraph.model.utilities.FilteringIterable;
 
 public abstract class Loader implements ILoader {
 	private final Loader parent;

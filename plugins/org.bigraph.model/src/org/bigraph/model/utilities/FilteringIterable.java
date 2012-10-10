@@ -1,4 +1,4 @@
-package org.bigraph.model.internal.utilities;
+package org.bigraph.model.utilities;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
