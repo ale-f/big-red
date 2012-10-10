@@ -8,6 +8,7 @@ import org.bigraph.model.Edge;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
 import org.bigraph.model.Node;
@@ -43,6 +44,15 @@ public abstract class LayoutUtilities {
 			"eD!+dk.itu.big_red.Layoutable.layout";
 	private static final String BOUNDARIES =
 			"eD!+org.bigraph.model.Bigraph.boundaries";
+	
+	private static final String getFN(
+			PropertyScratchpad context, NamedModelObject l) {
+		String type;
+		if (l instanceof Node) {
+			type = ((Node)l).getControl().getName();
+		} else type = l.getType();
+		return type + " " + l.getName(context);
+	}
 	
 	static final FinalExtendedDataValidator layoutValidator =
 			new FinalExtendedDataValidator() {
@@ -83,8 +93,8 @@ public abstract class LayoutUtilities {
 					} else {
 						if (getLayout(context, i).intersects(newLayout)) {
 							throw new ChangeRejectedException(c,
-									"The object overlaps with " +
-									"one of its siblings");
+									getFN(context, l) + " overlaps with " +
+									getFN(context, i));
 						}
 					}
 				}
@@ -95,8 +105,8 @@ public abstract class LayoutUtilities {
 				for (Layoutable i : ((Container)l).getChildren(context)) {
 					if (!adjusted.contains(getLayout(context, i)))
 						throw new ChangeRejectedException(c,
-								"The object is no longer big enough to " +
-								"accommodate its children");
+								getFN(context, i) + " cannot fit inside " +
+								getFN(context, l));
 				}
 			}
 			
@@ -105,7 +115,8 @@ public abstract class LayoutUtilities {
 						getLayout(context, parent).getCopy().setLocation(0, 0);
 				if (!parentLayout.contains(newLayout))
 					throw new ChangeRejectedException(c,
-							"The object can no longer fit into its container");
+							getFN(context, l) + " cannot fit inside " +
+							getFN(context, parent));
 			} else if (checkSiblings) {
 				Bigraph b = (Bigraph)parent;
 				
