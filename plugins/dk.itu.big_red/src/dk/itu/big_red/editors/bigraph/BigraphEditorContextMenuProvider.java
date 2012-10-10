@@ -26,6 +26,7 @@ import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure.Style;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
+import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.LinkStyleUtilities;
@@ -87,9 +88,7 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 			"BigraphEditorContextMenuProvider+Varying";
 	
 	private final void
-			addLinkOptions(final LinkPart p, final IMenuManager menu) {
-		final Link l = p.getModel();
-		
+			addLinkOptions(final Link l, final IMenuManager menu) {
 		MenuManager styleMenu = new MenuManager("Style");
 		Style currentStyle = LinkStyleUtilities.getStyle(l);
 		for (final Style i : Style.values()) {
@@ -160,7 +159,11 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 			menu.appendToGroup(GROUP_VARYING,
 					getActionRegistry().getAction(BigraphRelayoutAction.ID));
 		} else if (selection instanceof LinkPart) {
-			addLinkOptions((LinkPart)selection, menu);
+			addLinkOptions(((LinkPart)selection).getModel(), menu);
+		} else if (selection instanceof LinkConnectionPart) {
+			addLinkOptions(
+					((LinkConnectionPart)selection).getModel().getLink(),
+					menu);
 		}
 		
 		menu.appendToGroup(GEFActionConstants.GROUP_REST,

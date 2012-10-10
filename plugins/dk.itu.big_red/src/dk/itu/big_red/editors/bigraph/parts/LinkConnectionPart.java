@@ -39,13 +39,6 @@ import dk.itu.big_red.utilities.ui.UI;
  */
 public class LinkConnectionPart extends AbstractConnectionEditPart
 		implements NodeEditPart, PropertyChangeListener {
-	private IPropertySource propertySource;
-	
-	protected final IPropertySource getPropertySource() {
-		return (propertySource != null ? propertySource :
-			(propertySource = AbstractPart.createPropertySource(this)));
-	}
-	
 	/**
 	 * Returns the {@link LinkPart} corresponding to this connection's
 	 * {@link Link}.
@@ -64,7 +57,7 @@ public class LinkConnectionPart extends AbstractConnectionEditPart
 	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class key) {
 		if (key == IPropertySource.class) {
-			return getPropertySource();
+			return getLinkPart().getPropertySource();
 		} else return super.getAdapter(key);
 	}
 	
