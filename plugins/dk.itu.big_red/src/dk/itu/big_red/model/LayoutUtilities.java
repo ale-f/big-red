@@ -160,15 +160,14 @@ public abstract class LayoutUtilities {
 				}
 			} else if (l instanceof Edge) {
 				List<? extends Point> points = ((Edge)l).getPoints(context);
-				int s = points.size();
-				r = new Rectangle(50, 50, 10, 10);
-				if (s != 0) {
-					int tx = 0, ty = 0;
-					for (Point p : points) {
-						Rectangle rect = getRootLayout(context, p);
-						tx += rect.x; ty += rect.y;
-					}
-					r.setLocation(tx / s, ty / s);
+				if (!points.isEmpty()) {
+					org.eclipse.draw2d.geometry.Point fp =
+							getRootLayout(context, points.get(0)).getCenter();
+					r = new Rectangle(fp, fp);
+					for (Point p : points)
+						r.union(getRootLayout(p).getCenter());
+					r.setLocation(r.getCenter().translate(-5, -5)).
+							setSize(10, 10);
 				}
 			} else if (!(l instanceof Bigraph))
 				setLayout(context, l, r = new Rectangle());
