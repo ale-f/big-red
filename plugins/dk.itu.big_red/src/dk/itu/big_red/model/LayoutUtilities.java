@@ -62,19 +62,35 @@ public abstract class LayoutUtilities {
 			if (l instanceof Edge || parent == null)
 				return;
 			
-			Rectangle newLayout = getLayout(context, l);
-			for (Layoutable i : parent.getChildren(context)) {
-				if (i == l || i instanceof Edge) {
-					continue;
-				} else {
-					if (getLayout(context, i).intersects(newLayout)) {
-						throw new ChangeRejectedException(c,
-								"The object overlaps with one of its siblings");
+			Rectangle
+				oldLayout = getLayout(l),
+				newLayout = getLayout(context, l);
+			boolean
+				checkChildren = true,
+				checkSiblings = true;
+			
+			if (oldLayout != null) {
+				if (oldLayout.contains(newLayout))
+					checkSiblings = false;
+				if (oldLayout.getSize().equals(newLayout.getSize()))
+					checkChildren = false;
+			}
+			
+			if (checkSiblings) {
+				for (Layoutable i : parent.getChildren(context)) {
+					if (i == l || i instanceof Edge) {
+						continue;
+					} else {
+						if (getLayout(context, i).intersects(newLayout)) {
+							throw new ChangeRejectedException(c,
+									"The object overlaps with " +
+									"one of its siblings");
+						}
 					}
 				}
 			}
 			
-			if (l instanceof Container) {
+			if (l instanceof Container && checkChildren) {
 				Rectangle adjusted = newLayout.getCopy().setLocation(0, 0);
 				for (Layoutable i : ((Container)l).getChildren(context)) {
 					if (!adjusted.contains(getLayout(context, i)))
@@ -90,7 +106,7 @@ public abstract class LayoutUtilities {
 				if (!parentLayout.contains(newLayout))
 					throw new ChangeRejectedException(c,
 							"The object can no longer fit into its container");
-			} else {
+			} else if (checkSiblings) {
 				Bigraph b = (Bigraph)parent;
 				
 				/* Since the layout validator is a final validator, there are
