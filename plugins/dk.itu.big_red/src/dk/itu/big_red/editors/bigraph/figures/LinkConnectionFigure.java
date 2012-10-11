@@ -21,7 +21,7 @@ public class LinkConnectionFigure extends PolylineConnection {
 		CURVY {
 			@Override
 			public String getDisplayName() {
-				return "Bézier curve (default)";
+				return "B\u00E9zier curve (default)";
 			}
 		},
 		STRAIGHT {
