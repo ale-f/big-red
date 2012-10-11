@@ -18,15 +18,6 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 		this(null);
 	}
 	
-	private final ChangeCommand wrap(IChangeExecutor ex, IChange ch) {
-		return new ChangeCommand() {
-			@Override
-			public ChangeCommand prepare() {
-				return this;
-			}
-		}.setChange(ch).setTarget(ex);
-	}
-	
 	private final CommandStack commandStack;
 	private final CommandStackListener commandStackListener;
 	public RedPropertySheetEntry(CommandStack commandStack) {
@@ -96,7 +87,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 				cg.add(rch);
 		}
 		if (cg.size() > 0) {
-			getCommandStack().execute(wrap(ex, cg));
+			getCommandStack().execute(new ChangeCommand(cg, ex));
 			refreshFromRoot();
 		}
 	}
@@ -124,6 +115,6 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 		}
 		if (getParent() != null) {
 			getParent().valueChanged(this, cg);
-		} else getCommandStack().execute(wrap(ex, cg));
+		} else getCommandStack().execute(new ChangeCommand(cg, ex));
 	}
 }
