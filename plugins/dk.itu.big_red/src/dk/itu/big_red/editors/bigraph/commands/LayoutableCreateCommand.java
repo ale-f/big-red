@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import org.bigraph.model.Container;
-import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Node;
 import org.bigraph.model.changes.ChangeGroup;
@@ -29,13 +28,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		
 		Container container = containerPart.getModel();
 		setTarget(container.getBigraph());
-		for (Layoutable i : container.getChildren()) {
-			if (i instanceof Edge)
-				continue;
-			else if (LayoutUtilities.getLayout(i).intersects(layout))
-				return;
-		}
-		
 		String name = container.getBigraph().getFirstUnusedName(child);
 		
 		if (child instanceof Node){
