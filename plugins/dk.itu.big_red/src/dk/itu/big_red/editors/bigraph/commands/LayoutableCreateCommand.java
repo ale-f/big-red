@@ -22,10 +22,10 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	private Layoutable child = null;
 	
 	@Override
-	public LayoutableCreateCommand prepare() {
+	public void prepare() {
 		cg.clear();
 		if (layout == null || containerPart == null || child == null)
-			return this;
+			return;
 		
 		Container container = containerPart.getModel();
 		setTarget(container.getBigraph());
@@ -33,7 +33,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			if (i instanceof Edge)
 				continue;
 			else if (LayoutUtilities.getLayout(i).intersects(layout))
-				return this;
+				return;
 		}
 		
 		String name = container.getBigraph().getFirstUnusedName(child);
@@ -45,7 +45,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		
 		cg.add(container.changeAddChild(child, name));
 		cg.add(LayoutUtilities.changeLayout(child, layout));
-		return this;
 	}
 	
 	public void setChild(Object s) {

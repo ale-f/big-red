@@ -32,7 +32,7 @@ public class LayoutableMoveCommand extends ChangeCommand {
 	}
 	
 	@Override
-	public ChangeCommand prepare() {
+	public void prepare() {
 		ChangeGroup cg = new ChangeGroup();
 		setChange(cg);
 		for (Layoutable l : objects) {
@@ -46,12 +46,11 @@ public class LayoutableMoveCommand extends ChangeCommand {
 					r.height = 10;
 				cg.add(LayoutUtilities.changeLayout(l, r));
 			} else {
-				System.out.println("Oh no, flail: " + l);
+				System.out.println("Oh no: " + l);
 				cg.clear();
-				return this;
+				return;
 			}
 		}
-		return this;
 	}
 
 }

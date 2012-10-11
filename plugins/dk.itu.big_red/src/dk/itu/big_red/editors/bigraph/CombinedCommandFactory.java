@@ -59,7 +59,8 @@ public class CombinedCommandFactory {
 		for (Object i : r.getEditParts())
 			if (i instanceof AbstractPart || i instanceof LinkConnectionPart)
 				mdc.addObject(((EditPart)i).getModel());
-		return mdc.prepare();
+		mdc.prepare();
+		return mdc;
 	}
 	
 	public static Command createMoveCommand(ChangeBoundsRequest r) {
@@ -71,6 +72,7 @@ public class CombinedCommandFactory {
 		for (Object i : r.getEditParts())
 			if (i instanceof AbstractPart || i instanceof LinkConnectionPart)
 				lmc.addObject(((EditPart)i).getModel());
-		return lmc.prepare();
+		lmc.prepare();
+		return lmc;
 	}
 }

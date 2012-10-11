@@ -40,10 +40,10 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 	}
 	
 	@Override
-	public LayoutableRelayoutCommand prepare() {
+	public void prepare() {
 		cg.clear();
 		if (model == null || layout == null)
-			return this;
+			return;
 		
 		
 		if((model instanceof Bigraph) || (model instanceof Reaction)){
@@ -60,7 +60,6 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 			if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
 				cg.add(LayoutUtilities.changeLayout(((Layoutable)model), layout));
 		}
-		return this;
 	}
 	
 	public boolean noOverlap() {

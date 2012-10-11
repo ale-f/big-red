@@ -67,10 +67,10 @@ public class LayoutableReparentCommand extends ChangeCommand {
 	}
 	
 	@Override
-	public LayoutableReparentCommand prepare() {
+	public void prepare() {
 		cg.clear(); post.clear();
 		if (parent == null || child == null || constraint == null)
-			return this;
+			return;
 		setTarget(parent.getBigraph());
 		
 		remove(child, true);
@@ -78,7 +78,5 @@ public class LayoutableReparentCommand extends ChangeCommand {
 		cg.add(parent.changeAddChild(child, child.getName()));
 		cg.add(LayoutUtilities.changeLayout(child, constraint));
 		cg.add(post);
-		
-		return this;
 	}
 }

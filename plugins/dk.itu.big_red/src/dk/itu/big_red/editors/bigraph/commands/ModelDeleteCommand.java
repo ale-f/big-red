@@ -99,12 +99,11 @@ public class ModelDeleteCommand extends ChangeCommand {
 	}
 	
 	@Override
-	public ModelDeleteCommand prepare() {
+	public void prepare() {
 		cg.clear();
 		if (scratch != null)
 			scratch.clear();
 		for (Object m : objects)
 			remove(m);
-		return this;
 	}
 }

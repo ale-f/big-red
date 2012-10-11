@@ -40,7 +40,8 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			cmd2.setMoveDelta(cbr.getMoveDelta());
 			cmd = cmd2;
 		}
-		return cmd.prepare();
+		cmd.prepare();
+		return cmd;
 	}
 	
 	@Override

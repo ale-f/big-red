@@ -66,8 +66,7 @@ public class ChangeCommand extends Command {
 	 * set.
 	 * @return <code>this</code>, for convenience
 	 */
-	public ChangeCommand prepare() {
-		return this;
+	public void prepare() {
 	}
 	
 	/**

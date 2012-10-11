@@ -23,6 +23,7 @@ public class LayoutableDeletePolicy extends ComponentEditPolicy {
 			command.setTarget((BRS)part.getParent().getModel());
 			command.setSon((ModelObject)part.getModel());
 		}
-		return command.prepare();
+		command.prepare();
+		return command;
 	}
 }

@@ -32,7 +32,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 	private PropertyScratchpad scratch = null;
 	
 	@Override
-	public LayoutablePasteCommand prepare() {
+	public void prepare() {
 		/*
 		 * FIXME: If several elements with the same parent are copied and then
 		 * pasted *while the copied elements are still selected*, then
@@ -43,7 +43,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 		 */
 		cg.clear();
 		if (newParent == null)
-			return this;
+			return;
 		
 		setTarget(newParent.getBigraph());
 		if (scratch != null) {
@@ -54,9 +54,9 @@ public class LayoutablePasteCommand extends ChangeCommand {
 		try {
 			bList = (ArrayList<?>)Clipboard.getDefault().getContents();
 			if (bList == null)
-				return this;
+				return;
 		} catch (Exception e) {
-			return this;
+			return;
 		}
 		
 		for (Object i_ : bList) {
@@ -66,7 +66,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 			
 			if (!newParent.canContain(i)) {
 				cg.clear();
-				return this;
+				return;
 			} else if (i instanceof Node || i instanceof Root ||
 					i instanceof Site) {
 				/*
@@ -80,6 +80,5 @@ public class LayoutablePasteCommand extends ChangeCommand {
 				*/
 			}
 		}
-		return this;
 	}
 }

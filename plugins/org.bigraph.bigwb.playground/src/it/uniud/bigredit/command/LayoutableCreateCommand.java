@@ -42,10 +42,10 @@ public class LayoutableCreateCommand extends ChangeCommand {
 	
 	
 	@Override
-	public LayoutableCreateCommand prepare() {
+	public void prepare() {
 		cg.clear();
 		if (layout == null || container == null || node == null)
-			return this;
+			return;
 		
 		if (container instanceof Bigraph){
 			setTarget(((Bigraph) container).getBigraph());
@@ -64,7 +64,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 				if (i instanceof Edge)
 					continue;
 				else if (LayoutUtilities.getLayout(i).intersects(layout))
-					return this;
+					return;
 			}
 		}
 		if (container instanceof Bigraph)
@@ -144,7 +144,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 												(Bigraph) node, layout));
 			}
 		}
-		return this;
 	}
 	
 	public void setObject(Object s) {

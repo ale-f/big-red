@@ -21,11 +21,10 @@ public class DeleteCommand extends ChangeCommand {
 	}
 	
 	@Override
-	public ChangeCommand prepare() {
+	public void prepare() {
 		cg.clear();
 		
 		cg.add(((BRS)target).changeRemoveChild(del));
-		return this;
 	}
 	
 	@Override
