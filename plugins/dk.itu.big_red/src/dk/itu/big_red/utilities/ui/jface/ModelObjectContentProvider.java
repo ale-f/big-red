@@ -14,21 +14,25 @@ public abstract class ModelObjectContentProvider implements IContentProvider,
 		return input;
 	}
 	
-	protected void setInput(Object oldInput, Object newInput) {
+	protected void unregister(Object oldInput) {
 		if (oldInput instanceof ModelObject)
 			((ModelObject)oldInput).removePropertyChangeListener(this);
-		input = newInput;
-		if (input instanceof ModelObject)
-			((ModelObject)input).addPropertyChangeListener(this);
 	}
 	
-	protected void setInput(Object newInput) {
-		setInput(input, newInput);
+	protected void register(Object newInput) {
+		if (newInput instanceof ModelObject)
+			((ModelObject)newInput).addPropertyChangeListener(this);
+	}
+	
+	private void setInput(Object oldInput, Object newInput) {
+		unregister(oldInput);
+		input = newInput;
+		register(newInput);
 	}
 	
 	@Override
 	public void dispose() {
-		setInput(null);
+		setInput(null, null);
 	}
 	
 	@Override

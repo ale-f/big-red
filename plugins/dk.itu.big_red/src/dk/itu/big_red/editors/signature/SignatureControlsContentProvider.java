@@ -32,10 +32,13 @@ class SignatureControlsContentProvider extends ModelObjectTreeContentProvider {
 	}
 	
 	@Override
-	protected void setInput(Object oldInput, Object newInput) {
+	protected void unregister(Object oldInput) {
 		if (oldInput instanceof Signature)
 			recursivelyStopListening((Signature)oldInput);
-		super.setInput(oldInput, newInput);
+	}
+	
+	@Override
+	protected void register(Object newInput) {
 		if (newInput instanceof Signature)
 			recursivelyListen((Signature)newInput);
 	}
