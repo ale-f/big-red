@@ -116,7 +116,7 @@ public class Bigraph extends Container
 		
 		/* Container.clone */
 		for (Layoutable child : getChildren())
-			b.addChild(child.clone(b));
+			b.addChild(-1, child.clone(b));
 		
 		for (Link i : only(null, Link.class)) {
 			Link iClone = i.getIdentifier().lookup(null, b);
@@ -230,7 +230,7 @@ public class Bigraph extends Container
 				Namespace<Layoutable> ns =
 						c.getCreator().getBigraph().getNamespace(c.child);
 				c.child.setName(ns.put(c.name, c.child));
-				c.getCreator().addChild(c.child);
+				c.getCreator().addChild(c.position, c.child);
 			} else if (b instanceof Layoutable.ChangeRemove) {
 				Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 				Layoutable ch = c.getCreator();

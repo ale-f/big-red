@@ -34,10 +34,16 @@ public abstract class Container extends Layoutable {
 	public final class ChangeAddChild extends ContainerChange {
 		public final Layoutable child;
 		public final String name;
+		protected final int position;
 		
 		public ChangeAddChild(Layoutable child, String name) {
+			this(child, name, -1);
+		}
+		
+		protected ChangeAddChild(Layoutable child, String name, int position) {
 			this.child = child;
 			this.name = name;
+			this.position = position;
 		}
 		
 		@Override
@@ -52,14 +58,17 @@ public abstract class Container extends Layoutable {
 		
 		@Override
 		public String toString() {
-			return "Change(add child " + child + " to parent " + getCreator() + " with name \"" + name + "\")";
+			return "Change(add child " + child + " to parent " + 
+					getCreator() + " with name \"" + name + "\")";
 		}
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			context.<Layoutable>getModifiableList(
-					getCreator(), Container.PROPERTY_CHILD, getChildren()).
-				add(child);
+			List<Layoutable> children = context.<Layoutable>getModifiableList(
+					getCreator(), Container.PROPERTY_CHILD, getChildren());
+			if (position == -1) {
+				children.add(child);
+			} else children.add(position, child);
 			context.setProperty(child,
 					Layoutable.PROPERTY_PARENT, getCreator());
 			
@@ -73,11 +82,13 @@ public abstract class Container extends Layoutable {
 	
 	public abstract boolean canContain(Layoutable child);
 	
-	protected void addChild(Layoutable child) {
-		if (children.add(child)) {
-			child.setParent(this);
-			firePropertyChange(PROPERTY_CHILD, null, child);
-		}
+	protected void addChild(int position, Layoutable child) {
+		System.out.println(this + ".addChild(" + position + ", " + child + ")");
+		if (position == -1) {
+			children.add(child);
+		} else children.add(position, child);
+		child.setParent(this);
+		firePropertyChange(PROPERTY_CHILD, null, child);
 	}
 	
 	protected void removeChild(Layoutable child) {
@@ -102,7 +113,7 @@ public abstract class Container extends Layoutable {
 		Container c = (Container)super.clone(m);
 		
 		for (Layoutable child : getChildren())
-			c.addChild(child.clone(m));
+			c.addChild(-1, child.clone(m));
 		
 		return c;
 	}
