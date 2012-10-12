@@ -134,8 +134,10 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 			
 		}
 		
-		if (parent instanceof Container) {
-		 size.setSize(LayoutUtilities.getLayout(((Layoutable) requestObject)).getSize());
+		if (parent instanceof Container && parent!= null && requestObject!=null) {
+				if(LayoutUtilities.getLayout(((Layoutable) requestObject))!=null){
+					size.setSize(LayoutUtilities.getLayout(((Layoutable) requestObject)).getSize());
+				}
 		}
 		
 		
