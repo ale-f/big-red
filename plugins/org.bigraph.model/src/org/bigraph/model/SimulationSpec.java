@@ -70,9 +70,15 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	
 	public final class ChangeAddRule extends SimulationSpecChange {
 		public final ReactionRule rule;
+		public final int position;
 		
 		protected ChangeAddRule(ReactionRule rule) {
+			this(rule, -1);
+		}
+		
+		protected ChangeAddRule(ReactionRule rule, int position) {
 			this.rule = rule;
+			this.position = position;
 		}
 		
 		@Override
@@ -88,9 +94,13 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			context.<ReactionRule>getModifiableList(
-					getCreator(), SimulationSpec.PROPERTY_RULE, getRules()).
-				add(rule);
+			List<ReactionRule> l =
+					context.<ReactionRule>getModifiableList(
+							getCreator(),
+							SimulationSpec.PROPERTY_RULE, getRules());
+			if (position == -1) {
+				l.add(rule);
+			} else l.add(position, rule);
 		}
 	}
 	
@@ -101,9 +111,20 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 			this.rule = rule;
 		}
 		
+		private int actualPosition = -1;
+		@Override
+		public void beforeApply() {
+			actualPosition = getCreator().getRules().indexOf(rule);
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (actualPosition != -1);
+		}
+		
 		@Override
 		public ChangeAddRule inverse() {
-			return new ChangeAddRule(rule);
+			return new ChangeAddRule(rule, actualPosition);
 		}
 		
 		@Override
@@ -114,9 +135,8 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			context.<ReactionRule>getModifiableList(
-					getCreator(), SimulationSpec.PROPERTY_RULE, getRules()).
-				remove(rule);
+			context.<ReactionRule>getModifiableList(getCreator(),
+					SimulationSpec.PROPERTY_RULE, getRules()).remove(rule);
 		}
 	}
 	
@@ -170,7 +190,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		
 		ss.setSignature(getSignature().clone());
 		for (ReactionRule r : getRules())
-			ss.addRule(r.clone());
+			ss.addRule(-1, r.clone());
 		ss.setModel(getModel().clone());
 		
 		return ss;
@@ -178,14 +198,16 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	
 	private ArrayList<ReactionRule> rules = new ArrayList<ReactionRule>();
 	
-	protected void addRule(ReactionRule r) {
-		if (rules.add(r))
-			firePropertyChange(PROPERTY_RULE, null, r);
+	protected void addRule(int position, ReactionRule r) {
+		if (position == -1) {
+			rules.add(r);
+		} else rules.add(position, r);
+		firePropertyChange(PROPERTY_RULE, null, r);
 	}
 	
 	protected void removeRule(ReactionRule r) {
-		if (rules.remove(r))
-			firePropertyChange(PROPERTY_RULE, r, null);
+		rules.remove(r);
+		firePropertyChange(PROPERTY_RULE, r, null);
 	}
 	
 	public List<? extends ReactionRule> getRules() {
@@ -256,7 +278,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 				c.getCreator().setSignature(c.signature);
 			} else if (b instanceof ChangeAddRule) {
 				ChangeAddRule c = (ChangeAddRule)b;
-				c.getCreator().addRule(c.rule);
+				c.getCreator().addRule(c.position, c.rule);
 			} else if (b instanceof ChangeRemoveRule) {
 				ChangeRemoveRule c = (ChangeRemoveRule)b;
 				c.getCreator().removeRule(c.rule);
