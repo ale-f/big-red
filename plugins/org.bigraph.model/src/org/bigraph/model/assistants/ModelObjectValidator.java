@@ -53,12 +53,10 @@ class ModelObjectValidator implements IChangeValidator2 {
 	@Override
 	public boolean tryValidateChange(Process process, IChange change)
 			throws ChangeRejectedException {
-		final PropertyScratchpad context = process.getScratch();
 		if (change instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)change;
 			doExternalValidation(process, c, c.validator);
 		} else return false;
-		change.simulate(context);
 		return true;
 	}
 }

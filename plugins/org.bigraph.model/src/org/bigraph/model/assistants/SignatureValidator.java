@@ -55,7 +55,6 @@ class SignatureValidator implements IChangeValidator2 {
 				throw new ChangeRejectedException(b,
 						"Signature " + c.getCreator() + " doesn't have a parent");
 		} else return false;
-		b.simulate(context);
 		return true;
 	}
 }

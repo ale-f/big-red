@@ -96,7 +96,6 @@ class BigraphValidator implements IChangeValidator2 {
 			ModelObjectValidator.checkName(context, b, c.getCreator(),
 					bigraph.getNamespace(c.getCreator()), c.newName);
 		} else return false;
-		b.simulate(context);
 		return true;
 	}
 }

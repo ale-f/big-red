@@ -99,6 +99,8 @@ public class ValidatorManager {
 						break;
 					}
 				}
+				if (passes)
+					c.simulate(getScratch());
 				return (passes ? null : c);
 			} else {
 				for (IChange i : (ChangeGroup)c) {
