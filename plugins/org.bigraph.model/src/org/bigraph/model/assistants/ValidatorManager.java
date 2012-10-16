@@ -93,12 +93,8 @@ public class ValidatorManager {
 				throw new ChangeRejectedException(c, "" + c + " is not ready");
 			} else if (!(c instanceof ChangeGroup)) {
 				boolean passes = false;
-				for (IChangeValidator2 i : getValidators()) {
-					if (i.tryValidateChange(Process.this, c)) {
-						passes = true;
-						break;
-					}
-				}
+				for (IChangeValidator2 i : getValidators())
+					passes |= i.tryValidateChange(this, c);
 				if (passes)
 					c.simulate(getScratch());
 				return (passes ? null : c);
