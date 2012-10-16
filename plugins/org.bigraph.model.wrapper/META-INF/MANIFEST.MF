@@ -8,3 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.bigraph.model;bundle-version="1.0.0";visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="3.7.0"
 Export-Package: org.bigraph.model.wrapper
+Bundle-Activator: org.bigraph.model.wrapper.Activator
+Bundle-ActivationPolicy: lazy
