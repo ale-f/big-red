@@ -14,21 +14,19 @@ class SignatureControlsContentProvider extends ModelObjectTreeContentProvider {
 	}
 	
 	private void recursivelyListen(Signature s) {
+		s.addPropertyChangeListener(this);
 		for (Control c : s.getControls())
 			c.addPropertyChangeListener(this);
-		for (Signature t : s.getSignatures()) {
+		for (Signature t : s.getSignatures())
 			recursivelyListen(t);
-			t.addPropertyChangeListener(this);
-		}
 	}
 	
 	private void recursivelyStopListening(Signature s) {
+		for (Signature t : s.getSignatures())
+			recursivelyStopListening(t);
 		for (Control c : s.getControls())
 			c.removePropertyChangeListener(this);
-		for (Signature t : s.getSignatures()) {
-			recursivelyStopListening(t);
-			t.removePropertyChangeListener(this);
-		}
+		s.removePropertyChangeListener(this);
 	}
 	
 	@Override
