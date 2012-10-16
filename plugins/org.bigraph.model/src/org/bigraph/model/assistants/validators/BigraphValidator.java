@@ -35,11 +35,11 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 	}
 	
 	@Override
-	protected IChange doValidateChange(Process process, IChange b)
+	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
 		final PropertyScratchpad context = process.getScratch();
-		if (super.doValidateChange(process, b) == null) {
-			return null;
+		if (super.tryValidateChange(process, b)) {
+			return true;
 		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			checkEligibility(context, b, c.link, c.getCreator());
@@ -118,8 +118,8 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 			checkEligibility(context, b, c.getCreator());
 			checkName(context, b, c.getCreator(),
 					getChangeable().getNamespace(c.getCreator()), c.newName);
-		} else return b;
+		} else return false;
 		b.simulate(context);
-		return null;
+		return true;
 	}
 }

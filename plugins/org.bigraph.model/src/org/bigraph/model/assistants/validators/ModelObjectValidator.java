@@ -64,17 +64,6 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		}
 	}
 	
-	protected IChange doValidateChange(Process process, IChange b)
-			throws ChangeRejectedException {
-		final PropertyScratchpad context = process.getScratch();
-		if (b instanceof ChangeExtendedData) {
-			ChangeExtendedData c = (ChangeExtendedData)b;
-			doExternalValidation(process, c, c.validator);
-		} else return b;
-		b.simulate(context);
-		return null;
-	}
-	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
 		tryValidateChange((PropertyScratchpad)null, b);
@@ -92,6 +81,12 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 	@Override
 	public boolean tryValidateChange(Process process, IChange change)
 			throws ChangeRejectedException {
-		return (doValidateChange(process, change) == null);
+		final PropertyScratchpad context = process.getScratch();
+		if (change instanceof ChangeExtendedData) {
+			ChangeExtendedData c = (ChangeExtendedData)change;
+			doExternalValidation(process, c, c.validator);
+		} else return false;
+		change.simulate(context);
+		return true;
 	}
 }

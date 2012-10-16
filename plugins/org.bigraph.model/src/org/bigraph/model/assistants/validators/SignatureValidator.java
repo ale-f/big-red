@@ -29,11 +29,11 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 	}
 	
 	@Override
-	public IChange doValidateChange(Process process, IChange b)
+	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
 		final PropertyScratchpad context = process.getScratch();
-		if (super.doValidateChange(process, b) == null) {
-			return null;
+		if (super.tryValidateChange(process, b)) {
+			return true;
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
 			checkName(context, c, c.control,
@@ -72,8 +72,8 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 			if (c.getCreator().getParent(context) == null)
 				throw new ChangeRejectedException(b,
 						"Signature " + c.getCreator() + " doesn't have a parent");
-		} else return b;
+		} else return false;
 		b.simulate(context);
-		return null;
+		return true;
 	}
 }

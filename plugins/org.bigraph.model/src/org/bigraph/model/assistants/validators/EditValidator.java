@@ -13,17 +13,17 @@ public class EditValidator extends ModelObjectValidator<Edit> {
 	}
 
 	@Override
-	protected IChange doValidateChange(Process process, IChange b)
+	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
 		final PropertyScratchpad context = process.getScratch();
-		if (super.doValidateChange(process, b) == null) {
-			return null;
+		if (super.tryValidateChange(process, b)) {
+			return true;
 		} else if (b instanceof ChangeDescriptorAdd) {
 			/* do nothing, yet */
 		} else if (b instanceof ChangeDescriptorRemove) {
 			/* do nothing, yet */
-		} else return b;
+		} else return false;
 		b.simulate(context);
-		return null;
+		return true;
 	}
 }
