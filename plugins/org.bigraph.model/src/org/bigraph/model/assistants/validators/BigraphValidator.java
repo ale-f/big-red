@@ -20,16 +20,18 @@ import org.bigraph.model.changes.IChange;
  * consistency and visual sensibleness.
  * @author alec
  */
-public class BigraphValidator extends ModelObjectValidator<Bigraph> {
-	public BigraphValidator(Bigraph changeable) {
-		super(changeable);
+public class BigraphValidator extends ModelObjectValidator {
+	private final Bigraph bigraph;
+	
+	public BigraphValidator(Bigraph bigraph) {
+		this.bigraph = bigraph;
 	}
 	
 	private void checkEligibility(
 			PropertyScratchpad context, IChange b, Layoutable... l)
 			throws ChangeRejectedException {
 		for (Layoutable i : l)
-			if (i.getBigraph(context) != getChangeable())
+			if (i.getBigraph(context) != bigraph)
 				throw new ChangeRejectedException(b,
 						i + " is not part of this Bigraph");
 	}
@@ -64,7 +66,7 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 						" is an atomic control");
 			
 			checkName(context, b, c.child,
-					getChangeable().getNamespace(c.child), c.name);
+					bigraph.getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {
 				if (!(c.getCreator() instanceof Bigraph))
@@ -117,7 +119,7 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			checkEligibility(context, b, c.getCreator());
 			checkName(context, b, c.getCreator(),
-					getChangeable().getNamespace(c.getCreator()), c.newName);
+					bigraph.getNamespace(c.getCreator()), c.newName);
 		} else return false;
 		b.simulate(context);
 		return true;

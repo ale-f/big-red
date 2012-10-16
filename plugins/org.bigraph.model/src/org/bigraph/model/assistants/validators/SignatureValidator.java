@@ -15,15 +15,17 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
-public class SignatureValidator extends ModelObjectValidator<Signature> {
-	public SignatureValidator(Signature changeable) {
-		super(changeable);
+public class SignatureValidator extends ModelObjectValidator {
+	private final Signature signature;
+	
+	public SignatureValidator(Signature signature) {
+		this.signature = signature;
 	}
 	
 	private void checkEligibility(
 			PropertyScratchpad context, IChange b, Control c)
 			throws ChangeRejectedException {
-		if (c.getSignature(context) != getChangeable())
+		if (c.getSignature(context) != signature)
 			throw new ChangeRejectedException(b,
 					"The control " + c + " is not part of this Signature");
 	}
@@ -37,7 +39,7 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
 			checkName(context, c, c.control,
-					getChangeable().getNamespace(), c.name);
+					signature.getNamespace(), c.name);
 		} else if (b instanceof ChangeRemoveControl) {
 			ChangeRemoveControl c = (ChangeRemoveControl)b;
 			checkEligibility(context, b, c.getCreator());
@@ -61,7 +63,7 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 			ChangeName c = (ChangeName)b;
 			checkEligibility(context, b, c.getCreator());
 			checkName(context, c, c.getCreator(),
-					getChangeable().getNamespace(), c.name);
+					signature.getNamespace(), c.name);
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
 			if (c.signature.getParent(context) != null)

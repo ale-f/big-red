@@ -7,9 +7,8 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
-public class EditValidator extends ModelObjectValidator<Edit> {
-	public EditValidator(Edit changeExecutor) {
-		super(changeExecutor);
+public class EditValidator extends ModelObjectValidator {
+	public EditValidator(Edit edit) {
 	}
 
 	@Override

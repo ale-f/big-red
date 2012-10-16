@@ -6,24 +6,13 @@ import org.bigraph.model.ModelObject.ModelObjectChange;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
 import org.bigraph.model.changes.IChangeValidator2;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.policies.INamePolicy;
 
-abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
+abstract class ModelObjectValidator
 		implements IChangeValidator, IChangeValidator2 {
-	private final T changeExecutor;
-	
-	public ModelObjectValidator(T changeExecutor) {
-		this.changeExecutor = changeExecutor;
-	}
-
-	protected T getChangeable() {
-		return changeExecutor;
-	}
-	
 	protected static <V> void checkName(
 			PropertyScratchpad context, IChange c, V object,
 			Namespace<? extends V> ns, String cdt)
