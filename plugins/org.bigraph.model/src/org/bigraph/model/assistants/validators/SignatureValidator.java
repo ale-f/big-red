@@ -29,9 +29,10 @@ public class SignatureValidator extends ModelObjectValidator<Signature> {
 	}
 	
 	@Override
-	public IChange doValidateChange(PropertyScratchpad context, IChange b)
+	public IChange doValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
-		if (super.doValidateChange(context, b) == null) {
+		final PropertyScratchpad context = process.getScratch();
+		if (super.doValidateChange(process, b) == null) {
 			return null;
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;

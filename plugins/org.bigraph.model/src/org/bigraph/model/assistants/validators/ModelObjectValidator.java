@@ -17,11 +17,7 @@ import org.bigraph.model.names.policies.INamePolicy;
 
 abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		implements IChangeValidator, IChangeValidator2 {
-	private interface FinalCheck {
-		void run() throws ChangeRejectedException;
-	}
-	
-	private ArrayList<FinalCheck> finalChecks = new ArrayList<FinalCheck>();
+	private ArrayList<Callback> finalChecks = new ArrayList<Callback>();
 	
 	private final T changeExecutor;
 	
@@ -51,42 +47,42 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 			throw new ChangeRejectedException(c, "Names must be unique");
 	}
 	
-	protected static <V extends ModelObjectChange> FinalCheck makeFinalCheck(
-			final PropertyScratchpad context,
-			final V change, final ModelObject.FinalValidator<V> validator) {
-		return new FinalCheck() {
+	protected static <V extends ModelObjectChange> Callback makeCallback(
+			final Process process, final V change,
+			final ModelObject.FinalValidator<V> validator) {
+		return new Callback() {
 			@Override
 			public void run() throws ChangeRejectedException {
-				validator.finalValidate(change, context);
+				validator.finalValidate(change, process.getScratch());
 			}
 		};
 	}
 	
 	protected <V extends ModelObjectChange> void doExternalValidation(
-			final PropertyScratchpad context, final V change,
-			final ModelObject.Validator<V> validator)
+			Process process, V change, ModelObject.Validator<V> validator)
 			throws ChangeRejectedException {
 		if (validator != null) {
-			validator.validate(change, context);
+			validator.validate(change, process.getScratch());
 			if (validator instanceof ModelObject.FinalValidator<?>)
-				finalChecks.add(makeFinalCheck(context, change,
+				process.addCallback(makeCallback(process, change,
 						(ModelObject.FinalValidator<V>)validator));
 		}
 	}
 	
-	protected IChange doValidateChange(PropertyScratchpad context, IChange b)
+	protected IChange doValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
+		final PropertyScratchpad context = process.getScratch();
 		if (!b.isReady()) {
 			throw new ChangeRejectedException(b, "The Change is not ready");
 		} else if (b instanceof ChangeGroup) {
 			for (IChange c : (ChangeGroup)b)
-				if ((c = doValidateChange(context, c)) != null)
+				if ((c = doValidateChange(process, c)) != null)
 					return c;
 			/* All changes will have been individually simulated */
 			return null;
 		} else if (b instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)b;
-			doExternalValidation(context, c, c.validator);
+			doExternalValidation(process, c, c.validator);
 		} else return b;
 		b.simulate(context);
 		return null;
@@ -107,20 +103,25 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 				public PropertyScratchpad getScratch() {
 					return context;
 				};
+				
+				@Override
+				public void addCallback(Callback c) {
+					finalChecks.add(c);
+				}
 			}, b);
 		if (!r)
 			throw new ChangeRejectedException(b,
 					"The change was not recognised by the validator");
 		
-		for (FinalCheck i : finalChecks)
+		for (Callback i : finalChecks)
 			i.run();
 		
 		context.clear();
 	}
 	
 	@Override
-	public boolean tryValidateChange(Process context, IChange change)
+	public boolean tryValidateChange(Process process, IChange change)
 			throws ChangeRejectedException {
-		return (doValidateChange(context.getScratch(), change) == null);
+		return (doValidateChange(process, change) == null);
 	}
 }
