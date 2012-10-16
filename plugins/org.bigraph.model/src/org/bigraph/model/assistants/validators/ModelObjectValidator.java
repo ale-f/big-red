@@ -11,11 +11,12 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IChangeValidator;
+import org.bigraph.model.changes.IChangeValidator2;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.policies.INamePolicy;
 
 abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
-		implements IChangeValidator {
+		implements IChangeValidator, IChangeValidator2 {
 	private interface FinalCheck {
 		void run() throws ChangeRejectedException;
 	}
@@ -93,22 +94,33 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		tryValidateChange(null, b);
+		tryValidateChange((PropertyScratchpad)null, b);
 	}
 	
-	public void tryValidateChange(PropertyScratchpad context, IChange b)
+	public void tryValidateChange(PropertyScratchpad context_, IChange b)
 			throws ChangeRejectedException {
-		context = new PropertyScratchpad(context);
+		final PropertyScratchpad context = new PropertyScratchpad(context_);
 		finalChecks.clear();
 		
-		IChange c = doValidateChange(context, b);
-		if (c != null)
-			throw new ChangeRejectedException(c,
+		boolean r = tryValidateChange(new Process() {
+				@Override
+				public PropertyScratchpad getScratch() {
+					return context;
+				};
+			}, b);
+		if (!r)
+			throw new ChangeRejectedException(b,
 					"The change was not recognised by the validator");
 		
 		for (FinalCheck i : finalChecks)
 			i.run();
 		
 		context.clear();
+	}
+	
+	@Override
+	public boolean tryValidateChange(Process context, IChange change)
+			throws ChangeRejectedException {
+		return (doValidateChange(context.getScratch(), change) == null);
 	}
 }
