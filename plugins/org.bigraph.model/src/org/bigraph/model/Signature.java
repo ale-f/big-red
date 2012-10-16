@@ -373,15 +373,4 @@ public class Signature extends ModelObject
 			return getControl(((Control.Identifier)identifier).getName());
 		} else return null;
 	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return safeClassCmp(this, obj) &&
-				((Signature)obj).getControls().equals(getControls());
-	}
-	
-	@Override
-	public int hashCode() {
-		return compositeHashCode(getControls());
-	}
 }

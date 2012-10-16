@@ -150,17 +150,6 @@ public class PortSpec extends NamedModelObject implements IPort {
 	}
 	
 	@Override
-	public boolean equals(Object obj) {
-		return safeClassCmp(this, obj) &&
-				safeEquals(getName(), ((PortSpec)obj).getName());
-	}
-	
-	@Override
-	public int hashCode() {
-		return compositeHashCode(getName());
-	}
-	
-	@Override
 	public void dispose() {
 		control = null;
 		
