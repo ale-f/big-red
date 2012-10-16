@@ -10,7 +10,7 @@ import org.bigraph.model.Control.ChangeName;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.assistants.validators.SignatureValidator;
+import org.bigraph.model.assistants.validators.ModelObjectValidator;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -203,7 +203,7 @@ public class Signature extends ModelObject
 				getProperty(context, PROPERTY_CONTROL);
 	}
 	
-	private SignatureValidator validator = new SignatureValidator();
+	private ModelObjectValidator validator = new ModelObjectValidator();
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
 	

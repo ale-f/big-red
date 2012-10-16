@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.validators.BigraphValidator;
+import org.bigraph.model.assistants.validators.ModelObjectValidator;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -95,7 +95,7 @@ public class Bigraph extends Container
 		return getNamespace(l).getNextName();
 	}
 	
-	private BigraphValidator validator = new BigraphValidator();
+	private ModelObjectValidator validator = new ModelObjectValidator();
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
 	

@@ -13,21 +13,14 @@ import org.bigraph.model.Port;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.IChangeValidator2;
 
-/**
- * The <strong>BigraphIntegrityValidator</strong> is the basic validator that
- * all changes to {@link Bigraph}s must go through; it checks for both model
- * consistency and visual sensibleness.
- * @author alec
- */
-public class BigraphValidator extends ModelObjectValidator {
+class BigraphValidator implements IChangeValidator2 {
 	@Override
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
 		final PropertyScratchpad context = process.getScratch();
-		if (super.tryValidateChange(process, b)) {
-			return true;
-		} else if (b instanceof Point.ChangeConnect) {
+		if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
 			if (c.getCreator().getLink(context) != null)
 				throw new ChangeRejectedException(b,
@@ -49,7 +42,7 @@ public class BigraphValidator extends ModelObjectValidator {
 						((Node)c.getCreator()).getControl().getName() +
 						" is an atomic control");
 			
-			checkName(context, b, c.child,
+			ModelObjectValidator.checkName(context, b, c.child,
 					bigraph.getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {
@@ -101,7 +94,7 @@ public class BigraphValidator extends ModelObjectValidator {
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			Bigraph bigraph = c.getCreator().getBigraph(context);
-			checkName(context, b, c.getCreator(),
+			ModelObjectValidator.checkName(context, b, c.getCreator(),
 					bigraph.getNamespace(c.getCreator()), c.newName);
 		} else return false;
 		b.simulate(context);

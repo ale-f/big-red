@@ -11,7 +11,7 @@ import org.bigraph.model.changes.IChangeValidator2;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.policies.INamePolicy;
 
-abstract class ModelObjectValidator
+public final class ModelObjectValidator
 		implements IChangeValidator, IChangeValidator2 {
 	protected static <V> void checkName(
 			PropertyScratchpad context, IChange c, V object,
@@ -62,6 +62,9 @@ abstract class ModelObjectValidator
 			throws ChangeRejectedException {
 		ValidatorManager vm = new ValidatorManager();
 		vm.addValidator(this);
+		vm.addValidator(new BigraphValidator());
+		vm.addValidator(new EditValidator());
+		vm.addValidator(new SignatureValidator());
 		if (!vm.tryValidateChange(context, change))
 			throw new ChangeRejectedException(change,
 					"The Change was not recognised by the validator");
