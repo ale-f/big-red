@@ -43,8 +43,12 @@ public class ValidatorManager {
 	public boolean tryValidateChange(
 			PropertyScratchpad context, IChange change)
 			throws ChangeRejectedException {
-		return (new Process(
-				new PropertyScratchpad(context)).run(change) == null);
+		Process p = new Process(new PropertyScratchpad(context));
+		IChange ch = p.run(change);
+		if (ch != null) {
+			throw new ChangeRejectedException(ch,
+					"" + ch + " was not recognised by the validator");
+		} else return true;
 	}
 	
 	private final class Process implements IChangeValidator2.Process {
