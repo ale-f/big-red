@@ -265,7 +265,7 @@ public class Colour {
 	}
 	
 	public Colour() {
-		
+		this(0, 0, 0);
 	}
 	
 	/**
@@ -275,7 +275,7 @@ public class Colour {
 	 * @param b the blue component
 	 */
 	public Colour(int r, int g, int b) {
-		setRed(r).setGreen(g).setBlue(b);
+		this(r, g, b, 255);
 	}
 	
 	/**
@@ -457,9 +457,9 @@ public class Colour {
 	}
 	
 	/**
-	 * Randomises the red, green, and blue values of this {@link Colour}, and
-	 * sets its alpha value to <code>255</code>.
-	 * @return <code>this</code>, for convenience
+	 * Returns a new opaque {@link Colour} with random red, green, and blue
+	 * values.
+	 * @return a new {@link Colour}
 	 */
 	public static Colour random() {
 		Random r = new Random();
