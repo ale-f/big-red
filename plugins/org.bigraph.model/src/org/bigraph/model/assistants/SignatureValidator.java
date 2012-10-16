@@ -1,4 +1,4 @@
-package org.bigraph.model.assistants.validators;
+package org.bigraph.model.assistants;
 
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
@@ -10,7 +10,6 @@ import org.bigraph.model.Signature.ChangeAddControl;
 import org.bigraph.model.Signature.ChangeAddSignature;
 import org.bigraph.model.Signature.ChangeRemoveSignature;
 import org.bigraph.model.Control.ChangeRemoveControl;
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeValidator2;

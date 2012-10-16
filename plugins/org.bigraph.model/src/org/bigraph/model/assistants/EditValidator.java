@@ -1,8 +1,7 @@
-package org.bigraph.model.assistants.validators;
+package org.bigraph.model.assistants;
 
 import org.bigraph.model.Edit.ChangeDescriptorAdd;
 import org.bigraph.model.Edit.ChangeDescriptorRemove;
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeValidator2;

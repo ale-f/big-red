@@ -1,9 +1,8 @@
-package org.bigraph.model.assistants.validators;
+package org.bigraph.model.assistants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;

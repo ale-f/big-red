@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.validators.ValidatorManager;
+import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;

@@ -1,4 +1,4 @@
-package org.bigraph.model.assistants.validators;
+package org.bigraph.model.assistants;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
@@ -10,7 +10,6 @@ import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Port;
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeValidator2;
