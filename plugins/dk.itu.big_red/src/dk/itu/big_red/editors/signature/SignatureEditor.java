@@ -3,12 +3,8 @@ package dk.itu.big_red.editors.signature;
 import java.beans.PropertyChangeListener;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-
 import org.bigraph.model.Control;
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.ChangeGroup;
@@ -55,7 +51,6 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Text;
 import dk.itu.big_red.editors.AbstractNonGEFEditor;
 import dk.itu.big_red.editors.assistants.IFactory;
-import dk.itu.big_red.editors.assistants.ModelListenerProxy;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
@@ -106,13 +101,14 @@ implements PropertyChangeListener {
 		outlineLabel, fillLabel, nameLabel, appearanceLabel;
 	private ColorSelector outline, fill;
 	
-	private Map<ModelObject, ModelListenerProxy> proxies =
-			new HashMap<ModelObject, ModelListenerProxy>();
-	
 	protected void setControl(Control c) {
+		if (currentControl != null)
+			currentControl.removePropertyChangeListener(this);
 		currentControl = c;
-		if (setEnablement(c != null))
+		if (setEnablement(c != null)) {
+			currentControl.addPropertyChangeListener(this);
 			controlToFields();
+		}
 	}
 	
 	private boolean uiUpdateInProgress = false;
@@ -607,34 +603,23 @@ implements PropertyChangeListener {
 		model = (Signature)loadInput();
 	}
 	
-	private void addListenerProxy(ModelObject m) {
-		proxies.put(m, new ModelListenerProxy(m, this));
-	}
-	
 	@Override
 	protected void updateEditorControl() {
 		if (getError() != null)
 			return;
 		
 		clearUndo();
-		for (ModelListenerProxy p : proxies.values())
-			p.dispose();
-		proxies.clear();
+		if (currentControl != null)
+			currentControl.removePropertyChangeListener(this);
 		
-		addListenerProxy(getModel());
-		for (Control c : getModel().getControls())
-			addListenerProxy(c);
 		controls.setInput(getModel());
-		
 		setControl(null);
 	}
 
 	@Override
 	public void dispose() {
-		for (ModelListenerProxy p : proxies.values())
-			p.dispose();
-		proxies.clear();
-		
+		if (currentControl != null)
+			currentControl.removePropertyChangeListener(this);
 		model = null;
 		
 		appearance.dispose();
@@ -686,15 +671,6 @@ implements PropertyChangeListener {
 				}
 			} finally {
 				uiUpdateInProgress = false;
-			}
-		} else if (evt.getSource().equals(getModel())) {
-			Object oldValue = evt.getOldValue();
-			if (Signature.PROPERTY_CONTROL.equals(propertyName)) {
-				if (oldValue == null && newValue != null) {
-					addListenerProxy((Control)newValue);
-				} else if (oldValue != null && newValue == null) {
-					proxies.remove(oldValue).dispose();
-				}
 			}
 		}
 	}
