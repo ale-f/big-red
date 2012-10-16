@@ -3,6 +3,7 @@ package org.bigraph.model.assistants.validators;
 import org.bigraph.model.Edit;
 import org.bigraph.model.Edit.ChangeDescriptorAdd;
 import org.bigraph.model.Edit.ChangeDescriptorRemove;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
@@ -12,16 +13,16 @@ public class EditValidator extends ModelObjectValidator<Edit> {
 	}
 
 	@Override
-	protected IChange doValidateChange(IChange b)
+	protected IChange doValidateChange(PropertyScratchpad context, IChange b)
 			throws ChangeRejectedException {
-		if (super.doValidateChange(b) == null) {
+		if (super.doValidateChange(context, b) == null) {
 			return null;
 		} else if (b instanceof ChangeDescriptorAdd) {
 			/* do nothing, yet */
 		} else if (b instanceof ChangeDescriptorRemove) {
 			/* do nothing, yet */
 		} else return b;
-		b.simulate(getScratch());
+		b.simulate(context);
 		return null;
 	}
 }

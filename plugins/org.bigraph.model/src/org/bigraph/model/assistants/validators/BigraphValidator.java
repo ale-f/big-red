@@ -10,6 +10,7 @@ import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Port;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
@@ -24,92 +25,100 @@ public class BigraphValidator extends ModelObjectValidator<Bigraph> {
 		super(changeable);
 	}
 	
-	private void checkEligibility(IChange b, Layoutable... l)
+	private void checkEligibility(
+			PropertyScratchpad context, IChange b, Layoutable... l)
 			throws ChangeRejectedException {
 		for (Layoutable i : l)
-			if (i.getBigraph(getScratch()) != getChangeable())
+			if (i.getBigraph(context) != getChangeable())
 				throw new ChangeRejectedException(b,
 						i + " is not part of this Bigraph");
 	}
 	
 	@Override
-	protected IChange doValidateChange(IChange b)
+	protected IChange doValidateChange(PropertyScratchpad context, IChange b)
 			throws ChangeRejectedException {
-		if (super.doValidateChange(b) == null) {
+		if (super.doValidateChange(context, b) == null) {
 			return null;
 		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
-			checkEligibility(b, c.link, c.getCreator());
-			if (c.getCreator().getLink(getScratch()) != null)
-				throw new ChangeRejectedException(b, "Connections can only be established to Points that " +
-				"aren't already connected");
+			checkEligibility(context, b, c.link, c.getCreator());
+			if (c.getCreator().getLink(context) != null)
+				throw new ChangeRejectedException(b,
+						"Connections can only be established to Points that " +
+						"aren't already connected");
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			checkEligibility(b, c.getCreator());
-			Link l = c.getCreator().getLink(getScratch());
+			checkEligibility(context, b, c.getCreator());
+			Link l = c.getCreator().getLink(context);
 			if (l == null)
-				throw new ChangeRejectedException(b, "The Point is already disconnected");
+				throw new ChangeRejectedException(b,
+						"The Point is already disconnected");
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			
 			if (c.getCreator() instanceof Node &&
 				((Node)c.getCreator()).getControl().getKind() == Kind.ATOMIC)
-				throw new ChangeRejectedException(b, ((Node)c.getCreator()).getControl().getName() +
-				" is an atomic control");
+				throw new ChangeRejectedException(b,
+						((Node)c.getCreator()).getControl().getName() +
+						" is an atomic control");
 			
-			checkName(b, c.child,
+			checkName(context, b, c.child,
 					getChangeable().getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {
 				if (!(c.getCreator() instanceof Bigraph))
-					throw new ChangeRejectedException(b, "Edges must be children of the top-level Bigraph");
+					throw new ChangeRejectedException(b,
+							"Edges must be children of the top-level Bigraph");
 			} else {
 				if (c.child instanceof Container)
-					if (((Container)c.child).getChildren(getScratch()).size() != 0)
-						throw new ChangeRejectedException(b, c.child + " already has child objects");
+					if (((Container)c.child).getChildren(context).size() != 0)
+						throw new ChangeRejectedException(b,
+								c.child + " already has child objects");
 				if (!c.getCreator().canContain(c.child))
-					throw new ChangeRejectedException(b, c.getCreator().getType() + "s can't contain " +
-					c.child.getType() + "s");
+					throw new ChangeRejectedException(b,
+							c.getCreator().getType() + "s can't contain " +
+							c.child.getType() + "s");
 			}
 			
-			Container existingParent = c.child.getParent(getScratch());
+			Container existingParent = c.child.getParent(context);
 			if (existingParent != null)
-				throw new ChangeRejectedException(b, c.child +
-				" already has a parent (" + existingParent + ")");
+				throw new ChangeRejectedException(b,
+						c.child + " already has a parent (" +
+						existingParent + ")");
 		} else if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
-			checkEligibility(b, ch);
+			checkEligibility(context, b, ch);
 			
 			if (ch instanceof InnerName)
-				if (((InnerName) ch).getLink(getScratch()) != null)
+				if (((InnerName) ch).getLink(context) != null)
 					throw new ChangeRejectedException(b,
 							"The point " + ch + " must be disconnected " +
 							"before it can be deleted");
 			
 			if (ch instanceof Container) {
-				if (((Container)ch).getChildren(getScratch()).size() != 0)
+				if (((Container)ch).getChildren(context).size() != 0)
 					throw new ChangeRejectedException(b,
 							ch + " has child objects which must be " +
 							"removed first");
 				if (ch instanceof Node) {
 					for (Port p : ((Node)ch).getPorts())
-						if (p.getLink(getScratch()) != null)
+						if (p.getLink(context) != null)
 							throw new ChangeRejectedException(b,
 									"The point " + ch + " must be " +
 									"disconnected before it can be deleted");
 				}
 			}
-			Container cp = ch.getParent(getScratch());
+			Container cp = ch.getParent(context);
 			if (cp == null)
 				throw new ChangeRejectedException(b, ch + " has no parent");
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			checkEligibility(b, c.getCreator());
-			checkName(b, c.getCreator(),
+			checkEligibility(context, b, c.getCreator());
+			checkName(context, b, c.getCreator(),
 					getChangeable().getNamespace(c.getCreator()), c.newName);
 		} else return b;
-		b.simulate(getScratch());
+		b.simulate(context);
 		return null;
 	}
 }
