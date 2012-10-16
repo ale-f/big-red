@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.validators.ModelObjectValidator;
+import org.bigraph.model.assistants.validators.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -94,8 +94,6 @@ public class Bigraph extends Container
 	public String getFirstUnusedName(Layoutable l) {
 		return getNamespace(l).getNextName();
 	}
-	
-	private ModelObjectValidator validator = new ModelObjectValidator();
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
 	
@@ -203,7 +201,7 @@ public class Bigraph extends Container
 	
 	public void tryValidateChange(PropertyScratchpad context, IChange b)
 			throws ChangeRejectedException {
-		validator.tryValidateChange(context, b);
+		ValidatorManager.getInstance().tryValidateChange(context, b);
 	}
 	
 	@Override

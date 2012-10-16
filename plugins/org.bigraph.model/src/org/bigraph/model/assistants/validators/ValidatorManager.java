@@ -11,6 +11,13 @@ import org.bigraph.model.changes.IChangeValidator2;
 import org.bigraph.model.changes.IChangeValidator2.Callback;
 
 public class ValidatorManager {
+	static {
+		getInstance().addValidator(new EditValidator());
+		getInstance().addValidator(new BigraphValidator());
+		getInstance().addValidator(new SignatureValidator());
+		getInstance().addValidator(new ModelObjectValidator());
+	}
+	
 	private static final class Holder {
 		private static final ValidatorManager INSTANCE =
 				new ValidatorManager();

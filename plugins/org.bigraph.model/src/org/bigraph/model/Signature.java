@@ -10,7 +10,7 @@ import org.bigraph.model.Control.ChangeName;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.assistants.validators.ModelObjectValidator;
+import org.bigraph.model.assistants.validators.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -202,14 +202,12 @@ public class Signature extends ModelObject
 		return (List<? extends Control>)
 				getProperty(context, PROPERTY_CONTROL);
 	}
-	
-	private ModelObjectValidator validator = new ModelObjectValidator();
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		validator.tryValidateChange(b);
+		ValidatorManager.getInstance().tryValidateChange(b);
 	}
 	
 	@Override
@@ -288,8 +286,6 @@ public class Signature extends ModelObject
 			signatures = null;
 		}
 
-		validator = null;
-		
 		super.dispose();
 	}
 	

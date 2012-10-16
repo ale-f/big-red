@@ -3,7 +3,7 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.assistants.validators.ModelObjectValidator;
+import org.bigraph.model.assistants.validators.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -137,11 +137,9 @@ public class Edit extends ModelObject
 		return cdg.createChange(context, r);
 	}
 
-	private ModelObjectValidator validator = new ModelObjectValidator();
-	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		validator.tryValidateChange(b);
+		ValidatorManager.getInstance().tryValidateChange(b);
 	}
 	
 	static final class ChangeExecutor extends ModelObject.ChangeExecutor {

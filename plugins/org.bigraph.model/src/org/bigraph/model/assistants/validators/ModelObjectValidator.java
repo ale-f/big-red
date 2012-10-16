@@ -6,13 +6,11 @@ import org.bigraph.model.ModelObject.ModelObjectChange;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeValidator;
 import org.bigraph.model.changes.IChangeValidator2;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.policies.INamePolicy;
 
-public final class ModelObjectValidator
-		implements IChangeValidator, IChangeValidator2 {
+class ModelObjectValidator implements IChangeValidator2 {
 	protected static <V> void checkName(
 			PropertyScratchpad context, IChange c, V object,
 			Namespace<? extends V> ns, String cdt)
@@ -51,23 +49,6 @@ public final class ModelObjectValidator
 				process.addCallback(makeCallback(process, change,
 						(ModelObject.FinalValidator<V>)validator));
 		}
-	}
-	
-	@Override
-	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		tryValidateChange((PropertyScratchpad)null, b);
-	}
-	
-	public void tryValidateChange(PropertyScratchpad context, IChange change)
-			throws ChangeRejectedException {
-		ValidatorManager vm = new ValidatorManager();
-		vm.addValidator(this);
-		vm.addValidator(new BigraphValidator());
-		vm.addValidator(new EditValidator());
-		vm.addValidator(new SignatureValidator());
-		if (!vm.tryValidateChange(context, change))
-			throw new ChangeRejectedException(change,
-					"The Change was not recognised by the validator");
 	}
 	
 	@Override
