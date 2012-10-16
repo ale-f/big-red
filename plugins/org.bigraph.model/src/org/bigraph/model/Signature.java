@@ -203,7 +203,7 @@ public class Signature extends ModelObject
 				getProperty(context, PROPERTY_CONTROL);
 	}
 	
-	private SignatureValidator validator = new SignatureValidator(this);
+	private SignatureValidator validator = new SignatureValidator();
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
 	

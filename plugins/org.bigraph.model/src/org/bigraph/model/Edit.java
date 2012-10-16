@@ -137,7 +137,7 @@ public class Edit extends ModelObject
 		return cdg.createChange(context, r);
 	}
 
-	private EditValidator validator = new EditValidator(this);
+	private EditValidator validator = new EditValidator();
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {

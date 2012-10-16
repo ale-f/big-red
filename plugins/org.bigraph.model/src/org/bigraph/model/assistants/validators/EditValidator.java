@@ -1,6 +1,5 @@
 package org.bigraph.model.assistants.validators;
 
-import org.bigraph.model.Edit;
 import org.bigraph.model.Edit.ChangeDescriptorAdd;
 import org.bigraph.model.Edit.ChangeDescriptorRemove;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -8,9 +7,6 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
 public class EditValidator extends ModelObjectValidator {
-	public EditValidator(Edit edit) {
-	}
-
 	@Override
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {

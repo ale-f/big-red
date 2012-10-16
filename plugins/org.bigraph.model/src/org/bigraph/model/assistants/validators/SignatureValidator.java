@@ -1,6 +1,5 @@
 package org.bigraph.model.assistants.validators;
 
-import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.Signature;
@@ -16,20 +15,6 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
 public class SignatureValidator extends ModelObjectValidator {
-	private final Signature signature;
-	
-	public SignatureValidator(Signature signature) {
-		this.signature = signature;
-	}
-	
-	private void checkEligibility(
-			PropertyScratchpad context, IChange b, Control c)
-			throws ChangeRejectedException {
-		if (c.getSignature(context) != signature)
-			throw new ChangeRejectedException(b,
-					"The control " + c + " is not part of this Signature");
-	}
-	
 	@Override
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
@@ -39,19 +24,16 @@ public class SignatureValidator extends ModelObjectValidator {
 		} else if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
 			checkName(context, c, c.control,
-					signature.getNamespace(), c.name);
+					c.getCreator().getNamespace(), c.name);
+			/* XXX: parent check */
 		} else if (b instanceof ChangeRemoveControl) {
-			ChangeRemoveControl c = (ChangeRemoveControl)b;
-			checkEligibility(context, b, c.getCreator());
+			/* XXX: parent check */
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
-			checkEligibility(context, b, c.getCreator());
 			checkName(context, c, c.port,
 					c.getCreator().getNamespace(), c.name);
 		} else if (b instanceof ChangeRemovePort) {
-			ChangeRemovePort c = (ChangeRemovePort)b;
-			Control co = c.getCreator().getControl();
-			checkEligibility(context, b, co);
+			/* XXX: parent check */
 		} else if (b instanceof ChangeKind) {
 			/* do nothing */
 		} else if (b instanceof PortSpec.ChangeName) {
@@ -61,7 +43,7 @@ public class SignatureValidator extends ModelObjectValidator {
 					c.name);
 		} else if (b instanceof ChangeName) {
 			ChangeName c = (ChangeName)b;
-			checkEligibility(context, b, c.getCreator());
+			Signature signature = c.getCreator().getSignature(context);
 			checkName(context, c, c.getCreator(),
 					signature.getNamespace(), c.name);
 		} else if (b instanceof ChangeAddSignature) {

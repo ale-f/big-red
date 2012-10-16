@@ -95,7 +95,7 @@ public class Bigraph extends Container
 		return getNamespace(l).getNextName();
 	}
 	
-	private BigraphValidator validator = new BigraphValidator(this);
+	private BigraphValidator validator = new BigraphValidator();
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.bigraph";
 	

@@ -21,21 +21,6 @@ import org.bigraph.model.changes.IChange;
  * @author alec
  */
 public class BigraphValidator extends ModelObjectValidator {
-	private final Bigraph bigraph;
-	
-	public BigraphValidator(Bigraph bigraph) {
-		this.bigraph = bigraph;
-	}
-	
-	private void checkEligibility(
-			PropertyScratchpad context, IChange b, Layoutable... l)
-			throws ChangeRejectedException {
-		for (Layoutable i : l)
-			if (i.getBigraph(context) != bigraph)
-				throw new ChangeRejectedException(b,
-						i + " is not part of this Bigraph");
-	}
-	
 	@Override
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
@@ -44,20 +29,19 @@ public class BigraphValidator extends ModelObjectValidator {
 			return true;
 		} else if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
-			checkEligibility(context, b, c.link, c.getCreator());
 			if (c.getCreator().getLink(context) != null)
 				throw new ChangeRejectedException(b,
 						"Connections can only be established to Points that " +
 						"aren't already connected");
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			checkEligibility(context, b, c.getCreator());
 			Link l = c.getCreator().getLink(context);
 			if (l == null)
 				throw new ChangeRejectedException(b,
 						"The Point is already disconnected");
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
+			Bigraph bigraph = c.getCreator().getBigraph(context);
 			
 			if (c.getCreator() instanceof Node &&
 				((Node)c.getCreator()).getControl().getKind() == Kind.ATOMIC)
@@ -91,7 +75,6 @@ public class BigraphValidator extends ModelObjectValidator {
 		} else if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
-			checkEligibility(context, b, ch);
 			
 			if (ch instanceof InnerName)
 				if (((InnerName) ch).getLink(context) != null)
@@ -117,7 +100,7 @@ public class BigraphValidator extends ModelObjectValidator {
 				throw new ChangeRejectedException(b, ch + " has no parent");
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			checkEligibility(context, b, c.getCreator());
+			Bigraph bigraph = c.getCreator().getBigraph(context);
 			checkName(context, b, c.getCreator(),
 					bigraph.getNamespace(c.getCreator()), c.newName);
 		} else return false;
