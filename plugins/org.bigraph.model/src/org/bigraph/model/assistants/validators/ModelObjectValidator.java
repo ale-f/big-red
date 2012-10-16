@@ -1,12 +1,9 @@
 package org.bigraph.model.assistants.validators;
 
-import java.util.ArrayList;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ModelObjectChange;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -17,8 +14,6 @@ import org.bigraph.model.names.policies.INamePolicy;
 
 abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		implements IChangeValidator, IChangeValidator2 {
-	private ArrayList<Callback> finalChecks = new ArrayList<Callback>();
-	
 	private final T changeExecutor;
 	
 	public ModelObjectValidator(T changeExecutor) {
@@ -72,15 +67,7 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 	protected IChange doValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
 		final PropertyScratchpad context = process.getScratch();
-		if (!b.isReady()) {
-			throw new ChangeRejectedException(b, "The Change is not ready");
-		} else if (b instanceof ChangeGroup) {
-			for (IChange c : (ChangeGroup)b)
-				if ((c = doValidateChange(process, c)) != null)
-					return c;
-			/* All changes will have been individually simulated */
-			return null;
-		} else if (b instanceof ChangeExtendedData) {
+		if (b instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)b;
 			doExternalValidation(process, c, c.validator);
 		} else return b;
@@ -93,30 +80,13 @@ abstract class ModelObjectValidator<T extends ModelObject & IChangeExecutor>
 		tryValidateChange((PropertyScratchpad)null, b);
 	}
 	
-	public void tryValidateChange(PropertyScratchpad context_, IChange b)
+	public void tryValidateChange(PropertyScratchpad context, IChange change)
 			throws ChangeRejectedException {
-		final PropertyScratchpad context = new PropertyScratchpad(context_);
-		finalChecks.clear();
-		
-		boolean r = tryValidateChange(new Process() {
-				@Override
-				public PropertyScratchpad getScratch() {
-					return context;
-				};
-				
-				@Override
-				public void addCallback(Callback c) {
-					finalChecks.add(c);
-				}
-			}, b);
-		if (!r)
-			throw new ChangeRejectedException(b,
-					"The change was not recognised by the validator");
-		
-		for (Callback i : finalChecks)
-			i.run();
-		
-		context.clear();
+		ValidatorManager vm = new ValidatorManager();
+		vm.addValidator(this);
+		if (!vm.tryValidateChange(context, change))
+			throw new ChangeRejectedException(change,
+					"The Change was not recognised by the validator");
 	}
 	
 	@Override
