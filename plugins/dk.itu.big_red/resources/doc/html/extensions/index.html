@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>
+			Writing extensions for Big Red
+		</title>
+		<link rel="stylesheet" media="screen" href="../big-red.css">
+	</head>
+	<body>
+<div id="header"></div>
+<h1>
+	Writing extensions for Big Red
+</h1>
+<h2>
+	Table of contents
+</h2>
+<ol>
+	<li>
+		<a href="#introduction">Introduction</a>
+	<li>
+		<a href="#a_thing">A thing</a>
+	<li>
+		<a href="#the_basics_of_eclipse">The basics of Eclipse</a>
+</ol>
+<h2 id="introduction">
+	Introduction
+</h2>
+<p>
+	This is a tutorial for new Big Red developers. It introduces some of
+	<a href="http://www.eclipse.org/rcp">Eclipse</a>'s extensibility
+	mechanisms, and shows how they can be used to add features to Big Red.
+</p>
+<p>
+	This tutorial is a worked example. By the end, you'll have extended Big
+	Red to support <em>a thing</em>.
+</p>
+<p class="info note">
+	Full source code for the completed extension can be found in the
+	<code>doc/plugins/examples/<i>a thing</i>/</code> directory of the Big
+	Red source repository.
+</p>
+<p class="warning note">
+	The completed extension is an incredibly naïve implementation of
+	a thing intended only to serve as a motivating example &mdash; if you
+	actually need to <em>use</em> a thing, you should probably look
+	elsewhere!
+</p>
+<h2 id="a_thing">
+	A thing
+</h2>
+<p>
+	A thing.
+</p>
+<h2 id="the_basics_of_eclipse">
+	The basics of Eclipse
+</h2>
+<p>
+	The <a href="http://www.eclipse.org/rcp">Eclipse Rich Client
+	Platform</a> (the <em>RCP</em>) is the foundation upon which Big Red is
+	built. In fact, all Eclipse applications &mdash; including the
+	<a href="http://www.eclipse.org/jdt/">Java Development Tools</a>
+	(the <em>JDT</em>), the Java IDE that most developers associate with
+	the name <q>Eclipse</q> &mdash; are built on top of the RCP.
+</p>
+<div class="info note">
+	<p>
+		The Eclipse world is very fond of layers of abstraction: the
+		RCP is itself built on top of an extensible platform called
+		<a href="http://www.eclipse.org/equinox/">Equinox</a>,
+		which is an implementation of a modular runtime environment
+		called <a href="http://www.osgi.org/">OSGi</a>.
+	</p>
+	<p>
+		(Many of the concepts introduced by this section are actually
+		OSGi concepts, not specific to Eclipse.)
+	</p>
+</div>
+<p>
+	The RCP consists of a number of <em>plugins</em>. Each of these plugins
+	implements a small piece of the Eclipse environment &mdash; for
+	example, one plugin implements the Eclipse widget toolkit, another
+	implements the user interface, and yet another implements the
+	workspace.
+</p>
+<p>
+	The plugins that make up the RCP only define the base of the Eclipse
+	platform. In order to add support for specific tasks (like writing Java
+	code &mdash; or, indeed, building bigraphical reactive systems), more
+	plugins must be added. Many plugins are required to make a useful
+	application &mdash; for example, the <em>Eclipse Modeling Tools</em>
+	environment is made up of more than seven hundred plugins!
+</p>
+<p>
+	At the most fundamental level, this is all Big Red is: a collection of
+	plugins that augment the RCP with the ability to create, modify, and
+	manipulate the bigraphical model. (The JDT, although orders of
+	magnitude more complex than Big Red, is built in the same way.)
+</p>
+<p>
+	Plugins contain more than just code, though: they also contain metadata
+	in their <em>manifests</em>. Amongst other things, manifests
+	define:&mdash;
+</p>
+<ul>
+	<li>
+		the <em>dependencies</em> of a plugin;
+	<li>
+		the <em>extensions</em> that a plugin contributes to the
+		environment; and
+	<li>
+		the <em>extension points</em>, if any, to which other plugins
+		can contribute extensions.
+</ul>
+<h3 id="extension_points_and_extensions">
+	Extension points and extensions
+</h3>
+<p>
+	Extension points and extensions allow plugins to instantiate and
+	manipulate code contributed by their <em>dependents</em>.
+</p>
+	</body>
+</html>
