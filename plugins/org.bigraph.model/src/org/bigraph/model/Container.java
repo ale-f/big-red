@@ -83,7 +83,6 @@ public abstract class Container extends Layoutable {
 	public abstract boolean canContain(Layoutable child);
 	
 	protected void addChild(int position, Layoutable child) {
-		System.out.println(this + ".addChild(" + position + ", " + child + ")");
 		if (position == -1) {
 			children.add(child);
 		} else children.add(position, child);
