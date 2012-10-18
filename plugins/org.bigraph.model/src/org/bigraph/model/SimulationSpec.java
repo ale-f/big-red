@@ -3,12 +3,14 @@ package org.bigraph.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.IStepExecutor;
 
 public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	/**
@@ -246,34 +248,22 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		if (b instanceof ChangeGroup) {
-			for (IChange i : (ChangeGroup)b)
-				tryValidateChange(i);
-		} else if (b instanceof ChangeSignature ||
-				b instanceof ChangeAddRule ||
-				b instanceof ChangeRemoveRule ||
-				b instanceof ChangeModel) {
-			/* do nothing */
-		} else {
-			throw new ChangeRejectedException(
-					b, "The Change was not recognised");
-		}
+		ValidatorManager.getInstance().tryValidateChange(b);
 	}
 
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		tryValidateChange(b);
-		ChangeExecutor.INSTANCE.doChange(b);
+		ExecutorManager.getInstance().tryExecuteChange(b);
 	}
 	
-	static final class ChangeExecutor extends ModelObject.ChangeExecutor {
-		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
-		
+	static {
+		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+	}
+	
+	private static final class ChangeExecutor implements IStepExecutor {
 		@Override
-		protected boolean doChange(IChange b) {
-			if (super.doChange(b)) {
-				/* do nothing */
-			} else if (b instanceof ChangeSignature) {
+		public boolean executeChange(IChange b) {
+			if (b instanceof ChangeSignature) {
 				ChangeSignature c = (ChangeSignature)b;
 				c.getCreator().setSignature(c.signature);
 			} else if (b instanceof ChangeAddRule) {

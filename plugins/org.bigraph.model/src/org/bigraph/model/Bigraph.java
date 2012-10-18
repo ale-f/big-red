@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.interfaces.IBigraph;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -206,18 +208,17 @@ public class Bigraph extends Container
 	
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		tryValidateChange(b);
-		ChangeExecutor.INSTANCE.doChange(b);
+		ExecutorManager.getInstance().tryExecuteChange(b);
 	}
 	
-	final static class ChangeExecutor extends ModelObject.ChangeExecutor {
-		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
-		
+	static {
+		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+	}
+	
+	private final static class ChangeExecutor implements IStepExecutor {
 		@Override
-		protected boolean doChange(IChange b) {
-			if (super.doChange(b)) {
-				/* do nothing */
-			} else if (b instanceof Point.ChangeConnect) {
+		public boolean executeChange(IChange b) {
+			if (b instanceof Point.ChangeConnect) {
 				Point.ChangeConnect c = (Point.ChangeConnect)b;
 				c.link.addPoint(c.getCreator());
 			} else if (b instanceof Point.ChangeDisconnect) {

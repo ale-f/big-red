@@ -1,12 +1,14 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -142,14 +144,14 @@ public class Edit extends ModelObject
 		ValidatorManager.getInstance().tryValidateChange(b);
 	}
 	
-	static final class ChangeExecutor extends ModelObject.ChangeExecutor {
-		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
-		
+	static {
+		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+	}
+	
+	private static final class ChangeExecutor implements IStepExecutor {
 		@Override
-		protected boolean doChange(IChange c_) {
-			if (super.doChange(c_)) {
-				/* do nothing */
-			} else if (c_ instanceof ChangeDescriptorAdd) {
+		public boolean executeChange(IChange c_) {
+			if (c_ instanceof ChangeDescriptorAdd) {
 				ChangeDescriptorAdd c = (ChangeDescriptorAdd)c_;
 				c.getCreator().addDescriptor(c.index, c.descriptor);
 			} else if (c_ instanceof ChangeDescriptorRemove) {
@@ -162,8 +164,7 @@ public class Edit extends ModelObject
 	
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		tryValidateChange(b);
-		ChangeExecutor.INSTANCE.doChange(b);
+		ExecutorManager.getInstance().tryExecuteChange(b);
 	}
 	
 	@Override

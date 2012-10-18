@@ -6,11 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -116,15 +117,14 @@ public abstract class ModelObject {
 		}
 	}
 	
-	protected abstract static class ChangeExecutor {
-		protected boolean doChange(IChange c_) {
-			c_.beforeApply();
-			if (c_ instanceof ChangeGroup) {
-				for (IChange c : (ChangeGroup)c_)
-					if (!doChange(c))
-						throw new Error("Couldn't apply " + c +
-								" (how did it pass validation?)");
-			} else if (c_ instanceof ChangeExtendedData) {
+	static {
+		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+	}
+	
+	private final static class ChangeExecutor implements IStepExecutor {
+		@Override
+		public boolean executeChange(IChange c_) {
+			if (c_ instanceof ChangeExtendedData) {
 				ChangeExtendedData c = (ChangeExtendedData)c_;
 				c.getCreator().setExtendedData(c.key, (c.normaliser == null ?
 						c.newValue : c.normaliser.normalise(c, c.newValue)));

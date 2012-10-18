@@ -8,12 +8,14 @@ import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
 import org.bigraph.model.Control.ChangeName;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.interfaces.ISignature;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -212,18 +214,17 @@ public class Signature extends ModelObject
 	
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		tryValidateChange(b);
-		ChangeExecutor.INSTANCE.doChange(b);
+		ExecutorManager.getInstance().tryExecuteChange(b);
 	}
 
-	static final class ChangeExecutor extends ModelObject.ChangeExecutor {
-		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
-		
+	static {
+		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+	}
+	
+	private static final class ChangeExecutor implements IStepExecutor {
 		@Override
-		protected boolean doChange(IChange b) {
-			if (super.doChange(b)) {
-				/* do nothing */
-			} else if (b instanceof ChangeAddControl) {
+		public boolean executeChange(IChange b) {
+			if (b instanceof ChangeAddControl) {
 				ChangeAddControl c = (ChangeAddControl)b;
 				Namespace<Control> ns = c.getCreator().getNamespace();
 				c.control.setName(ns.put(c.name, c.control));
