@@ -57,11 +57,8 @@ public class ExecutorManager {
 			c.beforeApply();
 			if (!(c instanceof ChangeGroup)) {
 				boolean passes = false;
-				for (IStepExecutor i : getExecutors()) {
-					passes = i.executeChange(c);
-					if (passes)
-						break;
-				}
+				for (IStepExecutor i : getExecutors())
+					passes |= i.executeChange(c);
 				return (passes ? null : c);
 			} else {
 				for (IChange i : (ChangeGroup)c) {
