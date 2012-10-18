@@ -12,9 +12,9 @@ import org.bigraph.model.Signature.ChangeRemoveSignature;
 import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeValidator2;
+import org.bigraph.model.changes.IStepValidator;
 
-class SignatureValidator implements IChangeValidator2 {
+class SignatureValidator implements IStepValidator {
 	@Override
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {

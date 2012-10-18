@@ -6,8 +6,8 @@ import java.util.List;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeValidator2;
-import org.bigraph.model.changes.IChangeValidator2.Callback;
+import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.changes.IStepValidator.Callback;
 
 public class ValidatorManager {
 	static {
@@ -26,18 +26,18 @@ public class ValidatorManager {
 		return Holder.INSTANCE;
 	}
 	
-	private List<IChangeValidator2> validators =
-			new ArrayList<IChangeValidator2>();
+	private List<IStepValidator> validators =
+			new ArrayList<IStepValidator>();
 	
-	public void addValidator(IChangeValidator2 validator) {
+	public void addValidator(IStepValidator validator) {
 		validators.add(validator);
 	}
 	
-	public void removeValidator(IChangeValidator2 validator) {
+	public void removeValidator(IStepValidator validator) {
 		validators.remove(validator);
 	}
 	
-	public List<? extends IChangeValidator2> getValidators() {
+	public List<? extends IStepValidator> getValidators() {
 		return validators;
 	}
 	
@@ -57,7 +57,7 @@ public class ValidatorManager {
 		} else return true;
 	}
 	
-	private final class Process implements IChangeValidator2.Process {
+	private final class Process implements IStepValidator.Process {
 		private final PropertyScratchpad scratch;
 		private ArrayList<Callback> callbacks = new ArrayList<Callback>();
 		
@@ -93,7 +93,7 @@ public class ValidatorManager {
 				throw new ChangeRejectedException(c, "" + c + " is not ready");
 			} else if (!(c instanceof ChangeGroup)) {
 				boolean passes = false;
-				for (IChangeValidator2 i : getValidators())
+				for (IStepValidator i : getValidators())
 					passes |= i.tryValidateChange(this, c);
 				if (passes)
 					c.simulate(getScratch());

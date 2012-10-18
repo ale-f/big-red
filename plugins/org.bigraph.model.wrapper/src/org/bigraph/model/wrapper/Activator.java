@@ -3,7 +3,7 @@ package org.bigraph.model.wrapper;
 import java.util.ArrayList;
 
 import org.bigraph.model.assistants.ValidatorManager;
-import org.bigraph.model.changes.IChangeValidator2;
+import org.bigraph.model.changes.IStepValidator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -14,7 +14,7 @@ import org.osgi.framework.BundleContext;
 public final class Activator extends Plugin {
 	private static Activator instance;
 	
-	private ArrayList<IChangeValidator2> validators;
+	private ArrayList<IStepValidator> validators;
 	
 	@Override
 	public void start(BundleContext context) throws Exception {
@@ -40,16 +40,16 @@ public final class Activator extends Plugin {
 			"org.bigraph.model.wrapper.validation";
 	
 	private void installValidators() {
-		validators = new ArrayList<IChangeValidator2>();
+		validators = new ArrayList<IStepValidator>();
 		
 		ValidatorManager instance = ValidatorManager.getInstance();
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		for (IConfigurationElement ice :
 				registry.getConfigurationElementsFor(
 						EXTENSION_POINT_VALIDATION)) {
-			IChangeValidator2 validator;
+			IStepValidator validator;
 			try {
-				validator = (IChangeValidator2)
+				validator = (IStepValidator)
 						ice.createExecutableExtension("class");
 			} catch (CoreException ce) {
 				ce.printStackTrace();
@@ -62,7 +62,7 @@ public final class Activator extends Plugin {
 	
 	private void uninstallValidators() {
 		ValidatorManager instance = ValidatorManager.getInstance();
-		for (IChangeValidator2 i : validators)
+		for (IStepValidator i : validators)
 			instance.removeValidator(i);
 		validators.clear();
 		

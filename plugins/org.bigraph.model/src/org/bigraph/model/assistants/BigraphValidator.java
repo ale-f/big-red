@@ -12,9 +12,9 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Port;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeValidator2;
+import org.bigraph.model.changes.IStepValidator;
 
-class BigraphValidator implements IChangeValidator2 {
+class BigraphValidator implements IStepValidator {
 	@Override
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {

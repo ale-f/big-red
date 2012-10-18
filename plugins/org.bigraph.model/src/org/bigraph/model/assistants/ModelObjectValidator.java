@@ -5,11 +5,11 @@ import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ModelObjectChange;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeValidator2;
+import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.policies.INamePolicy;
 
-class ModelObjectValidator implements IChangeValidator2 {
+class ModelObjectValidator implements IStepValidator {
 	protected static <V> void checkName(
 			PropertyScratchpad context, IChange c, V object,
 			Namespace<? extends V> ns, String cdt)
