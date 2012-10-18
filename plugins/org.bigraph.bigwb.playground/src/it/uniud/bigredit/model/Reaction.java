@@ -13,6 +13,8 @@ import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.ExecutorManager;
+import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -21,7 +23,6 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
-import it.uniud.bigredit.policy.ReactionChangeValidator;
 
 public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
@@ -192,13 +193,13 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 
 	
-	private void changeRedex(Bigraph redex ){
+	void changeRedex(Bigraph redex ){
 		Bigraph oldRedex = this.redex;
 		this.redex= redex;
 		firePropertyChange(Reaction.PROPERTY_RULE,oldRedex, redex);
 	}
 	
-	private void changeReactum(Bigraph reactum){
+	void changeReactum(Bigraph reactum){
 		Bigraph oldReactum= this.reactum;
 		this.reactum=reactum;
 		firePropertyChange(Reaction.PROPERTY_RULE,oldReactum, reactum);
@@ -206,18 +207,18 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		
-		tryValidateChange(b);
-		ChangeExecutor.INSTANCE.doChange(b);
-		
+		ExecutorManager.getInstance().tryExecuteChange(b);
 	}
 
-	private ReactionChangeValidator validator = new ReactionChangeValidator(this);
-	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		
-		validator.tryValidateChange(b);
+		ValidatorManager.getInstance().tryValidateChange(b);
+	}
+	
+	static {
+		ReactionHandler c = new ReactionHandler();
+		ExecutorManager.getInstance().addExecutor(c);
+		ValidatorManager.getInstance().addValidator(c);
 	}
 	
 	public void _changeInsideModel(ModelObject target, Change change){
@@ -228,34 +229,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 			((Bigraph)target).tryApplyChange(cgAux);
 		} catch (ChangeRejectedException e) {
 			e.printStackTrace();
-		}
-	}
-	
-	static final class ChangeExecutor extends ModelObject.ChangeExecutor {
-		private static final ChangeExecutor INSTANCE = new ChangeExecutor();
-		
-		@Override
-		protected boolean doChange(IChange b) {
-			if (b instanceof Reaction.ChangeAddReactum) {
-	
-				Reaction.ChangeAddReactum c = (Reaction.ChangeAddReactum) b;
-				((Reaction) c.getCreator()).changeReactum(c.child);
-				
-			} else if (b instanceof Reaction.ChangeAddRedex) {
-				Reaction.ChangeAddRedex c = (Reaction.ChangeAddRedex) b;
-				((Reaction) c.getCreator()).changeRedex(c.child);
-			}else if(b instanceof Reaction.ChangeLayoutChild){
-				Reaction.ChangeLayoutChild c = (Reaction.ChangeLayoutChild)b;
-				((Reaction)c.getCreator())._changeLayoutChild(c.child, c.layout);
-			} else if(b instanceof Reaction.ChangeInsideModel){
-				Reaction.ChangeInsideModel c = (Reaction.ChangeInsideModel) b;
-				((Reaction)c.getCreator())._changeInsideModel(c.target, c.change);
-			}else if (super.doChange(b)) {
-					/* do nothing */
-			}else{
-				return false;
-			}
-			return true;
 		}
 	}
 	
