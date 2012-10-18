@@ -79,6 +79,12 @@ public abstract class LayoutUtilities {
 				checkChildren = true,
 				checkSiblings = true;
 			
+			if (newLayout != null &&
+					(newLayout.x() < 0 || newLayout.y() < 0))
+				throw new ChangeRejectedException(c,
+						getFN(context, l) +
+						" must not have negative co-ordinates");
+			
 			if (oldLayout != null) {
 				if (oldLayout.contains(newLayout))
 					checkSiblings = false;
