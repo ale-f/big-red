@@ -9,7 +9,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 
-class SimulationSpecHandler implements IStepExecutor, IStepValidator {
+final class SimulationSpecHandler implements IStepExecutor, IStepValidator {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof ChangeSignature) {

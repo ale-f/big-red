@@ -15,7 +15,7 @@ import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.names.Namespace;
 
-class SignatureHandler implements IStepExecutor, IStepValidator {
+final class SignatureHandler implements IStepExecutor, IStepValidator {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof ChangeAddControl) {

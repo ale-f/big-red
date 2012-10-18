@@ -10,7 +10,7 @@ import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.policies.INamePolicy;
 
-class ModelObjectHandler implements IStepExecutor, IStepValidator {
+final class ModelObjectHandler implements IStepExecutor, IStepValidator {
 	protected static <V> void checkName(
 			PropertyScratchpad context, IChange c, V object,
 			Namespace<? extends V> ns, String cdt)

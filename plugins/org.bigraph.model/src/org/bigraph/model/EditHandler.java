@@ -7,7 +7,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 
-class EditHandler implements IStepExecutor, IStepValidator {
+final class EditHandler implements IStepExecutor, IStepValidator {
 	@Override
 	public boolean executeChange(IChange c_) {
 		if (c_ instanceof ChangeDescriptorAdd) {
