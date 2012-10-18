@@ -82,7 +82,7 @@ public class ValidatorManager {
 		
 		protected IChange doValidation(IChange c)
 				throws ChangeRejectedException {
-			if (!c.isReady()) {
+			if (c == null || !c.isReady()) {
 				throw new ChangeRejectedException(c, "" + c + " is not ready");
 			} else if (!(c instanceof ChangeGroup)) {
 				boolean passes = false;
