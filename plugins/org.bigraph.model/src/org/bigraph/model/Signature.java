@@ -219,6 +219,7 @@ public class Signature extends ModelObject
 
 	static {
 		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+		ValidatorManager.getInstance().addValidator(new SignatureValidator());
 	}
 	
 	private static final class ChangeExecutor implements IStepExecutor {

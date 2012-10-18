@@ -1,8 +1,8 @@
-package org.bigraph.model.assistants;
+package org.bigraph.model;
 
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ModelObjectChange;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;

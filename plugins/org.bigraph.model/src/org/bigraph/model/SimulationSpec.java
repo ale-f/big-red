@@ -258,6 +258,8 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	
 	static {
 		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+		ValidatorManager.getInstance().addValidator(
+				new SimulationSpecValidator());
 	}
 	
 	private static final class ChangeExecutor implements IStepExecutor {

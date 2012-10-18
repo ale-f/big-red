@@ -146,6 +146,7 @@ public class Edit extends ModelObject
 	
 	static {
 		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+		ValidatorManager.getInstance().addValidator(new EditValidator());
 	}
 	
 	private static final class ChangeExecutor implements IStepExecutor {

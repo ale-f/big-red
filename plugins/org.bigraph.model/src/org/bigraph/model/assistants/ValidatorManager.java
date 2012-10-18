@@ -10,14 +10,6 @@ import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.IStepValidator.Callback;
 
 public class ValidatorManager {
-	static {
-		getInstance().addValidator(new SpecValidator());
-		getInstance().addValidator(new EditValidator());
-		getInstance().addValidator(new BigraphValidator());
-		getInstance().addValidator(new SignatureValidator());
-		getInstance().addValidator(new ModelObjectValidator());
-	}
-	
 	private static final class Holder {
 		private static final ValidatorManager INSTANCE =
 				new ValidatorManager();

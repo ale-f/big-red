@@ -213,6 +213,7 @@ public class Bigraph extends Container
 	
 	static {
 		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+		ValidatorManager.getInstance().addValidator(new BigraphValidator());
 	}
 	
 	private final static class ChangeExecutor implements IStepExecutor {

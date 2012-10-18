@@ -1,15 +1,14 @@
-package org.bigraph.model.assistants;
+package org.bigraph.model;
 
-import org.bigraph.model.PortSpec;
-import org.bigraph.model.PortSpec.ChangeRemovePort;
-import org.bigraph.model.Signature;
 import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
 import org.bigraph.model.Control.ChangeName;
+import org.bigraph.model.Control.ChangeRemoveControl;
+import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.Signature.ChangeAddControl;
 import org.bigraph.model.Signature.ChangeAddSignature;
 import org.bigraph.model.Signature.ChangeRemoveSignature;
-import org.bigraph.model.Control.ChangeRemoveControl;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;

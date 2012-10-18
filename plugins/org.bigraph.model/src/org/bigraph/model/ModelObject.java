@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -119,6 +120,8 @@ public abstract class ModelObject {
 	
 	static {
 		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
+		ValidatorManager.getInstance().addValidator(
+				new ModelObjectValidator());
 	}
 	
 	private final static class ChangeExecutor implements IStepExecutor {

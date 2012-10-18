@@ -1,15 +1,7 @@
-package org.bigraph.model.assistants;
+package org.bigraph.model;
 
-import org.bigraph.model.Bigraph;
-import org.bigraph.model.Container;
-import org.bigraph.model.Edge;
-import org.bigraph.model.InnerName;
-import org.bigraph.model.Layoutable;
-import org.bigraph.model.Link;
-import org.bigraph.model.Node;
-import org.bigraph.model.Point;
 import org.bigraph.model.Control.Kind;
-import org.bigraph.model.Port;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;

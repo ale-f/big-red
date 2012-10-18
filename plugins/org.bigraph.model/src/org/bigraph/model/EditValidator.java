@@ -1,4 +1,4 @@
-package org.bigraph.model.assistants;
+package org.bigraph.model;
 
 import org.bigraph.model.Edit.ChangeDescriptorAdd;
 import org.bigraph.model.Edit.ChangeDescriptorRemove;
