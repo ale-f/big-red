@@ -30,7 +30,7 @@ public class ValidatorManager {
 		validators.remove(validator);
 	}
 	
-	public List<? extends IStepValidator> getValidators() {
+	protected List<? extends IStepValidator> getValidators() {
 		return validators;
 	}
 	
