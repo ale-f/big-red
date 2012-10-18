@@ -12,7 +12,6 @@ import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -119,21 +118,9 @@ public abstract class ModelObject {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
-		ValidatorManager.getInstance().addValidator(
-				new ModelObjectValidator());
-	}
-	
-	private final static class ChangeExecutor implements IStepExecutor {
-		@Override
-		public boolean executeChange(IChange c_) {
-			if (c_ instanceof ChangeExtendedData) {
-				ChangeExtendedData c = (ChangeExtendedData)c_;
-				c.getCreator().setExtendedData(c.key, (c.normaliser == null ?
-						c.newValue : c.normaliser.normalise(c, c.newValue)));
-			} else return false;
-			return true;
-		}
+		ModelObjectHandler c = new ModelObjectHandler();
+		ExecutorManager.getInstance().addExecutor(c);
+		ValidatorManager.getInstance().addValidator(c);
 	}
 	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);

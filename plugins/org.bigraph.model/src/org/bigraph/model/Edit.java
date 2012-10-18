@@ -8,7 +8,6 @@ import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -145,22 +144,9 @@ public class Edit extends ModelObject
 	}
 	
 	static {
-		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
-		ValidatorManager.getInstance().addValidator(new EditValidator());
-	}
-	
-	private static final class ChangeExecutor implements IStepExecutor {
-		@Override
-		public boolean executeChange(IChange c_) {
-			if (c_ instanceof ChangeDescriptorAdd) {
-				ChangeDescriptorAdd c = (ChangeDescriptorAdd)c_;
-				c.getCreator().addDescriptor(c.index, c.descriptor);
-			} else if (c_ instanceof ChangeDescriptorRemove) {
-				ChangeDescriptorRemove c = (ChangeDescriptorRemove)c_;
-				c.getCreator().removeDescriptor(c.index);
-			} else return false;
-			return true;
-		}
+		EditHandler c = new EditHandler();
+		ExecutorManager.getInstance().addExecutor(c);
+		ValidatorManager.getInstance().addValidator(c);
 	}
 	
 	@Override

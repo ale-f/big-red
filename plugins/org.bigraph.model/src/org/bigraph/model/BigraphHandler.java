@@ -4,9 +4,40 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.names.Namespace;
 
-class BigraphValidator implements IStepValidator {
+class BigraphHandler implements IStepExecutor, IStepValidator {
+	@Override
+	public boolean executeChange(IChange b) {
+		if (b instanceof Point.ChangeConnect) {
+			Point.ChangeConnect c = (Point.ChangeConnect)b;
+			c.link.addPoint(c.getCreator());
+		} else if (b instanceof Point.ChangeDisconnect) {
+			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
+			c.getCreator().getLink().removePoint(c.getCreator());
+		} else if (b instanceof Container.ChangeAddChild) {
+			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
+			Namespace<Layoutable> ns =
+					c.getCreator().getBigraph().getNamespace(c.child);
+			c.child.setName(ns.put(c.name, c.child));
+			c.getCreator().addChild(c.position, c.child);
+		} else if (b instanceof Layoutable.ChangeRemove) {
+			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
+			Layoutable ch = c.getCreator();
+			Namespace<Layoutable> ns = ch.getBigraph().getNamespace(ch);
+			ch.getParent().removeChild(ch);
+			ns.remove(ch.getName());
+		} else if (b instanceof Layoutable.ChangeName) {
+			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
+			Layoutable ch = c.getCreator();
+			Namespace<Layoutable> ns = ch.getBigraph().getNamespace(ch);
+			c.getCreator().setName(ns.rename(ch.getName(), c.newName));
+		} else return false;
+		return true;
+	}
+	
 	@Override
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
@@ -33,7 +64,7 @@ class BigraphValidator implements IStepValidator {
 						((Node)c.getCreator()).getControl().getName() +
 						" is an atomic control");
 			
-			ModelObjectValidator.checkName(context, b, c.child,
+			ModelObjectHandler.checkName(context, b, c.child,
 					bigraph.getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {
@@ -85,7 +116,7 @@ class BigraphValidator implements IStepValidator {
 		} else if (b instanceof Layoutable.ChangeName) {
 			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
 			Bigraph bigraph = c.getCreator().getBigraph(context);
-			ModelObjectValidator.checkName(context, b, c.getCreator(),
+			ModelObjectHandler.checkName(context, b, c.getCreator(),
 					bigraph.getNamespace(c.getCreator()), c.newName);
 		} else return false;
 		return true;

@@ -5,11 +5,12 @@ import org.bigraph.model.ModelObject.ModelObjectChange;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.policies.INamePolicy;
 
-class ModelObjectValidator implements IStepValidator {
+class ModelObjectHandler implements IStepExecutor, IStepValidator {
 	protected static <V> void checkName(
 			PropertyScratchpad context, IChange c, V object,
 			Namespace<? extends V> ns, String cdt)
@@ -48,6 +49,16 @@ class ModelObjectValidator implements IStepValidator {
 				process.addCallback(makeCallback(process, change,
 						(ModelObject.FinalValidator<V>)validator));
 		}
+	}
+	
+	@Override
+	public boolean executeChange(IChange c_) {
+		if (c_ instanceof ChangeExtendedData) {
+			ChangeExtendedData c = (ChangeExtendedData)c_;
+			c.getCreator().setExtendedData(c.key, (c.normaliser == null ?
+					c.newValue : c.normaliser.normalise(c, c.newValue)));
+		} else return false;
+		return true;
 	}
 	
 	@Override

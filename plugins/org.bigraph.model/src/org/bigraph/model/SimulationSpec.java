@@ -10,7 +10,6 @@ import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.changes.IStepExecutor;
 
 public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	/**
@@ -257,29 +256,9 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
-		ValidatorManager.getInstance().addValidator(
-				new SimulationSpecValidator());
-	}
-	
-	private static final class ChangeExecutor implements IStepExecutor {
-		@Override
-		public boolean executeChange(IChange b) {
-			if (b instanceof ChangeSignature) {
-				ChangeSignature c = (ChangeSignature)b;
-				c.getCreator().setSignature(c.signature);
-			} else if (b instanceof ChangeAddRule) {
-				ChangeAddRule c = (ChangeAddRule)b;
-				c.getCreator().addRule(c.position, c.rule);
-			} else if (b instanceof ChangeRemoveRule) {
-				ChangeRemoveRule c = (ChangeRemoveRule)b;
-				c.getCreator().removeRule(c.rule);
-			} else if (b instanceof ChangeModel) {
-				ChangeModel c = (ChangeModel)b;
-				c.getCreator().setModel(c.model);
-			} else return false;
-			return true;
-		}
+		SimulationSpecHandler c = new SimulationSpecHandler();
+		ExecutorManager.getInstance().addExecutor(c);
+		ValidatorManager.getInstance().addValidator(c);
 	}
 	
 	@Override

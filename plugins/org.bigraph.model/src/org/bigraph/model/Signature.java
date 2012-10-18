@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.Control.ChangeAddPort;
-import org.bigraph.model.Control.ChangeKind;
-import org.bigraph.model.Control.ChangeName;
-import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -15,7 +11,6 @@ import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.interfaces.ISignature;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -218,58 +213,9 @@ public class Signature extends ModelObject
 	}
 
 	static {
-		ExecutorManager.getInstance().addExecutor(new ChangeExecutor());
-		ValidatorManager.getInstance().addValidator(new SignatureValidator());
-	}
-	
-	private static final class ChangeExecutor implements IStepExecutor {
-		@Override
-		public boolean executeChange(IChange b) {
-			if (b instanceof ChangeAddControl) {
-				ChangeAddControl c = (ChangeAddControl)b;
-				Namespace<Control> ns = c.getCreator().getNamespace();
-				c.control.setName(ns.put(c.name, c.control));
-				c.getCreator().addControl(c.control);
-			} else if (b instanceof ChangeRemoveControl) {
-				ChangeRemoveControl c = (ChangeRemoveControl)b;
-				Namespace<Control> ns =
-						c.getCreator().getSignature().getNamespace();
-				c.getCreator().getSignature().removeControl(c.getCreator());
-				ns.remove(c.getCreator().getName());
-			} else if (b instanceof ChangeName) {
-				ChangeName c = (ChangeName)b;
-				Namespace<Control> ns =
-						c.getCreator().getSignature().getNamespace();
-				c.getCreator().setName(
-						ns.rename(c.getCreator().getName(), c.name));
-			} else if (b instanceof ChangeKind) {
-				ChangeKind c = (ChangeKind)b;
-				c.getCreator().setKind(c.kind);
-			} else if (b instanceof ChangeAddPort) {
-				ChangeAddPort c = (ChangeAddPort)b;
-				c.getCreator().addPort(c.port);
-				c.port.setName(
-						c.getCreator().getNamespace().put(c.name, c.port));
-			} else if (b instanceof ChangeRemovePort) {
-				ChangeRemovePort c = (ChangeRemovePort)b;
-				Namespace<PortSpec> ns =
-						c.getCreator().getControl().getNamespace();
-				c.getCreator().getControl().removePort(c.getCreator());
-				ns.remove(c.getCreator().getName());
-			} else if (b instanceof PortSpec.ChangeName) {
-				PortSpec.ChangeName c = (PortSpec.ChangeName)b;
-				PortSpec p = c.getCreator();
-				p.setName(p.getControl().getNamespace().rename(
-						p.getName(), c.name));
-			} else if (b instanceof ChangeAddSignature) {
-				ChangeAddSignature c = (ChangeAddSignature)b;
-				c.getCreator().addSignature(c.signature);
-			} else if (b instanceof ChangeRemoveSignature) {
-				ChangeRemoveSignature c = (ChangeRemoveSignature)b;
-				c.getCreator().getParent().removeSignature(c.getCreator());
-			} else return false;
-			return true;
-		}
+		SignatureHandler c = new SignatureHandler();
+		ExecutorManager.getInstance().addExecutor(c);
+		ValidatorManager.getInstance().addValidator(c);
 	}
 	
 	@Override
