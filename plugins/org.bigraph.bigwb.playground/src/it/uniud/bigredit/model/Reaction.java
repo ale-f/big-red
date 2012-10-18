@@ -18,7 +18,6 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.changes.IChangeValidator;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
@@ -213,7 +212,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		
 	}
 
-	private IChangeValidator validator = new ReactionChangeValidator(this);
+	private ReactionChangeValidator validator = new ReactionChangeValidator(this);
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {

@@ -17,7 +17,6 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.changes.IChangeValidator;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 
@@ -366,7 +365,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		return new ChangeRemoveChild(node);
 	}
 	
-	private IChangeValidator validator = new BRSChangeValidator(this);
+	private BRSChangeValidator validator = new BRSChangeValidator(this);
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {

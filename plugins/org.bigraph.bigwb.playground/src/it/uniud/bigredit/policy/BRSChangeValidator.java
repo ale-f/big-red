@@ -11,7 +11,6 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeValidator;
 
 
 
@@ -22,7 +21,7 @@ import org.bigraph.model.changes.IChangeValidator;
  * @author carlo
  *
  */
-public class BRSChangeValidator implements IChangeValidator {
+public class BRSChangeValidator {
 	//private BigraphScratchpad scratch = null;
 	private IChange activeChange = null;
 	
@@ -39,7 +38,6 @@ public class BRSChangeValidator implements IChangeValidator {
 	}
 
 	
-	@Override
 	public void tryValidateChange(IChange b)
 			throws ChangeRejectedException {
 		activeChange = b;
