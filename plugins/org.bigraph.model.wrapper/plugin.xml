@@ -3,5 +3,5 @@
 <plugin>
    <extension-point id="org.bigraph.model.wrapper.export" name="Model export" schema="expoints/export.exsd"/>
    <extension-point id="org.bigraph.model.wrapper.import" name="Model import" schema="expoints/import.exsd"/>
-   <extension-point id="org.bigraph.model.wrapper.validation" name="Model export" schema="expoints/validation.exsd"/>
+   <extension-point id="org.bigraph.model.wrapper.changes" name="Changes" schema="expoints/changes.exsd"/>
 </plugin>

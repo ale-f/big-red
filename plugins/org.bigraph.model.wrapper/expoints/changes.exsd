@@ -3,7 +3,7 @@
 <schema targetNamespace="org.bigraph.model.wrapper" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.bigraph.model.wrapper" id="org.bigraph.model.wrapper.validation" name="Validation"/>
+         <meta.schema plugin="org.bigraph.model.wrapper" id="org.bigraph.model.wrapper.changes" name="Changes"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -65,7 +65,32 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.IChangeValidator2"/>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.IStepValidator"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="executor">
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.IStepExecutor"/>
                </appinfo>
             </annotation>
          </attribute>
