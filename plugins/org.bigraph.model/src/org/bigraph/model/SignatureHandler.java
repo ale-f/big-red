@@ -72,15 +72,26 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 			ChangeAddControl c = (ChangeAddControl)b;
 			ModelObjectHandler.checkName(context, c, c.control,
 					c.getCreator().getNamespace(), c.name);
-			/* XXX: parent check */
+			if (c.control.getSignature(context) != null)
+				throw new ChangeRejectedException(b,
+						"" + c.control + " already has a parent");
 		} else if (b instanceof ChangeRemoveControl) {
-			/* XXX: parent check */
+			Control co = ((ChangeRemoveControl)b).getCreator();
+			if (co.getSignature(context) == null)
+				throw new ChangeRejectedException(b,
+						"" + co + " doesn't have a parent");
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
 			ModelObjectHandler.checkName(context, c, c.port,
 					c.getCreator().getNamespace(), c.name);
+			if (c.port.getControl(context) != null)
+				throw new ChangeRejectedException(b,
+						"" + c.port + " already has a parent");
 		} else if (b instanceof ChangeRemovePort) {
-			/* XXX: parent check */
+			PortSpec po = ((ChangeRemovePort)b).getCreator();
+			if (po.getControl(context) == null)
+				throw new ChangeRejectedException(b,
+						"" + po + " doesn't have a parent");
 		} else if (b instanceof ChangeKind) {
 			/* do nothing */
 		} else if (b instanceof PortSpec.ChangeName) {
