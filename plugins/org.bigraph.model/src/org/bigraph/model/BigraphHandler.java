@@ -1,5 +1,7 @@
 package org.bigraph.model;
 
+import java.util.List;
+
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -56,19 +58,20 @@ final class BigraphHandler implements IStepExecutor, IStepValidator {
 						"The Point is already disconnected");
 		} else if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
-			Bigraph bigraph = c.getCreator().getBigraph(context);
+			Container container = c.getCreator();
+			Bigraph bigraph = container.getBigraph(context);
 			
-			if (c.getCreator() instanceof Node &&
-				((Node)c.getCreator()).getControl().getKind() == Kind.ATOMIC)
+			if (container instanceof Node &&
+				((Node)container).getControl().getKind() == Kind.ATOMIC)
 				throw new ChangeRejectedException(b,
-						((Node)c.getCreator()).getControl().getName() +
+						((Node)container).getControl().getName() +
 						" is an atomic control");
 			
 			ModelObjectHandler.checkName(context, b, c.child,
 					bigraph.getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {
-				if (!(c.getCreator() instanceof Bigraph))
+				if (!(container instanceof Bigraph))
 					throw new ChangeRejectedException(b,
 							"Edges must be children of the top-level Bigraph");
 			} else {
@@ -76,9 +79,9 @@ final class BigraphHandler implements IStepExecutor, IStepValidator {
 					if (((Container)c.child).getChildren(context).size() != 0)
 						throw new ChangeRejectedException(b,
 								c.child + " already has child objects");
-				if (!c.getCreator().canContain(c.child))
+				if (!container.canContain(c.child))
 					throw new ChangeRejectedException(b,
-							c.getCreator().getType() + "s can't contain " +
+							container.getType() + "s can't contain " +
 							c.child.getType() + "s");
 			}
 			
@@ -87,6 +90,13 @@ final class BigraphHandler implements IStepExecutor, IStepValidator {
 				throw new ChangeRejectedException(b,
 						c.child + " already has a parent (" +
 						existingParent + ")");
+			
+			List<? extends Layoutable> siblings =
+					container.getChildren(context);
+			if (c.position < -1 || c.position > siblings.size())
+				throw new ChangeRejectedException(b,
+						"" + c.position + " is not a valid position for " +
+						c.child);
 		} else if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
