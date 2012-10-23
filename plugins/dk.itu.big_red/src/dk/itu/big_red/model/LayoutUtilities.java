@@ -7,6 +7,7 @@ import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
+import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
@@ -266,6 +267,9 @@ public abstract class LayoutUtilities {
 			PropertyScratchpad context, Layoutable l, ChangeGroup cg) {
 		assert
 			context != null;
+		
+		if (l instanceof Link)
+			cg.add(LinkStyleUtilities.changeStyle((Link)l, null));
 		
 		Rectangle r = null;
 		if (l instanceof Site || l instanceof InnerName ||
