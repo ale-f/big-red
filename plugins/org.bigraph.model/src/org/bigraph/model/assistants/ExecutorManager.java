@@ -21,7 +21,13 @@ public class ExecutorManager {
 	private final ValidatorManager validator;
 	
 	public ExecutorManager(ValidatorManager validator) {
-		this.validator = validator;
+		this.validator = new ValidatorManager();
+		if (validator != null)
+			this.validator.addValidator(validator);
+	}
+	
+	protected ValidatorManager getValidator() {
+		return validator;
 	}
 	
 	private List<IStepExecutor> executors =
@@ -29,6 +35,11 @@ public class ExecutorManager {
 	
 	public void addExecutor(IStepExecutor executor) {
 		executors.add(executor);
+	}
+	
+	public void addExecutor(ExecutorManager manager) {
+		validator.addValidator(manager.getValidator());
+		executors.add(manager.createStepExecutor());
 	}
 	
 	public void removeExecutor(IStepExecutor executor) {
@@ -41,8 +52,7 @@ public class ExecutorManager {
 	
 	public void tryExecuteChange(IChange change)
 			throws ChangeRejectedException {
-		if (validator != null)
-			validator.tryValidateChange(change);
+		getValidator().tryValidateChange(change);
 		
 		IChange ch = run(change);
 		if (ch != null)
