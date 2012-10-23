@@ -7,9 +7,8 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
-import org.bigraph.model.changes.IStepValidator.Callback;
 
-public class ValidatorManager {
+public class ValidatorManager implements IStepValidator {
 	private static final class Holder {
 		private static final ValidatorManager INSTANCE =
 				new ValidatorManager();
@@ -36,13 +35,14 @@ public class ValidatorManager {
 	
 	public void tryValidateChange(IChange change)
 			throws ChangeRejectedException {
-		tryValidateChange(null, change);
+		tryValidateChange((PropertyScratchpad)null, change);
 	}
 	
 	public boolean tryValidateChange(
 			PropertyScratchpad context, IChange change)
 			throws ChangeRejectedException {
-		Process p = new Process(new PropertyScratchpad(context));
+		StandaloneProcess p =
+				new StandaloneProcess(new PropertyScratchpad(context));
 		IChange ch = p.run(change);
 		if (ch != null) {
 			throw new ChangeRejectedException(ch,
@@ -50,9 +50,25 @@ public class ValidatorManager {
 		} else return true;
 	}
 	
-	private final class Process implements IStepValidator.Process {
+	@Override
+	public boolean tryValidateChange(Process context, IChange change)
+			throws ChangeRejectedException {
+		return (new ParticipantProcess(context).step(change) == null);
+	}
+	
+	private abstract class AbstractProcess implements Process {
+		protected IChange step(IChange c) throws ChangeRejectedException {
+			boolean passes = false;
+			for (IStepValidator i : getValidators())
+				passes |= i.tryValidateChange(this, c);
+			return (passes ? null : c);
+		}
+	}
+	
+	private final class StandaloneProcess extends AbstractProcess {
 		private final PropertyScratchpad scratch;
-		private ArrayList<Callback> callbacks = new ArrayList<Callback>();
+		private final ArrayList<Callback> callbacks =
+				new ArrayList<Callback>();
 		
 		@Override
 		public void addCallback(Callback c) {
@@ -63,7 +79,7 @@ public class ValidatorManager {
 			return callbacks;
 		}
 		
-		private Process(PropertyScratchpad scratch) {
+		private StandaloneProcess(PropertyScratchpad scratch) {
 			this.scratch = scratch;
 		}
 		
@@ -85,12 +101,10 @@ public class ValidatorManager {
 			if (c == null || !c.isReady()) {
 				throw new ChangeRejectedException(c, "" + c + " is not ready");
 			} else if (!(c instanceof ChangeGroup)) {
-				boolean passes = false;
-				for (IStepValidator i : getValidators())
-					passes |= i.tryValidateChange(this, c);
-				if (passes)
+				IChange d = step(c);
+				if (d == null)
 					c.simulate(getScratch());
-				return (passes ? null : c);
+				return d;
 			} else {
 				for (IChange i : (ChangeGroup)c) {
 					IChange j = doValidation(i);
@@ -99,6 +113,24 @@ public class ValidatorManager {
 				}
 				return null;
 			}
+		}
+	}
+	
+	private final class ParticipantProcess extends AbstractProcess {
+		private final IStepValidator.Process process;
+		
+		public ParticipantProcess(IStepValidator.Process process) {
+			this.process = process;
+		}
+		
+		@Override
+		public PropertyScratchpad getScratch() {
+			return process.getScratch();
+		}
+
+		@Override
+		public void addCallback(Callback c) {
+			process.addCallback(c);
 		}
 	}
 }
