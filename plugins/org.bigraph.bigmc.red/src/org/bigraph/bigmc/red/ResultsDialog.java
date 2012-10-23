@@ -248,4 +248,9 @@ public class ResultsDialog extends TitleAreaDialog {
 				IDialogConstants.CLOSE_ID, IDialogConstants.CLOSE_LABEL, true);
 		createButton(parent, SAVE_AS_ID, SAVE_AS_LABEL, false);
 	}
+	
+	@Override
+	protected boolean isResizable() {
+		return true;
+	}
 }
