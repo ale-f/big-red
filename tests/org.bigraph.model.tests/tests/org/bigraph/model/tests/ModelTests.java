@@ -7,7 +7,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
 	BigraphTests.class,
-	SignatureTests.class
+	SignatureTests.class,
+	ExecutionTests.class
 })
 public class ModelTests {
 }
