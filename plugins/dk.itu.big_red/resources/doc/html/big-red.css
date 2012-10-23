@@ -102,11 +102,14 @@ div#trail > .next:after {
 }
 
 div.figure {
-	padding-top: 1em;
-	padding-bottom: 1em;
-	
 	text-align: center;
 	font-style: italic;
+	
+	padding: 0.5em;
+}
+
+div.figure > div.caption {
+	padding: 0.5em;
 }
 
 div.figure img {

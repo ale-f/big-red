@@ -19,7 +19,7 @@
 	<li>
 		<a href="#introduction">Introduction</a>
 	<li>
-		<a href="#a_thing">A thing</a>
+		<a href="#scope_rules">Scope rules</a>
 	<li>
 		<a href="#the_basics_of_eclipse">The basics of Eclipse</a>
 </ol>
@@ -33,24 +33,52 @@
 </p>
 <p>
 	This tutorial is a worked example. By the end, you'll have extended Big
-	Red to support <em>a thing</em>.
+	Red to support a <em>scope rule</em>.
 </p>
 <p class="info note">
 	Full source code for the completed extension can be found in the
-	<code>doc/plugins/examples/<i>a thing</i>/</code> directory of the Big
+	<code>doc/plugins/examples/scope/</code> directory of the Big
 	Red source repository.
 </p>
-<p class="warning note">
-	The completed extension is an incredibly naïve implementation of
-	a thing intended only to serve as a motivating example &mdash; if you
-	actually need to <em>use</em> a thing, you should probably look
-	elsewhere!
-</p>
-<h2 id="a_thing">
-	A thing
+<h2 id="scope_rules">
+	Scope rules
 </h2>
 <p>
-	A thing.
+	Normally, ports in a bigraph can be connected to any other ports.
+	Consider the following bigraph:
+</p>
+<div class="figure">
+	<img src="scope.png">
+</div>
+<p>
+	The <span style="color: #008000">green edge</span> on the left
+	connects the <span style="color: #a52a2a"><code>D</code> node</span>
+	to its children, the <span style="color: #ff0000"><code>A</code>
+	node</span> and the <span style="color: #00ff00"><code>C</code>
+	node</span>, and to its grandchild, the <span style="color: #1e90ff"><code>B</code>
+	node</span>. The <span style="color: #ff0000">red edge</span> on
+	the right connects the <span style="color: #a52a2a"><code>D</code>
+	node</span> to its sibling, the <span style="color: #1e90ff"><code>B</code>
+	node</span>. Both of these edges are completely valid.
+</p>
+<p>
+	Introducing a <em>scope rule</em> restricts the connectivity of certain
+	ports. Here are two possible scope rules:&mdash;
+</p>
+<ol>
+<li>
+	A port can be connected only to its node's siblings.
+</li>
+<li>
+	A port can be connected only to its node's descendants.
+</li>
+</ol>
+<p>
+	Applying the first of these rules to the single port of
+	<span style="color: #a52a2a">control <code>D</code></span>, for
+	example, would forbid the <span style="color: #008000">green edge</span>,
+	and applying the second would forbid the <span style="color: #ff0000">red
+	edge</span>.
 </p>
 <h2 id="the_basics_of_eclipse">
 	The basics of Eclipse
