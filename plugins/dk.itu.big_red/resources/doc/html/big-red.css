@@ -102,14 +102,18 @@ div#trail > .next:after {
 }
 
 div.figure {
-	text-align: center;
-	font-style: italic;
-	
+	max-width: 50%;
 	padding: 0.5em;
+	
+	margin-left: auto;
+	margin-right: auto;
 }
 
 div.figure > div.caption {
 	padding: 0.5em;
+	
+	text-align: center;
+	font-style: italic;
 }
 
 div.figure img {
@@ -132,4 +136,9 @@ img.border.tight {
 
 code.control-name {
 	font-weight: 900;
+}
+
+code .comment {
+	color: green;
+	font-style: italic;
 }

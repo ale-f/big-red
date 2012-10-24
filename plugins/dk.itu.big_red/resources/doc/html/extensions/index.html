@@ -19,7 +19,7 @@
 	<li>
 		<a href="#introduction">Introduction</a>
 	<li>
-		<a href="#scope_rules">Scope rules</a>
+		<a href="#constraining_bigraphs">Constraining bigraphs</a>
 	<li>
 		<a href="#the_basics_of_eclipse">The basics of Eclipse</a>
 </ol>
@@ -40,8 +40,8 @@
 	<code>doc/plugins/examples/scope/</code> directory of the Big
 	Red source repository.
 </p>
-<h2 id="scope_rules">
-	Scope rules
+<h2 id="constraining_bigraphs">
+	Constraining bigraphs
 </h2>
 <p>
 	Normally, ports in a bigraph can be connected to any other ports.
@@ -51,19 +51,20 @@
 	<img src="scope.png">
 </div>
 <p>
-	The <span style="color: #008000">green edge</span> on the left
-	connects the <span style="color: #a52a2a"><code>D</code> node</span>
-	to its children, the <span style="color: #ff0000"><code>A</code>
+	This bigraph has two links: the <span style="color: #008000">green
+	edge</span> on the left connects the <span style="color: #a52a2a"><code>D</code>
+	node</span> to its children, the <span style="color: #ff0000"><code>A</code>
 	node</span> and the <span style="color: #00ff00"><code>C</code>
 	node</span>, and to its grandchild, the <span style="color: #1e90ff"><code>B</code>
-	node</span>. The <span style="color: #ff0000">red edge</span> on
-	the right connects the <span style="color: #a52a2a"><code>D</code>
+	node</span>, while the <span style="color: #ff0000">red edge</span>
+	on the right connects the <span style="color: #a52a2a"><code>D</code>
 	node</span> to its sibling, the <span style="color: #1e90ff"><code>B</code>
-	node</span>. Both of these edges are completely valid.
+	node</span>. Both of these links are completely valid.
 </p>
 <p>
-	Introducing a <em>scope rule</em> restricts the connectivity of certain
-	ports. Here are two possible scope rules:&mdash;
+	We can change this, however, by introducing <em>constraints</em> &mdash;
+	rules that forbid some bigraphs. Here are two possible constraints that
+	could be applied to the above example:&mdash;
 </p>
 <ol>
 <li>
@@ -74,11 +75,20 @@
 </li>
 </ol>
 <p>
-	Applying the first of these rules to the single port of
+	Applying the first of these constraints to the single port of
 	<span style="color: #a52a2a">control <code>D</code></span>, for
 	example, would forbid the <span style="color: #008000">green edge</span>,
 	and applying the second would forbid the <span style="color: #ff0000">red
-	edge</span>.
+	edge</span>. Both of these constraints introduce a <em>scope</em> to a
+	port &mdash; that is, they restrict the points on a bigraph to which
+	their port can be connected.
+</p>
+<p>
+	The second constraint is much more interesting, however! Many of the
+	systems that we might want to represent using bigraphs &mdash; for
+	example, the &pi;-calculus &mdash; require this particular scope rule
+	in order to be faithfully represented. (In fact, a variant of bigraphs,
+	which adds only this constraint, was.)
 </p>
 <h2 id="the_basics_of_eclipse">
 	The basics of Eclipse
@@ -145,7 +155,28 @@
 </h3>
 <p>
 	Extension points and extensions allow plugins to instantiate and
-	manipulate code contributed by their <em>dependents</em>.
+	manipulate code contributed by their <em>dependents</em>. Both are
+	represented using XML: extension points are just XML schemas with a
+	Java-style reverse domain name identifier (like <q>org.eclipse.core.contenttype.contentTypes</q>),
+	and extensions are XML elements which conform to the schema of a named
+	extension point.
 </p>
+<p>
+	When a plugin is loaded, its extensions are contributed to the
+	platform's <em>extension registry</em>. The plugin's dependencies can
+	then consult these new extensions.
+</p>
+<p>
+	If one of the fields of an extension point is a fully-qualified class
+	name, then the extension registry can be used to instantiate an object
+	of that class.
+</p>
+<div class="info note">
+<p>
+	In order to make all of this work, Eclipse implements a custom <em>class
+	loader</em> &mdash; the Java runtime component responsible for loading
+	compiled classes at the right time and in the right order.
+</p>
+</div>
 	</body>
 </html>
