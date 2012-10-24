@@ -1,5 +1,6 @@
 package dk.itu.big_red.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bigraph.model.Bigraph;
@@ -268,8 +269,11 @@ public abstract class LayoutUtilities {
 		assert
 			context != null;
 		
-		if (l instanceof Link)
-			cg.add(LinkStyleUtilities.changeStyle((Link)l, null));
+		if (l instanceof Link) {
+			cg.addAll(Arrays.asList(
+					LinkStyleUtilities.changeStyle((Link)l, null),
+					ColourUtilities.changeOutline(l, Colour.random())));
+		}
 		
 		Rectangle r = null;
 		if (l instanceof Site || l instanceof InnerName ||
