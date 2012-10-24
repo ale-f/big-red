@@ -30,7 +30,7 @@ public class BigraphCanvas extends Canvas {
 
 	public static final double zoomBounds[] = {
 		0.05,
-		1
+		20
 	};
 
 	public BigraphCanvas(Composite parent, int style) {
