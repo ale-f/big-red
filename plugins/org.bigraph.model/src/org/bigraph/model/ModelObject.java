@@ -8,7 +8,6 @@ import java.util.Map;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -120,7 +119,7 @@ public abstract class ModelObject {
 	static {
 		ModelObjectHandler c = new ModelObjectHandler();
 		ExecutorManager.getInstance().addExecutor(c);
-		ValidatorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addValidator(c);
 	}
 	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);

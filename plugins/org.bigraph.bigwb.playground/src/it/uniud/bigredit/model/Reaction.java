@@ -2,8 +2,6 @@ package it.uniud.bigredit.model;
 
 
 import java.util.HashMap;
-import java.util.List;
-
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Layoutable;
@@ -14,7 +12,6 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -212,13 +209,13 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		ValidatorManager.getInstance().tryValidateChange(b);
+		ExecutorManager.getInstance().tryValidateChange(b);
 	}
 	
 	static {
 		ReactionHandler c = new ReactionHandler();
 		ExecutorManager.getInstance().addExecutor(c);
-		ValidatorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addValidator(c);
 	}
 	
 	public void _changeInsideModel(ModelObject target, Change change){

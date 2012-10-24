@@ -1,8 +1,6 @@
 package it.uniud.bigredit.model;
 
 import it.uniud.bigredit.PlayEditor;
-import it.uniud.bigredit.model.Reaction.ChangeInsideModel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +9,6 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -301,7 +298,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		ValidatorManager.getInstance().tryValidateChange(b);
+		ExecutorManager.getInstance().tryValidateChange(b);
 	}
 
 
@@ -313,7 +310,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	static {
 		BRSHandler c = new BRSHandler();
 		ExecutorManager.getInstance().addExecutor(c);
-		ValidatorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addValidator(c);
 	}
 	
 	public Rectangle getChildrenConstraint(ModelObject child){

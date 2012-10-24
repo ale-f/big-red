@@ -101,8 +101,7 @@ public class ExecutionTests {
 	
 	@Test(expected = ChangeRejectedException.class)
 	public void blankManagers() throws ChangeRejectedException {
-		ValidatorManager vm = new ValidatorManager();
-		ExecutorManager em = new ExecutorManager(vm);
+		ExecutorManager em = new ExecutorManager();
 		go(em);
 	}
 	
@@ -110,11 +109,9 @@ public class ExecutionTests {
 	public void newManagers() throws ChangeRejectedException {
 		DummyHandler dh = new DummyHandler();
 		
-		ValidatorManager vm = new ValidatorManager();
-		vm.addValidator(dh);
-		
-		ExecutorManager em = new ExecutorManager(vm);
+		ExecutorManager em = new ExecutorManager();
 		em.addExecutor(dh);
+		em.addValidator(dh);
 		
 		go(em);
 	}
@@ -124,7 +121,7 @@ public class ExecutionTests {
 		DummyHandler dh = new DummyHandler();
 		
 		ValidatorManager vm = new ValidatorManager();
-		vm.addValidator(ValidatorManager.getInstance());
+		vm.addValidator(ExecutorManager.getInstance());
 		vm.addValidator(dh);
 		
 		Dummy d = new Dummy();
@@ -140,12 +137,10 @@ public class ExecutionTests {
 	public void stackedExecution() throws ChangeRejectedException {
 		DummyHandler dh = new DummyHandler();
 		
-		ValidatorManager vm = new ValidatorManager();
-		vm.addValidator(dh);
-		
-		ExecutorManager em = new ExecutorManager(vm);
+		ExecutorManager em = new ExecutorManager();
 		em.addExecutor(ExecutorManager.getInstance());
 		em.addExecutor(dh);
+		em.addValidator(dh);
 		
 		Dummy d = new Dummy();
 		

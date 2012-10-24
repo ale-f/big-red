@@ -7,7 +7,6 @@ import java.util.Locale;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
@@ -202,7 +201,7 @@ public class Bigraph extends Container
 	
 	public void tryValidateChange(PropertyScratchpad context, IChange b)
 			throws ChangeRejectedException {
-		ValidatorManager.getInstance().tryValidateChange(context, b);
+		ExecutorManager.getInstance().tryValidateChange(context, b);
 	}
 	
 	@Override
@@ -213,7 +212,7 @@ public class Bigraph extends Container
 	static {
 		BigraphHandler c = new BigraphHandler();
 		ExecutorManager.getInstance().addExecutor(c);
-		ValidatorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addValidator(c);
 	}
 	
 	@Override

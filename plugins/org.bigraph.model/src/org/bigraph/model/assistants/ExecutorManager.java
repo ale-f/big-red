@@ -8,26 +8,16 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 
-public class ExecutorManager {
+public class ExecutorManager extends ValidatorManager {
 	private static final class Holder {
-		private static final ExecutorManager INSTANCE =
-				new ExecutorManager(ValidatorManager.getInstance());
+		private static final ExecutorManager INSTANCE = new ExecutorManager();
 	}
 	
 	public static ExecutorManager getInstance() {
 		return Holder.INSTANCE;
 	}
 	
-	private final ValidatorManager validator;
-	
-	public ExecutorManager(ValidatorManager validator) {
-		this.validator = new ValidatorManager();
-		if (validator != null)
-			this.validator.addValidator(validator);
-	}
-	
-	protected ValidatorManager getValidator() {
-		return validator;
+	public ExecutorManager() {
 	}
 	
 	private List<IStepExecutor> executors =
@@ -38,7 +28,7 @@ public class ExecutorManager {
 	}
 	
 	public void addExecutor(ExecutorManager manager) {
-		validator.addValidator(manager.getValidator());
+		addValidator(manager);
 		executors.add(manager.createStepExecutor());
 	}
 	
@@ -52,12 +42,12 @@ public class ExecutorManager {
 	
 	public void tryExecuteChange(IChange change)
 			throws ChangeRejectedException {
-		getValidator().tryValidateChange(change);
+		tryValidateChange(change);
 		
 		IChange ch = run(change);
 		if (ch != null)
 			throw new Error(
-					"BUG: " + ch + " passed validation but couldn't" +
+					"BUG: " + ch + " passed validation but couldn't " +
 					"be executed");
 	}
 	

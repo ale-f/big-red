@@ -9,15 +9,6 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
 
 public class ValidatorManager implements IStepValidator {
-	private static final class Holder {
-		private static final ValidatorManager INSTANCE =
-				new ValidatorManager();
-	}
-	
-	public static ValidatorManager getInstance() {
-		return Holder.INSTANCE;
-	}
-	
 	private List<IStepValidator> validators =
 			new ArrayList<IStepValidator>();
 	

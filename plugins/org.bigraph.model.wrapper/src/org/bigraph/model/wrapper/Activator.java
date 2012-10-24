@@ -3,7 +3,6 @@ package org.bigraph.model.wrapper;
 import java.util.ArrayList;
 
 import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.assistants.ValidatorManager;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.eclipse.core.runtime.CoreException;
@@ -47,7 +46,6 @@ public final class Activator extends Plugin {
 		validators = new ArrayList<IStepValidator>();
 		
 		ExecutorManager eInstance = ExecutorManager.getInstance();
-		ValidatorManager vInstance = ValidatorManager.getInstance();
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
 		
 		for (IConfigurationElement ice :
@@ -75,19 +73,17 @@ public final class Activator extends Plugin {
 					continue;
 				}
 				validators.add(validator);
-				vInstance.addValidator(validator);
+				eInstance.addValidator(validator);
 			}
 		}
 	}
 	
 	private void uninstall() {
-		ValidatorManager vInstance = ValidatorManager.getInstance();
-		for (IStepValidator i : validators)
-			vInstance.removeValidator(i);
-		
 		ExecutorManager eInstance = ExecutorManager.getInstance();
 		for (IStepExecutor i : executors)
 			eInstance.removeExecutor(i);
+		for (IStepValidator i : validators)
+			eInstance.removeValidator(i);
 		
 		executors.clear();
 		validators.clear();
