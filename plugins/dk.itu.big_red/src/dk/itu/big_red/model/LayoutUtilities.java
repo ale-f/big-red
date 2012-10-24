@@ -282,21 +282,39 @@ public abstract class LayoutUtilities {
 		} else if (l instanceof Edge) {
 			setLayout(context, l, r = null);
 		} else if (l instanceof Node || l instanceof Root) {
-			int left = PADDING, height = 0;
-			for (Layoutable i : ((Container)l).getChildren(context)) {
-				r = relayout(context, i, cg).setLocation(left, 0);
-				left = left + r.width + PADDING;
-				if (height < r.height)
-					height = r.height;
+			boolean horizontal = (l instanceof Root);
+			int progress = PADDING, max = 0;
+			List<? extends Layoutable> children =
+					((Container)l).getChildren(context);
+			for (Layoutable i : children) {
+				r = relayout(context, i, cg);
+				if (horizontal) {
+					r.setLocation(progress, 0);
+					progress = progress + r.width + PADDING;
+					if (max < r.height)
+						max = r.height;
+				} else {
+					r.setLocation(0, progress);
+					progress = progress + r.height + PADDING;
+					if (max < r.width)
+						max = r.width;
+				}
 				cg.add(changeLayout(i, r));
 			}
-			for (Layoutable i : ((Container)l).getChildren(context))
-				(r = getLayout(context, i)).y =
-					PADDING + ((height - r.height) / 2);
-			if (left == PADDING)
-				left += PADDING;
-			setLayout(context, l,
-					r = new Rectangle(0, 0, left, (PADDING * 2) + height));
+			for (Layoutable i : children) {
+				r = getLayout(context, i);
+				if (horizontal) {
+					r.y = PADDING + ((max - r.height) / 2);
+				} else r.x = PADDING + ((max - r.width) / 2);
+			}
+			if (progress == PADDING)
+				progress += PADDING;
+			if (horizontal) {
+				r = new Rectangle(0, 0, progress, (PADDING * 2) + max);
+			} else {
+				r = new Rectangle(0, 0, (PADDING * 2) + max, progress);
+			}
+			setLayout(context, l, r);
 		} else if (l instanceof Bigraph) {
 			Bigraph b = (Bigraph)l;
 			List<? extends Layoutable> children = b.getChildren(context);
