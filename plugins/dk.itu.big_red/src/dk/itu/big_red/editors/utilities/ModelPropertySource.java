@@ -175,6 +175,10 @@ public class ModelPropertySource implements IRedPropertySource {
 
 	@Override
 	public IChange resetPropertyValueChange(Object id) {
-		return null;
+		if (ColourUtilities.FILL.equals(id)) {
+			return ColourUtilities.changeFill(getModel(), null);
+		} else if (ColourUtilities.OUTLINE.equals(id)) {
+			return ColourUtilities.changeOutline(getModel(), null);
+		} else return null;
 	}
 }
