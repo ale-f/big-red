@@ -46,4 +46,11 @@ public class ReactumPropertySource extends ModelPropertySource {
 					(Site)getModel(), (String)newValue);
 		} else return super.setPropertyValueChange(id, newValue);
 	}
+	
+	@Override
+	public IChange resetPropertyValueChange(Object id) {
+		if (ExtendedDataUtilities.ALIAS.equals(id)) {
+			return ExtendedDataUtilities.changeAlias((Site)getModel(), null);
+		} else return super.resetPropertyValueChange(id);
+	}
 }
