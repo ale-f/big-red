@@ -6,9 +6,11 @@ import java.util.List;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IStepExecutor;
 
-public class ExecutorManager extends ValidatorManager {
+public class ExecutorManager extends ValidatorManager 
+		implements IChangeExecutor {
 	private static final class Holder {
 		private static final ExecutorManager INSTANCE = new ExecutorManager();
 	}
@@ -40,7 +42,8 @@ public class ExecutorManager extends ValidatorManager {
 		return executors;
 	}
 	
-	public void tryExecuteChange(IChange change)
+	@Override
+	public void tryApplyChange(IChange change)
 			throws ChangeRejectedException {
 		tryValidateChange(change);
 		

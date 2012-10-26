@@ -150,7 +150,7 @@ public class Edit extends ModelObject
 	
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryExecuteChange(b);
+		ExecutorManager.getInstance().tryApplyChange(b);
 	}
 	
 	@Override

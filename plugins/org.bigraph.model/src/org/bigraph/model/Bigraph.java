@@ -206,7 +206,7 @@ public class Bigraph extends Container
 	
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryExecuteChange(b);
+		ExecutorManager.getInstance().tryApplyChange(b);
 	}
 	
 	static {

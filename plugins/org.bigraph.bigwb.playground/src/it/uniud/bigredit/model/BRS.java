@@ -304,7 +304,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryExecuteChange(b);
+		ExecutorManager.getInstance().tryApplyChange(b);
 	}
 	
 	static {

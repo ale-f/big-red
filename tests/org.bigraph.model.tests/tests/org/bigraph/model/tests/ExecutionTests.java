@@ -94,7 +94,7 @@ public class ExecutionTests {
 	private Dummy go(ExecutorManager em) throws ChangeRejectedException {
 		Dummy d = new Dummy();
 		assertEquals(null, d.getString());
-		em.tryExecuteChange(d.change("value"));
+		em.tryApplyChange(d.change("value"));
 		assertEquals("value", d.getString());
 		return d;
 	}
@@ -148,6 +148,6 @@ public class ExecutionTests {
 		cg.addAll(Arrays.asList(
 				d.change("foxtrot"),
 				d.changeExtendedData("eD!+test", Object.class)));
-		em.tryExecuteChange(cg);
+		em.tryApplyChange(cg);
 	}
 }
