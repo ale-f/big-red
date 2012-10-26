@@ -20,18 +20,11 @@ public abstract class NamedModelObject extends ModelObject {
 		}
 	}
 	
-	protected Namespace<? extends NamedModelObject> getGoverningNamespace(
-			PropertyScratchpad context) {
-		return null;
-	}
-	
-	protected void simulateRename(PropertyScratchpad context, String name) {
-		/* do nothing */
-	}
-	
-	protected void applyRename(String name) {
-		setName(name);
-	}
+	protected abstract Namespace<? extends NamedModelObject>
+			getGoverningNamespace(PropertyScratchpad context);
+	protected abstract void simulateRename(
+			PropertyScratchpad context, String name);
+	protected abstract void applyRename(String name);
 	
 	public final class ChangeName extends NamedModelObjectChange {
 		public final String name;
@@ -188,7 +181,9 @@ public abstract class NamedModelObject extends ModelObject {
 		firePropertyChange(PROPERTY_NAME, oldName, name);
 	}
 	
-	public abstract IChange changeName(String newName);
+	public IChange changeName(String newName) {
+		return new ChangeName(newName);
+	}
 	
 	@Override
 	protected NamedModelObject clone() {

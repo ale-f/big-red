@@ -136,11 +136,6 @@ public abstract class Layoutable extends NamedModelObject {
 		return l;
 	}
 	
-	@Override
-	public IChange changeName(String newName) {
-		return new ChangeName(newName);
-	}
-	
 	public IChange changeRemove() {
 		return new ChangeRemove();
 	}
