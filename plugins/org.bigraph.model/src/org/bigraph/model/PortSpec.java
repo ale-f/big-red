@@ -7,6 +7,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.interfaces.ILink;
 import org.bigraph.model.interfaces.INode;
 import org.bigraph.model.interfaces.IPort;
+import org.bigraph.model.names.Namespace;
 
 public class PortSpec extends NamedModelObject implements IPort {
 	@RedProperty(fired = Control.class, retrieved = Control.class)
@@ -19,47 +20,22 @@ public class PortSpec extends NamedModelObject implements IPort {
 		}
 	}
 	
-	public final class ChangeName extends PortSpecChange {
-		public final String name;
-		
-		public ChangeName(String name) {
-			this.name = name;
-		}
-		
-		private String oldName;
-		@Override
-		public void beforeApply() {
-			oldName = getCreator().getName();
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (name != null);
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldName != null);
-		}
-		
-		@Override
-		public Change inverse() {
-			return new ChangeName(oldName);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set name of port " + getCreator() +
-					" to " + name + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			PortSpec cr = getCreator();
-			context.setProperty(cr, PROPERTY_NAME,
-					cr.getControl(context).getNamespace().rename(
-							context, cr.getName(context), name));
-		}
+	@Override
+	protected Namespace<PortSpec>
+			getGoverningNamespace(PropertyScratchpad context) {
+		return getControl(context).getNamespace();
+	}
+	
+	@Override
+	protected void applyRename(String name) {
+		setName(getGoverningNamespace(null).rename(getName(), name));
+	}
+	
+	@Override
+	protected void simulateRename(PropertyScratchpad context, String name) {
+		context.setProperty(this, PROPERTY_NAME,
+				getGoverningNamespace(context).rename(
+						context, getName(context), name));
 	}
 	
 	public final class ChangeRemovePort extends PortSpecChange {

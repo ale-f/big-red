@@ -42,11 +42,6 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 					c.getCreator().getControl().getNamespace();
 			c.getCreator().getControl().removePort(c.getCreator());
 			ns.remove(c.getCreator().getName());
-		} else if (b instanceof PortSpec.ChangeName) {
-			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
-			PortSpec p = c.getCreator();
-			p.setName(p.getControl().getNamespace().rename(
-					p.getName(), c.name));
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
 			c.getCreator().addSignature(c.signature);
@@ -87,11 +82,6 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 						"" + po + " doesn't have a parent");
 		} else if (b instanceof ChangeKind) {
 			/* do nothing */
-		} else if (b instanceof PortSpec.ChangeName) {
-			PortSpec.ChangeName c = (PortSpec.ChangeName)b;
-			ModelObjectHandler.checkName(context, c, c.getCreator(),
-					c.getCreator().getControl(context).getNamespace(),
-					c.name);
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
 			if (c.signature.getParent(context) != null)
