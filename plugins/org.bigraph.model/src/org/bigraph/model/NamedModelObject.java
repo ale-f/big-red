@@ -1,15 +1,82 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.names.Namespace;
 
 public abstract class NamedModelObject extends ModelObject {
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String PROPERTY_NAME = "NamedModelObjectName";
+	
+	public abstract class NamedModelObjectChange extends ModelObjectChange {
+		@Override
+		public NamedModelObject getCreator() {
+			return NamedModelObject.this;
+		}
+	}
+	
+	protected Namespace<? extends NamedModelObject> getGoverningNamespace(
+			PropertyScratchpad context) {
+		return null;
+	}
+	
+	protected void simulateRename(PropertyScratchpad context, String name) {
+		/* do nothing */
+	}
+	
+	protected void applyRename(String name) {
+		setName(name);
+	}
+	
+	public final class ChangeName extends NamedModelObjectChange {
+		public final String name;
+		
+		public ChangeName(String name) {
+			this.name = name;
+		}
+		
+		private String oldName;
+		@Override
+		public void beforeApply() {
+			oldName = getCreator().getName();
+		}
+		
+		@Override
+		public boolean canInvert() {
+			return (oldName != null);
+		}
+		
+		@Override
+		public ChangeName inverse() {
+			return new ChangeName(oldName);
+		}
+		
+		@Override
+		public boolean isReady() {
+			return (name != null);
+		}
+		
+		@Override
+		public String toString() {
+			return "Change(set name of " + getCreator() + " to " + name + ")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			getCreator().simulateRename(context, name);
+		}
+	}
+	
+	static {
+		NamedModelObjectHandler dh = new NamedModelObjectHandler();
+		ExecutorManager.getInstance().addExecutor(dh);
+		ExecutorManager.getInstance().addValidator(dh);
+	}
 	
 	public static abstract class Identifier implements ModelObject.Identifier {
 		private final String name;
