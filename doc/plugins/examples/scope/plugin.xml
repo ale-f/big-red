@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.bigraph.model.wrapper.changes">
+      <validator
+            class="example.org.bigraph.extensions.scope.ValidateScope"
+            id="Scope validator">
+      </validator>
+   </extension>
+   <extension
+         point="org.bigraph.model.wrapper.export">
+      <participant
+            class="example.org.bigraph.extensions.scope.SaveScope"
+            id="Save scope">
+      </participant>
+   </extension>
+   <extension
+         point="org.bigraph.model.wrapper.import">
+      <participant
+            class="example.org.bigraph.extensions.scope.LoadScope"
+            id="Load scope">
+      </participant>
+   </extension>
+
+</plugin>

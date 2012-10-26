@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Scope bigraphs for Big Red
+Bundle-SymbolicName: example.org.bigraph.extensions.scope;singleton:=true
+Bundle-Version: 1.0.0.0
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.bigraph.model.wrapper;bundle-version="1.0.0"
