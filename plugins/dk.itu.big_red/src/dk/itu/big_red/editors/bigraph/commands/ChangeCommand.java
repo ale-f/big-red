@@ -80,6 +80,9 @@ public class ChangeCommand extends Command {
 	@Override
 	public final boolean canExecute() {
 		IChange change = getChange();
+		if (change instanceof ChangeGroup &&
+				((ChangeGroup)change).size() == 0)
+			return false;
 		boolean status = false;
 		try {
 			ExecutorManager.getInstance().tryValidateChange(change);
@@ -98,6 +101,7 @@ public class ChangeCommand extends Command {
 	public final void execute() {
 		try {
 			ExecutorManager.getInstance().tryApplyChange(getChange());
+			UI.getActiveStatusLine().setErrorMessage(null);
 		} catch (ChangeRejectedException cre) {
 			/* do nothing */
 		}
