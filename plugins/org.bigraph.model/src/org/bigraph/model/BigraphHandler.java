@@ -31,11 +31,6 @@ final class BigraphHandler implements IStepExecutor, IStepValidator {
 			Namespace<Layoutable> ns = ch.getBigraph().getNamespace(ch);
 			ch.getParent().removeChild(ch);
 			ns.remove(ch.getName());
-		} else if (b instanceof Layoutable.ChangeName) {
-			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			Layoutable ch = c.getCreator();
-			Namespace<Layoutable> ns = ch.getBigraph().getNamespace(ch);
-			c.getCreator().setName(ns.rename(ch.getName(), c.newName));
 		} else return false;
 		return true;
 	}
@@ -123,11 +118,6 @@ final class BigraphHandler implements IStepExecutor, IStepValidator {
 			Container cp = ch.getParent(context);
 			if (cp == null)
 				throw new ChangeRejectedException(b, ch + " has no parent");
-		} else if (b instanceof Layoutable.ChangeName) {
-			Layoutable.ChangeName c = (Layoutable.ChangeName)b;
-			Bigraph bigraph = c.getCreator().getBigraph(context);
-			ModelObjectHandler.checkName(context, b, c.getCreator(),
-					bigraph.getNamespace(c.getCreator()), c.newName);
 		} else return false;
 		return true;
 	}

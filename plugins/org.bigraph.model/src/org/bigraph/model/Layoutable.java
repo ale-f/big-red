@@ -30,46 +30,22 @@ public abstract class Layoutable extends NamedModelObject {
 		}
 	}
 
-	public final class ChangeName extends LayoutableChange {
-		public final String newName;
-		
-		protected ChangeName(String newName) {
-			this.newName = newName;
-		}
-
-		private String oldName;
-		@Override
-		public void beforeApply() {
-			oldName = getCreator().getName();
-		}
-		
-		@Override
-		public ChangeName inverse() {
-			return new ChangeName(oldName);
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldName != null);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (newName != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set name of " + getCreator() + " to " + newName + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			Layoutable cr = getCreator();
-			Namespace<Layoutable> ns = cr.getBigraph(context).getNamespace(cr);
-			context.setProperty(cr, Layoutable.PROPERTY_NAME,
-					ns.rename(context, cr.getName(context), newName));
-		}
+	@Override
+	protected Namespace<Layoutable> getGoverningNamespace(
+			PropertyScratchpad context) {
+		return getBigraph(context).getNamespace(this);
+	}
+	
+	@Override
+	protected void applyRename(String name) {
+		setName(getGoverningNamespace(null).rename(getName(), name));
+	}
+	
+	@Override
+	protected void simulateRename(PropertyScratchpad context, String name) {
+		context.setProperty(this, PROPERTY_NAME,
+				getGoverningNamespace(context).rename(
+						context, getName(context), name));
 	}
 	
 	public final class ChangeRemove extends LayoutableChange {
