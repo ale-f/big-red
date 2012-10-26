@@ -2,7 +2,6 @@ package org.bigraph.model;
 
 import org.bigraph.model.Control.ChangeAddPort;
 import org.bigraph.model.Control.ChangeKind;
-import org.bigraph.model.Control.ChangeName;
 import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.Signature.ChangeAddControl;
@@ -29,12 +28,6 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 					c.getCreator().getSignature().getNamespace();
 			c.getCreator().getSignature().removeControl(c.getCreator());
 			ns.remove(c.getCreator().getName());
-		} else if (b instanceof ChangeName) {
-			ChangeName c = (ChangeName)b;
-			Namespace<Control> ns =
-					c.getCreator().getSignature().getNamespace();
-			c.getCreator().setName(
-					ns.rename(c.getCreator().getName(), c.name));
 		} else if (b instanceof ChangeKind) {
 			ChangeKind c = (ChangeKind)b;
 			c.getCreator().setKind(c.kind);
@@ -99,11 +92,6 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 			ModelObjectHandler.checkName(context, c, c.getCreator(),
 					c.getCreator().getControl(context).getNamespace(),
 					c.name);
-		} else if (b instanceof ChangeName) {
-			ChangeName c = (ChangeName)b;
-			Signature signature = c.getCreator().getSignature(context);
-			ModelObjectHandler.checkName(context, c, c.getCreator(),
-					signature.getNamespace(), c.name);
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
 			if (c.signature.getParent(context) != null)

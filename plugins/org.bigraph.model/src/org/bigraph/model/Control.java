@@ -52,45 +52,22 @@ public class Control extends NamedModelObject implements IControl {
 		}
 	}
 	
-	public final class ChangeName extends ControlChange {
-		public final String name;
-		
-		public ChangeName(String name) {
-			this.name = name;
-		}
-		
-		private String oldName;
-		@Override
-		public void beforeApply() {
-			oldName = getCreator().getName();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldName != null);
-		}
-		
-		@Override
-		public ChangeName inverse() {
-			return new ChangeName(oldName);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (name != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set name of " + getCreator() + " to " + name + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.setProperty(getCreator(), PROPERTY_NAME,
-					getCreator().getSignature(context).getNamespace().rename(
-							context, getCreator().getName(context), name));
-		}
+	@Override
+	protected Namespace<Control>
+			getGoverningNamespace(PropertyScratchpad context) {
+		return getSignature(context).getNamespace();
+	}
+	
+	@Override
+	protected void applyRename(String name) {
+		setName(getGoverningNamespace(null).rename(getName(), name));
+	}
+	
+	@Override
+	protected void simulateRename(PropertyScratchpad context, String name) {
+		context.setProperty(this, PROPERTY_NAME,
+				getGoverningNamespace(context).rename(
+						context, getName(context), name));
 	}
 	
 	public final class ChangeKind extends ControlChange {
