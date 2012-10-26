@@ -13,13 +13,7 @@ import org.bigraph.model.names.Namespace;
 final class BigraphHandler implements IStepExecutor, IStepValidator {
 	@Override
 	public boolean executeChange(IChange b) {
-		if (b instanceof Point.ChangeConnect) {
-			Point.ChangeConnect c = (Point.ChangeConnect)b;
-			c.link.addPoint(c.getCreator());
-		} else if (b instanceof Point.ChangeDisconnect) {
-			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			c.getCreator().getLink().removePoint(c.getCreator());
-		} else if (b instanceof Container.ChangeAddChild) {
+		if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			Namespace<Layoutable> ns =
 					c.getCreator().getBigraph().getNamespace(c.child);
@@ -39,19 +33,7 @@ final class BigraphHandler implements IStepExecutor, IStepValidator {
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
 		final PropertyScratchpad context = process.getScratch();
-		if (b instanceof Point.ChangeConnect) {
-			Point.ChangeConnect c = (Point.ChangeConnect)b;
-			if (c.getCreator().getLink(context) != null)
-				throw new ChangeRejectedException(b,
-						"Connections can only be established to Points that " +
-						"aren't already connected");
-		} else if (b instanceof Point.ChangeDisconnect) {
-			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			Link l = c.getCreator().getLink(context);
-			if (l == null)
-				throw new ChangeRejectedException(b,
-						"The Point is already disconnected");
-		} else if (b instanceof Container.ChangeAddChild) {
+		if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			Container container = c.getCreator();
 			Bigraph bigraph = container.getBigraph(context);

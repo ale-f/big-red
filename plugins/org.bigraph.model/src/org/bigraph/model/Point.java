@@ -1,6 +1,7 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
@@ -26,9 +27,6 @@ public abstract class Point extends Layoutable implements IPoint {
 		public Point getCreator() {
 			return Point.this;
 		}
-	}
-	
-	interface ConnectValidator extends Validator<ChangeConnect> {
 	}
 	
 	public final class ChangeConnect extends PointChange {
@@ -60,9 +58,6 @@ public abstract class Point extends Layoutable implements IPoint {
 				add(getCreator());
 			context.setProperty(getCreator(), Point.PROPERTY_LINK, link);
 		}
-	}
-	
-	interface DisconnectValidator extends Validator<ChangeDisconnect> {
 	}
 	
 	public final class ChangeDisconnect extends PointChange {
@@ -98,6 +93,12 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 	}
 
+	static {
+		PointHandler dh = new PointHandler();
+		ExecutorManager.getInstance().addExecutor(dh);
+		ExecutorManager.getInstance().addValidator(dh);
+	}
+	
 	private Link link = null;
 	
 	/**
