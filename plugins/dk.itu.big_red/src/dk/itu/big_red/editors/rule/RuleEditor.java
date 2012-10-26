@@ -11,7 +11,6 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -372,7 +371,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	private void _testConvertChange(int detail, ChangeCommand c) {
 		IChange commandChange = c.getChange();
-		IChangeExecutor target = c.getTarget();
+		Object target = c.getTarget();
 		
 		ChangeDescriptorGroup reactumChanges = getModel().getChanges();
 		if (target == getRedex()) {

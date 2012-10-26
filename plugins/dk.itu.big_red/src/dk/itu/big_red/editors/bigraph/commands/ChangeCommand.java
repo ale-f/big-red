@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -15,12 +16,12 @@ import dk.itu.big_red.utilities.ui.UI;
  */
 public class ChangeCommand extends Command {
 	private IChange change;
-	private IChangeExecutor target;
+	private Object target;
 	
 	public ChangeCommand() {
 	}
 	
-	public ChangeCommand(IChange change, IChangeExecutor target) {
+	public ChangeCommand(IChange change, Object target) {
 		this.change = change;
 		this.target = target;
 	}
@@ -47,7 +48,7 @@ public class ChangeCommand extends Command {
 	 * Gets the {@link IChangeExecutor} that will be modified by this command.
 	 * @return an {@link IChangeExecutor}
 	 */
-	public IChangeExecutor getTarget() {
+	public Object getTarget() {
 		return target;
 	}
 
@@ -56,7 +57,7 @@ public class ChangeCommand extends Command {
 	 * @param target an {@link IChangeExecutor}
 	 * @return <code>this</code>, for convenience
 	 */
-	public ChangeCommand setTarget(IChangeExecutor target) {
+	public ChangeCommand setTarget(Object target) {
 		this.target = target;
 		return this;
 	}
@@ -79,19 +80,12 @@ public class ChangeCommand extends Command {
 	@Override
 	public final boolean canExecute() {
 		IChange change = getChange();
-		boolean status =
-				(change != null && target != null && change.isReady());
-		if (status && change instanceof ChangeGroup)
-			status = (((ChangeGroup)change).size() != 0);
-		if (status) {
-			try {
-				target.tryValidateChange(change);
-				status = true;
-			} catch (ChangeRejectedException cre) {
-				status = false;
-				UI.getActiveStatusLine().
-					setErrorMessage(status ? null : cre.getRationale());
-			}
+		boolean status = false;
+		try {
+			ExecutorManager.getInstance().tryValidateChange(change);
+			status = true;
+		} catch (ChangeRejectedException cre) {
+			UI.getActiveStatusLine().setErrorMessage(cre.getRationale());
 		}
 		return status;
 	}
@@ -103,7 +97,7 @@ public class ChangeCommand extends Command {
 	@Override
 	public final void execute() {
 		try {
-			target.tryApplyChange(getChange());
+			ExecutorManager.getInstance().tryApplyChange(getChange());
 		} catch (ChangeRejectedException cre) {
 			/* do nothing */
 		}
@@ -124,7 +118,7 @@ public class ChangeCommand extends Command {
 	@Override
 	public final void undo() {
 		try {
-			target.tryApplyChange(getInverse());
+			ExecutorManager.getInstance().tryApplyChange(getInverse());
 		} catch (ChangeRejectedException cre) {
 			/* do nothing */
 		}

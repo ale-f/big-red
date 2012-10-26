@@ -16,11 +16,6 @@ import org.bigraph.model.changes.ChangeGroup;
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 
 public class ModelDeleteCommand extends ChangeCommand {
-	@Override
-	public Bigraph getTarget() {
-		return (Bigraph)super.getTarget();
-	}
-	
 	private ChangeGroup cg = new ChangeGroup();
 	
 	public ModelDeleteCommand() {

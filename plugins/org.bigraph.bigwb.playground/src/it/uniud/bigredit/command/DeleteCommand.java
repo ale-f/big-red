@@ -27,11 +27,6 @@ public class DeleteCommand extends ChangeCommand {
 		cg.add(((BRS)target).changeRemoveChild(del));
 	}
 	
-	@Override
-	public BRS getTarget() {
-		return (BRS)super.getTarget();
-	}
-	
 	public void setTarget(BRS target){
 		this.target=target;
 		super.setTarget(target);
