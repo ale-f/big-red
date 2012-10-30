@@ -42,12 +42,18 @@ public class LexerFactory {
 			lexer = scanner.matcher(input);
 		}
 		
-		public String getCurrent() {
+		protected String getCurrent() {
 			if (current == null)
 				current = (lexer.find() ? lexer.group() : null);
 			return current;
 		}
 		
+		/**
+		 * Consumes the next token if it matches {@code p}.
+		 * @param p a {@link Pattern}
+		 * @return the consumed token, or <code>null</code> if the next token
+		 * doesn't match {@code p}
+		 */
 		public String accept(Pattern p) {
 			String current = getCurrent();
 			
@@ -58,12 +64,25 @@ public class LexerFactory {
 			} else return null;
 		}
 		
+		/**
+		 * Examines the next token without consuming it.
+		 * @param p a {@link Pattern}
+		 * @return {@code true} if the next token will match {@code p}, or
+		 * {@code false} otherwise
+		 */
 		public boolean lookahead1(Pattern p) {
 			String current = getCurrent();
 			return (current != null &&
 					p.matcher(current).matches());
 		}
 		
+		/**
+		 * Consumes the next token if it matches {@code p}.
+		 * @param p a {@link Pattern}
+		 * @return the consumed token
+		 * @throws DisappointedException if the next token doesn't match {@code
+		 * p}
+		 */
 		public String expect(Pattern p) throws DisappointedException {
 			String s = accept(p);
 			if (s != null) {
