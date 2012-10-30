@@ -17,13 +17,14 @@ import org.bigraph.model.names.INamespace;
 
 import dk.itu.big_red.model.LayoutUtilities;
 
+import org.bigraph.bigmc.red.LexerFactoryFactory;
 import org.bigraph.bigmc.red.LexerFactory.Lexer;
 import org.bigraph.bigmc.red.LexerFactory.Lexer.DisappointedException;
 import org.bigraph.extensions.param.ParameterUtilities;
 
 public class OutputParser {
-	private static final LexerFactory lf = new LexerFactory(
-			"(\\(|\\)|\\[|\\]|,|-|\\$[0-9]+|[a-zA-Z_][a-zA-Z0-9_]*|\\.|\\|)");
+	private static final LexerFactoryFactory lff = new LexerFactoryFactory();
+	private static final LexerFactory lf;
 	
 	private Lexer lexer;
 	
@@ -43,17 +44,20 @@ public class OutputParser {
 	}
 	
 	private static final Pattern
-		P_NIL = Pattern.compile("^nil$"),
-		P_DOT = Pattern.compile("^\\.$"),
-		P_BAR = Pattern.compile("^\\|$"),
-		P_LSQ = Pattern.compile("^\\[$"),
-		P_RSQ = Pattern.compile("^\\]$"),
-		P_DSH = Pattern.compile("^-$"),
-		P_LBR = Pattern.compile("^\\($"),
-		P_RBR = Pattern.compile("^\\)$"),
-		P_COM = Pattern.compile("^,$"),
-		P_NAM = Pattern.compile("^[a-zA-Z_][a-zA-Z0-9_]*$"),
-		P_SIT = Pattern.compile("^\\$[0-9]+$");
+		P_NIL = lff.addTokenType("nil"),
+		P_DOT = lff.addTokenType("\\."),
+		P_BAR = lff.addTokenType("\\|"),
+		P_LSQ = lff.addTokenType("\\["),
+		P_RSQ = lff.addTokenType("\\]"),
+		P_DSH = lff.addTokenType("-"),
+		P_LBR = lff.addTokenType("\\("),
+		P_RBR = lff.addTokenType("\\)"),
+		P_COM = lff.addTokenType(","),
+		P_NAM = lff.addTokenType("[a-zA-Z_][a-zA-Z0-9_]*"),
+		P_SIT = lff.addTokenType("\\$[0-9]+");
+	static {
+		lf = lff.createLexerFactory();
+	}
 	
 	private int x = 1;
 	
