@@ -58,9 +58,8 @@ public class LexerFactory {
 			String current = getCurrent();
 			
 			if (current != null && p.matcher(current).matches()) {
-				String previous = current;
 				this.current = null;
-				return previous;
+				return current;
 			} else return null;
 		}
 		
