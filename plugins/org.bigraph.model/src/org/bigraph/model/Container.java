@@ -3,6 +3,7 @@ package org.bigraph.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -76,6 +77,10 @@ public abstract class Container extends Layoutable {
 					put(context, name, child);
 			context.setProperty(child, Layoutable.PROPERTY_NAME, name);
 		}
+	}
+	
+	static {
+		ExecutorManager.getInstance().addHandler(new ContainerHandler());
 	}
 	
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
