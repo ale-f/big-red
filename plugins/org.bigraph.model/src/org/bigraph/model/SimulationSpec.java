@@ -184,6 +184,10 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		return signature;
 	}
 	
+	public Signature getSignature(PropertyScratchpad context) {
+		return (Signature)getProperty(context, PROPERTY_SIGNATURE);
+	}
+	
 	@Override
 	public SimulationSpec clone() {
 		SimulationSpec ss = (SimulationSpec)super.clone();
@@ -214,6 +218,12 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		return rules;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<? extends ReactionRule> getRules(PropertyScratchpad context) {
+		return (List<? extends ReactionRule>)
+				getProperty(context, PROPERTY_RULE);
+	}
+	
 	private Bigraph model;
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.simulation_spec";
@@ -226,6 +236,10 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	
 	public Bigraph getModel() {
 		return model;
+	}
+	
+	public Bigraph getModel(PropertyScratchpad context) {
+		return (Bigraph)getProperty(context, PROPERTY_MODEL);
 	}
 	
 	public IChange changeSignature(Signature signature) {
