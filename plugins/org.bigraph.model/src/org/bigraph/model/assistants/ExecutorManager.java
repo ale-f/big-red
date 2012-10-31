@@ -8,6 +8,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IStepExecutor;
+import org.bigraph.model.changes.IStepValidator;
 
 public class ExecutorManager extends ValidatorManager 
 		implements IChangeExecutor {
@@ -24,6 +25,12 @@ public class ExecutorManager extends ValidatorManager
 	
 	private List<IStepExecutor> executors =
 			new ArrayList<IStepExecutor>();
+	
+	public <T extends IStepExecutor & IStepValidator> void addHandler(
+			T handler) {
+		addValidator(handler);
+		executors.add(handler);
+	}
 	
 	public void addExecutor(IStepExecutor executor) {
 		executors.add(executor);
