@@ -64,6 +64,16 @@ public class LexerFactory {
 		}
 		
 		/**
+		 * Consumes the next token.
+		 * @return the consumed token
+		 */
+		public String consume() {
+			String current = getCurrent();
+			this.current = null;
+			return current;
+		}
+		
+		/**
 		 * Examines the next token without consuming it.
 		 * @param p a {@link Pattern}
 		 * @return {@code true} if the next token will match {@code p}, or
