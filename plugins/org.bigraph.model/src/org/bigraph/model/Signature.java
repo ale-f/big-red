@@ -310,6 +310,12 @@ public class Signature extends ModelObject
 	public Object lookup(PropertyScratchpad context, Identifier identifier) {
 		if (identifier instanceof Control.Identifier) {
 			return getControl(((Control.Identifier)identifier).getName());
-		} else return null;
+		} else if (identifier instanceof PortSpec.Identifier) {
+			PortSpec.Identifier id = (PortSpec.Identifier)identifier;
+			Control c = getControl(id.getName());
+			if (c != null)
+				return c.getNamespace().get(context, id.getName());
+		}
+		return null;
 	}
 }
