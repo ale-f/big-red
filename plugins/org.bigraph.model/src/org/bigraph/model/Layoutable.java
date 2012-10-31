@@ -2,6 +2,7 @@ package org.bigraph.model;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -90,6 +91,10 @@ public abstract class Layoutable extends NamedModelObject {
 					remove(context, l.getName(context));
 			context.setProperty(l, Layoutable.PROPERTY_NAME, null);
 		}
+	}
+	
+	static {
+		ExecutorManager.getInstance().addHandler(new LayoutableHandler());
 	}
 	
 	private Container parent = null;

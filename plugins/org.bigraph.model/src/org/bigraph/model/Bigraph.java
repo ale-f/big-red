@@ -209,10 +209,6 @@ public class Bigraph extends Container
 		ExecutorManager.getInstance().tryApplyChange(b);
 	}
 	
-	static {
-		ExecutorManager.getInstance().addHandler(new BigraphHandler());
-	}
-	
 	@Override
 	public void dispose() {
 		if (signature != null) {
