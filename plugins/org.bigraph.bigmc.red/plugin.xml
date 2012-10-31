@@ -8,6 +8,11 @@
             id="BigMC for Big Red.interactionManager1"
             name="BigMC user interface 2.0">
       </interactionManager>
+      <interactionManager
+            class="org.bigraph.bigmc.red.NIM"
+            id="BigMC for Big Red.interactionManager1"
+            name="NIM">
+      </interactionManager>
    </extension>
    <extension
          point="org.bigraph.model.wrapper.export">
