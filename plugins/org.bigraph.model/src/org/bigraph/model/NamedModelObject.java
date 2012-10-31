@@ -114,6 +114,9 @@ public abstract class NamedModelObject extends ModelObject {
 		public abstract Identifier getRenamed(String name);
 	}
 	
+	public abstract Identifier getIdentifier();
+	public abstract Identifier getIdentifier(PropertyScratchpad context);
+	
 	public static class ChangeNameDescriptor implements IChangeDescriptor {
 		private final Identifier target;
 		private final String newName;
