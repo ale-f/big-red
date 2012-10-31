@@ -207,7 +207,7 @@ public class BGMParser {
 		} else if (lexer.accept(P_RULE) != null) {
 			reaction(lexer.expect(P_IDENTIFIER));
 		} else if (lexer.accept(P_IMPORT) != null) {
-			String id = lexer.expect(P_IDENTIFIER);
+			lexer.expect(P_IDENTIFIER);
 		} else reaction_or_exp();
 	}
 	
