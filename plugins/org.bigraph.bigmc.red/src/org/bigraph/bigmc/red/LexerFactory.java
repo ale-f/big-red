@@ -14,27 +14,27 @@ public class LexerFactory {
 		return new Lexer(input);
 	}
 	
-	public class Lexer {
-		public class DisappointedException extends Exception {
-			private static final long serialVersionUID = -8457674498082916079L;
+	public static class DisappointedException extends Exception {
+		private static final long serialVersionUID = -8457674498082916079L;
 
-			public DisappointedException() {
-				super();
-			}
-
-			public DisappointedException(String message, Throwable cause) {
-				super(message, cause);
-			}
-
-			public DisappointedException(String message) {
-				super(message);
-			}
-
-			public DisappointedException(Throwable cause) {
-				super(cause);
-			}
+		public DisappointedException() {
+			super();
 		}
-		
+
+		public DisappointedException(String message, Throwable cause) {
+			super(message, cause);
+		}
+
+		public DisappointedException(String message) {
+			super(message);
+		}
+
+		public DisappointedException(Throwable cause) {
+			super(cause);
+		}
+	}
+	
+	public class Lexer {
 		private final Matcher lexer;
 		private String current;
 		
@@ -42,7 +42,7 @@ public class LexerFactory {
 			lexer = scanner.matcher(input);
 		}
 		
-		protected String getCurrent() {
+		public String getCurrent() {
 			if (current == null)
 				current = (lexer.find() ? lexer.group() : null);
 			return current;

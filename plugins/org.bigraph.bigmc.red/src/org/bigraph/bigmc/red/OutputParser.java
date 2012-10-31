@@ -19,7 +19,7 @@ import dk.itu.big_red.model.LayoutUtilities;
 
 import org.bigraph.bigmc.red.LexerFactoryFactory;
 import org.bigraph.bigmc.red.LexerFactory.Lexer;
-import org.bigraph.bigmc.red.LexerFactory.Lexer.DisappointedException;
+import org.bigraph.bigmc.red.LexerFactory.DisappointedException;
 import org.bigraph.extensions.param.ParameterUtilities;
 
 public class OutputParser {
