@@ -139,7 +139,7 @@ public class Node extends Container implements INode {
 		
 		@Override
 		public String toString() {
-			return "node " + getName() + " (of " + getControl() + ")";
+			return getControl().getName() + " " + getName();
 		}
 	}
 	
