@@ -8,11 +8,6 @@
             id="BigMC for Big Red.interactionManager1"
             name="BigMC user interface 2.0">
       </interactionManager>
-      <interactionManager
-            class="org.bigraph.bigmc.red.NIM"
-            id="BigMC for Big Red.interactionManager1"
-            name="NIM">
-      </interactionManager>
    </extension>
    <extension
          point="org.bigraph.model.wrapper.export">
@@ -37,6 +32,18 @@
             id="org.bigraph.bigmc.red.PreferencePage"
             name="BigMC for Big Red">
       </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.importWizards">
+      <wizard
+            category="dk.itu.big_red.import"
+            class="org.bigraph.bigmc.red.bgm.ImportWizard"
+            id="org.bigraph.bigmc.red.importWizards.ImportWizard"
+            name="Import BigMC file">
+         <description>
+            Import a BigMC file as a new Big Red project.
+         </description>
+      </wizard>
    </extension>
 
 </plugin>
