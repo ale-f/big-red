@@ -213,9 +213,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	}
 	
 	static {
-		ReactionHandler c = new ReactionHandler();
-		ExecutorManager.getInstance().addExecutor(c);
-		ExecutorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addHandler(new ReactionHandler());
 	}
 	
 	public void _changeInsideModel(ModelObject target, Change change){

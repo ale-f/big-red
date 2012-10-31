@@ -210,9 +210,7 @@ public class Bigraph extends Container
 	}
 	
 	static {
-		BigraphHandler c = new BigraphHandler();
-		ExecutorManager.getInstance().addExecutor(c);
-		ExecutorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addHandler(new BigraphHandler());
 	}
 	
 	@Override

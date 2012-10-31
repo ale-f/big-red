@@ -117,9 +117,7 @@ public abstract class ModelObject {
 	}
 	
 	static {
-		ModelObjectHandler c = new ModelObjectHandler();
-		ExecutorManager.getInstance().addExecutor(c);
-		ExecutorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addHandler(new ModelObjectHandler());
 	}
 	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);

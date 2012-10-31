@@ -268,9 +268,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	static {
-		SimulationSpecHandler c = new SimulationSpecHandler();
-		ExecutorManager.getInstance().addExecutor(c);
-		ExecutorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addHandler(new SimulationSpecHandler());
 	}
 	
 	@Override

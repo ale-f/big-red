@@ -211,9 +211,7 @@ public class Signature extends ModelObject
 	}
 
 	static {
-		SignatureHandler c = new SignatureHandler();
-		ExecutorManager.getInstance().addExecutor(c);
-		ExecutorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addHandler(new SignatureHandler());
 	}
 	
 	@Override

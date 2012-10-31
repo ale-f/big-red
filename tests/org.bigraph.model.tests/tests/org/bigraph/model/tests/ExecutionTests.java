@@ -107,12 +107,8 @@ public class ExecutionTests {
 	
 	@Test
 	public void newManagers() throws ChangeRejectedException {
-		DummyHandler dh = new DummyHandler();
-		
 		ExecutorManager em = new ExecutorManager();
-		em.addExecutor(dh);
-		em.addValidator(dh);
-		
+		em.addHandler(new DummyHandler());
 		go(em);
 	}
 	

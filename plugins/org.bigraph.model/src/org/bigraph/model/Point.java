@@ -94,9 +94,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	}
 
 	static {
-		PointHandler dh = new PointHandler();
-		ExecutorManager.getInstance().addExecutor(dh);
-		ExecutorManager.getInstance().addValidator(dh);
+		ExecutorManager.getInstance().addHandler(new PointHandler());
 	}
 	
 	private Link link = null;

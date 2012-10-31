@@ -144,9 +144,7 @@ public class Edit extends ModelObject
 	}
 	
 	static {
-		EditHandler c = new EditHandler();
-		ExecutorManager.getInstance().addExecutor(c);
-		ExecutorManager.getInstance().addValidator(c);
+		ExecutorManager.getInstance().addHandler(new EditHandler());
 	}
 	
 	@Override

@@ -66,9 +66,8 @@ public abstract class NamedModelObject extends ModelObject {
 	}
 	
 	static {
-		NamedModelObjectHandler dh = new NamedModelObjectHandler();
-		ExecutorManager.getInstance().addExecutor(dh);
-		ExecutorManager.getInstance().addValidator(dh);
+		ExecutorManager.getInstance().addHandler(
+				new NamedModelObjectHandler());
 	}
 	
 	public static abstract class Identifier implements ModelObject.Identifier {
