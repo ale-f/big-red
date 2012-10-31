@@ -149,6 +149,13 @@
       </wizard>
    </extension>
    <extension
+         point="org.eclipse.ui.importWizards">
+      <category
+            id="dk.itu.big_red.import"
+            name="Big Red">
+      </category>
+   </extension>
+   <extension
          point="org.eclipse.ui.newWizards">
       <category
             id="dk.itu.big_red.new"
