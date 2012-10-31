@@ -32,13 +32,12 @@ public class ExecutorManager extends ValidatorManager
 		executors.add(handler);
 	}
 	
-	public void addExecutor(IStepExecutor executor) {
-		executors.add(executor);
+	public void addHandler(ExecutorManager manager) {
+		addHandler(manager.new Handler());
 	}
 	
-	public void addExecutor(ExecutorManager manager) {
-		addValidator(manager);
-		executors.add(manager.createStepExecutor());
+	public void addExecutor(IStepExecutor executor) {
+		executors.add(executor);
 	}
 	
 	public void removeExecutor(IStepExecutor executor) {
@@ -82,12 +81,16 @@ public class ExecutorManager extends ValidatorManager
 		}
 	}
 	
-	IStepExecutor createStepExecutor() {
-		return new IStepExecutor() {
-			@Override
-			public boolean executeChange(IChange change_) {
-				return (step(change_) == null);
-			}
-		};
+	private final class Handler implements IStepExecutor, IStepValidator {
+		@Override
+		public boolean executeChange(IChange change_) {
+			return (step(change_) == null);
+		}
+		
+		@Override
+		public boolean tryValidateChange(Process context, IChange change)
+				throws ChangeRejectedException {
+			return ExecutorManager.this.tryValidateChange(context, change);
+		}
 	}
 }

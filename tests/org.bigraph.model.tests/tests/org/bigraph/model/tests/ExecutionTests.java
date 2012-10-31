@@ -134,9 +134,8 @@ public class ExecutionTests {
 		DummyHandler dh = new DummyHandler();
 		
 		ExecutorManager em = new ExecutorManager();
-		em.addExecutor(ExecutorManager.getInstance());
-		em.addExecutor(dh);
-		em.addValidator(dh);
+		em.addHandler(ExecutorManager.getInstance());
+		em.addHandler(dh);
 		
 		Dummy d = new Dummy();
 		
