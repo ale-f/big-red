@@ -172,7 +172,7 @@ public abstract class NamedModelObject extends ModelObject {
 	}
 	
 	public String getName(PropertyScratchpad context) {
-		return (String)getProperty(context, PROPERTY_NAME);
+		return getProperty(context, PROPERTY_NAME, String.class);
 	}
 	
 	protected void setName(String name) {

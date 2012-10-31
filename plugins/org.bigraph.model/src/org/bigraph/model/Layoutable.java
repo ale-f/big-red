@@ -117,7 +117,7 @@ public abstract class Layoutable extends NamedModelObject {
 	}
 
 	public Container getParent(PropertyScratchpad context) {
-		return (Container)getProperty(context, PROPERTY_PARENT);
+		return getProperty(context, PROPERTY_PARENT, Container.class);
 	}
 	
 	/**

@@ -90,7 +90,7 @@ public class PortSpec extends NamedModelObject implements IPort {
 	}
 	
 	public Control getControl(PropertyScratchpad context) {
-		return (Control)getProperty(context, PROPERTY_CONTROL);
+		return getProperty(context, PROPERTY_CONTROL, Control.class);
 	}
 	
 	protected void setControl(Control control) {

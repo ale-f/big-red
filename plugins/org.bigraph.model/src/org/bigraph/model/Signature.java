@@ -195,8 +195,7 @@ public class Signature extends ModelObject
 
 	@SuppressWarnings("unchecked")
 	public List<? extends Control> getControls(PropertyScratchpad context) {
-		return (List<? extends Control>)
-				getProperty(context, PROPERTY_CONTROL);
+		return getProperty(context, PROPERTY_CONTROL, List.class);
 	}
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
@@ -264,7 +263,7 @@ public class Signature extends ModelObject
 	}
 	
 	public Signature getParent(PropertyScratchpad context) {
-		return (Signature)getProperty(context, PROPERTY_PARENT);
+		return getProperty(context, PROPERTY_PARENT, Signature.class);
 	}
 	
 	protected void setParent(Signature newValue) {
@@ -280,8 +279,7 @@ public class Signature extends ModelObject
 	@SuppressWarnings("unchecked")
 	public List<? extends Signature> getSignatures(
 			PropertyScratchpad context) {
-		return (List<? extends Signature>)
-				getProperty(context, PROPERTY_CHILD);
+		return getProperty(context, PROPERTY_CHILD, List.class);
 	}
 	
 	protected void addSignature(Signature s) {

@@ -23,7 +23,7 @@ public class Edit extends ModelObject
 	}
 	
 	public Edit getParent(PropertyScratchpad context) {
-		return (Edit)getProperty(context, PROPERTY_PARENT);
+		return getProperty(context, PROPERTY_PARENT, Edit.class);
 	}
 	
 	protected void setParent(Edit parent) {
@@ -42,7 +42,8 @@ public class Edit extends ModelObject
 	}
 	
 	public ChangeDescriptorGroup getChildren(PropertyScratchpad context) {
-		return (ChangeDescriptorGroup)getProperty(context, PROPERTY_CHILD);
+		return getProperty(
+				context, PROPERTY_CHILD, ChangeDescriptorGroup.class);
 	}
 	
 	protected ChangeDescriptorGroup getModifiableChildren(

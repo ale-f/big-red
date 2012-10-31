@@ -103,8 +103,7 @@ public abstract class Container extends Layoutable {
 
 	@SuppressWarnings("unchecked")
 	public List<? extends Layoutable> getChildren(PropertyScratchpad context) {
-		return (List<? extends Layoutable>)
-				getProperty(context, PROPERTY_CHILD);
+		return getProperty(context, PROPERTY_CHILD, List.class);
 	}
 	
 	@Override

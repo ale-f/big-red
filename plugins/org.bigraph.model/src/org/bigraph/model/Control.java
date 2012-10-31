@@ -232,7 +232,7 @@ public class Control extends NamedModelObject implements IControl {
 	}
 	
 	public Kind getKind(PropertyScratchpad context) {
-		return (Kind)getProperty(context, PROPERTY_KIND);
+		return getProperty(context, PROPERTY_KIND, Kind.class);
 	}
 	
 	protected void setKind(Kind kind) {
@@ -260,7 +260,7 @@ public class Control extends NamedModelObject implements IControl {
 	}
 	
 	public Signature getSignature(PropertyScratchpad context) {
-		return (Signature)getProperty(context, PROPERTY_SIGNATURE);
+		return getProperty(context, PROPERTY_SIGNATURE, Signature.class);
 	}
 	
 	void setSignature(Signature signature) {
@@ -282,7 +282,7 @@ public class Control extends NamedModelObject implements IControl {
 	
 	@SuppressWarnings("unchecked")
 	public List<? extends PortSpec> getPorts(PropertyScratchpad context) {
-		return (List<? extends PortSpec>)getProperty(context, PROPERTY_PORT);
+		return getProperty(context, PROPERTY_PORT, List.class);
 	}
 	
 	/**

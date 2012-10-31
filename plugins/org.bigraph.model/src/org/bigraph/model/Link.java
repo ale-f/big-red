@@ -58,7 +58,7 @@ public abstract class Link extends Layoutable implements ILink {
 	
 	@SuppressWarnings("unchecked")
 	public List<? extends Point> getPoints(PropertyScratchpad context) {
-		return (List<Point>)getProperty(context, PROPERTY_POINT);
+		return getProperty(context, PROPERTY_POINT, List.class);
 	}
 	
 	/**

@@ -181,10 +181,14 @@ public abstract class ModelObject {
 		return null;
 	}
 	
-	protected Object getProperty(PropertyScratchpad context, String name) {
-		if (context == null || !context.hasProperty(this, name)) {
-			return getProperty(name);
-		} else return context.getProperty(this, name);
+	protected <T> T getProperty(
+			PropertyScratchpad context, String name, Class<T> klass) {
+		if (context != null && context.hasProperty(this, name)) {
+			Object o = context.getProperty(this, name);
+			if (o == null || klass.isInstance(o))
+				return klass.cast(o);
+		}
+		return klass.cast(getProperty(name));
 	}
 	
 	@Override

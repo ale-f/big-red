@@ -185,7 +185,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	public Signature getSignature(PropertyScratchpad context) {
-		return (Signature)getProperty(context, PROPERTY_SIGNATURE);
+		return getProperty(context, PROPERTY_SIGNATURE, Signature.class);
 	}
 	
 	@Override
@@ -220,8 +220,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	
 	@SuppressWarnings("unchecked")
 	public List<? extends ReactionRule> getRules(PropertyScratchpad context) {
-		return (List<? extends ReactionRule>)
-				getProperty(context, PROPERTY_RULE);
+		return getProperty(context, PROPERTY_RULE, List.class);
 	}
 	
 	private Bigraph model;
@@ -239,7 +238,7 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 	}
 	
 	public Bigraph getModel(PropertyScratchpad context) {
-		return (Bigraph)getProperty(context, PROPERTY_MODEL);
+		return getProperty(context, PROPERTY_MODEL, Bigraph.class);
 	}
 	
 	public IChange changeSignature(Signature signature) {

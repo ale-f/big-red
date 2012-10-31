@@ -26,7 +26,7 @@ public class ExecutionTests {
 		}
 		
 		public String getString(PropertyScratchpad context) {
-			return (String)getProperty(context, PROPERTY_STRING);
+			return getProperty(context, PROPERTY_STRING, String.class);
 		}
 		
 		private class Change extends ModelObjectChange {

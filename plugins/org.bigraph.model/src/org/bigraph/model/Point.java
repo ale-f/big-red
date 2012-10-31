@@ -119,7 +119,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	}
 	
 	public Link getLink(PropertyScratchpad context) {
-		return (Link)getProperty(context, PROPERTY_LINK);
+		return getProperty(context, PROPERTY_LINK, Link.class);
 	}
 	
 	public IChange changeConnect(Link l) {
