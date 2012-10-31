@@ -10,7 +10,6 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
 import org.bigraph.model.Node;
@@ -47,15 +46,6 @@ public abstract class LayoutUtilities {
 	private static final String BOUNDARIES =
 			"eD!+org.bigraph.model.Bigraph.boundaries";
 	
-	private static final String getFN(
-			PropertyScratchpad context, NamedModelObject l) {
-		String type;
-		if (l instanceof Node) {
-			type = ((Node)l).getControl().getName();
-		} else type = l.getType();
-		return type + " " + l.getName(context);
-	}
-	
 	static final FinalExtendedDataValidator layoutValidator =
 			new FinalExtendedDataValidator() {
 		@Override
@@ -84,7 +74,7 @@ public abstract class LayoutUtilities {
 			if (newLayout != null &&
 					(newLayout.x() < 0 || newLayout.y() < 0))
 				throw new ChangeRejectedException(c,
-						getFN(context, l) +
+						l.toString(context) +
 						" must not have negative co-ordinates");
 			
 			if (oldLayout != null) {
@@ -101,8 +91,8 @@ public abstract class LayoutUtilities {
 					} else {
 						if (getLayout(context, i).intersects(newLayout)) {
 							throw new ChangeRejectedException(c,
-									getFN(context, l) + " overlaps with " +
-									getFN(context, i));
+									l.toString(context) + " overlaps with " +
+									i.toString(context));
 						}
 					}
 				}
@@ -113,8 +103,8 @@ public abstract class LayoutUtilities {
 				for (Layoutable i : ((Container)l).getChildren(context)) {
 					if (!adjusted.contains(getLayout(context, i)))
 						throw new ChangeRejectedException(c,
-								getFN(context, i) + " cannot fit inside " +
-								getFN(context, l));
+								i.toString(context) + " cannot fit inside " +
+								l.toString(context));
 				}
 			}
 			
@@ -123,8 +113,8 @@ public abstract class LayoutUtilities {
 						getLayout(context, parent).getCopy().setLocation(0, 0);
 				if (!parentLayout.contains(newLayout))
 					throw new ChangeRejectedException(c,
-							getFN(context, l) + " cannot fit inside " +
-							getFN(context, parent));
+							l.toString(context) + " cannot fit inside " +
+							parent.toString(context));
 			} else if (checkSiblings) {
 				Bigraph b = (Bigraph)parent;
 				

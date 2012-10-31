@@ -207,4 +207,8 @@ public abstract class NamedModelObject extends ModelObject {
 		
 		super.dispose();
 	}
+	
+	public final String toString(PropertyScratchpad context) {
+		return getIdentifier(context).toString();
+	}
 }
