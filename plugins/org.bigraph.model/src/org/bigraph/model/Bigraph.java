@@ -126,12 +126,6 @@ public class Bigraph extends Container
 	}
 	
 	@Override
-	public boolean canContain(Layoutable child) {
-		Class<? extends Layoutable> c = child.getClass();
-		return (c == Root.class || c == InnerName.class || c == OuterName.class || c == Edge.class);
-	}
-	
-	@Override
 	public Bigraph getBigraph(PropertyScratchpad context) {
 		return this;
 	}

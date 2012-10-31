@@ -39,12 +39,6 @@ public class Node extends Container implements INode {
 	
 	private Control control = null;
 	
-	@Override
-	public boolean canContain(Layoutable child) {
-		Class<? extends Layoutable> c = child.getClass();
-		return (c == Node.class || c == Site.class);
-	}
-	
 	/**
 	 * Returns the {@link Control} of this Node.
 	 * @return a Control

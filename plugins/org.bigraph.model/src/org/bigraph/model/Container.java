@@ -85,8 +85,6 @@ public abstract class Container extends Layoutable {
 	
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
 	
-	public abstract boolean canContain(Layoutable child);
-	
 	protected void addChild(int position, Layoutable child) {
 		if (position == -1) {
 			children.add(child);

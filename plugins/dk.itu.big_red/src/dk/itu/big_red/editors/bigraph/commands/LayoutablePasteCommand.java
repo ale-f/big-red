@@ -4,9 +4,6 @@ import java.util.ArrayList;
 
 import org.bigraph.model.Container;
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.Node;
-import org.bigraph.model.Root;
-import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.gef.ui.actions.Clipboard;
@@ -62,14 +59,14 @@ public class LayoutablePasteCommand extends ChangeCommand {
 		for (Object i_ : bList) {
 			if (!(i_ instanceof Layoutable))
 				continue;
-			Layoutable i = (Layoutable)i_;
+			/*Layoutable i = (Layoutable)i_;
 			
 			if (!newParent.canContain(i)) {
 				cg.clear();
 				return;
 			} else if (i instanceof Node || i instanceof Root ||
 					i instanceof Site) {
-				/*
+				
 				Layoutable j = i.clone(null);
 				
 				String name = newParent.getBigraph().
@@ -77,8 +74,8 @@ public class LayoutablePasteCommand extends ChangeCommand {
 				cg.add(scratch.executeChange(newParent.changeAddChild(j, name)));
 				cg.add(LayoutUtilities.changeLayout(j,
 										LayoutUtilities.getLayout(j).getCopy().translate(20, 20)));
-				*/
-			}
+				
+			}*/
 		}
 	}
 }

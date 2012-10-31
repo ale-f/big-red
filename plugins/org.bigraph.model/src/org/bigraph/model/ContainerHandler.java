@@ -23,6 +23,18 @@ final class ContainerHandler implements IStepExecutor, IStepValidator {
 		return true;
 	}
 	
+	private static boolean canContain(Container c, Layoutable l) {
+		return
+			(c instanceof Bigraph &&
+				(l instanceof Edge ||
+				 l instanceof OuterName ||
+				 l instanceof InnerName ||
+				 l instanceof Root)) ||
+			((c instanceof Node || c instanceof Root) &&
+				(l instanceof Node ||
+				 l instanceof Site));
+	}
+	
 	@Override
 	public boolean tryValidateChange(Process process, IChange b)
 			throws ChangeRejectedException {
@@ -50,7 +62,7 @@ final class ContainerHandler implements IStepExecutor, IStepValidator {
 					if (((Container)c.child).getChildren(context).size() != 0)
 						throw new ChangeRejectedException(b,
 								c.child + " already has child objects");
-				if (!container.canContain(c.child))
+				if (!canContain(container, c.child))
 					throw new ChangeRejectedException(b,
 							container.getType() + "s can't contain " +
 							c.child.getType() + "s");
