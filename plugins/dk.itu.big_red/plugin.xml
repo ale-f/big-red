@@ -430,4 +430,24 @@
             id="dk.itu.big_red.utilities.resources.builder.BigraphBuilder">
       </builder>
    </extension>
+   <extension
+         point="org.eclipse.ltk.core.refactoring.moveParticipants">
+      <moveParticipant
+            class="dk.itu.big_red.refactoring.MoveParticipant"
+            id="Big Red.moveParticipant2"
+            name="Bigraph nature move participant">
+         <enablement>
+            <with
+                  variable="affectedNatures">
+               <iterate
+                     ifEmpty="false"
+                     operator="or">
+                  <equals
+                        value="dk.itu.big_red.utilities.resources.builder.BigraphNature">
+                  </equals>
+               </iterate>
+            </with>
+         </enablement>
+      </moveParticipant>
+   </extension>
 </plugin>
