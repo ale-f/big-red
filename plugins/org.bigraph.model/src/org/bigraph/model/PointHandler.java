@@ -25,16 +25,19 @@ class PointHandler implements IStepExecutor, IStepValidator {
 		final PropertyScratchpad context = process.getScratch();
 		if (b instanceof Point.ChangeConnect) {
 			Point.ChangeConnect c = (Point.ChangeConnect)b;
-			if (c.getCreator().getLink(context) != null)
+			Point p = c.getCreator();
+			Link l = p.getLink(context);
+			if (l != null)
 				throw new ChangeRejectedException(b,
-						"Connections can only be established to Points that " +
-						"aren't already connected");
+						"" + p.toString(context) +
+						" is already connected to " + l.toString(context));
 		} else if (b instanceof Point.ChangeDisconnect) {
 			Point.ChangeDisconnect c = (Point.ChangeDisconnect)b;
-			Link l = c.getCreator().getLink(context);
+			Point p = c.getCreator();
+			Link l = p.getLink(context);
 			if (l == null)
 				throw new ChangeRejectedException(b,
-						"The Point is already disconnected");
+						"" + p.toString(context) + " isn't connected");
 		} else return false;
 		return true;
 	}
