@@ -41,7 +41,7 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 		final PropertyScratchpad context = process.getScratch();
 		if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
-			ModelObjectHandler.checkName(context, c, c.control,
+			NamedModelObjectHandler.checkName(context, c, c.control,
 					c.getCreator().getNamespace(), c.name);
 			if (c.control.getSignature(context) != null)
 				throw new ChangeRejectedException(b,

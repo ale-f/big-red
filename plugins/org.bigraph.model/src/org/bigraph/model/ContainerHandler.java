@@ -50,7 +50,7 @@ final class ContainerHandler implements IStepExecutor, IStepValidator {
 						((Node)container).getControl().getName() +
 						" is an atomic control");
 			
-			ModelObjectHandler.checkName(context, b, c.child,
+			NamedModelObjectHandler.checkName(context, b, c.child,
 					bigraph.getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {

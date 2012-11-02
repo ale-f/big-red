@@ -42,7 +42,7 @@ final class ControlHandler implements IStepExecutor, IStepValidator {
 						"" + co + " doesn't have a parent");
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
-			ModelObjectHandler.checkName(context, c, c.port,
+			NamedModelObjectHandler.checkName(context, c, c.port,
 					c.getCreator().getNamespace(), c.name);
 			if (c.port.getControl(context) != null)
 				throw new ChangeRejectedException(b,
