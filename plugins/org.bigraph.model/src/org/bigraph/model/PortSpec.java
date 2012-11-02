@@ -1,5 +1,6 @@
 package org.bigraph.model;
 
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -75,6 +76,10 @@ public class PortSpec extends NamedModelObject implements IPort {
 			c.getNamespace().remove(getCreator().getName(context));
 			context.setProperty(getCreator(), PROPERTY_NAME, null);
 		}
+	}
+	
+	static {
+		ExecutorManager.getInstance().addHandler(new PortSpecHandler());
 	}
 	
 	private Control control;

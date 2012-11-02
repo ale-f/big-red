@@ -1,6 +1,5 @@
 package org.bigraph.model;
 
-import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.Signature.ChangeAddControl;
 import org.bigraph.model.Signature.ChangeAddSignature;
 import org.bigraph.model.Signature.ChangeRemoveSignature;
@@ -19,12 +18,6 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 			Namespace<Control> ns = c.getCreator().getNamespace();
 			c.control.setName(ns.put(c.name, c.control));
 			c.getCreator().addControl(c.control);
-		} else if (b instanceof ChangeRemovePort) {
-			ChangeRemovePort c = (ChangeRemovePort)b;
-			Namespace<PortSpec> ns =
-					c.getCreator().getControl().getNamespace();
-			c.getCreator().getControl().removePort(c.getCreator());
-			ns.remove(c.getCreator().getName());
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
 			c.getCreator().addSignature(c.signature);
@@ -46,11 +39,6 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 			if (c.control.getSignature(context) != null)
 				throw new ChangeRejectedException(b,
 						"" + c.control + " already has a parent");
-		} else if (b instanceof ChangeRemovePort) {
-			PortSpec po = ((ChangeRemovePort)b).getCreator();
-			if (po.getControl(context) == null)
-				throw new ChangeRejectedException(b,
-						"" + po + " doesn't have a parent");
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
 			if (c.signature.getParent(context) != null)
