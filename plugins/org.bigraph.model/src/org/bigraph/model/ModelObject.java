@@ -46,23 +46,14 @@ public abstract class ModelObject {
 		}
 	}
 	
-	public interface Validator<T extends ModelObjectChange> {
-		void validate(T c, PropertyScratchpad context)
+	public interface ExtendedDataValidator {
+		void validate(ChangeExtendedData c, PropertyScratchpad context)
 				throws ChangeRejectedException;
 	}
 	
-	public interface FinalValidator<T extends ModelObjectChange>
-			extends Validator<T> {
-		void finalValidate(T c, PropertyScratchpad context)
+	public interface FinalExtendedDataValidator extends ExtendedDataValidator {
+		void finalValidate(ChangeExtendedData c, PropertyScratchpad context)
 				throws ChangeRejectedException;
-	}
-	
-	public interface ExtendedDataValidator
-			extends Validator<ChangeExtendedData> {
-	}
-	
-	public interface FinalExtendedDataValidator
-			extends ExtendedDataValidator, FinalValidator<ChangeExtendedData> {
 	}
 	
 	public interface ExtendedDataNormaliser {
