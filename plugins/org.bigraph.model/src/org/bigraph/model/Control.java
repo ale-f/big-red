@@ -3,6 +3,7 @@ package org.bigraph.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
@@ -56,6 +57,10 @@ public class Control extends NamedModelObject implements IControl {
 	protected Namespace<Control>
 			getGoverningNamespace(PropertyScratchpad context) {
 		return getSignature(context).getNamespace();
+	}
+	
+	static {
+		ExecutorManager.getInstance().addHandler(new ControlHandler());
 	}
 	
 	@Override
@@ -363,10 +368,12 @@ public class Control extends NamedModelObject implements IControl {
 		}
 	}
 	
+	@Override
 	public Identifier getIdentifier() {
 		return getIdentifier(null);
 	}
 	
+	@Override
 	public Identifier getIdentifier(PropertyScratchpad context) {
 		return new Identifier(getName(context));
 	}
