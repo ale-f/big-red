@@ -22,9 +22,16 @@ public abstract class NamedModelObject extends ModelObject {
 	
 	protected abstract Namespace<? extends NamedModelObject>
 			getGoverningNamespace(PropertyScratchpad context);
-	protected abstract void simulateRename(
-			PropertyScratchpad context, String name);
-	protected abstract void applyRename(String name);
+	
+	protected void applyRename(String name) {
+		setName(getGoverningNamespace(null).rename(getName(), name));
+	}
+	
+	protected void simulateRename(PropertyScratchpad context, String name) {
+		context.setProperty(this, PROPERTY_NAME,
+				getGoverningNamespace(context).rename(
+						context, getName(context), name));
+	}
 	
 	public final class ChangeName extends NamedModelObjectChange {
 		public final String name;

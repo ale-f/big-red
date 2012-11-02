@@ -63,18 +63,6 @@ public class Control extends NamedModelObject implements IControl {
 		ExecutorManager.getInstance().addHandler(new ControlHandler());
 	}
 	
-	@Override
-	protected void applyRename(String name) {
-		setName(getGoverningNamespace(null).rename(getName(), name));
-	}
-	
-	@Override
-	protected void simulateRename(PropertyScratchpad context, String name) {
-		context.setProperty(this, PROPERTY_NAME,
-				getGoverningNamespace(context).rename(
-						context, getName(context), name));
-	}
-	
 	public final class ChangeKind extends ControlChange {
 		public final Kind kind;
 		

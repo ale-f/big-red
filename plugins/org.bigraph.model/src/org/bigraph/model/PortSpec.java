@@ -27,18 +27,6 @@ public class PortSpec extends NamedModelObject implements IPort {
 		return getControl(context).getNamespace();
 	}
 	
-	@Override
-	protected void applyRename(String name) {
-		setName(getGoverningNamespace(null).rename(getName(), name));
-	}
-	
-	@Override
-	protected void simulateRename(PropertyScratchpad context, String name) {
-		context.setProperty(this, PROPERTY_NAME,
-				getGoverningNamespace(context).rename(
-						context, getName(context), name));
-	}
-	
 	public final class ChangeRemovePort extends PortSpecChange {
 		private String oldName;
 		private Control oldControl;

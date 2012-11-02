@@ -37,18 +37,6 @@ public abstract class Layoutable extends NamedModelObject {
 		return getBigraph(context).getNamespace(this);
 	}
 	
-	@Override
-	protected void applyRename(String name) {
-		setName(getGoverningNamespace(null).rename(getName(), name));
-	}
-	
-	@Override
-	protected void simulateRename(PropertyScratchpad context, String name) {
-		context.setProperty(this, PROPERTY_NAME,
-				getGoverningNamespace(context).rename(
-						context, getName(context), name));
-	}
-	
 	public final class ChangeRemove extends LayoutableChange {
 		private String oldName;
 		private Container oldParent;
