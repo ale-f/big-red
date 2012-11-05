@@ -11,7 +11,6 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySourceProvider;
 
@@ -28,35 +27,34 @@ public class PartFactory implements EditPartFactory, IPropertySourceProvider {
 				new ModelPropertySource((Layoutable)o) : null);
 	}
 	
+	protected EditPart createEditPart(Class<?> klass) {
+		if (klass == Bigraph.class) {
+			return new BigraphPart();
+		} else if (klass == Node.class) {
+			return new NodePart();
+		} else if (klass == Root.class) {
+			return new RootPart();
+		} else if (klass == Site.class) {
+			return new SitePart();
+		} else if (klass == LinkPart.Connection.class) {
+			return new LinkConnectionPart();
+		} else if (klass == Edge.class) {
+			return new EdgePart();
+		} else if (klass == InnerName.class) {
+			return new InnerNamePart();
+		} else if (klass == OuterName.class) {
+			return new OuterNamePart();
+		} else if (klass == Port.class) {
+			return new PortPart();
+		} else return null;
+	}
+	
 	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
-		AbstractGraphicalEditPart part = null;
-		
 		if (model == null)
 			return null;
-		
-		Class<?> target = model.getClass();
-		
-		if (target == Bigraph.class) {
-			part = new BigraphPart();
-		} else if (target == Node.class) {
-			part = new NodePart();
-        } else if (target == Root.class) {
-        	part = new RootPart();
-        } else if (target == Site.class) {
-    		part = new SitePart();
-        } else if (target == LinkPart.Connection.class) {
-        	part = new LinkConnectionPart();
-        } else if (target == Edge.class) {
-        	part = new EdgePart();
-        } else if (target == InnerName.class) {
-        	part = new InnerNamePart();
-        } else if (target == OuterName.class) {
-        	part = new OuterNamePart();
-        } else if (target == Port.class) {
-        	part = new PortPart();
-        }
-	       
+	    
+		EditPart part = createEditPart(model.getClass());
 		if (part != null)
 			part.setModel(model);
 		
