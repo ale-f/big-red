@@ -12,6 +12,7 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -67,8 +68,19 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		return reactum;
 	}
 	
+	abstract class ReactionChange extends ModelObjectChange {
+		@Override
+		public Reaction getCreator() {
+			return Reaction.this;
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			/* do nothing */
+		}
+	}
 	
-	public class ChangeAddRedex extends ModelObjectChange {
+	public class ChangeAddRedex extends ReactionChange {
 		public Bigraph child;
 		public Bigraph oldchild;
 		
@@ -92,7 +104,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		}
 	}
 	
-	public class ChangeInsideModel extends ModelObjectChange{
+	public class ChangeInsideModel extends ReactionChange{
 		
 		public ModelObject target;
 		public Change change;
@@ -112,7 +124,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	}
 	
 	
-	public class ChangeAddReactum extends ModelObjectChange {
+	public class ChangeAddReactum extends ReactionChange {
 		public Bigraph child;
 		public Bigraph oldchild;
 		
@@ -149,7 +161,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 	public ChangeGroup cgAux = new ChangeGroup();
 	
 	
-	public class ChangeLayoutChild extends ModelObjectChange {
+	public class ChangeLayoutChild extends ReactionChange {
 		public Bigraph child;
 		public Rectangle layout;
 		

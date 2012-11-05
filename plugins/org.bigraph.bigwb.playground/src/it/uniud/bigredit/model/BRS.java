@@ -9,6 +9,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.ExecutorManager;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -50,7 +51,19 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		return name;
 	}
 	
-	public class ChangeAddChild extends ModelObjectChange {
+	abstract class BRSChange extends ModelObjectChange {
+		@Override
+		public BRS getCreator() {
+			return BRS.this;
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context) {
+			/* do nothing */
+		}
+	}
+	
+	public class ChangeAddChild extends BRSChange {
 		public ModelObject child;
 		public String name;
 		
@@ -75,7 +88,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		}
 	}
 	
-	public class ChangeRemoveChild extends ModelObjectChange {
+	public class ChangeRemoveChild extends BRSChange {
 		public ModelObject child;
 		
 		public ChangeRemoveChild(ModelObject child) {
@@ -110,7 +123,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		}
 	}
 	
-	public class ChangeLayoutChild extends ModelObjectChange {
+	public class ChangeLayoutChild extends BRSChange {
 		public ModelObject child;
 		public Rectangle layout;
 		
@@ -147,7 +160,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		}
 	}
 	
-	public class ChangeInsideModel extends ModelObjectChange{
+	public class ChangeInsideModel extends BRSChange{
 		
 		public ModelObject target;
 		public Change change;
