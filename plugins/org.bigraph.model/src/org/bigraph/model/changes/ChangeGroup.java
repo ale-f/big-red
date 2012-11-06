@@ -33,20 +33,22 @@ public class ChangeGroup extends ArrayList<IChange> implements IChange {
 	public ChangeGroup inverse() {
 		ChangeGroup changes = new ChangeGroup();
 		for (IChange c : this)
-			changes.add(0, c.inverse());
+			if (c != null)
+				changes.add(0, c.inverse());
 		return changes;
 	}
 
 	@Override
 	public void simulate(PropertyScratchpad context) {
 		for (IChange c : this)
-			c.simulate(context);
+			if (c != null)
+				c.simulate(context);
 	}
 
 	@Override
 	public boolean canInvert() {
 		for (IChange c : this)
-			if (!c.canInvert())
+			if (c == null || !c.canInvert())
 				return false;
 		return true;
 	}
@@ -59,7 +61,7 @@ public class ChangeGroup extends ArrayList<IChange> implements IChange {
 	@Override
 	public boolean isReady() {
 		for (IChange c : this)
-			if (!c.isReady())
+			if (c == null || !c.isReady())
 				return false;
 		return true;
 	}
