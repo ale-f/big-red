@@ -38,7 +38,8 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	protected void executeChanges(IChangeExecutor ex)
 			throws LoadFailedException {
 		try {
-			ex.tryApplyChange(getChanges());
+			if (getChanges().size() > 0)
+				ex.tryApplyChange(getChanges());
 		} catch (ChangeRejectedException cre) {
 			throw new LoadFailedException(cre);
 		}
