@@ -3,11 +3,15 @@ package dk.itu.big_red.utilities.resources;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectDescription;
 import org.eclipse.core.resources.IResource;
@@ -246,6 +250,69 @@ public final class Project {
 		@Override
 		public ISchedulingRule getSchedulingRule() {
 			return getRuleFactory().modifyRule(project);
+		}
+	}
+	
+	private static abstract class MarkerModification
+			implements IWorkspaceModification {
+		private final IResource resource;
+		
+		public MarkerModification(IResource resource) {
+			this.resource = resource;
+		}
+		
+		protected IResource getResource() {
+			return resource;
+		}
+		
+		@Override
+		public ISchedulingRule getSchedulingRule() {
+			return getRuleFactory().markerRule(resource);
+		}
+	}
+	
+	public static class CreateMarker extends MarkerModification {
+		private final String type;
+		private final Map<String, Object> attributes =
+				new HashMap<String, Object>();
+		
+		public CreateMarker(IResource resource, String type) {
+			super(resource);
+			this.type = type;
+		}
+		
+		public CreateMarker addAttribute(String attributeName, Object value) {
+			if (attributeName != null && value != null)
+				attributes.put(attributeName, value);
+			return this;
+		}
+		
+		private IMarker marker;
+		
+		public IMarker getMarker() {
+			return marker;
+		}
+		
+		@Override
+		public void run(IProgressMonitor monitor) throws CoreException {
+			monitor.subTask("Marking " + getResource());
+			marker = getResource().createMarker(type);
+			for (Entry<String, Object> attr : attributes.entrySet())
+				marker.setAttribute(attr.getKey(), attr.getValue());
+		}
+	}
+	
+	public static class DeleteMarker extends MarkerModification {
+		private final IMarker marker;
+		
+		public DeleteMarker(IResource resource, IMarker marker) {
+			super(resource);
+			this.marker = marker;
+		}
+		
+		@Override
+		public void run(IProgressMonitor monitor) throws CoreException {
+			marker.delete();
 		}
 	}
 	
