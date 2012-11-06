@@ -180,8 +180,8 @@ public class ReactionRule extends ModelObject {
 		ReactionRule rr = (ReactionRule)super.clone();
 		
 		rr.setRedex(getRedex().clone());
-		Bigraph reactum = getReactum().clone();
-		rr.setReactum(getReactum().clone());
+		Bigraph reactum = getRedex().clone();
+		rr.setReactum(reactum);
 		
 		IChange c = null;
 		try {
