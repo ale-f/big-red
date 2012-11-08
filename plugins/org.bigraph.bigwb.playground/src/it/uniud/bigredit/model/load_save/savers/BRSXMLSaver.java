@@ -7,6 +7,7 @@ import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.process.IInheritableParticipant;
 import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.SignatureXMLSaver;
@@ -64,8 +65,7 @@ public class BRSXMLSaver extends XMLSaver {
 			rr.setSign(ss.getSignature());
 			ReactionXMLSaver rxs = new ReactionXMLSaver();
 			rxs.setDocument(getDocument());
-			for (InheritableParticipant p :
-					getParticipants(InheritableParticipant.class))
+			for (IInheritableParticipant p : getParticipants(IInheritableParticipant.class))
 				rxs.addParticipant(p.newInstance());
 			appendChildIfNotNull(e, processOrReference(t1, rr, rxs));
 			Element pE = newElement(BIG_RED, "big-red:appearance");

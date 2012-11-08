@@ -2,13 +2,13 @@ package example.org.bigraph.extensions.scope;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
-import org.bigraph.model.savers.ISaver;
+import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.savers.IXMLSaver.Decorator;
 import org.w3c.dom.Element;
 
 public class SaveScope implements Decorator {
 	@Override
-	public void setSaver(ISaver saver) {
+	public void setHost(IParticipantHost host) {
 		/* do nothing */
 	}
 

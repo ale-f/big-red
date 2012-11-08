@@ -7,6 +7,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Element;
 
@@ -20,7 +21,7 @@ public class EditXMLSaver extends XMLSaver {
 		setDefaultNamespace(EDIT);
 	}
 	
-	public interface Participant extends ISaver.Participant {
+	public interface Participant extends IParticipant {
 		Element processDescriptor(IChangeDescriptor cd);
 	}
 	

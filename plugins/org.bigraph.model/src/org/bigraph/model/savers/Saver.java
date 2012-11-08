@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.process.IInheritableParticipant;
+import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.utilities.FilteringIterable;
 
@@ -18,8 +20,7 @@ public abstract class Saver implements ISaver {
 	public Saver(ISaver parent) {
 		this.parent = parent;
 		if (parent != null)
-			for (InheritableParticipant p : getParticipants(
-					parent, InheritableParticipant.class))
+			for (IInheritableParticipant p : getParticipants(parent, IInheritableParticipant.class))
 				addParticipant(p.newInstance());
 	}
 	
@@ -154,25 +155,25 @@ public abstract class Saver implements ISaver {
 		return options;
 	}
 	
-	private List<Participant> participants = new ArrayList<Participant>();
+	private List<IParticipant> participants = new ArrayList<IParticipant>();
 	
 	@Override
-	public void addParticipant(Participant p) {
+	public void addParticipant(IParticipant p) {
 		participants.add(p);
-		p.setSaver(this);
+		p.setHost(this);
 	}
 	
 	@Override
-	public List<? extends Participant> getParticipants() {
+	public List<? extends IParticipant> getParticipants() {
 		return participants;
 	}
 	
-	protected <T extends Participant>
+	protected <T extends IParticipant>
 			Iterable<T> getParticipants(Class<T> klass) {
 		return getParticipants(this, klass);
 	}
 	
-	protected static <T extends Participant>
+	protected static <T extends IParticipant>
 			Iterable<T> getParticipants(ISaver saver, Class<T> klass) {
 		return new FilteringIterable<T>(klass, saver.getParticipants());
 	}

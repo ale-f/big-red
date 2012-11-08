@@ -2,35 +2,15 @@ package org.bigraph.model.savers;
 
 import java.util.List;
 
+import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.resources.IFileWrapper;
 
 /**
  * Classes implementing <strong>ISaver</strong> are <em>savers</em>.
  * @author alec
  */
-public interface ISaver {
-	/**
-	 * Classes implementing <strong>Participant</strong> participate in a
-	 * {@link ISaver}'s saving process.
-	 * @author alec
-	 */
-	interface Participant {
-		void setSaver(ISaver saver);
-	}
-	
-	/**
-	 * Classes implementing <strong>InheritableParticipant</strong> are {@link
-	 * Participant}s that should be propagated down to sub-savers.
-	 * @author alec
-	 */
-	interface InheritableParticipant extends Participant {
-		InheritableParticipant newInstance();
-	}
-	
+public interface ISaver extends IParticipantHost {
 	ISaver getParent();
-	
-	void addParticipant(Participant p);
-	Iterable<? extends Participant> getParticipants();
 	
 	/**
 	 * Classes implementing <strong>Option</strong> are <em>options</em>: they

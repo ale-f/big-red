@@ -12,7 +12,7 @@ import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.names.policies.LongNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
-import org.bigraph.model.savers.ISaver;
+import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.savers.IXMLSaver;
 import org.w3c.dom.Element;
 
@@ -31,7 +31,7 @@ public abstract class FormatParticipants {
 	
 	public static class Decorator implements IXMLSaver.Decorator {
 		@Override
-		public void setSaver(ISaver saver) {
+		public void setHost(IParticipantHost host) {
 			/* do nothing */
 		}
 

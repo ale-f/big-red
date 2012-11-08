@@ -14,7 +14,7 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;
-import org.bigraph.model.savers.ISaver;
+import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.savers.IXMLSaver;
 import org.w3c.dom.Element;
 
@@ -56,7 +56,7 @@ public abstract class LinkStyleUtilities {
 	
 	public static final class Decorator implements IXMLSaver.Decorator {
 		@Override
-		public void setSaver(ISaver saver) {
+		public void setHost(IParticipantHost host) {
 		}
 
 		@Override

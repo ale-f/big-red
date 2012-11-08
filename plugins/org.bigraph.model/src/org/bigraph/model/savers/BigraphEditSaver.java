@@ -19,6 +19,7 @@ import org.bigraph.model.NamedModelObject.Identifier;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.savers.EditXMLSaver.Participant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,9 +28,9 @@ public final class BigraphEditSaver implements Participant {
 	private IXMLSaver saver;
 	
 	@Override
-	public void setSaver(ISaver saver) {
-		if (saver instanceof IXMLSaver)
-			this.saver = (IXMLSaver)saver;
+	public void setHost(IParticipantHost host) {
+		if (host instanceof IXMLSaver)
+			this.saver = (IXMLSaver)host;
 	}
 	
 	private final Element newElement(String ns, String qn) {

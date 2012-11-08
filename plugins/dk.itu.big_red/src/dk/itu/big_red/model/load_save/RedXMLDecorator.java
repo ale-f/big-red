@@ -10,8 +10,9 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
-import org.bigraph.model.savers.ISaver;
+import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.savers.IXMLSaver;
+import org.bigraph.model.savers.XMLSaver;
 import org.bigraph.model.savers.Saver.SaverOption;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -29,20 +30,23 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 	private boolean generateAppearance = true;
 	
 	@Override
-	public void setSaver(ISaver saver) {
-		saver.addOption(new SaverOption("Generate appearance data",
-				"Include Big Red-specific appearance data in the output.") {
-			@Override
-			public Object get() {
-				return generateAppearance;
-			}
-			
-			@Override
-			public void set(Object value) {
-				if (value instanceof Boolean)
-					generateAppearance = (Boolean)value;
-			}
-		});
+	public void setHost(IParticipantHost host) {
+		if (host instanceof XMLSaver)
+			((XMLSaver)host).addOption(new SaverOption(
+					"Generate appearance data",
+					"Include Big Red-specific appearance data " +
+					"in the output.") {
+				@Override
+				public Object get() {
+					return generateAppearance;
+				}
+				
+				@Override
+				public void set(Object value) {
+					if (value instanceof Boolean)
+						generateAppearance = (Boolean)value;
+				}
+			});
 	}
 	
 	public static Element rectangleToElement(Element e, Rectangle r) {
