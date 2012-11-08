@@ -11,7 +11,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.process.IParticipantHost;
@@ -81,9 +80,9 @@ public abstract class LinkStyleUtilities {
 		private IXMLLoader loader;
 		
 		@Override
-		public void setLoader(ILoader loader) {
-			if (loader instanceof IXMLLoader)
-				this.loader = (IXMLLoader)loader;
+		public void setHost(IParticipantHost host) {
+			if (host instanceof IXMLLoader)
+				this.loader = (IXMLLoader)host;
 		}
 		
 		@Override

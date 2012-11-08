@@ -5,7 +5,6 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
@@ -65,9 +64,9 @@ public abstract class FormatParticipants {
 		IXMLLoader loader;
 		
 		@Override
-		public void setLoader(ILoader loader) {
-			if (loader instanceof IXMLLoader)
-				this.loader = (IXMLLoader)loader;
+		public void setHost(IParticipantHost host) {
+			if (host instanceof IXMLLoader)
+				this.loader = (IXMLLoader)host;
 		}
 
 		@Override

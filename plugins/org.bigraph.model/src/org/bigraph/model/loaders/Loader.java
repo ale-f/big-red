@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.process.IInheritableParticipant;
+import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.utilities.FilteringIterable;
 
@@ -18,8 +20,8 @@ public abstract class Loader implements ILoader {
 	public Loader(Loader parent) {
 		this.parent = parent;
 		if (parent != null)
-			for (InheritableParticipant p : parent.getParticipants(
-					InheritableParticipant.class))
+			for (IInheritableParticipant p : parent.getParticipants(
+					IInheritableParticipant.class))
 				addParticipant(p.newInstance());
 	}
 	
@@ -113,20 +115,20 @@ public abstract class Loader implements ILoader {
 		return notices;
 	}
 	
-	private List<Participant> participants = new ArrayList<Participant>();
+	private List<IParticipant> participants = new ArrayList<IParticipant>();
 	
 	@Override
-	public void addParticipant(Participant p) {
+	public void addParticipant(IParticipant p) {
 		participants.add(p);
-		p.setLoader(this);
+		p.setHost(this);
 	}
 	
 	@Override
-	public List<Participant> getParticipants() {
+	public List<IParticipant> getParticipants() {
 		return participants;
 	}
 	
-	protected <T extends Participant>
+	protected <T extends IParticipant>
 	Iterable<T> getParticipants(Class<T> klass) {
 		return new FilteringIterable<T>(klass, participants);
 	}

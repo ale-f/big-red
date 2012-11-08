@@ -3,6 +3,7 @@ package org.bigraph.model.loaders;
 import org.bigraph.model.Edit;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.process.IParticipant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -11,7 +12,7 @@ import org.w3c.dom.NodeList;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 
 public class EditXMLLoader extends XMLLoader {
-	public interface Participant extends ILoader.Participant {
+	public interface Participant extends IParticipant {
 		IChangeDescriptor getDescriptor(Element descriptor);
 		IChangeDescriptor getRenameDescriptor(Element id, String name);
 	}

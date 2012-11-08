@@ -3,18 +3,18 @@ package example.org.bigraph.extensions.scope;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.IXMLLoader.Undecorator;
+import org.bigraph.model.process.IParticipantHost;
 import org.w3c.dom.Element;
 
 public class LoadScope implements Undecorator {
 	private IXMLLoader loader;
 	
 	@Override
-	public void setLoader(ILoader loader) {
-		if (loader instanceof IXMLLoader)
-			this.loader = (IXMLLoader)loader;
+	public void setHost(IParticipantHost host) {
+		if (host instanceof IXMLLoader)
+			this.loader = (IXMLLoader)host;
 	}
 
 	@Override

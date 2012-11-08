@@ -11,9 +11,9 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
+import org.bigraph.model.process.IParticipantHost;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
@@ -168,9 +168,9 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 	}
 
 	@Override
-	public void setLoader(ILoader loader) {
-		if (loader instanceof IXMLLoader)
-			this.loader = (IXMLLoader)loader;
+	public void setHost(IParticipantHost host) {
+		if (host instanceof IXMLLoader)
+			this.loader = (IXMLLoader)host;
 	}
 
 	@Override

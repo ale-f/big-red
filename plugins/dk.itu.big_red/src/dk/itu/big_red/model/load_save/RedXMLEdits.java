@@ -5,7 +5,6 @@ import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.ModelObject.Identifier;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.EditXMLLoader;
-import org.bigraph.model.loaders.ILoader;
 import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.savers.BigraphEditSaver;
 import org.bigraph.model.savers.EditXMLSaver;
@@ -26,7 +25,7 @@ public abstract class RedXMLEdits {
 	public static final class LoadParticipant
 			implements EditXMLLoader.Participant {
 		@Override
-		public void setLoader(ILoader loader) {
+		public void setHost(IParticipantHost host) {
 			// TODO Auto-generated method stub
 		}
 		

@@ -1,9 +1,9 @@
 package org.bigraph.model.wrapper;
 
-import org.bigraph.model.loaders.ILoader;
-import org.bigraph.model.loaders.ILoader.Participant;
-import org.bigraph.model.loaders.ILoader.InheritableParticipant;
 import org.bigraph.model.loaders.Loader;
+import org.bigraph.model.process.IInheritableParticipant;
+import org.bigraph.model.process.IParticipant;
+import org.bigraph.model.process.IParticipantHost;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -13,15 +13,15 @@ import org.eclipse.core.runtime.content.IContentType;
 
 public abstract class LoaderUtilities {
 	private static final class ParticipantContributor
-			implements InheritableParticipant {
+			implements IInheritableParticipant {
 		@Override
-		public void setLoader(ILoader loader) {
+		public void setHost(IParticipantHost host) {
 			IExtensionRegistry r = RegistryFactory.getRegistry();
 			for (IConfigurationElement ice :
 					r.getConfigurationElementsFor(EXTENSION_POINT)) {
 				if ("participant".equals(ice.getName())) {
 					try {
-						loader.addParticipant((Participant)
+						host.addParticipant((IParticipant)
 								ice.createExecutableExtension("class"));
 					} catch (CoreException e) {
 						e.printStackTrace();
@@ -32,7 +32,7 @@ public abstract class LoaderUtilities {
 		}
 
 		@Override
-		public InheritableParticipant newInstance() {
+		public IInheritableParticipant newInstance() {
 			return new ParticipantContributor();
 		}
 	}

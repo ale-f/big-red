@@ -1,20 +1,10 @@
 package org.bigraph.model.loaders;
 
+import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.resources.IFileWrapper;
 
-public interface ILoader {
-	interface Participant {
-		void setLoader(ILoader loader);
-	}
-	
-	interface InheritableParticipant extends Participant {
-		InheritableParticipant newInstance();
-	}
-	
+public interface ILoader extends IParticipantHost {
 	ILoader getParent();
-	
-	void addParticipant(Participant p);
-	Iterable<? extends Participant> getParticipants();
 	
 	void addNotice(LoaderNotice notice);
 	void addNotice(LoaderNotice.Type type, String message);

@@ -22,6 +22,7 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.EditXMLLoader.Participant;
+import org.bigraph.model.process.IParticipantHost;
 import org.w3c.dom.Element;
 
 public class BigraphEditLoader implements Participant {
@@ -149,7 +150,7 @@ public class BigraphEditLoader implements Participant {
 	}
 	
 	@Override
-	public void setLoader(ILoader loader) {
+	public void setHost(IParticipantHost host) {
 		/* do nothing */
 	}
 }
