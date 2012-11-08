@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.process.AbstractParticipantHost;
-import org.bigraph.model.process.ParticipantManager;
 import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Loader
@@ -19,7 +18,6 @@ public abstract class Loader
 	
 	public Loader(Loader parent) {
 		this.parent = parent;
-		ParticipantManager.getInstance().addParticipants(this);
 	}
 	
 	@Override

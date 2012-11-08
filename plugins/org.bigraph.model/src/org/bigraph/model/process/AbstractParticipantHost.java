@@ -8,6 +8,10 @@ import org.bigraph.model.utilities.FilteringIterable;
 public abstract class AbstractParticipantHost implements IParticipantHost {
 	private List<IParticipant> participants = new ArrayList<IParticipant>();
 
+	public AbstractParticipantHost() {
+		ParticipantManager.getInstance().addParticipants(this);
+	}
+	
 	@Override
 	public void addParticipant(IParticipant participant) {
 		participants.add(participant);
