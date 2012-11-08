@@ -1,8 +1,9 @@
 package org.bigraph.model.wrapper;
 
-import org.bigraph.model.process.IInheritableParticipant;
 import org.bigraph.model.process.IParticipant;
+import org.bigraph.model.process.IParticipantFactory;
 import org.bigraph.model.process.IParticipantHost;
+import org.bigraph.model.process.ParticipantManager;
 import org.bigraph.model.savers.Saver;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -13,9 +14,9 @@ import org.eclipse.core.runtime.content.IContentType;
 
 public abstract class SaverUtilities {
 	private static final class ParticipantContributor
-			implements IInheritableParticipant {
+			implements IParticipantFactory {
 		@Override
-		public void setHost(IParticipantHost host) {
+		public void addParticipants(IParticipantHost host) {
 			IExtensionRegistry r = RegistryFactory.getRegistry();
 			for (IConfigurationElement ice :
 					r.getConfigurationElementsFor(EXTENSION_POINT)) {
@@ -30,11 +31,11 @@ public abstract class SaverUtilities {
 				}
 			}
 		}
-		
-		@Override
-		public IInheritableParticipant newInstance() {
-			return new ParticipantContributor();
-		}
+	}
+	
+	static {
+		ParticipantManager.getInstance().addFactory(
+				new ParticipantContributor());
 	}
 	
 	private SaverUtilities() {}
@@ -42,12 +43,6 @@ public abstract class SaverUtilities {
 	public static final String EXTENSION_POINT =
 			"org.bigraph.model.wrapper.export";
 
-	public static Saver installParticipants(Saver saver) {
-		if (saver != null)
-			saver.addParticipant(new ParticipantContributor());
-		return saver;
-	}
-	
 	public static Saver forContentType(String ct) throws CoreException {
 		return forContentType(
 				Platform.getContentTypeManager().getContentType(ct));
@@ -63,6 +58,6 @@ public abstract class SaverUtilities {
 				break;
 			}
 		}
-		return installParticipants(s);
+		return s;
 	}
 }

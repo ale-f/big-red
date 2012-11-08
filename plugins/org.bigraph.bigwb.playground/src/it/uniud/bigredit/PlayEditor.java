@@ -14,7 +14,6 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.wrapper.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -318,7 +317,6 @@ public class PlayEditor extends BigraphEditor {
 	protected void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
 		BRSXMLSaver r = new BRSXMLSaver().setModel(getBRSModel());
-		SaverUtilities.installParticipants(r);
 		r.setFile(new EclipseFileWrapper(f)).
 			setOutputStream(os).exportObject();
 		

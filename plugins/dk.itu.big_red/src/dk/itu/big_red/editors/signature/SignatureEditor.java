@@ -17,7 +17,6 @@ import org.bigraph.model.names.policies.LongNamePolicy;
 import org.bigraph.model.names.policies.StringNamePolicy;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.SignatureXMLSaver;
-import org.bigraph.model.wrapper.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.PointList;
@@ -73,7 +72,6 @@ implements PropertyChangeListener {
 	public void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
     	SignatureXMLSaver r = new SignatureXMLSaver().setModel(getModel());
-    	SaverUtilities.installParticipants(r);
 		r.setFile(new EclipseFileWrapper(f)).
     		setOutputStream(os).exportObject();
 		setSavePoint();

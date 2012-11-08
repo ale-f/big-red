@@ -16,7 +16,6 @@ import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.wrapper.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.gef.KeyHandler;
@@ -142,7 +141,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 	public void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
     	ReactionRuleXMLSaver r = new ReactionRuleXMLSaver().setModel(getModel());
-    	SaverUtilities.installParticipants(r);
 		r.setFile(new EclipseFileWrapper(f)).
     		setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();

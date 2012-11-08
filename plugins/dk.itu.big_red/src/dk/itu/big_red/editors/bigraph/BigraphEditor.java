@@ -8,7 +8,6 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.wrapper.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -211,7 +210,6 @@ public class BigraphEditor extends AbstractGEFEditor {
 	protected void doActualSave(IFile f, OutputStream os)
 			throws SaveFailedException {
 		BigraphXMLSaver r = new BigraphXMLSaver().setModel(getModel());
-		SaverUtilities.installParticipants(r);
 		r.setFile(new EclipseFileWrapper(f)).
 			setOutputStream(os).exportObject();
 		getCommandStack().markSaveLocation();
