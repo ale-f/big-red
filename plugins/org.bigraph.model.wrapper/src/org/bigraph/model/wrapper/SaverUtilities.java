@@ -20,6 +20,8 @@ public abstract class SaverUtilities {
 		
 		@Override
 		public void addParticipants(IParticipantHost host) {
+			if (!(host instanceof Saver))
+				return;
 			IExtensionRegistry r = RegistryFactory.getRegistry();
 			for (IConfigurationElement ice :
 					r.getConfigurationElementsFor(EXTENSION_POINT)) {

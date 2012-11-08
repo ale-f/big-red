@@ -20,6 +20,8 @@ public abstract class LoaderUtilities {
 		
 		@Override
 		public void addParticipants(IParticipantHost host) {
+			if (!(host instanceof Loader))
+				return;
 			IExtensionRegistry r = RegistryFactory.getRegistry();
 			for (IConfigurationElement ice :
 					r.getConfigurationElementsFor(EXTENSION_POINT)) {
