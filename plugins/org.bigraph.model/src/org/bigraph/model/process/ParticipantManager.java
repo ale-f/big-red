@@ -26,6 +26,8 @@ public class ParticipantManager implements IParticipantFactory {
 	
 	@Override
 	public void addParticipants(IParticipantHost host) {
+		if (host == null)
+			return;
 		for (IParticipantFactory i : factories)
 			i.addParticipants(host);
 	}
