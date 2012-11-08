@@ -76,9 +76,15 @@ public final class Activator extends Plugin {
 				eInstance.addValidator(validator);
 			}
 		}
+		
+		SaverUtilities.init();
+		LoaderUtilities.init();
 	}
 	
 	private void uninstall() {
+		LoaderUtilities.fini();
+		SaverUtilities.fini();
+		
 		ExecutorManager eInstance = ExecutorManager.getInstance();
 		for (IStepExecutor i : executors)
 			eInstance.removeExecutor(i);

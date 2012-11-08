@@ -15,6 +15,9 @@ import org.eclipse.core.runtime.content.IContentType;
 public abstract class LoaderUtilities {
 	private static final class ParticipantContributor
 			implements IParticipantFactory {
+		private static final ParticipantContributor INSTANCE =
+				new ParticipantContributor();
+		
 		@Override
 		public void addParticipants(IParticipantHost host) {
 			IExtensionRegistry r = RegistryFactory.getRegistry();
@@ -33,9 +36,14 @@ public abstract class LoaderUtilities {
 		}
 	}
 	
-	static {
+	static void init() {
 		ParticipantManager.getInstance().addFactory(
-				new ParticipantContributor());
+				ParticipantContributor.INSTANCE);
+	}
+	
+	static void fini() {
+		ParticipantManager.getInstance().removeFactory(
+				ParticipantContributor.INSTANCE);
 	}
 	
 	private LoaderUtilities() {}
