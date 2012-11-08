@@ -20,6 +20,10 @@ public class ParticipantManager implements IParticipantFactory {
 		factories.add(factory);
 	}
 	
+	public void removeFactory(IParticipantFactory factory) {
+		factories.remove(factory);
+	}
+	
 	@Override
 	public void addParticipants(IParticipantHost host) {
 		for (IParticipantFactory i : factories)
