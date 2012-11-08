@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.process.AbstractParticipantHost;
 import org.bigraph.model.process.IInheritableParticipant;
-import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.resources.IFileWrapper;
-import org.bigraph.model.utilities.FilteringIterable;
 
-public abstract class Loader implements ILoader {
+public abstract class Loader
+		extends AbstractParticipantHost implements ILoader {
 	private final Loader parent;
 	
 	public Loader() {
@@ -113,23 +113,5 @@ public abstract class Loader implements ILoader {
 	
 	public List<LoaderNotice> getNotices() {
 		return notices;
-	}
-	
-	private List<IParticipant> participants = new ArrayList<IParticipant>();
-	
-	@Override
-	public void addParticipant(IParticipant p) {
-		participants.add(p);
-		p.setHost(this);
-	}
-	
-	@Override
-	public List<IParticipant> getParticipants() {
-		return participants;
-	}
-	
-	protected <T extends IParticipant>
-	Iterable<T> getParticipants(Class<T> klass) {
-		return new FilteringIterable<T>(klass, participants);
 	}
 }

@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.process.AbstractParticipantHost;
 import org.bigraph.model.process.IInheritableParticipant;
-import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.resources.IFileWrapper;
-import org.bigraph.model.utilities.FilteringIterable;
 
-public abstract class Saver implements ISaver {
+public abstract class Saver
+		extends AbstractParticipantHost implements ISaver {
 	private final ISaver parent;
 	
 	public Saver() {
@@ -153,29 +153,6 @@ public abstract class Saver implements ISaver {
 	@Override
 	public final List<Option> getOptions() {
 		return options;
-	}
-	
-	private List<IParticipant> participants = new ArrayList<IParticipant>();
-	
-	@Override
-	public void addParticipant(IParticipant p) {
-		participants.add(p);
-		p.setHost(this);
-	}
-	
-	@Override
-	public List<? extends IParticipant> getParticipants() {
-		return participants;
-	}
-	
-	protected <T extends IParticipant>
-			Iterable<T> getParticipants(Class<T> klass) {
-		return getParticipants(this, klass);
-	}
-	
-	protected static <T extends IParticipant>
-			Iterable<T> getParticipants(ISaver saver, Class<T> klass) {
-		return new FilteringIterable<T>(klass, saver.getParticipants());
 	}
 	
 	private static final void copyOption(Option option, ISaver parent) {
