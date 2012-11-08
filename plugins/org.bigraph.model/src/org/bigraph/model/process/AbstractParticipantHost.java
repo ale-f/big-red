@@ -21,11 +21,6 @@ public abstract class AbstractParticipantHost implements IParticipantHost {
 	
 	protected <T extends IParticipant>
 			Iterable<? extends T> getParticipants(Class<T> klass) {
-		return getParticipants(this, klass);
-	}
-	
-	protected static <T extends IParticipant> Iterable<? extends T>
-			getParticipants(IParticipantHost self, Class<T> klass) {
-		return new FilteringIterable<T>(klass, self.getParticipants());
+		return new FilteringIterable<T>(klass, this.getParticipants());
 	}
 }
