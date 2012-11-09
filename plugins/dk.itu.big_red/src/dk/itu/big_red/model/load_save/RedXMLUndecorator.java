@@ -24,9 +24,9 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
+import dk.itu.big_red.model.BigRedNamespaceConstants;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
 import static org.bigraph.model.loaders.XMLLoader.getDoubleAttribute;
 import static org.bigraph.model.loaders.XMLLoader.getIntAttribute;
@@ -62,10 +62,10 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 
 	public static Rectangle getRectangle(Element e) {
 		String
-			rectX = getAttributeNS(e, BIG_RED, "x"),
-			rectY = getAttributeNS(e, BIG_RED, "y"),
-			rectW = getAttributeNS(e, BIG_RED, "width"),
-			rectH = getAttributeNS(e, BIG_RED, "height");
+			rectX = getAttributeNS(e, BigRedNamespaceConstants.BIG_RED, "x"),
+			rectY = getAttributeNS(e, BigRedNamespaceConstants.BIG_RED, "y"),
+			rectW = getAttributeNS(e, BigRedNamespaceConstants.BIG_RED, "width"),
+			rectH = getAttributeNS(e, BigRedNamespaceConstants.BIG_RED, "height");
 		if (rectX != null && rectY != null && rectW != null && rectH != null) {
 			try {
 				return new Rectangle(
@@ -97,11 +97,11 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 		ChangeGroup cg = new ChangeGroup();
 		
 		Rectangle r = null;
-		Element eA = getNamedChildElement(el, BIG_RED, "appearance");
+		Element eA = getNamedChildElement(el, BigRedNamespaceConstants.BIG_RED, "appearance");
 		if (eA != null) {
 			Colour
-				fill = RedXMLUndecorator.getColorAttribute(eA, BIG_RED, "fillColor"),
-				outline = RedXMLUndecorator.getColorAttribute(eA, BIG_RED, "outlineColor");
+				fill = RedXMLUndecorator.getColorAttribute(eA, BigRedNamespaceConstants.BIG_RED, "fillColor"),
+				outline = RedXMLUndecorator.getColorAttribute(eA, BigRedNamespaceConstants.BIG_RED, "outlineColor");
 			if (fill != null)
 				cg.add(ColourUtilities.changeFill(object, fill));
 			if (outline != null)
@@ -114,7 +114,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 						LayoutUtilities.changeLayout((Layoutable)object, r));
 			}
 			
-			String comment = getAttributeNS(eA, BIG_RED, "comment");
+			String comment = getAttributeNS(eA, BigRedNamespaceConstants.BIG_RED, "comment");
 			if (comment != null)
 				cg.add(ExtendedDataUtilities.changeComment(object, comment));
 		}
@@ -125,37 +125,37 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 		
 		if (object instanceof PortSpec) {
 			PortSpec p = (PortSpec)object;
-			Element eS = getNamedChildElement(el, BIG_RED, "port-appearance");
+			Element eS = getNamedChildElement(el, BigRedNamespaceConstants.BIG_RED, "port-appearance");
 			if (eS != null) {
 				cg.add(ControlUtilities.changeSegment(p,
-						getIntAttribute(eS, BIG_RED, "segment")));
+						getIntAttribute(eS, BigRedNamespaceConstants.BIG_RED, "segment")));
 				cg.add(ControlUtilities.changeDistance(p,
-						getDoubleAttribute(eS, BIG_RED, "distance")));
+						getDoubleAttribute(eS, BigRedNamespaceConstants.BIG_RED, "distance")));
 			}
 		}
 		
 		if (object instanceof Control) {
 			Control c = (Control)object;
 			
-			String l = getAttributeNS(el, BIG_RED, "label");
+			String l = getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "label");
 			if (l != null)
 				cg.add(ControlUtilities.changeLabel(c, l));
 			
-			Element eS = getNamedChildElement(el, BIG_RED, "shape");
+			Element eS = getNamedChildElement(el, BigRedNamespaceConstants.BIG_RED, "shape");
 			if (eS != null) {
 				PointList pl = null;
 				
 				Object shape;
-				String s = getAttributeNS(eS, BIG_RED, "shape");
+				String s = getAttributeNS(eS, BigRedNamespaceConstants.BIG_RED, "shape");
 				if (s != null && s.equals("polygon")) {
 					pl = new PointList();
 					NodeList nl = eS.getChildNodes();
 					for (int i_ = 0; i_ < nl.getLength(); i_++) {
 						Node i = nl.item(i_);
-						if (i instanceof Element && cmpns(i, BIG_RED, "point"))
+						if (i instanceof Element && cmpns(i, BigRedNamespaceConstants.BIG_RED, "point"))
 							pl.addPoint(
-								getIntAttribute((Element)i, BIG_RED, "x"),
-								getIntAttribute((Element)i, BIG_RED, "y"));
+								getIntAttribute((Element)i, BigRedNamespaceConstants.BIG_RED, "x"),
+								getIntAttribute((Element)i, BigRedNamespaceConstants.BIG_RED, "y"));
 					}
 					shape = pl;
 				} else shape = Ellipse.SINGLETON;

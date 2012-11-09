@@ -19,7 +19,6 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure.Style;
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 
 public abstract class LinkStyleUtilities {
 	private LinkStyleUtilities() {}
@@ -71,7 +70,7 @@ public abstract class LinkStyleUtilities {
 					name = "straight";
 				}
 				if (name != null)
-					el.setAttributeNS(BIG_RED, "big-red:link-style", name);
+					el.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:link-style", name);
 			}
 		}
 	}
@@ -89,7 +88,7 @@ public abstract class LinkStyleUtilities {
 		public void undecorate(ModelObject object, Element el) {
 			if (object instanceof Link) {
 				String styleName =
-						XMLLoader.getAttributeNS(el, BIG_RED, "link-style");
+						XMLLoader.getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "link-style");
 				if (styleName != null)
 					styleName = styleName.toLowerCase(Locale.ENGLISH);
 				Style style = null;

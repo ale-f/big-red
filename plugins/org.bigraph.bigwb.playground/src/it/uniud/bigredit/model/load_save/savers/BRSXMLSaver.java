@@ -1,6 +1,5 @@
 package it.uniud.bigredit.model.load_save.savers;
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
 import it.uniud.bigredit.model.BRS;
 import it.uniud.bigredit.model.Reaction;
@@ -14,6 +13,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import org.bigraph.model.savers.XMLSaver;
+
+import dk.itu.big_red.model.BigRedNamespaceConstants;
 
 public class BRSXMLSaver extends XMLSaver {
 	
@@ -65,7 +66,7 @@ public class BRSXMLSaver extends XMLSaver {
 			ReactionXMLSaver rxs = new ReactionXMLSaver();
 			rxs.setDocument(getDocument());
 			appendChildIfNotNull(e, processOrReference(t1, rr, rxs));
-			Element pE = newElement(BIG_RED, "big-red:appearance");
+			Element pE = newElement(BigRedNamespaceConstants.BIG_RED, "big-red:appearance");
 			Rectangle rect= ss.getChildrenConstraint(rr);
 			rectangleToElement(pE, rect);
 			t1.appendChild(pE);
@@ -81,7 +82,7 @@ public class BRSXMLSaver extends XMLSaver {
 					processOrReference(t1,
 							bb, new BigraphXMLSaver(this)));
 			
-			Element pE = newElement(BIG_RED, "big-red:appearance");
+			Element pE = newElement(BigRedNamespaceConstants.BIG_RED, "big-red:appearance");
 			Rectangle rect= ss.getChildrenConstraint(bb);
 			rectangleToElement(pE, rect);
 			t1.appendChild(pE);

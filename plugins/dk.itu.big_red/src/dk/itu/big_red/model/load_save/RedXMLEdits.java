@@ -14,10 +14,10 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.BigRedNamespaceConstants;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 
 public abstract class RedXMLEdits {
 	private RedXMLEdits() {}
@@ -82,16 +82,16 @@ public abstract class RedXMLEdits {
 				String key = cd.getKey();
 				System.out.println(key);
 				if (LayoutUtilities.LAYOUT.equals(key)) {
-					e = saveLayout(newElement(BIG_RED, "big-red:set-layout"),
+					e = saveLayout(newElement(BigRedNamespaceConstants.BIG_RED, "big-red:set-layout"),
 							(Rectangle)cd.getNewValue());
 				} else if (ColourUtilities.FILL.equals(key)) {
-					e = saveColour(newElement(BIG_RED, "big-red:set-fill"),
+					e = saveColour(newElement(BigRedNamespaceConstants.BIG_RED, "big-red:set-fill"),
 							(Colour)cd.getNewValue());
 				} else if (ColourUtilities.OUTLINE.equals(key)) {
-					e = saveColour(newElement(BIG_RED, "big-red:set-outline"),
+					e = saveColour(newElement(BigRedNamespaceConstants.BIG_RED, "big-red:set-outline"),
 							(Colour)cd.getNewValue());
 				} else if (ExtendedDataUtilities.COMMENT.equals(key)) {
-					e = newElement(BIG_RED, "big-red:set-comment");
+					e = newElement(BigRedNamespaceConstants.BIG_RED, "big-red:set-comment");
 					e.setAttributeNS(null,
 							"comment", (String)cd.getNewValue());
 				}

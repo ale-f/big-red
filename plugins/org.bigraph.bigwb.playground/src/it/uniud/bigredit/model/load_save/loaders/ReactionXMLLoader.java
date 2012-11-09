@@ -1,6 +1,5 @@
 package it.uniud.bigredit.model.load_save.loaders;
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 
 import java.io.IOException;
@@ -29,6 +28,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.model.BigRedNamespaceConstants;
+
 
 public class ReactionXMLLoader extends XMLLoader{
 
@@ -48,7 +49,7 @@ public class ReactionXMLLoader extends XMLLoader{
 		Element redex = getNamedChildElement(e, REACTION, "redex");
 		if (redex != null){
 			Bigraph created=makeBigraph(redex);
-			Element eA = getNamedChildElement(redex, BIG_RED, "appearance");
+			Element eA = getNamedChildElement(redex, BigRedNamespaceConstants.BIG_RED, "appearance");
 			String width=eA.getAttribute("width");
 			String height=eA.getAttribute("height");
 			String x=eA.getAttribute("x");
@@ -66,7 +67,7 @@ public class ReactionXMLLoader extends XMLLoader{
 		
 		if (reactum != null){
 			Bigraph createdM=makeBigraph(reactum);
-			Element eB = getNamedChildElement(reactum, BIG_RED, "appearance");
+			Element eB = getNamedChildElement(reactum, BigRedNamespaceConstants.BIG_RED, "appearance");
 			String widthb=eB.getAttribute("width");
 			String heightb=eB.getAttribute("height");
 			String xb=eB.getAttribute("x");

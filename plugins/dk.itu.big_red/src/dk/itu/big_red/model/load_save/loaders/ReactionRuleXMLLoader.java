@@ -39,6 +39,7 @@ import org.w3c.dom.NodeList;
 
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.BigRedNamespaceConstants;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import org.bigraph.extensions.param.ParameterUtilities;
@@ -47,7 +48,6 @@ import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
@@ -243,13 +243,13 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 							ParameterUtilities.getParameter(scratch, no),
 							parameter);
 			}
-		} else if (el.getNamespaceURI().equals(BIG_RED)) {
+		} else if (el.getNamespaceURI().equals(BigRedNamespaceConstants.BIG_RED)) {
 			if (el.getLocalName().equals("layout")) {
 				String
 					type =
-						getAttributeNS(el, BIG_RED, "type"),
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "type"),
 					name =
-						getAttributeNS(el, BIG_RED, "name");
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
@@ -260,11 +260,11 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			} else if (el.getLocalName().equals("fill")) {
 				String
 					colour =
-						getAttributeNS(el, BIG_RED, "colour"),
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "colour"),
 					type =
-						getAttributeNS(el, BIG_RED, "type"),
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "type"),
 					name =
-						getAttributeNS(el, BIG_RED, "name");
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
@@ -275,11 +275,11 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			} else if (el.getLocalName().equals("outline")) {
 				String
 					colour =
-						getAttributeNS(el, BIG_RED, "colour"),
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "colour"),
 					type =
-						getAttributeNS(el, BIG_RED, "type"),
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "type"),
 					name =
-						getAttributeNS(el, BIG_RED, "name");
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
@@ -290,11 +290,11 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			} else if (el.getLocalName().equals("comment")) {
 				String
 					comment =
-						getAttributeNS(el, BIG_RED, "comment"),
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "comment"),
 					type =
-						getAttributeNS(el, BIG_RED, "type"),
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "type"),
 					name =
-						getAttributeNS(el, BIG_RED, "name");
+						getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				

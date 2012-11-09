@@ -33,6 +33,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.BigRedNamespaceConstants;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 import org.bigraph.extensions.param.ParameterUtilities;
@@ -40,7 +41,6 @@ import org.bigraph.extensions.param.ParameterUtilities;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 
 public class ReactionRuleXMLSaver extends XMLSaver {
@@ -163,20 +163,20 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 			String key = i.getKey();
 			Object newValue = i.getNewValue();
 			if (ExtendedDataUtilities.COMMENT.equals(key)) {
-				f = newElement(BIG_RED, "big-red:comment");
+				f = newElement(BigRedNamespaceConstants.BIG_RED, "big-red:comment");
 				if (newValue != null)
 					applyAttributes(f, "comment", newValue);
 			} else if (ColourUtilities.FILL.equals(key)) {
 				Colour c = (Colour)newValue;
-				f = applyAttributes(newElement(BIG_RED, "big-red:fill"),
+				f = applyAttributes(newElement(BigRedNamespaceConstants.BIG_RED, "big-red:fill"),
 						"colour", (c != null ? c.toHexString() : null));
 			} else if (ColourUtilities.OUTLINE.equals(key)) {
 				Colour c = (Colour)newValue;
-				f = applyAttributes(newElement(BIG_RED, "big-red:outline"),
+				f = applyAttributes(newElement(BigRedNamespaceConstants.BIG_RED, "big-red:outline"),
 						"colour", (c != null ? c.toHexString() : null));
 			} else if (LayoutUtilities.LAYOUT.equals(key)) {
 				Rectangle r = (Rectangle)newValue;
-				f = newElement(BIG_RED, "big-red:layout");
+				f = newElement(BigRedNamespaceConstants.BIG_RED, "big-red:layout");
 				if (r != null)
 					applyAttributes(f,
 							"x", r.x(), "y", r.y(),

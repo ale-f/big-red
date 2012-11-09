@@ -20,12 +20,6 @@ public abstract class RedNamespaceConstants {
 	String SIGNATURE = "http://www.itu.dk/research/pls/xmlns/2010/signature";
 	
 	/**
-	 * The XML namespace for Big Red's visual extensions.
-	 */
-	public static final
-	String BIG_RED = "http://www.itu.dk/research/pls/xmlns/2010/big-red";
-
-	/**
 	 * The XML namespace for {@code <change>} documents.
 	 */
 	public static final

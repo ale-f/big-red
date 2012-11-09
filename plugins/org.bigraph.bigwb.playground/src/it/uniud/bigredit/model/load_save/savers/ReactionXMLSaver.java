@@ -1,6 +1,5 @@
 package it.uniud.bigredit.model.load_save.savers;
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
@@ -10,6 +9,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import org.bigraph.model.savers.XMLSaver;
+
+import dk.itu.big_red.model.BigRedNamespaceConstants;
 
 public class ReactionXMLSaver extends XMLSaver{
 	
@@ -36,7 +37,7 @@ public class ReactionXMLSaver extends XMLSaver{
 					processOrReference(t1,
 							redex, new BigraphXMLSaver(this)));
 			
-			Element pE = newElement(BIG_RED, "big-red:appearance");
+			Element pE = newElement(BigRedNamespaceConstants.BIG_RED, "big-red:appearance");
 			Rectangle rect= ss.getChildConstraint(redex);
 			rectangleToElement(pE, rect);
 			t1.appendChild(pE);
@@ -49,7 +50,7 @@ public class ReactionXMLSaver extends XMLSaver{
 					processOrReference(t2,
 							reactum, new BigraphXMLSaver(this)));
 			
-			Element pE2 = newElement(BIG_RED, "big-red:appearance");
+			Element pE2 = newElement(BigRedNamespaceConstants.BIG_RED, "big-red:appearance");
 			Rectangle rect2= ss.getChildConstraint(reactum);
 			rectangleToElement(pE2, rect2);
 			t2.appendChild(pE2);

@@ -1,7 +1,6 @@
 package it.uniud.bigredit.model.load_save.loaders;
 
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 
 import java.io.InputStream;
@@ -26,6 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import dk.itu.big_red.model.BigRedNamespaceConstants;
 import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.BRS;
@@ -105,7 +105,7 @@ import it.uniud.bigredit.model.BRS;
 			for (Element modelElement : getNamedChildElements(e, BRS, "rule")){
 				if (modelElement != null){
 					ModelObject created=makeRule(modelElement);
-					Element eA = getNamedChildElement(modelElement, BIG_RED, "appearance");
+					Element eA = getNamedChildElement(modelElement, BigRedNamespaceConstants.BIG_RED, "appearance");
 					String width=eA.getAttribute("width");
 					String height=eA.getAttribute("height");
 					String x=eA.getAttribute("x");
@@ -121,7 +121,7 @@ import it.uniud.bigredit.model.BRS;
 			for (Element modelElement : getNamedChildElements(e, BRS, "model")){
 			if (modelElement != null){
 				ModelObject created=makeBigraph(modelElement);
-				Element eA = getNamedChildElement(modelElement, BIG_RED, "appearance");
+				Element eA = getNamedChildElement(modelElement, BigRedNamespaceConstants.BIG_RED, "appearance");
 				String width=eA.getAttribute("width");
 				String height=eA.getAttribute("height");
 				String x=eA.getAttribute("x");

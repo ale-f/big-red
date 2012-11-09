@@ -1,6 +1,5 @@
 package dk.itu.big_red.model.load_save;
 
-import static org.bigraph.model.loaders.RedNamespaceConstants.BIG_RED;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Control;
 import org.bigraph.model.Layoutable;
@@ -23,6 +22,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
+import dk.itu.big_red.model.BigRedNamespaceConstants;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
 
@@ -65,10 +65,10 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 			Control c = (Control)object;
 			
 			if (generateAppearance) {
-				Element aE = doc.createElementNS(BIG_RED, "big-red:shape");
+				Element aE = doc.createElementNS(BigRedNamespaceConstants.BIG_RED, "big-red:shape");
 				
 				Object shape = ControlUtilities.getShape(c);
-				aE.setAttributeNS(BIG_RED, "big-red:shape",
+				aE.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:shape",
 						(shape instanceof PointList ? "polygon" : "oval"));
 				
 				if (shape instanceof PointList) {
@@ -76,14 +76,14 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 					for (int i = 0; i < pl.size(); i++) {
 						Point p = pl.getPoint(i);
 						Element pE =
-								doc.createElementNS(BIG_RED, "big-red:point");
-						pE.setAttributeNS(BIG_RED, "big-red:x", "" + p.x);
-						pE.setAttributeNS(BIG_RED, "big-red:y", "" + p.y);
+								doc.createElementNS(BigRedNamespaceConstants.BIG_RED, "big-red:point");
+						pE.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:x", "" + p.x);
+						pE.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:y", "" + p.y);
 						aE.appendChild(pE);
 					}
 				}
 			
-				el.setAttributeNS(BIG_RED, "big-red:label",
+				el.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:label",
 						ControlUtilities.getLabel(c));
 				el.appendChild(aE);
 			}
@@ -93,10 +93,10 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 			
 			if (generateAppearance) {
 				Element pA =
-					doc.createElementNS(BIG_RED, "big-red:port-appearance");
-				pA.setAttributeNS(BIG_RED, "big-red:segment",
+					doc.createElementNS(BigRedNamespaceConstants.BIG_RED, "big-red:port-appearance");
+				pA.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:segment",
 						"" + ControlUtilities.getSegment(p));
-				pA.setAttributeNS(BIG_RED, "big-red:distance",
+				pA.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:distance",
 						"" + ControlUtilities.getDistance(p));
 				el.appendChild(pA);
 			}
@@ -106,7 +106,7 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 				object instanceof ReactionRule)
 			return;
 		
-		Element aE = doc.createElementNS(BIG_RED, "big-red:appearance");
+		Element aE = doc.createElementNS(BigRedNamespaceConstants.BIG_RED, "big-red:appearance");
 		
 		if (object instanceof Layoutable) {
 			Rectangle layout =
@@ -119,15 +119,15 @@ public class RedXMLDecorator implements IXMLSaver.Decorator {
 			fill = ColourUtilities.getFillRaw(object),
 			outline = ColourUtilities.getOutlineRaw(object);
 		if (fill != null)
-			aE.setAttributeNS(BIG_RED, "big-red:fillColor",
+			aE.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:fillColor",
 					fill.toHexString());
 		if (outline != null)
-			aE.setAttributeNS(BIG_RED, "big-red:outlineColor",
+			aE.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:outlineColor",
 					outline.toHexString());
 		
 		String comment = ExtendedDataUtilities.getComment(object);
 		if (comment != null)
-			aE.setAttributeNS(BIG_RED, "big-red:comment", comment);
+			aE.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:comment", comment);
 		
 		if (generateAppearance && (aE.hasChildNodes() || aE.hasAttributes()))
 			el.appendChild(aE);
