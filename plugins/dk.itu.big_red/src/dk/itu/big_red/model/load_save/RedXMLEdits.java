@@ -120,14 +120,12 @@ public abstract class RedXMLEdits {
 		
 		@Override
 		public Element processDescriptor(IChangeDescriptor cd_) {
-			System.out.println(this + ".processDescriptor(" + cd_ + ")");
 			Element e = null;
 			if (cd_ instanceof ChangeExtendedDataDescriptor) {
 				ChangeExtendedDataDescriptor cd =
 						(ChangeExtendedDataDescriptor)cd_;
 				Identifier target = cd.getTarget();
 				String key = cd.getKey();
-				System.out.println(key);
 				if (LayoutUtilities.LAYOUT.equals(key)) {
 					e = saveLayout(newElement(BIG_RED, "big-red:set-layout"),
 							(Rectangle)cd.getNewValue());

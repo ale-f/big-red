@@ -39,8 +39,6 @@ public abstract class DescriptorConflicts {
 					vK.isInstance(b) ? b : (vK.isInstance(a) ? a : null));
 			if (tInstance != null && vInstance != null &&
 					tInstance != vInstance) {
-				System.out.println("Running check for " + this + 
-						" with (" + a + ", " + b + ")");
 				return conflicts(tInstance, vInstance);
 			} else return false;
 		}

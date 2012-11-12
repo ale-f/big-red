@@ -46,7 +46,6 @@ public class LayoutableMoveCommand extends ChangeCommand {
 					r.height = 10;
 				cg.add(LayoutUtilities.changeLayout(l, r));
 			} else {
-				System.out.println("Oh no: " + l);
 				cg.clear();
 				return;
 			}

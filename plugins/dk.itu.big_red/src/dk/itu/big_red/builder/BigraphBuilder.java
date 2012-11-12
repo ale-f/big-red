@@ -15,7 +15,6 @@ public class BigraphBuilder extends IncrementalProjectBuilder {
 	class DeltaVisitor implements IResourceDeltaVisitor {
 		@Override
 		public boolean visit(IResourceDelta delta) throws CoreException {
-			System.out.println("" + this + ".visit(" + delta + ")");
 			switch (delta.getKind()) {
 			case IResourceDelta.ADDED:
 				break;
@@ -36,7 +35,6 @@ public class BigraphBuilder extends IncrementalProjectBuilder {
 	class ResourceVisitor implements IResourceVisitor {
 		@Override
 		public boolean visit(IResource resource) {
-			System.out.println("" + this + ".visit(" + resource + ")");
 			return true;
 		}
 		

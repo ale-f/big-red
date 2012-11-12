@@ -99,7 +99,6 @@ public abstract class Loader
 	public void addNotice(LoaderNotice status) {
 		if (notices == null)
 			notices = new ArrayList<LoaderNotice>();
-		System.out.println(this + ".addNotice(" + status + ")");
 		notices.add(status);
 	}
 	

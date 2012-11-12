@@ -1,6 +1,5 @@
 package dk.itu.big_red.application.standalone;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
@@ -66,18 +65,6 @@ public class RedApplicationActionBarAdvisor extends ActionBarAdvisor {
 		actionWindow = new Object[] {
 			new MenuManager("Show &View"),
 			ActionFactory.PREFERENCES.create(window),
-			new Separator(),
-			new Action() {
-				{
-					setId("dk.itu.big_red.application.standalone.TestAction");
-					setText("Test action");
-				}
-				
-				@Override
-				public void run() {
-					System.out.println("¿Qué?");
-				}
-			}
 		};
 		
 		actionWindowShowView = new Object[] {

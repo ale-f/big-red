@@ -146,7 +146,6 @@ public class BigraphTikZSaver extends Saver {
 			for (Layoutable i : ch)
 				bounding.union(LayoutUtilities.getLayout(i));
 			translate = bounding.getTopLeft().getNegated();
-			System.out.println("(translating everything by " + translate + ")");
 		}
 		
 		newLine();
@@ -258,7 +257,6 @@ public class BigraphTikZSaver extends Saver {
 			tl = rl.getTopLeft(),
 			br = rl.getBottomRight(),
 			c = rl.getCenter();
-		System.out.println(rl);
 		Colour fillColour =
 			(i.getLink() == null ? PointPart.DEFAULT_COLOUR : ColourUtilities.getOutline(i.getLink()));
 		line("definecolor{" + getNiceName(i) + " color}{RGB}{" + fillColour.getRed() + "," + fillColour.getGreen() + "," + fillColour.getBlue() + "}");
@@ -273,8 +271,6 @@ public class BigraphTikZSaver extends Saver {
 			String in, out;
 			Point source = LayoutUtilities.getRootLayout(p).getCenter(),
 			      target = LayoutUtilities.getRootLayout(l).getCenter();
-			System.out.println(source);
-			System.out.println(target);
 			if (source.y < target.y)
 				in = "90";
 			else in = "270";
