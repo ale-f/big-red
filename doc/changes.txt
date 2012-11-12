@@ -1,0 +1,55 @@
+The mutable model
+=================
+
+Although Big Red's implementation of the bigraphical model is mutable, its
+objects expose only getters, not setters:
+
+        Bigraph b;
+        Root r1, r2;
+        Node n;
+        /* ... b contains r1 and r2, while r1 contains n... */
+        assert(n.getParent() == r1); /* allowed */
+        n.setParent(r2); /* not allowed */
+
+Instead, the model introduces a layer of indirection: objects that encapsulate
+the desired modifications are submitted to a /validator/, which makes sure that
+the modification request makes sense, before being sent on to an /executor/,
+which actually modifies the model.
+
+Why?
+----
+
+* Undo and redo support for free
+
+  Changes track enough information to reverse themselves, which makes it easy
+  to apply and unapply them.
+
+* Protects against both users' and programmers' mistakes
+
+  As changes are the only way to modify the model, bugs in higher-level code
+  are treated like user mistakes -- anything that leaves the model in an
+  inconsistent state will be rejected.
+
+* Temporary inconsistencies don't matter
+
+  Some changes are validated only at the end of the validation process. This
+  allows objects to be temporarily put into undesirable states without any
+  consequences -- as long as those states are eventually resolved, the
+  validator won't complain.
+
+* Extensibility
+
+  Plugins can contribute new steps to executors and validators, adding new
+  kinds of modification -- or making existing checks more demanding!
+
+How?
+----
+
+Modifying a Big Red model object is a three-step process:
+
+	1. create objects that encapsulate the desired changes;
+	2. validate them; and finally
+	3. execute them.
+
+(In practice, the last two steps can be grouped together -- changes are always
+validated before they're executed.)
