@@ -186,14 +186,18 @@ public abstract class Layoutable extends NamedModelObject {
 		
 		@Override
 		public boolean equals(Object obj_) {
-			return safeClassCmp(this, obj_) &&
-					safeEquals(getTarget(),
-							((ChangeRemoveDescriptor)obj_).getTarget());
+			if (safeClassCmp(this, obj_)) {
+				ChangeRemoveDescriptor obj = (ChangeRemoveDescriptor)obj_;
+				return
+						safeEquals(getTarget(), obj.getTarget()) &&
+						safeEquals(getParent(), obj.getParent());
+			} else return false;
 		}
 		
 		@Override
 		public int hashCode() {
-			return compositeHashCode(ChangeRemoveDescriptor.class, target);
+			return compositeHashCode(ChangeRemoveDescriptor.class,
+					target, parent);
 		}
 		
 		@Override

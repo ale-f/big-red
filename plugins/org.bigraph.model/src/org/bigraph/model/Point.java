@@ -206,7 +206,8 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 	}
 	
-	public static class ChangeDisconnectDescriptor implements IChangeDescriptor {
+	public static class ChangeDisconnectDescriptor
+			implements IChangeDescriptor {
 		private final Identifier point;
 		private final Link.Identifier link;
 		
@@ -226,15 +227,19 @@ public abstract class Point extends Layoutable implements IPoint {
 		
 		@Override
 		public boolean equals(Object obj_) {
-			return safeClassCmp(this, obj_) &&
-					safeEquals(getPoint(),
-							((ChangeDisconnectDescriptor)obj_).getPoint());
+			if (safeClassCmp(this, obj_)) {
+				ChangeDisconnectDescriptor obj =
+						(ChangeDisconnectDescriptor)obj_;
+				return
+						safeEquals(getPoint(), obj.getPoint()) &&
+						safeEquals(getLink(), obj.getLink());
+			} else return false;
 		}
 		
 		@Override
 		public int hashCode() {
 			return compositeHashCode(
-					ChangeDisconnectDescriptor.class, point);
+					ChangeDisconnectDescriptor.class, point, link);
 		}
 		
 		@Override

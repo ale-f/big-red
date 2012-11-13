@@ -348,6 +348,7 @@ public abstract class ModelObject {
 				return
 						safeEquals(getTarget(), obj.getTarget()) &&
 						safeEquals(getKey(), obj.getKey()) &&
+						safeEquals(getOldValue(), obj.getOldValue()) &&
 						safeEquals(getNewValue(), obj.getNewValue());
 			} else return false;
 		}
@@ -355,7 +356,8 @@ public abstract class ModelObject {
 		@Override
 		public int hashCode() {
 			return compositeHashCode(
-					ChangeExtendedDataDescriptor.class, target, key, newValue);
+					ChangeExtendedDataDescriptor.class,
+					target, key, oldValue, newValue);
 		}
 
 		@Override
