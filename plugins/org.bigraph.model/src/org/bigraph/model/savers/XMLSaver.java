@@ -143,7 +143,8 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 	public abstract Element processModel(Element e) throws SaveFailedException;
 	
 	protected Element processOrReference(
-			Element e, ModelObject object, XMLSaver ex) {
+			Element e, ModelObject object, XMLSaver ex)
+			throws SaveFailedException {
 		IFileWrapper f;
 		if (e == null || object == null) {
 			return null;
@@ -153,12 +154,8 @@ public abstract class XMLSaver extends Saver implements IXMLSaver {
 				"src", f.getRelativePath(getFile().getParent().getPath()));
 			/* No decoration takes place! */
 		} else {
-			try {
-				ex.setModel(object).setFile(getFile());
-				ex.processModel(e);
-			} catch (Exception exc) {
-				return e;
-			}
+			ex.setModel(object).setFile(getFile());
+			ex.processModel(e);
 		}
 		return e;
 	}
