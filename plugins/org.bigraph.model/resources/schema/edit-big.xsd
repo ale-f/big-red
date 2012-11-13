@@ -135,12 +135,25 @@
 	<xsd:element name="remove">
 		<xsd:complexType>
 			<xsd:choice>
-				<xsd:element ref="edit-big:edge-id" />
-				<xsd:element ref="edit-big:node-id" />
-				<xsd:element ref="edit-big:root-id" />
-				<xsd:element ref="edit-big:site-id" />
-				<xsd:element ref="edit-big:innername-id" />
-				<xsd:element ref="edit-big:outername-id" />
+				<xsd:sequence>
+					<xsd:element ref="edit-big:bigraph-id" />
+					<xsd:choice>
+						<xsd:element ref="edit-big:edge-id" />
+						<xsd:element ref="edit-big:root-id" />
+						<xsd:element ref="edit-big:innername-id" />
+						<xsd:element ref="edit-big:outername-id" />
+					</xsd:choice>
+				</xsd:sequence>
+				<xsd:sequence>
+					<xsd:choice>
+						<xsd:element ref="edit-big:node-id" />
+						<xsd:element ref="edit-big:root-id" />
+					</xsd:choice>
+					<xsd:choice>
+						<xsd:element ref="edit-big:node-id" />
+						<xsd:element ref="edit-big:site-id" />
+					</xsd:choice>
+				</xsd:sequence>
 			</xsd:choice>
 		</xsd:complexType>
 	</xsd:element>
@@ -161,6 +174,10 @@
 		<xsd:complexType>
 			<xsd:sequence>
 				<xsd:group ref="edit-big:any-point-id" />
+				<xsd:choice>
+					<xsd:element ref="edit-big:edge-id" />
+					<xsd:element ref="edit-big:outername-id" />
+				</xsd:choice>
 			</xsd:sequence>
 		</xsd:complexType>
 	</xsd:element>

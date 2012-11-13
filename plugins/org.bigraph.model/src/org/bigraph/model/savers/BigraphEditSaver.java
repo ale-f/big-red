@@ -81,6 +81,7 @@ public final class BigraphEditSaver implements Participant {
 		} else if (cd_ instanceof ChangeRemoveDescriptor) {
 			ChangeRemoveDescriptor cd = (ChangeRemoveDescriptor)cd_;
 			el = newElement(EDIT_BIG, "edit-big:remove");
+			el.appendChild(makeID(cd.getParent()));
 			el.appendChild(makeID(cd.getTarget()));
 		} else if (cd_ instanceof ChangeNameDescriptor) {
 			ChangeNameDescriptor cd = (ChangeNameDescriptor)cd_;
@@ -97,6 +98,7 @@ public final class BigraphEditSaver implements Participant {
 					(ChangeDisconnectDescriptor)cd_;
 			el = newElement(EDIT_BIG, "edit-big:disconnect");
 			el.appendChild(makeID(cd.getPoint()));
+			el.appendChild(makeID(cd.getLink()));
 		}
 		return el;
 	}

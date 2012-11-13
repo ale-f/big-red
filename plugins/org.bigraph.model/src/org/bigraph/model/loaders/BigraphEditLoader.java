@@ -75,6 +75,8 @@ public class BigraphEditLoader implements Participant {
 	}
 	
 	public static ModelObject.Identifier getIdentifier(Element el) {
+		if (el == null)
+			return null;
 		String
 			localName = el.getLocalName(),
 			namespace = el.getNamespaceURI();
@@ -124,9 +126,11 @@ public class BigraphEditLoader implements Participant {
 				return new Container.ChangeAddChildDescriptor(
 						parent, child);
 			} else if ("remove".equals(localName)) {
-				Layoutable.Identifier target = getIdentifier(
-						ids.get(0), Layoutable.Identifier.class);
-				return new Layoutable.ChangeRemoveDescriptor(target, null);
+				Container.Identifier parent = getIdentifier(
+						ids.get(0), Container.Identifier.class);
+				Layoutable.Identifier child = getIdentifier(
+						ids.get(1), Layoutable.Identifier.class);
+				return new Layoutable.ChangeRemoveDescriptor(child, parent);
 			} else if ("connect".equals(localName)) {
 				Point.Identifier point = getIdentifier(
 						ids.get(0), Point.Identifier.class);
@@ -136,7 +140,9 @@ public class BigraphEditLoader implements Participant {
 			} else if ("disconnect".equals(localName)) {
 				Point.Identifier point = getIdentifier(
 						ids.get(0), Point.Identifier.class);
-				return new Point.ChangeDisconnectDescriptor(point, null);
+				Link.Identifier link = getIdentifier(
+						ids.get(1), Link.Identifier.class);
+				return new Point.ChangeDisconnectDescriptor(point, link);
 			} else return null;
 		} else return null;
 	}
