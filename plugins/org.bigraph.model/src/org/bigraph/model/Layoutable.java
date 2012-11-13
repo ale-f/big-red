@@ -170,11 +170,6 @@ public abstract class Layoutable extends NamedModelObject {
 		private final Identifier target;
 		private final Container.Identifier parent;
 		
-		public ChangeRemoveDescriptor(Identifier target) {
-			this.target = target;
-			parent = null;
-		}
-		
 		public ChangeRemoveDescriptor(
 				Identifier target, Container.Identifier parent) {
 			this.target = target;

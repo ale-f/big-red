@@ -126,7 +126,7 @@ public class BigraphEditLoader implements Participant {
 			} else if ("remove".equals(localName)) {
 				Layoutable.Identifier target = getIdentifier(
 						ids.get(0), Layoutable.Identifier.class);
-				return new Layoutable.ChangeRemoveDescriptor(target);
+				return new Layoutable.ChangeRemoveDescriptor(target, null);
 			} else if ("connect".equals(localName)) {
 				Point.Identifier point = getIdentifier(
 						ids.get(0), Point.Identifier.class);
@@ -136,7 +136,7 @@ public class BigraphEditLoader implements Participant {
 			} else if ("disconnect".equals(localName)) {
 				Point.Identifier point = getIdentifier(
 						ids.get(0), Point.Identifier.class);
-				return new Point.ChangeDisconnectDescriptor(point);
+				return new Point.ChangeDisconnectDescriptor(point, null);
 			} else return null;
 		} else return null;
 	}
