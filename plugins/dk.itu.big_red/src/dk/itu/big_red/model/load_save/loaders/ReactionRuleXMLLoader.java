@@ -182,7 +182,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					cd = new Layoutable.ChangeRemoveDescriptor(l, null);
+					cd = new Layoutable.ChangeRemoveDescriptor(l,
+							l.lookup(scratch, rr.getReactum()).
+									getParent(scratch).getIdentifier(scratch));
 			} else if (el.getLocalName().equals("rename")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
