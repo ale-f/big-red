@@ -17,7 +17,7 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class ReactionRule extends ModelObject {
 	private Bigraph redex, reactum;
-	private ChangeDescriptorGroup changes;
+	private Edit edit;
 	public static final String CONTENT_TYPE = "dk.itu.big_red.rule";
 	
 	public Bigraph getRedex() {
@@ -203,10 +203,15 @@ public class ReactionRule extends ModelObject {
 		reactum = b;
 	}
 	
+	public Edit getEdit() {
+		if (edit == null)
+			edit = new Edit();
+		return edit;
+	}
+	
+	@Deprecated
 	public ChangeDescriptorGroup getChanges() {
-		if (changes == null)
-			changes = new ChangeDescriptorGroup();
-		return changes;
+		return getEdit().getChildren();
 	}
 	
 	@Override
@@ -221,9 +226,9 @@ public class ReactionRule extends ModelObject {
 			reactum = null;
 		}
 		
-		if (changes != null) {
-			changes.clear();
-			changes = null;
+		if (edit != null) {
+			edit.dispose();
+			edit = null;
 		}
 		
 		super.dispose();
