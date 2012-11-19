@@ -13,59 +13,42 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class Edit extends ModelObject
 		implements IChangeDescriptor, IChangeExecutor {
-	@RedProperty(fired = Edit.class, retrieved = Edit.class)
-	public static final String PROPERTY_PARENT = "EditParent";
-	
-	private Edit parent;
-	
-	public Edit getParent() {
-		return parent;
-	}
-	
-	public Edit getParent(PropertyScratchpad context) {
-		return getProperty(context, PROPERTY_PARENT, Edit.class);
-	}
-	
-	protected void setParent(Edit parent) {
-		Edit oldParent = this.parent;
-		this.parent = parent;
-		firePropertyChange(PROPERTY_PARENT, oldParent, parent);
-	}
-	
-	@RedProperty(fired = IChangeDescriptor.class,
+	@RedProperty(
+			fired = IChangeDescriptor.class,
 			retrieved = ChangeDescriptorGroup.class)
-	public static final String PROPERTY_CHILD = "EditChildren";
+	public static final String PROPERTY_DESCRIPTOR = "EditDescriptor";
+	
 	private ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 	
-	public ChangeDescriptorGroup getChildren() {
+	public ChangeDescriptorGroup getDescriptors() {
 		return cdg;
 	}
 	
-	public ChangeDescriptorGroup getChildren(PropertyScratchpad context) {
+	public ChangeDescriptorGroup getDescriptors(PropertyScratchpad context) {
 		return getProperty(
-				context, PROPERTY_CHILD, ChangeDescriptorGroup.class);
+				context, PROPERTY_DESCRIPTOR, ChangeDescriptorGroup.class);
 	}
 	
-	protected ChangeDescriptorGroup getModifiableChildren(
+	protected ChangeDescriptorGroup getModifiableDescriptors(
 			PropertyScratchpad context) {
-		if (context.hasProperty(this, PROPERTY_CHILD)) {
+		if (context.hasProperty(this, PROPERTY_DESCRIPTOR)) {
 			return (ChangeDescriptorGroup)
-					context.getProperty(this, PROPERTY_CHILD);
+					context.getProperty(this, PROPERTY_DESCRIPTOR);
 		} else {
-			ChangeDescriptorGroup cdg = getChildren().clone();
-			context.setProperty(this, PROPERTY_CHILD, cdg);
+			ChangeDescriptorGroup cdg = getDescriptors().clone();
+			context.setProperty(this, PROPERTY_DESCRIPTOR, cdg);
 			return cdg;
 		}
 	}
 	
 	protected void addDescriptor(int index, IChangeDescriptor cd) {
 		cdg.add(index, cd);
-		firePropertyChange(PROPERTY_CHILD, null, cd);
+		firePropertyChange(PROPERTY_DESCRIPTOR, null, cd);
 	}
 	
 	protected void removeDescriptor(int index) {
 		IChangeDescriptor cd = cdg.remove(index);
-		firePropertyChange(PROPERTY_CHILD, cd, null);
+		firePropertyChange(PROPERTY_DESCRIPTOR, cd, null);
 	}
 	
 	protected abstract class EditChange extends ModelObjectChange {
@@ -91,9 +74,7 @@ public class Edit extends ModelObject
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			getCreator().getModifiableChildren(context).add(index, descriptor);
-			if (descriptor instanceof Edit)
-				context.setProperty(descriptor, PROPERTY_PARENT, getCreator());
+			getCreator().getModifiableDescriptors(context).add(index, descriptor);
 		}
 		
 		@Override
@@ -120,9 +101,7 @@ public class Edit extends ModelObject
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			getCreator().getModifiableChildren(context).remove(index);
-			if (descriptor instanceof Edit)
-				context.setProperty(descriptor, PROPERTY_PARENT, null);
+			getCreator().getModifiableDescriptors(context).remove(index);
 		}
 		
 		@Override
@@ -154,10 +133,8 @@ public class Edit extends ModelObject
 	
 	@Override
 	protected Object getProperty(String name) {
-		if (PROPERTY_CHILD.equals(name)) {
-			return getChildren();
-		} else if (PROPERTY_PARENT.equals(name)) {
-			return getParent();
+		if (PROPERTY_DESCRIPTOR.equals(name)) {
+			return getDescriptors();
 		} else return super.getProperty(name);
 	}
 	
@@ -169,5 +146,15 @@ public class Edit extends ModelObject
 	public IChange changeDescriptorRemove(int index,
 			IChangeDescriptor descriptor) {
 		return new ChangeDescriptorRemove(index, descriptor);
+	}
+	
+	@Override
+	public void dispose() {
+		if (cdg != null) {
+			cdg.clear();
+			cdg = null;
+		}
+		
+		super.dispose();
 	}
 }

@@ -63,7 +63,7 @@ public class EditXMLSaver extends XMLSaver {
 				if (me != null && them != null) {
 					ch.setAttributeNS(null, "src", them.getRelativePath(
 							me.getParent().getPath()));
-				} else ch = processGroup(ed.getChildren(), ch);
+				} else ch = processGroup(ed.getDescriptors(), ch);
 			} else if (cd instanceof ChangeDescriptorGroup) {
 				ch = processGroup((ChangeDescriptorGroup)cd,
 						newElement(EDIT, "edit:edit"));
@@ -76,7 +76,7 @@ public class EditXMLSaver extends XMLSaver {
 	
 	@Override
 	public Element processModel(Element e) throws SaveFailedException {
-		return processGroup(getModel().getChildren(), e);
+		return processGroup(getModel().getDescriptors(), e);
 	}
 
 	@Override

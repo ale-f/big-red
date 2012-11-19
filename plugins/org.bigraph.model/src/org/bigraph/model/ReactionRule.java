@@ -211,7 +211,7 @@ public class ReactionRule extends ModelObject {
 	
 	@Deprecated
 	public ChangeDescriptorGroup getChanges() {
-		return getEdit().getChildren();
+		return getEdit().getDescriptors();
 	}
 	
 	@Override

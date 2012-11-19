@@ -102,7 +102,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 			e = getNamedChildElement(root, EDIT, "edit");
 			if (e != null) {
 				Edit ed = new EditXMLLoader(this).makeObject(e);
-				for (IChangeDescriptor cd : ed.getChildren())
+				for (IChangeDescriptor cd : ed.getDescriptors())
 					cdg.add(cd);
 			}
 		}
