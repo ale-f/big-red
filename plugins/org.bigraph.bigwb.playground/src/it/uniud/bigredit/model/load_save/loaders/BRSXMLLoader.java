@@ -18,6 +18,7 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.loaders.ReactionRuleXMLLoader;
 import org.bigraph.model.loaders.SignatureXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
@@ -26,7 +27,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.BigRedNamespaceConstants;
-import dk.itu.big_red.model.load_save.loaders.ReactionRuleXMLLoader;
 import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.BRS;
 

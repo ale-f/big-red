@@ -8,6 +8,7 @@ import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.Loader;
+import org.bigraph.model.loaders.ReactionRuleXMLLoader;
 import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.SignatureXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;

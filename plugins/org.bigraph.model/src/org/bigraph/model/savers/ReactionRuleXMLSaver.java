@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save.savers;
+package org.bigraph.model.savers;
 
 import org.bigraph.model.Edit;
 import org.bigraph.model.ModelObject;
@@ -6,11 +6,6 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.savers.BigraphXMLSaver;
-import org.bigraph.model.savers.EditXMLSaver;
-import org.bigraph.model.savers.ISaver;
-import org.bigraph.model.savers.SaveFailedException;
-import org.bigraph.model.savers.XMLSaver;
 import org.w3c.dom.Element;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;

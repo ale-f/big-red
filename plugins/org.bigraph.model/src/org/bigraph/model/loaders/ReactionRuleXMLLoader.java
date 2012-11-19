@@ -1,4 +1,4 @@
-package dk.itu.big_red.model.load_save.loaders;
+package org.bigraph.model.loaders;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Edit;
@@ -8,12 +8,6 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.loaders.BigraphXMLLoader;
-import org.bigraph.model.loaders.EditXMLLoader;
-import org.bigraph.model.loaders.LoadFailedException;
-import org.bigraph.model.loaders.Loader;
-import org.bigraph.model.loaders.Schemas;
-import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

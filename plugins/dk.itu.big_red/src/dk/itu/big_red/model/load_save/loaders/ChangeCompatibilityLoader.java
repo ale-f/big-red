@@ -22,6 +22,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.loaders.ReactionRuleXMLLoader;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 import org.w3c.dom.Element;

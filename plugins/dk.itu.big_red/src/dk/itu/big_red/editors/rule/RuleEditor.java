@@ -15,6 +15,7 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
+import org.bigraph.model.savers.ReactionRuleXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.draw2d.ColorConstants;
@@ -67,7 +68,6 @@ import dk.itu.big_red.editors.bigraph.actions.ContainerPasteAction;
 import dk.itu.big_red.editors.bigraph.actions.ContainerPropertiesAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 import dk.itu.big_red.editors.bigraph.parts.PartFactory;
-import dk.itu.big_red.model.load_save.savers.ReactionRuleXMLSaver;
 import dk.itu.big_red.utilities.resources.EclipseFileWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 

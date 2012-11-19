@@ -5,6 +5,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.ISaver;
+import org.bigraph.model.savers.ReactionRuleXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.SignatureXMLSaver;
 import org.bigraph.model.savers.XMLSaver;
