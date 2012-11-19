@@ -60,7 +60,6 @@ public class ValidatorManager implements IStepValidator {
 		private final PropertyScratchpad scratch;
 		private final ArrayList<Callback> callbacks =
 				new ArrayList<Callback>();
-		private boolean utterlyContentless = true;
 		
 		@Override
 		public void addCallback(Callback c) {
@@ -82,9 +81,6 @@ public class ValidatorManager implements IStepValidator {
 		
 		public IChange run(IChange c) throws ChangeRejectedException {
 			IChange i = doValidation(c);
-			if (utterlyContentless)
-				throw new ChangeRejectedException(c,
-						"" + c + " contains no executable Changes");
 			if (i == null)
 				for (Callback j : getCallbacks())
 					j.run();
@@ -97,10 +93,8 @@ public class ValidatorManager implements IStepValidator {
 				throw new ChangeRejectedException(c, "" + c + " is not ready");
 			} else if (!(c instanceof ChangeGroup)) {
 				IChange d = step(c);
-				if (d == null) {
-					utterlyContentless = false;
+				if (d == null)
 					c.simulate(getScratch());
-				}
 				return d;
 			} else {
 				for (IChange i : (ChangeGroup)c) {
