@@ -26,7 +26,6 @@ public class ReactionRule extends ModelObject {
 	
 	public void setRedex(Bigraph redex) {
 		this.redex = redex;
-		
 		reactum = null;
 	}
 
@@ -178,10 +177,7 @@ public class ReactionRule extends ModelObject {
 	@Override
 	public ReactionRule clone() {
 		ReactionRule rr = (ReactionRule)super.clone();
-		
 		rr.setRedex(getRedex().clone());
-		Bigraph reactum = getRedex().clone();
-		rr.setReactum(reactum);
 		
 		IChange c = null;
 		try {
@@ -197,10 +193,6 @@ public class ReactionRule extends ModelObject {
 		}
 		
 		return rr;
-	}
-	
-	private void setReactum(Bigraph b) {
-		reactum = b;
 	}
 	
 	public Edit getEdit() {
