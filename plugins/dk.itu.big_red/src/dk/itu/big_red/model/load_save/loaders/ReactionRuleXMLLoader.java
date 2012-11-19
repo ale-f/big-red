@@ -2,13 +2,9 @@ package dk.itu.big_red.model.load_save.loaders;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Edit;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -16,7 +12,6 @@ import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.EditXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.Loader;
-import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.loaders.Schemas;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.resources.IFileWrapper;
@@ -24,7 +19,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import dk.itu.big_red.model.LayoutUtilities;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
@@ -93,8 +87,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		return rr;
 	}
 	
-	private PropertyScratchpad scratch = new PropertyScratchpad();
-	
 	private void populateRRDescriptorGroup(Element root)
 			throws LoadFailedException {
 		ChangeDescriptorGroup cdg = rr.getChanges();
@@ -126,26 +118,10 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		Bigraph reactum = rr.getReactum();
 		ChangeDescriptorGroup cdg = rr.getChanges();
 		
-		ChangeGroup cg = null;
 		try {
-			cg = cdg.createChange(null, reactum);
-			reactum.tryValidateChange(cg);
+			reactum.tryApplyChange(cdg.createChange(null, reactum));
 		} catch (ChangeCreationException cce) {
 			throw new LoadFailedException(cce);
-		} catch (ChangeRejectedException cre) {
-			IChange ch = cre.getRejectedChange();
-			if (ch instanceof ChangeExtendedData) {
-				ChangeExtendedData cd = (ChangeExtendedData)ch;
-				if (LayoutUtilities.LAYOUT.equals(cd.key)) {
-					addNotice(LoaderNotice.Type.WARNING,
-							"Layout data invalid; replacing.");
-					cg.add(LayoutUtilities.relayout(scratch, reactum));
-				} else throw new LoadFailedException(cre);
-			} else throw new LoadFailedException(cre);
-		}
-		
-		try {
-			reactum.tryApplyChange(cg);
 		} catch (ChangeRejectedException cre) {
 			throw new LoadFailedException(cre);
 		}
