@@ -276,7 +276,7 @@
             name="Reaction rule from XML">
       </importer>
       <importer
-            class="dk.itu.big_red.model.load_save.loaders.SimulationSpecXMLLoader"
+            class="org.bigraph.model.loaders.SimulationSpecXMLLoader"
             contentType="dk.itu.big_red.simulation_spec"
             icon="resources/icons/icon16.png"
             id="big_red.importer4"
@@ -333,7 +333,7 @@
             name="Signature as XML">
       </exporter>
       <exporter
-            class="dk.itu.big_red.model.load_save.savers.SimulationSpecXMLSaver"
+            class="org.bigraph.model.savers.SimulationSpecXMLSaver"
             contentType="dk.itu.big_red.simulation_spec"
             exports="org.bigraph.model.SimulationSpec"
             icon="resources/icons/icon16.png"
