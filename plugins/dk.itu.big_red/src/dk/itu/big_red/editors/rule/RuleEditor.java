@@ -371,7 +371,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 		IChange commandChange = c.getChange();
 		Object target = c.getTarget();
 		
-		ChangeDescriptorGroup reactumChanges = getModel().getChanges();
+		ChangeDescriptorGroup reactumChanges = getModel().getEdit().getDescriptors();
 		if (target == getRedex()) {
 			IChangeDescriptor cd =
 				DescriptorUtilities.createDescriptor(

@@ -83,7 +83,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	
 	private void populateRRDescriptorGroup(Element root)
 			throws LoadFailedException {
-		ChangeDescriptorGroup cdg = rr.getChanges();
+		ChangeDescriptorGroup cdg = rr.getEdit().getDescriptors();
 		Element e = getNamedChildElement(root, RULE, "changes");
 		if (e != null) {
 			if (ccl == null)
@@ -110,7 +110,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	
 	private void updateReactum() throws LoadFailedException {
 		Bigraph reactum = rr.getReactum();
-		ChangeDescriptorGroup cdg = rr.getChanges();
+		ChangeDescriptorGroup cdg = rr.getEdit().getDescriptors();
 		
 		try {
 			reactum.tryApplyChange(cdg.createChange(null, reactum));

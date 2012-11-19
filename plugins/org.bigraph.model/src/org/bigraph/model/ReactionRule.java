@@ -185,10 +185,10 @@ public class ReactionRule extends ModelObject {
 		
 		IChange c = null;
 		try {
-			c = getChanges().createChange(null, reactum);
+			c = getEdit().getDescriptors().createChange(null, reactum);
 			reactum.tryApplyChange(c);
-			for (IChangeDescriptor d : getChanges())
-				rr.getChanges().add(d);
+			for (IChangeDescriptor d : getEdit().getDescriptors())
+				rr.getEdit().getDescriptors().add(d);
 		} catch (ChangeCreationException cce) {
 			throw new Error("BUG: reactum changes were completely invalid",
 					cce);
@@ -207,11 +207,6 @@ public class ReactionRule extends ModelObject {
 		if (edit == null)
 			edit = new Edit();
 		return edit;
-	}
-	
-	@Deprecated
-	public ChangeDescriptorGroup getChanges() {
-		return getEdit().getDescriptors();
 	}
 	
 	@Override

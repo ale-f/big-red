@@ -1,11 +1,7 @@
 package org.bigraph.model.savers;
 
-import org.bigraph.model.Edit;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
-import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.w3c.dom.Element;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
@@ -50,23 +46,10 @@ public class ReactionRuleXMLSaver extends XMLSaver {
 				newElement(BIGRAPH, "bigraph:bigraph"),
 				rr.getRedex(), new BigraphXMLSaver(this)));
 		
-		Edit ed = new Edit();
-		ChangeGroup cg = new ChangeGroup();
-		
-		int i = 0;
-		for (IChangeDescriptor cd : rr.getChanges())
-			cg.add(ed.changeDescriptorAdd(i++, cd));
-		
-		try {
-			ed.tryApplyChange(cg);
-		} catch (ChangeRejectedException cre) {
-			throw new SaveFailedException(cre);
-		}
-		
 		appendChildIfNotNull(e,
 			processOrReference(
 				newElement(EDIT, "edit:edit"),
-				ed, new EditXMLSaver(this)));
+				rr.getEdit(), new EditXMLSaver(this)));
 		
 		return executeDecorators(rr, e);
 	}
