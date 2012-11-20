@@ -2,7 +2,6 @@ package org.bigraph.model.wrapper;
 
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.process.IParticipant;
-import org.bigraph.model.process.IParticipantFactory;
 import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.process.ParticipantManager;
 import org.eclipse.core.runtime.CoreException;
@@ -14,7 +13,7 @@ import org.eclipse.core.runtime.content.IContentType;
 
 public abstract class LoaderUtilities {
 	private static final class ParticipantContributor
-			implements IParticipantFactory {
+			extends EclipseParticipantFactory {
 		private static final ParticipantContributor INSTANCE =
 				new ParticipantContributor();
 		
@@ -27,8 +26,9 @@ public abstract class LoaderUtilities {
 					r.getConfigurationElementsFor(EXTENSION_POINT)) {
 				if ("participant".equals(ice.getName())) {
 					try {
-						host.addParticipant((IParticipant)
-								ice.createExecutableExtension("class"));
+						if (shouldAdd(host, ice))
+							host.addParticipant((IParticipant)
+									ice.createExecutableExtension("class"));
 					} catch (CoreException e) {
 						e.printStackTrace();
 						/* do nothing */
