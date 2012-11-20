@@ -10,6 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Path;
 
 import dk.itu.big_red.editors.bigraph.figures.assistants.CurvyConnectionRouter;
+import dk.itu.big_red.model.LinkStyleUtilities.Style;
 import dk.itu.big_red.utilities.ui.UI;
 
 public class LinkConnectionFigure extends PolylineConnection {
@@ -17,28 +18,6 @@ public class LinkConnectionFigure extends PolylineConnection {
 			ROUTER_CURVY = new CurvyConnectionRouter(),
 			ROUTER_MANHATTAN = new ManhattanConnectionRouter();
 	
-	public static enum Style {
-		CURVY {
-			@Override
-			public String getDisplayName() {
-				return "B\u00E9zier curve (default)";
-			}
-		},
-		STRAIGHT {
-			@Override
-			public String getDisplayName() {
-				return "Straight lines";
-			}
-		},
-		MANHATTAN {
-			@Override
-			public String getDisplayName() {
-				return "Taxicab geometry";
-			}
-		};
-		
-		public abstract String getDisplayName();
-	}
 	private Style style = Style.CURVY;
 	
 	public LinkConnectionFigure() {

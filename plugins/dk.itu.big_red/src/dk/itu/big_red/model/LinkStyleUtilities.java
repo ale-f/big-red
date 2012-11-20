@@ -2,6 +2,7 @@ package dk.itu.big_red.model;
 
 import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
 import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
+import static dk.itu.big_red.model.BigRedNamespaceConstants.BIG_RED;
 
 import java.util.Locale;
 
@@ -17,11 +18,31 @@ import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.savers.IXMLSaver;
 import org.w3c.dom.Element;
 
-import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure.Style;
-
-
 public abstract class LinkStyleUtilities {
 	private LinkStyleUtilities() {}
+	
+	public static enum Style {
+		CURVY {
+			@Override
+			public String getDisplayName() {
+				return "B\u00E9zier curve (default)";
+			}
+		},
+		STRAIGHT {
+			@Override
+			public String getDisplayName() {
+				return "Straight lines";
+			}
+		},
+		MANHATTAN {
+			@Override
+			public String getDisplayName() {
+				return "Taxicab geometry";
+			}
+		};
+		
+		public abstract String getDisplayName();
+	}
 	
 	@RedProperty(fired = Style.class, retrieved = Style.class)
 	public static final String STYLE =
@@ -70,7 +91,7 @@ public abstract class LinkStyleUtilities {
 					name = "straight";
 				}
 				if (name != null)
-					el.setAttributeNS(BigRedNamespaceConstants.BIG_RED, "big-red:link-style", name);
+					el.setAttributeNS(BIG_RED, "big-red:link-style", name);
 			}
 		}
 	}
@@ -81,14 +102,14 @@ public abstract class LinkStyleUtilities {
 		@Override
 		public void setHost(IParticipantHost host) {
 			if (host instanceof IXMLLoader)
-				this.loader = (IXMLLoader)host;
+				loader = (IXMLLoader)host;
 		}
 		
 		@Override
 		public void undecorate(ModelObject object, Element el) {
 			if (object instanceof Link) {
 				String styleName =
-						XMLLoader.getAttributeNS(el, BigRedNamespaceConstants.BIG_RED, "link-style");
+						XMLLoader.getAttributeNS(el, BIG_RED, "link-style");
 				if (styleName != null)
 					styleName = styleName.toLowerCase(Locale.ENGLISH);
 				Style style = null;

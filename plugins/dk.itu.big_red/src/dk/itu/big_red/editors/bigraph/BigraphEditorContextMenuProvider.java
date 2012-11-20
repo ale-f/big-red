@@ -24,12 +24,12 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.actions.ActionFactory;
 import dk.itu.big_red.editors.bigraph.actions.BigraphRelayoutAction;
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
-import dk.itu.big_red.editors.bigraph.figures.LinkConnectionFigure.Style;
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;
 import dk.itu.big_red.editors.bigraph.parts.LinkConnectionPart;
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.LinkStyleUtilities;
+import dk.itu.big_red.model.LinkStyleUtilities.Style;
 
 public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 	public BigraphEditorContextMenuProvider(
