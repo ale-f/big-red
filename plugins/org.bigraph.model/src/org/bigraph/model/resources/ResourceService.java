@@ -34,7 +34,8 @@ public class ResourceService {
 		private LoadFailedException lastError;
 		private ModelObject object;
 		private Set<FileRecord>
-			dependencies, dependents = new HashSet<FileRecord>();
+			dependencies,
+			dependents = new HashSet<FileRecord>();
 		
 		private FileRecord(IFileWrapper file) {
 			this.file = file;
@@ -43,10 +44,6 @@ public class ResourceService {
 		
 		public IFileWrapper getFile() {
 			return file;
-		}
-		
-		public LoadFailedException getLastError() {
-			return lastError;
 		}
 		
 		@Override
