@@ -295,10 +295,20 @@
       <participant
             class="dk.itu.big_red.model.load_save.RedXMLEdits$LoadParticipant"
             id="RedXMLEditLoader">
+         <enablement>
+            <instanceof
+                  value="org.bigraph.model.loaders.EditXMLLoader">
+            </instanceof>
+         </enablement>
       </participant>
       <participant
             class="dk.itu.big_red.model.load_save.loaders.ChangeCompatibilityLoader"
             id="ChangeCompatibilityLoader">
+         <enablement>
+            <instanceof
+                  value="org.bigraph.model.loaders.ReactionRuleXMLLoader">
+            </instanceof>
+         </enablement>
       </participant>
    </extension>
    <extension
@@ -374,6 +384,11 @@
       <participant
             class="dk.itu.big_red.model.load_save.RedXMLEdits$SaveParticipant"
             id="RedXMLEditSaver">
+         <enablement>
+            <instanceof
+                  value="org.bigraph.model.savers.EditXMLSaver">
+            </instanceof>
+         </enablement>
       </participant>
    </extension>
    <extension
