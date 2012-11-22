@@ -4,7 +4,24 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class FilteringIterable<T> implements Iterable<T> {
-	private final Class<T> klass;
+	public interface Filter<T, V> {
+		T filter(V in);
+	}
+	
+	private static final class ClassFilter<T> implements Filter<T, Object> {
+		private final Class<T> klass;
+		
+		public ClassFilter(Class<T> klass) {
+			this.klass = klass;
+		}
+		
+		@Override
+		public T filter(Object in) {
+			return (klass.isInstance(in) ? klass.cast(in) : null);
+		}
+	}
+	
+	private final Filter<T, Object> filter;
 	private final Iterable<?> iterable;
 	
 	private final class FilteringIterator implements Iterator<T> {
@@ -12,14 +29,8 @@ public class FilteringIterable<T> implements Iterable<T> {
 		private T buffer;
 		
 		private void prepBuffer() {
-			Object o;
-			while (buffer == null && actual.hasNext()) {
-				o = actual.next();
-				if (klass.isInstance(o)) {
-					buffer = klass.cast(o);
-					break;
-				}
-			}
+			while (buffer == null && actual.hasNext())
+				buffer = filter.filter(actual.next());
 		}
 		
 		@Override
@@ -45,7 +56,11 @@ public class FilteringIterable<T> implements Iterable<T> {
 	}
 	
 	public FilteringIterable(Class<T> klass, Iterable<?> iterable) {
-		this.klass = klass;
+		this(new ClassFilter<T>(klass), iterable);
+	}
+	
+	public FilteringIterable(Filter<T, Object> filter, Iterable<?> iterable) {
+		this.filter = filter;
 		this.iterable = iterable;
 	}
 	
