@@ -53,7 +53,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	
 	private static Pattern p = Pattern.compile("[^a-zA-Z0-9_]");
 	
-	private String normaliseName(String name) {
+	private static String normaliseName(String name) {
 		return p.matcher(name.trim()).replaceAll("_");
 	}
 	
@@ -173,7 +173,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 		write("\n");
 	}
 	
-	private String getPortString(ILink l) {
+	private static String getPortString(ILink l) {
 		return (l != null ? normaliseName(l.getName()) : "-");
 	}
 	

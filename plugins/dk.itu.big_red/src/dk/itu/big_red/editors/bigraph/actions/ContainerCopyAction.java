@@ -31,7 +31,7 @@ public class ContainerCopyAction extends SelectionAction {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private Command createCopyCommand(List selectedObjects) {
+	private static Command createCopyCommand(List selectedObjects) {
 		if (selectedObjects == null || selectedObjects.isEmpty())
 			return null;
 		

@@ -32,7 +32,7 @@ public class ContainerPasteAction extends SelectionAction {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private Command createPasteCommand(List selectedObjects) {
+	private static Command createPasteCommand(List selectedObjects) {
 		Layoutable newParent = null;
 		if (selectedObjects.size() == 0) {
 			return null;

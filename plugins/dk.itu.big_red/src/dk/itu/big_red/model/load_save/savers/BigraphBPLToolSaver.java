@@ -70,7 +70,7 @@ public class BigraphBPLToolSaver extends Saver {
 		indented = false;
 	}
 	
-	private String SMLify(String s) {
+	private static String SMLify(String s) {
 		// FIXME do this properly...
 		return s.replace(' ', '_');
 	}

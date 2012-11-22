@@ -134,7 +134,8 @@ public class BigraphXMLSaver extends XMLSaver {
 		return processContents(e, n);
 	}
 	
-	private Element processPoint(Element e, Point p) throws SaveFailedException {
+	private static Element processPoint(Element e, Point p)
+			throws SaveFailedException {
 		Link link = p.getLink();
 		if (link != null) {
 			applyAttributes(e, "name", p.getName());

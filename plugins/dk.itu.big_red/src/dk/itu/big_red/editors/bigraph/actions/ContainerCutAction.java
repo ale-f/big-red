@@ -32,7 +32,7 @@ public class ContainerCutAction extends SelectionAction {
 	}
 	
 	@SuppressWarnings("rawtypes")
-	private Command createCutCommand(List selectedObjects) {
+	private static Command createCutCommand(List selectedObjects) {
 		if (selectedObjects == null || selectedObjects.isEmpty())
 			return null;
 		

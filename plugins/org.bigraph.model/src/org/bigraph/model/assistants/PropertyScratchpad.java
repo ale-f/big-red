@@ -58,7 +58,7 @@ public class PropertyScratchpad {
 	
 	private Map<NNPair, Object> changes = new HashMap<NNPair, Object>();
 	
-	private NNPair getKey(Object target, String name) {
+	private static NNPair getKey(Object target, String name) {
 		return new NNPair(target, name);
 	}
 	

@@ -103,7 +103,7 @@ public class BigraphTests {
 		new Bigraph().tryApplyChange(new Root().changeRemove());
 	}
 	
-	private void tryAddAndConnect(Bigraph b, InnerName in, Link l)
+	private static void tryAddAndConnect(Bigraph b, InnerName in, Link l)
 			throws ChangeRejectedException {
 		b.tryApplyChange(cg(
 				b.changeAddChild(l, "a"),

@@ -33,7 +33,7 @@ public class BGMParser {
 		return this;
 	}
 	
-	private void change(IChange ch) throws ChangeRejectedException {
+	private static void change(IChange ch) throws ChangeRejectedException {
 		ExecutorManager.getInstance().tryApplyChange(ch);
 		System.out.println(ch);
 	}

@@ -193,14 +193,15 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 				SimulationSpec.class.getCanonicalName());
 	}
 	
-	private String getClassForType(String contentType) {
+	private static String getClassForType(String contentType) {
 		return typesMap.get(contentType);
 	}
 	
 	private IResource initialResource = null;
 	
 	@Override
-	public void init(IWorkbench workbench, final IStructuredSelection selection) {
+	public void init(
+			IWorkbench workbench, final IStructuredSelection selection) {
 		Iterator<?> it = selection.iterator();
 		while (it.hasNext()) {
 			Object i = it.next();

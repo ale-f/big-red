@@ -200,7 +200,7 @@ public class Colour {
 	
 	private int red, green, blue, alpha;
 	
-	private String leftPad(String s, char pad, int length) {
+	private static String leftPad(String s, char pad, int length) {
 		while (s.length() < length)
 			s = pad + s;
 		return s;

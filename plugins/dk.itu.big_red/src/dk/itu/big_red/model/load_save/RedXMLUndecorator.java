@@ -50,7 +50,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 		return (ns.equals(n.getNamespaceURI()) && ln.equals(n.getLocalName()));
 	}
 
-	private Element getNamedChildElement(Element el, String ns, String ln) {
+	private static Element getNamedChildElement(
+			Element el, String ns, String ln) {
 		NodeList children = el.getChildNodes();
 		for (int i = 0; i < children.getLength(); i++) {
 			Node j = children.item(i);
@@ -170,7 +171,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 	@Override
 	public void setHost(IParticipantHost host) {
 		if (host instanceof IXMLLoader)
-			this.loader = (IXMLLoader)host;
+			loader = (IXMLLoader)host;
 	}
 
 	@Override

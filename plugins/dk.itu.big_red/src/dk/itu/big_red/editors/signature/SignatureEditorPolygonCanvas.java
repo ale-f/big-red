@@ -493,11 +493,11 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 	}
 	
-	private void fillCircleCentredAt(GC gc, Point p, int radius) {
+	private static void fillCircleCentredAt(GC gc, Point p, int radius) {
 		gc.fillOval(p.x - radius, p.y - radius, radius * 2, radius * 2);
 	}
 	
-	private void drawPortName(GC gc, String name, Point portCenter) {
+	private static void drawPortName(GC gc, String name, Point portCenter) {
 		org.eclipse.swt.graphics.Point extent = gc.textExtent(name);
 		
 		int

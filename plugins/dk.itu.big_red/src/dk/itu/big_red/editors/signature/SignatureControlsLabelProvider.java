@@ -71,7 +71,7 @@ class SignatureControlsLabelProvider
 		} else return null;
 	}
 
-	private boolean isIncluded(Object element) {
+	private static boolean isIncluded(Object element) {
 		return (element instanceof Signature ||
 				(element instanceof Control &&
 					((Control)element).getSignature().getParent() != null));

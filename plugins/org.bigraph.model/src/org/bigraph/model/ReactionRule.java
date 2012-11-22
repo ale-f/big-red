@@ -113,7 +113,7 @@ public class ReactionRule extends ModelObject {
 	};
 	
 	protected static class Operation3PrimeRunner extends OperationRunner {
-		private boolean conflicts(
+		private static boolean conflicts(
 				IChangeDescriptor redexCD, IChangeDescriptor reactumCD) {
 			for (IConflict i : dcs)
 				if (i.run(redexCD, reactumCD))
@@ -121,7 +121,7 @@ public class ReactionRule extends ModelObject {
 			return false;
 		}
 		
-		private IChangeDescriptor reverse(IChangeDescriptor cd_) {
+		private static IChangeDescriptor reverse(IChangeDescriptor cd_) {
 			if (cd_ instanceof ChangeAddChildDescriptor) {
 				ChangeAddChildDescriptor cd = (ChangeAddChildDescriptor)cd_;
 				return new ChangeRemoveDescriptor(

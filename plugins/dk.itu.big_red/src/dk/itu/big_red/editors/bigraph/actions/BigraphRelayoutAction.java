@@ -35,7 +35,7 @@ public class BigraphRelayoutAction extends SelectionAction {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private Command createCopyCommand(List selectedObjects) {
+	private static Command createCopyCommand(List selectedObjects) {
 		if (selectedObjects == null || selectedObjects.isEmpty() ||
 				selectedObjects.size() != 1)
 			return null;
