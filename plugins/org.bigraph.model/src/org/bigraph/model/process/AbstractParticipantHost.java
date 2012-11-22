@@ -17,8 +17,6 @@ public abstract class AbstractParticipantHost implements IParticipantHost {
 	public void addParticipant(IParticipant participant) {
 		participants.add(participant);
 		participant.setHost(this);
-		
-		getParticipants(IParticipant.class);
 	}
 
 	@Override
