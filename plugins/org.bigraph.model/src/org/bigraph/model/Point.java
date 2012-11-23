@@ -201,6 +201,11 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
+		public ChangeDisconnectDescriptor inverse() {
+			return new ChangeDisconnectDescriptor(getPoint(), getLink());
+		}
+		
+		@Override
 		public String toString() {
 			return "ChangeDescriptor(connect " + point + " to " + link + ")";
 		}
@@ -250,6 +255,11 @@ public abstract class Point extends Layoutable implements IPoint {
 				throw new ChangeCreationException(this,
 						"" + point + " didn't resolve to a Point");
 			return p.changeDisconnect();
+		}
+		
+		@Override
+		public ChangeConnectDescriptor inverse() {
+			return new ChangeConnectDescriptor(getPoint(), getLink());
 		}
 		
 		@Override

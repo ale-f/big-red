@@ -24,4 +24,6 @@ public interface IChangeDescriptor {
 	 */
 	IChange createChange(PropertyScratchpad context, Resolver r)
 			throws ChangeCreationException;
+	
+	IChangeDescriptor inverse();
 }

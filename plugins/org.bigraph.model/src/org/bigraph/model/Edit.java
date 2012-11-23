@@ -149,6 +149,13 @@ public class Edit extends ModelObject
 	}
 	
 	@Override
+	public Edit inverse() {
+		Edit ed = (Edit)super.clone();
+		ed.cdg = cdg.inverse();
+		return ed;
+	}
+	
+	@Override
 	public void dispose() {
 		if (cdg != null) {
 			cdg.clear();

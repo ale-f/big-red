@@ -253,5 +253,10 @@ public abstract class Container extends Layoutable {
 			return "ChangeDescriptor(add child " + child + " to parent " + 
 					parent + ")";
 		}
+		
+		@Override
+		public ChangeRemoveDescriptor inverse() {
+			return new ChangeRemoveDescriptor(getChild(), getParent());
+		}
 	}
 }

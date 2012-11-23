@@ -371,6 +371,13 @@ public abstract class ModelObject {
 		}
 
 		@Override
+		public ChangeExtendedDataDescriptor inverse() {
+			return new ChangeExtendedDataDescriptor(
+					getTarget(), getKey(), getNewValue(), getOldValue(),
+					getValidator(), getNormaliser());
+		}
+		
+		@Override
 		public String toString() {
 			return "ChangeDescriptor(set extended data field " + key + " of " +
 					target + " to " + newValue + ")"; 

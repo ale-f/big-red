@@ -42,4 +42,13 @@ public class ChangeDescriptorGroup extends ArrayList<IChangeDescriptor>
 			cg.add(context.executeChange(one.createChange(context, r)));
 		return cg;
 	}
+	
+	@Override
+	public ChangeDescriptorGroup inverse() {
+		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+		for (IChangeDescriptor cd : this)
+			if (cd != null)
+				cdg.add(0, cd.inverse());
+		return cdg;
+	}
 }

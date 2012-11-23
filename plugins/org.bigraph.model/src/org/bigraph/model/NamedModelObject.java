@@ -168,6 +168,13 @@ public abstract class NamedModelObject extends ModelObject {
 		}
 		
 		@Override
+		public ChangeNameDescriptor inverse() {
+			return new ChangeNameDescriptor(
+					getTarget().getRenamed(getNewName()),
+					getTarget().getName());
+		}
+		
+		@Override
 		public String toString() {
 			return "ChangeDescriptor(set name of " + target + " to " + 
 					newName + ")";

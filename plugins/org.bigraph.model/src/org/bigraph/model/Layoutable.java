@@ -1,6 +1,7 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -208,6 +209,11 @@ public abstract class Layoutable extends NamedModelObject {
 				throw new ChangeCreationException(this,
 						"" + target + " didn't resolve to a Layoutable");
 			return l.changeRemove();
+		}
+		
+		@Override
+		public ChangeAddChildDescriptor inverse() {
+			return new ChangeAddChildDescriptor(getParent(), getTarget());
 		}
 		
 		@Override
