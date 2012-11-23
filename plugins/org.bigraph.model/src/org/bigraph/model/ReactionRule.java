@@ -2,11 +2,6 @@ package org.bigraph.model;
 
 import java.util.Iterator;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
-import org.bigraph.model.NamedModelObject.ChangeNameDescriptor;
-import org.bigraph.model.Point.ChangeConnectDescriptor;
-import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.assistants.DescriptorConflicts;
 import org.bigraph.model.assistants.DescriptorConflicts.IConflict;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -121,47 +116,13 @@ public class ReactionRule extends ModelObject {
 			return false;
 		}
 		
-		private static IChangeDescriptor reverse(IChangeDescriptor cd_) {
-			if (cd_ instanceof ChangeAddChildDescriptor) {
-				ChangeAddChildDescriptor cd = (ChangeAddChildDescriptor)cd_;
-				return new ChangeRemoveDescriptor(
-						cd.getChild(), cd.getParent());
-			} else if (cd_ instanceof ChangeRemoveDescriptor) {
-				ChangeRemoveDescriptor cd = (ChangeRemoveDescriptor)cd_;
-				return new ChangeAddChildDescriptor(
-						cd.getParent(), cd.getTarget());
-			} else if (cd_ instanceof ChangeConnectDescriptor) {
-				ChangeConnectDescriptor cd = (ChangeConnectDescriptor)cd_;
-				return new ChangeDisconnectDescriptor(
-						cd.getPoint(), cd.getLink());
-			} else if (cd_ instanceof ChangeDisconnectDescriptor) {
-				ChangeDisconnectDescriptor cd =
-						(ChangeDisconnectDescriptor)cd_;
-				return new ChangeConnectDescriptor(
-						cd.getPoint(), cd.getLink());
-			} else if (cd_ instanceof ChangeNameDescriptor) {
-				ChangeNameDescriptor cd = (ChangeNameDescriptor)cd_;
-				NamedModelObject.Identifier target = cd.getTarget();
-				return new NamedModelObject.ChangeNameDescriptor(
-						target.getRenamed(cd.getNewName()), target.getName());
-			} else if (cd_ instanceof ChangeExtendedDataDescriptor) {
-				ChangeExtendedDataDescriptor cd =
-						(ChangeExtendedDataDescriptor)cd_;
-				return new ChangeExtendedDataDescriptor(
-						cd.getTarget(), cd.getKey(),
-						cd.getNewValue(), cd.getOldValue(),
-						cd.getValidator(), cd.getNormaliser());
-			} else throw new Error(
-					"BUG: can't reverse the unrecognised descriptor " + cd_);
-		}
-		
 		@Override
 		protected ChangeDescriptorGroup runStepActual(
 				IChangeDescriptor redexCD, ChangeDescriptorGroup reactumCDs,
 				IChangeDescriptor reactumCD) {
 			if (conflicts(redexCD, reactumCD)) {
 				reactumCDs = reactumCDs.clone();
-				reactumCDs.add(0, reverse(redexCD));
+				reactumCDs.add(0, redexCD.inverse());
 				return reactumCDs;
 			} else return null;
 		}
