@@ -9,7 +9,6 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain
@@ -184,7 +183,8 @@ public abstract class Container extends Layoutable {
 	@Override
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
-	public static class ChangeAddChildDescriptor implements IChangeDescriptor {
+	public static class ChangeAddChildDescriptor
+			extends ModelObjectChangeDescriptor {
 		private final Identifier parent;
 		private final Layoutable.Identifier child;
 		

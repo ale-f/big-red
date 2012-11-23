@@ -44,6 +44,12 @@ public class ChangeDescriptorGroup extends ArrayList<IChangeDescriptor>
 	}
 	
 	@Override
+	public void simulate(PropertyScratchpad context, Resolver r)
+			throws ChangeCreationException {
+		context.executeChange(createChange(context, r));
+	}
+	
+	@Override
 	public ChangeDescriptorGroup inverse() {
 		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 		for (IChangeDescriptor cd : this)

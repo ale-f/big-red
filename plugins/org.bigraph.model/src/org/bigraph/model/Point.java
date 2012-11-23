@@ -6,7 +6,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.interfaces.IPoint;
 
 /**
@@ -152,7 +151,8 @@ public abstract class Point extends Layoutable implements IPoint {
 	@Override
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
-	public static class ChangeConnectDescriptor implements IChangeDescriptor {
+	public static class ChangeConnectDescriptor
+			extends ModelObjectChangeDescriptor {
 		private final Identifier point;
 		private final Link.Identifier link;
 		
@@ -212,7 +212,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	}
 	
 	public static class ChangeDisconnectDescriptor
-			implements IChangeDescriptor {
+			extends ModelObjectChangeDescriptor {
 		private final Identifier point;
 		private final Link.Identifier link;
 		

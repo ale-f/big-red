@@ -295,8 +295,17 @@ public abstract class ModelObject {
 		ModelObject lookup(PropertyScratchpad context, Resolver r);
 	}
 	
-	public static class ChangeExtendedDataDescriptor
+	public static abstract class ModelObjectChangeDescriptor
 			implements IChangeDescriptor {
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			context.executeChange(createChange(context, r));
+		}
+	}
+	
+	public static class ChangeExtendedDataDescriptor
+			extends ModelObjectChangeDescriptor {
 		private final Identifier target;
 
 		private final String key;

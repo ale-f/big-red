@@ -9,7 +9,6 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.Namespace;
 
 /**
@@ -167,7 +166,8 @@ public abstract class Layoutable extends NamedModelObject {
 		public abstract Identifier getRenamed(String name);
 	}
 	
-	public static class ChangeRemoveDescriptor implements IChangeDescriptor {
+	public static class ChangeRemoveDescriptor
+			extends ModelObjectChangeDescriptor {
 		private final Identifier target;
 		private final Container.Identifier parent;
 		

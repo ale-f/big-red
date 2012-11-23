@@ -6,7 +6,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.Namespace;
 
 public abstract class NamedModelObject extends ModelObject {
@@ -124,7 +123,8 @@ public abstract class NamedModelObject extends ModelObject {
 	public abstract Identifier getIdentifier();
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
-	public static class ChangeNameDescriptor implements IChangeDescriptor {
+	public static class ChangeNameDescriptor
+			extends ModelObjectChangeDescriptor {
 		private final Identifier target;
 		private final String newName;
 		

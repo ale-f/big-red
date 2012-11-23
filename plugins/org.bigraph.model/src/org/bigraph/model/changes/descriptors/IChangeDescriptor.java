@@ -26,4 +26,7 @@ public interface IChangeDescriptor {
 			throws ChangeCreationException;
 	
 	IChangeDescriptor inverse();
+	
+	void simulate(PropertyScratchpad context, Resolver r)
+			throws ChangeCreationException;
 }

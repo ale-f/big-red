@@ -149,6 +149,12 @@ public class Edit extends ModelObject
 	}
 	
 	@Override
+	public void simulate(PropertyScratchpad context, Resolver r)
+			throws ChangeCreationException {
+		context.executeChange(createChange(context, r));
+	}
+	
+	@Override
 	public Edit inverse() {
 		Edit ed = (Edit)super.clone();
 		ed.cdg = cdg.inverse();
