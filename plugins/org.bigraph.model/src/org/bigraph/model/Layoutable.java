@@ -9,6 +9,7 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
 
 /**
@@ -83,6 +84,8 @@ public abstract class Layoutable extends NamedModelObject {
 	
 	static {
 		ExecutorManager.getInstance().addHandler(new LayoutableHandler());
+		DescriptorExecutorManager.getInstance().addHandler(
+				new LayoutableDescriptorHandler());
 	}
 	
 	private Container parent = null;
