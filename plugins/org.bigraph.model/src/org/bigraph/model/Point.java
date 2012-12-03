@@ -6,6 +6,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 import org.bigraph.model.interfaces.IPoint;
 
 /**
@@ -94,6 +95,8 @@ public abstract class Point extends Layoutable implements IPoint {
 
 	static {
 		ExecutorManager.getInstance().addHandler(new PointHandler());
+		DescriptorExecutorManager.getInstance().addHandler(
+				new PointDescriptorHandler());
 	}
 	
 	private Link link = null;
