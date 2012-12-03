@@ -8,7 +8,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	BigraphTests.class,
 	SignatureTests.class,
-	ExecutionTests.class
+	ExecutionTests.class,
+	BigraphDescriptorTests.class
 })
 public class ModelTests {
 }
