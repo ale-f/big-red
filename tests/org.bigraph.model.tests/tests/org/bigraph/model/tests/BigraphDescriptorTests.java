@@ -3,6 +3,7 @@ package org.bigraph.model.tests;
 import java.util.Arrays;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.OuterName;
@@ -20,6 +21,44 @@ import static org.bigraph.model.tests.BigraphTests.cg;
 public class BigraphDescriptorTests {
 	static ChangeDescriptorGroup cdg(IChangeDescriptor... changes) {
 		return new ChangeDescriptorGroup(Arrays.asList(changes));
+	}
+	
+	@Test
+	public void addInnerAndOuterNames() throws ChangeCreationException {
+		Bigraph b = new Bigraph();
+		DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(),
+						new InnerName.Identifier("a")),
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(),
+						new OuterName.Identifier("a"))));
+	}
+	
+	@Test(expected = ChangeCreationException.class)
+	public void doubleRemoveInnerName() throws ChangeCreationException {
+		Bigraph b = new Bigraph();
+		DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(),
+						new InnerName.Identifier("a")),
+				new Layoutable.ChangeRemoveDescriptor(
+						new InnerName.Identifier("a"),
+						new Bigraph.Identifier()),
+				new Layoutable.ChangeRemoveDescriptor(
+						new InnerName.Identifier("a"),
+						new Bigraph.Identifier())
+				));
+	}
+	
+	@Test(expected = ChangeCreationException.class)
+	public void removeNotPresentInnerName() throws ChangeCreationException {
+		Bigraph b = new Bigraph();
+		DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
+				new Layoutable.ChangeRemoveDescriptor(
+						new InnerName.Identifier("a"),
+						new Bigraph.Identifier())
+				));
 	}
 	
 	@Test
