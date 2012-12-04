@@ -6,6 +6,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
 import org.bigraph.model.Root;
@@ -167,5 +168,44 @@ public class BigraphDescriptorTests {
 		DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
 				new Layoutable.ChangeRemoveDescriptor(
 						in.getIdentifier(), b.getIdentifier())));
+	}
+	
+	@Test
+	public void renameInnerName() throws ChangeCreationException {
+		DescriptorExecutorManager.getInstance().tryApplyChange(
+				new Bigraph(), cdg(
+						new Container.ChangeAddChildDescriptor(
+								new Bigraph.Identifier(),
+								new InnerName.Identifier("a")),
+						new NamedModelObject.ChangeNameDescriptor(
+								new InnerName.Identifier("a"),
+								"b")));
+	}
+	
+	@Test
+	public void renameAndRemoveInnerName() throws ChangeCreationException {
+		DescriptorExecutorManager.getInstance().tryApplyChange(
+				new Bigraph(), cdg(
+						new Container.ChangeAddChildDescriptor(
+								new Bigraph.Identifier(),
+								new InnerName.Identifier("a")),
+						new NamedModelObject.ChangeNameDescriptor(
+								new InnerName.Identifier("a"),
+								"b"),
+						new Layoutable.ChangeRemoveDescriptor(
+								new InnerName.Identifier("b"),
+								new Bigraph.Identifier())));
+	}
+	
+	@Test(expected = ChangeCreationException.class)
+	public void addButRenameAbsentInnerName() throws ChangeCreationException {
+		DescriptorExecutorManager.getInstance().tryApplyChange(
+				new Bigraph(), cdg(
+						new Container.ChangeAddChildDescriptor(
+								new Bigraph.Identifier(),
+								new InnerName.Identifier("a")),
+						new NamedModelObject.ChangeNameDescriptor(
+								new InnerName.Identifier("b"),
+								"a")));
 	}
 }
