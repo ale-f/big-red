@@ -6,6 +6,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
 
 public abstract class NamedModelObject extends ModelObject {
@@ -74,6 +75,8 @@ public abstract class NamedModelObject extends ModelObject {
 	static {
 		ExecutorManager.getInstance().addHandler(
 				new NamedModelObjectHandler());
+		DescriptorExecutorManager.getInstance().addHandler(
+				new NamedModelObjectDescriptorHandler());
 	}
 	
 	public static abstract class Identifier implements ModelObject.Identifier {
