@@ -9,6 +9,7 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain
@@ -80,6 +81,8 @@ public abstract class Container extends Layoutable {
 	
 	static {
 		ExecutorManager.getInstance().addHandler(new ContainerHandler());
+		DescriptorExecutorManager.getInstance().addHandler(
+				new ContainerDescriptorHandler());
 	}
 	
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
