@@ -2,6 +2,8 @@ package org.bigraph.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
@@ -301,6 +303,23 @@ public abstract class ModelObject {
 		extendedData.clear();
 		if (m != null)
 			extendedData.putAll(m.extendedData);
+	}
+	
+	/**
+	 * Returns the keys of this object's extended data properties.
+	 * <p>(Note that adding or removing extended data properties may invalidate
+	 * the returned collection.)
+	 * @return an unmodifiable {@link Collection} of extended data property
+	 * keys
+	 */
+	public Collection<? extends String> getExtendedDataKeys() {
+		return getExtendedDataKeys(null);
+	}
+	
+	public Collection<? extends String> getExtendedDataKeys(
+			PropertyScratchpad context) {
+		return Collections.unmodifiableCollection(
+				getExtendedDataMap(context).keySet());
 	}
 	
 	/**
