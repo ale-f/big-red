@@ -3,8 +3,6 @@ package org.bigraph.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
-import java.util.Map;
-
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -167,7 +165,9 @@ public abstract class ModelObject {
 	}
 	
 	protected Object getProperty(String name) {
-		return null;
+		if (PROPERTY_EXTENDED_DATA_MAP.equals(name)) {
+			return getExtendedDataMap();
+		} else return null;
 	}
 	
 	protected <T> T getProperty(
@@ -223,7 +223,38 @@ public abstract class ModelObject {
 		}
 	}
 	
-	private Map<String, Object> extendedData = new HashMap<String, Object>();
+	private static final String PROPERTY_EXTENDED_DATA_MAP =
+			"org.bigraph.model.ModelObject:ExtendedDataMap";
+	
+	private static final class ExtendedDataMap
+			extends HashMap<String, Object> {
+		private static final long serialVersionUID = -7033916127570739039L;
+	}
+	
+	private ExtendedDataMap getExtendedDataMap() {
+		return extendedData;
+	}
+	
+	private ExtendedDataMap getExtendedDataMap(PropertyScratchpad context) {
+		return getProperty(context, PROPERTY_EXTENDED_DATA_MAP,
+				ExtendedDataMap.class);
+	}
+	
+	private ExtendedDataMap getModifiableExtendedDataMap(
+			PropertyScratchpad context) {
+		ExtendedDataMap map;
+		if (context == null ||
+				context.hasProperty(this, PROPERTY_EXTENDED_DATA_MAP)) {
+			return getExtendedDataMap(context);
+		} else {
+			map = new ExtendedDataMap();
+			map.putAll(getExtendedDataMap());
+			context.setProperty(this, PROPERTY_EXTENDED_DATA_MAP, map);
+		}
+		return map;
+	}
+	
+	private ExtendedDataMap extendedData = new ExtendedDataMap();
 	
 	/**
 	 * Retrieves one of this object's extended data properties.
@@ -232,13 +263,11 @@ public abstract class ModelObject {
 	 * has no content
 	 */
 	public Object getExtendedData(String key) {
-		return extendedData.get(key);
+		return getExtendedData(null, key);
 	}
 	
 	public Object getExtendedData(PropertyScratchpad context, String key) {
-		if (context == null || !context.hasProperty(this, key)) {
-			return getExtendedData(key);
-		} else return context.getProperty(this, key);
+		return getExtendedDataMap(context).get(key);
 	}
 	
 	/**
@@ -256,11 +285,11 @@ public abstract class ModelObject {
 			PropertyScratchpad context, String key, Object value) {
 		if (key == null)
 			return;
-		if (context == null) {
-			Object oldValue = (value != null ?
-					extendedData.put(key, value) : extendedData.remove(key));
+		ExtendedDataMap map = getModifiableExtendedDataMap(context);
+		Object oldValue = (value != null ?
+				map.put(key, value) : map.remove(key));
+		if (context == null)
 			firePropertyChange(key, oldValue, value);
-		} else context.setProperty(this, key, value);
 	}
 	
 	/**
