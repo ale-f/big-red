@@ -102,7 +102,7 @@ public abstract class ModelObject {
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			context.setProperty(getCreator(), key, (normaliser == null ?
+			getCreator().setExtendedData(context, key, (normaliser == null ?
 					newValue : normaliser.normalise(this, newValue)));
 		}
 	}

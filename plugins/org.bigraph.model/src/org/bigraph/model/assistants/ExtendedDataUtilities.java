@@ -20,8 +20,6 @@ public abstract class ExtendedDataUtilities {
 			String name, Object value) {
 		if (o == null || name == null)
 			return;
-		if (context != null) {
-			context.setProperty(o, name, value);
-		} else o.setExtendedData(name, value);
+		o.setExtendedData(context, name, value);
 	}
 }
