@@ -249,11 +249,18 @@ public abstract class ModelObject {
 	 * <code>null</code> to remove an existing assignment
 	 */
 	public void setExtendedData(String key, Object value) {
+		setExtendedData(null, key, value);
+	}
+	
+	public void setExtendedData(
+			PropertyScratchpad context, String key, Object value) {
 		if (key == null)
 			return;
-		Object oldValue = (value != null ?
-				extendedData.put(key, value) : extendedData.remove(key));
-		firePropertyChange(key, oldValue, value);
+		if (context == null) {
+			Object oldValue = (value != null ?
+					extendedData.put(key, value) : extendedData.remove(key));
+			firePropertyChange(key, oldValue, value);
+		} else context.setProperty(this, key, value);
 	}
 	
 	/**
