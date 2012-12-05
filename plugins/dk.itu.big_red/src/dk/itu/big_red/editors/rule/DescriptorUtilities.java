@@ -78,10 +78,7 @@ abstract class DescriptorUtilities {
 		} else if (c instanceof ChangeExtendedData) {
 			ChangeExtendedData ch = (ChangeExtendedData)c;
 			Layoutable creator = (Layoutable)ch.getCreator();
-			Object oldValue;
-			if (context == null || !context.hasProperty(creator, ch.key)) {
-				oldValue = creator.getExtendedData(ch.key);
-			} else oldValue = context.getProperty(creator, ch.key);
+			Object oldValue = creator.getExtendedData(context, ch.key);
 			chd = new ChangeExtendedDataDescriptor(
 					creator.getIdentifier(context),
 					ch.key, oldValue, ch.newValue,

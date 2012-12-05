@@ -16,13 +16,7 @@ public abstract class FileData {
 
 	public static IFileWrapper getFile(
 			PropertyScratchpad context, ModelObject m) {
-		Object file = null;
-		if (m != null) {
-			if (context != null)
-				file = context.getProperty(m, FILE);
-			if (file == null)
-				file = m.getExtendedData(FILE);
-		}
+		Object file = (m != null ? m.getExtendedData(context, FILE) : null);
 		return (file instanceof IFileWrapper ? (IFileWrapper)file : null);
 	}
 
