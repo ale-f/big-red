@@ -10,6 +10,7 @@ import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
+import org.bigraph.model.utilities.FilteringIterable;
 
 /**
  * The <code>Container</code> is the superclass of anything which can contain
@@ -159,12 +160,11 @@ public abstract class Container extends Layoutable {
 	 * @param klass the {@link Class} to filter by
 	 * @return a {@link List} of children of the given {@link Class}
 	 */
-	@SuppressWarnings("unchecked")
-	protected <V> ArrayList<V> only(PropertyScratchpad context, Class<V> klass) {
+	protected <V> ArrayList<V> only(
+			PropertyScratchpad context, Class<V> klass) {
 		ArrayList<V> r = new ArrayList<V>();
-		for (Layoutable i : getChildren(context))
-			if (klass.isInstance(i))
-				r.add((V)i);
+		for (V i : new FilteringIterable<V>(klass, getChildren(context)))
+			r.add(i);
 		return r;
 	}
 	
