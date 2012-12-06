@@ -7,9 +7,9 @@ import org.bigraph.model.process.IParticipant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
+import static org.bigraph.model.utilities.ArrayIterable.forNodeList;
 
 public class EditXMLLoader extends XMLLoader {
 	public interface Participant extends IParticipant {
@@ -85,13 +85,9 @@ public class EditXMLLoader extends XMLLoader {
 					new EditXMLLoader(this));
 		Edit ed = new Edit();
 		
-		NodeList nl = el.getChildNodes();
-		int len = nl.getLength(), index = 0;
-		for (int i__ = 0; i__ < len; i__++) {
-			Node i_ = nl.item(i__);
-			if (!(i_ instanceof Element))
-				continue;
-			Element i = (Element)i_;
+		int index = 0;
+		for (Element i :
+				forNodeList(el.getChildNodes()).filter(Element.class)) {
 			String
 				localName = i.getLocalName(),
 				namespaceURI = i.getNamespaceURI();

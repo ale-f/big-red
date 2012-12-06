@@ -8,13 +8,12 @@ import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SPEC;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
 import static org.bigraph.model.loaders.RedNamespaceConstants.SIGNATURE;
+import static org.bigraph.model.utilities.ArrayIterable.forNodeList;
 
 public class SimulationSpecXMLLoader extends XMLLoader {
 	public SimulationSpecXMLLoader() {
@@ -56,15 +55,12 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		if (s != null)
 			addChange(ss.changeSignature(s));
 		
-		NodeList nl = e.getChildNodes();
-		for (int i_ = 0; i_ < nl.getLength(); i_++) {
-			Node n = nl.item(i_);
-			if (!(n instanceof Element))
-				continue;
+		for (Element n :
+				forNodeList(e.getChildNodes()).filter(Element.class)) {
 			String ns = n.getNamespaceURI();
 			if ((SPEC.equals(ns) || RULE.equals(ns)) &&
 					"rule".equals(n.getLocalName())) {
-				ReactionRule rr = loadSub((Element)n, SPEC, ReactionRule.class,
+				ReactionRule rr = loadSub(n, SPEC, ReactionRule.class,
 						new ReactionRuleXMLLoader(this));
 				if (rr != null)
 					addChange(ss.changeAddRule(rr));

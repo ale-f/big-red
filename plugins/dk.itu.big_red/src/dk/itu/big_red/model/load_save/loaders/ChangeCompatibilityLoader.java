@@ -26,8 +26,6 @@ import org.bigraph.model.loaders.ReactionRuleXMLLoader;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
@@ -35,6 +33,7 @@ import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 
 import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
+import static org.bigraph.model.utilities.ArrayIterable.forNodeList;
 import static dk.itu.big_red.model.BigRedNamespaceConstants.BIG_RED;
 
 @Deprecated
@@ -108,10 +107,9 @@ public final class ChangeCompatibilityLoader
 		if (el.getNamespaceURI().equals(CHANGE)) {
 			if (el.getLocalName().equals("group")) {
 				ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
-				NodeList nl = el.getChildNodes();
-				for (int i = 0; i < nl.getLength(); i++) {
+				for (org.w3c.dom.Node i : forNodeList(el.getChildNodes())) {
 					IChangeDescriptor cp =
-							changeDescriptorFromElement(nl.item(i));
+							changeDescriptorFromElement(i);
 					if (cp != null)
 						cdg.add(cp);
 				}

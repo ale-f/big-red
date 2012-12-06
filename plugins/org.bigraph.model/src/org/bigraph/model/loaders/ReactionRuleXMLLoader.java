@@ -11,11 +11,12 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.Node;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 import static org.bigraph.model.loaders.RedNamespaceConstants.RULE;
 import static org.bigraph.model.loaders.RedNamespaceConstants.BIGRAPH;
+import static org.bigraph.model.utilities.ArrayIterable.forNodeList;
 
 public class ReactionRuleXMLLoader extends XMLLoader {
 	@Deprecated
@@ -91,10 +92,8 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 						"Can't load a <rule:changes /> element without a " +
 						"ChangeCompatibilityLoader");
 			ccl.setReactionRule(rr);
-			NodeList nl = e.getChildNodes();
-			for (int i = 0; i < nl.getLength(); i++) {
-				IChangeDescriptor c =
-						ccl.changeDescriptorFromElement(nl.item(i));
+			for (Node i : forNodeList(e.getChildNodes())) {
+				IChangeDescriptor c = ccl.changeDescriptorFromElement(i);
 				if (c != null)
 					cdg.add(c);
 			}

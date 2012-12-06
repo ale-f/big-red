@@ -18,8 +18,6 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
@@ -30,6 +28,7 @@ import dk.itu.big_red.model.LayoutUtilities;
 import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
 import static org.bigraph.model.loaders.XMLLoader.getDoubleAttribute;
 import static org.bigraph.model.loaders.XMLLoader.getIntAttribute;
+import static org.bigraph.model.utilities.ArrayIterable.forNodeList;
 
 public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 	private enum Tristate {
@@ -52,12 +51,9 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 
 	private static Element getNamedChildElement(
 			Element el, String ns, String ln) {
-		NodeList children = el.getChildNodes();
-		for (int i = 0; i < children.getLength(); i++) {
-			Node j = children.item(i);
-			if (j instanceof Element && cmpns(j, ns, ln))
-				return (Element)j;
-		}
+		for (Element j : forNodeList(el.getChildNodes()).filter(Element.class))
+			if (cmpns(j, ns, ln))
+				return j;
 		return null;
 	}
 
@@ -150,14 +146,12 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 				String s = getAttributeNS(eS, BigRedNamespaceConstants.BIG_RED, "shape");
 				if (s != null && s.equals("polygon")) {
 					pl = new PointList();
-					NodeList nl = eS.getChildNodes();
-					for (int i_ = 0; i_ < nl.getLength(); i_++) {
-						Node i = nl.item(i_);
-						if (i instanceof Element && cmpns(i, BigRedNamespaceConstants.BIG_RED, "point"))
+					for (Element i : forNodeList(
+							eS.getChildNodes()).filter(Element.class))
+						if (cmpns(i, BigRedNamespaceConstants.BIG_RED, "point"))
 							pl.addPoint(
-								getIntAttribute((Element)i, BigRedNamespaceConstants.BIG_RED, "x"),
-								getIntAttribute((Element)i, BigRedNamespaceConstants.BIG_RED, "y"));
-					}
+								getIntAttribute(i, BigRedNamespaceConstants.BIG_RED, "x"),
+								getIntAttribute(i, BigRedNamespaceConstants.BIG_RED, "y"));
 					shape = pl;
 				} else shape = Ellipse.SINGLETON;
 				cg.add(ControlUtilities.changeShape(c, shape));
