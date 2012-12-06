@@ -35,6 +35,14 @@ final class ContainerDescriptorHandler
 							" is an atomic control");
 			}
 			
+			if (childI instanceof Node.Identifier) {
+				Node.Identifier nodeI = (Node.Identifier)childI;
+				Control.Identifier controlI = nodeI.getControl();
+				if (controlI.lookup(scratch, resolver) == null)
+					throw new ChangeCreationException(cd,
+							"lookup failed: " + controlI);
+			}
+			
 			if (!canContain(parentI, childI))
 				throw new ChangeCreationException(cd,
 						"" + parentI + " can't contain " + childI);
