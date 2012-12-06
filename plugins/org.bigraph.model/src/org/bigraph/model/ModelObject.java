@@ -359,7 +359,7 @@ public abstract class ModelObject {
 		}
 	}
 	
-	public static class ChangeExtendedDataDescriptor
+	public static final class ChangeExtendedDataDescriptor
 			extends ModelObjectChangeDescriptor {
 		private final Identifier target;
 

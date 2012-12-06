@@ -33,6 +33,10 @@ public abstract class Container extends Layoutable {
 		}
 	}
 	
+	abstract static class ContainerChangeDescriptor
+			extends LayoutableChangeDescriptor {
+	}
+	
 	public final class ChangeAddChild extends ContainerChange {
 		public final Layoutable child;
 		public final String name;
@@ -186,8 +190,8 @@ public abstract class Container extends Layoutable {
 	@Override
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
-	public static class ChangeAddChildDescriptor
-			extends ModelObjectChangeDescriptor {
+	public static final class ChangeAddChildDescriptor
+			extends ContainerChangeDescriptor {
 		private final Identifier parent;
 		private final Layoutable.Identifier child;
 		

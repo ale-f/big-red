@@ -29,6 +29,10 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 	}
 	
+	abstract static class PointChangeDescriptor
+			extends LayoutableChangeDescriptor {
+	}
+	
 	public final class ChangeConnect extends PointChange {
 		public final Link link;
 		
@@ -154,8 +158,8 @@ public abstract class Point extends Layoutable implements IPoint {
 	@Override
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
-	public static class ChangeConnectDescriptor
-			extends ModelObjectChangeDescriptor {
+	public static final class ChangeConnectDescriptor
+			extends PointChangeDescriptor {
 		private final Identifier point;
 		private final Link.Identifier link;
 		
@@ -214,8 +218,8 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 	}
 	
-	public static class ChangeDisconnectDescriptor
-			extends ModelObjectChangeDescriptor {
+	public static final class ChangeDisconnectDescriptor
+			extends PointChangeDescriptor {
 		private final Identifier point;
 		private final Link.Identifier link;
 		

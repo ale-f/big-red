@@ -25,13 +25,17 @@ public abstract class Layoutable extends NamedModelObject {
 	@RedProperty(fired = Container.class, retrieved = Container.class)
 	public static final String PROPERTY_PARENT = "LayoutableParent";
 	
-	abstract class LayoutableChange extends ModelObjectChange {
+	abstract class LayoutableChange extends NamedModelObjectChange {
 		@Override
 		public Layoutable getCreator() {
 			return Layoutable.this;
 		}
 	}
 
+	abstract static class LayoutableChangeDescriptor
+			extends NamedModelObjectChangeDescriptor {
+	}
+	
 	@Override
 	protected Namespace<Layoutable> getGoverningNamespace(
 			PropertyScratchpad context) {
@@ -169,8 +173,8 @@ public abstract class Layoutable extends NamedModelObject {
 		public abstract Identifier getRenamed(String name);
 	}
 	
-	public static class ChangeRemoveDescriptor
-			extends ModelObjectChangeDescriptor {
+	public static final class ChangeRemoveDescriptor
+			extends LayoutableChangeDescriptor {
 		private final Identifier target;
 		private final Container.Identifier parent;
 		

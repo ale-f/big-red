@@ -13,11 +13,15 @@ public abstract class NamedModelObject extends ModelObject {
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String PROPERTY_NAME = "NamedModelObjectName";
 	
-	public abstract class NamedModelObjectChange extends ModelObjectChange {
+	abstract class NamedModelObjectChange extends ModelObjectChange {
 		@Override
 		public NamedModelObject getCreator() {
 			return NamedModelObject.this;
 		}
+	}
+	
+	abstract static class NamedModelObjectChangeDescriptor
+			extends ModelObjectChangeDescriptor {
 	}
 	
 	protected abstract Namespace<? extends NamedModelObject>
@@ -126,8 +130,8 @@ public abstract class NamedModelObject extends ModelObject {
 	public abstract Identifier getIdentifier();
 	public abstract Identifier getIdentifier(PropertyScratchpad context);
 	
-	public static class ChangeNameDescriptor
-			extends ModelObjectChangeDescriptor {
+	public static final class ChangeNameDescriptor
+			extends NamedModelObjectChangeDescriptor {
 		private final Identifier target;
 		private final String newName;
 		
