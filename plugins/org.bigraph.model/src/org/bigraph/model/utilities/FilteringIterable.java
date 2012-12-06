@@ -64,6 +64,10 @@ public class FilteringIterable<T> implements Iterable<T> {
 		this.iterable = iterable;
 	}
 	
+	public <V> Iterable<V> filter(Class<V> klass) {
+		return new FilteringIterable<V>(klass, this);
+	}
+	
 	@Override
 	public Iterator<T> iterator() {
 		return new FilteringIterator();
