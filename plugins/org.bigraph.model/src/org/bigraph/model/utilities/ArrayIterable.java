@@ -3,6 +3,9 @@ package org.bigraph.model.utilities;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 public class ArrayIterable<T> implements Iterable<T> {
 	private ArrayWrapper<T> array;
 	
@@ -56,6 +59,31 @@ public class ArrayIterable<T> implements Iterable<T> {
 		public void remove() throws UnsupportedOperationException {
 			throw new UnsupportedOperationException();
 		}
+	}
+	
+	private static final class NodeListImpl implements ArrayWrapper<Node> {
+		private NodeList nl;
+		
+		private NodeListImpl(NodeList nl) {
+			this.nl = nl;
+		}
+
+		@Override
+		public int size() {
+			return nl.getLength();
+		}
+
+		@Override
+		public Node get(int index) throws ArrayIndexOutOfBoundsException {
+			Node n = nl.item(index);
+			if (n != null) {
+				return n;
+			} else throw new ArrayIndexOutOfBoundsException("" + index);
+		}
+	}
+	
+	public static ArrayIterable<? extends Node> forNodeList(NodeList nl) {
+		return new ArrayIterable<Node>(new NodeListImpl(nl));
 	}
 	
 	public <V> Iterable<V> filter(Class<V> klass) {
