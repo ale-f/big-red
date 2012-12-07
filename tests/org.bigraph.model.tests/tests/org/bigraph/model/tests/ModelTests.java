@@ -9,6 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	BigraphTests.class,
 	SignatureTests.class,
 	ExecutionTests.class,
+	EditDescriptorTests.class,
 	BigraphDescriptorTests.class
 })
 public class ModelTests {
