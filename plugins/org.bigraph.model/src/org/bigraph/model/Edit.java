@@ -10,9 +10,11 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 
 public class Edit extends ModelObject
-		implements IChangeDescriptor, IChangeExecutor {
+		implements IChangeDescriptor, IChangeExecutor,
+		ModelObject.Identifier.Resolver {
 	@RedProperty(
 			fired = IChangeDescriptor.class,
 			retrieved = ChangeDescriptorGroup.class)
@@ -124,6 +126,8 @@ public class Edit extends ModelObject
 	
 	static {
 		ExecutorManager.getInstance().addHandler(new EditHandler());
+		DescriptorExecutorManager.getInstance().addHandler(
+				new EditDescriptorHandler());
 	}
 	
 	@Override
@@ -169,5 +173,111 @@ public class Edit extends ModelObject
 		}
 		
 		super.dispose();
+	}
+	
+	public static final class Identifier implements ModelObject.Identifier {
+		@Override
+		public Edit lookup(PropertyScratchpad context, Resolver r) {
+			return NamedModelObject.Identifier.require(r.lookup(context, this),
+					Edit.class);
+		}
+	}
+	
+	abstract static class EditChangeDescriptor
+			extends ModelObjectChangeDescriptor {
+	}
+	
+	public static class ChangeDescriptorAddDescriptor
+			extends EditChangeDescriptor {
+		private final Identifier target;
+		private final int position;
+		private final IChangeDescriptor descriptor;
+		
+		public ChangeDescriptorAddDescriptor(
+				Identifier target, int position,
+				IChangeDescriptor descriptor) {
+			this.target = target;
+			this.position = position;
+			this.descriptor = descriptor;
+		}
+
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public int getPosition() {
+			return position;
+		}
+		
+		public IChangeDescriptor getDescriptor() {
+			return descriptor;
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Edit ed = getTarget().lookup(context, r);
+			if (ed == null)
+				throw new ChangeCreationException(this,
+						"Couldn't resolve " + getTarget() + " to an Edit");
+			return ed.changeDescriptorAdd(getPosition(), getDescriptor());
+		}
+
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeDescriptorRemoveDescriptor(
+					getTarget(), getPosition(), getDescriptor());
+		}
+	}
+	
+	public static class ChangeDescriptorRemoveDescriptor
+			extends EditChangeDescriptor {
+		private final Identifier target;
+		private final int position;
+		private final IChangeDescriptor descriptor;
+
+		public ChangeDescriptorRemoveDescriptor(
+				Identifier target, int position,
+				IChangeDescriptor descriptor) {
+			this.target = target;
+			this.position = position;
+			this.descriptor = descriptor;
+		}
+
+		public Identifier getTarget() {
+			return target;
+		}
+
+		public int getPosition() {
+			return position;
+		}
+		
+		public IChangeDescriptor getDescriptor() {
+			return descriptor;
+		}
+
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Edit ed = getTarget().lookup(context, r);
+			if (ed == null)
+				throw new ChangeCreationException(this,
+						"Couldn't resolve " + getTarget() + " to an Edit");
+			return ed.changeDescriptorRemove(getPosition(), getDescriptor());
+		}
+
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeDescriptorAddDescriptor(
+					getTarget(), getPosition(), getDescriptor());
+		}
+	}
+
+	@Override
+	public Object lookup(PropertyScratchpad context,
+			ModelObject.Identifier identifier) {
+		if (identifier instanceof Identifier) {
+			return this;
+		} else return null;
 	}
 }
