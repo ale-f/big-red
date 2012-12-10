@@ -5,12 +5,9 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 import org.junit.Test;
 
-import static org.bigraph.model.tests.BigraphDescriptorTests.cdg;
-
-public class SpecDescriptorTests {
+public class SpecDescriptorTests extends DescriptorTestRunner {
 	private static SimulationSpec constructSpec()
 			throws ChangeCreationException {
 		ReactionRule
@@ -21,7 +18,7 @@ public class SpecDescriptorTests {
 		
 		SimulationSpec ss = new SimulationSpec();
 		SimulationSpec.Identifier ssI = new SimulationSpec.Identifier();
-		DescriptorExecutorManager.getInstance().tryApplyChange(ss, cdg(
+		run(ss,
 				new SimulationSpec.ChangeSetModelDescriptor(
 						ssI, null, b),
 				new SimulationSpec.ChangeSetSignatureDescriptor(
@@ -29,7 +26,7 @@ public class SpecDescriptorTests {
 				new SimulationSpec.ChangeAddRuleDescriptor(
 						ssI, 0, rr2),
 				new SimulationSpec.ChangeAddRuleDescriptor(
-						ssI, 0, rr1)));
+						ssI, 0, rr1));
 		return ss;
 	}
 	
