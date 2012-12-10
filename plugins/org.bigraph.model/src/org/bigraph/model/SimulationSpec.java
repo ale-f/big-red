@@ -12,6 +12,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 
 public class SimulationSpec extends ModelObject
 		implements IChangeExecutor, Resolver {
@@ -273,6 +274,8 @@ public class SimulationSpec extends ModelObject
 	
 	static {
 		ExecutorManager.getInstance().addHandler(new SimulationSpecHandler());
+		DescriptorExecutorManager.getInstance().addHandler(
+				new SimulationSpecDescriptorHandler());
 	}
 	
 	@Override
