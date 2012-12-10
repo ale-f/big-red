@@ -1,5 +1,7 @@
 package org.bigraph.model;
 
+import java.util.List;
+
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.SimulationSpec.ChangeAddRuleDescriptor;
 import org.bigraph.model.SimulationSpec.ChangeRemoveRuleDescriptor;
@@ -37,12 +39,33 @@ final class SimulationSpecDescriptorHandler implements
 			if (ss == null)
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
+			
+			if (cd.getRule() == null)
+				throw new ChangeCreationException(cd,
+						"Can't insert a null rule");
+			
+			int position = cd.getPosition();
+			if (position < 0 ||
+					position > ss.getRules(scratch).size())
+				throw new ChangeCreationException(cd,
+						"" + position + " is not a valid position");
 		} else if (change instanceof ChangeRemoveRuleDescriptor) {
 			ChangeRemoveRuleDescriptor cd = (ChangeRemoveRuleDescriptor)change;
 			SimulationSpec ss = cd.getTarget().lookup(scratch, resolver);
 			if (ss == null)
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
+			
+			List<? extends ReactionRule> rrs = ss.getRules(scratch);
+			int position = cd.getPosition();
+			if (position < 0 || position >= rrs.size())
+				throw new ChangeCreationException(cd,
+						"" + position + " is not a valid position");
+			
+			if (!rrs.get(position).equals(cd.getRule()))
+				throw new ChangeCreationException(cd,
+						"" + cd.getRule() +
+						" is not at position " + position);
 		} else return false;
 		return true;
 	}

@@ -34,4 +34,36 @@ public class SpecDescriptorTests extends DescriptorTestRunner {
 	public void buildSpec() throws ChangeCreationException {
 		constructSpec();
 	}
+	
+	@Test(expected = ChangeCreationException.class)
+	public void addNullRule() throws ChangeCreationException {
+		run(new SimulationSpec(),
+				new SimulationSpec.ChangeAddRuleDescriptor(
+						new SimulationSpec.Identifier(), 0, null));
+	}
+	
+	@Test(expected = ChangeCreationException.class)
+	public void addAtInvalidOffset() throws ChangeCreationException {
+		run(new SimulationSpec(),
+				new SimulationSpec.ChangeAddRuleDescriptor(
+						new SimulationSpec.Identifier(), 1,
+						new ReactionRule()));
+	}
+	
+	@Test(expected = ChangeCreationException.class)
+	public void removeAbsentRule() throws ChangeCreationException {
+		run(new SimulationSpec(),
+				new SimulationSpec.ChangeRemoveRuleDescriptor(
+						new SimulationSpec.Identifier(), 0, null));
+	}
+	
+	@Test(expected = ChangeCreationException.class)
+	public void removeWrongRule() throws ChangeCreationException {
+		run(new SimulationSpec(),
+				new SimulationSpec.ChangeAddRuleDescriptor(
+						new SimulationSpec.Identifier(), 0,
+						new ReactionRule()),
+				new SimulationSpec.ChangeRemoveRuleDescriptor(
+						new SimulationSpec.Identifier(), 0, null));
+	}
 }
