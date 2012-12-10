@@ -25,25 +25,8 @@ final class NamedModelObjectDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
 			
-			String cdt = cd.getNewName();
-			
-			Namespace<? extends NamedModelObject> ns =
-					object.getGoverningNamespace(scratch);
-			
-			if (cdt == null || cdt.length() == 0)
-				throw new ChangeCreationException(cd, "Names cannot be empty");
-			if (ns != null) {
-				INamePolicy p = ns.getPolicy();
-				String mcdt = (p != null ? p.normalise(cdt) : cdt);
-				if (mcdt == null)
-					throw new ChangeCreationException(cd,
-							"\"" + cdt + "\" is not a valid name for " +
-							object);
-				NamedModelObject current = ns.get(scratch, mcdt);
-				if (current != null && current != object)
-					throw new ChangeCreationException(cd,
-							"Names must be unique");
-			}
+			checkName(scratch, cd, object,
+					object.getGoverningNamespace(scratch), cd.getNewName());
 		} else return false;
 		return true;
 	}
@@ -55,5 +38,23 @@ final class NamedModelObjectDescriptorHandler
 			cd.getTarget().lookup(null, resolver).applyRename(cd.getNewName());
 		} else return false;
 		return true;
+	}
+	
+	static <V> void checkName(
+			PropertyScratchpad context, IChangeDescriptor c, V object,
+			Namespace<? extends V> ns, String cdt)
+			throws ChangeCreationException {
+		if (cdt == null || cdt.length() == 0)
+			throw new ChangeCreationException(c, "Names cannot be empty");
+		if (ns == null)
+			return;
+		INamePolicy p = ns.getPolicy();
+		String mcdt = (p != null ? p.normalise(cdt) : cdt);
+		if (mcdt == null)
+			throw new ChangeCreationException(c,
+					"\"" + cdt + "\" is not a valid name for " + object);
+		V current = ns.get(context, mcdt);
+		if (current != null && current != object)
+			throw new ChangeCreationException(c, "Names must be unique");
 	}
 }
