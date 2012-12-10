@@ -3,14 +3,18 @@ package org.bigraph.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
-public class SimulationSpec extends ModelObject implements IChangeExecutor {
+public class SimulationSpec extends ModelObject
+		implements IChangeExecutor, Resolver {
 	/**
 	 * The property name fired when a rule is added or removed.
 	 */
@@ -310,5 +314,193 @@ public class SimulationSpec extends ModelObject implements IChangeExecutor {
 		} else if (PROPERTY_RULE.equals(name)) {
 			return getRules();
 		} else return super.getProperty(name);
+	}
+	
+	public static class Identifier implements ModelObject.Identifier {
+		@Override
+		public SimulationSpec lookup(PropertyScratchpad context, Resolver r) {
+			return NamedModelObject.Identifier.require(r.lookup(context, this),
+					SimulationSpec.class);
+		}
+	}
+	
+	abstract static class SimulationSpecChangeDescriptor
+			extends ModelObjectChangeDescriptor {
+	}
+	
+	public static final class ChangeSetModelDescriptor
+			extends SimulationSpecChangeDescriptor {
+		private final Identifier target;
+		private final Bigraph oldModel;
+		private final Bigraph newModel;
+		
+		public ChangeSetModelDescriptor(
+				Identifier target, Bigraph oldModel, Bigraph newModel) {
+			this.target = target;
+			this.oldModel = oldModel;
+			this.newModel = newModel;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public Bigraph getOldModel() {
+			return oldModel;
+		}
+		
+		public Bigraph getNewModel() {
+			return newModel;
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			SimulationSpec ss = getTarget().lookup(context, r);
+			if (ss == null)
+				throw new ChangeCreationException(this,
+						"" + getTarget() + ": lookup failed");
+			return ss.changeModel(getNewModel());
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeSetModelDescriptor(
+					getTarget(), getNewModel(), getOldModel());
+		}
+	}
+	
+	public static final class ChangeSetSignatureDescriptor
+			extends SimulationSpecChangeDescriptor {
+		private final Identifier target;
+		private final Signature oldSignature;
+		private final Signature newSignature;
+		
+		public ChangeSetSignatureDescriptor(Identifier target,
+				Signature oldSignature, Signature newSignature) {
+			this.target = target;
+			this.oldSignature = oldSignature;
+			this.newSignature = newSignature;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public Signature getOldSignature() {
+			return oldSignature;
+		}
+		
+		public Signature getNewSignature() {
+			return newSignature;
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			SimulationSpec ss = getTarget().lookup(context, r);
+			if (ss == null)
+				throw new ChangeCreationException(this,
+						"" + getTarget() + ": lookup failed");
+			return ss.changeSignature(getNewSignature());
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeSetSignatureDescriptor(
+					getTarget(), getNewSignature(), getOldSignature());
+		}
+	}
+	
+	public static final class ChangeAddRuleDescriptor
+			extends SimulationSpecChangeDescriptor {
+		private final Identifier target;
+		private final int position;
+		private final ReactionRule rule;
+		
+		public ChangeAddRuleDescriptor(
+				Identifier target, int position, ReactionRule rule) {
+			this.target = target;
+			this.position = position;
+			this.rule = rule;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public int getPosition() {
+			return position;
+		}
+		
+		public ReactionRule getRule() {
+			return rule;
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			SimulationSpec ss = getTarget().lookup(context, r);
+			if (ss == null)
+				throw new ChangeCreationException(this,
+						"" + getTarget() + ": lookup failed");
+			return ss.changeAddRule(getRule());
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeRemoveRuleDescriptor(
+					getTarget(), getPosition(), getRule());
+		}
+	}
+	
+	public static final class ChangeRemoveRuleDescriptor
+			extends SimulationSpecChangeDescriptor {
+		private final Identifier target;
+		private final int position;
+		private final ReactionRule rule;
+		
+		public ChangeRemoveRuleDescriptor(
+				Identifier target, int position, ReactionRule rule) {
+			this.target = target;
+			this.position = position;
+			this.rule = rule;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public int getPosition() {
+			return position;
+		}
+		
+		public ReactionRule getRule() {
+			return rule;
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			SimulationSpec ss = getTarget().lookup(context, r);
+			if (ss == null)
+				throw new ChangeCreationException(this,
+						"" + getTarget() + ": lookup failed");
+			return ss.changeRemoveRule(getRule());
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeAddRuleDescriptor(
+					getTarget(), getPosition(), getRule());
+		}
+	}
+
+	@Override
+	public Object lookup(PropertyScratchpad context,
+			ModelObject.Identifier identifier) {
+		if (identifier instanceof SimulationSpec.Identifier) {
+			return this;
+		} else return null;
 	}
 }
