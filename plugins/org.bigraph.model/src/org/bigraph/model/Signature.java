@@ -13,6 +13,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 import org.bigraph.model.interfaces.ISignature;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -215,6 +216,8 @@ public class Signature extends ModelObject
 
 	static {
 		ExecutorManager.getInstance().addHandler(new SignatureHandler());
+		DescriptorExecutorManager.getInstance().addHandler(
+				new SignatureDescriptorHandler());
 	}
 	
 	@Override
