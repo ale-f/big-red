@@ -17,10 +17,10 @@ final class SignatureHandler implements IStepExecutor, IStepValidator {
 			ChangeAddControl c = (ChangeAddControl)b;
 			Namespace<Control> ns = c.getCreator().getNamespace();
 			c.control.setName(ns.put(c.name, c.control));
-			c.getCreator().addControl(c.control);
+			c.getCreator().addControl(-1, c.control);
 		} else if (b instanceof ChangeAddSignature) {
 			ChangeAddSignature c = (ChangeAddSignature)b;
-			c.getCreator().addSignature(c.signature);
+			c.getCreator().addSignature(-1, c.signature);
 		} else if (b instanceof ChangeRemoveSignature) {
 			ChangeRemoveSignature c = (ChangeRemoveSignature)b;
 			c.getCreator().getParent().removeSignature(c.getCreator());

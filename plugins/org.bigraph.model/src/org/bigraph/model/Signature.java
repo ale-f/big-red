@@ -155,26 +155,26 @@ public class Signature extends ModelObject
 		Signature s = (Signature)super.clone();
 		
 		for (Control c : getControls())
-			s.addControl(c.clone(s));
+			s.addControl(-1, c.clone(s));
 		
 		for (Signature t : getSignatures())
-			s.addSignature(t.clone());
+			s.addSignature(-1, t.clone());
 		
 		return s;
 	}
 	
-	protected void addControl(Control c) {
-		if (controls.add(c)) {
-			c.setSignature(this);
-			firePropertyChange(PROPERTY_CONTROL, null, c);
-		}
+	protected void addControl(int position, Control c) {
+		if (position == -1) {
+			controls.add(c);
+		} else controls.add(position, c);
+		c.setSignature(this);
+		firePropertyChange(PROPERTY_CONTROL, null, c);
 	}
 	
 	protected void removeControl(Control m) {
-		if (controls.remove(m)) {
-			m.setSignature(null);
-			firePropertyChange(PROPERTY_CONTROL, m, null);
-		}
+		controls.remove(m);
+		m.setSignature(null);
+		firePropertyChange(PROPERTY_CONTROL, m, null);
 	}
 	
 	public Control getControl(String name) {
@@ -280,18 +280,18 @@ public class Signature extends ModelObject
 		return getProperty(context, PROPERTY_CHILD, List.class);
 	}
 	
-	protected void addSignature(Signature s) {
-		if (signatures.add(s)) {
-			s.setParent(this);
-			firePropertyChange(PROPERTY_CHILD, null, s);
-		}
+	protected void addSignature(int position, Signature s) {
+		if (position == -1) {
+			signatures.add(s);
+		} else signatures.add(position, s);
+		s.setParent(this);
+		firePropertyChange(PROPERTY_CHILD, null, s);
 	}
 	
 	protected void removeSignature(Signature s) {
-		if (signatures.remove(s)) {
-			s.setParent(null);
-			firePropertyChange(PROPERTY_CHILD, s, null);
-		}
+		signatures.remove(s);
+		s.setParent(null);
+		firePropertyChange(PROPERTY_CHILD, s, null);
 	}
 	
 	public IChange changeAddControl(Control control, String name) {
