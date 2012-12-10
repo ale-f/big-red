@@ -34,6 +34,10 @@ public abstract class Layoutable extends NamedModelObject {
 
 	abstract static class LayoutableChangeDescriptor
 			extends NamedModelObjectChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addHandler(
+					new LayoutableDescriptorHandler());
+		}
 	}
 	
 	@Override
@@ -88,8 +92,6 @@ public abstract class Layoutable extends NamedModelObject {
 	
 	static {
 		ExecutorManager.getInstance().addHandler(new LayoutableHandler());
-		DescriptorExecutorManager.getInstance().addHandler(
-				new LayoutableDescriptorHandler());
 	}
 	
 	private Container parent = null;

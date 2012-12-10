@@ -22,6 +22,10 @@ public abstract class NamedModelObject extends ModelObject {
 	
 	abstract static class NamedModelObjectChangeDescriptor
 			extends ModelObjectChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addHandler(
+					new NamedModelObjectDescriptorHandler());
+		}
 	}
 	
 	protected abstract Namespace<? extends NamedModelObject>
@@ -79,8 +83,6 @@ public abstract class NamedModelObject extends ModelObject {
 	static {
 		ExecutorManager.getInstance().addHandler(
 				new NamedModelObjectHandler());
-		DescriptorExecutorManager.getInstance().addHandler(
-				new NamedModelObjectDescriptorHandler());
 	}
 	
 	public static abstract class Identifier implements ModelObject.Identifier {

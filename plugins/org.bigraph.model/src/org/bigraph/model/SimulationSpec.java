@@ -274,8 +274,6 @@ public class SimulationSpec extends ModelObject
 	
 	static {
 		ExecutorManager.getInstance().addHandler(new SimulationSpecHandler());
-		DescriptorExecutorManager.getInstance().addHandler(
-				new SimulationSpecDescriptorHandler());
 	}
 	
 	@Override
@@ -329,6 +327,10 @@ public class SimulationSpec extends ModelObject
 	
 	abstract static class SimulationSpecChangeDescriptor
 			extends ModelObjectChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addHandler(
+					new SimulationSpecDescriptorHandler());
+		}
 	}
 	
 	public static final class ChangeSetModelDescriptor

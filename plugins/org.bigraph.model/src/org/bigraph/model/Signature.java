@@ -216,8 +216,6 @@ public class Signature extends ModelObject
 
 	static {
 		ExecutorManager.getInstance().addHandler(new SignatureHandler());
-		DescriptorExecutorManager.getInstance().addHandler(
-				new SignatureDescriptorHandler());
 	}
 	
 	@Override
@@ -338,6 +336,10 @@ public class Signature extends ModelObject
 	
 	abstract static class SignatureChangeDescriptor
 			extends ModelObjectChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addHandler(
+					new SignatureDescriptorHandler());
+		}
 	}
 	
 	public static final class ChangeAddControlDescriptor

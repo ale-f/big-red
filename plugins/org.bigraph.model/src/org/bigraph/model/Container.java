@@ -35,6 +35,10 @@ public abstract class Container extends Layoutable {
 	
 	abstract static class ContainerChangeDescriptor
 			extends LayoutableChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addHandler(
+					new ContainerDescriptorHandler());
+		}
 	}
 	
 	public final class ChangeAddChild extends ContainerChange {
@@ -86,8 +90,6 @@ public abstract class Container extends Layoutable {
 	
 	static {
 		ExecutorManager.getInstance().addHandler(new ContainerHandler());
-		DescriptorExecutorManager.getInstance().addHandler(
-				new ContainerDescriptorHandler());
 	}
 	
 	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();

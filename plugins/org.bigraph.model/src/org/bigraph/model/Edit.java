@@ -126,8 +126,6 @@ public class Edit extends ModelObject
 	
 	static {
 		ExecutorManager.getInstance().addHandler(new EditHandler());
-		DescriptorExecutorManager.getInstance().addHandler(
-				new EditDescriptorHandler());
 	}
 	
 	@Override
@@ -185,6 +183,10 @@ public class Edit extends ModelObject
 	
 	abstract static class EditChangeDescriptor
 			extends ModelObjectChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addHandler(
+					new EditDescriptorHandler());
+		}
 	}
 	
 	public static class ChangeDescriptorAddDescriptor

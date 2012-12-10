@@ -31,6 +31,10 @@ public abstract class Point extends Layoutable implements IPoint {
 	
 	abstract static class PointChangeDescriptor
 			extends LayoutableChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addHandler(
+					new PointDescriptorHandler());
+		}
 	}
 	
 	public final class ChangeConnect extends PointChange {
@@ -99,8 +103,6 @@ public abstract class Point extends Layoutable implements IPoint {
 
 	static {
 		ExecutorManager.getInstance().addHandler(new PointHandler());
-		DescriptorExecutorManager.getInstance().addHandler(
-				new PointDescriptorHandler());
 	}
 	
 	private Link link = null;
