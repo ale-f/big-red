@@ -1,6 +1,7 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.NamedModelObject.Identifier;
 import org.bigraph.model.NamedModelObject.ChangeNameDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -25,7 +26,7 @@ final class NamedModelObjectDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
 			
-			checkName(scratch, cd, object,
+			checkName(scratch, cd, cd.getTarget(),
 					object.getGoverningNamespace(scratch), cd.getNewName());
 		} else return false;
 		return true;
@@ -40,21 +41,20 @@ final class NamedModelObjectDescriptorHandler
 		return true;
 	}
 	
-	static <V> void checkName(
-			PropertyScratchpad context, IChangeDescriptor c, V object,
-			Namespace<? extends V> ns, String cdt)
+	static void checkName(
+			PropertyScratchpad context, IChangeDescriptor c, Identifier object,
+			Namespace<? extends NamedModelObject> ns, String newName)
 			throws ChangeCreationException {
-		if (cdt == null || cdt.length() == 0)
+		if (newName == null || newName.length() == 0)
 			throw new ChangeCreationException(c, "Names cannot be empty");
-		if (ns == null)
+		if (ns == null || newName.equals(object.getName()))
 			return;
 		INamePolicy p = ns.getPolicy();
-		String mcdt = (p != null ? p.normalise(cdt) : cdt);
+		String mcdt = (p != null ? p.normalise(newName) : newName);
 		if (mcdt == null)
 			throw new ChangeCreationException(c,
-					"\"" + cdt + "\" is not a valid name for " + object);
-		V current = ns.get(context, mcdt);
-		if (current != null && current != object)
+					"\"" + newName + "\" is not a valid name for " + object);
+		if (ns.get(context, mcdt) != null)
 			throw new ChangeCreationException(c, "Names must be unique");
 	}
 }

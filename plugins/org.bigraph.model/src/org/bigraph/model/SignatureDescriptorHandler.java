@@ -27,9 +27,8 @@ final class SignatureDescriptorHandler implements IDescriptorStepExecutor,
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
 			
-			/* XXX: can "new Control()" be improved upon? */
 			NamedModelObjectDescriptorHandler.checkName(scratch, cd,
-					new Control(), s.getNamespace(),
+					cd.getControl(), s.getNamespace(),
 					cd.getControl().getName()); 
 		} else if (change instanceof ChangeAddSignatureDescriptor) {
 			ChangeAddSignatureDescriptor cd =
