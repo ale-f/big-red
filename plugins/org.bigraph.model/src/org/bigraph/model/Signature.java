@@ -3,6 +3,7 @@ package org.bigraph.model;
 import java.util.ArrayList;
 import java.util.List;
 import org.bigraph.model.Control.ChangeRemoveControl;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -10,6 +11,8 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.interfaces.ISignature;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -307,8 +310,11 @@ public class Signature extends ModelObject
 	}
 	
 	@Override
-	public Object lookup(PropertyScratchpad context, Identifier identifier) {
-		if (identifier instanceof Control.Identifier) {
+	public Object lookup(
+			PropertyScratchpad context, ModelObject.Identifier identifier) {
+		if (identifier instanceof Signature.Identifier) {
+			return this;
+		} else if (identifier instanceof Control.Identifier) {
 			return getControl(((Control.Identifier)identifier).getName());
 		} else if (identifier instanceof PortSpec.Identifier) {
 			PortSpec.Identifier id = (PortSpec.Identifier)identifier;
@@ -317,5 +323,140 @@ public class Signature extends ModelObject
 				return c.getNamespace().get(context, id.getName());
 		}
 		return null;
+	}
+	
+	public static final class Identifier implements ModelObject.Identifier {
+		@Override
+		public Signature lookup(PropertyScratchpad context, Resolver r) {
+			return NamedModelObject.Identifier.require(
+					r.lookup(context, this), Signature.class);
+		}
+	}
+	
+	abstract static class SignatureChangeDescriptor
+			extends ModelObjectChangeDescriptor {
+	}
+	
+	public static final class ChangeAddControlDescriptor
+			extends SignatureChangeDescriptor {
+		private final Identifier target;
+		private final int position;
+		private final Control.Identifier control;
+		
+		public ChangeAddControlDescriptor(
+				Identifier target, int position, Control.Identifier control) {
+			this.target = target;
+			this.position = position;
+			this.control = control;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public int getPosition() {
+			return position;
+		}
+		
+		public Control.Identifier getControl() {
+			return control;
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Signature s = getTarget().lookup(context, r);
+			if (s == null)
+				throw new ChangeCreationException(this,
+						"" + getTarget() + ": lookup failed");
+			return s.changeAddControl(new Control(), getControl().getName());
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			throw new UnsupportedOperationException(
+					"FIXME: ChangeAddControlDescriptor.inverse() " +
+					"not implementable");
+		}
+	}
+	
+	public static final class ChangeAddSignatureDescriptor
+			extends SignatureChangeDescriptor {
+		private final Identifier target;
+		private final int position;
+		private final Signature signature;
+		
+		public ChangeAddSignatureDescriptor(
+				Identifier target, int position, Signature signature) {
+			this.target = target;
+			this.position = position;
+			this.signature = signature;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public int getPosition() {
+			return position;
+		}
+		
+		public Signature getSignature() {
+			return signature;
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Signature s = getTarget().lookup(context, r);
+			if (s == null)
+				throw new ChangeCreationException(this,
+						"" + getTarget() + ": lookup failed");
+			return s.changeAddSignature(getSignature());
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeRemoveSignatureDescriptor(
+					getTarget(), getPosition(), getSignature());
+		}
+	}
+	
+	public static final class ChangeRemoveSignatureDescriptor
+			extends SignatureChangeDescriptor {
+		private final Identifier target;
+		private final int position;
+		private final Signature signature;
+
+		public ChangeRemoveSignatureDescriptor(
+				Identifier target, int position, Signature signature) {
+			this.target = target;
+			this.position = position;
+			this.signature = signature;
+		}
+
+		public Identifier getTarget() {
+			return target;
+		}
+
+		public int getPosition() {
+			return position;
+		}
+
+		public Signature getSignature() {
+			return signature;
+		}
+
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			return getSignature().changeRemoveSignature();
+		}
+
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeAddSignatureDescriptor(
+					getTarget(), getPosition(), getSignature());
+		}
 	}
 }
