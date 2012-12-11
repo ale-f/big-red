@@ -4,7 +4,10 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
+import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.NamedModelObject;
+import org.bigraph.model.Root;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ValidatorManager;
@@ -13,6 +16,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.changes.descriptors.experimental.BoundDescriptor;
 import org.junit.Test;
 
 public class ExecutionTests {
@@ -144,5 +148,24 @@ public class ExecutionTests {
 				d.change("foxtrot"),
 				d.changeExtendedData("eD!+test", Object.class)));
 		em.tryApplyChange(cg);
+	}
+	
+	@Test
+	public void boundDescriptorExecution() throws ChangeRejectedException {
+		Bigraph b = new Bigraph();
+		Root r = new Root();
+		
+		ChangeGroup cg = new ChangeGroup();
+		cg.addAll(Arrays.asList(
+				b.changeAddChild(r, "0"),
+				new BoundDescriptor(b,
+						new NamedModelObject.ChangeNameDescriptor(
+								new Root.Identifier("0"), "1")),
+				new BoundDescriptor(b,
+						new NamedModelObject.ChangeNameDescriptor(
+								new Root.Identifier("1"), "2"))));
+		ExecutorManager.getInstance().tryApplyChange(cg);
+		
+		assertTrue("2".equals(r.getName()));
 	}
 }
