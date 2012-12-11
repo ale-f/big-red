@@ -12,6 +12,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -193,7 +194,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 				try {
 					Signature s = (newValue != null ?
 						(Signature)new EclipseFileWrapper((IFile)newValue).load() : null);
-					doChange(getModel().changeSignature(s));
+					doChange(getModel().changeSignature(
+							getModel().getSignature(), s));
 					recalculateExportEnabled();
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
@@ -239,7 +241,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 					IFile f = (IFile)rtsd.getFirstResult();
 					try {
 						ReactionRule r = (ReactionRule)new EclipseFileWrapper(f).load();
-						doChange(model.changeAddRule(r));
+						doChange(model.changeAddRule(-1, r));
 					} catch (LoadFailedException ife) {
 						ife.printStackTrace();
 					}
@@ -254,9 +256,13 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 				Iterator<?> it =
 					((IStructuredSelection)rules.getSelection()).iterator();
 				ChangeGroup cg = new ChangeGroup();
-				while (it.hasNext())
-					cg.add(getModel().
-							changeRemoveRule((ReactionRule)it.next()));
+				PropertyScratchpad scratch = new PropertyScratchpad();
+				while (it.hasNext()) {
+					ReactionRule rr = (ReactionRule)it.next();
+					IChange ch = getModel().changeRemoveRule(
+							getModel().getRules(scratch).indexOf(rr), rr);
+					cg.add(scratch.executeChange(ch));
+				}
 				if (!cg.isEmpty())
 					doChange(cg);
 			}
@@ -277,7 +283,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 				try {
 					Bigraph b = (newValue != null ?
 						(Bigraph)new EclipseFileWrapper((IFile)newValue).load() : null);
-					doChange(getModel().changeModel(b));
+					doChange(getModel().changeModel(
+							getModel().getModel(), b));
 					recalculateExportEnabled();
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();

@@ -12,6 +12,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.experimental.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 
 public class SimulationSpec extends ModelObject
@@ -33,149 +34,6 @@ public class SimulationSpec extends ModelObject
 	 */
 	@RedProperty(fired = Signature.class, retrieved = Signature.class)
 	public static final String PROPERTY_SIGNATURE = "SimulationSpecSignature";
-	
-	abstract class SimulationSpecChange extends ModelObjectChange {
-		@Override
-		public SimulationSpec getCreator() {
-			return SimulationSpec.this;
-		}
-	}
-	
-	public final class ChangeSignature extends SimulationSpecChange {
-		public final Signature signature;
-		
-		protected ChangeSignature(Signature signature) {
-			this.signature = signature;
-		}
-		
-		private Signature oldSignature;
-		
-		@Override
-		public void beforeApply() {
-			oldSignature = getCreator().getSignature();
-		}
-		
-		@Override
-		public ChangeSignature inverse() {
-			return new ChangeSignature(oldSignature);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set signature of " + getCreator() +
-					" to " + signature + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.setProperty(getCreator(),
-					SimulationSpec.PROPERTY_SIGNATURE, signature);
-		}
-	}
-	
-	public final class ChangeAddRule extends SimulationSpecChange {
-		public final ReactionRule rule;
-		public final int position;
-		
-		protected ChangeAddRule(ReactionRule rule) {
-			this(rule, -1);
-		}
-		
-		protected ChangeAddRule(ReactionRule rule, int position) {
-			this.rule = rule;
-			this.position = position;
-		}
-		
-		@Override
-		public ChangeRemoveRule inverse() {
-			return new ChangeRemoveRule(rule);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(add reaction rule " + rule + " to " +
-					getCreator() + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			List<ReactionRule> l =
-					context.<ReactionRule>getModifiableList(
-							getCreator(),
-							SimulationSpec.PROPERTY_RULE, getRules());
-			if (position == -1) {
-				l.add(rule);
-			} else l.add(position, rule);
-		}
-	}
-	
-	public final class ChangeRemoveRule extends SimulationSpecChange {
-		public final ReactionRule rule;
-		
-		protected ChangeRemoveRule(ReactionRule rule) {
-			this.rule = rule;
-		}
-		
-		private int actualPosition = -1;
-		@Override
-		public void beforeApply() {
-			actualPosition = getCreator().getRules().indexOf(rule);
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (actualPosition != -1);
-		}
-		
-		@Override
-		public ChangeAddRule inverse() {
-			return new ChangeAddRule(rule, actualPosition);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(remove reaction rule " + rule + " from " +
-					getCreator() + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.<ReactionRule>getModifiableList(getCreator(),
-					SimulationSpec.PROPERTY_RULE, getRules()).remove(rule);
-		}
-	}
-	
-	public final class ChangeModel extends SimulationSpecChange {
-		public final Bigraph model;
-		
-		protected ChangeModel(Bigraph model) {
-			this.model = model;
-		}
-		
-		private Bigraph oldModel;
-		
-		@Override
-		public void beforeApply() {
-			oldModel = getCreator().getModel();
-		}
-		
-		@Override
-		public ChangeModel inverse() {
-			return new ChangeModel(oldModel);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set model of " + getCreator() +
-					" to " + model + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.setProperty(getCreator(),
-					SimulationSpec.PROPERTY_MODEL, model);
-		}
-	}
 	
 	private Signature signature;
 	
@@ -246,20 +104,30 @@ public class SimulationSpec extends ModelObject
 		return getProperty(context, PROPERTY_MODEL, Bigraph.class);
 	}
 	
-	public IChange changeSignature(Signature signature) {
-		return new ChangeSignature(signature);
+	public IChange changeSignature(
+			Signature oldSignature, Signature newSignature) {
+		return new BoundDescriptor(this,
+				new SimulationSpec.ChangeSetSignatureDescriptor(
+						new SimulationSpec.Identifier(),
+						oldSignature, newSignature));
 	}
 	
-	public IChange changeAddRule(ReactionRule rule) {
-		return new ChangeAddRule(rule);
+	public IChange changeAddRule(int position, ReactionRule rule) {
+		return new BoundDescriptor(this,
+				new SimulationSpec.ChangeAddRuleDescriptor(
+						new SimulationSpec.Identifier(), position, rule));
 	}
 	
-	public IChange changeRemoveRule(ReactionRule rule) {
-		return new ChangeRemoveRule(rule);
+	public IChange changeRemoveRule(int position, ReactionRule rule) {
+		return new BoundDescriptor(this,
+				new SimulationSpec.ChangeRemoveRuleDescriptor(
+						new SimulationSpec.Identifier(), position, rule));
 	}
 
-	public IChange changeModel(Bigraph model) {
-		return new ChangeModel(model);
+	public IChange changeModel(Bigraph oldModel, Bigraph newModel) {
+		return new BoundDescriptor(this,
+				new SimulationSpec.ChangeSetModelDescriptor(
+						new SimulationSpec.Identifier(), oldModel, newModel));
 	}
 	
 	@Override
@@ -270,10 +138,6 @@ public class SimulationSpec extends ModelObject
 	@Override
 	public void tryApplyChange(IChange b) throws ChangeRejectedException {
 		ExecutorManager.getInstance().tryApplyChange(b);
-	}
-	
-	static {
-		ExecutorManager.getInstance().addHandler(new SimulationSpecHandler());
 	}
 	
 	@Override
@@ -365,13 +229,19 @@ public class SimulationSpec extends ModelObject
 			if (ss == null)
 				throw new ChangeCreationException(this,
 						"" + getTarget() + ": lookup failed");
-			return ss.changeModel(getNewModel());
+			return ss.changeModel(getOldModel(), getNewModel());
 		}
 		
 		@Override
 		public IChangeDescriptor inverse() {
 			return new ChangeSetModelDescriptor(
 					getTarget(), getNewModel(), getOldModel());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			SimulationSpec self = getTarget().lookup(context, r);
+			context.setProperty(self, PROPERTY_MODEL, getNewModel());
 		}
 	}
 	
@@ -407,13 +277,19 @@ public class SimulationSpec extends ModelObject
 			if (ss == null)
 				throw new ChangeCreationException(this,
 						"" + getTarget() + ": lookup failed");
-			return ss.changeSignature(getNewSignature());
+			return ss.changeSignature(getOldSignature(), getNewSignature());
 		}
 		
 		@Override
 		public IChangeDescriptor inverse() {
 			return new ChangeSetSignatureDescriptor(
 					getTarget(), getNewSignature(), getOldSignature());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			SimulationSpec self = getTarget().lookup(context, r);
+			context.setProperty(self, PROPERTY_SIGNATURE, getNewSignature());
 		}
 	}
 	
@@ -449,13 +325,24 @@ public class SimulationSpec extends ModelObject
 			if (ss == null)
 				throw new ChangeCreationException(this,
 						"" + getTarget() + ": lookup failed");
-			return ss.changeAddRule(getRule());
+			return ss.changeAddRule(getPosition(), getRule());
 		}
 		
 		@Override
 		public IChangeDescriptor inverse() {
 			return new ChangeRemoveRuleDescriptor(
 					getTarget(), getPosition(), getRule());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			SimulationSpec self = getTarget().lookup(context, r);
+			List<ReactionRule> l =
+					context.<ReactionRule>getModifiableList(
+							self, PROPERTY_RULE, self.getRules());
+			if (getPosition() == -1) {
+				l.add(getRule());
+			} else l.add(getPosition(), getRule());
 		}
 	}
 	
@@ -491,13 +378,20 @@ public class SimulationSpec extends ModelObject
 			if (ss == null)
 				throw new ChangeCreationException(this,
 						"" + getTarget() + ": lookup failed");
-			return ss.changeRemoveRule(getRule());
+			return ss.changeRemoveRule(getPosition(), getRule());
 		}
 		
 		@Override
 		public IChangeDescriptor inverse() {
 			return new ChangeAddRuleDescriptor(
 					getTarget(), getPosition(), getRule());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			SimulationSpec self = getTarget().lookup(context, r);
+			context.<ReactionRule>getModifiableList(
+					self, PROPERTY_RULE, self.getRules()).remove(getRule());
 		}
 	}
 

@@ -103,7 +103,7 @@ public class BGMParser {
 		parseRoots(lhs);
 		lexer.expect(P_ARROW);
 		parseRoots(rhs);
-		change(simulationSpec.changeAddRule(makeRule(lhs, rhs)));
+		change(simulationSpec.changeAddRule(-1, makeRule(lhs, rhs)));
 	}
 	
 	private void reaction_or_exp()
@@ -114,8 +114,8 @@ public class BGMParser {
 		parseRoots(lhs);
 		if (lexer.accept(P_ARROW) != null) { /* reaction */
 			parseRoots(rhs = makeBigraph());
-			change(simulationSpec.changeAddRule(makeRule(lhs, rhs)));
-		} else change(simulationSpec.changeModel(lhs));
+			change(simulationSpec.changeAddRule(-1, makeRule(lhs, rhs)));
+		} else change(simulationSpec.changeModel(simulationSpec.getModel(), lhs));
 	}
 	
 	private void parseRoots(Bigraph parent)
@@ -228,7 +228,7 @@ public class BGMParser {
 		simulationSpec = new SimulationSpec();
 		try {
 			change(simulationSpec.changeSignature(
-					signature = new Signature()));
+					simulationSpec.getSignature(), signature = new Signature()));
 			model();
 			return simulationSpec;
 		} catch (ChangeRejectedException cre) {

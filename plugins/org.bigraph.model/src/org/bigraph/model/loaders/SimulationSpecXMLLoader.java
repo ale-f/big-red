@@ -53,7 +53,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 					getNamedChildElement(e, SPEC, "signature")),
 				SPEC, Signature.class, new SignatureXMLLoader(this));
 		if (s != null)
-			addChange(ss.changeSignature(s));
+			addChange(ss.changeSignature(null, s));
 		
 		for (Element n :
 				forNodeList(e.getChildNodes()).filter(Element.class)) {
@@ -63,7 +63,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 				ReactionRule rr = loadSub(n, SPEC, ReactionRule.class,
 						new ReactionRuleXMLLoader(this));
 				if (rr != null)
-					addChange(ss.changeAddRule(rr));
+					addChange(ss.changeAddRule(-1, rr));
 			}
 		}
 		
@@ -73,7 +73,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 					getNamedChildElement(e, SPEC, "model")),
 				SPEC, Bigraph.class, new BigraphXMLLoader(this));
 		if (b != null)
-			addChange(ss.changeModel(b));
+			addChange(ss.changeModel(null, b));
 		
 		executeUndecorators(ss, e);
 		executeChanges(ss);

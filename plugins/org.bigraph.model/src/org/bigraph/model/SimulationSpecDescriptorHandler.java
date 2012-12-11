@@ -45,7 +45,7 @@ final class SimulationSpecDescriptorHandler implements
 						"Can't insert a null rule");
 			
 			int position = cd.getPosition();
-			if (position < 0 ||
+			if (position < -1 ||
 					position > ss.getRules(scratch).size())
 				throw new ChangeCreationException(cd,
 						"" + position + " is not a valid position");
@@ -58,6 +58,8 @@ final class SimulationSpecDescriptorHandler implements
 			
 			List<? extends ReactionRule> rrs = ss.getRules(scratch);
 			int position = cd.getPosition();
+			if (position == -1)
+				position = rrs.size() - 1;
 			if (position < 0 || position >= rrs.size())
 				throw new ChangeCreationException(cd,
 						"" + position + " is not a valid position");
