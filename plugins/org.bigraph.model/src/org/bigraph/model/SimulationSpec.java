@@ -194,6 +194,12 @@ public class SimulationSpec extends ModelObject
 			DescriptorExecutorManager.getInstance().addHandler(
 					new SimulationSpecDescriptorHandler());
 		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			return new BoundDescriptor(r, this);
+		}
 	}
 	
 	public static final class ChangeSetModelDescriptor
@@ -219,16 +225,6 @@ public class SimulationSpec extends ModelObject
 		
 		public Bigraph getNewModel() {
 			return newModel;
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			SimulationSpec ss = getTarget().lookup(context, r);
-			if (ss == null)
-				throw new ChangeCreationException(this,
-						"" + getTarget() + ": lookup failed");
-			return ss.changeModel(getOldModel(), getNewModel());
 		}
 		
 		@Override
@@ -270,16 +266,6 @@ public class SimulationSpec extends ModelObject
 		}
 		
 		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			SimulationSpec ss = getTarget().lookup(context, r);
-			if (ss == null)
-				throw new ChangeCreationException(this,
-						"" + getTarget() + ": lookup failed");
-			return ss.changeSignature(getOldSignature(), getNewSignature());
-		}
-		
-		@Override
 		public IChangeDescriptor inverse() {
 			return new ChangeSetSignatureDescriptor(
 					getTarget(), getNewSignature(), getOldSignature());
@@ -315,16 +301,6 @@ public class SimulationSpec extends ModelObject
 		
 		public ReactionRule getRule() {
 			return rule;
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			SimulationSpec ss = getTarget().lookup(context, r);
-			if (ss == null)
-				throw new ChangeCreationException(this,
-						"" + getTarget() + ": lookup failed");
-			return ss.changeAddRule(getPosition(), getRule());
 		}
 		
 		@Override
@@ -368,16 +344,6 @@ public class SimulationSpec extends ModelObject
 		
 		public ReactionRule getRule() {
 			return rule;
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			SimulationSpec ss = getTarget().lookup(context, r);
-			if (ss == null)
-				throw new ChangeCreationException(this,
-						"" + getTarget() + ": lookup failed");
-			return ss.changeRemoveRule(getPosition(), getRule());
 		}
 		
 		@Override
