@@ -347,7 +347,6 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 		try {
 			String propertyName = evt.getPropertyName();
 			Object newValue = evt.getNewValue();
-			uiUpdateInProgress = true;
 			if (SimulationSpec.PROPERTY_SIGNATURE.equals(propertyName)) {
 				Signature s = (Signature)newValue;
 				signatureSelector.setResource(getFileFrom(s));
@@ -357,6 +356,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			}
 		} finally {
 			uiUpdateInProgress = false;
+			recalculateExportEnabled();
 		}
 	}
 }
