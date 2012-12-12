@@ -176,8 +176,7 @@ public class Edit extends ModelObject
 	public static final class Identifier implements ModelObject.Identifier {
 		@Override
 		public Edit lookup(PropertyScratchpad context, Resolver r) {
-			return NamedModelObject.Identifier.require(r.lookup(context, this),
-					Edit.class);
+			return require(r.lookup(context, this), Edit.class);
 		}
 	}
 	

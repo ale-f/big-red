@@ -30,6 +30,7 @@ import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
 import static java.lang.Boolean.TRUE;
+import static org.bigraph.model.ModelObject.require;
 
 /**
  * The AbstractPart is the base class for most of the objects in the bigraph
@@ -186,8 +187,7 @@ public abstract class AbstractPart extends AbstractGraphicalEditPart
 	protected <T extends EditPart> T getPartFor(Object o, Class<T> klass) {
 		if (o == null)
 			return null;
-		Object r = getViewer().getEditPartRegistry().get(o);
-		return (klass.isInstance(r) ? klass.cast(r) : null);
+		return require(getViewer().getEditPartRegistry().get(o), klass);
 	}
 	
 	void layoutChange(int generations) {

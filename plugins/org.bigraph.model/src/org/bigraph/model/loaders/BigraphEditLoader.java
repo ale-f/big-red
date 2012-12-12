@@ -107,8 +107,7 @@ public class BigraphEditLoader implements Participant {
 	
 	public static <T extends ModelObject.Identifier> T getIdentifier(
 			Element el, Class<T> klass) {
-		ModelObject.Identifier id = getIdentifier(el);
-		return (klass.isInstance(id) ? klass.cast(id) : null);
+		return ModelObject.require(getIdentifier(el), klass);
 	}
 	
 	@Override

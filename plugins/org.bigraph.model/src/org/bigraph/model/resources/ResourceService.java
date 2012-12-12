@@ -172,6 +172,6 @@ public class ResourceService {
 		} else if (mo instanceof SimulationSpec) {
 			mo = ((SimulationSpec)mo).clone();
 		} else mo = null;
-		return (klass.isInstance(mo) ? klass.cast(mo) : null);
+		return ModelObject.require(mo, klass);
 	}
 }

@@ -329,8 +329,7 @@ public class Signature extends ModelObject
 	public static final class Identifier implements ModelObject.Identifier {
 		@Override
 		public Signature lookup(PropertyScratchpad context, Resolver r) {
-			return NamedModelObject.Identifier.require(
-					r.lookup(context, this), Signature.class);
+			return require(r.lookup(context, this), Signature.class);
 		}
 	}
 	

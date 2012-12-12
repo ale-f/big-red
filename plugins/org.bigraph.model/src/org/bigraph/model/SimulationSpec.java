@@ -184,8 +184,7 @@ public class SimulationSpec extends ModelObject
 	public static class Identifier implements ModelObject.Identifier {
 		@Override
 		public SimulationSpec lookup(PropertyScratchpad context, Resolver r) {
-			return NamedModelObject.Identifier.require(r.lookup(context, this),
-					SimulationSpec.class);
+			return require(r.lookup(context, this), SimulationSpec.class);
 		}
 	}
 	

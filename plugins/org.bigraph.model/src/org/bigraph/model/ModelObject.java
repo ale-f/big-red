@@ -448,6 +448,10 @@ public abstract class ModelObject {
 		}
 	}
 	
+	public static <T> T require(Object o, Class<? extends T> klass) {
+		return (klass.isInstance(o) ? klass.cast(o) : null);
+	}
+	
 	public static boolean safeClassCmp(Object o1, Object o2) {
 		return safeEquals(
 				o1 != null ? o1.getClass() : null,

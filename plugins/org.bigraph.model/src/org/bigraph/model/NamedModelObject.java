@@ -100,10 +100,6 @@ public abstract class NamedModelObject extends ModelObject {
 			return name;
 		}
 		
-		protected static <T> T require(Object o, Class<? extends T> klass) {
-			return (klass.isInstance(o) ? klass.cast(o) : null);
-		}
-		
 		@Override
 		public boolean equals(Object obj_) {
 			return safeClassCmp(this, obj_) &&

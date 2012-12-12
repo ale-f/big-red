@@ -3,6 +3,8 @@ package org.bigraph.model.utilities;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import static org.bigraph.model.ModelObject.require;
+
 public class FilteringIterable<T> implements Iterable<T> {
 	public interface Filter<T, V> {
 		T filter(V in);
@@ -17,7 +19,7 @@ public class FilteringIterable<T> implements Iterable<T> {
 		
 		@Override
 		public T filter(Object in) {
-			return (klass.isInstance(in) ? klass.cast(in) : null);
+			return require(in, klass);
 		}
 	}
 	
