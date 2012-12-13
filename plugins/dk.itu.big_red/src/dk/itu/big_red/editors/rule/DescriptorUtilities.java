@@ -16,6 +16,7 @@ import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -109,6 +110,8 @@ abstract class DescriptorUtilities {
 					ch.getCreator().getIdentifier(context),
 					/* The new child's name should be null at this point */
 					ch.child.getIdentifier(context).getRenamed(ch.name));
+		} else if (c instanceof BoundDescriptor) {
+			chd = ((BoundDescriptor)c).getDescriptor();
 		}
 		if (context != null)
 			c.simulate(context);
