@@ -45,7 +45,7 @@ final class SignatureDescriptorHandler implements IDescriptorStepExecutor,
 						"Can't insert a null signature");
 			
 			int position = cd.getPosition();
-			if (position < 0 ||
+			if (position < -1 ||
 					position > s.getSignatures(scratch).size())
 				throw new ChangeCreationException(cd,
 						"" + position + " is not a valid position");
@@ -60,6 +60,8 @@ final class SignatureDescriptorHandler implements IDescriptorStepExecutor,
 			
 			List<? extends Signature> sigs = s.getSignatures(scratch);
 			int position = cd.getPosition();
+			if (position == -1)
+				position = sigs.size() - 1;
 			if (position < 0 || position >= sigs.size())
 				throw new ChangeCreationException(cd,
 						"" + position + " is not a valid position");
