@@ -104,32 +104,6 @@ public class SimulationSpec extends ModelObject
 		return getProperty(context, PROPERTY_MODEL, Bigraph.class);
 	}
 	
-	public IChange changeSignature(
-			Signature oldSignature, Signature newSignature) {
-		return new BoundDescriptor(this,
-				new SimulationSpec.ChangeSetSignatureDescriptor(
-						new SimulationSpec.Identifier(),
-						oldSignature, newSignature));
-	}
-	
-	public IChange changeAddRule(int position, ReactionRule rule) {
-		return new BoundDescriptor(this,
-				new SimulationSpec.ChangeAddRuleDescriptor(
-						new SimulationSpec.Identifier(), position, rule));
-	}
-	
-	public IChange changeRemoveRule(int position, ReactionRule rule) {
-		return new BoundDescriptor(this,
-				new SimulationSpec.ChangeRemoveRuleDescriptor(
-						new SimulationSpec.Identifier(), position, rule));
-	}
-
-	public IChange changeModel(Bigraph oldModel, Bigraph newModel) {
-		return new BoundDescriptor(this,
-				new SimulationSpec.ChangeSetModelDescriptor(
-						new SimulationSpec.Identifier(), oldModel, newModel));
-	}
-	
 	@Override
 	public void tryValidateChange(IChange b) throws ChangeRejectedException {
 		ExecutorManager.getInstance().tryValidateChange(b);

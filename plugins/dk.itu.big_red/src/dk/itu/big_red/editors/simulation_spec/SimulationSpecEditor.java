@@ -16,6 +16,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.SaveFailedException;
@@ -194,8 +195,10 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 				try {
 					Signature s = (newValue != null ?
 						(Signature)new EclipseFileWrapper((IFile)newValue).load() : null);
-					doChange(getModel().changeSignature(
-							getModel().getSignature(), s));
+					doChange(new BoundDescriptor(getModel(),
+							new SimulationSpec.ChangeSetSignatureDescriptor(
+									new SimulationSpec.Identifier(),
+									getModel().getSignature(), s)));
 					recalculateExportEnabled();
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();
@@ -241,7 +244,10 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 					IFile f = (IFile)rtsd.getFirstResult();
 					try {
 						ReactionRule r = (ReactionRule)new EclipseFileWrapper(f).load();
-						doChange(model.changeAddRule(-1, r));
+						doChange(new BoundDescriptor(model,
+								new SimulationSpec.ChangeAddRuleDescriptor(
+										new SimulationSpec.Identifier(),
+										-1, r)));
 					} catch (LoadFailedException ife) {
 						ife.printStackTrace();
 					}
@@ -259,8 +265,11 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 				PropertyScratchpad scratch = new PropertyScratchpad();
 				while (it.hasNext()) {
 					ReactionRule rr = (ReactionRule)it.next();
-					IChange ch = getModel().changeRemoveRule(
-							getModel().getRules(scratch).indexOf(rr), rr);
+					IChange ch = new BoundDescriptor(getModel(),
+							new SimulationSpec.ChangeRemoveRuleDescriptor(
+									new SimulationSpec.Identifier(),
+									getModel().getRules(scratch).indexOf(rr),
+									rr));
 					cg.add(scratch.executeChange(ch));
 				}
 				if (!cg.isEmpty())
@@ -283,8 +292,10 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 				try {
 					Bigraph b = (newValue != null ?
 						(Bigraph)new EclipseFileWrapper((IFile)newValue).load() : null);
-					doChange(getModel().changeModel(
-							getModel().getModel(), b));
+					doChange(new BoundDescriptor(getModel(),
+							new SimulationSpec.ChangeSetModelDescriptor(
+									new SimulationSpec.Identifier(),
+									getModel().getModel(), b)));
 					recalculateExportEnabled();
 				} catch (LoadFailedException ife) {
 					ife.printStackTrace();

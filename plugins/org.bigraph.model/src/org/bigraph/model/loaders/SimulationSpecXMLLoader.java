@@ -5,6 +5,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -53,8 +54,12 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 					getNamedChildElement(e, SPEC, "signature")),
 				SPEC, Signature.class, new SignatureXMLLoader(this));
 		if (s != null)
-			addChange(ss.changeSignature(null, s));
+			addChange(new BoundDescriptor(ss,
+					new SimulationSpec.ChangeSetSignatureDescriptor(
+							new SimulationSpec.Identifier(),
+							null, s)));
 		
+		int index = 0;
 		for (Element n :
 				forNodeList(e.getChildNodes()).filter(Element.class)) {
 			String ns = n.getNamespaceURI();
@@ -63,7 +68,10 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 				ReactionRule rr = loadSub(n, SPEC, ReactionRule.class,
 						new ReactionRuleXMLLoader(this));
 				if (rr != null)
-					addChange(ss.changeAddRule(-1, rr));
+					addChange(new BoundDescriptor(ss,
+							new SimulationSpec.ChangeAddRuleDescriptor(
+									new SimulationSpec.Identifier(),
+									index++, rr)));
 			}
 		}
 		
@@ -73,7 +81,9 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 					getNamedChildElement(e, SPEC, "model")),
 				SPEC, Bigraph.class, new BigraphXMLLoader(this));
 		if (b != null)
-			addChange(ss.changeModel(null, b));
+			addChange(new BoundDescriptor(ss,
+					new SimulationSpec.ChangeSetModelDescriptor(
+							new SimulationSpec.Identifier(), null, b)));
 		
 		executeUndecorators(ss, e);
 		executeChanges(ss);

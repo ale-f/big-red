@@ -21,6 +21,7 @@ import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 
 public class BGMParser {
 	private static final LexerFactoryFactory lff = new LexerFactoryFactory();
@@ -103,7 +104,9 @@ public class BGMParser {
 		parseRoots(lhs);
 		lexer.expect(P_ARROW);
 		parseRoots(rhs);
-		change(simulationSpec.changeAddRule(-1, makeRule(lhs, rhs)));
+		change(new BoundDescriptor(simulationSpec,
+		new SimulationSpec.ChangeAddRuleDescriptor(
+				new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs))));
 	}
 	
 	private void reaction_or_exp()
@@ -114,8 +117,12 @@ public class BGMParser {
 		parseRoots(lhs);
 		if (lexer.accept(P_ARROW) != null) { /* reaction */
 			parseRoots(rhs = makeBigraph());
-			change(simulationSpec.changeAddRule(-1, makeRule(lhs, rhs)));
-		} else change(simulationSpec.changeModel(simulationSpec.getModel(), lhs));
+			change(new BoundDescriptor(simulationSpec,
+			new SimulationSpec.ChangeAddRuleDescriptor(
+					new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs))));
+		} else change(new BoundDescriptor(simulationSpec,
+		new SimulationSpec.ChangeSetModelDescriptor(
+				new SimulationSpec.Identifier(), simulationSpec.getModel(), lhs)));
 	}
 	
 	private void parseRoots(Bigraph parent)
@@ -227,8 +234,11 @@ public class BGMParser {
 		setString(test);
 		simulationSpec = new SimulationSpec();
 		try {
-			change(simulationSpec.changeSignature(
-					simulationSpec.getSignature(), signature = new Signature()));
+			Signature newSignature = signature = new Signature();
+			change(new BoundDescriptor(simulationSpec,
+			new SimulationSpec.ChangeSetSignatureDescriptor(
+					new SimulationSpec.Identifier(),
+					simulationSpec.getSignature(), newSignature)));
 			model();
 			return simulationSpec;
 		} catch (ChangeRejectedException cre) {
