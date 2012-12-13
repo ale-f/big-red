@@ -1,8 +1,10 @@
 package org.bigraph.model.loaders;
 
 import org.bigraph.model.Edit;
+import org.bigraph.model.Edit.ChangeDescriptorAddDescriptor;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.experimental.BoundDescriptor;
 import org.bigraph.model.process.IParticipant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -102,7 +104,9 @@ public class EditXMLLoader extends XMLLoader {
 			} else cd = makeDescriptor(i);
 			
 			if (cd != null)
-				addChange(ed.changeDescriptorAdd(index++, cd));
+				addChange(new BoundDescriptor(ed,
+						new ChangeDescriptorAddDescriptor(
+								new Edit.Identifier(), index++, cd)));
 		}
 		
 		executeUndecorators(ed, el);

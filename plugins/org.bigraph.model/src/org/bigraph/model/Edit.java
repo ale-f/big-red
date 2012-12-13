@@ -77,20 +77,6 @@ public class Edit extends ModelObject
 		} else return super.getProperty(name);
 	}
 	
-	public IChange changeDescriptorAdd(
-			int position, IChangeDescriptor descriptor) {
-		return new BoundDescriptor(this,
-				new ChangeDescriptorAddDescriptor(
-						new Edit.Identifier(), position, descriptor));
-	}
-	
-	public IChange changeDescriptorRemove(
-			int position, IChangeDescriptor descriptor) {
-		return new BoundDescriptor(this,
-				new ChangeDescriptorRemoveDescriptor(
-						new Edit.Identifier(), position, descriptor));
-	}
-	
 	@Override
 	public void simulate(PropertyScratchpad context, Resolver r)
 			throws ChangeCreationException {
