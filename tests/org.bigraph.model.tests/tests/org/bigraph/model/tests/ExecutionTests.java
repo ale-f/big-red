@@ -16,7 +16,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
-import org.bigraph.model.changes.descriptors.experimental.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.junit.Test;
 
 public class ExecutionTests {
