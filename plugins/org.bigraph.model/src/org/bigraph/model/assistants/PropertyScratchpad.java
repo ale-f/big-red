@@ -151,6 +151,14 @@ public class PropertyScratchpad {
 		}
 	}
 	
+	class MapHelper<T, V>
+			implements Helper<Map<? extends T, ? extends V>, Map<T, V>> {
+		@Override
+		public Map<T, V> newInstance(Map<? extends T, ? extends V> in) {
+			return new HashMap<T, V>(in);
+		}
+	}
+	
 	public <T, V extends T> V getModifiableComplexObject(
 			Helper<T, V> helper, Object target, String name, T original) {
 		@SuppressWarnings("unchecked")
@@ -169,5 +177,11 @@ public class PropertyScratchpad {
 			Object target, String name, Collection<? extends T> original) {
 		return getModifiableComplexObject(
 				new ListHelper<T>(), target, name, original);
+	}
+	
+	public <T, V> Map<T, V> getModifiableMap(Object target,
+			String name, Map<? extends T, ? extends V> original) {
+		return getModifiableComplexObject(
+				new MapHelper<T, V>(), target, name, original);
 	}
 }
