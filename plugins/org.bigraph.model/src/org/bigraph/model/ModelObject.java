@@ -5,6 +5,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
+
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -231,35 +233,25 @@ public abstract class ModelObject {
 	private static final String PROPERTY_EXTENDED_DATA_MAP =
 			"org.bigraph.model.ModelObject:ExtendedDataMap";
 	
-	private static final class ExtendedDataMap
-			extends HashMap<String, Object> {
-		private static final long serialVersionUID = -7033916127570739039L;
-	}
-	
-	private ExtendedDataMap getExtendedDataMap() {
+	private Map<String, Object> getExtendedDataMap() {
 		return extendedData;
 	}
 	
-	private ExtendedDataMap getExtendedDataMap(PropertyScratchpad context) {
-		return getProperty(context, PROPERTY_EXTENDED_DATA_MAP,
-				ExtendedDataMap.class);
-	}
-	
-	private ExtendedDataMap getModifiableExtendedDataMap(
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> getExtendedDataMap(
 			PropertyScratchpad context) {
-		ExtendedDataMap map;
-		if (context == null ||
-				context.hasProperty(this, PROPERTY_EXTENDED_DATA_MAP)) {
-			return getExtendedDataMap(context);
-		} else {
-			map = new ExtendedDataMap();
-			map.putAll(getExtendedDataMap());
-			context.setProperty(this, PROPERTY_EXTENDED_DATA_MAP, map);
-		}
-		return map;
+		return getProperty(context, PROPERTY_EXTENDED_DATA_MAP, Map.class);
 	}
 	
-	private ExtendedDataMap extendedData = new ExtendedDataMap();
+	private Map<String, Object> getModifiableExtendedDataMap(
+			PropertyScratchpad context) {
+		if (context != null) {
+			return context.getModifiableMap(
+					this, PROPERTY_EXTENDED_DATA_MAP, getExtendedDataMap());
+		} else return getExtendedDataMap();
+	}
+	
+	private Map<String, Object> extendedData = new HashMap<String, Object>();
 	
 	/**
 	 * Retrieves one of this object's extended data properties.
@@ -290,7 +282,7 @@ public abstract class ModelObject {
 			PropertyScratchpad context, String key, Object value) {
 		if (key == null)
 			return;
-		ExtendedDataMap map = getModifiableExtendedDataMap(context);
+		Map<String, Object> map = getModifiableExtendedDataMap(context);
 		Object oldValue = (value != null ?
 				map.put(key, value) : map.remove(key));
 		if (context == null)
