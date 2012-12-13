@@ -176,8 +176,11 @@ public abstract class ModelObject {
 			PropertyScratchpad context, String name, Class<T> klass) {
 		if (context != null && context.hasProperty(this, name)) {
 			Object o = context.getProperty(this, name);
-			if (o == null || klass.isInstance(o))
+			if (o == null || klass.isInstance(o)) {
 				return klass.cast(o);
+			} else throw new RuntimeException(
+					"BUG: " + context + "'s entry for " + name + "(" + o +
+					") isn't an instance of " + klass.getCanonicalName());
 		}
 		return klass.cast(getProperty(name));
 	}
