@@ -1,6 +1,7 @@
 package org.bigraph.model.assistants;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -139,17 +140,34 @@ public class PropertyScratchpad {
 		return change;
 	}
 	
-	public <T> List<T> getModifiableList(
-			Object target, String name, List<? extends T> original) {
+	public interface Helper<T, V extends T> {
+		V newInstance(T in);
+	}
+	
+	class ListHelper<T> implements Helper<Collection<? extends T>, List<T>> {
+		@Override
+		public List<T> newInstance(Collection<? extends T> in) {
+			return new ArrayList<T>(in);
+		}
+	}
+	
+	public <T, V extends T> V getModifiableComplexObject(
+			Helper<T, V> helper, Object target, String name, T original) {
 		@SuppressWarnings("unchecked")
-		List<T> l = (List<T>)getProperty(target, name);
+		V l = (V)getProperty(target, name);
 		if (l != null && !changes.containsKey(getKey(target, name))) {
-			/* This list has come from the parent, so make a copy of it */
+			/* This object has come from the parent, so make a copy of it */
 			original = l;
 			l = null;
 		}
 		if (l == null)
-			setProperty(target, name, l = new ArrayList<T>(original));
+			setProperty(target, name, l = helper.newInstance(original));
 		return l;
+	}
+	
+	public <T> List<T> getModifiableList(
+			Object target, String name, Collection<? extends T> original) {
+		return getModifiableComplexObject(
+				new ListHelper<T>(), target, name, original);
 	}
 }
