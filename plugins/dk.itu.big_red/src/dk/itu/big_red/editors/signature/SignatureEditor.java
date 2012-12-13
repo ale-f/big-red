@@ -7,9 +7,11 @@ import java.util.Iterator;
 import org.bigraph.model.Control;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
@@ -348,8 +350,12 @@ implements PropertyChangeListener {
 				if (rtsd.open() == Dialog.OK) {
 					try {
 						IFile f = (IFile)rtsd.getFirstResult();
-						doChange(getModel().changeAddSignature(
-								(Signature)new EclipseFileWrapper(f).load()));
+						doChange(new BoundDescriptor(getModel(),
+								new Signature.ChangeAddSignatureDescriptor(
+										new Signature.Identifier(),
+										-1,
+										(Signature)new EclipseFileWrapper(f).
+												load())));
 					} catch (LoadFailedException ex) {
 						return;
 					}
@@ -375,17 +381,24 @@ implements PropertyChangeListener {
 				Iterator<?> it =
 					((IStructuredSelection)controls.getSelection()).iterator();
 				ChangeGroup cg = new ChangeGroup();
+				PropertyScratchpad context = new PropertyScratchpad();
 				while (it.hasNext()) {
 					Object i = it.next();
+					IChange ch = null;
 					if (i instanceof Control) {
 						Control c = (Control)i;
 						if (c.getSignature().equals(getModel()))
-							cg.add(c.changeRemove());
+							cg.add(ch = c.changeRemove());
 					} else if (i instanceof Signature) {
 						Signature s = (Signature)i;
 						if (s.getParent().equals(getModel()))
-							cg.add(s.changeRemoveSignature());
+							cg.add(ch = new BoundDescriptor(getModel(),
+									new Signature.ChangeRemoveSignatureDescriptor(
+											new Signature.Identifier(),
+											getModel().getSignatures(context).indexOf(s),
+											s)));
 					}
+					context.executeChange(ch);
 				}
 				
 				if (cg.size() > 0) {

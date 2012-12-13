@@ -11,6 +11,7 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
@@ -87,56 +88,6 @@ public class Signature extends ModelObject
 			
 			getCreator().getNamespace().put(context, name, control);
 			context.setProperty(control, Control.PROPERTY_NAME, name);
-		}
-	}
-	
-	public final class ChangeAddSignature extends SignatureChange {
-		public final Signature signature;
-		
-		public ChangeAddSignature(Signature signature) {
-			this.signature = signature;
-		}
-		
-		@Override
-		public ChangeRemoveSignature inverse() {
-			return signature.new ChangeRemoveSignature();
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.<Signature>getModifiableList(
-					getCreator(), PROPERTY_CHILD, getSignatures()).
-				add(signature);
-			context.setProperty(signature,
-					PROPERTY_PARENT, getCreator());
-		}
-	}
-	
-	public final class ChangeRemoveSignature extends SignatureChange {
-		public ChangeRemoveSignature() {
-		}
-		
-		private Signature oldParent;
-		
-		@Override
-		public void beforeApply() {
-			oldParent = getCreator().getParent();
-		}
-		
-		@Override
-		public ChangeAddSignature inverse() {
-			return oldParent.new ChangeAddSignature(getCreator());
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			Signature self = getCreator();
-			Signature parent = self.getParent(context);
-			
-			context.<Signature>getModifiableList(
-					parent, PROPERTY_CHILD, parent.getSignatures()).
-				remove(self);
-			context.setProperty(self, PROPERTY_PARENT, null);
 		}
 	}
 	
@@ -302,14 +253,6 @@ public class Signature extends ModelObject
 		return new ChangeAddControl(control, name);
 	}
 	
-	public IChange changeAddSignature(Signature signature) {
-		return new ChangeAddSignature(signature);
-	}
-	
-	public IChange changeRemoveSignature() {
-		return new ChangeRemoveSignature();
-	}
-	
 	@Override
 	public Object lookup(
 			PropertyScratchpad context, ModelObject.Identifier identifier) {
@@ -338,6 +281,12 @@ public class Signature extends ModelObject
 		static {
 			DescriptorExecutorManager.getInstance().addHandler(
 					new SignatureDescriptorHandler());
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			return new BoundDescriptor(r, this);
 		}
 	}
 	
@@ -410,19 +359,18 @@ public class Signature extends ModelObject
 		}
 		
 		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			Signature s = getTarget().lookup(context, r);
-			if (s == null)
-				throw new ChangeCreationException(this,
-						"" + getTarget() + ": lookup failed");
-			return s.changeAddSignature(getSignature());
-		}
-		
-		@Override
 		public IChangeDescriptor inverse() {
 			return new ChangeRemoveSignatureDescriptor(
 					getTarget(), getPosition(), getSignature());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			Signature self = getTarget().lookup(context, r);
+			context.<Signature>getModifiableList(
+					self, PROPERTY_CHILD, self.getSignatures()).add(
+							getSignature());
+			context.setProperty(getSignature(), PROPERTY_PARENT, self);
 		}
 	}
 	
@@ -452,15 +400,19 @@ public class Signature extends ModelObject
 		}
 
 		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			return getSignature().changeRemoveSignature();
-		}
-
-		@Override
 		public IChangeDescriptor inverse() {
 			return new ChangeAddSignatureDescriptor(
 					getTarget(), getPosition(), getSignature());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			Signature self = getTarget().lookup(context, r);
+			
+			context.<Signature>getModifiableList(
+					self, PROPERTY_CHILD, self.getSignatures()).remove(
+							getSignature());
+			context.setProperty(getSignature(), PROPERTY_PARENT, null);
 		}
 	}
 }

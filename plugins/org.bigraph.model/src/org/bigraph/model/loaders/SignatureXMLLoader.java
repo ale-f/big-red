@@ -5,6 +5,7 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.FileData;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -58,7 +59,9 @@ public class SignatureXMLLoader extends XMLLoader {
 		SignatureXMLLoader si = new SignatureXMLLoader(this);
 		Signature t = si.makeObject(e);
 		if (t != null)
-			addChange(sig.changeAddSignature(t));
+			addChange(new BoundDescriptor(sig,
+					new Signature.ChangeAddSignatureDescriptor(
+							new Signature.Identifier(), -1, t)));
 	}
 	
 	@Override

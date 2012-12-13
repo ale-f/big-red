@@ -8,6 +8,7 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 
 import static org.bigraph.model.tests.BigraphTests.cg;
 
@@ -57,6 +58,9 @@ public class SignatureTests {
 	
 	@Test
 	public void addNestedSignature() throws ChangeRejectedException {
-		new Signature().changeAddSignature(new Signature());
+		Signature s = new Signature();
+		s.tryApplyChange(new BoundDescriptor(s,
+				new Signature.ChangeAddSignatureDescriptor(
+						new Signature.Identifier(), -1, new Signature())));
 	}
 }
