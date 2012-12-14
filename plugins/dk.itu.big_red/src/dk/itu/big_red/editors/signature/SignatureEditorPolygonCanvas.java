@@ -7,10 +7,12 @@ import java.util.List;
 
 import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Point;
@@ -161,7 +163,10 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			@Override
 			public String isValid(String newText) {
 				IChange c = (current != null ?
-						current.changeName(newText) :
+						new BoundDescriptor(
+								current.getControl().getSignature(),
+								new NamedModelObject.ChangeNameDescriptor(
+										current.getIdentifier(), newText)) :
 						getModel().changeAddPort(ps, newText));
 				try {
 					getModel().getSignature().tryValidateChange(c);
@@ -756,7 +761,10 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 							(p.getName() == null ? "" : p.getName()),
 							getPortNameValidator(p));
 					if (newName != null)
-						doChange(p.changeName(newName));
+						doChange(new BoundDescriptor(
+								getModel().getSignature(),
+								new NamedModelObject.ChangeNameDescriptor(
+										p.getIdentifier(), newName)));
 				}
 			});
 			

@@ -1,38 +1,13 @@
 package org.bigraph.model;
 
-import org.bigraph.model.NamedModelObject.ChangeName;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.names.Namespace;
 import org.bigraph.model.names.policies.INamePolicy;
 
-final class NamedModelObjectHandler implements IStepExecutor, IStepValidator {
-	@Override
-	public boolean executeChange(IChange change_) {
-		if (change_ instanceof NamedModelObject.ChangeName) {
-			ChangeName change = (ChangeName)change_;
-			change.getCreator().applyRename(change.name);
-		} else return false;
-		return true;
-	}
-
-	@Override
-	public boolean tryValidateChange(Process context, IChange change_)
-			throws ChangeRejectedException {
-		final PropertyScratchpad scratch = context.getScratch();
-		if (change_ instanceof NamedModelObject.ChangeName) {
-			ChangeName change = (ChangeName)change_;
-			checkName(scratch, change, change.getCreator(),
-					change.getCreator().getGoverningNamespace(scratch),
-					change.name);
-		} else return false;
-		return true;
-	}
-
-	protected static <V> void checkName(
+final class NamedModelObjectHandler {
+	static <V> void checkName(
 			PropertyScratchpad context, IChange c, V object,
 			Namespace<? extends V> ns, String cdt)
 			throws ChangeRejectedException {

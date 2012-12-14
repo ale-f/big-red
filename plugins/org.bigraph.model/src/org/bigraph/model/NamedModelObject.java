@@ -1,10 +1,10 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
@@ -12,13 +12,6 @@ import org.bigraph.model.names.Namespace;
 public abstract class NamedModelObject extends ModelObject {
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String PROPERTY_NAME = "NamedModelObjectName";
-	
-	abstract class NamedModelObjectChange extends ModelObjectChange {
-		@Override
-		public NamedModelObject getCreator() {
-			return NamedModelObject.this;
-		}
-	}
 	
 	abstract static class NamedModelObjectChangeDescriptor
 			extends ModelObjectChangeDescriptor {
@@ -39,50 +32,6 @@ public abstract class NamedModelObject extends ModelObject {
 		context.setProperty(this, PROPERTY_NAME,
 				getGoverningNamespace(context).rename(
 						context, getName(context), name));
-	}
-	
-	public final class ChangeName extends NamedModelObjectChange {
-		public final String name;
-		
-		public ChangeName(String name) {
-			this.name = name;
-		}
-		
-		private String oldName;
-		@Override
-		public void beforeApply() {
-			oldName = getCreator().getName();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldName != null);
-		}
-		
-		@Override
-		public ChangeName inverse() {
-			return new ChangeName(oldName);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (name != null);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set name of " + getCreator() + " to " + name + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			getCreator().simulateRename(context, name);
-		}
-	}
-	
-	static {
-		ExecutorManager.getInstance().addHandler(
-				new NamedModelObjectHandler());
 	}
 	
 	public static abstract class Identifier implements ModelObject.Identifier {
@@ -165,11 +114,7 @@ public abstract class NamedModelObject extends ModelObject {
 		@Override
 		public IChange createChange(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
-			NamedModelObject o = target.lookup(context, r);
-			if (o == null)
-				throw new ChangeCreationException(this,
-						"" + target + " didn't resolve to a NamedModelObject");
-			return o.changeName(newName);
+			return new BoundDescriptor(r, this);
 		}
 		
 		@Override
@@ -183,6 +128,13 @@ public abstract class NamedModelObject extends ModelObject {
 		public String toString() {
 			return "ChangeDescriptor(set name of " + target + " to " + 
 					newName + ")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			NamedModelObject self = getTarget().lookup(context, r);
+			self.simulateRename(context, getNewName());
 		}
 	}
 
@@ -200,10 +152,6 @@ public abstract class NamedModelObject extends ModelObject {
 		String oldName = this.name;
 		this.name = name;
 		firePropertyChange(PROPERTY_NAME, oldName, name);
-	}
-	
-	public IChange changeName(String newName) {
-		return new ChangeName(newName);
 	}
 	
 	@Override

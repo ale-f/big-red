@@ -12,6 +12,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.Edge;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Link;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.PortSpec;
@@ -21,6 +22,7 @@ import org.bigraph.model.Site;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 
 public class BigraphTests {
 	private Signature signature;
@@ -181,7 +183,9 @@ public class BigraphTests {
 		} catch (ChangeRejectedException e) {
 			fail("Root insertion failed: " + e.getRationale());
 		}
-		b.tryApplyChange(r.changeName("test"));
+		b.tryApplyChange(new BoundDescriptor(b,
+				new NamedModelObject.ChangeNameDescriptor(
+						r.getIdentifier(), "test")));
 	}
 	
 	@Test(expected = ChangeRejectedException.class)
@@ -208,7 +212,9 @@ public class BigraphTests {
 		} catch (ChangeRejectedException e) {
 			fail(e.getRationale());
 		}
-		b.tryApplyChange(s.changeName("test"));
+		b.tryApplyChange(new BoundDescriptor(b,
+				new NamedModelObject.ChangeNameDescriptor(
+						s.getIdentifier(), "test")));
 	}
 	
 	@Test(expected = ChangeRejectedException.class)

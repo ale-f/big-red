@@ -7,8 +7,6 @@ import org.bigraph.model.Layoutable.ChangeRemove;
 import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
-import org.bigraph.model.NamedModelObject.ChangeName;
-import org.bigraph.model.NamedModelObject.ChangeNameDescriptor;
 import org.bigraph.model.Point.ChangeConnect;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnect;
@@ -89,11 +87,6 @@ abstract class DescriptorUtilities {
 			chd = new ChangeRemoveDescriptor(
 					ch.getCreator().getIdentifier(context),
 					ch.getCreator().getParent(context).getIdentifier(context));
-		} else if (c instanceof ChangeName) {
-			ChangeName ch = (ChangeName)c;
-			chd = new ChangeNameDescriptor(
-					((Layoutable)ch.getCreator()).getIdentifier(context),
-					ch.name);
 		} else if (c instanceof ChangeConnect) {
 			ChangeConnect ch = (ChangeConnect)c;
 			chd = new ChangeConnectDescriptor(

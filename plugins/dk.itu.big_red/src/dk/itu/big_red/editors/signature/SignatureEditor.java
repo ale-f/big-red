@@ -5,6 +5,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.bigraph.model.Control;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -220,7 +221,9 @@ implements PropertyChangeListener {
 	private static final IChange changeControlName(Control c, String s) {
 		if (c != null && s != null) {
 			ChangeGroup cg = new ChangeGroup();
-			cg.add(c.changeName(s));
+			cg.add(new BoundDescriptor(c.getSignature(),
+					new NamedModelObject.ChangeNameDescriptor(
+							c.getIdentifier(), s)));
 			cg.add(ControlUtilities.changeLabel(c,
 					ControlUtilities.labelFor(s)));
 			return cg;

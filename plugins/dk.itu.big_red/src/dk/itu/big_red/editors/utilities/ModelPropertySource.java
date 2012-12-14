@@ -6,9 +6,11 @@ import java.util.List;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.swt.graphics.RGB;
@@ -55,7 +57,9 @@ public class ModelPropertySource implements IRedPropertySource {
 	private class NameValidator extends ChangeValidator {
 		@Override
 		public IChange getChange(Object value) {
-			return getModel().changeName((String)value);
+			return new BoundDescriptor(getModel().getBigraph(),
+					new NamedModelObject.ChangeNameDescriptor(
+							getModel().getIdentifier(), (String)value));
 		}
 	}
 	
@@ -157,7 +161,9 @@ public class ModelPropertySource implements IRedPropertySource {
 	@Override
 	public IChange setPropertyValueChange(Object id, Object newValue) {
 		if (Layoutable.PROPERTY_NAME.equals(id)) {
-			return getModel().changeName((String)newValue);
+			return new BoundDescriptor(getModel().getBigraph(),
+					new NamedModelObject.ChangeNameDescriptor(
+							getModel().getIdentifier(), (String)newValue));
 		} else if (ExtendedDataUtilities.COMMENT.equals(id)) {
 			return ExtendedDataUtilities.changeComment(
 					getModel(), (String)newValue);
