@@ -262,7 +262,7 @@ public class Signature extends ModelObject
 			return getControl(((Control.Identifier)identifier).getName());
 		} else if (identifier instanceof PortSpec.Identifier) {
 			PortSpec.Identifier id = (PortSpec.Identifier)identifier;
-			Control c = getControl(id.getName());
+			Control c = getControl(id.getControl().getName());
 			if (c != null)
 				return c.getNamespace().get(context, id.getName());
 		}
