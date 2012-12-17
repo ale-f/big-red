@@ -1,8 +1,10 @@
 Data support in Big Red
 =======================
 
-Big Red's bigraph model has some early and limited support for data in the
-form of "parameters", validated strings associated with nodes.
+Big Red has some early and limited support for data in the form of
+"parameters", validated strings associated with nodes. (This is actually an
+extension to the model contributed by the "org.bigraph.extensions.param"
+plugin.)
 
 Every control can optionally have a single "parameter policy", which is a
 class implementing the org.bigraph.model.names.policies.INamePolicy interface.
