@@ -93,20 +93,40 @@ another which first attempts to find it in a property scratchpad.)
 Validators and executors
 ------------------------
 
+Big Red's change execution system is flexible and extensible. In order to add
+support for new kinds of change, or to put further constraints on existing
+changes, developers must contribute "steps" to "managers".
+
 Steps are simple, stateless objects that can only do three things: ignore,
-accept, or reject a single change. (Step validators "accept" a change by
-validating it, and step executors do so by executing it.)
+accept, or reject a single change. Step validators accept a change by
+successfully validating it, and step executors do so by executing it; if a step
+doesn't implement any behaviour for a change, then it must ignore it. (An
+object which is both a step validator and a step executor is also called a
+"handler".)
 
-Steps are aggregated together by managers, which provide the infrastructure
-that makes up the complete process: they decompose (potentially nested) change
-groups into a sequence of single changes, attempting to find one or more steps
-to accept each change. (A change is rejected by the manager if no step accepted
-it.)
+Managers are responsible for aggregating steps together into a complete,
+coherent process: when asked to perform validation or execution, they decompose
+(potentially nested) change groups into a sequence of single changes, and
+attempt to find one or more steps to accept each change. (A change is rejected
+by the manager if either one step rejected it or all steps ignored it.)
 
-Validator managers perform an extra function: they provide each step validator
-with a "process", which provides a property scratchpad (to allow modifications
-to the model to be propagated to subsequent steps) and a callback mechanism (to
+Validation is necessarily slightly more complex, because step validators need
+to be able to propagate modifications to their successors. To this end, each
+step validator is given a reference to the object encapsulating the validation
+process, which provides a property scratchpad and a callback mechanism (to
 allow parts of the validation process to be delayed until the end).
+
+Executor managers are also validator managers (the ExecutorManager class is a
+subclass of ValidatorManager), and they will always perform validation before
+attempting to execute a change. If an executor manager has no step executor
+that can accept a change, then that change must not pass validation.
+
+Although executor managers can be instantiated, there's also a static shared
+instance; all of Big Red's handlers are installed into this shared manager, and
+all of Big Red's validation and execution goes through this object. (Validator
+managers are also step validators, so they can be included in other validation
+processes; similarly, executor managers have a mechanism which allows them to
+act as step executors.)
 
 Extensions
 ----------
