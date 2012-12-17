@@ -53,3 +53,65 @@ Modifying a Big Red model object is a three-step process:
 
 (In practice, the last two steps can be grouped together -- changes are always
 validated before they're executed.)
+
+Simulation
+----------
+
+Validating and applying a single change is straightforward, but sequences of
+changes are a bit trickier. Consider the following example:
+
+	Change(rename root "0" to "1")
+	Change(rename root "2" to "1")
+
+In isolation, both changes are valid -- but applying either change makes it
+impossible to apply the other (as that would cause a namespace collision). How
+can this be tracked?
+
+The simplest option would be to make a deep copy of the bigraph and to attempt
+to modify that directly, leaving the original unchanged in the event of an
+error. However, this causes serious performance problems -- particularly in the
+Eclipse context, where the UI frequently speculatively creates and validates
+changes. (Imagine making a new deep copy of a complex bigraph for every pixel
+traversed as part of a drag operation...)
+
+Instead, the model provides a class called the "property scratchpad", which
+is used to temporarily store changes to individual property values. After
+simulating the first change in a property scratchpad, for example, it might
+contain the associations
+
+	property "name" of (Root@10c) has value "1"
+	property "1" of ((Bigraph@2e64)'s root namespace) has value (Root@10c)
+
+These associations allow the second change to be rejected -- although the
+underlying namespace has not been changed, the namespace can consult the
+property scratchpad and sees that it contains incompatible changes.
+
+(All of Big Red's model objects, and many of their associated helpers, expose
+two accessors for each field -- one which retrieves the value directly and
+another which first attempts to find it in a property scratchpad.)
+
+Validators and executors
+------------------------
+
+Steps are simple, stateless objects that can only do three things: ignore,
+accept, or reject a single change. (Step validators "accept" a change by
+validating it, and step executors do so by executing it.)
+
+Steps are aggregated together by managers, which provide the infrastructure
+that makes up the complete process: they decompose (potentially nested) change
+groups into a sequence of single changes, attempting to find one or more steps
+to accept each change. (A change is rejected by the manager if no step accepted
+it.)
+
+Validator managers perform an extra function: they provide each step validator
+with a "process", which provides a property scratchpad (to allow modifications
+to the model to be propagated to subsequent steps) and a callback mechanism (to
+allow parts of the validation process to be delayed until the end).
+
+Extensions
+----------
+
+As validators and (particularly) executors may contain privileged code, it's
+not normally possible to instantiate them -- they're usually private or
+package-private classes which are instantiated statically before being
+contributed to the static executor manager.
