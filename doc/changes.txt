@@ -99,7 +99,7 @@ changes, developers must contribute "steps" to "managers".
 
 Steps are simple, stateless objects that can only do three things: ignore,
 accept, or reject a single change. Step validators accept a change by
-successfully validating it, and step executors do so by executing it; if a step
+successfully validating it, and step executors do so by executing it. If a step
 doesn't implement any behaviour for a change, then it must ignore it. (An
 object which is both a step validator and a step executor is also called a
 "handler".)
@@ -110,11 +110,12 @@ coherent process: when asked to perform validation or execution, they decompose
 attempt to find one or more steps to accept each change. (A change is rejected
 by the manager if either one step rejected it or all steps ignored it.)
 
-Validation is necessarily slightly more complex, because step validators need
-to be able to propagate modifications to their successors. To this end, each
-step validator is given a reference to the object encapsulating the validation
-process, which provides a property scratchpad and a callback mechanism (to
-allow parts of the validation process to be delayed until the end).
+Unlike step executors (which directly modify actual objects), step validators
+need to be able to propagate their temporary modifications to their successors.
+To this end, each step validator is also given a reference to the object
+encapsulating the validation process, which provides a property scratchpad and
+a callback mechanism (to allow parts of the validation process to be delayed
+until the end).
 
 Executor managers are also validator managers (the ExecutorManager class is a
 subclass of ValidatorManager), and they will always perform validation before
@@ -126,7 +127,7 @@ instance; all of Big Red's handlers are installed into this shared manager, and
 all of Big Red's validation and execution goes through this object. (Validator
 managers are also step validators, so they can be included in other validation
 processes; similarly, executor managers have a mechanism which allows them to
-act as step executors.)
+act as handlers.)
 
 Extensions
 ----------
@@ -135,3 +136,8 @@ As validators and (particularly) executors may contain privileged code, it's
 not normally possible to instantiate them -- they're usually private or
 package-private classes which are instantiated statically before being
 contributed to the static executor manager.
+
+Static initialisation works for this (as long as the initialisation order of
+classes is carefully managed), but there is another, more Eclipse-friendly
+option: the model wrapper plugin exposes an extension point for contributing
+new steps to the shared executor manager.
