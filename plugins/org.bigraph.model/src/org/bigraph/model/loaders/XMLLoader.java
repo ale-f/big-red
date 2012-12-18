@@ -18,7 +18,6 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.internal.SchemaResolver;
 import org.bigraph.model.resources.IFileWrapper;
-import org.bigraph.model.resources.IOpenable;
 import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -57,14 +56,6 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	
 	public static DocumentBuilder getSharedDocumentBuilder() {
 		return db;
-	}
-	
-	public static void registerSchema(String namespaceURI, IOpenable of) {
-		SchemaResolver.getInstance().registerSchema(namespaceURI, of);
-	}
-	
-	public static void unregisterSchema(String namespaceURI) {
-		SchemaResolver.getInstance().unregisterSchema(namespaceURI);
 	}
 	
 	public static String getAttributeNS(Element d, String nsURI, String n) {

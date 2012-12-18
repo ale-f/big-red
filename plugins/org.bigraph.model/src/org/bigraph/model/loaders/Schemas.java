@@ -3,6 +3,7 @@ package org.bigraph.model.loaders;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 
+import org.bigraph.model.loaders.internal.SchemaResolver;
 import org.bigraph.model.resources.ResourceOpenable;
 import org.xml.sax.SAXException;
 
@@ -15,7 +16,7 @@ public abstract class Schemas {
 			Schema s = XMLLoader.getSharedSchemaFactory().newSchema(
 					new StreamSource(file.open()));
 			if (ns != null)
-				XMLLoader.registerSchema(ns, file);
+				SchemaResolver.getInstance().registerSchema(ns, file);
 			return s;
 		} catch (SAXException e) {
 			e.printStackTrace();
