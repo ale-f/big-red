@@ -53,23 +53,6 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		return (r.length() != 0 ? r : null);
 	}
 
-	public static int getIntAttribute(Element d, String nsURI, String n) {
-		try {
-			return Integer.parseInt(getAttributeNS(d, nsURI, n));
-		} catch (Exception e) {
-			return 0;
-		}
-	}
-
-	public static double getDoubleAttribute(
-			Element d, String nsURI, String n) {
-		try {
-			return Double.parseDouble(getAttributeNS(d, nsURI, n));
-		} catch (Exception e) {
-			return 0;
-		}
-	}
-	
 	protected static <T extends Node> T validate(T d, Schema schema)
 			throws LoadFailedException {
 		try {

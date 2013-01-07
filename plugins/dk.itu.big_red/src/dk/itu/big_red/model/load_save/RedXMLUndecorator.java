@@ -25,9 +25,8 @@ import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.BigRedNamespaceConstants;
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.LayoutUtilities;
+
 import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
-import static org.bigraph.model.loaders.XMLLoader.getDoubleAttribute;
-import static org.bigraph.model.loaders.XMLLoader.getIntAttribute;
 import static org.bigraph.model.utilities.ArrayIterable.forNodeList;
 
 public class RedXMLUndecorator implements IXMLLoader.Undecorator {
@@ -125,9 +124,9 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			Element eS = getNamedChildElement(el, BigRedNamespaceConstants.BIG_RED, "port-appearance");
 			if (eS != null) {
 				cg.add(ControlUtilities.changeSegment(p,
-						getIntAttribute(eS, BigRedNamespaceConstants.BIG_RED, "segment")));
+						Integer.parseInt(getAttributeNS(eS, BigRedNamespaceConstants.BIG_RED, "segment"))));
 				cg.add(ControlUtilities.changeDistance(p,
-						getDoubleAttribute(eS, BigRedNamespaceConstants.BIG_RED, "distance")));
+						Double.parseDouble(getAttributeNS(eS, BigRedNamespaceConstants.BIG_RED, "distance"))));
 			}
 		}
 		
@@ -150,8 +149,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 							eS.getChildNodes()).filter(Element.class))
 						if (cmpns(i, BigRedNamespaceConstants.BIG_RED, "point"))
 							pl.addPoint(
-								getIntAttribute(i, BigRedNamespaceConstants.BIG_RED, "x"),
-								getIntAttribute(i, BigRedNamespaceConstants.BIG_RED, "y"));
+								Integer.parseInt(getAttributeNS(i, BigRedNamespaceConstants.BIG_RED, "x")),
+								Integer.parseInt(getAttributeNS(i, BigRedNamespaceConstants.BIG_RED, "y")));
 					shape = pl;
 				} else shape = Ellipse.SINGLETON;
 				cg.add(ControlUtilities.changeShape(c, shape));
