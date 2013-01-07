@@ -1,12 +1,21 @@
 package org.bigraph.model.loaders;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+
 import org.bigraph.model.loaders.internal.SchemaResolver;
 import org.bigraph.model.resources.ResourceOpenable;
 import org.xml.sax.SAXException;
 
 public abstract class Schemas {
+	private static final SchemaFactory sf;
+	static {
+		sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		sf.setResourceResolver(SchemaResolver.getInstance());
+	}
+	
 	private static final class SchemaSpec {
 		private final String xmlns, path;
 		private ResourceOpenable file;
@@ -25,8 +34,8 @@ public abstract class Schemas {
 				synchronized (this) {
 					try {
 						if (schema == null)
-							schema = XMLLoader.getSharedSchemaFactory().
-									newSchema(new StreamSource(file.open()));
+							schema = sf.newSchema(
+									new StreamSource(file.open()));
 					} catch (SAXException e) {
 						throw new RuntimeException(
 								"BUG: internal schema " + this +

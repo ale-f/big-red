@@ -6,17 +6,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.IChangeExecutor;
-import org.bigraph.model.loaders.internal.SchemaResolver;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
@@ -32,13 +28,9 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 		super(parent);
 	}
 	
-	private static final SchemaFactory sf;
 	private static final DocumentBuilderFactory dbf;
 	private static final DocumentBuilder db;
 	static {
-		sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		sf.setResourceResolver(SchemaResolver.getInstance());
-		
 		dbf = DocumentBuilderFactory.newInstance();
 		dbf.setNamespaceAware(true);
 		DocumentBuilder db_ = null;
@@ -48,10 +40,6 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 			/* do nothing */
 		}
 		db = db_;
-	}
-	
-	public static SchemaFactory getSharedSchemaFactory() {
-		return sf;
 	}
 	
 	public static DocumentBuilder getSharedDocumentBuilder() {
