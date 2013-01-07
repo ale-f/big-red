@@ -45,13 +45,8 @@ public class EditXMLLoader extends XMLLoader {
 		}
 	}
 
-	private final Participant bigraphEditHandler =
-			new BigraphEditLoader();
-	
 	private IChangeDescriptor makeDescriptor(Element el) {
 		IChangeDescriptor cd = null;
-		if ((cd = bigraphEditHandler.getDescriptor(el)) != null)
-			return cd;
 		for (Participant p : getParticipants(Participant.class)) {
 			cd = p.getDescriptor(el);
 			if (cd != null)
@@ -74,8 +69,6 @@ public class EditXMLLoader extends XMLLoader {
 		String name = getAttributeNS(el, EDIT, "name");
 		
 		IChangeDescriptor cd = null;
-		if ((cd = bigraphEditHandler.getRenameDescriptor(id, name)) != null)
-			return cd;
 		for (Participant p : getParticipants(Participant.class)) {
 			cd = p.getRenameDescriptor(id, name);
 			if (cd != null)
