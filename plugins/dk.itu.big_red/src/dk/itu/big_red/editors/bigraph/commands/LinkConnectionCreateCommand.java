@@ -1,10 +1,12 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
 import org.bigraph.model.Link;
 import org.bigraph.model.Point;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 
@@ -39,19 +41,35 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 	@Override
 	public void prepare() {
 		cg.clear();
+		Bigraph b = null;
 		if (first instanceof Point && second instanceof Point) {
-			Bigraph b = ((Point)first).getBigraph();
-			setTarget(b);
-			Edge ed = new Edge();
-			cg.add(b.changeAddChild(ed, b.getFirstUnusedName(ed)));
-			cg.add(((Point)first).changeConnect(ed));
-			cg.add(((Point)second).changeConnect(ed));
-		} else if (first instanceof Point && second instanceof Link) {
-			setTarget(((Point)first).getBigraph());
-			cg.add(((Point)first).changeConnect((Link)second));
-		} else if (first instanceof Link && second instanceof Point) {
-			setTarget(((Link)first).getBigraph());
-			cg.add(((Point)second).changeConnect((Link)first));
+			Point
+				firstP = (Point)first,
+				secondP = (Point)second;
+			b = firstP.getBigraph();
+			Edge.Identifier ed = new Edge.Identifier(
+					b.getNamespace(Link.class).getNextName());
+			cg.add(new BoundDescriptor(b,
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(), ed)));
+			cg.add(new BoundDescriptor(b,
+					new Point.ChangeConnectDescriptor(
+							firstP.getIdentifier(), ed)));
+			cg.add(new BoundDescriptor(b,
+					new Point.ChangeConnectDescriptor(
+							secondP.getIdentifier(), ed)));
+		} else {
+			Point p = (first instanceof Point ? (Point)first :
+				second instanceof Point ? (Point)second : null);
+			Link l = (first instanceof Link ? (Link)first :
+				second instanceof Link ? (Link)second : null);
+			if (p != null && l != null) {
+				b = p.getBigraph();
+				cg.add(new BoundDescriptor(b,
+						new Point.ChangeConnectDescriptor(
+								p.getIdentifier(), l.getIdentifier())));
+			}
 		}
+		setTarget(b);
 	}
 }
