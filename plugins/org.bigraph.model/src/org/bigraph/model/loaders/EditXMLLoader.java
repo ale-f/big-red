@@ -60,11 +60,17 @@ public class EditXMLLoader extends XMLLoader {
 		return cd;
 	}
 	
+	private static Element getFirstChildElement(Node n) {
+		for (Element i :
+				forNodeList(n.getChildNodes()).filter(Element.class))
+			return i;
+		return null;
+	}
+	
 	private IChangeDescriptor makeRename(Element el) {
-		Node id_ = el.getFirstChild();
-		if (!(id_ instanceof Element))
+		Element id = getFirstChildElement(el);
+		if (id == null)
 			return null;
-		Element id = (Element)id_;
 		String name = getAttributeNS(el, EDIT, "name");
 		
 		IChangeDescriptor cd = null;
