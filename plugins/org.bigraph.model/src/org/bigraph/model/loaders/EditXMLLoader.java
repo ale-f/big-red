@@ -103,10 +103,12 @@ public class EditXMLLoader extends XMLLoader {
 				}
 			} else cd = makeDescriptor(i);
 			
-			if (cd != null)
+			if (cd != null) {
 				addChange(new BoundDescriptor(ed,
 						new ChangeDescriptorAddDescriptor(
 								new Edit.Identifier(), index++, cd)));
+			} else throw new LoadFailedException(
+					"Couldn't create a change descriptor from element " + i);
 		}
 		
 		executeUndecorators(ed, el);
