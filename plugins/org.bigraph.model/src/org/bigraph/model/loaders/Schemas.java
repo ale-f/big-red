@@ -60,6 +60,15 @@ public abstract class Schemas {
 				RedNamespaceConstants.SPEC,
 				"/resources/schema/spec.xsd");
 	
+	static {
+		new SchemaSpec(
+				RedNamespaceConstants.EDIT_BIG,
+				"/resources/schema/edit-big.xsd");
+		new SchemaSpec(
+				RedNamespaceConstants.EDIT_SIG,
+				"/resources/schema/edit-sig.xsd");
+	}
+	
 	private Schemas() {}
 	
 	/**
