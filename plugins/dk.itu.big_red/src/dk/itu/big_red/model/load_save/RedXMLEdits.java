@@ -47,7 +47,8 @@ public abstract class RedXMLEdits {
 		}
 		
 		private static Colour loadColour(Element e) {
-			return new Colour(getAttributeNS(e, BIG_RED, "colour"));
+			String desc = getAttributeNS(e, BIG_RED, "colour");
+			return (desc != null ? new Colour(desc) : null);
 		}
 		
 		@Override
@@ -114,7 +115,8 @@ public abstract class RedXMLEdits {
 		}
 		
 		private static Element saveColour(Element e, Colour c) {
-			e.setAttributeNS(null, "colour", c.toHexString());
+			if (c != null)
+				e.setAttributeNS(null, "colour", c.toHexString());
 			return e;
 		}
 		
