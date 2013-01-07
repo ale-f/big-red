@@ -9,7 +9,8 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.experimental.IDescriptorStepExecutor;
 import org.bigraph.model.changes.descriptors.experimental.IDescriptorStepValidator;
 import org.bigraph.model.names.Namespace;
-import org.bigraph.model.names.policies.INamePolicy;
+
+import static org.bigraph.model.NamedModelObjectHandler.checkNameCore;
 
 final class NamedModelObjectDescriptorHandler
 		implements IDescriptorStepExecutor, IDescriptorStepValidator {
@@ -45,16 +46,8 @@ final class NamedModelObjectDescriptorHandler
 			PropertyScratchpad context, IChangeDescriptor c, Identifier object,
 			Namespace<? extends NamedModelObject> ns, String newName)
 			throws ChangeCreationException {
-		if (newName == null || newName.length() == 0)
-			throw new ChangeCreationException(c, "Names cannot be empty");
-		if (ns == null || newName.equals(object.getName()))
-			return;
-		INamePolicy p = ns.getPolicy();
-		String mcdt = (p != null ? p.normalise(newName) : newName);
-		if (mcdt == null)
-			throw new ChangeCreationException(c,
-					"\"" + newName + "\" is not a valid name for " + object);
-		if (ns.get(context, mcdt) != null)
-			throw new ChangeCreationException(c, "Names must be unique");
+		String rationale = checkNameCore(context, object, ns, newName);
+		if (rationale != null)
+			throw new ChangeCreationException(c, rationale);
 	}
 }

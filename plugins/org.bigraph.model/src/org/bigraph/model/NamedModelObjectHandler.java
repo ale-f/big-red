@@ -11,17 +11,25 @@ final class NamedModelObjectHandler {
 			PropertyScratchpad context, IChange c, V object,
 			Namespace<? extends V> ns, String cdt)
 			throws ChangeRejectedException {
+		String rationale = checkNameCore(context, object, ns, cdt);
+		if (rationale != null)
+			throw new ChangeRejectedException(c, rationale);
+	}
+	
+	static String checkNameCore(
+			PropertyScratchpad context, Object object,
+			Namespace<?> ns, String cdt) {
 		if (cdt == null || cdt.length() == 0)
-			throw new ChangeRejectedException(c, "Names cannot be empty");
+			return "Names cannot be empty";
 		if (ns == null)
-			return;
+			return null;
 		INamePolicy p = ns.getPolicy();
 		String mcdt = (p != null ? p.normalise(cdt) : cdt);
 		if (mcdt == null)
-			throw new ChangeRejectedException(c,
-					"\"" + cdt + "\" is not a valid name for " + object);
-		V current = ns.get(context, mcdt);
+			return "\"" + cdt + "\" is not a valid name for " + object;
+		Object current = ns.get(context, mcdt);
 		if (current != null && current != object)
-			throw new ChangeRejectedException(c, "Names must be unique");
+			return "Names must be unique";
+		return null;
 	}
 }
