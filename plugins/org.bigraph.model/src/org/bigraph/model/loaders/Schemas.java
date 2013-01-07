@@ -2,42 +2,65 @@ package org.bigraph.model.loaders;
 
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
-
 import org.bigraph.model.loaders.internal.SchemaResolver;
 import org.bigraph.model.resources.ResourceOpenable;
 import org.xml.sax.SAXException;
 
 public abstract class Schemas {
-	private Schemas() {}
-	
-	private static Schema tryOpenRegister(String ns, String path) {
-		ResourceOpenable file = new ResourceOpenable(path);
-		try {
-			Schema s = XMLLoader.getSharedSchemaFactory().newSchema(
-					new StreamSource(file.open()));
-			if (ns != null)
-				SchemaResolver.getInstance().registerSchema(ns, file);
-			return s;
-		} catch (SAXException e) {
-			e.printStackTrace();
-			return null;
+	private static final class SchemaSpec {
+		private final String xmlns, path;
+		private ResourceOpenable file;
+		
+		public SchemaSpec(String xmlns, String path) {
+			this.xmlns = xmlns;
+			this.path = path;
+			SchemaResolver.getInstance().registerSchema(
+					xmlns, file = new ResourceOpenable(Schemas.class, path));
+		}
+		
+		private Schema schema;
+		
+		private Schema getSchema() {
+			if (schema == null) {
+				synchronized (this) {
+					try {
+						if (schema == null)
+							schema = XMLLoader.getSharedSchemaFactory().
+									newSchema(new StreamSource(file.open()));
+					} catch (SAXException e) {
+						throw new RuntimeException(
+								"BUG: internal schema " + this +
+								" couldn't be loaded", e);
+					}
+				}
+			}
+			return schema;
+		}
+		
+		@Override
+		public String toString() {
+			return "SchemaSpec(" + xmlns + ", " + path + ")";
 		}
 	}
 	
-	private static final Schema
-		bigraph, signature, rule, spec, edit;
-	static {
-		signature = tryOpenRegister(RedNamespaceConstants.SIGNATURE,
-				"/resources/schema/signature.xsd");
-		bigraph = tryOpenRegister(RedNamespaceConstants.BIGRAPH,
-				"/resources/schema/bigraph.xsd");
-		edit = tryOpenRegister(RedNamespaceConstants.EDIT,
-				"/resources/schema/edit.xsd");
-		rule = tryOpenRegister(RedNamespaceConstants.RULE,
-				"/resources/schema/rule.xsd");
-		spec = tryOpenRegister(RedNamespaceConstants.SPEC,
+	private static final SchemaSpec
+		signature = new SchemaSpec(
+				RedNamespaceConstants.SIGNATURE,
+				"/resources/schema/signature.xsd"),
+		bigraph = new SchemaSpec(
+				RedNamespaceConstants.BIGRAPH,
+				"/resources/schema/bigraph.xsd"),
+		edit = new SchemaSpec(
+				RedNamespaceConstants.EDIT,
+				"/resources/schema/edit.xsd"),
+		rule = new SchemaSpec(
+				RedNamespaceConstants.RULE,
+				"/resources/schema/rule.xsd"),
+		spec = new SchemaSpec(
+				RedNamespaceConstants.SPEC,
 				"/resources/schema/spec.xsd");
-	}
+	
+	private Schemas() {}
 	
 	/**
 	 * Returns the shared {@link Schema} suitable for validating
@@ -45,7 +68,7 @@ public abstract class Schemas {
 	 * @return a {@link Schema}
 	 */
 	public static Schema getBigraphSchema() {
-		return bigraph;
+		return bigraph.getSchema();
 	}
 
 	/**
@@ -54,7 +77,7 @@ public abstract class Schemas {
 	 * @return a {@link Schema}
 	 */
 	public static Schema getSignatureSchema() {
-		return signature;
+		return signature.getSchema();
 	}
 
 	/**
@@ -63,7 +86,7 @@ public abstract class Schemas {
 	 * @return a {@link Schema}
 	 */
 	public static Schema getRuleSchema() {
-		return rule;
+		return rule.getSchema();
 	}
 
 	/**
@@ -72,7 +95,7 @@ public abstract class Schemas {
 	 * @return a {@link Schema}
 	 */
 	public static Schema getSpecSchema() {
-		return spec;
+		return spec.getSchema();
 	}
 
 	/**
@@ -81,6 +104,6 @@ public abstract class Schemas {
 	 * @return a {@link Schema}
 	 */
 	public static Schema getEditSchema() {
-		return edit;
+		return edit.getSchema();
 	}
 }
