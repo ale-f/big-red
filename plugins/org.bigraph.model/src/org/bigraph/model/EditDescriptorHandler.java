@@ -46,8 +46,7 @@ final class EditDescriptorHandler
 			
 			ChangeDescriptorGroup cdg = edit.getDescriptors(scratch);
 			int position = cd.getPosition();
-			if (position < 0 ||
-					position >= edit.getDescriptors(scratch).size())
+			if (position < 0 || position >= cdg.size())
 				throw new ChangeCreationException(cd,
 						"" + position + " is not a valid position");
 			
