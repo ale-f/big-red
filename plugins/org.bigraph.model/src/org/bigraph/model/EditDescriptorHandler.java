@@ -5,7 +5,6 @@ import org.bigraph.model.Edit.ChangeDescriptorRemoveDescriptor;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.experimental.IDescriptorStepExecutor;
 import org.bigraph.model.changes.descriptors.experimental.IDescriptorStepValidator;
@@ -30,11 +29,8 @@ final class EditDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"Can't insert a null change descriptor");
 			
-			int position = cd.getPosition();
-			if (position < 0 ||
-					position > edit.getDescriptors(scratch).size())
-				throw new ChangeCreationException(cd,
-						"" + position + " is not a valid position");
+			DescriptorHandlerUtilities.checkAddBounds(
+					cd, edit.getDescriptors(scratch), cd.getPosition());
 		} else if (change instanceof ChangeDescriptorRemoveDescriptor) {
 			ChangeDescriptorRemoveDescriptor cd =
 					(ChangeDescriptorRemoveDescriptor)change;
@@ -44,16 +40,9 @@ final class EditDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
 			
-			ChangeDescriptorGroup cdg = edit.getDescriptors(scratch);
-			int position = cd.getPosition();
-			if (position < 0 || position >= cdg.size())
-				throw new ChangeCreationException(cd,
-						"" + position + " is not a valid position");
-			
-			if (!cdg.get(position).equals(cd.getDescriptor()))
-				throw new ChangeCreationException(cd,
-						"" + cd.getDescriptor() +
-						" is not at position " + position);
+			DescriptorHandlerUtilities.checkRemove(cd,
+					edit.getDescriptors(scratch),
+					cd.getDescriptor(), cd.getPosition());
 		} else return false;
 		return true;
 	}
