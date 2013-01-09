@@ -1,7 +1,5 @@
 package org.bigraph.model;
 
-import java.util.List;
-
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Signature.ChangeAddControlDescriptor;
 import org.bigraph.model.Signature.ChangeAddSignatureDescriptor;
@@ -44,11 +42,8 @@ final class SignatureDescriptorHandler implements IDescriptorStepExecutor,
 				throw new ChangeCreationException(cd,
 						"Can't insert a null signature");
 			
-			int position = cd.getPosition();
-			if (position < -1 ||
-					position > s.getSignatures(scratch).size())
-				throw new ChangeCreationException(cd,
-						"" + position + " is not a valid position");
+			DescriptorHandlerUtilities.checkAddBounds(cd,
+					s.getSignatures(scratch), cd.getPosition());
 		} else if (change instanceof ChangeRemoveSignatureDescriptor) {
 			ChangeRemoveSignatureDescriptor cd =
 					(ChangeRemoveSignatureDescriptor)change;
@@ -58,18 +53,9 @@ final class SignatureDescriptorHandler implements IDescriptorStepExecutor,
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
 			
-			List<? extends Signature> sigs = s.getSignatures(scratch);
-			int position = cd.getPosition();
-			if (position == -1)
-				position = sigs.size() - 1;
-			if (position < 0 || position >= sigs.size())
-				throw new ChangeCreationException(cd,
-						"" + position + " is not a valid position");
-			
-			if (!sigs.get(position).equals(cd.getSignature()))
-				throw new ChangeCreationException(cd,
-						"" + cd.getSignature() +
-						" is not at position " + position);
+			DescriptorHandlerUtilities.checkRemove(cd,
+					s.getSignatures(scratch),
+					cd.getSignature(), cd.getPosition());
 		} else return false;
 		return true;
 	}
