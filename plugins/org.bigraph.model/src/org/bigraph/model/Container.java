@@ -195,11 +195,18 @@ public abstract class Container extends Layoutable {
 	public static final class ChangeAddChildDescriptor
 			extends ContainerChangeDescriptor {
 		private final Identifier parent;
+		private final int position;
 		private final Layoutable.Identifier child;
 		
 		public ChangeAddChildDescriptor(
 				Identifier parent, Layoutable.Identifier child) {
+			this(parent, -1, child);
+		}
+		
+		protected ChangeAddChildDescriptor(
+				Identifier parent, int position, Layoutable.Identifier child) {
 			this.parent = parent;
+			this.position = position;
 			this.child = child;
 		}
 		
@@ -207,6 +214,10 @@ public abstract class Container extends Layoutable {
 			return parent;
 		}
 
+		protected int getPosition() {
+			return position;
+		}
+		
 		public Layoutable.Identifier getChild() {
 			return child;
 		}
@@ -217,6 +228,7 @@ public abstract class Container extends Layoutable {
 				ChangeAddChildDescriptor obj = (ChangeAddChildDescriptor)obj_;
 				return
 						safeEquals(getParent(), obj.getParent()) &&
+						safeEquals(getPosition(), obj.getPosition()) &&
 						safeEquals(getChild(), obj.getChild());
 			} else return false;
 		}
@@ -265,7 +277,8 @@ public abstract class Container extends Layoutable {
 		
 		@Override
 		public ChangeRemoveDescriptor inverse() {
-			return new ChangeRemoveDescriptor(getChild(), getParent());
+			return new ChangeRemoveDescriptor(
+					getPosition(), getChild(), getParent());
 		}
 	}
 }

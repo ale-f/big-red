@@ -177,17 +177,28 @@ public abstract class Layoutable extends NamedModelObject {
 	
 	public static final class ChangeRemoveDescriptor
 			extends LayoutableChangeDescriptor {
+		private final int position;
 		private final Identifier target;
 		private final Container.Identifier parent;
 		
 		public ChangeRemoveDescriptor(
 				Identifier target, Container.Identifier parent) {
+			this(-1, target, parent);
+		}
+		
+		protected ChangeRemoveDescriptor(
+				int position, Identifier target, Container.Identifier parent) {
+			this.position = position;
 			this.target = target;
 			this.parent = parent;
 		}
 		
 		public Identifier getTarget() {
 			return target;
+		}
+		
+		protected int getPosition() {
+			return position;
 		}
 		
 		public Container.Identifier getParent() {
@@ -200,6 +211,7 @@ public abstract class Layoutable extends NamedModelObject {
 				ChangeRemoveDescriptor obj = (ChangeRemoveDescriptor)obj_;
 				return
 						safeEquals(getTarget(), obj.getTarget()) &&
+						safeEquals(getPosition(), obj.getPosition()) &&
 						safeEquals(getParent(), obj.getParent());
 			} else return false;
 		}
@@ -222,7 +234,8 @@ public abstract class Layoutable extends NamedModelObject {
 		
 		@Override
 		public ChangeAddChildDescriptor inverse() {
-			return new ChangeAddChildDescriptor(getParent(), getTarget());
+			return new ChangeAddChildDescriptor(
+					getParent(), getPosition(), getTarget());
 		}
 		
 		@Override
