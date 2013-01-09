@@ -2,6 +2,7 @@ package org.bigraph.model;
 
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.Layoutable.Identifier;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -63,6 +64,24 @@ final class ContainerDescriptorHandler
 				 l instanceof Site.Identifier));
 	}
 	
+	static Layoutable instantiate(
+			Identifier id, PropertyScratchpad context, Resolver r) {
+		if (id instanceof Root.Identifier) {
+			return new Root();
+		} else if (id instanceof Site.Identifier) {
+			return new Site();
+		} else if (id instanceof InnerName.Identifier) {
+			return new InnerName();
+		} else if (id instanceof OuterName.Identifier) {
+			return new OuterName();
+		} else if (id instanceof Edge.Identifier) {
+			return new Edge();
+		} else if (id instanceof Node.Identifier) {
+			return new Node(((Node.Identifier)id).getControl().
+					lookup(context, r));
+		} else return null;
+	}
+	
 	@Override
 	public boolean executeChange(Resolver resolver, IChangeDescriptor change) {
 		if (change instanceof ChangeAddChildDescriptor) {
@@ -71,22 +90,7 @@ final class ContainerDescriptorHandler
 			Layoutable.Identifier childI = cd.getChild();
 			
 			Container parent = parentI.lookup(null, resolver);
-			
-			Layoutable l;
-			if (childI instanceof Root.Identifier) {
-				l = new Root();
-			} else if (childI instanceof Site.Identifier) {
-				l = new Site();
-			} else if (childI instanceof InnerName.Identifier) {
-				l = new InnerName();
-			} else if (childI instanceof OuterName.Identifier) {
-				l = new OuterName();
-			} else if (childI instanceof Edge.Identifier) {
-				l = new Edge();
-			} else if (childI instanceof Node.Identifier) {
-				l = new Node(((Node.Identifier)childI).getControl().
-						lookup(null, parent.getBigraph()));
-			} else l = null;
+			Layoutable l = instantiate(childI, null, parent.getBigraph());
 			
 			Namespace<Layoutable> ns = parent.getBigraph().getNamespace(l);
 			l.setName(ns.put(childI.getName(), l));
