@@ -3,7 +3,6 @@ package org.bigraph.model.tests;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.InnerName;
-import org.bigraph.model.Layoutable;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
@@ -32,20 +31,20 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 				new Container.ChangeAddChildDescriptor(
 						new Bigraph.Identifier(),
 						new InnerName.Identifier("a")),
-				new Layoutable.ChangeRemoveDescriptor(
-						new InnerName.Identifier("a"),
-						new Bigraph.Identifier()),
-				new Layoutable.ChangeRemoveDescriptor(
-						new InnerName.Identifier("a"),
-						new Bigraph.Identifier()));
+				new Container.ChangeRemoveChildDescriptor(
+						new Bigraph.Identifier(),
+						new InnerName.Identifier("a")),
+				new Container.ChangeRemoveChildDescriptor(
+						new Bigraph.Identifier(),
+						new InnerName.Identifier("a")));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
 	public void removeNotPresentInnerName() throws ChangeCreationException {
 		run(new Bigraph(),
-				new Layoutable.ChangeRemoveDescriptor(
-						new InnerName.Identifier("a"),
-						new Bigraph.Identifier()));
+				new Container.ChangeRemoveChildDescriptor(
+						new Bigraph.Identifier(),
+						new InnerName.Identifier("a")));
 	}
 	
 	@Test
@@ -115,8 +114,8 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Root r = new Root();
 		b.tryApplyChange(b.changeAddChild(r, "0"));
 		run(b,
-				new Layoutable.ChangeRemoveDescriptor(
-						r.getIdentifier(), b.getIdentifier()));
+				new Container.ChangeRemoveChildDescriptor(
+						b.getIdentifier(), r.getIdentifier()));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
@@ -124,8 +123,8 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 			throws ChangeRejectedException, ChangeCreationException {
 		Bigraph b = new Bigraph();
 		run(new Bigraph(),
-				new Layoutable.ChangeRemoveDescriptor(
-						new Root.Identifier("0"), b.getIdentifier()));
+				new Container.ChangeRemoveChildDescriptor(
+						b.getIdentifier(), new Root.Identifier("0")));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
@@ -135,10 +134,10 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Root r = new Root();
 		b.tryApplyChange(b.changeAddChild(r, "0"));
 		run(b,
-				new Layoutable.ChangeRemoveDescriptor(
-						r.getIdentifier(), b.getIdentifier()),
-				new Layoutable.ChangeRemoveDescriptor(
-						r.getIdentifier(), b.getIdentifier()));
+				new Container.ChangeRemoveChildDescriptor(
+						b.getIdentifier(), r.getIdentifier()),
+				new Container.ChangeRemoveChildDescriptor(
+						b.getIdentifier(), r.getIdentifier()));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
@@ -152,8 +151,8 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 				b.changeAddChild(on, "a"),
 				in.changeConnect(on)));
 		run(b,
-				new Layoutable.ChangeRemoveDescriptor(
-						in.getIdentifier(), b.getIdentifier()));
+				new Container.ChangeRemoveChildDescriptor(
+						b.getIdentifier(), in.getIdentifier()));
 	}
 	
 	@Test
@@ -176,9 +175,9 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 				new NamedModelObject.ChangeNameDescriptor(
 						new InnerName.Identifier("a"),
 						"b"),
-				new Layoutable.ChangeRemoveDescriptor(
-						new InnerName.Identifier("b"),
-						new Bigraph.Identifier()));
+				new Container.ChangeRemoveChildDescriptor(
+						new Bigraph.Identifier(),
+						new InnerName.Identifier("b")));
 	}
 	
 	@Test(expected = ChangeCreationException.class)

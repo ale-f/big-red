@@ -276,9 +276,79 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public ChangeRemoveDescriptor inverse() {
-			return new ChangeRemoveDescriptor(
-					getPosition(), getChild(), getParent());
+		public Container.ChangeRemoveChildDescriptor inverse() {
+			return new Container.ChangeRemoveChildDescriptor(
+					getParent(), getPosition(), getChild());
+		}
+	}
+
+	public static final class ChangeRemoveChildDescriptor
+			extends ContainerChangeDescriptor {
+		private final Identifier parent;
+		private final int position;
+		private final Layoutable.Identifier child;
+		
+		public ChangeRemoveChildDescriptor(
+				Identifier parent, Layoutable.Identifier child) {
+			this(parent, -1, child);
+		}
+		
+		protected ChangeRemoveChildDescriptor(Identifier parent,
+				int position, Layoutable.Identifier child) {
+			this.position = position;
+			this.child = child;
+			this.parent = parent;
+		}
+		
+		public Layoutable.Identifier getChild() {
+			return child;
+		}
+		
+		protected int getPosition() {
+			return position;
+		}
+		
+		public Identifier getParent() {
+			return parent;
+		}
+		
+		@Override
+		public boolean equals(Object obj_) {
+			if (safeClassCmp(this, obj_)) {
+				ChangeRemoveChildDescriptor obj =
+						(ChangeRemoveChildDescriptor)obj_;
+				return
+						safeEquals(getChild(), obj.getChild()) &&
+						safeEquals(getPosition(), obj.getPosition()) &&
+						safeEquals(getParent(), obj.getParent());
+			} else return false;
+		}
+		
+		@Override
+		public int hashCode() {
+			return compositeHashCode(ChangeRemoveChildDescriptor.class,
+					child, parent);
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Layoutable l = child.lookup(context, r);
+			if (l == null)
+				throw new ChangeCreationException(this,
+						"" + child + " didn't resolve to a Layoutable");
+			return l.changeRemove();
+		}
+		
+		@Override
+		public ChangeAddChildDescriptor inverse() {
+			return new ChangeAddChildDescriptor(
+					getParent(), getPosition(), getChild());
+		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(remove child " + child + ")";
 		}
 	}
 }

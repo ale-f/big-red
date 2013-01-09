@@ -4,6 +4,7 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_BIG;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_SIG;
 
+import org.bigraph.model.Container.ChangeRemoveChildDescriptor;
 import org.bigraph.model.Control;
 import org.bigraph.model.Edge;
 import org.bigraph.model.InnerName;
@@ -14,7 +15,6 @@ import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
 import org.bigraph.model.NamedModelObject.Identifier;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
@@ -30,7 +30,7 @@ public final class BigraphEditSaver implements Participant {
 	@Override
 	public void setHost(IParticipantHost host) {
 		if (host instanceof IXMLSaver)
-			this.saver = (IXMLSaver)host;
+			saver = (IXMLSaver)host;
 	}
 	
 	private final Element newElement(String ns, String qn) {
@@ -78,11 +78,11 @@ public final class BigraphEditSaver implements Participant {
 			el = newElement(EDIT_BIG, "edit-big:add");
 			el.appendChild(makeID(cd.getParent()));
 			el.appendChild(makeID(cd.getChild()));
-		} else if (cd_ instanceof ChangeRemoveDescriptor) {
-			ChangeRemoveDescriptor cd = (ChangeRemoveDescriptor)cd_;
+		} else if (cd_ instanceof ChangeRemoveChildDescriptor) {
+			ChangeRemoveChildDescriptor cd = (ChangeRemoveChildDescriptor)cd_;
 			el = newElement(EDIT_BIG, "edit-big:remove");
 			el.appendChild(makeID(cd.getParent()));
-			el.appendChild(makeID(cd.getTarget()));
+			el.appendChild(makeID(cd.getChild()));
 		} else if (cd_ instanceof ChangeNameDescriptor) {
 			ChangeNameDescriptor cd = (ChangeNameDescriptor)cd_;
 			el = newElement(EDIT, "edit:rename");

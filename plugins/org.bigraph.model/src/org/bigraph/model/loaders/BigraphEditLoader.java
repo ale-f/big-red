@@ -129,7 +129,7 @@ public class BigraphEditLoader implements Participant {
 						ids.get(0), Container.Identifier.class);
 				Layoutable.Identifier child = getIdentifier(
 						ids.get(1), Layoutable.Identifier.class);
-				return new Layoutable.ChangeRemoveDescriptor(child, parent);
+				return new Container.ChangeRemoveChildDescriptor(parent, child);
 			} else if ("connect".equals(localName)) {
 				Point.Identifier point = getIdentifier(
 						ids.get(0), Point.Identifier.class);

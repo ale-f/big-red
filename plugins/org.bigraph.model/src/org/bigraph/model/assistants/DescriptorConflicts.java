@@ -6,7 +6,7 @@ import org.bigraph.model.NamedModelObject.ChangeNameDescriptor;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
+import org.bigraph.model.Container.ChangeRemoveChildDescriptor;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -75,12 +75,12 @@ public abstract class DescriptorConflicts {
 	};
 	
 	public static IConflict ADD_REM = new Conflict
-			<ChangeAddChildDescriptor, ChangeRemoveDescriptor>
-			(ChangeAddChildDescriptor.class, ChangeRemoveDescriptor.class) {
+			<ChangeAddChildDescriptor, ChangeRemoveChildDescriptor>
+			(ChangeAddChildDescriptor.class, ChangeRemoveChildDescriptor.class) {
 		@Override
 		public boolean conflicts(ChangeAddChildDescriptor a,
-				ChangeRemoveDescriptor b) {
-			return b.getTarget().equals(a.getParent());
+				ChangeRemoveChildDescriptor b) {
+			return b.getChild().equals(a.getParent());
 		}
 	};
 	
@@ -96,45 +96,45 @@ public abstract class DescriptorConflicts {
 	};
 	
 	public static IConflict REM_REM = new Conflict1
-			<ChangeRemoveDescriptor>
-			(ChangeRemoveDescriptor.class) {
+			<ChangeRemoveChildDescriptor>
+			(ChangeRemoveChildDescriptor.class) {
 		@Override
-		public boolean conflicts2(ChangeRemoveDescriptor a,
-				ChangeRemoveDescriptor b) {
-			return (a.getTarget().equals(b.getParent()));
+		public boolean conflicts2(ChangeRemoveChildDescriptor a,
+				ChangeRemoveChildDescriptor b) {
+			return (a.getChild().equals(b.getParent()));
 		}
 	};
 	
 	public static IConflict REM_CON = new Conflict
-			<ChangeRemoveDescriptor, ChangeConnectDescriptor>
-			(ChangeRemoveDescriptor.class, ChangeConnectDescriptor.class) {
+			<ChangeRemoveChildDescriptor, ChangeConnectDescriptor>
+			(ChangeRemoveChildDescriptor.class, ChangeConnectDescriptor.class) {
 		@Override
-		public boolean conflicts(ChangeRemoveDescriptor a,
+		public boolean conflicts(ChangeRemoveChildDescriptor a,
 				ChangeConnectDescriptor b) {
 			Layoutable.Identifier l = b.getPoint();
 			if (l instanceof Port.Identifier)
 				l = ((Port.Identifier)l).getNode();
-			return (a.getTarget().equals(l));
+			return (a.getChild().equals(l));
 		}
 	};
 	
 	public static IConflict REM_REN = new Conflict
-			<ChangeRemoveDescriptor, ChangeNameDescriptor>
-			(ChangeRemoveDescriptor.class, ChangeNameDescriptor.class) {
+			<ChangeRemoveChildDescriptor, ChangeNameDescriptor>
+			(ChangeRemoveChildDescriptor.class, ChangeNameDescriptor.class) {
 		@Override
-		public boolean conflicts(ChangeRemoveDescriptor a,
+		public boolean conflicts(ChangeRemoveChildDescriptor a,
 				ChangeNameDescriptor b) {
-			return a.getTarget().equals(b.getTarget());
+			return a.getChild().equals(b.getTarget());
 		}
 	};
 	
 	public static IConflict REM_EXT = new Conflict
-			<ChangeRemoveDescriptor, ChangeExtendedDataDescriptor>
-			(ChangeRemoveDescriptor.class, ChangeExtendedDataDescriptor.class) {
+			<ChangeRemoveChildDescriptor, ChangeExtendedDataDescriptor>
+			(ChangeRemoveChildDescriptor.class, ChangeExtendedDataDescriptor.class) {
 		@Override
-		public boolean conflicts(ChangeRemoveDescriptor a,
+		public boolean conflicts(ChangeRemoveChildDescriptor a,
 				ChangeExtendedDataDescriptor b) {
-			return a.getTarget().equals(b.getTarget());
+			return a.getChild().equals(b.getTarget());
 		}
 	};
 	

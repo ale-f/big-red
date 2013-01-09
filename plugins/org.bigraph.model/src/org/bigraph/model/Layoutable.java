@@ -1,15 +1,11 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
 
 /**
@@ -34,10 +30,6 @@ public abstract class Layoutable extends NamedModelObject {
 
 	abstract static class LayoutableChangeDescriptor
 			extends NamedModelObjectChangeDescriptor {
-		static {
-			DescriptorExecutorManager.getInstance().addHandler(
-					new LayoutableDescriptorHandler());
-		}
 	}
 	
 	@Override
@@ -173,74 +165,5 @@ public abstract class Layoutable extends NamedModelObject {
 		
 		@Override
 		public abstract Identifier getRenamed(String name);
-	}
-	
-	public static final class ChangeRemoveDescriptor
-			extends LayoutableChangeDescriptor {
-		private final int position;
-		private final Identifier target;
-		private final Container.Identifier parent;
-		
-		public ChangeRemoveDescriptor(
-				Identifier target, Container.Identifier parent) {
-			this(-1, target, parent);
-		}
-		
-		protected ChangeRemoveDescriptor(
-				int position, Identifier target, Container.Identifier parent) {
-			this.position = position;
-			this.target = target;
-			this.parent = parent;
-		}
-		
-		public Identifier getTarget() {
-			return target;
-		}
-		
-		protected int getPosition() {
-			return position;
-		}
-		
-		public Container.Identifier getParent() {
-			return parent;
-		}
-		
-		@Override
-		public boolean equals(Object obj_) {
-			if (safeClassCmp(this, obj_)) {
-				ChangeRemoveDescriptor obj = (ChangeRemoveDescriptor)obj_;
-				return
-						safeEquals(getTarget(), obj.getTarget()) &&
-						safeEquals(getPosition(), obj.getPosition()) &&
-						safeEquals(getParent(), obj.getParent());
-			} else return false;
-		}
-		
-		@Override
-		public int hashCode() {
-			return compositeHashCode(ChangeRemoveDescriptor.class,
-					target, parent);
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			Layoutable l = target.lookup(context, r);
-			if (l == null)
-				throw new ChangeCreationException(this,
-						"" + target + " didn't resolve to a Layoutable");
-			return l.changeRemove();
-		}
-		
-		@Override
-		public ChangeAddChildDescriptor inverse() {
-			return new ChangeAddChildDescriptor(
-					getParent(), getPosition(), getTarget());
-		}
-		
-		@Override
-		public String toString() {
-			return "ChangeDescriptor(remove child " + target + ")";
-		}
 	}
 }

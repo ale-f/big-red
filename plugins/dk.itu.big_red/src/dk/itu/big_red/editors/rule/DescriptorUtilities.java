@@ -1,10 +1,10 @@
 package dk.itu.big_red.editors.rule;
 
+import org.bigraph.model.Container.ChangeRemoveChildDescriptor;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Container.ChangeAddChild;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.Layoutable.ChangeRemoveDescriptor;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.Point.ChangeConnect;
@@ -84,9 +84,9 @@ abstract class DescriptorUtilities {
 					ch.validator, ch.normaliser);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
-			chd = new ChangeRemoveDescriptor(
-					ch.getCreator().getIdentifier(context),
-					ch.getCreator().getParent(context).getIdentifier(context));
+			chd = new ChangeRemoveChildDescriptor(
+					ch.getCreator().getParent(context).getIdentifier(context),
+					ch.getCreator().getIdentifier(context));
 		} else if (c instanceof ChangeConnect) {
 			ChangeConnect ch = (ChangeConnect)c;
 			chd = new ChangeConnectDescriptor(

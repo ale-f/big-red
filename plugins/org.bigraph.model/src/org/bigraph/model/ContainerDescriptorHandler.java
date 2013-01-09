@@ -1,6 +1,7 @@
 package org.bigraph.model;
 
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
+import org.bigraph.model.Container.ChangeRemoveChildDescriptor;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Layoutable.Identifier;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
@@ -47,6 +48,46 @@ final class ContainerDescriptorHandler
 			if (!canContain(parentI, childI))
 				throw new ChangeCreationException(cd,
 						"" + parentI + " can't contain " + childI);
+		} else if (change instanceof ChangeRemoveChildDescriptor) {
+			ChangeRemoveChildDescriptor co =
+					(ChangeRemoveChildDescriptor)change;
+			Layoutable ch = co.getChild().lookup(scratch, resolver);
+			Container parent = co.getParent().lookup(scratch, resolver);
+			
+			if (ch == null)
+				throw new ChangeCreationException(co,
+						"" + co.getChild() + ": lookup failed");
+			if (parent == null)
+				throw new ChangeCreationException(co,
+						"" + co.getParent() + ": lookup failed");
+			
+			if (ch instanceof InnerName)
+				if (((InnerName)ch).getLink(scratch) != null)
+					throw new ChangeCreationException(co,
+							"The point " + ch.toString(scratch) +
+							" must be disconnected before it can be deleted");
+			
+			if (ch instanceof Container) {
+				Container container = (Container)ch;
+				if (container.getChildren(scratch).size() > 0)
+					throw new ChangeCreationException(co,
+							"" + ch.toString(scratch) + " has child objects " +
+							"which must be deleted first");
+				if (container instanceof Node) {
+					for (Port p : ((Node)container).getPorts())
+						if (p.getLink(scratch) != null)
+							throw new ChangeCreationException(co,
+									"" + ch.toString(scratch) + " must be " +
+									"disconnected before it can be deleted");
+				}
+			}
+			
+			Container currentParent = ch.getParent(scratch);
+			if (currentParent == null ||
+					!parent.getIdentifier(scratch).equals(co.getParent()))
+				throw new ChangeCreationException(co,
+						"" + co.getChild() + " isn't connected to " +
+						co.getParent());
 		} else return false;
 		return true;
 	}
@@ -95,6 +136,14 @@ final class ContainerDescriptorHandler
 			Namespace<Layoutable> ns = parent.getBigraph().getNamespace(l);
 			l.setName(ns.put(childI.getName(), l));
 			parent.addChild(-1, l);
+		} else if (change instanceof ChangeRemoveChildDescriptor) {
+			ChangeRemoveChildDescriptor co =
+					(ChangeRemoveChildDescriptor)change;
+			Container parent = co.getParent().lookup(null, resolver);
+			Layoutable ch = co.getChild().lookup(null, resolver);
+			Namespace<Layoutable> ns = ch.getBigraph().getNamespace(ch);
+			parent.removeChild(ch);
+			ns.remove(ch.getName());
 		} else return false;
 		return true;
 	}
