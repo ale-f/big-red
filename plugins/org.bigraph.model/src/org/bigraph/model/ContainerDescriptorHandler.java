@@ -135,7 +135,7 @@ final class ContainerDescriptorHandler
 			
 			Namespace<Layoutable> ns = parent.getBigraph().getNamespace(l);
 			l.setName(ns.put(childI.getName(), l));
-			parent.addChild(-1, l);
+			parent.addChild(l);
 		} else if (change instanceof ChangeRemoveChildDescriptor) {
 			ChangeRemoveChildDescriptor co =
 					(ChangeRemoveChildDescriptor)change;

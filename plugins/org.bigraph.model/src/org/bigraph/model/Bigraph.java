@@ -114,7 +114,7 @@ public class Bigraph extends Container
 		
 		/* Container.clone */
 		for (Layoutable child : getChildren())
-			b.addChild(-1, child.clone(b));
+			b.addChild(child.clone(b));
 		
 		for (Link i : only(null, Link.class)) {
 			Link iClone = i.getIdentifier().lookup(null, b);

@@ -2,7 +2,10 @@ package org.bigraph.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -45,16 +48,10 @@ public abstract class Container extends Layoutable {
 	public final class ChangeAddChild extends ContainerChange {
 		public final Layoutable child;
 		public final String name;
-		protected final int position;
 		
 		public ChangeAddChild(Layoutable child, String name) {
-			this(child, name, -1);
-		}
-		
-		protected ChangeAddChild(Layoutable child, String name, int position) {
 			this.child = child;
 			this.name = name;
-			this.position = position;
 		}
 		
 		@Override
@@ -75,11 +72,9 @@ public abstract class Container extends Layoutable {
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			List<Layoutable> children = context.<Layoutable>getModifiableList(
+			Set<Layoutable> children = context.<Layoutable>getModifiableSet(
 					getCreator(), Container.PROPERTY_CHILD, getChildren());
-			if (position == -1) {
-				children.add(child);
-			} else children.add(position, child);
+			children.add(child);
 			context.setProperty(child,
 					Layoutable.PROPERTY_PARENT, getCreator());
 			
@@ -93,12 +88,10 @@ public abstract class Container extends Layoutable {
 		ExecutorManager.getInstance().addHandler(new ContainerHandler());
 	}
 	
-	protected ArrayList<Layoutable> children = new ArrayList<Layoutable>();
+	protected HashSet<Layoutable> children = new HashSet<Layoutable>();
 	
-	protected void addChild(int position, Layoutable child) {
-		if (position == -1) {
-			children.add(child);
-		} else children.add(position, child);
+	protected void addChild(Layoutable child) {
+		children.add(child);
 		child.setParent(this);
 		firePropertyChange(PROPERTY_CHILD, null, child);
 	}
@@ -125,7 +118,7 @@ public abstract class Container extends Layoutable {
 		Container c = (Container)super.clone(m);
 		
 		for (Layoutable child : getChildren())
-			c.addChild(-1, child.clone(m));
+			c.addChild(child.clone(m));
 		
 		return c;
 	}
@@ -197,27 +190,16 @@ public abstract class Container extends Layoutable {
 	public static final class ChangeAddChildDescriptor
 			extends ContainerChangeDescriptor {
 		private final Identifier parent;
-		private final int position;
 		private final Layoutable.Identifier child;
 		
 		public ChangeAddChildDescriptor(
 				Identifier parent, Layoutable.Identifier child) {
-			this(parent, -1, child);
-		}
-		
-		protected ChangeAddChildDescriptor(
-				Identifier parent, int position, Layoutable.Identifier child) {
 			this.parent = parent;
-			this.position = position;
 			this.child = child;
 		}
 		
 		public Identifier getParent() {
 			return parent;
-		}
-
-		protected int getPosition() {
-			return position;
 		}
 		
 		public Layoutable.Identifier getChild() {
@@ -230,7 +212,6 @@ public abstract class Container extends Layoutable {
 				ChangeAddChildDescriptor obj = (ChangeAddChildDescriptor)obj_;
 				return
 						safeEquals(getParent(), obj.getParent()) &&
-						safeEquals(getPosition(), obj.getPosition()) &&
 						safeEquals(getChild(), obj.getChild());
 			} else return false;
 		}
@@ -278,36 +259,24 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public Container.ChangeRemoveChildDescriptor inverse() {
-			return new Container.ChangeRemoveChildDescriptor(
-					getParent(), getPosition(), getChild());
+		public ChangeRemoveChildDescriptor inverse() {
+			return new ChangeRemoveChildDescriptor(getParent(), getChild());
 		}
 	}
 
 	public static final class ChangeRemoveChildDescriptor
 			extends ContainerChangeDescriptor {
 		private final Identifier parent;
-		private final int position;
 		private final Layoutable.Identifier child;
 		
 		public ChangeRemoveChildDescriptor(
 				Identifier parent, Layoutable.Identifier child) {
-			this(parent, -1, child);
-		}
-		
-		protected ChangeRemoveChildDescriptor(Identifier parent,
-				int position, Layoutable.Identifier child) {
-			this.position = position;
 			this.child = child;
 			this.parent = parent;
 		}
 		
 		public Layoutable.Identifier getChild() {
 			return child;
-		}
-		
-		protected int getPosition() {
-			return position;
 		}
 		
 		public Identifier getParent() {
@@ -321,7 +290,6 @@ public abstract class Container extends Layoutable {
 						(ChangeRemoveChildDescriptor)obj_;
 				return
 						safeEquals(getChild(), obj.getChild()) &&
-						safeEquals(getPosition(), obj.getPosition()) &&
 						safeEquals(getParent(), obj.getParent());
 			} else return false;
 		}
@@ -344,8 +312,7 @@ public abstract class Container extends Layoutable {
 		
 		@Override
 		public ChangeAddChildDescriptor inverse() {
-			return new ChangeAddChildDescriptor(
-					getParent(), getPosition(), getChild());
+			return new ChangeAddChildDescriptor(getParent(), getChild());
 		}
 		
 		@Override
