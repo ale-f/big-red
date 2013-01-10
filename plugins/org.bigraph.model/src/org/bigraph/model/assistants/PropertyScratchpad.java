@@ -3,8 +3,10 @@ package org.bigraph.model.assistants;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bigraph.model.changes.IChange;
 
@@ -159,6 +161,13 @@ public class PropertyScratchpad {
 		}
 	}
 	
+	class SetHelper<T> implements Helper<Collection<? extends T>, Set<T>> {
+		@Override
+		public Set<T> newInstance(Collection<? extends T> in) {
+			return new HashSet<T>(in);
+		}
+	}
+	
 	public <T, V extends T> V getModifiableComplexObject(
 			Helper<T, V> helper, Object target, String name, T original) {
 		@SuppressWarnings("unchecked")
@@ -183,5 +192,11 @@ public class PropertyScratchpad {
 			String name, Map<? extends T, ? extends V> original) {
 		return getModifiableComplexObject(
 				new MapHelper<T, V>(), target, name, original);
+	}
+	
+	public <T> Set<T> getModifiableSet(
+			Object target, String name, Collection<? extends T> original) {
+		return getModifiableComplexObject(
+				new SetHelper<T>(), target, name, original);
 	}
 }
