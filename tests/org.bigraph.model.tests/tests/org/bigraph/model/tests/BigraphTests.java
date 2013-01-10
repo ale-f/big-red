@@ -54,7 +54,7 @@ public class BigraphTests {
 		b.tryApplyChange(b.changeAddChild(r, "0"));
 		
 		assertTrue("Root addition failed", b.getChildren().size() == 1 &&
-				b.getChildren().get(0).equals(r) && r.getName().equals("0"));
+				b.getChildren().contains(r) && r.getName().equals("0"));
 	}
 	
 	@Test
@@ -89,7 +89,7 @@ public class BigraphTests {
 			b.tryApplyChange(b.changeAddChild(r, "0"));
 			assertTrue("Root addition failed",
 					b.getChildren().size() == 1 &&
-							b.getChildren().get(0).equals(r) &&
+							b.getChildren().contains(r) &&
 							r.getName().equals("0"));
 		} catch (ChangeRejectedException e) {
 			fail(e.getRationale());

@@ -41,13 +41,12 @@ public abstract class Layoutable extends NamedModelObject {
 	public final class ChangeRemove extends LayoutableChange {
 		private String oldName;
 		private Container oldParent;
-		private int oldPosition;
+		
 		@Override
 		public void beforeApply() {
 			Layoutable l = getCreator();
 			oldName = l.getName();
 			oldParent = l.getParent();
-			oldPosition = l.getParent().getChildren().indexOf(l);
 		}
 		
 		@Override
@@ -57,8 +56,7 @@ public abstract class Layoutable extends NamedModelObject {
 		
 		@Override
 		public Change inverse() {
-			return oldParent.new ChangeAddChild(
-					getCreator(), oldName, oldPosition);
+			return oldParent.new ChangeAddChild(getCreator(), oldName);
 		}
 		
 		@Override

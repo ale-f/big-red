@@ -1,6 +1,7 @@
 package dk.itu.big_red.model;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.bigraph.model.Bigraph;
@@ -274,7 +275,7 @@ public abstract class LayoutUtilities {
 		} else if (l instanceof Node || l instanceof Root) {
 			boolean horizontal = (l instanceof Root);
 			int progress = PADDING, max = 0;
-			List<? extends Layoutable> children =
+			Collection<? extends Layoutable> children =
 					((Container)l).getChildren(context);
 			for (Layoutable i : children) {
 				r = relayout(context, i, cg);
@@ -307,7 +308,7 @@ public abstract class LayoutUtilities {
 			setLayout(context, l, r);
 		} else if (l instanceof Bigraph) {
 			Bigraph b = (Bigraph)l;
-			List<? extends Layoutable> children = b.getChildren(context);
+			Collection<? extends Layoutable> children = b.getChildren(context);
 			
 			int
 				tallestOuterName = 0,

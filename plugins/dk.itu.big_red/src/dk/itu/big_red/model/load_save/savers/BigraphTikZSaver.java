@@ -3,8 +3,7 @@ package dk.itu.big_red.model.load_save.savers;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.List;
-
+import java.util.Collection;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Control;
@@ -140,9 +139,9 @@ public class BigraphTikZSaver extends Saver {
 		line("tikzset{internal outer name/.style={draw=none,rectangle}}");
 		line("tikzset{internal name/.style={text=white,font=\\itshape}}");
 		
-		List<? extends Layoutable> ch = b.getChildren();
+		Collection<? extends Layoutable> ch = b.getChildren();
 		if (ch.size() > 0) {
-			Rectangle bounding = LayoutUtilities.getLayout(ch.get(0)).getCopy();
+			Rectangle bounding = new Rectangle();
 			for (Layoutable i : ch)
 				bounding.union(LayoutUtilities.getLayout(i));
 			translate = bounding.getTopLeft().getNegated();

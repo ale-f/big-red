@@ -2,6 +2,8 @@ package dk.itu.big_red.editors.bigraph.parts.tree;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -99,11 +101,11 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart
 		return m;
 	}
 	
-	protected List<? extends Layoutable> getPlaceChildren() {
+	protected Collection<? extends Layoutable> getPlaceChildren() {
 		return Collections.emptyList();
 	}
 	
-	protected List<? extends Layoutable> getLinkChildren() {
+	protected Collection<? extends Layoutable> getLinkChildren() {
 		return Collections.emptyList();
 	}
 	
@@ -111,9 +113,9 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart
 	protected final List<? extends Layoutable> getModelChildren() {
 		switch (getMode()) {
 		case PLACE:
-			return getPlaceChildren();
+			return new ArrayList<Layoutable>(getPlaceChildren());
 		case LINK:
-			return getLinkChildren();
+			return new ArrayList<Layoutable>(getLinkChildren());
 		default:
 			throw new Error("Oh no, extra enum value");
 		}

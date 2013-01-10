@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.bigraph.parts.tree;
 
-import java.util.List;
-
+import java.util.Collection;
 import org.bigraph.model.Container;
 import org.bigraph.model.Layoutable;
 
@@ -12,7 +11,7 @@ public abstract class ContainerTreePart extends AbstractTreePart {
 	}
 	
 	@Override
-	protected List<? extends Layoutable> getPlaceChildren() {
+	protected Collection<? extends Layoutable> getPlaceChildren() {
 		return getModel().getChildren();
 	}
 }

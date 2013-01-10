@@ -1,7 +1,6 @@
 package org.bigraph.model;
 
-import java.util.List;
-
+import java.util.Collection;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -74,7 +73,7 @@ final class ContainerHandler implements IStepExecutor, IStepValidator {
 						c.child + " already has a parent (" +
 						existingParent + ")");
 			
-			List<? extends Layoutable> siblings =
+			Collection<? extends Layoutable> siblings =
 					container.getChildren(context);
 			if (c.position < -1 || c.position > siblings.size())
 				throw new ChangeRejectedException(b,

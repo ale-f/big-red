@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.Bigraph;
@@ -49,7 +50,7 @@ public class RootPart extends ContainerPart {
 	
 	@Override
 	public List<? extends Layoutable> getModelChildren() {
-		return getModel().getChildren();
+		return new ArrayList<Layoutable>(getModel().getChildren());
 	}
 	
 	@Override

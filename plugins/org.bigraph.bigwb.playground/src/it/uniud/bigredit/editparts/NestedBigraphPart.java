@@ -7,6 +7,7 @@ import it.uniud.bigredit.policy.LayoutableDeletePolicy;
 import it.uniud.bigredit.policy.LayoutableLayoutPolicy;
 
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.Bigraph;
@@ -89,7 +90,7 @@ public class NestedBigraphPart extends ContainerPart {
 
 	@Override
 	public List<? extends Layoutable> getModelChildren() {
-		return getModel().getChildren();
+		return new ArrayList<Layoutable>(getModel().getChildren());
 	}
 
 	@Override

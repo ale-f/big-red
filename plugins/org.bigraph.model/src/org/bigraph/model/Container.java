@@ -1,6 +1,7 @@
 package org.bigraph.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
@@ -109,13 +110,14 @@ public abstract class Container extends Layoutable {
 		}
 	}
 	
-	public List<? extends Layoutable> getChildren() {
+	public Collection<? extends Layoutable> getChildren() {
 		return children;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<? extends Layoutable> getChildren(PropertyScratchpad context) {
-		return getProperty(context, PROPERTY_CHILD, List.class);
+	public Collection<? extends Layoutable> getChildren(
+			PropertyScratchpad context) {
+		return getProperty(context, PROPERTY_CHILD, Collection.class);
 	}
 	
 	@Override
