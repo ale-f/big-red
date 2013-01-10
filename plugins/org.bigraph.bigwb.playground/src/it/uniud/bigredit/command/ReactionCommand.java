@@ -12,8 +12,6 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.ui.IWorkbenchPart;
-
 import dk.itu.big_red.utilities.ui.UI;
 
 

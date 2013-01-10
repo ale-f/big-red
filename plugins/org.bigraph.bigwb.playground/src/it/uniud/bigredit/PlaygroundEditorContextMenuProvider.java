@@ -4,8 +4,6 @@ import java.util.List;
 
 import it.uniud.bigredit.editparts.NestedBigraphPart;
 import it.uniud.bigredit.ipo.ISOLink;
-import it.uniud.bigredit.ipo.ISOPlace;
-
 import org.bigraph.model.Bigraph;
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;

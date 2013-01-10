@@ -8,7 +8,6 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
-import org.bigraph.uniud.bigraph.match.PlaceMatch;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;

@@ -3,27 +3,15 @@ package it.uniud.bigredit.figure;
 import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.graph.Path;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-
-
-
-
-
-
 import dk.itu.big_red.editors.bigraph.figures.AbstractFigure;
 import dk.itu.big_red.utilities.ui.UI;
 

@@ -2,7 +2,6 @@ package it.uniud.bigredit.ipo;
 
 import org.bigraph.model.Control;
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;

@@ -24,7 +24,6 @@ import org.bigraph.model.interfaces.IOuterName;
 import org.bigraph.model.interfaces.IParent;
 import org.bigraph.model.interfaces.IPort;
 import org.bigraph.model.interfaces.IRoot;
-import org.eclipse.core.resources.IContainer;
 
 public class ISOLink {
 

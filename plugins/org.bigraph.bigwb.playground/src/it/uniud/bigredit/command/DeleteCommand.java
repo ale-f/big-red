@@ -2,7 +2,6 @@ package it.uniud.bigredit.command;
 
 import it.uniud.bigredit.model.BRS;
 
-import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.ChangeGroup;
 

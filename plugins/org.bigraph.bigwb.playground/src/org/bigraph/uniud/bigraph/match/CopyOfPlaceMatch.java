@@ -32,12 +32,8 @@ import org.bigraph.model.Node;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
-import org.bigraph.model.interfaces.IRoot;
-import org.eclipse.core.runtime.IAdaptable;
-
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,17 +41,8 @@ import java.util.List;
 import choco.Choco;
 import choco.cp.model.CPModel;
 import choco.cp.solver.CPSolver;
-import choco.cp.solver.search.integer.varselector.StaticVarOrder;
-import choco.kernel.common.logging.ChocoLogging;
 import choco.kernel.model.Model;
-import choco.kernel.common.util.tools.ArrayUtils;
-import choco.kernel.model.constraints.Constraint;
-import choco.kernel.model.variables.integer.IntegerConstantVariable;
-import choco.kernel.model.variables.integer.IntegerExpressionVariable;
 import choco.kernel.model.variables.integer.IntegerVariable;
-import choco.kernel.model.variables.set.SetConstantVariable;
-import choco.kernel.model.variables.tree.TreeParametersObject;
-import choco.kernel.solver.Solver;
 
 public class CopyOfPlaceMatch {
 

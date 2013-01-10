@@ -4,11 +4,8 @@ import it.uniud.bigredit.model.BRS;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Edge;
-import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.OuterName;
-import org.bigraph.model.Root;
 import org.bigraph.model.changes.ChangeGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 

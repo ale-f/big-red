@@ -8,12 +8,7 @@ import it.uniud.bigredit.figure.NestedBigraphFigure;
 import it.uniud.bigredit.figure.ReactionFiguren;
 import it.uniud.bigredit.model.Reaction;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map.Entry;
-
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Node;
@@ -21,19 +16,9 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CompoundCommand;
-import org.eclipse.gef.editpolicies.NonResizableEditPolicy;
 import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
-import org.eclipse.gef.requests.GroupRequest;
-
-import dk.itu.big_red.editors.bigraph.figures.RootFigure;
 import dk.itu.big_red.editors.bigraph.parts.NodePart;
 import dk.itu.big_red.editors.bigraph.parts.RootPart;
 

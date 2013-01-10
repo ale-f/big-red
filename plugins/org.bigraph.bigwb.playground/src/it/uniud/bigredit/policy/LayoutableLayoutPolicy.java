@@ -20,7 +20,6 @@ import it.uniud.bigredit.command.LayoutableAddCommand;
 import it.uniud.bigredit.command.LayoutableCreateCommand;
 import it.uniud.bigredit.command.LayoutableRelayoutCommand;
 import it.uniud.bigredit.command.ReactionCommand;
-import it.uniud.bigredit.editparts.BigreditRootEditPart;
 import it.uniud.bigredit.model.Reaction;
 
 import dk.itu.big_red.editors.bigraph.parts.BigraphPart;

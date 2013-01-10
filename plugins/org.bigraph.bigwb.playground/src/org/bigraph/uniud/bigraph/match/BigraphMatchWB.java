@@ -5,8 +5,6 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.interfaces.BigraphBuilder;
 import org.bigraph.model.interfaces.IControl;
 import org.bigraph.model.interfaces.INode;
-import org.bigraph.model.interfaces.IOuterName;
-import org.bigraph.model.interfaces.IPort;
 import org.bigraph.model.interfaces.IRoot;
 import org.bigraph.model.interfaces.ISite;
 import org.bigraph.model.interfaces.SignatureBuilder;
