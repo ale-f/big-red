@@ -2,7 +2,7 @@ package org.bigraph.model;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.ExecutorManager;
@@ -150,22 +150,22 @@ public class Bigraph extends Container
 	}
 
 	@Override
-	public List<? extends Edge> getEdges() {
+	public Collection<? extends Edge> getEdges() {
 		return only(null, Edge.class);
 	}
 
 	@Override
-	public List<? extends Root> getRoots() {
+	public Collection<? extends Root> getRoots() {
 		return only(null, Root.class);
 	}
 
 	@Override
-	public List<? extends InnerName> getInnerNames() {
+	public Collection<? extends InnerName> getInnerNames() {
 		return only(null, InnerName.class);
 	}
 	
 	@Override
-	public List<? extends Site> getSites() {
+	public Collection<? extends Site> getSites() {
 		ArrayList<Site> sites = new ArrayList<Site>();
 		ArrayDeque<Container> queue = new ArrayDeque<Container>();
 		queue.add(this);
@@ -184,7 +184,7 @@ public class Bigraph extends Container
 	}
 	
 	@Override
-	public List<? extends OuterName> getOuterNames() {
+	public Collection<? extends OuterName> getOuterNames() {
 		return only(null, OuterName.class);
 	}
 	

@@ -1,7 +1,9 @@
 package org.bigraph.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IChild;
 import org.bigraph.model.interfaces.INode;
@@ -58,6 +60,8 @@ public class Node extends Container implements INode {
 	
 	@Override
 	public List<? extends Port> getPorts() {
+		/* The order of ports is important, so this method should return a List
+		 * rather than a bare Collection */
 		return ports;
 	}
 	
@@ -74,17 +78,17 @@ public class Node extends Container implements INode {
 	}
 
 	@Override
-	public List<? extends Node> getNodes() {
+	public Collection<? extends Node> getNodes() {
 		return only(null, Node.class);
 	}
 
 	@Override
-	public List<? extends Site> getSites() {
+	public Collection<? extends Site> getSites() {
 		return only(null, Site.class);
 	}
 	
 	@Override
-	public List<? extends IChild> getIChildren() {
+	public Collection<? extends IChild> getIChildren() {
 		return only(null, IChild.class);
 	}
 	

@@ -270,6 +270,8 @@ public class Control extends NamedModelObject implements IControl {
 	 */
 	@Override
 	public List<? extends PortSpec> getPorts() {
+		/* The order of ports is important, so this method should return a List
+		 * rather than a bare Collection */
 		return ports;
 	}
 	

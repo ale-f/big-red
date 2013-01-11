@@ -1,7 +1,6 @@
 package org.bigraph.model;
 
-import java.util.List;
-
+import java.util.Collection;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IChild;
 import org.bigraph.model.interfaces.IRoot;
@@ -12,17 +11,17 @@ import org.bigraph.model.interfaces.IRoot;
  */
 public class Root extends Container implements IRoot {
 	@Override
-	public List<? extends Node> getNodes() {
+	public Collection<? extends Node> getNodes() {
 		return only(null, Node.class);
 	}
 
 	@Override
-	public List<? extends Site> getSites() {
+	public Collection<? extends Site> getSites() {
 		return only(null, Site.class);
 	}
 
 	@Override
-	public List<? extends IChild> getIChildren() {
+	public Collection<? extends IChild> getIChildren() {
 		return only(null, IChild.class);
 	}
 	
