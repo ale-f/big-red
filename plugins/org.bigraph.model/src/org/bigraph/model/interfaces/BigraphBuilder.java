@@ -12,12 +12,26 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.IChange;
 
 public class BigraphBuilder {
 	private Bigraph b = new Bigraph();
 	private ChangeGroup cg = new ChangeGroup();
+	private PropertyScratchpad scratch = new PropertyScratchpad();
+	
+	private void addChange(IChange ch) {
+		if (ch == null)
+			return;
+		cg.add(ch);
+		getScratch().executeChange(ch);
+	}
+	
+	private PropertyScratchpad getScratch() {
+		return scratch;
+	}
 	
 	public BigraphBuilder(ISignature s) {
 		b.setSignature((Signature)s);
@@ -25,41 +39,41 @@ public class BigraphBuilder {
 	
 	public IEdge newEdge(String name) {
 		Edge e = new Edge();
-		cg.add(b.changeAddChild(e, name));
+		addChange(b.changeAddChild(e, name));
 		return e;
 	}
 	
 	public IOuterName newOuterName(String name) {
 		OuterName o = new OuterName();
-		cg.add(b.changeAddChild(o, name));
+		addChange(b.changeAddChild(o, name));
 		return o;
 	}
 	
 	public IInnerName newInnerName(String name) {
 		InnerName i = new InnerName();
-		cg.add(b.changeAddChild(i, name));
+		addChange(b.changeAddChild(i, name));
 		return i;
 	}
 	
 	public IRoot newRoot(String name) {
 		Root r = new Root();
-		cg.add(b.changeAddChild(r, name));
+		addChange(b.changeAddChild(r, name));
 		return r;
 	}
 	
 	public INode newNode(IParent parent, IControl c, String name) {
 		Node n = new Node((Control)c);
-		cg.add(((Container)parent).changeAddChild(n, name));
+		addChange(((Container)parent).changeAddChild(n, name));
 		return n;
 	}
 	
 	public void newConnection(IPoint p, ILink l) {
-		cg.add(((Point)p).changeConnect((Link)l));
+		addChange(((Point)p).changeConnect((Link)l));
 	}
 	
 	public ISite newSite(IParent parent, String name) {
 		Site s = new Site();
-		cg.add(((Container)parent).changeAddChild(s, name));
+		addChange(((Container)parent).changeAddChild(s, name));
 		return s;
 	}
 	
