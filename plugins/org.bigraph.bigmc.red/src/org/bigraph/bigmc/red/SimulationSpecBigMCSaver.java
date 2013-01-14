@@ -3,7 +3,8 @@ package org.bigraph.bigmc.red;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.Site;
 import org.bigraph.model.interfaces.IChild;
+import org.bigraph.model.interfaces.IEntity;
 import org.bigraph.model.interfaces.ILink;
 import org.bigraph.model.interfaces.INode;
 import org.bigraph.model.interfaces.IOuterName;
@@ -28,6 +30,10 @@ import org.bigraph.model.interfaces.ISite;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.bigraph.model.savers.SaveFailedException;
 import org.bigraph.model.savers.Saver;
+import org.bigraph.model.utilities.CollectionUtilities;
+import org.bigraph.model.utilities.comparators.ComparatorUtilities;
+import org.bigraph.model.utilities.comparators.IntegerStringComparator;
+import org.bigraph.model.utilities.comparators.LexicographicStringComparator;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
 import org.bigraph.extensions.param.ParameterUtilities;
@@ -50,6 +56,28 @@ public class SimulationSpecBigMCSaver extends Saver {
 			}
 		});
 	}
+	
+	private static final class EntityNameRetriever
+			implements ComparatorUtilities.Converter<IEntity, String> {
+		private static final EntityNameRetriever INSTANCE =
+				new EntityNameRetriever();
+		
+		@Override
+		public String convert(IEntity object) {
+			return object.getName();
+		}
+	}
+	
+	private static final <T extends IEntity> Collection<T> order(
+			Iterable<? extends T> it, Comparator<String> cmp) {
+		return CollectionUtilities.collect(it,
+				ComparatorUtilities.convertComparator(
+						EntityNameRetriever.INSTANCE, cmp));
+	}
+	
+	private static final Comparator<String>
+		C_INT = IntegerStringComparator.INSTANCE,
+		C_LEX = LexicographicStringComparator.INSTANCE;
 	
 	private static Pattern p = Pattern.compile("[^a-zA-Z0-9_]");
 	
@@ -160,16 +188,13 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processNames(SimulationSpec s) throws SaveFailedException {
-		ArrayList<String> names = new ArrayList<String>();
-		for (IOuterName o : s.getModel().getOuterNames())
-			names.add(normaliseName(o.getName()));
-		Collections.sort(names);
+		Collection<? extends IOuterName> names = s.getModel().getOuterNames();
 		
 		if (names.size() == 0)
 			return;
 		write("# Names\n");
-		for (String name : names)
-			write("%name " + name + ";\n");
+		for (IOuterName i : names)
+			write("%name " + normaliseName(i.getName()) + ";\n");
 		write("\n");
 	}
 	
@@ -206,7 +231,8 @@ public class SimulationSpecBigMCSaver extends Saver {
 			write("]");
 		}
 		
-		Iterator<? extends IChild> in = i.getIChildren().iterator();
+		Iterator<? extends IChild> in =
+				order(i.getIChildren(), C_LEX).iterator();
 		if (in.hasNext()) {
 			write(".");
 			IChild firstChild = in.next();
@@ -223,7 +249,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processRoot(IRoot i) throws SaveFailedException {
-		Iterator<? extends INode> in = i.getNodes().iterator();
+		Iterator<? extends INode> in = order(i.getNodes(), C_LEX).iterator();
 		boolean anyNodes = in.hasNext();
 		if (anyNodes) {
 			processNode(in.next());
@@ -233,7 +259,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 			}
 		}
 		
-		Iterator<? extends ISite> is = i.getSites().iterator();
+		Iterator<? extends ISite> is = order(i.getSites(), C_INT).iterator();
 		boolean anySites = is.hasNext();
 		if (anySites) {
 			if (anyNodes)
@@ -250,7 +276,7 @@ public class SimulationSpecBigMCSaver extends Saver {
 	}
 	
 	private void processBigraph(Bigraph b) throws SaveFailedException {
-		Iterator<? extends IRoot> ir = b.getRoots().iterator();
+		Iterator<? extends IRoot> ir = order(b.getRoots(), C_INT).iterator();
 		if (ir.hasNext()) {
 			processRoot(ir.next());
 			while (ir.hasNext()) {
