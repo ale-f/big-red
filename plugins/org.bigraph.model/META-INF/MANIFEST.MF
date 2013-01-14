@@ -17,4 +17,5 @@ Export-Package: org.bigraph.model,
  org.bigraph.model.process,
  org.bigraph.model.resources,
  org.bigraph.model.savers,
- org.bigraph.model.utilities
+ org.bigraph.model.utilities,
+ org.bigraph.model.utilities.comparators
