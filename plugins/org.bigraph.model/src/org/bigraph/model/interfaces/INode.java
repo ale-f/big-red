@@ -1,5 +1,7 @@
 package org.bigraph.model.interfaces;
 
+import java.util.Collection;
+
 import org.bigraph.model.Node;
 
 /**
@@ -10,5 +12,5 @@ import org.bigraph.model.Node;
 public interface INode extends IParent, IChild {
 	IControl getControl();
 	
-	Iterable<? extends IPort> getPorts();
+	Collection<? extends IPort> getPorts();
 }

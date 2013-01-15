@@ -1,5 +1,7 @@
 package org.bigraph.model.interfaces;
 
+import java.util.Collection;
+
 import org.bigraph.model.Link;
 
 /**
@@ -8,5 +10,5 @@ import org.bigraph.model.Link;
  * @see Link
  */
 public interface ILink extends IEntity {
-	Iterable<? extends IPoint> getPoints();
+	Collection<? extends IPoint> getPoints();
 }

@@ -1,8 +1,10 @@
 package org.bigraph.model.interfaces;
 
+import java.util.Collection;
+
 public interface IParent extends IPlace {
-	Iterable<? extends INode> getNodes();
-	Iterable<? extends ISite> getSites();
+	Collection<? extends INode> getNodes();
+	Collection<? extends ISite> getSites();
 	
-	Iterable<? extends IChild> getIChildren();
+	Collection<? extends IChild> getIChildren();
 }

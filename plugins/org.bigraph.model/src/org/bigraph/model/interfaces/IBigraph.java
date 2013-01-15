@@ -1,5 +1,7 @@
 package org.bigraph.model.interfaces;
 
+import java.util.Collection;
+
 import org.bigraph.model.Bigraph;
 
 /**
@@ -11,13 +13,13 @@ import org.bigraph.model.Bigraph;
 public interface IBigraph {
 	ISignature getSignature();
 
-	Iterable<? extends IEdge> getEdges();
+	Collection<? extends IEdge> getEdges();
 	
 	/* Inner interface */
-	Iterable<? extends ISite> getSites();
-	Iterable<? extends IInnerName> getInnerNames();
+	Collection<? extends ISite> getSites();
+	Collection<? extends IInnerName> getInnerNames();
 	
 	/* Outer interface */
-	Iterable<? extends IRoot> getRoots();
-	Iterable<? extends IOuterName> getOuterNames();
+	Collection<? extends IRoot> getRoots();
+	Collection<? extends IOuterName> getOuterNames();
 }

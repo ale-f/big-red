@@ -1,5 +1,7 @@
 package org.bigraph.model.interfaces;
 
+import java.util.Collection;
+
 import org.bigraph.model.Signature;
 
 /**
@@ -8,5 +10,5 @@ import org.bigraph.model.Signature;
  * @see Signature
  */
 public interface ISignature {
-	Iterable<? extends IControl> getControls();
+	Collection<? extends IControl> getControls();
 }

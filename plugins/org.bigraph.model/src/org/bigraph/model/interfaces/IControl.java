@@ -1,5 +1,7 @@
 package org.bigraph.model.interfaces;
 
+import java.util.Collection;
+
 import org.bigraph.model.Control;
 
 /**
@@ -8,7 +10,7 @@ import org.bigraph.model.Control;
  * @see Control
  */
 public interface IControl {
-	Iterable<? extends IPort> getPorts();
+	Collection<? extends IPort> getPorts();
 	
 	String getName();
 }
