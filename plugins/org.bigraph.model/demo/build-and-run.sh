@@ -14,7 +14,7 @@ if [ "$1" != "" ]; then
 	shift 1
 	(
 		export "CLASSPATH=bigraph.jar:."
-		if [ ! -e "$BASE.class" -o "$FILE" -nt "$BASE.class" ]; then
+		if [ \( ! -e "$BASE.class" \) -o "$FILE" -nt "$BASE.class" ]; then
 			ead javac "$FILE"
 		fi
 		ead java "$BASE" "$@"
