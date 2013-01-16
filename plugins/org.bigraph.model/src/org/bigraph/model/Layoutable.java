@@ -69,7 +69,7 @@ public abstract class Layoutable extends NamedModelObject {
 			Layoutable l = getCreator();
 			Container c = l.getParent(context);
 			
-			context.<Layoutable>getModifiableList(
+			context.<Layoutable>getModifiableSet(
 					c, Container.PROPERTY_CHILD, c.getChildren()).
 				remove(l);
 			context.setProperty(l, Layoutable.PROPERTY_PARENT, null);
