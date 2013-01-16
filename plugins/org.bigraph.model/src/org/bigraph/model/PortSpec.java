@@ -178,6 +178,6 @@ public class PortSpec extends NamedModelObject implements IPort {
 	@Override
 	public Identifier getIdentifier(PropertyScratchpad context) {
 		return new Identifier(getName(context),
-				getControl().getIdentifier(context));
+				getControl(context).getIdentifier(context));
 	}
 }
