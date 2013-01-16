@@ -11,6 +11,8 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
+
 import org.bigraph.model.savers.BigraphXMLSaver;
 import org.bigraph.model.savers.SaveFailedException;
 
@@ -23,11 +25,17 @@ public class Test {
 		Signature s = new Signature();
 		Control c = new Control();
 		PortSpec p = new PortSpec();
+
+		Control.Identifier cI = new Control.Identifier("Zone");
+		PortSpec.Identifier psI = new PortSpec.Identifier("z", cI);
+
 		try {
 			cg.addAll(Arrays.asList(
 				s.changeAddControl(c, "Zone"),
 				c.changeAddPort(p, "z"),
-				p.changeName("0")));
+				new BoundDescriptor(s,
+					new PortSpec.ChangeNameDescriptor(
+						psI, "0"))));
 			s.tryApplyChange(cg);
 		} catch (ChangeRejectedException cre) {
 			cre.printStackTrace();
