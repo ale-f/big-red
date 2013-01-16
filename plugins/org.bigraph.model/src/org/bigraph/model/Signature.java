@@ -133,12 +133,16 @@ public class Signature extends ModelObject
 	}
 	
 	public Control getControl(String name) {
-		for (Control c : getControls())
-			if (c.getName().equals(name))
+		return getControl(null, name);
+	}
+	
+	public Control getControl(PropertyScratchpad context, String name) {
+		for (Control c : getControls(context))
+			if (c.getName(context).equals(name))
 				return c;
 		Control c = null;
-		for (Signature s : getSignatures())
-			if ((c = s.getControl(name)) != null)
+		for (Signature s : getSignatures(context))
+			if ((c = s.getControl(context, name)) != null)
 				return c;
 		return null;
 	}
@@ -259,10 +263,11 @@ public class Signature extends ModelObject
 		if (identifier instanceof Signature.Identifier) {
 			return this;
 		} else if (identifier instanceof Control.Identifier) {
-			return getControl(((Control.Identifier)identifier).getName());
+			return getControl(context,
+					((Control.Identifier)identifier).getName());
 		} else if (identifier instanceof PortSpec.Identifier) {
 			PortSpec.Identifier id = (PortSpec.Identifier)identifier;
-			Control c = getControl(id.getControl().getName());
+			Control c = getControl(context, id.getControl().getName());
 			if (c != null)
 				return c.getNamespace().get(context, id.getName());
 		}
