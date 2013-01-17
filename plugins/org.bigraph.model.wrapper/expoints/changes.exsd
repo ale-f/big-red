@@ -19,6 +19,9 @@
       <complexType>
          <sequence>
             <element ref="validator" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="executor" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="descriptorValidator" minOccurs="0" maxOccurs="unbounded"/>
+            <element ref="descriptorExecutor" minOccurs="0" maxOccurs="unbounded"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -91,6 +94,56 @@
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.IStepExecutor"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="descriptorValidator">
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.descriptors.IDescriptorStepValidator"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="descriptorExecutor">
+      <complexType>
+         <sequence>
+            <element ref="description" minOccurs="0" maxOccurs="1"/>
+         </sequence>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="class" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.descriptors.IDescriptorStepExecutor"/>
                </appinfo>
             </annotation>
          </attribute>
