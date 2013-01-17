@@ -7,9 +7,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
-import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
-import org.bigraph.model.changes.descriptors.experimental.IDescriptorStepValidator;
-import org.bigraph.model.changes.descriptors.experimental.IDescriptorStepValidator.Callback;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 
 public class BoundDescriptor implements IChange {
 	private final Resolver resolver;

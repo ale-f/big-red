@@ -7,8 +7,8 @@ import org.bigraph.model.Signature.ChangeRemoveSignatureDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.changes.descriptors.experimental.IDescriptorStepExecutor;
-import org.bigraph.model.changes.descriptors.experimental.IDescriptorStepValidator;
+import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 
 final class SignatureDescriptorHandler implements IDescriptorStepExecutor,
 		IDescriptorStepValidator {

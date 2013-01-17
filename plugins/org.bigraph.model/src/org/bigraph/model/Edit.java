@@ -10,8 +10,8 @@ import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.changes.descriptors.experimental.DescriptorExecutorManager;
 
 public class Edit extends ModelObject
 		implements IChangeDescriptor, IChangeExecutor,

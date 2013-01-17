@@ -1,9 +1,7 @@
-package org.bigraph.model.changes.descriptors.experimental;
+package org.bigraph.model.changes.descriptors;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
  * Classes implementing <strong>IStepValidator</strong> can validate {@link

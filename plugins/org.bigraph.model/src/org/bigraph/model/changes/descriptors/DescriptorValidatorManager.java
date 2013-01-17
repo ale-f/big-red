@@ -1,13 +1,10 @@
-package org.bigraph.model.changes.descriptors.experimental;
+package org.bigraph.model.changes.descriptors;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
-import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class DescriptorValidatorManager implements IDescriptorStepValidator {
 	private List<IDescriptorStepValidator> validators =
