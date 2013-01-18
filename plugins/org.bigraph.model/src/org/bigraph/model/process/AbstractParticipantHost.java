@@ -19,6 +19,10 @@ public abstract class AbstractParticipantHost implements IParticipantHost {
 		participant.setHost(this);
 	}
 
+	protected void removeParticipant(IParticipant participant) {
+		participants.remove(participant);
+	}
+	
 	@Override
 	public List<? extends IParticipant> getParticipants() {
 		return participants;
