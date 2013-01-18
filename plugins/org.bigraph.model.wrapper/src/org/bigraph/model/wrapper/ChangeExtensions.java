@@ -6,8 +6,7 @@ import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
-import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
-import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
+import org.bigraph.model.process.IParticipant;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -19,10 +18,8 @@ final class ChangeExtensions {
 	private static final ArrayList<IStepValidator>
 			validators = new ArrayList<IStepValidator>();
 	
-	private static final ArrayList<IDescriptorStepExecutor>
-			descriptorExecutors = new ArrayList<IDescriptorStepExecutor>();
-	private static final ArrayList<IDescriptorStepValidator>
-			descriptorValidators = new ArrayList<IDescriptorStepValidator>();
+	private static final ArrayList<IParticipant>
+			descriptorParticipants = new ArrayList<IParticipant>();
 	
 	private static final Object instantiate(IConfigurationElement ice) {
 		try {
@@ -55,19 +52,12 @@ final class ChangeExtensions {
 					validators.add(validator);
 					eInstance.addValidator(validator);
 				}
-			} else if ("descriptorExecutor".equals(name)) {
-				IDescriptorStepExecutor executor =
-						(IDescriptorStepExecutor)instantiate(ice);
-				if (executor != null) {
-					descriptorExecutors.add(executor);
-					deInstance.addParticipant(executor);
-				}
-			} else if ("descriptorValidator".equals(name)) {
-				IDescriptorStepValidator validator =
-						(IDescriptorStepValidator)instantiate(ice);
-				if (validator != null) {
-					descriptorValidators.add(validator);
-					deInstance.addParticipant(validator);
+			} else if ("descriptorExecutor".equals(name) ||
+					"descriptorValidator".equals(name)) {
+				IParticipant participant = (IParticipant)instantiate(ice);
+				if (participant != null) {
+					descriptorParticipants.add(participant);
+					deInstance.addParticipant(participant);
 				}
 			}
 		}
@@ -86,12 +76,9 @@ final class ChangeExtensions {
 		executors.clear();
 		validators.clear();
 		
-		for (IDescriptorStepExecutor i : descriptorExecutors)
-			deInstance.removeParticipant(i);
-		for (IDescriptorStepValidator i : descriptorValidators)
+		for (IParticipant i : descriptorParticipants)
 			deInstance.removeParticipant(i);
 		
-		descriptorExecutors.clear();
-		descriptorValidators.clear();
+		descriptorParticipants.clear();
 	}
 }
