@@ -4,10 +4,8 @@ import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
 
-final class ModelObjectHandler implements IStepExecutor, IStepValidator {
+final class ModelObjectHandler extends DescriptorHandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange c_) {
 		if (c_ instanceof ChangeExtendedData) {

@@ -4,11 +4,9 @@ import org.bigraph.model.Signature.ChangeAddControl;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.names.Namespace;
 
-final class SignatureHandler implements IStepExecutor, IStepValidator {
+final class SignatureHandler extends DescriptorHandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof ChangeAddControl) {

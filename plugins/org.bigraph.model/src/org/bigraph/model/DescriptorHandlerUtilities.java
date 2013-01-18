@@ -2,6 +2,8 @@ package org.bigraph.model;
 
 import java.util.List;
 
+import org.bigraph.model.changes.IStepExecutor;
+import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
@@ -10,6 +12,10 @@ import org.bigraph.model.process.IParticipantHost;
 
 abstract class DescriptorHandlerUtilities {
 	private DescriptorHandlerUtilities() {}
+	
+	abstract static class HandlerImpl
+			implements IStepExecutor, IStepValidator {
+	}
 	
 	abstract static class DescriptorHandlerImpl
 			implements IDescriptorStepExecutor, IDescriptorStepValidator {

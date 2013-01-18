@@ -4,11 +4,9 @@ import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.names.Namespace;
 
-final class PortSpecHandler implements IStepExecutor, IStepValidator {
+final class PortSpecHandler extends DescriptorHandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof ChangeRemovePort) {

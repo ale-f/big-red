@@ -3,10 +3,8 @@ package org.bigraph.model;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
 
-final class PointHandler implements IStepExecutor, IStepValidator {
+final class PointHandler extends DescriptorHandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof Point.ChangeConnect) {
