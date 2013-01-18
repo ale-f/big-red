@@ -1,9 +1,7 @@
 package org.bigraph.model.changes.descriptors;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 
 public class DescriptorExecutorManager extends DescriptorValidatorManager {
@@ -19,29 +17,12 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 	public DescriptorExecutorManager() {
 	}
 	
-	private List<IDescriptorStepExecutor> executors =
-			new ArrayList<IDescriptorStepExecutor>();
-	
-	public <T extends IDescriptorStepExecutor & IDescriptorStepValidator>
-	void addHandler(T handler) {
-		addValidator(handler);
-		executors.add(handler);
-	}
-	
-	public void addHandler(DescriptorExecutorManager manager) {
-		addHandler(manager.new Handler());
-	}
-	
-	public void addExecutor(IDescriptorStepExecutor executor) {
-		executors.add(executor);
-	}
-	
-	public void removeExecutor(IDescriptorStepExecutor executor) {
-		executors.remove(executor);
-	}
-	
-	protected List<? extends IDescriptorStepExecutor> getExecutors() {
-		return executors;
+	@Override
+	public void addParticipant(IParticipant participant) {
+		if (participant instanceof DescriptorExecutorManager)
+			participant =
+					((DescriptorExecutorManager)participant).new Handler();
+		super.addParticipant(participant);
 	}
 	
 	public void tryApplyChange(Resolver resolver, IChangeDescriptor change)
@@ -57,7 +38,8 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 	
 	private IChangeDescriptor step(Resolver r, IChangeDescriptor c) {
 		boolean passes = false;
-		for (IDescriptorStepExecutor i : getExecutors())
+		for (IDescriptorStepExecutor i :
+				getParticipants(IDescriptorStepExecutor.class))
 			passes |= i.executeChange(r, c);
 		return (passes ? null : c);
 	}

@@ -60,14 +60,14 @@ final class ChangeExtensions {
 						(IDescriptorStepExecutor)instantiate(ice);
 				if (executor != null) {
 					descriptorExecutors.add(executor);
-					deInstance.addExecutor(executor);
+					deInstance.addParticipant(executor);
 				}
 			} else if ("descriptorValidator".equals(name)) {
 				IDescriptorStepValidator validator =
 						(IDescriptorStepValidator)instantiate(ice);
 				if (validator != null) {
 					descriptorValidators.add(validator);
-					deInstance.addValidator(validator);
+					deInstance.addParticipant(validator);
 				}
 			}
 		}
@@ -87,9 +87,9 @@ final class ChangeExtensions {
 		validators.clear();
 		
 		for (IDescriptorStepExecutor i : descriptorExecutors)
-			deInstance.removeExecutor(i);
+			deInstance.removeParticipant(i);
 		for (IDescriptorStepValidator i : descriptorValidators)
-			deInstance.removeValidator(i);
+			deInstance.removeParticipant(i);
 		
 		descriptorExecutors.clear();
 		descriptorValidators.clear();

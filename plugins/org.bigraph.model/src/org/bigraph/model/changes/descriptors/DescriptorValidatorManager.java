@@ -5,27 +5,20 @@ import java.util.List;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.process.AbstractParticipantHost;
+import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 
-public class DescriptorValidatorManager implements IDescriptorStepValidator {
+public class DescriptorValidatorManager
+		extends AbstractParticipantHost implements IDescriptorStepValidator {
 	@Override
 	public final void setHost(IParticipantHost host) {
 		/* do nothing */
 	}
 	
-	private List<IDescriptorStepValidator> validators =
-			new ArrayList<IDescriptorStepValidator>();
-	
-	public void addValidator(IDescriptorStepValidator validator) {
-		validators.add(validator);
-	}
-	
-	public void removeValidator(IDescriptorStepValidator validator) {
-		validators.remove(validator);
-	}
-	
-	protected List<? extends IDescriptorStepValidator> getValidators() {
-		return validators;
+	@Override
+	public void removeParticipant(IParticipant participant) {
+		super.removeParticipant(participant);
 	}
 	
 	public boolean tryValidateChange(Resolver r, IChangeDescriptor change)
@@ -55,7 +48,8 @@ public class DescriptorValidatorManager implements IDescriptorStepValidator {
 		protected IChangeDescriptor step(
 				IChangeDescriptor c) throws ChangeCreationException {
 			boolean passes = false;
-			for (IDescriptorStepValidator i : getValidators())
+			for (IDescriptorStepValidator i :
+					getParticipants(IDescriptorStepValidator.class))
 				passes |= i.tryValidateChange(this, c);
 			return (passes ? null : c);
 		}

@@ -165,8 +165,7 @@ public class SimulationSpec extends ModelObject
 	abstract static class SimulationSpecChangeDescriptor
 			extends ModelObjectChangeDescriptor {
 		static {
-			DescriptorExecutorManager.getInstance().addHandler(
-					new SimulationSpecDescriptorHandler());
+			DescriptorExecutorManager.getInstance().addParticipant(new SimulationSpecDescriptorHandler());
 		}
 		
 		@Override

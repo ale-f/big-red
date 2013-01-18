@@ -16,8 +16,7 @@ public abstract class NamedModelObject extends ModelObject {
 	abstract static class NamedModelObjectChangeDescriptor
 			extends ModelObjectChangeDescriptor {
 		static {
-			DescriptorExecutorManager.getInstance().addHandler(
-					new NamedModelObjectDescriptorHandler());
+			DescriptorExecutorManager.getInstance().addParticipant(new NamedModelObjectDescriptorHandler());
 		}
 	}
 	

@@ -32,8 +32,7 @@ public abstract class Point extends Layoutable implements IPoint {
 	abstract static class PointChangeDescriptor
 			extends LayoutableChangeDescriptor {
 		static {
-			DescriptorExecutorManager.getInstance().addHandler(
-					new PointDescriptorHandler());
+			DescriptorExecutorManager.getInstance().addParticipant(new PointDescriptorHandler());
 		}
 	}
 	

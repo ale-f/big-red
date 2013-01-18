@@ -284,8 +284,7 @@ public class Signature extends ModelObject
 	abstract static class SignatureChangeDescriptor
 			extends ModelObjectChangeDescriptor {
 		static {
-			DescriptorExecutorManager.getInstance().addHandler(
-					new SignatureDescriptorHandler());
+			DescriptorExecutorManager.getInstance().addParticipant(new SignatureDescriptorHandler());
 		}
 		
 		@Override

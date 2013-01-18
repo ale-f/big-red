@@ -40,8 +40,7 @@ public abstract class Container extends Layoutable {
 	abstract static class ContainerChangeDescriptor
 			extends LayoutableChangeDescriptor {
 		static {
-			DescriptorExecutorManager.getInstance().addHandler(
-					new ContainerDescriptorHandler());
+			DescriptorExecutorManager.getInstance().addParticipant(new ContainerDescriptorHandler());
 		}
 	}
 	
