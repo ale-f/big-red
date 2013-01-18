@@ -12,9 +12,15 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.utilities.FilteringIterable;
 
 public class ValidateScope implements IStepValidator {
+	@Override
+	public final void setHost(IParticipantHost host) {
+		/* do nothing */
+	}
+	
 	private static boolean isScoped(PropertyScratchpad context, Port p) {
 		return Scope.isScoped(context, p.getSpec());
 	}

@@ -17,6 +17,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.process.IParticipantHost;
 import org.junit.Test;
 
 public class ExecutionTests {
@@ -71,7 +72,12 @@ public class ExecutionTests {
 		}
 	}
 	
-	private class DummyHandler implements IStepValidator, IStepExecutor {
+	private final class DummyHandler implements IStepValidator, IStepExecutor {
+		@Override
+		public void setHost(IParticipantHost host) {
+			/* do nothing */
+		}
+		
 		@Override
 		public boolean executeChange(IChange change_) {
 			if (change_ instanceof Dummy.Change) {

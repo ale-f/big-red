@@ -4,8 +4,14 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.process.IParticipantHost;
 
 final class ReactionHandler implements IStepExecutor, IStepValidator {
+	@Override
+	public void setHost(IParticipantHost host) {
+		/* do nothing */
+	}
+	
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof Reaction.ChangeAddReactum) {

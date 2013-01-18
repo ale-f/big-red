@@ -20,6 +20,10 @@ abstract class HandlerUtilities {
 	
 	abstract static class HandlerImpl
 			implements IStepExecutor, IStepValidator {
+		@Override
+		public void setHost(IParticipantHost host) {
+			/* do nothing */
+		}
 	}
 	
 	abstract static class DescriptorHandlerImpl

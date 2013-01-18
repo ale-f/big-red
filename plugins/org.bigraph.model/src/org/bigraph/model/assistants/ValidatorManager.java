@@ -7,8 +7,16 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.process.AbstractParticipantHost;
+import org.bigraph.model.process.IParticipantHost;
 
-public class ValidatorManager implements IStepValidator {
+public class ValidatorManager
+		extends AbstractParticipantHost implements IStepValidator {
+	@Override
+	public final void setHost(IParticipantHost host) {
+		/* do nothing */
+	}
+	
 	private List<IStepValidator> validators =
 			new ArrayList<IStepValidator>();
 	

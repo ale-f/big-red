@@ -1,13 +1,14 @@
 package org.bigraph.model.changes;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.process.IParticipant;
 
 /**
  * Classes implementing <strong>IStepValidator</strong> can validate {@link
  * IChange}s as part of a {@link Process}.
  * @author alec
  */
-public interface IStepValidator {
+public interface IStepValidator extends IParticipant {
 	/**
 	 * Classes implementing <strong>Callback</strong> are called by a {@link
 	 * Process} just before it finishes, and so can be used to implement a

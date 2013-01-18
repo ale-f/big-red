@@ -1,5 +1,7 @@
 package org.bigraph.model.changes;
 
-public interface IStepExecutor {
+import org.bigraph.model.process.IParticipant;
+
+public interface IStepExecutor extends IParticipant {
 	boolean executeChange(IChange change_);
 }

@@ -8,6 +8,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
+import org.bigraph.model.process.IParticipantHost;
 
 /**
  * A <strong>BoundDescriptor</strong> is an {@link IChange} consisting of an
@@ -55,6 +56,11 @@ public class BoundDescriptor implements IChange {
 	
 	private static final class Handler
 			implements IStepValidator, IStepExecutor {
+		@Override
+		public void setHost(IParticipantHost host) {
+			/* do nothing */
+		}
+		
 		private static final Handler INSTANCE = new Handler();
 		
 		@Override

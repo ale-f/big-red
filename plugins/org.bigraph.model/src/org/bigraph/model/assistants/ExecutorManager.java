@@ -9,6 +9,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.process.IParticipantHost;
 
 public class ExecutorManager extends ValidatorManager 
 		implements IChangeExecutor {
@@ -82,6 +83,11 @@ public class ExecutorManager extends ValidatorManager
 	}
 	
 	private final class Handler implements IStepExecutor, IStepValidator {
+		@Override
+		public final void setHost(IParticipantHost host) {
+			/* do nothing */
+		}
+		
 		@Override
 		public boolean executeChange(IChange change_) {
 			return (step(change_) == null);
