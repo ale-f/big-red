@@ -3,7 +3,6 @@ package org.bigraph.model.wrapper;
 import org.bigraph.model.loaders.Loader;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
-import org.bigraph.model.process.ParticipantManager;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -39,12 +38,12 @@ public abstract class LoaderUtilities {
 	}
 	
 	static void init() {
-		ParticipantManager.getInstance().addFactory(
+		Loader.getParticipantManager().addFactory(
 				ParticipantContributor.INSTANCE);
 	}
 	
 	static void fini() {
-		ParticipantManager.getInstance().removeFactory(
+		Loader.getParticipantManager().removeFactory(
 				ParticipantContributor.INSTANCE);
 	}
 	

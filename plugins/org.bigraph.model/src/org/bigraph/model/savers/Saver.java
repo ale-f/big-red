@@ -11,6 +11,15 @@ import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Saver
 		extends AbstractParticipantHost implements ISaver {
+	private static final class Holder {
+		private static final ParticipantManager MANAGER =
+				new ParticipantManager();
+	}
+	
+	public static ParticipantManager getParticipantManager() {
+		return Holder.MANAGER;
+	}
+	
 	private final ISaver parent;
 	
 	public Saver() {
@@ -19,7 +28,7 @@ public abstract class Saver
 	
 	public Saver(ISaver parent) {
 		this.parent = parent;
-		ParticipantManager.getInstance().addParticipants(this);
+		getParticipantManager().addParticipants(this);
 	}
 	
 	@Override

@@ -11,6 +11,15 @@ import org.bigraph.model.resources.IFileWrapper;
 
 public abstract class Loader
 		extends AbstractParticipantHost implements ILoader {
+	private static final class Holder {
+		private static final ParticipantManager MANAGER =
+				new ParticipantManager();
+	}
+	
+	public static ParticipantManager getParticipantManager() {
+		return Holder.MANAGER;
+	}
+	
 	private final Loader parent;
 	
 	public Loader() {
@@ -19,7 +28,7 @@ public abstract class Loader
 	
 	public Loader(Loader parent) {
 		this.parent = parent;
-		ParticipantManager.getInstance().addParticipants(this);
+		getParticipantManager().addParticipants(this);
 	}
 	
 	@Override

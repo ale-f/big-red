@@ -3,9 +3,6 @@ package org.bigraph.model.process;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bigraph.model.loaders.Loader;
-import org.bigraph.model.savers.Saver;
-
 /**
  * The <strong>ParticipantManager</strong> is an implementation of {@link
  * IParticipantFactory} which hosts other factories.
@@ -13,20 +10,6 @@ import org.bigraph.model.savers.Saver;
  * @author alec
  */
 public class ParticipantManager implements IParticipantFactory {
-	private static final class Holder {
-		private static final ParticipantManager INSTANCE =
-				new ParticipantManager();
-	}
-	
-	/**
-	 * Returns the shared {@link ParticipantManager} instance, used by {@link
-	 * Saver}s and {@link Loader}s to find participants.
-	 * @return the shared {@link ParticipantManager}
-	 */
-	public static final ParticipantManager getInstance() {
-		return Holder.INSTANCE;
-	}
-	
 	private List<IParticipantFactory> factories =
 			new ArrayList<IParticipantFactory>();
 	

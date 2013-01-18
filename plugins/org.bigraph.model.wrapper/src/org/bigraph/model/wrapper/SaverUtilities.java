@@ -2,7 +2,6 @@ package org.bigraph.model.wrapper;
 
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
-import org.bigraph.model.process.ParticipantManager;
 import org.bigraph.model.savers.Saver;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -39,12 +38,12 @@ public abstract class SaverUtilities {
 	}
 	
 	static void init() {
-		ParticipantManager.getInstance().addFactory(
+		Saver.getParticipantManager().addFactory(
 				ParticipantContributor.INSTANCE);
 	}
 	
 	static void fini() {
-		ParticipantManager.getInstance().removeFactory(
+		Saver.getParticipantManager().removeFactory(
 				ParticipantContributor.INSTANCE);
 	}
 	
