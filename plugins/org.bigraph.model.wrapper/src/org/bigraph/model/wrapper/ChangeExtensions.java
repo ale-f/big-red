@@ -3,8 +3,6 @@ package org.bigraph.model.wrapper;
 import java.util.ArrayList;
 
 import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.process.IParticipant;
 import org.eclipse.core.runtime.CoreException;
@@ -16,12 +14,8 @@ final class ChangeExtensions {
 	public static final String EXTENSION_POINT_CHANGES =
 			"org.bigraph.model.wrapper.changes";
 	
-	private static final ArrayList<IStepExecutor>
-			executors = new ArrayList<IStepExecutor>();
-	private static final ArrayList<IStepValidator>
-			validators = new ArrayList<IStepValidator>();
-	
 	private static final ArrayList<IParticipant>
+			participants = new ArrayList<IParticipant>(),
 			descriptorParticipants = new ArrayList<IParticipant>();
 	
 	private static final Object instantiate(IConfigurationElement ice) {
@@ -43,17 +37,11 @@ final class ChangeExtensions {
 				registry.getConfigurationElementsFor(
 						EXTENSION_POINT_CHANGES)) {
 			String name = ice.getName();
-			if ("executor".equals(name)) {
-				IStepExecutor executor = (IStepExecutor)instantiate(ice);
-				if (executor != null) {
-					executors.add(executor);
-					eInstance.addParticipant(executor);
-				}
-			} else if ("validator".equals(name)) {
-				IStepValidator validator = (IStepValidator)instantiate(ice);
-				if (validator != null) {
-					validators.add(validator);
-					eInstance.addParticipant(validator);
+			if ("executor".equals(name) || "validator".equals(name)) {
+				IParticipant participant = (IParticipant)instantiate(ice);
+				if (participant != null) {
+					participants.add(participant);
+					eInstance.addParticipant(participant);
 				}
 			} else if ("descriptorExecutor".equals(name) ||
 					"descriptorValidator".equals(name)) {
@@ -71,17 +59,12 @@ final class ChangeExtensions {
 		DescriptorExecutorManager deInstance =
 				DescriptorExecutorManager.getInstance();
 		
-		for (IStepExecutor i : executors)
+		for (IParticipant i : participants)
 			eInstance.removeParticipant(i);
-		for (IStepValidator i : validators)
-			eInstance.removeParticipant(i);
-		
-		executors.clear();
-		validators.clear();
+		participants.clear();
 		
 		for (IParticipant i : descriptorParticipants)
 			deInstance.removeParticipant(i);
-		
 		descriptorParticipants.clear();
 	}
 }
