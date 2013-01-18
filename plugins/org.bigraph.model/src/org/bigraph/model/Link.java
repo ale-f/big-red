@@ -25,9 +25,6 @@ public abstract class Link extends Layoutable implements ILink {
 	 */
 	private ArrayList<Point> points = new ArrayList<Point>();
 	
-	public Link() {
-	}
-	
 	/**
 	 * Adds the given {@link Point} to this Link's set of points.
 	 * @param point a Point

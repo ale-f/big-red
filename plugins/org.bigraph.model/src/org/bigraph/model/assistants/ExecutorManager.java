@@ -19,9 +19,6 @@ public class ExecutorManager extends ValidatorManager
 		return Holder.INSTANCE;
 	}
 	
-	public ExecutorManager() {
-	}
-	
 	@Override
 	public void addParticipant(IParticipant participant) {
 		if (participant instanceof ExecutorManager)

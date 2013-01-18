@@ -14,9 +14,6 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 		return Holder.INSTANCE;
 	}
 	
-	public DescriptorExecutorManager() {
-	}
-	
 	@Override
 	public void addParticipant(IParticipant participant) {
 		if (participant instanceof DescriptorExecutorManager)
