@@ -13,6 +13,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.RegistryFactory;
 
 final class ChangeExtensions {
+	public static final String EXTENSION_POINT_CHANGES =
+			"org.bigraph.model.wrapper.changes";
+	
 	private static final ArrayList<IStepExecutor>
 			executors = new ArrayList<IStepExecutor>();
 	private static final ArrayList<IStepValidator>
@@ -38,7 +41,7 @@ final class ChangeExtensions {
 		
 		for (IConfigurationElement ice :
 				registry.getConfigurationElementsFor(
-						Activator.EXTENSION_POINT_CHANGES)) {
+						EXTENSION_POINT_CHANGES)) {
 			String name = ice.getName();
 			if ("executor".equals(name)) {
 				IStepExecutor executor = (IStepExecutor)instantiate(ice);

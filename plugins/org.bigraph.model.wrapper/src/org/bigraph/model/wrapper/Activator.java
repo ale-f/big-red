@@ -11,12 +11,16 @@ public final class Activator extends Plugin {
 		super.start(context);
 		instance = this;
 		
-		install();
+		ChangeExtensions.init();
+		SaverUtilities.init();
+		LoaderUtilities.init();
 	}
 	
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		uninstall();
+		LoaderUtilities.fini();
+		SaverUtilities.fini();
+		ChangeExtensions.fini();
 		
 		instance = null;
 		super.stop(context);
@@ -24,20 +28,5 @@ public final class Activator extends Plugin {
 	
 	public static Activator getInstance() {
 		return instance;
-	}
-
-	public static final String EXTENSION_POINT_CHANGES =
-			"org.bigraph.model.wrapper.changes";
-	
-	private static void install() {
-		ChangeExtensions.init();
-		SaverUtilities.init();
-		LoaderUtilities.init();
-	}
-	
-	private static void uninstall() {
-		LoaderUtilities.fini();
-		SaverUtilities.fini();
-		ChangeExtensions.fini();
 	}
 }
