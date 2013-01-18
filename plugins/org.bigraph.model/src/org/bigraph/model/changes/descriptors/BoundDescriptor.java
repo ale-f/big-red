@@ -9,6 +9,12 @@ import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 
+/**
+ * A <strong>BoundDescriptor</strong> is an {@link IChange} consisting of an
+ * {@link IChangeDescriptor} coupled to a {@link Resolver}; it serves as a
+ * bridge between IChange- and IChangeDescriptor-based APIs.
+ * @author alec
+ */
 public class BoundDescriptor implements IChange {
 	private final Resolver resolver;
 	private final IChangeDescriptor descriptor;
@@ -127,5 +133,4 @@ public class BoundDescriptor implements IChange {
 		} catch (ChangeCreationException cce) {
 		}
 	}
-
 }
