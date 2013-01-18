@@ -118,7 +118,7 @@ public class ExecutionTests {
 	@Test
 	public void newManagers() throws ChangeRejectedException {
 		ExecutorManager em = new ExecutorManager();
-		em.addHandler(new DummyHandler());
+		em.addParticipant(new DummyHandler());
 		go(em);
 	}
 	
@@ -127,8 +127,8 @@ public class ExecutionTests {
 		DummyHandler dh = new DummyHandler();
 		
 		ValidatorManager vm = new ValidatorManager();
-		vm.addValidator(ExecutorManager.getInstance());
-		vm.addValidator(dh);
+		vm.addParticipant(ExecutorManager.getInstance());
+		vm.addParticipant(dh);
 		
 		Dummy d = new Dummy();
 		
@@ -144,8 +144,8 @@ public class ExecutionTests {
 		DummyHandler dh = new DummyHandler();
 		
 		ExecutorManager em = new ExecutorManager();
-		em.addHandler(ExecutorManager.getInstance());
-		em.addHandler(dh);
+		em.addParticipant(ExecutorManager.getInstance());
+		em.addParticipant(dh);
 		
 		Dummy d = new Dummy();
 		

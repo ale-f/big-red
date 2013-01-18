@@ -170,7 +170,7 @@ public class Signature extends ModelObject
 	}
 
 	static {
-		ExecutorManager.getInstance().addHandler(new SignatureHandler());
+		ExecutorManager.getInstance().addParticipant(new SignatureHandler());
 	}
 	
 	@Override

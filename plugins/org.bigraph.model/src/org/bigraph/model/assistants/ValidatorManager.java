@@ -8,6 +8,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.process.AbstractParticipantHost;
+import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 
 public class ValidatorManager
@@ -17,19 +18,9 @@ public class ValidatorManager
 		/* do nothing */
 	}
 	
-	private List<IStepValidator> validators =
-			new ArrayList<IStepValidator>();
-	
-	public void addValidator(IStepValidator validator) {
-		validators.add(validator);
-	}
-	
-	public void removeValidator(IStepValidator validator) {
-		validators.remove(validator);
-	}
-	
-	protected List<? extends IStepValidator> getValidators() {
-		return validators;
+	@Override
+	public void removeParticipant(IParticipant participant) {
+		super.removeParticipant(participant);
 	}
 	
 	public void tryValidateChange(IChange change)
@@ -58,7 +49,7 @@ public class ValidatorManager
 	private abstract class AbstractProcess implements Process {
 		protected IChange step(IChange c) throws ChangeRejectedException {
 			boolean passes = false;
-			for (IStepValidator i : getValidators())
+			for (IStepValidator i : getParticipants(IStepValidator.class))
 				passes |= i.tryValidateChange(this, c);
 			return (passes ? null : c);
 		}

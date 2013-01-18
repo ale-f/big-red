@@ -60,7 +60,7 @@ public class Control extends NamedModelObject implements IControl {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addHandler(new ControlHandler());
+		ExecutorManager.getInstance().addParticipant(new ControlHandler());
 	}
 	
 	public final class ChangeKind extends ControlChange {

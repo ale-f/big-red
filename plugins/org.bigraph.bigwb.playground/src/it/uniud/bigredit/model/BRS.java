@@ -321,7 +321,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	}
 	
 	static {
-		ExecutorManager.getInstance().addHandler(new BRSHandler());
+		ExecutorManager.getInstance().addParticipant(new BRSHandler());
 	}
 	
 	public Rectangle getChildrenConstraint(ModelObject child){

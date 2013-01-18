@@ -81,7 +81,7 @@ public abstract class Layoutable extends NamedModelObject {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addHandler(new LayoutableHandler());
+		ExecutorManager.getInstance().addParticipant(new LayoutableHandler());
 	}
 	
 	private Container parent = null;

@@ -1,14 +1,12 @@
 package org.bigraph.model.assistants;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 
 public class ExecutorManager extends ValidatorManager 
@@ -24,29 +22,11 @@ public class ExecutorManager extends ValidatorManager
 	public ExecutorManager() {
 	}
 	
-	private List<IStepExecutor> executors =
-			new ArrayList<IStepExecutor>();
-	
-	public <T extends IStepExecutor & IStepValidator> void addHandler(
-			T handler) {
-		addValidator(handler);
-		executors.add(handler);
-	}
-	
-	public void addHandler(ExecutorManager manager) {
-		addHandler(manager.new Handler());
-	}
-	
-	public void addExecutor(IStepExecutor executor) {
-		executors.add(executor);
-	}
-	
-	public void removeExecutor(IStepExecutor executor) {
-		executors.remove(executor);
-	}
-	
-	protected List<? extends IStepExecutor> getExecutors() {
-		return executors;
+	@Override
+	public void addParticipant(IParticipant participant) {
+		if (participant instanceof ExecutorManager)
+			participant = ((ExecutorManager)participant).new Handler();
+		super.addParticipant(participant);
 	}
 	
 	@Override
@@ -63,7 +43,7 @@ public class ExecutorManager extends ValidatorManager
 	
 	private IChange step(IChange c) {
 		boolean passes = false;
-		for (IStepExecutor i : getExecutors())
+		for (IStepExecutor i : getParticipants(IStepExecutor.class))
 			passes |= i.executeChange(c);
 		return (passes ? null : c);
 	}

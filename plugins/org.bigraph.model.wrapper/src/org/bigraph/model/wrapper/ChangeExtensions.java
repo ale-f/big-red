@@ -44,13 +44,13 @@ final class ChangeExtensions {
 				IStepExecutor executor = (IStepExecutor)instantiate(ice);
 				if (executor != null) {
 					executors.add(executor);
-					eInstance.addExecutor(executor);
+					eInstance.addParticipant(executor);
 				}
 			} else if ("validator".equals(name)) {
 				IStepValidator validator = (IStepValidator)instantiate(ice);
 				if (validator != null) {
 					validators.add(validator);
-					eInstance.addValidator(validator);
+					eInstance.addParticipant(validator);
 				}
 			} else if ("descriptorExecutor".equals(name) ||
 					"descriptorValidator".equals(name)) {
@@ -69,9 +69,9 @@ final class ChangeExtensions {
 				DescriptorExecutorManager.getInstance();
 		
 		for (IStepExecutor i : executors)
-			eInstance.removeExecutor(i);
+			eInstance.removeParticipant(i);
 		for (IStepValidator i : validators)
-			eInstance.removeValidator(i);
+			eInstance.removeParticipant(i);
 		
 		executors.clear();
 		validators.clear();

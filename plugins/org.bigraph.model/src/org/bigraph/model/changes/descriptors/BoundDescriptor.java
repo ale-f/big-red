@@ -97,7 +97,7 @@ public class BoundDescriptor implements IChange {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addHandler(Handler.INSTANCE);
+		ExecutorManager.getInstance().addParticipant(Handler.INSTANCE);
 	}
 	
 	public BoundDescriptor(Resolver resolver, IChangeDescriptor descriptor) {

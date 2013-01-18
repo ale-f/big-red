@@ -84,7 +84,7 @@ public abstract class Container extends Layoutable {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addHandler(new ContainerHandler());
+		ExecutorManager.getInstance().addParticipant(new ContainerHandler());
 	}
 	
 	protected HashSet<Layoutable> children = new HashSet<Layoutable>();

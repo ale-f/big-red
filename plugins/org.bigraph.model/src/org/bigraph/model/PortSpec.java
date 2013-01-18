@@ -67,7 +67,7 @@ public class PortSpec extends NamedModelObject implements IPort {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addHandler(new PortSpecHandler());
+		ExecutorManager.getInstance().addParticipant(new PortSpecHandler());
 	}
 	
 	private Control control;
