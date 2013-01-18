@@ -4,9 +4,15 @@ import java.util.List;
 
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 
 abstract class DescriptorHandlerUtilities {
 	private DescriptorHandlerUtilities() {}
+	
+	abstract static class DescriptorHandlerImpl
+			implements IDescriptorStepExecutor, IDescriptorStepValidator {
+	}
 	
 	static void checkAddBounds(
 			IChangeDescriptor cd, List<?> l, int position)

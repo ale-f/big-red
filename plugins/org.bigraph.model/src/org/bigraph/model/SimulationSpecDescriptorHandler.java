@@ -8,11 +8,9 @@ import org.bigraph.model.SimulationSpec.ChangeSetSignatureDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
-import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 
-final class SimulationSpecDescriptorHandler implements
-		IDescriptorStepExecutor, IDescriptorStepValidator {
+final class SimulationSpecDescriptorHandler
+		extends DescriptorHandlerUtilities.DescriptorHandlerImpl {
 	@Override
 	public boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException {
