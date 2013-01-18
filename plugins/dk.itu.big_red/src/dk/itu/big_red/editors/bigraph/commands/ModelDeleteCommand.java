@@ -12,6 +12,7 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 
@@ -44,7 +45,9 @@ public class ModelDeleteCommand extends ChangeCommand {
 	}
 	
 	private void removePoint(Link l, Point p) {
-		cg.add(scratch.executeChange(p.changeDisconnect()));
+		cg.add(scratch.executeChange(new BoundDescriptor(p.getBigraph(scratch),
+				new Point.ChangeDisconnectDescriptor(
+						p.getIdentifier(scratch), l.getIdentifier(scratch)))));
 		if (l.getPoints(scratch).size() == 0 && l instanceof Edge) {
 			cg.add(scratch.executeChange(l.changeRemove()));
 		}
