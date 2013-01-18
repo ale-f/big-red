@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.process.IParticipantHost;
 
 public class DescriptorExecutorManager extends DescriptorValidatorManager {
 	private static final class Holder {
@@ -76,6 +77,11 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 	
 	private final class Handler
 			implements IDescriptorStepExecutor, IDescriptorStepValidator {
+		@Override
+		public final void setHost(IParticipantHost host) {
+			/* do nothing */
+		}
+		
 		@Override
 		public boolean executeChange(Resolver r, IChangeDescriptor change_) {
 			return (step(r, change_) == null);

@@ -5,8 +5,14 @@ import java.util.List;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.process.IParticipantHost;
 
 public class DescriptorValidatorManager implements IDescriptorStepValidator {
+	@Override
+	public final void setHost(IParticipantHost host) {
+		/* do nothing */
+	}
+	
 	private List<IDescriptorStepValidator> validators =
 			new ArrayList<IDescriptorStepValidator>();
 	

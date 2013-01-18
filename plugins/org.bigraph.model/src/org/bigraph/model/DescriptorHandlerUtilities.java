@@ -6,12 +6,17 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
+import org.bigraph.model.process.IParticipantHost;
 
 abstract class DescriptorHandlerUtilities {
 	private DescriptorHandlerUtilities() {}
 	
 	abstract static class DescriptorHandlerImpl
 			implements IDescriptorStepExecutor, IDescriptorStepValidator {
+		@Override
+		public void setHost(IParticipantHost host) {
+			/* do nothing */
+		}
 	}
 	
 	static void checkAddBounds(
