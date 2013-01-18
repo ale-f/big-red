@@ -9,9 +9,9 @@ package org.bigraph.model.process;
 public interface IParticipant {
 	/**
 	 * Sets the {@link IParticipantHost} that will use this {@link
-	 * IParticipant}.
-	 * <p>(If participants need to configure their host, then they should do so
-	 * in this method.)
+	 * IParticipant}. If participants need to configure their host, then they
+	 * should do so in this method.
+	 * <p>(This method may be called multiple times.)
 	 * @param host an {@link IParticipantHost}
 	 */
 	void setHost(IParticipantHost host);

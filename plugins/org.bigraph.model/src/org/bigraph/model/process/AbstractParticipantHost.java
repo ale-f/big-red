@@ -19,6 +19,12 @@ public abstract class AbstractParticipantHost implements IParticipantHost {
 		participant.setHost(this);
 	}
 
+	/**
+	 * Removes an {@link IParticipant} from this {@link IParticipantHost}.
+	 * (This method will <em>not</em> ordinarily cause the participant's {@link
+	 * IParticipant#setHost(IParticipantHost) setHost} method to be called.)
+	 * @param participant an {@link IParticipant}
+	 */
 	protected void removeParticipant(IParticipant participant) {
 		participants.remove(participant);
 	}
