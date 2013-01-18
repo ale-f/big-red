@@ -5,7 +5,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.Namespace;
 
-final class LayoutableHandler extends DescriptorHandlerUtilities.HandlerImpl {
+final class LayoutableHandler extends HandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof Layoutable.ChangeRemove) {

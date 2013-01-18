@@ -8,10 +8,8 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.Namespace;
 
-import static org.bigraph.model.NamedModelObjectHandler.checkNameCore;
-
 final class NamedModelObjectDescriptorHandler
-		extends DescriptorHandlerUtilities.DescriptorHandlerImpl {
+		extends HandlerUtilities.DescriptorHandlerImpl {
 	@Override
 	public boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException {
@@ -44,7 +42,7 @@ final class NamedModelObjectDescriptorHandler
 			PropertyScratchpad context, IChangeDescriptor c, Identifier object,
 			Namespace<? extends NamedModelObject> ns, String newName)
 			throws ChangeCreationException {
-		String rationale = checkNameCore(context, object, ns, newName);
+		String rationale = HandlerUtilities.checkNameCore(context, object, ns, newName);
 		if (rationale != null)
 			throw new ChangeCreationException(c, rationale);
 	}

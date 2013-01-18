@@ -4,7 +4,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
-final class PointHandler extends DescriptorHandlerUtilities.HandlerImpl {
+final class PointHandler extends HandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof Point.ChangeConnect) {

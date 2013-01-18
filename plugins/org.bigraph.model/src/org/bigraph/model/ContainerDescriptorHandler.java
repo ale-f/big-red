@@ -11,7 +11,7 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.Namespace;
 
 final class ContainerDescriptorHandler
-		extends DescriptorHandlerUtilities.DescriptorHandlerImpl {
+		extends HandlerUtilities.DescriptorHandlerImpl {
 	@Override
 	public boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException {

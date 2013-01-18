@@ -9,7 +9,7 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 final class SignatureDescriptorHandler
-		extends DescriptorHandlerUtilities.DescriptorHandlerImpl {
+		extends HandlerUtilities.DescriptorHandlerImpl {
 	@Override
 	public boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException {
@@ -40,7 +40,7 @@ final class SignatureDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"Can't insert a null signature");
 			
-			DescriptorHandlerUtilities.checkAddBounds(cd,
+			HandlerUtilities.checkAddBounds(cd,
 					s.getSignatures(scratch), cd.getPosition());
 		} else if (change instanceof ChangeRemoveSignatureDescriptor) {
 			ChangeRemoveSignatureDescriptor cd =
@@ -51,7 +51,7 @@ final class SignatureDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
 			
-			DescriptorHandlerUtilities.checkRemove(cd,
+			HandlerUtilities.checkRemove(cd,
 					s.getSignatures(scratch),
 					cd.getSignature(), cd.getPosition());
 		} else return false;

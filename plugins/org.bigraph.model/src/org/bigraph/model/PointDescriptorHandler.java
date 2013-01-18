@@ -8,7 +8,7 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 final class PointDescriptorHandler
-		extends DescriptorHandlerUtilities.DescriptorHandlerImpl {
+		extends HandlerUtilities.DescriptorHandlerImpl {
 	@Override
 	public boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException {

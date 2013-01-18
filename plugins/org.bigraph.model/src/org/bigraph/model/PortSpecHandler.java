@@ -6,7 +6,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.Namespace;
 
-final class PortSpecHandler extends DescriptorHandlerUtilities.HandlerImpl {
+final class PortSpecHandler extends HandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof ChangeRemovePort) {

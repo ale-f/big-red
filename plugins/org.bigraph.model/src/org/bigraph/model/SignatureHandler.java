@@ -6,7 +6,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.Namespace;
 
-final class SignatureHandler extends DescriptorHandlerUtilities.HandlerImpl {
+final class SignatureHandler extends HandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof ChangeAddControl) {
@@ -24,7 +24,7 @@ final class SignatureHandler extends DescriptorHandlerUtilities.HandlerImpl {
 		final PropertyScratchpad context = process.getScratch();
 		if (b instanceof ChangeAddControl) {
 			ChangeAddControl c = (ChangeAddControl)b;
-			NamedModelObjectHandler.checkName(context, c, c.control,
+			HandlerUtilities.checkName(context, c, c.control,
 					c.getCreator().getNamespace(), c.name);
 			if (c.control.getSignature(context) != null)
 				throw new ChangeRejectedException(b,

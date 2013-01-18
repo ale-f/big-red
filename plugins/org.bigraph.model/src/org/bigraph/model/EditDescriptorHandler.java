@@ -8,7 +8,7 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 final class EditDescriptorHandler
-		extends DescriptorHandlerUtilities.DescriptorHandlerImpl {
+		extends HandlerUtilities.DescriptorHandlerImpl {
 	@Override
 	public boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException {
@@ -27,7 +27,7 @@ final class EditDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"Can't insert a null change descriptor");
 			
-			DescriptorHandlerUtilities.checkAddBounds(
+			HandlerUtilities.checkAddBounds(
 					cd, edit.getDescriptors(scratch), cd.getPosition());
 		} else if (change instanceof ChangeDescriptorRemoveDescriptor) {
 			ChangeDescriptorRemoveDescriptor cd =
@@ -38,7 +38,7 @@ final class EditDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
 			
-			DescriptorHandlerUtilities.checkRemove(cd,
+			HandlerUtilities.checkRemove(cd,
 					edit.getDescriptors(scratch),
 					cd.getDescriptor(), cd.getPosition());
 		} else return false;

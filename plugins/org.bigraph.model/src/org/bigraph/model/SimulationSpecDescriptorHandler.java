@@ -10,7 +10,7 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 final class SimulationSpecDescriptorHandler
-		extends DescriptorHandlerUtilities.DescriptorHandlerImpl {
+		extends HandlerUtilities.DescriptorHandlerImpl {
 	@Override
 	public boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException {
@@ -40,7 +40,7 @@ final class SimulationSpecDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"Can't insert a null rule");
 			
-			DescriptorHandlerUtilities.checkAddBounds(cd,
+			HandlerUtilities.checkAddBounds(cd,
 					ss.getRules(scratch), cd.getPosition());
 		} else if (change instanceof ChangeRemoveRuleDescriptor) {
 			ChangeRemoveRuleDescriptor cd = (ChangeRemoveRuleDescriptor)change;
@@ -49,7 +49,7 @@ final class SimulationSpecDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"" + cd.getTarget() + ": lookup failed");
 			
-			DescriptorHandlerUtilities.checkRemove(cd,
+			HandlerUtilities.checkRemove(cd,
 					ss.getRules(scratch), cd.getRule(), cd.getPosition());
 		} else return false;
 		return true;

@@ -8,7 +8,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.Namespace;
 
-final class ControlHandler extends DescriptorHandlerUtilities.HandlerImpl {
+final class ControlHandler extends HandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof ChangeRemoveControl) {
@@ -40,7 +40,7 @@ final class ControlHandler extends DescriptorHandlerUtilities.HandlerImpl {
 						"" + co + " doesn't have a parent");
 		} else if (b instanceof ChangeAddPort) {
 			ChangeAddPort c = (ChangeAddPort)b;
-			NamedModelObjectHandler.checkName(context, c, c.port,
+			HandlerUtilities.checkName(context, c, c.port,
 					c.getCreator().getNamespace(), c.name);
 			if (c.port.getControl(context) != null)
 				throw new ChangeRejectedException(b,

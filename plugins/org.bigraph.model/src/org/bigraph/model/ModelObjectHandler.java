@@ -5,7 +5,7 @@ import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 
-final class ModelObjectHandler extends DescriptorHandlerUtilities.HandlerImpl {
+final class ModelObjectHandler extends HandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange c_) {
 		if (c_ instanceof ChangeExtendedData) {

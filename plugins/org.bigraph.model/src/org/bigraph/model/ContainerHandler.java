@@ -6,7 +6,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.names.Namespace;
 
-final class ContainerHandler extends DescriptorHandlerUtilities.HandlerImpl {
+final class ContainerHandler extends HandlerUtilities.HandlerImpl {
 	@Override
 	public boolean executeChange(IChange b) {
 		if (b instanceof Container.ChangeAddChild) {
@@ -46,7 +46,7 @@ final class ContainerHandler extends DescriptorHandlerUtilities.HandlerImpl {
 						((Node)container).getControl().getName() +
 						" is an atomic control");
 			
-			NamedModelObjectHandler.checkName(context, b, c.child,
+			HandlerUtilities.checkName(context, b, c.child,
 					bigraph.getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {
