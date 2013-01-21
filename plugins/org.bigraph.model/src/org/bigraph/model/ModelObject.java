@@ -11,6 +11,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -332,6 +333,50 @@ public abstract class ModelObject {
 		public void simulate(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
 			context.executeChange(createChange(context, r));
+		}
+	}
+	
+	static final class ChangeMoveExtendedDataDescriptor
+			extends ModelObjectChangeDescriptor {
+		private final Identifier source, target;
+		
+		public ChangeMoveExtendedDataDescriptor(
+				Identifier source, Identifier target) {
+			this.source = source;
+			this.target = target;
+		}
+		
+		public Identifier getSource() {
+			return source;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			return new BoundDescriptor(r, this);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeMoveExtendedDataDescriptor(
+					getTarget(), getSource());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			ModelObject
+				source = getSource().lookup(context, r),
+				target = getTarget().lookup(context, r);
+			Map<String, Object>
+				sourceMap = source.getModifiableExtendedDataMap(context),
+				targetMap = target.getModifiableExtendedDataMap(context);
+			sourceMap.putAll(targetMap);
+			targetMap.clear();
 		}
 	}
 	
