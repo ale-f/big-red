@@ -13,6 +13,7 @@ import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
@@ -329,6 +330,11 @@ public abstract class ModelObject {
 	
 	public static abstract class ModelObjectChangeDescriptor
 			implements IChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new ModelObjectDescriptorHandler());
+		}
+		
 		@Override
 		public void simulate(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
