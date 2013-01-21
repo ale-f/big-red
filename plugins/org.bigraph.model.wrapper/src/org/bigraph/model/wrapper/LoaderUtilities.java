@@ -1,50 +1,24 @@
 package org.bigraph.model.wrapper;
 
 import org.bigraph.model.loaders.Loader;
-import org.bigraph.model.process.IParticipant;
-import org.bigraph.model.process.IParticipantHost;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.core.runtime.content.IContentType;
 
 public abstract class LoaderUtilities {
-	private static final class ParticipantContributor
-			extends EclipseParticipantFactory {
-		private static final ParticipantContributor INSTANCE =
-				new ParticipantContributor();
-		
-		@Override
-		public void addParticipants(IParticipantHost host) {
-			if (!(host instanceof Loader))
-				return;
-			IExtensionRegistry r = RegistryFactory.getRegistry();
-			for (IConfigurationElement ice :
-					r.getConfigurationElementsFor(EXTENSION_POINT)) {
-				if ("participant".equals(ice.getName())) {
-					try {
-						if (shouldAdd(host, ice))
-							host.addParticipant((IParticipant)
-									ice.createExecutableExtension("class"));
-					} catch (CoreException e) {
-						e.printStackTrace();
-						/* do nothing */
-					}
-				}
-			}
-		}
+	private static final class Holder {
+		private static final EclipseParticipantFactory FACTORY =
+				new EclipseParticipantFactory(EXTENSION_POINT);
 	}
 	
 	static void init() {
-		Loader.getParticipantManager().addFactory(
-				ParticipantContributor.INSTANCE);
+		Loader.getParticipantManager().addFactory(Holder.FACTORY);
 	}
 	
 	static void fini() {
-		Loader.getParticipantManager().removeFactory(
-				ParticipantContributor.INSTANCE);
+		Loader.getParticipantManager().removeFactory(Holder.FACTORY);
 	}
 	
 	private LoaderUtilities() {}
