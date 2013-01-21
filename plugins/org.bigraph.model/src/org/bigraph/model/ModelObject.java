@@ -2,8 +2,6 @@ package org.bigraph.model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -233,17 +231,17 @@ public abstract class ModelObject {
 	private static final String PROPERTY_EXTENDED_DATA_MAP =
 			"org.bigraph.model.ModelObject:ExtendedDataMap";
 	
-	private Map<String, Object> getExtendedDataMap() {
+	Map<String, Object> getExtendedDataMap() {
 		return extendedData;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Map<String, Object> getExtendedDataMap(
+	Map<String, Object> getExtendedDataMap(
 			PropertyScratchpad context) {
 		return getProperty(context, PROPERTY_EXTENDED_DATA_MAP, Map.class);
 	}
 	
-	private Map<String, Object> getModifiableExtendedDataMap(
+	Map<String, Object> getModifiableExtendedDataMap(
 			PropertyScratchpad context) {
 		if (context != null) {
 			return context.getModifiableMap(
@@ -298,23 +296,6 @@ public abstract class ModelObject {
 		extendedData.clear();
 		if (m != null)
 			extendedData.putAll(m.extendedData);
-	}
-	
-	/**
-	 * Returns the keys of this object's extended data properties.
-	 * <p>(Note that adding or removing extended data properties may invalidate
-	 * the returned collection.)
-	 * @return an unmodifiable {@link Collection} of extended data property
-	 * keys
-	 */
-	public Collection<? extends String> getExtendedDataKeys() {
-		return getExtendedDataKeys(null);
-	}
-	
-	public Collection<? extends String> getExtendedDataKeys(
-			PropertyScratchpad context) {
-		return Collections.unmodifiableCollection(
-				getExtendedDataMap(context).keySet());
 	}
 	
 	/**
