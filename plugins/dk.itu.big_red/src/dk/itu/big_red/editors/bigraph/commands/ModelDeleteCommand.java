@@ -39,7 +39,7 @@ public class ModelDeleteCommand extends ChangeCommand {
 	private PropertyScratchpad scratch = null;
 
 	public void setTarget(Bigraph target) {
-		super.setTarget(target);
+		super.setContext(target);
 		if (scratch == null)
 			scratch = new PropertyScratchpad();
 	}

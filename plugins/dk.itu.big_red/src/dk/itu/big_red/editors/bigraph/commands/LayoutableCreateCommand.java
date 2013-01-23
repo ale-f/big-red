@@ -27,7 +27,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			return;
 		
 		Container container = containerPart.getModel();
-		setTarget(container.getBigraph());
+		setContext(container.getBigraph());
 		String name = container.getBigraph().getFirstUnusedName(child);
 		
 		if (child instanceof Node){

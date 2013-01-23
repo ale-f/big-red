@@ -36,7 +36,7 @@ public class LayoutableMoveCommand extends ChangeCommand {
 		ChangeGroup cg = new ChangeGroup();
 		setChange(cg);
 		for (Layoutable l : objects) {
-			setTarget(l.getBigraph());
+			setContext(l.getBigraph());
 			Rectangle r = LayoutUtilities.getLayout(l);
 			if (r != null) {
 				r = r.getTranslated(moveDelta).resize(sizeDelta);

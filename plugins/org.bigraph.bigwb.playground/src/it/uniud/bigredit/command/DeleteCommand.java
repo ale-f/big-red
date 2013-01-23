@@ -28,7 +28,7 @@ public class DeleteCommand extends ChangeCommand {
 	
 	public void setTarget(BRS target){
 		this.target=target;
-		super.setTarget(target);
+		super.setContext(target);
 	}
 	
 	public void setSon(ModelObject deleteNode){

@@ -370,7 +370,7 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	private void _testConvertChange(int detail, ChangeCommand c) {
 		IChange commandChange = c.getChange();
-		Object target = c.getTarget();
+		Object target = c.getContext();
 		
 		ChangeDescriptorGroup reactumChanges = getModel().getEdit().getDescriptors();
 		if (target == getRedex()) {

@@ -70,6 +70,6 @@ public class LinkConnectionCreateCommand extends ChangeCommand {
 								p.getIdentifier(), l.getIdentifier())));
 			}
 		}
-		setTarget(b);
+		setContext(b);
 	}
 }

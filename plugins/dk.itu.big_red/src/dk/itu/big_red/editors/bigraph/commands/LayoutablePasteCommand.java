@@ -42,7 +42,7 @@ public class LayoutablePasteCommand extends ChangeCommand {
 		if (newParent == null)
 			return;
 		
-		setTarget(newParent.getBigraph());
+		setContext(newParent.getBigraph());
 		if (scratch != null) {
 			scratch.clear();
 		} else scratch = new PropertyScratchpad();

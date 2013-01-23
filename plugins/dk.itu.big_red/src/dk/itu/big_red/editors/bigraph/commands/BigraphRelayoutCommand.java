@@ -6,7 +6,7 @@ import dk.itu.big_red.model.LayoutUtilities;
 
 public class BigraphRelayoutCommand extends ChangeCommand {
 	public void setBigraph(Bigraph bigraph) {
-		setTarget(bigraph);
+		setContext(bigraph);
 		setChange(bigraph != null ? LayoutUtilities.relayout(bigraph) : null);
 	}
 }

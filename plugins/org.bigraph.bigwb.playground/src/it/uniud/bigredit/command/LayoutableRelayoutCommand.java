@@ -46,14 +46,14 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		if((model instanceof Bigraph) || (model instanceof Reaction)){
 			
 			if(parent instanceof BRS){
-				setTarget((BRS)parent);
+				setContext((BRS)parent);
 				cg.add(((BRS)parent).changeLayoutChild(model,layout));
 			}else if(parent instanceof Reaction){
-				setTarget((Reaction)parent);
+				setContext((Reaction)parent);
 				cg.add(((Reaction)parent).changeLayoutChild((Bigraph)model,layout));
 			}
 		}else{
-			setTarget(((Layoutable)model).getBigraph());
+			setContext(((Layoutable)model).getBigraph());
 			if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
 				cg.add(LayoutUtilities.changeLayout(((Layoutable)model), layout));
 		}

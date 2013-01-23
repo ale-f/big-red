@@ -1,5 +1,6 @@
 package org.bigraph.model.changes;
 
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -31,8 +32,8 @@ public interface IChange {
 	boolean canInvert();
 	
 	/**
-	 * Called by {@link IChangeExecutor}s just before they apply this {@link
-	 * IChange}.
+	 * Called by {@link ExecutorManager} just before this {@link IChange} is
+	 * applied.
 	 * <p>(Subclasses should override this method if they need to save some
 	 * properties of an object before a change in order to be able to {@link
 	 * #inverse() reverse} it.)

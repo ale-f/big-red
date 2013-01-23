@@ -25,7 +25,7 @@ public class LayoutableAddCommand extends ChangeCommand {
 	public void prepare() {
 		cg.clear();
 		if (parent != null && child != null && constraint != null) {
-			setTarget(parent.getBigraph());
+			setContext(parent.getBigraph());
 			
 			if (!(child instanceof Edge)) {
 				for (Layoutable i : parent.getChildren()) {

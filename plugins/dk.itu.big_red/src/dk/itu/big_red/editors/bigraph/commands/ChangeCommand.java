@@ -14,14 +14,14 @@ import dk.itu.big_red.utilities.ui.UI;
  */
 public class ChangeCommand extends Command {
 	private IChange change;
-	private Object target;
+	private Object context;
 	
 	public ChangeCommand() {
 	}
 	
-	public ChangeCommand(IChange change, Object target) {
+	public ChangeCommand(IChange change, Object context) {
 		this.change = change;
-		this.target = target;
+		this.context = context;
 	}
 	
 	/**
@@ -43,21 +43,15 @@ public class ChangeCommand extends Command {
 	}
 
 	/**
-	 * Gets the {@link IChangeExecutor} that will be modified by this command.
-	 * @return an {@link IChangeExecutor}
+	 * Gets the object representing this command's context.
+	 * @return an {@link Object}
 	 */
-	public Object getTarget() {
-		return target;
+	public Object getContext() {
+		return context;
 	}
-
-	/**
-	 * Sets the {@link IChangeExecutor} that will be modified by this command.
-	 * @param target an {@link IChangeExecutor}
-	 * @return <code>this</code>, for convenience
-	 */
-	public ChangeCommand setTarget(Object target) {
-		this.target = target;
-		return this;
+	
+	public void setContext(Object context) {
+		this.context = context;
 	}
 	
 	/**
@@ -69,9 +63,8 @@ public class ChangeCommand extends Command {
 	}
 	
 	/**
-	 * If this command's {@link IChange change} and {@link IChangeExecutor
-	 * target} have been set, and the {@link IChange} is suitably configured
-	 * and ready to go, returns <code>true</code>.
+	 * Indicates whether or not this command's {@link IChange} is ready to be
+	 * executed.
 	 * @return <code>true</code> if this {@link IChangeCommand} is ready to be
 	 * executed, or <code>false</code> otherwise
 	 */
@@ -92,8 +85,7 @@ public class ChangeCommand extends Command {
 	}
 	
 	/**
-	 * Applies this command's {@link IChange} to its {@link IChangeExecutor
-	 * target}.
+	 * Applies this command's {@link IChange}.
 	 */
 	@Override
 	public final void execute() {
@@ -127,8 +119,7 @@ public class ChangeCommand extends Command {
 	}
 	
 	/**
-	 * Re-applies this command's {@link IChange} to its {@link IChangeExecutor
-	 * target}.
+	 * Re-applies this command's {@link IChange}.
 	 */
 	@Override
 	public final void redo() {

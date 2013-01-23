@@ -77,7 +77,7 @@ public class LayoutableReparentCommand extends ChangeCommand {
 		cg.clear(); post.clear();
 		if (parent == null || child == null || constraint == null)
 			return;
-		setTarget(parent.getBigraph());
+		setContext(parent.getBigraph());
 		
 		remove(child, true);
 		
