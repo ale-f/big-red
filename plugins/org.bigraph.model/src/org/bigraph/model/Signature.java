@@ -134,10 +134,9 @@ public class Signature extends ModelObject
 	}
 	
 	public Control getControl(PropertyScratchpad context, String name) {
-		for (Control c : getControls(context))
-			if (c.getName(context).equals(name))
-				return c;
-		Control c = null;
+		Control c = getNamespace().get(context, name);
+		if (c != null)
+			return c;
 		for (Signature s : getSignatures(context))
 			if ((c = s.getControl(context, name)) != null)
 				return c;
