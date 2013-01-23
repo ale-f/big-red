@@ -13,6 +13,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -135,7 +136,7 @@ import it.uniud.bigredit.model.BRS;
 			
 			try {
 				if (cg.size() != 0)
-					ss.tryApplyChange(cg);
+					ExecutorManager.getInstance().tryApplyChange(cg);
 			} catch (ChangeRejectedException cre) {
 				throw new LoadFailedException(cre);
 			}

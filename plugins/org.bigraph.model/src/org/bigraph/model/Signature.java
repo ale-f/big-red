@@ -8,9 +8,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -29,8 +27,7 @@ import org.bigraph.model.names.policies.StringNamePolicy;
  * @see ISignature
  */
 public class Signature extends ModelObject
-		implements ISignature, IChangeExecutor,
-				ModelObject.Identifier.Resolver {
+		implements ISignature, ModelObject.Identifier.Resolver {
 	private Signature parent;
 	private List<Signature> signatures = new ArrayList<Signature>();
 	
@@ -159,16 +156,6 @@ public class Signature extends ModelObject
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
 	
-	@Override
-	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryValidateChange(b);
-	}
-	
-	@Override
-	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryApplyChange(b);
-	}
-
 	static {
 		ExecutorManager.getInstance().addParticipant(new SignatureHandler());
 	}

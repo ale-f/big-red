@@ -4,6 +4,7 @@ import java.util.Iterator;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.DescriptorConflicts;
 import org.bigraph.model.assistants.DescriptorConflicts.IConflict;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -143,7 +144,7 @@ public class ReactionRule extends ModelObject {
 		IChange c = null;
 		try {
 			c = getEdit().getDescriptors().createChange(null, reactum);
-			reactum.tryApplyChange(c);
+			ExecutorManager.getInstance().tryApplyChange(c);
 			for (IChangeDescriptor d : getEdit().getDescriptors())
 				rr.getEdit().getDescriptors().add(d);
 		} catch (ChangeCreationException cce) {

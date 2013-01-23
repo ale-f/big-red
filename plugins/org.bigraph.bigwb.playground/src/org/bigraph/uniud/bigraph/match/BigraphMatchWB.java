@@ -1,5 +1,6 @@
 package org.bigraph.uniud.bigraph.match;
 import org.bigraph.model.*;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.interfaces.BigraphBuilder;
@@ -87,7 +88,7 @@ public class BigraphMatchWB {
 		cg.add(c1.changeAddPort(new PortSpec(),"0"));
 		
 		try {
-			 agent.tryApplyChange(cg);
+			 ExecutorManager.getInstance().tryApplyChange(cg);
 			 cg.clear();
 			} catch (ChangeRejectedException cre) {
 			 System.out.println(cre.getRationale());
@@ -97,7 +98,7 @@ public class BigraphMatchWB {
 		cg.add(n1.getPort("0").changeConnect(O1));
 
 		try {
-		 agent.tryApplyChange(cg);
+		 ExecutorManager.getInstance().tryApplyChange(cg);
 		} catch (ChangeRejectedException cre) {
 		 System.out.println(cre.getRationale());
 		}
@@ -122,7 +123,7 @@ public class BigraphMatchWB {
 		cg.add(n1.getPort("0").changeConnect(O1));
 
 		try {
-		 redex.tryApplyChange(cg);
+		 ExecutorManager.getInstance().tryApplyChange(cg);
 		} catch (ChangeRejectedException cre) {
 		 System.out.println(cre.getRationale());
 		}

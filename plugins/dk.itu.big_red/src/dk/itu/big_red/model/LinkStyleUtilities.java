@@ -11,7 +11,6 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.process.IParticipantHost;
@@ -126,7 +125,7 @@ public abstract class LinkStyleUtilities {
 		}
 
 		@Override
-		public void finish(IChangeExecutor ex) {
+		public void finish() {
 		}
 	}
 }

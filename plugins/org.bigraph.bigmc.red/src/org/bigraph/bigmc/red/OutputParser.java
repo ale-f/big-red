@@ -10,6 +10,7 @@ import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.names.HashMapNamespace;
@@ -131,9 +132,8 @@ public class OutputParser {
 			
 			parseChildren(r, cg);
 			
-			workingBigraph.tryApplyChange(cg);
-			workingBigraph.tryApplyChange(
-					LayoutUtilities.relayout(workingBigraph));
+			ExecutorManager.getInstance().tryApplyChange(cg);
+			ExecutorManager.getInstance().tryApplyChange(LayoutUtilities.relayout(workingBigraph));
 			
 			return workingBigraph;
 		} catch (ChangeRejectedException cre) {

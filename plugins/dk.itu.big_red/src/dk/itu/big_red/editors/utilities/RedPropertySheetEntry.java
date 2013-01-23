@@ -2,9 +2,9 @@ package dk.itu.big_red.editors.utilities;
 
 import java.util.EventObject;
 
+import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -73,7 +73,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 			return;
 		Object[] values = getParent().getValues();
 		ChangeGroup cg = new ChangeGroup();
-		IChangeExecutor ex = null;
+		ModelObject ex = null;
 		for (int i = 0; i < values.length; i++) {
 			Object o = values[i];
 			if (ex == null && o instanceof IBigraphPart)
@@ -100,7 +100,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 	private void valueChanged(
 			RedPropertySheetEntry child, ChangeGroup cg) {
 		Object[] values = getValues();
-		IChangeExecutor ex = null;
+		ModelObject ex = null;
 		for (int i = 0; i < values.length; i++) {
 			Object o = values[i];
 			if (ex == null && o instanceof IBigraphPart)

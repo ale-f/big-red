@@ -15,6 +15,7 @@ import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -79,7 +80,7 @@ public class ReactionXMLLoader extends XMLLoader{
 		
 		try {
 			if (cg.size() != 0)
-				ra.tryApplyChange(cg);
+				ExecutorManager.getInstance().tryApplyChange(cg);
 		} catch (ChangeRejectedException cre) {
 			throw new LoadFailedException(cre);
 		}

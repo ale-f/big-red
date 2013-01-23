@@ -16,13 +16,11 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
 
-public class Reaction  extends ModelObject  implements IChangeExecutor{
+public class Reaction  extends ModelObject{
 	
 	public static final int GAP_WIDTH = 96;
 	public static final int MIN_WIDTH_BIG= 100;
@@ -214,16 +212,6 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		firePropertyChange(Reaction.PROPERTY_RULE,oldReactum, reactum);
 	}
 	
-	@Override
-	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryApplyChange(b);
-	}
-
-	@Override
-	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryValidateChange(b);
-	}
-	
 	static {
 		ExecutorManager.getInstance().addParticipant(new ReactionHandler());
 	}
@@ -233,7 +221,7 @@ public class Reaction  extends ModelObject  implements IChangeExecutor{
 		
 		cgAux.add(change);
 		try {
-			((Bigraph)target).tryApplyChange(cgAux);
+			ExecutorManager.getInstance().tryApplyChange(cgAux);
 		} catch (ChangeRejectedException e) {
 			e.printStackTrace();
 		}

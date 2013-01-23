@@ -1,12 +1,9 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
@@ -14,8 +11,7 @@ import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class Edit extends ModelObject
-		implements IChangeDescriptor, IChangeExecutor,
-		ModelObject.Identifier.Resolver {
+		implements IChangeDescriptor, ModelObject.Identifier.Resolver {
 	@RedProperty(
 			fired = IChangeDescriptor.class,
 			retrieved = ChangeDescriptorGroup.class)
@@ -60,16 +56,6 @@ public class Edit extends ModelObject
 		return cdg.createChange(context, r);
 	}
 
-	@Override
-	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryValidateChange(b);
-	}
-	
-	@Override
-	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryApplyChange(b);
-	}
-	
 	@Override
 	protected Object getProperty(String name) {
 		if (PROPERTY_DESCRIPTOR.equals(name)) {

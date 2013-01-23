@@ -3,14 +3,12 @@ package org.bigraph.model.assistants;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 
-public class ExecutorManager extends ValidatorManager 
-		implements IChangeExecutor {
+public class ExecutorManager extends ValidatorManager {
 	private static final class Holder {
 		private static final ExecutorManager INSTANCE = new ExecutorManager();
 	}
@@ -26,7 +24,6 @@ public class ExecutorManager extends ValidatorManager
 		super.addParticipant(participant);
 	}
 	
-	@Override
 	public void tryApplyChange(IChange change)
 			throws ChangeRejectedException {
 		tryValidateChange(change);

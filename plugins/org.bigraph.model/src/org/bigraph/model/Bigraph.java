@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.interfaces.IBigraph;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -23,7 +19,7 @@ import org.bigraph.model.names.policies.StringNamePolicy;
  * @see IBigraph
  */
 public class Bigraph extends Container
-		implements IBigraph, IChangeExecutor, ModelObject.Identifier.Resolver {
+		implements IBigraph, ModelObject.Identifier.Resolver {
 	private Signature signature = null;
 
 	private Namespace<Layoutable>
@@ -186,21 +182,6 @@ public class Bigraph extends Container
 	@Override
 	public Collection<? extends OuterName> getOuterNames() {
 		return only(null, OuterName.class);
-	}
-	
-	@Override
-	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		tryValidateChange(null, b);
-	}
-	
-	public void tryValidateChange(PropertyScratchpad context, IChange b)
-			throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryValidateChange(context, b);
-	}
-	
-	@Override
-	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryApplyChange(b);
 	}
 	
 	@Override

@@ -111,7 +111,7 @@ public class EditXMLLoader extends XMLLoader {
 		}
 		
 		executeUndecorators(ed, el);
-		executeChanges(ed);
+		executeChanges();
 		return ed;
 	}
 }

@@ -11,6 +11,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
@@ -82,7 +83,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	
 	@Override
 	protected void tryApplyChange(IChange c) throws ChangeRejectedException {
-		getModel().tryApplyChange(c);
+		ExecutorManager.getInstance().tryApplyChange(c);
 	}
 	
 	@Override

@@ -19,6 +19,7 @@ import org.bigraph.model.OuterName;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.uniud.bigraph.match.PlaceMatch;
@@ -649,7 +650,7 @@ public class ReactionWizard extends Wizard {
 		
 		if (cgA.size() != 0){
 			try {
-				target.tryApplyChange(cgA);
+				ExecutorManager.getInstance().tryApplyChange(cgA);
 			} catch (ChangeRejectedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -659,10 +660,10 @@ public class ReactionWizard extends Wizard {
 
 		if (cgLink.size() != 0){
 			try {
-				target.tryApplyChange(cgLink);
+				ExecutorManager.getInstance().tryApplyChange(cgLink);
 				cgA.clear();
 				cgA.add(LayoutUtilities.relayout(target));
-				target.tryApplyChange(cgA);
+				ExecutorManager.getInstance().tryApplyChange(cgA);
 				
 //				Rectangle rectTest=LayoutUtilities.getLayout(target);
 //				System.out.println(rectTest);

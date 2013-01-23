@@ -8,6 +8,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -697,7 +698,7 @@ implements PropertyChangeListener {
 
 	@Override
 	protected void tryApplyChange(IChange c) throws ChangeRejectedException {
-		getModel().tryApplyChange(c);
+		ExecutorManager.getInstance().tryApplyChange(c);
 	}
 	
 	@Override

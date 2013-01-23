@@ -2,7 +2,6 @@ package example.org.bigraph.extensions.scope;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.IXMLLoader.Undecorator;
 import org.bigraph.model.process.IParticipantHost;
@@ -28,7 +27,7 @@ public class LoadScope implements Undecorator {
 	}
 
 	@Override
-	public void finish(IChangeExecutor ex) {
+	public void finish() {
 		/* do nothing */
 	}
 }

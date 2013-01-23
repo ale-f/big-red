@@ -13,8 +13,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 
@@ -23,7 +21,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 
 
-public class BRS extends ModelObject implements IChangeExecutor{
+public class BRS extends ModelObject {
 	
 	private static ArrayList< Bigraph > diagrams = new ArrayList< Bigraph >();
 	private HashMap<ModelObject,Rectangle> children = new HashMap<ModelObject,Rectangle>();
@@ -267,7 +265,7 @@ public class BRS extends ModelObject implements IChangeExecutor{
 		
 		cgAux.add(change);
 		try {
-			((Reaction)target).tryApplyChange(cgAux);
+			ExecutorManager.getInstance().tryApplyChange(cgAux);
 		} catch (ChangeRejectedException e) {
 			e.printStackTrace();
 		}
@@ -307,17 +305,6 @@ public class BRS extends ModelObject implements IChangeExecutor{
 	public Change changeRemoveChild(ModelObject node) {
 		
 		return new ChangeRemoveChild(node);
-	}
-	
-	@Override
-	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryValidateChange(b);
-	}
-
-
-	@Override
-	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryApplyChange(b);
 	}
 	
 	static {

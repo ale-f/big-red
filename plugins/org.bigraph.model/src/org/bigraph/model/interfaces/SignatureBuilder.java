@@ -3,6 +3,7 @@ package org.bigraph.model.interfaces;
 import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 
@@ -24,7 +25,7 @@ public class SignatureBuilder {
 	
 	public Signature finish() {
 		try {
-			s.tryApplyChange(cg);
+			ExecutorManager.getInstance().tryApplyChange(cg);
 		} catch (ChangeRejectedException cre) {
 			return null;
 		}

@@ -80,7 +80,7 @@ public class SignatureXMLLoader extends XMLLoader {
 			makeControl(j);
 		
 		executeUndecorators(sig, e);
-		executeChanges(sig);
+		executeChanges();
 		return sig;
 	}
 	

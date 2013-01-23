@@ -1,10 +1,10 @@
 package org.bigraph.model.loaders;
 
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 
 public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	public ChangeLoader() {
@@ -35,10 +35,9 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 		return scratch;
 	}
 	
-	protected void executeChanges(IChangeExecutor ex)
-			throws LoadFailedException {
+	protected void executeChanges() throws LoadFailedException {
 		try {
-			ex.tryApplyChange(getChanges());
+			ExecutorManager.getInstance().tryApplyChange(getChanges());
 		} catch (ChangeRejectedException cre) {
 			throw new LoadFailedException(cre);
 		}

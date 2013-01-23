@@ -4,19 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
-public class SimulationSpec extends ModelObject
-		implements IChangeExecutor, Resolver {
+public class SimulationSpec extends ModelObject implements Resolver {
 	/**
 	 * The property name fired when a rule is added or removed.
 	 */
@@ -102,16 +98,6 @@ public class SimulationSpec extends ModelObject
 	
 	public Bigraph getModel(PropertyScratchpad context) {
 		return getProperty(context, PROPERTY_MODEL, Bigraph.class);
-	}
-	
-	@Override
-	public void tryValidateChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryValidateChange(b);
-	}
-
-	@Override
-	public void tryApplyChange(IChange b) throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryApplyChange(b);
 	}
 	
 	@Override

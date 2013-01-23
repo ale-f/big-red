@@ -4,7 +4,6 @@ import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
@@ -119,7 +118,7 @@ public abstract class FormatParticipants {
 		}
 
 		@Override
-		public void finish(IChangeExecutor ex) {
+		public void finish() {
 			/* do nothing */
 		}
 	}

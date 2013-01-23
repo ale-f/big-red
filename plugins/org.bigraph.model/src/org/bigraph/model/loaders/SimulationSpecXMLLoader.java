@@ -86,7 +86,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 							new SimulationSpec.Identifier(), null, b)));
 		
 		executeUndecorators(ss, e);
-		executeChanges(ss);
+		executeChanges();
 		return ss;
 	}
 	

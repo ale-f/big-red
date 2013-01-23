@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ReactionRule;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -392,8 +393,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 				/* scratch now contains the prospective state of the redex
 				 * after the change has been applied. Check that we can still
 				 * get to the reactum from there */
-				getRedex().tryValidateChange(scratch,
-						cdg.createChange(scratch, getRedex()));
+				ExecutorManager.getInstance().tryValidateChange(
+						scratch, cdg.createChange(scratch, getRedex()));
 			} catch (ChangeCreationException cce) {
 				throw new Error("BUG: post-fixup reactum changes are " +
 						"completely inconsistent, don't save", cce);
@@ -417,13 +418,14 @@ public class RuleEditor extends AbstractGEFEditor implements
 				if (detail != CommandStack.PRE_UNDO) { 
 					instantiatedReactumChanges =
 							lRedexCDs.createChange(null, getReactum());
-					getReactum().tryApplyChange(instantiatedReactumChanges);
+					ExecutorManager.getInstance().tryApplyChange(
+							instantiatedReactumChanges);
 					safeRedexToReactum.put(
 							commandChange, instantiatedReactumChanges);
 				} else {
 					instantiatedReactumChanges =
 							safeRedexToReactum.remove(commandChange);
-					getReactum().tryApplyChange(
+					ExecutorManager.getInstance().tryApplyChange(
 							instantiatedReactumChanges.inverse());
 				}
 			} catch (ChangeCreationException cce) {

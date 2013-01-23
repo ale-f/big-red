@@ -12,6 +12,7 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -79,7 +80,7 @@ public class BigraphBuilder {
 	
 	public Bigraph finish() {
 		try {
-			b.tryApplyChange(cg);
+			ExecutorManager.getInstance().tryApplyChange(cg);
 			return b;
 		} catch (ChangeRejectedException e) {
 			return null;

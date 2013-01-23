@@ -4,14 +4,12 @@ import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
- * {@link IChangeCommand}s apply a {@link IChange} to an {@link
- * IChangeExecutor}.
+ * {@link ChangeCommand}s apply an {@link IChange}.
  * @author alec
  */
 public class ChangeCommand extends Command {

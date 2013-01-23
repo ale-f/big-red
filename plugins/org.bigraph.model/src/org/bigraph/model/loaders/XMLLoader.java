@@ -12,7 +12,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
@@ -199,10 +198,9 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	}
 
 	@Override
-	protected void executeChanges(IChangeExecutor ex)
-			throws LoadFailedException {
+	protected void executeChanges() throws LoadFailedException {
 		for (Undecorator u : getParticipants(Undecorator.class))
-			u.finish(ex);
-		super.executeChanges(ex);
+			u.finish();
+		super.executeChanges();
 	}
 }

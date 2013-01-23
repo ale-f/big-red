@@ -3,6 +3,7 @@ package org.bigraph.model.loaders;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Edit;
 import org.bigraph.model.ReactionRule;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -112,7 +113,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		ChangeDescriptorGroup cdg = rr.getEdit().getDescriptors();
 		
 		try {
-			reactum.tryApplyChange(cdg.createChange(null, reactum));
+			ExecutorManager.getInstance().tryApplyChange(cdg.createChange(null, reactum));
 		} catch (ChangeCreationException cce) {
 			throw new LoadFailedException(cce);
 		} catch (ChangeRejectedException cre) {

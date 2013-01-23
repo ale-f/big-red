@@ -76,7 +76,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		processContainer(e, bigraph);
 		
 		executeUndecorators(bigraph, e);
-		executeChanges(bigraph);
+		executeChanges();
 		return bigraph;
 	}
 	

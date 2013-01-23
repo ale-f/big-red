@@ -7,10 +7,11 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.PortSpec;
+import org.bigraph.model.assistants.ExecutorManager;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IChangeExecutor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.process.IParticipantHost;
@@ -168,7 +169,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 	}
 
 	@Override
-	public void finish(IChangeExecutor ex) {
+	public void finish() {
+		Object ex = null; /* FIXME: get model object here somehow */
 		if (ex instanceof Bigraph) {
 			Bigraph bigraph = (Bigraph)ex;
 			IChange relayout =
@@ -178,7 +180,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 				loader.addChange(relayout);
 			} else {
 				try {
-					bigraph.tryValidateChange(loader.getChanges());
+					ExecutorManager.getInstance().tryValidateChange((PropertyScratchpad)null, loader.getChanges());
 				} catch (ChangeRejectedException cre) {
 					IChange ch = cre.getRejectedChange();
 					if (ch instanceof ChangeExtendedData) {

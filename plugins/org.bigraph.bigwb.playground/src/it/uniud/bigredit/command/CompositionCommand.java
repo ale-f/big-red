@@ -17,6 +17,7 @@ import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -173,8 +174,8 @@ public class CompositionCommand extends Command {
 		}
 		
 		try {
-			inner.tryApplyChange(cgB);
-			outer.tryApplyChange(cgA);
+			ExecutorManager.getInstance().tryApplyChange(cgB);
+			ExecutorManager.getInstance().tryApplyChange(cgA);
 			
 		} catch (ChangeRejectedException e) {
 			// TODO Auto-generated catch block

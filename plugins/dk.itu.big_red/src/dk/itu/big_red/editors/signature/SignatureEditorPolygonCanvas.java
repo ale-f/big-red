@@ -9,6 +9,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.PortSpec;
+import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -169,7 +170,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 										current.getIdentifier(), newText)) :
 						getModel().changeAddPort(ps, newText));
 				try {
-					getModel().getSignature().tryValidateChange(c);
+					ExecutorManager.getInstance().tryValidateChange(c);
 					return null;
 				} catch (ChangeRejectedException e) {
 					return e.getRationale();
