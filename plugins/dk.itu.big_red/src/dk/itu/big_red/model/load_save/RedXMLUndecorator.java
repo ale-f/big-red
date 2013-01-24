@@ -170,7 +170,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 
 	@Override
 	public void finish() {
-		Object ex = null; /* FIXME: get model object here somehow */
+		ModelObject.Identifier.Resolver ex = loader.getResolver();
 		if (ex instanceof Bigraph) {
 			Bigraph bigraph = (Bigraph)ex;
 			IChange relayout =
