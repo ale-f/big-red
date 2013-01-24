@@ -4,6 +4,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.resources.IFileWrapper;
@@ -39,6 +40,13 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		}
 	}
 	
+	private final SimulationSpec ss = new SimulationSpec();
+	
+	@Override
+	public Resolver getResolver() {
+		return ss;
+	}
+	
 	@Override
 	public SimulationSpec makeObject(Element e) throws LoadFailedException {
 		cycleCheck();
@@ -46,7 +54,6 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		if (replacement != null)
 			return loadRelative(replacement, SimulationSpec.class,
 					new SimulationSpecXMLLoader(this));
-		SimulationSpec ss = new SimulationSpec();
 		
 		Signature s = loadSub(
 				selectFirst(

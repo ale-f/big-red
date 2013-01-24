@@ -4,6 +4,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.resources.IFileWrapper;
@@ -20,7 +21,12 @@ public class SignatureXMLLoader extends XMLLoader {
 		super(parent);
 	}
 	
-	private Signature sig;
+	private final Signature sig = new Signature();
+	
+	@Override
+	public Resolver getResolver() {
+		return sig;
+	}
 	
 	@Override
 	public Signature importObject() throws LoadFailedException {
@@ -68,10 +74,9 @@ public class SignatureXMLLoader extends XMLLoader {
 	public Signature makeObject(Element e) throws LoadFailedException {
 		cycleCheck();
 		String replacement = getAttributeNS(e, SIGNATURE, "src");
-		if (replacement != null) {
+		if (replacement != null)
 			return loadRelative(replacement, Signature.class,
 					new SignatureXMLLoader(this));
-		} else sig = new Signature();
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "signature"))
 			makeSignature(j);

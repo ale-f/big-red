@@ -52,16 +52,20 @@ public class BigraphXMLLoader extends XMLLoader {
 		}
 	}
 	
-	private Bigraph bigraph = null;
+	private final Bigraph bigraph = new Bigraph();
+	
+	@Override
+	public Bigraph getResolver() {
+		return bigraph;
+	}
 	
 	@Override
 	public Bigraph makeObject(Element e) throws LoadFailedException {
 		cycleCheck();
 		String replacement = getAttributeNS(e, BIGRAPH, "src");
-		if (replacement != null) {
+		if (replacement != null)
 			return loadRelative(replacement, Bigraph.class,
 					new BigraphXMLLoader(this));
-		} else bigraph = new Bigraph();
 		
 		Signature s = loadSub(
 				selectFirst(

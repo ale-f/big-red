@@ -3,6 +3,7 @@ package org.bigraph.model.loaders;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Edit;
 import org.bigraph.model.ReactionRule;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeRejectedException;
@@ -44,7 +45,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		super(parent);
 	}
 	
-	private ReactionRule rr = null;
+	private final ReactionRule rr = new ReactionRule();
 	
 	@Override
 	public ReactionRule importObject() throws LoadFailedException {
@@ -65,10 +66,9 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	public ReactionRule makeObject(Element e) throws LoadFailedException {
 		cycleCheck();
 		String replacement = getAttributeNS(e, RULE, "src");
-		if (replacement != null) {
+		if (replacement != null)
 			return loadRelative(replacement, ReactionRule.class,
 					new ReactionRuleXMLLoader(this));
-		} else rr = new ReactionRule();
 		
 		rr.setRedex(loadSub(
 				selectFirst(

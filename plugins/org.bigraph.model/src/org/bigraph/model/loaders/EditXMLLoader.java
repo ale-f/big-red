@@ -1,5 +1,6 @@
 package org.bigraph.model.loaders;
 
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Edit;
 import org.bigraph.model.Edit.ChangeDescriptorAddDescriptor;
 import org.bigraph.model.assistants.FileData;
@@ -77,6 +78,13 @@ public class EditXMLLoader extends XMLLoader {
 		return cd;
 	}
 	
+	private final Edit edit = new Edit();
+	
+	@Override
+	public Resolver getResolver() {
+		return edit;
+	}
+	
 	@Override
 	public Edit makeObject(Element el) throws LoadFailedException {
 		cycleCheck();
@@ -84,7 +92,6 @@ public class EditXMLLoader extends XMLLoader {
 		if (replacement != null)
 			return loadRelative(replacement, Edit.class,
 					new EditXMLLoader(this));
-		Edit ed = new Edit();
 		
 		int index = 0;
 		for (Element i :
@@ -103,15 +110,15 @@ public class EditXMLLoader extends XMLLoader {
 			} else cd = makeDescriptor(i);
 			
 			if (cd != null) {
-				addChange(new BoundDescriptor(ed,
+				addChange(new BoundDescriptor(edit,
 						new ChangeDescriptorAddDescriptor(
 								new Edit.Identifier(), index++, cd)));
 			} else throw new LoadFailedException(
 					"Couldn't create a change descriptor from element " + i);
 		}
 		
-		executeUndecorators(ed, el);
+		executeUndecorators(edit, el);
 		executeChanges();
-		return ed;
+		return edit;
 	}
 }

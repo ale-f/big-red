@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;
@@ -25,6 +26,11 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 	
 	public XMLLoader(Loader parent) {
 		super(parent);
+	}
+	
+	@Override
+	public Resolver getResolver() {
+		throw new RuntimeException("BUG: no resolver available for " + this);
 	}
 	
 	private static final DocumentBuilderFactory dbf;
