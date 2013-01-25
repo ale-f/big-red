@@ -4,6 +4,7 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.ModelObject.Identifier;
+import org.bigraph.model.Site;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.BigraphEditLoader;
 import org.bigraph.model.loaders.EditXMLLoader;
@@ -17,6 +18,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities.ChangeAliasDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
 
@@ -57,6 +59,7 @@ public abstract class RedXMLEdits {
 			if (BIG_RED.equals(descriptor.getNamespaceURI())) {
 				Layoutable.Identifier id = null;
 				String ln = descriptor.getLocalName();
+				/* XXX: the use of "null" here discards some history */
 				if ("set-layout".equals(ln)) {
 					id = BigraphEditLoader.getIdentifier(
 							XMLLoader.getChildElements(descriptor).get(0),
@@ -78,6 +81,12 @@ public abstract class RedXMLEdits {
 							Layoutable.Identifier.class);
 					cd = new ChangeCommentDescriptor(id, null, getAttributeNS(
 					descriptor, BIG_RED, "comment"));
+				} else if ("set-alias".equals(ln)) {
+					Site.Identifier sid = BigraphEditLoader.getIdentifier(
+							XMLLoader.getChildElements(descriptor).get(0),
+							Site.Identifier.class);
+					cd = new ChangeAliasDescriptor(sid, null,
+							getAttributeNS(descriptor, BIG_RED, "alias"));
 				}
 			}
 			return cd;
@@ -142,8 +151,12 @@ public abstract class RedXMLEdits {
 				ChangeCommentDescriptor cd = (ChangeCommentDescriptor)cd_;
 				target = cd.getTarget();
 				e = newElement(BIG_RED, "big-red:set-comment");
-				e.setAttributeNS(null,
-						"comment", cd.getNewValue());
+				e.setAttributeNS(null, "comment", cd.getNewValue());
+			} else if (cd_ instanceof ChangeAliasDescriptor) {
+				ChangeAliasDescriptor cd = (ChangeAliasDescriptor)cd_;
+				target = cd.getTarget();
+				e = newElement(BIG_RED, "big-red:set-alias");
+				e.setAttributeNS(null, "alias", cd.getNewValue());
 			}
 			if (e != null && target instanceof NamedModelObject.Identifier)
 				e.appendChild(BigraphEditSaver.makeID(
