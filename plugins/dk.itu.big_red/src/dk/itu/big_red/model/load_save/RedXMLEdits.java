@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
-import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
 
 import static dk.itu.big_red.model.BigRedNamespaceConstants.BIG_RED;
@@ -76,9 +76,8 @@ public abstract class RedXMLEdits {
 					id = BigraphEditLoader.getIdentifier(
 							XMLLoader.getChildElements(descriptor).get(0),
 							Layoutable.Identifier.class);
-					cd = ExtendedDataUtilities.changeCommentDescriptor(id,
-							null, getAttributeNS(
-									descriptor, BIG_RED, "comment"));
+					cd = new ChangeCommentDescriptor(id, null, getAttributeNS(
+					descriptor, BIG_RED, "comment"));
 				}
 			}
 			return cd;
@@ -123,10 +122,11 @@ public abstract class RedXMLEdits {
 		@Override
 		public Element processDescriptor(IChangeDescriptor cd_) {
 			Element e = null;
+			Identifier target = null;
 			if (cd_ instanceof ChangeExtendedDataDescriptor) {
 				ChangeExtendedDataDescriptor cd =
 						(ChangeExtendedDataDescriptor)cd_;
-				Identifier target = cd.getTarget();
+				target = cd.getTarget();
 				String key = cd.getKey();
 				if (LayoutUtilities.LAYOUT.equals(key)) {
 					e = saveLayout(newElement(BIG_RED, "big-red:set-layout"),
@@ -137,16 +137,18 @@ public abstract class RedXMLEdits {
 				} else if (ColourUtilities.OUTLINE.equals(key)) {
 					e = saveColour(newElement(BIG_RED, "big-red:set-outline"),
 							(Colour)cd.getNewValue());
-				} else if (ExtendedDataUtilities.COMMENT.equals(key)) {
-					e = newElement(BIG_RED, "big-red:set-comment");
-					e.setAttributeNS(null,
-							"comment", (String)cd.getNewValue());
 				}
-				if (e != null && target instanceof NamedModelObject.Identifier)
-					e.appendChild(BigraphEditSaver.makeID(
-							saver.getDocument(),
-							(NamedModelObject.Identifier)target));
+			} else if (cd_ instanceof ChangeCommentDescriptor) {
+				ChangeCommentDescriptor cd = (ChangeCommentDescriptor)cd_;
+				target = cd.getTarget();
+				e = newElement(BIG_RED, "big-red:set-comment");
+				e.setAttributeNS(null,
+						"comment", cd.getNewValue());
 			}
+			if (e != null && target instanceof NamedModelObject.Identifier)
+				e.appendChild(BigraphEditSaver.makeID(
+						saver.getDocument(),
+						(NamedModelObject.Identifier)target));
 			return e;
 		}
 	}

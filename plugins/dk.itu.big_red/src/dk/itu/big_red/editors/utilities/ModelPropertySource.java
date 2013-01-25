@@ -23,6 +23,8 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
+
 import org.bigraph.extensions.param.ParameterUtilities;
 import dk.itu.big_red.utilities.ui.NullTextPropertyDescriptor;
 
@@ -168,8 +170,11 @@ public class ModelPropertySource implements IRedPropertySource {
 					new NamedModelObject.ChangeNameDescriptor(
 							getModel().getIdentifier(), (String)newValue));
 		} else if (ExtendedDataUtilities.COMMENT.equals(id)) {
-			return ExtendedDataUtilities.changeComment(
-					getModel(), (String)newValue);
+			return new BoundDescriptor(getModel().getBigraph(),
+					new ChangeCommentDescriptor(
+							getModel().getIdentifier(),
+							ExtendedDataUtilities.getComment(getModel()),
+							(String)newValue));
 		} else if (ColourUtilities.FILL.equals(id)) {
 			return ColourUtilities.changeFill(
 					getModel(), new Colour((RGB)newValue));

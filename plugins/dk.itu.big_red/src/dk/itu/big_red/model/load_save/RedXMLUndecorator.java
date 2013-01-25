@@ -12,6 +12,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.process.IParticipantHost;
@@ -23,7 +24,7 @@ import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
-import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
 
 import static dk.itu.big_red.model.BigRedNamespaceConstants.BIG_RED;
@@ -113,7 +114,9 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			
 			String comment = getAttributeNS(eA, BIG_RED, "comment");
 			if (comment != null)
-				cg.add(ExtendedDataUtilities.changeComment(object, comment));
+				cg.add(new BoundDescriptor(loader.getResolver(),
+						new ChangeCommentDescriptor(((Layoutable)object).getIdentifier(
+						loader.getScratch()), null, comment)));
 		}
 		
 		if (object instanceof Layoutable && !(object instanceof Edge) &&

@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 
@@ -259,9 +260,7 @@ public final class ChangeCompatibilityLoader
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
-					cd = ExtendedDataUtilities.changeCommentDescriptor(l,
-							ExtendedDataUtilities.getComment(scratch, la),
-							comment);
+					cd = new ChangeCommentDescriptor(l, ExtendedDataUtilities.getComment(scratch, la), comment);
 			}
 		}
 		if (cd != null) {

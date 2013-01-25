@@ -3,7 +3,6 @@ package org.bigraph.model.loaders;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Edit;
 import org.bigraph.model.ReactionRule;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeRejectedException;
