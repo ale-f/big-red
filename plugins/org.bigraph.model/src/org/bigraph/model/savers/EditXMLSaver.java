@@ -52,6 +52,8 @@ public class EditXMLSaver extends XMLSaver {
 	}
 	
 	protected Element processGroup(ChangeDescriptorGroup cdg, Element e) {
+		if (cdg.size() == 0)
+			return null;
 		Element ch;
 		for (IChangeDescriptor cd : cdg) {
 			if (cd instanceof Edit) {
