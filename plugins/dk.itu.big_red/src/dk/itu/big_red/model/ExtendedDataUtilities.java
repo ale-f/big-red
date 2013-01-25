@@ -34,20 +34,72 @@ import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 public abstract class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
 	
-	public static final class ChangeCommentDescriptor
+	protected static abstract class ChangeExtendedDataDescriptor<
+			T extends ModelObject.Identifier, V>
 			extends ModelObject.ModelObjectChangeDescriptor {
-		static {
-			DescriptorExecutorManager.getInstance().addParticipant(
-					new CommentHandler());
-		}
-		
-		private static final class CommentHandler
+		protected static abstract class Handler
 				implements IDescriptorStepExecutor, IDescriptorStepValidator {
 			@Override
 			public void setHost(IParticipantHost host) {
 				/* do nothing */
 			}
-			
+		}
+		
+		private final String key;
+		private final T target;
+		private final V oldValue, newValue;
+		
+		protected ChangeExtendedDataDescriptor(
+				String key, T target, V oldValue, V newValue) {
+			this.key = key;
+			this.target = target;
+			this.oldValue = oldValue;
+			this.newValue = newValue;
+		}
+		
+		protected String getKey() {
+			return key;
+		}
+		
+		public T getTarget() {
+			return target;
+		}
+		
+		public V getOldValue() {
+			return oldValue;
+		}
+		
+		public V getNewValue() {
+			return newValue;
+		}
+		
+		protected V getNormalisedNewValue() {
+			return getNewValue();
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			return new BoundDescriptor(r, this);
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			ModelObject mo = getTarget().lookup(context, r);
+			mo.setExtendedData(context, getKey(), getNormalisedNewValue());
+		}
+	}
+	
+	public static final class ChangeCommentDescriptor
+			extends ChangeExtendedDataDescriptor<
+					ModelObject.Identifier, String> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new CommentHandler());
+		}
+		
+		private static final class CommentHandler extends Handler {
 			@Override
 			public boolean tryValidateChange(Process context,
 					IChangeDescriptor change) throws ChangeCreationException {
@@ -71,35 +123,20 @@ public abstract class ExtendedDataUtilities {
 					ChangeCommentDescriptor cd =
 							(ChangeCommentDescriptor)change;
 					cd.getTarget().lookup(null, resolver).setExtendedData(
-							COMMENT, fixup(cd.getNewValue()));
+							COMMENT, cd.getNormalisedNewValue());
 				} else return false;
 				return true;
 			}
 		}
 		
-		private final ModelObject.Identifier target;
-		private final String oldValue, newValue;
-		
 		public ChangeCommentDescriptor(ModelObject.Identifier target,
 				String oldValue, String newValue) {
-			this.target = target;
-			this.oldValue = oldValue;
-			this.newValue = newValue;
+			super(COMMENT, target, oldValue, newValue);
 		}
 		
-		public ModelObject.Identifier getTarget() {
-			return target;
-		}
-		
-		public String getOldValue() {
-			return oldValue;
-		}
-		
-		public String getNewValue() {
-			return newValue;
-		}
-		
-		private static final String fixup(String s) {
+		@Override
+		protected String getNormalisedNewValue() {
+			String s = getNewValue();
 			if (s != null) {
 				s = s.trim();
 				return (s.length() > 0 ? s : null);
@@ -107,22 +144,9 @@ public abstract class ExtendedDataUtilities {
 		}
 		
 		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			return new BoundDescriptor(r, this);
-		}
-		
-		@Override
 		public IChangeDescriptor inverse() {
 			return new ChangeCommentDescriptor(
 					getTarget(), getNewValue(), getOldValue());
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			ModelObject mo = getTarget().lookup(context, r);
-			mo.setExtendedData(context, COMMENT, fixup(getNewValue()));
 		}
 	}
 	
