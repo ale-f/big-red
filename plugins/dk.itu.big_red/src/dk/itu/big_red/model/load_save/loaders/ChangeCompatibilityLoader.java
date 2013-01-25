@@ -29,6 +29,7 @@ import org.w3c.dom.Element;
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities;
+import dk.itu.big_red.model.ExtendedDataUtilities.ChangeAliasDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
@@ -189,9 +190,7 @@ public final class ChangeCompatibilityLoader
 				Site si = s.lookup(scratch, rr.getReactum());
 				
 				if (s != null)
-					cd = ExtendedDataUtilities.changeAliasDescriptor(s,
-							ExtendedDataUtilities.getAlias(scratch, si),
-							alias);
+					cd = new ChangeAliasDescriptor(s, ExtendedDataUtilities.getAlias(scratch, si), alias);
 			} else if (el.getLocalName().equals("node-parameter")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
