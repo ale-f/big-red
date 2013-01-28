@@ -227,7 +227,7 @@ public abstract class LayoutUtilities {
 	public static IChangeDescriptor changeLayoutDescriptor(
 			Layoutable.Identifier l, Rectangle oldR, Rectangle newR) {
 		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, LAYOUT, oldR, newR, layoutValidator, null);
+				l, LAYOUT, oldR, newR, layoutValidator);
 	}
 
 	public static Rectangle getRootLayout(Layoutable l) {

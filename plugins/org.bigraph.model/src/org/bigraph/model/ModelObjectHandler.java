@@ -10,8 +10,7 @@ final class ModelObjectHandler extends HandlerUtilities.HandlerImpl {
 	public boolean executeChange(IChange c_) {
 		if (c_ instanceof ChangeExtendedData) {
 			ChangeExtendedData c = (ChangeExtendedData)c_;
-			c.getCreator().setExtendedData(c.key, (c.normaliser == null ?
-					c.newValue : c.normaliser.normalise(c, c.newValue)));
+			c.getCreator().setExtendedData(c.key, c.newValue);
 		} else return false;
 		return true;
 	}
