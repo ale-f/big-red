@@ -584,7 +584,11 @@ implements PropertyChangeListener {
 					return;
 				Colour newColour = new Colour(outline.getColorValue());
 				if (!ColourUtilities.getOutline(currentControl).equals(newColour))
-					doChange(ColourUtilities.changeOutline(currentControl, newColour));
+					doChange(new BoundDescriptor(getModel(),
+							new ColourUtilities.ChangeOutlineDescriptor(
+									currentControl.getIdentifier(),
+									ColourUtilities.getOutlineRaw(currentControl),
+									newColour)));
 			}
 		});
 		
@@ -598,7 +602,11 @@ implements PropertyChangeListener {
 					return;
 				Colour newColour = new Colour(fill.getColorValue());
 				if (!ColourUtilities.getFill(currentControl).equals(newColour))
-					doChange(ColourUtilities.changeFill(currentControl, newColour));
+					doChange(new BoundDescriptor(getModel(),
+							new ColourUtilities.ChangeFillDescriptor(
+									currentControl.getIdentifier(),
+									ColourUtilities.getFillRaw(currentControl),
+									newColour)));
 			}
 		});
 		

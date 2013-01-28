@@ -229,7 +229,7 @@ public final class ChangeCompatibilityLoader
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
-					cd = ColourUtilities.changeFillDescriptor(l,
+					cd = new ColourUtilities.ChangeFillDescriptor(l,
 							ColourUtilities.getFill(scratch, la),
 							(colour != null ? new Colour(colour) : null));
 			} else if (el.getLocalName().equals("outline")) {
@@ -244,7 +244,7 @@ public final class ChangeCompatibilityLoader
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
-					cd = ColourUtilities.changeOutlineDescriptor(l,
+					cd = new ColourUtilities.ChangeOutlineDescriptor(l,
 							ColourUtilities.getOutline(scratch, la),
 							(colour != null ? new Colour(colour) : null));
 			} else if (el.getLocalName().equals("comment")) {

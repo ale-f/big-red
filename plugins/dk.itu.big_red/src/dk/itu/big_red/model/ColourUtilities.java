@@ -4,13 +4,15 @@ import org.bigraph.model.Control;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
+import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
-import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 
 /**
  * The <strong>ColourUtilities</strong> class is a collection of static
@@ -22,6 +24,84 @@ import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 public abstract class ColourUtilities {
 	private ColourUtilities() {}
 
+	protected static abstract class ChangeColourDescriptor
+			extends ChangeExtendedDataDescriptor<
+					ModelObject.Identifier, Colour> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new ColourHandler());
+		}
+		
+		private static final class ColourHandler extends Handler {
+			@Override
+			public boolean tryValidateChange(Process context,
+					IChangeDescriptor change) throws ChangeCreationException {
+				final PropertyScratchpad scratch = context.getScratch();
+				final Resolver resolver = context.getResolver();
+				if (change instanceof ChangeColourDescriptor) {
+					ChangeColourDescriptor cd =
+							(ChangeColourDescriptor)change;
+					ModelObject mo = cd.getTarget().lookup(scratch, resolver);
+					if (mo == null)
+						throw new ChangeCreationException(cd,
+								"" + cd.getTarget() + ": lookup failed");
+				} else return false;
+				return true;
+			}
+			
+			@Override
+			public boolean executeChange(Resolver resolver,
+					IChangeDescriptor change) {
+				if (change instanceof ChangeColourDescriptor) {
+					ChangeColourDescriptor cd =
+							(ChangeColourDescriptor)change;
+					cd.getTarget().lookup(null, resolver).setExtendedData(
+							cd.getKey(), cd.getNormalisedNewValue());
+				} else return false;
+				return true;
+			}
+		}
+		
+		protected ChangeColourDescriptor(String key,
+				ModelObject.Identifier target,
+				Colour oldValue, Colour newValue) {
+			super(key, target, oldValue, newValue);
+		}
+		
+		@Override
+		public String getKey() {
+			return super.getKey();
+		}
+	}
+	
+	public static final class ChangeOutlineDescriptor
+			extends ChangeColourDescriptor {
+		public ChangeOutlineDescriptor(ModelObject.Identifier identifier,
+				Colour oldValue, Colour newValue) {
+			super(OUTLINE, identifier, oldValue, newValue);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeOutlineDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
+	}
+	
+	public static final class ChangeFillDescriptor
+			extends ChangeColourDescriptor {
+		public ChangeFillDescriptor(ModelObject.Identifier identifier,
+				Colour oldValue, Colour newValue) {
+			super(FILL, identifier, oldValue, newValue);
+		}
+
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeFillDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
+	}
+	
 	@RedProperty(fired = Colour.class, retrieved = Colour.class)
 	public static final String FILL =
 			"eD!+dk.itu.big_red.model.Colourable.fill";
@@ -58,25 +138,6 @@ public abstract class ColourUtilities {
 	public static Colour getFillRaw(
 			PropertyScratchpad context, ModelObject m) {
 		return getProperty(context, m, FILL, Colour.class);
-	}
-	
-	public static void setFill(ModelObject m, Colour c) {
-		setFill(null, m, c);
-	}
-
-	public static void setFill(
-			PropertyScratchpad context, ModelObject m, Colour c) {
-		setProperty(context, m, FILL, c);
-	}
-
-	public static IChange changeFill(ModelObject m, Colour c) {
-		return m.changeExtendedData(FILL, c);
-	}
-	
-	public static IChangeDescriptor changeFillDescriptor(
-			ModelObject.Identifier l, Colour oldC, Colour newC) {
-		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, FILL, oldC, newC, null, null);
 	}
 
 	@RedProperty(fired = Colour.class, retrieved = Colour.class)
@@ -117,24 +178,5 @@ public abstract class ColourUtilities {
 	public static Colour getOutlineRaw(
 			PropertyScratchpad context, ModelObject m) {
 		return getProperty(context, m, OUTLINE, Colour.class);
-	}
-	
-	public static void setOutline(ModelObject m, Colour c) {
-		setOutline(null, m, c);
-	}
-
-	public static void setOutline(
-			PropertyScratchpad context, ModelObject m, Colour c) {
-		setProperty(context, m, OUTLINE, c);
-	}
-
-	public static IChange changeOutline(ModelObject m, Colour c) {
-		return m.changeExtendedData(OUTLINE, c);
-	}
-	
-	public static IChangeDescriptor changeOutlineDescriptor(
-			ModelObject.Identifier l, Colour oldC, Colour newC) {
-		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, OUTLINE, oldC, newC, null, null);
 	}
 }

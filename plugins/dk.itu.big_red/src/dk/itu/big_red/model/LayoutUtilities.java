@@ -24,6 +24,7 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -263,7 +264,11 @@ public abstract class LayoutUtilities {
 		if (l instanceof Link) {
 			cg.addAll(Arrays.asList(
 					LinkStyleUtilities.changeStyle((Link)l, null),
-					ColourUtilities.changeOutline(l, Colour.random())));
+					new BoundDescriptor(l.getBigraph(context),
+							new ColourUtilities.ChangeOutlineDescriptor(
+									l.getIdentifier(context),
+									ColourUtilities.getOutline(context, l),
+									Colour.random()))));
 		}
 		
 		Rectangle r = null;

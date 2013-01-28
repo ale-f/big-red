@@ -6,6 +6,7 @@ import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
@@ -13,6 +14,7 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.process.IParticipantHost;
@@ -90,6 +92,17 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 		}
 	}
 
+	private IChange bind(IChangeDescriptor desc) {
+		return new BoundDescriptor(loader.getResolver(), desc);
+	}
+	
+	@Deprecated
+	private NamedModelObject.Identifier getBodgedIdentifier(
+			ModelObject object) {
+		/* XXX: this cast is a catastrophe masquerading as a disaster */
+		return ((NamedModelObject)object).getIdentifier(loader.getScratch());
+	}
+	
 	@Override
 	public void undecorate(ModelObject object, Element el) {
 		ChangeGroup cg = new ChangeGroup();
@@ -101,9 +114,11 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 				fill = getColorAttribute(eA, BIG_RED, "fillColor"),
 				outline = getColorAttribute(eA, BIG_RED, "outlineColor");
 			if (fill != null)
-				cg.add(ColourUtilities.changeFill(object, fill));
+				cg.add(bind(new ColourUtilities.ChangeFillDescriptor(
+						getBodgedIdentifier(object), null, fill)));
 			if (outline != null)
-				cg.add(ColourUtilities.changeOutline(object, outline));
+				cg.add(bind(new ColourUtilities.ChangeOutlineDescriptor(
+						getBodgedIdentifier(object), null, outline)));
 	
 			if (object instanceof Layoutable) {
 				r = getRectangle(eA);
@@ -114,9 +129,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			
 			String comment = getAttributeNS(eA, BIG_RED, "comment");
 			if (comment != null)
-				cg.add(new BoundDescriptor(loader.getResolver(),
-						new ChangeCommentDescriptor(((Layoutable)object).getIdentifier(
-						loader.getScratch()), null, comment)));
+				cg.add(bind(new ChangeCommentDescriptor(
+						getBodgedIdentifier(object), null, comment)));
 		}
 		
 		if (object instanceof Layoutable && !(object instanceof Edge) &&

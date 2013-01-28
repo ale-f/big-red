@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Colour;
 import dk.itu.big_red.model.ColourUtilities;
+import dk.itu.big_red.model.ColourUtilities.ChangeFillDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeAliasDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
@@ -72,8 +73,8 @@ public abstract class RedXMLEdits {
 							Layoutable.Identifier.class);
 					Colour c = loadColour(descriptor);
 					if ("set-fill".equals(ln)) {
-						cd = ColourUtilities.changeFillDescriptor(id, null, c);
-					} else cd = ColourUtilities.changeOutlineDescriptor(
+						cd = new ColourUtilities.ChangeFillDescriptor(id, null, c);
+					} else cd = new ColourUtilities.ChangeOutlineDescriptor(
 							id, null, c);
 				} else if ("set-comment".equals(ln)) {
 					id = BigraphEditLoader.getIdentifier(
@@ -140,12 +141,6 @@ public abstract class RedXMLEdits {
 				if (LayoutUtilities.LAYOUT.equals(key)) {
 					e = saveLayout(newElement(BIG_RED, "big-red:set-layout"),
 							(Rectangle)cd.getNewValue());
-				} else if (ColourUtilities.FILL.equals(key)) {
-					e = saveColour(newElement(BIG_RED, "big-red:set-fill"),
-							(Colour)cd.getNewValue());
-				} else if (ColourUtilities.OUTLINE.equals(key)) {
-					e = saveColour(newElement(BIG_RED, "big-red:set-outline"),
-							(Colour)cd.getNewValue());
 				}
 			} else if (cd_ instanceof ChangeCommentDescriptor) {
 				ChangeCommentDescriptor cd = (ChangeCommentDescriptor)cd_;
@@ -157,6 +152,16 @@ public abstract class RedXMLEdits {
 				target = cd.getTarget();
 				e = newElement(BIG_RED, "big-red:set-alias");
 				e.setAttributeNS(null, "alias", cd.getNewValue());
+			} else if (cd_ instanceof ChangeFillDescriptor) {
+				ChangeFillDescriptor cd = (ChangeFillDescriptor)cd_;
+				target = cd.getTarget();
+				e = saveColour(newElement(BIG_RED, "big-red:set-fill"),
+						cd.getNewValue());
+			} else if (cd_ instanceof ChangeFillDescriptor) {
+				ChangeFillDescriptor cd = (ChangeFillDescriptor)cd_;
+				target = cd.getTarget();
+				e = saveColour(newElement(BIG_RED, "big-red:set-outline"),
+						cd.getNewValue());
 			}
 			if (e != null && target instanceof NamedModelObject.Identifier)
 				e.appendChild(BigraphEditSaver.makeID(
