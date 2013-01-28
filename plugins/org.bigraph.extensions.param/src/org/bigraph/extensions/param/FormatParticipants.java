@@ -4,6 +4,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
@@ -65,7 +66,7 @@ public abstract class FormatParticipants {
 		@Override
 		public void setHost(IParticipantHost host) {
 			if (host instanceof IXMLLoader)
-				this.loader = (IXMLLoader)host;
+				loader = (IXMLLoader)host;
 		}
 
 		@Override
@@ -107,9 +108,15 @@ public abstract class FormatParticipants {
 				} else if (parameter == null && policy != null) {
 					loader.addNotice(LoaderNotice.Type.WARNING,
 							"Default parameter value assigned.");
-					ch = ParameterUtilities.changeParameter(n, policy.get(0));
+					ch = new BoundDescriptor(loader.getResolver(),
+							ParameterUtilities.changeParameterDescriptor(
+									n.getIdentifier(loader.getScratch()),
+									null, policy.get(0)));
 				} else if (parameter != null && policy != null) {
-					ch = ParameterUtilities.changeParameter(n, parameter);
+					ch = new BoundDescriptor(loader.getResolver(),
+							ParameterUtilities.changeParameterDescriptor(
+									n.getIdentifier(loader.getScratch()),
+									null, parameter));
 				}
 				
 				if (ch != null)

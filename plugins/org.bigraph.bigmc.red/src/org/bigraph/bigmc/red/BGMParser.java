@@ -157,10 +157,15 @@ public class BGMParser {
 				n = new Node(signature.getControl(id));
 			} else if (parts.length == 2) {
 				n = new Node(signature.getControl(parts[0]));
-				ParameterUtilities.setParameter(n, parts[1]);
 			} else throw new Error("Control name couldn't be matched");
 
 			change(parent.changeAddChild(n, Integer.toString(x++)));
+			
+			if (parts.length == 2)
+				change(new BoundDescriptor(b,
+						new ParameterUtilities.ChangeParameterDescriptor(
+								n.getIdentifier(), null, parts[1])));
+			
 			if (lexer.accept(P_LEFTSQ) != null) { /* ports */
 				int i = 0;
 				do {

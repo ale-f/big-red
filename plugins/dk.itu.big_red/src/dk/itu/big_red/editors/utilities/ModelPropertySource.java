@@ -187,8 +187,11 @@ public class ModelPropertySource implements IRedPropertySource {
 							ColourUtilities.getOutlineRaw(getModel()),
 							new Colour((RGB)newValue)));
 		} else if (ParameterUtilities.PARAMETER.equals(id)) {
-			return ParameterUtilities.changeParameter(
-					(Node)getModel(), (String)newValue);
+			return new BoundDescriptor(getModel().getBigraph(),
+					new ParameterUtilities.ChangeParameterDescriptor(
+							((Node)getModel()).getIdentifier(),
+							ParameterUtilities.getParameter((Node)getModel()),
+							(String)newValue));
 		} else return null;
 	}
 

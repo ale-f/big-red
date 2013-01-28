@@ -4,6 +4,7 @@ import java.util.regex.Pattern;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
+import org.bigraph.model.Control;
 import org.bigraph.model.Link;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
@@ -13,6 +14,7 @@ import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.INamespace;
 
@@ -72,15 +74,24 @@ public class OutputParser {
 		String name = lexer.accept(P_NAM);
 		if (name != null) { /* name is a control */
 			Node n = null;
+			String cn = null;
 			String[] parts = name.split("_P__", 2);
 			if (parts.length == 1) {
 				n = new Node(s.getControl(name));
 			} else if (parts.length == 2) {
-				n = new Node(s.getControl(parts[0]));
-				ParameterUtilities.setParameter(n, parts[1]);
+				n = new Node(s.getControl(cn = parts[0]));
 			} else throw new Error("Control name couldn't be matched");
+
+			String nn = Integer.toString(x++);
+			cg.add(parent.changeAddChild(n, nn));
 			
-			cg.add(parent.changeAddChild(n, Integer.toString(x++)));
+			if (parts.length == 2)
+				cg.add(new BoundDescriptor(workingBigraph,
+						new ParameterUtilities.ChangeParameterDescriptor(
+								new Node.Identifier(nn,
+										new Control.Identifier(cn)),
+								null, parts[1])));
+			
 			if (lexer.accept(P_LSQ) != null) { /* ports */
 				int i = 0;
 				do {

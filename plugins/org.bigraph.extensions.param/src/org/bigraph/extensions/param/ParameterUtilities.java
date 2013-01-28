@@ -1,19 +1,17 @@
 package org.bigraph.extensions.param;
 
 import org.bigraph.model.Control;
-import org.bigraph.model.ModelObject;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.ModelObject.ExtendedDataNormaliser;
-import org.bigraph.model.ModelObject.ExtendedDataValidator;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Node;
+import org.bigraph.model.assistants.ExtendedDataUtilities;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.policies.INamePolicy;
 
-import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
 
 public abstract class ParameterUtilities {
@@ -22,47 +20,83 @@ public abstract class ParameterUtilities {
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String PARAMETER =
 			"eD!+dk.itu.big_red.model.Node.parameter";
+	
+	public static final class ChangeParameterDescriptor
+			extends ExtendedDataUtilities.ChangeExtendedDataDescriptor<
+					Node.Identifier, String> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new ParameterHandler());
+		}
+		
+		private static final class ParameterHandler extends Handler {
+			@Override
+			public boolean tryValidateChange(Process context,
+					IChangeDescriptor change) throws ChangeCreationException {
+				final PropertyScratchpad scratch = context.getScratch();
+				final Resolver resolver = context.getResolver();
+				if (change instanceof ChangeParameterDescriptor) {
+					ChangeParameterDescriptor cd =
+							(ChangeParameterDescriptor)change;
+					Node n = cd.getTarget().lookup(scratch, resolver);
+					if (n == null)
+						throw new ChangeCreationException(cd,
+								"" + cd.getTarget() + ": lookup failed");
+					
+					Control control = n.getControl();
+					INamePolicy policy = getParameterPolicy(scratch, control);
+					if (policy == null)
+						throw new ChangeCreationException(cd,
+								"The control " + control.getName() +
+								" does not define a parameter");
+					
+					if (cd.getNormalisedNewValue(scratch, resolver) == null)
+						throw new ChangeCreationException(cd,
+								"\"" + cd.getNewValue() + "\" is not a " +
+								"valid value for the parameter of " +
+								control.getName());
+				} else return false;
+				return true;
+			}
+			
+			@Override
+			public boolean executeChange(Resolver resolver,
+					IChangeDescriptor change) {
+				if (change instanceof ChangeParameterDescriptor) {
+					ChangeParameterDescriptor cd =
+							(ChangeParameterDescriptor)change;
+					cd.getTarget().lookup(null, resolver).setExtendedData(
+							PARAMETER,
+							cd.getNormalisedNewValue(null, resolver));
+				} else return false;
+				return true;
+			}
+		}
+		
+		public ChangeParameterDescriptor(Node.Identifier identifier,
+				String oldValue, String newValue) {
+			super(PARAMETER, identifier, oldValue, newValue);
+		}
+		
+		@Override
+		protected String getNormalisedNewValue(PropertyScratchpad context,
+				Resolver r) {
+			INamePolicy parameterPolicy = getParameterPolicy(
+					getTarget().getControl().lookup(context, r));
+			return (parameterPolicy != null ?
+					parameterPolicy.normalise(getNewValue()) : null);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeParameterDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
+	}
 
 	@RedProperty(fired = INamePolicy.class, retrieved = INamePolicy.class)
 	public static final String PARAMETER_POLICY =
 			"eD!+dk.itu.big_red.model.Control.parameter-policy";
-	
-	private static final ExtendedDataNormaliser parameterNormaliser =
-			new ExtendedDataNormaliser() {
-		@Override
-		public Object normalise(ChangeExtendedData c, Object rawValue) {
-			return getParameterPolicy(((Node)c.getCreator()).getControl()).
-					normalise((String)rawValue);
-		}
-	};
-	
-	private static final ExtendedDataValidator parameterValidator =
-			new ExtendedDataValidator() {
-		@Override
-		public void validate(ChangeExtendedData c, PropertyScratchpad context)
-				throws ChangeRejectedException {
-			if (!(c.getCreator() instanceof Node))
-				throw new ChangeRejectedException(c,
-						c.getCreator() + " is not a Node");
-			Node n = (Node)c.getCreator();
-				
-			Control control = n.getControl();
-			INamePolicy policy = getParameterPolicy(control);
-			if (policy == null)
-				throw new ChangeRejectedException(c,
-						"The control " + control.getName() +
-						" does not define a parameter");
-			
-			if (!(c.newValue instanceof String))
-				throw new ChangeRejectedException(c,
-						"Parameter values must be strings");
-			
-			if (policy.normalise((String)c.newValue) == null)
-				throw new ChangeRejectedException(c,
-						"\"" + c.newValue + "\" is not a valid value for " +
-						"the parameter of " + control.getName());
-		}
-	};
 
 	public static INamePolicy getParameterPolicy(Control c) {
 		return getParameterPolicy(null, c);
@@ -95,28 +129,11 @@ public abstract class ParameterUtilities {
 			if (t == null)
 				t = p.get(0);
 		}
-		if (s != null ? !s.equals(t) : s != t)
-			setParameter(context, n, t);
 		return t;
-	}
-
-	public static void setParameter(Node n, String s) {
-		setParameter(null, n, s);
-	}
-	
-	public static void setParameter(
-			PropertyScratchpad context, Node n, String s) {
-		setProperty(context, n, PARAMETER, s);
-	}
-
-	public static IChange changeParameter(Node n, String s) {
-		return n.changeExtendedData(
-				PARAMETER, s, parameterValidator, parameterNormaliser);
 	}
 	
 	public static IChangeDescriptor changeParameterDescriptor(
 			Node.Identifier n, String oldP, String newP) {
-		return new ModelObject.ChangeExtendedDataDescriptor(n, PARAMETER,
-				oldP, newP, parameterValidator, parameterNormaliser);
+		return new ChangeParameterDescriptor(n, oldP, newP);
 	}
 }
