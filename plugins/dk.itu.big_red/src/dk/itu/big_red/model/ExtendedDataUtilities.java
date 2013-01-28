@@ -3,18 +3,14 @@ package dk.itu.big_red.model;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Site;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
-import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 import org.bigraph.model.names.policies.BoundedIntegerNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
-import org.bigraph.model.process.IParticipantHost;
 
 import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
 
@@ -28,63 +24,6 @@ import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
  */
 public abstract class ExtendedDataUtilities {
 	private ExtendedDataUtilities() {}
-	
-	protected static abstract class ChangeExtendedDataDescriptor<
-			T extends ModelObject.Identifier, V>
-			extends ModelObject.ModelObjectChangeDescriptor {
-		protected static abstract class Handler
-				implements IDescriptorStepExecutor, IDescriptorStepValidator {
-			@Override
-			public void setHost(IParticipantHost host) {
-				/* do nothing */
-			}
-		}
-		
-		private final String key;
-		private final T target;
-		private final V oldValue, newValue;
-		
-		protected ChangeExtendedDataDescriptor(
-				String key, T target, V oldValue, V newValue) {
-			this.key = key;
-			this.target = target;
-			this.oldValue = oldValue;
-			this.newValue = newValue;
-		}
-		
-		protected String getKey() {
-			return key;
-		}
-		
-		public T getTarget() {
-			return target;
-		}
-		
-		public V getOldValue() {
-			return oldValue;
-		}
-		
-		public V getNewValue() {
-			return newValue;
-		}
-		
-		protected V getNormalisedNewValue() {
-			return getNewValue();
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			return new BoundDescriptor(r, this);
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			ModelObject mo = getTarget().lookup(context, r);
-			mo.setExtendedData(context, getKey(), getNormalisedNewValue());
-		}
-	}
 	
 	public static final class ChangeCommentDescriptor
 			extends ChangeExtendedDataDescriptor<
@@ -159,7 +98,7 @@ public abstract class ExtendedDataUtilities {
 	}
 	
 	public static final class ChangeAliasDescriptor
-			extends ChangeExtendedDataDescriptor<
+			extends org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor<
 					Site.Identifier, String> {
 		static {
 			DescriptorExecutorManager.getInstance().addParticipant(
