@@ -4,7 +4,8 @@ import java.util.EventObject;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -81,10 +82,10 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 			IRedPropertySource rps = getPropertySource(values[i]);
 			if (rps == null)
 				continue;
-			IChange rch =
+			IChangeDescriptor rcd =
 					rps.resetPropertyValueChange(getDescriptor().getId());
-			if (rch != null)
-				cg.add(rch);
+			if (rcd != null)
+				cg.add(new BoundDescriptor(rps.getResolver(), rcd));
 		}
 		if (cg.size() > 0) {
 			getCommandStack().execute(new ChangeCommand(cg, ex));
@@ -108,10 +109,10 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 			IRedPropertySource rps = getPropertySource(values[i]);
 			if (rps == null)
 				continue;
-			IChange rch = rps.setPropertyValueChange(
+			IChangeDescriptor rcd = rps.setPropertyValueChange(
 					child.getDescriptor().getId(), child.getEditValue(i));
-			if (rch != null)
-				cg.add(rch);
+			if (rcd != null)
+				cg.add(new BoundDescriptor(rps.getResolver(), rcd));
 		}
 		if (getParent() != null) {
 			getParent().valueChanged(this, cg);

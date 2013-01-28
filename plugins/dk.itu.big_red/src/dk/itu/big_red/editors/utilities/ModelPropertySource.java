@@ -8,10 +8,10 @@ import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
-import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.policies.INamePolicy;
 import org.eclipse.jface.viewers.ICellEditorValidator;
 import org.eclipse.swt.graphics.RGB;
@@ -39,20 +39,25 @@ public class ModelPropertySource implements IRedPropertySource {
 	}
 	
 	@Override
+	public Resolver getResolver() {
+		return getModel().getBigraph();
+	}
+	
+	@Override
 	public Object getEditableValue() {
 		return null;
 	}
 	
 	public abstract class ChangeValidator implements ICellEditorValidator {
-		public abstract IChange getChange(Object value);
+		public abstract IChangeDescriptor getChange(Object value);
 		
 		@Override
 		public String isValid(Object value) {
 			try {
-				ExecutorManager.getInstance().tryValidateChange(
-						getChange(value));
+				DescriptorExecutorManager.getInstance().tryValidateChange(
+						getResolver(), getChange(value));
 				return null;
-			} catch (ChangeRejectedException cre) {
+			} catch (ChangeCreationException cre) {
 				return cre.getRationale();
 			}
 		}
@@ -60,10 +65,9 @@ public class ModelPropertySource implements IRedPropertySource {
 	
 	private class NameValidator extends ChangeValidator {
 		@Override
-		public IChange getChange(Object value) {
-			return new BoundDescriptor(getModel().getBigraph(),
-					new NamedModelObject.ChangeNameDescriptor(
-							getModel().getIdentifier(), (String)value));
+		public IChangeDescriptor getChange(Object value) {
+			return new NamedModelObject.ChangeNameDescriptor(
+					getModel().getIdentifier(), (String)value);
 		}
 	}
 	
@@ -163,50 +167,44 @@ public class ModelPropertySource implements IRedPropertySource {
 	}
 	
 	@Override
-	public IChange setPropertyValueChange(Object id, Object newValue) {
+	public IChangeDescriptor setPropertyValueChange(
+			Object id, Object newValue) {
 		if (Layoutable.PROPERTY_NAME.equals(id)) {
-			return new BoundDescriptor(getModel().getBigraph(),
-					new NamedModelObject.ChangeNameDescriptor(
-							getModel().getIdentifier(), (String)newValue));
+			return new NamedModelObject.ChangeNameDescriptor(
+					getModel().getIdentifier(), (String)newValue);
 		} else if (ExtendedDataUtilities.COMMENT.equals(id)) {
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ChangeCommentDescriptor(
-							getModel().getIdentifier(),
-							ExtendedDataUtilities.getComment(getModel()),
-							(String)newValue));
+			return new ChangeCommentDescriptor(
+					getModel().getIdentifier(),
+					ExtendedDataUtilities.getComment(getModel()),
+					(String)newValue);
 		} else if (ColourUtilities.FILL.equals(id)) {
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ColourUtilities.ChangeFillDescriptor(
-							getModel().getIdentifier(),
-							ColourUtilities.getFillRaw(getModel()),
-							new Colour((RGB)newValue)));
+			return new ColourUtilities.ChangeFillDescriptor(
+					getModel().getIdentifier(),
+					ColourUtilities.getFillRaw(getModel()),
+					new Colour((RGB)newValue));
 		} else if (ColourUtilities.OUTLINE.equals(id)) {
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ColourUtilities.ChangeOutlineDescriptor(
-							getModel().getIdentifier(),
-							ColourUtilities.getOutlineRaw(getModel()),
-							new Colour((RGB)newValue)));
+			return new ColourUtilities.ChangeOutlineDescriptor(
+					getModel().getIdentifier(),
+					ColourUtilities.getOutlineRaw(getModel()),
+					new Colour((RGB)newValue));
 		} else if (ParameterUtilities.PARAMETER.equals(id)) {
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ParameterUtilities.ChangeParameterDescriptor(
-							((Node)getModel()).getIdentifier(),
-							ParameterUtilities.getParameter((Node)getModel()),
-							(String)newValue));
+			return new ParameterUtilities.ChangeParameterDescriptor(
+					((Node)getModel()).getIdentifier(),
+					ParameterUtilities.getParameter((Node)getModel()),
+					(String)newValue);
 		} else return null;
 	}
 
 	@Override
-	public IChange resetPropertyValueChange(Object id) {
+	public IChangeDescriptor resetPropertyValueChange(Object id) {
 		if (ColourUtilities.FILL.equals(id)) {
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ColourUtilities.ChangeFillDescriptor(
-							getModel().getIdentifier(),
-							ColourUtilities.getFillRaw(getModel()), null));
+			return new ColourUtilities.ChangeFillDescriptor(
+					getModel().getIdentifier(),
+					ColourUtilities.getFillRaw(getModel()), null);
 		} else if (ColourUtilities.OUTLINE.equals(id)) {
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ColourUtilities.ChangeOutlineDescriptor(
-							getModel().getIdentifier(),
-							ColourUtilities.getOutlineRaw(getModel()), null));
+			return new ColourUtilities.ChangeOutlineDescriptor(
+					getModel().getIdentifier(),
+					ColourUtilities.getOutlineRaw(getModel()), null);
 		} else return null;
 	}
 }

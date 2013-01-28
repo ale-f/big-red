@@ -2,8 +2,7 @@ package dk.itu.big_red.editors.rule;
 
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 import dk.itu.big_red.editors.utilities.ModelPropertySource;
 import dk.itu.big_red.model.ExtendedDataUtilities;
@@ -17,10 +16,11 @@ public class ReactumPropertySource extends ModelPropertySource {
 	
 	private class AliasValidator extends ChangeValidator {
 		@Override
-		public IChange getChange(Object value) {
+		public IChangeDescriptor getChange(Object value) {
 			Site site = (Site)getModel();
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ChangeAliasDescriptor(site.getIdentifier(), ExtendedDataUtilities.getAlias(site), (String)value));
+			return new ChangeAliasDescriptor(
+					site.getIdentifier(),
+					ExtendedDataUtilities.getAlias(site), (String)value);
 		}
 	}
 	
@@ -43,20 +43,23 @@ public class ReactumPropertySource extends ModelPropertySource {
 	}
 	
 	@Override
-	public IChange setPropertyValueChange(Object id, Object newValue) {
+	public IChangeDescriptor setPropertyValueChange(
+			Object id, Object newValue) {
 		if (ExtendedDataUtilities.ALIAS.equals(id)) {
 			Site site = (Site)getModel();
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ChangeAliasDescriptor(site.getIdentifier(), ExtendedDataUtilities.getAlias(site), (String)newValue));
+			return new ChangeAliasDescriptor(
+					site.getIdentifier(),
+					ExtendedDataUtilities.getAlias(site), (String)newValue);
 		} else return super.setPropertyValueChange(id, newValue);
 	}
 	
 	@Override
-	public IChange resetPropertyValueChange(Object id) {
+	public IChangeDescriptor resetPropertyValueChange(Object id) {
 		if (ExtendedDataUtilities.ALIAS.equals(id)) {
 			Site site = (Site)getModel();
-			return new BoundDescriptor(getModel().getBigraph(),
-					new ChangeAliasDescriptor(site.getIdentifier(), ExtendedDataUtilities.getAlias(site), null));
+			return new ChangeAliasDescriptor(
+					site.getIdentifier(),
+					ExtendedDataUtilities.getAlias(site), null);
 		} else return super.resetPropertyValueChange(id);
 	}
 }
