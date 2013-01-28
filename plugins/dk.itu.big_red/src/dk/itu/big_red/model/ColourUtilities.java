@@ -56,7 +56,8 @@ public abstract class ColourUtilities {
 					ChangeColourDescriptor cd =
 							(ChangeColourDescriptor)change;
 					cd.getTarget().lookup(null, resolver).setExtendedData(
-							cd.getKey(), cd.getNormalisedNewValue());
+							cd.getKey(),
+							cd.getNormalisedNewValue(null, resolver));
 				} else return false;
 				return true;
 			}

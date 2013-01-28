@@ -49,7 +49,8 @@ public abstract class ExtendedDataUtilities {
 			return newValue;
 		}
 		
-		protected V getNormalisedNewValue() {
+		protected V getNormalisedNewValue(
+				PropertyScratchpad context, Resolver r) {
 			return getNewValue();
 		}
 		
@@ -63,7 +64,8 @@ public abstract class ExtendedDataUtilities {
 		public void simulate(PropertyScratchpad context, Resolver r)
 				throws ChangeCreationException {
 			ModelObject mo = getTarget().lookup(context, r);
-			mo.setExtendedData(context, getKey(), getNormalisedNewValue());
+			mo.setExtendedData(context, getKey(),
+					getNormalisedNewValue(context, r));
 		}
 	}
 

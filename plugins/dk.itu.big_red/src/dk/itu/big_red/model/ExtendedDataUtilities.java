@@ -57,7 +57,7 @@ public abstract class ExtendedDataUtilities {
 					ChangeCommentDescriptor cd =
 							(ChangeCommentDescriptor)change;
 					cd.getTarget().lookup(null, resolver).setExtendedData(
-							COMMENT, cd.getNormalisedNewValue());
+							COMMENT, cd.getNormalisedNewValue(null, resolver));
 				} else return false;
 				return true;
 			}
@@ -69,7 +69,8 @@ public abstract class ExtendedDataUtilities {
 		}
 		
 		@Override
-		protected String getNormalisedNewValue() {
+		protected String getNormalisedNewValue(
+				PropertyScratchpad context, Resolver r) {
 			String s = getNewValue();
 			if (s != null) {
 				s = s.trim();
@@ -124,7 +125,8 @@ public abstract class ExtendedDataUtilities {
 					
 					String nv = cd.getNewValue();
 					if (nv != null) {
-						if (cd.getNormalisedNewValue() == null)
+						if (cd.getNormalisedNewValue(
+								scratch, resolver) == null)
 							throw new ChangeCreationException(cd,
 									"\"" + nv + "\" is not a valid alias" +
 									" for " + cd.getTarget());
@@ -140,7 +142,7 @@ public abstract class ExtendedDataUtilities {
 					ChangeAliasDescriptor cd =
 							(ChangeAliasDescriptor)change;
 					cd.getTarget().lookup(null, resolver).setExtendedData(
-							ALIAS, cd.getNormalisedNewValue());
+							ALIAS, cd.getNormalisedNewValue(null, resolver));
 				} else return false;
 				return true;
 			}
@@ -152,7 +154,8 @@ public abstract class ExtendedDataUtilities {
 		}
 
 		@Override
-		protected String getNormalisedNewValue() {
+		protected String getNormalisedNewValue(
+				PropertyScratchpad context, Resolver r) {
 			return NAME_POLICY.normalise(getNewValue());
 		}
 
