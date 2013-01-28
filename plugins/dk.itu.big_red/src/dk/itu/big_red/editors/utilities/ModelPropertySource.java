@@ -9,7 +9,6 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
@@ -51,7 +50,7 @@ public class ModelPropertySource implements IRedPropertySource {
 		public String isValid(Object value) {
 			try {
 				ExecutorManager.getInstance().tryValidateChange(
-						(PropertyScratchpad)null, getChange(value));
+						getChange(value));
 				return null;
 			} catch (ChangeRejectedException cre) {
 				return cre.getRationale();

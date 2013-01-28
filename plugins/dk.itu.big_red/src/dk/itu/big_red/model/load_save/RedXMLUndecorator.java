@@ -9,7 +9,6 @@ import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -197,7 +196,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 				loader.addChange(relayout);
 			} else {
 				try {
-					ExecutorManager.getInstance().tryValidateChange((PropertyScratchpad)null, loader.getChanges());
+					ExecutorManager.getInstance().tryValidateChange(
+							loader.getChanges());
 				} catch (ChangeRejectedException cre) {
 					IChange ch = cre.getRejectedChange();
 					if (ch instanceof ChangeExtendedData) {
