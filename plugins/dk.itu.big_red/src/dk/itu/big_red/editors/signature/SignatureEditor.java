@@ -284,8 +284,11 @@ implements PropertyChangeListener {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						if (i.getSelection())
-							doChange(ParameterUtilities.changeParameterPolicy(
-									currentControl, p.newInstance()));
+							doChange(new BoundDescriptor(getModel(),
+									new ParameterUtilities.ChangeParameterPolicyDescriptor(
+											currentControl.getIdentifier(),
+											ParameterUtilities.getParameterPolicy(currentControl),
+											p.newInstance())));
 					}
 				});
 			}
@@ -318,9 +321,11 @@ implements PropertyChangeListener {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						if (n.getSelection())
-							doChange(
-								ParameterUtilities.changeParameterPolicy(
-										currentControl, null));
+							doChange(new BoundDescriptor(getModel(),
+								new ParameterUtilities.ChangeParameterPolicyDescriptor(
+										currentControl.getIdentifier(),
+										ParameterUtilities.getParameterPolicy(currentControl),
+										null)));
 					}
 				});
 				if (!nested) {

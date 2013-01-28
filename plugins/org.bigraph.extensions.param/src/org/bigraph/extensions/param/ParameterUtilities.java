@@ -6,7 +6,6 @@ import org.bigraph.model.Node;
 import org.bigraph.model.assistants.ExtendedDataUtilities;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -94,6 +93,57 @@ public abstract class ParameterUtilities {
 		}
 	}
 
+	public static final class ChangeParameterPolicyDescriptor
+			extends ExtendedDataUtilities.ChangeExtendedDataDescriptor<
+					Control.Identifier, INamePolicy> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new ParameterPolicyHandler());
+		}
+		
+		private static final class ParameterPolicyHandler extends Handler {
+			@Override
+			public boolean tryValidateChange(Process context,
+					IChangeDescriptor change) throws ChangeCreationException {
+				final PropertyScratchpad scratch = context.getScratch();
+				final Resolver resolver = context.getResolver();
+				if (change instanceof ChangeParameterPolicyDescriptor) {
+					ChangeParameterPolicyDescriptor cd =
+							(ChangeParameterPolicyDescriptor)change;
+					Control c = cd.getTarget().lookup(scratch, resolver);
+					if (c == null)
+						throw new ChangeCreationException(cd,
+								"" + cd.getTarget() + ": lookup failed");
+				} else return false;
+				return true;
+			}
+			
+			@Override
+			public boolean executeChange(Resolver resolver,
+					IChangeDescriptor change) {
+				if (change instanceof ChangeParameterPolicyDescriptor) {
+					ChangeParameterPolicyDescriptor cd =
+							(ChangeParameterPolicyDescriptor)change;
+					cd.getTarget().lookup(null, resolver).setExtendedData(
+							PARAMETER_POLICY,
+							cd.getNormalisedNewValue(null, resolver));
+				} else return false;
+				return true;
+			}
+		}
+		
+		public ChangeParameterPolicyDescriptor(Control.Identifier identifier,
+				INamePolicy oldValue, INamePolicy newValue) {
+			super(PARAMETER_POLICY, identifier, oldValue, newValue);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeParameterPolicyDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
+	}
+	
 	@RedProperty(fired = INamePolicy.class, retrieved = INamePolicy.class)
 	public static final String PARAMETER_POLICY =
 			"eD!+dk.itu.big_red.model.Control.parameter-policy";
@@ -107,12 +157,9 @@ public abstract class ParameterUtilities {
 		return getProperty(context, c, PARAMETER_POLICY, INamePolicy.class);
 	}
 
-	public static void setParameterPolicy(Control c, INamePolicy n) {
-		c.setExtendedData(PARAMETER_POLICY, n);
-	}
-
-	public static IChange changeParameterPolicy(Control c, INamePolicy n) {
-		return c.changeExtendedData(PARAMETER_POLICY, n);
+	public static IChangeDescriptor changeParameterPolicyDescriptor(
+			Control.Identifier c, INamePolicy oldP, INamePolicy newP) {
+		return new ChangeParameterPolicyDescriptor(c, oldP, newP);
 	}
 
 	public static String getParameter(Node n) {

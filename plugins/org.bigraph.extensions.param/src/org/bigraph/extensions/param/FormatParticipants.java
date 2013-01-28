@@ -87,9 +87,10 @@ public abstract class FormatParticipants {
 						n = new BooleanNamePolicy();
 					}
 					if (n != null)
-						loader.addChange(
-								ParameterUtilities.changeParameterPolicy(
-										c, n));
+						loader.addChange(new BoundDescriptor(loader.getResolver(),
+								new ParameterUtilities.ChangeParameterPolicyDescriptor(
+										c.getIdentifier(loader.getScratch()),
+										null, n)));
 				}
 			} else if (object instanceof Node) {
 				Node n = (Node)object;
