@@ -6,7 +6,6 @@ import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
@@ -95,11 +94,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 		return new BoundDescriptor(loader.getResolver(), desc);
 	}
 	
-	@Deprecated
-	private NamedModelObject.Identifier getBodgedIdentifier(
-			ModelObject object) {
-		/* XXX: this cast is a catastrophe masquerading as a disaster */
-		return ((NamedModelObject)object).getIdentifier(loader.getScratch());
+	private ModelObject.Identifier getIdentifier(ModelObject object) {
+		return object.getIdentifier(loader.getScratch());
 	}
 	
 	@Override
@@ -114,10 +110,10 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 				outline = getColorAttribute(eA, BIG_RED, "outlineColor");
 			if (fill != null)
 				cg.add(bind(new ColourUtilities.ChangeFillDescriptor(
-						getBodgedIdentifier(object), null, fill)));
+						getIdentifier(object), null, fill)));
 			if (outline != null)
 				cg.add(bind(new ColourUtilities.ChangeOutlineDescriptor(
-						getBodgedIdentifier(object), null, outline)));
+						getIdentifier(object), null, outline)));
 	
 			if (object instanceof Layoutable) {
 				r = getRectangle(eA);
@@ -129,7 +125,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			String comment = getAttributeNS(eA, BIG_RED, "comment");
 			if (comment != null)
 				cg.add(bind(new ChangeCommentDescriptor(
-						getBodgedIdentifier(object), null, comment)));
+						getIdentifier(object), null, comment)));
 		}
 		
 		if (object instanceof Layoutable && !(object instanceof Edge) &&

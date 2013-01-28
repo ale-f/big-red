@@ -452,6 +452,18 @@ public abstract class ModelObject {
 		}
 	}
 	
+	public Identifier getIdentifier() {
+		throw new RuntimeException(
+				"BUG: can't get an identifier for class " +
+				getClass().getCanonicalName());
+	}
+	
+	public Identifier getIdentifier(PropertyScratchpad context) {
+		throw new RuntimeException(
+				"BUG: can't get an in-context identifier for class " +
+				getClass().getCanonicalName());
+	}
+	
 	public static <T> T require(Object o, Class<? extends T> klass) {
 		return (klass.isInstance(o) ? klass.cast(o) : null);
 	}
