@@ -28,7 +28,7 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 		
 		IChangeDescriptor ch = run(resolver, change);
 		if (ch != null)
-			throw new Error(
+			throw new RuntimeException(
 					"BUG: " + ch + " passed validation but couldn't " +
 					"be executed");
 	}
@@ -54,7 +54,7 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 		}
 	}
 	
-	private final class Handler
+	final class Handler
 			implements IDescriptorStepExecutor, IDescriptorStepValidator {
 		@Override
 		public final void setHost(IParticipantHost host) {
