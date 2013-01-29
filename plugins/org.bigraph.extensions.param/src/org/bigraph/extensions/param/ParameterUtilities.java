@@ -12,6 +12,7 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.policies.INamePolicy;
 
 import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
+import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 
 public abstract class ParameterUtilities {
 	private ParameterUtilities() {}
@@ -176,6 +177,8 @@ public abstract class ParameterUtilities {
 			if (t == null)
 				t = p.get(0);
 		}
+		if (s != null ? !s.equals(t) : s != t)
+			setProperty(context, n, PARAMETER, t);
 		return t;
 	}
 	
