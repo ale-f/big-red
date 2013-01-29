@@ -5,6 +5,7 @@ import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 import org.bigraph.model.process.IParticipantHost;
@@ -66,6 +67,44 @@ public abstract class ExtendedDataUtilities {
 			ModelObject mo = getTarget().lookup(context, r);
 			mo.setExtendedData(context, getKey(),
 					getNormalisedNewValue(context, r));
+		}
+	}
+	
+	public static final class SimpleHandler
+			extends ChangeExtendedDataDescriptor.Handler {
+		private final
+				Class<? extends ChangeExtendedDataDescriptor<?, ?>> klass;
+		
+		public SimpleHandler(
+				Class<? extends ChangeExtendedDataDescriptor<?, ?>> klass) {
+			this.klass = klass;
+		}
+		
+		@Override
+		public boolean tryValidateChange(Process context,
+				IChangeDescriptor change) throws ChangeCreationException {
+			final PropertyScratchpad scratch = context.getScratch();
+			final Resolver resolver = context.getResolver();
+			if (klass.isInstance(change)) {
+				ChangeExtendedDataDescriptor<?, ?> cd = klass.cast(change);
+				ModelObject mo = cd.getTarget().lookup(scratch, resolver);
+				if (mo == null)
+					throw new ChangeCreationException(cd,
+							"" + cd.getTarget() + ": lookup failed");
+			} else return false;
+			return true;
+		}
+		
+		@Override
+		public boolean executeChange(Resolver resolver,
+				IChangeDescriptor change) {
+			if (klass.isInstance(change)) {
+				ChangeExtendedDataDescriptor<?, ?> cd = klass.cast(change);
+				ModelObject mo = cd.getTarget().lookup(null, resolver);
+				mo.setExtendedData(cd.getKey(),
+						cd.getNormalisedNewValue(null, resolver));
+			} else return false;
+			return true;
 		}
 	}
 
