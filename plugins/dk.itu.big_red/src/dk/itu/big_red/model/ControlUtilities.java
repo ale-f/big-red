@@ -6,10 +6,14 @@ import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.ExtendedDataValidator;
 import org.bigraph.model.PortSpec;
+import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
+import org.bigraph.model.assistants.ExtendedDataUtilities.SimpleHandler;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -76,7 +80,7 @@ public abstract class ControlUtilities {
 		}
 		
 		setSegment(context, p, segment);
-		setDistance(context, p, distance);
+		setProperty(context, p, DISTANCE, distance);
 	}
 	
 	public static double getDistance(PortSpec p) {
@@ -93,17 +97,29 @@ public abstract class ControlUtilities {
 		return d;
 	}
 
-	public static void setDistance(PortSpec p, double d) {
-		setDistance(null, p, d);
-	}
-
-	public static void setDistance(
-			PropertyScratchpad context, PortSpec p, double d) {
-		setProperty(context, p, DISTANCE, d);
-	}
-
-	public static IChange changeDistance(PortSpec p, double d) {
-		return p.changeExtendedData(DISTANCE, d);
+	public static final class ChangeDistanceDescriptor
+			extends ChangeExtendedDataDescriptor<PortSpec.Identifier, Double> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new SimpleHandler(ChangeDistanceDescriptor.class));
+		}
+		
+		public ChangeDistanceDescriptor(PortSpec.Identifier id,
+				double oldValue, double newValue) {
+			super(DISTANCE, id, oldValue, newValue);
+		}
+		
+		public ChangeDistanceDescriptor(PropertyScratchpad context,
+				PortSpec mo, double newValue) {
+			this(mo.getIdentifier(context),
+					getDistance(context, mo), newValue);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeDistanceDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
 	}
 
 	@RedProperty(fired = Object.class, retrieved = Object.class)

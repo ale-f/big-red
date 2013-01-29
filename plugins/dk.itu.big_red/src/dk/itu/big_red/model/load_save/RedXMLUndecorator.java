@@ -138,8 +138,9 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			if (eS != null) {
 				cg.add(ControlUtilities.changeSegment(p,
 						Integer.parseInt(getAttributeNS(eS, BIG_RED, "segment"))));
-				cg.add(ControlUtilities.changeDistance(p,
-						Double.parseDouble(getAttributeNS(eS, BIG_RED, "distance"))));
+				cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
+						loader.getScratch(), p, Double.parseDouble(
+								getAttributeNS(eS, BIG_RED, "distance")))));
 			}
 		}
 		

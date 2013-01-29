@@ -46,7 +46,6 @@ import dk.itu.big_red.model.Line;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
-import static dk.itu.big_red.model.ControlUtilities.changeDistance;
 import static dk.itu.big_red.model.ControlUtilities.changeSegment;
 import static dk.itu.big_red.model.ControlUtilities.getDistance;
 import static dk.itu.big_red.model.ControlUtilities.getSegment;
@@ -264,9 +263,13 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			int segment = getSegment(port);
 			double distance = getDistance(port);
 			if (segment == deleteIndex - 1) {
-				cg.add(changeDistance(port, distance * l1l));
+				cg.add(new BoundDescriptor(getModel().getSignature(),
+						new ControlUtilities.ChangeDistanceDescriptor(
+								null, port, distance * l1l)));
 			} else if (segment == deleteIndex) {
-				cg.add(changeDistance(port, l1l + (distance * (len2 / len))));
+				cg.add(new BoundDescriptor(getModel().getSignature(),
+						new ControlUtilities.ChangeDistanceDescriptor(
+								null, port, l1l + (distance * (len2 / len)))));
 			}
 			if (segment >= deleteIndex)
 				cg.add(changeSegment(port, segment - 1));
@@ -289,11 +292,15 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			double distance = getDistance(port);
 			if (segment == (insertIndex - 1)) {
 				if (distance < pivot) {
-					cg.add(changeDistance(port, (pivot - distance) / pivot));
+					cg.add(new BoundDescriptor(getModel().getSignature(),
+							new ControlUtilities.ChangeDistanceDescriptor(
+									null, port, (pivot - distance) / pivot)));
 				} else {
 					cg.add(changeSegment(port, segment + 1));
-					cg.add(changeDistance(
-							port, (distance - pivot) / (1 - pivot)));
+					cg.add(new BoundDescriptor(getModel().getSignature(),
+							new ControlUtilities.ChangeDistanceDescriptor(
+									null, port,
+									(distance - pivot) / (1 - pivot))));
 				}
 			} else if (segment >= insertIndex) {
 				cg.add(changeSegment(port, segment + 1));
@@ -305,7 +312,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		doChange(cg);
 	}
 	
-	private void opAddPort(PortSpec port, String name, int segment, double distance) {
+	private void opAddPort(
+			PortSpec port, String name, int segment, double distance) {
 		ChangeGroup cg = new ChangeGroup();
 		if (distance >= 1.0) {
 			distance = 0.0;
@@ -313,7 +321,11 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 		cg.add(getModel().changeAddPort(port, name));
 		cg.add(changeSegment(port, segment));
-		cg.add(changeDistance(port, distance));
+		cg.add(new BoundDescriptor(getModel().getSignature(),
+				new ControlUtilities.ChangeDistanceDescriptor(
+						new PortSpec.Identifier(
+								name, getModel().getIdentifier()),
+						0.0, distance)));
 		doChange(cg);
 	}
 	
@@ -324,7 +336,9 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			segment = (segment + 1) % getPointCount();
 		}
 		cg.add(changeSegment(port, segment));
-		cg.add(changeDistance(port, distance));
+		cg.add(new BoundDescriptor(getModel().getSignature(),
+				new ControlUtilities.ChangeDistanceDescriptor(
+						null, port, distance)));
 		doChange(cg);
 	}
 	
