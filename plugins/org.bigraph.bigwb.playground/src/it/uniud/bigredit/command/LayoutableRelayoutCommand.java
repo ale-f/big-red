@@ -7,6 +7,7 @@ import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
@@ -46,16 +47,18 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		if((model instanceof Bigraph) || (model instanceof Reaction)){
 			
 			if(parent instanceof BRS){
-				setContext((BRS)parent);
+				setContext(parent);
 				cg.add(((BRS)parent).changeLayoutChild(model,layout));
 			}else if(parent instanceof Reaction){
-				setContext((Reaction)parent);
+				setContext(parent);
 				cg.add(((Reaction)parent).changeLayoutChild((Bigraph)model,layout));
 			}
 		}else{
 			setContext(((Layoutable)model).getBigraph());
 			if ((model instanceof Edge || noOverlap()) && boundariesSatisfied())
-				cg.add(LayoutUtilities.changeLayout(((Layoutable)model), layout));
+				cg.add(new BoundDescriptor(((Layoutable)model).getBigraph(),
+						new LayoutUtilities.ChangeLayoutDescriptor(null,
+								(Layoutable)model, layout)));
 		}
 	}
 	

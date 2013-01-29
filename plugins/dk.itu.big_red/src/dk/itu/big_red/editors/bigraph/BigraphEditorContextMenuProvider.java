@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import org.bigraph.model.Edge;
 import org.bigraph.model.Link;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.utilities.FilteringIterable;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -117,9 +118,10 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 						r = null;
 					} else r = LayoutUtilities.getLayout(l);
 					getViewer().getEditDomain().getCommandStack().execute(
-							new ChangeCommand(
-									LayoutUtilities.changeLayout(l, r),
-									l.getBigraph()));
+							new ChangeCommand(new BoundDescriptor(
+									l.getBigraph(),
+									new LayoutUtilities.ChangeLayoutDescriptor(
+											null, l, r)), l.getBigraph()));
 				}
 			};
 			a.setChecked(LayoutUtilities.getLayoutRaw(l) == null);

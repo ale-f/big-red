@@ -4,6 +4,7 @@ import org.bigraph.model.Container;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Node;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.bigraph.parts.ContainerPart;
@@ -36,7 +37,10 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		}
 		
 		cg.add(container.changeAddChild(child, name));
-		cg.add(LayoutUtilities.changeLayout(child, layout));
+		cg.add(new BoundDescriptor(container.getBigraph(),
+				new LayoutUtilities.ChangeLayoutDescriptor(
+						child.getIdentifier().getRenamed(name),
+						null, layout)));
 	}
 	
 	public void setChild(Object s) {

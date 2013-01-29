@@ -485,7 +485,7 @@ public class ReactionWizard extends Wizard {
 			if ( r.y + r.height > dim.height )
 				r.height = dim.height - r.y;
 			
-			double scale = Math.min( 1.0, 256.0 / ( double )Math.max( r.width, r.height ) );
+			double scale = Math.min( 1.0, 256.0 / Math.max( r.width, r.height ) );
 			//Image image = target.getDiagram().getEditor().getDiagramImage( scale );
 			
 			r.width = ( int )( ( r.x + r.width ) * scale + 0.5 );
@@ -746,6 +746,11 @@ public class ReactionWizard extends Wizard {
 	
 		}
 		
+	@Deprecated
+	private static final void setLayout(Layoutable l, Rectangle r) {
+		l.setExtendedData(LayoutUtilities.LAYOUT, r);
+	}
+		
 	private void fillAddChangeItemReactum(Layoutable l, Layoutable itemAgent,
 			ChangeGroup cg, ChangeGroup cgL) {
 
@@ -766,15 +771,13 @@ public class ReactionWizard extends Wizard {
 
 				cg.add(((Container) itemAgent).changeAddChild(newNodeAgent,
 						la.getName() + ""));
-				LayoutUtilities.setLayout(newNodeAgent,
-						LayoutUtilities.getLayout(l));
+				setLayout(newNodeAgent, LayoutUtilities.getLayout(l));
 
 			} else {
 				// element in reactum is non contained i redex
 				cg.add(((Container) itemAgent).changeAddChild(newNodeAgent,
 						l.getName() + ((int) (Math.random() * 100)) + "'"));
-				LayoutUtilities.setLayout(newNodeAgent,
-						LayoutUtilities.getLayout(l));
+				setLayout(newNodeAgent, LayoutUtilities.getLayout(l));
 
 			}
 			if (l instanceof Container) {
@@ -875,7 +878,7 @@ public class ReactionWizard extends Wizard {
 			
 			rect.width=(rect.width < parentRect.width) ? rect.width : (parentRect.width*2)/3;
 			rect.height=(rect.height < parentRect.height) ? rect.height : (parentRect.height*2)/3;
-			LayoutUtilities.setLayout(newNodeAgent, new Rectangle(parentRect.x+1,parentRect.y+1,rect.width,rect.height));
+			setLayout(newNodeAgent, new Rectangle(parentRect.x+1,parentRect.y+1,rect.width,rect.height));
 					
 			
 			
@@ -914,8 +917,7 @@ public class ReactionWizard extends Wizard {
 			//newNodeAgent.changeName(name + ((int) (Math.random() * 100)));
 			
 			cgAdd.add(((Container) newParentAgent).changeAddChild(newNodeAgent,name));
-			LayoutUtilities.setLayout(newNodeAgent,
-					LayoutUtilities.getLayout(match));
+			setLayout(newNodeAgent, LayoutUtilities.getLayout(match));
 			
 			
 

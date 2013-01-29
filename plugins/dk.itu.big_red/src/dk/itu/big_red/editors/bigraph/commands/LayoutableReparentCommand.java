@@ -66,8 +66,9 @@ public class LayoutableReparentCommand extends ChangeCommand {
 		
 		cg.add(l.changeRemove());
 		if (!root) {
-			post.add(0, LayoutUtilities.changeLayout(
-					l, LayoutUtilities.getLayout(l)));
+			post.add(0, new BoundDescriptor(l.getBigraph(),
+					new LayoutUtilities.ChangeLayoutDescriptor(
+							null, l, LayoutUtilities.getLayout(l))));
 			post.add(0, l.getParent().changeAddChild(l, l.getName()));
 		}
 	}
@@ -82,7 +83,9 @@ public class LayoutableReparentCommand extends ChangeCommand {
 		remove(child, true);
 		
 		cg.add(parent.changeAddChild(child, child.getName()));
-		cg.add(LayoutUtilities.changeLayout(child, constraint));
+		cg.add(new BoundDescriptor(parent.getBigraph(),
+				new LayoutUtilities.ChangeLayoutDescriptor(
+						null, child, constraint)));
 		cg.add(post);
 	}
 }

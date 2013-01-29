@@ -118,8 +118,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			if (object instanceof Layoutable) {
 				r = getRectangle(eA);
 				if (r != null)
-					cg.add(
-						LayoutUtilities.changeLayout((Layoutable)object, r));
+					cg.add(bind(new LayoutUtilities.ChangeLayoutDescriptor(
+						loader.getScratch(), (Layoutable)object, r)));
 			}
 			
 			String comment = getAttributeNS(eA, BIG_RED, "comment");

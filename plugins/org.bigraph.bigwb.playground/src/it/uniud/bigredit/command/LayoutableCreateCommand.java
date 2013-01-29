@@ -13,6 +13,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
@@ -72,11 +73,17 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			if (node instanceof Root){
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
 				cg.add(((Bigraph) container).changeAddChild(((Root)node), name));
-				cg.add(LayoutUtilities.changeLayout(((Layoutable)node), layout));
+				cg.add(new BoundDescriptor((Bigraph) container,
+						new LayoutUtilities.ChangeLayoutDescriptor(
+								((Root)node).getIdentifier().getRenamed(name),
+								null, layout)));
 			}else{
 				String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
 				cg.add(((Bigraph) container).changeAddChild(((Layoutable)node), name));
-				cg.add(LayoutUtilities.changeLayout(((Layoutable)node), layout));
+				cg.add(new BoundDescriptor((Bigraph) container,
+						new LayoutUtilities.ChangeLayoutDescriptor(
+								((Layoutable)node).getIdentifier().getRenamed(name),
+								null, layout)));
 			}
 			/** TODO add name */
 			//String name = ((Bigraph) container).getBigraph().getFirstUnusedName((Layoutable)node);
@@ -111,7 +118,12 @@ public class LayoutableCreateCommand extends ChangeCommand {
 				String name = ((Bigraph) node).getBigraph().getFirstUnusedName((Layoutable)root);
 				
 				cg.add(((Bigraph) node).changeAddChild(((Root)root), name));
-				cg.add(LayoutUtilities.changeLayout(root, new Rectangle(layout.x+10,layout.y+10,layout.width-20,layout.height-20)));
+				cg.add(new BoundDescriptor((Bigraph) container,
+						new LayoutUtilities.ChangeLayoutDescriptor(
+								((Layoutable)node).getIdentifier().getRenamed(name),
+								null, new Rectangle(
+										layout.x+10,layout.y+10,
+										layout.width-20,layout.height-20))));
 			}
 			
 		}

@@ -10,21 +10,24 @@ import org.bigraph.model.Edge;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
-import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -196,8 +199,9 @@ public abstract class LayoutUtilities {
 					r.setLocation(r.getCenter().translate(-5, -5)).
 							setSize(10, 10);
 				}
-			} else if (!(l instanceof Bigraph))
-				setLayout(context, l, r = new Rectangle());
+			} else if (!(l instanceof Bigraph)) {
+				setProperty(context, l, LAYOUT, r = new Rectangle());
+			}
 		}
 		return r;
 	}
@@ -210,26 +214,81 @@ public abstract class LayoutUtilities {
 			PropertyScratchpad context, Layoutable l) {
 		return getProperty(context, l, LAYOUT, Rectangle.class);
 	}
+
+	public static final class ChangeLayoutDescriptor
+			extends ChangeExtendedDataDescriptor<
+					Layoutable.Identifier, Rectangle> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new LayoutHandler());
+		}
+		
+		private static final class LayoutHandler extends Handler {
+			@Override
+			public boolean tryValidateChange(Process context,
+					IChangeDescriptor change) throws ChangeCreationException {
+				final PropertyScratchpad scratch = context.getScratch();
+				final Resolver resolver = context.getResolver();
+				if (change instanceof ChangeLayoutDescriptor) {
+					final ChangeLayoutDescriptor cd =
+							(ChangeLayoutDescriptor)change;
+					final Layoutable l =
+							cd.getTarget().lookup(scratch, resolver);
+					if (l == null)
+						throw new ChangeCreationException(cd,
+								"" + cd.getTarget() + ": lookup failed");
+					
+					context.addCallback(new Callback() {
+						@Override
+						public void run() throws ChangeCreationException {
+							try {
+								layoutValidator.finalValidate(
+										(ChangeExtendedData)
+										l.changeExtendedData(LAYOUT,
+												cd.getNormalisedNewValue(
+														scratch, resolver)),
+										scratch);
+							} catch (ChangeRejectedException ce) {
+								throw new ChangeCreationException(cd,
+										ce.getRationale());
+							}
+						}
+					});
+				} else return false;
+				return true;
+			}
+			
+			@Override
+			public boolean executeChange(Resolver resolver,
+					IChangeDescriptor change) {
+				if (change instanceof ChangeLayoutDescriptor) {
+					ChangeLayoutDescriptor cd = (ChangeLayoutDescriptor)change;
+					cd.getTarget().lookup(null, resolver).setExtendedData(
+							cd.getKey(),
+							cd.getNormalisedNewValue(null, resolver));
+				} else return false;
+				return true;
+			}
+		}
+		
+		public ChangeLayoutDescriptor(Layoutable.Identifier identifier,
+				Rectangle oldValue, Rectangle newValue) {
+			super(LAYOUT, identifier, oldValue, newValue);
+		}
+		
+		public ChangeLayoutDescriptor(PropertyScratchpad context,
+				Layoutable mo, Rectangle newValue) {
+			this(mo.getIdentifier(context),
+					getLayoutRaw(context, mo), newValue);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeLayoutDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
+	}
 	
-	public static void setLayout(Layoutable l, Rectangle r) {
-		setLayout(null, l, r);
-	}
-
-	public static void setLayout(
-			PropertyScratchpad context, Layoutable l, Rectangle r) {
-		setProperty(context, l, LAYOUT, r);
-	}
-
-	public static IChange changeLayout(Layoutable l, Rectangle r) {
-		return l.changeExtendedData(LAYOUT, r, layoutValidator);
-	}
-	
-	public static IChangeDescriptor changeLayoutDescriptor(
-			Layoutable.Identifier l, Rectangle oldR, Rectangle newR) {
-		return new ModelObject.ChangeExtendedDataDescriptor(
-				l, LAYOUT, oldR, newR, layoutValidator);
-	}
-
 	public static Rectangle getRootLayout(Layoutable l) {
 		return getRootLayout(null, l);
 	}
@@ -274,9 +333,9 @@ public abstract class LayoutUtilities {
 		Rectangle r = null;
 		if (l instanceof Site || l instanceof InnerName ||
 				l instanceof OuterName) {
-			setLayout(context, l, r = new Rectangle(0, 0, 50, 50));
+			setProperty(context, l, LAYOUT, r = new Rectangle(0, 0, 50, 50));
 		} else if (l instanceof Edge) {
-			setLayout(context, l, r = null);
+			setProperty(context, l, LAYOUT, r = null);
 		} else if (l instanceof Node || l instanceof Root) {
 			boolean horizontal = (l instanceof Root);
 			int progress = PADDING, max = 0;
@@ -295,7 +354,8 @@ public abstract class LayoutUtilities {
 					if (max < r.width)
 						max = r.width;
 				}
-				cg.add(changeLayout(i, r));
+				cg.add(new BoundDescriptor(l.getBigraph(),
+						new ChangeLayoutDescriptor(null, i, r)));
 			}
 			for (Layoutable i : children) {
 				r = getLayout(context, i);
@@ -310,7 +370,7 @@ public abstract class LayoutUtilities {
 			} else {
 				r = new Rectangle(0, 0, (PADDING * 2) + max, progress);
 			}
-			setLayout(context, l, r);
+			setProperty(context, l, LAYOUT, r);
 		} else if (l instanceof Bigraph) {
 			Bigraph b = (Bigraph)l;
 			Collection<? extends Layoutable> children = b.getChildren(context);
@@ -343,7 +403,8 @@ public abstract class LayoutUtilities {
 					r.x = inLeft;
 					inLeft = inLeft + r.width + PADDING;
 				}
-				cg.add(changeLayout(i, r));
+				cg.add(new BoundDescriptor(i.getBigraph(),
+						new ChangeLayoutDescriptor(null, i, r)));
 			}
 			
 			for (Layoutable i : children) {
@@ -358,8 +419,9 @@ public abstract class LayoutUtilities {
 					if (tallestRoot > 0)
 						r.y += tallestRoot + PADDING;
 				} else if (i instanceof Edge) {
-					cg.add(changeLayout(i,
-							relayout(context, i, cg)));
+					cg.add(new BoundDescriptor(i.getBigraph(),
+							new ChangeLayoutDescriptor(null, i,
+									relayout(context, i, cg))));
 				}
 			}
 		}

@@ -32,6 +32,7 @@ import dk.itu.big_red.model.ExtendedDataUtilities;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeAliasDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.LayoutUtilities.ChangeLayoutDescriptor;
 import dk.itu.big_red.model.load_save.RedXMLUndecorator;
 
 import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
@@ -214,9 +215,7 @@ public final class ChangeCompatibilityLoader
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
-					cd = LayoutUtilities.changeLayoutDescriptor(l,
-							LayoutUtilities.getLayout(scratch, la),
-							RedXMLUndecorator.getRectangle(el));
+					cd = new ChangeLayoutDescriptor(l, LayoutUtilities.getLayout(scratch, la), RedXMLUndecorator.getRectangle(el));
 			} else if (el.getLocalName().equals("fill")) {
 				String
 					colour =

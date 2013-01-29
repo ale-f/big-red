@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -44,7 +45,9 @@ public class LayoutableMoveCommand extends ChangeCommand {
 					r.width = 10;
 				if (r.height < 10)
 					r.height = 10;
-				cg.add(LayoutUtilities.changeLayout(l, r));
+				cg.add(new BoundDescriptor(l.getBigraph(),
+						new LayoutUtilities.ChangeLayoutDescriptor(
+								null, l, r)));
 			} else {
 				cg.clear();
 				return;

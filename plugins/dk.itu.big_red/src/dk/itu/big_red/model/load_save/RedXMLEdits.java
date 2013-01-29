@@ -22,6 +22,7 @@ import dk.itu.big_red.model.ColourUtilities.ChangeFillDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeAliasDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
+import dk.itu.big_red.model.LayoutUtilities.ChangeLayoutDescriptor;
 
 import static dk.itu.big_red.model.BigRedNamespaceConstants.BIG_RED;
 import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
@@ -65,8 +66,7 @@ public abstract class RedXMLEdits {
 					id = BigraphEditLoader.getIdentifier(
 							XMLLoader.getChildElements(descriptor).get(0),
 							Layoutable.Identifier.class);
-					cd = LayoutUtilities.changeLayoutDescriptor(
-							id, null, loadLayout(descriptor));
+					cd = new ChangeLayoutDescriptor(id, null, loadLayout(descriptor));
 				} else if ("set-fill".equals(ln) || "set-outline".equals(ln)) {
 					id = BigraphEditLoader.getIdentifier(
 							XMLLoader.getChildElements(descriptor).get(0),
