@@ -83,7 +83,7 @@ public class BoundDescriptor implements IChange {
 		public boolean executeChange(IChange change) {
 			if (change instanceof BoundDescriptor) {
 				BoundDescriptor bd = (BoundDescriptor)change;
-				return DescriptorExecutorManager.getInstance().new Handler().
+				return DescriptorExecutorManager.getInstance().getHandler().
 						executeChange(bd.getResolver(), bd.getDescriptor());
 			} else return false;
 		}

@@ -18,7 +18,7 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 	public void addParticipant(IParticipant participant) {
 		if (participant instanceof DescriptorExecutorManager)
 			participant =
-					((DescriptorExecutorManager)participant).new Handler();
+					((DescriptorExecutorManager)participant).getHandler();
 		super.addParticipant(participant);
 	}
 	
@@ -52,6 +52,12 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 			}
 			return null;
 		}
+	}
+	
+	final Handler handler = new Handler();
+	
+	Handler getHandler() {
+		return handler;
 	}
 	
 	final class Handler

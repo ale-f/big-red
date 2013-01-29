@@ -20,7 +20,7 @@ public class ExecutorManager extends ValidatorManager {
 	@Override
 	public void addParticipant(IParticipant participant) {
 		if (participant instanceof ExecutorManager)
-			participant = ((ExecutorManager)participant).new Handler();
+			participant = ((ExecutorManager)participant).getHandler();
 		super.addParticipant(participant);
 	}
 	
@@ -56,7 +56,13 @@ public class ExecutorManager extends ValidatorManager {
 		}
 	}
 	
-	private final class Handler implements IStepExecutor, IStepValidator {
+	final Handler handler = new Handler();
+	
+	Handler getHandler() {
+		return handler;
+	}
+	
+	final class Handler implements IStepExecutor, IStepValidator {
 		@Override
 		public final void setHost(IParticipantHost host) {
 			/* do nothing */
