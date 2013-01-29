@@ -61,7 +61,7 @@ public class PortSpec extends NamedModelObject implements IPort {
 				remove(getCreator());
 			context.setProperty(getCreator(), PortSpec.PROPERTY_CONTROL, null);
 			
-			c.getNamespace().remove(getCreator().getName(context));
+			c.getNamespace().remove(context, getCreator().getName(context));
 			context.setProperty(getCreator(), PROPERTY_NAME, null);
 		}
 	}

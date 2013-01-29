@@ -169,7 +169,7 @@ public class Control extends NamedModelObject implements IControl {
 			context.setProperty(getCreator(),
 					Control.PROPERTY_SIGNATURE, null);
 			
-			s.getNamespace().remove(getCreator().getName(context));
+			s.getNamespace().remove(context, getCreator().getName(context));
 			context.setProperty(getCreator(), PROPERTY_NAME, null);
 		}
 	}
