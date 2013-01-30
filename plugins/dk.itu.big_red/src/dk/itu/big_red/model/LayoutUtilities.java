@@ -10,7 +10,6 @@ import org.bigraph.model.Edge;
 import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
@@ -22,7 +21,6 @@ import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDesc
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -49,108 +47,6 @@ public abstract class LayoutUtilities {
 			"eD!+dk.itu.big_red.Layoutable.layout";
 	private static final String BOUNDARIES =
 			"eD!+org.bigraph.model.Bigraph.boundaries";
-	
-	private interface FinalExtendedDataValidator {
-		void finalValidate(ChangeExtendedData c, PropertyScratchpad context)
-				throws ChangeRejectedException;
-	}
-	
-	static final FinalExtendedDataValidator layoutValidator =
-			new FinalExtendedDataValidator() {
-		@Override
-		public void finalValidate(
-				ChangeExtendedData c, PropertyScratchpad context)
-				throws ChangeRejectedException {
-			Layoutable l = (Layoutable)c.getCreator();
-			Container parent = l.getParent(context);
-			
-			if (l instanceof Edge || parent == null)
-				return;
-			
-			Rectangle
-				oldLayout = getLayout(l),
-				newLayout = getLayout(context, l);
-			boolean
-				checkChildren = true,
-				checkSiblings = true;
-			
-			if (newLayout != null &&
-					(newLayout.x() < 0 || newLayout.y() < 0))
-				throw new ChangeRejectedException(c,
-						l.toString(context) +
-						" must not have negative co-ordinates");
-			
-			if (oldLayout != null) {
-				if (oldLayout.contains(newLayout))
-					checkSiblings = false;
-				if (oldLayout.getSize().equals(newLayout.getSize()))
-					checkChildren = false;
-			}
-			
-			if (checkSiblings) {
-				for (Layoutable i : parent.getChildren(context)) {
-					if (i == l || i instanceof Edge) {
-						continue;
-					} else {
-						if (getLayout(context, i).intersects(newLayout)) {
-							throw new ChangeRejectedException(c,
-									l.toString(context) + " overlaps with " +
-									i.toString(context));
-						}
-					}
-				}
-			}
-			
-			if (l instanceof Container && checkChildren) {
-				Rectangle adjusted = newLayout.getCopy().setLocation(0, 0);
-				for (Layoutable i : ((Container)l).getChildren(context)) {
-					if (!adjusted.contains(getLayout(context, i)))
-						throw new ChangeRejectedException(c,
-								i.toString(context) + " cannot fit inside " +
-								l.toString(context));
-				}
-			}
-			
-			if (!(parent instanceof Bigraph)) {
-				Rectangle parentLayout =
-						getLayout(context, parent).getCopy().setLocation(0, 0);
-				if (!parentLayout.contains(newLayout))
-					throw new ChangeRejectedException(c,
-							l.toString(context) + " cannot fit inside " +
-							parent.toString(context));
-			} else if (checkSiblings) {
-				Bigraph b = (Bigraph)parent;
-				
-				/* Since the layout validator is a final validator, there are
-				 * no further updates to come, so the boundary state can be
-				 * calculated once and then stashed away in the scratchpad */
-				BigraphBoundaryState bbs = getProperty(
-						context, b, BOUNDARIES, BigraphBoundaryState.class);
-				if (bbs == null)
-					setProperty(context, parent, BOUNDARIES,
-							bbs = new BigraphBoundaryState(context, b));
-				
-				int bs = bbs.getBoundaryState(newLayout);
-				if (l instanceof Root) {
-					if ((bs & BigraphBoundaryState.B_UR) != 0) {
-						throw new ChangeRejectedException(c,
-								"Roots must be placed below all outer names");
-					} else if ((bs & BigraphBoundaryState.B_LR) != 0) {
-						throw new ChangeRejectedException(c,
-								"Roots must be placed above all inner names");
-					}
-				} else if (l instanceof OuterName &&
-						(bs & BigraphBoundaryState.B_LON) != 0) {
-					throw new ChangeRejectedException(c,
-							"Outer names must be placed above all roots");
-				} else if (l instanceof InnerName &&
-						(bs & BigraphBoundaryState.B_UIN) != 0) {
-					throw new ChangeRejectedException(c,
-							"Inner names must be placed below all roots");
-				}
-			}
-		}
-	};
 	
 	/**
 	 * The space that should be present between any two {@link Layoutable}s
@@ -237,19 +133,94 @@ public abstract class LayoutUtilities {
 								"" + cd.getTarget() + ": lookup failed");
 					
 					context.addCallback(new Callback() {
-						@Override
-						public void run() throws ChangeCreationException {
-							try {
-								layoutValidator.finalValidate(
-										(ChangeExtendedData)
-										l.changeExtendedData(LAYOUT,
-												cd.getNormalisedNewValue(
-														scratch, resolver)),
-										scratch);
-							} catch (ChangeRejectedException ce) {
-								throw new ChangeCreationException(cd,
-										ce.getRationale());
-							}
+		@Override
+		public void run() throws ChangeCreationException {
+			Container parent = l.getParent(scratch);
+			if (l instanceof Edge || parent == null)
+				return;
+			
+			Rectangle
+				oldLayout = getLayout(l),
+				newLayout = getLayout(scratch, l);
+			boolean
+				checkChildren = true,
+				checkSiblings = true;
+			
+			if (newLayout != null &&
+					(newLayout.x() < 0 || newLayout.y() < 0))
+				throw new ChangeCreationException(cd,
+						l.toString(scratch) +
+						" must not have negative co-ordinates");
+			
+			if (oldLayout != null) {
+				if (oldLayout.contains(newLayout))
+					checkSiblings = false;
+				if (oldLayout.getSize().equals(newLayout.getSize()))
+					checkChildren = false;
+			}
+			
+			if (checkSiblings) {
+				for (Layoutable i : parent.getChildren(scratch)) {
+					if (i == l || i instanceof Edge) {
+						continue;
+					} else {
+						if (getLayout(scratch, i).intersects(newLayout)) {
+							throw new ChangeCreationException(cd,
+									l.toString(scratch) + " overlaps with " +
+									i.toString(scratch));
+						}
+					}
+				}
+			}
+			
+			if (l instanceof Container && checkChildren) {
+				Rectangle adjusted = newLayout.getCopy().setLocation(0, 0);
+				for (Layoutable i : ((Container)l).getChildren(scratch)) {
+					if (!adjusted.contains(getLayout(scratch, i)))
+						throw new ChangeCreationException(cd,
+								i.toString(scratch) + " cannot fit inside " +
+								l.toString(scratch));
+				}
+			}
+			
+			if (!(parent instanceof Bigraph)) {
+				Rectangle parentLayout =
+						getLayout(scratch, parent).getCopy().setLocation(0, 0);
+				if (!parentLayout.contains(newLayout))
+					throw new ChangeCreationException(cd,
+							l.toString(scratch) + " cannot fit inside " +
+							parent.toString(scratch));
+			} else if (checkSiblings) {
+				Bigraph b = (Bigraph)parent;
+				
+				/* Since the layout validator is a final validator, there are
+				 * no further updates to come, so the boundary state can be
+				 * calculated once and then stashed away in the scratchpad */
+				BigraphBoundaryState bbs = getProperty(
+						scratch, b, BOUNDARIES, BigraphBoundaryState.class);
+				if (bbs == null)
+					setProperty(scratch, parent, BOUNDARIES,
+							bbs = new BigraphBoundaryState(scratch, b));
+				
+				int bs = bbs.getBoundaryState(newLayout);
+				if (l instanceof Root) {
+					if ((bs & BigraphBoundaryState.B_UR) != 0) {
+						throw new ChangeCreationException(cd,
+								"Roots must be placed below all outer names");
+					} else if ((bs & BigraphBoundaryState.B_LR) != 0) {
+						throw new ChangeCreationException(cd,
+								"Roots must be placed above all inner names");
+					}
+				} else if (l instanceof OuterName &&
+						(bs & BigraphBoundaryState.B_LON) != 0) {
+					throw new ChangeCreationException(cd,
+							"Outer names must be placed above all roots");
+				} else if (l instanceof InnerName &&
+						(bs & BigraphBoundaryState.B_UIN) != 0) {
+					throw new ChangeCreationException(cd,
+							"Inner names must be placed below all roots");
+				}
+			}
 						}
 					});
 				} else return false;
