@@ -540,8 +540,10 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					doChange(ControlUtilities.changeShape(
-							currentControl, Ellipse.SINGLETON));
+					doChange(new BoundDescriptor(getModel(),
+							new ControlUtilities.ChangeShapeDescriptor(
+									(PropertyScratchpad)null,
+									currentControl, Ellipse.SINGLETON)));
 			}
 		});
 		
@@ -551,8 +553,10 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					doChange(ControlUtilities.changeShape(
-							currentControl, POINTS_QUAD));
+					doChange(new BoundDescriptor(getModel(),
+							new ControlUtilities.ChangeShapeDescriptor(
+									(PropertyScratchpad)null,
+									currentControl, POINTS_QUAD)));
 			}
 		});
 		

@@ -126,16 +126,42 @@ public abstract class ControlUtilities {
 	public static final String SHAPE =
 			"eD!+dk.itu.big_red.model.Control.shape";
 	
+	public static final class ChangeShapeDescriptor
+			extends ChangeExtendedDataDescriptor<
+					Control.Identifier, Object> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new SimpleHandler(ChangeShapeDescriptor.class));
+		}
+		
+		public ChangeShapeDescriptor(Control.Identifier identifier,
+				Object oldValue, Object newValue) {
+			super(SHAPE, identifier, oldValue, newValue);
+		}
+		
+		public ChangeShapeDescriptor(PropertyScratchpad context,
+				Control mo, Object newValue) {
+			this(mo.getIdentifier(context),
+					getShapeRaw(context, mo), newValue);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeShapeDescriptor(getTarget(),
+					getNewValue(), getOldValue());
+		}
+	}
+	
 	public static Object getShape(Control c) {
 		return getShape(null, c);
 	}
 
 	public static Object getShape(PropertyScratchpad context, Control c) {
-		Object o = getProperty(context, c, SHAPE, Object.class);
+		Object o = getShapeRaw(context, c);
 		if (!(o instanceof PointList || o instanceof Ellipse)) {
 			o = new Ellipse(new Rectangle(0, 0, 300, 300)).
 				getPolygon(Math.max(3, c.getPorts(context).size()));
-			setShape(context, c, o);
+			setProperty(context, c, SHAPE, o);
 			
 			for (PortSpec p : c.getPorts(context))
 				recalculatePosition(context, p);
@@ -143,18 +169,8 @@ public abstract class ControlUtilities {
 		return o;
 	}
 
-	public static void setShape(Control c, Object s) {
-		setShape(null, c, s);
-	}
-
-	public static void setShape(
-			PropertyScratchpad context, Control c, Object s) {
-		if (s instanceof PointList || s instanceof Ellipse)
-			setProperty(context, c, SHAPE, s);
-	}
-
-	public static IChange changeShape(Control c, Object s) {
-		return c.changeExtendedData(SHAPE, s);
+	public static Object getShapeRaw(PropertyScratchpad context, Control c) {
+		return getProperty(context, c, SHAPE, Object.class);
 	}
 
 	private static final ExtendedDataValidator labelValidator =

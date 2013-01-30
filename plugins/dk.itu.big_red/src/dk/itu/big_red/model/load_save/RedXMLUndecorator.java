@@ -167,7 +167,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 								Integer.parseInt(getAttributeNS(i, BIG_RED, "y")));
 					shape = pl;
 				} else shape = Ellipse.SINGLETON;
-				cg.add(ControlUtilities.changeShape(c, shape));
+				cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
+						loader.getScratch(), c, shape)));
 			}
 		}
 		

@@ -10,6 +10,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExecutorManager;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -240,12 +241,19 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 	
 	private void doChange(IChange c) {
 		editor.doChange(c);
-	}	
+	}
+	
+	private void opSetShape(Object shape) {
+		doChange(new BoundDescriptor(getModel().getSignature(),
+				new ControlUtilities.ChangeShapeDescriptor(
+						(PropertyScratchpad)null, getModel(), shape)));
+	}
+	
 	private void opMovePoint(int moveIndex, int mx, int my) {
 		int x = mx - translationX(), y = my - translationY();
 		PointList pl = getPoints().getCopy();
 		pl.setPoint(new Point(x, y), moveIndex);
-		doChange(ControlUtilities.changeShape(getModel(), pl));
+		opSetShape(pl);
 	}
 	
 	private void opDeletePoint(int deleteIndex) {
@@ -276,7 +284,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 		PointList pl = getPoints().getCopy();
 		pl.removePoint(deleteIndex);
-		cg.add(ControlUtilities.changeShape(getModel(), pl));
+		opSetShape(pl);
 		doChange(cg);
 	}
 	
@@ -308,7 +316,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 		PointList pl = getPoints().getCopy();
 		pl.insertPoint(p, insertIndex);
-		cg.add(ControlUtilities.changeShape(getModel(), pl));
+		opSetShape(pl);
 		doChange(cg);
 	}
 	
@@ -812,8 +820,10 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 					ChangeGroup cg = new ChangeGroup();
 					for (PortSpec i : getModel().getPorts())
 						cg.add(i.changeRemove());
-					cg.add(ControlUtilities.changeShape(getModel(),
-							new PointList(new int[] { 0, 0 })));
+					cg.add(new BoundDescriptor(getModel().getSignature(),
+							new ControlUtilities.ChangeShapeDescriptor(
+									(PropertyScratchpad)null, getModel(),
+									new PointList(new int[] { 0, 0 }))));
 					doChange(cg);
 				}
 			});
@@ -835,10 +845,13 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 						ChangeGroup cg = new ChangeGroup();
 						for (PortSpec i : getModel().getPorts())
 							cg.add(i.changeRemove());
-						cg.add(ControlUtilities.changeShape(getModel(),
-								Ellipse.SINGLETON.
-								setBounds(new Rectangle(0, 0, 60, 60)).
-								getPolygon(Integer.parseInt(polySides))));
+						Ellipse el = Ellipse.SINGLETON.setBounds(
+								new Rectangle(0, 0, 60, 60));
+						cg.add(new BoundDescriptor(getModel().getSignature(),
+								new ControlUtilities.ChangeShapeDescriptor(
+										(PropertyScratchpad)null, getModel(),
+										el.getPolygon(Integer.parseInt(
+												polySides)))));
 						doChange(cg);
 					}
 				}
