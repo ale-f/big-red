@@ -11,7 +11,6 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.ModelObject.FinalExtendedDataValidator;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
@@ -51,14 +50,13 @@ public abstract class LayoutUtilities {
 	private static final String BOUNDARIES =
 			"eD!+org.bigraph.model.Bigraph.boundaries";
 	
+	private interface FinalExtendedDataValidator {
+		void finalValidate(ChangeExtendedData c, PropertyScratchpad context)
+				throws ChangeRejectedException;
+	}
+	
 	static final FinalExtendedDataValidator layoutValidator =
 			new FinalExtendedDataValidator() {
-		@Override
-		public void validate(ChangeExtendedData c, PropertyScratchpad context)
-				throws ChangeRejectedException {
-			/* do nothing */
-		}
-		
 		@Override
 		public void finalValidate(
 				ChangeExtendedData c, PropertyScratchpad context)

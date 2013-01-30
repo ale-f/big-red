@@ -9,7 +9,6 @@ import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -48,16 +47,6 @@ public abstract class ModelObject {
 		}
 	}
 	
-	public interface ExtendedDataValidator {
-		void validate(ChangeExtendedData c, PropertyScratchpad context)
-				throws ChangeRejectedException;
-	}
-	
-	public interface FinalExtendedDataValidator extends ExtendedDataValidator {
-		void finalValidate(ChangeExtendedData c, PropertyScratchpad context)
-				throws ChangeRejectedException;
-	}
-	
 	/**
 	 * The <strong>ChangeExtendedData</strong> class represents a change to one
 	 * of a {@link ModelObject}'s extended data properties.
@@ -67,13 +56,10 @@ public abstract class ModelObject {
 	public final class ChangeExtendedData extends ModelObjectChange {
 		public final String key;
 		public final Object newValue;
-		public final ExtendedDataValidator validator;
 		
-		protected ChangeExtendedData(String key, Object newValue,
-				ExtendedDataValidator validator) {
+		protected ChangeExtendedData(String key, Object newValue) {
 			this.key = key;
 			this.newValue = newValue;
-			this.validator = validator;
 		}
 		
 		private Object oldValue;
@@ -85,7 +71,7 @@ public abstract class ModelObject {
 		
 		@Override
 		public Change inverse() {
-			return new ChangeExtendedData(key, oldValue, validator);
+			return new ChangeExtendedData(key, oldValue);
 		}
 		
 		@Override
@@ -192,12 +178,7 @@ public abstract class ModelObject {
 	}
 	
 	public IChange changeExtendedData(String key, Object newValue) {
-		return changeExtendedData(key, newValue, null);
-	}
-	
-	public IChange changeExtendedData(
-			String key, Object newValue, ExtendedDataValidator validator) {
-		return new ChangeExtendedData(key, newValue, validator);
+		return new ChangeExtendedData(key, newValue);
 	}
 	
 	public void dispose() {
@@ -376,16 +357,13 @@ public abstract class ModelObject {
 
 		private final String key;
 		private final Object oldValue, newValue;
-		private final ExtendedDataValidator validator;
 
 		public ChangeExtendedDataDescriptor(Identifier target, String key,
-				Object oldValue, Object newValue,
-				ExtendedDataValidator validator) {
+				Object oldValue, Object newValue) {
 			this.target = target;
 			this.key = key;
 			this.newValue = newValue;
 			this.oldValue = oldValue;
-			this.validator = validator;
 		}
 		
 		public Identifier getTarget() {
@@ -402,10 +380,6 @@ public abstract class ModelObject {
 
 		public Object getOldValue() {
 			return oldValue;
-		}
-		
-		public ExtendedDataValidator getValidator() {
-			return validator;
 		}
 		
 		@Override
@@ -435,14 +409,13 @@ public abstract class ModelObject {
 			if (m == null)
 				throw new ChangeCreationException(this,
 						"" + target + " didn't resolve to a ModelObject");
-			return m.changeExtendedData(key, newValue, validator);
+			return m.changeExtendedData(key, newValue);
 		}
 
 		@Override
 		public ChangeExtendedDataDescriptor inverse() {
 			return new ChangeExtendedDataDescriptor(
-					getTarget(), getKey(), getNewValue(), getOldValue(),
-					getValidator());
+					getTarget(), getKey(), getNewValue(), getOldValue());
 		}
 		
 		@Override
