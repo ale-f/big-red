@@ -291,7 +291,9 @@ public abstract class LayoutUtilities {
 		
 		if (l instanceof Link) {
 			cg.addAll(Arrays.asList(
-					LinkStyleUtilities.changeStyle((Link)l, null),
+					new BoundDescriptor(l.getBigraph(context),
+							new LinkStyleUtilities.ChangeLinkStyleDescriptor(
+									context, (Link)l, null)),
 					new BoundDescriptor(l.getBigraph(context),
 							new ColourUtilities.ChangeOutlineDescriptor(
 									l.getIdentifier(context),

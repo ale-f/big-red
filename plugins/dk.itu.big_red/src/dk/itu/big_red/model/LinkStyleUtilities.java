@@ -1,16 +1,19 @@
 package dk.itu.big_red.model;
 
 import static org.bigraph.model.assistants.ExtendedDataUtilities.getProperty;
-import static org.bigraph.model.assistants.ExtendedDataUtilities.setProperty;
 import static dk.itu.big_red.model.BigRedNamespaceConstants.BIG_RED;
 
 import java.util.Locale;
 
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
+import org.bigraph.model.assistants.ExtendedDataUtilities.SimpleHandler;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.XMLLoader;
 import org.bigraph.model.process.IParticipantHost;
@@ -47,6 +50,31 @@ public abstract class LinkStyleUtilities {
 	public static final String STYLE =
 			"eD!+org.bigraph.model.Link.style";
 	
+	public static final class ChangeLinkStyleDescriptor
+			extends ChangeExtendedDataDescriptor<Link.Identifier, Style> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new SimpleHandler(ChangeLinkStyleDescriptor.class));
+		}
+		
+		public ChangeLinkStyleDescriptor(Link.Identifier identifier,
+				Style oldValue, Style newValue) {
+			super(STYLE, identifier, oldValue, newValue);
+		}
+		
+		public ChangeLinkStyleDescriptor(PropertyScratchpad context,
+				Link mo, Style newValue) {
+			this(mo.getIdentifier(context),
+					getStyleRaw(context, mo), newValue);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeLinkStyleDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
+	}
+	
 	public static Style getStyle(Link l) {
 		return getStyle(null, l);
 	}
@@ -58,18 +86,6 @@ public abstract class LinkStyleUtilities {
 	
 	public static Style getStyleRaw(PropertyScratchpad context, Link l) {
 		return getProperty(context, l, STYLE, Style.class);
-	}
-	
-	public static void setStyle(Link l, Style s) {
-		setStyle(null, l, s);
-	}
-	
-	public static void setStyle(PropertyScratchpad context, Link l, Style s) {
-		setProperty(context, l, STYLE, s);
-	}
-	
-	public static IChange changeStyle(Link l, Style s) {
-		return l.changeExtendedData(STYLE, s);
 	}
 	
 	public static final class Decorator implements IXMLSaver.Decorator {
@@ -107,6 +123,7 @@ public abstract class LinkStyleUtilities {
 		@Override
 		public void undecorate(ModelObject object, Element el) {
 			if (object instanceof Link) {
+				Link l = (Link)object;
 				String styleName =
 						XMLLoader.getAttributeNS(el, BIG_RED, "link-style");
 				if (styleName != null)
@@ -120,7 +137,9 @@ public abstract class LinkStyleUtilities {
 					style = Style.STRAIGHT;
 				}
 				if (style != null)
-					loader.addChange(changeStyle((Link)object, style));
+					loader.addChange(new BoundDescriptor(loader.getResolver(),
+							new ChangeLinkStyleDescriptor(
+									loader.getScratch(), l, style)));
 			}
 		}
 

@@ -99,9 +99,10 @@ public class BigraphEditorContextMenuProvider extends ContextMenuProvider {
 					if (!isChecked())
 						return;
 					getViewer().getEditDomain().getCommandStack().execute(
-							new ChangeCommand(
-									LinkStyleUtilities.changeStyle(l, i),
-									l.getBigraph()));
+							new ChangeCommand(new BoundDescriptor(
+									l.getBigraph(),
+									new LinkStyleUtilities.ChangeLinkStyleDescriptor(
+											null, l, i)), l.getBigraph()));
 				}
 			};
 			a.setChecked(i.equals(currentStyle));
