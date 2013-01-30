@@ -1,7 +1,6 @@
 package org.bigraph.model.assistants;
 
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.NamedModelObject.ChangeNameDescriptor;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
@@ -128,16 +127,6 @@ public abstract class DescriptorConflicts {
 		}
 	};
 	
-	public static IConflict REM_EXT = new Conflict
-			<ChangeRemoveChildDescriptor, ChangeExtendedDataDescriptor>
-			(ChangeRemoveChildDescriptor.class, ChangeExtendedDataDescriptor.class) {
-		@Override
-		public boolean conflicts(ChangeRemoveChildDescriptor a,
-				ChangeExtendedDataDescriptor b) {
-			return a.getChild().equals(b.getTarget());
-		}
-	};
-	
 	public static IConflict CON_CON = new Conflict1
 			<ChangeConnectDescriptor>
 			(ChangeConnectDescriptor.class) {
@@ -179,27 +168,6 @@ public abstract class DescriptorConflicts {
 				ChangeNameDescriptor b) {
 			/* More */
 			return a.getTarget().equals(b.getTarget());
-		}
-	};
-	
-	public static IConflict REN_EXT = new Conflict
-			<ChangeNameDescriptor, ChangeExtendedDataDescriptor>
-			(ChangeNameDescriptor.class, ChangeExtendedDataDescriptor.class) {
-		@Override
-		public boolean conflicts(ChangeNameDescriptor a,
-				ChangeExtendedDataDescriptor b) {
-			return a.getTarget().equals(b.getTarget());
-		}
-	};
-	
-	public static IConflict EXT_EXT = new Conflict1
-			<ChangeExtendedDataDescriptor>
-			(ChangeExtendedDataDescriptor.class) {
-		@Override
-		public boolean conflicts2(ChangeExtendedDataDescriptor a,
-				ChangeExtendedDataDescriptor b) {
-			return a.getTarget().equals(b.getTarget()) &&
-					a.getKey().equals(b.getKey());
 		}
 	};
 }

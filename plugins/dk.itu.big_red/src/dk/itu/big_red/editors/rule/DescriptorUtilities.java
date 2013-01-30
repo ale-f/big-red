@@ -1,12 +1,9 @@
 package dk.itu.big_red.editors.rule;
 
 import org.bigraph.model.Container.ChangeRemoveChildDescriptor;
-import org.bigraph.model.Layoutable;
 import org.bigraph.model.Container.ChangeAddChild;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.Point.ChangeConnect;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnect;
@@ -74,13 +71,6 @@ abstract class DescriptorUtilities {
 			}
 			/* All changes will have been simulated */
 			return cdg;
-		} else if (c instanceof ChangeExtendedData) {
-			ChangeExtendedData ch = (ChangeExtendedData)c;
-			Layoutable creator = (Layoutable)ch.getCreator();
-			Object oldValue = creator.getExtendedData(context, ch.key);
-			chd = new ChangeExtendedDataDescriptor(
-					creator.getIdentifier(context),
-					ch.key, oldValue, ch.newValue);
 		} else if (c instanceof ChangeRemove) {
 			ChangeRemove ch = (ChangeRemove)c;
 			chd = new ChangeRemoveChildDescriptor(

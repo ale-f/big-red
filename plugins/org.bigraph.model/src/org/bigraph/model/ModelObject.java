@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
@@ -45,49 +44,6 @@ public abstract class ModelObject {
 		public ModelObject getCreator() {
 			return ModelObject.this;
 		}
-	}
-	
-	/**
-	 * The <strong>ChangeExtendedData</strong> class represents a change to one
-	 * of a {@link ModelObject}'s extended data properties.
-	 * @author alec
-	 * @see ModelObject#setExtendedData(String, Object)
-	 */
-	public final class ChangeExtendedData extends ModelObjectChange {
-		public final String key;
-		public final Object newValue;
-		
-		protected ChangeExtendedData(String key, Object newValue) {
-			this.key = key;
-			this.newValue = newValue;
-		}
-		
-		private Object oldValue;
-		
-		@Override
-		public void beforeApply() {
-			oldValue = getCreator().getExtendedData(key);
-		}
-		
-		@Override
-		public Change inverse() {
-			return new ChangeExtendedData(key, oldValue);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set extended data field " + key + " of " +
-					getCreator() + " to " + newValue + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			getCreator().setExtendedData(context, key, newValue);
-		}
-	}
-	
-	static {
-		ExecutorManager.getInstance().addParticipant(new ModelObjectHandler());
 	}
 	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
@@ -175,10 +131,6 @@ public abstract class ModelObject {
 	 */
 	public String getType() {
 		return getClass().getSimpleName();
-	}
-	
-	public IChange changeExtendedData(String key, Object newValue) {
-		return new ChangeExtendedData(key, newValue);
 	}
 	
 	public void dispose() {
@@ -348,80 +300,6 @@ public abstract class ModelObject {
 				targetMap = target.getModifiableExtendedDataMap(context);
 			sourceMap.putAll(targetMap);
 			targetMap.clear();
-		}
-	}
-	
-	public static final class ChangeExtendedDataDescriptor
-			extends ModelObjectChangeDescriptor {
-		private final Identifier target;
-
-		private final String key;
-		private final Object oldValue, newValue;
-
-		public ChangeExtendedDataDescriptor(Identifier target, String key,
-				Object oldValue, Object newValue) {
-			this.target = target;
-			this.key = key;
-			this.newValue = newValue;
-			this.oldValue = oldValue;
-		}
-		
-		public Identifier getTarget() {
-			return target;
-		}
-
-		public String getKey() {
-			return key;
-		}
-
-		public Object getNewValue() {
-			return newValue;
-		}
-
-		public Object getOldValue() {
-			return oldValue;
-		}
-		
-		@Override
-		public boolean equals(Object obj_) {
-			if (safeClassCmp(this, obj_)) {
-				ChangeExtendedDataDescriptor obj =
-						(ChangeExtendedDataDescriptor)obj_;
-				return
-						safeEquals(getTarget(), obj.getTarget()) &&
-						safeEquals(getKey(), obj.getKey()) &&
-						safeEquals(getOldValue(), obj.getOldValue()) &&
-						safeEquals(getNewValue(), obj.getNewValue());
-			} else return false;
-		}
-
-		@Override
-		public int hashCode() {
-			return compositeHashCode(
-					ChangeExtendedDataDescriptor.class,
-					target, key, oldValue, newValue);
-		}
-
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			ModelObject m = target.lookup(context, r);
-			if (m == null)
-				throw new ChangeCreationException(this,
-						"" + target + " didn't resolve to a ModelObject");
-			return m.changeExtendedData(key, newValue);
-		}
-
-		@Override
-		public ChangeExtendedDataDescriptor inverse() {
-			return new ChangeExtendedDataDescriptor(
-					getTarget(), getKey(), getNewValue(), getOldValue());
-		}
-		
-		@Override
-		public String toString() {
-			return "ChangeDescriptor(set extended data field " + key + " of " +
-					target + " to " + newValue + ")"; 
 		}
 	}
 	

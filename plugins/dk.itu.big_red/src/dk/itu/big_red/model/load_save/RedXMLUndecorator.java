@@ -5,7 +5,6 @@ import org.bigraph.model.Control;
 import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
@@ -199,6 +198,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 					ExecutorManager.getInstance().tryValidateChange(
 							loader.getChanges());
 				} catch (ChangeRejectedException cre) {
+					/* FIXME: Temporarily broken
 					IChange ch = cre.getRejectedChange();
 					if (ch instanceof ChangeExtendedData) {
 						ChangeExtendedData cd = (ChangeExtendedData)ch;
@@ -208,6 +208,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 							loader.addChange(relayout);
 						}
 					}
+					*/
 				}
 			}
 		}

@@ -2,7 +2,6 @@ package dk.itu.big_red.model.load_save;
 
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.NamedModelObject;
-import org.bigraph.model.ModelObject.ChangeExtendedDataDescriptor;
 import org.bigraph.model.ModelObject.Identifier;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -17,11 +16,10 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.w3c.dom.Element;
 
 import dk.itu.big_red.model.Colour;
-import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ColourUtilities.ChangeFillDescriptor;
+import dk.itu.big_red.model.ColourUtilities.ChangeOutlineDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeAliasDescriptor;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
-import dk.itu.big_red.model.LayoutUtilities;
 import dk.itu.big_red.model.LayoutUtilities.ChangeLayoutDescriptor;
 
 import static dk.itu.big_red.model.BigRedNamespaceConstants.BIG_RED;
@@ -73,15 +71,14 @@ public abstract class RedXMLEdits {
 							Layoutable.Identifier.class);
 					Colour c = loadColour(descriptor);
 					if ("set-fill".equals(ln)) {
-						cd = new ColourUtilities.ChangeFillDescriptor(id, null, c);
-					} else cd = new ColourUtilities.ChangeOutlineDescriptor(
-							id, null, c);
+						cd = new ChangeFillDescriptor(id, null, c);
+					} else cd = new ChangeOutlineDescriptor(id, null, c);
 				} else if ("set-comment".equals(ln)) {
 					id = BigraphEditLoader.getIdentifier(
 							XMLLoader.getChildElements(descriptor).get(0),
 							Layoutable.Identifier.class);
-					cd = new ChangeCommentDescriptor(id, null, getAttributeNS(
-					descriptor, BIG_RED, "comment"));
+					cd = new ChangeCommentDescriptor(id, null,
+							getAttributeNS(descriptor, BIG_RED, "comment"));
 				} else if ("set-alias".equals(ln)) {
 					Site.Identifier sid = BigraphEditLoader.getIdentifier(
 							XMLLoader.getChildElements(descriptor).get(0),
@@ -133,16 +130,7 @@ public abstract class RedXMLEdits {
 		public Element processDescriptor(IChangeDescriptor cd_) {
 			Element e = null;
 			Identifier target = null;
-			if (cd_ instanceof ChangeExtendedDataDescriptor) {
-				ChangeExtendedDataDescriptor cd =
-						(ChangeExtendedDataDescriptor)cd_;
-				target = cd.getTarget();
-				String key = cd.getKey();
-				if (LayoutUtilities.LAYOUT.equals(key)) {
-					e = saveLayout(newElement(BIG_RED, "big-red:set-layout"),
-							(Rectangle)cd.getNewValue());
-				}
-			} else if (cd_ instanceof ChangeCommentDescriptor) {
+			if (cd_ instanceof ChangeCommentDescriptor) {
 				ChangeCommentDescriptor cd = (ChangeCommentDescriptor)cd_;
 				target = cd.getTarget();
 				e = newElement(BIG_RED, "big-red:set-comment");
@@ -157,10 +145,15 @@ public abstract class RedXMLEdits {
 				target = cd.getTarget();
 				e = saveColour(newElement(BIG_RED, "big-red:set-fill"),
 						cd.getNewValue());
-			} else if (cd_ instanceof ChangeFillDescriptor) {
-				ChangeFillDescriptor cd = (ChangeFillDescriptor)cd_;
+			} else if (cd_ instanceof ChangeOutlineDescriptor) {
+				ChangeOutlineDescriptor cd = (ChangeOutlineDescriptor)cd_;
 				target = cd.getTarget();
 				e = saveColour(newElement(BIG_RED, "big-red:set-outline"),
+						cd.getNewValue());
+			} else if (cd_ instanceof ChangeLayoutDescriptor) {
+				ChangeLayoutDescriptor cd = (ChangeLayoutDescriptor)cd_;
+				target = cd.getTarget();
+				e = saveLayout(newElement(BIG_RED, "big-red:set-layout"),
 						cd.getNewValue());
 			}
 			if (e != null && target instanceof NamedModelObject.Identifier)
