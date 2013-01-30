@@ -130,13 +130,7 @@ public class ExecutionTests {
 		vm.addParticipant(ExecutorManager.getInstance());
 		vm.addParticipant(dh);
 		
-		Dummy d = new Dummy();
-		
-		ChangeGroup cg = new ChangeGroup();
-		cg.addAll(Arrays.asList(
-				d.change("foxtrot"),
-				d.changeExtendedData("eD!+test", Object.class)));
-		vm.tryValidateChange(cg);
+		vm.tryValidateChange(new Dummy().change("foxtrot"));
 	}
 	
 	@Test
@@ -148,12 +142,8 @@ public class ExecutionTests {
 		em.addParticipant(dh);
 		
 		Dummy d = new Dummy();
-		
-		ChangeGroup cg = new ChangeGroup();
-		cg.addAll(Arrays.asList(
-				d.change("foxtrot"),
-				d.changeExtendedData("eD!+test", Object.class)));
-		em.tryApplyChange(cg);
+		em.tryApplyChange(d.change("foxtrot"));
+		assertEquals("foxtrot", d.getString());
 	}
 	
 	@Test
