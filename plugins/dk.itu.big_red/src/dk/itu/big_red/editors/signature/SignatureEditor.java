@@ -225,8 +225,11 @@ implements PropertyChangeListener {
 			cg.add(new BoundDescriptor(c.getSignature(),
 					new NamedModelObject.ChangeNameDescriptor(
 							c.getIdentifier(), s)));
-			cg.add(ControlUtilities.changeLabel(c,
-					ControlUtilities.labelFor(s)));
+			cg.add(new BoundDescriptor(c.getSignature(),
+					new ControlUtilities.ChangeLabelDescriptor(
+							c.getIdentifier().getRenamed(s),
+							ControlUtilities.getLabel(c),
+							ControlUtilities.labelFor(s))));
 			return cg;
 		} else return null;
 	}
@@ -471,8 +474,11 @@ implements PropertyChangeListener {
 			@Override
 			void go() {
 				String l = ControlUtilities.getLabel(currentControl);
-				if (!l.equals(label.getText()))
-					if (!doChange(ControlUtilities.changeLabel(currentControl, label.getText())))
+				String n = label.getText();
+				if (!l.equals(n))
+					if (!doChange(new BoundDescriptor(getModel(),
+							new ControlUtilities.ChangeLabelDescriptor(
+									null, currentControl, n))))
 						lockedTextUpdate(label, l);
 			}
 		};

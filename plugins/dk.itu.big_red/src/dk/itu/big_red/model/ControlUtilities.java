@@ -3,15 +3,14 @@ package dk.itu.big_red.model;
 import java.util.List;
 
 import org.bigraph.model.Control;
-import org.bigraph.model.ModelObject.ChangeExtendedData;
-import org.bigraph.model.ModelObject.ExtendedDataValidator;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
 import org.bigraph.model.assistants.ExtendedDataUtilities.SimpleHandler;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.geometry.PointList;
@@ -173,23 +172,76 @@ public abstract class ControlUtilities {
 		return getProperty(context, c, SHAPE, Object.class);
 	}
 
-	private static final ExtendedDataValidator labelValidator =
-			new ExtendedDataValidator() {
-		@Override
-		public void validate(ChangeExtendedData c, PropertyScratchpad context)
-				throws ChangeRejectedException {
-			if (!(c.newValue instanceof String)) {
-				throw new ChangeRejectedException(c, "Labels must be strings");
-			} else if (((String)c.newValue).length() == 0) {
-				throw new ChangeRejectedException(c,
-						"Labels must not be empty");
-			}
-		}
-	};
-	
 	@RedProperty(fired = String.class, retrieved = String.class)
 	public static final String LABEL =
 			"eD!+dk.itu.big_red.model.Control.label";
+	
+	public static final class ChangeLabelDescriptor
+			extends ChangeExtendedDataDescriptor<
+					Control.Identifier, String> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new LabelHandler());
+		}
+		
+		private static final class LabelHandler extends Handler {
+			@Override
+			public boolean tryValidateChange(Process context,
+					IChangeDescriptor change) throws ChangeCreationException {
+				final PropertyScratchpad scratch = context.getScratch();
+				final Resolver resolver = context.getResolver();
+				if (change instanceof ChangeLabelDescriptor) {
+					ChangeLabelDescriptor cd = (ChangeLabelDescriptor)change;
+					Control co = cd.getTarget().lookup(scratch, resolver);
+					if (co == null)
+						throw new ChangeCreationException(cd,
+								"" + cd.getTarget() + ": lookup failed");
+					
+					String s = cd.getNormalisedNewValue(scratch, resolver);
+					if (s.length() == 0)
+						throw new ChangeCreationException(cd,
+								"The label of " + cd.getTarget() +
+								" must not be empty");
+				} else return false;
+				return true;
+			}
+			
+			@Override
+			public boolean executeChange(Resolver resolver,
+					IChangeDescriptor change) {
+				if (change instanceof ChangeLabelDescriptor) {
+					ChangeLabelDescriptor cd = (ChangeLabelDescriptor)change;
+					cd.getTarget().lookup(null, resolver).setExtendedData(
+							LABEL, cd.getNormalisedNewValue(null, resolver));
+				} else return false;
+				return true;
+			}
+		}
+		
+		@Override
+		protected String getNormalisedNewValue(
+				PropertyScratchpad context, Resolver r) {
+			String s = getNewValue();
+			return (s != null ? s.trim() : null);
+		}
+		
+		public ChangeLabelDescriptor(Control.Identifier identifier,
+				String oldValue, String newValue) {
+			super(LABEL, identifier, oldValue, newValue);
+		}
+		
+		public ChangeLabelDescriptor(PropertyScratchpad context,
+				Control mo, String newValue) {
+			this(mo.getIdentifier(context),
+					getLabel(context, mo), newValue);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeLabelDescriptor(getTarget(),
+					getNewValue(), getOldValue());
+		}
+	}
 	
 	public static String getLabel(Control c) {
 		return getLabel(null, c);
@@ -202,20 +254,7 @@ public abstract class ControlUtilities {
 	public static String getLabel(PropertyScratchpad context, Control c) {
 		String s = getProperty(context, c, LABEL, String.class);
 		if (s == null)
-			setLabel(context, c, s = labelFor(c.getName(context)));
+			setProperty(context, c, LABEL, s = labelFor(c.getName(context)));
 		return s;
-	}
-
-	public static void setLabel(Control c, String s) {
-		setLabel(null, c, s);
-	}
-
-	public static void setLabel(
-			PropertyScratchpad context, Control c, String s) {
-		setProperty(context, c, LABEL, s);
-	}
-
-	public static IChange changeLabel(Control c, String s) {
-		return c.changeExtendedData(LABEL, s, labelValidator);
 	}
 }

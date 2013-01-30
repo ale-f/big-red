@@ -149,7 +149,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			
 			String l = getAttributeNS(el, BIG_RED, "label");
 			if (l != null)
-				cg.add(ControlUtilities.changeLabel(c, l));
+				cg.add(bind(new ControlUtilities.ChangeLabelDescriptor(
+						loader.getScratch(), c, l)));
 			
 			Element eS = getNamedChildElement(el, BIG_RED, "shape");
 			if (eS != null) {
