@@ -15,6 +15,7 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.geometry.Point;
@@ -47,7 +48,6 @@ import dk.itu.big_red.model.Line;
 import dk.itu.big_red.utilities.ui.ColorWrapper;
 import dk.itu.big_red.utilities.ui.UI;
 
-import static dk.itu.big_red.model.ControlUtilities.changeSegment;
 import static dk.itu.big_red.model.ControlUtilities.getDistance;
 import static dk.itu.big_red.model.ControlUtilities.getSegment;
 
@@ -243,10 +243,17 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		editor.doChange(c);
 	}
 	
+	private IChange bind(IChangeDescriptor c) {
+		return new BoundDescriptor(getModel().getSignature(), c);
+	}
+	
+	private void doChange(IChangeDescriptor c) {
+		doChange(bind(c));
+	}
+	
 	private void opSetShape(Object shape) {
-		doChange(new BoundDescriptor(getModel().getSignature(),
-				new ControlUtilities.ChangeShapeDescriptor(
-						(PropertyScratchpad)null, getModel(), shape)));
+		doChange(new ControlUtilities.ChangeShapeDescriptor(
+				(PropertyScratchpad)null, getModel(), shape));
 	}
 	
 	private void opMovePoint(int moveIndex, int mx, int my) {
@@ -271,16 +278,15 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			int segment = getSegment(port);
 			double distance = getDistance(port);
 			if (segment == deleteIndex - 1) {
-				cg.add(new BoundDescriptor(getModel().getSignature(),
-						new ControlUtilities.ChangeDistanceDescriptor(
-								null, port, distance * l1l)));
+				cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
+						null, port, distance * l1l)));
 			} else if (segment == deleteIndex) {
-				cg.add(new BoundDescriptor(getModel().getSignature(),
-						new ControlUtilities.ChangeDistanceDescriptor(
-								null, port, l1l + (distance * (len2 / len)))));
+				cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
+						null, port, l1l + (distance * (len2 / len)))));
 			}
 			if (segment >= deleteIndex)
-				cg.add(changeSegment(port, segment - 1));
+				cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
+						null, port, segment - 1)));
 		}
 		PointList pl = getPoints().getCopy();
 		pl.removePoint(deleteIndex);
@@ -300,18 +306,18 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			double distance = getDistance(port);
 			if (segment == (insertIndex - 1)) {
 				if (distance < pivot) {
-					cg.add(new BoundDescriptor(getModel().getSignature(),
-							new ControlUtilities.ChangeDistanceDescriptor(
-									null, port, (pivot - distance) / pivot)));
+					cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
+							null, port, (pivot - distance) / pivot)));
 				} else {
-					cg.add(changeSegment(port, segment + 1));
-					cg.add(new BoundDescriptor(getModel().getSignature(),
-							new ControlUtilities.ChangeDistanceDescriptor(
-									null, port,
-									(distance - pivot) / (1 - pivot))));
+					cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
+							null, port, segment + 1)));
+					cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
+							null, port,
+							(distance - pivot) / (1 - pivot))));
 				}
 			} else if (segment >= insertIndex) {
-				cg.add(changeSegment(port, segment + 1));
+				cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
+						null, port, segment + 1)));
 			}
 		}
 		PointList pl = getPoints().getCopy();
@@ -327,13 +333,13 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			distance = 0.0;
 			segment = (segment + 1) % getPointCount();
 		}
+		PortSpec.Identifier id =
+				new PortSpec.Identifier(name, getModel().getIdentifier());
 		cg.add(getModel().changeAddPort(port, name));
-		cg.add(changeSegment(port, segment));
-		cg.add(new BoundDescriptor(getModel().getSignature(),
-				new ControlUtilities.ChangeDistanceDescriptor(
-						new PortSpec.Identifier(
-								name, getModel().getIdentifier()),
-						0.0, distance)));
+		cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
+				id, 0, segment)));
+		cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
+				id, 0.0, distance)));
 		doChange(cg);
 	}
 	
@@ -343,10 +349,10 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			distance = 0.0;
 			segment = (segment + 1) % getPointCount();
 		}
-		cg.add(changeSegment(port, segment));
-		cg.add(new BoundDescriptor(getModel().getSignature(),
-				new ControlUtilities.ChangeDistanceDescriptor(
-						null, port, distance)));
+		cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
+				null, port, segment)));
+		cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
+				null, port, distance)));
 		doChange(cg);
 	}
 	
@@ -784,10 +790,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 							(p.getName() == null ? "" : p.getName()),
 							getPortNameValidator(p));
 					if (newName != null)
-						doChange(new BoundDescriptor(
-								getModel().getSignature(),
-								new NamedModelObject.ChangeNameDescriptor(
-										p.getIdentifier(), newName)));
+						doChange(new NamedModelObject.ChangeNameDescriptor(
+								p.getIdentifier(), newName));
 				}
 			});
 			
@@ -820,10 +824,9 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 					ChangeGroup cg = new ChangeGroup();
 					for (PortSpec i : getModel().getPorts())
 						cg.add(i.changeRemove());
-					cg.add(new BoundDescriptor(getModel().getSignature(),
-							new ControlUtilities.ChangeShapeDescriptor(
-									(PropertyScratchpad)null, getModel(),
-									new PointList(new int[] { 0, 0 }))));
+					cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
+							(PropertyScratchpad)null, getModel(),
+							new PointList(new int[] { 0, 0 }))));
 					doChange(cg);
 				}
 			});
@@ -847,11 +850,10 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 							cg.add(i.changeRemove());
 						Ellipse el = Ellipse.SINGLETON.setBounds(
 								new Rectangle(0, 0, 60, 60));
-						cg.add(new BoundDescriptor(getModel().getSignature(),
-								new ControlUtilities.ChangeShapeDescriptor(
-										(PropertyScratchpad)null, getModel(),
-										el.getPolygon(Integer.parseInt(
-												polySides)))));
+						cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
+								(PropertyScratchpad)null, getModel(),
+								el.getPolygon(Integer.parseInt(
+										polySides)))));
 						doChange(cg);
 					}
 				}

@@ -9,7 +9,6 @@ import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDesc
 import org.bigraph.model.assistants.ExtendedDataUtilities.SimpleHandler;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -26,6 +25,32 @@ public abstract class ControlUtilities {
 	public static final String SEGMENT =
 			"eD!+dk.itu.big_red.model.PortSpec.segment";
 	
+	public static final class ChangeSegmentDescriptor
+			extends ChangeExtendedDataDescriptor<
+					PortSpec.Identifier, Integer> {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new SimpleHandler(ChangeSegmentDescriptor.class));
+		}
+		
+		public ChangeSegmentDescriptor(PortSpec.Identifier id,
+				int oldValue, int newValue) {
+			super(SEGMENT, id, oldValue, newValue);
+		}
+		
+		public ChangeSegmentDescriptor(PropertyScratchpad context,
+				PortSpec mo, int newValue) {
+			this(mo.getIdentifier(context),
+					getSegment(context, mo), newValue);
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeSegmentDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
+	}
+	
 	public static int getSegment(PortSpec p) {
 		return getSegment(null, p);
 	}
@@ -37,19 +62,6 @@ public abstract class ControlUtilities {
 			i = getProperty(context, p, SEGMENT, Integer.class);
 		}
 		return i;
-	}
-
-	public static void setSegment(PortSpec p, int i) {
-		setSegment(null, p, i);
-	}
-
-	public static void setSegment(
-			PropertyScratchpad context, PortSpec p, int i) {
-		setProperty(context, p, SEGMENT, i);
-	}
-
-	public static IChange changeSegment(PortSpec p, int i) {
-		return p.changeExtendedData(SEGMENT, i);
 	}
 
 	@RedProperty(fired = Double.class, retrieved = Double.class)
@@ -78,7 +90,7 @@ public abstract class ControlUtilities {
 			distance = (1.0 / l.size()) * index;
 		}
 		
-		setSegment(context, p, segment);
+		setProperty(context, p, SEGMENT, segment);
 		setProperty(context, p, DISTANCE, distance);
 	}
 	

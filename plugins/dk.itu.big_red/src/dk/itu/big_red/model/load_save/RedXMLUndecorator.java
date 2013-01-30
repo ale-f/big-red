@@ -136,8 +136,9 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			PortSpec p = (PortSpec)object;
 			Element eS = getNamedChildElement(el, BIG_RED, "port-appearance");
 			if (eS != null) {
-				cg.add(ControlUtilities.changeSegment(p,
-						Integer.parseInt(getAttributeNS(eS, BIG_RED, "segment"))));
+				cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
+						loader.getScratch(), p, Integer.parseInt(
+								getAttributeNS(eS, BIG_RED, "segment")))));
 				cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
 						loader.getScratch(), p, Double.parseDouble(
 								getAttributeNS(eS, BIG_RED, "distance")))));
