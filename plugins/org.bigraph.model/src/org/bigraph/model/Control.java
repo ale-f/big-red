@@ -163,7 +163,7 @@ public class Control extends NamedModelObject implements IControl {
 		public void simulate(PropertyScratchpad context) {
 			Signature s = getCreator().getSignature(context);
 			
-			context.<Control>getModifiableList(
+			context.<Control>getModifiableSet(
 					s, Signature.PROPERTY_CONTROL, s.getControls()).
 				remove(getCreator());
 			context.setProperty(getCreator(),

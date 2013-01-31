@@ -13,7 +13,7 @@ final class SignatureHandler extends HandlerUtilities.HandlerImpl {
 			ChangeAddControl c = (ChangeAddControl)b;
 			Namespace<Control> ns = c.getCreator().getNamespace();
 			c.control.setName(ns.put(c.name, c.control));
-			c.getCreator().addControl(-1, c.control);
+			c.getCreator().addControl(c.control);
 		} else return false;
 		return true;
 	}

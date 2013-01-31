@@ -46,6 +46,6 @@ public class SignatureDescriptorTests extends DescriptorTestRunner {
 		Control.Identifier cI = new Control.Identifier("a");
 		run(s1,
 				new Signature.ChangeAddControlDescriptor(
-						new Signature.Identifier(), 0, cI));
+						new Signature.Identifier(), cI));
 	}
 }

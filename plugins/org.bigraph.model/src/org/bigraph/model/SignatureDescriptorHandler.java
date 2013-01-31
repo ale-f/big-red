@@ -66,7 +66,7 @@ final class SignatureDescriptorHandler
 			Control c = new Control();
 			
 			c.setName(s.getNamespace().put(cd.getControl().getName(), c));
-			s.addControl(cd.getPosition(), c);
+			s.addControl(c);
 		} else if (change instanceof ChangeAddSignatureDescriptor) {
 			ChangeAddSignatureDescriptor cd =
 					(ChangeAddSignatureDescriptor)change;

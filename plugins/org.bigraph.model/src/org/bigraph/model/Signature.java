@@ -1,6 +1,8 @@
 package org.bigraph.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
@@ -77,7 +79,7 @@ public class Signature extends ModelObject
 		
 		@Override
 		public void simulate(PropertyScratchpad context) {
-			context.<Control>getModifiableList(
+			context.<Control>getModifiableSet(
 					getCreator(), PROPERTY_CONTROL, getControls()).
 				add(control);
 			context.setProperty(control,
@@ -100,14 +102,14 @@ public class Signature extends ModelObject
 		return ns;
 	}
 	
-	private ArrayList<Control> controls = new ArrayList<Control>();
+	private HashSet<Control> controls = new HashSet<Control>();
 	
 	@Override
 	public Signature clone() {
 		Signature s = (Signature)super.clone();
 		
 		for (Control c : getControls())
-			s.addControl(-1, c.clone(s));
+			s.addControl(c.clone(s));
 		
 		for (Signature t : getSignatures())
 			s.addSignature(-1, t.clone());
@@ -115,10 +117,8 @@ public class Signature extends ModelObject
 		return s;
 	}
 	
-	protected void addControl(int position, Control c) {
-		if (position == -1) {
-			controls.add(c);
-		} else controls.add(position, c);
+	protected void addControl(Control c) {
+		controls.add(c);
 		c.setSignature(this);
 		firePropertyChange(PROPERTY_CONTROL, null, c);
 	}
@@ -144,13 +144,14 @@ public class Signature extends ModelObject
 	}
 	
 	@Override
-	public List<? extends Control> getControls() {
+	public Collection<? extends Control> getControls() {
 		return controls;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<? extends Control> getControls(PropertyScratchpad context) {
-		return getProperty(context, PROPERTY_CONTROL, List.class);
+	public Collection<? extends Control> getControls(
+			PropertyScratchpad context) {
+		return getProperty(context, PROPERTY_CONTROL, Collection.class);
 	}
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
@@ -283,22 +284,16 @@ public class Signature extends ModelObject
 	public static final class ChangeAddControlDescriptor
 			extends SignatureChangeDescriptor {
 		private final Identifier target;
-		private final int position;
 		private final Control.Identifier control;
 		
 		public ChangeAddControlDescriptor(
-				Identifier target, int position, Control.Identifier control) {
+				Identifier target, Control.Identifier control) {
 			this.target = target;
-			this.position = position;
 			this.control = control;
 		}
 		
 		public Identifier getTarget() {
 			return target;
-		}
-		
-		public int getPosition() {
-			return position;
 		}
 		
 		public Control.Identifier getControl() {
