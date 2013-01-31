@@ -1,6 +1,7 @@
 package dk.itu.big_red.editors;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.bigraph.model.Control;
@@ -11,6 +12,10 @@ import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
+import org.bigraph.model.utilities.CollectionUtilities;
+import org.bigraph.model.utilities.comparators.ComparatorUtilities;
+import org.bigraph.model.utilities.comparators.ComparatorUtilities.Converter;
+import org.bigraph.model.utilities.comparators.LexicographicStringComparator;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.RootEditPart;
@@ -287,10 +292,20 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 		return paletteRoot;
 	}
 	
+	private static final Comparator<Control> CONTROL_NAME_COMPARATOR =
+			ComparatorUtilities.convertComparator(
+				new Converter<Control, String>() {
+					@Override
+					public String convert(Control object) {
+						return object.getName();
+					}
+				}, LexicographicStringComparator.INSTANCE);
+	
 	private static PaletteContainer sigPop(
 			List<String> names, PaletteContainer pc, Signature signature) {
 		pc.setLabel(signature.toString());
-		for (Control c : signature.getControls()) {
+		for (Control c : CollectionUtilities.collect(
+				signature.getControls(), CONTROL_NAME_COMPARATOR)) {
 			if (names.contains(c.getName()))
 				continue;
 			names.add(c.getName());
