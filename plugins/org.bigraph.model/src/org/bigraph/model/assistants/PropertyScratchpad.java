@@ -37,6 +37,11 @@ public class PropertyScratchpad {
 		}
 		
 		@Override
+		public String toString() {
+			return "(" + target + ", " + name + ")";
+		}
+		
+		@Override
 		public int hashCode() {
 			return target.hashCode() ^ name.hashCode();
 		}
