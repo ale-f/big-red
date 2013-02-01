@@ -3,6 +3,7 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Signature.ChangeAddControlDescriptor;
 import org.bigraph.model.Signature.ChangeAddSignatureDescriptor;
+import org.bigraph.model.Signature.ChangeRemoveControlDescriptor;
 import org.bigraph.model.Signature.ChangeRemoveSignatureDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -26,6 +27,20 @@ final class SignatureDescriptorHandler
 			NamedModelObjectDescriptorHandler.checkName(scratch, cd,
 					cd.getControl(), s.getNamespace(),
 					cd.getControl().getName()); 
+		} else if (change instanceof ChangeRemoveControlDescriptor) {
+			ChangeRemoveControlDescriptor cd =
+					(ChangeRemoveControlDescriptor)change;
+			Signature s = cd.getTarget().lookup(scratch, resolver);
+			
+			if (s == null)
+				throw new ChangeCreationException(cd,
+						"" + cd.getTarget() + ": lookup failed");
+			
+			Control co = cd.getControl().lookup(scratch, resolver);
+			
+			if (co == null)
+				throw new ChangeCreationException(cd,
+						"" + cd.getControl() + ": lookup failed");
 		} else if (change instanceof ChangeAddSignatureDescriptor) {
 			ChangeAddSignatureDescriptor cd =
 					(ChangeAddSignatureDescriptor)change;
@@ -67,6 +82,14 @@ final class SignatureDescriptorHandler
 			
 			c.setName(s.getNamespace().put(cd.getControl().getName(), c));
 			s.addControl(c);
+		} else if (change instanceof ChangeRemoveControlDescriptor) {
+			ChangeRemoveControlDescriptor cd =
+					(ChangeRemoveControlDescriptor)change;
+			Signature s = cd.getTarget().lookup(null, resolver);
+			Control c = cd.getControl().lookup(null, resolver);
+			
+			s.removeControl(c);
+			s.getNamespace().remove(c.getName());
 		} else if (change instanceof ChangeAddSignatureDescriptor) {
 			ChangeAddSignatureDescriptor cd =
 					(ChangeAddSignatureDescriptor)change;

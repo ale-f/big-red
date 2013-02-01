@@ -301,20 +301,61 @@ public class Signature extends ModelObject
 		}
 		
 		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			Signature s = getTarget().lookup(context, r);
-			if (s == null)
-				throw new ChangeCreationException(this,
-						"" + getTarget() + ": lookup failed");
-			return s.changeAddControl(new Control(), getControl().getName());
+		public IChangeDescriptor inverse() {
+			return new ChangeRemoveControlDescriptor(
+					getTarget(), getControl());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			Signature self = getTarget().lookup(context, r);
+			Control n = new Control();
+			
+			context.<Control>getModifiableSet(
+					self, PROPERTY_CONTROL, self.getControls()).add(n);
+			context.setProperty(n, Control.PROPERTY_SIGNATURE, self);
+			
+			String name = getControl().getName();
+			self.getNamespace().put(context, name, n);
+			context.setProperty(n, Control.PROPERTY_NAME, name);
+		}
+	}
+	
+	public static final class ChangeRemoveControlDescriptor
+			extends SignatureChangeDescriptor {
+		private final Identifier target;
+		private final Control.Identifier control;
+		
+		public ChangeRemoveControlDescriptor(
+				Identifier target, Control.Identifier control) {
+			this.target = target;
+			this.control = control;
+		}
+		
+		public Identifier getTarget() {
+			return target;
+		}
+		
+		public Control.Identifier getControl() {
+			return control;
 		}
 		
 		@Override
 		public IChangeDescriptor inverse() {
-			throw new UnsupportedOperationException(
-					"FIXME: ChangeAddControlDescriptor.inverse() " +
-					"not implementable");
+			return new ChangeAddControlDescriptor(getTarget(), getControl());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			Signature self = getTarget().lookup(context, r);
+			Control co = getControl().lookup(context, r);
+			
+			context.<Control>getModifiableSet(
+					self, PROPERTY_CONTROL, self.getControls()).remove(co);
+			context.setProperty(co, Control.PROPERTY_SIGNATURE, null);
+			
+			self.getNamespace().remove(context, getControl().getName());
+			context.setProperty(co, Control.PROPERTY_NAME, null);
 		}
 	}
 	
