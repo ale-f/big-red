@@ -14,6 +14,7 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
 import org.bigraph.model.names.policies.INamePolicy;
@@ -232,6 +233,10 @@ implements PropertyChangeListener {
 							ControlUtilities.labelFor(s))));
 			return cg;
 		} else return null;
+	}
+	
+	private final IChange bind(IChangeDescriptor cd) {
+		return new BoundDescriptor(getModel(), cd);
 	}
 	
 	@Override
@@ -501,7 +506,8 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI() &&
 						!currentControl.getKind().equals(Kind.ATOMIC))
-					doChange(currentControl.changeKind(Kind.ATOMIC));
+					doChange(bind(new Control.ChangeKindDescriptor(
+							null, currentControl, Kind.ATOMIC)));
 			}
 		});
 		
@@ -511,7 +517,8 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI() &&
 						!currentControl.getKind().equals(Kind.ACTIVE))
-					doChange(currentControl.changeKind(Kind.ACTIVE));
+					doChange(bind(new Control.ChangeKindDescriptor(
+							null, currentControl, Kind.ACTIVE)));
 			}
 		});
 		
@@ -521,7 +528,8 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI() &&
 						!currentControl.getKind().equals(Kind.PASSIVE))
-					doChange(currentControl.changeKind(Kind.PASSIVE));
+					doChange(bind(new Control.ChangeKindDescriptor(
+							null, currentControl, Kind.PASSIVE)));
 			}
 		});
 		

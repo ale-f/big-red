@@ -2,12 +2,17 @@ package org.bigraph.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.interfaces.IControl;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -53,6 +58,20 @@ public class Control extends NamedModelObject implements IControl {
 		}
 	}
 	
+	abstract static class ControlChangeDescriptor
+			extends ModelObjectChangeDescriptor {
+		static {
+			DescriptorExecutorManager.getInstance().addParticipant(
+					new ControlDescriptorHandler());
+		}
+		
+		@Override
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			return new BoundDescriptor(r, this);
+		}
+	}
+	
 	@Override
 	protected Namespace<Control>
 			getGoverningNamespace(PropertyScratchpad context) {
@@ -63,42 +82,45 @@ public class Control extends NamedModelObject implements IControl {
 		ExecutorManager.getInstance().addParticipant(new ControlHandler());
 	}
 	
-	public final class ChangeKind extends ControlChange {
-		public final Kind kind;
+	public static final class ChangeKindDescriptor
+			extends ControlChangeDescriptor {
+		private final Identifier target;
+		private final Kind oldValue, newValue;
 		
-		public ChangeKind(Kind kind) {
-			this.kind = kind;
+		public ChangeKindDescriptor(Identifier target,
+				Kind oldValue, Kind newValue) {
+			this.target = target;
+			this.oldValue = oldValue;
+			this.newValue = newValue;
 		}
 		
-		private Kind oldKind;
-		@Override
-		public void beforeApply() {
-			oldKind = getCreator().getKind();
+		public ChangeKindDescriptor(PropertyScratchpad context,
+				Control mo, Kind newValue) {
+			this(mo.getIdentifier(context), mo.getKind(context), newValue);
 		}
 		
-		@Override
-		public boolean canInvert() {
-			return (oldKind != null);
+		public Identifier getTarget() {
+			return target;
 		}
 		
-		@Override
-		public boolean isReady() {
-			return (kind != null);
+		public Kind getOldValue() {
+			return oldValue;
 		}
 		
-		@Override
-		public ChangeKind inverse() {
-			return new ChangeKind(oldKind);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(set kind of " + getCreator() + " to " + kind + ")";
+		public Kind getNewValue() {
+			return newValue;
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.setProperty(getCreator(), PROPERTY_KIND, kind);
+		public ChangeKindDescriptor inverse() {
+			return new ChangeKindDescriptor(
+					getTarget(), getNewValue(), getOldValue());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			Control c = getTarget().lookup(context, r);
+			context.setProperty(c, PROPERTY_KIND, getNewValue());
 		}
 	}
 	
@@ -323,10 +345,6 @@ public class Control extends NamedModelObject implements IControl {
 		kind = null;
 		
 		super.dispose();
-	}
-	
-	public IChange changeKind(Kind kind) {
-		return new ChangeKind(kind);
 	}
 	
 	public IChange changeAddPort(PortSpec port, String name) {

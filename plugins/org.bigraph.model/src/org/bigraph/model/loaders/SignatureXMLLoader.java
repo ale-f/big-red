@@ -49,11 +49,12 @@ public class SignatureXMLLoader extends XMLLoader {
 				model, getAttributeNS(e, SIGNATURE, "name")));
 		
 		String kind = getAttributeNS(e, SIGNATURE, "kind");
-		if (kind != null) {
-			addChange(model.changeKind(
-				kind.equals("active") ? Kind.ACTIVE :
-				kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC));
-		}
+		if (kind != null)
+			addChange(new BoundDescriptor(sig,
+					new Control.ChangeKindDescriptor(getScratch(), model,
+							kind.equals("active") ? Kind.ACTIVE :
+							kind.equals("passive") ? Kind.PASSIVE :
+									Kind.ATOMIC)));
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "port"))
 			makePortSpec(j, model);

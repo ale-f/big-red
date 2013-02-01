@@ -27,7 +27,10 @@ public class SignatureTests {
 		ExecutorManager.getInstance().tryApplyChange(cg(
 				s.changeAddControl(c0, "c0"),
 				c0.changeAddPort(new PortSpec(), "p0"),
-				c0.changeKind(Kind.ATOMIC)));
+				new BoundDescriptor(s,
+						new Control.ChangeKindDescriptor(
+								new Control.Identifier("c0"),
+								Kind.ACTIVE, Kind.ATOMIC))));
 	}
 	
 	@Test

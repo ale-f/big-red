@@ -205,11 +205,15 @@ public class BGMParser {
 			lexer.expect(P_COLON);
 			String arity = lexer.expect(P_INTEGER);
 			
+			Control.Identifier cid = new Control.Identifier(id);
 			Control c = new Control();
 			ChangeGroup cg = new ChangeGroup();
 			cg.add(signature.changeAddControl(c, id));
-			cg.add(c.changeKind("%active".equals(controlType) ?
-					Kind.ACTIVE : Kind.PASSIVE));
+			cg.add(new BoundDescriptor(signature,
+					new Control.ChangeKindDescriptor(
+							cid, null,
+							"%active".equals(controlType) ?
+									Kind.ACTIVE : Kind.PASSIVE)));
 			for (int i = 0; i < Integer.parseInt(arity); i++)
 				cg.add(c.changeAddPort(new PortSpec(), "" + i));
 			change(cg);
