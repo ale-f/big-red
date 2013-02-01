@@ -239,6 +239,10 @@ implements PropertyChangeListener {
 		return new BoundDescriptor(getModel(), cd);
 	}
 	
+	private final boolean doChange(IChangeDescriptor cd) {
+		return doChange(bind(cd));
+	}
+	
 	@Override
 	public void createEditorControl(Composite parent) {
 		Composite self = new Composite(parent, SWT.NONE);
@@ -292,11 +296,10 @@ implements PropertyChangeListener {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						if (i.getSelection())
-							doChange(new BoundDescriptor(getModel(),
-									new ParameterUtilities.ChangeParameterPolicyDescriptor(
-											currentControl.getIdentifier(),
-											ParameterUtilities.getParameterPolicy(currentControl),
-											p.newInstance())));
+							doChange(new ParameterUtilities.ChangeParameterPolicyDescriptor(
+									currentControl.getIdentifier(),
+									ParameterUtilities.getParameterPolicy(currentControl),
+									p.newInstance()));
 					}
 				});
 			}
@@ -329,11 +332,10 @@ implements PropertyChangeListener {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						if (n.getSelection())
-							doChange(new BoundDescriptor(getModel(),
-								new ParameterUtilities.ChangeParameterPolicyDescriptor(
-										currentControl.getIdentifier(),
-										ParameterUtilities.getParameterPolicy(currentControl),
-										null)));
+							doChange(new ParameterUtilities.ChangeParameterPolicyDescriptor(
+									currentControl.getIdentifier(),
+									ParameterUtilities.getParameterPolicy(currentControl),
+									null));
 					}
 				});
 				if (!nested) {
@@ -367,12 +369,9 @@ implements PropertyChangeListener {
 				if (rtsd.open() == Dialog.OK) {
 					try {
 						IFile f = (IFile)rtsd.getFirstResult();
-						doChange(new BoundDescriptor(getModel(),
-								new Signature.ChangeAddSignatureDescriptor(
-										new Signature.Identifier(),
-										-1,
-										(Signature)new EclipseFileWrapper(f).
-												load())));
+						doChange(new Signature.ChangeAddSignatureDescriptor(
+								new Signature.Identifier(), -1,
+								(Signature)new EclipseFileWrapper(f).load()));
 					} catch (LoadFailedException ex) {
 						return;
 					}
@@ -409,7 +408,7 @@ implements PropertyChangeListener {
 					} else if (i instanceof Signature) {
 						Signature s = (Signature)i;
 						if (s.getParent().equals(getModel()))
-							cg.add(ch = new BoundDescriptor(getModel(),
+							cg.add(ch = bind(
 									new Signature.ChangeRemoveSignatureDescriptor(
 											new Signature.Identifier(),
 											getModel().getSignatures(context).indexOf(s),
@@ -481,9 +480,8 @@ implements PropertyChangeListener {
 				String l = ControlUtilities.getLabel(currentControl);
 				String n = label.getText();
 				if (!l.equals(n))
-					if (!doChange(new BoundDescriptor(getModel(),
-							new ControlUtilities.ChangeLabelDescriptor(
-									null, currentControl, n))))
+					if (!doChange(new ControlUtilities.ChangeLabelDescriptor(
+							null, currentControl, n)))
 						lockedTextUpdate(label, l);
 			}
 		};
@@ -506,8 +504,8 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI() &&
 						!currentControl.getKind().equals(Kind.ATOMIC))
-					doChange(bind(new Control.ChangeKindDescriptor(
-							null, currentControl, Kind.ATOMIC)));
+					doChange(new Control.ChangeKindDescriptor(
+							null, currentControl, Kind.ATOMIC));
 			}
 		});
 		
@@ -517,8 +515,8 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI() &&
 						!currentControl.getKind().equals(Kind.ACTIVE))
-					doChange(bind(new Control.ChangeKindDescriptor(
-							null, currentControl, Kind.ACTIVE)));
+					doChange(new Control.ChangeKindDescriptor(
+							null, currentControl, Kind.ACTIVE));
 			}
 		});
 		
@@ -528,8 +526,8 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI() &&
 						!currentControl.getKind().equals(Kind.PASSIVE))
-					doChange(bind(new Control.ChangeKindDescriptor(
-							null, currentControl, Kind.PASSIVE)));
+					doChange(new Control.ChangeKindDescriptor(
+							null, currentControl, Kind.PASSIVE));
 			}
 		});
 		
@@ -554,10 +552,9 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					doChange(new BoundDescriptor(getModel(),
-							new ControlUtilities.ChangeShapeDescriptor(
-									(PropertyScratchpad)null,
-									currentControl, Ellipse.SINGLETON)));
+					doChange(new ControlUtilities.ChangeShapeDescriptor(
+							(PropertyScratchpad)null, currentControl,
+							Ellipse.SINGLETON));
 			}
 		});
 		
@@ -567,10 +564,9 @@ implements PropertyChangeListener {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (shouldPropagateUI())
-					doChange(new BoundDescriptor(getModel(),
-							new ControlUtilities.ChangeShapeDescriptor(
-									(PropertyScratchpad)null,
-									currentControl, POINTS_QUAD)));
+					doChange(new ControlUtilities.ChangeShapeDescriptor(
+							(PropertyScratchpad)null,
+							currentControl, POINTS_QUAD));
 			}
 		});
 		
@@ -607,11 +603,10 @@ implements PropertyChangeListener {
 					return;
 				Colour newColour = new Colour(outline.getColorValue());
 				if (!ColourUtilities.getOutline(currentControl).equals(newColour))
-					doChange(new BoundDescriptor(getModel(),
-							new ColourUtilities.ChangeOutlineDescriptor(
-									currentControl.getIdentifier(),
-									ColourUtilities.getOutlineRaw(currentControl),
-									newColour)));
+					doChange(new ColourUtilities.ChangeOutlineDescriptor(
+							currentControl.getIdentifier(),
+							ColourUtilities.getOutlineRaw(currentControl),
+							newColour));
 			}
 		});
 		
@@ -625,11 +620,10 @@ implements PropertyChangeListener {
 					return;
 				Colour newColour = new Colour(fill.getColorValue());
 				if (!ColourUtilities.getFill(currentControl).equals(newColour))
-					doChange(new BoundDescriptor(getModel(),
-							new ColourUtilities.ChangeFillDescriptor(
-									currentControl.getIdentifier(),
-									ColourUtilities.getFillRaw(currentControl),
-									newColour)));
+					doChange(new ColourUtilities.ChangeFillDescriptor(
+							currentControl.getIdentifier(),
+							ColourUtilities.getFillRaw(currentControl),
+							newColour));
 			}
 		});
 		
