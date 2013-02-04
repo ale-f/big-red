@@ -13,6 +13,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.interfaces.IControl;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.Namespace;
@@ -121,6 +122,69 @@ public class Control extends NamedModelObject implements IControl {
 		public void simulate(PropertyScratchpad context, Resolver r) {
 			Control c = getTarget().lookup(context, r);
 			context.setProperty(c, PROPERTY_KIND, getNewValue());
+		}
+	}
+	
+	public static final class ChangeAddPortSpecDescriptor
+			extends ControlChangeDescriptor {
+		private final PortSpec.Identifier spec;
+		
+		public ChangeAddPortSpecDescriptor(PortSpec.Identifier spec) {
+			this.spec = spec;
+		}
+		
+		public PortSpec.Identifier getSpec() {
+			return spec;
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeRemovePortSpecDescriptor(getSpec());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			Control self = getSpec().getControl().lookup(context, r);
+			PortSpec p = new PortSpec();
+			
+			context.<PortSpec>getModifiableList(
+					self, Control.PROPERTY_PORT, self.getPorts()).add(p);
+			context.setProperty(p, PortSpec.PROPERTY_CONTROL, self);
+			
+			String name = getSpec().getName();
+			self.getNamespace().put(context, name, p);
+			context.setProperty(p, PortSpec.PROPERTY_NAME, name);
+		}
+	}
+	
+	public static final class ChangeRemovePortSpecDescriptor
+			extends ControlChangeDescriptor {
+		private final PortSpec.Identifier spec;
+		
+		public ChangeRemovePortSpecDescriptor(PortSpec.Identifier spec) {
+			this.spec = spec;
+		}
+		
+		public PortSpec.Identifier getSpec() {
+			return spec;
+		}
+		
+		@Override
+		public IChangeDescriptor inverse() {
+			return new ChangeAddPortSpecDescriptor(getSpec());
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r) {
+			Control self = getSpec().getControl().lookup(context, r);
+			PortSpec p = getSpec().lookup(context, r);
+			
+			context.<PortSpec>getModifiableList(
+					self, Control.PROPERTY_PORT, self.getPorts()).remove(p);
+			context.setProperty(p, PortSpec.PROPERTY_CONTROL, null);
+			
+			self.getNamespace().put(context, getSpec().getName(), null);
+			context.setProperty(p, PortSpec.PROPERTY_NAME, null);
 		}
 	}
 	
