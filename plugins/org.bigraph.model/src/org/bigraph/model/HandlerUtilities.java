@@ -2,6 +2,8 @@ package org.bigraph.model;
 
 import java.util.List;
 
+import org.bigraph.model.ModelObject.Identifier;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -31,6 +33,17 @@ abstract class HandlerUtilities {
 		@Override
 		public void setHost(IParticipantHost host) {
 			/* do nothing */
+		}
+		
+		protected static <T> T tryLookup(IChangeDescriptor cd, Identifier id,
+				PropertyScratchpad scratch, Resolver resolver, Class<T> klass)
+				throws ChangeCreationException {
+			T x = NamedModelObject.require(
+					id.lookup(scratch, resolver), klass);
+			if (x == null) {
+				throw new ChangeCreationException(cd,
+						"" + id + ": lookup failed");
+			} else return x;
 		}
 	}
 	
