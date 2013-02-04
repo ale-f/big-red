@@ -26,7 +26,10 @@ public class SignatureTests {
 		Control c0 = new Control();
 		ExecutorManager.getInstance().tryApplyChange(cg(
 				s.changeAddControl(c0, "c0"),
-				c0.changeAddPort(new PortSpec(), "p0"),
+				new BoundDescriptor(s,
+						new Control.ChangeAddPortSpecDescriptor(
+								new PortSpec.Identifier("p0",
+										new Control.Identifier("c0")))),
 				new BoundDescriptor(s,
 						new Control.ChangeKindDescriptor(
 								new Control.Identifier("c0"),

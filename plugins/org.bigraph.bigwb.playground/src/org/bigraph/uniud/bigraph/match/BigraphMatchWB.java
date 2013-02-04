@@ -1,8 +1,14 @@
 package org.bigraph.uniud.bigraph.match;
+import java.util.Arrays;
+
 import org.bigraph.model.*;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.interfaces.BigraphBuilder;
 import org.bigraph.model.interfaces.IControl;
 import org.bigraph.model.interfaces.INode;
@@ -71,8 +77,20 @@ public class BigraphMatchWB {
 	
 	
 	public static void fillAgent(){
+		Control.Identifier cid = new Control.Identifier("c1");
 		Signature s = new Signature();
-		Control c1 = new Control();
+		try {
+			DescriptorExecutorManager.getInstance().tryApplyChange(s,
+					new ChangeDescriptorGroup(Arrays.asList(
+							new Signature.ChangeAddControlDescriptor(
+									new Signature.Identifier(), cid),
+							new Control.ChangeAddPortSpecDescriptor(
+									new PortSpec.Identifier("0", cid)))));
+		} catch (ChangeCreationException cce) {
+			System.out.println(cce.getRationale());
+			return;
+		}
+		Control c1 = cid.lookup(null, s);
 		
 
 		agent = new Bigraph();
@@ -85,7 +103,6 @@ public class BigraphMatchWB {
 
 		cg.add(agent.changeAddChild(O1, "O1"));
 		cg.add(r1.changeAddChild(n1, "n1"));
-		cg.add(c1.changeAddPort(new PortSpec(),"0"));
 		
 		try {
 			 ExecutorManager.getInstance().tryApplyChange(cg);
@@ -106,9 +123,20 @@ public class BigraphMatchWB {
 	}
 	
 	public static void fillRedex(){
+		Control.Identifier cid = new Control.Identifier("c1");
 		Signature s = new Signature();
-		Control c1 = new Control();
-		c1.changeAddPort(new PortSpec(),"0");
+		try {
+			DescriptorExecutorManager.getInstance().tryApplyChange(s,
+					new ChangeDescriptorGroup(Arrays.asList(
+							new Signature.ChangeAddControlDescriptor(
+									new Signature.Identifier(), cid),
+							new Control.ChangeAddPortSpecDescriptor(
+									new PortSpec.Identifier("0", cid)))));
+		} catch (ChangeCreationException cce) {
+			System.out.println(cce.getRationale());
+			return;
+		}
+		Control c1 = cid.lookup(null, s);
 
 		redex = new Bigraph();
 		redex.setSignature(s);

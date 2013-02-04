@@ -157,20 +157,18 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 	}
 	
-	private static final PortSpec ps = new PortSpec();
-	
 	private IInputValidator getPortNameValidator(final PortSpec current) {
 		return new IInputValidator() {
 			@Override
 			public String isValid(String newText) {
-				IChange c = (current != null ?
-						new BoundDescriptor(
-								current.getControl().getSignature(),
-								new NamedModelObject.ChangeNameDescriptor(
-										current.getIdentifier(), newText)) :
-						getModel().changeAddPort(ps, newText));
+				IChangeDescriptor c = (current != null ?
+						new NamedModelObject.ChangeNameDescriptor(
+								current.getIdentifier(), newText) :
+						new Control.ChangeAddPortSpecDescriptor(
+								new PortSpec.Identifier(
+										newText, getModel().getIdentifier())));
 				try {
-					ExecutorManager.getInstance().tryValidateChange(c);
+					ExecutorManager.getInstance().tryValidateChange(bind(c));
 					return null;
 				} catch (ChangeRejectedException e) {
 					return e.getRationale();
@@ -335,7 +333,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		}
 		PortSpec.Identifier id =
 				new PortSpec.Identifier(name, getModel().getIdentifier());
-		cg.add(getModel().changeAddPort(port, name));
+		cg.add(bind(new Control.ChangeAddPortSpecDescriptor(id)));
 		cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
 				id, 0, segment)));
 		cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
@@ -798,7 +796,9 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			UI.createMenuItem(m, 0, "&Remove port", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					doChange(getModel().getPorts().get(foundPort).changeRemove());
+					doChange(new Control.ChangeRemovePortSpecDescriptor(
+							getModel().getPorts().get(foundPort).
+									getIdentifier()));
 				}
 			});
 		}
@@ -823,7 +823,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 				public void widgetSelected(SelectionEvent e) {
 					ChangeGroup cg = new ChangeGroup();
 					for (PortSpec i : getModel().getPorts())
-						cg.add(i.changeRemove());
+						cg.add(bind(new Control.ChangeRemovePortSpecDescriptor(
+								i.getIdentifier())));
 					cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
 							(PropertyScratchpad)null, getModel(),
 							new PointList(new int[] { 0, 0 }))));
@@ -847,7 +848,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 					if (polySides != null) {
 						ChangeGroup cg = new ChangeGroup();
 						for (PortSpec i : getModel().getPorts())
-							cg.add(i.changeRemove());
+							cg.add(bind(new Control.ChangeRemovePortSpecDescriptor(
+									i.getIdentifier())));
 						Ellipse el = Ellipse.SINGLETON.setBounds(
 								new Rectangle(0, 0, 60, 60));
 						cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(

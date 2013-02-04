@@ -18,7 +18,6 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
@@ -207,16 +206,16 @@ public class BGMParser {
 			
 			Control.Identifier cid = new Control.Identifier(id);
 			Control c = new Control();
-			ChangeGroup cg = new ChangeGroup();
-			cg.add(signature.changeAddControl(c, id));
-			cg.add(new BoundDescriptor(signature,
+			change(signature.changeAddControl(c, id));
+			change(new BoundDescriptor(signature,
 					new Control.ChangeKindDescriptor(
 							cid, null,
 							"%active".equals(controlType) ?
 									Kind.ACTIVE : Kind.PASSIVE)));
 			for (int i = 0; i < Integer.parseInt(arity); i++)
-				cg.add(c.changeAddPort(new PortSpec(), "" + i));
-			change(cg);
+				change(new BoundDescriptor(signature,
+						new Control.ChangeAddPortSpecDescriptor(
+								new PortSpec.Identifier("" + i, cid))));
 		} else if (lexer.accept(P_PROPERTY) != null) {
 			lexer.expect(P_IDENTIFIER);
 			property();

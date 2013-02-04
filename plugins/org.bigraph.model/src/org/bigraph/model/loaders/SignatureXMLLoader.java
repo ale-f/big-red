@@ -91,10 +91,12 @@ public class SignatureXMLLoader extends XMLLoader {
 	}
 	
 	private PortSpec makePortSpec(Element e, Control c) {
-		PortSpec model = new PortSpec();
-		addChange(
-				c.changeAddPort(model, getAttributeNS(e, SIGNATURE, "name")));
-		return executeUndecorators(model, e);
+		PortSpec.Identifier pid = new PortSpec.Identifier(
+				getAttributeNS(e, SIGNATURE, "name"),
+				c.getIdentifier(getScratch()));
+		addChange(new BoundDescriptor(sig,
+				new Control.ChangeAddPortSpecDescriptor(pid)));
+		return executeUndecorators(pid.lookup(getScratch(), sig), e);
 	}
 	
 	@Override

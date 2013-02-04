@@ -24,27 +24,34 @@ import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 
 public class BigraphTests {
 	private Signature signature;
-	private Control control0, control1;
+	private Control control0;
 	
 	static ChangeGroup cg(IChange... changes) {
 		return new ChangeGroup(Arrays.asList(changes));
 	}
 	
 	@Before
-	public void createSignature() throws ChangeRejectedException {
+	public void createSignature()
+			throws ChangeCreationException, ChangeRejectedException {
 		signature = new Signature();
 		
 		control0 = new Control();
-		ExecutorManager.getInstance().tryApplyChange(signature.changeAddControl(control0, "c0"));
+		ExecutorManager.getInstance().tryApplyChange(
+				signature.changeAddControl(control0, "c0"));
 		
-		control1 = new Control();
-		ExecutorManager.getInstance().tryApplyChange(cg(
-				signature.changeAddControl(control1, "c1"),
-				control1.changeAddPort(new PortSpec(), "p0"),
-				control1.changeAddPort(new PortSpec(), "p1")));
+		Control.Identifier cid = new Control.Identifier("c1");
+		DescriptorTestRunner.run(signature,
+				new Signature.ChangeAddControlDescriptor(
+						new Signature.Identifier(), cid),
+				new Control.ChangeAddPortSpecDescriptor(
+						new PortSpec.Identifier("p0", cid)),
+				new Control.ChangeAddPortSpecDescriptor(
+						new PortSpec.Identifier("p1", cid)));
+		assertNotNull(signature.getControl("c1"));
 	}
 	
 	@Test

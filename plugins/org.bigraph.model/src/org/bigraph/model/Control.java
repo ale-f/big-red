@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
-import org.bigraph.model.PortSpec.ChangeRemovePort;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -185,43 +184,6 @@ public class Control extends NamedModelObject implements IControl {
 			
 			self.getNamespace().put(context, getSpec().getName(), null);
 			context.setProperty(p, PortSpec.PROPERTY_NAME, null);
-		}
-	}
-	
-	public final class ChangeAddPort extends ControlChange {
-		public final PortSpec port;
-		public final String name;
-		
-		public ChangeAddPort(PortSpec port, String name) {
-			this.port = port;
-			this.name = name;
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (port != null && name != null);
-		}
-		
-		@Override
-		public ChangeRemovePort inverse() {
-			return port.new ChangeRemovePort();
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(add port " + port + " to " + getCreator() +
-					" with name \"" + name + "\")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.<PortSpec>getModifiableList(
-					getCreator(), Control.PROPERTY_PORT, getPorts()).
-				add(port);
-			context.setProperty(port, PortSpec.PROPERTY_CONTROL, getCreator());
-			
-			getCreator().getNamespace().put(context, name, port);
-			context.setProperty(port, PortSpec.PROPERTY_NAME, name);
 		}
 	}
 
@@ -409,10 +371,6 @@ public class Control extends NamedModelObject implements IControl {
 		kind = null;
 		
 		super.dispose();
-	}
-	
-	public IChange changeAddPort(PortSpec port, String name) {
-		return new ChangeAddPort(port, name);
 	}
 	
 	public IChange changeRemove() {
