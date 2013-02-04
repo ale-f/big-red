@@ -3,51 +3,36 @@ package org.bigraph.model.interfaces;
 import org.bigraph.model.Control;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
-import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class SignatureBuilder {
 	private Signature s = new Signature();
-	private ChangeGroup cg = new ChangeGroup();
-	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
-	private void addChange(IChange ch) {
-		if (ch == null)
-			return;
-		cg.add(ch);
-		getScratch().executeChange(ch);
-	}
-	
-	private PropertyScratchpad getScratch() {
-		return scratch;
+	private void doChange(IChangeDescriptor ch) {
+		try {
+			DescriptorExecutorManager.getInstance().tryApplyChange(s, ch);
+		} catch (ChangeCreationException cce) {
+			/* do nothing */
+		}
 	}
 	
 	public IControl newControl(String name) {
-		Control c = new Control();
-		addChange(s.changeAddControl(c, name));
-		return c;
+		Control.Identifier cid = new Control.Identifier(name);
+		doChange(new Signature.ChangeAddControlDescriptor(
+				new Signature.Identifier(), cid));
+		return cid.lookup(null, s);
 	}
 	
 	public IPort newPort(IControl control, String name) {
-		PortSpec p = new PortSpec();
-		addChange(new BoundDescriptor(s,
-				new Control.ChangeAddPortSpecDescriptor(
-						new PortSpec.Identifier(name,
-								((Control)control).
-										getIdentifier(getScratch())))));
-		return p;
+		PortSpec.Identifier pid = new PortSpec.Identifier(
+				name, ((Control)control).getIdentifier());
+		doChange(new Control.ChangeAddPortSpecDescriptor(pid));
+		return pid.lookup(null, s);
 	}
 	
 	public Signature finish() {
-		try {
-			ExecutorManager.getInstance().tryApplyChange(cg);
-		} catch (ChangeRejectedException cre) {
-			return null;
-		}
 		return s;
 	}
 }

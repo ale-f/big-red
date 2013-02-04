@@ -44,9 +44,12 @@ public class SignatureXMLLoader extends XMLLoader {
 	}
 
 	private void makeControl(Element e) throws LoadFailedException {
-		Control model = new Control();
-		addChange(sig.changeAddControl(
-				model, getAttributeNS(e, SIGNATURE, "name")));
+		Control.Identifier cid =
+				new Control.Identifier(getAttributeNS(e, SIGNATURE, "name"));
+		addChange(new BoundDescriptor(sig,
+				new Signature.ChangeAddControlDescriptor(
+						new Signature.Identifier(), cid)));
+		Control model = cid.lookup(getScratch(), getResolver());
 		
 		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null)

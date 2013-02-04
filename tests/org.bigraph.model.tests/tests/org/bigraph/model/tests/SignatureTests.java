@@ -7,68 +7,69 @@ import org.bigraph.model.Control;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
-import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
-
-import static org.bigraph.model.tests.BigraphTests.cg;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 
 public class SignatureTests {
 	@Test
-	public void addSimpleControl() throws ChangeRejectedException {
-		Signature s = new Signature();
-		ExecutorManager.getInstance().tryApplyChange(s.changeAddControl(new Control(), "c0"));
+	public void addSimpleControl() throws ChangeCreationException {
+		DescriptorTestRunner.run(new Signature(),
+				new Signature.ChangeAddControlDescriptor(
+						new Signature.Identifier(),
+						new Control.Identifier("c0")));
 	}
 	
 	@Test
-	public void addComplexControl() throws ChangeRejectedException {
-		Signature s = new Signature();
-		Control c0 = new Control();
-		ExecutorManager.getInstance().tryApplyChange(cg(
-				s.changeAddControl(c0, "c0"),
-				new BoundDescriptor(s,
-						new Control.ChangeAddPortSpecDescriptor(
-								new PortSpec.Identifier("p0",
-										new Control.Identifier("c0")))),
-				new BoundDescriptor(s,
-						new Control.ChangeKindDescriptor(
-								new Control.Identifier("c0"),
-								Kind.ACTIVE, Kind.ATOMIC))));
+	public void addComplexControl() throws ChangeCreationException {
+		DescriptorTestRunner.run(new Signature(),
+				new Signature.ChangeAddControlDescriptor(
+						new Signature.Identifier(),
+						new Control.Identifier("c0")),
+				new Control.ChangeAddPortSpecDescriptor(
+						new PortSpec.Identifier("p0",
+								new Control.Identifier("c0"))),
+				new Control.ChangeKindDescriptor(
+						new Control.Identifier("c0"),
+						Kind.ACTIVE, Kind.ATOMIC));
 	}
 	
 	@Test
-	public void removeControl() throws ChangeRejectedException {
+	public void removeControl() throws ChangeCreationException {
 		Signature s = new Signature();
 		try {
-			ExecutorManager.getInstance().tryApplyChange(s.changeAddControl(new Control(), "c0"));
-		} catch (ChangeRejectedException e) {
+			DescriptorTestRunner.run(s,
+					new Signature.ChangeAddControlDescriptor(
+							new Signature.Identifier(),
+							new Control.Identifier("c0")));
+		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
-		ExecutorManager.getInstance().tryApplyChange(s.getControl("c0").changeRemove());
+		DescriptorTestRunner.run(s,
+				new Signature.ChangeRemoveControlDescriptor(
+						new Signature.Identifier(),
+						new Control.Identifier("c0")));
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void removeAbsentControl() throws ChangeRejectedException {
-		ExecutorManager.getInstance().tryApplyChange(
-				new Control().changeRemove());
+	@Test(expected = ChangeCreationException.class)
+	public void removeAbsentControl() throws ChangeCreationException {
+		DescriptorTestRunner.run(new Signature(),
+				new Signature.ChangeRemoveControlDescriptor(
+						new Signature.Identifier(),
+						new Control.Identifier("c0")));
 	}
-	
-	@Test(expected = ChangeRejectedException.class)
-	public void addDuplicateName() throws ChangeRejectedException {
-		Signature s = new Signature();
-		Control
-			c0 = new Control(),
-			c1 = new Control();
-		ExecutorManager.getInstance().tryApplyChange(cg(
-				s.changeAddControl(c0, "c0"),
-				s.changeAddControl(c1, "c0")));
+
+	@Test(expected = ChangeCreationException.class)
+	public void addDuplicateName() throws ChangeCreationException {
+		Signature.ChangeAddControlDescriptor cd =
+				new Signature.ChangeAddControlDescriptor(
+						new Signature.Identifier(),
+						new Control.Identifier("c0"));
+		DescriptorTestRunner.run(new Signature(), cd, cd);
 	}
 	
 	@Test
-	public void addNestedSignature() throws ChangeRejectedException {
-		Signature s = new Signature();
-		ExecutorManager.getInstance().tryApplyChange(new BoundDescriptor(s,
+	public void addNestedSignature() throws ChangeCreationException {
+		DescriptorTestRunner.run(new Signature(),
 				new Signature.ChangeAddSignatureDescriptor(
-						new Signature.Identifier(), -1, new Signature())));
+						new Signature.Identifier(), -1, new Signature()));
 	}
 }

@@ -200,13 +200,14 @@ public class BGMParser {
 			lexer.expect(P_IDENTIFIER);
 		} else if ((controlType = lexer.accept(P_ACTIVE)) != null ||
 				(controlType = lexer.accept(P_PASSIVE)) != null) {
-			String id = lexer.expect(P_IDENTIFIER);
+			Control.Identifier cid =
+					new Control.Identifier(lexer.expect(P_IDENTIFIER));
 			lexer.expect(P_COLON);
 			String arity = lexer.expect(P_INTEGER);
 			
-			Control.Identifier cid = new Control.Identifier(id);
-			Control c = new Control();
-			change(signature.changeAddControl(c, id));
+			change(new BoundDescriptor(signature,
+					new Signature.ChangeAddControlDescriptor(
+							new Signature.Identifier(), cid)));
 			change(new BoundDescriptor(signature,
 					new Control.ChangeKindDescriptor(
 							cid, null,

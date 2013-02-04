@@ -39,18 +39,19 @@ public class BigraphTests {
 			throws ChangeCreationException, ChangeRejectedException {
 		signature = new Signature();
 		
-		control0 = new Control();
-		ExecutorManager.getInstance().tryApplyChange(
-				signature.changeAddControl(control0, "c0"));
-		
-		Control.Identifier cid = new Control.Identifier("c1");
+		Control.Identifier
+			cid0 = new Control.Identifier("c0"),
+			cid1 = new Control.Identifier("c1");
 		DescriptorTestRunner.run(signature,
 				new Signature.ChangeAddControlDescriptor(
-						new Signature.Identifier(), cid),
+						new Signature.Identifier(), cid0),
+				new Signature.ChangeAddControlDescriptor(
+						new Signature.Identifier(), cid1),
 				new Control.ChangeAddPortSpecDescriptor(
-						new PortSpec.Identifier("p0", cid)),
+						new PortSpec.Identifier("p0", cid1)),
 				new Control.ChangeAddPortSpecDescriptor(
-						new PortSpec.Identifier("p1", cid)));
+						new PortSpec.Identifier("p1", cid1)));
+		control0 = cid0.lookup(null, signature);
 		assertNotNull(signature.getControl("c1"));
 	}
 	

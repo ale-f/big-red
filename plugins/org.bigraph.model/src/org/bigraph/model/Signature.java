@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import org.bigraph.model.Control.ChangeRemoveControl;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
@@ -44,51 +42,6 @@ public class Signature extends ModelObject
 	
 	@RedProperty(fired = Signature.class, retrieved = Signature.class)
 	public static final String PROPERTY_PARENT = "SignatureParent";
-	
-	abstract class SignatureChange extends ModelObjectChange {
-		@Override
-		public Signature getCreator() {
-			return Signature.this;
-		}
-	}
-	
-	public final class ChangeAddControl extends SignatureChange {
-		public final Control control;
-		public final String name;
-		
-		public ChangeAddControl(Control control, String name) {
-			this.control = control;
-			this.name = name;
-		}
-
-		@Override
-		public ChangeRemoveControl inverse() {
-			return control.new ChangeRemoveControl();
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(add control " + control + " to signature " +
-					getCreator() + " with name " + name + ")";
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (control != null);
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.<Control>getModifiableSet(
-					getCreator(), PROPERTY_CONTROL, getControls()).
-				add(control);
-			context.setProperty(control,
-					Control.PROPERTY_SIGNATURE, getCreator());
-			
-			getCreator().getNamespace().put(context, name, control);
-			context.setProperty(control, Control.PROPERTY_NAME, name);
-		}
-	}
 	
 	private Namespace<Control> ns = new HashMapNamespace<Control>(
 			new StringNamePolicy() {
@@ -155,10 +108,6 @@ public class Signature extends ModelObject
 	}
 
 	public static final String CONTENT_TYPE = "dk.itu.big_red.signature";
-	
-	static {
-		ExecutorManager.getInstance().addParticipant(new SignatureHandler());
-	}
 	
 	@Override
 	public void dispose() {
@@ -238,10 +187,6 @@ public class Signature extends ModelObject
 		signatures.remove(s);
 		s.setParent(null);
 		firePropertyChange(PROPERTY_CHILD, s, null);
-	}
-	
-	public IChange changeAddControl(Control control, String name) {
-		return new ChangeAddControl(control, name);
 	}
 	
 	@Override

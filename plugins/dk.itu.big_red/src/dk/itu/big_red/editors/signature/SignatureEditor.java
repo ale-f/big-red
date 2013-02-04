@@ -383,10 +383,13 @@ implements PropertyChangeListener {
 		addControl.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Control c = new Control();
-				doChange(getModel().changeAddControl(c,
-						getModel().getNamespace().getNextName()));
-				controls.setSelection(new StructuredSelection(c), true);
+				Control.Identifier cid = new Control.Identifier(
+						getModel().getNamespace().getNextName());
+				doChange(new Signature.ChangeAddControlDescriptor(
+						new Signature.Identifier(), cid));
+				controls.setSelection(
+						new StructuredSelection(
+								cid.lookup(null, getModel())), true);
 			}
 		});
 		
@@ -404,7 +407,10 @@ implements PropertyChangeListener {
 					if (i instanceof Control) {
 						Control c = (Control)i;
 						if (c.getSignature().equals(getModel()))
-							cg.add(ch = c.changeRemove());
+							cg.add(ch = bind(
+									new Signature.ChangeRemoveControlDescriptor(
+											new Signature.Identifier(),
+											c.getIdentifier())));
 					} else if (i instanceof Signature) {
 						Signature s = (Signature)i;
 						if (s.getParent().equals(getModel()))

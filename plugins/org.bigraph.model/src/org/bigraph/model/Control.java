@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -51,13 +49,6 @@ public class Control extends NamedModelObject implements IControl {
 	@RedProperty(fired = Signature.class, retrieved = Signature.class)
 	public static final String PROPERTY_SIGNATURE = "ControlSignature";
 	
-	abstract class ControlChange extends ModelObjectChange {
-		@Override
-		public Control getCreator() {
-			return Control.this;
-		}
-	}
-	
 	abstract static class ControlChangeDescriptor
 			extends ModelObjectChangeDescriptor {
 		static {
@@ -76,10 +67,6 @@ public class Control extends NamedModelObject implements IControl {
 	protected Namespace<Control>
 			getGoverningNamespace(PropertyScratchpad context) {
 		return getSignature(context).getNamespace();
-	}
-	
-	static {
-		ExecutorManager.getInstance().addParticipant(new ControlHandler());
 	}
 	
 	public static final class ChangeKindDescriptor
@@ -184,41 +171,6 @@ public class Control extends NamedModelObject implements IControl {
 			
 			self.getNamespace().put(context, getSpec().getName(), null);
 			context.setProperty(p, PortSpec.PROPERTY_NAME, null);
-		}
-	}
-
-	public final class ChangeRemoveControl extends ControlChange {
-		private String oldName;
-		private Signature oldSignature;
-		
-		@Override
-		public void beforeApply() {
-			oldName = getCreator().getName();
-			oldSignature = getSignature();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldSignature != null);
-		}
-		
-		@Override
-		public Change inverse() {
-			return oldSignature.new ChangeAddControl(getCreator(), oldName);
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			Signature s = getCreator().getSignature(context);
-			
-			context.<Control>getModifiableSet(
-					s, Signature.PROPERTY_CONTROL, s.getControls()).
-				remove(getCreator());
-			context.setProperty(getCreator(),
-					Control.PROPERTY_SIGNATURE, null);
-			
-			s.getNamespace().remove(context, getCreator().getName(context));
-			context.setProperty(getCreator(), PROPERTY_NAME, null);
 		}
 	}
 	
@@ -371,10 +323,6 @@ public class Control extends NamedModelObject implements IControl {
 		kind = null;
 		
 		super.dispose();
-	}
-	
-	public IChange changeRemove() {
-		return new ChangeRemoveControl();
 	}
 	
 	public static final class Identifier extends NamedModelObject.Identifier {
