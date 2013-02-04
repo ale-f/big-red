@@ -107,7 +107,9 @@ public class BigraphEditor extends AbstractGEFEditor {
 	    		new ToggleGridAction(getGraphicalViewer()),
 	    		new ToggleSnapToGeometryAction(getGraphicalViewer()),
 	    		new TogglePropertyAction(
-	    				PROPERTY_DISPLAY_GUIDES, true, getGraphicalViewer()));
+	    				PROPERTY_DISPLAY_GUIDES, true, getGraphicalViewer()),
+	    		new TogglePropertyAction(
+	    				PROPERTY_DISPLAY_EDGES, true, getGraphicalViewer()));
 	}
 	
 	@Override

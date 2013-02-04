@@ -56,6 +56,9 @@ public abstract class AbstractGEFEditor extends AbstractEditor
 	public static final String PROPERTY_DISPLAY_GUIDES =
 			"dk.itu.big_red.editors.AbstractGEFEditor.propertyDisplayGuides";
 	
+	public static final String PROPERTY_DISPLAY_EDGES =
+			"dk.itu.big_red.editors.AbstractGEFEditor.propertyDisplayEdges";
+	
 	private DefaultEditDomain editDomain;
 	
 	private List<String> selectionActions;

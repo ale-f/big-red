@@ -1,9 +1,12 @@
 package dk.itu.big_red.editors.bigraph.parts;
 
+import java.beans.PropertyChangeEvent;
+
 import org.bigraph.model.Edge;
 import org.bigraph.model.Link;
 import org.eclipse.draw2d.IFigure;
 
+import dk.itu.big_red.editors.AbstractGEFEditor;
 import dk.itu.big_red.editors.bigraph.figures.EdgeFigure;
 import dk.itu.big_red.editors.bigraph.figures.assistants.FixedPointAnchor.Orientation;
 
@@ -22,6 +25,29 @@ public class EdgePart extends LinkPart {
 	}
 	
 	@Override
+	public void activate() {
+		super.activate();
+		getViewer().addPropertyChangeListener(this);
+	}
+	
+	@Override
+	public void deactivate() {
+		getViewer().removePropertyChangeListener(this);
+		super.deactivate();
+	}
+	
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getSource() == getViewer()) {
+			if (AbstractGEFEditor.PROPERTY_DISPLAY_EDGES.equals(
+					evt.getPropertyName()))
+				refreshVisuals();
+			return;
+		}
+		super.propertyChange(evt);
+	}
+	
+	@Override
 	public EdgeFigure getFigure() {
 		return (EdgeFigure)super.getFigure();
 	}
@@ -30,6 +56,12 @@ public class EdgePart extends LinkPart {
 	public void refreshVisuals() {
 		super.refreshVisuals();
 		
+		Object displayEdgesObj = getViewer().getProperty(
+				AbstractGEFEditor.PROPERTY_DISPLAY_EDGES);
+		boolean displayEdges = (displayEdgesObj instanceof Boolean ?
+				(Boolean)displayEdgesObj : true);
+		
+		getFigure().setVisible(displayEdges);
 		getFigure().setSingle(getModel().getPoints().size() == 1);
 		getFigure().repaint();
 	}

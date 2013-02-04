@@ -20,6 +20,8 @@ import dk.itu.big_red.editors.assistants.ActionBarContributor;
 public class BigraphEditorActionBarContributor extends ActionBarContributor {
 	public static final String ACTION_GUIDE = TogglePropertyAction.getId(
 			AbstractGEFEditor.PROPERTY_DISPLAY_GUIDES);
+	public static final String ACTION_EDGE = TogglePropertyAction.getId(
+			AbstractGEFEditor.PROPERTY_DISPLAY_EDGES);
 	
 	@Override
 	protected void buildActions() {
@@ -63,6 +65,14 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 						"resources/icons/actions/guide-lines.png"));
 			}
 		});
+		
+		addRetargetAction(new RetargetAction(
+				ACTION_EDGE, "Toggle edge display", IAction.AS_CHECK_BOX) {
+			{
+				setImageDescriptor(RedPlugin.getImageDescriptor(
+						"resources/icons/actions/guide-lines.png"));
+			}
+		});
 	}
 
 	@Override
@@ -90,5 +100,6 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 		toolBarManager.add(
 				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
 		toolBarManager.add(getAction(ACTION_GUIDE));
+		toolBarManager.add(getAction(ACTION_EDGE));
 	}
 }
