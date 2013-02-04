@@ -18,11 +18,8 @@ final class SignatureDescriptorHandler
 		final Resolver resolver = context.getResolver();
 		if (change instanceof ChangeAddControlDescriptor) {
 			ChangeAddControlDescriptor cd = (ChangeAddControlDescriptor)change;
-			Signature s = cd.getTarget().lookup(scratch, resolver);
-			
-			if (s == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			Signature s = tryLookup(cd,
+					cd.getTarget(), scratch, resolver, Signature.class);
 			
 			NamedModelObjectDescriptorHandler.checkName(scratch, cd,
 					cd.getControl(), s.getNamespace(),
@@ -30,25 +27,13 @@ final class SignatureDescriptorHandler
 		} else if (change instanceof ChangeRemoveControlDescriptor) {
 			ChangeRemoveControlDescriptor cd =
 					(ChangeRemoveControlDescriptor)change;
-			Signature s = cd.getTarget().lookup(scratch, resolver);
-			
-			if (s == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
-			
-			Control co = cd.getControl().lookup(scratch, resolver);
-			
-			if (co == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getControl() + ": lookup failed");
+			tryLookup(cd, cd.getTarget(), scratch, resolver, Signature.class);
+			tryLookup(cd, cd.getControl(), scratch, resolver, Control.class);
 		} else if (change instanceof ChangeAddSignatureDescriptor) {
 			ChangeAddSignatureDescriptor cd =
 					(ChangeAddSignatureDescriptor)change;
-			Signature s = cd.getTarget().lookup(scratch, resolver);
-			
-			if (s == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			Signature s = tryLookup(cd,
+					cd.getTarget(), scratch, resolver, Signature.class);
 			
 			Signature ch = cd.getSignature();
 			if (ch == null)
@@ -60,11 +45,8 @@ final class SignatureDescriptorHandler
 		} else if (change instanceof ChangeRemoveSignatureDescriptor) {
 			ChangeRemoveSignatureDescriptor cd =
 					(ChangeRemoveSignatureDescriptor)change;
-			Signature s = cd.getTarget().lookup(scratch, resolver);
-			
-			if (s == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			Signature s = tryLookup(cd,
+					cd.getTarget(), scratch, resolver, Signature.class);
 			
 			HandlerUtilities.checkRemove(cd,
 					s.getSignatures(scratch),

@@ -17,11 +17,8 @@ final class EditDescriptorHandler
 		if (change instanceof ChangeDescriptorAddDescriptor) {
 			ChangeDescriptorAddDescriptor cd =
 					(ChangeDescriptorAddDescriptor)change;
-			Edit edit = cd.getTarget().lookup(scratch, resolver);
-			
-			if (edit == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			Edit edit = tryLookup(cd,
+					cd.getTarget(), scratch, resolver, Edit.class);
 			
 			if (cd.getDescriptor() == null)
 				throw new ChangeCreationException(cd,
@@ -32,11 +29,8 @@ final class EditDescriptorHandler
 		} else if (change instanceof ChangeDescriptorRemoveDescriptor) {
 			ChangeDescriptorRemoveDescriptor cd =
 					(ChangeDescriptorRemoveDescriptor)change;
-			Edit edit = cd.getTarget().lookup(scratch, resolver);
-			
-			if (edit == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			Edit edit = tryLookup(cd,
+					cd.getTarget(), scratch, resolver, Edit.class);
 			
 			HandlerUtilities.checkRemove(cd,
 					edit.getDescriptors(scratch),

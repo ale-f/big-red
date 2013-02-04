@@ -15,11 +15,7 @@ final class ControlDescriptorHandler extends DescriptorHandlerImpl {
 		final Resolver resolver = context.getResolver();
 		if (change instanceof ChangeKindDescriptor) {
 			ChangeKindDescriptor cd = (ChangeKindDescriptor)change;
-			Control c = cd.getTarget().lookup(scratch, resolver);
-			
-			if (c == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			tryLookup(cd, cd.getTarget(), scratch, resolver, Control.class);
 		} else return false;
 		return true;
 	}

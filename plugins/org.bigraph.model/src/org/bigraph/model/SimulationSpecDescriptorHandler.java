@@ -18,23 +18,17 @@ final class SimulationSpecDescriptorHandler
 		final PropertyScratchpad scratch = context.getScratch();
 		if (change instanceof ChangeSetModelDescriptor) {
 			ChangeSetModelDescriptor cd = (ChangeSetModelDescriptor)change;
-			SimulationSpec ss = cd.getTarget().lookup(scratch, resolver);
-			if (ss == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			tryLookup(cd,
+					cd.getTarget(), scratch, resolver, SimulationSpec.class);
 		} else if (change instanceof ChangeSetSignatureDescriptor) {
 			ChangeSetSignatureDescriptor cd =
 					(ChangeSetSignatureDescriptor)change;
-			SimulationSpec ss = cd.getTarget().lookup(scratch, resolver);
-			if (ss == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			tryLookup(cd,
+					cd.getTarget(), scratch, resolver, SimulationSpec.class);
 		} else if (change instanceof ChangeAddRuleDescriptor) {
 			ChangeAddRuleDescriptor cd = (ChangeAddRuleDescriptor)change;
-			SimulationSpec ss = cd.getTarget().lookup(scratch, resolver);
-			if (ss == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			SimulationSpec ss = tryLookup(cd,
+					cd.getTarget(), scratch, resolver, SimulationSpec.class);
 			
 			if (cd.getRule() == null)
 				throw new ChangeCreationException(cd,
@@ -44,10 +38,8 @@ final class SimulationSpecDescriptorHandler
 					ss.getRules(scratch), cd.getPosition());
 		} else if (change instanceof ChangeRemoveRuleDescriptor) {
 			ChangeRemoveRuleDescriptor cd = (ChangeRemoveRuleDescriptor)change;
-			SimulationSpec ss = cd.getTarget().lookup(scratch, resolver);
-			if (ss == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			SimulationSpec ss = tryLookup(cd,
+					cd.getTarget(), scratch, resolver, SimulationSpec.class);
 			
 			HandlerUtilities.checkRemove(cd,
 					ss.getRules(scratch), cd.getRule(), cd.getPosition());

@@ -16,15 +16,11 @@ final class ModelObjectDescriptorHandler
 		if (change instanceof ChangeMoveExtendedDataDescriptor) {
 			ChangeMoveExtendedDataDescriptor cd =
 					(ChangeMoveExtendedDataDescriptor)change;
+			tryLookup(cd,
+					cd.getSource(), scratch, resolver, ModelObject.class);
 			ModelObject
-				source = cd.getSource().lookup(scratch, resolver),
-				target = cd.getTarget().lookup(scratch, resolver);
-			if (source == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getSource() + ": lookup failed");
-			if (target == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+				target = tryLookup(cd,
+						cd.getTarget(), scratch, resolver, ModelObject.class);
 			
 			if (!target.getExtendedDataMap(scratch).isEmpty())
 				throw new ChangeCreationException(cd,

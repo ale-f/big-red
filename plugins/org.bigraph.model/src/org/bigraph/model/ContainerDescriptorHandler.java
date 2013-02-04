@@ -22,10 +22,8 @@ final class ContainerDescriptorHandler
 			Container.Identifier parentI = cd.getParent();
 			Layoutable.Identifier childI = cd.getChild();
 			
-			Container parent = parentI.lookup(scratch, resolver);
-			if (parent == null)
-				throw new ChangeCreationException(cd,
-						"lookup failed: " + parentI);
+			Container parent =
+					tryLookup(cd, parentI, scratch, resolver, Container.class);
 			
 			if (parent instanceof Node) {
 				Control c = ((Node)parent).getControl();
@@ -35,13 +33,9 @@ final class ContainerDescriptorHandler
 							" is an atomic control");
 			}
 			
-			if (childI instanceof Node.Identifier) {
-				Node.Identifier nodeI = (Node.Identifier)childI;
-				Control.Identifier controlI = nodeI.getControl();
-				if (controlI.lookup(scratch, resolver) == null)
-					throw new ChangeCreationException(cd,
-							"lookup failed: " + controlI);
-			}
+			if (childI instanceof Node.Identifier)
+				tryLookup(cd, ((Node.Identifier)childI).getControl(),
+						scratch, resolver, Control.class);
 			
 			if (!canContain(parentI, childI))
 				throw new ChangeCreationException(cd,
@@ -49,15 +43,10 @@ final class ContainerDescriptorHandler
 		} else if (change instanceof ChangeRemoveChildDescriptor) {
 			ChangeRemoveChildDescriptor co =
 					(ChangeRemoveChildDescriptor)change;
-			Layoutable ch = co.getChild().lookup(scratch, resolver);
-			Container parent = co.getParent().lookup(scratch, resolver);
-			
-			if (ch == null)
-				throw new ChangeCreationException(co,
-						"" + co.getChild() + ": lookup failed");
-			if (parent == null)
-				throw new ChangeCreationException(co,
-						"" + co.getParent() + ": lookup failed");
+			Layoutable ch = tryLookup(co,
+					co.getChild(), scratch, resolver, Layoutable.class);
+			Container parent = tryLookup(co,
+					co.getParent(), scratch, resolver, Container.class);
 			
 			if (ch instanceof InnerName)
 				if (((InnerName)ch).getLink(scratch) != null)

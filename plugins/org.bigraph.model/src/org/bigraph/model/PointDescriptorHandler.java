@@ -16,15 +16,9 @@ final class PointDescriptorHandler
 		final PropertyScratchpad scratch = context.getScratch();
 		if (change instanceof ChangeConnectDescriptor) {
 			ChangeConnectDescriptor co = (ChangeConnectDescriptor)change;
-			Point p = co.getPoint().lookup(scratch, resolver);
-			Link l = co.getLink().lookup(scratch, resolver);
-			
-			if (p == null)
-				throw new ChangeCreationException(co,
-						"" + co.getPoint() + " didn't resolve to a Point");
-			if (l == null)
-				throw new ChangeCreationException(co,
-						"" + co.getLink() + " didn't resolve to a Link");
+			Point p = tryLookup(co,
+					co.getPoint(), scratch, resolver, Point.class);
+			tryLookup(co, co.getLink(), scratch, resolver, Link.class);
 			
 			Link currentLink = p.getLink(scratch);
 			if (currentLink != null)

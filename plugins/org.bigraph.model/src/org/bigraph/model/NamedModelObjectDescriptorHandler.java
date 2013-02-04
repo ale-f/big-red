@@ -18,10 +18,8 @@ final class NamedModelObjectDescriptorHandler
 		if (change instanceof ChangeNameDescriptor) {
 			ChangeNameDescriptor cd = (ChangeNameDescriptor)change;
 			
-			NamedModelObject object = cd.getTarget().lookup(scratch, resolver);
-			if (object == null)
-				throw new ChangeCreationException(cd,
-						"" + cd.getTarget() + ": lookup failed");
+			NamedModelObject object = tryLookup(cd,
+					cd.getTarget(), scratch, resolver, NamedModelObject.class);
 			
 			checkName(scratch, cd, cd.getTarget(),
 					object.getGoverningNamespace(scratch), cd.getNewName());
