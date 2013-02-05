@@ -70,7 +70,7 @@ public class ExecutorManager extends ValidatorManager {
 		
 		@Override
 		public boolean executeChange(IChange change_) {
-			return (step(change_) == null);
+			return (run(change_) == null);
 		}
 		
 		@Override

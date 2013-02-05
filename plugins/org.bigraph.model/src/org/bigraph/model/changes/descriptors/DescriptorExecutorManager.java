@@ -69,7 +69,7 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 		
 		@Override
 		public boolean executeChange(Resolver r, IChangeDescriptor change_) {
-			return (step(r, change_) == null);
+			return (run(r, change_) == null);
 		}
 		
 		@Override
