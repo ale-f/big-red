@@ -3,8 +3,6 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
@@ -110,12 +108,6 @@ public abstract class NamedModelObject extends ModelObject {
 		public int hashCode() {
 			return compositeHashCode(
 					ChangeNameDescriptor.class, target, newName);
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			return new BoundDescriptor(r, this);
 		}
 		
 		@Override

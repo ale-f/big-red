@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
 
 /**
  * A <strong>ChangeDescriptorGroup</strong> is a collection of {@link
@@ -31,17 +30,6 @@ public class ChangeDescriptorGroup extends ArrayList<IChangeDescriptor>
 	@Override
 	public ChangeDescriptorGroup clone() {
 		return new ChangeDescriptorGroup(this);
-	}
-	
-	@Override
-	public ChangeGroup createChange(PropertyScratchpad context, Resolver r)
-			throws ChangeCreationException {
-		ChangeGroup cg = new ChangeGroup();
-		context = new PropertyScratchpad(context);
-		for (IChangeDescriptor cd : this)
-			if (cd != null)
-				cg.add(context.executeChange(cd.createChange(context, r)));
-		return cg;
 	}
 	
 	@Override

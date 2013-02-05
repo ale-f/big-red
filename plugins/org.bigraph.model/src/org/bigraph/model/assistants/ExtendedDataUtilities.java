@@ -2,8 +2,6 @@ package org.bigraph.model.assistants;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
@@ -53,12 +51,6 @@ public abstract class ExtendedDataUtilities {
 		protected V getNormalisedNewValue(
 				PropertyScratchpad context, Resolver r) {
 			return getNewValue();
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			return new BoundDescriptor(r, this);
 		}
 		
 		@Override

@@ -3,11 +3,10 @@ package org.bigraph.model.loaders;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Edit;
 import org.bigraph.model.ReactionRule;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
@@ -108,15 +107,11 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	}
 	
 	private void updateReactum() throws LoadFailedException {
-		Bigraph reactum = rr.getReactum();
-		ChangeDescriptorGroup cdg = rr.getEdit().getDescriptors();
-		
 		try {
-			ExecutorManager.getInstance().tryApplyChange(cdg.createChange(null, reactum));
+			DescriptorExecutorManager.getInstance().tryApplyChange(
+					rr.getReactum(), rr.getEdit().getDescriptors());
 		} catch (ChangeCreationException cce) {
 			throw new LoadFailedException(cce);
-		} catch (ChangeRejectedException cre) {
-			throw new LoadFailedException(cre);
 		}
 	}
 	

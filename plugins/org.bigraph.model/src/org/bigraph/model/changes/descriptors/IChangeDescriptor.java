@@ -15,16 +15,6 @@ import org.bigraph.model.changes.IChange;
  * @see IChange
  */
 public interface IChangeDescriptor {
-	/**
-	 * Instantiates an {@link IChange} from this descriptor.
-	 * @param context a {@link PropertyScratchpad}
-	 * @param r a {@link Resolver} for resolving {@link Identifier}s
-	 * @return a new {@link IChange} (not <code>null</code>)
-	 * @throws ChangeCreationException if something went wrong
-	 */
-	IChange createChange(PropertyScratchpad context, Resolver r)
-			throws ChangeCreationException;
-	
 	IChangeDescriptor inverse();
 	
 	void simulate(PropertyScratchpad context, Resolver r)

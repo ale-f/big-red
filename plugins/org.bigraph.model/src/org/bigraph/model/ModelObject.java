@@ -8,8 +8,6 @@ import java.util.Map;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -269,12 +267,6 @@ public abstract class ModelObject {
 		
 		public Identifier getTarget() {
 			return target;
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			return new BoundDescriptor(r, this);
 		}
 		
 		@Override

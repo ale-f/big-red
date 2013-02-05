@@ -4,11 +4,9 @@ import java.util.Iterator;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.DescriptorConflicts;
 import org.bigraph.model.assistants.DescriptorConflicts.IConflict;
-import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class ReactionRule extends ModelObject {
@@ -138,17 +136,14 @@ public class ReactionRule extends ModelObject {
 		ReactionRule rr = (ReactionRule)super.clone();
 		rr.setRedex(getRedex().clone());
 		
-		IChange c = null;
 		try {
-			c = getEdit().getDescriptors().createChange(null, reactum);
-			ExecutorManager.getInstance().tryApplyChange(c);
+			DescriptorExecutorManager.getInstance().tryApplyChange(
+					rr.getRedex(), getEdit().getDescriptors());
 			for (IChangeDescriptor d : getEdit().getDescriptors())
 				rr.getEdit().getDescriptors().add(d);
 		} catch (ChangeCreationException cce) {
-			throw new Error("BUG: reactum changes were completely invalid",
-					cce);
-		} catch (ChangeRejectedException cre) {
-			throw new Error("BUG: reactum changes were slightly invalid", cre);
+			throw new RuntimeException(
+					"BUG: reactum changes were completely invalid", cce);
 		}
 		
 		return rr;

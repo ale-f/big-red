@@ -102,7 +102,8 @@ public class EditXMLLoader extends XMLLoader {
 			IChangeDescriptor cd = null;
 			if (EDIT.equals(namespaceURI)) {
 				if ("edit".equals(localName)) {
-					cd = new EditXMLLoader(this).makeObject(i);
+					cd =
+						new EditXMLLoader(this).makeObject(i).getDescriptors();
 				} else if ("rename".equals(localName)) {
 					cd = makeRename(i);
 				}

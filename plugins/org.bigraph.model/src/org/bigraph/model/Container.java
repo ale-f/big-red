@@ -222,36 +222,6 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			Container c = parent.lookup(context, r);
-			if (c != null) {
-				Layoutable l = null;
-				if (child instanceof Root.Identifier) {
-					l = new Root();
-				} else if (child instanceof Site.Identifier) {
-					l = new Site();
-				} else if (child instanceof InnerName.Identifier) {
-					l = new InnerName();
-				} else if (child instanceof Edge.Identifier) {
-					l = new Edge();
-				} else if (child instanceof OuterName.Identifier) {
-					l = new OuterName();
-				} else if (child instanceof Node.Identifier) {
-					Node.Identifier id = (Node.Identifier)child;
-					/* There shouldn't be any changes to the signature in this
-					 * context */
-					l = new Node(id.getControl().lookup(null, r));
-				}
-				if (l != null) {
-					return c.changeAddChild(l, child.getName());
-				} else throw new ChangeCreationException(this,
-						"Couldn't create a new child object from " + child);
-			} else throw new ChangeCreationException(this,
-					"" + parent + " didn't resolve to a Container");
-		}
-		
-		@Override
 		public String toString() {
 			return "ChangeDescriptor(add child " + child + " to parent " + 
 					parent + ")";
@@ -315,16 +285,6 @@ public abstract class Container extends Layoutable {
 		public int hashCode() {
 			return compositeHashCode(ChangeRemoveChildDescriptor.class,
 					child, parent);
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			Layoutable l = child.lookup(context, r);
-			if (l == null)
-				throw new ChangeCreationException(this,
-						"" + child + " didn't resolve to a Layoutable");
-			return l.changeRemove();
 		}
 		
 		@Override

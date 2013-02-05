@@ -263,8 +263,7 @@ public final class ChangeCompatibilityLoader
 		}
 		if (cd != null) {
 			try {
-				scratch.executeChange(
-						cd.createChange(scratch, rr.getReactum()));
+				cd.simulate(scratch, rr.getReactum());
 			} catch (ChangeCreationException cce) {
 				cd = null;
 			}

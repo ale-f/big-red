@@ -3,8 +3,6 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.interfaces.IPoint;
@@ -26,12 +24,6 @@ public abstract class Point extends Layoutable implements IPoint {
 			extends LayoutableChangeDescriptor {
 		static {
 			DescriptorExecutorManager.getInstance().addParticipant(new PointDescriptorHandler());
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			return new BoundDescriptor(r, this);
 		}
 	}
 	

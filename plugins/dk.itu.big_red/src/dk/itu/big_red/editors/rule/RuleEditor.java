@@ -8,12 +8,11 @@ import java.util.Map;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ReactionRule;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.savers.ReactionRuleXMLSaver;
@@ -371,10 +370,9 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
-	private Map<IChange, IChangeDescriptor> reactumChangeToDescriptor =
-			new HashMap<IChange, IChangeDescriptor>();
-	private Map<IChange, IChange> safeRedexToReactum =
-			new HashMap<IChange, IChange>();
+	private Map<IChange, IChangeDescriptor>
+		reactumChangeToDescriptor = new HashMap<IChange, IChangeDescriptor>(),
+		safeRedexToReactum = new HashMap<IChange, IChangeDescriptor>();
 	
 	private void _testConvertChange(int detail, ChangeCommand c) {
 		IChange commandChange = c.getChange();
@@ -401,14 +399,11 @@ public class RuleEditor extends AbstractGEFEditor implements
 				/* scratch now contains the prospective state of the redex
 				 * after the change has been applied. Check that we can still
 				 * get to the reactum from there */
-				ExecutorManager.getInstance().tryValidateChange(
-						scratch, cdg.createChange(scratch, getRedex()));
+				DescriptorExecutorManager.getInstance().
+						tryValidateChange(scratch, getRedex(), cdg);
 			} catch (ChangeCreationException cce) {
 				throw new Error("BUG: post-fixup reactum changes are " +
 						"completely inconsistent, don't save", cce);
-			} catch (ChangeRejectedException cre) {
-				throw new Error("BUG: post-fixup reactum changes are " +
-						"slightly inconsistent, don't save", cre);
 			}
 			
 			/* cdg will be equal to reactumChanges if the fixup operations made
@@ -418,30 +413,23 @@ public class RuleEditor extends AbstractGEFEditor implements
 				reactumChanges.addAll(cdg);
 			}
 			
-			IChange instantiatedReactumChanges;
 			/* Anything that's left in lRedexCDs after the fixups should be
 			 * unrelated to the reactum changes, and so should be safe to
 			 * apply */
 			try {
-				if (detail != CommandStack.PRE_UNDO) { 
-					instantiatedReactumChanges =
-							lRedexCDs.createChange(null, getReactum());
-					ExecutorManager.getInstance().tryApplyChange(
-							instantiatedReactumChanges);
-					safeRedexToReactum.put(
-							commandChange, instantiatedReactumChanges);
+				if (detail != CommandStack.PRE_UNDO) {
+					DescriptorExecutorManager.getInstance().tryApplyChange(
+							getReactum(), lRedexCDs);
+					safeRedexToReactum.put(commandChange, lRedexCDs);
 				} else {
-					instantiatedReactumChanges =
+					IChangeDescriptor oldlRedexCDs = 
 							safeRedexToReactum.remove(commandChange);
-					ExecutorManager.getInstance().tryApplyChange(
-							instantiatedReactumChanges.inverse());
+					DescriptorExecutorManager.getInstance().tryApplyChange(
+							getReactum(), oldlRedexCDs.inverse());
 				}
 			} catch (ChangeCreationException cce) {
 				throw new Error("BUG: completely unsafe change slipped " +
 						"through the net", cce);
-			} catch (ChangeRejectedException cre) {
-				throw new Error("BUG: slightly unsafe change slipped " +
-						"through the net", cre);
 			}
 		} else if (target == getReactum()) {
 			IChangeDescriptor cd;

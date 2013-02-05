@@ -3,8 +3,6 @@ package org.bigraph.model;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -49,12 +47,6 @@ public class Edit extends ModelObject
 		IChangeDescriptor cd = cdg.remove(index);
 		firePropertyChange(PROPERTY_DESCRIPTOR, cd, null);
 	}
-	
-	@Override
-	public IChange createChange(PropertyScratchpad context, Resolver r)
-			throws ChangeCreationException {
-		return cdg.createChange(context, r);
-	}
 
 	@Override
 	protected Object getProperty(String name) {
@@ -97,12 +89,6 @@ public class Edit extends ModelObject
 			extends ModelObjectChangeDescriptor {
 		static {
 			DescriptorExecutorManager.getInstance().addParticipant(new EditDescriptorHandler());
-		}
-		
-		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			return new BoundDescriptor(r, this);
 		}
 	}
 	
