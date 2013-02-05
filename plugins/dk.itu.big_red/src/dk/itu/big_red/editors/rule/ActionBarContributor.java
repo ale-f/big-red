@@ -4,13 +4,9 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.ui.actions.RetargetAction;
-
-import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.editors.bigraph.BigraphEditorActionBarContributor;
+import dk.itu.big_red.editors.assistants.RedActions;
 
 public class ActionBarContributor extends
 		dk.itu.big_red.editors.assistants.ActionBarContributor {
@@ -21,30 +17,9 @@ public class ActionBarContributor extends
 		addRetargetAction(new ZoomInRetargetAction());
 		addRetargetAction(new ZoomOutRetargetAction());
 		
-		addRetargetAction(new RetargetAction(
-				GEFActionConstants.TOGGLE_GRID_VISIBILITY,
-				"Snap to grid", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(RedPlugin.getImageDescriptor(
-						"resources/icons/actions/snap-to-grid.png"));
-			}
-		});
-		addRetargetAction(new RetargetAction(
-				GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
-				"Snap to nearby objects", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(RedPlugin.getImageDescriptor(
-						"resources/icons/actions/snap-to-object.png"));
-			}
-		});
-		addRetargetAction(new RetargetAction(
-				BigraphEditorActionBarContributor.ACTION_GUIDE,
-				"Toggle guide display", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(RedPlugin.getImageDescriptor(
-						"resources/icons/actions/guide-lines.png"));
-			}
-		});
+		addRetargetAction(RedActions.createToggleGridAction());
+		addRetargetAction(RedActions.createSnapNearAction());
+		addRetargetAction(RedActions.createGuideDisplayAction());
 	}
 
 	@Override
@@ -60,7 +35,7 @@ public class ActionBarContributor extends
 		toolBarManager.add(
 				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
 		toolBarManager.add(
-				getAction(BigraphEditorActionBarContributor.ACTION_GUIDE));
+				getAction(RedActions.ACTION_GUIDE));
 	}
 
 }

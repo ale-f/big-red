@@ -5,24 +5,16 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.ZoomComboContributionItem;
 import org.eclipse.gef.ui.actions.ZoomInRetargetAction;
 import org.eclipse.gef.ui.actions.ZoomOutRetargetAction;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.actions.RetargetAction;
 
-import dk.itu.big_red.application.plugin.RedPlugin;
-import dk.itu.big_red.editors.AbstractGEFEditor;
-import dk.itu.big_red.editors.actions.TogglePropertyAction;
 import dk.itu.big_red.editors.assistants.ActionBarContributor;
+import dk.itu.big_red.editors.assistants.RedActions;
 
 public class BigraphEditorActionBarContributor extends ActionBarContributor {
-	public static final String ACTION_GUIDE = TogglePropertyAction.getId(
-			AbstractGEFEditor.PROPERTY_DISPLAY_GUIDES);
-	public static final String ACTION_EDGE = TogglePropertyAction.getId(
-			AbstractGEFEditor.PROPERTY_DISPLAY_EDGES);
-	
 	@Override
 	protected void buildActions() {
 		super.buildActions();
@@ -42,37 +34,10 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 		addRetargetAction(new ZoomInRetargetAction());
 		addRetargetAction(new ZoomOutRetargetAction());
 		
-		addRetargetAction(new RetargetAction(
-				GEFActionConstants.TOGGLE_GRID_VISIBILITY,
-				"Snap to grid", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(RedPlugin.getImageDescriptor(
-						"resources/icons/actions/snap-to-grid.png"));
-			}
-		});
-		addRetargetAction(new RetargetAction(
-				GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
-				"Snap to nearby objects", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(RedPlugin.getImageDescriptor(
-						"resources/icons/actions/snap-to-object.png"));
-			}
-		});
-		addRetargetAction(new RetargetAction(
-				ACTION_GUIDE, "Toggle guide display", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(RedPlugin.getImageDescriptor(
-						"resources/icons/actions/guide-lines.png"));
-			}
-		});
-		
-		addRetargetAction(new RetargetAction(
-				ACTION_EDGE, "Toggle edge display", IAction.AS_CHECK_BOX) {
-			{
-				setImageDescriptor(RedPlugin.getImageDescriptor(
-						"resources/icons/actions/guide-lines.png"));
-			}
-		});
+		addRetargetAction(RedActions.createToggleGridAction());
+		addRetargetAction(RedActions.createSnapNearAction());
+		addRetargetAction(RedActions.createGuideDisplayAction());
+		addRetargetAction(RedActions.createEdgeDisplayAction());
 	}
 
 	@Override
@@ -99,7 +64,7 @@ public class BigraphEditorActionBarContributor extends ActionBarContributor {
 				getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 		toolBarManager.add(
 				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
-		toolBarManager.add(getAction(ACTION_GUIDE));
-		toolBarManager.add(getAction(ACTION_EDGE));
+		toolBarManager.add(getAction(RedActions.ACTION_GUIDE));
+		toolBarManager.add(getAction(RedActions.ACTION_EDGE));
 	}
 }
