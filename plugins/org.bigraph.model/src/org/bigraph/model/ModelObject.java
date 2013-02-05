@@ -251,12 +251,6 @@ public abstract class ModelObject {
 			DescriptorExecutorManager.getInstance().addParticipant(
 					new ModelObjectDescriptorHandler());
 		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			context.executeChange(createChange(context, r));
-		}
 	}
 	
 	static final class ChangeMoveExtendedDataDescriptor

@@ -66,7 +66,7 @@ public class Edit extends ModelObject
 	@Override
 	public void simulate(PropertyScratchpad context, Resolver r)
 			throws ChangeCreationException {
-		context.executeChange(createChange(context, r));
+		cdg.simulate(context, r);
 	}
 	
 	@Override

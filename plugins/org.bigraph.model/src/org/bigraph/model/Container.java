@@ -261,6 +261,24 @@ public abstract class Container extends Layoutable {
 		public ChangeRemoveChildDescriptor inverse() {
 			return new ChangeRemoveChildDescriptor(getParent(), getChild());
 		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Container self = getParent().lookup(context, r);
+			Layoutable child = ContainerDescriptorHandler.instantiate(
+					getChild(), context, r);
+			
+			Set<Layoutable> children = context.<Layoutable>getModifiableSet(
+					self, Container.PROPERTY_CHILD, self.getChildren());
+			children.add(child);
+			context.setProperty(child, Layoutable.PROPERTY_PARENT, self);
+			
+			String name = getChild().getName();
+			self.getBigraph(context).getNamespace(child).
+					put(context, name, child);
+			context.setProperty(child, Layoutable.PROPERTY_NAME, name);
+		}
 	}
 
 	public static final class ChangeRemoveChildDescriptor
@@ -317,6 +335,21 @@ public abstract class Container extends Layoutable {
 		@Override
 		public String toString() {
 			return "ChangeDescriptor(remove child " + child + ")";
+		}
+		
+		@Override
+		public void simulate(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Container self = getParent().lookup(context, r);
+			Layoutable child = getChild().lookup(context, r);
+			
+			context.<Layoutable>getModifiableSet(
+					self, PROPERTY_CHILD, self.getChildren()).remove(child);
+			context.setProperty(child, Layoutable.PROPERTY_PARENT, null);
+			
+			self.getBigraph(context).getNamespace(child).
+					remove(context, getChild().getName());
+			context.setProperty(child, Layoutable.PROPERTY_NAME, null);
 		}
 	}
 }

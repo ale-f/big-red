@@ -38,15 +38,18 @@ public class ChangeDescriptorGroup extends ArrayList<IChangeDescriptor>
 			throws ChangeCreationException {
 		ChangeGroup cg = new ChangeGroup();
 		context = new PropertyScratchpad(context);
-		for (IChangeDescriptor one : this)
-			cg.add(context.executeChange(one.createChange(context, r)));
+		for (IChangeDescriptor cd : this)
+			if (cd != null)
+				cg.add(context.executeChange(cd.createChange(context, r)));
 		return cg;
 	}
 	
 	@Override
 	public void simulate(PropertyScratchpad context, Resolver r)
 			throws ChangeCreationException {
-		context.executeChange(createChange(context, r));
+		for (IChangeDescriptor cd : this)
+			if (cd != null)
+				cd.simulate(context, r);
 	}
 	
 	@Override
