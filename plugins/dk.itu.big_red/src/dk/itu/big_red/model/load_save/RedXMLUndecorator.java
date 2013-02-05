@@ -24,6 +24,7 @@ import dk.itu.big_red.model.ColourUtilities;
 import dk.itu.big_red.model.ControlUtilities;
 import dk.itu.big_red.model.Ellipse;
 import dk.itu.big_red.model.ExtendedDataUtilities.ChangeCommentDescriptor;
+import dk.itu.big_red.model.LayoutUtilities.ChangeLayoutDescriptor;
 import dk.itu.big_red.model.LayoutUtilities;
 
 import static dk.itu.big_red.model.BigRedNamespaceConstants.BIG_RED;
@@ -198,17 +199,16 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 					ExecutorManager.getInstance().tryValidateChange(
 							loader.getChanges());
 				} catch (ChangeRejectedException cre) {
-					/* FIXME: Temporarily broken
 					IChange ch = cre.getRejectedChange();
-					if (ch instanceof ChangeExtendedData) {
-						ChangeExtendedData cd = (ChangeExtendedData)ch;
-						if (LayoutUtilities.LAYOUT.equals(cd.key)) {
+					if (ch instanceof BoundDescriptor) {
+						BoundDescriptor bd = (BoundDescriptor)ch;
+						if (bd.getDescriptor()
+								instanceof ChangeLayoutDescriptor) {
 							loader.addNotice(LoaderNotice.Type.WARNING,
 									"Layout data invalid: replacing.");
 							loader.addChange(relayout);
 						}
 					}
-					*/
 				}
 			}
 		}
