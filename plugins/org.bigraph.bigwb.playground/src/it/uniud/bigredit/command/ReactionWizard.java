@@ -16,12 +16,14 @@ import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.uniud.bigraph.match.PlaceMatch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -226,6 +228,7 @@ public class ReactionWizard extends Wizard {
 			
 			if ( matchList != null ) {
 				matchList.addListener( SWT.Selection, new Listener() {
+				@Override
 				public void handleEvent( Event e )
 					{
 						updateDetails();
@@ -799,7 +802,11 @@ public class ReactionWizard extends Wizard {
 					if (mapLinksRule.containsKey(link)) {
 						Link lagent = chosenMatch.getLinkMap().get(
 								mapLinksRule.get(link));
-						cgL.add(pOnNewNode.changeConnect(lagent));
+						/* XXX: untested PointChange replacement! */
+						cgL.add(new BoundDescriptor(target,
+								new Point.ChangeConnectDescriptor(
+										pOnNewNode.getIdentifier(),
+										lagent.getIdentifier())));
 					} else {
 						Edge edge;
 						if (mapEdges.containsKey(link)) {
@@ -811,7 +818,11 @@ public class ReactionWizard extends Wizard {
 									+ ((int) (Math.random() * 100))));
 							mapEdges.put(link, edge);
 						}
-						cgL.add(pOnNewNode.changeConnect(edge));
+						/* XXX: untested PointChange replacement! */
+						cgL.add(new BoundDescriptor(target,
+								new Point.ChangeConnectDescriptor(
+										pOnNewNode.getIdentifier(),
+										edge.getIdentifier())));
 					}
 
 					// ((Node)newNodeAgent).getPort(p.getName());
@@ -896,7 +907,11 @@ public class ReactionWizard extends Wizard {
 
 					Link link = p.getLink();
 
-					cgRem.add(pOnNewNode.changeConnect(link));
+					/* XXX: untested PointChange replacement! */
+					cgRem.add(new BoundDescriptor(target,
+							new Point.ChangeConnectDescriptor(
+									pOnNewNode.getIdentifier(),
+									link.getIdentifier())));
 
 					// ((Node)newNodeAgent).getPort(p.getName());
 				}
@@ -935,7 +950,11 @@ public class ReactionWizard extends Wizard {
 
 					Link link = p.getLink();
 
-					cgRem.add(pOnNewNode.changeConnect(link));
+					/* XXX: untested PointChange replacement! */
+					cgRem.add(new BoundDescriptor(target,
+							new Point.ChangeConnectDescriptor(
+									pOnNewNode.getIdentifier(),
+									link.getIdentifier())));
 
 					// ((Node)newNodeAgent).getPort(p.getName());
 				}
@@ -961,8 +980,12 @@ public class ReactionWizard extends Wizard {
 			if (node instanceof Node){
 				for (Port p :((Node) node).getPorts()){
 					System.out.println("get port");
-
-						cg.add(p.changeDisconnect());
+					
+						/* XXX: untested PointChange replacement! */
+						cg.add(new BoundDescriptor(target,
+								new Point.ChangeDisconnectDescriptor(
+										p.getIdentifier(),
+										p.getLink().getIdentifier())));
 
 					
 				}

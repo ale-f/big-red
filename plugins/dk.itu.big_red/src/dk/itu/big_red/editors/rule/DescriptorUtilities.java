@@ -4,10 +4,6 @@ import org.bigraph.model.Container.ChangeRemoveChildDescriptor;
 import org.bigraph.model.Container.ChangeAddChild;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.Point.ChangeConnect;
-import org.bigraph.model.Point.ChangeConnectDescriptor;
-import org.bigraph.model.Point.ChangeDisconnect;
-import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
@@ -76,16 +72,6 @@ abstract class DescriptorUtilities {
 			chd = new ChangeRemoveChildDescriptor(
 					ch.getCreator().getParent(context).getIdentifier(context),
 					ch.getCreator().getIdentifier(context));
-		} else if (c instanceof ChangeConnect) {
-			ChangeConnect ch = (ChangeConnect)c;
-			chd = new ChangeConnectDescriptor(
-					ch.getCreator().getIdentifier(context),
-					ch.link.getIdentifier(context));
-		} else if (c instanceof ChangeDisconnect) {
-			ChangeDisconnect ch = (ChangeDisconnect)c;
-			chd = new ChangeDisconnectDescriptor(
-					ch.getCreator().getIdentifier(context),
-					ch.getCreator().getLink(context).getIdentifier(context));
 		} else if (c instanceof ChangeAddChild) {
 			ChangeAddChild ch = (ChangeAddChild)c;
 			chd = new ChangeAddChildDescriptor(

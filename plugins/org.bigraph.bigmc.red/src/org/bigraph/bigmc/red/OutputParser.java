@@ -8,6 +8,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.Link;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
@@ -106,7 +107,10 @@ public class OutputParser {
 						ns.put(linkName, (l = new OuterName()));
 						cg.add(workingBigraph.changeAddChild(l, linkName));
 					}
-					cg.add(n.getPorts().get(i++).changeConnect(l));
+					cg.add(new BoundDescriptor(workingBigraph,
+							new Point.ChangeConnectDescriptor(
+									n.getPorts().get(i++).getIdentifier(),
+									l.getIdentifier().getRenamed(linkName))));
 				} while (lexer.accept(P_COM) != null);
 				lexer.expect(P_RSQ);
 			}

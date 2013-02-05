@@ -112,7 +112,10 @@ public class BigraphMatchWB {
 			}
 			
 		
-		cg.add(n1.getPort("0").changeConnect(O1));
+		cg.add(new BoundDescriptor(agent,
+				new Point.ChangeConnectDescriptor(
+						n1.getPort("0").getIdentifier(),
+						O1.getIdentifier())));
 
 		try {
 		 ExecutorManager.getInstance().tryApplyChange(cg);
@@ -148,7 +151,10 @@ public class BigraphMatchWB {
 
 		cg.add(redex.changeAddChild(O1, "O1"));
 		cg.add(r1.changeAddChild(n1, "n1"));
-		cg.add(n1.getPort("0").changeConnect(O1));
+		cg.add(new BoundDescriptor(agent,
+				new Point.ChangeConnectDescriptor(
+						n1.getPort("0").getIdentifier(),
+						new OuterName.Identifier("O1"))));
 
 		try {
 		 ExecutorManager.getInstance().tryApplyChange(cg);

@@ -20,6 +20,7 @@ import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -146,7 +147,11 @@ public class CompositionCommand extends Command {
 			connection.put(link, points);
 
 			if(innerName.getLink()!=null){
-				cgA.add(innerName.changeDisconnect());
+				/* XXX: untested PointChange replacement! */
+				cgA.add(new BoundDescriptor(outer,
+						new Point.ChangeDisconnectDescriptor(
+								innerName.getIdentifier(),
+								innerName.getLink().getIdentifier())));
 			}
 			cgA.add(innerName.changeRemove());
 			cgB.add(outerName.changeRemove());
@@ -166,9 +171,17 @@ public class CompositionCommand extends Command {
 				Point p=points.get(i);
 
 				if(p.getLink() != null){
-					cgA.add(p.changeDisconnect());
+					/* XXX: untested PointChange replacement! */
+					cgA.add(new BoundDescriptor(outer,
+							new Point.ChangeDisconnectDescriptor(
+									p.getIdentifier(),
+									p.getLink().getIdentifier())));
 				}
-				cgA.add(p.changeConnect(link));
+				/* XXX: untested PointChange replacement! */
+				cgA.add(new BoundDescriptor(outer,
+						new Point.ChangeConnectDescriptor(
+								p.getIdentifier(),
+								link.getIdentifier())));
 
 			}
 		}

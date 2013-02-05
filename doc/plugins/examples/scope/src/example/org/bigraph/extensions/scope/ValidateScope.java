@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.Container;
+import org.bigraph.model.Link;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Node;
 import org.bigraph.model.Point;
-import org.bigraph.model.Point.ChangeConnect;
+import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Port;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.utilities.FilteringIterable;
 
-public class ValidateScope implements IStepValidator {
+public class ValidateScope implements IDescriptorStepValidator {
 	@Override
 	public final void setHost(IParticipantHost host) {
 		/* do nothing */
@@ -26,13 +28,13 @@ public class ValidateScope implements IStepValidator {
 	}
 	
 	private static void checkAll(
-			IChange ch, PropertyScratchpad context, Port original,
+			IChangeDescriptor cd, PropertyScratchpad context, Port original,
 			Iterable<? extends Port> ps)
-			throws ChangeRejectedException {
+			throws ChangeCreationException {
 		Node n = original.getParent(context);
 		for (Port p : ps) {
 			if (isScoped(context, p) && p != original)
-				throw new ChangeRejectedException(ch,
+				throw new ChangeCreationException(cd,
 						"Scope problem: Two scoped ports can't be connected " +
 						"to the same link");
 			Container parent = p.getParent(context);
@@ -42,28 +44,29 @@ public class ValidateScope implements IStepValidator {
 				} else break;
 			}
 			if (parent == null)
-				throw new ChangeRejectedException(ch,
+				throw new ChangeCreationException(cd,
 						"Scope problem: " + p + " is not a child of " + n);
 		}
 	}
 	
 	@Override
-	public boolean tryValidateChange(Process context, IChange change_)
-			throws ChangeRejectedException {
+	public boolean tryValidateChange(Process context, IChangeDescriptor change)
+			throws ChangeCreationException {
 		final PropertyScratchpad scratch = context.getScratch();
-		if (change_ instanceof ChangeConnect) {
-			ChangeConnect change = (ChangeConnect)change_;
-			Point p = change.getCreator();
+		final Resolver resolver = context.getResolver();
+		if (change instanceof ChangeConnectDescriptor) {
+			ChangeConnectDescriptor cd = (ChangeConnectDescriptor)change;
+			Point point = cd.getPoint().lookup(scratch, resolver);
+			Link link = cd.getLink().lookup(scratch, resolver);
 			
-			List<Point> l = new ArrayList<Point>(
-					change.link.getPoints(scratch));
-			l.add(p);
+			List<Point> l = new ArrayList<Point>(link.getPoints(scratch));
+			l.add(point);
 			
 			Iterable<? extends Port> ps =
 					new FilteringIterable<Port>(Port.class, l);
 			for (Port i : ps) {
 				if (isScoped(scratch, i)) {
-					checkAll(change, scratch, i, ps);
+					checkAll(cd, scratch, i, ps);
 					break;
 				}
 			}

@@ -149,9 +149,11 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		OuterName on = new OuterName();
 		ExecutorManager.getInstance().tryApplyChange(cg(
 				b.changeAddChild(in, "a"),
-				b.changeAddChild(on, "a"),
-				in.changeConnect(on)));
+				b.changeAddChild(on, "a")));
 		run(b,
+				new Point.ChangeConnectDescriptor(
+						new InnerName.Identifier("a"),
+						new OuterName.Identifier("a")),
 				new Container.ChangeRemoveChildDescriptor(
 						b.getIdentifier(), in.getIdentifier()));
 	}

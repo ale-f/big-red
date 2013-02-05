@@ -15,6 +15,7 @@ import org.bigraph.model.Link;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
@@ -118,7 +119,10 @@ public class BigraphTests {
 		ExecutorManager.getInstance().tryApplyChange(cg(
 				b.changeAddChild(l, "a"),
 				b.changeAddChild(in, "a"),
-				in.changeConnect(l)));
+				new BoundDescriptor(b,
+						new Point.ChangeConnectDescriptor(
+								new InnerName.Identifier("a"),
+								l.getIdentifier().getRenamed("a")))));
 		assertTrue(in.getLink().equals(l) && l.getPoints().contains(in));
 	}
 	
@@ -132,35 +136,47 @@ public class BigraphTests {
 		tryAddAndConnect(new Bigraph(), new InnerName(), new OuterName());
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void connectPointTwice() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void connectPointTwice() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Edge e1 = new Edge(), e2 = new Edge();
 		InnerName in = new InnerName();
 		try {
 			ExecutorManager.getInstance().tryApplyChange(cg(
-					b.changeAddChild(e1, "a"),
-					b.changeAddChild(e2, "b"),
-					b.changeAddChild(in, "a"),
-					in.changeConnect(e1)));
+					b.changeAddChild(e1, "e1"),
+					b.changeAddChild(e2, "e2"),
+					b.changeAddChild(in, "in"),
+					new BoundDescriptor(b,
+							new Point.ChangeConnectDescriptor(
+									new InnerName.Identifier("in"),
+									new Edge.Identifier("e1")))));
 		} catch (ChangeRejectedException e) {
 			fail(e.getRationale());
 		}
 		
-		ExecutorManager.getInstance().tryApplyChange(in.changeConnect(e2));
+		DescriptorTestRunner.run(b,
+				new Point.ChangeConnectDescriptor(
+						new InnerName.Identifier("in"),
+						new Edge.Identifier("e2")));
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void disconnectUnconnectedPoint() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void disconnectUnconnectedPoint() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
+		Edge e1 = new Edge();
 		InnerName in = new InnerName();
 		try {
-			ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(in, "a"));
+			ExecutorManager.getInstance().tryApplyChange(cg(
+					b.changeAddChild(e1, "e1"),
+					b.changeAddChild(in, "in")));
 		} catch (ChangeRejectedException e) {
 			fail(e.getRationale());
 		}
 		
-		ExecutorManager.getInstance().tryApplyChange(in.changeDisconnect());
+		DescriptorTestRunner.run(b,
+				new Point.ChangeDisconnectDescriptor(
+						new InnerName.Identifier("in"),
+						new Edge.Identifier("e1")));
 	}
 	
 	@Test(expected = ChangeRejectedException.class)

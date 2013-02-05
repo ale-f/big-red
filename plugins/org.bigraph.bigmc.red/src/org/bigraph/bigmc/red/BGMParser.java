@@ -11,6 +11,7 @@ import org.bigraph.model.Control;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
+import org.bigraph.model.Point;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Root;
@@ -174,11 +175,15 @@ public class BGMParser {
 						i++;
 						continue;
 					}
-					OuterName l =
-							new OuterName.Identifier(linkName).lookup(null, b);
+					OuterName.Identifier onid =
+							new OuterName.Identifier(linkName);
+					OuterName l = onid.lookup(null, b);
 					if (l == null)
 						change(b.changeAddChild(l = new OuterName(), linkName));
-					change(n.getPorts().get(i++).changeConnect(l));
+					change(new BoundDescriptor(b,
+							new Point.ChangeConnectDescriptor(
+									n.getPorts().get(i++).getIdentifier(),
+									onid)));
 				} while (lexer.accept(P_COMMA) != null);
 				lexer.expect(P_RIGHTSQ);
 			}

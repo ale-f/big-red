@@ -3,10 +3,10 @@
 <plugin>
    <extension
          point="org.bigraph.model.wrapper.changes">
-      <validator
+      <descriptorValidator
             class="example.org.bigraph.extensions.scope.ValidateScope"
             id="Scope validator">
-      </validator>
+      </descriptorValidator>
    </extension>
    <extension
          point="org.bigraph.model.wrapper.export">

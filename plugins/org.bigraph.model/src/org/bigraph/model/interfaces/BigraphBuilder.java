@@ -17,6 +17,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 
 public class BigraphBuilder {
 	private Bigraph b = new Bigraph();
@@ -69,7 +70,10 @@ public class BigraphBuilder {
 	}
 	
 	public void newConnection(IPoint p, ILink l) {
-		addChange(((Point)p).changeConnect((Link)l));
+		addChange(new BoundDescriptor(b,
+				new Point.ChangeConnectDescriptor(
+						((Point)p).getIdentifier(getScratch()),
+						((Link)l).getIdentifier(getScratch()))));
 	}
 	
 	public ISite newSite(IParent parent, String name) {

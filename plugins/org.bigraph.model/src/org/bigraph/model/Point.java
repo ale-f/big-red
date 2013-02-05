@@ -1,10 +1,10 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject.Identifier.Resolver;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.interfaces.IPoint;
@@ -22,86 +22,17 @@ public abstract class Point extends Layoutable implements IPoint {
 	@RedProperty(fired = Link.class, retrieved = Link.class)
 	public static final String PROPERTY_LINK = "PointLink";
 	
-	abstract class PointChange extends LayoutableChange {
-		@Override
-		public Point getCreator() {
-			return Point.this;
-		}
-	}
-	
 	abstract static class PointChangeDescriptor
 			extends LayoutableChangeDescriptor {
 		static {
 			DescriptorExecutorManager.getInstance().addParticipant(new PointDescriptorHandler());
 		}
-	}
-	
-	public final class ChangeConnect extends PointChange {
-		public final Link link;
-		
-		public ChangeConnect(Link link) {
-			this.link = link;
-		}
-
-		@Override
-		public boolean isReady() {
-			return (link != null);
-		}
 		
 		@Override
-		public ChangeDisconnect inverse() {
-			return new ChangeDisconnect();
+		public IChange createChange(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			return new BoundDescriptor(r, this);
 		}
-		
-		@Override
-		public String toString() {
-			return "Change(connect " + getCreator() + " to " + link + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			context.<Point>getModifiableList(
-					link, Link.PROPERTY_POINT, link.getPoints()).
-				add(getCreator());
-			context.setProperty(getCreator(), Point.PROPERTY_LINK, link);
-		}
-	}
-	
-	public final class ChangeDisconnect extends PointChange {
-		private Link oldLink;
-		@Override
-		public void beforeApply() {
-			oldLink = getCreator().getLink();
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return (oldLink != null);
-		}
-		
-		@Override
-		public ChangeConnect inverse() {
-			return new ChangeConnect(oldLink);
-		}
-		
-		@Override
-		public String toString() {
-			return "Change(disconnect " + getCreator() + ")";
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context) {
-			Link l = getCreator().getLink(context);
-			
-			context.<Point>getModifiableList(
-					l, Link.PROPERTY_POINT, l.getPoints()).
-				remove(getCreator());
-			context.setProperty(getCreator(), Point.PROPERTY_LINK, null);
-		}
-	}
-
-	static {
-		ExecutorManager.getInstance().addParticipant(new PointHandler());
 	}
 	
 	private Link link = null;
@@ -125,14 +56,6 @@ public abstract class Point extends Layoutable implements IPoint {
 	
 	public Link getLink(PropertyScratchpad context) {
 		return getProperty(context, PROPERTY_LINK, Link.class);
-	}
-	
-	public IChange changeConnect(Link l) {
-		return new ChangeConnect(l);
-	}
-	
-	public IChange changeDisconnect() {
-		return new ChangeDisconnect();
 	}
 	
 	@Override
@@ -195,22 +118,18 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			Point p = point.lookup(context, r);
-			if (p == null)
-				throw new ChangeCreationException(this,
-						"" + point + " didn't resolve to a Point");
-			Link l = link.lookup(context, r);
-			if (l == null)
-				throw new ChangeCreationException(this,
-						"" + link + " didn't resolve to a Link");
-			return p.changeConnect(l);
+		public ChangeDisconnectDescriptor inverse() {
+			return new ChangeDisconnectDescriptor(getPoint(), getLink());
 		}
 		
 		@Override
-		public ChangeDisconnectDescriptor inverse() {
-			return new ChangeDisconnectDescriptor(getPoint(), getLink());
+		public void simulate(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Point p = getPoint().lookup(context, r);
+			Link l = getLink().lookup(context, r);
+			context.<Point>getModifiableList(
+					l, Link.PROPERTY_POINT, l.getPoints()).add(p);
+			context.setProperty(p, Point.PROPERTY_LINK, l);
 		}
 		
 		@Override
@@ -256,18 +175,19 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public IChange createChange(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			Point p = point.lookup(context, r);
-			if (p == null)
-				throw new ChangeCreationException(this,
-						"" + point + " didn't resolve to a Point");
-			return p.changeDisconnect();
+		public ChangeConnectDescriptor inverse() {
+			return new ChangeConnectDescriptor(getPoint(), getLink());
 		}
 		
 		@Override
-		public ChangeConnectDescriptor inverse() {
-			return new ChangeConnectDescriptor(getPoint(), getLink());
+		public void simulate(PropertyScratchpad context, Resolver r)
+				throws ChangeCreationException {
+			Point p = getPoint().lookup(context, r);
+			Link l = getLink().lookup(context, r);
+			
+			context.<Point>getModifiableList(
+					l, Link.PROPERTY_POINT, l.getPoints()).remove(p);
+			context.setProperty(p, Point.PROPERTY_LINK, null);
 		}
 		
 		@Override
