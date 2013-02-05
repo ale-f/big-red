@@ -61,8 +61,9 @@ public class EdgePart extends LinkPart {
 		boolean displayEdges = (displayEdgesObj instanceof Boolean ?
 				(Boolean)displayEdgesObj : true);
 		
-		getFigure().setVisible(displayEdges);
-		getFigure().setSingle(getModel().getPoints().size() == 1);
+		getFigure().setRender(displayEdges);
+		if (displayEdges) /* otherwise irrelevant */
+			getFigure().setSingle(getModel().getPoints().size() == 1);
 		getFigure().repaint();
 	}
 	
