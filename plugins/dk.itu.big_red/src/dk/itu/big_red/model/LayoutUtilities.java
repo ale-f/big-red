@@ -280,14 +280,17 @@ public abstract class LayoutUtilities {
 
 	public static IChange relayout(PropertyScratchpad context, Bigraph b) {
 		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
-		relayout(context, b, cdg);
+		relayout(context, new PropertyScratchpad(context), b, cdg);
 		return new BoundDescriptor(b, cdg);
 	}
 
 	static Rectangle relayout(PropertyScratchpad context,
+			PropertyScratchpad tracker,
 			Layoutable l, ChangeDescriptorGroup cdg) {
+		/* The first PropertyScratchpad represents the world and the second
+		 * stores the provisional changes made by the relayout operation */
 		assert
-			context != null;
+			tracker != null;
 		
 		if (l instanceof Link)
 			cdg.addAll(Arrays.<IChangeDescriptor>asList(
@@ -301,16 +304,16 @@ public abstract class LayoutUtilities {
 		Rectangle r = null;
 		if (l instanceof Site || l instanceof InnerName ||
 				l instanceof OuterName) {
-			setProperty(context, l, LAYOUT, r = new Rectangle(0, 0, 50, 50));
+			setProperty(tracker, l, LAYOUT, r = new Rectangle(0, 0, 50, 50));
 		} else if (l instanceof Edge) {
-			setProperty(context, l, LAYOUT, r = null);
+			setProperty(tracker, l, LAYOUT, r = null);
 		} else if (l instanceof Node || l instanceof Root) {
 			boolean horizontal = (l instanceof Root);
 			int progress = PADDING, max = 0;
 			Collection<? extends Layoutable> children =
 					((Container)l).getChildren(context);
 			for (Layoutable i : children) {
-				r = relayout(context, i, cdg);
+				r = relayout(context, tracker, i, cdg);
 				if (horizontal) {
 					r.setLocation(progress, 0);
 					progress = progress + r.width + PADDING;
@@ -322,10 +325,10 @@ public abstract class LayoutUtilities {
 					if (max < r.width)
 						max = r.width;
 				}
-				cdg.add(new ChangeLayoutDescriptor(null, i, r));
+				cdg.add(new ChangeLayoutDescriptor(context, i, r));
 			}
 			for (Layoutable i : children) {
-				r = getLayout(context, i);
+				r = getLayout(tracker, i);
 				if (horizontal) {
 					r.y = PADDING + ((max - r.height) / 2);
 				} else r.x = PADDING + ((max - r.width) / 2);
@@ -337,7 +340,7 @@ public abstract class LayoutUtilities {
 			} else {
 				r = new Rectangle(0, 0, (PADDING * 2) + max, progress);
 			}
-			setProperty(context, l, LAYOUT, r);
+			setProperty(tracker, l, LAYOUT, r);
 		} else if (l instanceof Bigraph) {
 			Bigraph b = (Bigraph)l;
 			Collection<? extends Layoutable> children = b.getChildren(context);
@@ -353,7 +356,7 @@ public abstract class LayoutUtilities {
 			for (Layoutable i : children) {
 				if (i instanceof Edge)
 					continue;
-				r = relayout(context, i, cdg);
+				r = relayout(context, tracker, i, cdg);
 				if (r != null)
 					r.y = PADDING;
 				if (i instanceof OuterName) {
@@ -370,11 +373,11 @@ public abstract class LayoutUtilities {
 					r.x = inLeft;
 					inLeft = inLeft + r.width + PADDING;
 				}
-				cdg.add(new ChangeLayoutDescriptor(null, i, r));
+				cdg.add(new ChangeLayoutDescriptor(context, i, r));
 			}
 			
 			for (Layoutable i : children) {
-				r = getLayout(context, i);
+				r = getLayout(tracker, i);
 				if (i instanceof Root) {
 					if (tallestOuterName > 0)
 						r.y += ((tallestRoot - r.height) / 2) +
@@ -385,8 +388,8 @@ public abstract class LayoutUtilities {
 					if (tallestRoot > 0)
 						r.y += tallestRoot + PADDING;
 				} else if (i instanceof Edge) {
-					cdg.add(new ChangeLayoutDescriptor(null, i,
-							relayout(context, i, cdg)));
+					cdg.add(new ChangeLayoutDescriptor(context, i,
+							relayout(context, tracker, i, cdg)));
 				}
 			}
 		}
