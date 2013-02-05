@@ -288,20 +288,19 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    			@Override
 	    			public void run() {
 	    				super.run();
-	    				boolean val = isChecked();
 	    				reactumViewer.setProperty(
-	    						SnapToGrid.PROPERTY_GRID_VISIBLE, val);
+	    						SnapToGrid.PROPERTY_GRID_VISIBLE, isChecked());
 	    				reactumViewer.setProperty(
-	    						SnapToGrid.PROPERTY_GRID_ENABLED, val);
+	    						SnapToGrid.PROPERTY_GRID_ENABLED, isChecked());
 	    			}
 	    		},
 	    		new ToggleSnapToGeometryAction(redexViewer) {
 	    			@Override
 	    			public void run() {
 	    				super.run();
-	    				boolean val = isChecked();
 	    				reactumViewer.setProperty(
-	    						SnapToGeometry.PROPERTY_SNAP_ENABLED, val);
+	    						SnapToGeometry.PROPERTY_SNAP_ENABLED,
+	    						isChecked());
 	    			}
 	    		},
 	    		new TogglePropertyAction(
@@ -311,6 +310,15 @@ public class RuleEditor extends AbstractGEFEditor implements
 	    				super.run();
 	    				reactumViewer.setProperty(
 	    						PROPERTY_DISPLAY_GUIDES, isChecked());
+	    			}
+	    		},
+	    		new TogglePropertyAction(
+	    				PROPERTY_DISPLAY_EDGES, true, redexViewer) {
+	    			@Override
+	    			public void run() {
+	    				super.run();
+	    				reactumViewer.setProperty(
+	    						PROPERTY_DISPLAY_EDGES, isChecked());
 	    			}
 	    		});
 	}

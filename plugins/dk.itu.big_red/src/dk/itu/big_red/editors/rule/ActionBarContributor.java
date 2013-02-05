@@ -20,6 +20,7 @@ public class ActionBarContributor extends
 		addRetargetAction(RedActions.createToggleGridAction());
 		addRetargetAction(RedActions.createSnapNearAction());
 		addRetargetAction(RedActions.createGuideDisplayAction());
+		addRetargetAction(RedActions.createEdgeDisplayAction());
 	}
 
 	@Override
@@ -34,8 +35,8 @@ public class ActionBarContributor extends
 				getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 		toolBarManager.add(
 				getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
-		toolBarManager.add(
-				getAction(RedActions.ACTION_GUIDE));
+		toolBarManager.add(getAction(RedActions.ACTION_GUIDE));
+		toolBarManager.add(getAction(RedActions.ACTION_EDGE));
 	}
 
 }
