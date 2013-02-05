@@ -16,6 +16,12 @@ public class EdgeFigure extends AbstractFigure {
 		this.single = single;
 	}
 	
+	private boolean render = true;
+	
+	public void setRender(boolean render) {
+		this.render = render;
+	}
+	
 	@Override
 	public void setToolTip(String content) {
 		String labelText = "Edge";
@@ -32,15 +38,12 @@ public class EdgeFigure extends AbstractFigure {
 	
 	@Override
 	protected void fillShape(Graphics graphics) {
+		if (!render)
+			return;
 		Rectangle a = start(graphics);
 		try {
 			graphics.setAlpha(32);
 			graphics.fillRectangle(a);
-			
-			graphics.setAlpha(64);
-			graphics.setLineWidth(2);
-			graphics.setLineStyle(SWT.LINE_SOLID);
-			graphics.drawRectangle(a);
 			
 			if (single) {
 				graphics.setAlpha(255);
@@ -48,6 +51,21 @@ public class EdgeFigure extends AbstractFigure {
 						a.getLeft().translate(0, 3),
 						a.getRight().translate(0, -3));
 			}
+		} finally {
+			stop(graphics);
+		}
+	}
+	
+	@Override
+	protected void outlineShape(Graphics graphics) {
+		if (!render)
+			return;
+		Rectangle a = start(graphics);
+		try {
+			graphics.setAlpha(64);
+			graphics.setLineWidth(2);
+			graphics.setLineStyle(SWT.LINE_SOLID);
+			graphics.drawRectangle(a.shrink(1, 1));
 		} finally {
 			stop(graphics);
 		}
