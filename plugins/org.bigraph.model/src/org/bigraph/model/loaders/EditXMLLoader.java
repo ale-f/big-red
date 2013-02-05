@@ -4,7 +4,6 @@ import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Edit;
 import org.bigraph.model.Edit.ChangeDescriptorAddDescriptor;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.process.IParticipant;
 import org.w3c.dom.Document;
@@ -110,9 +109,8 @@ public class EditXMLLoader extends XMLLoader {
 			} else cd = makeDescriptor(i);
 			
 			if (cd != null) {
-				addChange(new BoundDescriptor(edit,
-						new ChangeDescriptorAddDescriptor(
-								new Edit.Identifier(), index++, cd)));
+				addChange(new ChangeDescriptorAddDescriptor(
+						new Edit.Identifier(), index++, cd));
 			} else throw new LoadFailedException(
 					"Couldn't create a change descriptor from element " + i);
 		}

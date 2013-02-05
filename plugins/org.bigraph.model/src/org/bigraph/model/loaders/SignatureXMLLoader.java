@@ -6,7 +6,6 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,18 +45,15 @@ public class SignatureXMLLoader extends XMLLoader {
 	private void makeControl(Element e) throws LoadFailedException {
 		Control.Identifier cid =
 				new Control.Identifier(getAttributeNS(e, SIGNATURE, "name"));
-		addChange(new BoundDescriptor(sig,
-				new Signature.ChangeAddControlDescriptor(
-						new Signature.Identifier(), cid)));
+		addChange(new Signature.ChangeAddControlDescriptor(
+				new Signature.Identifier(), cid));
 		Control model = cid.lookup(getScratch(), getResolver());
 		
 		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null)
-			addChange(new BoundDescriptor(sig,
-					new Control.ChangeKindDescriptor(getScratch(), model,
-							kind.equals("active") ? Kind.ACTIVE :
-							kind.equals("passive") ? Kind.PASSIVE :
-									Kind.ATOMIC)));
+			addChange(new Control.ChangeKindDescriptor(getScratch(), model,
+					kind.equals("active") ? Kind.ACTIVE :
+					kind.equals("passive") ? Kind.PASSIVE : Kind.ATOMIC));
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "port"))
 			makePortSpec(j, model);
@@ -69,9 +65,8 @@ public class SignatureXMLLoader extends XMLLoader {
 		SignatureXMLLoader si = new SignatureXMLLoader(this);
 		Signature t = si.makeObject(e);
 		if (t != null)
-			addChange(new BoundDescriptor(sig,
-					new Signature.ChangeAddSignatureDescriptor(
-							new Signature.Identifier(), -1, t)));
+			addChange(new Signature.ChangeAddSignatureDescriptor(
+					new Signature.Identifier(), -1, t));
 	}
 	
 	@Override
@@ -97,8 +92,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		PortSpec.Identifier pid = new PortSpec.Identifier(
 				getAttributeNS(e, SIGNATURE, "name"),
 				c.getIdentifier(getScratch()));
-		addChange(new BoundDescriptor(sig,
-				new Control.ChangeAddPortSpecDescriptor(pid)));
+		addChange(new Control.ChangeAddPortSpecDescriptor(pid));
 		return executeUndecorators(pid.lookup(getScratch(), sig), e);
 	}
 	

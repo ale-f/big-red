@@ -17,7 +17,6 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.resources.IFileWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -96,10 +95,9 @@ public class BigraphXMLLoader extends XMLLoader {
 				Link link = (Link)bigraph.getNamespace(Link.class).get(
 						getScratch(), linkName);
 				if (link != null)
-					addChange(new BoundDescriptor(bigraph,
-							new Point.ChangeConnectDescriptor(
-									model.getIdentifier(getScratch()),
-									link.getIdentifier(getScratch()))));
+					addChange(new Point.ChangeConnectDescriptor(
+							model.getIdentifier(getScratch()),
+							link.getIdentifier(getScratch())));
 			}
 		} else {
 			addNotice(LoaderNotice.Type.WARNING,

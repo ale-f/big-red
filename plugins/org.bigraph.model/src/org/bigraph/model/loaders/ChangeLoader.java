@@ -5,6 +5,8 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	public ChangeLoader() {
@@ -23,6 +25,10 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 			cg.add(c);
 			c.simulate(scratch);
 		}
+	}
+	
+	protected void addChange(IChangeDescriptor c) {
+		addChange(new BoundDescriptor(getResolver(), c));
 	}
 	
 	@Override
