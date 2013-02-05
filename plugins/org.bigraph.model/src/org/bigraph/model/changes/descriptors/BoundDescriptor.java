@@ -112,6 +112,12 @@ public class BoundDescriptor implements IChange {
 	}
 
 	@Override
+	public String toString() {
+		return "BoundDescriptor(" + getResolver() +
+				", " + getDescriptor() + ")";
+	}
+	
+	@Override
 	public boolean canInvert() {
 		return true;
 	}
