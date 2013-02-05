@@ -20,10 +20,10 @@ import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.geometry.PointList;
@@ -279,27 +279,24 @@ public abstract class LayoutUtilities {
 	}
 
 	public static IChange relayout(PropertyScratchpad context, Bigraph b) {
-		ChangeGroup cg = new ChangeGroup();
-		relayout(context, b, cg);
-		return cg;
+		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+		relayout(context, b, cdg);
+		return new BoundDescriptor(b, cdg);
 	}
 
-	static Rectangle relayout(
-			PropertyScratchpad context, Layoutable l, ChangeGroup cg) {
+	static Rectangle relayout(PropertyScratchpad context,
+			Layoutable l, ChangeDescriptorGroup cdg) {
 		assert
 			context != null;
 		
-		if (l instanceof Link) {
-			cg.addAll(Arrays.asList(
-					new BoundDescriptor(l.getBigraph(context),
-							new LinkStyleUtilities.ChangeLinkStyleDescriptor(
-									context, (Link)l, null)),
-					new BoundDescriptor(l.getBigraph(context),
-							new ColourUtilities.ChangeOutlineDescriptor(
-									l.getIdentifier(context),
-									ColourUtilities.getOutline(context, l),
-									Colour.random()))));
-		}
+		if (l instanceof Link)
+			cdg.addAll(Arrays.<IChangeDescriptor>asList(
+					new LinkStyleUtilities.ChangeLinkStyleDescriptor(
+							context, (Link)l, null),
+					new ColourUtilities.ChangeOutlineDescriptor(
+							l.getIdentifier(context),
+							ColourUtilities.getOutline(context, l),
+							Colour.random())));
 		
 		Rectangle r = null;
 		if (l instanceof Site || l instanceof InnerName ||
@@ -313,7 +310,7 @@ public abstract class LayoutUtilities {
 			Collection<? extends Layoutable> children =
 					((Container)l).getChildren(context);
 			for (Layoutable i : children) {
-				r = relayout(context, i, cg);
+				r = relayout(context, i, cdg);
 				if (horizontal) {
 					r.setLocation(progress, 0);
 					progress = progress + r.width + PADDING;
@@ -325,8 +322,7 @@ public abstract class LayoutUtilities {
 					if (max < r.width)
 						max = r.width;
 				}
-				cg.add(new BoundDescriptor(l.getBigraph(),
-						new ChangeLayoutDescriptor(null, i, r)));
+				cdg.add(new ChangeLayoutDescriptor(null, i, r));
 			}
 			for (Layoutable i : children) {
 				r = getLayout(context, i);
@@ -357,7 +353,7 @@ public abstract class LayoutUtilities {
 			for (Layoutable i : children) {
 				if (i instanceof Edge)
 					continue;
-				r = relayout(context, i, cg);
+				r = relayout(context, i, cdg);
 				if (r != null)
 					r.y = PADDING;
 				if (i instanceof OuterName) {
@@ -374,8 +370,7 @@ public abstract class LayoutUtilities {
 					r.x = inLeft;
 					inLeft = inLeft + r.width + PADDING;
 				}
-				cg.add(new BoundDescriptor(i.getBigraph(),
-						new ChangeLayoutDescriptor(null, i, r)));
+				cdg.add(new ChangeLayoutDescriptor(null, i, r));
 			}
 			
 			for (Layoutable i : children) {
@@ -390,9 +385,8 @@ public abstract class LayoutUtilities {
 					if (tallestRoot > 0)
 						r.y += tallestRoot + PADDING;
 				} else if (i instanceof Edge) {
-					cg.add(new BoundDescriptor(i.getBigraph(),
-							new ChangeLayoutDescriptor(null, i,
-									relayout(context, i, cg))));
+					cdg.add(new ChangeLayoutDescriptor(null, i,
+							relayout(context, i, cdg)));
 				}
 			}
 		}
