@@ -49,10 +49,11 @@ public interface IStepValidator extends IParticipant {
 	 * @param change the {@link IChange} to be validated, which is
 	 * guaranteed:&mdash;
 	 * <ul>
+	 * <li>not to be {@code null};
 	 * <li>to be {@link IChange#isReady() ready};
-	 * <li>not to be a {@link ChangeGroup}; and
+	 * <li>not to be an {@link IChange.Group}; and
 	 * <li>not to have been {@link IChange#simulate(PropertyScratchpad)
-	 * simulated} in {@code context}'s {@link Process#getScratch() scratchpad}
+	 * simulated} in {@code context}'s {@link Process#getScratch() scratchpad}.
 	 * </ul>
 	 * @return <code>true</code> if the change was recognised and validated, or
 	 * <code>false</code> otherwise

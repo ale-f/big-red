@@ -11,6 +11,13 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
  * @see IChangeDescriptor
  */
 public interface IChange {
+	/**
+	 * Classes implementing <strong>Group</strong> are collections of {@link
+	 * IChange}s. They receive special treatment from {@link ValidatorManager}s
+	 * and {@link ExecutorManager}s, which will never directly validate,
+	 * execute, or simulate them.
+	 * @author alec
+	 */
 	interface Group extends IChange, Iterable<IChange> {}
 	
 	/**

@@ -5,8 +5,8 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.process.IParticipant;
 
 /**
- * Classes implementing <strong>IStepValidator</strong> can validate {@link
- * IChange}s as part of a {@link Process}.
+ * Classes implementing <strong>IDescriptorStepValidator</strong> can validate
+ * {@link IChangeDescriptor}s as part of a {@link Process}.
  * @author alec
  */
 public interface IDescriptorStepValidator extends IParticipant {
@@ -19,7 +19,7 @@ public interface IDescriptorStepValidator extends IParticipant {
 	interface Callback {
 		/**
 		 * Executes this {@link Callback}.
-		 * @throws ChangeRejectedException if final validation failed
+		 * @throws ChangeCreationException if final validation failed
 		 */
 		void run() throws ChangeCreationException;
 	}
@@ -47,19 +47,20 @@ public interface IDescriptorStepValidator extends IParticipant {
 	}
 	
 	/**
-	 * Validates an {@link IChange}.
+	 * Validates an {@link IChangeDescriptor}.
 	 * @param context the {@link Process} in which validation is taking place
-	 * @param change the {@link IChange} to be validated, which is
+	 * @param change the {@link IChangeDescriptor} to be validated, which is
 	 * guaranteed:&mdash;
 	 * <ul>
-	 * <li>to be {@link IChange#isReady() ready};
-	 * <li>not to be a {@link ChangeGroup}; and
-	 * <li>not to have been {@link IChange#simulate(PropertyScratchpad)
-	 * simulated} in {@code context}'s {@link Process#getScratch() scratchpad}
+	 * <li>not to be {@code null};
+	 * <li>not to be an {@link IChangeDescriptor.Group}; and
+	 * <li>not to have been {@link IChangeDescriptor#simulate(Resolver,
+	 * PropertyScratchpad) simulated} in {@code context}'s {@link
+	 * Process#getScratch() scratchpad}.
 	 * </ul>
 	 * @return <code>true</code> if the change was recognised and validated, or
 	 * <code>false</code> otherwise
-	 * @throws ChangeRejectedException if the change was recognised and failed
+	 * @throws ChangeCreationException if the change was recognised and failed
 	 * validation
 	 */
 	boolean tryValidateChange(Process context, IChangeDescriptor change)
