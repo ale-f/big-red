@@ -12,7 +12,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
  * @see ArrayList
  */
 public class ChangeDescriptorGroup extends ArrayList<IChangeDescriptor>
-		implements IChangeDescriptor {
+		implements IChangeDescriptor.Group {
 	private static final long serialVersionUID = 8660898241398280925L;
 	
 	public ChangeDescriptorGroup() {

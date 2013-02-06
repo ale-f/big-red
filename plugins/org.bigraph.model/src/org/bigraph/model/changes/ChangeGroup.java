@@ -9,7 +9,7 @@ import org.bigraph.model.assistants.PropertyScratchpad;
  * @author alec
  * @see ArrayList
  */
-public class ChangeGroup extends ArrayList<IChange> implements IChange {
+public class ChangeGroup extends ArrayList<IChange> implements IChange.Group {
 	private static final long serialVersionUID = -5459931168098216972L;
 
 	public ChangeGroup() {
