@@ -1,5 +1,7 @@
 package org.bigraph.model;
 
+import java.util.Iterator;
+
 import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
@@ -9,7 +11,7 @@ import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class Edit extends ModelObject
-		implements IChangeDescriptor, ModelObject.Identifier.Resolver {
+		implements IChangeDescriptor.Group, ModelObject.Identifier.Resolver {
 	@RedProperty(
 			fired = IChangeDescriptor.class,
 			retrieved = ChangeDescriptorGroup.class)
@@ -177,5 +179,10 @@ public class Edit extends ModelObject
 		if (identifier instanceof Identifier) {
 			return this;
 		} else return null;
+	}
+	
+	@Override
+	public Iterator<IChangeDescriptor> iterator() {
+		return getDescriptors().iterator();
 	}
 }
