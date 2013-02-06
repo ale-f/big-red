@@ -2,26 +2,20 @@ package org.bigraph.model.tests;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-
-import org.bigraph.model.Bigraph;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.NamedModelObject;
-import org.bigraph.model.Root;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.ValidatorManager;
-import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 import org.bigraph.model.process.IParticipantHost;
 import org.junit.Test;
 
 public class ExecutionTests {
-	private class Dummy extends ModelObject {
+	private static class Dummy extends ModelObject implements Resolver {
 		public static final String PROPERTY_STRING = "DummyString";
 		
 		private String string;
@@ -34,134 +28,184 @@ public class ExecutionTests {
 			return getProperty(context, PROPERTY_STRING, String.class);
 		}
 		
-		private class Change extends ModelObjectChange {
+		@Override
+		protected Object getProperty(String name) {
+			if (PROPERTY_STRING.equals(name)) {
+				return getString();
+			} else return null;
+		}
+		
+		private static final class Identifier
+				implements ModelObject.Identifier {
 			@Override
-			public Dummy getCreator() {
-				return Dummy.this;
-			}
-			
-			private final String string;
-			
-			public Change(String string) {
-				this.string = string;
-			}
-			
-			public String getString() {
-				return string;
-			}
-			
-			private String oldString;
-			@Override
-			public void beforeApply() {
-				oldString = getCreator().getString();
+			public Dummy lookup(PropertyScratchpad context, Resolver r) {
+				return NamedModelObject.require(
+						r.lookup(context, this), Dummy.class);
 			}
 			
 			@Override
-			public Change inverse() {
-				return new Change(oldString);
-			}
-			
-			@Override
-			public void simulate(PropertyScratchpad context) {
-				context.setProperty(getCreator(), PROPERTY_STRING, string);
+			public String toString() {
+				return "Dummy";
 			}
 		}
 		
-		public IChange change(String string) {
-			return new Change(string);
+		@Override
+		public Object lookup(PropertyScratchpad context,
+				org.bigraph.model.ModelObject.Identifier identifier) {
+			if (identifier instanceof Dummy.Identifier) {
+				return this;
+			} else return null;
+		}
+		
+		private static class ChangeDescriptor
+				extends ModelObjectChangeDescriptor {
+			private final Identifier target;
+			private final String oldString, newString;
+			
+			public ChangeDescriptor(
+					Identifier target, String oldString, String newString) {
+				this.target = target;
+				this.oldString = oldString;
+				this.newString = newString;
+			}
+			
+			public Identifier getTarget() {
+				return target;
+			}
+			
+			public String getOldString() {
+				return oldString;
+			}
+			
+			public String getNewString() {
+				return newString;
+			}
+			
+			@Override
+			public IChangeDescriptor inverse() {
+				return new ChangeDescriptor(
+						getTarget(), getNewString(), getOldString());
+			}
+			
+			@Override
+			public void simulate(PropertyScratchpad context, Resolver r) {
+				Dummy self = getTarget().lookup(context, r);
+				context.setProperty(self, PROPERTY_STRING, getNewString());
+			}
+			
+			@Override
+			public String toString() {
+				return "ChangeDescriptor(set string of " + getTarget() +
+						" from " + getOldString() + " to " + getNewString() +
+						")";
+			}
 		}
 	}
 	
-	private final class DummyHandler implements IStepValidator, IStepExecutor {
+	private final class DummyHandler
+			implements IDescriptorStepValidator, IDescriptorStepExecutor {
 		@Override
 		public void setHost(IParticipantHost host) {
 			/* do nothing */
 		}
 		
 		@Override
-		public boolean executeChange(IChange change_) {
-			if (change_ instanceof Dummy.Change) {
-				Dummy.Change change = (Dummy.Change)change_;
-				change.getCreator().string = change.getString();
+		public boolean executeChange(Resolver r, IChangeDescriptor change_) {
+			if (change_ instanceof Dummy.ChangeDescriptor) {
+				Dummy.ChangeDescriptor cd = (Dummy.ChangeDescriptor)change_;
+				cd.getTarget().lookup(null, r).string =
+						cd.getNewString();
 			} else return false;
 			return true;
 		}
 		
 		@Override
-		public boolean tryValidateChange(Process context, IChange change_)
-				throws ChangeRejectedException {
+		public boolean tryValidateChange(
+				Process context, IChangeDescriptor change_)
+				throws ChangeCreationException {
 			final PropertyScratchpad scratch = context.getScratch();
-			if (change_ instanceof Dummy.Change) {
-				Dummy.Change change = (Dummy.Change)change_;
-				if ("LOCKED".equals(change.getCreator().getString(scratch)))
-					throw new ChangeRejectedException(change_,
-							"" + change.getCreator() + "'s string is locked");
+			final Resolver resolver = context.getResolver();
+			if (change_ instanceof Dummy.ChangeDescriptor) {
+				Dummy.ChangeDescriptor cd = (Dummy.ChangeDescriptor)change_;
+				
+				Dummy d = cd.getTarget().lookup(scratch, resolver);
+				if (d == null)
+					throw new ChangeCreationException(cd,
+							"" + cd.getTarget() + ": lookup failed");
+				
+				if ("LOCKED".equals(d.getString(scratch)))
+					throw new ChangeCreationException(cd,
+							"" + cd.getTarget() + "'s string is locked");
 			} else return false;
 			return true;
 		}
 	}
 	
-	private Dummy go(ExecutorManager em) throws ChangeRejectedException {
+	private static final Dummy.ChangeDescriptor makeDescriptor(
+			String oldS, String newS) {
+		return new Dummy.ChangeDescriptor(new Dummy.Identifier(), oldS, newS);
+	}
+	
+	private static Dummy go(
+			DescriptorExecutorManager em) throws ChangeCreationException {
 		Dummy d = new Dummy();
 		assertEquals(null, d.getString());
-		em.tryApplyChange(d.change("value"));
+		em.tryApplyChange(d, makeDescriptor(null, "value"));
 		assertEquals("value", d.getString());
 		return d;
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void blankManagers() throws ChangeRejectedException {
-		ExecutorManager em = new ExecutorManager();
+	@Test(expected = ChangeCreationException.class)
+	public void blankManagers() throws ChangeCreationException {
+		DescriptorExecutorManager em = new DescriptorExecutorManager();
 		go(em);
 	}
 	
 	@Test
-	public void newManagers() throws ChangeRejectedException {
-		ExecutorManager em = new ExecutorManager();
+	public void newManagers() throws ChangeCreationException {
+		DescriptorExecutorManager em = new DescriptorExecutorManager();
 		em.addParticipant(new DummyHandler());
 		go(em);
 	}
 	
-	@Test
-	public void stackedValidation() throws ChangeRejectedException {
-		DummyHandler dh = new DummyHandler();
-		
-		ValidatorManager vm = new ValidatorManager();
-		vm.addParticipant(ExecutorManager.getInstance());
-		vm.addParticipant(dh);
-		
-		vm.tryValidateChange(new Dummy().change("foxtrot"));
-	}
-	
-	@Test
-	public void stackedExecution() throws ChangeRejectedException {
-		DummyHandler dh = new DummyHandler();
-		
-		ExecutorManager em = new ExecutorManager();
-		em.addParticipant(ExecutorManager.getInstance());
-		em.addParticipant(dh);
+	@Test(expected = ChangeCreationException.class)
+	public void testLock() throws ChangeCreationException {
+		DescriptorExecutorManager em = new DescriptorExecutorManager();
+		em.addParticipant(new DummyHandler());
 		
 		Dummy d = new Dummy();
-		em.tryApplyChange(d.change("foxtrot"));
-		assertEquals("foxtrot", d.getString());
+		em.tryApplyChange(d, makeDescriptor(null, "LOCKED"));
+		em.tryApplyChange(d, makeDescriptor("LOCKED", "value"));
+	}
+	
+	@Test(expected = ChangeCreationException.class)
+	public void testLockScratch() throws ChangeCreationException {
+		DescriptorExecutorManager em = new DescriptorExecutorManager();
+		em.addParticipant(new DummyHandler());
+		
+		Dummy d = new Dummy();
+		em.tryApplyChange(d, DescriptorTestRunner.cdg(
+				makeDescriptor(null, "LOCKED"),
+				makeDescriptor("LOCKED", "value")));
 	}
 	
 	@Test
-	public void boundDescriptorExecution() throws ChangeRejectedException {
-		Bigraph b = new Bigraph();
-		Root r = new Root();
+	public void stackedValidation() throws ChangeCreationException {
+		DescriptorExecutorManager vm = new DescriptorExecutorManager();
+		vm.addParticipant(DescriptorExecutorManager.getInstance());
+		vm.addParticipant(new DummyHandler());
 		
-		ChangeGroup cg = new ChangeGroup();
-		cg.addAll(Arrays.asList(
-				b.changeAddChild(r, "0"),
-				new BoundDescriptor(b,
-						new NamedModelObject.ChangeNameDescriptor(
-								new Root.Identifier("0"), "1")),
-				new BoundDescriptor(b,
-						new NamedModelObject.ChangeNameDescriptor(
-								new Root.Identifier("1"), "2"))));
-		ExecutorManager.getInstance().tryApplyChange(cg);
+		vm.tryValidateChange(new Dummy(), makeDescriptor(null, "value"));
+	}
+	
+	@Test
+	public void stackedExecution() throws ChangeCreationException {
+		DescriptorExecutorManager em = new DescriptorExecutorManager();
+		em.addParticipant(DescriptorExecutorManager.getInstance());
+		em.addParticipant(new DummyHandler());
 		
-		assertTrue("2".equals(r.getName()));
+		Dummy d = new Dummy();
+		em.tryApplyChange(d, makeDescriptor(null, "value"));
+		assertEquals("value", d.getString());
 	}
 }
