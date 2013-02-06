@@ -11,6 +11,8 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
  * @see IChangeDescriptor
  */
 public interface IChange {
+	interface Group extends IChange, Iterable<IChange> {}
+	
 	/**
 	 * Gets a new {@link IChange} which, when applied, will reverse this one.
 	 * <p><strong>Depending on the {@link IChange}, it is possible that this

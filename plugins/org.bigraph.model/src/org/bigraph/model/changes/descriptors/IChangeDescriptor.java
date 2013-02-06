@@ -15,6 +15,8 @@ import org.bigraph.model.changes.IChange;
  * @see IChange
  */
 public interface IChangeDescriptor {
+	interface Group extends IChangeDescriptor, Iterable<IChangeDescriptor> {}
+	
 	IChangeDescriptor inverse();
 	
 	void simulate(PropertyScratchpad context, Resolver r)
