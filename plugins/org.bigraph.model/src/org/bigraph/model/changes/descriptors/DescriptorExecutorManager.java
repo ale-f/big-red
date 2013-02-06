@@ -42,10 +42,10 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 	}
 	
 	private IChangeDescriptor run(Resolver r, IChangeDescriptor c) {
-		if (!(c instanceof ChangeDescriptorGroup)) {
+		if (!(c instanceof IChangeDescriptor.Group)) {
 			return step(r, c);
 		} else {
-			for (IChangeDescriptor i : (ChangeDescriptorGroup)c) {
+			for (IChangeDescriptor i : (IChangeDescriptor.Group)c) {
 				IChangeDescriptor j = run(r, i);
 				if (j != null)
 					return j;

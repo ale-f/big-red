@@ -3,7 +3,6 @@ package org.bigraph.model.assistants;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
@@ -90,13 +89,13 @@ public class ValidatorManager
 				throws ChangeRejectedException {
 			if (c == null || !c.isReady()) {
 				throw new ChangeRejectedException(c, "" + c + " is not ready");
-			} else if (!(c instanceof ChangeGroup)) {
+			} else if (!(c instanceof IChange.Group)) {
 				IChange d = step(c);
 				if (d == null)
 					c.simulate(getScratch());
 				return d;
 			} else {
-				for (IChange i : (ChangeGroup)c) {
+				for (IChange i : (IChange.Group)c) {
 					IChange j = doValidation(i);
 					if (j != null)
 						return j;

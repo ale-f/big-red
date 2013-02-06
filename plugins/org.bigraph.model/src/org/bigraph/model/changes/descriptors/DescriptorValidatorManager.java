@@ -99,13 +99,13 @@ public class DescriptorValidatorManager
 				throws ChangeCreationException {
 			if (c == null) {
 				throw new ChangeCreationException(c, "" + c + " is not ready");
-			} else if (!(c instanceof ChangeDescriptorGroup)) {
+			} else if (!(c instanceof IChangeDescriptor.Group)) {
 				IChangeDescriptor d = step(c);
 				if (d == null)
 					c.simulate(getScratch(), getResolver());
 				return d;
 			} else {
-				for (IChangeDescriptor i : (ChangeDescriptorGroup)c) {
+				for (IChangeDescriptor i : (IChangeDescriptor.Group)c) {
 					IChangeDescriptor j = doValidation(i);
 					if (j != null)
 						return j;

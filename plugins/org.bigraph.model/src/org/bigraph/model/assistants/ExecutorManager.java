@@ -1,6 +1,5 @@
 package org.bigraph.model.assistants;
 
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
@@ -44,10 +43,10 @@ public class ExecutorManager extends ValidatorManager {
 	
 	private IChange run(IChange c) {
 		c.beforeApply();
-		if (!(c instanceof ChangeGroup)) {
+		if (!(c instanceof IChange.Group)) {
 			return step(c);
 		} else {
-			for (IChange i : (ChangeGroup)c) {
+			for (IChange i : (IChange.Group)c) {
 				IChange j = run(i);
 				if (j != null)
 					return j;
