@@ -5,7 +5,6 @@ import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT;
 import org.bigraph.model.Edit;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.resources.IFileWrapper;
@@ -51,7 +50,7 @@ public class EditXMLSaver extends XMLSaver {
 		return el;
 	}
 	
-	protected Element processGroup(ChangeDescriptorGroup cdg, Element e) {
+	protected Element processGroup(IChangeDescriptor.Group cdg, Element e) {
 		if (cdg.size() == 0)
 			return null;
 		Element ch;
@@ -66,8 +65,8 @@ public class EditXMLSaver extends XMLSaver {
 					ch.setAttributeNS(null, "src", them.getRelativePath(
 							me.getParent().getPath()));
 				} else ch = processGroup(ed.getDescriptors(), ch);
-			} else if (cd instanceof ChangeDescriptorGroup) {
-				ch = processGroup((ChangeDescriptorGroup)cd,
+			} else if (cd instanceof IChangeDescriptor.Group) {
+				ch = processGroup((IChangeDescriptor.Group)cd,
 						newElement(EDIT, "edit:edit"));
 			} else ch = processDescriptor(cd);
 			if (ch != null)

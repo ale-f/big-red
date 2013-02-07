@@ -71,8 +71,8 @@ public class ChangeCommand extends Command {
 	@Override
 	public final boolean canExecute() {
 		IChange change = getChange();
-		if (change instanceof ChangeGroup &&
-				((ChangeGroup)change).size() == 0)
+		if (change instanceof IChange.Group &&
+				((IChange.Group)change).size() == 0)
 			return false;
 		boolean status = false;
 		try {

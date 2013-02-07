@@ -5,7 +5,6 @@ import org.bigraph.model.Container.ChangeAddChild;
 import org.bigraph.model.Container.ChangeAddChildDescriptor;
 import org.bigraph.model.Layoutable.ChangeRemove;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
@@ -22,8 +21,8 @@ abstract class DescriptorUtilities {
 			IChangeDescriptor cd, ChangeDescriptorGroup cdg) {
 		if (cdg == null)
 			cdg = new ChangeDescriptorGroup();
-		if (cd instanceof ChangeDescriptorGroup) {
-			for (IChangeDescriptor i : (ChangeDescriptorGroup)cd)
+		if (cd instanceof IChangeDescriptor.Group) {
+			for (IChangeDescriptor i : (IChangeDescriptor.Group)cd)
 				linearise(i, cdg);
 		} else cdg.add(cd);
 		return cdg;
@@ -53,10 +52,10 @@ abstract class DescriptorUtilities {
 	static IChangeDescriptor createDescriptor(
 			PropertyScratchpad context, IChange c) {
 		IChangeDescriptor chd = null;
-		if (c instanceof ChangeGroup) {
+		if (c instanceof IChange.Group) {
 			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 			context = new PropertyScratchpad(context);
-			for (IChange ch : (ChangeGroup)c) {
+			for (IChange ch : (IChange.Group)c) {
 				chd = createDescriptor(context, ch);
 				if (chd != null) {
 					cdg.add(chd);
