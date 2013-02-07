@@ -5,11 +5,8 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
@@ -245,48 +242,6 @@ public abstract class ModelObject {
 	
 	public static abstract class ModelObjectChangeDescriptor
 			implements IChangeDescriptor {
-		static {
-			DescriptorExecutorManager.getInstance().addParticipant(
-					new ModelObjectDescriptorHandler());
-		}
-	}
-	
-	static final class ChangeMoveExtendedDataDescriptor
-			extends ModelObjectChangeDescriptor {
-		private final Identifier source, target;
-		
-		public ChangeMoveExtendedDataDescriptor(
-				Identifier source, Identifier target) {
-			this.source = source;
-			this.target = target;
-		}
-		
-		public Identifier getSource() {
-			return source;
-		}
-		
-		public Identifier getTarget() {
-			return target;
-		}
-		
-		@Override
-		public IChangeDescriptor inverse() {
-			return new ChangeMoveExtendedDataDescriptor(
-					getTarget(), getSource());
-		}
-		
-		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
-			ModelObject
-				source = getSource().lookup(context, r),
-				target = getTarget().lookup(context, r);
-			Map<String, Object>
-				sourceMap = source.getModifiableExtendedDataMap(context),
-				targetMap = target.getModifiableExtendedDataMap(context);
-			sourceMap.putAll(targetMap);
-			targetMap.clear();
-		}
 	}
 	
 	public Identifier getIdentifier() {
