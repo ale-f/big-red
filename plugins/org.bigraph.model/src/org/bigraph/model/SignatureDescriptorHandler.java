@@ -28,7 +28,13 @@ final class SignatureDescriptorHandler
 			ChangeRemoveControlDescriptor cd =
 					(ChangeRemoveControlDescriptor)change;
 			tryLookup(cd, cd.getTarget(), scratch, resolver, Signature.class);
-			tryLookup(cd, cd.getControl(), scratch, resolver, Control.class);
+			Control c = tryLookup(
+					cd, cd.getControl(), scratch, resolver, Control.class);
+			
+			if (c.getPorts(scratch).size() != 0)
+				throw new ChangeCreationException(cd,
+						"" + cd.getControl() + " still has ports " +
+						"that must be removed first");
 		} else if (change instanceof ChangeAddSignatureDescriptor) {
 			ChangeAddSignatureDescriptor cd =
 					(ChangeAddSignatureDescriptor)change;
