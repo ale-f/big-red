@@ -185,4 +185,9 @@ public class Edit extends ModelObject
 	public Iterator<IChangeDescriptor> iterator() {
 		return getDescriptors().iterator();
 	}
+	
+	@Override
+	public int size() {
+		return getDescriptors().size();
+	}
 }

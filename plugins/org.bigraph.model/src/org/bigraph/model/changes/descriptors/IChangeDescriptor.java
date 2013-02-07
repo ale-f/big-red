@@ -22,7 +22,9 @@ public interface IChangeDescriptor {
 	 * which will never directly validate, execute, or simulate them.
 	 * @author alec
 	 */
-	interface Group extends IChangeDescriptor, Iterable<IChangeDescriptor> {}
+	interface Group extends IChangeDescriptor, Iterable<IChangeDescriptor> {
+		int size();
+	}
 	
 	IChangeDescriptor inverse();
 	

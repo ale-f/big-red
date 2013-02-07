@@ -18,7 +18,9 @@ public interface IChange {
 	 * execute, or simulate them.
 	 * @author alec
 	 */
-	interface Group extends IChange, Iterable<IChange> {}
+	interface Group extends IChange, Iterable<IChange> {
+		int size();
+	}
 	
 	/**
 	 * Gets a new {@link IChange} which, when applied, will reverse this one.
