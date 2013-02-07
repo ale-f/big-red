@@ -423,8 +423,7 @@ implements PropertyChangeListener {
 					context.executeChange(ch);
 				}
 				
-				if (cg.size() > 0) {
-					doChange(cg);
+				if (cg.size() > 0 && doChange(cg)) {
 					controls.setSelection(StructuredSelection.EMPTY);
 					setControl(null);
 				}
