@@ -6,14 +6,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import org.bigraph.model.Control;
 import org.bigraph.model.NamedModelObject;
+import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.Store;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.ResolverDeque;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
@@ -243,6 +247,28 @@ implements PropertyChangeListener {
 		return doChange(bind(cd));
 	}
 	
+	private Store store = new Store();
+	
+	private final IChange changeDeleteControl(Control c) {
+		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+		Control.Identifier cid = c.getIdentifier();
+		
+		for (PortSpec i : c.getPorts()) {
+			PortSpec.Identifier pid = i.getIdentifier();
+			cdg.add(new Store.ToStoreDescriptor(pid, store.createID()));
+			cdg.add(new Control.ChangeRemovePortSpecDescriptor(pid));
+		}
+		cdg.add(new Store.ToStoreDescriptor(cid, store.createID()));
+		cdg.add(new Signature.ChangeRemoveControlDescriptor(
+				new Signature.Identifier(), c.getIdentifier()));
+		
+		ResolverDeque rd = new ResolverDeque();
+		rd.add(store);
+		rd.add(getModel());
+		
+		return new BoundDescriptor(rd, cdg);
+	}
+	
 	@Override
 	public void createEditorControl(Composite parent) {
 		Composite self = new Composite(parent, SWT.NONE);
@@ -407,10 +433,7 @@ implements PropertyChangeListener {
 					if (i instanceof Control) {
 						Control c = (Control)i;
 						if (c.getSignature().equals(getModel()))
-							cg.add(ch = bind(
-									new Signature.ChangeRemoveControlDescriptor(
-											new Signature.Identifier(),
-											c.getIdentifier())));
+							cg.add(ch = changeDeleteControl(c));
 					} else if (i instanceof Signature) {
 						Signature s = (Signature)i;
 						if (s.getParent().equals(getModel()))
