@@ -29,7 +29,13 @@ final class ControlDescriptorHandler extends DescriptorHandlerImpl {
 		} else if (change instanceof ChangeRemovePortSpecDescriptor) {
 			ChangeRemovePortSpecDescriptor cd =
 					(ChangeRemovePortSpecDescriptor)change;
-			tryLookup(cd, cd.getSpec(), scratch, resolver, PortSpec.class);
+			PortSpec p = tryLookup(cd,
+					cd.getSpec(), scratch, resolver, PortSpec.class);
+			
+			if (p.getExtendedDataMap(scratch).size() != 0)
+				throw new ChangeCreationException(cd,
+						"" + cd.getSpec() + " still has extended data " +
+						"that must be removed");
 		} else return false;
 		return true;
 	}
