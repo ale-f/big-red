@@ -35,6 +35,11 @@ final class SignatureDescriptorHandler
 				throw new ChangeCreationException(cd,
 						"" + cd.getControl() + " still has ports " +
 						"that must be removed first");
+			
+			if (c.getExtendedDataMap().size() != 0)
+				throw new ChangeCreationException(cd,
+						"" + cd.getControl() + " still has extended data " +
+						"that must be removed first");
 		} else if (change instanceof ChangeAddSignatureDescriptor) {
 			ChangeAddSignatureDescriptor cd =
 					(ChangeAddSignatureDescriptor)change;
