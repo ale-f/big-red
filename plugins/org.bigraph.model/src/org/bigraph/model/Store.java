@@ -3,8 +3,9 @@ package org.bigraph.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -152,13 +153,13 @@ public class Store implements Resolver {
 	
 	@Override
 	public Object lookup(
-			PropertyScratchpad context, ModelObject.Identifier identifier) {
+			PropertyScratchpad context, IObjectIdentifier identifier) {
 		if (identifier instanceof EntryIdentifier) {
-			long id = ((EntryIdentifier)identifier).getID();
+			EntryIdentifier eid = (EntryIdentifier)identifier;
+			long id = eid.getID();
 			ModelObject result;
 			if (!entries.containsKey(id)) {
-				entries.put(id,
-						result = new DummyModelObject(identifier));
+				entries.put(id, result = new DummyModelObject(eid));
 			} else result = entries.get(id);
 			return result;
 		} else return null;

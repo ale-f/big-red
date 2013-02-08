@@ -1,9 +1,9 @@
 package org.bigraph.model;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Point.ChangeDisconnectDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 

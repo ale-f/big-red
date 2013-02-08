@@ -2,16 +2,17 @@ package org.bigraph.model;
 
 import java.util.Iterator;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class Edit extends ModelObject
-		implements IChangeDescriptor.Group, ModelObject.Identifier.Resolver {
+		implements IChangeDescriptor.Group, IObjectIdentifier.Resolver {
 	@RedProperty(
 			fired = IChangeDescriptor.class,
 			retrieved = ChangeDescriptorGroup.class)
@@ -175,7 +176,7 @@ public class Edit extends ModelObject
 
 	@Override
 	public Object lookup(PropertyScratchpad context,
-			ModelObject.Identifier identifier) {
+			IObjectIdentifier identifier) {
 		if (identifier instanceof Identifier) {
 			return this;
 		} else return null;

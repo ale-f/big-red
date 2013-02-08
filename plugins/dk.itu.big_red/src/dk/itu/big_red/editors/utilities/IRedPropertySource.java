@@ -1,6 +1,6 @@
 package dk.itu.big_red.editors.utilities;
 
-import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
@@ -8,7 +8,7 @@ public interface IRedPropertySource extends IPropertySource {
 	@Override
 	Object getPropertyValue(Object id);
 	
-	ModelObject.Identifier.Resolver getResolver();
+	Resolver getResolver();
 	
 	/**
 	 * Creates and returns an {@link IChangeDescriptor} which will set the

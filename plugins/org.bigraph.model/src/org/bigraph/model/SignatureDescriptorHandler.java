@@ -1,11 +1,11 @@
 package org.bigraph.model;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Signature.ChangeAddControlDescriptor;
 import org.bigraph.model.Signature.ChangeAddSignatureDescriptor;
 import org.bigraph.model.Signature.ChangeRemoveControlDescriptor;
 import org.bigraph.model.Signature.ChangeRemoveSignatureDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 

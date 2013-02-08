@@ -3,10 +3,10 @@ package dk.itu.big_red.model;
 import java.util.List;
 
 import org.bigraph.model.Control;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
 import org.bigraph.model.assistants.ExtendedDataUtilities.SimpleHandler;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;

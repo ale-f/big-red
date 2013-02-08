@@ -1,7 +1,7 @@
 package org.bigraph.model.loaders;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 

@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
+
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.interfaces.ISignature;
@@ -24,7 +26,7 @@ import org.bigraph.model.names.policies.StringNamePolicy;
  * @see ISignature
  */
 public class Signature extends ModelObject
-		implements ISignature, ModelObject.Identifier.Resolver {
+		implements ISignature, Resolver {
 	private Signature parent;
 	private List<Signature> signatures = new ArrayList<Signature>();
 	
@@ -188,7 +190,7 @@ public class Signature extends ModelObject
 	
 	@Override
 	public Object lookup(
-			PropertyScratchpad context, ModelObject.Identifier identifier) {
+			PropertyScratchpad context, IObjectIdentifier identifier) {
 		if (identifier instanceof Signature.Identifier) {
 			return this;
 		} else if (identifier instanceof Control.Identifier) {

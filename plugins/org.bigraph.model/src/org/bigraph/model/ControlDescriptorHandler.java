@@ -4,8 +4,8 @@ import org.bigraph.model.Control.ChangeAddPortSpecDescriptor;
 import org.bigraph.model.Control.ChangeKindDescriptor;
 import org.bigraph.model.Control.ChangeRemovePortSpecDescriptor;
 import org.bigraph.model.HandlerUtilities.DescriptorHandlerImpl;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 

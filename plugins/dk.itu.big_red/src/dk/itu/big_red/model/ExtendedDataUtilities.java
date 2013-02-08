@@ -2,8 +2,8 @@ package dk.itu.big_red.model;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Site;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDescriptor;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;

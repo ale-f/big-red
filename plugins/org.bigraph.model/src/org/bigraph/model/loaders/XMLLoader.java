@@ -11,8 +11,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
+
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.resources.IResourceWrapper;
 import org.w3c.dom.Document;

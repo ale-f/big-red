@@ -3,8 +3,8 @@ package org.bigraph.model.changes.descriptors;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.process.AbstractParticipantHost;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;

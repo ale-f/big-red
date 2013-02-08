@@ -3,8 +3,8 @@ package org.bigraph.model;
 import java.util.List;
 
 import org.bigraph.model.ModelObject.Identifier;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;

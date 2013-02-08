@@ -4,7 +4,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
-import org.bigraph.model.ModelObject;
+
+import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IBigraph;
 import org.bigraph.model.names.HashMapNamespace;
@@ -19,7 +20,7 @@ import org.bigraph.model.names.policies.StringNamePolicy;
  * @see IBigraph
  */
 public class Bigraph extends Container
-		implements IBigraph, ModelObject.Identifier.Resolver {
+		implements IBigraph, IObjectIdentifier.Resolver {
 	private Signature signature = null;
 
 	private Namespace<Layoutable>
@@ -227,7 +228,7 @@ public class Bigraph extends Container
 
 	@Override
 	public Object lookup(PropertyScratchpad context,
-			ModelObject.Identifier identifier) {
+			IObjectIdentifier identifier) {
 		if (identifier instanceof Bigraph.Identifier) {
 			return this;
 		} else if (identifier instanceof Layoutable.Identifier) {

@@ -1,6 +1,7 @@
 package org.bigraph.model;
 
 import java.util.Collection;
+
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.interfaces.IChild;
 import org.bigraph.model.interfaces.IRoot;

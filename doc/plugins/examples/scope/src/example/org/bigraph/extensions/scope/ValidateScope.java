@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.bigraph.model.Container;
 import org.bigraph.model.Link;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.Point.ChangeConnectDescriptor;
 import org.bigraph.model.Port;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;

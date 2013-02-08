@@ -2,7 +2,7 @@ package org.bigraph.model.tests;
 
 import java.util.Arrays;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;

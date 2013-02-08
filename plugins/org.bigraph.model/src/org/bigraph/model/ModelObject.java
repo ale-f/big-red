@@ -5,6 +5,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -218,25 +219,8 @@ public abstract class ModelObject {
 	 * a less specific way than a Java object reference does.
 	 * @author alec
 	 */
-	public interface Identifier {
-		/**
-		 * Classes implementing <strong>Resolver</strong> can resolve {@link
-		 * Identifier}s into {@link Object}s.
-		 * @author alec
-		 */
-		interface Resolver {
-			Object lookup(PropertyScratchpad context, Identifier identifier);
-		}
-		
-		/**
-		 * Retrieves the {@link ModelObject} corresponding to this {@link
-		 * Identifier} from the given {@link Resolver}.
-		 * @param context a {@link PropertyScratchpad} containing changes to
-		 * the {@link Resolver}'s state; can be <code>null</code>
-		 * @param r a {@link Resolver}
-		 * @return a {@link ModelObject}, or <code>null</code> if the lookup
-		 * failed
-		 */
+	public interface Identifier extends IObjectIdentifier {
+		@Override
 		ModelObject lookup(PropertyScratchpad context, Resolver r);
 	}
 	

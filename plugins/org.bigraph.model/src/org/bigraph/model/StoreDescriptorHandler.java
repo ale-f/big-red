@@ -1,10 +1,10 @@
 package org.bigraph.model;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Store.FromStoreDescriptor;
 import org.bigraph.model.Store.StoreChangeDescriptor;
 import org.bigraph.model.Store.ToStoreDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 

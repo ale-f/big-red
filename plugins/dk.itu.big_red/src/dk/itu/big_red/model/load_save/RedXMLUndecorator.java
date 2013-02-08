@@ -7,6 +7,7 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExecutorManager;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
@@ -186,7 +187,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 
 	@Override
 	public void finish() {
-		ModelObject.Identifier.Resolver ex = loader.getResolver();
+		Resolver ex = loader.getResolver();
 		if (ex instanceof Bigraph) {
 			Bigraph bigraph = (Bigraph)ex;
 			IChange relayout =

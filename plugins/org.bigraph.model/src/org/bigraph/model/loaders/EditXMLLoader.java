@@ -1,9 +1,9 @@
 package org.bigraph.model.loaders;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.Edit;
 import org.bigraph.model.Edit.ChangeDescriptorAddDescriptor;
 import org.bigraph.model.assistants.FileData;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.process.IParticipant;
 import org.w3c.dom.Document;

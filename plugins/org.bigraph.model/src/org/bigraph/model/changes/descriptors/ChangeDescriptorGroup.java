@@ -2,8 +2,9 @@ package org.bigraph.model.changes.descriptors;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
+
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 
 /**
  * A <strong>ChangeDescriptorGroup</strong> is a collection of {@link

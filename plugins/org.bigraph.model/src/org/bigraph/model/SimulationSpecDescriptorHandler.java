@@ -1,11 +1,11 @@
 package org.bigraph.model;
 
-import org.bigraph.model.ModelObject.Identifier.Resolver;
 import org.bigraph.model.SimulationSpec.ChangeAddRuleDescriptor;
 import org.bigraph.model.SimulationSpec.ChangeRemoveRuleDescriptor;
 import org.bigraph.model.SimulationSpec.ChangeSetModelDescriptor;
 import org.bigraph.model.SimulationSpec.ChangeSetSignatureDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 

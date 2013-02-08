@@ -3,8 +3,9 @@ package org.bigraph.model.tests;
 import static org.junit.Assert.*;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.ModelObject.Identifier.Resolver;
+import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.DescriptorValidatorManager;
@@ -30,7 +31,8 @@ public class ExecutionTests {
 	private static final DescriptorExecutorManager MANAGER =
 			new DescriptorExecutorManager();
 	
-	private static class Dummy extends ModelObject implements Resolver {
+	private static class Dummy extends ModelObject
+			implements IObjectIdentifier.Resolver {
 		/*
 		 * Big Red's model is built around the model-view-controller pattern;
 		 * when model properties change, interested parties are notified. This
@@ -124,7 +126,7 @@ public class ExecutionTests {
 		 */
 		@Override
 		public Object lookup(PropertyScratchpad context,
-				org.bigraph.model.ModelObject.Identifier identifier) {
+				IObjectIdentifier identifier) {
 			if (identifier instanceof Dummy.Identifier) {
 				return this;
 			} else return null;
