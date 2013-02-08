@@ -9,12 +9,15 @@ import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.PortSpec;
+import org.bigraph.model.Store;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.ResolverDeque;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
@@ -241,8 +244,14 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		editor.doChange(c);
 	}
 	
+	private final Store store = new Store();
+	private final ResolverDeque resolver = new ResolverDeque();
+	
 	private IChange bind(IChangeDescriptor c) {
-		return new BoundDescriptor(getModel().getSignature(), c);
+		resolver.clear();
+		resolver.add(store);
+		resolver.add(getModel().getSignature());
+		return new BoundDescriptor(resolver, c);
 	}
 	
 	private void doChange(IChangeDescriptor c) {
@@ -290,6 +299,25 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		pl.removePoint(deleteIndex);
 		opSetShape(pl);
 		doChange(cg);
+	}
+	
+	private void opDeletePort(int deleteIndex) {
+		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+		PortSpec p = getModel().getPorts().get(deleteIndex);
+		PortSpec.Identifier pid = p.getIdentifier();
+		cdg.add(new Store.ToStoreDescriptor(pid, store.createID()));
+		cdg.add(new Control.ChangeRemovePortSpecDescriptor(pid));
+		doChange(bind(cdg));
+	}
+	
+	private ChangeGroup changeDeleteAllPorts() {
+		ChangeGroup cg = new ChangeGroup();
+		for (PortSpec p : getModel().getPorts()) {
+			PortSpec.Identifier pid = p.getIdentifier();
+			cg.add(bind(new Store.ToStoreDescriptor(pid, store.createID())));
+			cg.add(bind(new Control.ChangeRemovePortSpecDescriptor(pid)));
+		}
+		return cg;
 	}
 	
 	private void opInsertPoint(int insertIndex, int mx, int my) {
@@ -796,9 +824,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			UI.createMenuItem(m, 0, "&Remove port", new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					doChange(new Control.ChangeRemovePortSpecDescriptor(
-							getModel().getPorts().get(foundPort).
-									getIdentifier()));
+					opDeletePort(foundPort);
 				}
 			});
 		}
@@ -821,10 +847,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 					new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					ChangeGroup cg = new ChangeGroup();
-					for (PortSpec i : getModel().getPorts())
-						cg.add(bind(new Control.ChangeRemovePortSpecDescriptor(
-								i.getIdentifier())));
+					ChangeGroup cg = changeDeleteAllPorts();
 					cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
 							(PropertyScratchpad)null, getModel(),
 							new PointList(new int[] { 0, 0 }))));
@@ -846,10 +869,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 							"\n(All ports will be deleted.)",
 							"3", getIntegerValidator(3, Integer.MAX_VALUE));
 					if (polySides != null) {
-						ChangeGroup cg = new ChangeGroup();
-						for (PortSpec i : getModel().getPorts())
-							cg.add(bind(new Control.ChangeRemovePortSpecDescriptor(
-									i.getIdentifier())));
+						ChangeGroup cg = changeDeleteAllPorts();
 						Ellipse el = Ellipse.SINGLETON.setBounds(
 								new Rectangle(0, 0, 60, 60));
 						cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
