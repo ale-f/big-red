@@ -3,6 +3,7 @@ package org.bigraph.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.assistants.ExtendedDataUtilities;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
@@ -28,7 +29,7 @@ public class Control extends NamedModelObject implements IControl {
 	 * The property name fired when the kind changes.
 	 */
 	@RedProperty(fired = Kind.class, retrieved = Kind.class)
-	public static final String PROPERTY_KIND = "ControlKind";
+	public static final String PROPERTY_KIND = "eD!+ControlKind";
 	
 	/**
 	 * The property name fired when the set of ports changes. If this changes
@@ -195,7 +196,6 @@ public class Control extends NamedModelObject implements IControl {
 	
 	private ArrayList<PortSpec> ports = new ArrayList<PortSpec>();
 	
-	private Control.Kind kind = Kind.ACTIVE;
 	private Signature signature = null;
 	
 	protected Control clone(Signature m) {
@@ -212,17 +212,17 @@ public class Control extends NamedModelObject implements IControl {
 	}
 	
 	public Kind getKind() {
-		return kind;
+		return getKind(null);
 	}
 	
 	public Kind getKind(PropertyScratchpad context) {
-		return getProperty(context, PROPERTY_KIND, Kind.class);
+		Kind k = ExtendedDataUtilities.getProperty(
+				context, this, PROPERTY_KIND, Kind.class);
+		return (k == null ? Kind.ACTIVE : k);
 	}
 	
 	protected void setKind(Kind kind) {
-		Kind oldKind = this.kind;
-		this.kind = kind;
-		firePropertyChange(PROPERTY_KIND, oldKind, kind);
+		setExtendedData(PROPERTY_KIND, kind);
 	}
 	
 	protected void addPort(PortSpec p) {
@@ -310,8 +310,6 @@ public class Control extends NamedModelObject implements IControl {
 			ports.clear();
 			ports = null;
 		}
-		
-		kind = null;
 		
 		super.dispose();
 	}
