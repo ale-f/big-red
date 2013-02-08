@@ -50,9 +50,9 @@ final class StoreDescriptorHandler
 				target = (cd instanceof FromStoreDescriptor ?
 						cd.getID() : cd.getEntryID()).lookup(null, resolver);
 
-			source.getExtendedDataMap().putAll(
-					target.getExtendedDataMap());
-			target.getExtendedDataMap().clear();
+			target.getExtendedDataMap().putAll(
+					source.getExtendedDataMap());
+			source.getExtendedDataMap().clear();
 		} else return false;
 		return true;
 	}

@@ -40,8 +40,8 @@ public class Store implements Resolver {
 			Map<String, Object>
 				sourceMap = source.getModifiableExtendedDataMap(context),
 				targetMap = target.getModifiableExtendedDataMap(context);
-			sourceMap.putAll(targetMap);
-			targetMap.clear();
+			targetMap.putAll(sourceMap);
+			sourceMap.clear();
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class Store implements Resolver {
 		
 		@Override
 		public IChangeDescriptor inverse() {
-			return new ToStoreDescriptor(getID(), getEntryID());
+			return new FromStoreDescriptor(getID(), getEntryID());
 		}
 		
 		@Override
@@ -111,8 +111,8 @@ public class Store implements Resolver {
 		}
 	}
 	
-	private Map<Long, ModelObject> entries =
-			new HashMap<Long, ModelObject>();
+	private Map<EntryIdentifier, ModelObject> entries =
+			new HashMap<EntryIdentifier, ModelObject>();
 	
 	public EntryIdentifier createID() {
 		return new EntryIdentifier(getNextID());
@@ -156,11 +156,10 @@ public class Store implements Resolver {
 			PropertyScratchpad context, IObjectIdentifier identifier) {
 		if (identifier instanceof EntryIdentifier) {
 			EntryIdentifier eid = (EntryIdentifier)identifier;
-			long id = eid.getID();
 			ModelObject result;
-			if (!entries.containsKey(id)) {
-				entries.put(id, result = new DummyModelObject(eid));
-			} else result = entries.get(id);
+			if (!entries.containsKey(eid)) {
+				entries.put(eid, result = new DummyModelObject(eid));
+			} else result = entries.get(eid);
 			return result;
 		} else return null;
 	}
