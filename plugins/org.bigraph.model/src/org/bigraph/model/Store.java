@@ -63,6 +63,12 @@ public class Store implements Resolver {
 			doSimulate(context, getID().lookup(context, r),
 					getEntryID().lookup(context, r));
 		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(store extended data from " + getID() +
+					" into " + getEntryID() + ")";
+		}
 	}
 	
 	public static final class FromStoreDescriptor
@@ -82,6 +88,12 @@ public class Store implements Resolver {
 				throws ChangeCreationException {
 			doSimulate(context, getEntryID().lookup(context, r),
 					getID().lookup(context, r));
+		}
+		
+		@Override
+		public String toString() {
+			return "ChangeDescriptor(load extended data from " + getEntryID() +
+					" into " + getID() + ")";
 		}
 	}
 	
@@ -148,6 +160,11 @@ public class Store implements Resolver {
 		public ModelObject lookup(PropertyScratchpad context, Resolver r) {
 			return ModelObject.require(
 					r.lookup(context, this), ModelObject.class);
+		}
+		
+		@Override
+		public String toString() {
+			return "store entry " + getID();
 		}
 	}
 	
