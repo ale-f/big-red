@@ -113,6 +113,12 @@ public class Store implements Resolver {
 		public Identifier getIdentifier(PropertyScratchpad context) {
 			return id;
 		}
+		
+		@Override
+		protected void firePropertyChange(String propertyName, Object oldValue,
+				Object newValue) {
+			/* do nothing */
+		}
 	}
 	
 	private Long nextID = new Long(0);
@@ -123,8 +129,8 @@ public class Store implements Resolver {
 		}
 	}
 	
-	private Map<EntryIdentifier, ModelObject> entries =
-			new HashMap<EntryIdentifier, ModelObject>();
+	private Map<EntryIdentifier, DummyModelObject> entries =
+			new HashMap<EntryIdentifier, DummyModelObject>();
 	
 	public EntryIdentifier createID() {
 		return new EntryIdentifier(getNextID());
@@ -173,7 +179,7 @@ public class Store implements Resolver {
 			PropertyScratchpad context, IObjectIdentifier identifier) {
 		if (identifier instanceof EntryIdentifier) {
 			EntryIdentifier eid = (EntryIdentifier)identifier;
-			ModelObject result;
+			DummyModelObject result;
 			if (!entries.containsKey(eid)) {
 				entries.put(eid, result = new DummyModelObject(eid));
 			} else result = entries.get(eid);
