@@ -1,5 +1,7 @@
 package org.bigraph.model;
 
+import java.util.Map.Entry;
+
 import org.bigraph.model.Store.FromStoreDescriptor;
 import org.bigraph.model.Store.StoreChangeDescriptor;
 import org.bigraph.model.Store.ToStoreDescriptor;
@@ -50,8 +52,9 @@ final class StoreDescriptorHandler
 				target = (cd instanceof FromStoreDescriptor ?
 						cd.getID() : cd.getEntryID()).lookup(null, resolver);
 
-			target.getExtendedDataMap().putAll(
-					source.getExtendedDataMap());
+			for (Entry<String, Object> i :
+					source.getExtendedDataMap().entrySet())
+				target.setExtendedData(i.getKey(), i.getValue());
 			source.getExtendedDataMap().clear();
 		} else return false;
 		return true;
