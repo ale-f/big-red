@@ -116,19 +116,9 @@ public class BoundDescriptor implements IChange {
 		return "BoundDescriptor(" + getResolver() +
 				", " + getDescriptor() + ")";
 	}
-	
-	@Override
-	public boolean canInvert() {
-		return true;
-	}
 
 	@Override
 	public void beforeApply() {
-	}
-
-	@Override
-	public boolean isReady() {
-		return true;
 	}
 
 	@Override

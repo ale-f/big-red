@@ -59,11 +59,6 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public boolean isReady() {
-			return (child != null && name != null);
-		}
-		
-		@Override
 		public String toString() {
 			return "Change(add child " + child + " to parent " + 
 					getCreator() + " with name \"" + name + "\")";

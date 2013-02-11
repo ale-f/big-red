@@ -92,11 +92,6 @@ public class Reaction  extends ModelObject{
 		}
 		
 		@Override
-		public boolean isReady() {
-			return (child != null);// && name != null);
-		}
-		
-		@Override
 		public String toString() {
 			return "Change(add redex " + child + " to parent " + getCreator() + "\")";
 		}
@@ -136,11 +131,6 @@ public class Reaction  extends ModelObject{
 		}
 		
 		@Override
-		public boolean isReady() {
-			return (child != null);// && name != null);
-		}
-		
-		@Override
 		public String toString() {
 			return "Change(add reactum" + child + " to parent " + getCreator() + "\")";
 		}
@@ -176,18 +166,8 @@ public class Reaction  extends ModelObject{
 		}
 		
 		@Override
-		public boolean canInvert() {
-			return (oldLayout != null);
-		}
-		
-		@Override
 		public ChangeLayoutChild inverse() {
 			return new ChangeLayoutChild(child, oldLayout);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (child != null);
 		}
 		
 		@Override

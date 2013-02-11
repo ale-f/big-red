@@ -46,23 +46,7 @@ public class ChangeGroup extends ArrayList<IChange> implements IChange.Group {
 	}
 
 	@Override
-	public boolean canInvert() {
-		for (IChange c : this)
-			if (c == null || !c.canInvert())
-				return false;
-		return true;
-	}
-
-	@Override
 	public void beforeApply() {
 		/* do nothing */
-	}
-
-	@Override
-	public boolean isReady() {
-		for (IChange c : this)
-			if (c == null || !c.isReady())
-				return false;
-		return true;
 	}
 }

@@ -50,11 +50,6 @@ public abstract class Layoutable extends NamedModelObject {
 		}
 		
 		@Override
-		public boolean canInvert() {
-			return (oldName != null && oldParent != null);
-		}
-		
-		@Override
 		public Change inverse() {
 			return oldParent.new ChangeAddChild(getCreator(), oldName);
 		}

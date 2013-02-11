@@ -87,7 +87,7 @@ public class ValidatorManager
 		
 		protected IChange doValidation(IChange c)
 				throws ChangeRejectedException {
-			if (c == null || !c.isReady()) {
+			if (c == null) {
 				throw new ChangeRejectedException(c, "" + c + " is not ready");
 			} else if (!(c instanceof IChange.Group)) {
 				IChange d = step(c);

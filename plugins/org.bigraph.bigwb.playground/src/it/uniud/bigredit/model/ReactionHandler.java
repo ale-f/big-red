@@ -36,10 +36,19 @@ final class ReactionHandler implements IStepExecutor, IStepValidator {
 	public boolean tryValidateChange(Process p, IChange b)
 			throws ChangeRejectedException {
 		//System.out.println("called _tryValidateChange BRSChangeValidator");
-		if (b instanceof Reaction.ChangeAddReactum ||
-				b instanceof Reaction.ChangeAddRedex ||
-				b instanceof Reaction.ChangeLayoutChild ||
-				b instanceof Reaction.ChangeInsideModel) {
+		if (b instanceof Reaction.ChangeAddReactum) {
+			if (((Reaction.ChangeAddReactum)b).child == null)
+				throw new ChangeRejectedException(b,
+						"" + b + " is not ready");
+		} else if (b instanceof Reaction.ChangeAddRedex) {
+			if (((Reaction.ChangeAddRedex)b).child == null)
+				throw new ChangeRejectedException(b,
+						"" + b + " is not ready");
+		} else if (b instanceof Reaction.ChangeLayoutChild) {
+			if (((Reaction.ChangeLayoutChild)b).child == null)
+				throw new ChangeRejectedException(b,
+						"" + b + " is not ready");
+		} else if (b instanceof Reaction.ChangeInsideModel) {
 			/* do nothing */
 		} else return false;
 		return true;

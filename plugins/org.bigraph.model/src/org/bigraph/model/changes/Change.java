@@ -11,17 +11,7 @@ public abstract class Change implements IChange {
 	public abstract Change inverse();
 	
 	@Override
-	public boolean canInvert() {
-		return true /* by default; subclasses can override */;
-	}
-	
-	@Override
 	public void beforeApply() {
-	}
-	
-	@Override
-	public boolean isReady() {
-		return true /* by default; subclasses can override */;
 	}
 	
 	@Override
@@ -37,16 +27,6 @@ public abstract class Change implements IChange {
 		@Override
 		public Change inverse() {
 			return this;
-		}
-		
-		@Override
-		public boolean canInvert() {
-			return false;
-		}
-		
-		@Override
-		public boolean isReady() {
-			return false;
 		}
 		
 		@Override

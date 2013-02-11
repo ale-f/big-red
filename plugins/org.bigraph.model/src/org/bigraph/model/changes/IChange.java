@@ -33,16 +33,6 @@ public interface IChange {
 	IChange inverse();
 	
 	/**
-	 * Indicates whether or not this {@link IChange} needs more information to
-	 * be reversible. For example, inverting the change "resize X to 40x40"
-	 * requires knowledge of the size of X before the change was made.
-	 * @return <code>true</code> if {@link #inverse()} will work, or
-	 * <code>false</code> if more information is needed first
-	 * @see #beforeApply()
-	 */
-	boolean canInvert();
-	
-	/**
 	 * Called by {@link ExecutorManager} just before this {@link IChange} is
 	 * applied.
 	 * <p>(Subclasses should override this method if they need to save some
@@ -50,13 +40,6 @@ public interface IChange {
 	 * #inverse() reverse} it.)
 	 */
 	void beforeApply();
-	
-	/**
-	 * Indicates whether or not this {@link IChange} has all the information it
-	 * needs to be applied.
-	 * @return <code>true</code> if this {@link IChange} is ready to apply
-	 */
-	boolean isReady();
 	
 	/**
 	 * Simulates the execution of this {@link IChange} in the given {@link

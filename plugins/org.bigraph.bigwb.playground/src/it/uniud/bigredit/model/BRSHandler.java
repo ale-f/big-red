@@ -75,10 +75,19 @@ final class BRSHandler implements IStepExecutor, IStepValidator {
 	@Override
 	public boolean tryValidateChange(Process context, IChange b)
 			throws ChangeRejectedException {
-		if (b instanceof BRS.ChangeAddChild ||
-				b instanceof BRS.ChangeLayoutChild ||
-				b instanceof BRS.ChangeInsideModel ||
-				b instanceof BRS.ChangeRemoveChild) {
+		if (b instanceof BRS.ChangeLayoutChild) {
+			if (((BRS.ChangeLayoutChild)b).child == null)
+				throw new ChangeRejectedException(b,
+						"" + b + " is not ready");
+		} else if (b instanceof BRS.ChangeRemoveChild) {
+			if (((BRS.ChangeRemoveChild)b).child == null)
+				throw new ChangeRejectedException(b,
+						"" + b + " is not ready");
+		} else if (b instanceof BRS.ChangeAddChild) {
+			if (((BRS.ChangeAddChild)b).child == null)
+				throw new ChangeRejectedException(b,
+						"" + b + " is not ready");
+		} else if (b instanceof BRS.ChangeInsideModel) {
 			/* do nothing */
 		} else return false;
 		return true;

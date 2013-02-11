@@ -76,11 +76,6 @@ public class BRS extends ModelObject {
 		}
 		
 		@Override
-		public boolean isReady() {
-			return (child != null);// && name != null);
-		}
-		
-		@Override
 		public String toString() {
 			return "Change(add child " + child + " to parent " + getCreator() + " with name \"" + name + "\")";
 		}
@@ -101,18 +96,8 @@ public class BRS extends ModelObject {
 		}
 		
 		@Override
-		public boolean canInvert() {
-			return (oldName != null);
-		}
-		
-		@Override
 		public ChangeAddChild inverse() {
 			return new ChangeAddChild(child, oldName);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (child != null);
 		}
 		
 		@Override
@@ -138,18 +123,8 @@ public class BRS extends ModelObject {
 		}
 		
 		@Override
-		public boolean canInvert() {
-			return (oldLayout != null);
-		}
-		
-		@Override
 		public ChangeLayoutChild inverse() {
 			return new ChangeLayoutChild(child, oldLayout);
-		}
-		
-		@Override
-		public boolean isReady() {
-			return (child != null);
 		}
 		
 		@Override

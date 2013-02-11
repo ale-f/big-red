@@ -37,6 +37,11 @@ final class ContainerHandler extends HandlerUtilities.HandlerImpl {
 		final PropertyScratchpad context = process.getScratch();
 		if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
+			
+			if (c.child == null || c.name == null)
+				throw new ChangeRejectedException(b,
+						"" + b + " is not ready");
+			
 			Container container = c.getCreator();
 			Bigraph bigraph = container.getBigraph(context);
 			
