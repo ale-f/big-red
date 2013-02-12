@@ -425,19 +425,21 @@ implements PropertyChangeListener {
 					if (i instanceof Control) {
 						Control c = (Control)i;
 						if (c.getSignature().equals(getModel()))
-							cg.add(ch = changeDeleteControl(c));
+							ch = changeDeleteControl(c);
 					} else if (i instanceof Signature) {
 						Signature s = (Signature)i;
 						if (s.getParent().equals(getModel()))
-							cg.add(new Signature.ChangeRemoveSignatureDescriptor(
+							ch = new Signature.ChangeRemoveSignatureDescriptor(
 									new Signature.Identifier(),
 									getModel().getSignatures(context).indexOf(s),
-									s));
+									s);
 					}
 					if (ch != null) {
 						try {
 							ch.simulate(context, _getResolver());
+							cg.add(ch);
 						} catch (ChangeCreationException cce) {
+							cce.printStackTrace();
 						}
 					}
 				}
@@ -750,6 +752,10 @@ implements PropertyChangeListener {
 			throws ChangeCreationException {
 		DescriptorExecutorManager.getInstance().tryApplyChange(
 				_getResolver(), c);
+	}
+	
+	Store getStore() {
+		return store;
 	}
 	
 	@Override

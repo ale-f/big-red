@@ -11,9 +11,6 @@ import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.Store;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.ResolverDeque;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -240,22 +237,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		return roundToGrid(((controlHeight - r.height) / 2) - r.y);
 	}
 	
-	private void doChange(IChange c) {
-		editor.doChange(c);
-	}
-	
-	private final Store store = new Store();
-	private final ResolverDeque resolver = new ResolverDeque();
-	
-	private IChange bind(IChangeDescriptor c) {
-		resolver.clear();
-		resolver.add(store);
-		resolver.add(getModel().getSignature());
-		return new BoundDescriptor(resolver, c);
-	}
-	
 	private void doChange(IChangeDescriptor c) {
-		doChange(bind(c));
+		editor.doChange(c);
 	}
 	
 	private void opSetShape(Object shape) {
@@ -305,16 +288,18 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 		PortSpec p = getModel().getPorts().get(deleteIndex);
 		PortSpec.Identifier pid = p.getIdentifier();
-		cdg.add(new Store.ToStoreDescriptor(pid, store.createID()));
+		cdg.add(new Store.ToStoreDescriptor(
+				pid, editor.getStore().createID()));
 		cdg.add(new Control.ChangeRemovePortSpecDescriptor(pid));
-		doChange(bind(cdg));
+		doChange(cdg);
 	}
 	
 	private ChangeDescriptorGroup changeDeleteAllPorts() {
 		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 		for (PortSpec p : getModel().getPorts()) {
 			PortSpec.Identifier pid = p.getIdentifier();
-			cdg.add(new Store.ToStoreDescriptor(pid, store.createID()));
+			cdg.add(new Store.ToStoreDescriptor(
+					pid, editor.getStore().createID()));
 			cdg.add(new Control.ChangeRemovePortSpecDescriptor(pid));
 		}
 		return cdg;
