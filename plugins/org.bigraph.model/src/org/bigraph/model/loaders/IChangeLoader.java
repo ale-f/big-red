@@ -3,16 +3,17 @@ package org.bigraph.model.loaders;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public interface IChangeLoader extends ILoader {
 	/**
-	 * Adds and simulates an {@link IChange}.
-	 * @param c an {@link IChange}
+	 * Adds and simulates an {@link IChangeDescriptor}.
+	 * @param c an {@link IChangeDescriptor}
 	 * @see #getChanges()
 	 * @see #getScratch()
 	 */
-	void addChange(IChange c);
+	void addChange(IChangeDescriptor c);
 	
 	Resolver getResolver();
 	
@@ -20,7 +21,7 @@ public interface IChangeLoader extends ILoader {
 	 * Returns a {@link ChangeGroup} containing all of the added changes.
 	 * @return a {@link ChangeGroup}
 	 */
-	ChangeGroup getChanges();
+	ChangeDescriptorGroup getChanges();
 	
 	/**
 	 * Returns the {@link PropertyScratchpad} in which the added changes have

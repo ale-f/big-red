@@ -198,7 +198,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			} else {
 				try {
 					DescriptorExecutorManager.getInstance().tryValidateChange(
-							loader.getChanges());
+							loader.getResolver(), loader.getChanges());
 				} catch (ChangeCreationException cre) {
 					IChangeDescriptor ch = cre.getChangeDescriptor();
 					if (ch instanceof BoundDescriptor) {

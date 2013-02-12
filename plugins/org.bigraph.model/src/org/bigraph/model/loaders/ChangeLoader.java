@@ -1,10 +1,8 @@
 package org.bigraph.model.loaders;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -16,24 +14,24 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 		super(parent);
 	}
 	
-	private ChangeGroup cg = new ChangeGroup();
+	private ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
 	@Override
-	public void addChange(IChange c) {
+	public void addChange(IChangeDescriptor c) {
 		if (c != null) {
-			cg.add(c);
-			c.simulate(scratch, null);
+			try {
+				c.simulate(getScratch(), getResolver());
+				cdg.add(c);
+			} catch (ChangeCreationException e) {
+				e.printStackTrace(); /* XXX */
+			}
 		}
 	}
 	
-	protected void addChange(IChangeDescriptor c) {
-		addChange(new BoundDescriptor(getResolver(), c));
-	}
-	
 	@Override
-	public ChangeGroup getChanges() {
-		return cg;
+	public ChangeDescriptorGroup getChanges() {
+		return cdg;
 	}
 	
 	@Override
@@ -43,7 +41,8 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	
 	protected void executeChanges() throws LoadFailedException {
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(getChanges());
+			DescriptorExecutorManager.getInstance().tryApplyChange(
+					getResolver(), getChanges());
 		} catch (ChangeCreationException cre) {
 			throw new LoadFailedException(cre);
 		}
