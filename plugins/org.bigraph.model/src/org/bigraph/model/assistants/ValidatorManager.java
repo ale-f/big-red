@@ -5,17 +5,15 @@ import java.util.List;
 
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
-import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 import org.bigraph.model.process.AbstractParticipantHost;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 
 public class ValidatorManager
-		extends AbstractParticipantHost implements IStepValidator {
+		extends AbstractParticipantHost implements IDescriptorStepValidator {
 	@Override
 	public final void setHost(IParticipantHost host) {
 		/* do nothing */
@@ -53,7 +51,8 @@ public class ValidatorManager
 		protected IChangeDescriptor step(IChangeDescriptor c)
 				throws ChangeCreationException {
 			boolean passes = false;
-			for (IStepValidator i : getParticipants(IStepValidator.class))
+			for (IDescriptorStepValidator i :
+					getParticipants(IDescriptorStepValidator.class))
 				passes |= i.tryValidateChange(this, c);
 			return (passes ? null : c);
 		}

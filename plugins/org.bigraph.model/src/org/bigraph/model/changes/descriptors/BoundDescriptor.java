@@ -5,7 +5,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 import org.bigraph.model.process.IParticipantHost;
@@ -44,7 +43,7 @@ public class BoundDescriptor implements IChange {
 	}
 	
 	private static final class Handler
-			implements IStepValidator, IStepExecutor {
+			implements IDescriptorStepValidator, IStepExecutor {
 		@Override
 		public void setHost(IParticipantHost host) {
 			/* do nothing */
@@ -53,7 +52,8 @@ public class BoundDescriptor implements IChange {
 		private static final Handler INSTANCE = new Handler();
 		
 		@Override
-		public boolean tryValidateChange(Process context, IChangeDescriptor change)
+		public boolean tryValidateChange(
+				Process context, IChangeDescriptor change)
 				throws ChangeCreationException {
 			if (change instanceof BoundDescriptor) {
 				BoundDescriptor bd = (BoundDescriptor)change;

@@ -7,7 +7,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
-import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
@@ -20,7 +19,7 @@ abstract class HandlerUtilities {
 	private HandlerUtilities() {}
 	
 	abstract static class HandlerImpl
-			implements IStepExecutor, IStepValidator {
+			implements IStepExecutor, IDescriptorStepValidator {
 		@Override
 		public void setHost(IParticipantHost host) {
 			/* do nothing */
