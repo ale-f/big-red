@@ -18,9 +18,9 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 
 import static org.bigraph.model.tests.DescriptorTestRunner.cdg;
@@ -72,7 +72,7 @@ public class BigraphTests {
 			fail(e.getRationale());
 		}
 		
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 		Container c = r;
 		for (int i = 0; i < 1000; i++) {
 			Node n = new Node(control0);

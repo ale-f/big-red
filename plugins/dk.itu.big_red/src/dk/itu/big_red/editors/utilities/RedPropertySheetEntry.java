@@ -3,8 +3,8 @@ package dk.itu.big_red.editors.utilities;
 import java.util.EventObject;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackListener;
@@ -73,7 +73,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 		if (getParent() == null)
 			return;
 		Object[] values = getParent().getValues();
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 		ModelObject ex = null;
 		for (int i = 0; i < values.length; i++) {
 			Object o = values[i];
@@ -95,11 +95,12 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 	
 	@Override
 	protected void valueChanged(PropertySheetEntry child) {
-		valueChanged((RedPropertySheetEntry)child, new ChangeGroup());
+		valueChanged(
+				(RedPropertySheetEntry)child, new ChangeDescriptorGroup());
 	}
 	
 	private void valueChanged(
-			RedPropertySheetEntry child, ChangeGroup cg) {
+			RedPropertySheetEntry child, ChangeDescriptorGroup cg) {
 		Object[] values = getValues();
 		ModelObject ex = null;
 		for (int i = 0; i < values.length; i++) {

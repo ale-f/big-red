@@ -12,7 +12,6 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Store;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ResolverDeque;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -224,18 +223,17 @@ implements PropertyChangeListener {
 		-40, 0
 	});
 	
-	private static final IChange changeControlName(Control c, String s) {
+	private static final IChangeDescriptor changeControlName(
+			Control c, String s) {
 		if (c != null && s != null) {
-			ChangeGroup cg = new ChangeGroup();
-			cg.add(new BoundDescriptor(c.getSignature(),
-					new NamedModelObject.ChangeNameDescriptor(
-							c.getIdentifier(), s)));
-			cg.add(new BoundDescriptor(c.getSignature(),
-					new ControlUtilities.ChangeLabelDescriptor(
-							c.getIdentifier().getRenamed(s),
-							ControlUtilities.getLabel(c),
-							ControlUtilities.labelFor(s))));
-			return cg;
+			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+			cdg.add(new NamedModelObject.ChangeNameDescriptor(
+					c.getIdentifier(), s));
+			cdg.add(new ControlUtilities.ChangeLabelDescriptor(
+					c.getIdentifier().getRenamed(s),
+					ControlUtilities.getLabel(c),
+					ControlUtilities.labelFor(s)));
+			return cdg;
 		} else return null;
 	}
 	
@@ -425,7 +423,7 @@ implements PropertyChangeListener {
 			public void widgetSelected(SelectionEvent e) {
 				Iterator<?> it =
 					((IStructuredSelection)controls.getSelection()).iterator();
-				ChangeGroup cg = new ChangeGroup();
+				ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 				PropertyScratchpad context = new PropertyScratchpad();
 				while (it.hasNext()) {
 					Object i = it.next();
@@ -751,7 +749,7 @@ implements PropertyChangeListener {
 
 	@Override
 	protected void tryApplyChange(IChange c) throws ChangeCreationException {
-		DescriptorExecutorManager.getInstance().tryApplyChange(c);
+		DescriptorExecutorManager.getInstance().tryApplyChange(getModel(), c);
 	}
 	
 	@Override

@@ -12,8 +12,8 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
@@ -22,7 +22,7 @@ import dk.itu.big_red.model.LayoutUtilities;
 
 
 public class LayoutableCreateCommand extends ChangeCommand {
-	ChangeGroup cg = new ChangeGroup();
+	ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 	
 	public LayoutableCreateCommand() {
 		setChange(cg);
@@ -49,7 +49,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (container instanceof Bigraph){
 			setContext(((Bigraph) container).getBigraph());
 		}else if(container instanceof BRS){
-			setContext((BRS)container);
+			setContext(container);
 			
 		}else if(container instanceof Layoutable){
 			setContext(((Layoutable)container).getBigraph());
@@ -93,7 +93,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (container instanceof BRS){
 			/** TODO get a name for Bigraph */
 			
-			setContext((BRS)container);
+			setContext(container);
 			cg.add(((BRS)container).changeAddChild(node, "B0"));
 			cg.add(((BRS)container).changeLayoutChild(node, layout));
 			
@@ -115,9 +115,9 @@ public class LayoutableCreateCommand extends ChangeCommand {
 			
 			if(node instanceof Bigraph){
 				Root root= new Root();
-				String name = ((Bigraph) node).getBigraph().getFirstUnusedName((Layoutable)root);
+				String name = ((Bigraph) node).getBigraph().getFirstUnusedName(root);
 				
-				cg.add(((Bigraph) node).changeAddChild(((Root)root), name));
+				cg.add(((Bigraph) node).changeAddChild(root, name));
 				cg.add(new BoundDescriptor((Bigraph) container,
 						new LayoutUtilities.ChangeLayoutDescriptor(
 								((Layoutable)node).getIdentifier().getRenamed(name),
@@ -143,7 +143,7 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (container instanceof Reaction){
 			/** TODO get a name for Bigraph */
 			System.out.println("Instance of Reaction");
-			setContext((Reaction)container);
+			setContext(container);
 			if(layout.x > ((Reaction)container).SEPARATOR_WIDTH){
 				cg.add(((Reaction) container).changeAddReactum((Bigraph) node));
 				cg.add(((Reaction) container).changeLayoutChild(

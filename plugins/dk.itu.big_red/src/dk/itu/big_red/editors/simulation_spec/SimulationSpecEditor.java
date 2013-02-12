@@ -13,11 +13,12 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.SaveFailedException;
@@ -262,19 +263,24 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 			public void widgetSelected(SelectionEvent e) {
 				Iterator<?> it =
 					((IStructuredSelection)rules.getSelection()).iterator();
-				ChangeGroup cg = new ChangeGroup();
+				ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 				PropertyScratchpad scratch = new PropertyScratchpad();
 				while (it.hasNext()) {
 					ReactionRule rr = (ReactionRule)it.next();
-					IChange ch = new BoundDescriptor(getModel(),
+					IChangeDescriptor ch =
 							new SimulationSpec.ChangeRemoveRuleDescriptor(
 									new SimulationSpec.Identifier(),
 									getModel().getRules(scratch).indexOf(rr),
-									rr));
-					cg.add(scratch.executeChange(ch));
+									rr);
+					try {
+						ch.simulate(scratch, getModel());
+					} catch (ChangeCreationException cce) {
+						/* XXX */
+					}
+					cg.add(ch);
 				}
 				if (!cg.isEmpty())
-					doChange(cg);
+					doChange(new BoundDescriptor(getModel(), cg));
 			}
 		});
 		

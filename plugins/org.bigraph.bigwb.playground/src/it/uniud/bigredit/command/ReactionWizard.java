@@ -20,9 +20,9 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.uniud.bigraph.match.PlaceMatch;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -615,8 +615,8 @@ public class ReactionWizard extends Wizard {
 	@Override
 	public boolean performFinish()
 	{
-		ChangeGroup cgA = new ChangeGroup();
-		ChangeGroup cgLink = new ChangeGroup();
+		ChangeDescriptorGroup cgA = new ChangeDescriptorGroup();
+		ChangeDescriptorGroup cgLink = new ChangeDescriptorGroup();
 		HashMap<Root,Root> mapReactionRoots= rule.getMapRedexRootToReactum();
 		chosenMatch= matches.get(selection);
 		
@@ -738,7 +738,7 @@ public class ReactionWizard extends Wizard {
 		
 		
 		private void fillAddChangeReactum(Root rootReactum, Layoutable itemAgent,
-				ChangeGroup cg, MatchData ma) {
+				ChangeDescriptorGroup cg, MatchData ma) {
 	
 			for (Layoutable l : rootReactum.getChildren()) {
 				if (itemAgent instanceof Container) {
@@ -755,7 +755,7 @@ public class ReactionWizard extends Wizard {
 	}
 		
 	private void fillAddChangeItemReactum(Layoutable l, Layoutable itemAgent,
-			ChangeGroup cg, ChangeGroup cgL) {
+			ChangeDescriptorGroup cg, ChangeDescriptorGroup cgL) {
 
 		if (l instanceof Site) {
 			addSite((Site)l, itemAgent, cg, cgL);
@@ -833,8 +833,8 @@ public class ReactionWizard extends Wizard {
 		
 
 		
-	private void addSite(Site siteReactum, Layoutable agentParent, ChangeGroup cgAdd,
-			ChangeGroup cgRem) {
+	private void addSite(Site siteReactum, Layoutable agentParent, ChangeDescriptorGroup cgAdd,
+			ChangeDescriptorGroup cgRem) {
 		
 		Site redexS= rule.mapReactumSiteToRedex.get(siteReactum);
 		ArrayList<Layoutable> matches= new ArrayList<Layoutable>();
@@ -868,7 +868,7 @@ public class ReactionWizard extends Wizard {
 	}
 		
 	private void removeSite(ArrayList<Layoutable> agentMatchedComponets,
-			ChangeGroup cg) {
+			ChangeDescriptorGroup cg) {
 		for (Layoutable match : agentMatchedComponets) {
 			eraseNodeandChild(match, cg);
 		}
@@ -876,7 +876,7 @@ public class ReactionWizard extends Wizard {
 		
 		
 	private void addOneSite(ArrayList<Layoutable> agentMatchedComponets,
-			Layoutable newParentAgent, ChangeGroup cgAdd, ChangeGroup cgRem) {
+			Layoutable newParentAgent, ChangeDescriptorGroup cgAdd, ChangeDescriptorGroup cgRem) {
 		for (Layoutable match : agentMatchedComponets) {
 			Layoutable newNodeAgent = (Layoutable) match.newInstance();
 			String name = match.getName();
@@ -923,7 +923,7 @@ public class ReactionWizard extends Wizard {
 
 	private void addOneSiteRenaming(
 			ArrayList<Layoutable> agentMatchedComponets,
-			Layoutable newParentAgent, ChangeGroup cgAdd, ChangeGroup cgRem) {
+			Layoutable newParentAgent, ChangeDescriptorGroup cgAdd, ChangeDescriptorGroup cgRem) {
 		for (Layoutable match : agentMatchedComponets) {
 			Layoutable newNodeAgent = (Layoutable) match.newInstance();
 			String name = match.getName();
@@ -967,7 +967,7 @@ public class ReactionWizard extends Wizard {
 		
 		
 		
-		private void eraseNodeandChild(Layoutable node, ChangeGroup cg){
+		private void eraseNodeandChild(Layoutable node, ChangeDescriptorGroup cg){
 			
 			
 			if(node instanceof Container){

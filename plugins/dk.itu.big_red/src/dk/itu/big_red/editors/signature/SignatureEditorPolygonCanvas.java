@@ -12,7 +12,6 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.Store;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ResolverDeque;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -171,7 +170,8 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 								new PortSpec.Identifier(
 										newText, getModel().getIdentifier())));
 				try {
-					DescriptorExecutorManager.getInstance().tryValidateChange(bind(c));
+					DescriptorExecutorManager.getInstance().tryValidateChange(
+							getModel().getSignature(), c);
 					return null;
 				} catch (ChangeCreationException e) {
 					return e.getRationale();
@@ -271,7 +271,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 	}
 	
 	private void opDeletePoint(int deleteIndex) {
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 		Point p = getPoint(deleteIndex);
 		Line l1 = new Line(getPoint(deleteIndex - 1), p),
 				l2 = new Line(p, getPoint(deleteIndex + 1));
@@ -285,15 +285,15 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			int segment = getSegment(port);
 			double distance = getDistance(port);
 			if (segment == deleteIndex - 1) {
-				cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
-						null, port, distance * l1l)));
+				cg.add(new ControlUtilities.ChangeDistanceDescriptor(
+						null, port, distance * l1l));
 			} else if (segment == deleteIndex) {
-				cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
-						null, port, l1l + (distance * (len2 / len)))));
+				cg.add(new ControlUtilities.ChangeDistanceDescriptor(
+						null, port, l1l + (distance * (len2 / len))));
 			}
 			if (segment >= deleteIndex)
-				cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
-						null, port, segment - 1)));
+				cg.add(new ControlUtilities.ChangeSegmentDescriptor(
+						null, port, segment - 1));
 		}
 		PointList pl = getPoints().getCopy();
 		pl.removePoint(deleteIndex);
@@ -310,19 +310,19 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		doChange(bind(cdg));
 	}
 	
-	private ChangeGroup changeDeleteAllPorts() {
-		ChangeGroup cg = new ChangeGroup();
+	private ChangeDescriptorGroup changeDeleteAllPorts() {
+		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 		for (PortSpec p : getModel().getPorts()) {
 			PortSpec.Identifier pid = p.getIdentifier();
-			cg.add(bind(new Store.ToStoreDescriptor(pid, store.createID())));
-			cg.add(bind(new Control.ChangeRemovePortSpecDescriptor(pid)));
+			cdg.add(new Store.ToStoreDescriptor(pid, store.createID()));
+			cdg.add(new Control.ChangeRemovePortSpecDescriptor(pid));
 		}
-		return cg;
+		return cdg;
 	}
 	
 	private void opInsertPoint(int insertIndex, int mx, int my) {
 		int x = mx - translationX(), y = my - translationY();
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 		Point p = roundToGrid(x, y);
 		Line l1 = new Line(getPoint(insertIndex - 1), p),
 				l2 = new Line(p, getPoint(insertIndex));
@@ -332,18 +332,17 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 			double distance = getDistance(port);
 			if (segment == (insertIndex - 1)) {
 				if (distance < pivot) {
-					cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
-							null, port, (pivot - distance) / pivot)));
+					cg.add(new ControlUtilities.ChangeDistanceDescriptor(
+							null, port, (pivot - distance) / pivot));
 				} else {
-					cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
-							null, port, segment + 1)));
-					cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
-							null, port,
-							(distance - pivot) / (1 - pivot))));
+					cg.add(new ControlUtilities.ChangeSegmentDescriptor(
+							null, port, segment + 1));
+					cg.add(new ControlUtilities.ChangeDistanceDescriptor(
+							null, port, (distance - pivot) / (1 - pivot)));
 				}
 			} else if (segment >= insertIndex) {
-				cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
-						null, port, segment + 1)));
+				cg.add(new ControlUtilities.ChangeSegmentDescriptor(
+						null, port, segment + 1));
 			}
 		}
 		PointList pl = getPoints().getCopy();
@@ -354,31 +353,29 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 	
 	private void opAddPort(
 			PortSpec port, String name, int segment, double distance) {
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 		if (distance >= 1.0) {
 			distance = 0.0;
 			segment = (segment + 1) % getPointCount();
 		}
 		PortSpec.Identifier id =
 				new PortSpec.Identifier(name, getModel().getIdentifier());
-		cg.add(bind(new Control.ChangeAddPortSpecDescriptor(id)));
-		cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
-				id, 0, segment)));
-		cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
-				id, 0.0, distance)));
+		cg.add(new Control.ChangeAddPortSpecDescriptor(id));
+		cg.add(new ControlUtilities.ChangeSegmentDescriptor(id, 0, segment));
+		cg.add(new ControlUtilities.ChangeDistanceDescriptor(id, 0, distance));
 		doChange(cg);
 	}
 	
 	private void opMovePort(PortSpec port, int segment, double distance) {
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 		if (distance >= 1.0) {
 			distance = 0.0;
 			segment = (segment + 1) % getPointCount();
 		}
-		cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
-				null, port, segment)));
-		cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
-				null, port, distance)));
+		cg.add(new ControlUtilities.ChangeSegmentDescriptor(
+				null, port, segment));
+		cg.add(new ControlUtilities.ChangeDistanceDescriptor(
+				null, port, distance));
 		doChange(cg);
 	}
 	
@@ -847,11 +844,11 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 					new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					ChangeGroup cg = changeDeleteAllPorts();
-					cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
+					ChangeDescriptorGroup cdg = changeDeleteAllPorts();
+					cdg.add(new ControlUtilities.ChangeShapeDescriptor(
 							(PropertyScratchpad)null, getModel(),
-							new PointList(new int[] { 0, 0 }))));
-					doChange(cg);
+							new PointList(new int[] { 0, 0 })));
+					doChange(cdg);
 				}
 			});
 		}
@@ -869,14 +866,14 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 							"\n(All ports will be deleted.)",
 							"3", getIntegerValidator(3, Integer.MAX_VALUE));
 					if (polySides != null) {
-						ChangeGroup cg = changeDeleteAllPorts();
+						ChangeDescriptorGroup cdg = changeDeleteAllPorts();
 						Ellipse el = Ellipse.SINGLETON.setBounds(
 								new Rectangle(0, 0, 60, 60));
-						cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
+						cdg.add(new ControlUtilities.ChangeShapeDescriptor(
 								(PropertyScratchpad)null, getModel(),
 								el.getPolygon(Integer.parseInt(
-										polySides)))));
-						doChange(cg);
+										polySides))));
+						doChange(cdg);
 					}
 				}
 			});

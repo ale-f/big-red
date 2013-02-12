@@ -14,8 +14,8 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -85,7 +85,7 @@ import it.uniud.bigredit.model.BRS;
 						new BRSXMLLoader());
 			BRS ss = new BRS();
 			
-			ChangeGroup cg = new ChangeGroup();
+			ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 			
 			SignatureXMLLoader si = new SignatureXMLLoader(this);
 			Element signatureElement = getNamedChildElement(e, SIGNATURE, "signature");

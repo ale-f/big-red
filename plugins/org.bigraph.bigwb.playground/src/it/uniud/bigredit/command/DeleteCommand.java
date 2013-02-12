@@ -3,7 +3,7 @@ package it.uniud.bigredit.command;
 import it.uniud.bigredit.model.BRS;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.changes.ChangeGroup;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
 
@@ -11,7 +11,7 @@ public class DeleteCommand extends ChangeCommand {
 
 	
 	private ModelObject target;
-	private ChangeGroup cg = new ChangeGroup();
+	private ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 	private ModelObject del;
 	
 	
@@ -32,7 +32,7 @@ public class DeleteCommand extends ChangeCommand {
 	}
 	
 	public void setSon(ModelObject deleteNode){
-		this.del=deleteNode;
+		del=deleteNode;
 	}
 
 }

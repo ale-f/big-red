@@ -2,7 +2,6 @@ package org.bigraph.model.loaders;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -18,8 +17,9 @@ public interface IChangeLoader extends ILoader {
 	Resolver getResolver();
 	
 	/**
-	 * Returns a {@link ChangeGroup} containing all of the added changes.
-	 * @return a {@link ChangeGroup}
+	 * Returns a {@link ChangeDescriptorGroup} containing all of the added
+	 * changes.
+	 * @return a {@link ChangeDescriptorGroup}
 	 */
 	ChangeDescriptorGroup getChanges();
 	

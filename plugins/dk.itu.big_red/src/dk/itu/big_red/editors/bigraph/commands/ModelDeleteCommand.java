@@ -11,13 +11,13 @@ import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 
 public class ModelDeleteCommand extends ChangeCommand {
-	private ChangeGroup cg = new ChangeGroup();
+	private ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 	
 	public ModelDeleteCommand() {
 		setChange(cg);

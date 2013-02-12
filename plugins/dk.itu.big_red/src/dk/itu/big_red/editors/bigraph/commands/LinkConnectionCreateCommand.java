@@ -5,8 +5,8 @@ import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
 import org.bigraph.model.Link;
 import org.bigraph.model.Point;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 
@@ -19,7 +19,7 @@ import dk.itu.big_red.editors.bigraph.parts.LinkPart;
  * @author alec
  */
 public class LinkConnectionCreateCommand extends ChangeCommand {
-	private ChangeGroup cg = new ChangeGroup();
+	private ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 	private Object first = null, second = null;
 	
 	public LinkConnectionCreateCommand() {

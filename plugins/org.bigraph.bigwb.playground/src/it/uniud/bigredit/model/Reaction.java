@@ -14,8 +14,8 @@ import org.bigraph.model.Site;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -147,7 +147,7 @@ public class Reaction  extends ModelObject{
 		
 	}
 	
-	public ChangeGroup cgAux = new ChangeGroup();
+	public ChangeDescriptorGroup cgAux = new ChangeDescriptorGroup();
 	
 	
 	public class ChangeLayoutChild extends ReactionChange {

@@ -16,8 +16,8 @@ import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.assistants.FileData;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -45,7 +45,7 @@ public class ReactionXMLLoader extends XMLLoader{
 	public Reaction makeObject(Element e) throws LoadFailedException {
 		Reaction ra= new Reaction();
 		
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 		
 		Element redex = getNamedChildElement(e, REACTION, "redex");
 		if (redex != null){

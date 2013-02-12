@@ -13,15 +13,15 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 
 public class BigraphBuilder {
 	private Bigraph b = new Bigraph();
-	private ChangeGroup cg = new ChangeGroup();
+	private ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
 	private void addChange(IChange ch) {

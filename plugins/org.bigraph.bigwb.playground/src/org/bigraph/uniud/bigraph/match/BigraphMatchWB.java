@@ -2,7 +2,6 @@ package org.bigraph.uniud.bigraph.match;
 import java.util.Arrays;
 
 import org.bigraph.model.*;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
@@ -93,7 +92,7 @@ public class BigraphMatchWB {
 
 		agent = new Bigraph();
 		agent.setSignature(s);
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 
 		Root r1 = new Root();
 		Node n1 = new Node(c1);
@@ -141,7 +140,7 @@ public class BigraphMatchWB {
 
 		redex = new Bigraph();
 		redex.setSignature(s);
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 
 		Root r1 = new Root();
 		Node n1 = new Node(c1);

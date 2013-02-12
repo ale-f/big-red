@@ -3,8 +3,8 @@ package it.uniud.bigredit.command;
 import org.bigraph.model.Container;
 import org.bigraph.model.Edge;
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.editors.bigraph.commands.ChangeCommand;
@@ -12,7 +12,7 @@ import dk.itu.big_red.model.LayoutUtilities;
 
 
 public class LayoutableAddCommand extends ChangeCommand {
-	private ChangeGroup cg = new ChangeGroup();
+	private ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 	
 	public LayoutableAddCommand() {
 		setChange(cg);

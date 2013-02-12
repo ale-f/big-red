@@ -17,9 +17,9 @@ import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
@@ -112,8 +112,8 @@ public class CompositionCommand extends Command {
 			return;
 		
 		System.out.println("REDO");
-		ChangeGroup cgA = new ChangeGroup(); //change in A
-		ChangeGroup cgB = new ChangeGroup(); //change in B
+		ChangeDescriptorGroup cgA = new ChangeDescriptorGroup(); //change in A
+		ChangeDescriptorGroup cgB = new ChangeDescriptorGroup(); //change in B
 		
 		/**start placing roots in sites */
 		for (Site site : placeMap.keySet()) {

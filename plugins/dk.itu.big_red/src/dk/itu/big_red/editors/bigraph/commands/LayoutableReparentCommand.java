@@ -6,22 +6,22 @@ import org.bigraph.model.Link;
 import org.bigraph.model.Node;
 import org.bigraph.model.Point;
 import org.bigraph.model.Port;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.LayoutUtilities;
 
 public class LayoutableReparentCommand extends ChangeCommand {
-	private ChangeGroup cg = new ChangeGroup();
+	private ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 	
 	public LayoutableReparentCommand() {
 		setChange(cg);
 	}
 	
 	@Override
-	public ChangeGroup getChange() {
-		return (ChangeGroup)super.getChange();
+	public ChangeDescriptorGroup getChange() {
+		return (ChangeDescriptorGroup)super.getChange();
 	}
 	
 	private Container parent = null;
@@ -43,7 +43,7 @@ public class LayoutableReparentCommand extends ChangeCommand {
 			this.constraint = (Rectangle)constraint;
 	}
 	
-	private ChangeGroup post = new ChangeGroup();
+	private ChangeDescriptorGroup post = new ChangeDescriptorGroup();
 	
 	private void remove(Layoutable l, boolean root) {
 		if (l instanceof Container)

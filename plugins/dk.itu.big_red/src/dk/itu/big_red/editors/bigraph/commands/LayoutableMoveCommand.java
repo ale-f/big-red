@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -34,7 +34,7 @@ public class LayoutableMoveCommand extends ChangeCommand {
 	
 	@Override
 	public void prepare() {
-		ChangeGroup cg = new ChangeGroup();
+		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 		setChange(cg);
 		for (Layoutable l : objects) {
 			setContext(l.getBigraph());
@@ -54,5 +54,4 @@ public class LayoutableMoveCommand extends ChangeCommand {
 			}
 		}
 	}
-
 }

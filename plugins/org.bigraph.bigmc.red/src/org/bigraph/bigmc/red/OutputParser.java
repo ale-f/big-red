@@ -12,9 +12,9 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.INamespace;
@@ -68,7 +68,7 @@ public class OutputParser {
 	private Bigraph workingBigraph;
 	private INamespace<Link> ns;
 	
-	private void parseChild(Container parent, ChangeGroup cg)
+	private void parseChild(Container parent, ChangeDescriptorGroup cg)
 			throws DisappointedException {
 		if (lexer.accept(P_NIL) != null)
 			return;
@@ -125,7 +125,7 @@ public class OutputParser {
 		} else throw new Error("What(child-context): " + lexer.getCurrent());
 	}
 	
-	private void parseChildren(Container parent, ChangeGroup cg)
+	private void parseChildren(Container parent, ChangeDescriptorGroup cg)
 			throws DisappointedException {
 		if (lexer.lookahead1(P_LBR)) {
 			lexer.expect(P_LBR);
@@ -139,7 +139,7 @@ public class OutputParser {
 	public Bigraph run() {
 		try {
 			ns = new HashMapNamespace<Link>();
-			ChangeGroup cg = new ChangeGroup();
+			ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 			workingBigraph = new Bigraph();
 			workingBigraph.setSignature(s);
 			Root r = new Root();
