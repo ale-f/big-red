@@ -92,7 +92,7 @@ public class ValidatorManager
 			} else if (!(c instanceof IChange.Group)) {
 				IChange d = step(c);
 				if (d == null)
-					c.simulate(getScratch());
+					c.simulate(getScratch(), null);
 				return d;
 			} else {
 				for (IChange i : (IChange.Group)c) {

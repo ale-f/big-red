@@ -12,6 +12,7 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
@@ -73,7 +74,7 @@ public class Reaction  extends ModelObject{
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context) {
+		public void simulate(PropertyScratchpad context, Resolver resolver) {
 			/* do nothing */
 		}
 	}

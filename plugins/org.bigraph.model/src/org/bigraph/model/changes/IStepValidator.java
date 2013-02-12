@@ -1,5 +1,6 @@
 package org.bigraph.model.changes;
 
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.process.IParticipant;
 
@@ -52,7 +53,7 @@ public interface IStepValidator extends IParticipant {
 	 * <li>not to be {@code null};
 	 * <li>to be {@link IChange#isReady() ready};
 	 * <li>not to be an {@link IChange.Group}; and
-	 * <li>not to have been {@link IChange#simulate(PropertyScratchpad)
+	 * <li>not to have been {@link IChange#simulate(PropertyScratchpad, Resolver)
 	 * simulated} in {@code context}'s {@link Process#getScratch() scratchpad}.
 	 * </ul>
 	 * @return <code>true</code> if the change was recognised and validated, or

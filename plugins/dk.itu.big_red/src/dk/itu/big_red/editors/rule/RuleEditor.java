@@ -394,8 +394,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 			try {
 				PropertyScratchpad scratch = new PropertyScratchpad();
 				if (detail != CommandStack.PRE_UNDO) {
-					commandChange.simulate(scratch);
-				} else commandChange.inverse().simulate(scratch);
+					commandChange.simulate(scratch, null);
+				} else commandChange.inverse().simulate(scratch, null);
 				/* scratch now contains the prospective state of the redex
 				 * after the change has been applied. Check that we can still
 				 * get to the reactum from there */

@@ -2,6 +2,8 @@ package org.bigraph.model.changes;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 
 /**
@@ -39,10 +41,10 @@ public class ChangeGroup extends ArrayList<IChange> implements IChange.Group {
 	}
 
 	@Override
-	public void simulate(PropertyScratchpad context) {
+	public void simulate(PropertyScratchpad context, Resolver resolver) {
 		for (IChange c : this)
 			if (c != null)
-				c.simulate(context);
+				c.simulate(context, null);
 	}
 
 	@Override

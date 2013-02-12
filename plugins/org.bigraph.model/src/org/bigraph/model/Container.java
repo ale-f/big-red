@@ -65,7 +65,7 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context) {
+		public void simulate(PropertyScratchpad context, Resolver resolver) {
 			Set<Layoutable> children = context.<Layoutable>getModifiableSet(
 					getCreator(), Container.PROPERTY_CHILD, getChildren());
 			children.add(child);

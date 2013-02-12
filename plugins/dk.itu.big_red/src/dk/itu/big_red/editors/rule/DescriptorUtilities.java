@@ -81,7 +81,7 @@ abstract class DescriptorUtilities {
 			chd = ((BoundDescriptor)c).getDescriptor();
 		}
 		if (context != null)
-			c.simulate(context);
+			c.simulate(context, null);
 		return chd;
 	}
 }

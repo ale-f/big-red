@@ -1,6 +1,7 @@
 package org.bigraph.model.changes;
 
 import org.bigraph.model.assistants.ExecutorManager;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -46,6 +47,7 @@ public interface IChange {
 	 * PropertyScratchpad}. (No validation is performed by this method.)
 	 * @param context a {@link PropertyScratchpad} to populate with
 	 * modifications
+	 * @param resolver TODO
 	 */
-	void simulate(PropertyScratchpad context);
+	void simulate(PropertyScratchpad context, Resolver resolver);
 }

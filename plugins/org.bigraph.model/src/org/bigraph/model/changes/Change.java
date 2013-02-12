@@ -1,5 +1,6 @@
 package org.bigraph.model.changes;
 
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 
 /**
@@ -15,7 +16,7 @@ public abstract class Change implements IChange {
 	}
 	
 	@Override
-	public void simulate(PropertyScratchpad context) {
+	public void simulate(PropertyScratchpad context, Resolver resolver) {
 		throw new UnsupportedOperationException("" + this +
 				" doesn't support the simulate(PropertyScratchpad) method");
 	}

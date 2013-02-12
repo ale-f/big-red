@@ -23,7 +23,7 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	public void addChange(IChange c) {
 		if (c != null) {
 			cg.add(c);
-			c.simulate(scratch);
+			c.simulate(scratch, null);
 		}
 	}
 	

@@ -143,7 +143,7 @@ public class PropertyScratchpad {
 	 */
 	public IChange executeChange(IChange change) {
 		if (change != null)
-			change.simulate(this);
+			change.simulate(this, null);
 		return change;
 	}
 	

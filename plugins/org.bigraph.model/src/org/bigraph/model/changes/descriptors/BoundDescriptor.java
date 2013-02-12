@@ -122,7 +122,7 @@ public class BoundDescriptor implements IChange {
 	}
 
 	@Override
-	public void simulate(PropertyScratchpad context) {
+	public void simulate(PropertyScratchpad context, Resolver resolver) {
 		try {
 			getDescriptor().simulate(context, getResolver());
 		} catch (ChangeCreationException cce) {
