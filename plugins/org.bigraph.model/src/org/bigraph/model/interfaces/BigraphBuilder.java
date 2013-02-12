@@ -13,22 +13,24 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class BigraphBuilder {
 	private Bigraph b = new Bigraph();
-	private ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
+	private ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
-	private void addChange(IChange ch) {
+	private void addChange(IChangeDescriptor ch) {
 		if (ch == null)
 			return;
-		cg.add(ch);
-		getScratch().executeChange(ch);
+		try {
+			ch.simulate(getScratch(), b);
+			cdg.add(ch);
+		} catch (ChangeCreationException cce) {
+		}
 	}
 	
 	private PropertyScratchpad getScratch() {
@@ -70,10 +72,9 @@ public class BigraphBuilder {
 	}
 	
 	public void newConnection(IPoint p, ILink l) {
-		addChange(new BoundDescriptor(b,
-				new Point.ChangeConnectDescriptor(
-						((Point)p).getIdentifier(getScratch()),
-						((Link)l).getIdentifier(getScratch()))));
+		addChange(new Point.ChangeConnectDescriptor(
+				((Point)p).getIdentifier(getScratch()),
+				((Link)l).getIdentifier(getScratch())));
 	}
 	
 	public ISite newSite(IParent parent, String name) {
@@ -84,7 +85,7 @@ public class BigraphBuilder {
 	
 	public Bigraph finish() {
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(cg);
+			DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg);
 			return b;
 		} catch (ChangeCreationException e) {
 			return null;
