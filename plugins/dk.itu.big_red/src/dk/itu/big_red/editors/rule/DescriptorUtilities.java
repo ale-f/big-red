@@ -7,6 +7,7 @@ import org.bigraph.model.Layoutable.ChangeRemove;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -36,7 +37,7 @@ abstract class DescriptorUtilities {
 	 * of a conversion error
 	 * @see #createDescriptor(PropertyScratchpad, IChange)
 	 */
-	static IChangeDescriptor createDescriptor(IChange c) {
+	static IChangeDescriptor createDescriptor(IChangeDescriptor c) {
 		return createDescriptor(null, c);
 	}
 	
@@ -50,12 +51,12 @@ abstract class DescriptorUtilities {
 	 * @see #createDescriptor(IChange)
 	 */
 	static IChangeDescriptor createDescriptor(
-			PropertyScratchpad context, IChange c) {
+			PropertyScratchpad context, IChangeDescriptor c) {
 		IChangeDescriptor chd = null;
-		if (c instanceof IChange.Group) {
+		if (c instanceof IChangeDescriptor.Group) {
 			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 			context = new PropertyScratchpad(context);
-			for (IChange ch : (IChange.Group)c) {
+			for (IChangeDescriptor ch : (IChangeDescriptor.Group)c) {
 				chd = createDescriptor(context, ch);
 				if (chd != null) {
 					cdg.add(chd);
@@ -79,9 +80,16 @@ abstract class DescriptorUtilities {
 					ch.child.getIdentifier(context).getRenamed(ch.name));
 		} else if (c instanceof BoundDescriptor) {
 			chd = ((BoundDescriptor)c).getDescriptor();
+		} else if (!(c instanceof IChange)) {
+			chd = c;
 		}
-		if (context != null)
-			c.simulate(context, null);
+		if (context != null) {
+			try {
+				c.simulate(context, null);
+			} catch (ChangeCreationException e) {
+				return null;
+			}
+		}
 		return chd;
 	}
 }

@@ -9,7 +9,6 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -370,12 +369,14 @@ public class RuleEditor extends AbstractGEFEditor implements
 		}
 	}
 	
-	private Map<IChange, IChangeDescriptor>
-		reactumChangeToDescriptor = new HashMap<IChange, IChangeDescriptor>(),
-		safeRedexToReactum = new HashMap<IChange, IChangeDescriptor>();
+	private Map<IChangeDescriptor, IChangeDescriptor>
+		reactumChangeToDescriptor =
+				new HashMap<IChangeDescriptor, IChangeDescriptor>(),
+		safeRedexToReactum =
+				new HashMap<IChangeDescriptor, IChangeDescriptor>();
 	
 	private void _testConvertChange(int detail, ChangeCommand c) {
-		IChange commandChange = c.getChange();
+		IChangeDescriptor commandChange = c.getChange();
 		Object target = c.getContext();
 		
 		ChangeDescriptorGroup reactumChanges = getModel().getEdit().getDescriptors();

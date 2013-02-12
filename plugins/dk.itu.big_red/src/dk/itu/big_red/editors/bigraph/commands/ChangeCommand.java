@@ -1,25 +1,26 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
-import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.utilities.ui.UI;
 
 /**
- * {@link ChangeCommand}s apply an {@link IChange}.
+ * {@link ChangeCommand}s apply an {@link ChangeDescriptorGroup}.
  * @author alec
  */
 public class ChangeCommand extends Command {
-	private IChange change;
+	private IChangeDescriptor change;
 	private Object context;
 	
 	public ChangeCommand() {
 	}
 	
-	public ChangeCommand(IChange change, Object context) {
+	public ChangeCommand(IChangeDescriptor change, Object context) {
 		this.change = change;
 		this.context = context;
 	}
@@ -28,7 +29,7 @@ public class ChangeCommand extends Command {
 	 * Gets the {@link IChange} that will be applied by this command.
 	 * @return a {@link IChange}
 	 */
-	public IChange getChange() {
+	public IChangeDescriptor getChange() {
 		return change;
 	}
 
@@ -37,7 +38,7 @@ public class ChangeCommand extends Command {
 	 * @param change a {@link IChange}
 	 * @return <code>this</code>, for convenience
 	 */
-	public ChangeCommand setChange(IChange change) {
+	public ChangeCommand setChange(IChangeDescriptor change) {
 		this.change = change;
 		return this;
 	}
@@ -70,9 +71,9 @@ public class ChangeCommand extends Command {
 	 */
 	@Override
 	public final boolean canExecute() {
-		IChange change = getChange();
-		if (change instanceof IChange.Group &&
-				((IChange.Group)change).size() == 0)
+		IChangeDescriptor change = getChange();
+		if (change instanceof IChangeDescriptor.Group &&
+				((IChangeDescriptor.Group)change).size() == 0)
 			return false;
 		boolean status = false;
 		try {
@@ -97,9 +98,9 @@ public class ChangeCommand extends Command {
 		}
 	}
 	
-	private IChange inverse = null;
+	private IChangeDescriptor inverse = null;
 	
-	protected IChange getInverse() {
+	protected IChangeDescriptor getInverse() {
 		if (inverse == null)
 			inverse = getChange().inverse();
 		return inverse;
@@ -128,10 +129,10 @@ public class ChangeCommand extends Command {
 	
 	@Override
 	public void dispose() {
-		if (change instanceof ChangeGroup)
-			((ChangeGroup)change).clear();
-		if (inverse instanceof ChangeGroup)
-			((ChangeGroup)inverse).clear();
+		if (change instanceof ChangeDescriptorGroup)
+			((ChangeDescriptorGroup)change).clear();
+		if (inverse instanceof ChangeDescriptorGroup)
+			((ChangeDescriptorGroup)inverse).clear();
 		change = inverse = null;
 	}
 	
