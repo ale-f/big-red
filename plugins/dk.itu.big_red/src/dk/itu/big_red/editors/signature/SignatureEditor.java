@@ -15,7 +15,6 @@ import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ResolverDeque;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
-import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
@@ -238,7 +237,8 @@ implements PropertyChangeListener {
 	
 	private Store store = new Store();
 	
-	private final Resolver _getResolver() {
+	@Override
+	protected Resolver getResolver() {
 		ResolverDeque rd = new ResolverDeque();
 		rd.add(store);
 		rd.add(getModel());
@@ -436,7 +436,7 @@ implements PropertyChangeListener {
 					}
 					if (ch != null) {
 						try {
-							ch.simulate(context, _getResolver());
+							ch.simulate(context, getResolver());
 							cg.add(ch);
 						} catch (ChangeCreationException cce) {
 							cce.printStackTrace();
@@ -745,13 +745,6 @@ implements PropertyChangeListener {
 	protected void createActions() {
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	protected void tryApplyChange(IChangeDescriptor c)
-			throws ChangeCreationException {
-		DescriptorExecutorManager.getInstance().tryApplyChange(
-				_getResolver(), c);
 	}
 	
 	Store getStore() {

@@ -2,7 +2,9 @@ package dk.itu.big_red.editors;
 
 import java.util.ArrayDeque;
 
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.jface.action.IStatusLineManager;
 
@@ -31,8 +33,13 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 		return (redoBuffer.size() != 0);
 	}
 	
-	protected abstract void tryApplyChange(IChangeDescriptor c)
-			throws ChangeCreationException;
+	protected abstract Resolver getResolver();
+	
+	protected void tryApplyChange(IChangeDescriptor c)
+			throws ChangeCreationException {
+		DescriptorExecutorManager.getInstance().tryApplyChange(
+				getResolver(), c);
+	}
 	
 	protected boolean doChange(IChangeDescriptor c) {
 		IStatusLineManager slm =

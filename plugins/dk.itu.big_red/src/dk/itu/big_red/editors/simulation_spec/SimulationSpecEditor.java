@@ -13,10 +13,10 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
-import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.resources.IFileWrapper;
@@ -82,9 +82,8 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	}
 	
 	@Override
-	protected void tryApplyChange(IChangeDescriptor c)
-			throws ChangeCreationException {
-		DescriptorExecutorManager.getInstance().tryApplyChange(getModel(), c);
+	protected Resolver getResolver() {
+		return getModel();
 	}
 	
 	@Override
