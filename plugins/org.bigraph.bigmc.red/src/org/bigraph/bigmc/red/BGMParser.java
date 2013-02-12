@@ -18,10 +18,10 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class BGMParser {
 	private static final LexerFactoryFactory lff = new LexerFactoryFactory();
@@ -34,8 +34,9 @@ public class BGMParser {
 		return this;
 	}
 	
-	private static void change(IChange ch) throws ChangeCreationException {
-		DescriptorExecutorManager.getInstance().tryApplyChange(ch);
+	private static void change(Resolver r, IChangeDescriptor ch)
+			throws ChangeCreationException {
+		DescriptorExecutorManager.getInstance().tryApplyChange(r, ch);
 		System.out.println(ch);
 	}
 	
@@ -104,9 +105,8 @@ public class BGMParser {
 		parseRoots(lhs);
 		lexer.expect(P_ARROW);
 		parseRoots(rhs);
-		change(new BoundDescriptor(simulationSpec,
-		new SimulationSpec.ChangeAddRuleDescriptor(
-				new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs))));
+		change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
+				new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs)));
 	}
 	
 	private void reaction_or_exp()
@@ -117,19 +117,19 @@ public class BGMParser {
 		parseRoots(lhs);
 		if (lexer.accept(P_ARROW) != null) { /* reaction */
 			parseRoots(rhs = makeBigraph());
-			change(new BoundDescriptor(simulationSpec,
-			new SimulationSpec.ChangeAddRuleDescriptor(
-					new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs))));
-		} else change(new BoundDescriptor(simulationSpec,
-		new SimulationSpec.ChangeSetModelDescriptor(
-				new SimulationSpec.Identifier(), simulationSpec.getModel(), lhs)));
+			change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
+					new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs)));
+		} else change(simulationSpec,
+				new SimulationSpec.ChangeSetModelDescriptor(
+						new SimulationSpec.Identifier(),
+						simulationSpec.getModel(), lhs));
 	}
 	
 	private void parseRoots(Bigraph parent)
 			throws DisappointedException, ChangeCreationException {
 		do {
 			Root r = new Root();
-			change(parent.changeAddChild(r,
+			change(null, parent.changeAddChild(r,
 					parent.getFirstUnusedName(r)));
 			parseChildren(parent, r);
 		} while (lexer.accept(P_TWOBAR) != null);
@@ -159,12 +159,11 @@ public class BGMParser {
 				n = new Node(signature.getControl(parts[0]));
 			} else throw new Error("Control name couldn't be matched");
 
-			change(parent.changeAddChild(n, Integer.toString(x++)));
+			change(null, parent.changeAddChild(n, Integer.toString(x++)));
 			
 			if (parts.length == 2)
-				change(new BoundDescriptor(b,
-						new ParameterUtilities.ChangeParameterDescriptor(
-								n.getIdentifier(), null, parts[1])));
+				change(b, new ParameterUtilities.ChangeParameterDescriptor(
+						n.getIdentifier(), null, parts[1]));
 			
 			if (lexer.accept(P_LEFTSQ) != null) { /* ports */
 				int i = 0;
@@ -179,11 +178,10 @@ public class BGMParser {
 							new OuterName.Identifier(linkName);
 					OuterName l = onid.lookup(null, b);
 					if (l == null)
-						change(b.changeAddChild(l = new OuterName(), linkName));
-					change(new BoundDescriptor(b,
-							new Point.ChangeConnectDescriptor(
-									n.getPorts().get(i++).getIdentifier(),
-									onid)));
+						change(null, b.changeAddChild(
+								l = new OuterName(), linkName));
+					change(b, new Point.ChangeConnectDescriptor(
+							n.getPorts().get(i++).getIdentifier(), onid));
 				} while (lexer.accept(P_COMMA) != null);
 				lexer.expect(P_RIGHTSQ);
 			}
@@ -192,7 +190,7 @@ public class BGMParser {
 				parseChildren(b, n);
 		} else if (lexer.accept(P_DOLLAR) != null) {
 			id = lexer.accept(P_INTEGER);
-			change(parent.changeAddChild(new Site(), id));
+			change(null, parent.changeAddChild(new Site(), id));
 		}
 	}
 	
@@ -210,18 +208,15 @@ public class BGMParser {
 			lexer.expect(P_COLON);
 			String arity = lexer.expect(P_INTEGER);
 			
-			change(new BoundDescriptor(signature,
-					new Signature.ChangeAddControlDescriptor(
-							new Signature.Identifier(), cid)));
-			change(new BoundDescriptor(signature,
-					new Control.ChangeKindDescriptor(
-							cid, null,
-							"%active".equals(controlType) ?
-									Kind.ACTIVE : Kind.PASSIVE)));
+			change(signature, new Signature.ChangeAddControlDescriptor(
+					new Signature.Identifier(), cid));
+			change(signature, new Control.ChangeKindDescriptor(
+					cid, null,
+					"%active".equals(controlType) ?
+							Kind.ACTIVE : Kind.PASSIVE));
 			for (int i = 0; i < Integer.parseInt(arity); i++)
-				change(new BoundDescriptor(signature,
-						new Control.ChangeAddPortSpecDescriptor(
-								new PortSpec.Identifier("" + i, cid))));
+				change(signature, new Control.ChangeAddPortSpecDescriptor(
+						new PortSpec.Identifier("" + i, cid)));
 		} else if (lexer.accept(P_PROPERTY) != null) {
 			lexer.expect(P_IDENTIFIER);
 			property();
@@ -249,10 +244,10 @@ public class BGMParser {
 		simulationSpec = new SimulationSpec();
 		try {
 			Signature newSignature = signature = new Signature();
-			change(new BoundDescriptor(simulationSpec,
-			new SimulationSpec.ChangeSetSignatureDescriptor(
-					new SimulationSpec.Identifier(),
-					simulationSpec.getSignature(), newSignature)));
+			change(simulationSpec,
+					new SimulationSpec.ChangeSetSignatureDescriptor(
+							new SimulationSpec.Identifier(),
+							simulationSpec.getSignature(), newSignature));
 			model();
 			return simulationSpec;
 		} catch (ChangeCreationException cre) {

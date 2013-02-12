@@ -12,7 +12,6 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -87,11 +86,10 @@ public class OutputParser {
 			cg.add(parent.changeAddChild(n, nn));
 			
 			if (parts.length == 2)
-				cg.add(new BoundDescriptor(workingBigraph,
-						new ParameterUtilities.ChangeParameterDescriptor(
-								new Node.Identifier(nn,
-										new Control.Identifier(cn)),
-								null, parts[1])));
+				cg.add(new ParameterUtilities.ChangeParameterDescriptor(
+						new Node.Identifier(nn,
+								new Control.Identifier(cn)),
+						null, parts[1]));
 			
 			if (lexer.accept(P_LSQ) != null) { /* ports */
 				int i = 0;
@@ -107,10 +105,9 @@ public class OutputParser {
 						ns.put(linkName, (l = new OuterName()));
 						cg.add(workingBigraph.changeAddChild(l, linkName));
 					}
-					cg.add(new BoundDescriptor(workingBigraph,
-							new Point.ChangeConnectDescriptor(
-									n.getPorts().get(i++).getIdentifier(),
-									l.getIdentifier().getRenamed(linkName))));
+					cg.add(new Point.ChangeConnectDescriptor(
+							n.getPorts().get(i++).getIdentifier(),
+							l.getIdentifier().getRenamed(linkName)));
 				} while (lexer.accept(P_COM) != null);
 				lexer.expect(P_RSQ);
 			}
@@ -147,9 +144,10 @@ public class OutputParser {
 			
 			parseChildren(r, cg);
 			
-			DescriptorExecutorManager.getInstance().tryApplyChange(cg);
 			DescriptorExecutorManager.getInstance().tryApplyChange(
-					LayoutUtilities.relayout(workingBigraph));
+					workingBigraph, cg);
+			DescriptorExecutorManager.getInstance().tryApplyChange(
+					workingBigraph, LayoutUtilities.relayout(workingBigraph));
 			
 			return workingBigraph;
 		} catch (ChangeCreationException cre) {
