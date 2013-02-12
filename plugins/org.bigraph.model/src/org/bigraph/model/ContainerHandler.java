@@ -1,15 +1,15 @@
 package org.bigraph.model;
 
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.Namespace;
 
 final class ContainerHandler extends HandlerUtilities.HandlerImpl {
 	@Override
-	public boolean executeChange(IChange b) {
+	public boolean executeChange(Resolver resolver, IChangeDescriptor b) {
 		if (b instanceof Container.ChangeAddChild) {
 			Container.ChangeAddChild c = (Container.ChangeAddChild)b;
 			Namespace<Layoutable> ns =

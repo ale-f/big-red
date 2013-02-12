@@ -1,14 +1,14 @@
 package org.bigraph.model;
 
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.names.Namespace;
 
 final class LayoutableHandler extends HandlerUtilities.HandlerImpl {
 	@Override
-	public boolean executeChange(IChange b) {
+	public boolean executeChange(Resolver resolver, IChangeDescriptor b) {
 		if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();

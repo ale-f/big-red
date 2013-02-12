@@ -1,9 +1,10 @@
 package org.bigraph.model.assistants;
 
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
@@ -37,8 +38,9 @@ public class ExecutorManager extends ValidatorManager {
 	
 	private IChange step(IChange c) {
 		boolean passes = false;
-		for (IStepExecutor i : getParticipants(IStepExecutor.class))
-			passes |= i.executeChange(c);
+		for (IDescriptorStepExecutor i :
+				getParticipants(IDescriptorStepExecutor.class))
+			passes |= i.executeChange(null, c);
 		return (passes ? null : c);
 	}
 	
@@ -61,15 +63,18 @@ public class ExecutorManager extends ValidatorManager {
 		return handler;
 	}
 	
-	final class Handler implements IStepExecutor, IDescriptorStepValidator {
+	final class Handler
+			implements IDescriptorStepExecutor, IDescriptorStepValidator {
 		@Override
 		public final void setHost(IParticipantHost host) {
 			/* do nothing */
 		}
 		
 		@Override
-		public boolean executeChange(IChange change_) {
-			return (run(change_) == null);
+		public boolean executeChange(
+				Resolver resolver, IChangeDescriptor change_) {
+			return (change_ instanceof IChange ?
+					run((IChange)change_) == null : false);
 		}
 		
 		@Override

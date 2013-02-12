@@ -1,20 +1,21 @@
 package it.uniud.bigredit.model;
 
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.IStepExecutor;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator;
 import org.bigraph.model.process.IParticipantHost;
 
-final class BRSHandler implements IStepExecutor, IDescriptorStepValidator {
+final class BRSHandler
+		implements IDescriptorStepExecutor, IDescriptorStepValidator {
 	@Override
 	public void setHost(IParticipantHost host) {
 		/* do nothing */
 	}
 	
 	@Override
-	public boolean executeChange(IChange b) {
+	public boolean executeChange(Resolver resolver, IChangeDescriptor b) {
 		if (b instanceof BRS.ChangeAddChild) {
 			BRS.ChangeAddChild c = (BRS.ChangeAddChild)b;
 			c.getCreator().addChild(c.child);
