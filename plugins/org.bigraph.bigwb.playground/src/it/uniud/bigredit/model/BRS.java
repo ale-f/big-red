@@ -231,7 +231,7 @@ public class BRS extends ModelObject {
 		
 		cgAux.add(change);
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(cgAux);
+			DescriptorExecutorManager.getInstance().tryApplyChange(null, cgAux);
 		} catch (ChangeCreationException e) {
 			e.printStackTrace();
 		}

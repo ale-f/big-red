@@ -102,7 +102,7 @@ public class BigraphMatchWB {
 		cg.add(r1.changeAddChild(n1, "n1"));
 		
 		try {
-			 DescriptorExecutorManager.getInstance().tryApplyChange(cg);
+			 DescriptorExecutorManager.getInstance().tryApplyChange(null, cg);
 			 cg.clear();
 			} catch (ChangeCreationException cre) {
 			 System.out.println(cre.getRationale());
@@ -115,7 +115,7 @@ public class BigraphMatchWB {
 						O1.getIdentifier())));
 
 		try {
-		 DescriptorExecutorManager.getInstance().tryApplyChange(cg);
+		 DescriptorExecutorManager.getInstance().tryApplyChange(null, cg);
 		} catch (ChangeCreationException cre) {
 		 System.out.println(cre.getRationale());
 		}
@@ -154,7 +154,7 @@ public class BigraphMatchWB {
 						new OuterName.Identifier("O1"))));
 
 		try {
-		 DescriptorExecutorManager.getInstance().tryApplyChange(cg);
+		 DescriptorExecutorManager.getInstance().tryApplyChange(null, cg);
 		} catch (ChangeCreationException cre) {
 		 System.out.println(cre.getRationale());
 		}

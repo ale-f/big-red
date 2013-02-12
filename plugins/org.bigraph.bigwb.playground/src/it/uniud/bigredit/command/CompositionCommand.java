@@ -187,8 +187,8 @@ public class CompositionCommand extends Command {
 		}
 		
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(cgB);
-			DescriptorExecutorManager.getInstance().tryApplyChange(cgA);
+			DescriptorExecutorManager.getInstance().tryApplyChange(null, cgB);
+			DescriptorExecutorManager.getInstance().tryApplyChange(null, cgA);
 			
 		} catch (ChangeCreationException e) {
 			// TODO Auto-generated catch block

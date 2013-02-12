@@ -653,7 +653,7 @@ public class ReactionWizard extends Wizard {
 		
 		if (cgA.size() != 0){
 			try {
-				DescriptorExecutorManager.getInstance().tryApplyChange(cgA);
+				DescriptorExecutorManager.getInstance().tryApplyChange(null, cgA);
 			} catch (ChangeCreationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -663,10 +663,10 @@ public class ReactionWizard extends Wizard {
 
 		if (cgLink.size() != 0){
 			try {
-				DescriptorExecutorManager.getInstance().tryApplyChange(cgLink);
+				DescriptorExecutorManager.getInstance().tryApplyChange(null, cgLink);
 				cgA.clear();
 				cgA.add(LayoutUtilities.relayout(target));
-				DescriptorExecutorManager.getInstance().tryApplyChange(cgA);
+				DescriptorExecutorManager.getInstance().tryApplyChange(null, cgA);
 				
 //				Rectangle rectTest=LayoutUtilities.getLayout(target);
 //				System.out.println(rectTest);

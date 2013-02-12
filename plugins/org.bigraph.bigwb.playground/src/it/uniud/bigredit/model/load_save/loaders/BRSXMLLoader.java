@@ -136,7 +136,7 @@ import it.uniud.bigredit.model.BRS;
 			
 			try {
 				if (cg.size() != 0)
-					DescriptorExecutorManager.getInstance().tryApplyChange(cg);
+					DescriptorExecutorManager.getInstance().tryApplyChange(null, cg);
 			} catch (ChangeCreationException cre) {
 				throw new LoadFailedException(cre);
 			}
