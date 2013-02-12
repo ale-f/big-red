@@ -19,9 +19,9 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 
 public class BGMParser {
 	private static final LexerFactoryFactory lff = new LexerFactoryFactory();
@@ -34,7 +34,7 @@ public class BGMParser {
 		return this;
 	}
 	
-	private static void change(IChange ch) throws ChangeRejectedException {
+	private static void change(IChange ch) throws ChangeCreationException {
 		ExecutorManager.getInstance().tryApplyChange(ch);
 		System.out.println(ch);
 	}
@@ -97,7 +97,7 @@ public class BGMParser {
 	}
 	
 	private void reaction(String id)
-			throws DisappointedException, ChangeRejectedException {
+			throws DisappointedException, ChangeCreationException {
 		Bigraph
 			lhs = makeBigraph(),
 			rhs = makeBigraph();
@@ -110,7 +110,7 @@ public class BGMParser {
 	}
 	
 	private void reaction_or_exp()
-			throws DisappointedException, ChangeRejectedException {
+			throws DisappointedException, ChangeCreationException {
 		Bigraph
 			lhs = makeBigraph(),
 			rhs;
@@ -126,7 +126,7 @@ public class BGMParser {
 	}
 	
 	private void parseRoots(Bigraph parent)
-			throws DisappointedException, ChangeRejectedException {
+			throws DisappointedException, ChangeCreationException {
 		do {
 			Root r = new Root();
 			change(parent.changeAddChild(r,
@@ -136,7 +136,7 @@ public class BGMParser {
 	}
 	
 	private void parseChildren(Bigraph b, Container parent)
-			throws DisappointedException, ChangeRejectedException {
+			throws DisappointedException, ChangeCreationException {
 		if (lexer.accept(P_LEFTPA) != null) {
 			do {
 				parseChild(b, parent);
@@ -146,7 +146,7 @@ public class BGMParser {
 	}
 	
 	private void parseChild(Bigraph b, Container parent)
-			throws DisappointedException, ChangeRejectedException {
+			throws DisappointedException, ChangeCreationException {
 		if (lexer.accept(P_NIL) != null)
 			return;
 		String id = lexer.accept(P_IDENTIFIER);
@@ -197,7 +197,7 @@ public class BGMParser {
 	}
 	
 	private void dec()
-			throws DisappointedException, ChangeRejectedException {
+			throws DisappointedException, ChangeCreationException {
 		String controlType;
 		if (lexer.accept(P_INNER) != null) {
 			lexer.expect(P_IDENTIFIER);
@@ -233,7 +233,7 @@ public class BGMParser {
 	}
 	
 	private void model()
-			throws DisappointedException, ChangeRejectedException {
+			throws DisappointedException, ChangeCreationException {
 		while (lexer.lookahead1(P_CHECK) == false) {
 			dec();
 			lexer.expect(P_SEMICOLON);
@@ -255,7 +255,7 @@ public class BGMParser {
 					simulationSpec.getSignature(), newSignature)));
 			model();
 			return simulationSpec;
-		} catch (ChangeRejectedException cre) {
+		} catch (ChangeCreationException cre) {
 			return null;
 		}
 	}

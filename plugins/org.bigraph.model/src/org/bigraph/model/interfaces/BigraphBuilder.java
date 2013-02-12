@@ -15,9 +15,9 @@ import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 
 public class BigraphBuilder {
 	private Bigraph b = new Bigraph();
@@ -86,7 +86,7 @@ public class BigraphBuilder {
 		try {
 			ExecutorManager.getInstance().tryApplyChange(cg);
 			return b;
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			return null;
 		}
 	}

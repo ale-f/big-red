@@ -15,9 +15,9 @@ import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.resources.IFileWrapper;
 import org.bigraph.model.savers.SaveFailedException;
@@ -82,7 +82,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 	}
 	
 	@Override
-	protected void tryApplyChange(IChange c) throws ChangeRejectedException {
+	protected void tryApplyChange(IChange c) throws ChangeCreationException {
 		ExecutorManager.getInstance().tryApplyChange(c);
 	}
 	

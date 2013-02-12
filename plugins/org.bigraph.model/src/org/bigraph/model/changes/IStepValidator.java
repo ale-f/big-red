@@ -2,6 +2,7 @@ package org.bigraph.model.changes;
 
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.process.IParticipant;
 
 /**
@@ -19,9 +20,9 @@ public interface IStepValidator extends IParticipant {
 	interface Callback {
 		/**
 		 * Executes this {@link Callback}.
-		 * @throws ChangeRejectedException if final validation failed
+		 * @throws ChangeCreationException if final validation failed
 		 */
-		void run() throws ChangeRejectedException;
+		void run() throws ChangeCreationException;
 	}
 	
 	/**
@@ -58,9 +59,9 @@ public interface IStepValidator extends IParticipant {
 	 * </ul>
 	 * @return <code>true</code> if the change was recognised and validated, or
 	 * <code>false</code> otherwise
-	 * @throws ChangeRejectedException if the change was recognised and failed
+	 * @throws ChangeCreationException if the change was recognised and failed
 	 * validation
 	 */
 	boolean tryValidateChange(Process context, IChange change)
-			throws ChangeRejectedException;
+			throws ChangeCreationException;
 }

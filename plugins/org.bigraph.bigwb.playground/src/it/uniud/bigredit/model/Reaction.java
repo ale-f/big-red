@@ -16,7 +16,7 @@ import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
@@ -198,7 +198,7 @@ public class Reaction  extends ModelObject{
 		cgAux.add(change);
 		try {
 			ExecutorManager.getInstance().tryApplyChange(cgAux);
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			e.printStackTrace();
 		}
 	}

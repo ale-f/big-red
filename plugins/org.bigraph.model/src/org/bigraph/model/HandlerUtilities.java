@@ -5,7 +5,6 @@ import java.util.List;
 import org.bigraph.model.ModelObject.Identifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
@@ -88,10 +87,10 @@ abstract class HandlerUtilities {
 	static <V> void checkName(
 			PropertyScratchpad context, IChange c, V object,
 			Namespace<? extends V> ns, String cdt)
-			throws ChangeRejectedException {
+			throws ChangeCreationException {
 		String rationale = checkNameCore(context, object, ns, cdt);
 		if (rationale != null)
-			throw new ChangeRejectedException(c, rationale);
+			throw new ChangeCreationException(c, rationale);
 	}
 
 	static String checkNameCore(

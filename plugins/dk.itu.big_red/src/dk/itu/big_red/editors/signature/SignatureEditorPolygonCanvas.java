@@ -14,9 +14,9 @@ import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ResolverDeque;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.draw2d.ColorConstants;
@@ -173,7 +173,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 				try {
 					ExecutorManager.getInstance().tryValidateChange(bind(c));
 					return null;
-				} catch (ChangeRejectedException e) {
+				} catch (ChangeCreationException e) {
 					return e.getRationale();
 				}
 			}

@@ -3,7 +3,6 @@ package org.bigraph.model.changes.descriptors;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
@@ -32,13 +31,8 @@ public class BoundDescriptor implements IChange {
 		public void addCallback(final Callback c) {
 			changeProcess.addCallback(new IStepValidator.Callback() {
 				@Override
-				public void run() throws ChangeRejectedException {
-					try {
-						c.run();
-					} catch (ChangeCreationException cce) {
-						throw new ChangeRejectedException(BoundDescriptor.this,
-								cce.getRationale());
-					}
+				public void run() throws ChangeCreationException {
+					c.run();
 				}
 			});
 		}
@@ -65,16 +59,12 @@ public class BoundDescriptor implements IChange {
 		
 		@Override
 		public boolean tryValidateChange(Process context, IChange change)
-				throws ChangeRejectedException {
+				throws ChangeCreationException {
 			if (change instanceof BoundDescriptor) {
 				BoundDescriptor bd = (BoundDescriptor)change;
-				try {
-					DescriptorExecutorManager.getInstance().tryValidateChange(
-							bd.new ProcessWrapper(context),
-							bd.getDescriptor());
-				} catch (ChangeCreationException cce) {
-					throw new ChangeRejectedException(bd, cce.getRationale());
-				}
+				DescriptorExecutorManager.getInstance().tryValidateChange(
+						bd.new ProcessWrapper(context),
+						bd.getDescriptor());
 			} else return false;
 			return true;
 		}

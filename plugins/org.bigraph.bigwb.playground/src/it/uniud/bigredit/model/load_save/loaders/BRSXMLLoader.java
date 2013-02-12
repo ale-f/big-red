@@ -16,7 +16,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.ReactionRuleXMLLoader;
@@ -137,7 +137,7 @@ import it.uniud.bigredit.model.BRS;
 			try {
 				if (cg.size() != 0)
 					ExecutorManager.getInstance().tryApplyChange(cg);
-			} catch (ChangeRejectedException cre) {
+			} catch (ChangeCreationException cre) {
 				throw new LoadFailedException(cre);
 			}
 			

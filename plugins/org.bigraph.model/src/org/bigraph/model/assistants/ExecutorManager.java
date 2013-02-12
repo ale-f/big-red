@@ -1,9 +1,9 @@
 package org.bigraph.model.assistants;
 
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
 
@@ -24,7 +24,7 @@ public class ExecutorManager extends ValidatorManager {
 	}
 	
 	public void tryApplyChange(IChange change)
-			throws ChangeRejectedException {
+			throws ChangeCreationException {
 		tryValidateChange(change);
 		
 		IChange ch = run(change);
@@ -73,7 +73,7 @@ public class ExecutorManager extends ValidatorManager {
 		
 		@Override
 		public boolean tryValidateChange(Process context, IChange change)
-				throws ChangeRejectedException {
+				throws ChangeCreationException {
 			return ExecutorManager.this.tryValidateChange(context, change);
 		}
 	}

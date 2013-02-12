@@ -1,9 +1,9 @@
 package it.uniud.bigredit.model;
 
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.process.IParticipantHost;
 
 final class ReactionHandler implements IStepExecutor, IStepValidator {
@@ -38,19 +38,19 @@ final class ReactionHandler implements IStepExecutor, IStepValidator {
 	
 	@Override
 	public boolean tryValidateChange(Process p, IChange b)
-			throws ChangeRejectedException {
+			throws ChangeCreationException {
 		//System.out.println("called _tryValidateChange BRSChangeValidator");
 		if (b instanceof Reaction.ChangeAddReactum) {
 			if (((Reaction.ChangeAddReactum)b).child == null)
-				throw new ChangeRejectedException(b,
+				throw new ChangeCreationException(b,
 						"" + b + " is not ready");
 		} else if (b instanceof Reaction.ChangeAddRedex) {
 			if (((Reaction.ChangeAddRedex)b).child == null)
-				throw new ChangeRejectedException(b,
+				throw new ChangeCreationException(b,
 						"" + b + " is not ready");
 		} else if (b instanceof Reaction.ChangeLayoutChild) {
 			if (((Reaction.ChangeLayoutChild)b).child == null)
-				throw new ChangeRejectedException(b,
+				throw new ChangeCreationException(b,
 						"" + b + " is not ready");
 		} else if (b instanceof Reaction.ChangeInsideModel) {
 			/* do nothing */

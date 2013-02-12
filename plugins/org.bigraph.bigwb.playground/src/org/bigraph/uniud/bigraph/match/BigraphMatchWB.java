@@ -4,7 +4,6 @@ import java.util.Arrays;
 import org.bigraph.model.*;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
@@ -107,7 +106,7 @@ public class BigraphMatchWB {
 		try {
 			 ExecutorManager.getInstance().tryApplyChange(cg);
 			 cg.clear();
-			} catch (ChangeRejectedException cre) {
+			} catch (ChangeCreationException cre) {
 			 System.out.println(cre.getRationale());
 			}
 			
@@ -119,7 +118,7 @@ public class BigraphMatchWB {
 
 		try {
 		 ExecutorManager.getInstance().tryApplyChange(cg);
-		} catch (ChangeRejectedException cre) {
+		} catch (ChangeCreationException cre) {
 		 System.out.println(cre.getRationale());
 		}
 		
@@ -158,7 +157,7 @@ public class BigraphMatchWB {
 
 		try {
 		 ExecutorManager.getInstance().tryApplyChange(cg);
-		} catch (ChangeRejectedException cre) {
+		} catch (ChangeCreationException cre) {
 		 System.out.println(cre.getRationale());
 		}
 		

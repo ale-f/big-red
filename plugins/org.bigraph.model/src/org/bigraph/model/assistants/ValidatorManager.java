@@ -3,9 +3,9 @@ package org.bigraph.model.assistants;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.process.AbstractParticipantHost;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
@@ -23,30 +23,30 @@ public class ValidatorManager
 	}
 	
 	public void tryValidateChange(IChange change)
-			throws ChangeRejectedException {
+			throws ChangeCreationException {
 		tryValidateChange((PropertyScratchpad)null, change);
 	}
 	
 	public boolean tryValidateChange(
 			PropertyScratchpad context, IChange change)
-			throws ChangeRejectedException {
+			throws ChangeCreationException {
 		StandaloneProcess p =
 				new StandaloneProcess(new PropertyScratchpad(context));
 		IChange ch = p.run(change);
 		if (ch != null) {
-			throw new ChangeRejectedException(ch,
+			throw new ChangeCreationException(ch,
 					"" + ch + " was not recognised by the validator");
 		} else return true;
 	}
 	
 	@Override
 	public boolean tryValidateChange(Process context, IChange change)
-			throws ChangeRejectedException {
+			throws ChangeCreationException {
 		return (new ParticipantProcess(context).step(change) == null);
 	}
 	
 	private abstract class AbstractProcess implements Process {
-		protected IChange step(IChange c) throws ChangeRejectedException {
+		protected IChange step(IChange c) throws ChangeCreationException {
 			boolean passes = false;
 			for (IStepValidator i : getParticipants(IStepValidator.class))
 				passes |= i.tryValidateChange(this, c);
@@ -77,7 +77,7 @@ public class ValidatorManager
 			return scratch;
 		}
 		
-		public IChange run(IChange c) throws ChangeRejectedException {
+		public IChange run(IChange c) throws ChangeCreationException {
 			IChange i = doValidation(c);
 			if (i == null)
 				for (Callback j : getCallbacks())
@@ -86,9 +86,9 @@ public class ValidatorManager
 		}
 		
 		protected IChange doValidation(IChange c)
-				throws ChangeRejectedException {
+				throws ChangeCreationException {
 			if (c == null) {
-				throw new ChangeRejectedException(c, "" + c + " is not ready");
+				throw new ChangeCreationException(c, "" + c + " is not ready");
 			} else if (!(c instanceof IChange.Group)) {
 				IChange d = step(c);
 				if (d == null)

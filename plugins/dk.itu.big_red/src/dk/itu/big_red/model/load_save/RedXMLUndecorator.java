@@ -9,9 +9,9 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
@@ -199,8 +199,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 				try {
 					ExecutorManager.getInstance().tryValidateChange(
 							loader.getChanges());
-				} catch (ChangeRejectedException cre) {
-					IChange ch = cre.getRejectedChange();
+				} catch (ChangeCreationException cre) {
+					IChangeDescriptor ch = cre.getChangeDescriptor();
 					if (ch instanceof BoundDescriptor) {
 						BoundDescriptor bd = (BoundDescriptor)ch;
 						if (bd.getDescriptor()

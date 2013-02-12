@@ -3,9 +3,9 @@ package org.bigraph.model.loaders;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public abstract class ChangeLoader extends Loader implements IChangeLoader {
@@ -44,7 +44,7 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	protected void executeChanges() throws LoadFailedException {
 		try {
 			ExecutorManager.getInstance().tryApplyChange(getChanges());
-		} catch (ChangeRejectedException cre) {
+		} catch (ChangeCreationException cre) {
 			throw new LoadFailedException(cre);
 		}
 	}

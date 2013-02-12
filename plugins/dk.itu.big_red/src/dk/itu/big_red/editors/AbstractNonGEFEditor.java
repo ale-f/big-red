@@ -2,8 +2,8 @@ package dk.itu.big_red.editors;
 
 import java.util.ArrayDeque;
 
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.eclipse.jface.action.IStatusLineManager;
 
 public abstract class AbstractNonGEFEditor extends AbstractEditor {
@@ -32,7 +32,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 	}
 	
 	protected abstract void tryApplyChange(IChange c)
-			throws ChangeRejectedException;
+			throws ChangeCreationException;
 	
 	protected boolean doChange(IChange c) {
 		IStatusLineManager slm =
@@ -46,7 +46,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 			
 			slm.setErrorMessage(null);
 			return true;
-		} catch (ChangeRejectedException cre) {
+		} catch (ChangeCreationException cre) {
 			slm.setErrorMessage(cre.getRationale());
 			return false;
 		}
@@ -61,7 +61,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 			redoBuffer.push(c = undoBuffer.pop());
 			tryApplyChange(c.inverse());
 			stateChanged();
-		} catch (ChangeRejectedException cre) {
+		} catch (ChangeCreationException cre) {
 			throw new Error("Unhandled Change undo failure", cre);
 		}
 	}
@@ -75,7 +75,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 			tryApplyChange(c = redoBuffer.pop());
 			undoBuffer.push(c);
 			stateChanged();
-		} catch (ChangeRejectedException cre) {
+		} catch (ChangeCreationException cre) {
 			throw new Error("Unhandled Change redo failure", cre);
 		}
 	}

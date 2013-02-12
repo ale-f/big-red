@@ -22,7 +22,6 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -37,7 +36,7 @@ public class BigraphTests {
 	
 	@Before
 	public void createSignature()
-			throws ChangeCreationException, ChangeRejectedException {
+			throws ChangeCreationException, ChangeCreationException {
 		signature = new Signature();
 		
 		Control.Identifier
@@ -57,7 +56,7 @@ public class BigraphTests {
 	}
 	
 	@Test
-	public void basicAdd() throws ChangeRejectedException {
+	public void basicAdd() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Root r = new Root();
 		ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(r, "0"));
@@ -67,14 +66,14 @@ public class BigraphTests {
 	}
 	
 	@Test
-	public void basicAddHierarchy() throws ChangeRejectedException {
+	public void basicAddHierarchy() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		b.setSignature(signature);
 		
 		Root r = new Root();
 		try {
 			ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(r, "0"));
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		
@@ -91,7 +90,7 @@ public class BigraphTests {
 	}
 	
 	@Test
-	public void removeRoot() throws ChangeRejectedException {
+	public void removeRoot() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Root r = new Root();
 		try {
@@ -100,7 +99,7 @@ public class BigraphTests {
 					b.getChildren().size() == 1 &&
 							b.getChildren().contains(r) &&
 							r.getName().equals("0"));
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		
@@ -109,13 +108,13 @@ public class BigraphTests {
 		assertTrue("Root removal failed", b.getChildren().size() == 0);
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void removeAbsentRoot() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void removeAbsentRoot() throws ChangeCreationException {
 		ExecutorManager.getInstance().tryApplyChange(new Root().changeRemove());
 	}
 	
 	private static void tryAddAndConnect(Bigraph b, InnerName in, Link l)
-			throws ChangeRejectedException {
+			throws ChangeCreationException {
 		ExecutorManager.getInstance().tryApplyChange(cg(
 				b.changeAddChild(l, "a"),
 				b.changeAddChild(in, "a"),
@@ -127,12 +126,12 @@ public class BigraphTests {
 	}
 	
 	@Test
-	public void connectInnerToEdge() throws ChangeRejectedException {
+	public void connectInnerToEdge() throws ChangeCreationException {
 		tryAddAndConnect(new Bigraph(), new InnerName(), new Edge());
 	}
 	
 	@Test
-	public void connectInnerToOuter() throws ChangeRejectedException {
+	public void connectInnerToOuter() throws ChangeCreationException {
 		tryAddAndConnect(new Bigraph(), new InnerName(), new OuterName());
 	}
 	
@@ -150,7 +149,7 @@ public class BigraphTests {
 							new Point.ChangeConnectDescriptor(
 									new InnerName.Identifier("in"),
 									new Edge.Identifier("e1")))));
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		
@@ -169,7 +168,7 @@ public class BigraphTests {
 			ExecutorManager.getInstance().tryApplyChange(cg(
 					b.changeAddChild(e1, "e1"),
 					b.changeAddChild(in, "in")));
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		
@@ -179,8 +178,8 @@ public class BigraphTests {
 						new Edge.Identifier("e1")));
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void addDuplicateName() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void addDuplicateName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Root
 			r0 = new Root(),
@@ -190,19 +189,19 @@ public class BigraphTests {
 				b.changeAddChild(r1, "0")));
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void addInvalidRootName() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void addInvalidRootName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(new Root(), "test"));
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void setInvalidRootName() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void setInvalidRootName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Root r = new Root();
 		try {
 			ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(r, "0"));
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			fail("Root insertion failed: " + e.getRationale());
 		}
 		ExecutorManager.getInstance().tryApplyChange(new BoundDescriptor(b,
@@ -210,20 +209,20 @@ public class BigraphTests {
 						r.getIdentifier(), "test")));
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void addInvalidSiteName() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void addInvalidSiteName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Root r = new Root();
 		try {
 			ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(r, "0"));
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		ExecutorManager.getInstance().tryApplyChange(r.changeAddChild(new Site(), "test"));
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void setInvalidSiteName() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void setInvalidSiteName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Root r = new Root();
 		Site s = new Site();
@@ -231,7 +230,7 @@ public class BigraphTests {
 			ExecutorManager.getInstance().tryApplyChange(cg(
 					b.changeAddChild(r, "0"),
 					r.changeAddChild(s, "0")));
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		ExecutorManager.getInstance().tryApplyChange(new BoundDescriptor(b,
@@ -239,8 +238,8 @@ public class BigraphTests {
 						s.getIdentifier(), "test")));
 	}
 	
-	@Test(expected = ChangeRejectedException.class)
-	public void addSiteToBigraph() throws ChangeRejectedException {
+	@Test(expected = ChangeCreationException.class)
+	public void addSiteToBigraph() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(new Site(), "0"));
 	}

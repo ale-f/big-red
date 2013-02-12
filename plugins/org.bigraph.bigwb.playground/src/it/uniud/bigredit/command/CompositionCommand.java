@@ -19,8 +19,8 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -190,7 +190,7 @@ public class CompositionCommand extends Command {
 			ExecutorManager.getInstance().tryApplyChange(cgB);
 			ExecutorManager.getInstance().tryApplyChange(cgA);
 			
-		} catch (ChangeRejectedException e) {
+		} catch (ChangeCreationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

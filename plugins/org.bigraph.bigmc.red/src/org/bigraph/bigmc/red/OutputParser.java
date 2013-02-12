@@ -14,8 +14,8 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.ChangeRejectedException;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.names.HashMapNamespace;
 import org.bigraph.model.names.INamespace;
 
@@ -148,10 +148,11 @@ public class OutputParser {
 			parseChildren(r, cg);
 			
 			ExecutorManager.getInstance().tryApplyChange(cg);
-			ExecutorManager.getInstance().tryApplyChange(LayoutUtilities.relayout(workingBigraph));
+			ExecutorManager.getInstance().tryApplyChange(
+					LayoutUtilities.relayout(workingBigraph));
 			
 			return workingBigraph;
-		} catch (ChangeRejectedException cre) {
+		} catch (ChangeCreationException cre) {
 			cre.printStackTrace();
 			return null;
 		} catch (DisappointedException de) {
