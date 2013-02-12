@@ -12,10 +12,6 @@ public abstract class Change implements IChange {
 	public abstract Change inverse();
 	
 	@Override
-	public void beforeApply() {
-	}
-	
-	@Override
 	public void simulate(PropertyScratchpad context, Resolver resolver) {
 		throw new UnsupportedOperationException("" + this +
 				" doesn't support the simulate(PropertyScratchpad) method");

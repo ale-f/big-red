@@ -92,11 +92,6 @@ public class BRS extends ModelObject {
 		private String oldName = null;
 		
 		@Override
-		public void beforeApply() {
-			//oldName = child.getName();
-		}
-		
-		@Override
 		public ChangeAddChild inverse() {
 			return new ChangeAddChild(child, oldName);
 		}
@@ -117,11 +112,6 @@ public class BRS extends ModelObject {
 		}
 		
 		private Rectangle oldLayout = null;
-		
-		@Override
-		public void beforeApply() {
-			//oldName = child.getName();
-		}
 		
 		@Override
 		public ChangeLayoutChild inverse() {

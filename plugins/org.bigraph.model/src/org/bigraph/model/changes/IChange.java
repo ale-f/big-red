@@ -34,15 +34,6 @@ public interface IChange {
 	IChange inverse();
 	
 	/**
-	 * Called by {@link ExecutorManager} just before this {@link IChange} is
-	 * applied.
-	 * <p>(Subclasses should override this method if they need to save some
-	 * properties of an object before a change in order to be able to {@link
-	 * #inverse() reverse} it.)
-	 */
-	void beforeApply();
-	
-	/**
 	 * Simulates the execution of this {@link IChange} in the given {@link
 	 * PropertyScratchpad}. (No validation is performed by this method.)
 	 * @param context a {@link PropertyScratchpad} to populate with

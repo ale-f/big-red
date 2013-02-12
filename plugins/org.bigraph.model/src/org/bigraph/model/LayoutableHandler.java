@@ -11,6 +11,11 @@ final class LayoutableHandler extends HandlerUtilities.HandlerImpl {
 		if (b instanceof Layoutable.ChangeRemove) {
 			Layoutable.ChangeRemove c = (Layoutable.ChangeRemove)b;
 			Layoutable ch = c.getCreator();
+			
+			/* beforeApply() implementation follows */
+			c.oldName = ch.getName();
+			c.oldParent = ch.getParent();
+			
 			Namespace<Layoutable> ns = ch.getBigraph().getNamespace(ch);
 			ch.getParent().removeChild(ch);
 			ns.remove(ch.getName());

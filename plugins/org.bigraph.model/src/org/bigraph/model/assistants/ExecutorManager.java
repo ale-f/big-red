@@ -42,7 +42,6 @@ public class ExecutorManager extends ValidatorManager {
 	}
 	
 	private IChange run(IChange c) {
-		c.beforeApply();
 		if (!(c instanceof IChange.Group)) {
 			return step(c);
 		} else {

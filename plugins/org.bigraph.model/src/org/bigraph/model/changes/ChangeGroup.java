@@ -46,9 +46,4 @@ public class ChangeGroup extends ArrayList<IChange> implements IChange.Group {
 			if (c != null)
 				c.simulate(context, null);
 	}
-
-	@Override
-	public void beforeApply() {
-		/* do nothing */
-	}
 }

@@ -162,11 +162,6 @@ public class Reaction  extends ModelObject{
 		private Rectangle oldLayout = null;
 		
 		@Override
-		public void beforeApply() {
-			//oldName = child.getName();
-		}
-		
-		@Override
 		public ChangeLayoutChild inverse() {
 			return new ChangeLayoutChild(child, oldLayout);
 		}

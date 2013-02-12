@@ -24,6 +24,10 @@ final class ReactionHandler implements IStepExecutor, IStepValidator {
 			c.getCreator().changeRedex(c.child);
 		}else if(b instanceof Reaction.ChangeLayoutChild){
 			Reaction.ChangeLayoutChild c = (Reaction.ChangeLayoutChild)b;
+			
+			/* beforeApply() implementation follows */
+			//oldName = child.getName();
+			
 			c.getCreator()._changeLayoutChild(c.child, c.layout);
 		} else if(b instanceof Reaction.ChangeInsideModel){
 			Reaction.ChangeInsideModel c = (Reaction.ChangeInsideModel) b;

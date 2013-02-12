@@ -21,12 +21,20 @@ final class BRSHandler implements IStepExecutor, IStepValidator {
 			//getNamespace(getNSI(c.child)).put(c.name, c.child);
 		} else if(b instanceof BRS.ChangeLayoutChild){
 			BRS.ChangeLayoutChild c = (BRS.ChangeLayoutChild)b;
+			
+			/* beforeApply() implementation follows */
+			//oldName = child.getName();
+			
 			c.getCreator()._changeLayoutChild(c.child, c.layout);
 		} else if(b instanceof BRS.ChangeInsideModel){
 			BRS.ChangeInsideModel c = (BRS.ChangeInsideModel) b;
 			c.getCreator()._changeInsideModel(c.target, c.change);
 		} else if(b instanceof BRS.ChangeRemoveChild){
 			BRS.ChangeRemoveChild c = (BRS.ChangeRemoveChild) b;
+			
+			/* beforeApply() implementation follows */
+			//oldName = child.getName();
+			
 			c.getCreator()._changeRemoveChild(c.child);
 		}else return false;
 		return true;
