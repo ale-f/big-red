@@ -8,7 +8,6 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -90,10 +89,6 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			partialAppearanceWarning = true;
 		}
 	}
-
-	private IChange bind(IChangeDescriptor desc) {
-		return new BoundDescriptor(loader.getResolver(), desc);
-	}
 	
 	private ModelObject.Identifier getIdentifier(ModelObject object) {
 		return object.getIdentifier(loader.getScratch());
@@ -110,23 +105,23 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 				fill = getColorAttribute(eA, BIG_RED, "fillColor"),
 				outline = getColorAttribute(eA, BIG_RED, "outlineColor");
 			if (fill != null)
-				cg.add(bind(new ColourUtilities.ChangeFillDescriptor(
-						getIdentifier(object), null, fill)));
+				cg.add(new ColourUtilities.ChangeFillDescriptor(
+						getIdentifier(object), null, fill));
 			if (outline != null)
-				cg.add(bind(new ColourUtilities.ChangeOutlineDescriptor(
-						getIdentifier(object), null, outline)));
+				cg.add(new ColourUtilities.ChangeOutlineDescriptor(
+						getIdentifier(object), null, outline));
 	
 			if (object instanceof Layoutable) {
 				r = getRectangle(eA);
 				if (r != null)
-					cg.add(bind(new LayoutUtilities.ChangeLayoutDescriptor(
-						loader.getScratch(), (Layoutable)object, r)));
+					cg.add(new LayoutUtilities.ChangeLayoutDescriptor(
+						loader.getScratch(), (Layoutable)object, r));
 			}
 			
 			String comment = getAttributeNS(eA, BIG_RED, "comment");
 			if (comment != null)
-				cg.add(bind(new ChangeCommentDescriptor(
-						getIdentifier(object), null, comment)));
+				cg.add(new ChangeCommentDescriptor(
+						getIdentifier(object), null, comment));
 		}
 		
 		if (object instanceof Layoutable && !(object instanceof Edge) &&
@@ -137,12 +132,12 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			PortSpec p = (PortSpec)object;
 			Element eS = getNamedChildElement(el, BIG_RED, "port-appearance");
 			if (eS != null) {
-				cg.add(bind(new ControlUtilities.ChangeSegmentDescriptor(
+				cg.add(new ControlUtilities.ChangeSegmentDescriptor(
 						loader.getScratch(), p, Integer.parseInt(
-								getAttributeNS(eS, BIG_RED, "segment")))));
-				cg.add(bind(new ControlUtilities.ChangeDistanceDescriptor(
+								getAttributeNS(eS, BIG_RED, "segment"))));
+				cg.add(new ControlUtilities.ChangeDistanceDescriptor(
 						loader.getScratch(), p, Double.parseDouble(
-								getAttributeNS(eS, BIG_RED, "distance")))));
+								getAttributeNS(eS, BIG_RED, "distance"))));
 			}
 		}
 		
@@ -151,8 +146,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 			
 			String l = getAttributeNS(el, BIG_RED, "label");
 			if (l != null)
-				cg.add(bind(new ControlUtilities.ChangeLabelDescriptor(
-						loader.getScratch(), c, l)));
+				cg.add(new ControlUtilities.ChangeLabelDescriptor(
+						loader.getScratch(), c, l));
 			
 			Element eS = getNamedChildElement(el, BIG_RED, "shape");
 			if (eS != null) {
@@ -170,8 +165,8 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 								Integer.parseInt(getAttributeNS(i, BIG_RED, "y")));
 					shape = pl;
 				} else shape = Ellipse.SINGLETON;
-				cg.add(bind(new ControlUtilities.ChangeShapeDescriptor(
-						loader.getScratch(), c, shape)));
+				cg.add(new ControlUtilities.ChangeShapeDescriptor(
+						loader.getScratch(), c, shape));
 			}
 		}
 		
@@ -201,14 +196,10 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 							loader.getResolver(), loader.getChanges());
 				} catch (ChangeCreationException cre) {
 					IChangeDescriptor ch = cre.getChangeDescriptor();
-					if (ch instanceof BoundDescriptor) {
-						BoundDescriptor bd = (BoundDescriptor)ch;
-						if (bd.getDescriptor()
-								instanceof ChangeLayoutDescriptor) {
-							loader.addNotice(LoaderNotice.Type.WARNING,
-									"Layout data invalid: replacing.");
-							loader.addChange(relayout);
-						}
+					if (ch instanceof ChangeLayoutDescriptor) {
+						loader.addNotice(LoaderNotice.Type.WARNING,
+								"Layout data invalid: replacing.");
+						loader.addChange(relayout);
 					}
 				}
 			}
