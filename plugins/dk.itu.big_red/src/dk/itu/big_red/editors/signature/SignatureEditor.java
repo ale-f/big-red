@@ -10,10 +10,9 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Store;
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ResolverDeque;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -237,13 +236,16 @@ implements PropertyChangeListener {
 		} else return null;
 	}
 	
-	private final IChange bind(IChangeDescriptor cd) {
-		return new BoundDescriptor(getModel(), cd);
-	}
-	
 	private Store store = new Store();
 	
-	private final IChange changeDeleteControl(Control c) {
+	private final Resolver _getResolver() {
+		ResolverDeque rd = new ResolverDeque();
+		rd.add(store);
+		rd.add(getModel());
+		return rd;
+	}
+	
+	private final IChangeDescriptor changeDeleteControl(Control c) {
 		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 		Control.Identifier cid = c.getIdentifier();
 		
@@ -256,11 +258,7 @@ implements PropertyChangeListener {
 		cdg.add(new Signature.ChangeRemoveControlDescriptor(
 				new Signature.Identifier(), c.getIdentifier()));
 		
-		ResolverDeque rd = new ResolverDeque();
-		rd.add(store);
-		rd.add(getModel());
-		
-		return new BoundDescriptor(rd, cdg);
+		return cdg;
 	}
 	
 	@Override
@@ -423,7 +421,7 @@ implements PropertyChangeListener {
 				PropertyScratchpad context = new PropertyScratchpad();
 				while (it.hasNext()) {
 					Object i = it.next();
-					IChange ch = null;
+					IChangeDescriptor ch = null;
 					if (i instanceof Control) {
 						Control c = (Control)i;
 						if (c.getSignature().equals(getModel()))
@@ -431,13 +429,17 @@ implements PropertyChangeListener {
 					} else if (i instanceof Signature) {
 						Signature s = (Signature)i;
 						if (s.getParent().equals(getModel()))
-							cg.add(ch = bind(
-									new Signature.ChangeRemoveSignatureDescriptor(
-											new Signature.Identifier(),
-											getModel().getSignatures(context).indexOf(s),
-											s)));
+							cg.add(new Signature.ChangeRemoveSignatureDescriptor(
+									new Signature.Identifier(),
+									getModel().getSignatures(context).indexOf(s),
+									s));
 					}
-					context.executeChange(ch);
+					if (ch != null) {
+						try {
+							ch.simulate(context, _getResolver());
+						} catch (ChangeCreationException cce) {
+						}
+					}
 				}
 				
 				if (cg.size() > 0 && doChange(cg)) {
@@ -746,7 +748,8 @@ implements PropertyChangeListener {
 	@Override
 	protected void tryApplyChange(IChangeDescriptor c)
 			throws ChangeCreationException {
-		DescriptorExecutorManager.getInstance().tryApplyChange(getModel(), c);
+		DescriptorExecutorManager.getInstance().tryApplyChange(
+				_getResolver(), c);
 	}
 	
 	@Override
