@@ -4,6 +4,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.process.IParticipantHost;
 
@@ -82,7 +83,7 @@ final class BRSHandler implements IStepExecutor, IStepValidator {
 	}
 	
 	@Override
-	public boolean tryValidateChange(Process context, IChange b)
+	public boolean tryValidateChange(Process context, IChangeDescriptor b)
 			throws ChangeCreationException {
 		if (b instanceof BRS.ChangeLayoutChild) {
 			if (((BRS.ChangeLayoutChild)b).child == null)

@@ -3,6 +3,7 @@ package org.bigraph.model;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.names.Namespace;
 
@@ -25,7 +26,7 @@ final class LayoutableHandler extends HandlerUtilities.HandlerImpl {
 	}
 	
 	@Override
-	public boolean tryValidateChange(Process process, IChange b)
+	public boolean tryValidateChange(Process process, IChangeDescriptor b)
 			throws ChangeCreationException {
 		final PropertyScratchpad context = process.getScratch();
 		if (b instanceof Layoutable.ChangeRemove) {

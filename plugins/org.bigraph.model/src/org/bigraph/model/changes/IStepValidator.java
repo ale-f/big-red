@@ -3,6 +3,7 @@ package org.bigraph.model.changes;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.process.IParticipant;
 
@@ -29,6 +30,6 @@ public interface IStepValidator extends IParticipant {
 	 * @throws ChangeCreationException if the change was recognised and failed
 	 * validation
 	 */
-	boolean tryValidateChange(Process context, IChange change)
+	boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException;
 }

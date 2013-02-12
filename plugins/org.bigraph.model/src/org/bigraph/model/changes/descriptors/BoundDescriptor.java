@@ -53,7 +53,7 @@ public class BoundDescriptor implements IChange {
 		private static final Handler INSTANCE = new Handler();
 		
 		@Override
-		public boolean tryValidateChange(Process context, IChange change)
+		public boolean tryValidateChange(Process context, IChangeDescriptor change)
 				throws ChangeCreationException {
 			if (change instanceof BoundDescriptor) {
 				BoundDescriptor bd = (BoundDescriptor)change;

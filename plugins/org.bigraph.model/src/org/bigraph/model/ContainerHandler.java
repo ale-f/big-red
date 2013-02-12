@@ -4,6 +4,7 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.names.Namespace;
 
@@ -33,7 +34,7 @@ final class ContainerHandler extends HandlerUtilities.HandlerImpl {
 	}
 	
 	@Override
-	public boolean tryValidateChange(Process process, IChange b)
+	public boolean tryValidateChange(Process process, IChangeDescriptor b)
 			throws ChangeCreationException {
 		final PropertyScratchpad context = process.getScratch();
 		if (b instanceof Container.ChangeAddChild) {
@@ -52,7 +53,7 @@ final class ContainerHandler extends HandlerUtilities.HandlerImpl {
 						((Node)container).getControl().getName() +
 						" is an atomic control");
 			
-			HandlerUtilities.checkName(context, b, c.child,
+			HandlerUtilities.checkName(context, c, c.child,
 					bigraph.getNamespace(c.child), c.name);
 
 			if (c.child instanceof Edge) {

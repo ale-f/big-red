@@ -7,6 +7,7 @@ import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 import org.bigraph.model.process.AbstractParticipantHost;
@@ -25,17 +26,17 @@ public class ValidatorManager
 		super.removeParticipant(participant);
 	}
 	
-	public void tryValidateChange(IChange change)
+	public void tryValidateChange(IChangeDescriptor change)
 			throws ChangeCreationException {
 		tryValidateChange((PropertyScratchpad)null, change);
 	}
 	
 	public boolean tryValidateChange(
-			PropertyScratchpad context, IChange change)
+			PropertyScratchpad context, IChangeDescriptor change)
 			throws ChangeCreationException {
 		StandaloneProcess p =
 				new StandaloneProcess(new PropertyScratchpad(context));
-		IChange ch = p.run(change);
+		IChangeDescriptor ch = p.run(change);
 		if (ch != null) {
 			throw new ChangeCreationException(ch,
 					"" + ch + " was not recognised by the validator");
@@ -43,13 +44,14 @@ public class ValidatorManager
 	}
 	
 	@Override
-	public boolean tryValidateChange(Process context, IChange change)
+	public boolean tryValidateChange(Process context, IChangeDescriptor change)
 			throws ChangeCreationException {
 		return (new ParticipantProcess(context).step(change) == null);
 	}
 	
 	private abstract class AbstractProcess implements Process {
-		protected IChange step(IChange c) throws ChangeCreationException {
+		protected IChangeDescriptor step(IChangeDescriptor c)
+				throws ChangeCreationException {
 			boolean passes = false;
 			for (IStepValidator i : getParticipants(IStepValidator.class))
 				passes |= i.tryValidateChange(this, c);
@@ -85,26 +87,27 @@ public class ValidatorManager
 			return scratch;
 		}
 		
-		public IChange run(IChange c) throws ChangeCreationException {
-			IChange i = doValidation(c);
+		public IChangeDescriptor run(IChangeDescriptor c)
+				throws ChangeCreationException {
+			IChangeDescriptor i = doValidation(c);
 			if (i == null)
 				for (Callback j : getCallbacks())
 					j.run();
 			return i;
 		}
 		
-		protected IChange doValidation(IChange c)
+		protected IChangeDescriptor doValidation(IChangeDescriptor c)
 				throws ChangeCreationException {
 			if (c == null) {
 				throw new ChangeCreationException(c, "" + c + " is not ready");
 			} else if (!(c instanceof IChange.Group)) {
-				IChange d = step(c);
+				IChangeDescriptor d = step(c);
 				if (d == null)
 					c.simulate(getScratch(), null);
 				return d;
 			} else {
-				for (IChange i : (IChange.Group)c) {
-					IChange j = doValidation(i);
+				for (IChangeDescriptor i : (IChange.Group)c) {
+					IChangeDescriptor j = doValidation(i);
 					if (j != null)
 						return j;
 				}
