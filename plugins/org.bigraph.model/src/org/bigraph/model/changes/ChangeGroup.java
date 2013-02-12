@@ -5,20 +5,23 @@ import java.util.Collection;
 
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
  * A <strong>ChangeGroup</strong> is a collection of {@link IChange}s.
  * @author alec
  * @see ArrayList
  */
-public class ChangeGroup extends ArrayList<IChange> implements IChange.Group {
-	private static final long serialVersionUID = -5459931168098216972L;
+public class ChangeGroup extends ChangeDescriptorGroup implements IChange {
+	private static final long serialVersionUID = -5459931168098216973L;
 
 	public ChangeGroup() {
 		super();
 	}
 	
-	public ChangeGroup(Collection<? extends IChange> c) {
+	public ChangeGroup(Collection<? extends IChangeDescriptor> c) {
 		super(c);
 	}
 
@@ -34,7 +37,7 @@ public class ChangeGroup extends ArrayList<IChange> implements IChange.Group {
 	@Override
 	public ChangeGroup inverse() {
 		ChangeGroup changes = new ChangeGroup();
-		for (IChange c : this)
+		for (IChangeDescriptor c : this)
 			if (c != null)
 				changes.add(0, c.inverse());
 		return changes;
@@ -42,8 +45,12 @@ public class ChangeGroup extends ArrayList<IChange> implements IChange.Group {
 
 	@Override
 	public void simulate(PropertyScratchpad context, Resolver resolver) {
-		for (IChange c : this)
-			if (c != null)
-				c.simulate(context, null);
+		try {
+			for (IChangeDescriptor c : this)
+				if (c != null)
+					c.simulate(context, null);
+		} catch (ChangeCreationException e) {
+			/* XXX: do nothing */
+		}
 	}
 }
