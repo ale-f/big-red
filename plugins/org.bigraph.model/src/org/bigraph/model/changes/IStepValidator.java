@@ -3,6 +3,7 @@ package org.bigraph.model.changes;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 import org.bigraph.model.process.IParticipant;
 
 /**
@@ -11,20 +12,6 @@ import org.bigraph.model.process.IParticipant;
  * @author alec
  */
 public interface IStepValidator extends IParticipant {
-	/**
-	 * Classes implementing <strong>Callback</strong> are called by a {@link
-	 * Process} just before it finishes, and so can be used to implement a
-	 * second validation phase.
-	 * @author alec
-	 */
-	interface Callback {
-		/**
-		 * Executes this {@link Callback}.
-		 * @throws ChangeCreationException if final validation failed
-		 */
-		void run() throws ChangeCreationException;
-	}
-	
 	/**
 	 * Classes implementing <strong>Process</strong> are validation processes
 	 * which use {@link IStepValidator}s to perform validation.

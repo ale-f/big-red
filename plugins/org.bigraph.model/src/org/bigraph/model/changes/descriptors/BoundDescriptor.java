@@ -29,12 +29,7 @@ public class BoundDescriptor implements IChange {
 		
 		@Override
 		public void addCallback(final Callback c) {
-			changeProcess.addCallback(new IStepValidator.Callback() {
-				@Override
-				public void run() throws ChangeCreationException {
-					c.run();
-				}
-			});
+			changeProcess.addCallback(c);
 		}
 		
 		@Override

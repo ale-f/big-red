@@ -6,6 +6,7 @@ import java.util.List;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 import org.bigraph.model.process.AbstractParticipantHost;
 import org.bigraph.model.process.IParticipant;
 import org.bigraph.model.process.IParticipantHost;
