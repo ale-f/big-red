@@ -22,6 +22,12 @@ public class DescriptorExecutorManager extends DescriptorValidatorManager {
 		super.addParticipant(participant);
 	}
 	
+	@Deprecated
+	public void tryApplyChange(IChangeDescriptor change)
+			throws ChangeCreationException {
+		tryApplyChange(null, change);
+	}
+	
 	public void tryApplyChange(Resolver resolver, IChangeDescriptor change)
 			throws ChangeCreationException {
 		tryValidateChange(resolver, change);

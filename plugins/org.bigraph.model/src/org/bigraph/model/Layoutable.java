@@ -1,12 +1,12 @@
 package org.bigraph.model;
 
 import org.bigraph.model.ModelObject;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
 
 /**
@@ -70,7 +70,7 @@ public abstract class Layoutable extends NamedModelObject {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addParticipant(new LayoutableHandler());
+		DescriptorExecutorManager.getInstance().addParticipant(new LayoutableHandler());
 	}
 	
 	private Container parent = null;

@@ -1,9 +1,9 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.eclipse.gef.commands.Command;
 
 import dk.itu.big_red.utilities.ui.UI;
@@ -76,7 +76,7 @@ public class ChangeCommand extends Command {
 			return false;
 		boolean status = false;
 		try {
-			ExecutorManager.getInstance().tryValidateChange(change);
+			DescriptorExecutorManager.getInstance().tryValidateChange(change);
 			status = true;
 		} catch (ChangeCreationException cre) {
 			UI.getActiveStatusLine().setErrorMessage(cre.getRationale());
@@ -90,7 +90,7 @@ public class ChangeCommand extends Command {
 	@Override
 	public final void execute() {
 		try {
-			ExecutorManager.getInstance().tryApplyChange(getChange());
+			DescriptorExecutorManager.getInstance().tryApplyChange(getChange());
 			UI.getActiveStatusLine().setErrorMessage(null);
 		} catch (ChangeCreationException cre) {
 			/* do nothing */
@@ -112,7 +112,7 @@ public class ChangeCommand extends Command {
 	@Override
 	public final void undo() {
 		try {
-			ExecutorManager.getInstance().tryApplyChange(getInverse());
+			DescriptorExecutorManager.getInstance().tryApplyChange(getInverse());
 		} catch (ChangeCreationException cre) {
 			/* do nothing */
 		}

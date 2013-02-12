@@ -21,6 +21,19 @@ public class DescriptorValidatorManager
 		super.removeParticipant(participant);
 	}
 	
+	@Deprecated
+	public boolean tryValidateChange(IChangeDescriptor change)
+			throws ChangeCreationException {
+		return tryValidateChange((PropertyScratchpad)null, change);
+	}
+	
+	@Deprecated
+	public boolean tryValidateChange(
+			PropertyScratchpad context, IChangeDescriptor change)
+			throws ChangeCreationException {
+		return tryValidateChange(context, null, change);
+	}
+	
 	public boolean tryValidateChange(Resolver r, IChangeDescriptor change)
 			throws ChangeCreationException {
 		return tryValidateChange(null, r, change);

@@ -15,10 +15,10 @@ import it.uniud.bigredit.Activator;
 import it.uniud.bigredit.model.Reaction;
 
 import org.bigraph.model.Bigraph;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.loaders.BigraphXMLLoader;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.loaders.XMLLoader;
@@ -80,7 +80,7 @@ public class ReactionXMLLoader extends XMLLoader{
 		
 		try {
 			if (cg.size() != 0)
-				ExecutorManager.getInstance().tryApplyChange(cg);
+				DescriptorExecutorManager.getInstance().tryApplyChange(cg);
 		} catch (ChangeCreationException cre) {
 			throw new LoadFailedException(cre);
 		}

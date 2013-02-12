@@ -1,6 +1,5 @@
 package org.bigraph.model.changes;
 
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;

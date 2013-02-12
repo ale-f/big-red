@@ -12,12 +12,12 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 
 public class BigraphBuilder {
 	private Bigraph b = new Bigraph();
@@ -84,7 +84,7 @@ public class BigraphBuilder {
 	
 	public Bigraph finish() {
 		try {
-			ExecutorManager.getInstance().tryApplyChange(cg);
+			DescriptorExecutorManager.getInstance().tryApplyChange(cg);
 			return b;
 		} catch (ChangeCreationException e) {
 			return null;

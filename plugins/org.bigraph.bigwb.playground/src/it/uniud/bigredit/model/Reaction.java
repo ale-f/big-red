@@ -11,12 +11,12 @@ import org.bigraph.model.OuterName;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import dk.itu.big_red.model.ExtendedDataUtilities;
@@ -189,7 +189,7 @@ public class Reaction  extends ModelObject{
 	}
 	
 	static {
-		ExecutorManager.getInstance().addParticipant(new ReactionHandler());
+		DescriptorExecutorManager.getInstance().addParticipant(new ReactionHandler());
 	}
 	
 	public void _changeInsideModel(ModelObject target, Change change){
@@ -197,7 +197,7 @@ public class Reaction  extends ModelObject{
 		
 		cgAux.add(change);
 		try {
-			ExecutorManager.getInstance().tryApplyChange(cgAux);
+			DescriptorExecutorManager.getInstance().tryApplyChange(cgAux);
 		} catch (ChangeCreationException e) {
 			e.printStackTrace();
 		}

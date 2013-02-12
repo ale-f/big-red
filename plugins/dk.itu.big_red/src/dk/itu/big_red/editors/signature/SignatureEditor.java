@@ -10,7 +10,6 @@ import org.bigraph.model.PortSpec;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Store;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ResolverDeque;
 import org.bigraph.model.changes.ChangeGroup;
@@ -18,6 +17,7 @@ import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
@@ -751,7 +751,7 @@ implements PropertyChangeListener {
 
 	@Override
 	protected void tryApplyChange(IChange c) throws ChangeCreationException {
-		ExecutorManager.getInstance().tryApplyChange(c);
+		DescriptorExecutorManager.getInstance().tryApplyChange(c);
 	}
 	
 	@Override

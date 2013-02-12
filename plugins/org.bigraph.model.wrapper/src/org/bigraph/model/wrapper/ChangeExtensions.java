@@ -2,7 +2,6 @@ package org.bigraph.model.wrapper;
 
 import java.util.ArrayList;
 
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.process.IParticipant;
 import org.eclipse.core.runtime.CoreException;
@@ -15,8 +14,7 @@ final class ChangeExtensions {
 			"org.bigraph.model.wrapper.changes";
 	
 	private static final ArrayList<IParticipant>
-			participants = new ArrayList<IParticipant>(),
-			descriptorParticipants = new ArrayList<IParticipant>();
+			participants = new ArrayList<IParticipant>();
 	
 	private static final Object instantiate(IConfigurationElement ice) {
 		try {
@@ -28,7 +26,6 @@ final class ChangeExtensions {
 	}
 	
 	static void init() {
-		ExecutorManager eInstance = ExecutorManager.getInstance();
 		DescriptorExecutorManager deInstance =
 				DescriptorExecutorManager.getInstance();
 		IExtensionRegistry registry = RegistryFactory.getRegistry();
@@ -37,17 +34,12 @@ final class ChangeExtensions {
 				registry.getConfigurationElementsFor(
 						EXTENSION_POINT_CHANGES)) {
 			String name = ice.getName();
-			if ("executor".equals(name) || "validator".equals(name)) {
-				IParticipant participant = (IParticipant)instantiate(ice);
-				if (participant != null) {
-					participants.add(participant);
-					eInstance.addParticipant(participant);
-				}
-			} else if ("descriptorExecutor".equals(name) ||
+			if ("executor".equals(name) || "validator".equals(name) ||
+					"descriptorExecutor".equals(name) ||
 					"descriptorValidator".equals(name)) {
 				IParticipant participant = (IParticipant)instantiate(ice);
 				if (participant != null) {
-					descriptorParticipants.add(participant);
+					participants.add(participant);
 					deInstance.addParticipant(participant);
 				}
 			}
@@ -55,16 +47,11 @@ final class ChangeExtensions {
 	}
 	
 	static void fini() {
-		ExecutorManager eInstance = ExecutorManager.getInstance();
 		DescriptorExecutorManager deInstance =
 				DescriptorExecutorManager.getInstance();
 		
 		for (IParticipant i : participants)
-			eInstance.removeParticipant(i);
-		participants.clear();
-		
-		for (IParticipant i : descriptorParticipants)
 			deInstance.removeParticipant(i);
-		descriptorParticipants.clear();
+		participants.clear();
 	}
 }

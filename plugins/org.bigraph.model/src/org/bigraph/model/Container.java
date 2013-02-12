@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
@@ -79,7 +78,7 @@ public abstract class Container extends Layoutable {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addParticipant(new ContainerHandler());
+		DescriptorExecutorManager.getInstance().addParticipant(new ContainerHandler());
 	}
 	
 	protected HashSet<Layoutable> children = new HashSet<Layoutable>();

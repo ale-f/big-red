@@ -1,6 +1,5 @@
 package org.bigraph.model.changes.descriptors;
 
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
@@ -74,7 +73,7 @@ public class BoundDescriptor implements IChange {
 	}
 	
 	static {
-		ExecutorManager.getInstance().addParticipant(Handler.INSTANCE);
+		DescriptorExecutorManager.getInstance().addParticipant(Handler.INSTANCE);
 	}
 	
 	public BoundDescriptor(Resolver resolver, IChangeDescriptor descriptor) {

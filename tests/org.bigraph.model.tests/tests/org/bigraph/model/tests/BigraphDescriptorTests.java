@@ -7,8 +7,8 @@ import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
 import org.bigraph.model.Root;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.junit.Test;
 
 import static org.bigraph.model.tests.BigraphTests.cg;
@@ -53,7 +53,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		ExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "b")));
 		run(b,
@@ -67,7 +67,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		ExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "b")));
 		run(b,
@@ -83,7 +83,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		ExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "b")));
 		run(b,
@@ -99,7 +99,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		ExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "b")));
 		run(b,
@@ -111,7 +111,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 	public void removeAddedRoot() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Root r = new Root();
-		ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(r, "0"));
+		DescriptorExecutorManager.getInstance().tryApplyChange(b.changeAddChild(r, "0"));
 		run(b,
 				new Container.ChangeRemoveChildDescriptor(
 						b.getIdentifier(), r.getIdentifier()));
@@ -129,7 +129,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 	public void removeAddedRootTwice() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
 		Root r = new Root();
-		ExecutorManager.getInstance().tryApplyChange(b.changeAddChild(r, "0"));
+		DescriptorExecutorManager.getInstance().tryApplyChange(b.changeAddChild(r, "0"));
 		run(b,
 				new Container.ChangeRemoveChildDescriptor(
 						b.getIdentifier(), r.getIdentifier()),
@@ -142,7 +142,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		ExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "a")));
 		run(b,

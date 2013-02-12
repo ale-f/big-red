@@ -2,7 +2,6 @@ package org.bigraph.uniud.bigraph.match;
 import java.util.Arrays;
 
 import org.bigraph.model.*;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -104,7 +103,7 @@ public class BigraphMatchWB {
 		cg.add(r1.changeAddChild(n1, "n1"));
 		
 		try {
-			 ExecutorManager.getInstance().tryApplyChange(cg);
+			 DescriptorExecutorManager.getInstance().tryApplyChange(cg);
 			 cg.clear();
 			} catch (ChangeCreationException cre) {
 			 System.out.println(cre.getRationale());
@@ -117,7 +116,7 @@ public class BigraphMatchWB {
 						O1.getIdentifier())));
 
 		try {
-		 ExecutorManager.getInstance().tryApplyChange(cg);
+		 DescriptorExecutorManager.getInstance().tryApplyChange(cg);
 		} catch (ChangeCreationException cre) {
 		 System.out.println(cre.getRationale());
 		}
@@ -156,7 +155,7 @@ public class BigraphMatchWB {
 						new OuterName.Identifier("O1"))));
 
 		try {
-		 ExecutorManager.getInstance().tryApplyChange(cg);
+		 DescriptorExecutorManager.getInstance().tryApplyChange(cg);
 		} catch (ChangeCreationException cre) {
 		 System.out.println(cre.getRationale());
 		}

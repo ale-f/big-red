@@ -20,10 +20,10 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
-import org.bigraph.model.assistants.ExecutorManager;
 import org.bigraph.model.changes.ChangeGroup;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.uniud.bigraph.match.PlaceMatch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -653,7 +653,7 @@ public class ReactionWizard extends Wizard {
 		
 		if (cgA.size() != 0){
 			try {
-				ExecutorManager.getInstance().tryApplyChange(cgA);
+				DescriptorExecutorManager.getInstance().tryApplyChange(cgA);
 			} catch (ChangeCreationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -663,10 +663,10 @@ public class ReactionWizard extends Wizard {
 
 		if (cgLink.size() != 0){
 			try {
-				ExecutorManager.getInstance().tryApplyChange(cgLink);
+				DescriptorExecutorManager.getInstance().tryApplyChange(cgLink);
 				cgA.clear();
 				cgA.add(LayoutUtilities.relayout(target));
-				ExecutorManager.getInstance().tryApplyChange(cgA);
+				DescriptorExecutorManager.getInstance().tryApplyChange(cgA);
 				
 //				Rectangle rectTest=LayoutUtilities.getLayout(target);
 //				System.out.println(rectTest);
