@@ -4,6 +4,7 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.names.Namespace;
 
 final class ContainerHandler extends HandlerUtilities.HandlerImpl {

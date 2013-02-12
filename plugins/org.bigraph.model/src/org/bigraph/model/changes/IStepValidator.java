@@ -3,7 +3,7 @@ package org.bigraph.model.changes;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.process.IParticipant;
 
 /**
@@ -12,26 +12,6 @@ import org.bigraph.model.process.IParticipant;
  * @author alec
  */
 public interface IStepValidator extends IParticipant {
-	/**
-	 * Classes implementing <strong>Process</strong> are validation processes
-	 * which use {@link IStepValidator}s to perform validation.
-	 * @author alec
-	 */
-	interface Process {
-		/**
-		 * Returns the {@link PropertyScratchpad} used to track the
-		 * modifications made by this {@link Process}.
-		 * @return a {@link PropertyScratchpad}
-		 */
-		PropertyScratchpad getScratch();
-		
-		/**
-		 * Adds a {@link Callback} to this {@link Process}.
-		 * @param c a {@link Callback}
-		 */
-		void addCallback(Callback c);
-	}
-	
 	/**
 	 * Validates an {@link IChange}.
 	 * @param context the {@link Process} in which validation is taking place

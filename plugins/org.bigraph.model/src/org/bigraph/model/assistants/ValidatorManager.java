@@ -3,9 +3,11 @@ package org.bigraph.model.assistants;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepValidator;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 import org.bigraph.model.process.AbstractParticipantHost;
 import org.bigraph.model.process.IParticipant;
@@ -52,6 +54,11 @@ public class ValidatorManager
 			for (IStepValidator i : getParticipants(IStepValidator.class))
 				passes |= i.tryValidateChange(this, c);
 			return (passes ? null : c);
+		}
+		
+		@Override
+		public Resolver getResolver() {
+			return null;
 		}
 	}
 	
@@ -107,9 +114,9 @@ public class ValidatorManager
 	}
 	
 	private final class ParticipantProcess extends AbstractProcess {
-		private final IStepValidator.Process process;
+		private final Process process;
 		
-		public ParticipantProcess(IStepValidator.Process process) {
+		public ParticipantProcess(Process process) {
 			this.process = process;
 		}
 		

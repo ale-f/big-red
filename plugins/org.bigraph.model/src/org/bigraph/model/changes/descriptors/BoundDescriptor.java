@@ -6,6 +6,7 @@ import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.IStepExecutor;
 import org.bigraph.model.changes.IStepValidator;
+import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 import org.bigraph.model.process.IParticipantHost;
 
@@ -19,11 +20,10 @@ public class BoundDescriptor implements IChange {
 	private final Resolver resolver;
 	private final IChangeDescriptor descriptor;
 	
-	private final class ProcessWrapper
-			implements IDescriptorStepValidator.Process {
-		private final IStepValidator.Process changeProcess;
+	private final class ProcessWrapper implements Process {
+		private final Process changeProcess;
 		
-		public ProcessWrapper(IStepValidator.Process changeProcess) {
+		public ProcessWrapper(Process changeProcess) {
 			this.changeProcess = changeProcess;
 		}
 		
