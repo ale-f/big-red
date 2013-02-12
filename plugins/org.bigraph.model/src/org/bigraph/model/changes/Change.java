@@ -7,10 +7,8 @@ import org.bigraph.model.assistants.PropertyScratchpad;
  * A Change is a reversible modification.
  * @author alec
  */
+@Deprecated
 public abstract class Change implements IChange {
-	@Override
-	public abstract Change inverse();
-	
 	@Override
 	public void simulate(PropertyScratchpad context, Resolver resolver) {
 		throw new UnsupportedOperationException("" + this +

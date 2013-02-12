@@ -10,18 +10,8 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
  * @author alec
  * @see IChangeDescriptor
  */
+@Deprecated
 public interface IChange extends IChangeDescriptor {
-	/**
-	 * Gets a new {@link IChange} which, when applied, will reverse this one.
-	 * <p><strong>Depending on the {@link IChange}, it is possible that this
-	 * function will only have a meaningful result <i>after</i> this {@link
-	 * IChange} has been applied. See {@link #canInvert()}.</strong>
-	 * @return this IChange's inverse
-	 * @see #canInvert()
-	 */
-	@Override
-	IChange inverse();
-	
 	/**
 	 * Simulates the execution of this {@link IChange} in the given {@link
 	 * PropertyScratchpad}. (No validation is performed by this method.)
