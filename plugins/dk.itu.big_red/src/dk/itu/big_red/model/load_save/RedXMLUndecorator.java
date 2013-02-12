@@ -7,7 +7,6 @@ import org.bigraph.model.Layoutable;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -185,7 +184,7 @@ public class RedXMLUndecorator implements IXMLLoader.Undecorator {
 		Resolver ex = loader.getResolver();
 		if (ex instanceof Bigraph) {
 			Bigraph bigraph = (Bigraph)ex;
-			IChange relayout =
+			IChangeDescriptor relayout =
 					LayoutUtilities.relayout(loader.getScratch(), bigraph);
 			
 			if (appearanceAllowed == Tristate.FALSE) {

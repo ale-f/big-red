@@ -20,8 +20,6 @@ import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDesc
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -274,14 +272,15 @@ public abstract class LayoutUtilities {
 		return r;
 	}
 
-	public static IChange relayout(Bigraph b) {
+	public static IChangeDescriptor relayout(Bigraph b) {
 		return relayout(new PropertyScratchpad(), b);
 	}
 
-	public static IChange relayout(PropertyScratchpad context, Bigraph b) {
+	public static IChangeDescriptor relayout(
+			PropertyScratchpad context, Bigraph b) {
 		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 		relayout(context, new PropertyScratchpad(context), b, cdg);
-		return new BoundDescriptor(b, cdg);
+		return cdg;
 	}
 
 	static Rectangle relayout(PropertyScratchpad context,
