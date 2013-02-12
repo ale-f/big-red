@@ -49,7 +49,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (container instanceof Bigraph){
 			setContext(((Bigraph) container).getBigraph());
 		}else if(container instanceof BRS){
-			setContext(container);
 			
 		}else if(container instanceof Layoutable){
 			setContext(((Layoutable)container).getBigraph());
@@ -93,7 +92,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (container instanceof BRS){
 			/** TODO get a name for Bigraph */
 			
-			setContext(container);
 			cg.add(((BRS)container).changeAddChild(node, "B0"));
 			cg.add(((BRS)container).changeLayoutChild(node, layout));
 			
@@ -143,7 +141,6 @@ public class LayoutableCreateCommand extends ChangeCommand {
 		if (container instanceof Reaction){
 			/** TODO get a name for Bigraph */
 			System.out.println("Instance of Reaction");
-			setContext(container);
 			if(layout.x > ((Reaction)container).SEPARATOR_WIDTH){
 				cg.add(((Reaction) container).changeAddReactum((Bigraph) node));
 				cg.add(((Reaction) container).changeLayoutChild(

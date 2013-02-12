@@ -47,10 +47,8 @@ public class LayoutableRelayoutCommand extends ChangeCommand {
 		if((model instanceof Bigraph) || (model instanceof Reaction)){
 			
 			if(parent instanceof BRS){
-				setContext(parent);
 				cg.add(((BRS)parent).changeLayoutChild(model,layout));
 			}else if(parent instanceof Reaction){
-				setContext(parent);
 				cg.add(((Reaction)parent).changeLayoutChild((Bigraph)model,layout));
 			}
 		}else{

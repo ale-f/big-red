@@ -1,5 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
+import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
@@ -15,14 +16,14 @@ import dk.itu.big_red.utilities.ui.UI;
  */
 public class ChangeCommand extends Command {
 	private IChangeDescriptor change;
-	private Object context;
+	private Resolver resolver;
 	
 	public ChangeCommand() {
 	}
 	
-	public ChangeCommand(IChangeDescriptor change, Object context) {
+	public ChangeCommand(IChangeDescriptor change, Resolver resolver) {
 		this.change = change;
-		this.context = context;
+		this.resolver = resolver;
 	}
 	
 	/**
@@ -47,12 +48,12 @@ public class ChangeCommand extends Command {
 	 * Gets the object representing this command's context.
 	 * @return an {@link Object}
 	 */
-	public Object getContext() {
-		return context;
+	public Resolver getContext() {
+		return resolver;
 	}
 	
-	public void setContext(Object context) {
-		this.context = context;
+	public void setContext(Resolver resolver) {
+		this.resolver = resolver;
 	}
 	
 	/**
@@ -77,7 +78,8 @@ public class ChangeCommand extends Command {
 			return false;
 		boolean status = false;
 		try {
-			DescriptorExecutorManager.getInstance().tryValidateChange(change);
+			DescriptorExecutorManager.getInstance().tryValidateChange(
+					getContext(), change);
 			status = true;
 		} catch (ChangeCreationException cre) {
 			UI.getActiveStatusLine().setErrorMessage(cre.getRationale());
@@ -91,7 +93,8 @@ public class ChangeCommand extends Command {
 	@Override
 	public final void execute() {
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(getChange());
+			DescriptorExecutorManager.getInstance().tryApplyChange(
+					getContext(), getChange());
 			UI.getActiveStatusLine().setErrorMessage(null);
 		} catch (ChangeCreationException cre) {
 			/* do nothing */
@@ -113,7 +116,8 @@ public class ChangeCommand extends Command {
 	@Override
 	public final void undo() {
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(getInverse());
+			DescriptorExecutorManager.getInstance().tryApplyChange(
+					getContext(), getInverse());
 		} catch (ChangeCreationException cre) {
 			/* do nothing */
 		}

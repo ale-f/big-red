@@ -2,7 +2,7 @@ package dk.itu.big_red.editors.utilities;
 
 import java.util.EventObject;
 
-import org.bigraph.model.ModelObject;
+import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -74,7 +74,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 			return;
 		Object[] values = getParent().getValues();
 		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
-		ModelObject ex = null;
+		IObjectIdentifier.Resolver ex = null;
 		for (int i = 0; i < values.length; i++) {
 			Object o = values[i];
 			if (ex == null && o instanceof IBigraphPart)
@@ -102,7 +102,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 	private void valueChanged(
 			RedPropertySheetEntry child, ChangeDescriptorGroup cg) {
 		Object[] values = getValues();
-		ModelObject ex = null;
+		IObjectIdentifier.Resolver ex = null;
 		for (int i = 0; i < values.length; i++) {
 			Object o = values[i];
 			if (ex == null && o instanceof IBigraphPart)
