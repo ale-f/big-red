@@ -11,7 +11,7 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
  * @author alec
  * @see IChangeDescriptor
  */
-public interface IChange {
+public interface IChange extends IChangeDescriptor {
 	/**
 	 * Classes implementing <strong>Group</strong> are collections of {@link
 	 * IChange}s. They receive special treatment from {@link ValidatorManager}s
@@ -31,6 +31,7 @@ public interface IChange {
 	 * @return this IChange's inverse
 	 * @see #canInvert()
 	 */
+	@Override
 	IChange inverse();
 	
 	/**
@@ -40,5 +41,6 @@ public interface IChange {
 	 * modifications
 	 * @param resolver TODO
 	 */
+	@Override
 	void simulate(PropertyScratchpad context, Resolver resolver);
 }
