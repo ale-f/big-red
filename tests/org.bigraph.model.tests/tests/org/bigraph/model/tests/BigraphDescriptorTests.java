@@ -11,8 +11,6 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.junit.Test;
 
-import static org.bigraph.model.tests.BigraphTests.cg;
-
 public class BigraphDescriptorTests extends DescriptorTestRunner {
 	@Test
 	public void addInnerAndOuterNames() throws ChangeCreationException {
@@ -53,7 +51,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "b")));
 		run(b,
@@ -67,7 +65,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "b")));
 		run(b,
@@ -83,7 +81,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "b")));
 		run(b,
@@ -99,7 +97,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "b")));
 		run(b,
@@ -142,7 +140,7 @@ public class BigraphDescriptorTests extends DescriptorTestRunner {
 		Bigraph b = new Bigraph();
 		InnerName in = new InnerName();
 		OuterName on = new OuterName();
-		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 				b.changeAddChild(in, "a"),
 				b.changeAddChild(on, "a")));
 		run(b,

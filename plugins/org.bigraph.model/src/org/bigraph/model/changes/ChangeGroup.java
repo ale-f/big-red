@@ -1,8 +1,6 @@
 package org.bigraph.model.changes;
 
 import java.util.ArrayList;
-import java.util.Collection;
-
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
@@ -19,19 +17,6 @@ public class ChangeGroup extends ChangeDescriptorGroup implements IChange {
 
 	public ChangeGroup() {
 		super();
-	}
-	
-	public ChangeGroup(Collection<? extends IChangeDescriptor> c) {
-		super(c);
-	}
-
-	public ChangeGroup(int initialCapacity) {
-		super(initialCapacity);
-	}
-
-	@Override
-	public ChangeGroup clone() {
-		return new ChangeGroup(this);
 	}
 	
 	@Override

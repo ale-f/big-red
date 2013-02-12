@@ -1,7 +1,5 @@
 package org.bigraph.model.tests;
 
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,18 +19,15 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.ChangeGroup;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 
+import static org.bigraph.model.tests.DescriptorTestRunner.cdg;
+
 public class BigraphTests {
 	private Signature signature;
 	private Control control0;
-	
-	static ChangeGroup cg(IChange... changes) {
-		return new ChangeGroup(Arrays.asList(changes));
-	}
 	
 	@Before
 	public void createSignature()
@@ -115,7 +110,7 @@ public class BigraphTests {
 	
 	private static void tryAddAndConnect(Bigraph b, InnerName in, Link l)
 			throws ChangeCreationException {
-		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 				b.changeAddChild(l, "a"),
 				b.changeAddChild(in, "a"),
 				new BoundDescriptor(b,
@@ -141,7 +136,7 @@ public class BigraphTests {
 		Edge e1 = new Edge(), e2 = new Edge();
 		InnerName in = new InnerName();
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+			DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 					b.changeAddChild(e1, "e1"),
 					b.changeAddChild(e2, "e2"),
 					b.changeAddChild(in, "in"),
@@ -165,7 +160,7 @@ public class BigraphTests {
 		Edge e1 = new Edge();
 		InnerName in = new InnerName();
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+			DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 					b.changeAddChild(e1, "e1"),
 					b.changeAddChild(in, "in")));
 		} catch (ChangeCreationException e) {
@@ -184,7 +179,7 @@ public class BigraphTests {
 		Root
 			r0 = new Root(),
 			r1 = new Root();
-		DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+		DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 				b.changeAddChild(r0, "0"),
 				b.changeAddChild(r1, "0")));
 	}
@@ -227,7 +222,7 @@ public class BigraphTests {
 		Root r = new Root();
 		Site s = new Site();
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(cg(
+			DescriptorExecutorManager.getInstance().tryApplyChange(cdg(
 					b.changeAddChild(r, "0"),
 					r.changeAddChild(s, "0")));
 		} catch (ChangeCreationException e) {
