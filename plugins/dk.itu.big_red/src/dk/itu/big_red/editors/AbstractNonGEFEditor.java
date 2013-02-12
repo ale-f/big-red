@@ -2,17 +2,17 @@ package dk.itu.big_red.editors;
 
 import java.util.ArrayDeque;
 
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.eclipse.jface.action.IStatusLineManager;
 
 public abstract class AbstractNonGEFEditor extends AbstractEditor {
-	private IChange savePoint = null;
-	private ArrayDeque<IChange>
-			undoBuffer = new ArrayDeque<IChange>(),
-			redoBuffer = new ArrayDeque<IChange>();
+	private IChangeDescriptor savePoint = null;
+	private ArrayDeque<IChangeDescriptor>
+			undoBuffer = new ArrayDeque<IChangeDescriptor>(),
+			redoBuffer = new ArrayDeque<IChangeDescriptor>();
 	
-	protected IChange getSavePoint() {
+	protected IChangeDescriptor getSavePoint() {
 		return savePoint;
 	}
 	
@@ -31,10 +31,10 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 		return (redoBuffer.size() != 0);
 	}
 	
-	protected abstract void tryApplyChange(IChange c)
+	protected abstract void tryApplyChange(IChangeDescriptor c)
 			throws ChangeCreationException;
 	
-	protected boolean doChange(IChange c) {
+	protected boolean doChange(IChangeDescriptor c) {
 		IStatusLineManager slm =
 				getEditorSite().getActionBars().getStatusLineManager();
 		try {
@@ -57,7 +57,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 		try {
 			if (!canUndo())
 				return;
-			IChange c;
+			IChangeDescriptor c;
 			redoBuffer.push(c = undoBuffer.pop());
 			tryApplyChange(c.inverse());
 			stateChanged();
@@ -71,7 +71,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 		try {
 			if (!canRedo())
 				return;
-			IChange c;
+			IChangeDescriptor c;
 			tryApplyChange(c = redoBuffer.pop());
 			undoBuffer.push(c);
 			stateChanged();

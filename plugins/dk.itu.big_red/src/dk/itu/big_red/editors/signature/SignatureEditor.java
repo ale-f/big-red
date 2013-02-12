@@ -241,10 +241,6 @@ implements PropertyChangeListener {
 		return new BoundDescriptor(getModel(), cd);
 	}
 	
-	private final boolean doChange(IChangeDescriptor cd) {
-		return doChange(bind(cd));
-	}
-	
 	private Store store = new Store();
 	
 	private final IChange changeDeleteControl(Control c) {
@@ -748,12 +744,13 @@ implements PropertyChangeListener {
 	}
 
 	@Override
-	protected void tryApplyChange(IChange c) throws ChangeCreationException {
+	protected void tryApplyChange(IChangeDescriptor c)
+			throws ChangeCreationException {
 		DescriptorExecutorManager.getInstance().tryApplyChange(getModel(), c);
 	}
 	
 	@Override
-	public boolean doChange(IChange c) {
+	public boolean doChange(IChangeDescriptor c) {
 		return super.doChange(c);
 	}
 }
