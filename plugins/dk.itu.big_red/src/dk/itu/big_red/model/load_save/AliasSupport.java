@@ -2,7 +2,6 @@ package dk.itu.big_red.model.load_save;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Site;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.process.IParticipantHost;
 import org.bigraph.model.savers.IXMLSaver;
@@ -32,9 +31,10 @@ public abstract class AliasSupport {
 				Site site = (Site)object;
 				String alias = getAttributeNS(el, BIGRAPH, "alias");
 				if (alias != null)
-					loader.addChange(new BoundDescriptor(loader.getResolver(),
-							new ChangeAliasDescriptor(site.getIdentifier(), null, ExtendedDataUtilities.getAlias(
-							loader.getScratch(), site))));
+					loader.addChange(new ChangeAliasDescriptor(
+							site.getIdentifier(), null,
+							ExtendedDataUtilities.getAlias(
+									loader.getScratch(), site)));
 			}
 		}
 

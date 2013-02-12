@@ -3,8 +3,7 @@ package org.bigraph.extensions.param;
 import org.bigraph.model.Control;
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.Node;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.LoaderNotice;
 import org.bigraph.model.names.policies.BooleanNamePolicy;
@@ -87,10 +86,10 @@ public abstract class FormatParticipants {
 						n = new BooleanNamePolicy();
 					}
 					if (n != null)
-						loader.addChange(new BoundDescriptor(loader.getResolver(),
+						loader.addChange(
 								new ParameterUtilities.ChangeParameterPolicyDescriptor(
 										c.getIdentifier(loader.getScratch()),
-										null, n)));
+										null, n));
 				}
 			} else if (object instanceof Node) {
 				Node n = (Node)object;
@@ -101,7 +100,7 @@ public abstract class FormatParticipants {
 				if (parameter == null)
 					parameter = getAttributeNS(el, BIGRAPH, "parameter");
 				
-				IChange ch = null;
+				IChangeDescriptor ch = null;
 				 /* FIXME - details */
 				if (parameter != null && policy == null) {
 					loader.addNotice(LoaderNotice.Type.WARNING,
@@ -109,15 +108,13 @@ public abstract class FormatParticipants {
 				} else if (parameter == null && policy != null) {
 					loader.addNotice(LoaderNotice.Type.WARNING,
 							"Default parameter value assigned.");
-					ch = new BoundDescriptor(loader.getResolver(),
-							ParameterUtilities.changeParameterDescriptor(
-									n.getIdentifier(loader.getScratch()),
-									null, policy.get(0)));
+					ch = ParameterUtilities.changeParameterDescriptor(
+							n.getIdentifier(loader.getScratch()),
+							null, policy.get(0));
 				} else if (parameter != null && policy != null) {
-					ch = new BoundDescriptor(loader.getResolver(),
-							ParameterUtilities.changeParameterDescriptor(
-									n.getIdentifier(loader.getScratch()),
-									null, parameter));
+					ch = ParameterUtilities.changeParameterDescriptor(
+							n.getIdentifier(loader.getScratch()),
+							null, parameter);
 				}
 				
 				if (ch != null)

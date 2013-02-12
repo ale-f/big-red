@@ -2,7 +2,6 @@ package example.org.bigraph.extensions.scope;
 
 import org.bigraph.model.ModelObject;
 import org.bigraph.model.PortSpec;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
 import org.bigraph.model.loaders.IXMLLoader.Undecorator;
 import org.bigraph.model.process.IParticipantHost;
@@ -22,9 +21,8 @@ public class LoadScope implements Undecorator {
 		if (object instanceof PortSpec) {
 			String scope = el.getAttributeNS(SaveScope.XMLNS, "scope");
 			if ("true".equals(scope))
-				loader.addChange(new BoundDescriptor(loader.getResolver(),
-						new Scope.ChangeScopedDescriptor(
-								loader.getScratch(), (PortSpec)object, true)));
+				loader.addChange(new Scope.ChangeScopedDescriptor(
+						loader.getScratch(), (PortSpec)object, true));
 		}
 	}
 

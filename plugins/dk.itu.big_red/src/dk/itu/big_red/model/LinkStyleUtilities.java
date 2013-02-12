@@ -11,7 +11,6 @@ import org.bigraph.model.assistants.ExtendedDataUtilities.ChangeExtendedDataDesc
 import org.bigraph.model.assistants.ExtendedDataUtilities.SimpleHandler;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.IXMLLoader;
@@ -137,9 +136,8 @@ public abstract class LinkStyleUtilities {
 					style = Style.STRAIGHT;
 				}
 				if (style != null)
-					loader.addChange(new BoundDescriptor(loader.getResolver(),
-							new ChangeLinkStyleDescriptor(
-									loader.getScratch(), l, style)));
+					loader.addChange(new ChangeLinkStyleDescriptor(
+							loader.getScratch(), l, style));
 			}
 		}
 
