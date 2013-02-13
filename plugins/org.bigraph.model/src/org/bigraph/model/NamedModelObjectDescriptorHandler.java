@@ -1,12 +1,10 @@
 package org.bigraph.model;
 
-import org.bigraph.model.NamedModelObject.Identifier;
 import org.bigraph.model.NamedModelObject.ChangeNameDescriptor;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
-import org.bigraph.model.names.Namespace;
 
 final class NamedModelObjectDescriptorHandler
 		extends HandlerUtilities.DescriptorHandlerImpl {
@@ -21,7 +19,7 @@ final class NamedModelObjectDescriptorHandler
 			NamedModelObject object = tryLookup(cd,
 					cd.getTarget(), scratch, resolver, NamedModelObject.class);
 			
-			checkName(scratch, cd, cd.getTarget(),
+			HandlerUtilities.checkName(scratch, cd, cd.getTarget(),
 					object.getGoverningNamespace(scratch), cd.getNewName());
 		} else return false;
 		return true;
@@ -34,14 +32,5 @@ final class NamedModelObjectDescriptorHandler
 			cd.getTarget().lookup(null, resolver).applyRename(cd.getNewName());
 		} else return false;
 		return true;
-	}
-	
-	static void checkName(
-			PropertyScratchpad context, IChangeDescriptor c, Identifier object,
-			Namespace<? extends NamedModelObject> ns, String newName)
-			throws ChangeCreationException {
-		String rationale = HandlerUtilities.checkNameCore(context, object, ns, newName);
-		if (rationale != null)
-			throw new ChangeCreationException(c, rationale);
 	}
 }

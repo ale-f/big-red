@@ -5,7 +5,6 @@ import java.util.List;
 import org.bigraph.model.ModelObject.Identifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.changes.descriptors.IDescriptorStepExecutor;
@@ -78,28 +77,20 @@ abstract class HandlerUtilities {
 	}
 
 	static <V> void checkName(
-			PropertyScratchpad context, IChange c, V object,
+			PropertyScratchpad context, IChangeDescriptor c, V object,
 			Namespace<? extends V> ns, String cdt)
 			throws ChangeCreationException {
-		String rationale = checkNameCore(context, object, ns, cdt);
-		if (rationale != null)
-			throw new ChangeCreationException(c, rationale);
-	}
-
-	static String checkNameCore(
-			PropertyScratchpad context, Object object,
-			Namespace<?> ns, String cdt) {
 		if (cdt == null || cdt.length() == 0)
-			return "Names cannot be empty";
+			throw new ChangeCreationException(c, "Names cannot be empty");
 		if (ns == null)
-			return null;
+			return;
 		INamePolicy p = ns.getPolicy();
 		String mcdt = (p != null ? p.normalise(cdt) : cdt);
 		if (mcdt == null)
-			return "\"" + cdt + "\" is not a valid name for " + object;
+			throw new ChangeCreationException(c,
+					"\"" + cdt + "\" is not a valid name for " + object);
 		Object current = ns.get(context, mcdt);
 		if (current != null && current != object)
-			return "Names must be unique";
-		return null;
+			throw new ChangeCreationException(c, "Names must be unique");
 	}
 }

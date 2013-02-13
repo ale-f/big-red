@@ -24,7 +24,7 @@ final class ControlDescriptorHandler extends DescriptorHandlerImpl {
 			Control c = tryLookup(cd, cd.getSpec().getControl(),
 					scratch, resolver, Control.class);
 			
-			NamedModelObjectDescriptorHandler.checkName(scratch, cd,
+			HandlerUtilities.checkName(scratch, cd,
 					cd.getSpec(), c.getNamespace(), cd.getSpec().getName());
 		} else if (change instanceof ChangeRemovePortSpecDescriptor) {
 			ChangeRemovePortSpecDescriptor cd =

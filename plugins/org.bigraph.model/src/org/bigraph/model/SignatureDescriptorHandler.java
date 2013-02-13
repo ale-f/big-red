@@ -21,7 +21,7 @@ final class SignatureDescriptorHandler
 			Signature s = tryLookup(cd,
 					cd.getTarget(), scratch, resolver, Signature.class);
 			
-			NamedModelObjectDescriptorHandler.checkName(scratch, cd,
+			HandlerUtilities.checkName(scratch, cd,
 					cd.getControl(), s.getNamespace(),
 					cd.getControl().getName()); 
 		} else if (change instanceof ChangeRemoveControlDescriptor) {
