@@ -50,8 +50,7 @@ public class BRS extends ModelObject {
 		return name;
 	}
 	
-	abstract class BRSChange extends ModelObjectChange {
-		@Override
+	abstract class BRSChange implements IChange {
 		public BRS getCreator() {
 			return BRS.this;
 		}

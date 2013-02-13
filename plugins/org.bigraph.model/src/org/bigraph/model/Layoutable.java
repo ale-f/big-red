@@ -21,8 +21,7 @@ public abstract class Layoutable extends NamedModelObject {
 	@RedProperty(fired = Container.class, retrieved = Container.class)
 	public static final String PROPERTY_PARENT = "LayoutableParent";
 	
-	abstract class LayoutableChange extends ModelObjectChange {
-		@Override
+	abstract class LayoutableChange implements IChange {
 		public Layoutable getCreator() {
 			return Layoutable.this;
 		}

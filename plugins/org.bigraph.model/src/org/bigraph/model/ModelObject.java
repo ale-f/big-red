@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 /**
@@ -25,23 +24,6 @@ import org.bigraph.model.changes.descriptors.IChangeDescriptor;
  * @see #setExtendedData(String, Object)
  */
 public abstract class ModelObject {
-	/**
-	 * All {@link IChange}s which operate on {@link ModelObject}s inherit from
-	 * <strong>ModelObjectChange</strong>.
-	 * @author alec
-	 * @see #getCreator()
-	 */
-	public abstract class ModelObjectChange implements IChange {
-		/**
-		 * Gets the {@link ModelObject} which created this {@link
-		 * ModelObjectChange}.
-		 * @return
-		 */
-		public ModelObject getCreator() {
-			return ModelObject.this;
-		}
-	}
-	
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	
 	/**

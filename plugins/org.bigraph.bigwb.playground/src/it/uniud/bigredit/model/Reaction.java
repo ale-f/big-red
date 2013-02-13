@@ -67,8 +67,7 @@ public class Reaction  extends ModelObject{
 		return reactum;
 	}
 	
-	abstract class ReactionChange extends ModelObjectChange {
-		@Override
+	abstract class ReactionChange implements IChange {
 		public Reaction getCreator() {
 			return Reaction.this;
 		}
