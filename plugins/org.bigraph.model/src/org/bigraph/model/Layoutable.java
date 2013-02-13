@@ -4,7 +4,6 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
-import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
@@ -44,7 +43,7 @@ public abstract class Layoutable extends NamedModelObject {
 		Container oldParent;
 		
 		@Override
-		public Change inverse() {
+		public IChange inverse() {
 			return oldParent.new ChangeAddChild(getCreator(), oldName);
 		}
 		

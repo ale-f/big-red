@@ -13,7 +13,7 @@ import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -101,16 +101,16 @@ public class Reaction  extends ModelObject{
 	public class ChangeInsideModel extends ReactionChange{
 		
 		public ModelObject target;
-		public Change change;
+		public IChange change;
 		
 		
 		@Override
-		public Change inverse() {
+		public IChange inverse() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 		
-		public ChangeInsideModel(ModelObject target, Change change){
+		public ChangeInsideModel(ModelObject target, IChange change){
 			this.target=target;
 			this.change=change;
 		}
@@ -192,7 +192,7 @@ public class Reaction  extends ModelObject{
 		DescriptorExecutorManager.getInstance().addParticipant(new ReactionHandler());
 	}
 	
-	public void _changeInsideModel(ModelObject target, Change change){
+	public void _changeInsideModel(ModelObject target, IChange change){
 		cgAux.clear();
 		
 		cgAux.add(change);
@@ -203,19 +203,19 @@ public class Reaction  extends ModelObject{
 		}
 	}
 	
-	public Change changeAddRedex(Bigraph node) {
+	public IChange changeAddRedex(Bigraph node) {
 		return new ChangeAddRedex(node);
 	}
 	
-	public Change changeInsideModel(ModelObject target, Change change){
+	public IChange changeInsideModel(ModelObject target, IChange change){
 		return new ChangeInsideModel(target,change);
 	}
 	
-	public Change changeAddReactum(Bigraph node) {
+	public IChange changeAddReactum(Bigraph node) {
 		return new ChangeAddReactum(node);
 	}
 	
-	public Change changeLayoutChild(Bigraph node, Rectangle rectangle) {
+	public IChange changeLayoutChild(Bigraph node, Rectangle rectangle) {
 		return new ChangeLayoutChild(node,rectangle);
 	}
 	

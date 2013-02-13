@@ -10,7 +10,7 @@ import org.bigraph.model.ModelObject;
 import org.bigraph.model.Signature;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.Change;
+import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -127,16 +127,16 @@ public class BRS extends ModelObject {
 	public class ChangeInsideModel extends BRSChange{
 		
 		public ModelObject target;
-		public Change change;
+		public IChange change;
 		
 		
 		@Override
-		public Change inverse() {
+		public IChange inverse() {
 			// TODO Auto-generated method stub
 			return null;
 		}
 		
-		public ChangeInsideModel(ModelObject target, Change change){
+		public ChangeInsideModel(ModelObject target, IChange change){
 			this.target=target;
 			this.change=change;
 		}
@@ -224,7 +224,7 @@ public class BRS extends ModelObject {
 	
 	
 	ChangeDescriptorGroup cgAux= new ChangeDescriptorGroup();
-	public void _changeInsideModel(ModelObject target, Change change){
+	public void _changeInsideModel(ModelObject target, IChange change){
 		
 		
 		cgAux.clear();
@@ -252,23 +252,23 @@ public class BRS extends ModelObject {
 	}
 	
 	
-	public Change changeInsideModel(ModelObject target, Change change){
+	public IChange changeInsideModel(ModelObject target, IChange change){
 		return new ChangeInsideModel(target,change);
 	}
 
 
-	public Change changeLayoutChild(ModelObject node, Rectangle rectangle) {
+	public IChange changeLayoutChild(ModelObject node, Rectangle rectangle) {
 		// TODO Auto-generated method stub
 		return new ChangeLayoutChild(node,rectangle);
 	}
 
 
-	public Change changeAddChild(ModelObject node, String string) {
+	public IChange changeAddChild(ModelObject node, String string) {
 		
 		return new ChangeAddChild(node, string);
 	}
 
-	public Change changeRemoveChild(ModelObject node) {
+	public IChange changeRemoveChild(ModelObject node) {
 		
 		return new ChangeRemoveChild(node);
 	}
