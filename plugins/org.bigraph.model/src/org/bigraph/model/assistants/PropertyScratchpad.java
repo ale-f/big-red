@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.bigraph.model.changes.IChange;
-
 /**
  * The <strong>PropertyScratchpad</strong> is used to track simulated updates
  * to the model.
@@ -134,17 +132,6 @@ public class PropertyScratchpad {
 	public PropertyScratchpad clear() {
 		changes.clear();
 		return this;
-	}
-	
-	/**
-	 * Simulates an {@link IChange} in this {@link PropertyScratchpad}.
-	 * @param change an {@link IChange} (can be <code>null</code>)
-	 * @return {@code change}, for convenience
-	 */
-	public IChange executeChange(IChange change) {
-		if (change != null)
-			change.simulate(this, null);
-		return change;
 	}
 	
 	public interface Helper<T, V extends T> {

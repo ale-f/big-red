@@ -13,6 +13,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 import dk.itu.big_red.editors.bigraph.parts.LinkPart;
 
@@ -45,11 +46,14 @@ public class ModelDeleteCommand extends ChangeCommand {
 	}
 	
 	private void removePoint(Link l, Point p) {
-		cg.add(scratch.executeChange(new BoundDescriptor(p.getBigraph(scratch),
+		IChangeDescriptor cd = new BoundDescriptor(p.getBigraph(scratch),
 				new Point.ChangeDisconnectDescriptor(
-						p.getIdentifier(scratch), l.getIdentifier(scratch)))));
+						p.getIdentifier(scratch), l.getIdentifier(scratch)));
+		cd.simulate(scratch, null);
+		cg.add(cd);
 		if (l.getPoints(scratch).size() == 0 && l instanceof Edge) {
-			cg.add(scratch.executeChange(l.changeRemove()));
+			(cd = l.changeRemove()).simulate(scratch, null);
+			cg.add(cd);
 		}
 	}
 	
@@ -92,7 +96,9 @@ public class ModelDeleteCommand extends ChangeCommand {
 				if (p.getLink(scratch) != null)
 					removePoint(p.getLink(scratch), p);
 			}
-			cg.add(scratch.executeChange(n.changeRemove()));
+			IChangeDescriptor cd = n.changeRemove();
+			cd.simulate(scratch, null);
+			cg.add(cd);
 		}
 	}
 	
