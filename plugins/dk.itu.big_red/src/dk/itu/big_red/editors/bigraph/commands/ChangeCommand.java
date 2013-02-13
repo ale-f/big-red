@@ -1,7 +1,6 @@
 package dk.itu.big_red.editors.bigraph.commands;
 
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
@@ -27,8 +26,8 @@ public class ChangeCommand extends Command {
 	}
 	
 	/**
-	 * Gets the {@link IChange} that will be applied by this command.
-	 * @return a {@link IChange}
+	 * Gets the {@link IChangeDescriptor} that will be applied by this command.
+	 * @return a {@link IChangeDescriptor}
 	 */
 	public IChangeDescriptor getChange() {
 		return change;
