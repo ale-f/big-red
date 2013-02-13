@@ -2,18 +2,16 @@ package org.bigraph.model.changes.descriptors;
 
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Process;
 import org.bigraph.model.changes.descriptors.IDescriptorStepValidator.Callback;
 import org.bigraph.model.process.IParticipantHost;
 
 /**
- * A <strong>BoundDescriptor</strong> is an {@link IChange} consisting of an
- * {@link IChangeDescriptor} coupled to a {@link Resolver}; it serves as a
- * bridge between IChange- and IChangeDescriptor-based APIs.
+ * A <strong>BoundDescriptor</strong> is an {@link IChangeDescriptor} coupled
+ * to a {@link Resolver}.
  * @author alec
  */
-public class BoundDescriptor implements IChange {
+public class BoundDescriptor implements IChangeDescriptor {
 	private final Resolver resolver;
 	private final IChangeDescriptor descriptor;
 	
@@ -73,7 +71,8 @@ public class BoundDescriptor implements IChange {
 	}
 	
 	static {
-		DescriptorExecutorManager.getInstance().addParticipant(Handler.INSTANCE);
+		DescriptorExecutorManager.getInstance().addParticipant(
+				Handler.INSTANCE);
 	}
 	
 	public BoundDescriptor(Resolver resolver, IChangeDescriptor descriptor) {
