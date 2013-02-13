@@ -117,7 +117,7 @@ public abstract class AbstractTreePart extends AbstractTreeEditPart
 		case LINK:
 			return new ArrayList<Layoutable>(getLinkChildren());
 		default:
-			throw new Error("Oh no, extra enum value");
+			throw new RuntimeException("Oh no, extra enum value");
 		}
 	}
 	

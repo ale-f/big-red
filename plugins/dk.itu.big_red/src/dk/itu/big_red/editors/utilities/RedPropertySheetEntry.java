@@ -46,7 +46,7 @@ public class RedPropertySheetEntry extends PropertySheetEntry {
 			return getParent().getCommandStack();
 		} else {
 			if (commandStack == null)
-				throw new Error("BUG: root with no command stack");
+				throw new RuntimeException("BUG: root with no command stack");
 			return commandStack;
 		}
 	}

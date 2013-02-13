@@ -147,7 +147,7 @@ public abstract class XMLLoader extends ChangeLoader implements IXMLLoader {
 					throws LoadFailedException {
 		if (replacement != null) {
 			if (getFile() == null)
-				 throw new Error("BUG: relative path to resolve, " +
+				 throw new RuntimeException("BUG: relative path to resolve, " +
 							"but no IFileWrapper set on " + this);
 			IResourceWrapper rw =
 					getFile().getParent().getResource(replacement);

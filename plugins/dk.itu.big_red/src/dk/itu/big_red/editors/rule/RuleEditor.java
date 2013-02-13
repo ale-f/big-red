@@ -403,8 +403,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 				DescriptorExecutorManager.getInstance().
 						tryValidateChange(scratch, getRedex(), cdg);
 			} catch (ChangeCreationException cce) {
-				throw new Error("BUG: post-fixup reactum changes are " +
-						"completely inconsistent, don't save", cce);
+				throw new RuntimeException("BUG: post-fixup reactum changes " +
+						"are completely inconsistent, don't save", cce);
 			}
 			
 			/* cdg will be equal to reactumChanges if the fixup operations made
@@ -429,8 +429,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 							getReactum(), oldlRedexCDs.inverse());
 				}
 			} catch (ChangeCreationException cce) {
-				throw new Error("BUG: completely unsafe change slipped " +
-						"through the net", cce);
+				throw new RuntimeException("BUG: completely unsafe change " +
+						"slipped through the net", cce);
 			}
 		} else if (target == getReactum()) {
 			IChangeDescriptor cd;

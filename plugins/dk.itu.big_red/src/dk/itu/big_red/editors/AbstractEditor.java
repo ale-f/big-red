@@ -350,7 +350,7 @@ public abstract class AbstractEditor extends EditorPart
 	
 	private final Composite setParent(Composite parent) {
 		if (this.parent != null && this.parent != parent)
-			throw new Error("Mysterious parent mismatch");
+			throw new RuntimeException("Mysterious parent mismatch");
 		this.parent = parent;
 		return parent;
 	}

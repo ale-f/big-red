@@ -77,7 +77,7 @@ public final class ChangeCompatibilityLoader
 		if ("node".equals(type)) {
 			Node.Identifier n = _getScratchNodeIdentifier(name);
 			if (n == null)
-				throw new Error(
+				throw new RuntimeException(
 						"getContainer(String, String) can only retrieve " +
 						"identifiers for Nodes that already exist");
 			return n;

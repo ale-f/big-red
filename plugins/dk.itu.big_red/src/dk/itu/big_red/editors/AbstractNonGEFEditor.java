@@ -69,7 +69,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 			tryApplyChange(c.inverse());
 			stateChanged();
 		} catch (ChangeCreationException cre) {
-			throw new Error("Unhandled Change undo failure", cre);
+			throw new RuntimeException("Unhandled Change undo failure", cre);
 		}
 	}
 	
@@ -83,7 +83,7 @@ public abstract class AbstractNonGEFEditor extends AbstractEditor {
 			undoBuffer.push(c);
 			stateChanged();
 		} catch (ChangeCreationException cre) {
-			throw new Error("Unhandled Change redo failure", cre);
+			throw new RuntimeException("Unhandled Change redo failure", cre);
 		}
 	}
 	

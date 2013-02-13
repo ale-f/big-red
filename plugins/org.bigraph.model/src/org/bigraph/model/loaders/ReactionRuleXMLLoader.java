@@ -32,7 +32,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 	public void setCCL(CompatibilityChangeLoader ccl) {
 		if (this.ccl == null) {
 			this.ccl = ccl;
-		} else throw new Error(
+		} else throw new RuntimeException(
 				"BUG: tried to register multiple CompatibilityChangeLoaders");
 	}
 	

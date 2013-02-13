@@ -80,7 +80,8 @@ public class OutputParser {
 				n = new Node(s.getControl(name));
 			} else if (parts.length == 2) {
 				n = new Node(s.getControl(cn = parts[0]));
-			} else throw new Error("Control name couldn't be matched");
+			} else throw new RuntimeException(
+					"Control name couldn't be matched");
 
 			String nn = Integer.toString(x++);
 			cg.add(parent.changeAddChild(n, nn));
@@ -119,7 +120,8 @@ public class OutputParser {
 		} else if ((name = lexer.accept(P_SIT)) != null) { /* name is a site id */
 			Site s = new Site();
 			cg.add(parent.changeAddChild(s, name.substring(1)));
-		} else throw new Error("What(child-context): " + lexer.getCurrent());
+		} else throw new RuntimeException(
+				"What(child-context): " + lexer.getCurrent());
 	}
 	
 	private void parseChildren(Container parent, ChangeDescriptorGroup cg)

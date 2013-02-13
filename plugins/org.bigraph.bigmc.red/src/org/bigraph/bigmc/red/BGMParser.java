@@ -157,7 +157,8 @@ public class BGMParser {
 				n = new Node(signature.getControl(id));
 			} else if (parts.length == 2) {
 				n = new Node(signature.getControl(parts[0]));
-			} else throw new Error("Control name couldn't be matched");
+			} else throw new RuntimeException(
+					"Control name couldn't be matched");
 
 			change(null, parent.changeAddChild(n, Integer.toString(x++)));
 			
