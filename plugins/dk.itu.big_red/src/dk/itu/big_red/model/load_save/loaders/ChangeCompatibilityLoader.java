@@ -19,7 +19,6 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.ReactionRuleXMLLoader;
@@ -258,16 +257,13 @@ public final class ChangeCompatibilityLoader
 				Layoutable la = l.lookup(scratch, rr.getReactum());
 				
 				if (l != null)
-					cd = new ChangeCommentDescriptor(l, ExtendedDataUtilities.getComment(scratch, la), comment);
+					cd = new ChangeCommentDescriptor(l,
+							ExtendedDataUtilities.getComment(scratch, la),
+							comment);
 			}
 		}
-		if (cd != null) {
-			try {
-				cd.simulate(scratch, rr.getReactum());
-			} catch (ChangeCreationException cce) {
-				cd = null;
-			}
-		}
+		if (cd != null)
+			cd.simulate(scratch, rr.getReactum());
 		return cd;
 	}
 }

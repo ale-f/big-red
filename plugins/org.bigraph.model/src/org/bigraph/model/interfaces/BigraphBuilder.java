@@ -26,11 +26,8 @@ public class BigraphBuilder {
 	private void addChange(IChangeDescriptor ch) {
 		if (ch == null)
 			return;
-		try {
-			ch.simulate(getScratch(), b);
-			cdg.add(ch);
-		} catch (ChangeCreationException cce) {
-		}
+		ch.simulate(getScratch(), b);
+		cdg.add(ch);
 	}
 	
 	private PropertyScratchpad getScratch() {

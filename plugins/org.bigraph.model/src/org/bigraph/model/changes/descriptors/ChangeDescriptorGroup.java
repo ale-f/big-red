@@ -34,8 +34,7 @@ public class ChangeDescriptorGroup extends ArrayList<IChangeDescriptor>
 	}
 	
 	@Override
-	public void simulate(PropertyScratchpad context, Resolver r)
-			throws ChangeCreationException {
+	public void simulate(PropertyScratchpad context, Resolver r) {
 		for (IChangeDescriptor cd : this)
 			if (cd != null)
 				cd.simulate(context, r);

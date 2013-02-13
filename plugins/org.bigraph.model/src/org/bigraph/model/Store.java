@@ -6,7 +6,6 @@ import java.util.Map;
 import org.bigraph.model.assistants.IObjectIdentifier;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -58,8 +57,7 @@ public class Store implements Resolver {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
+		public void simulate(PropertyScratchpad context, Resolver r) {
 			doSimulate(context, getID().lookup(context, r),
 					getEntryID().lookup(context, r));
 		}
@@ -84,8 +82,7 @@ public class Store implements Resolver {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
+		public void simulate(PropertyScratchpad context, Resolver r) {
 			doSimulate(context, getEntryID().lookup(context, r),
 					getID().lookup(context, r));
 		}

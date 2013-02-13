@@ -20,12 +20,8 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	@Override
 	public void addChange(IChangeDescriptor c) {
 		if (c != null) {
-			try {
-				c.simulate(getScratch(), getResolver());
-				cdg.add(c);
-			} catch (ChangeCreationException e) {
-				e.printStackTrace(); /* XXX */
-			}
+			c.simulate(getScratch(), getResolver());
+			cdg.add(c);
 		}
 	}
 	

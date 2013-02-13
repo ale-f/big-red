@@ -13,7 +13,6 @@ import org.bigraph.model.Store;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.ResolverDeque;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -435,12 +434,8 @@ implements PropertyChangeListener {
 									s);
 					}
 					if (ch != null) {
-						try {
-							ch.simulate(context, getResolver());
-							cg.add(ch);
-						} catch (ChangeCreationException cce) {
-							cce.printStackTrace();
-						}
+						ch.simulate(context, getResolver());
+						cg.add(ch);
 					}
 				}
 				

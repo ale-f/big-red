@@ -195,8 +195,7 @@ public class ExecutionTests {
 			 * call it yourself.)
 			 */
 			@Override
-			public void simulate(PropertyScratchpad context, Resolver r)
-					throws ChangeCreationException {
+			public void simulate(PropertyScratchpad context, Resolver r) {
 				Dummy self = getTarget().lookup(context, r);
 				context.setProperty(self, PROPERTY_STRING, getNewString());
 			}

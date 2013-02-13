@@ -15,7 +15,6 @@ import org.bigraph.model.assistants.FileData;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -271,11 +270,7 @@ public class SimulationSpecEditor extends AbstractNonGEFEditor
 									new SimulationSpec.Identifier(),
 									getModel().getRules(scratch).indexOf(rr),
 									rr);
-					try {
-						ch.simulate(scratch, getModel());
-					} catch (ChangeCreationException cce) {
-						/* XXX */
-					}
+					ch.simulate(scratch, getModel());
 					cg.add(ch);
 				}
 				if (!cg.isEmpty())

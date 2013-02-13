@@ -54,8 +54,7 @@ public abstract class ExtendedDataUtilities {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
+		public void simulate(PropertyScratchpad context, Resolver r) {
 			ModelObject mo = getTarget().lookup(context, r);
 			mo.setExtendedData(context, getKey(),
 					getNormalisedNewValue(context, r));

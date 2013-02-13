@@ -3,7 +3,6 @@ package org.bigraph.model;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.interfaces.IPoint;
 
@@ -115,8 +114,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
+		public void simulate(PropertyScratchpad context, Resolver r) {
 			Point p = getPoint().lookup(context, r);
 			Link l = getLink().lookup(context, r);
 			context.<Point>getModifiableList(
@@ -172,8 +170,7 @@ public abstract class Point extends Layoutable implements IPoint {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
+		public void simulate(PropertyScratchpad context, Resolver r) {
 			Point p = getPoint().lookup(context, r);
 			Link l = getLink().lookup(context, r);
 			

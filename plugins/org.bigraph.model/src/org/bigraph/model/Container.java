@@ -11,7 +11,6 @@ import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.Change;
 import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.utilities.FilteringIterable;
 
@@ -227,8 +226,7 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
+		public void simulate(PropertyScratchpad context, Resolver r) {
 			Container self = getParent().lookup(context, r);
 			Layoutable child = ContainerDescriptorHandler.instantiate(
 					getChild(), context, r);
@@ -292,8 +290,7 @@ public abstract class Container extends Layoutable {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
+		public void simulate(PropertyScratchpad context, Resolver r) {
 			Container self = getParent().lookup(context, r);
 			Layoutable child = getChild().lookup(context, r);
 			

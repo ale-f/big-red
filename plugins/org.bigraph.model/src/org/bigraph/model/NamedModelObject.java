@@ -3,7 +3,6 @@ package org.bigraph.model;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
 
@@ -124,8 +123,7 @@ public abstract class NamedModelObject extends ModelObject {
 		}
 		
 		@Override
-		public void simulate(PropertyScratchpad context, Resolver r)
-				throws ChangeCreationException {
+		public void simulate(PropertyScratchpad context, Resolver r) {
 			NamedModelObject self = getTarget().lookup(context, r);
 			self.simulateRename(context, getNewName());
 		}

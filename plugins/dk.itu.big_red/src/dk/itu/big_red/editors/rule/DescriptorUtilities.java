@@ -7,7 +7,6 @@ import org.bigraph.model.Layoutable.ChangeRemove;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.IChange;
 import org.bigraph.model.changes.descriptors.BoundDescriptor;
-import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -80,16 +79,9 @@ abstract class DescriptorUtilities {
 					ch.child.getIdentifier(context).getRenamed(ch.name));
 		} else if (c instanceof BoundDescriptor) {
 			chd = ((BoundDescriptor)c).getDescriptor();
-		} else if (!(c instanceof IChange)) {
-			chd = c;
 		}
-		if (context != null) {
-			try {
-				c.simulate(context, null);
-			} catch (ChangeCreationException e) {
-				return null;
-			}
-		}
+		if (context != null) /* XXX: need a resolver here somehow */
+			c.simulate(context, null);
 		return chd;
 	}
 }
