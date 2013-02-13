@@ -68,7 +68,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.IStepValidator"/>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.descriptors.IDescriptorStepValidator"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -93,7 +93,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.IStepExecutor"/>
+                  <meta.attribute kind="java" basedOn=":org.bigraph.model.changes.descriptors.IDescriptorStepExecutor"/>
                </appinfo>
             </annotation>
          </attribute>
