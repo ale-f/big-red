@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Sortings for Big Red
+Bundle-SymbolicName: org.bigraph.extensions.sortings;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: Alexander Faithfull
+Require-Bundle: org.bigraph.model.wrapper;bundle-version="1.0.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
