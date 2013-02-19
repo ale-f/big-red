@@ -2,13 +2,65 @@ package org.bigraph.extensions.sortings;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
-import org.bigraph.extensions.sortings.Lexer.Token;
-import org.bigraph.extensions.sortings.Lexer.TokenIterator;
+import org.bigraph.extensions.sortings.LexerFactory;
+import org.bigraph.extensions.sortings.LexerFactory.Lexer.TokenIterator;
+import org.bigraph.extensions.sortings.LexerFactory.TokenType;
 
-import static org.bigraph.extensions.sortings.Lexer.Token.Type.*;
+import static org.bigraph.extensions.sortings.Parser.Type.*;
 
 final class Parser {
+	enum Type implements TokenType {
+		WHITESPACE("\\s+", true),
+		
+		FORALL("forall"),
+		PARENT_OF("parent-of"),
+		ANCESTOR_OF("ancestor-of"),
+		OR("or"),
+		AND("and"),
+		CTRL("ctrl"),
+		COMMA(","),
+		COLON(":"),
+		LEFT_BR("\\("),
+		RIGHT_BR("\\)"),
+		AT("@"),
+		IMPLIES("=>"),
+		NOT_EQUAL("!="),
+		EQUAL("="),
+		LINKED("--"),
+		NOT_LINKED("-/-"),
+		IDENT("[a-zA-Z_\\-$][a-zA-Z0-9_\\-$]*"),
+		NUM("[0-9]+");
+		
+		final Pattern pattern;
+		final boolean skip;
+		
+		Type(String pattern) {
+			this(pattern, false);
+		}
+		
+		Type(String pattern, boolean skip) {
+			this.pattern = Pattern.compile(pattern);
+			this.skip = skip;
+		}
+		
+		@Override
+		public String getName() {
+			return toString();
+		}
+		
+		@Override
+		public Pattern getPattern() {
+			return pattern;
+		}
+		
+		@Override
+		public boolean shouldSkip() {
+			return skip;
+		}
+	}
+	
 	public enum LOper {
 		ParentOf("parent-of"),
 		AncestorOf("ancestor-of"),
@@ -100,7 +152,7 @@ final class Parser {
 			it.next(LEFT_BR);
 			LIdent x = new LIdent(it.next(IDENT).getValue());
 			it.next(RIGHT_BR);
-			Token.Type tt = it.next(EQUAL, NOT_EQUAL).getType();
+			TokenType tt = it.next(EQUAL, NOT_EQUAL).getType();
 			LIdent y = new LIdent(it.next(IDENT).getValue());
 			return new LBinOp(x,
 					(tt == EQUAL ? LOper.CtrlEq : LOper.CtrlNeq), y);
@@ -190,7 +242,7 @@ final class Parser {
 	}
 	
 	public static final LPredicate parse(String input) {
-		return pred(new Lexer(input).iterator());
+		return pred(new LexerFactory(Type.values()).lexer(input).iterator());
 	}
 	
 	public static void main(String[] args) {
