@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.bigraph.extensions.sortings.LexerFactory;
-import org.bigraph.extensions.sortings.LexerFactory.Lexer.TokenIterator;
-import org.bigraph.extensions.sortings.LexerFactory.TokenType;
+import org.bigraph.model.utilities.LexerFactory;
+import org.bigraph.model.utilities.LexerFactory.TokenType;
+import org.bigraph.model.utilities.LexerFactory.Lexer.TokenIterator;
 
 import static org.bigraph.extensions.sortings.Parser.Type.*;
 

@@ -1,4 +1,4 @@
-package org.bigraph.extensions.sortings;
+package org.bigraph.model.utilities;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -6,28 +6,6 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-/*
-
-nameList ::= x ',' nameList
-         ::= x
-
-l ::= 'forall' nameList ':' u
-
-u ::= x 'parent-of' y
-  ::= x 'child-of' y
-  ::= x 'ancestor-of' y
-  ::= x 'descendant-of' y
-  ::= x '[' n ']' '-/-' y '[' n ']'
-  ::= x '[' n ']' '--' y '[' n ']'
-  ::= u 'or' u
-  ::= u 'and' u
-  ::= 'ctrl' '(' x ')' '=' y
-  ::= 'ctrl' '(' x ')' '!=' y
-  ::= '(' u ')'
-  ::= u '=>' u
-
-*/
 
 public class LexerFactory {
 	public interface TokenType {
