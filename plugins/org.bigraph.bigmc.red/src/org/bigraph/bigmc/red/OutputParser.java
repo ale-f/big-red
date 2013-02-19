@@ -13,150 +13,163 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
-import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
-import org.bigraph.model.names.HashMapNamespace;
-import org.bigraph.model.names.INamespace;
+import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.utilities.LexerFactory;
+import org.bigraph.model.utilities.LexerFactory.Lexer.TokenIterator;
+import org.bigraph.model.utilities.LexerFactory.Token;
+import org.bigraph.model.utilities.LexerFactory.TokenType;
 
 import dk.itu.big_red.model.LayoutUtilities;
 
-import org.bigraph.bigmc.red.LexerFactoryFactory;
-import org.bigraph.bigmc.red.LexerFactory.Lexer;
-import org.bigraph.bigmc.red.LexerFactory.DisappointedException;
 import org.bigraph.extensions.param.ParameterUtilities;
 
+import static org.bigraph.bigmc.red.OutputParser.Type.*;
+
 public class OutputParser {
-	private static final LexerFactoryFactory lff = new LexerFactoryFactory();
-	private static final LexerFactory lf;
-	
-	private Lexer lexer;
-	
-	private Signature s;
-	
-	public OutputParser setSignature(Signature s) {
-		this.s = s;
-		return this;
+	static enum Type implements TokenType {
+		WHITESPACE("\\s+", true),
+		
+		NIL("nil"),
+		DOT("\\."),
+		BAR("\\|"),
+		LSQ("\\["),
+		RSQ("\\]"),
+		DSH("-"),
+		LBR("\\("),
+		RBR("\\)"),
+		COM(","),
+		NAM("[a-zA-Z_][a-zA-Z0-9_]*"),
+		SIT("\\$[0-9]+");
+		
+		final Pattern pattern;
+		final boolean skip;
+		
+		Type(String pattern) {
+			this(pattern, false);
+		}
+		
+		Type(String pattern, boolean skip) {
+			this.pattern = Pattern.compile(pattern);
+			this.skip = skip;
+		}
+		
+		@Override
+		public String getName() {
+			return toString();
+		}
+		
+		@Override
+		public Pattern getPattern() {
+			return pattern;
+		}
+		
+		@Override
+		public boolean shouldSkip() {
+			return skip;
+		}
 	}
 	
-	public OutputParser setString(String string) {
-		lexer = lf.createLexer(string);
-		return this;
-	}
+	private static final LexerFactory lf = new LexerFactory(Type.values());
 	
-	public OutputParser() {
-	}
+	private TokenIterator it;
 	
-	private static final Pattern
-		P_NIL = lff.addTokenType("nil"),
-		P_DOT = lff.addTokenType("\\."),
-		P_BAR = lff.addTokenType("\\|"),
-		P_LSQ = lff.addTokenType("\\["),
-		P_RSQ = lff.addTokenType("\\]"),
-		P_DSH = lff.addTokenType("-"),
-		P_LBR = lff.addTokenType("\\("),
-		P_RBR = lff.addTokenType("\\)"),
-		P_COM = lff.addTokenType(","),
-		P_NAM = lff.addTokenType("[a-zA-Z_][a-zA-Z0-9_]*"),
-		P_SIT = lff.addTokenType("\\$[0-9]+");
-	static {
-		lf = lff.createLexerFactory();
+	private Signature signature;
+	
+	public OutputParser(Signature signature, String input) {
+		this.signature = signature;
+		it = lf.lexer(input).iterator();
 	}
 	
 	private int x = 1;
 	
-	private Bigraph workingBigraph;
-	private INamespace<Link> ns;
+	private Bigraph bigraph;
 	
-	private void parseChild(Container parent, ChangeDescriptorGroup cg)
-			throws DisappointedException {
-		if (lexer.accept(P_NIL) != null)
+	private void change(IChangeDescriptor cd) throws ChangeCreationException {
+		DescriptorExecutorManager.getInstance().tryApplyChange(bigraph, cd);
+	}
+	
+	private void parseChild(Container parent) throws ChangeCreationException {
+		if (it.tryNext(NIL) != null)
 			return;
-		String name = lexer.accept(P_NAM);
-		if (name != null) { /* name is a control */
+		Token nameT = it.tryNext(NAM);
+		if (nameT != null) { /* name is a control */
+			String name = nameT.getValue();
 			Node n = null;
 			String cn = null;
 			String[] parts = name.split("_P__", 2);
-			if (parts.length == 1) {
-				n = new Node(s.getControl(name));
-			} else if (parts.length == 2) {
-				n = new Node(s.getControl(cn = parts[0]));
+			if (parts.length < 3) {
+				n = new Node(signature.getControl(cn = parts[0]));
 			} else throw new RuntimeException(
 					"Control name couldn't be matched");
 
 			String nn = Integer.toString(x++);
-			cg.add(parent.changeAddChild(n, nn));
+			change(parent.changeAddChild(n, nn));
 			
 			if (parts.length == 2)
-				cg.add(new ParameterUtilities.ChangeParameterDescriptor(
+				change(new ParameterUtilities.ChangeParameterDescriptor(
 						new Node.Identifier(nn,
 								new Control.Identifier(cn)),
 						null, parts[1]));
 			
-			if (lexer.accept(P_LSQ) != null) { /* ports */
+			if (it.tryNext(LSQ) != null) { /* ports */
 				int i = 0;
 				do {
-					String linkName = lexer.accept(P_NAM);
-					if (linkName == null) {
-						lexer.expect(P_DSH);
+					Token linkNameT = it.tryNext(NAM);
+					if (linkNameT == null) {
+						it.next(DSH);
 						i++;
 						continue;
 					}
-					Link l = ns.get(linkName);
-					if (l == null) {
-						ns.put(linkName, (l = new OuterName()));
-						cg.add(workingBigraph.changeAddChild(l, linkName));
-					}
-					cg.add(new Point.ChangeConnectDescriptor(
+					String linkName = linkNameT.getValue();
+					Link l = (Link)bigraph.getNamespace(Link.class).get(
+							linkName);
+					if (l == null)
+						change(bigraph.changeAddChild(
+								l = new OuterName(), linkName));
+					change(new Point.ChangeConnectDescriptor(
 							n.getPorts().get(i++).getIdentifier(),
 							l.getIdentifier().getRenamed(linkName)));
-				} while (lexer.accept(P_COM) != null);
-				lexer.expect(P_RSQ);
+				} while (it.tryNext(COM) != null);
+				it.next(RSQ);
 			}
 			/* Strictly speaking, this doesn't need to be a conditional -- on
 			 * the other hand, it means that the input language can be parsed
 			 * as well */
-			if (lexer.accept(P_DOT) != null)
-				parseChildren(n, cg);
-		} else if ((name = lexer.accept(P_SIT)) != null) { /* name is a site id */
+			if (it.tryNext(DOT) != null)
+				parseChildren(n);
+		} else if ((nameT = it.tryNext(SIT)) != null) { /* name is a site id */
 			Site s = new Site();
-			cg.add(parent.changeAddChild(s, name.substring(1)));
-		} else throw new RuntimeException(
-				"What(child-context): " + lexer.getCurrent());
+			change(parent.changeAddChild(s, nameT.getValue().substring(1)));
+		}
 	}
 	
-	private void parseChildren(Container parent, ChangeDescriptorGroup cg)
-			throws DisappointedException {
-		if (lexer.lookahead1(P_LBR)) {
-			lexer.expect(P_LBR);
+	private void parseChildren(Container parent)
+			throws ChangeCreationException {
+		if (it.tryNext(LBR) != null) {
 			do {
-				parseChild(parent, cg);
-			} while (lexer.accept(P_BAR) != null);
-			lexer.expect(P_RBR);
-		} else parseChild(parent, cg);
+				parseChild(parent);
+			} while (it.tryNext(BAR) != null);
+			it.next(RBR);
+		} else parseChild(parent);
 	}
 	
 	public Bigraph run() {
 		try {
-			ns = new HashMapNamespace<Link>();
-			ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
-			workingBigraph = new Bigraph();
-			workingBigraph.setSignature(s);
+			bigraph = new Bigraph();
+			bigraph.setSignature(signature);
+			
 			Root r = new Root();
-			cg.add(workingBigraph.changeAddChild(r, "1"));
+			change(bigraph.changeAddChild(r, "1"));
 			
-			parseChildren(r, cg);
+			parseChildren(r);
 			
 			DescriptorExecutorManager.getInstance().tryApplyChange(
-					workingBigraph, cg);
-			DescriptorExecutorManager.getInstance().tryApplyChange(
-					workingBigraph, LayoutUtilities.relayout(workingBigraph));
+					bigraph, LayoutUtilities.relayout(bigraph));
 			
-			return workingBigraph;
+			return bigraph;
 		} catch (ChangeCreationException cre) {
 			cre.printStackTrace();
-			return null;
-		} catch (DisappointedException de) {
-			de.printStackTrace();
 			return null;
 		}
 	}

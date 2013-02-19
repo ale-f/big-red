@@ -2,8 +2,6 @@ package org.bigraph.bigmc.red;
 
 import java.util.regex.Pattern;
 
-import org.bigraph.bigmc.red.LexerFactory.Lexer;
-import org.bigraph.bigmc.red.LexerFactory.DisappointedException;
 import org.bigraph.extensions.param.ParameterUtilities;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
@@ -22,15 +20,16 @@ import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.utilities.LexerFactory.Token;
+import org.bigraph.model.utilities.LexerFactory.TokenType;
+import org.bigraph.model.utilities.LexerFactory.Lexer.TokenIterator;
+
+import static org.bigraph.bigmc.red.BGMParser.Type.*;
 
 public class BGMParser {
-	private static final LexerFactoryFactory lff = new LexerFactoryFactory();
-	private static final LexerFactory lf;
-	
-	private Lexer lexer;
+	private TokenIterator it;
 	
 	public BGMParser setString(String s) {
-		lexer = lf.createLexer(s);
 		return this;
 	}
 	
@@ -40,31 +39,61 @@ public class BGMParser {
 		System.out.println(ch);
 	}
 	
-	private static final Pattern
-		P_NIL = lff.addTokenType("nil"),
-		P_TWOBAR = lff.addTokenType("\\|\\|"),
-		P_ONEBAR = lff.addTokenType("\\|"),
-		P_LEFTSQ = lff.addTokenType("\\["),
-		P_RIGHTSQ = lff.addTokenType("\\]"),
-		P_LEFTPA = lff.addTokenType("\\("),
-		P_RIGHTPA = lff.addTokenType("\\)"),
-		P_DOT = lff.addTokenType("\\."),
-		P_DOLLAR = lff.addTokenType("$"),
-		P_ARROW = lff.addTokenType("->"),
-		P_DASH = lff.addTokenType("-"),
-		P_COMMA = lff.addTokenType(","),
-		P_ACTIVE = lff.addTokenType("%active"),
-		P_PASSIVE = lff.addTokenType("%passive"),
-		P_NAME = lff.addTokenType("%(outer|name)"),
-		P_INNER = lff.addTokenType("%inner"),
-		P_CHECK = lff.addTokenType("%check"),
-		P_COLON = lff.addTokenType(":"),
-		P_SEMICOLON = lff.addTokenType(";"),
-		P_PROPERTY = lff.addTokenType("%property"),
-		P_RULE = lff.addTokenType("%rule"),
-		P_IMPORT = lff.addTokenType("%import"),
-		P_IDENTIFIER = lff.addTokenType("[a-zA-Z_][a-zA-Z0-9_]*"),
-		P_INTEGER = lff.addTokenType("[0-9]+");
+	static enum Type implements TokenType {
+		WHITESPACE("\\s+", true),
+		
+		NIL("nil"),
+		TWOBAR("\\|\\|"),
+		ONEBAR("\\|"),
+		LEFTSQ("\\["),
+		RIGHTSQ("\\]"),
+		LEFTPA("\\("),
+		RIGHTPA("\\)"),
+		DOT("\\."),
+		DOLLAR("\\$"),
+		ARROW("->"),
+		DASH("-"),
+		COMMA(","),
+		ACTIVE("%active"),
+		PASSIVE("%passive"),
+		NAME("%(outer|name)"),
+		INNER("%inner"),
+		CHECK("%check"),
+		COLON(":"),
+		SEMICOLON(";"),
+		PROPERTY("%property"),
+		RULE("%rule"),
+		IMPORT("%import"),
+		IDENTIFIER("[a-zA-Z_][a-zA-Z0-9_]*"),
+		INTEGER("[0-9]+");
+		
+		final Pattern pattern;
+		final boolean skip;
+		
+		Type(String pattern) {
+			this(pattern, false);
+		}
+		
+		Type(String pattern, boolean skip) {
+			this.pattern = Pattern.compile(pattern);
+			this.skip = skip;
+		}
+		
+		@Override
+		public String getName() {
+			return toString();
+		}
+		
+		@Override
+		public Pattern getPattern() {
+			return pattern;
+		}
+		
+		@Override
+		public boolean shouldSkip() {
+			return skip;
+		}
+	}
 	
 	private static final String test =
 			"%active a : 1;\n" + 
@@ -77,14 +106,10 @@ public class BGMParser {
 			"a -> b;\n\n" + 
 			"%check";
 	
-	static {
-		lf = lff.createLexerFactory();
-	}
-	
 	private void property() {
 		/* Discard properties for now */
-		while (!lexer.lookahead1(P_SEMICOLON))
-			System.out.println(lexer.consume());
+		while (it.tryNext(SEMICOLON) != null)
+			System.out.println(it.next());
 	}
 	
 	private static ReactionRule makeRule(Bigraph lhs, Bigraph rhs) {
@@ -97,25 +122,23 @@ public class BGMParser {
 		return b;
 	}
 	
-	private void reaction(String id)
-			throws DisappointedException, ChangeCreationException {
+	private void reaction(String id) throws ChangeCreationException {
 		Bigraph
 			lhs = makeBigraph(),
 			rhs = makeBigraph();
 		parseRoots(lhs);
-		lexer.expect(P_ARROW);
+		it.next(ARROW);
 		parseRoots(rhs);
 		change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
 				new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs)));
 	}
 	
-	private void reaction_or_exp()
-			throws DisappointedException, ChangeCreationException {
+	private void reaction_or_exp() throws ChangeCreationException {
 		Bigraph
 			lhs = makeBigraph(),
 			rhs;
 		parseRoots(lhs);
-		if (lexer.accept(P_ARROW) != null) { /* reaction */
+		if (it.tryNext(ARROW) != null) { /* reaction */
 			parseRoots(rhs = makeBigraph());
 			change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
 					new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs)));
@@ -125,32 +148,32 @@ public class BGMParser {
 						simulationSpec.getModel(), lhs));
 	}
 	
-	private void parseRoots(Bigraph parent)
-			throws DisappointedException, ChangeCreationException {
+	private void parseRoots(Bigraph parent) throws ChangeCreationException {
 		do {
 			Root r = new Root();
 			change(null, parent.changeAddChild(r,
 					parent.getFirstUnusedName(r)));
 			parseChildren(parent, r);
-		} while (lexer.accept(P_TWOBAR) != null);
+		} while (it.tryNext(TWOBAR) != null);
 	}
 	
 	private void parseChildren(Bigraph b, Container parent)
-			throws DisappointedException, ChangeCreationException {
-		if (lexer.accept(P_LEFTPA) != null) {
+			throws ChangeCreationException {
+		if (it.tryNext(LEFTPA) != null) {
 			do {
 				parseChild(b, parent);
-			} while (lexer.accept(P_ONEBAR) != null);
-			lexer.expect(P_RIGHTPA);
+			} while (it.tryNext(ONEBAR) != null);
+			it.next(RIGHTPA);
 		} else parseChild(b, parent);
 	}
 	
 	private void parseChild(Bigraph b, Container parent)
-			throws DisappointedException, ChangeCreationException {
-		if (lexer.accept(P_NIL) != null)
+			throws ChangeCreationException {
+		if (it.tryNext(NIL) != null)
 			return;
-		String id = lexer.accept(P_IDENTIFIER);
-		if (id != null) {
+		Token idT = it.tryNext(IDENTIFIER);
+		if (idT != null) {
+			String id = idT.getValue();
 			Node n = null;
 			String[] parts = id.split("_P__", 2);
 			if (parts.length == 1) {
@@ -166,15 +189,16 @@ public class BGMParser {
 				change(b, new ParameterUtilities.ChangeParameterDescriptor(
 						n.getIdentifier(), null, parts[1]));
 			
-			if (lexer.accept(P_LEFTSQ) != null) { /* ports */
+			if (it.tryNext(LEFTSQ) != null) { /* ports */
 				int i = 0;
 				do {
-					String linkName = lexer.accept(P_IDENTIFIER);
-					if (linkName == null) {
-						lexer.expect(P_DASH);
+					Token linkNameT = it.tryNext(IDENTIFIER);
+					if (linkNameT == null) {
+						it.next(DASH);
 						i++;
 						continue;
 					}
+					String linkName = linkNameT.getValue();
 					OuterName.Identifier onid =
 							new OuterName.Identifier(linkName);
 					OuterName l = onid.lookup(null, b);
@@ -183,31 +207,30 @@ public class BGMParser {
 								l = new OuterName(), linkName));
 					change(b, new Point.ChangeConnectDescriptor(
 							n.getPorts().get(i++).getIdentifier(), onid));
-				} while (lexer.accept(P_COMMA) != null);
-				lexer.expect(P_RIGHTSQ);
+				} while (it.tryNext(COMMA) != null);
+				it.next(RIGHTSQ);
 			}
 			
-			if (lexer.accept(P_DOT) != null)
+			if (it.tryNext(DOT) != null)
 				parseChildren(b, n);
-		} else if (lexer.accept(P_DOLLAR) != null) {
-			id = lexer.accept(P_INTEGER);
+		} else if (it.tryNext(DOLLAR) != null) {
+			String id = it.next(INTEGER).getValue();
 			change(null, parent.changeAddChild(new Site(), id));
 		}
 	}
 	
-	private void dec()
-			throws DisappointedException, ChangeCreationException {
-		String controlType;
-		if (lexer.accept(P_INNER) != null) {
-			lexer.expect(P_IDENTIFIER);
-		} else if (lexer.accept(P_NAME) != null) {
-			lexer.expect(P_IDENTIFIER);
-		} else if ((controlType = lexer.accept(P_ACTIVE)) != null ||
-				(controlType = lexer.accept(P_PASSIVE)) != null) {
+	private void dec() throws ChangeCreationException {
+		Token controlTypeT;
+		if (it.tryNext(INNER) != null) {
+			it.next(IDENTIFIER);
+		} else if (it.tryNext(NAME) != null) {
+			it.next(IDENTIFIER);
+		} else if ((controlTypeT = it.next(ACTIVE, PASSIVE)) != null) {
+			String controlType = controlTypeT.getValue();
 			Control.Identifier cid =
-					new Control.Identifier(lexer.expect(P_IDENTIFIER));
-			lexer.expect(P_COLON);
-			String arity = lexer.expect(P_INTEGER);
+					new Control.Identifier(it.next(IDENTIFIER).getValue());
+			it.next(COLON);
+			String arity = it.next(INTEGER).getValue();
 			
 			change(signature, new Signature.ChangeAddControlDescriptor(
 					new Signature.Identifier(), cid));
@@ -218,21 +241,20 @@ public class BGMParser {
 			for (int i = 0; i < Integer.parseInt(arity); i++)
 				change(signature, new Control.ChangeAddPortSpecDescriptor(
 						new PortSpec.Identifier("" + i, cid)));
-		} else if (lexer.accept(P_PROPERTY) != null) {
-			lexer.expect(P_IDENTIFIER);
+		} else if (it.tryNext(PROPERTY) != null) {
+			it.next(IDENTIFIER);
 			property();
-		} else if (lexer.accept(P_RULE) != null) {
-			reaction(lexer.expect(P_IDENTIFIER));
-		} else if (lexer.accept(P_IMPORT) != null) {
-			lexer.expect(P_IDENTIFIER);
+		} else if (it.tryNext(RULE) != null) {
+			reaction(it.next(IDENTIFIER).getValue());
+		} else if (it.tryNext(IMPORT) != null) {
+			it.next(IDENTIFIER);
 		} else reaction_or_exp();
 	}
 	
-	private void model()
-			throws DisappointedException, ChangeCreationException {
-		while (lexer.lookahead1(P_CHECK) == false) {
+	private void model() throws ChangeCreationException {
+		while (it.tryNext(CHECK) == null) {
 			dec();
-			lexer.expect(P_SEMICOLON);
+			it.next(SEMICOLON);
 		}
 	}
 	
@@ -240,7 +262,7 @@ public class BGMParser {
 	private Signature signature;
 	private SimulationSpec simulationSpec;
 	
-	public SimulationSpec run() throws DisappointedException {
+	public SimulationSpec run() {
 		setString(test);
 		simulationSpec = new SimulationSpec();
 		try {

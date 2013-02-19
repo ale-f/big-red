@@ -125,8 +125,7 @@ public class ResultsDialog extends TitleAreaDialog {
 	}
 	
 	protected OutputParser parserFor(int i) {
-		return new OutputParser().
-				setSignature(ss.getSignature()).setString(getStates().get(i));
+		return new OutputParser(ss.getSignature(), getStates().get(i));
 	}
 	
 	@Override
