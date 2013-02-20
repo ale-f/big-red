@@ -46,6 +46,7 @@ public class BGMParser {
 		WHITESPACE("\\s+", true),
 		COMMENT("#(.*)$", true),
 		
+		NOT("!"),
 		NIL("nil"),
 		TWOBAR("\\|\\|"),
 		ONEBAR("\\|"),
@@ -258,19 +259,15 @@ public class BGMParser {
 	private Signature signature;
 	private SimulationSpec simulationSpec;
 	
-	public SimulationSpec run() {
+	public SimulationSpec run() throws ChangeCreationException {
 		simulationSpec = new SimulationSpec();
-		try {
-			Signature newSignature = signature = new Signature();
-			change(simulationSpec,
-					new SimulationSpec.ChangeSetSignatureDescriptor(
-							new SimulationSpec.Identifier(),
-							simulationSpec.getSignature(), newSignature));
-			model();
-			return simulationSpec;
-		} catch (ChangeCreationException cre) {
-			return null;
-		}
+		Signature newSignature = signature = new Signature();
+		change(simulationSpec,
+				new SimulationSpec.ChangeSetSignatureDescriptor(
+						new SimulationSpec.Identifier(),
+						simulationSpec.getSignature(), newSignature));
+		model();
+		return simulationSpec;
 	}
 	
 	private static final String test =
@@ -285,6 +282,10 @@ public class BGMParser {
 			"%check";
 	
 	public static void main(String[] args) {
-		new BGMParser(test).run();
+		try {
+			new BGMParser(test).run();
+		} catch (ChangeCreationException e) {
+			e.printStackTrace();
+		}
 	}
 }
