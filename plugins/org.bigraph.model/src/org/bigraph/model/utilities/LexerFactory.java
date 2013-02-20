@@ -71,16 +71,22 @@ public class LexerFactory {
 			private void prime() {
 				if (current != null || position == getInput().length())
 					return;
-				for (TokenType i : getTokenTypes()) {
-					Matcher m = i.getPattern().matcher(getInput());
-					if (m.find(position) && m.start() == position) {
-						position = m.end();
-						if (!i.shouldSkip()) {
-							current = new Token(i, m.group());
+				
+				boolean again;
+				do {
+					again = false;
+					for (TokenType i : getTokenTypes()) {
+						Matcher m = i.getPattern().matcher(getInput());
+						if (m.find(position) && m.start() == position) {
+							position = m.end();
+							if (!i.shouldSkip()) {
+								current = new Token(i, m.group());
+							} else again = true;
 							break;
 						}
 					}
-				}
+				} while (again);
+				
 				if (current == null && position != getInput().length())
 					throw new IllegalStateException(
 							"Couldn't lex " + getInput().substring(position));
