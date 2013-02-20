@@ -17,13 +17,15 @@ public class ImportWizardPage extends WizardPage {
 		setDescription("Import a BigMC file as a new Big Red project.");
 	}
 	
+	private Text text;
+	
 	@Override
 	public void createControl(Composite parent) {
 		Composite c = new Composite(parent, SWT.NONE);
 		c.setLayout(new GridLayout());
 		
-		Text t = new Text(c, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
-		t.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		text = new Text(c, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		
 		Composite buttonBar = new Composite(c, SWT.NONE);
 		buttonBar.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -32,5 +34,9 @@ public class ImportWizardPage extends WizardPage {
 		StockButton.OPEN.create(buttonBar, 0, true);
 		
 		setControl(c);
+	}
+	
+	public String getText() {
+		return text.getText().trim();
 	}
 }

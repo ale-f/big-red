@@ -1,5 +1,6 @@
 package org.bigraph.bigmc.red.bgm;
 
+import org.bigraph.bigmc.red.BGMParser;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.IImportWizard;
@@ -14,7 +15,13 @@ public class ImportWizard extends Wizard implements IImportWizard {
 
 	@Override
 	public boolean performFinish() {
-		return false;
+		try {
+			System.out.println(new BGMParser(mainPage.getText()).run());
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	@Override
