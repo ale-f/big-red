@@ -20,6 +20,8 @@ import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
+import org.bigraph.model.utilities.CollectionUtilities;
+import org.bigraph.model.utilities.LexerFactory;
 import org.bigraph.model.utilities.LexerFactory.Token;
 import org.bigraph.model.utilities.LexerFactory.TokenType;
 import org.bigraph.model.utilities.LexerFactory.Lexer.TokenIterator;
@@ -27,10 +29,11 @@ import org.bigraph.model.utilities.LexerFactory.Lexer.TokenIterator;
 import static org.bigraph.bigmc.red.BGMParser.Type.*;
 
 public class BGMParser {
-	private TokenIterator it;
+	private final TokenIterator it;
 	
-	public BGMParser setString(String s) {
-		return this;
+	public BGMParser(String input) {
+		it = lf.lexer(input).iterator();
+		System.out.println(CollectionUtilities.collect(it.clone()));
 	}
 	
 	private static void change(Resolver r, IChangeDescriptor ch)
@@ -41,6 +44,7 @@ public class BGMParser {
 	
 	static enum Type implements TokenType {
 		WHITESPACE("\\s+", true),
+		COMMENT("#(.*)$", true),
 		
 		NIL("nil"),
 		TWOBAR("\\|\\|"),
@@ -75,7 +79,7 @@ public class BGMParser {
 		}
 		
 		Type(String pattern, boolean skip) {
-			this.pattern = Pattern.compile(pattern);
+			this.pattern = Pattern.compile(pattern, Pattern.MULTILINE);
 			this.skip = skip;
 		}
 		
@@ -95,20 +99,12 @@ public class BGMParser {
 		}
 	}
 	
-	private static final String test =
-			"%active a : 1;\n" + 
-			"%active b : 2;\n" + 
-			"%active c : 9;\n" + 
-			"%active d : 8;\n" + 
-			"%active e : 7;\n\n" + 
-			"%property abacus : weasel backgammon ( fred$->());\n" +
-			"d.(e.(d | b[-,x].(b[x,-] | c) | a[x]) | b[x,x].(b[-,-] | c));\n\n" + 
-			"a -> b;\n\n" + 
-			"%check";
+	private static final LexerFactory lf = new LexerFactory(Type.values());
 	
 	private void property() {
 		/* Discard properties for now */
-		while (it.tryNext(SEMICOLON) != null)
+		Token t;
+		while ((t = it.peek()) != null && !SEMICOLON.equals(t.getType()))
 			System.out.println(it.next());
 	}
 	
@@ -225,7 +221,7 @@ public class BGMParser {
 			it.next(IDENTIFIER);
 		} else if (it.tryNext(NAME) != null) {
 			it.next(IDENTIFIER);
-		} else if ((controlTypeT = it.next(ACTIVE, PASSIVE)) != null) {
+		} else if ((controlTypeT = it.tryNext(ACTIVE, PASSIVE)) != null) {
 			String controlType = controlTypeT.getValue();
 			Control.Identifier cid =
 					new Control.Identifier(it.next(IDENTIFIER).getValue());
@@ -263,7 +259,6 @@ public class BGMParser {
 	private SimulationSpec simulationSpec;
 	
 	public SimulationSpec run() {
-		setString(test);
 		simulationSpec = new SimulationSpec();
 		try {
 			Signature newSignature = signature = new Signature();
@@ -276,5 +271,20 @@ public class BGMParser {
 		} catch (ChangeCreationException cre) {
 			return null;
 		}
+	}
+	
+	private static final String test =
+			"%active a : 1; # I'm a comment\n" + 
+			"%active b : 2; # Hey, me too!\n" + 
+			"%active c : 9;\n" + 
+			"%active d : 8;\n" + 
+			"%active e : 7;\n\n" + 
+			"%property abacus : weasel backgammon ( fred$->());\n" +
+			"d.(e.(d | b[-,x].(b[x,-] | c) | a[x]) | b[x,x].(b[-,-] | c));\n\n" + 
+			"a -> b;\n\n" + 
+			"%check";
+	
+	public static void main(String[] args) {
+		new BGMParser(test).run();
 	}
 }
