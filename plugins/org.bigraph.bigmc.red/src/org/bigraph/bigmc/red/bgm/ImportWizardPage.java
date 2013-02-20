@@ -1,7 +1,14 @@
 package org.bigraph.bigmc.red.bgm;
 
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+
+import dk.itu.big_red.utilities.ui.StockButton;
 
 public class ImportWizardPage extends WizardPage {
 	public ImportWizardPage(String pageName) {
@@ -12,6 +19,18 @@ public class ImportWizardPage extends WizardPage {
 	
 	@Override
 	public void createControl(Composite parent) {
-		setControl(new Composite(parent, 0));
+		Composite c = new Composite(parent, SWT.NONE);
+		c.setLayout(new GridLayout());
+		
+		Text t = new Text(c, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+		t.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		
+		Composite buttonBar = new Composite(c, SWT.NONE);
+		buttonBar.setLayout(new RowLayout(SWT.HORIZONTAL));
+		buttonBar.setLayoutData(new GridData(SWT.END, SWT.TOP, true, false));
+		
+		StockButton.OPEN.create(buttonBar, 0, true);
+		
+		setControl(c);
 	}
 }
