@@ -144,7 +144,9 @@ public class LexerFactory {
 				Token token = tryNext(ts);
 				if (token != null) {
 					return token;
-				} else throw new NoSuchElementException();
+				} else throw new NoSuchElementException(
+						"Expected " + Arrays.asList(ts) +
+						", but got " + current);
 			}
 			
 			/**
