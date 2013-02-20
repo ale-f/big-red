@@ -15,14 +15,11 @@ import org.bigraph.model.savers.Saver;
 import org.bigraph.model.wrapper.SaverUtilities;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.RegistryFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
@@ -30,8 +27,6 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -43,11 +38,7 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.model.WorkbenchContentProvider;
-import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.part.FileEditorInput;
-import org.eclipse.ui.views.navigator.ResourceComparator;
-
 import dk.itu.big_red.editors.assistants.IFactory;
 import dk.itu.big_red.editors.simulation_spec.ExportResults;
 import dk.itu.big_red.utilities.io.IOAdapter;
@@ -221,36 +212,10 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 		
 		final ExporterWizardPage exporterPage = new ExporterWizardPage();
 		
-		addPage(new WizardPage("Select a file") {
+		addPage(new ResourceSelectionPage("Select a file") {
 			@Override
-			public void createControl(Composite parent) {
-				final TreeViewer t = new TreeViewer(parent,
-						SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-				t.addFilter(new ViewerFilter() {
-					@Override
-					public boolean select(Viewer viewer, Object parentElement,
-							Object element) {
-						if (element instanceof IResource) {
-							return ((IResource)element).getName().
-									charAt(0) != '.';
-						} else return false;
-					}
-				});
-				t.setComparator(
-						new ResourceComparator(ResourceComparator.NAME));
-				t.setLabelProvider(
-						WorkbenchLabelProvider.
-							getDecoratingWorkbenchLabelProvider());
-				t.setContentProvider(new WorkbenchContentProvider());
-				t.setInput(ResourcesPlugin.getWorkspace().getRoot());
-				
-				t.addDoubleClickListener(new IDoubleClickListener() {
-					@Override
-					public void doubleClick(DoubleClickEvent event) {
-						if (canFlipToNextPage())
-							getContainer().showPage(getNextPage());
-					}
-				});
+			protected void initialize() {
+				final TreeViewer t = getTreeViewer();
 				
 				t.addSelectionChangedListener(new ISelectionChangedListener() {
 					@Override
@@ -289,14 +254,6 @@ public class TextExportWizard extends Wizard implements IExportWizard {
 				if (initialResource != null)
 					t.setSelection(
 							new StructuredSelection(initialResource), true);
-				
-				setControl(t.getControl());
-			}
-			
-			{
-				setTitle("Select a file");
-				setDescription("Select a bigraph, signature, " +
-						"reaction rule, or simulation spec to export.");
 			}
 		});
 		
