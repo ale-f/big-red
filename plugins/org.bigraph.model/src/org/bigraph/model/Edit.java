@@ -65,7 +65,7 @@ public class Edit extends ModelObject
 	@Override
 	public Edit inverse() {
 		Edit ed = (Edit)super.clone();
-		ed.cdg = (ChangeDescriptorGroup)cdg.inverse();
+		ed.cdg = cdg.inverse();
 		return ed;
 	}
 	

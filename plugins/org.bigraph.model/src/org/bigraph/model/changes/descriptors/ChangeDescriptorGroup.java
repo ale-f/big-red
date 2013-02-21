@@ -41,7 +41,7 @@ public class ChangeDescriptorGroup extends ArrayList<IChangeDescriptor>
 	}
 	
 	@Override
-	public IChangeDescriptor inverse() {
+	public ChangeDescriptorGroup inverse() {
 		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 		for (IChangeDescriptor cd : this)
 			if (cd != null)
