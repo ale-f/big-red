@@ -16,9 +16,9 @@ import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.utilities.LexerFactory;
-import org.bigraph.model.utilities.LexerFactory.Lexer.TokenIterator;
 import org.bigraph.model.utilities.LexerFactory.Token;
 import org.bigraph.model.utilities.LexerFactory.TokenType;
+import org.bigraph.model.utilities.LexerFactory.TokenIterator;
 
 import dk.itu.big_red.model.LayoutUtilities;
 

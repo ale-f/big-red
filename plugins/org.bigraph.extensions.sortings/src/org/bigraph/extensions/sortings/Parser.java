@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import org.bigraph.model.utilities.LexerFactory;
 import org.bigraph.model.utilities.LexerFactory.TokenType;
-import org.bigraph.model.utilities.LexerFactory.Lexer.TokenIterator;
+import org.bigraph.model.utilities.LexerFactory.TokenIterator;
 
 import static org.bigraph.extensions.sortings.Parser.Type.*;
 

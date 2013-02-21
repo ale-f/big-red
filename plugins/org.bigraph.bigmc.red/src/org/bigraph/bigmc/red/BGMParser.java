@@ -24,7 +24,7 @@ import org.bigraph.model.utilities.CollectionUtilities;
 import org.bigraph.model.utilities.LexerFactory;
 import org.bigraph.model.utilities.LexerFactory.Token;
 import org.bigraph.model.utilities.LexerFactory.TokenType;
-import org.bigraph.model.utilities.LexerFactory.Lexer.TokenIterator;
+import org.bigraph.model.utilities.LexerFactory.TokenIterator;
 
 import static org.bigraph.bigmc.red.BGMParser.Type.*;
 
