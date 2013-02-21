@@ -109,8 +109,12 @@ public class BGMParser {
 			System.out.println(it.next());
 	}
 	
-	private static ReactionRule makeRule(Bigraph lhs, Bigraph rhs) {
-		return null;
+	private void makeRule(Bigraph lhs, Bigraph rhs)
+			throws ChangeCreationException {
+		ReactionRule rr = new ReactionRule();
+		rr.setRedex(lhs);
+		change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
+				new SimulationSpec.Identifier(), -1, rr));
 	}
 	
 	private Bigraph makeBigraph() {
@@ -126,8 +130,7 @@ public class BGMParser {
 		parseRoots(lhs);
 		it.next(ARROW);
 		parseRoots(rhs);
-		change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
-				new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs)));
+		makeRule(lhs, rhs);
 	}
 	
 	private void reaction_or_exp() throws ChangeCreationException {
@@ -137,8 +140,7 @@ public class BGMParser {
 		parseRoots(lhs);
 		if (it.tryNext(ARROW) != null) { /* reaction */
 			parseRoots(rhs = makeBigraph());
-			change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
-					new SimulationSpec.Identifier(), -1, makeRule(lhs, rhs)));
+			makeRule(lhs, rhs);
 		} else change(simulationSpec,
 				new SimulationSpec.ChangeSetModelDescriptor(
 						new SimulationSpec.Identifier(),
