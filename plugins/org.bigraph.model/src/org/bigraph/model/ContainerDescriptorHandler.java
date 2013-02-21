@@ -75,6 +75,11 @@ final class ContainerDescriptorHandler
 				throw new ChangeCreationException(co,
 						"" + co.getChild() + " isn't connected to " +
 						co.getParent());
+			
+			if (ch.getExtendedDataMap(scratch).size() != 0)
+				throw new ChangeCreationException(co,
+						"" + co.getChild() + " still has extended data " +
+						"that must be removed first");
 		} else return false;
 		return true;
 	}
