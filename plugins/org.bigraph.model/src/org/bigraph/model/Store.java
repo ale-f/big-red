@@ -10,6 +10,14 @@ import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class Store implements Resolver {
+	private static final class Holder {
+		private static final Store INSTANCE = new Store();
+	}
+	
+	public static final Store getInstance() {
+		return Holder.INSTANCE;
+	}
+	
 	protected static abstract class StoreChangeDescriptor
 			implements IChangeDescriptor {
 		static {
@@ -161,8 +169,10 @@ public class Store implements Resolver {
 		
 		@Override
 		public ModelObject lookup(PropertyScratchpad context, Resolver r) {
-			return ModelObject.require(
-					r.lookup(context, this), ModelObject.class);
+			Object o = r.lookup(context, this);
+			if (o == null)
+				o = Store.getInstance().lookup(context, this);
+			return ModelObject.require(o, ModelObject.class);
 		}
 		
 		@Override
