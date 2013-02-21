@@ -12,7 +12,6 @@ import org.bigraph.model.Control.Kind;
 import org.bigraph.model.Store;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.assistants.ResolverDeque;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.LoadFailedException;
@@ -234,26 +233,23 @@ implements PropertyChangeListener {
 		} else return null;
 	}
 	
-	private Store store = new Store();
-	
 	@Override
 	protected Resolver getResolver() {
-		ResolverDeque rd = new ResolverDeque();
-		rd.add(store);
-		rd.add(getModel());
-		return rd;
+		return getModel();
 	}
 	
-	private final IChangeDescriptor changeDeleteControl(Control c) {
+	private static final IChangeDescriptor changeDeleteControl(Control c) {
 		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
 		Control.Identifier cid = c.getIdentifier();
 		
 		for (PortSpec i : c.getPorts()) {
 			PortSpec.Identifier pid = i.getIdentifier();
-			cdg.add(new Store.ToStoreDescriptor(pid, store.createID()));
+			cdg.add(new Store.ToStoreDescriptor(
+					pid, Store.getInstance().createID()));
 			cdg.add(new Control.ChangeRemovePortSpecDescriptor(pid));
 		}
-		cdg.add(new Store.ToStoreDescriptor(cid, store.createID()));
+		cdg.add(new Store.ToStoreDescriptor(
+				cid, Store.getInstance().createID()));
 		cdg.add(new Signature.ChangeRemoveControlDescriptor(
 				new Signature.Identifier(), c.getIdentifier()));
 		
@@ -740,10 +736,6 @@ implements PropertyChangeListener {
 	protected void createActions() {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	Store getStore() {
-		return store;
 	}
 	
 	@Override

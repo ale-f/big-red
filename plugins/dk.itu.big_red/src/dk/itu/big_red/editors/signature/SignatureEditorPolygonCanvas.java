@@ -289,7 +289,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		PortSpec p = getModel().getPorts().get(deleteIndex);
 		PortSpec.Identifier pid = p.getIdentifier();
 		cdg.add(new Store.ToStoreDescriptor(
-				pid, editor.getStore().createID()));
+				pid, Store.getInstance().createID()));
 		cdg.add(new Control.ChangeRemovePortSpecDescriptor(pid));
 		doChange(cdg);
 	}
@@ -299,7 +299,7 @@ public class SignatureEditorPolygonCanvas extends Canvas implements
 		for (PortSpec p : getModel().getPorts()) {
 			PortSpec.Identifier pid = p.getIdentifier();
 			cdg.add(new Store.ToStoreDescriptor(
-					pid, editor.getStore().createID()));
+					pid, Store.getInstance().createID()));
 			cdg.add(new Control.ChangeRemovePortSpecDescriptor(pid));
 		}
 		return cdg;
