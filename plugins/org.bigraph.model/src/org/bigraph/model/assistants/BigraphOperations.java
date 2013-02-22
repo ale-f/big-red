@@ -21,6 +21,7 @@ public abstract class BigraphOperations {
 	
 	private static IChangeDescriptor simulate(
 			IChangeDescriptor cd, PropertyScratchpad context, Resolver r) {
+		System.out.println(cd + ".simulate(" + context + ", " + r + ")");
 		cd.simulate(context, r);
 		return cd;
 	}
@@ -80,6 +81,27 @@ public abstract class BigraphOperations {
 		
 		/* Garbage collection */
 		removeNullEdges(cdg, context, b);
+	}
+	
+	public static void reparentObject(ChangeDescriptorGroup cdg,
+			PropertyScratchpad context, Layoutable l, Container newParent) {
+		Bigraph b = newParent.getBigraph(context);
+		Layoutable.Identifier lid = l.getIdentifier(context);
+		Container.Identifier
+			opid = l.getParent(context).getIdentifier(context),
+			npid = newParent.getIdentifier(context);
+		
+		ChangeDescriptorGroup remove = new ChangeDescriptorGroup();
+		removeObject(remove, context, l);
+		
+		ChangeDescriptorGroup add = remove.inverse();
+		add.set(add.indexOf(
+						new Container.ChangeAddChildDescriptor(opid, lid)),
+				new Container.ChangeAddChildDescriptor(npid, lid));
+		simulate(add, context, b);
+		
+		cdg.addAll(remove);
+		cdg.addAll(add);
 	}
 	
 	public static void removeNullEdges(ChangeDescriptorGroup cdg,
