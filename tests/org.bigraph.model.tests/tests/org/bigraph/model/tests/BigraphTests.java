@@ -52,12 +52,12 @@ public class BigraphTests {
 	@Test
 	public void basicAdd() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
-		Root r = new Root();
-		DescriptorExecutorManager.getInstance().tryApplyChange(null,
-				b.changeAddChild(r, "0"));
+		Root.Identifier rid = new Root.Identifier("0");
+		DescriptorExecutorManager.getInstance().tryApplyChange(b,
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(), rid));
 		
-		assertTrue("Root addition failed", b.getChildren().size() == 1 &&
-				b.getChildren().contains(r) && r.getName().equals("0"));
+		assertNotNull("Root addition failed", rid.lookup(null, b));
 	}
 	
 	@Test
@@ -65,84 +65,92 @@ public class BigraphTests {
 		Bigraph b = new Bigraph();
 		b.setSignature(signature);
 		
-		Root r = new Root();
+		Root.Identifier rid = new Root.Identifier("0");
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(null,
-					b.changeAddChild(r, "0"));
+			DescriptorExecutorManager.getInstance().tryApplyChange(b,
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(), rid));
 		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		
-		ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
-		Container c = r;
+		ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
+		Container.Identifier cid = rid;
 		for (int i = 0; i < 1000; i++) {
-			Node n = new Node(control0);
-			cg.add(
-					c.changeAddChild(n, Integer.toString(i)));
-			c = n;
+			Node.Identifier nid = new Node.Identifier(
+					Integer.toString(i), control0.getIdentifier());
+			cdg.add(new Container.ChangeAddChildDescriptor(cid, nid));
+			cid = nid;
 		}
 		
-		DescriptorExecutorManager.getInstance().tryApplyChange(null, cg);
+		DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg);
 	}
 	
 	@Test
 	public void removeRoot() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
-		Root r = new Root();
+		Root.Identifier rid = new Root.Identifier("0");
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(null,
-					b.changeAddChild(r, "0"));
-			assertTrue("Root addition failed",
-					b.getChildren().size() == 1 &&
-							b.getChildren().contains(r) &&
-							r.getName().equals("0"));
+			DescriptorExecutorManager.getInstance().tryApplyChange(b,
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(), rid));
+			assertNotNull("Root addition failed", rid.lookup(null, b));
 		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		
-		DescriptorExecutorManager.getInstance().tryApplyChange(null,
-				r.changeRemove());
+		DescriptorExecutorManager.getInstance().tryApplyChange(b,
+				new Container.ChangeRemoveChildDescriptor(
+						new Bigraph.Identifier(), rid));
 		
-		assertTrue("Root removal failed", b.getChildren().size() == 0);
+		assertNull("Root removal failed", rid.lookup(null, b));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
 	public void removeAbsentRoot() throws ChangeCreationException {
-		DescriptorExecutorManager.getInstance().tryApplyChange(null,
-				new Root().changeRemove());
+		DescriptorExecutorManager.getInstance().tryApplyChange(new Bigraph(),
+				new Container.ChangeRemoveChildDescriptor(
+						new Bigraph.Identifier(), new Root.Identifier("0")));
 	}
 	
-	private static void tryAddAndConnect(Bigraph b, InnerName in, Link l)
+	private static void tryAddAndConnect(
+			Bigraph b, InnerName.Identifier in, Link.Identifier l)
 			throws ChangeCreationException {
 		DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
-				b.changeAddChild(l, "a"),
-				b.changeAddChild(in, "a"),
-				new Point.ChangeConnectDescriptor(
-						new InnerName.Identifier("a"),
-						l.getIdentifier().getRenamed("a"))));
-		assertTrue(in.getLink().equals(l) && l.getPoints().contains(in));
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(), in),
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(), l),
+				new Point.ChangeConnectDescriptor(in, l)));
+		assertTrue(in.lookup(null, b).getLink() == l.lookup(null, b));
 	}
 	
 	@Test
 	public void connectInnerToEdge() throws ChangeCreationException {
-		tryAddAndConnect(new Bigraph(), new InnerName(), new Edge());
+		tryAddAndConnect(new Bigraph(),
+				new InnerName.Identifier("a"), new Edge.Identifier("a"));
 	}
 	
 	@Test
 	public void connectInnerToOuter() throws ChangeCreationException {
-		tryAddAndConnect(new Bigraph(), new InnerName(), new OuterName());
+		tryAddAndConnect(new Bigraph(),
+				new InnerName.Identifier("a"), new OuterName.Identifier("a"));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
 	public void connectPointTwice() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
-		Edge e1 = new Edge(), e2 = new Edge();
-		InnerName in = new InnerName();
 		try {
 			DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
-					b.changeAddChild(e1, "e1"),
-					b.changeAddChild(e2, "e2"),
-					b.changeAddChild(in, "in"),
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(),
+							new Edge.Identifier("e1")),
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(),
+							new Edge.Identifier("e2")),
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(),
+							new InnerName.Identifier("in")),
 					new Point.ChangeConnectDescriptor(
 							new InnerName.Identifier("in"),
 							new Edge.Identifier("e1"))));
@@ -159,12 +167,14 @@ public class BigraphTests {
 	@Test(expected = ChangeCreationException.class)
 	public void disconnectUnconnectedPoint() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
-		Edge e1 = new Edge();
-		InnerName in = new InnerName();
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(null, cdg(
-					b.changeAddChild(e1, "e1"),
-					b.changeAddChild(in, "in")));
+			DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(),
+							new Edge.Identifier("e1")),
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(),
+							new InnerName.Identifier("in"))));
 		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
@@ -178,71 +188,78 @@ public class BigraphTests {
 	@Test(expected = ChangeCreationException.class)
 	public void addDuplicateName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
-		Root
-			r0 = new Root(),
-			r1 = new Root();
-		DescriptorExecutorManager.getInstance().tryApplyChange(null, cdg(
-				b.changeAddChild(r0, "0"),
-				b.changeAddChild(r1, "0")));
+		DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(),
+						new Root.Identifier("0")),
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(),
+						new Root.Identifier("0"))));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
 	public void addInvalidRootName() throws ChangeCreationException {
-		Bigraph b = new Bigraph();
-		DescriptorExecutorManager.getInstance().tryApplyChange(null,
-				b.changeAddChild(new Root(), "test"));
+		DescriptorExecutorManager.getInstance().tryApplyChange(new Bigraph(),
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(),
+						new Root.Identifier("test")));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
 	public void setInvalidRootName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
-		Root r = new Root();
+		Root.Identifier rid = new Root.Identifier("0");
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(null,
-					b.changeAddChild(r, "0"));
+			DescriptorExecutorManager.getInstance().tryApplyChange(b,
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(), rid));
 		} catch (ChangeCreationException e) {
 			fail("Root insertion failed: " + e.getRationale());
 		}
 		DescriptorExecutorManager.getInstance().tryApplyChange(b,
-				new NamedModelObject.ChangeNameDescriptor(
-						r.getIdentifier(), "test"));
+				new NamedModelObject.ChangeNameDescriptor(rid, "test"));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
 	public void addInvalidSiteName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
-		Root r = new Root();
+		Root.Identifier rid = new Root.Identifier("0");
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(null,
-					b.changeAddChild(r, "0"));
+			DescriptorExecutorManager.getInstance().tryApplyChange(b,
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(), rid));
 		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
-		DescriptorExecutorManager.getInstance().tryApplyChange(null,
-				r.changeAddChild(new Site(), "test"));
+		DescriptorExecutorManager.getInstance().tryApplyChange(b,
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(),
+						new Site.Identifier("test")));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
 	public void setInvalidSiteName() throws ChangeCreationException {
 		Bigraph b = new Bigraph();
-		Root r = new Root();
-		Site s = new Site();
 		try {
-			DescriptorExecutorManager.getInstance().tryApplyChange(null, cdg(
-					b.changeAddChild(r, "0"),
-					r.changeAddChild(s, "0")));
+			DescriptorExecutorManager.getInstance().tryApplyChange(b, cdg(
+					new Container.ChangeAddChildDescriptor(
+							new Bigraph.Identifier(),
+							new Root.Identifier("0")),
+					new Container.ChangeAddChildDescriptor(
+							new Root.Identifier("0"),
+							new Site.Identifier("0"))));
 		} catch (ChangeCreationException e) {
 			fail(e.getRationale());
 		}
 		DescriptorExecutorManager.getInstance().tryApplyChange(b,
 				new NamedModelObject.ChangeNameDescriptor(
-						s.getIdentifier(), "test"));
+						new Site.Identifier("0"), "test"));
 	}
 	
 	@Test(expected = ChangeCreationException.class)
 	public void addSiteToBigraph() throws ChangeCreationException {
-		Bigraph b = new Bigraph();
-		DescriptorExecutorManager.getInstance().tryApplyChange(null,
-				b.changeAddChild(new Site(), "0"));
+		DescriptorExecutorManager.getInstance().tryApplyChange(new Bigraph(),
+				new Container.ChangeAddChildDescriptor(
+						new Bigraph.Identifier(), new Site.Identifier("0")));
 	}
 }
