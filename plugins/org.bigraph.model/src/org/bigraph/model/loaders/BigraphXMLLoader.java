@@ -128,8 +128,10 @@ public class BigraphXMLLoader extends XMLLoader {
 		}
 
 		if (model instanceof Layoutable)
-			addChange(context.changeAddChild(
-					(Layoutable)model, getAttributeNS(e, BIGRAPH, "name")));
+			addChange(new Container.ChangeAddChildDescriptor(
+					context.getIdentifier(getScratch()),
+					((Layoutable)model).getIdentifier(getScratch()).getRenamed(
+							getAttributeNS(e, BIGRAPH, "name"))));
 		
 		if (model instanceof Container) {
 			processContainer(e, (Container)model);
