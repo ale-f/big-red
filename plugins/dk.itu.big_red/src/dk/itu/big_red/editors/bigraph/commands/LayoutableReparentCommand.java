@@ -51,9 +51,7 @@ public class LayoutableReparentCommand extends ChangeCommand {
 		
 		Layoutable.Identifier lid = child.getIdentifier();
 		
-		BigraphOperations.reparentObject(cg, scratch, child, parent);
-		System.out.println(cg);
-		
+		BigraphOperations.reparentObject(cg, scratch, child, parent);		
 		/* The old reference to child is no longer helpful */
 		cg.add(new LayoutUtilities.ChangeLayoutDescriptor(scratch,
 				lid.lookup(scratch, parent.getBigraph()), constraint));

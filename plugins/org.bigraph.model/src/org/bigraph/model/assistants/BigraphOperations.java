@@ -21,7 +21,6 @@ public abstract class BigraphOperations {
 	
 	private static IChangeDescriptor simulate(
 			IChangeDescriptor cd, PropertyScratchpad context, Resolver r) {
-		System.out.println(cd + ".simulate(" + context + ", " + r + ")");
 		cd.simulate(context, r);
 		return cd;
 	}
