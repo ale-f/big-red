@@ -33,6 +33,11 @@ final class ContainerDescriptorHandler
 							" is an atomic control");
 			}
 			
+			Layoutable tmp = instantiate(childI, scratch, resolver);
+			Namespace<Layoutable> ns =
+					parent.getBigraph(scratch).getNamespace(tmp);
+			HandlerUtilities.checkName(scratch, cd, tmp, ns, childI.getName());
+			
 			if (childI instanceof Node.Identifier)
 				tryLookup(cd, ((Node.Identifier)childI).getControl(),
 						scratch, resolver, Control.class);
