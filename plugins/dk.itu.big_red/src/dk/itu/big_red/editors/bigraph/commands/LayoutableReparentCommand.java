@@ -2,11 +2,8 @@ package dk.itu.big_red.editors.bigraph.commands;
 
 import org.bigraph.model.Container;
 import org.bigraph.model.Layoutable;
-import org.bigraph.model.Link;
-import org.bigraph.model.Node;
-import org.bigraph.model.Point;
-import org.bigraph.model.Port;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
+import org.bigraph.model.assistants.BigraphOperations;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -43,49 +40,22 @@ public class LayoutableReparentCommand extends ChangeCommand {
 			this.constraint = (Rectangle)constraint;
 	}
 	
-	private ChangeDescriptorGroup post = new ChangeDescriptorGroup();
-	
-	private void remove(Layoutable l, boolean root) {
-		if (l instanceof Container)
-			for (Layoutable k : ((Container)l).getChildren())
-				remove(k, false);
-		
-		if (l instanceof Node) {
-			for (Port p : ((Node)l).getPorts()) {
-				Link li = p.getLink();
-				if (li != null) {
-					cg.add(new BoundDescriptor(l.getBigraph(),
-							new Point.ChangeDisconnectDescriptor(
-									p.getIdentifier(), li.getIdentifier())));
-					post.add(new BoundDescriptor(l.getBigraph(),
-							new Point.ChangeConnectDescriptor(
-									p.getIdentifier(), li.getIdentifier())));
-				}
-			}
-		}
-		
-		cg.add(l.changeRemove());
-		if (!root) {
-			post.add(0, new BoundDescriptor(l.getBigraph(),
-					new LayoutUtilities.ChangeLayoutDescriptor(
-							null, l, LayoutUtilities.getLayout(l))));
-			post.add(0, l.getParent().changeAddChild(l, l.getName()));
-		}
-	}
+	private PropertyScratchpad scratch = new PropertyScratchpad();
 	
 	@Override
 	public void prepare() {
-		cg.clear(); post.clear();
+		cg.clear(); scratch.clear();
 		if (parent == null || child == null || constraint == null)
 			return;
 		setContext(parent.getBigraph());
 		
-		remove(child, true);
+		Layoutable.Identifier lid = child.getIdentifier();
 		
-		cg.add(parent.changeAddChild(child, child.getName()));
-		cg.add(new BoundDescriptor(parent.getBigraph(),
-				new LayoutUtilities.ChangeLayoutDescriptor(
-						null, child, constraint)));
-		cg.add(post);
+		BigraphOperations.reparentObject(cg, scratch, child, parent);
+		System.out.println(cg);
+		
+		/* The old reference to child is no longer helpful */
+		cg.add(new LayoutUtilities.ChangeLayoutDescriptor(scratch,
+				lid.lookup(scratch, parent.getBigraph()), constraint));
 	}
 }
