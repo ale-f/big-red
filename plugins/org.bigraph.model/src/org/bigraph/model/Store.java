@@ -102,7 +102,9 @@ public class Store implements Resolver {
 		}
 	}
 	
-	private static final class DummyModelObject extends ModelObject {
+	final class DummyModelObject extends ModelObject {
+		final static String PROPERTY_STORE = ".dmo.internal.store";
+		
 		private final Identifier id;
 		
 		public DummyModelObject(Identifier id) {
@@ -124,6 +126,13 @@ public class Store implements Resolver {
 				Object newValue) {
 			/* do nothing */
 		}
+		
+		@Override
+		protected Object getProperty(String name) {
+			if (PROPERTY_STORE.equals(name)) {
+				return Store.this;
+			} else return super.getProperty(name);
+		}
 	}
 	
 	private Long nextID = new Long(0);
@@ -141,7 +150,7 @@ public class Store implements Resolver {
 		return new EntryIdentifier(getNextID());
 	}
 	
-	public boolean drop(long id) {
+	public boolean drop(EntryIdentifier id) {
 		return (entries.remove(id) != null);
 	}
 	

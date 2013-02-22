@@ -56,6 +56,11 @@ final class StoreDescriptorHandler
 					source.getExtendedDataMap().entrySet())
 				target.setExtendedData(i.getKey(), i.getValue());
 			source.getExtendedDataMap().clear();
+			
+			if (cd instanceof FromStoreDescriptor)
+				((Store)source.getProperty(
+						Store.DummyModelObject.PROPERTY_STORE)).
+								drop(cd.getEntryID());
 		} else return false;
 		return true;
 	}
