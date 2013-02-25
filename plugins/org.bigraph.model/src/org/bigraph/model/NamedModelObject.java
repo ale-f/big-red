@@ -1,10 +1,16 @@
 package org.bigraph.model;
 
+import java.util.Collection;
+import java.util.Comparator;
+
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.RedProperty;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.names.Namespace;
+import org.bigraph.model.utilities.CollectionUtilities;
+import org.bigraph.model.utilities.comparators.ComparatorUtilities;
+import org.bigraph.model.utilities.comparators.ComparatorUtilities.Converter;
 
 public abstract class NamedModelObject extends ModelObject {
 	@RedProperty(fired = String.class, retrieved = String.class)
@@ -168,5 +174,24 @@ public abstract class NamedModelObject extends ModelObject {
 	
 	public final String toString(PropertyScratchpad context) {
 		return getIdentifier(context).toString();
+	}
+	
+	public static final <T extends NamedModelObject>
+	Collection<? extends T> order(
+			Iterable<? extends T> c, Comparator<String> cmp) {
+		return order(null, c, cmp);
+	}
+	
+	public static final <T extends NamedModelObject>
+	Collection<? extends T> order(final PropertyScratchpad context,
+			Iterable<? extends T> c, Comparator<String> cmp) {
+		return CollectionUtilities.collect(c,
+				ComparatorUtilities.convertComparator(
+						new Converter<NamedModelObject, String>() {
+							@Override
+							public String convert(NamedModelObject object) {
+								return object.getName(context);
+							}
+						}, cmp));
 	}
 }
