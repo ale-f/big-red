@@ -27,7 +27,9 @@ public abstract class BigraphOperations {
 	
 	public static void disconnectPoint(ChangeDescriptorGroup cdg,
 			PropertyScratchpad context, Point p) {
-		if (p.getLink(context) == null)
+		if (cdg == null || context == null || p == null)
+			return;
+		else if (p.getLink(context) == null)
 			return;
 		
 		cdg.add(simulate(
@@ -39,7 +41,9 @@ public abstract class BigraphOperations {
 	
 	public static void removeObject(ChangeDescriptorGroup cdg,
 			PropertyScratchpad context, Layoutable l) {
-		if (l.getParent(context) == null)
+		if (cdg == null || context == null || l == null)
+			return;
+		else if (l.getParent(context) == null)
 			return;
 		
 		Bigraph b = l.getBigraph(context);
@@ -84,6 +88,9 @@ public abstract class BigraphOperations {
 	
 	public static void reparentObject(ChangeDescriptorGroup cdg,
 			PropertyScratchpad context, Layoutable l, Container newParent) {
+		if (cdg == null || context == null || l == null || newParent == null)
+			return;
+		
 		Bigraph b = newParent.getBigraph(context);
 		Layoutable.Identifier lid = l.getIdentifier(context);
 		Container.Identifier
@@ -105,6 +112,9 @@ public abstract class BigraphOperations {
 	
 	public static void removeNullEdges(ChangeDescriptorGroup cdg,
 			PropertyScratchpad context, Bigraph b) {
+		if (cdg == null || context == null || b == null)
+			return;
+		
 		for (Edge ch : new FilteringIterable<Edge>(
 				Edge.class, collect(b.getChildren(context))))
 			if (ch.getPoints(context).size() == 0)
