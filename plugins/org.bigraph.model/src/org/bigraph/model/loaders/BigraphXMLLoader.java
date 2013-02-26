@@ -10,9 +10,11 @@ import org.bigraph.model.InnerName;
 import org.bigraph.model.Layoutable;
 import org.bigraph.model.Link;
 import org.bigraph.model.ModelObject;
+import org.bigraph.model.ModelObject.Identifier;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
+import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.Site;
@@ -76,72 +78,71 @@ public class BigraphXMLLoader extends XMLLoader {
 		} else throw new LoadFailedException(
 				"The bigraph does not define or reference a signature.");
 		
-		processContainer(e, bigraph);
+		processContainer(e, new Bigraph.Identifier());
 		
 		executeUndecorators(bigraph, e);
 		executeChanges();
 		return bigraph;
 	}
 	
-	private void processContainer(Element e, Container model) throws LoadFailedException {
+	private void processContainer(
+			Element e, Container.Identifier model) throws LoadFailedException {
 		for (Element i : getChildElements(e))
 			addChild(model, i);
 	}
 	
-	private void processPoint(Element e, Point model) throws LoadFailedException {
+	private <T extends Identifier> T select(T... args) {
+		for (T i : args)
+			if (i.lookup(getScratch(), getResolver()) != null)
+				return i;
+		return null;
+	}
+	
+	private void processPoint(Element e,
+			Point.Identifier model) throws LoadFailedException {
 		if (model != null) {
 			String linkName = getAttributeNS(e, BIGRAPH, "link");
-			if (linkName != null) {
-				Link link = (Link)bigraph.getNamespace(Link.class).get(
-						getScratch(), linkName);
-				if (link != null)
-					addChange(new Point.ChangeConnectDescriptor(
-							model.getIdentifier(getScratch()),
-							link.getIdentifier(getScratch())));
-			}
+			
+			Link.Identifier lid = select(
+					new Edge.Identifier(linkName),
+					new OuterName.Identifier(linkName));
+			
+			if (lid != null)
+				addChange(new Point.ChangeConnectDescriptor(model, lid));
 		} else {
 			addNotice(LoaderNotice.Type.WARNING,
 					"Invalid point referenced; skipping.");
 		}
 	}
 	
-	private void addChild(Container context, Element e) throws LoadFailedException {
+	private void addChild(Container.Identifier context, Element e)
+			throws LoadFailedException {
 		ModelObject.Identifier modelID = null;
-		boolean port = false;
 		String name = getAttributeNS(e, BIGRAPH, "name");
 		if (e.getLocalName().equals("node")) {
 			String
 				controlName = getAttributeNS(e, BIGRAPH, "control");
 			modelID = new Node.Identifier(name,
 					new Control.Identifier(controlName));
-		} else if (e.getLocalName().equals("port") && context instanceof Node) {
-			/*
-			 * <port /> tags shouldn't actually create anything, so let the
-			 * special handling commence!
-			 */
-			port = true;
+		} else if (e.getLocalName().equals("port") &&
+				context instanceof Node.Identifier) {
+			processPoint(e,
+					new Port.Identifier(name, (Node.Identifier)context));
+			/* Deliberately leave modelID unset */
 		} else modelID = BigraphXMLLoader.getNewObject(e.getLocalName(), name);
 
-		ModelObject model = null;
 		if (modelID instanceof Layoutable.Identifier) {
-			addChange(new Container.ChangeAddChildDescriptor(
-					context.getIdentifier(getScratch()),
-					(Layoutable.Identifier)modelID));
+			Layoutable.Identifier lID = (Layoutable.Identifier)modelID;
+			addChange(new Container.ChangeAddChildDescriptor(context, lID));
 			
-			/* Get the temporary object from the scratchpad */
-			model = modelID.lookup(getScratch(), getResolver());
+			if (modelID instanceof Container.Identifier) {
+				processContainer(e, (Container.Identifier)modelID);
+			} else if (modelID instanceof InnerName.Identifier) {
+				processPoint(e, (InnerName.Identifier)modelID);
+			}
+			
+			executeUndecorators(lID.lookup(getScratch(), getResolver()), e);
 		}
-		
-		if (model instanceof Container) {
-			processContainer(e, (Container)model);
-		} else if (port) {
-			processPoint(e, ((Node)context).getPort(name));
-		} else if (model instanceof InnerName) {
-			processPoint(e, (InnerName)model);
-		}
-		
-		if (model != null)
-			executeUndecorators(model, e);
 	}
 
 	@Override
