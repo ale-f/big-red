@@ -110,6 +110,28 @@ public abstract class BigraphOperations {
 		cdg.addAll(add);
 	}
 	
+	public static void copyPlace(ChangeDescriptorGroup cdg,
+			PropertyScratchpad context, Layoutable l, Container newParent) {
+		if (cdg == null || context == null || l == null || newParent == null)
+			return;
+		
+		Bigraph
+			b2 = newParent.getBigraph(context);
+		
+		Layoutable.Identifier newID = l.getIdentifier(context).getRenamed(
+				b2.getNamespace(l).getNextName(context));
+		
+		cdg.add(simulate(
+				new Container.ChangeAddChildDescriptor(
+						newParent.getIdentifier(context), newID),
+				context, b2));
+		
+		if (l instanceof Container)
+			for (Layoutable m : ((Container)l).getChildren(context))
+				copyPlace(cdg, context, m,
+						((Container.Identifier)newID).lookup(context, b2));
+	}
+	
 	public static void removeNullEdges(ChangeDescriptorGroup cdg,
 			PropertyScratchpad context, Bigraph b) {
 		if (cdg == null || context == null || b == null)
