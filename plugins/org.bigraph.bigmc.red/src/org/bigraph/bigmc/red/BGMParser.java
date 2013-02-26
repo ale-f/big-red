@@ -7,6 +7,7 @@ import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
 import org.bigraph.model.Control;
 import org.bigraph.model.Control.Kind;
+import org.bigraph.model.NamedModelObject;
 import org.bigraph.model.Node;
 import org.bigraph.model.OuterName;
 import org.bigraph.model.Point;
@@ -16,8 +17,11 @@ import org.bigraph.model.Root;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.Site;
+import org.bigraph.model.assistants.BigraphOperations;
+import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.assistants.IObjectIdentifier.Resolver;
 import org.bigraph.model.changes.descriptors.ChangeCreationException;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.utilities.CollectionUtilities;
@@ -25,6 +29,7 @@ import org.bigraph.model.utilities.LexerFactory;
 import org.bigraph.model.utilities.LexerFactory.Token;
 import org.bigraph.model.utilities.LexerFactory.TokenType;
 import org.bigraph.model.utilities.LexerFactory.TokenIterator;
+import org.bigraph.model.utilities.comparators.IntegerStringComparator;
 
 import static org.bigraph.bigmc.red.BGMParser.Type.*;
 
@@ -113,6 +118,16 @@ public class BGMParser {
 			throws ChangeCreationException {
 		ReactionRule rr = new ReactionRule();
 		rr.setRedex(lhs);
+		
+		ChangeDescriptorGroup cdg = rr.getEdit().getDescriptors();
+		PropertyScratchpad scratch = new PropertyScratchpad();
+		for (Root i : rr.getReactum().getRoots())
+			BigraphOperations.removeObject(cdg, scratch, i);
+		
+		for (Root i : NamedModelObject.order(
+				rhs.getRoots(), IntegerStringComparator.INSTANCE))
+			BigraphOperations.copyPlace(cdg, scratch, i, rr.getReactum());
+		
 		change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
 				new SimulationSpec.Identifier(), -1, rr));
 	}
