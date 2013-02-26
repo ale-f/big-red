@@ -106,44 +106,36 @@ public class BigraphXMLLoader extends XMLLoader {
 	}
 	
 	private void addChild(Container context, Element e) throws LoadFailedException {
-		ModelObject model = null;
+		ModelObject.Identifier modelID = null;
 		boolean port = false;
+		String name = getAttributeNS(e, BIGRAPH, "name");
 		if (e.getLocalName().equals("node")) {
-			String controlName = getAttributeNS(e, BIGRAPH, "control");
-			Control c = bigraph.getSignature().getControl(controlName);
-			if (c == null)
-				throw new LoadFailedException(
-					"The control \"" + controlName + "\" isn't defined by " +
-							"this bigraph's signature.");
-			
-			model = new Node(c);
+			String
+				controlName = getAttributeNS(e, BIGRAPH, "control");
+			modelID = new Node.Identifier(name,
+					new Control.Identifier(controlName));
 		} else if (e.getLocalName().equals("port") && context instanceof Node) {
 			/*
 			 * <port /> tags shouldn't actually create anything, so let the
 			 * special handling commence!
 			 */
 			port = true;
-		} else {
-			model = BigraphXMLLoader.getNewObject(e.getLocalName()); /* XXX */
-		}
+		} else modelID = BigraphXMLLoader.getNewObject(e.getLocalName(), name);
 
-		if (model instanceof Layoutable) {
-			String name = getAttributeNS(e, BIGRAPH, "name");
-			Layoutable.Identifier modelID = ((Layoutable)model).getIdentifier(
-					getScratch()).getRenamed(name);
+		ModelObject model = null;
+		if (modelID instanceof Layoutable.Identifier) {
 			addChange(new Container.ChangeAddChildDescriptor(
-					context.getIdentifier(getScratch()), modelID));
+					context.getIdentifier(getScratch()),
+					(Layoutable.Identifier)modelID));
 			
-			/* Get the temporary object that's now in the scratchpad */
+			/* Get the temporary object from the scratchpad */
 			model = modelID.lookup(getScratch(), getResolver());
 		}
 		
 		if (model instanceof Container) {
 			processContainer(e, (Container)model);
 		} else if (port) {
-			Node n = (Node)context;
-			processPoint(e,
-				n.getPort(getAttributeNS(e, BIGRAPH, "name")));
+			processPoint(e, ((Node)context).getPort(name));
 		} else if (model instanceof InnerName) {
 			processPoint(e, (InnerName)model);
 		}
@@ -157,31 +149,24 @@ public class BigraphXMLLoader extends XMLLoader {
 		return (BigraphXMLLoader)super.setFile(f);
 	}
 
-	/**
-	 * Creates a new object of the named type.
-	 * @param typeName a type name (not case sensitive)
-	 * @return a new object of the appropriate type, or <code>null</code> if
-	 *          the type name was unrecognised
-	 * @see ModelObject#getType()
-	 */
-	static ModelObject getNewObject(String typeName) {
+	static ModelObject.Identifier getNewObject(String typeName, String name) {
 		typeName = typeName.toLowerCase(Locale.ENGLISH);
 		if (typeName.equals("bigraph"))
-			return new Bigraph();
+			return new Bigraph.Identifier();
 		else if (typeName.equals("root"))
-			return new Root();
+			return new Root.Identifier(name);
 		else if (typeName.equals("site"))
-			return new Site();
+			return new Site.Identifier(name);
 		else if (typeName.equals("innername"))
-			return new InnerName();
+			return new InnerName.Identifier(name);
 		else if (typeName.equals("outername"))
-			return new OuterName();
+			return new OuterName.Identifier(name);
 		else if (typeName.equals("signature"))
-			return new Signature();
+			return new Signature.Identifier();
 		else if (typeName.equals("control"))
-			return new Control();
+			return new Control.Identifier(name);
 		else if (typeName.equals("edge"))
-			return new Edge();
+			return new Edge.Identifier(name);
 		else return null;
 	}
 }
