@@ -124,14 +124,19 @@ public class BigraphXMLLoader extends XMLLoader {
 			 */
 			port = true;
 		} else {
-			model = BigraphXMLLoader.getNewObject(e.getLocalName());
+			model = BigraphXMLLoader.getNewObject(e.getLocalName()); /* XXX */
 		}
 
-		if (model instanceof Layoutable)
+		if (model instanceof Layoutable) {
+			String name = getAttributeNS(e, BIGRAPH, "name");
+			Layoutable.Identifier modelID = ((Layoutable)model).getIdentifier(
+					getScratch()).getRenamed(name);
 			addChange(new Container.ChangeAddChildDescriptor(
-					context.getIdentifier(getScratch()),
-					((Layoutable)model).getIdentifier(getScratch()).getRenamed(
-							getAttributeNS(e, BIGRAPH, "name"))));
+					context.getIdentifier(getScratch()), modelID));
+			
+			/* Get the temporary object that's now in the scratchpad */
+			model = modelID.lookup(getScratch(), getResolver());
+		}
 		
 		if (model instanceof Container) {
 			processContainer(e, (Container)model);
