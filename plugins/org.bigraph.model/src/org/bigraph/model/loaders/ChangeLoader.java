@@ -19,9 +19,15 @@ public abstract class ChangeLoader extends Loader implements IChangeLoader {
 	
 	@Override
 	public void addChange(IChangeDescriptor c) {
-		if (c != null) {
+		if (c == null)
+			return;
+		try {
+			DescriptorExecutorManager.getInstance().tryValidateChange(
+					getScratch(), getResolver(), c);
 			c.simulate(getScratch(), getResolver());
 			cdg.add(c);
+		} catch (ChangeCreationException e) {
+			/* do nothing */
 		}
 	}
 	
