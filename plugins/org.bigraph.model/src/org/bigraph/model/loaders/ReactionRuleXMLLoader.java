@@ -67,6 +67,7 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		if (replacement != null)
 			return loadRelative(replacement, ReactionRule.class,
 					new ReactionRuleXMLLoader(this));
+		executeUndecorators(rr, e);
 		
 		rr.setRedex(loadSub(
 				selectFirst(
@@ -77,7 +78,6 @@ public class ReactionRuleXMLLoader extends XMLLoader {
 		populateRRDescriptorGroup(e);
 		updateReactum();
 		
-		executeUndecorators(rr, e);
 		return rr;
 	}
 	

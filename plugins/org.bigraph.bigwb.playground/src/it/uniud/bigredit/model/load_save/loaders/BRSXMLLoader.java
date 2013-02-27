@@ -83,7 +83,7 @@ import it.uniud.bigredit.model.BRS;
 			if (replacement != null)
 				return loadRelative(replacement, BRS.class,
 						new BRSXMLLoader());
-			BRS ss = new BRS();
+			BRS ss = executeUndecorators(new BRS(), e);
 			
 			ChangeDescriptorGroup cg = new ChangeDescriptorGroup();
 			
@@ -96,6 +96,7 @@ import it.uniud.bigredit.model.BRS;
 			}else{
 				System.out.println("Signature ==  null");
 			}
+			
 //				cg.add(ss.setSignature(makeSignature(signatureElement)));
 //			
 //TODO:RULE			for (Element i : getNamedChildElements(e, BRS, "rule"))
@@ -141,7 +142,7 @@ import it.uniud.bigredit.model.BRS;
 				throw new LoadFailedException(cre);
 			}
 			
-			return executeUndecorators(ss, e);
+			return ss;
 		}
 		
 		@Override

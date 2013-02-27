@@ -91,6 +91,7 @@ public class EditXMLLoader extends XMLLoader {
 		if (replacement != null)
 			return loadRelative(replacement, Edit.class,
 					new EditXMLLoader(this));
+		executeUndecorators(edit, el);
 		
 		int index = 0;
 		for (Element i :
@@ -116,7 +117,6 @@ public class EditXMLLoader extends XMLLoader {
 					"Couldn't create a change descriptor from element " + i);
 		}
 		
-		executeUndecorators(edit, el);
 		executeChanges();
 		return edit;
 	}

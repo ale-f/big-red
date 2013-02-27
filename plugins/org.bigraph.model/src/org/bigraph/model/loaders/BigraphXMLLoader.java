@@ -67,6 +67,7 @@ public class BigraphXMLLoader extends XMLLoader {
 		if (replacement != null)
 			return loadRelative(replacement, Bigraph.class,
 					new BigraphXMLLoader(this));
+		executeUndecorators(bigraph, e);
 		
 		Signature s = loadSub(
 				selectFirst(
@@ -80,7 +81,6 @@ public class BigraphXMLLoader extends XMLLoader {
 		
 		processContainer(e, new Bigraph.Identifier());
 		
-		executeUndecorators(bigraph, e);
 		executeChanges();
 		return bigraph;
 	}
@@ -135,13 +135,14 @@ public class BigraphXMLLoader extends XMLLoader {
 			Layoutable.Identifier lID = (Layoutable.Identifier)modelID;
 			addChange(new Container.ChangeAddChildDescriptor(context, lID));
 			
+			executeUndecorators(lID.lookup(getScratch(), getResolver()), e);
+			
 			if (modelID instanceof Container.Identifier) {
 				processContainer(e, (Container.Identifier)modelID);
 			} else if (modelID instanceof InnerName.Identifier) {
 				processPoint(e, (InnerName.Identifier)modelID);
 			}
 			
-			executeUndecorators(lID.lookup(getScratch(), getResolver()), e);
 		}
 	}
 

@@ -49,6 +49,8 @@ public class SignatureXMLLoader extends XMLLoader {
 				new Signature.Identifier(), cid));
 		Control model = cid.lookup(getScratch(), getResolver());
 		
+		executeUndecorators(model, e);
+		
 		String kind = getAttributeNS(e, SIGNATURE, "kind");
 		if (kind != null)
 			addChange(new Control.ChangeKindDescriptor(getScratch(), model,
@@ -57,8 +59,6 @@ public class SignatureXMLLoader extends XMLLoader {
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "port"))
 			makePortSpec(j, model);
-		
-		executeUndecorators(model, e);
 	}
 	
 	private void makeSignature(Element e) throws LoadFailedException {
@@ -76,6 +76,7 @@ public class SignatureXMLLoader extends XMLLoader {
 		if (replacement != null)
 			return loadRelative(replacement, Signature.class,
 					new SignatureXMLLoader(this));
+		executeUndecorators(sig, e);
 		
 		for (Element j : getNamedChildElements(e, SIGNATURE, "signature"))
 			makeSignature(j);
@@ -83,7 +84,6 @@ public class SignatureXMLLoader extends XMLLoader {
 		for (Element j : getNamedChildElements(e, SIGNATURE, "control"))
 			makeControl(j);
 		
-		executeUndecorators(sig, e);
 		executeChanges();
 		return sig;
 	}

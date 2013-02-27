@@ -53,6 +53,7 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 		if (replacement != null)
 			return loadRelative(replacement, SimulationSpec.class,
 					new SimulationSpecXMLLoader(this));
+		executeUndecorators(ss, e);
 		
 		Signature s = loadSub(
 				selectFirst(
@@ -86,7 +87,6 @@ public class SimulationSpecXMLLoader extends XMLLoader {
 			addChange(new SimulationSpec.ChangeSetModelDescriptor(
 					new SimulationSpec.Identifier(), null, b));
 		
-		executeUndecorators(ss, e);
 		executeChanges();
 		return ss;
 	}
