@@ -377,8 +377,6 @@ public class RuleEditor extends AbstractGEFEditor implements
 	}
 	
 	private Map<IChangeDescriptor, IChangeDescriptor>
-		reactumChangeToDescriptor =
-				new HashMap<IChangeDescriptor, IChangeDescriptor>(),
 		safeRedexToReactum =
 				new HashMap<IChangeDescriptor, IChangeDescriptor>();
 	
@@ -389,9 +387,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 		ChangeDescriptorGroup reactumChanges = getModel().getEdit().getDescriptors();
 		if (target == getRedex()) {
 			IChangeDescriptor cd =
-				DescriptorUtilities.createDescriptor(
-					(detail != CommandStack.PRE_UNDO ?
-						commandChange : commandChange.inverse()));
+				(detail != CommandStack.PRE_UNDO ?
+					commandChange : commandChange.inverse());
 			
 			ChangeDescriptorGroup lRedexCDs =
 					DescriptorUtilities.linearise(cd);
@@ -402,8 +399,8 @@ public class RuleEditor extends AbstractGEFEditor implements
 			try {
 				PropertyScratchpad scratch = new PropertyScratchpad();
 				if (detail != CommandStack.PRE_UNDO) {
-					commandChange.simulate(scratch, null);
-				} else commandChange.inverse().simulate(scratch, null);
+					commandChange.simulate(scratch, getRedex());
+				} else commandChange.inverse().simulate(scratch, getRedex());
 				/* scratch now contains the prospective state of the redex
 				 * after the change has been applied. Check that we can still
 				 * get to the reactum from there */
@@ -440,15 +437,10 @@ public class RuleEditor extends AbstractGEFEditor implements
 						"slipped through the net", cce);
 			}
 		} else if (target == getReactum()) {
-			IChangeDescriptor cd;
+			IChangeDescriptor cd = commandChange;
 			if (detail == CommandStack.PRE_UNDO) {
-				cd = reactumChangeToDescriptor.remove(commandChange);
 				reactumChanges.remove(cd);
-			} else {
-				cd = DescriptorUtilities.createDescriptor(commandChange);
-				reactumChangeToDescriptor.put(commandChange, cd);
-				reactumChanges.add(cd);
-			}
+			} else reactumChanges.add(cd);
 		}
 	}
 	

@@ -1,12 +1,5 @@
 package dk.itu.big_red.editors.rule;
 
-import org.bigraph.model.Container.ChangeRemoveChildDescriptor;
-import org.bigraph.model.Container.ChangeAddChild;
-import org.bigraph.model.Container.ChangeAddChildDescriptor;
-import org.bigraph.model.Layoutable.ChangeRemove;
-import org.bigraph.model.assistants.PropertyScratchpad;
-import org.bigraph.model.changes.IChange;
-import org.bigraph.model.changes.descriptors.BoundDescriptor;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
@@ -26,62 +19,5 @@ abstract class DescriptorUtilities {
 				linearise(i, cdg);
 		} else cdg.add(cd);
 		return cdg;
-	}
-	
-	/**
-	 * Converts an {@link IChange} that hasn't been applied yet into an {@link
-	 * IChangeDescriptor}.
-	 * @param c the {@link IChange} to convert
-	 * @return an {@link IChangeDescriptor}, or <code>null</code> in the event
-	 * of a conversion error
-	 * @see #createDescriptor(PropertyScratchpad, IChange)
-	 */
-	static IChangeDescriptor createDescriptor(IChangeDescriptor c) {
-		return createDescriptor(null, c);
-	}
-	
-	/**
-	 * Converts an {@link IChange} into an {@link IChangeDescriptor}.
-	 * @param context a {@link PropertyScratchpad} representing an appropriate
-	 * initial model state; can be <code>null</code>
-	 * @param c the {@link IChange} to convert
-	 * @return an {@link IChangeDescriptor}, or <code>null</code> in the event
-	 * of a conversion error
-	 * @see #createDescriptor(IChange)
-	 */
-	static IChangeDescriptor createDescriptor(
-			PropertyScratchpad context, IChangeDescriptor c) {
-		IChangeDescriptor chd = null;
-		if (c instanceof IChangeDescriptor.Group) {
-			ChangeDescriptorGroup cdg = new ChangeDescriptorGroup();
-			context = new PropertyScratchpad(context);
-			for (IChangeDescriptor ch : (IChangeDescriptor.Group)c) {
-				chd = createDescriptor(context, ch);
-				if (chd != null) {
-					cdg.add(chd);
-				} else {
-					cdg.clear();
-					return null;
-				}
-			}
-			/* All changes will have been simulated */
-			return cdg;
-		} else if (c instanceof ChangeRemove) {
-			ChangeRemove ch = (ChangeRemove)c;
-			chd = new ChangeRemoveChildDescriptor(
-					ch.getCreator().getParent(context).getIdentifier(context),
-					ch.getCreator().getIdentifier(context));
-		} else if (c instanceof ChangeAddChild) {
-			ChangeAddChild ch = (ChangeAddChild)c;
-			chd = new ChangeAddChildDescriptor(
-					ch.getCreator().getIdentifier(context),
-					/* The new child's name should be null at this point */
-					ch.child.getIdentifier(context).getRenamed(ch.name));
-		} else if (c instanceof BoundDescriptor) {
-			chd = ((BoundDescriptor)c).getDescriptor();
-		}
-		if (context != null) /* XXX: need a resolver here somehow */
-			c.simulate(context, null);
-		return chd;
 	}
 }
