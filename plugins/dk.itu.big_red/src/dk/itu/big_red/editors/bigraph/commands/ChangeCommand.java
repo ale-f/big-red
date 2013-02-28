@@ -96,7 +96,8 @@ public class ChangeCommand extends Command {
 					getContext(), getChange());
 			UI.getActiveStatusLine().setErrorMessage(null);
 		} catch (ChangeCreationException cre) {
-			/* do nothing */
+			throw new RuntimeException("BUG: " + this + ".execute() called, " +
+					"but the change was rejected", cre);
 		}
 	}
 	
@@ -141,7 +142,7 @@ public class ChangeCommand extends Command {
 	
 	@Override
 	public String toString() {
-		return "ChangeCommand(" + getChange() + ")";
+		return "ChangeCommand(" + getContext() + ", " + getChange() + ")";
 	}
 	
 	@Override
