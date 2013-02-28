@@ -2,6 +2,8 @@ package dk.itu.big_red.model.load_save.loaders;
 
 import static org.bigraph.model.loaders.RedNamespaceConstants.CHANGE;
 
+import java.util.Arrays;
+
 import org.bigraph.extensions.param.ParameterUtilities;
 import org.bigraph.model.Bigraph;
 import org.bigraph.model.Container;
@@ -18,6 +20,7 @@ import org.bigraph.model.Port;
 import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.Store;
 import org.bigraph.model.assistants.PropertyScratchpad;
 import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
@@ -150,10 +153,13 @@ public final class ChangeCompatibilityLoader
 				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					cd = new Container.ChangeRemoveChildDescriptor(
-							l.lookup(scratch, getReactum()).
-							getParent(scratch).getIdentifier(scratch),
-							l);
+					cd = new ChangeDescriptorGroup(Arrays.asList(
+							new Store.ToStoreDescriptor(
+									l, Store.getInstance().createID()),
+							new Container.ChangeRemoveChildDescriptor(
+									l.lookup(scratch, getReactum()).
+									getParent(scratch).getIdentifier(scratch),
+									l)));
 			} else if (el.getLocalName().equals("rename")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
