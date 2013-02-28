@@ -51,9 +51,6 @@ public class LayoutableLayoutPolicy extends XYLayoutEditPolicy {
 	
 	@Override
 	protected Command getCreateCommand(CreateRequest request) {
-		Object requestObject = request.getNewObject();
-		
-		requestObject.getClass();
 		Layoutable self = (Layoutable)getHost().getModel();
 		if (!(self instanceof Container))
 			return null;
