@@ -3,6 +3,7 @@ package org.bigraph.model.loaders;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_BIG;
 import static org.bigraph.model.loaders.RedNamespaceConstants.EDIT_SIG;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.bigraph.model.Bigraph;
@@ -20,6 +21,8 @@ import org.bigraph.model.Point;
 import org.bigraph.model.Port;
 import org.bigraph.model.Root;
 import org.bigraph.model.Site;
+import org.bigraph.model.Store;
+import org.bigraph.model.changes.descriptors.ChangeDescriptorGroup;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 import org.bigraph.model.loaders.EditXMLLoader.Participant;
 import org.bigraph.model.process.IParticipantHost;
@@ -95,12 +98,20 @@ public class BigraphEditLoader implements Participant {
 				return new Container.ChangeAddChildDescriptor(
 						parent, child);
 			} else if ("remove".equals(localName)) {
+				String store =
+						getAttributeNS(descriptor, EDIT_BIG, "store");
+				Store.EntryIdentifier eID;
+				if (store != null) {
+					eID = new Store.EntryIdentifier(Long.parseLong(store));
+				} else eID = Store.getInstance().createID();
 				Container.Identifier parent = getIdentifier(
 						ids.get(0), Container.Identifier.class);
 				Layoutable.Identifier child = getIdentifier(
 						ids.get(1), Layoutable.Identifier.class);
-				return new Container.ChangeRemoveChildDescriptor(
-						parent, child);
+				return new ChangeDescriptorGroup(Arrays.asList(
+						new Store.ToStoreDescriptor(child, eID),
+						new Container.ChangeRemoveChildDescriptor(
+								parent, child)));
 			} else if ("connect".equals(localName)) {
 				Point.Identifier point = getIdentifier(
 						ids.get(0), Point.Identifier.class);
