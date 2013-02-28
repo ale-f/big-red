@@ -25,55 +25,9 @@ import org.bigraph.model.loaders.EditXMLLoader.Participant;
 import org.bigraph.model.process.IParticipantHost;
 import org.w3c.dom.Element;
 
+import static org.bigraph.model.loaders.XMLLoader.getAttributeNS;
+
 public class BigraphEditLoader implements Participant {
-	private static Root.Identifier getRootIdentifier(Element el) {
-		return new Root.Identifier(
-				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"));
-	}
-	
-	private static Site.Identifier getSiteIdentifier(Element el) {
-		return new Site.Identifier(
-				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"));
-	}
-	
-	private static Edge.Identifier getEdgeIdentifier(Element el) {
-		return new Edge.Identifier(
-				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"));
-	}
-	
-	private static InnerName.Identifier getInnerNameIdentifier(Element el) {
-		return new InnerName.Identifier(
-				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"));
-	}
-	
-	private static OuterName.Identifier getOuterNameIdentifier(Element el) {
-		return new OuterName.Identifier(
-				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"));
-	}
-	
-	private static Bigraph.Identifier getBigraphIdentifier() {
-		return new Bigraph.Identifier();
-	}
-	
-	private static Port.Identifier getPortIdentifier(Element el) {
-		Node.Identifier id = getNodeIdentifier(
-				EditXMLLoader.getNamedChildElement(el, EDIT_BIG, "node-id"));
-		return new Port.Identifier(
-				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"), id);
-	}
-	
-	private static Node.Identifier getNodeIdentifier(Element el) {
-		Control.Identifier id = getControlIdentifier(
-				EditXMLLoader.getNamedChildElement(el, EDIT_SIG, "control-id"));
-		return new Node.Identifier(
-				EditXMLLoader.getAttributeNS(el, EDIT_BIG, "name"), id);
-	}
-	
-	private static Control.Identifier getControlIdentifier(Element el) {
-		return new Control.Identifier(
-				EditXMLLoader.getAttributeNS(el, EDIT_SIG, "name"));
-	}
-	
 	public static ModelObject.Identifier getIdentifier(Element el) {
 		if (el == null)
 			return null;
@@ -82,25 +36,41 @@ public class BigraphEditLoader implements Participant {
 			namespace = el.getNamespaceURI();
 		if (EDIT_BIG.equals(namespace)) {
 			if ("bigraph-id".equals(localName)) {
-				return getBigraphIdentifier();
+				return new Bigraph.Identifier();
 			} else if ("root-id".equals(localName)) {
-				return getRootIdentifier(el);
+				return new Root.Identifier(
+						getAttributeNS(el, EDIT_BIG, "name"));
 			} else if ("edge-id".equals(localName)) {
-				return getEdgeIdentifier(el);
+				return new Edge.Identifier(
+						getAttributeNS(el, EDIT_BIG, "name"));
 			} else if ("innername-id".equals(localName)) {
-				return getInnerNameIdentifier(el);
+				return new InnerName.Identifier(
+						getAttributeNS(el, EDIT_BIG, "name"));
 			} else if ("outername-id".equals(localName)) {
-				return getOuterNameIdentifier(el);
+				return new OuterName.Identifier(
+						getAttributeNS(el, EDIT_BIG, "name"));
 			} else if ("node-id".equals(localName)) {
-				return getNodeIdentifier(el);
+				Control.Identifier cID = getIdentifier(
+						EditXMLLoader.getNamedChildElement(
+								el, EDIT_SIG, "control-id"),
+						Control.Identifier.class);
+				return new Node.Identifier(
+						getAttributeNS(el, EDIT_BIG, "name"), cID);
 			} else if ("port-id".equals(localName)) {
-				return getPortIdentifier(el);
+				Node.Identifier nID = getIdentifier(
+						EditXMLLoader.getNamedChildElement(
+								el, EDIT_BIG, "node-id"),
+						Node.Identifier.class);
+				return new Port.Identifier(
+						getAttributeNS(el, EDIT_BIG, "name"), nID);
 			} else if ("site-id".equals(localName)) {
-				return getSiteIdentifier(el);
+				return new Site.Identifier(
+						getAttributeNS(el, EDIT_BIG, "name"));
 			} else return null;
 		} else if (EDIT_SIG.equals(namespace)) {
 			if ("control-id".equals(localName)) {
-				return getControlIdentifier(el);
+				return new Control.Identifier(
+						getAttributeNS(el, EDIT_SIG, "name"));
 			} else return null;
 		} else return null;
 	}
@@ -129,7 +99,8 @@ public class BigraphEditLoader implements Participant {
 						ids.get(0), Container.Identifier.class);
 				Layoutable.Identifier child = getIdentifier(
 						ids.get(1), Layoutable.Identifier.class);
-				return new Container.ChangeRemoveChildDescriptor(parent, child);
+				return new Container.ChangeRemoveChildDescriptor(
+						parent, child);
 			} else if ("connect".equals(localName)) {
 				Point.Identifier point = getIdentifier(
 						ids.get(0), Point.Identifier.class);
