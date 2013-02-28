@@ -226,6 +226,8 @@ public class Bigraph extends Container
 		return new Identifier();
 	}
 
+	private final Store store = new Store();
+	
 	@Override
 	public Object lookup(PropertyScratchpad context,
 			IObjectIdentifier identifier) {
@@ -246,6 +248,8 @@ public class Bigraph extends Container
 			} else return null;
 		} else if (identifier instanceof Control.Identifier) {
 			return getSignature().lookup(context, identifier);
+		} else if (identifier instanceof Store.EntryIdentifier) {
+			return store.lookup(context, identifier);
 		} else return null;
 	}
 }

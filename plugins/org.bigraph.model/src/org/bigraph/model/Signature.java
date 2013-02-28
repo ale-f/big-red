@@ -188,6 +188,8 @@ public class Signature extends ModelObject
 		firePropertyChange(PROPERTY_CHILD, s, null);
 	}
 	
+	private final Store store = new Store();
+	
 	@Override
 	public Object lookup(
 			PropertyScratchpad context, IObjectIdentifier identifier) {
@@ -201,6 +203,8 @@ public class Signature extends ModelObject
 			Control c = getControl(context, id.getControl().getName());
 			if (c != null)
 				return c.getNamespace().get(context, id.getName());
+		} else if (identifier instanceof Store.EntryIdentifier) {
+			return store.lookup(context, identifier);
 		}
 		return null;
 	}
