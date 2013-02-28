@@ -95,8 +95,18 @@ public class BigraphEditLoader implements Participant {
 						ids.get(0), Container.Identifier.class);
 				Layoutable.Identifier child = getIdentifier(
 						ids.get(1), Layoutable.Identifier.class);
-				return new Container.ChangeAddChildDescriptor(
-						parent, child);
+				
+				Container.ChangeAddChildDescriptor add =
+						new Container.ChangeAddChildDescriptor(parent, child);
+				
+				String store =
+						getAttributeNS(descriptor, EDIT_BIG, "store");
+				if (store != null) {
+					Store.EntryIdentifier eID =
+							new Store.EntryIdentifier(Long.parseLong(store));
+					return new ChangeDescriptorGroup(Arrays.asList(
+							add, new Store.FromStoreDescriptor(child, eID)));
+				} else return add;
 			} else if ("remove".equals(localName)) {
 				String store =
 						getAttributeNS(descriptor, EDIT_BIG, "store");
