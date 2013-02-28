@@ -43,6 +43,7 @@ public final class ChangeCompatibilityLoader
 		implements ReactionRuleXMLLoader.CompatibilityChangeLoader,
 		IParticipant {
 	private ReactionRule rr;
+	private Bigraph reactum;
 	private final PropertyScratchpad scratch = new PropertyScratchpad();
 	
 	@Override
@@ -54,6 +55,13 @@ public final class ChangeCompatibilityLoader
 	@Override
 	public void setReactionRule(ReactionRule rr) {
 		this.rr = rr;
+		reactum = null;
+	}
+	
+	private Bigraph getReactum() {
+		if (reactum == null)
+			reactum = rr.getRedex().clone();
+		return reactum;
 	}
 	
 	private Layoutable.Identifier getLayoutable(
@@ -90,13 +98,13 @@ public final class ChangeCompatibilityLoader
 	
 	private Node.Identifier _getScratchNodeIdentifier(String name) {
 		Node n = (Node)
-				rr.getReactum().getNamespace(Node.class).get(scratch, name);
+				getReactum().getNamespace(Node.class).get(scratch, name);
 		return (n != null ? n.getIdentifier(scratch) : null);
 	}
 	
 	private Link.Identifier _getScratchLinkIdentifier(String name) {
 		Link l = (Link)
-				rr.getReactum().getNamespace(Link.class).get(scratch, name);
+				getReactum().getNamespace(Link.class).get(scratch, name);
 		return (l != null ? l.getIdentifier(scratch) : null);
 	}
 	
@@ -142,7 +150,8 @@ public final class ChangeCompatibilityLoader
 				Layoutable.Identifier l = getLayoutable(type, name);
 				
 				if (l != null)
-					cd = new Container.ChangeRemoveChildDescriptor(l.lookup(scratch, rr.getReactum()).
+					cd = new Container.ChangeRemoveChildDescriptor(
+							l.lookup(scratch, getReactum()).
 							getParent(scratch).getIdentifier(scratch),
 							l);
 			} else if (el.getLocalName().equals("rename")) {
@@ -178,7 +187,7 @@ public final class ChangeCompatibilityLoader
 						_getScratchNodeIdentifier(node));
 				} else p = new InnerName.Identifier(name);
 				
-				Link.Identifier l = p.lookup(scratch, rr.getReactum()).
+				Link.Identifier l = p.lookup(scratch, getReactum()).
 						getLink(scratch).getIdentifier(scratch);
 				if (p != null)
 					cd = new Point.ChangeDisconnectDescriptor(p, l);
@@ -187,16 +196,18 @@ public final class ChangeCompatibilityLoader
 					name = getAttributeNS(el, CHANGE, "name"),
 					alias = getAttributeNS(el, CHANGE, "alias");
 				Site.Identifier s = new Site.Identifier(name);
-				Site si = s.lookup(scratch, rr.getReactum());
+				Site si = s.lookup(scratch, getReactum());
 				
 				if (s != null)
-					cd = new ChangeAliasDescriptor(s, ExtendedDataUtilities.getAlias(scratch, si), alias);
+					cd = new ChangeAliasDescriptor(s,
+							ExtendedDataUtilities.getAlias(scratch, si),
+							alias);
 			} else if (el.getLocalName().equals("node-parameter")) {
 				String
 					name = getAttributeNS(el, CHANGE, "name"),
 					parameter = getAttributeNS(el, CHANGE, "parameter");
 				Node.Identifier o = _getScratchNodeIdentifier(name);
-				Node no = o.lookup(scratch, rr.getReactum());
+				Node no = o.lookup(scratch, getReactum());
 				
 				if (o != null)
 					cd = ParameterUtilities.changeParameterDescriptor(o,
@@ -211,7 +222,7 @@ public final class ChangeCompatibilityLoader
 					name =
 						getAttributeNS(el, BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
-				Layoutable la = l.lookup(scratch, rr.getReactum());
+				Layoutable la = l.lookup(scratch, getReactum());
 				
 				if (l != null)
 					cd = new ChangeLayoutDescriptor(l, LayoutUtilities.getLayout(scratch, la), RedXMLUndecorator.getRectangle(el));
@@ -224,7 +235,7 @@ public final class ChangeCompatibilityLoader
 					name =
 						getAttributeNS(el, BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
-				Layoutable la = l.lookup(scratch, rr.getReactum());
+				Layoutable la = l.lookup(scratch, getReactum());
 				
 				if (l != null)
 					cd = new ColourUtilities.ChangeFillDescriptor(l,
@@ -239,7 +250,7 @@ public final class ChangeCompatibilityLoader
 					name =
 						getAttributeNS(el, BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
-				Layoutable la = l.lookup(scratch, rr.getReactum());
+				Layoutable la = l.lookup(scratch, getReactum());
 				
 				if (l != null)
 					cd = new ColourUtilities.ChangeOutlineDescriptor(l,
@@ -254,7 +265,7 @@ public final class ChangeCompatibilityLoader
 					name =
 						getAttributeNS(el, BIG_RED, "name");
 				Layoutable.Identifier l = getLayoutable(type, name);
-				Layoutable la = l.lookup(scratch, rr.getReactum());
+				Layoutable la = l.lookup(scratch, getReactum());
 				
 				if (l != null)
 					cd = new ChangeCommentDescriptor(l,
@@ -263,7 +274,7 @@ public final class ChangeCompatibilityLoader
 			}
 		}
 		if (cd != null)
-			cd.simulate(scratch, rr.getReactum());
+			cd.simulate(scratch, getReactum());
 		return cd;
 	}
 }

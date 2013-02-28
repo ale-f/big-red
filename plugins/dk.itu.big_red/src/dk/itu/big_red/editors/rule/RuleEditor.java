@@ -330,7 +330,12 @@ public class RuleEditor extends AbstractGEFEditor implements
 	
 	@Override
 	protected void loadModel() throws LoadFailedException {
-		model = (ReactionRule)loadInput();		
+		model = (ReactionRule)loadInput();
+		try {
+	    	reactum = model.createReactum();
+	    } catch (ChangeCreationException e) {
+	    	throw new LoadFailedException(e);
+	    }
 	}
 	
 	@Override
@@ -340,15 +345,17 @@ public class RuleEditor extends AbstractGEFEditor implements
 		getCommandStack().flush();
 	    updateNodePalette(getModel().getRedex().getSignature());
 	    redexViewer.setContents(model.getRedex());
-	    reactumViewer.setContents(model.getReactum());
+	    reactumViewer.setContents(getReactum());
     }
 	
 	private Bigraph getRedex() {
 		return getModel().getRedex();
 	}
 	
+	private Bigraph reactum;
+	
 	private Bigraph getReactum() {
-		return getModel().getReactum();
+		return reactum;
 	}
 	
 	@Override

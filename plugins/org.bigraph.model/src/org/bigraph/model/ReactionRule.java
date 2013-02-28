@@ -10,7 +10,7 @@ import org.bigraph.model.changes.descriptors.DescriptorExecutorManager;
 import org.bigraph.model.changes.descriptors.IChangeDescriptor;
 
 public class ReactionRule extends ModelObject {
-	private Bigraph redex, reactum;
+	private Bigraph redex;
 	private Edit edit;
 	public static final String CONTENT_TYPE = "dk.itu.big_red.rule";
 	
@@ -20,12 +20,12 @@ public class ReactionRule extends ModelObject {
 	
 	public void setRedex(Bigraph redex) {
 		this.redex = redex;
-		reactum = null;
 	}
-
-	public Bigraph getReactum() {
-		if (reactum == null)
-			reactum = redex.clone();
+	
+	public Bigraph createReactum() throws ChangeCreationException {
+		Bigraph reactum = redex.clone();
+		DescriptorExecutorManager.getInstance().tryApplyChange(
+				reactum, getEdit());
 		return reactum;
 	}
 	
@@ -160,11 +160,6 @@ public class ReactionRule extends ModelObject {
 		if (redex != null) {
 			redex.dispose();
 			redex = null;
-		}
-		
-		if (reactum != null) {
-			reactum.dispose();
-			reactum = null;
 		}
 		
 		if (edit != null) {

@@ -121,12 +121,15 @@ public class BGMParser {
 		
 		ChangeDescriptorGroup cdg = rr.getEdit().getDescriptors();
 		PropertyScratchpad scratch = new PropertyScratchpad();
-		for (Root i : rr.getReactum().getRoots())
+		
+		Bigraph reactum = rr.getRedex().clone();
+		
+		for (Root i : reactum.getRoots())
 			BigraphOperations.removeObject(cdg, scratch, i);
 		
 		for (Root i : NamedModelObject.order(
 				rhs.getRoots(), IntegerStringComparator.INSTANCE))
-			BigraphOperations.copyPlace(cdg, scratch, i, rr.getReactum());
+			BigraphOperations.copyPlace(cdg, scratch, i, reactum);
 		
 		change(simulationSpec, new SimulationSpec.ChangeAddRuleDescriptor(
 				new SimulationSpec.Identifier(), -1, rr));

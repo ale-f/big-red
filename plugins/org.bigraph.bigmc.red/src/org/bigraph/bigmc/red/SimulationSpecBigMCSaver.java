@@ -19,6 +19,7 @@ import org.bigraph.model.ReactionRule;
 import org.bigraph.model.Signature;
 import org.bigraph.model.SimulationSpec;
 import org.bigraph.model.Site;
+import org.bigraph.model.changes.descriptors.ChangeCreationException;
 import org.bigraph.model.interfaces.IChild;
 import org.bigraph.model.interfaces.IEntity;
 import org.bigraph.model.interfaces.ILink;
@@ -167,10 +168,8 @@ public class SimulationSpecBigMCSaver extends Saver {
 				writeControl(c, null);
 			} else parameterised = true;
 		}
-		for (Signature t : s.getSignatures()) {
-			if (recProcessSignature(names, t))
-				parameterised = true;
-		}
+		for (Signature t : s.getSignatures())
+			parameterised |= recProcessSignature(names, t);
 		return parameterised;
 	}
 	
@@ -181,7 +180,11 @@ public class SimulationSpecBigMCSaver extends Saver {
 			recHandleParams(ss.getModel());
 			for (ReactionRule r : ss.getRules()) {
 				recHandleParams(r.getRedex());
-				recHandleParams(r.getReactum());
+				try {
+					recHandleParams(r.createReactum());
+				} catch (ChangeCreationException e) {
+					throw new SaveFailedException(e);
+				}
 			}
 		}
 		write("\n");
@@ -297,16 +300,23 @@ public class SimulationSpecBigMCSaver extends Saver {
 	private int i = 0;
 	
 	private void processRule(ReactionRule r) throws SaveFailedException {
+		Bigraph reactum;
+		try {
+			reactum = r.createReactum();
+		} catch (ChangeCreationException e) {
+			throw new SaveFailedException(e);
+		}
+		
 		if (!iteratorsMatched(
 				r.getRedex().getRoots().iterator(),
-				r.getReactum().getRoots().iterator()))
+				reactum.getRoots().iterator()))
 			throw new SaveFailedException(
 					"Same number of roots required in redex and reactum");
 		if (namedRules)
 			write("%rule r_" + (i++) + " "); /* XXX FIXME */
 		processBigraph(r.getRedex());
 		write(" -> ");
-		processBigraph(r.getReactum());
+		processBigraph(reactum);
 		write(";\n");
 	}
 	
